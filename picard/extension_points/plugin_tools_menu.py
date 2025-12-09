@@ -24,15 +24,15 @@ from picard.plugin import ExtensionPoint
 
 
 class Signaler(QObject):
-    test_menu_updated = pyqtSignal()
+    plugin_tools_updated = pyqtSignal()
 
 
 signaler = Signaler()
-ext_point_test_menu_items = ExtensionPoint(label='test_menu_items')
+ext_point_plugin_tools_items = ExtensionPoint(label='plugin_tools_items')
 
 
-def register_test_menu_action(action, api=None):
+def register_tools_menu_action(action, api=None):
     if api is not None:
         action._plugin_api = api
-    ext_point_test_menu_items.register(action.__module__, action)
-    signaler.test_menu_updated.emit()
+    ext_point_plugin_tools_items.register(action.__module__, action)
+    signaler.plugin_tools_updated.emit()
