@@ -103,7 +103,7 @@ class InfoDialog(PicardDialog):
 
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
-        self.ui.buttonBox.accepted.connect(self.accept)
+        self.ui.buttonBox.rejected.connect(self.close)
 
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = artworktable_class(parent=self)
