@@ -35,11 +35,6 @@
 
 from collections import defaultdict
 
-from PyQt6.QtCore import (
-    QObject,
-    pyqtSignal,
-)
-
 from picard import log
 from picard.config import get_config
 
@@ -51,11 +46,8 @@ _extension_points = []
 _plugin_uuid_to_module = {}  # Maps UUID -> module name for v3 plugins
 
 
-class ExtensionPoint(QObject):
-    changed = pyqtSignal()
-
+class ExtensionPoint:
     def __init__(self, label=None):
-        super().__init__()
         if label is None:
             import uuid
 
@@ -74,12 +66,10 @@ class ExtensionPoint(QObject):
             # uncomment to debug internal extensions loaded at startup
             # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
         self.__dict[name].append(item)
-        self.changed.emit()
 
     def unregister_module(self, name):
         try:
             del self.__dict[name]
-            self.changed.emit()
         except KeyError:
             # NOTE: needed due to defaultdict behaviour:
             # >>> d = defaultdict(list)
