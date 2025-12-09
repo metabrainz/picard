@@ -48,6 +48,10 @@
 import argparse
 from collections import namedtuple
 import contextlib
+from dataclasses import (
+    dataclass,
+    field,
+)
 from functools import partial
 from hashlib import blake2b
 import logging
@@ -208,6 +212,7 @@ class Tagger(QtWidgets.QApplication):
     cluster_removed = QtCore.pyqtSignal(Cluster)
     album_added = QtCore.pyqtSignal(Album)
     album_removed = QtCore.pyqtSignal(Album)
+    translations_updated = QtCore.pyqtSignal()
 
     __instance = None
 
@@ -236,6 +241,8 @@ class Tagger(QtWidgets.QApplication):
         self._init_gettext(config, localedir)
 
         upgrade_config(config)
+
+        self._translators = Translators(self)
 
         self._init_webservice()
         self._init_fingerprinting()
@@ -736,6 +743,7 @@ class Tagger(QtWidgets.QApplication):
             QMessageBox.warning(self.window, 'Blacklisted Plugins Detected', message)
 
         QtCore.QTimer.singleShot(0, self._run_init)
+        self.translations_updated.emit()
         res = self.exec()
         self.exit()
         return res
@@ -1601,16 +1609,67 @@ def setup_dbus():
         pass
 
 
-def setup_translator(tagger):
-    """Setup Qt default translations"""
-    translator = QtCore.QTranslator(tagger)
-    locale = QtCore.QLocale()
-    translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
-    log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-    if translator.load(locale, 'qtbase_', directory=translation_path):
-        tagger.installTranslator(translator)
-    else:
-        log.debug("Qt locale %s not available", locale.name())
+# Translator priority constants (higher = installed later = searched first)
+TRANSLATOR_PRIORITY_QT_BASE = 100  # Qt base translations (highest priority)
+TRANSLATOR_PRIORITY_PLUGIN = 0  # Plugin translations (lower priority)
+
+
+@dataclass(init=True, order=True, kw_only=True)
+class Translator:
+    sort_index: int = TRANSLATOR_PRIORITY_QT_BASE
+    installed: bool = field(default=False, compare=False)
+    instance: QtCore.QTranslator = field(default=None, compare=False)
+
+
+class Translators:
+    def __init__(self, tagger):
+        self.tagger = tagger
+        self.tagger.translations_updated.connect(self.reinstall)
+        self._translators = []
+        self.add_default_translators()
+
+    def add_default_translators(self):
+        translator = QtCore.QTranslator(self.tagger)
+        locale = QtCore.QLocale()
+        translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
+        log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
+        if translator.load(locale, 'qtbase_', directory=translation_path):
+            t = Translator(sort_index=TRANSLATOR_PRIORITY_QT_BASE, instance=translator)
+            self._translators.append(t)
+        else:
+            log.debug("Qt locale %s not available", locale.name())
+
+    def add_translator(self, translator):
+        t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator)
+        self._translators.append(t)
+
+    def remove_translator(self, translator):
+        for t in self._translators[:]:
+            if t.instance == translator:
+                if t.installed:
+                    log.debug("Remove translator: %r", t)
+                    self.tagger.removeTranslator(t.instance)
+                self._translators.remove(t)
+                break
+
+    def reinstall(self):
+        log.debug("Reinstall translators")
+
+        # Translations are searched for in the reverse order in which they were installed,
+        # so the most recently installed translation file is searched for translations first
+        # and the earliest translation file is searched last.
+        # The search stops as soon as a translation containing a matching string is found.
+
+        # First, remove installed translators
+        for t in self._translators:
+            if t.installed:
+                self.tagger.removeTranslator(t.instance)
+                t.installed = False
+
+        # Now install new ones (higher sort_index installed last, used first)
+        for t in sorted(self._translators, reverse=True):
+            t.installed = self.tagger.installTranslator(t.instance)
+            log.debug("Translator: %r", t)
 
 
 def main(localedir=None, autoupdate=True):
@@ -1668,8 +1727,6 @@ def main(localedir=None, autoupdate=True):
 
     # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
-
-    setup_translator(tagger)
 
     tagger.startTimer(1000)
     exit_code = tagger.run()

@@ -46,7 +46,6 @@ from typing import (
 if TYPE_CHECKING:
     from picard.tagger import Tagger
 
-from PyQt6.QtCore import QCoreApplication
 
 from picard.album import Album
 from picard.album_requests import TaskType
@@ -231,17 +230,22 @@ class PluginApi:
         """Install Qt translator for .ui file translations."""
         if not self._translations:
             return
-
+        self._logger.debug(
+            f"Installing Qt translator with {len(self._translations)} locales: {list(self._translations.keys())}"
+        )
+        for locale, data in self._translations.items():
+            qt_keys = [k for k in data.keys() if k.startswith('qt.')]
+            self._logger.debug(f"  Locale {locale}: {len(qt_keys)} Qt translations")
         self._qt_translator = PluginTranslator(self._translations, self._source_locale)
         self._qt_translator._current_locale = self.get_locale()
-        QCoreApplication.installTranslator(self._qt_translator)
+        self._tagger._translators.add_translator(self._qt_translator)
 
     def _remove_qt_translator(self) -> None:
         """Remove Qt translator for .ui file translations."""
         if not self._qt_translator:
             return
 
-        QCoreApplication.removeTranslator(self._qt_translator)
+        self._tagger._translators.remove_translator(self._qt_translator)
         self._qt_translator = None
 
     def _is_valid_locale(self, locale: str) -> bool:
