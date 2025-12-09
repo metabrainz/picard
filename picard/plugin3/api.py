@@ -237,14 +237,14 @@ class PluginApi:
         if has_qt_keys:
             self._qt_translator = PluginTranslator(self._translations, self._source_locale)
             self._qt_translator._current_locale = self.get_locale()
-            self._tagger._translators.add_translator(self._qt_translator)
+            self._tagger._qt_translators.add_translator(self._qt_translator)
 
     def _remove_qt_translator(self) -> None:
         """Remove Qt translator for .ui file translations."""
         if not self._qt_translator:
             return
 
-        self._tagger._translators.remove_translator(self._qt_translator)
+        self._tagger._qt_translators.remove_translator(self._qt_translator)
         self._qt_translator = None
 
     def _is_valid_locale(self, locale: str) -> bool:

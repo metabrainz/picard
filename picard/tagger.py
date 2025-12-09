@@ -242,7 +242,7 @@ class Tagger(QtWidgets.QApplication):
 
         upgrade_config(config)
 
-        self._translators = Translators(self)
+        self._qt_translators = Translators(self)
 
         self._init_webservice()
         self._init_fingerprinting()
