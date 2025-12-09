@@ -34,7 +34,10 @@ import datetime
 import re
 import unittest
 from unittest import mock
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -42,7 +45,6 @@ from picard.cluster import Cluster
 from picard.const.defaults import DEFAULT_FILE_NAMING_FORMAT
 from picard.extension_points.script_functions import (
     FunctionRegistryItem,
-    ext_point_script_functions,
     register_script_function,
     script_function,
 )
@@ -50,6 +52,7 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
+from picard.plugin import ExtensionPoint
 from picard.script import (
     MultiValue,
     ScriptEndOfFile,
@@ -115,20 +118,9 @@ class ScriptParserTest(PicardTestCase):
         )
 
         self.parser = ScriptParser()
+
         # ensure we start on clean registry
         ScriptParser._cache = {}
-        # remember registered script functions to restore them after test run
-        self._original_script_functions = list(ext_point_script_functions)
-
-    def tearDown(self):
-        super().tearDown()
-        # Clear script functions extension point and restore original registered functions
-        ext_point_script_functions.clear()
-        for name, func_info in self._original_script_functions:
-            ext_point_script_functions.register(
-                func_info.function.__module__,
-                (name, func_info),
-            )
 
     def assertScriptResultEquals(self, script, expected, context=None, file=None):
         """Asserts that evaluating `script` returns `expected`.
@@ -181,6 +173,7 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptUnicodeError, areg):
             self.parser.eval("\\ufffg")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_default(self):
         # test default decorator and default prefix
         @script_function()
@@ -189,6 +182,7 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc()", "x")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_no_prefix(self):
         # function without prefix
         @script_function()
@@ -197,6 +191,7 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc()", "x")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_arg(self):
         # function with argument
         @script_function()
@@ -212,6 +207,7 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$somefunc()")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_argcount(self):
         # ignore argument count
         @script_function(check_argcount=False)
@@ -220,6 +216,7 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc(a,b,c)", "3")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_altname(self):
         # alternative name
         @script_function(name="otherfunc")
@@ -231,6 +228,7 @@ class ScriptParserTest(PicardTestCase):
         with self.assertRaisesRegex(ScriptError, areg):
             self.parser.eval("$somefunc()")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_altprefix(self):
         # alternative prefix
         @script_function(prefix='theprefix_')
@@ -239,6 +237,7 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc()", "x")
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_decorator_eval_args(self):
         # disable argument evaluation
         @script_function(eval_args=False)
@@ -261,6 +260,7 @@ class ScriptParserTest(PicardTestCase):
         if not text.endswith(expect):
             raise AssertionError("do not end with %r but with %r" % (expect, text[-len(expect) :]))
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_nodoc(self):
         """test script_function_documentation() with a function without documentation"""
 
@@ -273,6 +273,7 @@ class ScriptParserTest(PicardTestCase):
         doc = script_function_documentation('nodocfunc', 'html')
         self.assertEqual(doc, '')
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation(self):
         """test script_function_documentation() with a function with documentation"""
         # the documentation used to test includes backquotes
@@ -289,6 +290,7 @@ class ScriptParserTest(PicardTestCase):
             script_function_documentation('somefunc', 'unknownformat')
 
     @unittest.skipUnless(markdown, "markdown module missing")
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_html(self):
         """test script_function_documentation() with a function with documentation"""
         # get html code as generated by markdown
@@ -304,15 +306,16 @@ class ScriptParserTest(PicardTestCase):
         doc = script_function_documentation('somefunc', 'html')
         self.assertEqual(doc, pre + '$somefunc()' + post)
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_unknown_function(self):
         """test script_function_documentation() with an unknown function"""
         areg = r"^no such function: unknownfunc"
         with self.assertRaisesRegex(ScriptFunctionDocError, areg):
             script_function_documentation('unknownfunc', 'html')
 
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_all(self):
         """test script_function_documentation_all() with markdown format"""
-        ext_point_script_functions.clear()
 
         @script_function(documentation='somedoc2')
         def func_somefunc2(parser):
@@ -326,10 +329,9 @@ class ScriptParserTest(PicardTestCase):
         self.assertEqual(docall, 'somedoc1\nsomedoc2')
 
     @unittest.skipUnless(markdown, "markdown module missing")
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_all_html(self):
         """test script_function_documentation_all() with html format"""
-        ext_point_script_functions.clear()
-
         # get html code as generated by markdown
         pre, post = markdown('XXX').split('XXX')
 

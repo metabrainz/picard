@@ -218,36 +218,3 @@ class TestExtensionPoints(PicardTestCase):
         # Neither should yield items
         self.assertEqual(list(ep1), [])
         self.assertEqual(list(ep2), [])
-
-    def test_register_changed_signal(self):
-        ep = ExtensionPoint(label='ep')
-        mock_slot = Mock()
-        ep.changed.connect(mock_slot)
-        ep.register('picard', 'item1')
-        mock_slot.assert_called_once()
-
-    def test_unregister_changed_signal(self):
-        ep = ExtensionPoint(label='ep')
-        mock_slot = Mock()
-        ep.register('picard.plugins.testplugin', 'item1')
-        ep.changed.connect(mock_slot)
-        ep.unregister_module('testplugin')
-        mock_slot.assert_called_once()
-
-    def test_unregister_changed_signal_unknown_module(self):
-        ep = ExtensionPoint(label='ep')
-        mock_slot = Mock()
-        ep.changed.connect(mock_slot)
-        ep.unregister_module('unknown')
-        mock_slot.assert_not_called()
-
-    def test_clear(self):
-        ep = ExtensionPoint(label='ep')
-        mock_slot = Mock()
-        ep.register('picard', 'item1')
-        ep.register('picard', 'item2')
-        self.assertEqual(2, len(list(ep)))
-        ep.changed.connect(mock_slot)
-        ep.clear()
-        mock_slot.assert_called_once()
-        self.assertEqual(0, len(list(ep)))

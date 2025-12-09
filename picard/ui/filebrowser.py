@@ -39,7 +39,6 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
-from picard.extension_points.formats import ext_point_formats
 from picard.formats import supported_formats
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
@@ -72,7 +71,6 @@ class FileBrowser(QtWidgets.QTreeView):
         self.addAction(self.set_as_starting_directory_action)
         self.doubleClicked.connect(self.load_file_for_item)
         self.focused = False
-        ext_point_formats.changed.connect(self._update_name_filters)
 
     def showEvent(self, event):
         if not self.model():
