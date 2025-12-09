@@ -428,6 +428,16 @@ Major changes:
 - `exec_()` → `exec()`
 - QAction moved: QtWidgets → QtGui
 
+### 5. register_ui_init was removed
+
+Registering a function to run with `register_ui_init` was removed. If possible, one
+of the other API functions better fits your use case.
+
+If there is not other API function, move the code into the `enable(api)` function.
+This function is being called after Picard's UI is already available and hence behaves
+very similar to the `ui_init` functions before. Plugins should however clean up any
+changes done to the UI in their `disable()` function.
+
 ---
 
 ## Manual Steps After Migration

@@ -93,7 +93,6 @@ from picard.extension_points.options_pages import register_options_page
 from picard.extension_points.plugin_tools_menu import register_tools_menu_action
 from picard.extension_points.script_functions import register_script_function
 from picard.extension_points.script_variables import register_script_variable
-from picard.extension_points.ui_init import register_ui_init
 from picard.file import File
 from picard.metadata import Metadata
 from picard.plugin3.i18n import (
@@ -670,11 +669,6 @@ class PluginApi:
     # UI
     def register_options_page(self, page_class: Type[OptionsPage]) -> None:
         return register_options_page(page_class, self)
-
-    def register_ui_init(self, function: Callable) -> None:
-        wrapped = partial(function, self)
-        update_wrapper(wrapped, function)
-        return register_ui_init(wrapped)
 
     def register_tools_menu_action(self, action: BaseAction) -> None:
         return register_tools_menu_action(action, self)
