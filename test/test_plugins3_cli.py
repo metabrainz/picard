@@ -28,6 +28,7 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
+from picard.plugin3.git_factory import has_git_backend
 from picard.plugin3.manager import UpdateResult
 
 
@@ -108,15 +109,8 @@ class TestPluginCLI(PicardTestCase):
         """Test validate command with git URL."""
         import tempfile
 
-        try:
-            import pygit2  # noqa: F401
-
-            HAS_PYGIT2 = True
-        except ImportError:
-            HAS_PYGIT2 = False
-
-        if not HAS_PYGIT2:
-            self.skipTest("pygit2 not available")
+        if not has_git_backend():
+            self.skipTest("git backend not available")
 
         # Create a temporary git repository
         with tempfile.TemporaryDirectory() as tmpdir:

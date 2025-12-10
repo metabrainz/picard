@@ -194,12 +194,13 @@ class TestPluginRegistry(PicardTestCase):
                             ) as mock_check_dirty:
                                 mock_check_dirty.return_value = []  # No uncommitted changes
 
-                                with patch('pygit2.Repository') as mock_repo_class:
+                                with patch('picard.plugin3.git_factory.git_backend') as mock_backend_func:
+                                    mock_backend = Mock()
                                     mock_repo = Mock()
-                                    mock_commit = Mock()
-                                    mock_commit.commit_time = 1234567890
-                                    mock_repo.get = Mock(return_value=mock_commit)
-                                    mock_repo_class.return_value = mock_repo
+                                    mock_repo.get_commit_date = Mock(return_value=1234567890)
+                                    mock_repo.free = Mock()
+                                    mock_backend.create_repository = Mock(return_value=mock_repo)
+                                    mock_backend_func.return_value = mock_backend
 
                                     # Update plugin
                                     manager.update_plugin(mock_plugin)

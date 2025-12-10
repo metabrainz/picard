@@ -20,35 +20,30 @@
 
 from test.picardtestcase import PicardTestCase
 
+from picard.plugin3.git_factory import has_git_backend
 from picard.plugin3.plugin import (
-    HAS_PYGIT2,
+    PluginSourceGit,
     PluginSourceSyncError,
 )
 
 
 class TestPluginSourceGit(PicardTestCase):
-    def test_plugin_source_git_without_pygit2(self):
-        """Test PluginSourceGit raises error when pygit2 not available."""
-        if HAS_PYGIT2:
-            self.skipTest('pygit2 is available')
-
-        from picard.plugin3.plugin import PluginSourceGit
+    def test_plugin_source_git_without_backend(self):
+        """Test PluginSourceGit raises error when git backend not available."""
+        if has_git_backend():
+            self.skipTest('git backend is available')
 
         with self.assertRaises(PluginSourceSyncError) as context:
             PluginSourceGit('https://example.com/repo.git')
 
-        self.assertIn('pygit2 is not available', str(context.exception))
+        self.assertIn('git backend is not available', str(context.exception))
 
     def test_plugin_source_git_retry_on_network_error(self):
         """Test PluginSourceGit retries on network errors."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 is not available')
+        if not has_git_backend():
+            self.skipTest('git backend is not available')
 
         from unittest.mock import patch
-
-        from picard.plugin3.plugin import PluginSourceGit
-
-        import pygit2
 
         source = PluginSourceGit('https://example.com/repo.git')
 
@@ -59,7 +54,9 @@ class TestPluginSourceGit(PicardTestCase):
             nonlocal call_count
             call_count += 1
             if call_count < 3:
-                raise pygit2.GitError('Failed to resolve host')
+                from picard.plugin3 import GitBackendError
+
+                raise GitBackendError('Failed to resolve host')
             return 'success'
 
         with patch('picard.plugin3.plugin.time.sleep'):  # Skip actual sleep
@@ -70,23 +67,21 @@ class TestPluginSourceGit(PicardTestCase):
 
     def test_plugin_source_git_no_retry_on_non_network_error(self):
         """Test PluginSourceGit does not retry on non-network errors."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 is not available')
-
-        from picard.plugin3.plugin import PluginSourceGit
-
-        import pygit2
+        if not has_git_backend():
+            self.skipTest('git backend is not available')
 
         source = PluginSourceGit('https://example.com/repo.git')
 
         call_count = 0
 
+        from picard.plugin3 import GitReferenceError
+
         def mock_operation():
             nonlocal call_count
             call_count += 1
-            raise pygit2.GitError('Invalid reference')
+            raise GitReferenceError('Invalid reference')
 
-        with self.assertRaises(pygit2.GitError):
+        with self.assertRaises(GitReferenceError):
             source._retry_git_operation(mock_operation)
 
         # Should only try once (no retries for non-network errors)

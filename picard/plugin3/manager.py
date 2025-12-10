@@ -293,7 +293,7 @@ class PluginManager(QObject):
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-            commit_id = str(ref.oid) if hasattr(ref, 'oid') else None
+            commit_id = str(ref.id) if hasattr(ref, 'id') else None
 
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]
@@ -813,15 +813,16 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                import pygit2
+                from picard.plugin3.git_factory import git_backend
 
-                source_repo = pygit2.Repository(str(local_path))
-                if source_repo.status():
+                backend = git_backend()
+                source_repo = backend.create_repository(local_path)
+                if source_repo.get_status():
                     log.warning('Installing from local repository with uncommitted changes: %s', local_path)
 
                 # If no ref specified, use the current branch
-                if not ref and not source_repo.head_is_detached:
-                    ref = source_repo.head.shorthand
+                if not ref and not source_repo.is_head_detached():
+                    ref = source_repo.get_head_shorthand()
                     log.debug('Using current branch from local repo: %s', ref)
             except Exception:
                 pass  # Ignore errors checking status
@@ -1034,18 +1035,20 @@ class PluginManager(QObject):
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        import pygit2
+        from picard.plugin3.git_backend import GitObjectType
+        from picard.plugin3.git_factory import git_backend
 
-        repo = pygit2.Repository(plugin.local_path.absolute())
-        obj = repo.get(new_commit)
-        assert obj is not None
+        backend = git_backend()
+        repo = backend.create_repository(plugin.local_path)
+        obj = repo.revparse_single(new_commit)
         # Peel tag to commit if needed
-        if obj.type == pygit2.GIT_OBJECT_TAG:
-            commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)  # type: ignore[call-overload]
-            new_commit = str(commit.id)  # Use actual commit ID, not tag object ID
+        if obj.type == GitObjectType.TAG:
+            commit = repo.peel_to_commit(obj)
+            new_commit = commit.id  # Use actual commit ID, not tag object ID
         else:
             commit = obj
-        commit_date = commit.commit_time
+        # Get commit date using backend
+        commit_date = repo.get_commit_date(commit.id)
         repo.free()
 
         # Reload manifest to get new version
@@ -1111,14 +1114,16 @@ class PluginManager(QObject):
                 continue
 
             try:
-                import pygit2
+                from picard.plugin3.git_factory import git_backend
 
-                repo = pygit2.Repository(plugin.local_path.absolute())
-                current_commit = str(repo.head.target)
+                backend = git_backend()
+                repo = backend.create_repository(plugin.local_path)
+                current_commit = repo.get_head_target()
 
                 # Fetch without updating (suppress progress output)
-                for remote in repo.remotes:
-                    remote.fetch()
+                callbacks = backend.create_remote_callbacks()
+                for remote in repo.get_remotes():
+                    repo.fetch_remote(remote, None, callbacks._callbacks)
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
                 registry_plugin = self._registry.find_plugin(url=metadata.url)
@@ -1167,14 +1172,16 @@ class PluginManager(QObject):
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    if obj.type == pygit2.GIT_OBJECT_TAG:
-                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                    from picard.plugin3.git_backend import GitObjectType
+
+                    if obj.type == GitObjectType.TAG:
+                        commit = repo.peel_to_commit(obj)
                     else:
                         commit = obj
 
-                    latest_commit = str(commit.id)
-                    # Get commit date
-                    latest_commit_date = commit.commit_time
+                    latest_commit = commit.id
+                    # Get commit date using backend
+                    latest_commit_date = repo.get_commit_date(commit.id)
                 except KeyError:
                     # Ref not found, skip this plugin
                     continue

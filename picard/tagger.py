@@ -386,7 +386,7 @@ class Tagger(QtWidgets.QApplication):
                 self.pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self.pluginmanager3 = None
-            log.warning('Plugin3 system not available (pygit2 not installed)')
+            log.warning('Plugin3 system not available (git backend not available)')
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -1745,7 +1745,7 @@ def main(localedir=None, autoupdate=True):
     # Handle plugin commands with minimal initialization (no GUI)
     if cmdline_args.subcommand == 'plugins':
         if not HAS_PLUGIN3:
-            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
+            log.error('Plugin3 system not available. Git backend not available for plugin management.')
             sys.exit(1)
 
         app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication

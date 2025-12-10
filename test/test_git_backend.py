@@ -1,0 +1,233 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2025 Philipp Wolfer, Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+from pathlib import Path
+import unittest
+from unittest.mock import Mock, patch
+
+from picard.plugin3.git_backend import (
+    GitBackend,
+    GitObject,
+    GitObjectType,
+    GitRef,
+    GitRepository,
+    GitStatusFlag,
+)
+from picard.plugin3.git_factory import git_backend
+
+
+class MockGitRepository(GitRepository):
+    """Mock implementation for testing"""
+
+    def __init__(self):
+        self.status_result = {}
+        self.head_target = "abc123"
+        self.head_detached = False
+        self.head_shorthand = "main"
+        self.head_name = "refs/heads/main"
+        self.references = {}
+
+    def get_status(self):
+        return self.status_result
+
+    def get_head_target(self):
+        return self.head_target
+
+    def is_head_detached(self):
+        return self.head_detached
+
+    def get_head_shorthand(self):
+        return self.head_shorthand
+
+    def get_head_name(self):
+        return self.head_name
+
+    def revparse_single(self, ref):
+        return GitObject("abc123", GitObjectType.COMMIT)
+
+    def peel_to_commit(self, obj):
+        return obj
+
+    def reset(self, commit_id, mode):
+        pass
+
+    def checkout_tree(self, obj):
+        pass
+
+    def set_head(self, target):
+        pass
+
+    def list_references(self):
+        return list(self.references.keys())
+
+    def get_references(self):
+        return self.references
+
+    def get_remotes(self):
+        return {}
+
+    def get_remote(self, name):
+        return Mock()
+
+    def create_remote(self, name, url):
+        return Mock()
+
+    def get_branches(self):
+        return Mock()
+
+    def get_commit_date(self, commit_id):
+        return 1234567890  # Mock timestamp
+
+    def fetch_remote(self, remote, refspec=None, callbacks=None):
+        pass
+
+    def free(self):
+        pass
+
+
+class MockGitBackend(GitBackend):
+    """Mock backend for testing"""
+
+    def __init__(self):
+        self.repo = MockGitRepository()
+
+    def create_repository(self, path):
+        return self.repo
+
+    def init_repository(self, path, bare=False):
+        return self.repo
+
+    def clone_repository(self, url, path, **options):
+        return self.repo
+
+    def fetch_remote_refs(self, url, **options):
+        return [GitRef("main", "abc123")]
+
+    def create_remote_callbacks(self):
+        return Mock()
+
+    def get_remote(self, name):
+        return Mock()
+
+    def create_commit(self, repo, message, author_name="Test", author_email="test@example.com"):
+        return "abc123"
+
+    def create_tag(self, repo, tag_name, commit_id, message="", author_name="Test", author_email="test@example.com"):
+        pass
+
+    def create_branch(self, repo, branch_name, commit_id):
+        pass
+
+    def add_and_commit_files(self, repo, message, author_name="Test", author_email="test@example.com"):
+        return "abc123"
+
+    def reset_hard(self, repo, commit_id):
+        pass
+
+    def create_reference(self, repo, ref_name, commit_id):
+        pass
+
+    def set_head_detached(self, repo, commit_id):
+        pass
+
+
+class TestGitBackend(unittest.TestCase):
+    def test_git_status_flags(self):
+        """Test git status flag enumeration"""
+        self.assertEqual(GitStatusFlag.CURRENT.value, 0)
+        self.assertEqual(GitStatusFlag.IGNORED.value, 1)
+        self.assertEqual(GitStatusFlag.MODIFIED.value, 2)
+
+    def test_git_object_types(self):
+        """Test git object type enumeration"""
+        self.assertEqual(GitObjectType.COMMIT.value, "commit")
+        self.assertEqual(GitObjectType.TAG.value, "tag")
+
+    def test_git_ref_creation(self):
+        """Test GitRef object creation"""
+        ref = GitRef("main", "abc123")
+        self.assertEqual(ref.name, "main")
+        self.assertEqual(ref.target, "abc123")
+
+    def test_git_object_creation(self):
+        """Test GitObject creation"""
+        obj = GitObject("abc123", GitObjectType.COMMIT)
+        self.assertEqual(obj.id, "abc123")
+        self.assertEqual(obj.type, GitObjectType.COMMIT)
+
+    def test_mock_backend_operations(self):
+        """Test mock backend basic operations"""
+        backend = MockGitBackend()
+
+        # Test repository creation
+        repo = backend.create_repository(Path("/test"))
+        self.assertIsInstance(repo, MockGitRepository)
+
+        # Test status
+        status = repo.get_status()
+        self.assertEqual(status, {})
+
+        # Test head operations
+        self.assertEqual(repo.get_head_target(), "abc123")
+        self.assertFalse(repo.is_head_detached())
+        self.assertEqual(repo.get_head_shorthand(), "main")
+
+    def test_git_backend_exceptions(self):
+        """Test that git backend raises proper exceptions"""
+        from picard.plugin3 import GitReferenceError, GitRepositoryError
+
+        backend = git_backend()
+
+        # Test repository error
+        with self.assertRaises(GitRepositoryError):
+            backend.create_repository(Path('/nonexistent/path'))
+
+        # Test reference error with a valid repo
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo_dir = Path(tmpdir) / "test-repo"
+            repo = backend.init_repository(repo_dir)
+
+            with self.assertRaises(GitReferenceError):
+                repo.revparse_single('nonexistent-ref')
+
+            repo.free()
+
+    @patch('picard.plugin3.git_factory.get_git_backend')
+    def test_git_factory_singleton(self, mock_get_backend):
+        """Test git factory returns singleton"""
+        mock_backend = MockGitBackend()
+        mock_get_backend.return_value = mock_backend
+
+        # Reset singleton
+        import picard.plugin3.git_factory
+
+        picard.plugin3.git_factory._git_backend = None
+
+        backend1 = git_backend()
+        backend2 = git_backend()
+
+        self.assertIs(backend1, backend2)
+        mock_get_backend.assert_called_once()
+
+
+if __name__ == '__main__':
+    unittest.main()

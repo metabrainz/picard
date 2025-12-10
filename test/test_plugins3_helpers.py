@@ -243,6 +243,140 @@ def create_mock_manager_with_manifest_validation():
     return manager
 
 
+def skip_if_no_git_backend():
+    """Skip test if git backend is not available."""
+    try:
+        from picard.plugin3.git_factory import has_git_backend
+
+        if not has_git_backend():
+            import pytest
+
+            pytest.skip("git backend not available")
+    except ImportError:
+        import pytest
+
+        pytest.skip("git backend not available")
+
+
+def create_git_repo_with_backend(repo_path, initial_files=None):
+    """Create a git repository using the git backend abstraction.
+
+    Args:
+        repo_path: Path to create repository
+        initial_files: Dict of {filename: content} to create and commit
+
+    Returns:
+        str: Initial commit ID
+    """
+    from pathlib import Path
+
+    from picard.plugin3.git_factory import git_backend
+
+    repo_path = Path(repo_path)
+    repo_path.mkdir(parents=True, exist_ok=True)
+
+    backend = git_backend()
+    repo = backend.init_repository(repo_path)
+
+    if initial_files:
+        # Create files
+        for filename, content in initial_files.items():
+            (repo_path / filename).write_text(content)
+
+        # Commit using backend
+        commit_id = backend.create_commit(repo, 'Initial commit')
+        repo.free()
+        return commit_id
+
+    repo.free()
+    return None
+
+
+def get_backend_repo(repo_path):
+    """Get a backend repository instance for a path."""
+    from picard.plugin3.git_factory import git_backend
+
+    return git_backend().create_repository(repo_path)
+
+
+def backend_create_tag(repo_path, tag_name, commit_id=None, message=""):
+    """Create a tag using the git backend."""
+    from picard.plugin3.git_factory import git_backend
+
+    backend = git_backend()
+    repo = backend.create_repository(repo_path)
+    if commit_id is None:
+        commit_id = repo.get_head_target()
+    backend.create_tag(repo, tag_name, commit_id, message)
+    repo.free()
+
+
+def backend_create_lightweight_tag(repo_path, tag_name, commit_id=None):
+    """Create a lightweight tag (reference only) using backend."""
+    from picard.plugin3.git_factory import git_backend
+
+    backend = git_backend()
+    repo = backend.create_repository(repo_path)
+    if commit_id is None:
+        commit_id = repo.get_head_target()
+    backend.create_reference(repo, f'refs/tags/{tag_name}', commit_id)
+    repo.free()
+
+
+def backend_set_detached_head(repo_path, commit_id):
+    """Set repository to detached HEAD state using backend."""
+    from picard.plugin3.git_factory import git_backend
+
+    backend = git_backend()
+    repo = backend.create_repository(repo_path)
+    backend.set_head_detached(repo, commit_id)
+    repo.free()
+
+
+def backend_create_branch(repo_path, branch_name, commit_id=None):
+    """Create a branch using the git backend."""
+    from picard.plugin3.git_factory import git_backend
+
+    backend = git_backend()
+    repo = backend.create_repository(repo_path)
+    if commit_id is None:
+        commit_id = repo.get_head_target()
+    backend.create_branch(repo, branch_name, commit_id)
+    repo.free()
+
+
+def backend_add_and_commit(repo_path, message="Commit", author_name="Test", author_email="test@example.com"):
+    """Add all files and commit using backend."""
+    from picard.plugin3.git_factory import git_backend
+
+    backend = git_backend()
+    repo = backend.create_repository(repo_path)
+    commit_id = backend.add_and_commit_files(repo, message, author_name, author_email)
+    repo.free()
+    return commit_id
+
+
+def backend_init_and_commit(repo_path, files=None, message="Initial commit"):
+    """Initialize repo and create initial commit using backend."""
+    from pathlib import Path
+
+    from picard.plugin3.git_factory import git_backend
+
+    repo_path = Path(repo_path)
+    repo_path.mkdir(parents=True, exist_ok=True)
+
+    # Create files first
+    if files:
+        for filename, content in files.items():
+            (repo_path / filename).write_text(content)
+
+    backend = git_backend()
+    repo = backend.init_repository(repo_path)
+    commit_id = backend.add_and_commit_files(repo, message)
+    repo.free()
+    return commit_id
+
+
 def create_test_manifest_content(
     name='Test Plugin',
     version='1.0.0',
@@ -343,18 +477,14 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
     # Initialize git if requested
     if add_git:
         try:
-            import pygit2
+            from picard.plugin3.git_factory import has_git_backend
 
-            repo = pygit2.init_repository(str(plugin_dir))
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature('Test', 'test@example.com')
-            repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
-            repo.set_head('refs/heads/main')
-        except ImportError:
-            # pygit2 not available, skip git init
+            if has_git_backend():
+                create_git_repo_with_backend(
+                    plugin_dir, {'MANIFEST.toml': manifest_content, '__init__.py': '# Test plugin\n'}
+                )
+        except (ImportError, Exception):
+            # Git backend not available, skip git init
             pass
 
     return plugin_dir
@@ -373,16 +503,15 @@ def create_git_commit(repo_path, message='Initial commit', author_name='Test', a
         str: Commit ID (SHA)
     """
     try:
-        import pygit2
+        from picard.plugin3.git_factory import git_backend, has_git_backend
 
-        repo = pygit2.Repository(str(repo_path))
-        index = repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature(author_name, author_email)
-        commit_id = repo.create_commit('refs/heads/main', author, author, message, tree, [])
-        repo.set_head('refs/heads/main')
-        return str(commit_id)
-    except ImportError:
+        if not has_git_backend():
+            return None
+
+        backend = git_backend()
+        repo = backend.create_repository(repo_path)
+        commit_id = backend.create_commit(repo, message, author_name, author_email)
+        repo.free()
+        return commit_id
+    except (ImportError, Exception):
         return None

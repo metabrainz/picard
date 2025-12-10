@@ -33,17 +33,11 @@ from picard.extension_points import (
     unset_plugin_uuid,
 )
 from picard.plugin3.api import PluginApi
+from picard.plugin3.git_backend import GitBackendError
+from picard.plugin3.git_factory import git_backend
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
 
-
-try:
-    import pygit2
-
-    HAS_PYGIT2 = True
-except ImportError:
-    HAS_PYGIT2 = False
-    pygit2 = None  # type: ignore[assignment]
 
 try:
     import hashlib
@@ -92,46 +86,6 @@ class PluginState(Enum):
     ERROR = 'error'  # Failed to load or enable
 
 
-if HAS_PYGIT2:
-
-    class GitRemoteCallbacks(pygit2.RemoteCallbacks):
-        def __init__(self):
-            super().__init__()
-            self._attempted = False
-
-        def transfer_progress(self, stats):
-            pass  # Suppress progress output
-
-        def credentials(self, url, username_from_url, allowed_types):
-            """Provide credentials for git operations.
-
-            Supports SSH keys and username/password authentication.
-            Falls back to system git credential helpers.
-            """
-            # Prevent infinite retry loops
-            if self._attempted:
-                return None
-            self._attempted = True
-
-            if allowed_types & pygit2.GIT_CREDENTIAL_SSH_KEY:
-                # Try SSH key authentication with default key
-                try:
-                    return pygit2.Keypair('git', None, None, '')
-                except Exception:
-                    return None
-            elif allowed_types & pygit2.GIT_CREDENTIAL_USERPASS_PLAINTEXT:
-                # Try default credential helper
-                try:
-                    return pygit2.Username('git')
-                except Exception:
-                    return None
-            return None
-else:
-
-    class GitRemoteCallbacks:  # type: ignore[no-redef]
-        pass
-
-
 class PluginSourceSyncError(Exception):
     pass
 
@@ -164,8 +118,7 @@ class PluginSourceGit(PluginSource):
 
     def __init__(self, url: str, ref: str | None = None):
         super().__init__()
-        if not HAS_PYGIT2:
-            raise PluginSourceSyncError("pygit2 is not available. Install it to use git-based plugin sources.")
+        # Git backend will handle availability check
         # Note: url can be a local directory
         self.url = url
         self.ref = ref
@@ -175,14 +128,14 @@ class PluginSourceGit(PluginSource):
         """List available refs in repository.
 
         Args:
-            repo: pygit2.Repository instance
+            repo: GitRepository instance
             limit: Maximum number of refs to return
 
         Returns:
             str: Comma-separated list of ref names
         """
         refs = []
-        all_refs = list(repo.references)  # Convert References to list
+        all_refs = repo.list_references()
         for ref in all_refs:
             if ref.startswith('refs/heads/'):
                 refs.append(ref[11:])  # Remove 'refs/heads/' prefix
@@ -205,7 +158,7 @@ class PluginSourceGit(PluginSource):
         for attempt in range(max_retries):
             try:
                 return operation()
-            except pygit2.GitError as e:
+            except Exception as e:
                 error_msg = str(e).lower()
                 is_network_error = any(
                     keyword in error_msg
@@ -226,10 +179,12 @@ class PluginSourceGit(PluginSource):
                 else:
                     raise
 
-    def _resolve_to_commit(self, obj):
+    def _resolve_to_commit(self, obj, repo=None):
         """Resolve a git object to a commit, peeling tags if needed."""
-        if hasattr(obj, 'type') and obj.type == pygit2.GIT_OBJECT_TAG:
-            return obj.peel(pygit2.GIT_OBJECT_COMMIT)
+        from picard.plugin3.git_backend import GitObjectType
+
+        if hasattr(obj, 'type') and obj.type == GitObjectType.TAG and repo:
+            return repo.peel_to_commit(obj)
         return obj
 
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
@@ -241,20 +196,34 @@ class PluginSourceGit(PluginSource):
             single_branch: If True, only clone/fetch the specific branch
             fetch_ref: If True and repo exists, fetch the ref before checking out (for switch-ref)
         """
+        backend = git_backend()
+
         if target_directory.is_dir():
-            repo = pygit2.Repository(target_directory.absolute())
+            repo = backend.create_repository(target_directory.absolute())
             # If fetch_ref is True, fetch the specific ref we're switching to
             if fetch_ref and self.ref:
-                for remote in repo.remotes:
+                callbacks = backend.create_remote_callbacks()
+                try:
+                    origin_remote = repo.get_remote('origin')
                     refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                     try:
-                        self._retry_git_operation(lambda: remote.fetch([refspec], callbacks=GitRemoteCallbacks()))
+                        self._retry_git_operation(
+                            lambda: repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
+                        )
                     except Exception:
                         # If specific refspec fails, try fetching all (might be a tag or commit)
-                        self._retry_git_operation(lambda: remote.fetch(callbacks=GitRemoteCallbacks()))
+                        self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                except (KeyError, GitBackendError):
+                    # No origin remote, skip fetch
+                    pass
             else:
-                for remote in repo.remotes:
-                    self._retry_git_operation(lambda: remote.fetch(callbacks=GitRemoteCallbacks()))
+                callbacks = backend.create_remote_callbacks()
+                try:
+                    origin_remote = repo.get_remote('origin')
+                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                except (KeyError, GitBackendError):
+                    # No origin remote, skip fetch
+                    pass
         else:
             depth = 1 if shallow else 0
             # Strip origin/ prefix if present for checkout_branch
@@ -263,17 +232,17 @@ class PluginSourceGit(PluginSource):
                 checkout_branch = self.ref[7:] if self.ref.startswith('origin/') else self.ref
 
             def clone_operation():
-                return pygit2.clone_repository(
+                return backend.clone_repository(
                     self.url,
-                    target_directory.absolute(),
-                    callbacks=GitRemoteCallbacks(),
+                    target_directory,
+                    callbacks=backend.create_remote_callbacks(),
                     depth=depth,
                     checkout_branch=checkout_branch,
                 )
 
             try:
                 repo = self._retry_git_operation(clone_operation)
-            except (KeyError, pygit2.GitError) as e:
+            except Exception as e:
                 # Check if it's a repository-level 404/not found error (not branch-level)
                 error_msg = str(e).lower()
                 # Only catch repository not found, not branch/ref not found
@@ -292,10 +261,10 @@ class PluginSourceGit(PluginSource):
                 elif checkout_branch:
 
                     def fallback_clone():
-                        return pygit2.clone_repository(
+                        return backend.clone_repository(
                             self.url,
-                            target_directory.absolute(),
-                            callbacks=GitRemoteCallbacks(),
+                            target_directory,
+                            callbacks=backend.create_remote_callbacks(),
                             depth=depth,
                         )
 
@@ -305,24 +274,25 @@ class PluginSourceGit(PluginSource):
 
             # If shallow clone and ref specified, fetch tags to ensure tags are available for updates
             if shallow and self.ref:
-                for remote in repo.remotes:
-                    try:
-                        remote.fetch(['+refs/tags/*:refs/tags/*'], callbacks=GitRemoteCallbacks())
-                    except Exception:
-                        pass  # Tags might not exist or fetch might fail
+                callbacks = backend.create_remote_callbacks()
+                try:
+                    origin_remote = repo.get_remote('origin')
+                    repo.fetch_remote(origin_remote, '+refs/tags/*:refs/tags/*', callbacks._callbacks)
+                except Exception:
+                    pass  # Tags might not exist or fetch might fail
 
         if self.ref:
             try:
                 commit = repo.revparse_single(self.ref)
                 self.resolved_ref = self.ref
-            except KeyError:
+            except (KeyError, Exception):
                 # If ref starts with 'origin/', try without it
                 if self.ref.startswith('origin/'):
                     try:
                         ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
                         commit = repo.revparse_single(ref_without_origin)
                         self.resolved_ref = ref_without_origin
-                    except KeyError:
+                    except (KeyError, GitBackendError):
                         available_refs = self._list_available_refs(repo)
                         raise KeyError(
                             f"Could not find ref '{self.ref}' or '{ref_without_origin}'. "
@@ -333,12 +303,12 @@ class PluginSourceGit(PluginSource):
                     try:
                         commit = repo.revparse_single(f'origin/{self.ref}')
                         self.resolved_ref = f'origin/{self.ref}'
-                    except KeyError:
+                    except (KeyError, GitBackendError):
                         # Try as local branch refs/heads/
                         try:
                             commit = repo.revparse_single(f'refs/heads/{self.ref}')
                             self.resolved_ref = self.ref
-                        except KeyError:
+                        except (KeyError, GitBackendError):
                             available_refs = self._list_available_refs(repo)
                             raise KeyError(
                                 f"Could not find ref '{self.ref}'. "
@@ -350,21 +320,21 @@ class PluginSourceGit(PluginSource):
             try:
                 commit = repo.revparse_single('HEAD')
                 # Get the branch name that HEAD points to
-                if repo.head_is_detached:
-                    self.resolved_ref = short_commit_id(str(commit.id))
+                if repo.is_head_detached():
+                    self.resolved_ref = short_commit_id(commit.id)
                 else:
                     # Get branch name from HEAD
-                    head_ref = repo.head.name
+                    head_ref = repo.get_head_name()
                     if head_ref.startswith('refs/heads/'):
                         self.resolved_ref = head_ref[11:]  # Remove 'refs/heads/' prefix
                     else:
                         self.resolved_ref = head_ref
-            except KeyError:
+            except (KeyError, GitBackendError):
                 # HEAD not set, try 'main' or first available branch
                 try:
                     commit = repo.revparse_single('main')
                     self.resolved_ref = 'main'
-                except KeyError:
+                except (KeyError, GitBackendError):
                     # Find first available branch
                     branches = list(repo.branches.local)
                     if branches:
@@ -392,9 +362,12 @@ class PluginSourceGit(PluginSource):
                                 raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
-        commit = self._resolve_to_commit(commit)
-        repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
-        commit_id = str(commit.id)
+        commit = self._resolve_to_commit(commit, repo)
+        # Use backend for reset operation
+        from picard.plugin3.git_backend import GitResetMode
+
+        repo.reset(commit.id, GitResetMode.HARD)
+        commit_id = commit.id
         repo.free()
         return commit_id
 
@@ -406,8 +379,9 @@ class PluginSourceGit(PluginSource):
             single_branch: If True, only fetch the current ref
         """
 
-        repo = pygit2.Repository(target_directory.absolute())
-        old_commit = str(repo.head.target)
+        backend = git_backend()
+        repo = backend.create_repository(target_directory.absolute())
+        old_commit = repo.get_head_target()
 
         # Check if currently on a tag
         current_is_tag = False
@@ -418,17 +392,22 @@ class PluginSourceGit(PluginSource):
                 repo.revparse_single(f'refs/tags/{self.ref}')
                 current_is_tag = True
                 current_tag = self.ref
-            except KeyError:
+            except (KeyError, GitBackendError):
                 pass
 
-        for remote in repo.remotes:
+        callbacks = backend.create_remote_callbacks()
+        try:
+            origin_remote = repo.get_remote('origin')
             if single_branch and self.ref and not current_is_tag:
                 # Fetch only the specific ref (branch)
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
-                remote.fetch([refspec], callbacks=GitRemoteCallbacks())
+                repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
             else:
                 # Fetch all refs (including tags if on a tag)
-                remote.fetch(callbacks=GitRemoteCallbacks())
+                repo.fetch_remote(origin_remote, None, callbacks._callbacks)
+        except (KeyError, GitBackendError):
+            # No origin remote, skip fetch
+            pass
 
         # If on a tag, try to find latest tag
         if current_is_tag and current_tag:
@@ -445,20 +424,22 @@ class PluginSourceGit(PluginSource):
                 try:
                     commit = repo.revparse_single(f'origin/{self.ref}')
                     ref_to_use = f'origin/{self.ref}'
-                except KeyError:
+                except (KeyError, GitBackendError):
                     # Fall back to original ref (might be tag or commit hash)
                     try:
                         commit = repo.revparse_single(f'refs/tags/{self.ref}')
-                    except KeyError:
+                    except (KeyError, GitBackendError):
                         commit = repo.revparse_single(self.ref)
             else:
                 commit = repo.revparse_single(ref_to_use)
         else:
             commit = repo.revparse_single('HEAD')
 
-        commit = self._resolve_to_commit(commit)
-        repo.reset(commit.id, pygit2.enums.ResetMode.HARD)
-        new_commit = str(commit.id)
+        commit = self._resolve_to_commit(commit, repo)
+        from picard.plugin3.git_backend import GitResetMode
+
+        repo.reset(commit.id, GitResetMode.HARD)
+        new_commit = commit.id
         repo.free()
 
         return old_commit, new_commit
@@ -472,13 +453,9 @@ class PluginSourceGit(PluginSource):
         - release-1.0.0, release/1.0.0
         - 2024.11.30 (date-based)
         """
-        # Get all tags (use listall_references to include fetched tags)
+        # Get all tags (use abstracted list_references)
         tags = []
-        try:
-            all_refs = repo.listall_references()
-        except AttributeError:
-            # Fallback for older pygit2
-            all_refs = list(repo.references)
+        all_refs = repo.list_references()
 
         for ref_name in all_refs:
             if ref_name.startswith('refs/tags/'):
@@ -589,16 +566,14 @@ class Plugin:
 
     def get_current_commit_id(self):
         """Get the current commit ID of the plugin if it's a git repository."""
-        if not HAS_PYGIT2:
-            return None
-
         git_dir = self.local_path / '.git'
         if not git_dir.exists():
             return None
 
         try:
-            repo = pygit2.Repository(str(self.local_path))
-            commit_id = str(repo.head.target)
+            backend = git_backend()
+            repo = backend.create_repository(self.local_path)
+            commit_id = repo.get_head_target()
             repo.free()
             return short_commit_id(commit_id)
         except Exception:

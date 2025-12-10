@@ -28,24 +28,27 @@ import pytest
 
 
 try:
-    import pygit2
+    from picard.plugin3.git_factory import has_git_backend
 
-    HAS_PYGIT2 = True
+    HAS_GIT_BACKEND = has_git_backend()
 except ImportError:
-    HAS_PYGIT2 = False
-    pygit2 = None
+    HAS_GIT_BACKEND = False
 
 
 class TestCheckRefType(PicardTestCase):
     """Test check_ref_type() function that queries actual git repos."""
 
-    def test_check_ref_type_requires_pygit2(self):
-        """Test that check_ref_type is only available with pygit2."""
-        if not HAS_PYGIT2:
-            self.skipTest("pygit2 not available")
+    def test_check_ref_type_with_invalid_repo(self):
+        """Test check_ref_type with invalid repository path."""
+        from picard.plugin3.git_ops import GitOperations
+
+        # Should handle repository errors gracefully
+        ref_type, ref_name = GitOperations.check_ref_type(Path('/nonexistent'), 'main')
+        self.assertIsNone(ref_type)
+        self.assertEqual(ref_name, 'main')
 
 
-@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+@pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
 class TestCheckRefTypeWithRepo(PicardTestCase):
     """Test check_ref_type() with actual git repository."""
 
@@ -54,20 +57,15 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         super().setUp()
         self.tmpdir = tempfile.mkdtemp()
         self.repo_dir = Path(self.tmpdir) / "test-repo"
-        self.repo_dir.mkdir()
 
-        # Initialize git repo
-        self.repo = pygit2.init_repository(str(self.repo_dir))
+        from picard.plugin3.git_factory import git_backend
+
+        backend = git_backend()
+        self.repo = backend.init_repository(self.repo_dir)
 
         # Create initial commit
         (self.repo_dir / "file.txt").write_text("content")
-        index = self.repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        self.commit1 = self.repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
-        self.repo.set_head('refs/heads/main')
+        self.commit1 = backend.create_commit(self.repo, 'Initial commit')
 
     def tearDown(self):
         """Clean up temporary directory."""
@@ -89,11 +87,12 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_detached_head_commit(self):
         """Test checking detached HEAD (commit)."""
+        from test.test_plugins3_helpers import backend_set_detached_head
+
         from picard.plugin3.git_ops import GitOperations
 
         # Checkout specific commit (detached HEAD)
-        self.repo.set_head(self.commit1)
-        self.repo.checkout_head()
+        backend_set_detached_head(self.repo_dir, self.commit1)
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir)
         self.assertEqual(ref_type, 'commit')
@@ -101,11 +100,12 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_tag_ref(self):
         """Test checking if a ref is a tag."""
+        from test.test_plugins3_helpers import backend_create_tag
+
         from picard.plugin3.git_ops import GitOperations
 
         # Create a tag
-        author = pygit2.Signature("Test", "test@example.com")
-        self.repo.create_tag('v1.0.0', self.commit1, pygit2.GIT_OBJECT_COMMIT, author, 'Version 1.0.0')
+        backend_create_tag(self.repo_dir, 'v1.0.0', self.commit1, 'Version 1.0.0')
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'v1.0.0')
         self.assertEqual(ref_type, 'tag')
@@ -113,16 +113,14 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_branch_ref(self):
         """Test checking if a ref is a branch."""
+        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
+
         from picard.plugin3.git_ops import GitOperations
 
-        # Create a dev branch
+        # Create a dev branch with different content
         (self.repo_dir / "dev.txt").write_text("dev")
-        index = self.repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        self.repo.create_commit('refs/heads/dev', author, author, 'Dev', tree, [self.commit1])
+        dev_commit = backend_add_and_commit(self.repo_dir, 'Dev')
+        backend_create_branch(self.repo_dir, 'dev', dev_commit)
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'dev')
         self.assertEqual(ref_type, 'branch')
@@ -147,17 +145,19 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_lightweight_tag(self):
         """Test checking a lightweight tag (ref to commit, not tag object)."""
+        from test.test_plugins3_helpers import backend_create_lightweight_tag
+
         from picard.plugin3.git_ops import GitOperations
 
         # Create a lightweight tag (just a reference, no tag object)
-        self.repo.create_reference('refs/tags/lightweight-v1.0', self.commit1)
+        backend_create_lightweight_tag(self.repo_dir, 'lightweight-v1.0', self.commit1)
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'lightweight-v1.0')
         self.assertEqual(ref_type, 'tag')
         self.assertEqual(ref_name, 'lightweight-v1.0')
 
 
-@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+@pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
 class TestPluginGitOperations(PicardTestCase):
     """Test git operations for plugin installation and updates."""
 
@@ -168,10 +168,7 @@ class TestPluginGitOperations(PicardTestCase):
         self.plugin_dir = Path(self.tmpdir) / "test-plugin"
         self.plugin_dir.mkdir()
 
-        # Initialize git repo
-        repo = pygit2.init_repository(str(self.plugin_dir))
-
-        # Create MANIFEST.toml
+        # Create MANIFEST.toml and __init__.py, then initialize git repo
         manifest_content = """name = "Test Plugin"
 authors = ["Test Author"]
 version = "1.0.0"
@@ -181,26 +178,22 @@ license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 """
-        (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
 
-        # Create __init__.py
-        (self.plugin_dir / "__init__.py").write_text("""
+        from test.test_plugins3_helpers import create_git_repo_with_backend
+
+        create_git_repo_with_backend(
+            self.plugin_dir,
+            {
+                'MANIFEST.toml': manifest_content,
+                '__init__.py': """
 def enable(api):
     pass
 
 def disable():
     pass
-""")
-
-        # Commit files
-        index = repo.index
-        index.add_all()
-        index.write()
-
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        repo.create_commit('refs/heads/main', author, author, 'Initial commit', tree, [])
-        repo.set_head('refs/heads/main')
+""",
+            },
+        )
 
     def tearDown(self):
         """Clean up temporary directory."""
@@ -260,13 +253,9 @@ def disable():
 
             # Make a new commit in source
             (self.plugin_dir / "newfile.txt").write_text("new content")
-            repo = pygit2.Repository(str(self.plugin_dir))
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            repo.create_commit('refs/heads/main', author, author, 'Add new file', tree, [repo.head.target])
+            from test.test_plugins3_helpers import backend_add_and_commit
+
+            backend_add_and_commit(self.plugin_dir, 'Add new file')
 
             # Update - need to use origin/main after clone
             source_with_remote = PluginSourceGit(str(self.plugin_dir), ref='origin/main')
@@ -279,20 +268,20 @@ def disable():
 
     def test_plugin_source_git_with_branch(self):
         """Test cloning specific branch."""
+        # Create a dev branch in source
+        from picard.plugin3.git_factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
-        # Create a dev branch in source
-        repo = pygit2.Repository(str(self.plugin_dir))
-        main_commit = repo.head.target
+        backend = git_backend()
+        repo = backend.create_repository(self.plugin_dir)
+        repo.free()
 
         # Create file on dev branch
         (self.plugin_dir / "dev-feature.txt").write_text("dev only")
-        index = repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        dev_commit = repo.create_commit('refs/heads/dev', author, author, 'Dev feature', tree, [main_commit])
+        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
+
+        dev_commit = backend_add_and_commit(self.plugin_dir, 'Dev feature')
+        backend_create_branch(self.plugin_dir, 'dev', dev_commit)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             # Clone dev branch
@@ -306,13 +295,15 @@ def disable():
 
     def test_plugin_source_git_with_tag(self):
         """Test cloning specific tag."""
+        # Create a tag in source
+        from picard.plugin3.git_factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
-        # Create a tag in source
-        repo = pygit2.Repository(str(self.plugin_dir))
-        commit = repo.head.target
-        author = pygit2.Signature("Test", "test@example.com")
-        repo.create_tag('v1.0.0', commit, pygit2.GIT_OBJECT_COMMIT, author, 'Version 1.0.0')
+        backend = git_backend()
+        repo = backend.create_repository(self.plugin_dir)
+        commit = repo.get_head_target()
+        backend.create_tag(repo, 'v1.0.0', commit, 'Version 1.0.0')
+        repo.free()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir) / "cloned"
@@ -325,19 +316,19 @@ def disable():
 
     def test_plugin_source_git_with_commit_hash(self):
         """Test cloning specific commit."""
+        from picard.plugin3.git_factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
-        repo = pygit2.Repository(str(self.plugin_dir))
-        first_commit = str(repo.head.target)
+        backend = git_backend()
+        repo = backend.create_repository(self.plugin_dir)
+        first_commit = repo.get_head_target()
+        repo.free()
 
         # Make another commit
         (self.plugin_dir / "second.txt").write_text("second")
-        index = repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        repo.create_commit('refs/heads/main', author, author, 'Second commit', tree, [repo.head.target])
+        from test.test_plugins3_helpers import backend_add_and_commit
+
+        backend_add_and_commit(self.plugin_dir, 'Second commit')
 
         with tempfile.TemporaryDirectory() as tmpdir:
             # Clone first commit
@@ -379,18 +370,19 @@ def disable():
 
     def test_manager_install_with_ref(self):
         """Test installing plugin from specific ref."""
+        # Create dev branch
+        from picard.plugin3.git_factory import git_backend
         from picard.plugin3.manager import PluginManager
 
-        # Create dev branch
-        repo = pygit2.Repository(str(self.plugin_dir))
-        main_commit = repo.head.target
+        backend = git_backend()
+        repo = backend.create_repository(self.plugin_dir)
+        repo.free()
+
         (self.plugin_dir / "dev.txt").write_text("dev")
-        index = repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        repo.create_commit('refs/heads/dev', author, author, 'Dev', tree, [main_commit])
+        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
+
+        dev_commit = backend_add_and_commit(self.plugin_dir, 'Dev')
+        backend_create_branch(self.plugin_dir, 'dev', dev_commit)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             mock_tagger = MockTagger()
@@ -441,13 +433,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 """
             (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
             (self.plugin_dir / "update.txt").write_text("updated")
-            repo = pygit2.Repository(str(self.plugin_dir))
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            repo.create_commit('refs/heads/main', author, author, 'Update to 1.1.0', tree, [repo.head.target])
+            from test.test_plugins3_helpers import backend_add_and_commit
+
+            backend_add_and_commit(self.plugin_dir, 'Update to 1.1.0')
 
             # Update
             result = manager.update_plugin(plugin)
@@ -486,17 +474,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         # Create repo without MANIFEST
         with tempfile.TemporaryDirectory() as tmpdir:
             bad_plugin_dir = Path(tmpdir) / "bad-plugin"
-            bad_plugin_dir.mkdir()
+            from test.test_plugins3_helpers import backend_init_and_commit
 
-            repo = pygit2.init_repository(str(bad_plugin_dir))
-            (bad_plugin_dir / "README.md").write_text("No manifest")
-
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+            backend_init_and_commit(bad_plugin_dir, {"README.md": "No manifest"}, 'Initial')
 
             # Try to install
             mock_tagger = MockTagger()
@@ -512,7 +492,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             self.assertIn('No MANIFEST.toml', str(context.exception))
 
 
-@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+@pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
 class TestCleanPythonCache(PicardTestCase):
     """Test clean_python_cache function."""
 
@@ -596,7 +576,7 @@ class TestCleanPythonCache(PicardTestCase):
         self.assertTrue(txt_file.exists())
 
 
-@pytest.mark.skipif(not HAS_PYGIT2, reason="pygit2 not available")
+@pytest.mark.skipif(not HAS_GIT_BACKEND, reason="git backend not available")
 class TestCheckDirtyWorkingDir(PicardTestCase):
     """Test check_dirty_working_dir function."""
 
@@ -605,17 +585,10 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
         super().setUp()
         self.tmpdir = tempfile.mkdtemp()
         self.repo_dir = Path(self.tmpdir) / "test-repo"
-        self.repo_dir.mkdir()
 
-        self.repo = pygit2.init_repository(str(self.repo_dir))
-        (self.repo_dir / "file.txt").write_text("content")
-        index = self.repo.index
-        index.add_all()
-        index.write()
-        tree = index.write_tree()
-        author = pygit2.Signature("Test", "test@example.com")
-        self.repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-        self.repo.set_head('refs/heads/main')
+        from test.test_plugins3_helpers import backend_init_and_commit
+
+        backend_init_and_commit(self.repo_dir, {"file.txt": "content"}, 'Initial')
 
     def tearDown(self):
         """Clean up temporary directory."""
