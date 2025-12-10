@@ -70,6 +70,7 @@ class FileBrowser(QtWidgets.QTreeView):
         self.addAction(self.set_as_starting_directory_action)
         self.doubleClicked.connect(self.load_file_for_item)
         self.focused = False
+        self.tagger.format_registry.formats_changed.connect(self._update_name_filters)
 
     def showEvent(self, event):
         if not self.model():

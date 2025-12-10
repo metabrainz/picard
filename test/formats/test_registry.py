@@ -143,6 +143,13 @@ class TestFormatRegistry:
         # Should only appear once despite MockFormat2 having '.OGG'
         assert extensions.count('.ogg') == 1
 
+    def test_register_emits_changed(self):
+        registry = FormatRegistry()
+        mock_slot = Mock()
+        registry.formats_changed.connect(mock_slot)
+        registry.register(MockFormat1)
+        mock_slot.assert_called_once()
+
     def test_supported_extensions_empty(self):
         """Test supported_extensions on empty registry."""
         registry = FormatRegistry()
@@ -651,3 +658,23 @@ class TestFormatRegistry:
         # State should be identical after each rebuild
         assert extensions_initial == extensions_after_1 == extensions_after_2
         assert formats_ogg_initial == formats_ogg_after_1 == formats_ogg_after_2
+
+    def test_rebuild_extension_map_emits_changed(self):
+        registry = FormatRegistry()
+        mock_slot = Mock()
+        registry.register(MockFormat1)
+
+        # Intentionally change extension map to trigger change
+        del registry._extension_map['.ogg']
+        registry.formats_changed.connect(mock_slot)
+        registry.rebuild_extension_map()
+        mock_slot.assert_called_once()
+
+    def test_rebuild_extension_map_no_change_not_emits_changed(self):
+        registry = FormatRegistry()
+        mock_slot = Mock()
+        registry.register(MockFormat1)
+
+        registry.formats_changed.connect(mock_slot)
+        registry.rebuild_extension_map()
+        mock_slot.assert_not_called()

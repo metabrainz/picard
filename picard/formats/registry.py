@@ -21,7 +21,10 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Generator
 
-from PyQt6.QtCore import QObject
+from PyQt6.QtCore import (
+    QObject,
+    pyqtSignal,
+)
 
 from picard import log
 from picard.extension_points import ExtensionPoint
@@ -30,6 +33,8 @@ from picard.file import File
 
 class FormatRegistry(QObject):
     """Registry for file formats."""
+
+    formats_changed = pyqtSignal()
 
     def __init__(self, parent: QObject | None = None) -> None:
         super().__init__(parent)
@@ -48,6 +53,8 @@ class FormatRegistry(QObject):
         # Track extensions for quick lookup
         for ext in format.EXTENSIONS:
             self._extension_map[ext.lower()].add(format)
+
+        self.formats_changed.emit()
 
     def __iter__(self) -> Generator[File, None, None]:
         yield from self._ext_point_formats
@@ -176,7 +183,11 @@ class FormatRegistry(QObject):
         This is especially needed after a plugin got disabled, which can result in
         formats being no longer available.
         """
+        old_extension_map = self._extension_map
         self._extension_map = defaultdict(set)
         for format in self._ext_point_formats:
             for ext in format.EXTENSIONS:
                 self._extension_map[ext.lower()].add(format)
+
+        if old_extension_map != self._extension_map:
+            self.formats_changed.emit()
