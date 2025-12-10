@@ -43,6 +43,8 @@ from picard import (
     config,
     log,
 )
+from picard.formats import DEFAULT_FORMATS
+from picard.formats.registry import FormatRegistry
 from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
 
@@ -130,6 +132,11 @@ class PicardTestCase(unittest.TestCase):
     def remove_file_tmp(filepath):
         if os.path.isfile(filepath):
             os.unlink(filepath)
+
+    def setup_test_format_registry(self):
+        self.format_registry = FormatRegistry()
+        for format in DEFAULT_FORMATS:
+            self.format_registry.register(format)
 
 
 def get_test_data_path(*paths):

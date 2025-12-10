@@ -87,7 +87,6 @@ from picard.extension_points.plugin_tools_menu import (
     signaler,
 )
 from picard.file import File
-from picard.formats import supported_formats
 from picard.i18n import (
     N_,
     gettext as _,
@@ -1096,7 +1095,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         current_directory = find_starting_directory()
         formats = []
         extensions = []
-        for exts, name in supported_formats():
+        for exts, name in self.tagger.format_registry.supported_formats():
             exts = ["*" + e.lower() for e in exts]
             if not exts:
                 continue

@@ -71,7 +71,7 @@ class TagsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         # Cache date sanitization entries once; formats are unlikely to change at runtime
-        self._date_sanitization_entries = date_sanitization_format_entries()
+        self._date_sanitization_entries = date_sanitization_format_entries(self.tagger.format_registry)
 
         # Add multi-select combo for disabling date sanitization per format
         self._init_disable_date_sanitization_formats_control()

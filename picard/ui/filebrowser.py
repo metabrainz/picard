@@ -39,7 +39,6 @@ from PyQt6 import (
 
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
-from picard.formats import supported_formats
 from picard.i18n import gettext as _
 from picard.util import find_existing_path
 from picard.util.macos import (
@@ -122,7 +121,7 @@ class FileBrowser(QtWidgets.QTreeView):
 
     def _update_name_filters(self):
         filters = []
-        for exts, _name in supported_formats():
+        for exts, _name in self.tagger.format_registry.supported_formats():
             filters.extend("*" + e for e in exts)
         model = self.model()
         if model:

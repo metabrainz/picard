@@ -30,7 +30,6 @@
 from PyQt6 import QtCore
 
 from picard.const import PICARD_URLS
-from picard.formats import supported_extensions
 from picard.i18n import gettext as _
 from picard.util import versions
 
@@ -62,7 +61,8 @@ class AboutDialog(PicardDialog, SingletonDialog):
             ]
         )
 
-        args['formats'] = ", ".join(map(lambda x: x[1:], supported_extensions()))
+        tagger = QtCore.QCoreApplication.instance()
+        args['formats'] = ", ".join(map(lambda x: x[1:], tagger.format_registry.supported_extensions()))
         args['copyright_years'] = '2004-2024'
         args['authors_credits'] = ", ".join(
             [

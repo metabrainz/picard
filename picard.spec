@@ -37,8 +37,11 @@ def get_locale_messages():
     data_files = []
     for locale in _picard_get_locale_files():
         data_files.append(
-            (os.path.join("picard", "locale", locale[1], "LC_MESSAGES", locale[0] + ".mo"),
-             os.path.join("locale", locale[1], "LC_MESSAGES")))
+            (
+                os.path.join("picard", "locale", locale[1], "LC_MESSAGES", locale[0] + ".mo"),
+                os.path.join("locale", locale[1], "LC_MESSAGES"),
+            )
+        )
     return data_files
 
 
@@ -75,67 +78,64 @@ hiddenimports = [
 ]
 try:
     import zstandard as _
+
     hiddenimports.append('zstandard')
 except ImportError:
     # zstandard is not available, so we don't need to include it
     pass
 
-a = Analysis(['tagger.py'],
-             pathex=['picard'],
-             binaries=binaries,
-             datas=data_files,
-             hiddenimports=hiddenimports,
-             hookspath=[],
-             runtime_hooks=runtime_hooks,
-             excludes=[],
-             cipher=block_cipher)
+a = Analysis(
+    ['tagger.py'],
+    pathex=['picard'],
+    binaries=binaries,
+    datas=data_files,
+    hiddenimports=hiddenimports,
+    hookspath=[],
+    runtime_hooks=runtime_hooks,
+    excludes=[],
+    cipher=block_cipher,
+)
 
 
-pyz = PYZ(a.pure, a.zipped_data,
-          cipher=block_cipher)
+pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 
 
 if build_portable:
-    exe = EXE(pyz,
-              a.scripts,
-              a.binaries,
-              a.zipfiles,
-              a.datas,
-              name='{}-{}-{}'.format(PICARD_ORG_NAME,
-                                     PICARD_APP_NAME,
-                                     __version__),
-              debug=False,
-              strip=False,
-              upx=False,
-              icon='picard.ico',
-              version='win-version-info.txt',
-              console=False)
+    exe = EXE(
+        pyz,
+        a.scripts,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        name='{}-{}-{}'.format(PICARD_ORG_NAME, PICARD_APP_NAME, __version__),
+        debug=False,
+        strip=False,
+        upx=False,
+        icon='picard.ico',
+        version='win-version-info.txt',
+        console=False,
+    )
 
 else:
-    exe = EXE(pyz,
-              a.scripts,
-              exclude_binaries=True,
-              target_arch=os.environ.get('TARGET_ARCH', None),
-              # Avoid name clash between picard executable and picard module folder
-              name='picard' if os_name == 'Windows' else 'picard-run',
-              debug=False,
-              strip=False,
-              upx=False,
-              icon='picard.ico',
-              version='win-version-info.txt',
-              console=False,
-              # macOS code signing
-              codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
-              entitlements_file='./scripts/package/entitlements.plist')
+    exe = EXE(
+        pyz,
+        a.scripts,
+        exclude_binaries=True,
+        target_arch=os.environ.get('TARGET_ARCH', None),
+        # Avoid name clash between picard executable and picard module folder
+        name='picard' if os_name == 'Windows' else 'picard-run',
+        debug=False,
+        strip=False,
+        upx=False,
+        icon='picard.ico',
+        version='win-version-info.txt',
+        console=False,
+        # macOS code signing
+        codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
+        entitlements_file='./scripts/package/entitlements.plist',
+    )
 
-
-    coll = COLLECT(exe,
-                   a.binaries,
-                   a.zipfiles,
-                   a.datas,
-                   strip=False,
-                   upx=False,
-                   name='picard')
+    coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=False, name='picard')
 
     if os_name == 'Darwin':
         info_plist = {
@@ -149,44 +149,50 @@ else:
             'NSHighResolutionCapable': True,
             'NSPrincipalClass': 'NSApplication',
             'NSRequiresAquaSystemAppearance': False,
-            'CFBundleDocumentTypes': [{
-                # Add UTIs understood by macOS
-                'LSItemContentTypes': [
-                    'com.apple.m4a-audio',
-                    'com.apple.m4v-video',
-                    'com.apple.protected-mpeg-4-audio',
-                    'com.microsoft.advanced-systems-format',
-                    'com.microsoft.waveform-audio',
-                    'com.microsoft.windows-media-wm',
-                    'com.microsoft.windows-media-wma',
-                    'com.microsoft.windows-media-wmv',
-                    'org.xiph.flac',
-                    'public.aac-audio',
-                    'public.ac3-audio',
-                    'public.aifc-audio',
-                    'public.aiff-audio',
-                    'public.enhanced-ac3-audio',
-                    'public.folder',
-                    'public.midi-audio',
-                    'public.mp3',
-                    'public.mpeg-4',
-                    'public.mpeg-4-audio',
-                ],
-                'CFBundleTypeRole': 'Editor',
-            }],
+            'CFBundleDocumentTypes': [
+                {
+                    # Add UTIs understood by macOS
+                    'LSItemContentTypes': [
+                        'com.apple.m4a-audio',
+                        'com.apple.m4v-video',
+                        'com.apple.protected-mpeg-4-audio',
+                        'com.microsoft.advanced-systems-format',
+                        'com.microsoft.waveform-audio',
+                        'com.microsoft.windows-media-wm',
+                        'com.microsoft.windows-media-wma',
+                        'com.microsoft.windows-media-wmv',
+                        'org.xiph.flac',
+                        'public.aac-audio',
+                        'public.ac3-audio',
+                        'public.aifc-audio',
+                        'public.aiff-audio',
+                        'public.enhanced-ac3-audio',
+                        'public.folder',
+                        'public.midi-audio',
+                        'public.mp3',
+                        'public.mpeg-4',
+                        'public.mpeg-4-audio',
+                    ],
+                    'CFBundleTypeRole': 'Editor',
+                }
+            ],
         }
 
         # Add additional supported file types by extension
-        from picard.formats import supported_formats
-        for extensions, _name in supported_formats():
-            info_plist['CFBundleDocumentTypes'].append({
-                'CFBundleTypeExtensions': [ext[1:] for ext in extensions],
-                'CFBundleTypeRole': 'Editor',
-            })
+        from picard.formats import DEFAULT_FORMATS
 
-        app = BUNDLE(coll,
-                     name='{} {}.app'.format(PICARD_ORG_NAME, PICARD_APP_NAME),
-                     icon='picard.icns',
-                     bundle_identifier=PICARD_APP_ID,
-                     info_plist=info_plist
-                     )
+        for format in DEFAULT_FORMATS:
+            info_plist['CFBundleDocumentTypes'].append(
+                {
+                    'CFBundleTypeExtensions': [ext[1:] for ext in format.EXTENSIONS],
+                    'CFBundleTypeRole': 'Editor',
+                }
+            )
+
+        app = BUNDLE(
+            coll,
+            name='{} {}.app'.format(PICARD_ORG_NAME, PICARD_APP_NAME),
+            icon='picard.icns',
+            bundle_identifier=PICARD_APP_ID,
+            info_plist=info_plist,
+        )

@@ -69,12 +69,12 @@ class AACNoTagsTest(CommonTests.BaseFileTestCase):
         config.setting['remove_ape_from_aac'] = False
 
     def test_load_but_do_not_save_tags(self):
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual('Test AAC with APEv2 tags', metadata['title'])
         self.assertEqual('The Artist', metadata['artist'])
         metadata['artist'] = 'Foo'
         metadata['title'] = 'Bar'
-        metadata = save_and_load_metadata(self.filename, metadata)
+        metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
         self.assertEqual('Test AAC with APEv2 tags', metadata['title'])
         self.assertEqual('The Artist', metadata['artist'])
 
@@ -83,15 +83,15 @@ class AACNoTagsTest(CommonTests.BaseFileTestCase):
         metadata = Metadata(
             {'artist': 'Foo'},
         )
-        metadata = save_and_load_metadata(self.filename, metadata)
+        metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
         self.assertEqual('AAC', metadata['~format'])
         self.assertNotIn('title', metadata)
         self.assertNotIn('artist', metadata)
 
     def test_info_format(self):
-        metadata = load_metadata(os.path.join('test', 'data', 'test.aac'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test.aac'))
         self.assertEqual('AAC', metadata['~format'])
-        metadata = load_metadata(os.path.join('test', 'data', 'test-apev2.aac'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test-apev2.aac'))
         self.assertEqual('AAC (APEv2)', metadata['~format'])
 
     def test_supports_tag(self):

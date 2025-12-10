@@ -30,11 +30,9 @@ import mutagen
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-import picard.formats
-from picard.formats import ext_to_format
 from picard.formats.mutagenext.aac import AACAPEv2
 from picard.formats.mutagenext.ac3 import AC3APEv2
-from picard.formats.util import guess_format
+from picard.formats.registry import FormatRegistry
 from picard.metadata import Metadata
 from picard.tags import file_info_tag_names
 
@@ -68,22 +66,22 @@ settings = {
 }
 
 
-def save_metadata(filename, metadata):
-    f = picard.formats.open_(filename)
+def save_metadata(registry: FormatRegistry, filename, metadata):
+    f = registry.open(filename)
     loaded_metadata = f._load(filename)
     f._copy_loaded_metadata(loaded_metadata)
     f._save(filename, metadata)
 
 
-def load_metadata(filename):
-    f = picard.formats.open_(filename)
+def load_metadata(registry: FormatRegistry, filename):
+    f = registry.open(filename)
     return f._load(filename)
 
 
-def save_and_load_metadata(filename, metadata):
+def save_and_load_metadata(registry: FormatRegistry, filename, metadata):
     """Save new metadata to a file and load it again."""
-    save_metadata(filename, metadata)
-    return load_metadata(filename)
+    save_metadata(registry, filename, metadata)
+    return load_metadata(registry, filename)
 
 
 def load_raw(filename):
@@ -211,12 +209,13 @@ class CommonTests:
         def setUp(self):
             super().setUp()
             self.set_config_values(settings)
+            self.setup_test_format_registry()
             if self.testfile:
                 _name, self.testfile_ext = os.path.splitext(self.testfile)
                 self.testfile_path = os.path.join('test', 'data', self.testfile)
                 self.testfile_ext = os.path.splitext(self.testfile)[1]
                 self.filename = self.copy_of_original_testfile()
-                self.format = ext_to_format(self.testfile_ext)
+                self.format = self.format_registry.extension_to_formats(self.testfile_ext)[0]
 
         def copy_of_original_testfile(self):
             return self.copy_file_tmp(self.testfile_path, self.testfile_ext)
@@ -227,14 +226,14 @@ class CommonTests:
 
         @skipUnlessTestfile
         def test_can_open_and_save(self):
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             self.assertTrue(metadata['~format'])
 
         @skipUnlessTestfile
         def test_info(self):
             if not self.expected_info:
                 raise unittest.SkipTest("Ratings not supported for %s" % self.format.NAME)
-            metadata = load_metadata(self.filename)
+            metadata = load_metadata(self.format_registry, self.filename)
             for key, expected_value in self.expected_info.items():
                 value = metadata.length if key == 'length' else metadata[key]
                 self.assertEqual(expected_value, value, '%s: %r != %r' % (key, expected_value, value))
@@ -243,13 +242,13 @@ class CommonTests:
 
         def _test_supported_tags(self, tags):
             metadata = Metadata(tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             for key, value in tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
         def _test_unsupported_tags(self, tags):
             metadata = Metadata(tags)
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             for tag in tags:
                 self.assertFalse(self.format.supports_tag(tag))
                 self.assertNotIn(tag, loaded_metadata, '%s: %r != None' % (tag, loaded_metadata[tag]))
@@ -296,7 +295,7 @@ class CommonTests:
                 'replaygain_reference_loudness': '-18.00 LUFS',
             }
             save_raw(self.filename, tags)
-            loaded_metadata = load_metadata(self.filename)
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
             for key, value in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
@@ -306,7 +305,7 @@ class CommonTests:
             if self.supports_ratings:
                 tags['~rating'] = '3'
             metadata = Metadata(tags)
-            save_metadata(self.filename, metadata)
+            save_metadata(self.format_registry, self.filename, metadata)
             for key, value in tags.items():
                 self.assertEqual(metadata[key], value, '%s: %r != %r' % (key, metadata[key], value))
 
@@ -322,8 +321,8 @@ class CommonTests:
         @skipUnlessTestfile
         def test_preserve_unchanged_tags(self):
             metadata = Metadata(self.tags)
-            save_metadata(self.filename, metadata)
-            loaded_metadata = save_and_load_metadata(self.filename, Metadata())
+            save_metadata(self.format_registry, self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             for key, value in self.tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
@@ -332,12 +331,12 @@ class CommonTests:
             metadata = Metadata(self.tags)
             if self.supports_ratings:
                 metadata['~rating'] = 1
-            original_metadata = save_and_load_metadata(self.filename, metadata)
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             del metadata['albumartist']
             del metadata['musicbrainz_artistid']
             if self.supports_ratings:
                 del metadata['~rating']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertIn('albumartist', original_metadata)
             self.assertNotIn('albumartist', new_metadata)
             self.assertIn('musicbrainz_artistid', original_metadata)
@@ -353,10 +352,10 @@ class CommonTests:
                     continue
                 metadata = Metadata()
                 metadata[name] = 'bar'
-                original_metadata = save_and_load_metadata(self.filename, metadata)
+                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertIn(name, original_metadata)
                 del metadata[name]
-                new_metadata = save_and_load_metadata(self.filename, metadata)
+                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertNotIn(name, new_metadata)
 
         @skipUnlessTestfile
@@ -368,10 +367,10 @@ class CommonTests:
                 metadata = Metadata()
                 metadata[name] = 'bar'
                 metadata[name_with_description] = 'other'
-                original_metadata = save_and_load_metadata(self.filename, metadata)
+                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertIn(name, original_metadata)
                 del metadata[name]
-                new_metadata = save_and_load_metadata(self.filename, metadata)
+                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertNotIn(name, new_metadata)
                 # Ensure the names with description did not get deleted
                 if name_with_description in original_metadata:
@@ -394,13 +393,13 @@ class CommonTests:
                 prefix = key.split(':')[0]
                 metadata = Metadata()
                 metadata[key] = 'bar'
-                original_metadata = save_and_load_metadata(self.filename, metadata)
+                original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 if key not in original_metadata and prefix in original_metadata:
                     continue  # Skip if the type did not support saving this kind of tag
                 self.assertEqual('bar', original_metadata[key], original_metadata)
                 metadata[prefix] = '(foo) bar'
                 del metadata[key]
-                new_metadata = save_and_load_metadata(self.filename, metadata)
+                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertNotIn(key, new_metadata)
                 self.assertEqual('(foo) bar', new_metadata[prefix])
 
@@ -418,17 +417,17 @@ class CommonTests:
                 if not self.format.supports_tag(key):
                     continue
                 metadata = Metadata()
-                save_metadata(self.filename, metadata)
+                save_metadata(self.format_registry, self.filename, metadata)
                 del metadata[key]
-                new_metadata = save_and_load_metadata(self.filename, metadata)
+                new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertNotIn(key, new_metadata)
 
         @skipUnlessTestfile
         def test_delete_complex_tags(self):
             metadata = Metadata(self.tags)
-            original_metadata = save_and_load_metadata(self.filename, metadata)
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             del metadata['totaldiscs']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
 
             self.assertIn('totaldiscs', original_metadata)
             if self.testfile_ext in {'.m4a', '.m4v'}:
@@ -446,14 +445,14 @@ class CommonTests:
                     'performer:guitar': ['Guitar1'],
                 }
             )
-            original_metadata = save_and_load_metadata(self.filename, metadata)
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertIn('Piano1', original_metadata.getall('performer:piano'))
             self.assertIn('Piano2', original_metadata.getall('performer:piano'))
             self.assertEqual(2, len(original_metadata.getall('performer:piano')))
             self.assertEqual('Guitar1', original_metadata['performer:guitar'])
 
             del metadata['performer:piano']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertNotIn('performer:piano', new_metadata)
             self.assertEqual('Guitar1', metadata['performer:guitar'])
 
@@ -465,7 +464,7 @@ class CommonTests:
             artist = "桑山哲也"
             tag = "performer:" + instrument
             metadata = Metadata({tag: artist})
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertIn(tag, loaded_metadata)
             self.assertEqual(artist, loaded_metadata[tag])
 
@@ -477,7 +476,7 @@ class CommonTests:
                 rating = 1
                 metadata = Metadata()
                 metadata['~rating'] = rating
-                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertEqual(
                     int(loaded_metadata['~rating']), rating, '~rating: %r != %r' % (loaded_metadata['~rating'], rating)
                 )
@@ -489,19 +488,19 @@ class CommonTests:
             metadata = Metadata()
             metadata['~rating'] = 3
             config.setting['rating_user_email'] = '{in\tvälid}'
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(loaded_metadata['~rating'], metadata['~rating'])
 
         @skipUnlessTestfile
         def test_guess_format(self):
             temp_file = self.copy_of_original_testfile()
-            audio = guess_format(temp_file)
-            audio_original = picard.formats.open_(self.filename)
+            audio = self.format_registry.guess_format(temp_file)
+            audio_original = self.format_registry.open(self.filename)
             self.assertEqual(type(audio), type(audio_original))
 
         @skipUnlessTestfile
         def test_split_ext(self):
-            f = picard.formats.open_(self.filename)
+            f = self.format_registry.open(self.filename)
             self.assertEqual(f._fixed_splitext(f.filename), os.path.splitext(f.filename))
             self.assertEqual(f._fixed_splitext('.test'), os.path.splitext('.test'))
             if f.EXTENSIONS:
@@ -512,9 +511,9 @@ class CommonTests:
         def test_clear_existing_tags_off(self):
             config.setting['clear_existing_tags'] = False
             existing_metadata = Metadata({'artist': 'The Artist'})
-            save_metadata(self.filename, existing_metadata)
+            save_metadata(self.format_registry, self.filename, existing_metadata)
             new_metadata = Metadata({'title': 'The Title'})
-            loaded_metadata = save_and_load_metadata(self.filename, new_metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, new_metadata)
             self.assertEqual(existing_metadata['artist'], loaded_metadata['artist'])
             self.assertEqual(new_metadata['title'], loaded_metadata['title'])
 
@@ -522,16 +521,16 @@ class CommonTests:
         def test_clear_existing_tags_on(self):
             config.setting['clear_existing_tags'] = True
             existing_metadata = Metadata({'artist': 'The Artist'})
-            save_metadata(self.filename, existing_metadata)
+            save_metadata(self.format_registry, self.filename, existing_metadata)
             new_metadata = Metadata({'title': 'The Title'})
-            loaded_metadata = save_and_load_metadata(self.filename, new_metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, new_metadata)
             self.assertNotIn('artist', loaded_metadata)
             self.assertEqual(new_metadata['title'], loaded_metadata['title'])
 
         @skipUnlessTestfile
         def test_lyrics_with_description(self):
             metadata = Metadata({'lyrics:foó': 'bar'})
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(metadata['lyrics:foó'], loaded_metadata['lyrics'])
 
         @skipUnlessTestfile
@@ -539,7 +538,7 @@ class CommonTests:
             if not self.format.supports_tag('comment:foó'):
                 return
             metadata = Metadata({'comment:foó': 'bar'})
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(metadata['comment:foó'], loaded_metadata['comment:foó'])
 
         @skipUnlessTestfile
@@ -552,7 +551,7 @@ class CommonTests:
                     'tracknumber': 'notanumber',
                 }
             )
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(loaded_metadata['discnumber'], metadata['discnumber'])
             self.assertEqual(loaded_metadata['totaldiscs'], metadata['totaldiscs'])
             self.assertEqual(loaded_metadata['tracknumber'], metadata['tracknumber'])
@@ -563,6 +562,6 @@ class CommonTests:
             if not self.format.supports_tag('movementnumber'):
                 raise unittest.SkipTest('Tag "movementnumber" not supported for %s' % self.format.NAME)
             metadata = Metadata({'movementnumber': 7})
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(loaded_metadata['movementnumber'], metadata['movementnumber'])
             self.assertNotIn('movementtotal', loaded_metadata)

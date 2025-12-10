@@ -29,7 +29,6 @@ import shutil
 from test.picardtestcase import PicardTestCase
 
 from picard import config
-import picard.formats
 
 
 def prepare_files(src_dir, dst_dir, src_files=None, dst_files=None, src_rel_path='', dst_rel_path=''):
@@ -102,6 +101,7 @@ class SampleFileSystem(PicardTestCase):
         self.src_directory = self.mktmpdir()
         self.dst_directory = self.mktmpdir()
         self.set_config_values(self.settings)
+        self.setup_test_format_registry()
 
     def _prepare_files(self, src_rel_path='', dst_rel_path=''):
         """Prepare src files and dst filenames for a test."""
@@ -135,7 +135,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_no_pattern(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
 
         moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, ()))
         expected = set()
@@ -143,7 +143,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_no_src_dir(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('*.jpg')
 
         with self.assertRaises(FileNotFoundError):
@@ -152,7 +152,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_no_dst_dir(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('*.jpg')
 
         suffix = 'donotexist'
@@ -165,7 +165,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_all_jpg_no_hidden(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('*.j?g *.jpg')
 
         moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
@@ -177,7 +177,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_all_hidden_jpg(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('.*.j?g .*.jpg')
 
         moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
@@ -189,7 +189,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     def test_one_only_jpg(self):
         src, dst = self._prepare_files()
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('.*1.j?g *1.jpg')
 
         moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
@@ -202,7 +202,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
 class TestFileSystem(SampleFileSystem):
     def _move_additional_files(self, src, dst):
-        f = picard.formats.open_(src['test.mp3'])
+        f = self.format_registry.open(src['test.mp3'])
         f._move_additional_files(src['test.mp3'], dst['test.mp3'], config)
 
     def _assert_files_moved(self, src, dst):

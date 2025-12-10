@@ -27,7 +27,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.extension_points.formats import register_format
 from picard.formats.ac3 import AC3File
 from picard.formats.apev2 import (
     AACFile,
@@ -47,13 +46,6 @@ from picard.formats.id3 import (
 )
 from picard.formats.midi import MIDIFile
 from picard.formats.mp4 import MP4File
-from picard.formats.util import (  # noqa: F401 # pylint: disable=unused-import
-    ext_to_format,
-    guess_format,
-    open_,
-    supported_extensions,
-    supported_formats,
-)
 from picard.formats.vorbis import (
     FLACFile,
     OggAudioFile,
@@ -68,29 +60,36 @@ from picard.formats.vorbis import (
 from picard.formats.wav import WAVFile
 
 
-register_format(AACFile)
-register_format(AC3File)
-register_format(AiffFile)
-register_format(ASFFile)
+__all__ = [
+    'DEFAULT_FORMATS',
+]
+
+DEFAULT_FORMATS = [
+    AACFile,
+    AC3File,
+    AiffFile,
+    ASFFile,
+    DSFFile,
+    FLACFile,
+    MIDIFile,
+    MonkeysAudioFile,
+    MP3File,
+    MP4File,
+    MusepackFile,
+    OggAudioFile,
+    OggContainerFile,
+    OggFLACFile,
+    OggOpusFile,
+    OggSpeexFile,
+    OggTheoraFile,
+    OggVideoFile,
+    OggVorbisFile,
+    OptimFROGFile,
+    TAKFile,
+    TrueAudioFile,
+    WAVFile,
+    WavPackFile,
+]
+
 if DSDIFFFile:
-    register_format(DSDIFFFile)
-register_format(DSFFile)
-register_format(FLACFile)
-register_format(MIDIFile)
-register_format(MonkeysAudioFile)
-register_format(MP3File)
-register_format(MP4File)
-register_format(MusepackFile)
-register_format(OggAudioFile)
-register_format(OggContainerFile)
-register_format(OggFLACFile)
-register_format(OggOpusFile)
-register_format(OggSpeexFile)
-register_format(OggTheoraFile)
-register_format(OggVideoFile)
-register_format(OggVorbisFile)
-register_format(OptimFROGFile)
-register_format(TAKFile)
-register_format(TrueAudioFile)
-register_format(WAVFile)
-register_format(WavPackFile)
+    DEFAULT_FORMATS.append(DSDIFFFile)
