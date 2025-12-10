@@ -488,3 +488,166 @@ class TestFormatRegistry:
                 mock_init.assert_called_once()
         finally:
             os.unlink(temp_file)
+
+    def test_rebuild_extension_map_empty_registry(self):
+        """Test rebuild_extension_map on empty registry."""
+        registry = FormatRegistry()
+        registry.rebuild_extension_map()
+
+        assert registry.supported_extensions() == []
+        assert registry.extension_to_formats('.ogg') == tuple()
+
+    def test_rebuild_extension_map_with_formats(self):
+        """Test rebuild_extension_map rebuilds the extension map correctly."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)
+        registry.register(MockFormat2)
+
+        # Verify initial state
+        initial_extensions = set(registry.supported_extensions())
+        assert initial_extensions == {'.ogg', '.ogv', '.mba', '.mbv'}
+
+        # Rebuild the map
+        registry.rebuild_extension_map()
+
+        # Verify extensions are still correct after rebuild
+        rebuilt_extensions = set(registry.supported_extensions())
+        assert rebuilt_extensions == initial_extensions
+
+        # Verify format mappings are still correct
+        assert set(registry.extension_to_formats('.ogg')) == {MockFormat1, MockFormat2}
+        assert registry.extension_to_formats('.ogv') == (MockFormat1,)
+        assert registry.extension_to_formats('.mba') == (MockFormat2,)
+
+    def test_rebuild_extension_map_after_manual_corruption(self):
+        """Test rebuild_extension_map can recover from corrupted state."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)
+        registry.register(MockFormat2)
+
+        # Manually corrupt the extension map
+        registry._extension_map['.fake'] = {MockFormat1}
+        registry._extension_map['.ogg'].clear()
+
+        # Verify corrupted state
+        assert '.fake' in registry.supported_extensions()
+        assert registry.extension_to_formats('.ogg') == tuple()
+
+        # Rebuild should fix the corruption
+        registry.rebuild_extension_map()
+
+        # Verify map is restored correctly
+        assert '.fake' not in registry.supported_extensions()
+        assert set(registry.extension_to_formats('.ogg')) == {MockFormat1, MockFormat2}
+        assert registry.extension_to_formats('.ogv') == (MockFormat1,)
+
+    def test_rebuild_extension_map_after_format_removal(self):
+        """Test rebuild_extension_map after formats are removed from extension point."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)
+        registry.register(MockFormat2)
+
+        # Verify initial state
+        assert '.ogg' in registry.supported_extensions()
+        assert '.mba' in registry.supported_extensions()
+        assert set(registry.extension_to_formats('.ogg')) == {MockFormat1, MockFormat2}
+
+        # Extension map still has old data
+        assert set(registry.extension_to_formats('.ogg')) == {MockFormat1, MockFormat2}
+        assert '.mba' in registry.supported_extensions()
+
+        # Mock the extension point to return only MockFormat1 (simulating plugin disable)
+        mock_ext_point = Mock()
+        mock_ext_point.__iter__ = Mock(return_value=iter([MockFormat1]))
+        registry._ext_point_formats = mock_ext_point
+
+        # Rebuild should remove MockFormat2 from extension map
+        registry.rebuild_extension_map()
+
+        # Verify MockFormat2 extensions are cleaned up
+        assert registry.extension_to_formats('.ogg') == (MockFormat1,)
+        assert '.mba' not in registry.supported_extensions()
+        assert '.mbv' not in registry.supported_extensions()
+        # MockFormat1 extensions should still be present
+        assert '.ogg' in registry.supported_extensions()
+        assert '.ogv' in registry.supported_extensions()
+
+    def test_rebuild_extension_map_preserves_case_insensitivity(self):
+        """Test rebuild_extension_map preserves case-insensitive behavior."""
+        registry = FormatRegistry()
+        registry.register(MockFormat2)  # Has '.OGG' in uppercase
+
+        # Initial registration normalizes to lowercase
+        assert '.ogg' in registry.supported_extensions()
+
+        # Rebuild should preserve lowercase normalization
+        registry.rebuild_extension_map()
+
+        assert '.ogg' in registry.supported_extensions()
+        # Case-insensitive lookups should still work
+        assert registry.extension_to_formats('.OGG') == (MockFormat2,)
+        assert registry.extension_to_formats('.ogg') == (MockFormat2,)
+        assert registry.extension_to_formats('.OgG') == (MockFormat2,)
+
+    def test_rebuild_extension_map_handles_multiple_formats_per_extension(self):
+        """Test rebuild_extension_map correctly handles multiple formats per extension."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)  # Has .ogg
+        registry.register(MockFormat2)  # Also has .OGG
+
+        # Both formats should be registered for .ogg
+        ogg_formats_before = set(registry.extension_to_formats('.ogg'))
+        assert ogg_formats_before == {MockFormat1, MockFormat2}
+
+        # Rebuild
+        registry.rebuild_extension_map()
+
+        # Should still have both formats
+        ogg_formats_after = set(registry.extension_to_formats('.ogg'))
+        assert ogg_formats_after == {MockFormat1, MockFormat2}
+
+    def test_rebuild_extension_map_clears_previous_state(self):
+        """Test rebuild_extension_map completely clears previous state."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)
+
+        # Add fake data to extension map
+        registry._extension_map['.fake1'] = {MockFormat1}
+        registry._extension_map['.fake2'] = {MockFormat2}
+
+        # Verify fake extensions exist
+        assert '.fake1' in registry.supported_extensions()
+        assert '.fake2' in registry.supported_extensions()
+
+        # Rebuild should clear everything and rebuild from scratch
+        registry.rebuild_extension_map()
+
+        # Fake extensions should be gone
+        assert '.fake1' not in registry.supported_extensions()
+        assert '.fake2' not in registry.supported_extensions()
+        # Real extensions from MockFormat1 should be present
+        assert '.ogg' in registry.supported_extensions()
+        assert '.ogv' in registry.supported_extensions()
+
+    def test_rebuild_extension_map_idempotent(self):
+        """Test rebuild_extension_map can be called multiple times safely."""
+        registry = FormatRegistry()
+        registry.register(MockFormat1)
+        registry.register(MockFormat2)
+
+        # Get initial state
+        extensions_initial = set(registry.supported_extensions())
+        formats_ogg_initial = set(registry.extension_to_formats('.ogg'))
+
+        # Rebuild multiple times
+        registry.rebuild_extension_map()
+        extensions_after_1 = set(registry.supported_extensions())
+        formats_ogg_after_1 = set(registry.extension_to_formats('.ogg'))
+
+        registry.rebuild_extension_map()
+        extensions_after_2 = set(registry.supported_extensions())
+        formats_ogg_after_2 = set(registry.extension_to_formats('.ogg'))
+
+        # State should be identical after each rebuild
+        assert extensions_initial == extensions_after_1 == extensions_after_2
+        assert formats_ogg_initial == formats_ogg_after_1 == formats_ogg_after_2

@@ -169,3 +169,14 @@ class FormatRegistry(QObject):
             log.error("Error reading file %r for format detection: %s", str(path), e)
 
         return None
+
+    def rebuild_extension_map(self):
+        """Rebuild the extension map.
+
+        This is especially needed after a plugin got disabled, which can result in
+        formats being no longer available.
+        """
+        self._extension_map = defaultdict(set)
+        for format in self._ext_point_formats:
+            for ext in format.EXTENSIONS:
+                self._extension_map[ext.lower()].add(format)

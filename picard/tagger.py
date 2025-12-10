@@ -397,11 +397,15 @@ class Tagger(QtWidgets.QApplication):
         """Initialize and load plugins"""
         if HAS_PLUGIN3:
             self.pluginmanager3 = PluginManager(self)
+            self.pluginmanager3.plugin_disabled.connect(self._on_plugin_disabled)
             if not self._no_plugins:
                 self.pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self.pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
+
+    def _on_plugin_disabled(self):
+        self.format_registry.rebuild_extension_map()
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
