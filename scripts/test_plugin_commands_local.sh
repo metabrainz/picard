@@ -128,7 +128,7 @@ echo
 
 # Test 10: Uninstall plugin
 echo "10. Uninstall plugin"
-$PICARD plugins --uninstall $TEST_PLUGIN_UUID --yes
+$PICARD plugins --remove $TEST_PLUGIN_UUID --yes
 echo
 
 # Test 11: Verify uninstall
@@ -153,7 +153,7 @@ echo
 
 # Test 15: Uninstall with purge
 echo "15. Uninstall with purge (delete config)"
-$PICARD plugins --uninstall $TEST_PLUGIN_UUID --purge --yes
+$PICARD plugins --remove $TEST_PLUGIN_UUID --purge --yes
 echo
 
 # Test 16: Verify final cleanup
@@ -199,7 +199,7 @@ echo
 
 # Test 21: Update plugin (should update to v1.2.0 if versioning detected)
 echo "21. Update plugin (may update to newer tag if available)"
-$PICARD plugins --update $TEST_PLUGIN_UUID
+$PICARD plugins --update $TEST_PLUGIN_UUID --yes
 echo
 
 # Test 22: Verify commit after update
@@ -243,7 +243,7 @@ echo
 
 # Test 26: Final uninstall
 echo "26. Final uninstall"
-$PICARD plugins --uninstall $TEST_PLUGIN_UUID --purge --yes
+$PICARD plugins --remove $TEST_PLUGIN_UUID --purge --yes
 echo
 
 # Cleanup

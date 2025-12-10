@@ -129,7 +129,7 @@ echo
 
 # Test 24: Uninstall plugin
 echo "24. Uninstall $TEST_PLUGIN_ID"
-$PICARD plugins --uninstall $TEST_PLUGIN_ID --yes
+$PICARD plugins --remove $TEST_PLUGIN_ID --yes
 echo
 
 # Test 25: Verify uninstall
@@ -159,7 +159,7 @@ echo
 
 # Test 30: Uninstall with purge
 echo "30. Uninstall with purge (delete config)"
-$PICARD plugins --uninstall $TEST_PLUGIN_ID --purge --yes
+$PICARD plugins --remove $TEST_PLUGIN_ID --purge --yes
 echo
 
 # Test 31: Verify final cleanup
