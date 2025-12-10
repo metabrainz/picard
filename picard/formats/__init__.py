@@ -70,6 +70,7 @@ DEFAULT_FORMATS = [
     AiffFile,
     ASFFile,
     DSFFile,
+    DSDIFFFile,
     FLACFile,
     MIDIFile,
     MonkeysAudioFile,
@@ -90,6 +91,3 @@ DEFAULT_FORMATS = [
     WAVFile,
     WavPackFile,
 ]
-
-if DSDIFFFile:
-    DEFAULT_FORMATS.append(DSDIFFFile)
