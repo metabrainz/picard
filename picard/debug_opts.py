@@ -83,3 +83,4 @@ class DebugOpt(DebugOptEnum):
     PLUGIN_FULLPATH = 1, N_('Plugin Fullpath'), N_('Log plugin full paths')
     WS_POST = 2, N_('Web Service Post Data'), N_('Log data of web service post requests')
     WS_REPLIES = 3, N_('Web Service Replies'), N_('Log content of web service replies')
+    GIT_BACKEND = 4, N_('Git Backend'), N_('Log git backend method calls')

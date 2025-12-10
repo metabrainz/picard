@@ -371,7 +371,7 @@ class RefsCache:
         Returns:
             list: Filtered tags or empty list
         """
-        import pygit2
+        from picard.plugin3.git_factory import git_backend
 
         # Parse versioning scheme
         pattern = self.parse_versioning_scheme(versioning_scheme)
@@ -379,10 +379,11 @@ class RefsCache:
             return []
 
         try:
-            repo = pygit2.Repository(str(repo_path))
+            backend = git_backend()
+            repo = backend.create_repository(repo_path)
 
             # Filter and sort tags
-            tags = self.filter_tags(repo.references, pattern)
+            tags = self.filter_tags(repo.get_references(), pattern)
             tags = self.sort_tags(tags, versioning_scheme)
 
             # Update cache

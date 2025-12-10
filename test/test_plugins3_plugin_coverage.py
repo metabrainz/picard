@@ -23,8 +23,8 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
+from picard.plugin3.git_factory import has_git_backend
 from picard.plugin3.plugin import (
-    HAS_PYGIT2,
     PluginSource,
     PluginSourceGit,
 )
@@ -42,8 +42,8 @@ class TestPluginSource(PicardTestCase):
 class TestPluginSourceGitInit(PicardTestCase):
     def test_plugin_source_git_init_with_ref(self):
         """Test PluginSourceGit initialization with ref."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 not available')
+        if not has_git_backend():
+            self.skipTest('git backend not available')
 
         source = PluginSourceGit('https://example.com/repo.git', ref='v1.0')
 
@@ -53,8 +53,8 @@ class TestPluginSourceGitInit(PicardTestCase):
 
     def test_plugin_source_git_init_without_ref(self):
         """Test PluginSourceGit initialization without ref."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 not available')
+        if not has_git_backend():
+            self.skipTest('git backend not available')
 
         source = PluginSourceGit('https://example.com/repo.git')
 
@@ -65,53 +65,42 @@ class TestPluginSourceGitInit(PicardTestCase):
 
 class TestGitRemoteCallbacks(PicardTestCase):
     def test_git_remote_callbacks_transfer_progress(self):
-        """Test GitRemoteCallbacks.transfer_progress() prints progress."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 not available')
+        """Test GitRemoteCallbacks._transfer_progress() prints progress."""
+        if not has_git_backend():
+            self.skipTest('git backend not available')
 
         from unittest.mock import patch
 
-        from picard.plugin3.plugin import GitRemoteCallbacks
+        from picard.plugin3.git_factory import git_backend
 
-        callbacks = GitRemoteCallbacks()
+        backend = git_backend()
+        callbacks = backend.create_remote_callbacks()
         mock_stats = Mock()
         mock_stats.indexed_objects = 50
         mock_stats.total_objects = 100
 
         # Progress output is suppressed for cleaner CLI
         with patch('builtins.print') as mock_print:
-            callbacks.transfer_progress(mock_stats)
+            callbacks._transfer_progress(mock_stats)
             mock_print.assert_not_called()
 
 
 class TestPluginSourceGitUpdate(PicardTestCase):
     def test_update_without_ref_uses_head(self):
         """Test update without ref uses HEAD."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 not available')
+        if not has_git_backend():
+            self.skipTest('git backend not available')
 
         import tempfile
 
         from picard.plugin3.plugin import PluginSourceGit
 
-        import pygit2
-
         # Create a test git repo
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir) / 'source'
-            repo_dir.mkdir()
+            from test.test_plugins3_helpers import backend_init_and_commit
 
-            # Initialize repo
-            repo = pygit2.init_repository(str(repo_dir))
-            (repo_dir / 'file.txt').write_text('content')
-
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature('Test', 'test@example.com')
-            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-            repo.set_head('refs/heads/main')
+            backend_init_and_commit(repo_dir, {'file.txt': 'content'}, 'Initial')
 
             # Clone it
             target = Path(tmpdir) / 'target'
@@ -128,34 +117,22 @@ class TestPluginSourceGitUpdate(PicardTestCase):
 
     def test_update_with_tag_ref(self):
         """Test update with tag ref falls back to original ref."""
-        if not HAS_PYGIT2:
-            self.skipTest('pygit2 not available')
+        if not has_git_backend():
+            self.skipTest('git backend not available')
 
         import tempfile
 
         from picard.plugin3.plugin import PluginSourceGit
 
-        import pygit2
-
         # Create a test git repo with a tag
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir) / 'source'
-            repo_dir.mkdir()
+            from test.test_plugins3_helpers import backend_create_tag, backend_init_and_commit
 
-            # Initialize repo
-            repo = pygit2.init_repository(str(repo_dir))
-            (repo_dir / 'file.txt').write_text('content')
-
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature('Test', 'test@example.com')
-            commit = repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-            repo.set_head('refs/heads/main')
+            commit = backend_init_and_commit(repo_dir, {'file.txt': 'content'}, 'Initial')
 
             # Create a tag
-            repo.create_tag('v1.0', commit, pygit2.GIT_OBJECT_COMMIT, author, 'Version 1.0')
+            backend_create_tag(repo_dir, 'v1.0', commit, 'Version 1.0')
 
             # Clone it
             target = Path(tmpdir) / 'target'

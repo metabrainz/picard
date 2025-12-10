@@ -167,24 +167,26 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            import pygit2
+            from picard.plugin3.git_factory import has_git_backend
+
+            if not has_git_backend():
+                self.skipTest("git backend not available")
         except ImportError:
-            self.skipTest("pygit2 not available")
+            self.skipTest("git backend not available")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir)
-            repo = pygit2.init_repository(str(repo_dir))
+            from test.test_plugins3_helpers import backend_init_and_commit
 
-            # Create and commit a file
-            (repo_dir / 'test.txt').write_text('test')
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            commit_id = repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-            repo.set_head('refs/heads/main')
-            repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
+            commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
+
+            # Reset to clean state
+            from picard.plugin3.git_factory import git_backend
+
+            backend = git_backend()
+            repo = backend.create_repository(repo_dir)
+            backend.reset_hard(repo, commit_id)
+            repo.free()
 
             changes = GitOperations.check_dirty_working_dir(repo_dir)
 
@@ -196,22 +198,18 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            import pygit2
+            from picard.plugin3.git_factory import has_git_backend
+
+            if not has_git_backend():
+                self.skipTest("git backend not available")
         except ImportError:
-            self.skipTest("pygit2 not available")
+            self.skipTest("git backend not available")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir)
-            repo = pygit2.init_repository(str(repo_dir))
+            from test.test_plugins3_helpers import backend_init_and_commit
 
-            # Create and commit a file
-            (repo_dir / 'test.txt').write_text('test')
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
+            backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Modify the file (uncommitted change)
             (repo_dir / 'test.txt').write_text('modified')
@@ -277,13 +275,18 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                 mock_source_instance.update = Mock(return_value=('old123', 'new456'))
                 mock_source.return_value = mock_source_instance
 
-                # Mock pygit2 Repository
-                with patch('pygit2.Repository') as mock_repo_class:
+                # Mock git backend at import location
+                with patch('picard.plugin3.git_factory.git_backend') as mock_backend_func:
+                    mock_backend = Mock()
                     mock_repo = Mock()
                     mock_commit = Mock()
-                    mock_commit.commit_time = 1234567890
-                    mock_repo.get = Mock(return_value=mock_commit)
-                    mock_repo_class.return_value = mock_repo
+                    mock_commit.id = 'new456'
+                    mock_commit.type = Mock()  # Not a tag
+                    mock_repo.revparse_single = Mock(return_value=mock_commit)
+                    mock_repo.get_commit_date = Mock(return_value=1234567890)
+                    mock_repo.free = Mock()
+                    mock_backend.create_repository = Mock(return_value=mock_repo)
+                    mock_backend_func.return_value = mock_backend
 
                     # Should not raise with discard_changes=True
                     result = manager.update_plugin(mock_plugin, discard_changes=True)
@@ -317,9 +320,12 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            import pygit2
+            from picard.plugin3.git_factory import has_git_backend
+
+            if not has_git_backend():
+                self.skipTest("git backend not available")
         except ImportError:
-            self.skipTest("pygit2 not available")
+            self.skipTest("git backend not available")
 
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
@@ -328,17 +334,17 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Create existing plugin with uncommitted changes
             existing = plugin_dir / 'test_plugin_uuid'
-            existing.mkdir()
-            repo = pygit2.init_repository(str(existing))
-            (existing / 'test.txt').write_text('test')
-            index = repo.index
-            index.add_all()
-            index.write()
-            tree = index.write_tree()
-            author = pygit2.Signature("Test", "test@example.com")
-            commit_id = repo.create_commit('refs/heads/main', author, author, 'Initial', tree, [])
-            repo.set_head('refs/heads/main')
-            repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
+            from test.test_plugins3_helpers import backend_init_and_commit
+
+            commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
+
+            # Reset to clean state
+            from picard.plugin3.git_factory import git_backend
+
+            backend = git_backend()
+            repo = backend.create_repository(existing)
+            backend.reset_hard(repo, commit_id)
+            repo.free()
 
             # Modify file (uncommitted change)
             (existing / 'test.txt').write_text('modified')

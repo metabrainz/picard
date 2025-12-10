@@ -1,0 +1,242 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2025 Philipp Wolfer, Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+"""Git backend abstraction layer."""
+
+from abc import (
+    ABC,
+    abstractmethod,
+)
+from enum import Enum
+from pathlib import Path
+from typing import (
+    Any,
+    Dict,
+    List,
+    Optional,
+)
+
+from picard import log
+from picard.debug_opts import DebugOpt
+
+
+class GitBackendError(Exception):
+    """Base exception for git backend operations"""
+
+
+class GitRepositoryError(GitBackendError):
+    """Exception for repository-related errors"""
+
+
+class GitReferenceError(GitBackendError):
+    """Exception for reference-related errors"""
+
+
+class GitCommitError(GitBackendError):
+    """Exception for commit-related errors"""
+
+
+class GitObjectType(Enum):
+    COMMIT = "commit"
+    TAG = "tag"
+
+
+class GitStatusFlag(Enum):
+    CURRENT = 0
+    IGNORED = 1
+    MODIFIED = 2
+
+
+class GitResetMode(Enum):
+    HARD = "hard"
+
+
+class GitCredentialType(Enum):
+    SSH_KEY = 1
+    USERPASS = 2
+
+
+class GitRef:
+    def __init__(self, name: str, target: str = None):
+        self.name = name
+        self.target = target
+
+
+class GitObject:
+    def __init__(self, id: str, obj_type: GitObjectType):
+        self.id = id
+        self.type = obj_type
+
+
+class GitRemoteCallbacks:
+    """Abstract remote callbacks for authentication"""
+
+
+def _log_git_call(method_name: str, *args, **kwargs):
+    """Log git backend method calls if debug option enabled"""
+    if DebugOpt.GIT_BACKEND.enabled:
+        args_str = ', '.join(str(arg)[:100] for arg in args)  # Truncate long args
+        kwargs_str = ', '.join(f'{k}={str(v)[:50]}' for k, v in kwargs.items())
+        all_args = ', '.join(filter(None, [args_str, kwargs_str]))
+        log.debug("Git backend call: %s(%s)", method_name, all_args)
+
+
+class GitRepository(ABC):
+    """Abstract interface for repository operations"""
+
+    @abstractmethod
+    def get_status(self) -> Dict[str, GitStatusFlag]:
+        """Get working directory status"""
+
+    @abstractmethod
+    def get_head_target(self) -> str:
+        """Get HEAD commit ID"""
+
+    @abstractmethod
+    def is_head_detached(self) -> bool:
+        """Check if HEAD is detached"""
+
+    @abstractmethod
+    def get_head_shorthand(self) -> str:
+        """Get current branch name or short commit"""
+
+    @abstractmethod
+    def get_head_name(self) -> str:
+        """Get HEAD reference name"""
+
+    @abstractmethod
+    def revparse_single(self, ref: str) -> GitObject:
+        """Resolve reference to object"""
+
+    @abstractmethod
+    def peel_to_commit(self, obj: GitObject) -> GitObject:
+        """Peel tag to underlying commit"""
+
+    @abstractmethod
+    def reset(self, commit_id: str, mode: GitResetMode):
+        """Reset repository to commit"""
+
+    @abstractmethod
+    def checkout_tree(self, obj: GitObject):
+        """Checkout tree object"""
+
+    @abstractmethod
+    def set_head(self, target: str):
+        """Set HEAD to target"""
+
+    @abstractmethod
+    def list_references(self) -> List[str]:
+        """List all references"""
+
+    @abstractmethod
+    def get_references(self) -> List[str]:
+        """Get list of reference names"""
+
+    @abstractmethod
+    def get_remotes(self) -> List[Any]:
+        """Get remotes list"""
+
+    @abstractmethod
+    def get_remote(self, name: str) -> Any:
+        """Get specific remote by name"""
+
+    @abstractmethod
+    def create_remote(self, name: str, url: str) -> Any:
+        """Create remote"""
+
+    @abstractmethod
+    def get_branches(self) -> Any:
+        """Get branches object"""
+
+    @abstractmethod
+    def get_commit_date(self, commit_id: str) -> int:
+        """Get commit timestamp for given commit ID"""
+
+    @abstractmethod
+    def fetch_remote(self, remote, refspec: str = None, callbacks=None):
+        """Fetch from remote with optional refspec"""
+
+    @abstractmethod
+    def free(self):
+        """Free repository resources"""
+
+
+class GitBackend(ABC):
+    """Abstract interface for git operations"""
+
+    @abstractmethod
+    def create_repository(self, path: Path) -> GitRepository:
+        """Open existing repository"""
+
+    @abstractmethod
+    def init_repository(self, path: Path, bare: bool = False) -> GitRepository:
+        """Initialize new repository"""
+
+    @abstractmethod
+    def create_commit(
+        self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
+    ) -> str:
+        """Create a commit with all staged files"""
+
+    @abstractmethod
+    def create_tag(
+        self,
+        repo: GitRepository,
+        tag_name: str,
+        commit_id: str,
+        message: str = "",
+        author_name: str = "Test",
+        author_email: str = "test@example.com",
+    ):
+        """Create a tag pointing to a commit"""
+
+    @abstractmethod
+    def create_branch(self, repo: GitRepository, branch_name: str, commit_id: str):
+        """Create a branch pointing to a commit"""
+
+    @abstractmethod
+    def add_and_commit_files(
+        self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
+    ) -> str:
+        """Add all files and create commit"""
+
+    @abstractmethod
+    def reset_hard(self, repo: GitRepository, commit_id: str):
+        """Reset repository to commit (hard reset)"""
+
+    @abstractmethod
+    def create_reference(self, repo: GitRepository, ref_name: str, commit_id: str):
+        """Create a reference pointing to commit"""
+
+    @abstractmethod
+    def set_head_detached(self, repo: GitRepository, commit_id: str):
+        """Set HEAD to detached state at commit"""
+
+    @abstractmethod
+    def clone_repository(self, url: str, path: Path, **options) -> GitRepository:
+        """Clone repository from URL"""
+
+    @abstractmethod
+    def fetch_remote_refs(self, url: str, **options) -> Optional[List[GitRef]]:
+        """Fetch remote refs without cloning"""
+
+    @abstractmethod
+    def create_remote_callbacks(self) -> GitRemoteCallbacks:
+        """Create remote callbacks for authentication"""

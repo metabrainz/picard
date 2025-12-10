@@ -228,27 +228,32 @@ class PluginMetadataManager:
             # Detect current ref from local git repo (overrides metadata)
             if plugin.local_path:
                 try:
-                    import pygit2
+                    from picard.plugin3.git_factory import git_backend
 
-                    repo = pygit2.Repository(str(plugin.local_path))
-                    current_commit = str(repo.head.target)
+                    backend = git_backend()
+                    repo = backend.create_repository(plugin.local_path)
+                    current_commit = repo.get_head_target()
 
                     # Check if current commit matches a tag (prefer tag over branch)
                     current_ref = None
-                    for ref_name in repo.references:
+                    for ref_name in repo.list_references():
                         if ref_name.startswith('refs/tags/'):
                             tag_name = ref_name[10:]
                             if tag_name.endswith('^{}'):
                                 continue
-                            ref = repo.references[ref_name]
-                            target = ref.peel()
-                            if str(target.id) == current_commit:
-                                current_ref = tag_name
-                                break
+                            try:
+                                obj = repo.revparse_single(ref_name)
+                                target = repo.peel_to_commit(obj)
+                                if target.id == current_commit:
+                                    current_ref = tag_name
+                                    break
+                            except Exception:
+                                # Skip invalid tags and continue to next one
+                                continue  # nosec try_except_continue
 
                     # If no tag found, use branch name
-                    if not current_ref and not repo.head_is_detached:
-                        current_ref = repo.head.shorthand
+                    if not current_ref and not repo.is_head_detached():
+                        current_ref = repo.get_head_shorthand()
                 except Exception:
                     pass  # Ignore errors, use metadata values
         else:

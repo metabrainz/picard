@@ -23,9 +23,13 @@
 import os
 from pathlib import Path
 import shutil
-import tempfile
 
 from picard import log
+from picard.plugin3.git_backend import (
+    GitBackendError,
+    GitStatusFlag,
+)
+from picard.plugin3.git_factory import git_backend
 
 
 def clean_python_cache(directory):
@@ -60,15 +64,14 @@ class GitOperations:
         Raises:
             Exception: If path is not a git repository
         """
-        import pygit2
-
-        repo = pygit2.Repository(str(path))
-        status = repo.status()
+        backend = git_backend()
+        repo = backend.create_repository(path)
+        status = repo.get_status()
 
         # Check for any changes (modified, added, deleted, renamed, etc.)
         modified_files = []
-        for filepath, flags in status.items():
-            if flags != pygit2.GIT_STATUS_CURRENT and flags != pygit2.GIT_STATUS_IGNORED:
+        for filepath, flag in status.items():
+            if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
                 # Ignore Python cache files
                 if (
                     filepath.endswith(('.pyc', '.pyo'))
@@ -89,26 +92,10 @@ class GitOperations:
             use_callbacks: Whether to use GitRemoteCallbacks for authentication
 
         Returns:
-            list: Remote refs from pygit2, or None on error
+            list: Remote refs, or None on error
         """
-        import pygit2
-
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                repo = pygit2.init_repository(tmpdir, bare=True)
-                remote = repo.remotes.create('origin', url)
-
-                if use_callbacks:
-                    from picard.plugin3.plugin import GitRemoteCallbacks
-
-                    callbacks = GitRemoteCallbacks()
-                    return remote.list_heads(callbacks=callbacks)
-                else:
-                    return remote.list_heads()
-
-        except Exception as e:
-            log.warning('Failed to fetch remote refs from %s: %s', url, e)
-            return None
+        backend = git_backend()
+        return backend.fetch_remote_refs(url, use_callbacks=use_callbacks)
 
     @staticmethod
     def validate_ref(url, ref, uuid=None, registry=None):
@@ -188,30 +175,28 @@ class GitOperations:
         Returns:
             tuple: (ref_type, ref_name) where ref_type is 'commit', 'tag', 'branch', or None
         """
-        import pygit2
-
         try:
-            repo = pygit2.Repository(str(repo_path))
+            backend = git_backend()
+            repo = backend.create_repository(repo_path)
+            references = repo.get_references()
 
             if ref:
                 # Check if ref exists in standard locations first
-                # This handles both lightweight and annotated tags
-                if f'refs/tags/{ref}' in repo.references:
+                if f'refs/tags/{ref}' in references:
                     return 'tag', ref
-                if f'refs/heads/{ref}' in repo.references:
+                if f'refs/heads/{ref}' in references:
                     return 'branch', ref
-                if f'refs/remotes/origin/{ref}' in repo.references:
+                if f'refs/remotes/origin/{ref}' in references:
                     return 'branch', ref
 
                 # Not found in standard refs, try to resolve it
                 try:
                     obj = repo.revparse_single(ref)
-                    # It resolves. Check object type.
-                    # Note: lightweight tags resolve to commits, but we already checked refs/tags above
-                    if obj.type == pygit2.GIT_OBJECT_COMMIT:
+                    from picard.plugin3.git_backend import GitObjectType
+
+                    if obj.type == GitObjectType.COMMIT:
                         return 'commit', ref
-                    elif obj.type == pygit2.GIT_OBJECT_TAG:
-                        # Annotated tag object
+                    elif obj.type == GitObjectType.TAG:
                         return 'tag', ref
                     else:
                         return None, ref
@@ -219,14 +204,16 @@ class GitOperations:
                     return None, ref
             else:
                 # Check current HEAD state
-                if repo.head_is_detached:
-                    commit = str(repo.head.target)[:7]
+                if repo.is_head_detached():
+                    commit = repo.get_head_target()[:7]
                     return 'commit', commit
                 else:
                     # HEAD points to a branch
-                    branch_name = repo.head.shorthand
+                    branch_name = repo.get_head_shorthand()
                     return 'branch', branch_name
 
+        except GitBackendError:
+            return None, ref
         except Exception:
             return None, ref
 
@@ -256,46 +243,49 @@ class GitOperations:
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
-        import pygit2
-
-        repo = pygit2.Repository(str(plugin.local_path))
+        # Use abstracted git operations for ref switching
+        backend = git_backend()
+        repo = backend.create_repository(plugin.local_path)
 
         # Get old ref and commit
-        old_commit = str(repo.head.target)
-        old_ref = repo.head.shorthand if not repo.head_is_detached else old_commit[:7]
+        old_commit = repo.get_head_target()
+        old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
 
         # Fetch latest from remote
-        remote = repo.remotes['origin']
-        from picard.plugin3.plugin import GitRemoteCallbacks
-
-        callbacks = GitRemoteCallbacks()
-        remote.fetch(callbacks=callbacks)
+        callbacks = backend.create_remote_callbacks()
+        origin_remote = repo.get_remote('origin')
+        repo.fetch_remote(origin_remote, None, callbacks._callbacks)
 
         # Find the ref
         try:
+            references = repo.get_references()
+
             # Try as branch first
             branch_ref = f'refs/remotes/origin/{ref}'
-            if branch_ref in repo.references:
-                commit = repo.references[branch_ref].peel()
+            if branch_ref in references:
+                commit_obj = repo.revparse_single(branch_ref)
+                commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)
                 # Detach HEAD first to avoid "cannot force update current branch" error
                 repo.set_head(commit.id)
                 # Set branch to track remote
-                branch = repo.branches.local.create(ref, commit, force=True)
-                branch.upstream = repo.branches.remote[f'origin/{ref}']
+                branches = repo.get_branches()
+                branch = branches.local.create(ref, commit_obj, force=True)
+                branch.upstream = branches.remote[f'origin/{ref}']
                 # Now point HEAD to the branch
                 repo.set_head(f'refs/heads/{ref}')
                 log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
-                return old_ref, ref, old_commit, str(commit.id)
+                return old_ref, ref, old_commit, commit.id
 
             # Try as tag
             tag_ref = f'refs/tags/{ref}'
-            if tag_ref in repo.references:
-                commit = repo.references[tag_ref].peel()
+            if tag_ref in references:
+                commit_obj = repo.revparse_single(tag_ref)
+                commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                return old_ref, ref, old_commit, str(commit.id)
+                return old_ref, ref, old_commit, commit.id
 
             # Try as commit hash
             try:
@@ -303,7 +293,7 @@ class GitOperations:
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-                return old_ref, ref[:7], old_commit, str(commit.id)
+                return old_ref, ref[:7], old_commit, commit.id
             except KeyError:
                 pass
 

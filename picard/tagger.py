@@ -137,10 +137,17 @@ from picard.options import init_options
 
 
 try:
-    from picard.plugin3.cli import PluginCLI
-    from picard.plugin3.manager import PluginManager
+    from picard.plugin3.git_factory import has_git_backend
 
-    HAS_PLUGIN3 = True
+    if has_git_backend():
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.manager import PluginManager
+
+        HAS_PLUGIN3 = True
+    else:
+        HAS_PLUGIN3 = False
+        PluginCLI = None
+        PluginManager = None
 except ImportError:
     HAS_PLUGIN3 = False
     PluginCLI = None
@@ -386,7 +393,7 @@ class Tagger(QtWidgets.QApplication):
                 self.pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self.pluginmanager3 = None
-            log.warning('Plugin3 system not available (pygit2 not installed)')
+            log.warning('Plugin3 system not available (git backend not available)')
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -727,7 +734,10 @@ class Tagger(QtWidgets.QApplication):
 
         self.update_browser_integration()
         self.window.show()
-        blacklisted_plugins = self.pluginmanager3.init_plugins()
+
+        blacklisted_plugins = []
+        if self.pluginmanager3:
+            blacklisted_plugins = self.pluginmanager3.init_plugins()
 
         # Show warning if any plugins were blacklisted
         if blacklisted_plugins:
@@ -1745,18 +1755,25 @@ def main(localedir=None, autoupdate=True):
     # Handle plugin commands with minimal initialization (no GUI)
     if cmdline_args.subcommand == 'plugins':
         if not HAS_PLUGIN3:
-            log.error('Plugin3 system not available. Install pygit2 to use plugin management.')
+            log.error('Plugin3 system not available. Git backend not available for plugin management.')
             sys.exit(1)
 
         app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
+
+        # Initialize debug options for CLI
+        if cmdline_args.debug_opts:
+            DebugOpt.from_string(cmdline_args.debug_opts)
+            # Ensure DEBUG level is enabled when debug options are used
+            log.set_verbosity(logging.DEBUG)
+
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.output import PluginOutput
 
         manager = PluginManager()
         manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
-        # Suppress INFO logs for cleaner CLI output unless in debug mode
-        if not cmdline_args.debug:
+        # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
+        if not cmdline_args.debug and not cmdline_args.debug_opts:
             log.set_verbosity(logging.WARNING)
 
         # Create output with color setting from args

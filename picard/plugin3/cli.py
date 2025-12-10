@@ -1202,7 +1202,7 @@ class PluginCLI:
         config.endGroup()
 
         if not has_config:
-            self._out.error(f'No saved options found for "{display_name}"')
+            self._out.print(f'No saved options found for "{display_name}"')
 
             # Show orphaned configs
             orphaned = self._manager.get_orphaned_plugin_configs()
@@ -1213,7 +1213,7 @@ class PluginCLI:
                     self._out.print(f'  • {self._out.d_uuid(uuid)}')
                 self._out.nl()
                 self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
-            return ExitCode.NOT_FOUND
+            return ExitCode.SUCCESS
 
         if not yes:
             if not self._out.yesno(f'Delete saved options for "{display_name}"?'):

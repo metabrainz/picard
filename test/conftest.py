@@ -117,5 +117,11 @@ def _install_defaulting_config(monkeypatch):
 
         monkeypatch.setattr(ptc.PicardTestCase, "init_config", staticmethod(_init_config_override), raising=False)
 
+    # Reset git backend singleton between tests
+    with suppress(ModuleNotFoundError):
+        from picard.plugin3.git_factory import _reset_git_backend
+
+        _reset_git_backend()
+
     # Yield control to test session
     yield

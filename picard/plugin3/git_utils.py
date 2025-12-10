@@ -133,9 +133,11 @@ def check_local_repo_dirty(url):
         return False
 
     try:
-        import pygit2
+        from picard.plugin3.git_factory import git_backend
 
-        repo = pygit2.Repository(str(local_path))
-        return bool(repo.status())
+        backend = git_backend()
+        repo = backend.create_repository(local_path)
+        status = repo.get_status()
+        return bool(status)
     except Exception:
         return False
