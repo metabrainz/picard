@@ -137,10 +137,17 @@ from picard.options import init_options
 
 
 try:
-    from picard.plugin3.cli import PluginCLI
-    from picard.plugin3.manager import PluginManager
+    from picard.plugin3.git_factory import has_git_backend
 
-    HAS_PLUGIN3 = True
+    if has_git_backend():
+        from picard.plugin3.cli import PluginCLI
+        from picard.plugin3.manager import PluginManager
+
+        HAS_PLUGIN3 = True
+    else:
+        HAS_PLUGIN3 = False
+        PluginCLI = None
+        PluginManager = None
 except ImportError:
     HAS_PLUGIN3 = False
     PluginCLI = None
@@ -727,7 +734,10 @@ class Tagger(QtWidgets.QApplication):
 
         self.update_browser_integration()
         self.window.show()
-        blacklisted_plugins = self.pluginmanager3.init_plugins()
+
+        blacklisted_plugins = []
+        if self.pluginmanager3:
+            blacklisted_plugins = self.pluginmanager3.init_plugins()
 
         # Show warning if any plugins were blacklisted
         if blacklisted_plugins:
