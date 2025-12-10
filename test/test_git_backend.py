@@ -166,6 +166,55 @@ class TestGitBackend(unittest.TestCase):
         self.assertEqual(ref.name, "main")
         self.assertEqual(ref.target, "abc123")
 
+    def test_fetch_remote_refs_real_repo(self):
+        """Test fetch_remote_refs with a local repository to ensure refs have proper targets"""
+        import tempfile
+
+        from picard.plugin3.git_factory import has_git_backend
+
+        if not has_git_backend():
+            self.skipTest("git backend not available")
+
+        backend = git_backend()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a local git repository with tags
+            repo_path = Path(tmpdir) / "test-repo"
+            from test.test_plugins3_helpers import backend_create_tag, create_git_repo_with_backend
+
+            # Create repo with initial commit
+            commit_id = create_git_repo_with_backend(
+                repo_path, {'README.md': '# Test Repository', 'file.txt': 'test content'}
+            )
+
+            # Create some version tags
+            backend_create_tag(repo_path, 'v1.0.0', commit_id, 'Version 1.0.0')
+            backend_create_tag(repo_path, 'v1.0.1', commit_id, 'Version 1.0.1')
+
+            # Test fetch_remote_refs on the local repository
+            # Use pathlib to create proper file URL for cross-platform compatibility
+            repo_url = repo_path.as_uri()
+            refs = backend.fetch_remote_refs(repo_url)
+
+            # Should get some refs
+            self.assertIsNotNone(refs)
+            self.assertGreater(len(refs), 0)
+
+            # Find tag refs to test
+            tag_refs = [ref for ref in refs if ref.name.startswith('refs/tags/v')]
+            self.assertGreater(len(tag_refs), 0, "Repository should have version tags")
+
+            # Check that tag refs have proper targets (commit IDs)
+            for ref in tag_refs:
+                self.assertIsNotNone(ref.target, f"Tag {ref.name} should have a target commit ID")
+                self.assertNotEqual(ref.target, "", f"Tag {ref.name} target should not be empty")
+                # Commit IDs should be 40-character hex strings
+                self.assertEqual(len(ref.target), 40, f"Tag {ref.name} target should be 40-char commit ID")
+                self.assertTrue(
+                    all(c in '0123456789abcdef' for c in ref.target.lower()),
+                    f"Tag {ref.name} target should be valid hex",
+                )
+
     def test_git_object_creation(self):
         """Test GitObject creation"""
         obj = GitObject("abc123", GitObjectType.COMMIT)
