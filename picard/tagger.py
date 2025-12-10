@@ -1759,14 +1759,21 @@ def main(localedir=None, autoupdate=True):
             sys.exit(1)
 
         app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
+
+        # Initialize debug options for CLI
+        if cmdline_args.debug_opts:
+            DebugOpt.from_string(cmdline_args.debug_opts)
+            # Ensure DEBUG level is enabled when debug options are used
+            log.set_verbosity(logging.DEBUG)
+
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.output import PluginOutput
 
         manager = PluginManager()
         manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
-        # Suppress INFO logs for cleaner CLI output unless in debug mode
-        if not cmdline_args.debug:
+        # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
+        if not cmdline_args.debug and not cmdline_args.debug_opts:
             log.set_verbosity(logging.WARNING)
 
         # Create output with color setting from args
