@@ -337,7 +337,7 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                return [GitRef(ref.name, getattr(ref, 'target', None)) for ref in remote_refs]
+                return [GitRef(ref.name, str(ref.oid)) for ref in remote_refs]
         except Exception as e:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None
