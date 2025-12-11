@@ -1878,21 +1878,24 @@ def main():
     if cmdline_args.version:
         cli.print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
 
+    log.enable_console_handler()
+
+    # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
+    if not cmdline_args.debug and not cmdline_args.debug_opts:
+        log.set_verbosity(logging.WARNING)
+    elif cmdline_args.debug or cmdline_args.debug_opts:
+        # Ensure DEBUG level is enabled when requested or debug options are used
+        log.set_verbosity(logging.DEBUG)
+
     # Initialize debug options for CLI
     if cmdline_args.debug_opts:
         DebugOpt.from_string(cmdline_args.debug_opts)
-        # Ensure DEBUG level is enabled when debug options are used
-        log.set_verbosity(logging.DEBUG)
 
     from picard.plugin3.manager import PluginManager
     from picard.plugin3.output import PluginOutput
 
     manager = PluginManager()
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
-
-    # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
-    if not cmdline_args.debug and not cmdline_args.debug_opts:
-        log.set_verbosity(logging.WARNING)
 
     # Create output with color setting from args
     color = not getattr(cmdline_args, 'no_color', False)
