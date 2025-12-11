@@ -425,8 +425,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                         tagger.pluginmanager3.uninstall_plugin(plugin, purge_config=True)
                     else:
                         tagger.pluginmanager3.uninstall_plugin(plugin)
-                    # Force refresh by calling the refresh method
-                    self._refresh_plugin_list()
+                    # Use timer to refresh after uninstall completes
+                    QtCore.QTimer.singleShot(100, self._refresh_plugin_list)
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(
                         self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
