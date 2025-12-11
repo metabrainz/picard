@@ -1,6 +1,6 @@
 # Plugin v3 CLI Commands Reference
 
-This document provides a complete reference for the `picard plugins` command-line interface.
+This document provides a complete reference for the `picard-plugins` command-line interface.
 
 ---
 
@@ -48,29 +48,29 @@ Most commands accept a plugin identifier, which can be:
 
 **Note:** The Plugin ID is the directory name where the plugin is installed. It consists of a sanitized version of the display name plus the UUID (e.g., `listenbrainz_891a96e7-...`).
 
-**Registry ID (recommended):** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for all operations. This is stored when you install from the registry and is much easier to remember than the full Plugin ID.
+**Registry ID (recommended):** If you installed a plugin from the registry (e.g., `picard-plugins --install view-script-variables`), you can use the short registry ID for all operations. This is stored when you install from the registry and is much easier to remember than the full Plugin ID.
 
 **Prefix matching:** You can use any prefix of **any identifier type** (Registry ID, Plugin ID, UUID, or Display name). All matching is **case-insensitive**. The command will match if the prefix uniquely identifies a single plugin. Exact matches are prioritized over prefix matches.
 
 **Examples:**
 ```bash
 # Registry ID (exact or prefix)
-picard plugins --info view-script-variables            # Exact registry ID
-picard plugins --info view-script                      # Registry ID prefix
-picard plugins --info VIEW-SCRIPT                      # Case-insensitive
+picard-plugins --info view-script-variables            # Exact registry ID
+picard-plugins --info view-script                      # Registry ID prefix
+picard-plugins --info VIEW-SCRIPT                      # Case-insensitive
 
 # Display name (exact or prefix)
-picard plugins --info "ListenBrainz Submitter"         # Exact display name
-picard plugins --info "ListenBrainz"                   # Display name prefix
-picard plugins --info listenbrainz                     # Case-insensitive
+picard-plugins --info "ListenBrainz Submitter"         # Exact display name
+picard-plugins --info "ListenBrainz"                   # Display name prefix
+picard-plugins --info listenbrainz                     # Case-insensitive
 
 # Plugin ID (exact or prefix)
-picard plugins --info listenbrainz_a1b2c3d4-e5f6-...   # Full Plugin ID
-picard plugins --info listenbrainz_a1b2                # Plugin ID prefix
+picard-plugins --info listenbrainz_a1b2c3d4-e5f6-...   # Full Plugin ID
+picard-plugins --info listenbrainz_a1b2                # Plugin ID prefix
 
 # UUID (exact or prefix)
-picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...      # Full UUID
-picard plugins --info a1b2c3d4                         # UUID prefix
+picard-plugins --info a1b2c3d4-e5f6-4a5b-8c9d-...      # Full UUID
+picard-plugins --info a1b2c3d4                         # UUID prefix
 ```
 
 **Note:** If multiple plugins match (e.g., ambiguous prefix like `view` matching both `view-script-variables` and `view-history`), you'll get an error listing the matches. Use a more specific identifier (longer prefix, full identifier, or UUID).
@@ -81,39 +81,39 @@ picard plugins --info a1b2c3d4                         # UUID prefix
 
 ```bash
 # List installed plugins
-picard plugins --list
+picard-plugins --list
 
 # Install plugin
-picard plugins --install https://github.com/user/plugin
-picard plugins --install listenbrainz  # By name (Phase 3)
+picard-plugins --install https://github.com/user/plugin
+picard-plugins --install listenbrainz  # By name (Phase 3)
 
 # Update plugins
-picard plugins --update listenbrainz
-picard plugins --update-all
+picard-plugins --update listenbrainz
+picard-plugins --update-all
 
 # Enable/disable
-picard plugins --enable listenbrainz
-picard plugins --disable listenbrainz
+picard-plugins --enable listenbrainz
+picard-plugins --disable listenbrainz
 
 # Uninstall
-picard plugins --remove listenbrainz
-picard plugins --remove listenbrainz --purge  # Delete saved options too
+picard-plugins --remove listenbrainz
+picard-plugins --remove listenbrainz --purge  # Delete saved options too
 
 # Get info
-picard plugins --info listenbrainz
+picard-plugins --info listenbrainz
 
 # Show MANIFEST
-picard plugins --manifest                    # Template
-picard plugins --manifest listenbrainz       # From installed plugin
-picard plugins --manifest ~/dev/my-plugin    # From local directory
+picard-plugins --manifest                    # Template
+picard-plugins --manifest listenbrainz       # From installed plugin
+picard-plugins --manifest ~/dev/my-plugin    # From local directory
 
 # Browse/search (Phase 3)
-picard plugins --browse
-picard plugins --search "cover art"
+picard-plugins --browse
+picard-plugins --search "cover art"
 
 # Disable colored output
-picard plugins --list --no-color
-picard plugins --validate ~/dev/my-plugin --no-color
+picard-plugins --list --no-color
+picard-plugins --validate ~/dev/my-plugin --no-color
 ```
 
 ---
@@ -128,7 +128,7 @@ Plugin commands work in two modes:
 - Phase 1 implementation
 
 ```bash
-picard plugins --enable listenbrainz
+picard-plugins --enable listenbrainz
 # Output: Plugin enabled. Restart Picard to load it.
 ```
 
@@ -146,25 +146,36 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 
 ## Complete Command Line Interface
 
-**Base command:** `picard plugins [OPTIONS]`
+**Base command:** `picard-plugins [OPTIONS]`
 
 ### Help Output
 
 ```text
-usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-r PLUGIN [PLUGIN ...]]
-                      [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
-                      [-u PLUGIN [PLUGIN ...]] [--update-all]
-                      [--info NAME|URL] [--list-refs PLUGIN] [--ref REF]
-                      [--switch-ref PLUGIN REF] [--browse] [--search TERM]
-                      [--check-blacklist URL] [--refresh-registry]
-                      [--check-updates] [--reinstall] [-y] [--force-blacklisted]
-                      [--trust-community] [--trust LEVEL] [--category CATEGORY]
-                      [--purge] [--no-color]
+usage: picard-plugins [-h] [-c CONFIG_FILE] [--debug] [-v] [-V] [--debug-opts DEBUG_OPTS]
+                      [--yes] [--no-color] [-l] [-i URL [URL ...]]
+                      [-r PLUGIN [PLUGIN ...]] [-e PLUGIN [PLUGIN ...]]
+                      [-d PLUGIN [PLUGIN ...]] [-u PLUGIN [PLUGIN ...]] [--update-all]
+                      [--info PLUGIN] [--validate URL] [--clean-config [PLUGIN]]
+                      [--manifest [PLUGIN]] [--list-refs PLUGIN] [--ref REF]
+                      [--switch-ref PLUGIN REF] [--browse] [--search QUERY]
+                      [--check-blacklist URL] [--refresh-registry] [--check-updates]
+                      [--reinstall] [--force-blacklisted] [--trust-community]
+                      [--trust LEVEL] [--category CATEGORY] [--purge] [--locale LOCALE]
 
 Manage Picard plugins (install, update, enable, disable)
 
 options:
   -h, --help            show this help message and exit
+  -c CONFIG_FILE, --config-file CONFIG_FILE
+                        location of the configuration file
+  --debug               enable debug-level logging
+  -v, --version         display version information and exit
+  -V, --long-version    display long version information and exit
+  --debug-opts DEBUG_OPTS
+                        comma-separated list of debug options to enable:
+                        git_backend,plugin_fullpath,ws_post,ws_replies
+  --yes, -y             skip confirmation prompts
+  --no-color            disable colored output
 
 Plugin Management:
   -l, --list            list all installed plugins with details
@@ -177,42 +188,45 @@ Plugin Management:
   -d PLUGIN [PLUGIN ...], --disable PLUGIN [PLUGIN ...]
                         disable plugin(s)
   -u PLUGIN [PLUGIN ...], --update PLUGIN [PLUGIN ...]
-                        update specific plugin(s) to latest version
+                        update plugin(s) to latest version
   --update-all          update all installed plugins
-  --info NAME|URL       show detailed information and status about a plugin
+  --info PLUGIN         show detailed plugin information
   --validate URL        validate plugin MANIFEST from git URL
+  --clean-config [PLUGIN]
+                        delete saved options for a plugin (list orphaned configs if no
+                        plugin specified)
+  --manifest [PLUGIN]   show MANIFEST.toml (template if no argument)
 
 Git Version Control:
   --list-refs PLUGIN    list available git refs (branches/tags) for plugin
-  --ref REF             git ref (branch, tag, or commit) to use with --install, --validate
+  --ref REF             git ref (branch/tag/commit) to use with --install or --validate
   --switch-ref PLUGIN REF
-                        switch plugin to different git ref without reinstalling
+                        switch plugin to different git ref
 
 Plugin Discovery:
-  --browse              browse official plugin registry
-  --search TERM         search official plugins by name or description
+  --browse              browse plugins from registry
+  --search QUERY        search plugins in registry
   --check-blacklist URL
-                        check if a plugin URL is blacklisted
+                        check if URL is blacklisted
 
 Registry:
-  --refresh-registry    force refresh of plugin registry cache (can be combined with other commands)
-  --check-updates       check for available plugin updates
+  --refresh-registry    force refresh of plugin registry cache
+  --check-updates       check for available updates
 
 Advanced Options:
   --reinstall           force reinstall when used with --install
-  -y, --yes             skip all confirmation prompts (for automation)
-  --force-blacklisted   install plugin even if blacklisted (DANGEROUS!)
+  --force-blacklisted   bypass blacklist check (dangerous!)
   --trust-community     skip warnings for community plugins
-  --trust LEVEL         filter plugins by trust level (official, trusted, community)
-  --category CATEGORY   filter plugins by category (metadata, coverart, ui, scripting, formats, other)
-  --purge               delete plugin saved options when uninstalling
-  --no-color            disable colored output
+  --trust LEVEL         filter by trust level (official, trusted, community)
+  --category CATEGORY   filter by category (metadata, coverart, ui, etc.)
+  --purge               delete plugin saved options on uninstall
+  --locale LOCALE       locale for displaying plugin info (e.g., 'fr', 'de', 'en')
 
 Trust Levels:
-  🛡️  official      - Reviewed by Picard team (highest trust)
-  ✓  trusted   - Known authors, not reviewed (high trust)
-  ⚠️  community        - Other authors, not reviewed (use caution)
-  🔓 unregistered     - Not in registry (local/unknown source - lowest trust)
+  🛡️ official: Reviewed by Picard team (highest trust)
+  ✓ trusted: Known authors, not reviewed (high trust)
+  ⚠️ community: Other authors, not reviewed (use caution)
+  🔓 unregistered: Not in registry (local/unknown source - lowest trust)
 
 For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 ```
@@ -257,7 +271,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 
 ### List Plugins
 
-**Command:** `picard plugins --list` or `picard plugins -l`
+**Command:** `picard-plugins --list` or `picard-plugins -l`
 
 **Description:** List all installed plugins with status and details
 
@@ -292,29 +306,29 @@ Total: 2 plugins (1 enabled, 1 disabled)
 
 ### Install Plugin
 
-**Command:** `picard plugins --install <url|path|id>` or `picard plugins -i <url|path|id>`
+**Command:** `picard-plugins --install <url|path|id>` or `picard-plugins -i <url|path|id>`
 
 **Description:** Install plugin from git repository URL, local path, or registry ID
 
 **Examples:**
 ```bash
 # Install from GitHub
-picard plugins --install https://github.com/metabrainz/picard-plugin-listenbrainz
+picard-plugins --install https://github.com/metabrainz/picard-plugin-listenbrainz
 
 # Install from specific ref
-picard plugins --install https://github.com/user/plugin --ref v1.0.0
+picard-plugins --install https://github.com/user/plugin --ref v1.0.0
 
 # Install from local repository (absolute path)
-picard plugins --install ~/dev/my-plugin
+picard-plugins --install ~/dev/my-plugin
 
 # Install from local repository (relative path - note the ./)
-picard plugins --install ./my-plugin
+picard-plugins --install ./my-plugin
 
 # Install from registry by ID
-picard plugins --install view-script-variables
+picard-plugins --install view-script-variables
 
 # Install multiple
-picard plugins --install url1 url2 url3
+picard-plugins --install url1 url2 url3
 ```
 
 **How the argument is interpreted:**
@@ -324,10 +338,10 @@ picard plugins --install url1 url2 url3
 **Important:** If you have a local directory without a path separator, you must prefix it with `./` to avoid registry lookup:
 ```bash
 # Wrong - will look in registry:
-picard plugins --install my-plugin
+picard-plugins --install my-plugin
 
 # Correct - will use local directory:
-picard plugins --install ./my-plugin
+picard-plugins --install ./my-plugin
 ```
 
 **Behavior:**
@@ -343,17 +357,17 @@ picard plugins --install ./my-plugin
 
 ### Install from Registry
 
-**Command:** `picard plugins --install <registry-id>`
+**Command:** `picard-plugins --install <registry-id>`
 
 **Description:** Install plugin by registry ID (no slashes or protocol)
 
 **Examples:**
 ```bash
 # Install by registry ID
-picard plugins --install view-script-variables
+picard-plugins --install view-script-variables
 
 # Install multiple from registry
-picard plugins --install listenbrainz discogs acoustid
+picard-plugins --install listenbrainz discogs acoustid
 ```
 
 **Note:** The registry ID is shown in `--browse` and `--search` output. It's different from the internal plugin_id that gets created after installation.
@@ -368,34 +382,34 @@ picard plugins --install listenbrainz discogs acoustid
 **Examples with versioning:**
 ```bash
 # Plugin with versioning_scheme: semver
-picard plugins --install my-plugin
+picard-plugins --install my-plugin
 # Installs latest tag (e.g., v2.1.4)
 
 # Override to install specific version
-picard plugins --install my-plugin --ref v1.0.0
+picard-plugins --install my-plugin --ref v1.0.0
 
 # Override to install branch instead
-picard plugins --install my-plugin --ref main
+picard-plugins --install my-plugin --ref main
 ```
 
 ---
 
 ### Uninstall Plugin
 
-**Command:** `picard plugins --remove <name>` or `picard plugins -u <name>`
+**Command:** `picard-plugins --remove <name>` or `picard-plugins -u <name>`
 
 **Description:** Uninstall plugin and optionally remove saved options
 
 **Examples:**
 ```bash
 # Uninstall plugin (keep saved options)
-picard plugins --remove listenbrainz
+picard-plugins --remove listenbrainz
 
 # Uninstall and delete saved options
-picard plugins --remove listenbrainz --purge
+picard-plugins --remove listenbrainz --purge
 
 # Uninstall multiple
-picard plugins --remove listenbrainz discogs
+picard-plugins --remove listenbrainz discogs
 ```
 
 ---
@@ -403,24 +417,24 @@ picard plugins --remove listenbrainz discogs
 ### Enable/Disable Plugin
 
 **Commands:**
-- `picard plugins --enable <name>` or `picard plugins -e <name>`
-- `picard plugins --disable <name>` or `picard plugins -d <name>`
+- `picard-plugins --enable <name>` or `picard-plugins -e <name>`
+- `picard-plugins --disable <name>` or `picard-plugins -d <name>`
 
 **Description:** Enable or disable installed plugin
 
 **Examples:**
 ```bash
 # Enable plugin (using registry ID if installed from registry)
-picard plugins --enable view-script-variables
+picard-plugins --enable view-script-variables
 
 # Enable plugin (using plugin ID)
-picard plugins --enable listenbrainz_a1b2c3d4-e5f6-...
+picard-plugins --enable listenbrainz_a1b2c3d4-e5f6-...
 
 # Disable plugin
-picard plugins --disable view-script-variables
+picard-plugins --disable view-script-variables
 
 # Enable multiple
-picard plugins --enable listenbrainz discogs acoustid
+picard-plugins --enable listenbrainz discogs acoustid
 ```
 
 **Note:** If you installed a plugin from the registry, you can use the short registry ID (e.g., `view-script-variables`) instead of the long plugin_id with UUID suffix.
@@ -430,31 +444,31 @@ picard plugins --enable listenbrainz discogs acoustid
 ### Update Plugin
 
 **Commands:**
-- `picard plugins --update <name>` - Update specific plugin
-- `picard plugins --update-all` - Update all plugins
-- `picard plugins --check-updates` - Check for available updates
+- `picard-plugins --update <name>` - Update specific plugin
+- `picard-plugins --update-all` - Update all plugins
+- `picard-plugins --check-updates` - Check for available updates
 
 **Description:** Update plugin to latest version from git
 
 **Examples:**
 ```bash
 # Update one plugin (using registry ID if installed from registry)
-picard plugins --update view-script-variables
+picard-plugins --update view-script-variables
 
 # Update one plugin (using plugin ID)
-picard plugins --update listenbrainz_a1b2c3d4-e5f6-...
+picard-plugins --update listenbrainz_a1b2c3d4-e5f6-...
 
 # Update to specific ref
-picard plugins --update view-script-variables --ref v2.0.0
+picard-plugins --update view-script-variables --ref v2.0.0
 
 # Update all plugins
-picard plugins --update-all
+picard-plugins --update-all
 
 # Check for updates without installing
-picard plugins --check-updates
+picard-plugins --check-updates
 ```
 
-**Note on registry ID:** If you installed a plugin from the registry (e.g., `picard plugins --install view-script-variables`), you can use the short registry ID for updates instead of the long plugin_id with UUID suffix.
+**Note on registry ID:** If you installed a plugin from the registry (e.g., `picard-plugins --install view-script-variables`), you can use the short registry ID for updates instead of the long plugin_id with UUID suffix.
 
 **Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
 
@@ -469,11 +483,11 @@ picard plugins --check-updates
 **Examples with versioning:**
 ```bash
 # Plugin with versioning_scheme: semver, currently on v2.1.4
-picard plugins --update my-plugin
+picard-plugins --update my-plugin
 # Discovers and updates to v3.0.0
 
 # Plugin on branch (no versioning_scheme)
-picard plugins --update my-plugin
+picard-plugins --update my-plugin
 # Updates to latest commit on current branch
 ```
 
@@ -481,18 +495,18 @@ picard plugins --update my-plugin
 
 ```bash
 # Plugin installed with version tag v1.0.0
-picard plugins --update myplugin
+picard-plugins --update myplugin
 # Output: Updated from v1.0.0 to v1.2.0
 
 # Plugin installed with non-version tag "stable"
-picard plugins --update myplugin
+picard-plugins --update myplugin
 # Output: Already up to date
 
 # To switch to a specific tag manually
-picard plugins --switch-ref myplugin v2.0.0
+picard-plugins --switch-ref myplugin v2.0.0
 
 # Or switch to a branch for continuous updates
-picard plugins --switch-ref myplugin main
+picard-plugins --switch-ref myplugin main
 ```
 
 **Note on commits:** If a plugin was installed with a specific commit hash, `--update` will report "Already up to date" because commit hashes are immutable. Use `--switch-ref` to change to a different commit, tag, or branch.
@@ -500,18 +514,18 @@ picard plugins --switch-ref myplugin main
 **Example:**
 ```bash
 # Plugin installed from 'dev' branch at v0.7.3
-picard plugins --check-updates
+picard-plugins --check-updates
 # Output: All plugins are up to date (checks 'dev' branch only)
 
 # To switch to 'main' branch (which might have v1.0.0)
-picard plugins --switch-ref myplugin main
+picard-plugins --switch-ref myplugin main
 ```
 
 ---
 
 ### Plugin Info
 
-**Command:** `picard plugins --info <identifier>`
+**Command:** `picard-plugins --info <identifier>`
 
 **Description:** Show detailed information and status about plugin
 
@@ -526,25 +540,25 @@ picard plugins --switch-ref myplugin main
 **Examples:**
 ```bash
 # By registry ID (if installed from registry)
-picard plugins --info view-script-variables
+picard-plugins --info view-script-variables
 
 # By display name
-picard plugins --info listenbrainz
+picard-plugins --info listenbrainz
 
 # By UUID
-picard plugins --info a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+picard-plugins --info a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
 # By UUID prefix
-picard plugins --info a1b2c3d4
+picard-plugins --info a1b2c3d4
 
 # By Plugin ID
-picard plugins --info listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+picard-plugins --info listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 
 # By Plugin ID prefix
-picard plugins --info listenbrainz_a1b2
+picard-plugins --info listenbrainz_a1b2
 
 # By URL (not installed)
-picard plugins --info https://github.com/user/plugin
+picard-plugins --info https://github.com/user/plugin
 ```
 
 **Example output:**
@@ -581,11 +595,11 @@ Last Updated: 2025-11-20 14:15:00
 ### Git Ref Management
 
 **Commands:**
-- `picard plugins --list-refs <name|url>` - List available refs for plugin
-- `picard plugins --install <url> --ref <ref>` - Install specific ref
-- `picard plugins --switch-ref <name> <ref>` - Switch to different ref
-- `picard plugins --update <name> --ref <ref>` - Update to specific ref
-- `picard plugins --info <name>` - Show available refs for registered plugins
+- `picard-plugins --list-refs <name|url>` - List available refs for plugin
+- `picard-plugins --install <url> --ref <ref>` - Install specific ref
+- `picard-plugins --switch-ref <name> <ref>` - Switch to different ref
+- `picard-plugins --update <name> --ref <ref>` - Update to specific ref
+- `picard-plugins --info <name>` - Show available refs for registered plugins
 
 **Description:** Manage git branches, tags, and commits
 
@@ -613,13 +627,13 @@ When installing a registered plugin without specifying `--ref`, Picard automatic
 **Examples:**
 ```bash
 # Install from registry (auto-selects appropriate ref)
-picard plugins --install my-plugin
+picard-plugins --install my-plugin
 
 # Install specific ref from registry
-picard plugins --install my-plugin --ref beta
+picard-plugins --install my-plugin --ref beta
 
 # Show available refs for registered plugin
-picard plugins --info my-plugin
+picard-plugins --info my-plugin
 # Output:
 #   Available refs:
 #     - main (default) - Stable release for Picard 4.x
@@ -627,19 +641,19 @@ picard plugins --info my-plugin
 #     - picard-v3 - Maintenance branch for Picard 3.x
 
 # Install from tag
-picard plugins --install https://github.com/user/plugin --ref v1.0.0
+picard-plugins --install https://github.com/user/plugin --ref v1.0.0
 
 # Install from branch
-picard plugins --install https://github.com/user/plugin --ref dev
+picard-plugins --install https://github.com/user/plugin --ref dev
 
 # Switch to different branch
-picard plugins --switch-ref myplugin dev
+picard-plugins --switch-ref myplugin dev
 
 # Switch to beta ref (for registered plugin)
-picard plugins --switch-ref myplugin beta
+picard-plugins --switch-ref myplugin beta
 
 # Switch to tag
-picard plugins --switch-ref myplugin v1.1.0
+picard-plugins --switch-ref myplugin v1.1.0
 ```
 
 **Ref validation:**
@@ -648,7 +662,7 @@ When using `--switch-ref`, Picard validates the ref exists:
 
 - **With `versioning_scheme`**: Validates tag matches pattern and exists
   ```bash
-  picard plugins --switch-ref my-plugin v1.0.0
+  picard-plugins --switch-ref my-plugin v1.0.0
   # If invalid:
   # ✗ Error: Tag 'v1.0.0' not found
   #
@@ -660,7 +674,7 @@ When using `--switch-ref`, Picard validates the ref exists:
 
 - **With explicit `refs`**: Validates ref is in registry list
   ```bash
-  picard plugins --switch-ref my-plugin beta
+  picard-plugins --switch-ref my-plugin beta
   # If invalid:
   # ✗ Error: Ref 'beta' not available for this plugin
   #
@@ -674,29 +688,29 @@ When using `--switch-ref`, Picard validates the ref exists:
 1. **Testing beta features:**
    ```bash
    # Switch to beta channel
-   picard plugins --switch-ref my-plugin beta
+   picard-plugins --switch-ref my-plugin beta
 
    # Switch back to stable
-   picard plugins --switch-ref my-plugin main
+   picard-plugins --switch-ref my-plugin main
    ```
 
 2. **Staying on older Picard version:**
    ```bash
    # If you're on Picard 3.x and plugin moved to 4.x API
-   picard plugins --switch-ref my-plugin picard-v3
+   picard-plugins --switch-ref my-plugin picard-v3
    ```
 
 3. **Pinning to specific version:**
    ```bash
    # Pin to specific tag
-   picard plugins --switch-ref my-plugin v2.1.0
+   picard-plugins --switch-ref my-plugin v2.1.0
    ```
 
 ---
 
 ### List Available Refs
 
-**Command:** `picard plugins --list-refs <identifier>`
+**Command:** `picard-plugins --list-refs <identifier>`
 
 **Description:** List all available git refs (branches and tags) for a plugin
 
@@ -708,7 +722,7 @@ When using `--switch-ref`, Picard validates the ref exists:
 
 **Example output for registry plugin:**
 ```bash
-$ picard plugins --list-refs additional-artists-variables
+$ picard-plugins --list-refs additional-artists-variables
 
 Plugin: Additional Artists Variables
 Source: https://github.com/rdswift/picard-plugin-additional-artists-variables
@@ -726,7 +740,7 @@ Tags (1 total):
 
 **Example output for non-registry plugin:**
 ```bash
-$ picard plugins --list-refs https://github.com/user/my-plugin
+$ picard-plugins --list-refs https://github.com/user/my-plugin
 
 Plugin: https://github.com/user/my-plugin
 Source: https://github.com/user/my-plugin
@@ -746,24 +760,24 @@ Tags (5 total):
 
 1. **Before installing - see what versions are available:**
    ```bash
-   picard plugins --list-refs view-script-variables
-   picard plugins --install view-script-variables --ref v2.0.0
+   picard-plugins --list-refs view-script-variables
+   picard-plugins --install view-script-variables --ref v2.0.0
    ```
 
 2. **Using UUID (works for both installed and registry plugins):**
    ```bash
-   picard plugins --list-refs 2eae631a-1696-4bdc-841f-f75aaa3ae294
+   picard-plugins --list-refs 2eae631a-1696-4bdc-841f-f75aaa3ae294
    ```
 
 3. **Before switching - see what refs exist:**
    ```bash
-   picard plugins --list-refs my-plugin
-   picard plugins --switch-ref my-plugin beta
+   picard-plugins --list-refs my-plugin
+   picard-plugins --switch-ref my-plugin beta
    ```
 
 4. **Check for new releases:**
    ```bash
-   picard plugins --list-refs my-plugin
+   picard-plugins --list-refs my-plugin
    # See if newer version tags are available
    ```
 
@@ -779,7 +793,7 @@ Tags (5 total):
 
 ### Reinstall Plugin
 
-**Command:** `picard plugins --install <url|registry-id|uuid> --reinstall`
+**Command:** `picard-plugins --install <url|registry-id|uuid> --reinstall`
 
 **Description:** Force reinstall of an already installed plugin. Useful for:
 - Recovering from corrupted plugin files
@@ -789,19 +803,19 @@ Tags (5 total):
 **Examples:**
 ```bash
 # Reinstall plugin from same URL
-picard plugins --install https://github.com/user/plugin --reinstall
+picard-plugins --install https://github.com/user/plugin --reinstall
 
 # Reinstall by registry ID
-picard plugins --install view-script-variables --reinstall
+picard-plugins --install view-script-variables --reinstall
 
 # Reinstall by UUID
-picard plugins --install aa0f0588-84e0-4f5b-aa32-17657b4434a1 --reinstall
+picard-plugins --install aa0f0588-84e0-4f5b-aa32-17657b4434a1 --reinstall
 
 # Reinstall with different ref
-picard plugins --install https://github.com/user/plugin --ref v2.0.0 --reinstall
+picard-plugins --install https://github.com/user/plugin --ref v2.0.0 --reinstall
 
 # Reinstall without prompts (automation)
-picard plugins --install https://github.com/user/plugin --reinstall --yes
+picard-plugins --install https://github.com/user/plugin --reinstall --yes
 ```
 
 **Behavior:**
@@ -818,7 +832,7 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 
 ### Trust Community Plugins
 
-**Command:** `picard plugins --install <url> --trust-community`
+**Command:** `picard-plugins --install <url> --trust-community`
 
 **Description:** Skip warnings when installing community plugins. This flag only affects **community** trust level plugins - unregistered plugins will still show warnings.
 
@@ -831,17 +845,17 @@ picard plugins --install https://github.com/user/plugin --reinstall --yes
 **Examples:**
 ```bash
 # Install community plugin with warnings (default)
-picard plugins --install https://github.com/user/community-plugin
+picard-plugins --install https://github.com/user/community-plugin
 # Output: WARNING: This is a community plugin
 #         Community plugins are not reviewed by the Picard team
 #         Only install plugins from sources you trust
 #         Do you want to continue? [y/N]
 
 # Install community plugin without warnings
-picard plugins --install https://github.com/user/community-plugin --trust-community
+picard-plugins --install https://github.com/user/community-plugin --trust-community
 
 # Unregistered plugins still show warnings
-picard plugins --install https://github.com/unknown/plugin --trust-community
+picard-plugins --install https://github.com/unknown/plugin --trust-community
 # Output: WARNING: This plugin is not in the official registry
 #         Installing unregistered plugins may pose security risks
 #         ...
@@ -855,58 +869,58 @@ picard plugins --install https://github.com/unknown/plugin --trust-community
 
 ### Browse Official Plugins
 
-**Command:** `picard plugins --browse`
+**Command:** `picard-plugins --browse`
 
 **Description:** Browse official plugin registry
 
 **Examples:**
 ```bash
 # Browse all plugins
-picard plugins --browse
+picard-plugins --browse
 
 # Browse by category
-picard plugins --browse --category metadata
+picard-plugins --browse --category metadata
 
 # Browse by trust level
-picard plugins --browse --trust official
+picard-plugins --browse --trust official
 
 # Browse official + trusted
-picard plugins --browse --trust official,trusted
+picard-plugins --browse --trust official,trusted
 ```
 
 ---
 
 ### Search Plugins
 
-**Command:** `picard plugins --search <term>`
+**Command:** `picard-plugins --search <term>`
 
 **Description:** Search official plugin registry
 
 **Examples:**
 ```bash
 # Search by name
-picard plugins --search listenbrainz
+picard-plugins --search listenbrainz
 
 # Search by keyword
-picard plugins --search "cover art"
+picard-plugins --search "cover art"
 
 # Search with filters
-picard plugins --search metadata --category metadata
-picard plugins --search script --trust official
+picard-plugins --search metadata --category metadata
+picard-plugins --search script --trust official
 ```
 
 ---
 
 ### Check Blacklist
 
-**Command:** `picard plugins --check-blacklist <url>`
+**Command:** `picard-plugins --check-blacklist <url>`
 
 **Description:** Check if a plugin URL is blacklisted before installing
 
 **Examples:**
 ```bash
 # Check if URL is blacklisted
-picard plugins --check-blacklist https://github.com/user/plugin
+picard-plugins --check-blacklist https://github.com/user/plugin
 
 # Example output (not blacklisted):
 # ✓ URL is not blacklisted
@@ -925,22 +939,22 @@ picard plugins --check-blacklist https://github.com/user/plugin
 
 ### Refresh Registry
 
-**Command:** `picard plugins --refresh-registry`
+**Command:** `picard-plugins --refresh-registry`
 
 **Description:** Force refresh of plugin registry cache
 
 **Examples:**
 ```bash
 # Refresh registry cache
-picard plugins --refresh-registry
+picard-plugins --refresh-registry
 
 # Combine with other commands (recommended when switching registries)
-picard plugins --refresh-registry --browse
-picard plugins --refresh-registry --install view-script-variables
+picard-plugins --refresh-registry --browse
+picard-plugins --refresh-registry --install view-script-variables
 
 # After changing PICARD_PLUGIN_REGISTRY_URL
 export PICARD_PLUGIN_REGISTRY_URL="https://example.com/custom-registry.toml"
-picard plugins --refresh-registry --browse
+picard-plugins --refresh-registry --browse
 ```
 
 **Use cases:**
@@ -957,14 +971,14 @@ picard plugins --refresh-registry --browse
 
 ### Discover and Install
 ```bash
-picard plugins --search "listenbrainz.org"
-picard plugins --info listenbrainz
-picard plugins --install listenbrainz
+picard-plugins --search "listenbrainz.org"
+picard-plugins --info listenbrainz
+picard-plugins --install listenbrainz
 ```
 
 ### Validate Plugin
 
-**Command:** `picard plugins --validate <url> [--ref <ref>]`
+**Command:** `picard-plugins --validate <url> [--ref <ref>]`
 
 **Description:** Validate a plugin's MANIFEST.toml without installing it
 
@@ -976,13 +990,13 @@ picard plugins --install listenbrainz
 **Example:**
 ```bash
 # Validate main branch
-picard plugins --validate https://github.com/user/my-plugin
+picard-plugins --validate https://github.com/user/my-plugin
 
 # Validate specific branch
-picard plugins --validate https://github.com/user/my-plugin --ref dev
+picard-plugins --validate https://github.com/user/my-plugin --ref dev
 
 # Validate specific tag
-picard plugins --validate https://github.com/user/my-plugin --ref v1.0.0
+picard-plugins --validate https://github.com/user/my-plugin --ref v1.0.0
 ```
 
 **Success output:**
@@ -1017,7 +1031,7 @@ Cloning repository...
 
 ### Show MANIFEST
 
-**Command:** `picard plugins --manifest [plugin|path|url]`
+**Command:** `picard-plugins --manifest [plugin|path|url]`
 
 **Description:** Display MANIFEST.toml template or from a plugin
 
@@ -1030,16 +1044,16 @@ Cloning repository...
 **Examples:**
 ```bash
 # Show template (for creating new plugins)
-picard plugins --manifest
+picard-plugins --manifest
 
 # Show MANIFEST from installed plugin
-picard plugins --manifest listenbrainz
+picard-plugins --manifest listenbrainz
 
 # Show MANIFEST from local directory
-picard plugins --manifest ~/dev/my-plugin
+picard-plugins --manifest ~/dev/my-plugin
 
 # Show MANIFEST from git repository
-picard plugins --manifest https://github.com/user/plugin
+picard-plugins --manifest https://github.com/user/plugin
 ```
 
 **Template output (no argument):**
@@ -1093,28 +1107,28 @@ categories = ["metadata"]
 
 ### Update Workflow
 ```bash
-picard plugins --check-updates
-picard plugins --update-all
+picard-plugins --check-updates
+picard-plugins --update-all
 ```
 
 ### Testing Workflow
 ```bash
-picard plugins --install <url> --ref dev
-picard plugins --disable plugin
-picard plugins --enable plugin
-picard plugins --switch-ref plugin main
+picard-plugins --install <url> --ref dev
+picard-plugins --disable plugin
+picard-plugins --enable plugin
+picard-plugins --switch-ref plugin main
 ```
 
 ### Cleanup Workflow
 ```bash
-picard plugins --list
-picard plugins --disable old-plugin
-picard plugins --remove old-plugin --purge
+picard-plugins --list
+picard-plugins --disable old-plugin
+picard-plugins --remove old-plugin --purge
 ```
 
 ### Clean Plugin Configuration
 
-**Command:** `picard plugins --clean-config [plugin]`
+**Command:** `picard-plugins --clean-config [plugin]`
 
 **Description:** Delete saved options for a plugin, or list orphaned configurations
 
@@ -1126,16 +1140,16 @@ picard plugins --remove old-plugin --purge
 **Examples:**
 ```bash
 # List all orphaned plugin configurations
-picard plugins --clean-config
+picard-plugins --clean-config
 
 # Clean specific plugin configuration by name (with confirmation)
-picard plugins --clean-config listenbrainz
+picard-plugins --clean-config listenbrainz
 
 # Clean by UUID (for orphaned configs)
-picard plugins --clean-config ae5ef1ed-0195-4014-a113-6090de7cf8b7
+picard-plugins --clean-config ae5ef1ed-0195-4014-a113-6090de7cf8b7
 
 # Clean without confirmation (automation)
-picard plugins --clean-config listenbrainz --yes
+picard-plugins --clean-config listenbrainz --yes
 ```
 
 **List orphaned configs output:**
@@ -1145,12 +1159,12 @@ Orphaned plugin configurations (no plugin installed):
   • f8a9c2b1-3d4e-5f6a-7b8c-9d0e1f2a3b4c
   • 1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d
 
-Clean with: picard plugins --clean-config <uuid>
+Clean with: picard-plugins --clean-config <uuid>
 ```
 
 **When cleaning non-existent plugin:**
 ```bash
-$ picard plugins --clean-config nonexistent
+$ picard-plugins --clean-config nonexistent
 
 ✗ No saved options found for "nonexistent"
 
@@ -1158,7 +1172,7 @@ Orphaned plugin configurations (no plugin installed):
   • ae5ef1ed-0195-4014-a113-6090de7cf8b7
   • f8a9c2b1-3d4e-5f6a-7b8c-9d0e1f2a3b4c
 
-Clean with: picard plugins --clean-config <uuid>
+Clean with: picard-plugins --clean-config <uuid>
 ```
 
 **Notes:**

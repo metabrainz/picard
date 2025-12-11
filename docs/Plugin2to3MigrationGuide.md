@@ -465,10 +465,10 @@ Address these before testing.
 
 ```bash
 # Install from local directory
-picard plugins --install /path/to/my_plugin_v3 --yes
+picard-plugins --install /path/to/my_plugin_v3 --yes
 
 # Verify
-picard plugins --list
+picard-plugins --list
 ```
 
 ### 4. Test Functionality
@@ -702,7 +702,7 @@ python3 -m py_compile __init__.py
 ```bash
 cd my_plugin_v3
 git init && git add . && git commit -m "v3"
-picard plugins --install $(pwd) --yes
+picard-plugins --install $(pwd) --yes
 ```
 
 ### 3. Check Logs
