@@ -19,30 +19,5 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
-from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_
-
-from picard.ui.options import OptionsPage
-
-
-class PluginsOptionsPage(OptionsPage):
-    """Parent page for plugin options pages."""
-
-    NAME = 'plugins'
-    TITLE = N_('Plugins')
-    PARENT = None
-    SORT_ORDER = 90
-    ACTIVE = True
-
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
-
-    def load(self):
-        pass
-
-    def save(self):
-        pass
-
-
-register_options_page(PluginsOptionsPage)
+# Import the actual plugins implementation
+from picard.ui.options.plugins3 import Plugins3OptionsPage as PluginsOptionsPage  # noqa: F401
