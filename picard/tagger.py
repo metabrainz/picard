@@ -138,7 +138,7 @@ from picard.options import init_options
 
 
 try:
-    from picard.plugin3.git_factory import has_git_backend
+    from picard.git.factory import has_git_backend
 
     if has_git_backend():
         from picard.plugin3.cli import PluginCLI

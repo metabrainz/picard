@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2025 Laurent Monin, Philipp Wolfer
+# Copyright (C) 2025 Philipp Wolfer, Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,19 +18,42 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+"""Git utilities for Picard."""
+
+# Public API exports
 from picard.git.backend import (
+    GitBackend,
     GitBackendError,
     GitCommitError,
+    GitObject,
+    GitObjectType,
+    GitRef,
     GitReferenceError,
+    GitRemoteCallbacks,
+    GitRepository,
     GitRepositoryError,
+    GitResetMode,
+    GitStatusFlag,
 )
-from picard.plugin3.api import PluginApi
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
+)
 
 
 __all__ = [
-    'PluginApi',
+    'GitBackend',
     'GitBackendError',
-    'GitRepositoryError',
-    'GitReferenceError',
     'GitCommitError',
+    'GitObject',
+    'GitObjectType',
+    'GitRef',
+    'GitReferenceError',
+    'GitRemoteCallbacks',
+    'GitRepository',
+    'GitRepositoryError',
+    'GitResetMode',
+    'GitStatusFlag',
+    'git_backend',
+    'has_git_backend',
 ]

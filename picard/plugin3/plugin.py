@@ -32,9 +32,9 @@ from picard.extension_points import (
     unregister_module_extensions,
     unset_plugin_uuid,
 )
+from picard.git.backend import GitBackendError
+from picard.git.factory import git_backend
 from picard.plugin3.api import PluginApi
-from picard.plugin3.git_backend import GitBackendError
-from picard.plugin3.git_factory import git_backend
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
 
@@ -181,7 +181,7 @@ class PluginSourceGit(PluginSource):
 
     def _resolve_to_commit(self, obj, repo=None):
         """Resolve a git object to a commit, peeling tags if needed."""
-        from picard.plugin3.git_backend import GitObjectType
+        from picard.git.backend import GitObjectType
 
         if hasattr(obj, 'type') and obj.type == GitObjectType.TAG and repo:
             return repo.peel_to_commit(obj)
@@ -364,7 +364,7 @@ class PluginSourceGit(PluginSource):
         # hard reset to passed ref or HEAD
         commit = self._resolve_to_commit(commit, repo)
         # Use backend for reset operation
-        from picard.plugin3.git_backend import GitResetMode
+        from picard.git.backend import GitResetMode
 
         repo.reset(commit.id, GitResetMode.HARD)
         commit_id = commit.id
@@ -436,7 +436,7 @@ class PluginSourceGit(PluginSource):
             commit = repo.revparse_single('HEAD')
 
         commit = self._resolve_to_commit(commit, repo)
-        from picard.plugin3.git_backend import GitResetMode
+        from picard.git.backend import GitResetMode
 
         repo.reset(commit.id, GitResetMode.HARD)
         new_commit = commit.id

@@ -371,7 +371,7 @@ class RefsCache:
         Returns:
             list: Filtered tags or empty list
         """
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
 
         # Parse versioning scheme
         pattern = self.parse_versioning_scheme(versioning_scheme)

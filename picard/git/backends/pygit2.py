@@ -39,7 +39,7 @@ except ImportError:
     pygit2 = None
 
 from picard import log
-from picard.plugin3.git_backend import (
+from picard.git.backend import (
     GitBackend,
     GitCommitError,
     GitObject,
