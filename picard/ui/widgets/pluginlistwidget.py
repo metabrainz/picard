@@ -74,6 +74,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Column 1: Plugin name
             item.setText(COLUMN_PLUGIN, plugin.name or plugin.plugin_id)
 
+            # Add tooltip with description if available
+            try:
+                description = plugin.manifest.description()
+                if description:
+                    item.setToolTip(COLUMN_PLUGIN, description)
+            except (AttributeError, Exception):
+                pass
+
             # Column 2: Version
             item.setText(COLUMN_VERSION, self._get_version_display(plugin))
 
