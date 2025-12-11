@@ -24,6 +24,8 @@ from PyQt6 import QtCore, QtWidgets
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
+from picard.ui.dialogs.plugininfo import PluginInfoDialog
+
 
 try:
     from markdown import markdown as render_markdown
@@ -403,81 +405,4 @@ class InstallPluginDialog(QtWidgets.QDialog):
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Installation Failed"), error_msg)
 
-
-class PluginInfoDialog(QtWidgets.QDialog):
     """Dialog showing detailed plugin information."""
-
-    def __init__(self, plugin_data, parent=None):
-        super().__init__(parent)
-        self.plugin_data = plugin_data
-        self.setWindowTitle(_("Plugin Information"))
-        self.setModal(True)
-        self.resize(600, 500)
-        self.setup_ui()
-
-    def setup_ui(self):
-        """Setup the dialog UI."""
-        layout = QtWidgets.QVBoxLayout(self)
-
-        # Plugin name as title
-        name = self.plugin_data.get('name', self.plugin_data.get('id', ''))
-        title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
-        layout.addWidget(title_label)
-
-        # Details in a form layout
-        details_widget = QtWidgets.QWidget()
-        details_layout = QtWidgets.QFormLayout(details_widget)
-
-        # Basic info
-        details_layout.addRow(_("ID:"), QtWidgets.QLabel(self.plugin_data.get('id', '')))
-        details_layout.addRow(_("UUID:"), QtWidgets.QLabel(self.plugin_data.get('uuid', '')))
-
-        trust_level = self.plugin_data.get('trust_level', 'community')
-        details_layout.addRow(_("Trust Level:"), QtWidgets.QLabel(trust_level.title()))
-
-        categories = ', '.join(self.plugin_data.get('categories', []))
-        details_layout.addRow(_("Categories:"), QtWidgets.QLabel(categories))
-
-        authors = ', '.join(self.plugin_data.get('authors', []))
-        if authors:
-            details_layout.addRow(_("Authors:"), QtWidgets.QLabel(authors))
-
-        maintainers = ', '.join(self.plugin_data.get('maintainers', []))
-        if maintainers:
-            details_layout.addRow(_("Maintainers:"), QtWidgets.QLabel(maintainers))
-
-        git_url = self.plugin_data.get('git_url', '')
-        if git_url:
-            details_layout.addRow(_("Repository:"), QtWidgets.QLabel(git_url))
-
-        versioning_scheme = self.plugin_data.get('versioning_scheme', '')
-        if versioning_scheme:
-            details_layout.addRow(_("Versioning:"), QtWidgets.QLabel(versioning_scheme))
-
-        layout.addWidget(details_widget)
-
-        # Description
-        desc_label = QtWidgets.QLabel(_("Description:"))
-        layout.addWidget(desc_label)
-
-        desc_text = QtWidgets.QTextBrowser()
-        desc_text.setMaximumHeight(200)
-
-        description = self.plugin_data.get('description', '')
-        if description and render_markdown:
-            html_desc = render_markdown(description, output_format='html')
-            desc_text.setHtml(html_desc)
-        else:
-            desc_text.setPlainText(description)
-
-        layout.addWidget(desc_text)
-
-        # Close button
-        button_layout = QtWidgets.QHBoxLayout()
-        button_layout.addStretch()
-
-        close_button = QtWidgets.QPushButton(_("Close"))
-        close_button.clicked.connect(self.accept)
-        button_layout.addWidget(close_button)
-
-        layout.addLayout(button_layout)
