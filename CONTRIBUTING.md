@@ -155,6 +155,7 @@ We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) with these exceptio
 The goal is consistent, readable code within the project.
 
 **Code formatting and linting:**
+
 ```bash
 # Format code automatically
 ruff format

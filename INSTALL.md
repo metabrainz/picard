@@ -151,12 +151,13 @@ twine upload dist/*
 Official Picard packages are digitally signed. For packaging, use source archives from the [official file server](https://data.musicbrainz.org/pub/musicbrainz/picard/).
 
 Verify signatures with:
+
 ```bash
 gpg --verify picard-x.y.z.tar.gz.asc  # where x.y.z is the version number
 ```
 
-| Certificate          | Expiration | Fingerprint                              |
-|----------------------|------------|------------------------------------------|
+| Certificate | Expiration | Fingerprint |
+| ----------- | ---------- | ----------- |
 | Windows Code Signing | 2024-10-25 | 4d0c868847e2a5e44ae734e1279a9c7007fd6d4c |
-| Apple Code Signing   | 2027-02-01 | deb351206f7dc9361e1cf3d864edce98a8d3302d |
-| MBP Developers GPG   | 2026-10-28 | [68990dd0b1edc129b856958167997e14d563da7c](https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x67997e14d563da7c) |
+| Apple Code Signing | 2027-02-01 | deb351206f7dc9361e1cf3d864edce98a8d3302d |
+| MBP Developers GPG | 2026-10-28 | [68990dd0b1edc129b856958167997e14d563da7c](https://keyserver.ubuntu.com/pks/lookup?op=vindex&search=0x67997e14d563da7c) |
