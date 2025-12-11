@@ -796,26 +796,26 @@ Redirects handle plugin repository changes transparently:
 The registry supports two types of redirects:
 
 1. **URL redirects** - Plugin moved to different repository:
-```toml
-{
-  "uuid": "a1b2c3d4-...",
-  "git_url": "https://github.com/neworg/plugin",
-  "redirect_from": [
-    "https://github.com/olduser/plugin"
-  ]
-}
-```
+    ```toml
+    {
+      "uuid": "a1b2c3d4-...",
+      "git_url": "https://github.com/neworg/plugin",
+      "redirect_from": [
+        "https://github.com/olduser/plugin"
+      ]
+    }
+    ```
 
 2. **UUID redirects** - Plugin was forked/replaced (rare):
-```toml
-{
-  "uuid": "new-uuid-...",
-  "git_url": "https://github.com/org/plugin",
-  "redirect_from_uuid": [
-    "old-uuid-..."
-  ]
-}
-```
+    ```toml
+    {
+      "uuid": "new-uuid-...",
+      "git_url": "https://github.com/org/plugin",
+      "redirect_from_uuid": [
+        "old-uuid-..."
+      ]
+    }
+    ```
 
 **Lookup Algorithm:**
 
@@ -1060,7 +1060,7 @@ To check for updates:
 ### Examples
 
 **Branch tracking:**
-```
+```text
 Registry entry:
   git_url: https://github.com/user/plugin
   refs: [{"name": "main"}]  // or omitted (defaults to main)
@@ -1076,7 +1076,7 @@ Update check:
 ```
 
 **Tag tracking:**
-```
+```text
 Registry entry:
   git_url: https://github.com/user/plugin
   refs: [{"name": "v1.8.0"}]

@@ -34,7 +34,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
 
 ### Data Flow
 
-```
+```text
 1. Admin runs: registry plugin add <url> --trust community
    ↓
 2. CLI updates plugins.toml in local git repo
@@ -56,7 +56,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
 
 ### picard-plugins-registry
 
-```
+```text
 picard-plugins-registry/
 ├── plugins.toml              # The registry (generated/managed)
 ├── registry_lib/
@@ -405,12 +405,13 @@ def plugins_json():
 
 ### Via Pull Request (Recommended)
 
-```
 1. Developer forks picard-plugins-registry
 2. Developer runs:
+   ```bash
    uv sync
    source .venv/bin/activate
    registry plugin add https://github.com/me/my-plugin --trust community --categories metadata
+   ```
 3. Developer creates PR with the change
 4. CI validates:
    - JSON is valid
@@ -421,17 +422,14 @@ def plugins_json():
 5. Picard team reviews PR
 6. Picard team merges
 7. Plugin appears in registry within 1 hour (cache refresh)
-```
 
 ### Via Web Form (Future)
 
-```
 1. Developer submits form on picard.musicbrainz.org
 2. Website validates input
 3. Website creates PR automatically via GitHub API
 4. Same validation and review process
 5. Picard team merges
-```
 
 ---
 

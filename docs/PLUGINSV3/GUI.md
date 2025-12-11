@@ -16,7 +16,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ### Main Plugins Options Page
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Options > Plugins                                                   │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -53,7 +53,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ### Install Plugin Dialog
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Install Plugin                                                      │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -79,7 +79,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ### Browse Plugins Dialog
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Browse Plugins                                                      │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -110,7 +110,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ### Update Notification
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Plugin Updates Available                                            │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -261,7 +261,7 @@ The plugin GUI provides a user-friendly interface for discovering, installing, a
 
 ### Plugin System Settings
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │ Plugin Settings                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -597,14 +597,14 @@ elif trust_level == 'unregistered':
 ### Common Errors
 
 **Network Error:**
-```
+```text
 Failed to download plugin
 Unable to connect to repository.
 Check your internet connection and try again.
 ```
 
 **Blacklisted Plugin:**
-```
+```text
 Plugin Blocked
 This plugin is blacklisted for security reasons:
 "Contains malicious code"
@@ -613,7 +613,7 @@ Do not install this plugin.
 ```
 
 **Incompatible API Version:**
-```
+```text
 Incompatible Plugin
 This plugin requires API version 3.2
 Your Picard version supports API 3.0-3.1
@@ -622,7 +622,7 @@ Update Picard or find a compatible plugin ref.
 ```
 
 **Install Failed:**
-```
+```text
 Installation Failed
 Could not install plugin: Invalid MANIFEST.toml
 

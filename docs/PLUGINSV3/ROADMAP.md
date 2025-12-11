@@ -660,7 +660,7 @@ See [CLI.md](CLI.md) for command specifications.
 
 ## Success Metrics
 
-### Phase 1 Complete When:
+### Phase 1 Complete
 - [ ] Can install plugin from git URL
 - [ ] Can enable/disable plugin
 - [ ] Plugin state persists across restarts
@@ -671,13 +671,13 @@ See [CLI.md](CLI.md) for command specifications.
 - [ ] All operations have proper error handling
 - [ ] CLI provides useful feedback
 
-### Phase 2 Complete When:
+### Phase 2 Complete
 - [ ] Test coverage >80%
 - [ ] Documentation complete
 - [ ] Migration guide published
 - [ ] No known critical bugs
 
-### Phase 3 Complete When:
+### Phase 3 Complete
 - [ ] Website serves plugin registry JSON
 - [ ] Picard fetches and caches registry
 - [ ] Can browse official plugins via CLI
@@ -718,13 +718,13 @@ See [CLI.md](CLI.md) for command specifications.
 3. **Implement Phase 1.2** - version checking (safety critical)
 
 ### Short Term (Next 2 Weeks)
-4. Implement Phase 1.3 - better CLI output
-5. Implement Phase 1.4 - updates
-6. Implement Phase 1.5 - state management
+1. Implement Phase 1.3 - better CLI output
+2. Implement Phase 1.4 - updates
+3. Implement Phase 1.5 - state management
 
 ### Medium Term (Next Month)
-7. Complete Phase 1 (1.6, 1.7, 1.8)
-8. Start Phase 2 - testing and docs
+1. Complete Phase 1 (1.6, 1.7, 1.8)
+2. Start Phase 2 - testing and docs
 
 ---
 
