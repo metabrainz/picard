@@ -21,7 +21,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-09-01 09:53+0200\n"
-"PO-Revision-Date: 2025-03-05 10:44+0000\n"
+"PO-Revision-Date: 2025-12-11 21:11+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
 "3/app/fi/>\n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.14.3\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:191
@@ -340,40 +340,32 @@ msgstr "Tallenna vain yksi etukannen kuva erillisenä tiedostona"
 
 #: picard/options.py:212
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Show cover art details in cover art view"
-msgstr "Tallenna kansikuvat erillisinä tiedostoina"
+msgstr "Näytä kansikuvien lisätiedot katselimessa"
 
 #: picard/options.py:213
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Show cover art type in info labels"
-msgstr "Sisällytä kansikuvat tunnisteisiin"
+msgstr "Näytä kansitaiteen muoto tietotunnisteissa"
 
 #: picard/options.py:214
 msgid "Show cover art file size in info labels"
-msgstr ""
+msgstr "Näytä kansitaiteen tiedoston koko tietotunnisteissa"
 
 #: picard/options.py:215
 msgid "Show cover art dimensions in info labels"
-msgstr ""
+msgstr "Näytä kansitaiteen mitat tietotunnisteissa"
 
 #: picard/options.py:216
 msgid "Show cover art MIME type in info labels"
-msgstr ""
+msgstr "Näytä kansitaiteen MIME-muota tietotunnisteissa"
 
 #: picard/options.py:247
-#, fuzzy
-#| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID audio fingerprinting"
-msgstr "Älä käytä äänitunnisteita"
+msgstr "Käytä AcoustID-äänitunnisteita"
 
 #: picard/options.py:250
-#, fuzzy
-#| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
-msgstr "AcoustID-äänitunniste"
+msgstr "Tallenna AcoustID-äänitunnisteet"
 
 #: picard/options.py:260 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
@@ -505,7 +497,7 @@ msgstr "Tummaan teemaan käytettävät värit"
 
 #: picard/options.py:323
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Pikavalikossa näytettävät vaihtoehdot"
 
 #: picard/options.py:338
 msgid "Layout of the tool bar"
@@ -560,16 +552,12 @@ msgid "Use standardized artist names"
 msgstr "Käytä yhdenmukaistettuja artistien nimiä"
 
 #: picard/options.py:367 picard/ui/forms/ui_options_metadata.py:145
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
-msgstr "Käytä yhdenmukaistettuja soittimien ja laulujen nimiä"
+msgstr "Käytä yhdenmukaistettuja soittimien nimiä"
 
 #: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:146
-#, fuzzy
-#| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
-msgstr "Käytä yhdenmukaistettuja soittimien ja laulujen nimiä"
+msgstr "Käytä yhdenmukaistettuja lauluäänten nimiä"
 
 #: picard/options.py:369
 msgid "Use track and release relationships"
@@ -589,7 +577,7 @@ msgstr "Useita artisteja -nimi"
 
 #: picard/options.py:377
 msgid "Tag formats to not sanitize dates"
-msgstr ""
+msgstr "Tunnistemuodot joiden päiväyksiä puhdisteta"
 
 #: picard/options.py:382
 msgid "Browser integration"
@@ -809,7 +797,7 @@ msgstr "Valittu tiedostonnimeämiskomentosarja"
 #: picard/options.py:527
 #, python-format
 msgid "No title for setting '%s'"
-msgstr ""
+msgstr "Asetukselle '%s' ei ole otsikkoa"
 
 #: picard/pluginmanager.py:280
 #, python-format
@@ -1092,16 +1080,18 @@ msgid "Allowed Cover Art URLs"
 msgstr "Sallitut kansitaiteen osoitteet"
 
 #: picard/formats/apev2.py:102
+#, fuzzy
 msgid "APEv2 (Monkey's Audio, WavPack)"
-msgstr ""
+msgstr "APEv2 (Monkey's Audio, WavPack)"
 
 #: picard/formats/id3.py:135
+#, fuzzy
 msgid "ID3 (MP3, AIFF)"
-msgstr ""
+msgstr "ID3 (MP3, AIFF)"
 
 #: picard/formats/vorbis.py:130
 msgid "Vorbis Comments (FLAC, Ogg Vorbis, Opus)"
-msgstr ""
+msgstr "Vorbis-kommentit (FLAC, Ogg Vorbis, Opus)"
 
 #: picard/script/__init__.py:183
 msgid ""
