@@ -17,7 +17,7 @@ Plugin v3 supports two types of translations:
 
 ### File Structure
 
-```
+```text
 myplugin/
 ├── __init__.py
 ├── MANIFEST.toml

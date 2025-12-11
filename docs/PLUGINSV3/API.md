@@ -320,39 +320,6 @@ def my_processor(api, track, metadata):
 
 ---
 
-## Class References
-
-These classes are available as attributes on the API for type hints and inheritance:
-
-```python
-api.Album          # picard.album.Album
-api.Track          # picard.track.Track
-api.File           # picard.file.File
-api.Cluster        # picard.cluster.Cluster
-api.CoverArtImage  # picard.coverart.image.CoverArtImage
-api.BaseAction     # picard.extension_points.item_actions.BaseAction
-api.OptionsPage    # picard.ui.options.OptionsPage
-```
-
-**Usage**:
-```python
-from picard.plugin3.api import BaseAction
-
-class MyAction(BaseAction):
-    NAME = "My Action"
-
-    def __init__(self, api=None):
-        super().__init__(api=api)
-
-    def callback(self, objs):
-        for obj in objs:
-            if isinstance(obj, self.api.Track):
-                # Handle track
-                pass
-```
-
----
-
 ## Translation Methods
 
 ### `get_locale() -> str`

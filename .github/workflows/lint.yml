@@ -15,6 +15,15 @@ jobs:
         with:
           args: "format --check"
 
+  pymarkdown:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install pymarkdownlnt
+        run: pip install pymarkdownlnt
+      - name: Run pymarkdownlnt
+        run: pymarkdownlnt scan -r .
+
   check-keys:
     runs-on: ubuntu-latest
     steps:

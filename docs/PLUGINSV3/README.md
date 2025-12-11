@@ -142,10 +142,10 @@ To contribute to Plugin v3:
 
 ## Links
 
-- **Picard Website:** https://picard.musicbrainz.org/
-- **Documentation:** https://picard-docs.musicbrainz.org/
-- **GitHub:** https://github.com/metabrainz/picard
-- **Forum:** https://community.metabrainz.org/c/picard
+- **Picard Website:** <https://picard.musicbrainz.org/>
+- **Documentation:** <https://picard-docs.musicbrainz.org/>
+- **GitHub:** <https://github.com/metabrainz/picard>
+- **Forum:** <https://community.metabrainz.org/c/picard>
 
 ---
 

@@ -40,10 +40,6 @@ Plugins can be identified in multiple ways. Understanding these identifiers is i
 
 Most commands accept a plugin identifier, which can be:
 
-### How Commands Accept Identifiers
-
-Most commands accept a plugin identifier, which can be:
-
 - **Registry ID**: `view-script-variables` (only for plugins installed from registry, always unique)
 - **Plugin ID**: `listenbrainz_a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d` (always unique, used internally)
 - **Display name**: `ListenBrainz Submitter` (case-insensitive, may not be unique)
@@ -154,7 +150,7 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 
 ### Help Output
 
-```
+```text
 usage: picard plugins [-h] [-l] [-i URL [URL ...]] [-r PLUGIN [PLUGIN ...]]
                       [-e PLUGIN [PLUGIN ...]] [-d PLUGIN [PLUGIN ...]]
                       [-u PLUGIN [PLUGIN ...]] [--update-all]
@@ -266,7 +262,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 **Description:** List all installed plugins with status and details
 
 **Example output:**
-```
+```text
 Installed plugins:
 
   listenbrainz (enabled) 🛡️
@@ -552,7 +548,7 @@ picard plugins --info https://github.com/user/plugin
 ```
 
 **Example output:**
-```
+```text
 Plugin: ListenBrainz Submitter
 UUID: a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 Status: enabled
@@ -990,7 +986,7 @@ picard plugins --validate https://github.com/user/my-plugin --ref v1.0.0
 ```
 
 **Success output:**
-```
+```text
 Validating plugin from: https://github.com/user/my-plugin
 Cloning repository...
 ✓ MANIFEST.toml found
@@ -1007,7 +1003,7 @@ Plugin Information:
 ```
 
 **Error output:**
-```
+```text
 Validating plugin from: https://github.com/user/bad-plugin
 Cloning repository...
 ✓ MANIFEST.toml found
@@ -1143,7 +1139,7 @@ picard plugins --clean-config listenbrainz --yes
 ```
 
 **List orphaned configs output:**
-```
+```text
 Orphaned plugin configurations (no plugin installed):
   • ae5ef1ed-0195-4014-a113-6090de7cf8b7
   • f8a9c2b1-3d4e-5f6a-7b8c-9d0e1f2a3b4c

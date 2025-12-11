@@ -70,7 +70,7 @@ The 4 plugins requiring manual work use non-standard patterns (custom registrati
 
 ### Example Output
 
-```
+```text
 Migrating plugin: Keep tags
   Author: Wieland Hoffmann
   Version: 1.2.1
@@ -187,7 +187,7 @@ The tool will:
 
 Check the output for any warnings:
 
-```
+```text
 ⚠️  Class 'MyClass' uses 'api' but injection failed - needs manual review
 ```
 
@@ -402,7 +402,7 @@ def enable(api: PluginApi):
 ### Before (v2)
 
 **Directory structure:**
-```
+```text
 example-plugin/
   __init__.py
   ui_options.py
@@ -453,7 +453,7 @@ def register():
 ### After (v3)
 
 **Directory structure:**
-```
+```text
 picard-plugin-example/
   MANIFEST.toml
   __init__.py
@@ -647,9 +647,9 @@ picard plugins --uninstall example
 
 ## Getting Help
 
-- **Documentation:** https://picard-docs.musicbrainz.org/
-- **Forum:** https://community.metabrainz.org/c/picard
-- **GitHub:** https://github.com/metabrainz/picard
+- **Documentation:** <https://picard-docs.musicbrainz.org/>
+- **Forum:** <https://community.metabrainz.org/c/picard>
+- **GitHub:** <https://github.com/metabrainz/picard>
 
 ---
 
