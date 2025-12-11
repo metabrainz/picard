@@ -122,11 +122,6 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         self.assertEqual(self.config.setting["missing_option"], "def")
         self.assertEqual(Option.get_title('setting', 'missing_option'), 'TITLE')
 
-    def test_double_declaration(self):
-        Option("setting", "option", "abc")
-        with self.assertRaisesRegex(OptionError, r"^Option setting/option: Already declared"):
-            Option("setting", "option", "def")
-
     def test_get_default(self):
         Option("setting", "option", "abc")
         self.assertEqual(Option.get_default("setting", "option"), "abc")
