@@ -1,4 +1,11 @@
 {
+    "heading-style": {
+        "style": "atx"
+    },
+    "table-column-style": {
+	"aligned_delimiter": true,
+	"style": "compact"
+    },
     "no-multiple-blanks": false,
     "line-length": false,
     "blanks-around-headers": false,

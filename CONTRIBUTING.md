@@ -1,240 +1,224 @@
 # Contributing to Picard
 
-## Development Environment
+## Quick Setup
 
-To get started with Picard development, follow these steps to set up your environment:
+### 1. Install System Dependencies
 
-### 1. Install `msgfmt` (gettext)
+**gettext (required for translations):**
 
-Picard requires `msgfmt` from GetText for translations.
+- **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add `C:\Program Files\gettext-iconv\bin` to PATH
+- **Linux:** `sudo apt install gettext`
+- **macOS:** `brew install gettext` (if not included with Xcode Command Line Tools)
 
-- **Windows:**
-  - Download and install the latest from: https://github.com/mlocati/gettext-iconv-windows/releases (e.g. `gettext0.25.1-iconv1.17-shared-64.exe`)
-  - Add `C:\Program Files\gettext-iconv\bin` to your PATH variable.
+### 2. Install uv (Recommended)
 
-- **Linux:**
-
-```bash
-sudo apt update
-sudo apt install gettext
-```
-
-- **macOS:**
+[uv](https://docs.astral.sh/uv/) is an extremely fast Python package manager:
 
 ```bash
-# Sometimes included in Xcode Command Line Tools
-which msgfmt
-msgfmt --version
-
-# if not installed
-brew install gettext
-```
-
-### 2. Install `uv` (Python package manager, optional)
-
-You may use [uv](https://docs.astral.sh/uv/), an extremely fast Python package manager, but this is optional. If you prefer, you can always use `pip` for traditional Python development and dependency management.
-
-- **macOS or Linux:**
-
-```bash
+# macOS/Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
-```
 
-- **Windows:**
-
-```bash
+# Windows
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-### 3. Install Dependencies and Build
-
-Install dependencies and build the project:
+### 3. Set Up Development Environment
 
 ```bash
-# create a virtual environment and activate it
-uv venv
-. ./.venv/bin/activate # macos/linux
-.\.venv\Scripts\activate.bat # windows
+# Clone and enter the repository
+git clone https://github.com/metabrainz/picard.git
+cd picard
 
-# install all dependencies (main, build, and dev)
+# Create virtual environment
+uv venv
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate.bat  # Windows
+
+# Install all dependencies (main, build, dev)
 uv sync
 
-# alternatively, you can install dependencies manually using `uv pip`
-uv pip install -r requirements.txt
-uv pip install -r requirements-build.txt -r requirements-dev.txt
+# Build the project
+python setup.py build          # Compiles translations and prepares build files
+python setup.py build_ext -i   # Builds C extensions in-place for development
 
-# build the project
-python setup.py build
-
-# install picard in editable mode
+# Install in editable mode
 uv pip install -e .
 ```
 
-While manual installation is available, `uv sync` provides a more streamlined approach by automatically handling all dependency groups.
-
 ### 4. Run Picard
 
-Launch the UI for development:
-
 ```bash
-uv run python ./tagger.py
+# After installing in editable mode (recommended)
+picard
+
+# Or run directly from source (without installation)
+python ./tagger.py
+
+# With debug mode
+picard -d
+# or
+python ./tagger.py -d
 ```
 
 ### 5. Run Tests
 
-After making changes, run the test suite:
-
 ```bash
+# With activated virtual environment
+pytest -n auto
+
+# Or using uv (if not in activated venv)
 uv run pytest -n auto
 ```
 
-### 6. Set Up pre-commit Hooks
+## Development Workflow
 
-We use [pre-commit](https://pre-commit.com/) to manage code quality checks and requirements file generation.
+### Dependency Management
 
-Install the hooks:
+Dependencies are defined in `pyproject.toml` using modern Python packaging standards:
+
+- **Main dependencies**: Runtime requirements for Picard
+- **build**: Build tools (Babel, PyInstaller, pytest, setuptools)
+- **dev**: Development tools (ruff, pre-commit, pylint, etc.)
+- **plugins**: Optional plugin dependencies (aubio, opencc, zstandard)
+
+**Important**: Never edit requirements files manually. They are auto-generated from `pyproject.toml`.
+
+### Code Quality
+
+Install pre-commit hooks for automatic code quality checks:
 
 ```bash
 pre-commit install
 ```
 
-This ensures all code style checks (`ruff`) and requirements file updates (using [uv](https://github.com/astral-sh/uv)) are run automatically before each commit.
+This runs `ruff` for code style and updates requirements files automatically before each commit.
 
-**Do not edit requirements files by hand.** All requirements files are generated from `pyproject.toml` via pre-commit hooks.
-
-To manually update requirements after changing `pyproject.toml`, run:
+To manually update requirements after changing `pyproject.toml`:
 
 ```bash
 pre-commit run pip-compile --all-files
 ```
 
-## Coding Style
+### Alternative Setup (Traditional pip)
 
-As most of the other projects written in Python, we use the [PEP 8](https://www.python.org/dev/peps/pep-0008/). Though, we ignore some of the recommendations:
+If you prefer not to use uv:
 
-- E501 - Maximum line length (79 characters). The general limit we have is somewhere around 120-130.
+```bash
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
 
-*Recommended video: "[Beyond PEP 8 -- Best practices for beautiful intelligible code](https://www.youtube.com/watch?v=wf-BqAjZb8M)" by Raymond Hettinger at PyCon 2015, which talks about the famous P versus NP problem.*
+# Install dependencies
+pip install -r requirements.txt
+pip install -r requirements-build.txt
+pip install -r requirements-dev.txt
 
-The general idea is to make the code within a project consistent and easy to interpret (for humans).
+# Build and install
+python setup.py build          # Compiles translations and prepares build files
+python setup.py build_ext -i   # Builds C extensions in-place for development
+pip install -e .
+```
 
+### Switching Python Versions
+
+**With uv (recommended):**
+
+```bash
+# uv automatically manages Python versions
+uv venv --python 3.11
+uv venv --python 3.12
+source .venv/bin/activate
+uv sync
+```
+
+**With system Python:**
+
+```bash
+# Create separate virtual environments
+python3.11 -m venv .venv311
+python3.12 -m venv .venv312
+
+# Activate desired version
+source .venv311/bin/activate  # or .venv312/bin/activate
+
+# Install dependencies manually
+pip install -r requirements.txt -r requirements-build.txt -r requirements-dev.txt
+```
+
+## Coding Standards
+
+### Style Guidelines
+
+We follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) with these exceptions:
+- **E501**: Line length limit is ~120-130 characters (not 79)
+
+The goal is consistent, readable code within the project.
+
+**Code formatting and linting:**
+
+```bash
+# Format code automatically
+ruff format
+
+# Check for style and lint issues
+ruff check
+
+# Auto-fix issues where possible
+ruff check --fix
+```
 
 ### Docstrings
 
-Unless the function is easy to understand quickly, it should probably have a docstring describing what it does, how it does it, what the arguments are, and what the expected output is.
+Use ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#38-comments-and-docstrings) for functions that aren't immediately obvious.
 
-We recommend using ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html?showone=Comments#38-comments-and-docstrings) for writing docstrings.
+### Picard-Specific Guidelines
 
+- **UI Files**: Don't edit `picard/ui/ui_*.py` directly - these are auto-generated. Use Qt Designer to edit `ui/*.ui` files, then run `python setup.py build_ui` to regenerate the Python files
+- **Naming**: Use snake_case for functions/variables (except pre-generated PyQt code)
+- **Internationalization**: Use `_()` for translatable strings and `N_()` for gettext-noop
 
-### Picard specific code
+## Git Workflow
 
-Picard has some auto-generated `picard/ui/ui_*.py` PyQt UI related files. Please do not change them directly. To modify them, use Qt-Designer to edit the `ui/*.ui` and use the command `python setup.py build_ui` to generate the corresponding `ui_*.py` files.
+1. **Fork** the repository to your account
+2. **Create a branch** with a meaningful name (e.g., `picard-257` or `preserve-artwork`)
+3. **Make changes** with [good commit messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html):
+   - Use **imperative voice** and **sentence case**
+   - Be descriptive but concise
+4. **Create a pull request** with format: `PICARD-257: Allow preserving existing cover-art tags`
+5. **Reference the issue** in the PR description
+6. **Keep PRs focused** - split unrelated changes into separate PRs
+7. **Use git rebase** to clean up commits before merging
 
-We use snake-case to name all functions and variables except for the pre-generated PyQt functions/variables.
+## Documentation
 
-`gettext` and `gettext-noop` have been built-in the Picard code as `_` and `N_` respectively to provide support for internationalization/localization. You can use them without imports across all of Picard code. Make sure to mark all displayable strings for translation using `_` or `N_` as applicable. You can read more about python-gettext [here](https://docs.python.org/2/library/gettext.html).
+### User Documentation
 
+See [Picard Documentation project](https://github.com/metabrainz/picard-docs/blob/master/.github/CONTRIBUTING.md) for contributing to the [Picard User Guide](https://picard-docs.musicbrainz.org).
 
-### Strings quoting: single or double quotes?
+### Translations
 
-As a general guideline, we tend to use double quotes for translatable strings and/or English phrases; or anything that may contain one or more single quotes.
-We use single quotes for identifiers and keys (those are unlikely to contain a single quote; and usually no special character or space).
-Of course, it all depends on context and those are just hints, rather than rules.
+See [po/README.md](./po/README.md) for translation information.
 
-Examples:
+## Audio Metadata Standards
 
-```python
-print("It is red")
-```
+When implementing tag support, aim for compatibility with existing software.
 
-Because changing it to `print("It's red")` would not require changing quotes.
-
-```python
-d = dict()
-d['key'] = "It's red"
-
-if 'key' in d:
-    print(_("The value for 'key' is {key}.").format(**d))
-
-```
-
-In above example, 'key' is an identifier, usually using characters from `[a-z0-9_]` set.
-But the printed string is translatable (English phrase).
-
-```python
-l1 = ['big', 'small']
-l2 = ["It's a big city", "Small is the village"]
-l3 = ["The city is big", "That's a small village"]
-
-d = {
-    'big': "The City",
-    'small': "The Village",
-}
-print(d['small'])
-```
-
-In above example, `l1` contains identifiers (keys of dict `d`) while others are English words/phrases.
-In the dict declaration, keys are single-quoted but values are double-quoted.
-
-URIs (and paths used in URIs) should be, in general, enclosed in double quotes,
-mainly because single quotes can appear in URI, unencoded, as sub-delimiters as specified
-by [RFC3986](https://www.rfc-editor.org/rfc/rfc3986#section-2.2).
-
-HTML/XML code often contains attributes that are enclosed by double quotes, so in this case,
-better use single quotes, e.g. `html = '<a href="someurl">text</a>'`.
-
-In doubt, choose whichever limit the number of escaped characters.
-Typically single quote strings that are meant to contain double quotes (e.g. `'The file is "{file}"'`).
-
-
-## Git Work-flow
-
-We follow the "typical" GitHub workflow when contributing changes:
-
-1. [Fork](https://help.github.com/articles/fork-a-repo/) a repository into your account.
-2. Create a new branch and give it a meaningful name. For example, if you are going to fix issue PICARD-257, branch can be called `picard-257` or `preserve-artwork`.
-3. Make your changes and commit them with a [good description](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html). Your commit subject should be written in **imperative voice** and **sentence case**. With regards to the contents of the message itself, you don't need to provide a lot of details, but make sure that people who look at the commit history afterwards can understand what you were changing and why.
-4. [Create](https://help.github.com/articles/creating-a-pull-request/) a new pull request on GitHub. Make sure that the title of your pull request is descriptive and consistent with the rest. If you are fixing issue that exists in our bug tracker reference it like this: `PICARD-257: Allow preserving existing cover-art tags`. **Not** `[PICARD-257] - Allow preserving existing cover-art tags` or `Allow preserving existing cover-art tags (PICARD-257)` or simply `PICARD-257`.
-5. Make sure to provide a bug tracker link to the issue that your pull request solves in the description.
-6. Do not make one big pull request with a lot of unrelated changes. If you are solving more than one issue, unless they are closely related, split them into multiple pull requests. It makes it easier to review and merge the patches this way.
-7. Try to avoid un-necessary commits after code reviews by making use of [git rebase](https://help.github.com/articles/about-git-rebase/) to fix merge conflicts, remove unwanted commits, rewording and editing previous commits or squashing multiple small related changes into one commit.
-
-
-## Translations
-
-See [po/README.md](./po/README.md) for information about translations.
-
-
-## User Documentation
-
-See the [Picard Documentation](https://github.com/metabrainz/picard-docs/blob/master/.github/CONTRIBUTING.md) project for information about contributing to the documentation for MusicBrainz Picard (aka the [Picard User Guide](https://picard-docs.musicbrainz.org)).
-
-
-## Audio Metadata Specifications
-
-The core functionality of Picard is the ability to read and write tags from / to files
-with different tagging formats. When implementing support for new tags the goal is to
-be compatible with existing software as good as possible. Below are links to relevant
-metadata specifications and to the tag mapping tables used by various audio software.
-
-
-### Format specs
+### Format Specifications
 
 - [ID3](https://github.com/id3/ID3v2.4)
 - [VorbisComment](https://wiki.xiph.org/VorbisComment)
 - [OggOpus](https://wiki.xiph.org/OggOpus#Comment_Header) (in addition to Vorbis Comment spec)
 - [RFC 7845 - Ogg Encapsulation for the Opus Audio Codec](https://tools.ietf.org/html/rfc7845#section-5.2.1)
 - [APE-Tags](http://wiki.hydrogenaud.io/index.php?title=APE_key)
-- [Matroska \| Tag Specifications](https://www.matroska.org/technical/specs/tagging/index.html)
+- [Matroska Tags](https://www.matroska.org/technical/specs/tagging/index.html)
 - [ASF / WMA](http://msdn.microsoft.com/en-us/library/ms867702.aspx)
 - MP4: See iTunes Metadata Format Specification (was available at [Apple Developer website](https://developer.apple.com/), but does not seem to be available anymore)
 - [RIFF Tags](https://exiftool.org/TagNames/RIFF.html) / [Resource Interchange File Format: INFO List Chunk](https://www.tactilemedia.com/info/MCI_Control_Info.html) / [Multimedia Programming Interface and Data Specifications 1.0](http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Docs/riffmci.pdf)
 - [Mutagen Spec Collection](https://mutagen-specs.readthedocs.io/en/latest/)
 
+### Tag Mapping References
 
-### Tag mapping tables
-
-- [Picard](https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html)
+- [Picard Tag Mapping](https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html)
 - [JAudiotagger](http://www.jthink.net/jaudiotagger/tagmapping.html)
 - [MP3Tag](https://help.mp3tag.de/main_tags.html)
 - [Kid3](https://kid3.sourceforge.io/kid3_en.html#frame-list)
@@ -254,13 +238,9 @@ metadata specifications and to the tag mapping tables used by various audio soft
 - [DJ apps metadata matrix](https://docs.google.com/spreadsheets/d/1zhIJPOtYIueV72Gd81aVnbSa6dIA-azq9fnGC2rHUzo/edit?usp=sharing)
 - [Navidrome mappings.yaml](https://github.com/navidrome/navidrome/blob/master/resources/mappings.yaml)
 
-Also relevant:
+### Additional References
 
-- [Comparisson Picard / JAudiotagger](https://docs.google.com/spreadsheets/d/1afugW3R1FRDN-mwt5SQLY4R7aLAu3RqzjN3pR1497Ok/edit#gid=0)
+- [Comparison Picard / JAudiotagger](https://docs.google.com/spreadsheets/d/1afugW3R1FRDN-mwt5SQLY4R7aLAu3RqzjN3pR1497Ok/edit#gid=0)
 - [Roon Knowledge Base - File Tag Best Practice](https://kb.roonlabs.com/File_Tag_Best_Practice)
 - [Roon Knowledge Base - Roon Vs Tags](https://kb.roonlabs.com/Roon_Vs_Tags)
-
-
-### Other specs
-
 - [ReplayGain 2.0 specification](http://wiki.hydrogenaud.io/index.php?title=ReplayGain_2.0_specification)
