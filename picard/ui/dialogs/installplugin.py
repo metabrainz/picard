@@ -41,19 +41,43 @@ class InstallPluginDialog(QtWidgets.QDialog):
         """Setup the dialog UI."""
         layout = QtWidgets.QVBoxLayout(self)
 
-        # URL input section
+        # Tab widget for different install methods
+        self.tab_widget = QtWidgets.QTabWidget()
+        layout.addWidget(self.tab_widget)
+
+        # Registry tab
+        registry_widget = QtWidgets.QWidget()
+        registry_layout = QtWidgets.QVBoxLayout(registry_widget)
+
+        registry_group = QtWidgets.QGroupBox(_("Install from Registry"))
+        registry_form = QtWidgets.QFormLayout(registry_group)
+
+        self.plugin_id_edit = QtWidgets.QLineEdit()
+        self.plugin_id_edit.setPlaceholderText(_("plugin-name or plugin-uuid"))
+        registry_form.addRow(_("Plugin ID:"), self.plugin_id_edit)
+
+        registry_layout.addWidget(registry_group)
+        registry_layout.addStretch()
+        self.tab_widget.addTab(registry_widget, _("Registry"))
+
+        # URL tab
+        url_widget = QtWidgets.QWidget()
+        url_layout = QtWidgets.QVBoxLayout(url_widget)
+
         url_group = QtWidgets.QGroupBox(_("Install from URL"))
-        url_layout = QtWidgets.QFormLayout(url_group)
+        url_form = QtWidgets.QFormLayout(url_group)
 
         self.url_edit = QtWidgets.QLineEdit()
         self.url_edit.setPlaceholderText(_("https://github.com/user/plugin"))
-        url_layout.addRow(_("Git URL:"), self.url_edit)
+        url_form.addRow(_("Git URL:"), self.url_edit)
 
         self.ref_edit = QtWidgets.QLineEdit()
         self.ref_edit.setPlaceholderText(_("main"))
-        url_layout.addRow(_("Ref/Tag:"), self.ref_edit)
+        url_form.addRow(_("Ref/Tag:"), self.ref_edit)
 
-        layout.addWidget(url_group)
+        url_layout.addWidget(url_group)
+        url_layout.addStretch()
+        self.tab_widget.addTab(url_widget, _("URL"))
 
         # Warning label
         self.warning_label = QtWidgets.QLabel()
@@ -87,18 +111,71 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         layout.addLayout(button_layout)
 
-        # Connect URL changes to validation
+        # Connect input changes to validation
+        self.plugin_id_edit.textChanged.connect(self._validate_input)
         self.url_edit.textChanged.connect(self._validate_input)
+        self.tab_widget.currentChanged.connect(self._validate_input)
         self._validate_input()
 
     def _validate_input(self):
         """Validate input and update UI."""
-        url = self.url_edit.text().strip()
-        self.install_button.setEnabled(bool(url))
+        current_tab = self.tab_widget.currentIndex()
 
-        if url:
-            # Check trust level and show warning if needed
-            self._check_trust_level(url)
+        if current_tab == 0:  # Registry tab
+            plugin_id = self.plugin_id_edit.text().strip()
+            self.install_button.setEnabled(bool(plugin_id))
+            if plugin_id:
+                self._check_registry_plugin(plugin_id)
+        else:  # URL tab
+            url = self.url_edit.text().strip()
+            self.install_button.setEnabled(bool(url))
+            if url:
+                self._check_trust_level(url)
+
+    def _check_registry_plugin(self, plugin_id):
+        """Check registry plugin and show info if needed."""
+        tagger = QtWidgets.QApplication.instance()
+        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
+            return
+
+        try:
+            registry = tagger.pluginmanager3._registry
+            # Try to find plugin in registry
+            plugin_data = registry.find_plugin(plugin_id=plugin_id)
+            if plugin_data:
+                trust_level = registry.get_trust_level(plugin_data.get('url', ''))
+                if trust_level in ("community", "unregistered"):
+                    self._show_trust_warning(trust_level)
+                else:
+                    self.warning_label.hide()
+            else:
+                self.warning_label.setText(_("Plugin not found in registry"))
+                self.warning_label.show()
+        except Exception:
+            self.warning_label.hide()
+
+    def _show_trust_warning(self, trust_level):
+        """Show trust level warning."""
+        if trust_level == "community":
+            self.warning_label.setText(
+                _(
+                    "Warning: This is a community plugin. "
+                    "Community plugins are not reviewed by the Picard team. "
+                    "Only install plugins from sources you trust."
+                )
+            )
+            self.warning_label.show()
+        elif trust_level == "unregistered":
+            self.warning_label.setText(
+                _(
+                    "Warning: This plugin is not in the official registry. "
+                    "Installing unregistered plugins may pose security risks. "
+                    "Only install plugins from sources you trust."
+                )
+            )
+            self.warning_label.show()
+        else:
+            self.warning_label.hide()
 
     def _check_trust_level(self, url):
         """Check trust level and show warning if needed."""
@@ -109,37 +186,13 @@ class InstallPluginDialog(QtWidgets.QDialog):
         try:
             registry = tagger.pluginmanager3._registry
             trust_level = registry.get_trust_level(url)
-
-            if trust_level == "community":
-                self.warning_label.setText(
-                    _(
-                        "Warning: This is a community plugin. "
-                        "Community plugins are not reviewed by the Picard team. "
-                        "Only install plugins from sources you trust."
-                    )
-                )
-                self.warning_label.show()
-            elif trust_level == "unregistered":
-                self.warning_label.setText(
-                    _(
-                        "Warning: This plugin is not in the official registry. "
-                        "Installing unregistered plugins may pose security risks. "
-                        "Only install plugins from sources you trust."
-                    )
-                )
-                self.warning_label.show()
-            else:
-                self.warning_label.hide()
+            self._show_trust_warning(trust_level)
         except Exception:
             self.warning_label.hide()
 
     def _install_plugin(self):
         """Install the plugin."""
-        url = self.url_edit.text().strip()
-        ref = self.ref_edit.text().strip() or None
-
-        if not url:
-            return
+        current_tab = self.tab_widget.currentIndex()
 
         # Get plugin manager
         tagger = QtWidgets.QApplication.instance()
@@ -147,10 +200,39 @@ class InstallPluginDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin system not available"))
             return
 
+        if current_tab == 0:  # Registry tab
+            plugin_id = self.plugin_id_edit.text().strip()
+            if not plugin_id:
+                return
+
+            # Try to get URL from registry
+            try:
+                registry = tagger.pluginmanager3._registry
+                plugin_data = registry.find_plugin(plugin_id=plugin_id)
+                if not plugin_data:
+                    QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin not found in registry"))
+                    return
+
+                url = plugin_data.get('url')
+                ref = plugin_data.get('ref')  # Use registry's preferred ref
+                if not url:
+                    QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
+                    return
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(self, _("Error"), _("Failed to get plugin info: {}").format(str(e)))
+                return
+        else:  # URL tab
+            url = self.url_edit.text().strip()
+            ref = self.ref_edit.text().strip() or None
+            if not url:
+                return
+
         # Disable UI during installation
         self.install_button.setEnabled(False)
+        self.plugin_id_edit.setEnabled(False)
         self.url_edit.setEnabled(False)
         self.ref_edit.setEnabled(False)
+        self.tab_widget.setEnabled(False)
         self.progress_bar.show()
         self.progress_bar.setValue(0)
 
@@ -167,8 +249,10 @@ class InstallPluginDialog(QtWidgets.QDialog):
         """Handle installation completion."""
         # Re-enable UI
         self.install_button.setEnabled(True)
+        self.plugin_id_edit.setEnabled(True)
         self.url_edit.setEnabled(True)
         self.ref_edit.setEnabled(True)
+        self.tab_widget.setEnabled(True)
         self.progress_bar.hide()
 
         if result.success:
