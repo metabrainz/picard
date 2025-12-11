@@ -22,7 +22,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import Mock, patch
 
-from picard.plugin3.git_backend import (
+from picard.git.backend import (
     GitBackend,
     GitObject,
     GitObjectType,

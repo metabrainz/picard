@@ -1035,7 +1035,7 @@ class PluginManager(QObject):
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        from picard.plugin3.git_backend import GitObjectType
+        from picard.git.backend import GitObjectType
         from picard.plugin3.git_factory import git_backend
 
         backend = git_backend()
@@ -1172,7 +1172,7 @@ class PluginManager(QObject):
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    from picard.plugin3.git_backend import GitObjectType
+                    from picard.git.backend import GitObjectType
 
                     if obj.type == GitObjectType.TAG:
                         commit = repo.peel_to_commit(obj)

@@ -25,7 +25,7 @@ from pathlib import Path
 import shutil
 
 from picard import log
-from picard.plugin3.git_backend import (
+from picard.git.backend import (
     GitBackendError,
     GitStatusFlag,
 )
@@ -192,7 +192,7 @@ class GitOperations:
                 # Not found in standard refs, try to resolve it
                 try:
                     obj = repo.revparse_single(ref)
-                    from picard.plugin3.git_backend import GitObjectType
+                    from picard.git.backend import GitObjectType
 
                     if obj.type == GitObjectType.COMMIT:
                         return 'commit', ref

@@ -20,7 +20,7 @@
 
 """Git backend factory."""
 
-from picard.plugin3.git_backend import GitBackend
+from picard.git.backend import GitBackend
 
 
 def get_git_backend() -> GitBackend:
