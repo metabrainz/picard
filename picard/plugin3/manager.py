@@ -39,8 +39,8 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const.appdirs import cache_folder
-from picard.plugin3.git_ops import GitOperations
-from picard.plugin3.git_utils import get_local_repository_path
+from picard.git.ops import GitOperations
+from picard.git.utils import get_local_repository_path
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,

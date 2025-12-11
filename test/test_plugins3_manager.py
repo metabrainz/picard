@@ -29,7 +29,7 @@ from test.test_plugins3_helpers import (
     MockTagger,
 )
 
-from picard.plugin3.git_ops import GitOperations
+from picard.git.ops import GitOperations
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.validation import PluginValidation
 

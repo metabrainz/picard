@@ -28,7 +28,7 @@ from urllib.request import urlopen
 
 from picard import log
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
-from picard.plugin3.git_utils import (
+from picard.git.utils import (
     normalize_git_url,
 )
 from picard.plugin3.plugin import hash_string

@@ -40,7 +40,7 @@ class TestCheckRefType(PicardTestCase):
 
     def test_check_ref_type_with_invalid_repo(self):
         """Test check_ref_type with invalid repository path."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         # Should handle repository errors gracefully
         ref_type, ref_name = GitOperations.check_ref_type(Path('/nonexistent'), 'main')
@@ -79,7 +79,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_current_branch(self):
         """Test checking current HEAD on a branch."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir)
         self.assertEqual(ref_type, 'branch')
@@ -89,7 +89,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         """Test checking detached HEAD (commit)."""
         from test.test_plugins3_helpers import backend_set_detached_head
 
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         # Checkout specific commit (detached HEAD)
         backend_set_detached_head(self.repo_dir, self.commit1)
@@ -102,7 +102,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         """Test checking if a ref is a tag."""
         from test.test_plugins3_helpers import backend_create_tag
 
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         # Create a tag
         backend_create_tag(self.repo_dir, 'v1.0.0', self.commit1, 'Version 1.0.0')
@@ -115,7 +115,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         """Test checking if a ref is a branch."""
         from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
 
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         # Create a dev branch with different content
         (self.repo_dir / "dev.txt").write_text("dev")
@@ -128,7 +128,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_commit_hash_ref(self):
         """Test checking if a ref is a commit hash."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         commit_hash = str(self.commit1)
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, commit_hash)
@@ -137,7 +137,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_nonexistent_ref(self):
         """Test checking a ref that doesn't exist."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'nonexistent')
         self.assertIsNone(ref_type)
@@ -147,7 +147,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         """Test checking a lightweight tag (ref to commit, not tag object)."""
         from test.test_plugins3_helpers import backend_create_lightweight_tag
 
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         # Create a lightweight tag (just a reference, no tag object)
         backend_create_lightweight_tag(self.repo_dir, 'lightweight-v1.0', self.commit1)
@@ -512,7 +512,7 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_pycache_directory(self):
         """Test removing __pycache__ directory."""
-        from picard.plugin3.git_ops import clean_python_cache
+        from picard.git.ops import clean_python_cache
 
         pycache = self.test_dir / "__pycache__"
         pycache.mkdir()
@@ -524,7 +524,7 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_pyc_files(self):
         """Test removing .pyc files."""
-        from picard.plugin3.git_ops import clean_python_cache
+        from picard.git.ops import clean_python_cache
 
         pyc_file = self.test_dir / "test.pyc"
         pyc_file.write_text("cache")
@@ -535,7 +535,7 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_pyo_files(self):
         """Test removing .pyo files."""
-        from picard.plugin3.git_ops import clean_python_cache
+        from picard.git.ops import clean_python_cache
 
         pyo_file = self.test_dir / "test.pyo"
         pyo_file.write_text("cache")
@@ -546,7 +546,7 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_nested_cache(self):
         """Test removing cache files in nested directories."""
-        from picard.plugin3.git_ops import clean_python_cache
+        from picard.git.ops import clean_python_cache
 
         subdir = self.test_dir / "subdir"
         subdir.mkdir()
@@ -563,7 +563,7 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_preserves_other_files(self):
         """Test that non-cache files are preserved."""
-        from picard.plugin3.git_ops import clean_python_cache
+        from picard.git.ops import clean_python_cache
 
         py_file = self.test_dir / "test.py"
         py_file.write_text("code")
@@ -601,7 +601,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_clean_working_dir(self):
         """Test that clean working directory returns empty list."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
 
@@ -609,7 +609,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_modified_file_detected(self):
         """Test that modified files are detected."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         (self.repo_dir / "file.txt").write_text("modified")
 
@@ -619,7 +619,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_untracked_file_detected(self):
         """Test that untracked files are detected."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         (self.repo_dir / "new.txt").write_text("new")
 
@@ -629,7 +629,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pyc_files_ignored(self):
         """Test that .pyc files are ignored."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         (self.repo_dir / "test.pyc").write_text("cache")
 
@@ -639,7 +639,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pyo_files_ignored(self):
         """Test that .pyo files are ignored."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         (self.repo_dir / "test.pyo").write_text("cache")
 
@@ -649,7 +649,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pycache_directory_ignored(self):
         """Test that __pycache__ directory is ignored."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         pycache = self.repo_dir / "__pycache__"
         pycache.mkdir()
@@ -661,7 +661,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_nested_pycache_ignored(self):
         """Test that nested __pycache__ is ignored."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         subdir = self.repo_dir / "subdir"
         subdir.mkdir()
@@ -675,7 +675,7 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_real_changes_with_cache_files(self):
         """Test that real changes are detected even with cache files present."""
-        from picard.plugin3.git_ops import GitOperations
+        from picard.git.ops import GitOperations
 
         (self.repo_dir / "real.txt").write_text("real change")
         (self.repo_dir / "test.pyc").write_text("cache")
