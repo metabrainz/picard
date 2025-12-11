@@ -1753,7 +1753,7 @@ class PluginCLI:
 
 
 def process_cmdline_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
 
     # Picard specific arguments
     parser.add_argument('-c', '--config-file', action='store', default=None, help="location of the configuration file")
@@ -1766,45 +1766,77 @@ def process_cmdline_args():
         default=None,
         help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names(),
     )
-
-    parser.add_argument('-l', '--list', action='store_true', help="list installed plugins")
-    parser.add_argument('-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from URL(s)")
-    parser.add_argument('-r', '--remove', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
-    parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
-    parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
-    parser.add_argument('-u', '--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version")
-    parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
-    parser.add_argument('--check-updates', action='store_true', help="check for available updates")
-    parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
-    parser.add_argument('--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin")
-    parser.add_argument('--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate")
-    parser.add_argument('--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref")
-    parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
-    parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
     parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
-    parser.add_argument(
+    parser.add_argument('--no-color', action='store_true', help="disable colored output")
+
+    group_management = parser.add_argument_group("Plugin Management")
+    group_management.add_argument('-l', '--list', action='store_true', help="list all installed plugins with details")
+    group_management.add_argument(
+        '-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from git URL(s) or by name"
+    )
+    group_management.add_argument('-r', '--remove', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
+    group_management.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
+    group_management.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
+    group_management.add_argument(
+        '-u', '--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version"
+    )
+    group_management.add_argument('--update-all', action='store_true', help="update all installed plugins")
+    group_management.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
+    group_management.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
+    group_management.add_argument(
         '--clean-config',
         nargs='?',
         const='',
         metavar='PLUGIN',
         help="delete saved options for a plugin (list orphaned configs if no plugin specified)",
     )
-    parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
-    parser.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
-    parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
-    parser.add_argument(
+    group_management.add_argument(
         '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
     )
-    parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
-    parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
-    parser.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
-    parser.add_argument('--refresh-registry', action='store_true', help="force refresh of plugin registry cache")
-    parser.add_argument('--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)")
-    parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
-    parser.add_argument(
+
+    group_git = parser.add_argument_group("Git Version Control")
+    group_git.add_argument('--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin")
+    group_git.add_argument(
+        '--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate"
+    )
+    group_git.add_argument(
+        '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
+    )
+
+    group_discover = parser.add_argument_group("Plugin Discovery")
+    group_discover.add_argument('--browse', action='store_true', help="browse plugins from registry")
+    group_discover.add_argument('--search', metavar='QUERY', help="search plugins in registry")
+    group_discover.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
+
+    group_registry = parser.add_argument_group("Registry")
+    group_registry.add_argument(
+        '--refresh-registry', action='store_true', help="force refresh of plugin registry cache"
+    )
+    group_registry.add_argument('--check-updates', action='store_true', help="check for available updates")
+
+    group_advanced = parser.add_argument_group("Advanced Options")
+    group_advanced.add_argument('--reinstall', action='store_true', help="force reinstall when used with --install")
+    group_advanced.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
+    group_advanced.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
+    group_advanced.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
+    group_advanced.add_argument(
+        '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
+    )
+    group_advanced.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
+    group_advanced.add_argument(
         '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
     )
-    parser.add_argument('--no-color', action='store_true', help="disable colored output")
+
+    # Additional information
+    parser.description = "Manage Picard plugins (install, update, enable, disable)"
+    parser.epilog = (
+        "Trust Levels:\n"
+        "  🛡️ official: Reviewed by Picard team (highest trust)\n"
+        "  ✓ trusted: Known authors, not reviewed (high trust)\n"
+        "  ⚠️ community: Other authors, not reviewed (use caution)\n"
+        "  🔓 unregistered: Not in registry (local/unknown source - lowest trust)\n"
+        "\nFor more information, visit: https://picard.musicbrainz.org/docs/plugins/"
+    )
 
     args = parser.parse_args()
     args.remote_commands_help = False
