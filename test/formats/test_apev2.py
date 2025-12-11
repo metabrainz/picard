@@ -35,10 +35,7 @@ from test.picardtestcase import (
 )
 
 from picard import config
-from picard.formats import (
-    apev2,
-    open_,
-)
+from picard.formats import apev2
 from picard.metadata import Metadata
 
 from .common import (
@@ -97,7 +94,7 @@ class CommonApeTests:
                 'Cover Art (Front)': APEValue(b'filename.png\0NOTPNGDATA', BINARY),
             }
             save_raw(self.filename, metadata)
-            loaded_metadata = load_metadata(self.filename)
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(0, len(loaded_metadata.images))
 
         @skipUnlessTestfile
@@ -114,10 +111,10 @@ class CommonApeTests:
             )
             config.setting['clear_existing_tags'] = True
             config.setting['preserve_images'] = True
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             self.assertEqual(4, len(metadata.images))
             config.setting['preserve_images'] = False
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             self.assertEqual(0, len(metadata.images))
 
         def test_supports_extended_tags(self):
@@ -141,9 +138,9 @@ class CommonApeTests:
                 tags = {}
                 tags[name] = 'foo'
                 save_raw(self.filename, tags)
-                loaded_metadata = load_metadata(self.filename)
+                loaded_metadata = load_metadata(self.format_registry, self.filename)
                 loaded_metadata[name.lower()] = 'bar'
-                save_metadata(self.filename, loaded_metadata)
+                save_metadata(self.format_registry, self.filename, loaded_metadata)
                 raw_metadata = dict(load_raw(self.filename))
                 self.assertIn(name, raw_metadata)
                 self.assertEqual(raw_metadata[name], loaded_metadata[name.lower()])
@@ -154,9 +151,9 @@ class CommonApeTests:
             upper_ape_name = ape_name.upper()
             metadata = {upper_ape_name: 'Some value'}
             save_raw(self.filename, metadata)
-            loaded_metadata = load_metadata(self.filename)
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(metadata[upper_ape_name], loaded_metadata[name])
-            save_metadata(self.filename, loaded_metadata)
+            save_metadata(self.format_registry, self.filename, loaded_metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn(upper_ape_name, raw_metadata.keys())
             self.assertEqual(metadata[upper_ape_name], raw_metadata[ape_name])
@@ -204,7 +201,7 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         # Create dummy WavPack correction file
         open(source_file_wvc, 'a').close()
         # Open file and rename it
-        f = open_(self.filename)
+        f = self.format_registry.open(self.filename)
         f._copy_loaded_metadata(f._load(self.filename))
         f.metadata['title'] = 'renamed_' + os.path.basename(self.filename)
         self.assertTrue(os.path.isfile(self.filename))
@@ -292,7 +289,7 @@ class OptimFROGLosslessTest(CommonApeTests.ApeTestCase):
     unexpected_info = ['~video']
 
     def test_format(self):
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual(metadata['~format'], 'OptimFROG Lossless Audio')
 
 
@@ -308,7 +305,7 @@ class OptimFROGDUalStreamTest(CommonApeTests.ApeTestCase):
     unexpected_info = ['~video']
 
     def test_format(self):
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual(metadata['~format'], 'OptimFROG DualStream Audio')
 
 

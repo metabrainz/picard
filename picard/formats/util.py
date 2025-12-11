@@ -26,74 +26,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import os.path
-
-from picard import log
-from picard.extension_points.formats import (
-    ext_point_formats,
-    ext_to_format,
-)
+from picard.formats.registry import FormatRegistry
 
 
-def supported_formats():
-    """Returns list of supported formats."""
-    return [(file_format.EXTENSIONS, file_format.NAME) for file_format in ext_point_formats]
-
-
-def supported_extensions():
-    """Returns list of supported extensions."""
-    return [ext for exts, name in supported_formats() for ext in exts]
-
-
-def guess_format(filename, options=None):
-    """Select the best matching file type amongst supported formats."""
-    if options is None:
-        options = ext_point_formats
-    results = []
-    # Since we are reading only 128 bytes and then immediately closing the file,
-    # use unbuffered mode.
-    with open(filename, 'rb', 0) as fileobj:
-        header = fileobj.read(128)
-        # Calls the score method of a particular format's associated filetype
-        # and assigns a positive score depending on how closely the fileobj's header matches
-        # the header for a particular file format.
-        results = [
-            (option._File.score(filename, fileobj, header), option.__name__, option)
-            for option in options
-            if getattr(option, "_File", None)
-        ]
-    if results:
-        results.sort()
-        if results[-1][0] > 0:
-            # return the format with the highest matching score
-            return results[-1][2](filename)
-
-    # No positive score i.e. the fileobj's header did not match any supported format
-    return None
-
-
-def open_(filename):
-    """Open the specified file and return a File instance with the appropriate format handler, or None."""
-    try:
-        # Use extension based opening as default
-        _name, ext = os.path.splitext(filename)
-        if ext:
-            if file_format := ext_to_format(ext):
-                return file_format(filename)
-        # If detection by extension failed, try to guess the format based on file headers
-        return guess_format(filename)
-    except Exception as error:
-        log.error("Error occurred:\n%s", error)
-        return None
-
-
-def format_key_desc_generator():
+def _format_key_desc_generator(registry: FormatRegistry):
     """Yield (file_format, key, desc) for formats with key and description.
 
     Ensures each FORMAT_KEY is yielded at most once.
     """
     seen = set()
-    for file_format in ext_point_formats:
+    for file_format in registry:
         key = getattr(file_format, 'FORMAT_KEY', None)
         if key is None or key in seen:
             continue
@@ -104,7 +46,7 @@ def format_key_desc_generator():
         yield file_format, key, desc
 
 
-def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
+def date_sanitization_format_entries(registry: FormatRegistry) -> tuple[tuple[str, str], ...]:
     """Return registered format entries that support date-sanitization toggle.
 
     Returns
@@ -120,7 +62,7 @@ def date_sanitization_format_entries() -> tuple[tuple[str, str], ...]:
     de-duplicating on ``FORMAT_KEY``.
     """
     entries = []
-    for file_format, key, desc in format_key_desc_generator():
+    for file_format, key, desc in _format_key_desc_generator(registry):
         toggleable = getattr(file_format, 'DATE_SANITIZATION_TOGGLEABLE', False)
         if toggleable:
             # dropping `_()` here as it's done in the UI, e.g. see `tags.py`

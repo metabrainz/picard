@@ -71,13 +71,13 @@ class TestPluginApiMethods(PicardTestCase):
     def test_register_format(self):
         """Test file format registration."""
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        mock_tagger = Mock()
+        api = PluginApi(manifest, mock_tagger)
 
         mock_format = Mock()
 
-        with patch('picard.plugin3.api.register_format') as mock:
-            api.register_format(mock_format)
-            mock.assert_called_once_with(mock_format)
+        api.register_format(mock_format)
+        mock_tagger.format_registry.register.assert_called_once_with(mock_format)
 
     def test_register_context_menu_actions(self):
         """Test context menu action registration methods."""

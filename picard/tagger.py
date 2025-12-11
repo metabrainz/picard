@@ -126,7 +126,8 @@ from picard.disc import (
     whipperlog,
 )
 from picard.file import File
-from picard.formats import open_ as open_file
+from picard.formats import DEFAULT_FORMATS
+from picard.formats.registry import FormatRegistry
 from picard.i18n import (
     N_,
     gettext as _,
@@ -252,6 +253,7 @@ class Tagger(QtWidgets.QApplication):
         self._qt_translators = Translators(self)
 
         self._init_webservice()
+        self._init_format_registry()
         self._init_fingerprinting()
         self._init_plugins()
         self._init_browser_integration()
@@ -377,6 +379,12 @@ class Tagger(QtWidgets.QApplication):
         self.mb_api = MBAPIHelper(self.webservice)
         load_user_collections()
 
+    def _init_format_registry(self):
+        """Initialize the file formats registry and register default formats"""
+        self.format_registry = FormatRegistry(self)
+        for format in DEFAULT_FORMATS:
+            self.format_registry.register(format)
+
     def _init_fingerprinting(self):
         """Initialize fingerprinting"""
         acoustid_api = AcoustIdAPIHelper(self.webservice)
@@ -389,11 +397,15 @@ class Tagger(QtWidgets.QApplication):
         """Initialize and load plugins"""
         if HAS_PLUGIN3:
             self.pluginmanager3 = PluginManager(self)
+            self.pluginmanager3.plugin_disabled.connect(self._on_plugin_disabled)
             if not self._no_plugins:
                 self.pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self.pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
+
+    def _on_plugin_disabled(self):
+        self.format_registry.rebuild_extension_map()
 
     def _init_browser_integration(self):
         """Initialize browser integration"""
@@ -912,7 +924,7 @@ class Tagger(QtWidgets.QApplication):
                 log.info("File ignored (matching %r): %r", pattern, filename)
                 continue
             if filename not in self.files:
-                file = open_file(filename)
+                file = self.format_registry.open(filename)
                 if file:
                     self.files[filename] = file
                     new_files.append(file)

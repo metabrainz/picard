@@ -70,11 +70,9 @@ class TagsOptionsPage(OptionsPage):
         self.ui = Ui_TagsOptionsPage()
         self.ui.setupUi(self)
 
-        # Cache date sanitization entries once; formats are unlikely to change at runtime
-        self._date_sanitization_entries = date_sanitization_format_entries()
-
         # Add multi-select combo for disabling date sanitization per format
         self._init_disable_date_sanitization_formats_control()
+        self.tagger.format_registry.formats_changed.connect(self._rebuild_date_sanitization_model)
 
     def load(self):
         config = get_config()
@@ -112,24 +110,27 @@ class TagsOptionsPage(OptionsPage):
 
         self.disable_date_sanitization_formats = QtWidgets.QComboBox(self)
         self.disable_date_sanitization_formats.setObjectName('disable_date_sanitization_formats')
-        self.disable_date_sanitization_formats.setModel(
-            QtGui.QStandardItemModel(self.disable_date_sanitization_formats)
-        )
         self.disable_date_sanitization_formats.setSizeAdjustPolicy(
             QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
         )
 
-        for key, title in self._date_sanitization_entries:
+        self._rebuild_date_sanitization_model()
+
+        # Place the control at the end of the page
+        self.ui.vboxlayout.addWidget(label)
+        self.ui.vboxlayout.addWidget(self.disable_date_sanitization_formats)
+
+    def _rebuild_date_sanitization_model(self):
+        date_sanitization_entries = date_sanitization_format_entries(self.tagger.format_registry)
+        model = QtGui.QStandardItemModel(self.disable_date_sanitization_formats)
+        self.disable_date_sanitization_formats.setModel(model)
+        for key, title in date_sanitization_entries:
             item = QtGui.QStandardItem(_(title))
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setData(key, QtCore.Qt.ItemDataRole.UserRole)
             item.setCheckable(True)
             item.setCheckState(QtCore.Qt.CheckState.Unchecked)
             self.disable_date_sanitization_formats.model().appendRow(item)
-
-        # Place the control at the end of the page
-        self.ui.vboxlayout.addWidget(label)
-        self.ui.vboxlayout.addWidget(self.disable_date_sanitization_formats)
 
     def _set_disable_date_sanitization_checked(self, keys):
         model = self.disable_date_sanitization_formats.model()

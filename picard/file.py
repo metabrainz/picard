@@ -256,10 +256,8 @@ class File(MetadataItem):
             self._set_error(error)
 
             # If loading failed, force format guessing and try loading again
-            from picard.formats.util import guess_format
-
             try:
-                alternative_file = guess_format(self.filename)
+                alternative_file = self.tagger.format_registry.guess_format(self.filename)
             except (FileNotFoundError, OSError):
                 log.error("Guessing format of %s failed", self.filename, exc_info=True)
                 alternative_file = None
@@ -273,10 +271,9 @@ class File(MetadataItem):
                     return
                 else:
                     alternative_file.remove()  # cleanup unused File object
-            from picard.formats import supported_extensions
 
             file_name, file_extension = os.path.splitext(self.base_filename)
-            if file_extension not in supported_extensions():
+            if file_extension not in self.tagger.format_registry.supported_extensions():
                 log.error("Unsupported media file %r wrongly loaded. Removing …", self)
                 callback(self, remove_file=True)
                 return

@@ -28,10 +28,7 @@ from test.picardtestcase import (
     create_fake_png,
 )
 
-from picard.formats import (
-    asf,
-    ext_to_format,
-)
+from picard.formats import asf
 
 from .common import (
     CommonTests,
@@ -48,7 +45,7 @@ from .coverart import CommonCoverArtTests
 class CommonAsfTests:
     class AsfTestCase(CommonTests.TagFormatsTestCase):
         def test_supports_tag(self):
-            fmt = ext_to_format(self.testfile_ext)
+            fmt = self.format_registry.extension_to_formats(self.testfile_ext)[0]
             self.assertTrue(fmt.supports_tag('copyright'))
             self.assertTrue(fmt.supports_tag('compilation'))
             self.assertTrue(fmt.supports_tag('bpm'))
@@ -64,9 +61,9 @@ class CommonAsfTests:
             # case preserving.
             tags = {'Replaygain_Album_Peak': '-6.48 dB'}
             save_raw(self.filename, tags)
-            loaded_metadata = load_metadata(self.filename)
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
             loaded_metadata['replaygain_album_peak'] = '1.0'
-            save_metadata(self.filename, loaded_metadata)
+            save_metadata(self.format_registry, self.filename, loaded_metadata)
             raw_metadata = load_raw(self.filename)
             self.assertIn('Replaygain_Album_Peak', raw_metadata)
             self.assertEqual(raw_metadata['Replaygain_Album_Peak'][0], loaded_metadata['replaygain_album_peak'])
@@ -82,7 +79,7 @@ class CommonAsfTests:
                 ]
             }
             save_raw(self.filename, tags)
-            metadata = load_metadata(self.filename)
+            metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(1, len(metadata.images))
             self.assertEqual(png_data, metadata.images[0].data)
 

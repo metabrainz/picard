@@ -28,7 +28,7 @@ from picard.coverart.image import (
     CoverArtImage,
     TagCoverArtImage,
 )
-import picard.formats
+from picard.formats.registry import FormatRegistry
 from picard.metadata import Metadata
 
 from .common import (
@@ -39,8 +39,8 @@ from .common import (
 )
 
 
-def file_save_image(filename, image):
-    f = picard.formats.open_(filename)
+def file_save_image(registry: FormatRegistry, filename, image):
+    f = registry.open(filename)
     metadata = Metadata(images=[image])
     f._save(filename, metadata)
 
@@ -75,6 +75,7 @@ class CommonCoverArtTests:
 
         def setUp(self):
             super().setUp()
+            self.setup_test_format_registry()
             self.set_config_values(
                 {
                     'clear_existing_tags': False,
@@ -95,22 +96,22 @@ class CommonCoverArtTests:
                 CoverArtImage(data=self.pngdata + payload, types=source_types),
             ]
             for test in tests:
-                file_save_image(self.filename, test)
-                loaded_metadata = load_metadata(self.filename)
+                file_save_image(self.format_registry, self.filename, test)
+                loaded_metadata = load_metadata(self.format_registry, self.filename)
                 image = loaded_metadata.images[0]
                 self.assertEqual(test.mimetype, image.mimetype)
                 self.assertEqual(test, image)
 
         def test_cover_art_with_types(self):
             expected = set('abcdefg'[:]) if self.supports_types else set('a')
-            loaded_metadata = save_and_load_metadata(self.filename, self._cover_metadata())
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, self._cover_metadata())
             found = {chr(img.data[-1]) for img in loaded_metadata.images}
             self.assertEqual(expected, found)
 
         @skipUnlessTestfile
         def test_cover_art_types_only_one_front(self):
             config.setting['embed_only_one_front_image'] = True
-            loaded_metadata = save_and_load_metadata(self.filename, self._cover_metadata())
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, self._cover_metadata())
             self.assertEqual(1, len(loaded_metadata.images))
             self.assertEqual(ord('a'), loaded_metadata.images[0].data[-1])
 
@@ -121,21 +122,21 @@ class CommonCoverArtTests:
             metadata.images.append(DummyUnsupportedCoverArt(b'unsupported', 'image/unknown'))
             # Save an image with supported mimetype, but invalid data
             metadata.images.append(DummyUnsupportedCoverArt(b'unsupported', 'image/png'))
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(0, len(loaded_metadata.images))
 
         @skipUnlessTestfile
         def test_cover_art_clear_tags(self):
             image = CoverArtImage(data=self.pngdata, types=['front'])
-            file_save_image(self.filename, image)
-            metadata = load_metadata(self.filename)
+            file_save_image(self.format_registry, self.filename, image)
+            metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(image, metadata.images[0])
             config.setting['clear_existing_tags'] = True
             config.setting['preserve_images'] = True
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             self.assertEqual(image, metadata.images[0])
             config.setting['preserve_images'] = False
-            metadata = save_and_load_metadata(self.filename, Metadata())
+            metadata = save_and_load_metadata(self.format_registry, self.filename, Metadata())
             self.assertEqual(0, len(metadata.images))
 
         @skipUnlessTestfile
@@ -143,8 +144,8 @@ class CommonCoverArtTests:
             config.setting['clear_existing_tags'] = True
             config.setting['preserve_images'] = True
             image = CoverArtImage(data=self.pngdata, types=['front'])
-            file_save_image(self.filename, image)
-            metadata = load_metadata(self.filename)
+            file_save_image(self.format_registry, self.filename, image)
+            metadata = load_metadata(self.format_registry, self.filename)
             self.assertEqual(image, metadata.images[0])
 
         def _cover_metadata(self):

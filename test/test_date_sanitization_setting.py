@@ -22,8 +22,9 @@ from types import SimpleNamespace
 from typing import Any, cast
 
 from picard import config
-from picard.formats import id3
+from picard.formats import DEFAULT_FORMATS, id3
 from picard.formats.apev2 import APEv2File
+from picard.formats.registry import FormatRegistry
 from picard.formats.util import date_sanitization_format_entries
 from picard.formats.vorbis import OggVorbisFile
 from picard.metadata import Metadata
@@ -46,6 +47,14 @@ def patched_get_config(monkeypatch: pytest.MonkeyPatch) -> None:
     # Ensure default expected keys exist for extension point iteration
     fake.setting['enabled_plugins'] = []
     return None
+
+
+@pytest.fixture
+def format_registry() -> FormatRegistry:
+    registry = FormatRegistry()
+    for format in DEFAULT_FORMATS:
+        registry.register(format)
+    return registry
 
 
 @pytest.mark.parametrize(
@@ -172,21 +181,21 @@ def test_instance_method_respects_config(
     assert enabled is expected_enabled
 
 
-def test_entries_include_known_toggleable_families(patched_get_config: None) -> None:
+def test_entries_include_known_toggleable_families(format_registry: FormatRegistry, patched_get_config: None) -> None:
     # Ensure deterministic plugin environment for extension point iteration
     settings = cast(dict[str, Any], config.setting)
     settings['enabled_plugins'] = []
-    entries = dict(date_sanitization_format_entries())
+    entries = dict(date_sanitization_format_entries(format_registry))
     # These are provided by our built-in formats; presence is enough here
     assert 'id3' in entries and isinstance(entries['id3'], str)
     assert 'vorbis' in entries and isinstance(entries['vorbis'], str)
     assert 'apev2' in entries and isinstance(entries['apev2'], str)
 
 
-def test_entries_are_unique_by_key(patched_get_config: None) -> None:
+def test_entries_are_unique_by_key(format_registry: FormatRegistry, patched_get_config: None) -> None:
     # Ensure deterministic plugin environment for extension point iteration
     settings = cast(dict[str, Any], config.setting)
     settings['enabled_plugins'] = []
-    entries = date_sanitization_format_entries()
+    entries = date_sanitization_format_entries(format_registry)
     keys = [k for (k, _title) in entries]
     assert len(keys) == len(set(keys))

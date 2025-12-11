@@ -76,7 +76,6 @@ from picard.extension_points.event_hooks import (
     register_file_post_save_processor,
     register_file_pre_save_processor,
 )
-from picard.extension_points.formats import register_format
 from picard.extension_points.item_actions import (
     BaseAction,
     register_album_action,
@@ -634,7 +633,7 @@ class PluginApi:
 
     # File formats
     def register_format(self, format: Type[File]) -> None:
-        return register_format(format)
+        return self._tagger.format_registry.register(format)
 
     # Scripting
     def register_script_function(

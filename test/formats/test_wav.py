@@ -83,7 +83,7 @@ class WAVTest(CommonId3Tests.Id3TestCase):
     @skipUnlessTestfile
     def test_load_riff_info_fallback(self):
         self._save_riff_info_tags()
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual(metadata['artist'], 'the artist')
 
     @skipUnlessTestfile
@@ -94,7 +94,7 @@ class WAVTest(CommonId3Tests.Id3TestCase):
                 'album': 'the album',
             }
         )
-        save_metadata(self.filename, metadata)
+        save_metadata(self.format_registry, self.filename, metadata)
         info = RiffListInfo()
         info.load(self.filename)
         self.assertEqual(info['IART'], 'the artist')
@@ -105,7 +105,7 @@ class WAVTest(CommonId3Tests.Id3TestCase):
         self._save_riff_info_tags()
         metadata = Metadata()
         del metadata['title']
-        save_metadata(self.filename, metadata)
+        save_metadata(self.format_registry, self.filename, metadata)
         info = RiffListInfo()
         info.load(self.filename)
         self.assertEqual(info['IART'], 'the artist')

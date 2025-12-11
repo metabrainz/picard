@@ -34,12 +34,13 @@ import base64
 import re
 
 import mutagen.flac
-import mutagen.ogg
 import mutagen.oggflac
 import mutagen.oggopus
 import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
+
+from PyQt6 import QtCore
 
 from picard import log
 from picard.config import get_config
@@ -49,7 +50,6 @@ from picard.coverart.image import (
 )
 from picard.coverart.utils import types_from_id3
 from picard.file import File
-from picard.formats.util import guess_format
 from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
@@ -476,7 +476,7 @@ class OggOpusFile(VCommentFile):
 def OggAudioFile(filename):
     """Generic Ogg audio file."""
     options = [OggFLACFile, OggOpusFile, OggSpeexFile, OggVorbisFile]
-    return guess_format(filename, options)
+    return _guess_format(filename, options)
 
 
 OggAudioFile.EXTENSIONS = [".oga"]
@@ -487,7 +487,7 @@ OggAudioFile.supports_tag = VCommentFile.supports_tag
 def OggVideoFile(filename):
     """Generic Ogg video file."""
     options = [OggTheoraFile]
-    return guess_format(filename, options)
+    return _guess_format(filename, options)
 
 
 OggVideoFile.EXTENSIONS = [".ogv"]
@@ -504,9 +504,14 @@ def OggContainerFile(filename):
         OggTheoraFile,
         OggVorbisFile,
     ]
-    return guess_format(filename, options)
+    return _guess_format(filename, options)
 
 
 OggContainerFile.EXTENSIONS = [".ogg", ".ogx"]
 OggContainerFile.NAME = "Ogg"
 OggContainerFile.supports_tag = VCommentFile.supports_tag
+
+
+def _guess_format(filename, options):
+    tagger = QtCore.QCoreApplication.instance()
+    return tagger.format_registry.guess_format(filename, options)

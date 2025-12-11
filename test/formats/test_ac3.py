@@ -65,12 +65,12 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
         config.setting['remove_ape_from_ac3'] = False
 
     def test_load_but_do_not_save_tags(self):
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual('Test AC3 with APEv2 tags', metadata['title'])
         self.assertEqual('The Artist', metadata['artist'])
         metadata['artist'] = 'Foo'
         metadata['title'] = 'Bar'
-        metadata = save_and_load_metadata(self.filename, metadata)
+        metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
         self.assertEqual('Test AC3 with APEv2 tags', metadata['title'])
         self.assertEqual('The Artist', metadata['artist'])
 
@@ -79,17 +79,17 @@ class AC3NoTagsTest(CommonTests.BaseFileTestCase):
         metadata = Metadata(
             {'artist': 'Foo'},
         )
-        metadata = save_and_load_metadata(self.filename, metadata)
+        metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
         self.assertEqual('AC-3', metadata['~format'])
         self.assertNotIn('title', metadata)
         self.assertNotIn('artist', metadata)
 
     def test_info_format(self):
-        metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test.ac3'))
         self.assertEqual('AC-3', metadata['~format'])
-        metadata = load_metadata(os.path.join('test', 'data', 'test-apev2.ac3'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test-apev2.ac3'))
         self.assertEqual('AC-3 (APEv2)', metadata['~format'])
-        metadata = load_metadata(os.path.join('test', 'data', 'test.eac3'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test.eac3'))
         self.assertEqual('Enhanced AC-3', metadata['~format'])
 
     def test_supports_tag(self):
@@ -116,5 +116,5 @@ class EAC3Test(CommonTests.SimpleFormatsTestCase):
 
     def test_bitrate(self):
         # For EAC3 bitrate is calculated and often a fractional value
-        metadata = load_metadata(os.path.join('test', 'data', 'test.ac3'))
+        metadata = load_metadata(self.format_registry, os.path.join('test', 'data', 'test.ac3'))
         self.assertAlmostEqual(192.0, float(metadata['~bitrate']))

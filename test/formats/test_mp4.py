@@ -23,7 +23,6 @@
 
 import mutagen
 
-from picard.formats import ext_to_format
 from picard.metadata import Metadata
 
 from .common import (
@@ -42,7 +41,7 @@ from .coverart import CommonCoverArtTests
 class CommonMP4Tests:
     class MP4TestCase(CommonTests.TagFormatsTestCase):
         def test_supports_tag(self):
-            fmt = ext_to_format(self.testfile_ext)
+            fmt = self.format_registry.extension_to_formats(self.testfile_ext)[0]
             self.assertTrue(fmt.supports_tag('copyright'))
             self.assertTrue(fmt.supports_tag('compilation'))
             self.assertTrue(fmt.supports_tag('bpm'))
@@ -56,7 +55,7 @@ class CommonMP4Tests:
                 self.assertTrue(fmt.supports_tag(tag))
 
         def test_format(self):
-            metadata = load_metadata(self.filename)
+            metadata = load_metadata(self.format_registry, self.filename)
             self.assertIn('AAC LC', metadata['~format'])
 
         @skipUnlessTestfile
@@ -70,7 +69,7 @@ class CommonMP4Tests:
             tags['----:com.apple.iTunes:REPLAYGAIN_TRACK_RANGE'] = [b'8.22 dB']
             tags['----:com.apple.iTunes:replaygain_reference_loudness'] = [b'-18.00 LUFS']
             save_raw(self.filename, tags)
-            loaded_metadata = load_metadata(self.filename)
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
             for key, value in self.replaygain_tags.items():
                 self.assertEqual(loaded_metadata[key], value, '%s: %r != %r' % (key, loaded_metadata[key], value))
 
@@ -82,9 +81,9 @@ class CommonMP4Tests:
                 tags = mutagen.mp4.MP4Tags()
                 tags['----:com.apple.iTunes:' + name] = [b'foo']
                 save_raw(self.filename, tags)
-                loaded_metadata = load_metadata(self.filename)
+                loaded_metadata = load_metadata(self.format_registry, self.filename)
                 loaded_metadata[name.lower()] = 'bar'
-                save_metadata(self.filename, loaded_metadata)
+                save_metadata(self.format_registry, self.filename, loaded_metadata)
                 raw_metadata = load_raw(self.filename)
                 self.assertIn('----:com.apple.iTunes:' + name, raw_metadata)
                 self.assertEqual(
@@ -97,10 +96,10 @@ class CommonMP4Tests:
         def test_delete_freeform_tags(self):
             metadata = Metadata()
             metadata['foo'] = 'bar'
-            original_metadata = save_and_load_metadata(self.filename, metadata)
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual('bar', original_metadata['foo'])
             del metadata['foo']
-            new_metadata = save_and_load_metadata(self.filename, metadata)
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertNotIn('foo', new_metadata)
 
         @skipUnlessTestfile
@@ -111,7 +110,7 @@ class CommonMP4Tests:
                     'tracknumber': 'notanumber',
                 }
             )
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertNotIn('discnumber', loaded_metadata)
             self.assertNotIn('tracknumber', loaded_metadata)
 
@@ -125,7 +124,7 @@ class CommonMP4Tests:
                     'totaltracks': 'notanumber',
                 }
             )
-            loaded_metadata = save_and_load_metadata(self.filename, metadata)
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(metadata['discnumber'], loaded_metadata['discnumber'])
             self.assertEqual('0', loaded_metadata['totaldiscs'])
             self.assertEqual(metadata['tracknumber'], loaded_metadata['tracknumber'])
@@ -135,7 +134,7 @@ class CommonMP4Tests:
         def test_invalid_int_tag(self):
             for tag in ('bpm', 'movementnumber', 'movementtotal', 'showmovement'):
                 metadata = Metadata({tag: 'notanumber'})
-                loaded_metadata = save_and_load_metadata(self.filename, metadata)
+                loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
                 self.assertNotIn(tag, loaded_metadata)
 
 
@@ -156,7 +155,7 @@ class M4ATest(CommonMP4Tests.MP4TestCase):
         tags = mutagen.mp4.MP4Tags()
         tags['hdvd'] = [1]
         save_raw(self.filename, tags)
-        metadata = load_metadata(self.filename)
+        metadata = load_metadata(self.format_registry, self.filename)
         self.assertEqual('1', metadata["~video"])
 
 

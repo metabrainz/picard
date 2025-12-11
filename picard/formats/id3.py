@@ -43,6 +43,7 @@ from urllib.parse import urlparse
 from mutagen import id3
 import mutagen.aiff
 import mutagen.apev2
+import mutagen.dsdiff
 import mutagen.dsf
 import mutagen.mp3
 import mutagen.trueaudio
@@ -1123,15 +1124,9 @@ class AiffFile(NonCompatID3File):
     _File = mutagen.aiff.AIFF
 
 
-try:
-    import mutagen.dsdiff
+class DSDIFFFile(NonCompatID3File):
+    """DSF file."""
 
-    class DSDIFFFile(NonCompatID3File):
-        """DSF file."""
-
-        EXTENSIONS = [".dff"]
-        NAME = "DSDIFF"
-        _File = mutagen.dsdiff.DSDIFF
-
-except ImportError:
-    DSDIFFFile = None
+    EXTENSIONS = [".dff"]
+    NAME = "DSDIFF"
+    _File = mutagen.dsdiff.DSDIFF
