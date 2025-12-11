@@ -22,12 +22,12 @@ The plugin registry uses a **git repository as the database**. No traditional da
    - Validation scripts
    - CI/CD for validation
 
-2. **picard.musicbrainz.org** (Website)
+2. **picard.musicbrainz.org** (website)
    - Serves `plugins.toml` at `/api/v3/plugins.toml`
    - Displays plugin browser (HTML pages)
    - Fetches from GitHub (cached)
 
-3. **Picard Client**
+3. **Picard Client** (application)
    - Downloads `plugins.toml` from website
    - Caches locally
    - Uses for plugin discovery and blacklist checking
@@ -435,37 +435,37 @@ def plugins_json():
 
 ## Benefits of Git-Based Approach
 
-1. **No Database**
+1. **No Database:**
    - No database to maintain, backup, or migrate
    - Git is the database
 
-2. **Version Control**
+2. **Version Control:**
    - Full history of all changes
    - Easy rollback (git revert)
    - Audit trail built-in
 
-3. **Simple Deployment**
+3. **Simple Deployment:**
    - Website just serves static JSON
    - Can use CDN for plugins.toml
    - No database connection needed
 
-4. **Collaboration**
+4. **Collaboration:**
    - PRs for plugin submissions
    - Review process via GitHub
    - Community can submit PRs
    - Automated validation via CI
 
-5. **Transparency**
+5. **Transparency:**
    - Public repository
    - Anyone can see registry contents
    - Anyone can propose changes
 
-6. **Reliability**
+6. **Reliability:**
    - Git is the source of truth
    - GitHub provides hosting and CDN
    - Simple backup (git clone)
 
-7. **Scalability**
+7. **Scalability:**
    - Static JSON can be CDN-cached
    - Expected scale: <1000 plugins
 

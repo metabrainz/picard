@@ -599,7 +599,7 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 - Privacy considerations?
 - Opt-in vs opt-out?
 
-**See Q22 above for detailed discussion**
+**See Q22 above for detailed discussion.**
 
 ### Plugin Signing
 

@@ -306,7 +306,7 @@ $ picard plugins --switch-ref my-plugin beta
 
 ### Use Cases
 
-**1. Smooth Major Version Transitions**
+#### 1. Smooth Major Version Transitions
 
 When Picard releases a new major version with breaking API changes, plugin authors can maintain separate branches:
 
@@ -330,7 +330,7 @@ When Picard releases a new major version with breaking API changes, plugin autho
 
 Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branch, while users on Picard 4.x get new features on `main`.
 
-**2. Beta Testing**
+#### 2. Beta Testing
 
 Plugin authors can offer beta versions for testing:
 
@@ -351,7 +351,7 @@ Plugin authors can offer beta versions for testing:
 
 Power users can opt into beta testing with `--ref beta`.
 
-**3. Custom Branch Names**
+#### 3. Custom Branch Names
 
 Plugins can use any branch naming convention:
 
@@ -534,7 +534,7 @@ $ picard plugins --switch-ref my-plugin beta
 
 ### Use Cases
 
-**1. Stable Release Workflow**
+#### 1. Stable Release Workflow
 
 Plugin author releases stable versions as tags:
 ```bash
@@ -554,7 +554,7 @@ picard plugins --update my-plugin
 # Updates: v1.0.0 → v1.0.1
 ```
 
-**2. Combined with Branch Refs**
+#### 2. Combined with Branch Refs
 
 Use `versioning_scheme` for stable releases and `refs` for development:
 ```toml
@@ -579,9 +579,10 @@ picard plugins --install my-plugin --ref main
 picard plugins --install my-plugin --ref beta
 ```
 
-**3. No Registry Updates for Releases**
+#### 3. No Registry Updates for Releases
 
 Plugin author can release v1.0.0, v1.0.1, v1.0.2, v2.0.0 without updating the registry. Users automatically discover and install the latest version.
+
 
 ### Validation
 
@@ -1039,18 +1040,18 @@ The registry uses git refs to track and detect plugin updates. Unlike semantic v
 
 ### How It Works
 
-**1. Registry stores available refs**
+#### 1. Registry stores available refs
 
 Each plugin entry in `plugins.toml` has a `refs` array listing available branches/tags. If omitted, defaults to `[{"name": "main"}]`.
 
-**2. Local installation stores commit hash**
+#### 2. Local installation stores commit hash
 
 When a plugin is installed or updated, Picard records:
 - The git URL
 - The ref being tracked (e.g., `main`, `beta`, `v1.8.0`)
 - The actual commit SHA that was fetched (e.g., `abc123def456...`)
 
-**3. Update check process**
+#### 3. Update check process
 
 To check for updates:
 1. Fetch the latest commit SHA for the installed ref from the remote repository
