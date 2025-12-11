@@ -26,6 +26,13 @@ from picard.plugin3.plugin import PluginState, short_commit_id
 from picard.util import temporary_disconnect
 
 
+# Column positions
+COLUMN_ENABLED = 0
+COLUMN_PLUGIN = 1
+COLUMN_VERSION = 2
+COLUMN_TRUST_LEVEL = 3
+
+
 class PluginListWidget(QtWidgets.QTreeWidget):
     """Widget for displaying and managing plugins."""
 
@@ -60,20 +67,21 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Column 0: Checkbox only (no text)
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(
-                0, QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked
+                COLUMN_ENABLED,
+                QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked,
             )
 
             # Column 1: Plugin name
-            item.setText(1, plugin.name or plugin.plugin_id)
+            item.setText(COLUMN_PLUGIN, plugin.name or plugin.plugin_id)
 
             # Column 2: Version
-            item.setText(2, self._get_version_display(plugin))
+            item.setText(COLUMN_VERSION, self._get_version_display(plugin))
 
             # Column 3: Trust level
-            item.setText(3, self._get_trust_level_display(plugin))
+            item.setText(COLUMN_TRUST_LEVEL, self._get_trust_level_display(plugin))
 
             # Store plugin reference
-            item.setData(0, QtCore.Qt.ItemDataRole.UserRole, plugin)
+            item.setData(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole, plugin)
 
             self.addTopLevelItem(item)
 
@@ -221,8 +229,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _on_item_clicked(self, item, column):
         """Handle item clicks (checkbox clicks)."""
-        if column == 0:  # Only handle clicks on the checkbox column
-            plugin = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        if column == COLUMN_ENABLED:  # Only handle clicks on the checkbox column
+            plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if plugin:
                 # Prevent rapid toggling of the same plugin
                 if plugin.plugin_id in self._toggling_plugins:
@@ -266,7 +274,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     # Always update UI to reflect actual plugin state
                     actual_enabled = self._is_plugin_enabled(plugin)
                     item.setCheckState(
-                        0, QtCore.Qt.CheckState.Checked if actual_enabled else QtCore.Qt.CheckState.Unchecked
+                        COLUMN_ENABLED,
+                        QtCore.Qt.CheckState.Checked if actual_enabled else QtCore.Qt.CheckState.Unchecked,
                     )
 
                     # Remove from toggling set
@@ -274,12 +283,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _update_item_to_intended_state(self, item, enabled):
         """Update item display to show intended state."""
-        item.setCheckState(0, QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
+        item.setCheckState(COLUMN_ENABLED, QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
 
     def _update_item_display(self, item, plugin):
         """Update display for a specific item."""
         item.setCheckState(
-            0, QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked
+            COLUMN_ENABLED,
+            QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked,
         )
 
     def _clear_toggle_and_refresh(self, plugin_id):

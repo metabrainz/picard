@@ -25,6 +25,11 @@ from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 
+# Tab positions
+TAB_REGISTRY = 0
+TAB_URL = 1
+
+
 class InstallPluginDialog(QtWidgets.QDialog):
     """Dialog for installing plugins."""
 
@@ -121,7 +126,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         """Validate input and update UI."""
         current_tab = self.tab_widget.currentIndex()
 
-        if current_tab == 0:  # Registry tab
+        if current_tab == TAB_REGISTRY:  # Registry tab
             plugin_id = self.plugin_id_edit.text().strip()
             self.install_button.setEnabled(bool(plugin_id))
             if plugin_id:
@@ -200,7 +205,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin system not available"))
             return
 
-        if current_tab == 0:  # Registry tab
+        if current_tab == TAB_REGISTRY:  # Registry tab
             plugin_id = self.plugin_id_edit.text().strip()
             if not plugin_id:
                 return
