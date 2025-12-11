@@ -122,6 +122,7 @@ pip install -e .
 ### Switching Python Versions
 
 **With uv (recommended):**
+
 ```bash
 # uv automatically manages Python versions
 uv venv --python 3.11
@@ -131,6 +132,7 @@ uv sync
 ```
 
 **With system Python:**
+
 ```bash
 # Create separate virtual environments
 python3.11 -m venv .venv311
@@ -189,9 +191,11 @@ Use ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html
 ## Documentation
 
 ### User Documentation
+
 See [Picard Documentation project](https://github.com/metabrainz/picard-docs/blob/master/.github/CONTRIBUTING.md) for contributing to the [Picard User Guide](https://picard-docs.musicbrainz.org).
 
 ### Translations
+
 See [po/README.md](./po/README.md) for translation information.
 
 ## Audio Metadata Standards
@@ -199,6 +203,7 @@ See [po/README.md](./po/README.md) for translation information.
 When implementing tag support, aim for compatibility with existing software.
 
 ### Format Specifications
+
 - [ID3](https://github.com/id3/ID3v2.4)
 - [VorbisComment](https://wiki.xiph.org/VorbisComment)
 - [OggOpus](https://wiki.xiph.org/OggOpus#Comment_Header) (in addition to Vorbis Comment spec)
@@ -211,6 +216,7 @@ When implementing tag support, aim for compatibility with existing software.
 - [Mutagen Spec Collection](https://mutagen-specs.readthedocs.io/en/latest/)
 
 ### Tag Mapping References
+
 - [Picard Tag Mapping](https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html)
 - [JAudiotagger](http://www.jthink.net/jaudiotagger/tagmapping.html)
 - [MP3Tag](https://help.mp3tag.de/main_tags.html)
@@ -232,6 +238,7 @@ When implementing tag support, aim for compatibility with existing software.
 - [Navidrome mappings.yaml](https://github.com/navidrome/navidrome/blob/master/resources/mappings.yaml)
 
 ### Additional References
+
 - [Comparison Picard / JAudiotagger](https://docs.google.com/spreadsheets/d/1afugW3R1FRDN-mwt5SQLY4R7aLAu3RqzjN3pR1497Ok/edit#gid=0)
 - [Roon Knowledge Base - File Tag Best Practice](https://kb.roonlabs.com/File_Tag_Best_Practice)
 - [Roon Knowledge Base - Roon Vs Tags](https://kb.roonlabs.com/Roon_Vs_Tags)

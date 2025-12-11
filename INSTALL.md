@@ -1,5 +1,4 @@
-MusicBrainz Picard Installation
-===============================
+# MusicBrainz Picard Installation
 
 ## Quick Start
 
@@ -72,11 +71,13 @@ pip3 install .  # Installs Picard but not dependencies
 ```
 
 To start Picard:
+
 ```bash
 picard
 ```
 
 To uninstall:
+
 ```bash
 pip3 uninstall picard
 ```
@@ -124,9 +125,9 @@ apt install python3-pyqt6 python3-pyqt6.qtmultimedia
 ```
 
 **Note:**
-- Not needed for official binary installations
-- When using uv/pip, you may still need some system libraries (like libqt6multimedia6)
-- You can use system PyQt6 packages instead of installing via pip/uv
+* Not needed for official binary installations
+* When using uv/pip, you may still need some system libraries (like libqt6multimedia6)
+* You can use system PyQt6 packages instead of installing via pip/uv
 
 ### Qt6 via pip Issues
 
