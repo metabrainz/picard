@@ -22,6 +22,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.i18n import gettext as _
+from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState, short_commit_id
 from picard.util import temporary_disconnect
 
@@ -421,16 +422,22 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             tagger = QtCore.QCoreApplication.instance()
             if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
                 try:
-                    if dialog.purge_config:
-                        tagger.pluginmanager3.uninstall_plugin(plugin, purge_config=True)
-                    else:
-                        tagger.pluginmanager3.uninstall_plugin(plugin)
-                    # Use timer to refresh after uninstall completes
-                    QtCore.QTimer.singleShot(100, self._refresh_plugin_list)
+                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                    async_manager.uninstall_plugin(
+                        plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
+                    )
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(
                         self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
                     )
+
+    def _on_uninstall_complete(self, result):
+        """Handle uninstall completion."""
+        if result.success:
+            self._refresh_plugin_list()
+        else:
+            error_msg = str(result.error) if result.error else _("Unknown error")
+            QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
 
     def _view_repository(self, plugin):
         """Open plugin repository in browser."""
