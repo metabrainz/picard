@@ -362,7 +362,7 @@ See [MIGRATION.md](MIGRATION.md) for migration guide.
 > **rdswift:** "I agree with the recommendation to initially do manually checking only (for Phase 1) and ultimately implement automatic checking during startup (Phase 4). I suggest that there be a menu item, either from the main menu or on the 'Plugins' option page, to always allow initiation of a manual update check. I also recommend that the option setting to disable the automatic checking during startup, which exists in the current release of Picard, be retained. Another option might be to automatically perform the update check (if enabled) in the background, and display a notice (possibly right-justified on the same line as the main menu bar) indicating that an update is available. This would allow checking to take place without significantly impacting the startup UI. This is the approach that some other applications take (e.g. Calibre). I also suggest that a user setting regarding optional notification of pre-release versions could be included, similar to the setting regarding update checking for Picard itself."
 
 **Recommendations based on feedback:**
-- Phase 1: Manual check only (`picard plugins --check-updates`)
+- Phase 1: Manual check only (`picard-plugins --check-updates`)
 - Phase 2: Add menu item for manual check
 - Phase 4: Automatic background check on startup (with disable option)
 - Consider notification area indicator (like Calibre)
@@ -388,7 +388,7 @@ See [MIGRATION.md](MIGRATION.md) for migration guide.
 **Recommendation:**
 - Prompt during uninstall: "Delete plugin configuration? [y/N]"
 - Add `--purge` flag to force deletion
-- Add `picard plugins --clean-config <name>` command for later cleanup
+- Add `picard-plugins --clean-config <name>` command for later cleanup
 - Keep config by default for safety
 
 **Status:** OPEN - Implement in Phase 1.7
@@ -519,10 +519,10 @@ See [MIGRATION.md](MIGRATION.md) for migration guide.
 **Approach:**
 ```bash
 # Roll back to specific commit
-picard plugins --switch-ref myplugin abc123
+picard-plugins --switch-ref myplugin abc123
 
 # Roll back to version tag
-picard plugins --switch-ref myplugin v1.0.0
+picard-plugins --switch-ref myplugin v1.0.0
 ```
 
 **Community Feedback:**
@@ -548,7 +548,7 @@ picard plugins --switch-ref myplugin v1.0.0
 **Approach:**
 ```bash
 # Phase 1: Standalone mode
-picard plugins --enable listenbrainz
+picard-plugins --enable listenbrainz
 # Modifies config, restart required
 
 # Phase 2: Remote mode

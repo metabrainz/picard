@@ -242,30 +242,31 @@ history_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
 history_tail = TailLogger(_MAX_TAIL_LEN)
 
+# Logging formats
+main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
+main_time_fmt = '%H:%M:%S'
+main_inapp_fmt = main_fmt
+main_inapp_time_fmt = main_time_fmt
+
 
 def history_info(message, *args):
     history_logger.info(message, *args)
 
 
+def enable_console_handler():
+    main_console_handler = logging.StreamHandler()
+    main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
+    main_console_handler.setFormatter(main_console_formatter)
+    main_logger.addHandler(main_console_handler)
+
+
 def enable_default_handlers():
-    # Logging
-    main_fmt = '%(levelname).1s: %(asctime)s,%(msecs)03d %(name)s.%(funcName)s:%(lineno)d: %(message)s'
-    main_time_fmt = '%H:%M:%S'
-    main_inapp_fmt = main_fmt
-    main_inapp_time_fmt = main_time_fmt
+    enable_console_handler()
 
     main_handler = main_tail.log_handler
     main_formatter = logging.Formatter(main_inapp_fmt, main_inapp_time_fmt)
     main_handler.setFormatter(main_formatter)
-
     main_logger.addHandler(main_handler)
-
-    main_console_handler = logging.StreamHandler()
-    main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
-
-    main_console_handler.setFormatter(main_console_formatter)
-
-    main_logger.addHandler(main_console_handler)
 
     # History
     history_handler = history_tail.log_handler
