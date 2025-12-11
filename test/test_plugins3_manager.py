@@ -167,7 +167,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -181,7 +181,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.plugin3.git_factory import git_backend
+            from picard.git.factory import git_backend
 
             backend = git_backend()
             repo = backend.create_repository(repo_dir)
@@ -198,7 +198,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -320,7 +320,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -339,7 +339,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.plugin3.git_factory import git_backend
+            from picard.git.factory import git_backend
 
             backend = git_backend()
             repo = backend.create_repository(existing)

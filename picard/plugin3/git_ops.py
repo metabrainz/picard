@@ -29,7 +29,7 @@ from picard.git.backend import (
     GitBackendError,
     GitStatusFlag,
 )
-from picard.plugin3.git_factory import git_backend
+from picard.git.factory import git_backend
 
 
 def clean_python_cache(directory):

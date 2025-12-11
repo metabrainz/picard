@@ -119,7 +119,7 @@ def _install_defaulting_config(monkeypatch):
 
     # Reset git backend singleton between tests
     with suppress(ModuleNotFoundError):
-        from picard.plugin3.git_factory import _reset_git_backend
+        from picard.git.factory import _reset_git_backend
 
         _reset_git_backend()
 

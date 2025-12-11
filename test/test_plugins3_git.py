@@ -28,7 +28,7 @@ import pytest
 
 
 try:
-    from picard.plugin3.git_factory import has_git_backend
+    from picard.git.factory import has_git_backend
 
     HAS_GIT_BACKEND = has_git_backend()
 except ImportError:
@@ -58,7 +58,7 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         self.tmpdir = tempfile.mkdtemp()
         self.repo_dir = Path(self.tmpdir) / "test-repo"
 
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
 
         backend = git_backend()
         self.repo = backend.init_repository(self.repo_dir)
@@ -269,7 +269,7 @@ def disable():
     def test_plugin_source_git_with_branch(self):
         """Test cloning specific branch."""
         # Create a dev branch in source
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
         backend = git_backend()
@@ -296,7 +296,7 @@ def disable():
     def test_plugin_source_git_with_tag(self):
         """Test cloning specific tag."""
         # Create a tag in source
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
         backend = git_backend()
@@ -316,7 +316,7 @@ def disable():
 
     def test_plugin_source_git_with_commit_hash(self):
         """Test cloning specific commit."""
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
 
         backend = git_backend()
@@ -371,7 +371,7 @@ def disable():
     def test_manager_install_with_ref(self):
         """Test installing plugin from specific ref."""
         # Create dev branch
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
         from picard.plugin3.manager import PluginManager
 
         backend = git_backend()

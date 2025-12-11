@@ -28,7 +28,7 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
-from picard.plugin3.git_factory import has_git_backend
+from picard.git.factory import has_git_backend
 from picard.plugin3.manager import UpdateResult
 
 

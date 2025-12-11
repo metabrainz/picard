@@ -30,7 +30,7 @@ from picard.git.backend import (
     GitRepository,
     GitStatusFlag,
 )
-from picard.plugin3.git_factory import git_backend
+from picard.git.factory import git_backend
 
 
 class MockGitRepository(GitRepository):
@@ -170,7 +170,7 @@ class TestGitBackend(unittest.TestCase):
         """Test fetch_remote_refs with a local repository to ensure refs have proper targets"""
         import tempfile
 
-        from picard.plugin3.git_factory import has_git_backend
+        from picard.git.factory import has_git_backend
 
         if not has_git_backend():
             self.skipTest("git backend not available")
@@ -260,16 +260,16 @@ class TestGitBackend(unittest.TestCase):
 
             repo.free()
 
-    @patch('picard.plugin3.git_factory.get_git_backend')
+    @patch('picard.git.factory.get_git_backend')
     def test_git_factory_singleton(self, mock_get_backend):
         """Test git factory returns singleton"""
         mock_backend = MockGitBackend()
         mock_get_backend.return_value = mock_backend
 
         # Reset singleton
-        import picard.plugin3.git_factory
+        import picard.git.factory
 
-        picard.plugin3.git_factory._git_backend = None
+        picard.git.factory._git_backend = None
 
         backend1 = git_backend()
         backend2 = git_backend()

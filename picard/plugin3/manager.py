@@ -813,7 +813,7 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                from picard.plugin3.git_factory import git_backend
+                from picard.git.factory import git_backend
 
                 backend = git_backend()
                 source_repo = backend.create_repository(local_path)
@@ -1036,7 +1036,7 @@ class PluginManager(QObject):
 
         # Get commit date and resolve annotated tags to actual commit
         from picard.git.backend import GitObjectType
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
 
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
@@ -1114,7 +1114,7 @@ class PluginManager(QObject):
                 continue
 
             try:
-                from picard.plugin3.git_factory import git_backend
+                from picard.git.factory import git_backend
 
                 backend = git_backend()
                 repo = backend.create_repository(plugin.local_path)

@@ -228,7 +228,7 @@ class PluginMetadataManager:
             # Detect current ref from local git repo (overrides metadata)
             if plugin.local_path:
                 try:
-                    from picard.plugin3.git_factory import git_backend
+                    from picard.git.factory import git_backend
 
                     backend = git_backend()
                     repo = backend.create_repository(plugin.local_path)

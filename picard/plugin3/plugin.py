@@ -33,8 +33,8 @@ from picard.extension_points import (
     unset_plugin_uuid,
 )
 from picard.git.backend import GitBackendError
+from picard.git.factory import git_backend
 from picard.plugin3.api import PluginApi
-from picard.plugin3.git_factory import git_backend
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
 
