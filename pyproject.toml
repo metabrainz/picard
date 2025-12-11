@@ -29,7 +29,6 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
 ]
 dynamic = ["version", "readme", "gui-scripts"]
-
 dependencies = [
     "discid~=1.0",
     "Markdown~=3.2",
@@ -47,6 +46,16 @@ dependencies = [
     "pygit2~=1.19; python_version >= '3.14'",
     "tomli>=2.3.0; python_version < '3.11'",
 ]
+
+[project.urls]
+Homepage = "https://picard.musicbrainz.org/"
+Documentation = "https://picard-docs.musicbrainz.org/"
+Repository = "https://github.com/metabrainz/picard.git"
+Issues = "https://tickets.metabrainz.org/projects/PICARD/issues/"
+Changelog = "https://picard.musicbrainz.org/changelog/"
+
+[project.scripts]
+picard-plugins = "picard.plugin3.cli:main"
 
 [dependency-groups]
 build = [
@@ -73,13 +82,6 @@ plugins = [
     "opencc~=1.1",
     "zstandard~=0.23",
 ]
-
-[project.urls]
-Homepage = "https://picard.musicbrainz.org/"
-Documentation = "https://picard-docs.musicbrainz.org/"
-Repository = "https://github.com/metabrainz/picard.git"
-Issues = "https://tickets.metabrainz.org/projects/PICARD/issues/"
-Changelog = "https://picard.musicbrainz.org/changelog/"
 
 [tool.setuptools]
 ext-modules = [

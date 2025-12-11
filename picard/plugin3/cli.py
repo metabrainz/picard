@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,18 +19,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import argparse
 from enum import IntEnum
+import logging
 from pathlib import Path
+import sys
 import tempfile
 
+from PyQt6 import QtCore
+
+from picard import (
+    PICARD_APP_NAME,
+    PICARD_FANCY_VERSION_STR,
+    PICARD_ORG_NAME,
+    log,
+)
+from picard.config import (
+    get_config,
+    setup_config,
+)
+from picard.const import USER_PLUGIN_DIR
+from picard.debug_opts import DebugOpt
+from picard.options import init_options
 from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import short_commit_id
-
-
-def get_config():
-    from picard.config import get_config as _get_config
-
-    return _get_config()
+from picard.util import (
+    cli,
+    versions,
+)
 
 
 def get_display_locale(args):
@@ -1733,3 +1750,121 @@ class PluginCLI:
             'unregistered': '🔓',
         }
         return badges.get(trust_level, '?')
+
+
+def process_cmdline_args():
+    parser = argparse.ArgumentParser()
+
+    # Picard specific arguments
+    parser.add_argument('-c', '--config-file', action='store', default=None, help="location of the configuration file")
+    parser.add_argument('--debug', action='store_true', help="enable debug-level logging")
+    parser.add_argument('-v', '--version', action='store_true', help="display version information and exit")
+    parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
+    parser.add_argument(
+        '--debug-opts',
+        action='store',
+        default=None,
+        help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names(),
+    )
+
+    parser.add_argument('-l', '--list', action='store_true', help="list installed plugins")
+    parser.add_argument('-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from URL(s)")
+    parser.add_argument('-r', '--remove', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
+    parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
+    parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
+    parser.add_argument('-u', '--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version")
+    parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
+    parser.add_argument('--check-updates', action='store_true', help="check for available updates")
+    parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
+    parser.add_argument('--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin")
+    parser.add_argument('--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate")
+    parser.add_argument('--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref")
+    parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
+    parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
+    parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
+    parser.add_argument(
+        '--clean-config',
+        nargs='?',
+        const='',
+        metavar='PLUGIN',
+        help="delete saved options for a plugin (list orphaned configs if no plugin specified)",
+    )
+    parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
+    parser.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
+    parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
+    parser.add_argument(
+        '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
+    )
+    parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
+    parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
+    parser.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
+    parser.add_argument('--refresh-registry', action='store_true', help="force refresh of plugin registry cache")
+    parser.add_argument('--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)")
+    parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
+    parser.add_argument(
+        '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
+    )
+    parser.add_argument('--no-color', action='store_true', help="disable colored output")
+
+    args = parser.parse_args()
+    args.remote_commands_help = False
+
+    return args, parser
+
+
+def minimal_init(config_file=None):
+    """Minimal initialization for CLI commands without GUI.
+
+    Returns a QCoreApplication instance with config initialized.
+    """
+    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
+    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
+
+    app = QtCore.QCoreApplication(sys.argv)
+
+    init_options()
+    setup_config(app=app, filename=config_file)
+
+    return app
+
+
+def main():
+    try:
+        from picard.git.factory import has_git_backend
+
+        if not has_git_backend():
+            cli.print_message_and_exit("git backend not available", status=1)
+    except ImportError as err:
+        cli.print_message_and_exit("failed importing git backend", str(err), status=1)
+
+    cmdline_args, parser = process_cmdline_args()
+
+    app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
+
+    if cmdline_args.long_version:
+        cli.print_message_and_exit(versions.as_string())
+    if cmdline_args.version:
+        cli.print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
+
+    # Initialize debug options for CLI
+    if cmdline_args.debug_opts:
+        DebugOpt.from_string(cmdline_args.debug_opts)
+        # Ensure DEBUG level is enabled when debug options are used
+        log.set_verbosity(logging.DEBUG)
+
+    from picard.plugin3.manager import PluginManager
+    from picard.plugin3.output import PluginOutput
+
+    manager = PluginManager()
+    manager.add_directory(USER_PLUGIN_DIR, primary=True)
+
+    # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
+    if not cmdline_args.debug and not cmdline_args.debug_opts:
+        log.set_verbosity(logging.WARNING)
+
+    # Create output with color setting from args
+    color = not getattr(cmdline_args, 'no_color', False)
+    output = PluginOutput(color=color)
+
+    exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
+    sys.exit(exit_code)

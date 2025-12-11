@@ -105,7 +105,6 @@ from picard.config_upgrade import upgrade_config
 from picard.const import (
     BROWSER_INTEGRATION_LOCALHOST,
     USER_DIR,
-    USER_PLUGIN_DIR,
 )
 from picard.const.appdirs import (
     plugin_folder,
@@ -141,7 +140,6 @@ try:
     from picard.git.factory import has_git_backend
 
     if has_git_backend():
-        from picard.plugin3.cli import PluginCLI
         from picard.plugin3.manager import PluginManager
 
         HAS_PLUGIN3 = True
@@ -168,6 +166,7 @@ from picard.track import (
 )
 from picard.util import (
     check_io_encoding,
+    cli,
     encode_filename,
     is_hidden,
     iter_files_from_objects,
@@ -1416,11 +1415,9 @@ def show_standalone_messagebox(message, informative_text=None):
 def print_message_and_exit(message, informative_text=None, status=0):
     if is_windowed_app():
         show_standalone_messagebox(message, informative_text)
+        sys.exit(status)
     else:
-        print(message)
-        if informative_text:
-            print(informative_text)
-    sys.exit(status)
+        cli.print_message_and_exit(message, informative_text, status)
 
 
 def print_help_for_commands():
@@ -1479,55 +1476,6 @@ If a new instance will not be spawned files/directories will be passed to the ex
     parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
     parser.add_argument('FILE_OR_URL', nargs='*', help="the file(s), URL(s) and MBID(s) to load")
 
-    subparsers = parser.add_subparsers(title="subcommands", dest="subcommand")
-    plugin_parser = subparsers.add_parser('plugins', help="manage plugins, see plugins --help")
-    plugin_parser.add_argument('-l', '--list', action='store_true', help="list installed plugins")
-    plugin_parser.add_argument('-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from URL(s)")
-    plugin_parser.add_argument('-r', '--remove', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
-    plugin_parser.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
-    plugin_parser.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
-    plugin_parser.add_argument('-u', '--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version")
-    plugin_parser.add_argument('--update-all', action='store_true', help="update all installed plugins")
-    plugin_parser.add_argument('--check-updates', action='store_true', help="check for available updates")
-    plugin_parser.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
-    plugin_parser.add_argument(
-        '--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin"
-    )
-    plugin_parser.add_argument(
-        '--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate"
-    )
-    plugin_parser.add_argument(
-        '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
-    )
-    plugin_parser.add_argument('--reinstall', action='store_true', help="force reinstall of existing plugin")
-    plugin_parser.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
-    plugin_parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
-    plugin_parser.add_argument(
-        '--clean-config',
-        nargs='?',
-        const='',
-        metavar='PLUGIN',
-        help="delete saved options for a plugin (list orphaned configs if no plugin specified)",
-    )
-    plugin_parser.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
-    plugin_parser.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
-    plugin_parser.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
-    plugin_parser.add_argument(
-        '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
-    )
-    plugin_parser.add_argument('--browse', action='store_true', help="browse plugins from registry")
-    plugin_parser.add_argument('--search', metavar='QUERY', help="search plugins in registry")
-    plugin_parser.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
-    plugin_parser.add_argument('--refresh-registry', action='store_true', help="force refresh of plugin registry cache")
-    plugin_parser.add_argument(
-        '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
-    )
-    plugin_parser.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
-    plugin_parser.add_argument(
-        '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
-    )
-    plugin_parser.add_argument('--no-color', action='store_true', help="disable colored output")
-
     args = parser.parse_args()
     args.remote_commands_help = False
 
@@ -1550,7 +1498,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
             for arg in remote_command_args:
                 args.processable.append(f"{e[0]} {arg}")
 
-    return args, plugin_parser
+    return args
 
 
 PipeStatus = namedtuple('PipeStatus', ('handler', 'is_remote'))
@@ -1743,7 +1691,7 @@ def main(localedir=None, autoupdate=True):
 
     signal.signal(signal.SIGINT, signal.SIG_DFL)
 
-    cmdline_args, plugin_parser = process_cmdline_args()
+    cmdline_args = process_cmdline_args()
 
     if cmdline_args.long_version:
         _ = QtCore.QCoreApplication(sys.argv)
@@ -1763,37 +1711,6 @@ def main(localedir=None, autoupdate=True):
         sys.exit(0)
 
     setup_dbus()
-
-    # Handle plugin commands with minimal initialization (no GUI)
-    if cmdline_args.subcommand == 'plugins':
-        if not HAS_PLUGIN3:
-            log.error('Plugin3 system not available. Git backend not available for plugin management.')
-            sys.exit(1)
-
-        app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
-
-        # Initialize debug options for CLI
-        if cmdline_args.debug_opts:
-            DebugOpt.from_string(cmdline_args.debug_opts)
-            # Ensure DEBUG level is enabled when debug options are used
-            log.set_verbosity(logging.DEBUG)
-
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.output import PluginOutput
-
-        manager = PluginManager()
-        manager.add_directory(USER_PLUGIN_DIR, primary=True)
-
-        # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
-        if not cmdline_args.debug and not cmdline_args.debug_opts:
-            log.set_verbosity(logging.WARNING)
-
-        # Create output with color setting from args
-        color = not getattr(cmdline_args, 'no_color', False)
-        output = PluginOutput(color=color)
-
-        exit_code = PluginCLI(manager, cmdline_args, output=output, parser=plugin_parser).run()
-        sys.exit(exit_code)
 
     # GUI mode - full Tagger initialization
     tagger = Tagger(cmdline_args, localedir, autoupdate, pipe_handler=pipe_status.handler)
