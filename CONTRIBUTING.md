@@ -1,6 +1,49 @@
 # Contributing to Picard
 
-## Quick Setup
+Picard and associated plugins and documentation has been a colaborative effort by volunteer contributors from the very start,
+and contributions continue to be welcome from anyone in the community, as:
+
+* Code improvements in Picard itself (as PRs to this repo)
+* Language translations for Picard (see the [Translations README](/metabrainz/picard/blob/master/po/README.md))
+* New or modified plugins (as PRs on the [Picard-Plugins repo](/metabrainz/picard-plugins))
+* Documentation improvements on the [Picard-Docs website](https://picard-docs.musicbrainz.org/en/about_picard/contributing.html)
+* Answering user questions in the [Picard section of the Community discussion board](https://community.metabrainz.org/c/picard/13)
+
+Please be aware that we try to maintain high quality standards in all these areas,
+that there is a learning curve to being able to make high-quality contributions,
+and we consider achieving this to be a team effort with other community members chipping in to help you achieve the quality needed. 
+So please be prepared to welcome constructive criticism on your proposed contributions
+and consider the effort  that is being expended by others to help you in the positive light it is given.
+
+If you want to contribute to the Picard code, then please read-on for details on:
+
+* [To-do list](#to-do-list)
+* [Technical Setup](#technical-setup)
+* [Development Workflow](#development-workflow)
+* [Coding Standards](#coding-standards)
+* [Git Workflow](#git-workflow)
+* [Documentation](#documentation)
+* [Audio Metadata Standards](#audio-metadata-standards) 
+
+Before starting you might want to ask more experienced contributors for advice about how to get started, 
+and the easiest way for this would be to ask in the MusicBrainz Picard Development chat room
+on [Matrix](https://matrix.to/#/#musicbrainz-picard-dev:chatbrainz.org).
+
+## To-Do List
+
+In many cases, people make contributions because of their own experiences - 
+they have had an issue or can see a way that Picard could be improved.
+
+However if you simply would like to contribute and are looking for ideas, 
+then a to-do list of outstanding issues are areas for improvement can be found on the 
+[MusicBrainz Jira Tickets system - Picard project](https://tickets.metabrainz.org/projects/PICARD/issues/?filter=allopenissues).
+
+If you want to pick one of these to work on, make sure that you start with something small 
+as many of these are large-scale, long-term suggestions - 
+if in doubt ask for advice in the chat room so that you don't spend time and effort on something that
+is too complex or which won't get merged.
+
+## Technical Setup
 
 ### 1. Install System Dependencies
 
