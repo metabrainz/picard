@@ -39,7 +39,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def setup_ui(self):
         """Setup the tree widget."""
-        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Trust Level"), _("Status")])
+        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Trust Level")])
         self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
@@ -68,14 +68,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Column 2: Version
             item.setText(2, self._get_version_display(plugin))
-            # Column 2: Version
-            item.setText(2, self._get_version_display(plugin))
 
             # Column 3: Trust level
             item.setText(3, self._get_trust_level_display(plugin))
-
-            # Column 4: Status
-            item.setText(4, _("Enabled") if self._is_plugin_enabled(plugin) else _("Disabled"))
 
             # Store plugin reference
             item.setData(0, QtCore.Qt.ItemDataRole.UserRole, plugin)
@@ -273,19 +268,16 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     item.setCheckState(
                         0, QtCore.Qt.CheckState.Checked if actual_enabled else QtCore.Qt.CheckState.Unchecked
                     )
-                    item.setText(4, _("Enabled") if actual_enabled else _("Disabled"))
 
                     # Remove from toggling set
                     self._toggling_plugins.discard(plugin.plugin_id)
 
     def _update_item_to_intended_state(self, item, enabled):
         """Update item display to show intended state."""
-        item.setText(4, _("Enabled") if enabled else _("Disabled"))
         item.setCheckState(0, QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
 
     def _update_item_display(self, item, plugin):
         """Update display for a specific item."""
-        item.setText(4, _("Enabled") if self._is_plugin_enabled(plugin) else _("Disabled"))
         item.setCheckState(
             0, QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked
         )
