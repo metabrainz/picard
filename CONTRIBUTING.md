@@ -174,13 +174,6 @@ Use ["Google-style" docstrings](https://google.github.io/styleguide/pyguide.html
 - **Naming**: Use snake_case for functions/variables (except pre-generated PyQt code)
 - **Internationalization**: Use `_()` for translatable strings and `N_()` for gettext-noop
 
-### Examples
-
-```python
-# Good internationalization
-print(_("The value for 'key' is {key}.").format(**d))
-```
-
 ## Git Workflow
 
 1. **Fork** the repository to your account
