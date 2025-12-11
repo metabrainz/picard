@@ -1,4 +1,7 @@
 {
+    "heading-style": {
+        "style": "atx"
+    },
     "no-multiple-blanks": false,
     "line-length": false,
     "blanks-around-headers": false,
