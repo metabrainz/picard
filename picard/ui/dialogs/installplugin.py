@@ -430,7 +430,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         if result.success:
             self.status_label.setText(_("Plugin installed successfully"))
             self.plugin_installed.emit(result.result)
-            QtWidgets.QTimer.singleShot(1000, self.accept)  # Close after 1 second
+            QtCore.QTimer.singleShot(1000, self.accept)  # Close after 1 second
         else:
             self.status_label.setText(_("Installation failed"))
             error_msg = str(result.error) if result.error else _("Unknown error")
