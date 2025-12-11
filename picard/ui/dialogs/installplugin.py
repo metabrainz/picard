@@ -198,6 +198,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
         search_text = self.search_edit.text().lower()
         category = self.category_combo.currentData()
 
+        # Get installed plugin UUIDs
+        installed_uuids = self._get_installed_plugin_uuids()
+
         self.plugin_table.setRowCount(0)
 
         trust_badges = {
@@ -215,6 +218,11 @@ class InstallPluginDialog(QtWidgets.QDialog):
         }
 
         for plugin in self._all_plugins:
+            # Skip if already installed
+            plugin_uuid = plugin.get('uuid')
+            if plugin_uuid and plugin_uuid in installed_uuids:
+                continue
+
             # Category filter
             if category and category not in plugin.get('categories', []):
                 continue
@@ -250,6 +258,29 @@ class InstallPluginDialog(QtWidgets.QDialog):
             categories = plugin.get('categories', [])
             cat_item = QtWidgets.QTableWidgetItem(', '.join(categories))
             self.plugin_table.setItem(row, 2, cat_item)
+
+    def _get_installed_plugin_uuids(self):
+        """Get set of installed plugin UUIDs."""
+        installed_uuids = set()
+        tagger = QtWidgets.QApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            try:
+                for plugin in tagger.pluginmanager3.plugins:
+                    try:
+                        uuid = plugin.manifest.uuid()
+                        if uuid:
+                            installed_uuids.add(uuid)
+                    except (AttributeError, Exception):
+                        pass
+            except Exception:
+                pass
+        return installed_uuids
+
+    def showEvent(self, event):
+        """Refresh plugin filtering when dialog is shown."""
+        super().showEvent(event)
+        if hasattr(self, '_all_plugins'):
+            self._filter_plugins()
 
     def _install_selected_plugin(self):
         """Install the selected plugin from registry."""
