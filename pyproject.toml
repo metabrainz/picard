@@ -198,3 +198,9 @@ docstring-code-line-length = "dynamic"
 
 [tool.uv]
 default-groups = ["build", "dev"]
+
+[tool.bandit]
+exclude_dirs = ["*/test/*", "*/.venv*/*", "*/dist/*", "*/build/*"]
+skips = [
+    "B101",  # assert_used
+]

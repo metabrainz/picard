@@ -59,7 +59,7 @@ class ScriptEditorExamples:
     def _get_samples(self, candidates):
         candidates = tuple(candidates)
         length = min(self.max_samples, len(candidates))
-        return random.sample(candidates, k=length)
+        return random.sample(candidates, k=length)  # nosec B311
 
     def update_sample_example_files(self):
         """Get a new sample of randomly selected / loaded files to use as renaming examples."""

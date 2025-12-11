@@ -28,6 +28,15 @@ jobs:
             docs/**/*.md
             po/*.md
 
+  bandit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: install bandit
+        run: pip install bandit
+      - name: run bandit
+        run: bandit -c pyproject.toml -r .
+
   check-keys:
     runs-on: ubuntu-latest
     steps:
