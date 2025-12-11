@@ -293,26 +293,19 @@ class SettingConfigSection(ConfigSection):
             for _profile_id, settings in self._get_active_profile_settings():
                 if name in settings and settings[name] is not None:
                     return settings[name]
-        opt = Option.get(self.__name, name)
-        if opt is None:
-            return None
-        return self.value(name, opt, opt.default)
+        return super().__getitem__(name)
 
     def __setitem__(self, name, value):
-        old_value = self.__getitem__(name)
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
                 if name in settings:
+                    old_value = settings[name]
                     self._save_profile_setting(profile_id, name, value)
                     if value != old_value:
                         self.setting_changed.emit(name, old_value, value)
                     return
-        key = self.key(name)
-        self.__qt_config.setValue(key, value)
-        self._memoization[key].dirty = True
-        if value != old_value:
-            self.setting_changed.emit(name, old_value, value)
+        super().__setitem__(name, value)
 
     def _save_profile_setting(self, profile_id, name, value):
         profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
