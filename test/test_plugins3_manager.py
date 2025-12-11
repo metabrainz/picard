@@ -29,7 +29,7 @@ from test.test_plugins3_helpers import (
     MockTagger,
 )
 
-from picard.plugin3.git_ops import GitOperations
+from picard.git.ops import GitOperations
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.validation import PluginValidation
 
@@ -167,7 +167,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -181,7 +181,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.plugin3.git_factory import git_backend
+            from picard.git.factory import git_backend
 
             backend = git_backend()
             repo = backend.create_repository(repo_dir)
@@ -198,7 +198,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -276,7 +276,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                 mock_source.return_value = mock_source_instance
 
                 # Mock git backend at import location
-                with patch('picard.plugin3.git_factory.git_backend') as mock_backend_func:
+                with patch('picard.git.factory.git_backend') as mock_backend_func:
                     mock_backend = Mock()
                     mock_repo = Mock()
                     mock_commit = Mock()
@@ -306,8 +306,8 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
 
-        with patch('picard.plugin3.git_ops.clean_python_cache'):
-            with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
+        with patch('picard.git.ops.clean_python_cache'):
+            with patch('picard.git.ops.GitOperations.check_dirty_working_dir', return_value=['modified.txt']):
                 with self.assertRaises(PluginDirtyError) as context:
                     GitOperations.switch_ref(mock_plugin, 'develop')
 
@@ -320,7 +320,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         import tempfile
 
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if not has_git_backend():
                 self.skipTest("git backend not available")
@@ -339,7 +339,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.plugin3.git_factory import git_backend
+            from picard.git.factory import git_backend
 
             backend = git_backend()
             repo = backend.create_repository(existing)

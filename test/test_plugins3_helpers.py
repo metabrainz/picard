@@ -246,7 +246,7 @@ def create_mock_manager_with_manifest_validation():
 def skip_if_no_git_backend():
     """Skip test if git backend is not available."""
     try:
-        from picard.plugin3.git_factory import has_git_backend
+        from picard.git.factory import has_git_backend
 
         if not has_git_backend():
             import pytest
@@ -270,7 +270,7 @@ def create_git_repo_with_backend(repo_path, initial_files=None):
     """
     from pathlib import Path
 
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     repo_path = Path(repo_path)
     repo_path.mkdir(parents=True, exist_ok=True)
@@ -294,14 +294,14 @@ def create_git_repo_with_backend(repo_path, initial_files=None):
 
 def get_backend_repo(repo_path):
     """Get a backend repository instance for a path."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     return git_backend().create_repository(repo_path)
 
 
 def backend_create_tag(repo_path, tag_name, commit_id=None, message=""):
     """Create a tag using the git backend."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     backend = git_backend()
     repo = backend.create_repository(repo_path)
@@ -313,7 +313,7 @@ def backend_create_tag(repo_path, tag_name, commit_id=None, message=""):
 
 def backend_create_lightweight_tag(repo_path, tag_name, commit_id=None):
     """Create a lightweight tag (reference only) using backend."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     backend = git_backend()
     repo = backend.create_repository(repo_path)
@@ -325,7 +325,7 @@ def backend_create_lightweight_tag(repo_path, tag_name, commit_id=None):
 
 def backend_set_detached_head(repo_path, commit_id):
     """Set repository to detached HEAD state using backend."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     backend = git_backend()
     repo = backend.create_repository(repo_path)
@@ -335,7 +335,7 @@ def backend_set_detached_head(repo_path, commit_id):
 
 def backend_create_branch(repo_path, branch_name, commit_id=None):
     """Create a branch using the git backend."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     backend = git_backend()
     repo = backend.create_repository(repo_path)
@@ -347,7 +347,7 @@ def backend_create_branch(repo_path, branch_name, commit_id=None):
 
 def backend_add_and_commit(repo_path, message="Commit", author_name="Test", author_email="test@example.com"):
     """Add all files and commit using backend."""
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     backend = git_backend()
     repo = backend.create_repository(repo_path)
@@ -360,7 +360,7 @@ def backend_init_and_commit(repo_path, files=None, message="Initial commit"):
     """Initialize repo and create initial commit using backend."""
     from pathlib import Path
 
-    from picard.plugin3.git_factory import git_backend
+    from picard.git.factory import git_backend
 
     repo_path = Path(repo_path)
     repo_path.mkdir(parents=True, exist_ok=True)
@@ -477,7 +477,7 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
     # Initialize git if requested
     if add_git:
         try:
-            from picard.plugin3.git_factory import has_git_backend
+            from picard.git.factory import has_git_backend
 
             if has_git_backend():
                 create_git_repo_with_backend(
@@ -503,7 +503,7 @@ def create_git_commit(repo_path, message='Initial commit', author_name='Test', a
         str: Commit ID (SHA)
     """
     try:
-        from picard.plugin3.git_factory import git_backend, has_git_backend
+        from picard.git.factory import git_backend, has_git_backend
 
         if not has_git_backend():
             return None

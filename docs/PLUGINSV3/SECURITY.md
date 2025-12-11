@@ -32,29 +32,29 @@ See [REGISTRY.md](REGISTRY.md) for detailed trust level descriptions.
 
 ### Defense in Depth
 
-**Layer 1: Trust Levels**
+#### Layer 1: Trust Levels
 - Official plugins: Full code review by Picard team
 - Trusted plugins: Reputation-based trust
 - Community plugins: Clear warnings to users
 - Unregistered plugins: Strongest warnings
 
-**Layer 2: Blacklist**
+#### Layer 2: Blacklist
 - Centralized blacklist on website
 - Updated independently of Picard releases
 - Supports repository-level patterns (block entire organizations)
 - Checked on install and startup
 
-**Layer 3: User Education**
+#### Layer 3: User Education
 - Clear warnings for non-official plugins
 - Documentation of risks
 - Explanation of plugin capabilities
 
-**Layer 4: Rapid Response**
+#### Layer 4: Rapid Response
 - Fast blacklist updates
 - Community reporting
 - Incident response process
 
-**Layer 5: Code Signing (Future)**
+#### Layer 5: Code Signing (Future)
 - Sign official plugins
 - Verify signature on load
 - Proves authenticity (not security)

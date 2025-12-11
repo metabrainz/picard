@@ -20,7 +20,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.git_factory import has_git_backend
+from picard.git.factory import has_git_backend
 from picard.plugin3.plugin import (
     PluginSourceGit,
     PluginSourceSyncError,

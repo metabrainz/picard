@@ -10,13 +10,15 @@
 Currently, the V3 plugin system assumes **one plugin per repository**. This document explores supporting **multiple plugins in a single repository** (monorepo pattern).
 
 ### Current State
-```
+
+```text
 https://github.com/user/plugin.git
 → Installs one plugin
 ```
 
 ### Proposed Monorepo Support
-```
+
+```text
 https://github.com/metabrainz/picard-plugins.git#lastfm
 https://github.com/metabrainz/picard-plugins.git#bpm
 → Installs specific plugin from collection
@@ -80,7 +82,8 @@ https://github.com/metabrainz/picard-plugins.git#bpm
 ### URL Syntax: Fragment Identifier
 
 Use standard URL fragment to specify plugin:
-```
+
+```text
 https://github.com/user/plugins.git#plugin-name
 ```
 
@@ -93,7 +96,8 @@ https://github.com/user/plugins.git#plugin-name
 ### Auto-Detection
 
 If repository contains only one plugin, fragment is optional:
-```
+
+```text
 https://github.com/user/single-plugin.git
 → Auto-detects and installs the plugin
 ```
@@ -252,22 +256,22 @@ Plugin relocates from one repository to another.
 
 ### Important (Should Handle)
 
-8. **Partial update failure**: Atomic updates or rollback
-9. **Local modifications**: Detect and warn before overwrite
-10. **Large repos**: Sparse checkout or shallow clone
-11. **Cache management**: TTL and cleanup
-12. **Registry unavailable**: Fallback to direct URLs
-13. **Stale cache**: Fetch before updates
-14. **Multiple plugins from same repo**: Batch operations
+1. **Partial update failure**: Atomic updates or rollback
+2. **Local modifications**: Detect and warn before overwrite
+3. **Large repos**: Sparse checkout or shallow clone
+4. **Cache management**: TTL and cleanup
+5. **Registry unavailable**: Fallback to direct URLs
+6. **Stale cache**: Fetch before updates
+7. **Multiple plugins from same repo**: Batch operations
 
 ### Nice to Have (Could Handle)
 
-15. **Git LFS support**: Detect and handle large files
-16. **Submodules**: Clone recursively or ignore
-17. **Nested directories**: Scan depth limit
-18. **Hidden plugins**: Respect `.pluginignore`
-19. **Performance optimization**: Parallel operations
-20. **Circular dependencies**: Detect and reject
+1. **Git LFS support**: Detect and handle large files
+2. **Submodules**: Clone recursively or ignore
+3. **Nested directories**: Scan depth limit
+4. **Hidden plugins**: Respect `.pluginignore`
+5. **Performance optimization**: Parallel operations
+6. **Circular dependencies**: Detect and reject
 
 ---
 
@@ -283,30 +287,30 @@ Plugin relocates from one repository to another.
 
 ### Trust and Security
 
-6. **Trust inheritance**: Should plugins inherit repo trust by default, or start untrusted?
-7. **Blacklist scope**: Block individual plugin or entire repo?
-8. **Code signing**: Future requirement for official plugins?
-9. **Review process**: Who can mark plugins as trusted?
+1. **Trust inheritance**: Should plugins inherit repo trust by default, or start untrusted?
+2. **Blacklist scope**: Block individual plugin or entire repo?
+3. **Code signing**: Future requirement for official plugins?
+4. **Review process**: Who can mark plugins as trusted?
 
 ### User Experience
 
-10. **Default behavior**: If no fragment specified and multiple plugins found, list or error?
-11. **Update notifications**: Per-plugin or per-repo?
-12. **Conflict resolution**: What if user tries to install same plugin ID from different repos?
-13. **Migration path**: How to migrate existing single-repo plugins to monorepo?
+1. **Default behavior**: If no fragment specified and multiple plugins found, list or error?
+2. **Update notifications**: Per-plugin or per-repo?
+3. **Conflict resolution**: What if user tries to install same plugin ID from different repos?
+4. **Migration path**: How to migrate existing single-repo plugins to monorepo?
 
 ### Registry Design
 
-14. **Registry structure**: Flat list or hierarchical (repos → plugins)?
-15. **Redirect chains**: How many redirects to follow? (Currently: unlimited with cycle detection)
-16. **Plugin removal**: How to handle plugins removed from repo?
-17. **Metadata sync**: How often to update registry from repos?
+1. **Registry structure**: Flat list or hierarchical (repos → plugins)?
+2. **Redirect chains**: How many redirects to follow? (Currently: unlimited with cycle detection)
+3. **Plugin removal**: How to handle plugins removed from repo?
+4. **Metadata sync**: How often to update registry from repos?
 
 ### Performance
 
-18. **Clone optimization**: Always shallow clone? Depth limit?
-19. **Bandwidth**: How to minimize for large repos?
-20. **Parallel operations**: Install multiple plugins from same repo in parallel?
+1. **Clone optimization**: Always shallow clone? Depth limit?
+2. **Bandwidth**: How to minimize for large repos?
+3. **Parallel operations**: Install multiple plugins from same repo in parallel?
 
 ---
 
@@ -350,6 +354,6 @@ Plugin relocates from one repository to another.
 ## References
 
 - Current implementation: Single plugin per repo
-- Official plugins: https://github.com/metabrainz/picard-plugins (73 plugins)
+- Official plugins: <https://github.com/metabrainz/picard-plugins> (73 plugins)
 - Trust model: `docs/PLUGINSV3/SECURITY.md`
 - Registry design: `docs/PLUGINSV3/WEBSITE.md`

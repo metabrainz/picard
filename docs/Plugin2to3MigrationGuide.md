@@ -275,9 +275,10 @@ dialog.exec()
 **Before**: Copies `ui_*.py` and converts PyQt5 → PyQt6
 
 **After**: Regenerates from `.ui` source using pyuic6
-```
+```text
 Regenerated: ui_options_plugin.py (from ui_options_plugin.ui)
 ```
+
 - Uses latest PyQt6 code generator
 - All Qt6 enums automatically correct
 - Cleaner output than text conversion
@@ -292,7 +293,7 @@ Regenerated: ui_options_plugin.py (from ui_options_plugin.ui)
 **Excluded**: Build artifacts (`__pycache__`, `.pyc`, `dist/`, `build/`, etc.)
 
 **Conflict handling**: If a source file conflicts with a generated file (e.g., `.ui` file), the source is renamed with `.orig` extension:
-```
+```text
 options.ui (regenerated from source) ← takes priority
 options.ui.orig (original V2 file) ← renamed
 ```
@@ -376,12 +377,12 @@ The tool provides clear warnings for:
 ### 1. Plugin Structure
 
 **V2**:
-```
+```text
 my_plugin.py  (or my_plugin/__init__.py)
 ```
 
 **V3**:
-```
+```text
 my_plugin_v3/
 ├── MANIFEST.toml
 ├── __init__.py
@@ -454,7 +455,7 @@ git commit -m "Migrated to V3"
 ### 2. Review Warnings
 
 The migration tool outputs warnings for items needing manual review:
-```
+```text
 ⚠️  Class 'MyClass' uses 'api' but injection failed - needs manual review
 ```
 
@@ -812,7 +813,7 @@ The migration script has been tested on the entire picard-plugins repository:
 - **V3 Plugin Documentation**: [MIGRATION.md](PLUGINSV3/MIGRATION.md)
 - **Plugin Manifest Reference**: [MANIFEST.md](PLUGINSV3/MANIFEST.md)
 - **Plugin API Reference**: [API.md](PLUGINSV3/API.md)
-- **Forum**: https://community.metabrainz.org/c/picard
+- **Forum**: <https://community.metabrainz.org/c/picard>
 
 ---
 
@@ -823,7 +824,7 @@ If you encounter issues:
 1. Check the warnings from the migration script
 2. Review [MIGRATION.md](PLUGINSV3/MIGRATION.md)
 3. Ask on the MusicBrainz forum
-4. Report bugs: https://tickets.metabrainz.org/browse/PICARD
+4. Report bugs: <https://tickets.metabrainz.org/browse/PICARD>
 
 ---
 

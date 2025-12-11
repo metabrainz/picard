@@ -305,15 +305,15 @@ Hot-reload functionality for running Picard instance:
 
 ### Short Term (Next Week)
 
-4. **Implement Phase 2.3** - Remote commands for hot-reload
-5. **Start Phase 3.1** - Website registry generation
-6. **Announce to community** - Migration guide and tool
+1. **Implement Phase 2.3** - Remote commands for hot-reload
+2. **Start Phase 3.1** - Website registry generation
+3. **Announce to community** - Migration guide and tool
 
 ### Medium Term (Next Month)
 
-7. **Complete Phase 3** - Full registry integration
-8. **Start Phase 4** - GUI integration
-9. **Beta testing** with real users
+1. **Complete Phase 3** - Full registry integration
+2. **Start Phase 4** - GUI integration
+3. **Beta testing** with real users
 
 ---
 

@@ -189,12 +189,10 @@ class TestPluginRegistry(PicardTestCase):
                             mock_source.update.return_value = ('abc123', 'def456')
                             mock_source_class.return_value = mock_source
 
-                            with patch(
-                                'picard.plugin3.git_ops.GitOperations.check_dirty_working_dir'
-                            ) as mock_check_dirty:
+                            with patch('picard.git.ops.GitOperations.check_dirty_working_dir') as mock_check_dirty:
                                 mock_check_dirty.return_value = []  # No uncommitted changes
 
-                                with patch('picard.plugin3.git_factory.git_backend') as mock_backend_func:
+                                with patch('picard.git.factory.git_backend') as mock_backend_func:
                                     mock_backend = Mock()
                                     mock_repo = Mock()
                                     mock_repo.get_commit_date = Mock(return_value=1234567890)

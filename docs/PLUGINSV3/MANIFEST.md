@@ -8,7 +8,7 @@ This document describes the MANIFEST.toml format and how to develop plugins for 
 
 ### Minimal Plugin Structure
 
-```
+```text
 my-plugin/
 ├── MANIFEST.toml
 └── __init__.py
@@ -194,14 +194,14 @@ Le plugin respecte votre vie privée et n'envoie que les données que vous chois
 ### Display Contexts
 
 **Plugin List (uses `description`):**
-```
+```text
 🛡️ ListenBrainz Submitter
    Submit your music to ListenBrainz
    Authors: Picard Team | Category: metadata
 ```
 
 **Search Results (uses `description`):**
-```
+```text
 $ picard plugins --search submit listens
 
 Found 1 plugin:
@@ -210,7 +210,7 @@ Found 1 plugin:
 ```
 
 **Plugin Detail Page (uses `long_description` if available):**
-```
+```text
 ListenBrainz Submitter 🛡️
 
 This plugin integrates with ListenBrainz to submit your music listening history.
@@ -229,7 +229,7 @@ Requirements:
 ```
 
 **CLI Info Command (uses `long_description` if available):**
-```
+```text
 $ picard plugins --info listenbrainz
 
 Plugin: ListenBrainz Submitter
@@ -376,7 +376,7 @@ Vollständige deutsche Beschreibung hier...
 - Optional (recommended)
 - SPDX license identifier
 - Common values: `"GPL-2.0-or-later"`, `"MIT"`, `"Apache-2.0"`
-- See https://spdx.org/licenses/
+- See <https://spdx.org/licenses/>
 
 ### `license_url`
 - Optional
@@ -525,7 +525,7 @@ def enable(api: PluginApi):
 
 Plugins can provide translations using JSON files:
 
-```
+```text
 my-plugin/
 ├── MANIFEST.toml
 ├── __init__.py
@@ -541,7 +541,7 @@ See [TRANSLATIONS.md](TRANSLATIONS.md) for details.
 
 Plugins can include additional data files:
 
-```
+```text
 my-plugin/
 ├── MANIFEST.toml
 ├── __init__.py

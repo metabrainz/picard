@@ -133,7 +133,7 @@ def check_local_repo_dirty(url):
         return False
 
     try:
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
 
         backend = git_backend()
         repo = backend.create_repository(local_path)

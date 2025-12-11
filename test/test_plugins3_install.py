@@ -138,7 +138,7 @@ class TestPluginInstall(PicardTestCase):
         # Mock GitOperations.switch_ref to return ref changes
         from unittest.mock import patch
 
-        with patch('picard.plugin3.git_ops.GitOperations.switch_ref') as mock_switch:
+        with patch('picard.git.ops.GitOperations.switch_ref') as mock_switch:
             mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
 
             old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
@@ -317,7 +317,7 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest_class.return_value = mock_manifest
 
                         with patch('shutil.move'):
-                            with patch('picard.plugin3.git_ops.GitOperations.check_dirty_working_dir') as mock_check:
+                            with patch('picard.git.ops.GitOperations.check_dirty_working_dir') as mock_check:
                                 mock_check.return_value = []  # No uncommitted changes
 
                                 # Should not raise with reinstall=True

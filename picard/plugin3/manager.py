@@ -39,8 +39,8 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const.appdirs import cache_folder
-from picard.plugin3.git_ops import GitOperations
-from picard.plugin3.git_utils import get_local_repository_path
+from picard.git.ops import GitOperations
+from picard.git.utils import get_local_repository_path
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -813,7 +813,7 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                from picard.plugin3.git_factory import git_backend
+                from picard.git.factory import git_backend
 
                 backend = git_backend()
                 source_repo = backend.create_repository(local_path)
@@ -1035,8 +1035,8 @@ class PluginManager(QObject):
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        from picard.plugin3.git_backend import GitObjectType
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.backend import GitObjectType
+        from picard.git.factory import git_backend
 
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
@@ -1114,7 +1114,7 @@ class PluginManager(QObject):
                 continue
 
             try:
-                from picard.plugin3.git_factory import git_backend
+                from picard.git.factory import git_backend
 
                 backend = git_backend()
                 repo = backend.create_repository(plugin.local_path)
@@ -1172,7 +1172,7 @@ class PluginManager(QObject):
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    from picard.plugin3.git_backend import GitObjectType
+                    from picard.git.backend import GitObjectType
 
                     if obj.type == GitObjectType.TAG:
                         commit = repo.peel_to_commit(obj)

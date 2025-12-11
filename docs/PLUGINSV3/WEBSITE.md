@@ -22,19 +22,19 @@ The plugin registry uses a **git repository as the database**. No traditional da
    - Validation scripts
    - CI/CD for validation
 
-2. **picard.musicbrainz.org** (Website)
+2. **picard.musicbrainz.org** (website)
    - Serves `plugins.toml` at `/api/v3/plugins.toml`
    - Displays plugin browser (HTML pages)
    - Fetches from GitHub (cached)
 
-3. **Picard Client**
+3. **Picard Client** (application)
    - Downloads `plugins.toml` from website
    - Caches locally
    - Uses for plugin discovery and blacklist checking
 
 ### Data Flow
 
-```
+```text
 1. Admin runs: registry plugin add <url> --trust community
    ↓
 2. CLI updates plugins.toml in local git repo
@@ -56,7 +56,7 @@ The plugin registry uses a **git repository as the database**. No traditional da
 
 ### picard-plugins-registry
 
-```
+```text
 picard-plugins-registry/
 ├── plugins.toml              # The registry (generated/managed)
 ├── registry_lib/
@@ -405,12 +405,13 @@ def plugins_json():
 
 ### Via Pull Request (Recommended)
 
-```
 1. Developer forks picard-plugins-registry
 2. Developer runs:
+   ```bash
    uv sync
    source .venv/bin/activate
    registry plugin add https://github.com/me/my-plugin --trust community --categories metadata
+   ```
 3. Developer creates PR with the change
 4. CI validates:
    - JSON is valid
@@ -421,53 +422,50 @@ def plugins_json():
 5. Picard team reviews PR
 6. Picard team merges
 7. Plugin appears in registry within 1 hour (cache refresh)
-```
 
 ### Via Web Form (Future)
 
-```
 1. Developer submits form on picard.musicbrainz.org
 2. Website validates input
 3. Website creates PR automatically via GitHub API
 4. Same validation and review process
 5. Picard team merges
-```
 
 ---
 
 ## Benefits of Git-Based Approach
 
-1. **No Database**
+1. **No Database:**
    - No database to maintain, backup, or migrate
    - Git is the database
 
-2. **Version Control**
+2. **Version Control:**
    - Full history of all changes
    - Easy rollback (git revert)
    - Audit trail built-in
 
-3. **Simple Deployment**
+3. **Simple Deployment:**
    - Website just serves static JSON
    - Can use CDN for plugins.toml
    - No database connection needed
 
-4. **Collaboration**
+4. **Collaboration:**
    - PRs for plugin submissions
    - Review process via GitHub
    - Community can submit PRs
    - Automated validation via CI
 
-5. **Transparency**
+5. **Transparency:**
    - Public repository
    - Anyone can see registry contents
    - Anyone can propose changes
 
-6. **Reliability**
+6. **Reliability:**
    - Git is the source of truth
    - GitHub provides hosting and CDN
    - Simple backup (git clone)
 
-7. **Scalability**
+7. **Scalability:**
    - Static JSON can be CDN-cached
    - Expected scale: <1000 plugins
 

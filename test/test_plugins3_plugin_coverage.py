@@ -23,7 +23,7 @@ from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.git_factory import has_git_backend
+from picard.git.factory import has_git_backend
 from picard.plugin3.plugin import (
     PluginSource,
     PluginSourceGit,
@@ -71,7 +71,7 @@ class TestGitRemoteCallbacks(PicardTestCase):
 
         from unittest.mock import patch
 
-        from picard.plugin3.git_factory import git_backend
+        from picard.git.factory import git_backend
 
         backend = git_backend()
         callbacks = backend.create_remote_callbacks()
