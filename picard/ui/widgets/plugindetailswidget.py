@@ -22,7 +22,10 @@
 from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
+from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import short_commit_id
+
+from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
 
 
 class PluginDetailsWidget(QtWidgets.QWidget):
@@ -129,29 +132,28 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if not self.current_plugin:
             return
 
-        # Confirm uninstall
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Uninstall Plugin"),
-            _("Are you sure you want to uninstall '{}'?").format(
-                self.current_plugin.name or self.current_plugin.plugin_id
-            ),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.No,
-        )
-
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
-            # Get plugin manager and uninstall
+        dialog = UninstallPluginDialog(self.current_plugin, self)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtWidgets.QApplication.instance()
             if hasattr(tagger, 'pluginmanager3') and tagger.pluginmanager3:
                 try:
-                    tagger.pluginmanager3.uninstall_plugin(self.current_plugin)
-                    self.show_plugin(None)  # Clear details
-                    self.plugin_uninstalled.emit()  # Signal that plugin was uninstalled
+                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                    async_manager.uninstall_plugin(
+                        self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
+                    )
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(
                         self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
                     )
+
+    def _on_uninstall_complete(self, result):
+        """Handle uninstall completion."""
+        if result.success:
+            self.show_plugin(None)  # Clear details
+            self.plugin_uninstalled.emit()  # Signal that plugin was uninstalled
+        else:
+            error_msg = str(result.error) if result.error else _("Unknown error")
+            QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
 
     def _get_version_display(self, plugin):
         """Get version display text."""
