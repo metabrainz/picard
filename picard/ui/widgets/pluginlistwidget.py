@@ -416,21 +416,17 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Uninstall Plugin"),
-            _("Are you sure you want to uninstall '{}'?").format(plugin.name or plugin.plugin_id),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.No,
-        )
-
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+        dialog = UninstallPluginDialog(plugin, self)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtCore.QCoreApplication.instance()
             if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
                 try:
-                    tagger.pluginmanager3.uninstall_plugin(plugin)
-                    # Refresh the plugin list
-                    self.populate_plugins(tagger.pluginmanager3.plugins)
+                    if dialog.purge_config:
+                        tagger.pluginmanager3.uninstall_plugin(plugin, purge_config=True)
+                    else:
+                        tagger.pluginmanager3.uninstall_plugin(plugin)
+                    # Force refresh by calling the refresh method
+                    self._refresh_plugin_list()
                 except Exception as e:
                     QtWidgets.QMessageBox.critical(
                         self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
@@ -446,3 +442,53 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Show detailed plugin information dialog."""
         dialog = PluginInfoDialog(plugin, self)
         dialog.exec()
+
+
+class UninstallPluginDialog(QtWidgets.QDialog):
+    """Dialog for uninstalling plugins with purge option."""
+
+    def __init__(self, plugin, parent=None):
+        super().__init__(parent)
+        self.plugin = plugin
+        self.purge_config = False
+        self.setWindowTitle(_("Uninstall Plugin"))
+        self.setModal(True)
+        self.setup_ui()
+
+    def setup_ui(self):
+        """Setup the dialog UI."""
+        layout = QtWidgets.QVBoxLayout(self)
+
+        # Plugin name
+        try:
+            name = self.plugin.manifest.name
+        except (AttributeError, Exception):
+            name = self.plugin.name or self.plugin.plugin_id
+
+        # Confirmation message
+        message = QtWidgets.QLabel(_("Are you sure you want to uninstall '{}'?").format(name))
+        message.setWordWrap(True)
+        layout.addWidget(message)
+
+        # Purge configuration checkbox
+        self.purge_checkbox = QtWidgets.QCheckBox(_("Also remove plugin configuration"))
+        self.purge_checkbox.setToolTip(_("Remove all saved settings and configuration for this plugin"))
+        layout.addWidget(self.purge_checkbox)
+
+        # Buttons
+        button_layout = QtWidgets.QHBoxLayout()
+
+        uninstall_button = QtWidgets.QPushButton(_("Uninstall"))
+        uninstall_button.clicked.connect(self._uninstall)
+        button_layout.addWidget(uninstall_button)
+
+        cancel_button = QtWidgets.QPushButton(_("Cancel"))
+        cancel_button.clicked.connect(self.reject)
+        button_layout.addWidget(cancel_button)
+
+        layout.addLayout(button_layout)
+
+    def _uninstall(self):
+        """Handle uninstall button click."""
+        self.purge_config = self.purge_checkbox.isChecked()
+        self.accept()
