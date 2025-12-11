@@ -72,7 +72,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             )
 
             # Column 1: Plugin name
-            item.setText(COLUMN_PLUGIN, plugin.name or plugin.plugin_id)
+            try:
+                plugin_name = plugin.manifest.name()
+            except (AttributeError, Exception):
+                plugin_name = plugin.name or plugin.plugin_id
+            item.setText(COLUMN_PLUGIN, plugin_name)
 
             # Add tooltip with description if available
             try:
@@ -355,6 +359,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         menu.addSeparator()
 
+        menu.addSeparator()
+
+        # Information action
+        info_action = menu.addAction(_("Information"))
+        info_action.triggered.connect(lambda: self._show_plugin_info(plugin))
+
         # View repository action (if available)
         remote_url = self._get_plugin_remote_url(plugin)
         if remote_url:
@@ -429,3 +439,91 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         remote_url = self._get_plugin_remote_url(plugin)
         if remote_url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(remote_url))
+
+    def _show_plugin_info(self, plugin):
+        """Show detailed plugin information dialog."""
+        dialog = InstalledPluginInfoDialog(plugin, self)
+        dialog.exec()
+
+
+class InstalledPluginInfoDialog(QtWidgets.QDialog):
+    """Dialog showing detailed information for installed plugins."""
+
+    def __init__(self, plugin, parent=None):
+        super().__init__(parent)
+        self.plugin = plugin
+        self.setWindowTitle(_("Plugin Information"))
+        self.setModal(True)
+        self.resize(600, 500)
+        self.setup_ui()
+
+    def setup_ui(self):
+        """Setup the dialog UI."""
+        layout = QtWidgets.QVBoxLayout(self)
+
+        # Plugin name as title
+        try:
+            name = self.plugin.manifest.name()
+        except (AttributeError, Exception):
+            name = self.plugin.name or self.plugin.plugin_id
+        title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
+        layout.addWidget(title_label)
+
+        # Details in a form layout
+        details_widget = QtWidgets.QWidget()
+        details_layout = QtWidgets.QFormLayout(details_widget)
+
+        # Basic info
+        details_layout.addRow(_("Plugin ID:"), QtWidgets.QLabel(self.plugin.plugin_id))
+
+        try:
+            uuid = self.plugin.manifest.uuid()
+            details_layout.addRow(_("UUID:"), QtWidgets.QLabel(uuid))
+        except (AttributeError, Exception):
+            pass
+
+        try:
+            version = self.plugin.manifest.version()
+            details_layout.addRow(_("Version:"), QtWidgets.QLabel(version))
+        except (AttributeError, Exception):
+            pass
+
+        try:
+            api_version = self.plugin.manifest.api_version()
+            details_layout.addRow(_("API Version:"), QtWidgets.QLabel(api_version))
+        except (AttributeError, Exception):
+            pass
+
+        try:
+            authors = self.plugin.manifest.authors()
+            if authors:
+                details_layout.addRow(_("Authors:"), QtWidgets.QLabel(', '.join(authors)))
+        except (AttributeError, Exception):
+            pass
+
+        layout.addWidget(details_widget)
+
+        # Description
+        desc_label = QtWidgets.QLabel(_("Description:"))
+        layout.addWidget(desc_label)
+
+        desc_text = QtWidgets.QTextBrowser()
+        desc_text.setMaximumHeight(200)
+
+        try:
+            description = self.plugin.manifest.long_description() or self.plugin.manifest.description()
+            desc_text.setPlainText(description)
+        except (AttributeError, Exception):
+            desc_text.setPlainText(_("No description available"))
+
+        layout.addWidget(desc_text)
+
+        # Close button
+        button_layout = QtWidgets.QHBoxLayout()
+        button_layout.addStretch()
+
+        close_button = QtWidgets.QPushButton(_("Close"))
+        close_button.clicked.connect(self.accept)
+        button_layout.addWidget(close_button)
+
+        layout.addLayout(button_layout)
