@@ -35,7 +35,7 @@ class InstallConfirmDialog(QtWidgets.QDialog):
 
         # Cache plugin manager for performance
         tagger = QtCore.QCoreApplication.instance()
-        self.plugin_manager = getattr(tagger, 'pluginmanager3', None)
+        self.plugin_manager = tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Confirm Plugin Installation"))
         self.setModal(True)

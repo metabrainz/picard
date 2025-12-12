@@ -39,7 +39,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
 
         # Cache plugin manager for performance
         tagger = QtCore.QCoreApplication.instance()
-        self.plugin_manager = getattr(tagger, 'pluginmanager3', None)
+        self.plugin_manager = tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
@@ -218,8 +218,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
         else:
             # For installed plugins, get from manager
             try:
-                tagger = QtCore.QCoreApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and self.plugin_manager:
+                if self.plugin_manager:
                     return self.plugin_manager.get_plugin_remote_url(self.plugin_data) or ''
                 return ''
             except (AttributeError, Exception):
@@ -232,8 +231,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
         else:
             # For installed plugins, get versioning scheme from manager
             try:
-                tagger = QtCore.QCoreApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and self.plugin_manager:
+                if self.plugin_manager:
                     return self.plugin_manager.get_plugin_versioning_scheme(self.plugin_data)
                 return ''
             except (AttributeError, Exception):

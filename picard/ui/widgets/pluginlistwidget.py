@@ -63,11 +63,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Cache tagger instance for performance
         self.tagger = QtCore.QCoreApplication.instance()
-        if not self.tagger or not hasattr(self.tagger, 'pluginmanager3'):
+        self.plugin_manager = self.tagger.get_plugin_manager()
+        if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
-
-        # Cache plugin manager for performance
-        self.plugin_manager = self.plugin_manager
 
         # Connect to plugin manager signals
         self.plugin_manager.plugin_ref_switched.connect(self._on_plugin_ref_switched)
@@ -487,7 +485,8 @@ class SwitchRefDialog(QtWidgets.QDialog):
         self.selected_ref = None
         # Cache tagger instance for performance
         self.tagger = QtCore.QCoreApplication.instance()
-        if not self.tagger or not hasattr(self.tagger, 'pluginmanager3'):
+        self.plugin_manager = self.tagger.get_plugin_manager()
+        if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
         self.setModal(True)

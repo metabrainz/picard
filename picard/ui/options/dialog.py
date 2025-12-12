@@ -290,7 +290,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
-        self.plugin_manager = getattr(tagger, 'pluginmanager3', None)
+        self.plugin_manager = tagger.get_plugin_manager()
         try:
             self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes

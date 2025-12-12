@@ -44,7 +44,7 @@ class Plugins3OptionsPage(OptionsPage):
         self.all_plugins = []  # Store all plugins for filtering
 
         # Cache plugin manager for performance
-        self.plugin_manager = getattr(self.tagger, 'pluginmanager3', None)
+        self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setup_ui()
 
