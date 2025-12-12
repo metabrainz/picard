@@ -584,6 +584,11 @@ class UninstallPluginDialog(QtWidgets.QDialog):
 
         layout.addLayout(button_layout)
 
+    def _uninstall(self):
+        """Handle uninstall button click."""
+        self.purge_config = self.purge_checkbox.isChecked()
+        self.accept()
+
 
 class SwitchRefDialog(QtWidgets.QDialog):
     """Dialog for switching plugin git ref."""
