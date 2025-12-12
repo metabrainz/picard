@@ -79,7 +79,7 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         # Buttons
         button_layout = QtWidgets.QHBoxLayout()
 
-        self.install_button = QtWidgets.QPushButton(_("Install"))
+        self.install_button = QtWidgets.QPushButton(_("Yes, Install!"))
         self.install_button.clicked.connect(self._confirm_install)
         self.install_button.setDefault(True)
         button_layout.addWidget(self.install_button)
