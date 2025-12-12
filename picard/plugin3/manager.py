@@ -1329,7 +1329,7 @@ class PluginManager(QObject):
             if plugin_uuid:
                 metadata = self._metadata.get_plugin_metadata(plugin_uuid)
                 if metadata:
-                    git_info = self.format_git_info(metadata)
+                    git_info = self.get_plugin_git_info(metadata)
                     if git_info:
                         version_text = git_info
         except Exception:
