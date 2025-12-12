@@ -40,7 +40,9 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
-        test_uuid = 'test-uuid-1234'
+        from test.test_plugins3_helpers import generate_unique_uuid
+
+        test_uuid = generate_unique_uuid()
 
         # Save metadata
         manager._save_plugin_metadata(
@@ -237,16 +239,19 @@ class TestPluginInstall(PicardTestCase):
             patch,
         )
 
+        from test.test_plugins3_helpers import generate_unique_uuid
+
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
+        test_uuid = generate_unique_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Create a fake existing plugin directory with UUID-based name
-            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uuid-1234'
+            plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -266,7 +271,7 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
                         mock_manifest.name.return_value = 'test-plugin'
-                        mock_manifest.uuid = 'test-uuid-1234'
+                        mock_manifest.uuid = test_uuid
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
@@ -286,16 +291,19 @@ class TestPluginInstall(PicardTestCase):
             patch,
         )
 
+        from test.test_plugins3_helpers import generate_unique_uuid
+
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
+        test_uuid = generate_unique_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Create a fake existing plugin directory with UUID-based name
-            plugin_dir = manager._primary_plugin_dir / 'test_plugin_test-uuid-1234'
+            plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
             with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
@@ -315,7 +323,7 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest = Mock()
                         mock_manifest.module_name = 'test-plugin'
                         mock_manifest.name.return_value = 'test-plugin'
-                        mock_manifest.uuid = 'test-uuid-1234'
+                        mock_manifest.uuid = test_uuid
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 

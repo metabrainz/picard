@@ -188,6 +188,20 @@ class PluginCommitPinnedError(PluginManagerError):
         super().__init__(f'Plugin is pinned to commit "{commit}" and cannot be updated')
 
 
+class PluginUUIDConflictError(PluginManagerError):
+    """Raised when trying to install plugin with conflicting UUID."""
+
+    def __init__(self, uuid, existing_plugin_id, existing_source, new_source):
+        self.uuid = uuid
+        self.existing_plugin_id = existing_plugin_id
+        self.existing_source = existing_source
+        self.new_source = new_source
+        super().__init__(
+            f'Plugin UUID {uuid} already exists in plugin "{existing_plugin_id}" '
+            f'from source "{existing_source}". Cannot install from different source "{new_source}".'
+        )
+
+
 def get_plugin_directory_name(manifest) -> str:
     """Get plugin directory name from manifest (sanitized name + full UUID).
 
@@ -218,7 +232,6 @@ class PluginManager(QObject):
 
     _primary_plugin_dir: Path | None = None
     _plugin_dirs: List[Path] = []
-    _plugins: List[Plugin] = []
 
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
@@ -227,6 +240,7 @@ class PluginManager(QObject):
         # hence check type before passing it to QObject.
         super().__init__(parent=tagger if isinstance(tagger, QObject) else None)
         self._tagger: Tagger | None = tagger
+        self._plugins: List[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
         self._load_config()
@@ -478,6 +492,42 @@ class PluginManager(QObject):
                     config.endGroup()
 
         return sorted(orphaned)
+
+    def _check_uuid_conflict(self, manifest, source_url):
+        """Check if plugin UUID conflicts with existing plugin from different source.
+
+        Args:
+            manifest: Plugin manifest to check
+            source_url: Source URL of the plugin being installed
+
+        Returns:
+            tuple: (has_conflict: bool, existing_plugin: Plugin|None)
+        """
+        if not manifest.uuid:
+            return False, None
+
+        # Normalize source URL for comparison
+        source_url = str(source_url).rstrip('/')
+
+        for existing_plugin in self._plugins:
+            if (
+                existing_plugin.manifest
+                and existing_plugin.manifest.uuid
+                and str(existing_plugin.manifest.uuid).lower() == str(manifest.uuid).lower()
+            ):
+                # Get existing plugin's source URL
+                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+                existing_source = str(existing_source).rstrip('/')
+
+                # Same UUID + same source = no conflict (reinstall case)
+                if existing_source.lower() == source_url.lower():
+                    return False, None
+
+                # Same UUID + different source = conflict
+                return True, existing_plugin
+
+        return False, None
 
     def _cleanup_version_cache(self):
         """Remove cache entries for URLs no longer in registry."""
@@ -733,6 +783,13 @@ class PluginManager(QObject):
                 if is_blacklisted:
                     raise PluginBlacklistedError(url, reason, manifest.uuid)
 
+            # Check for UUID conflicts with existing plugins from different sources
+            has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
+            if has_conflict and not reinstall:
+                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+                raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
+
             final_path = self._primary_plugin_dir / plugin_name
 
             # Check if already installed and handle reinstall
@@ -886,6 +943,13 @@ class PluginManager(QObject):
 
         # Read MANIFEST to get plugin ID
         manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+
+        # Check for UUID conflicts with existing plugins from different sources
+        has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
+        if has_conflict and not reinstall:
+            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, str(local_path))
 
         # Generate plugin directory name from sanitized name + UUID
         plugin_name = get_plugin_directory_name(manifest)

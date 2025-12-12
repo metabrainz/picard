@@ -453,3 +453,85 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         result = metadata_manager.get_plugin_metadata('nonexistent-uuid')
         self.assertIsNone(result)
+
+    def test_check_uuid_conflict_no_conflict(self):
+        """Test _check_uuid_conflict returns False when no conflict exists."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Create a mock manifest
+        manifest = Mock()
+        manifest.uuid = 'test-uuid-123'
+
+        # No existing plugins, should have no conflict
+        has_conflict, existing_plugin = manager._check_uuid_conflict(manifest, 'https://example.com/plugin.git')
+        self.assertFalse(has_conflict)
+        self.assertIsNone(existing_plugin)
+
+    def test_check_uuid_conflict_same_source(self):
+        """Test _check_uuid_conflict returns False for same UUID from same source."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Create existing plugin with same UUID and source
+        existing_plugin = Mock()
+        existing_plugin.plugin_id = 'existing_plugin'
+        existing_plugin.local_path = '/path/to/plugin'
+        existing_plugin.manifest = Mock()
+        existing_plugin.manifest.uuid = 'test-uuid-123'
+
+        # Mock metadata to return same source URL
+        manager._metadata = Mock()
+        manager._metadata.get_plugin_metadata.return_value = Mock(url='https://example.com/plugin.git')
+
+        # Add to plugins list
+        manager._plugins = [existing_plugin]
+
+        # Create new manifest with same UUID
+        new_manifest = Mock()
+        new_manifest.uuid = 'test-uuid-123'
+
+        # Same source should have no conflict
+        has_conflict, conflict_plugin = manager._check_uuid_conflict(new_manifest, 'https://example.com/plugin.git')
+        self.assertFalse(has_conflict)
+        self.assertIsNone(conflict_plugin)
+
+    def test_check_uuid_conflict_different_source(self):
+        """Test _check_uuid_conflict returns True for same UUID from different source."""
+        from unittest.mock import Mock
+
+        from picard.plugin3.manager import PluginManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Create existing plugin
+        existing_plugin = Mock()
+        existing_plugin.plugin_id = 'existing_plugin'
+        existing_plugin.local_path = '/path/to/plugin'
+        existing_plugin.manifest = Mock()
+        existing_plugin.manifest.uuid = 'test-uuid-123'
+
+        # Mock metadata to return different source URL
+        manager._metadata = Mock()
+        manager._metadata.get_plugin_metadata.return_value = Mock(url='https://example.com/original.git')
+
+        # Add to plugins list
+        manager._plugins = [existing_plugin]
+
+        # Create new manifest with same UUID
+        new_manifest = Mock()
+        new_manifest.uuid = 'test-uuid-123'
+
+        # Different source should have conflict
+        has_conflict, conflict_plugin = manager._check_uuid_conflict(new_manifest, 'https://example.com/different.git')
+        self.assertTrue(has_conflict)
+        self.assertEqual(conflict_plugin, existing_plugin)

@@ -168,15 +168,21 @@ class TestPluginGitOperations(PicardTestCase):
         self.plugin_dir = Path(self.tmpdir) / "test-plugin"
         self.plugin_dir.mkdir()
 
+    def _create_test_plugin(self):
+        """Create a test plugin with unique UUID for each test method."""
+        from test.test_plugins3_helpers import generate_unique_uuid
+
+        test_uuid = generate_unique_uuid()
+
         # Create MANIFEST.toml and __init__.py, then initialize git repo
-        manifest_content = """name = "Test Plugin"
+        manifest_content = f"""name = "Test Plugin"
 authors = ["Test Author"]
 version = "1.0.0"
 description = "A test plugin"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
+uuid = "{test_uuid}"
 """
 
         from test.test_plugins3_helpers import create_git_repo_with_backend
@@ -194,6 +200,7 @@ def disable():
 """,
             },
         )
+        return test_uuid
 
     def tearDown(self):
         """Clean up temporary directory."""
@@ -211,6 +218,9 @@ def disable():
         """Test cloning a git repository."""
         from picard.plugin3.plugin import PluginSourceGit
 
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
+
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir) / "cloned"
             source = PluginSourceGit(str(self.plugin_dir))
@@ -226,6 +236,9 @@ def disable():
     def test_plugin_source_git_fetch_existing(self):
         """Test fetching updates to existing repository."""
         from picard.plugin3.plugin import PluginSourceGit
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir) / "cloned"
@@ -243,6 +256,9 @@ def disable():
     def test_plugin_source_git_update(self):
         """Test updating an existing git repository."""
         from picard.plugin3.plugin import PluginSourceGit
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir) / "cloned"
@@ -268,6 +284,9 @@ def disable():
 
     def test_plugin_source_git_with_branch(self):
         """Test cloning specific branch."""
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
+
         # Create a dev branch in source
         from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
@@ -295,6 +314,9 @@ def disable():
 
     def test_plugin_source_git_with_tag(self):
         """Test cloning specific tag."""
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
+
         # Create a tag in source
         from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
@@ -318,6 +340,9 @@ def disable():
         """Test cloning specific commit."""
         from picard.git.factory import git_backend
         from picard.plugin3.plugin import PluginSourceGit
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
 
         backend = git_backend()
         repo = backend.create_repository(self.plugin_dir)
@@ -343,6 +368,9 @@ def disable():
     def test_manager_install_from_git(self):
         """Test full install flow from git repository."""
         from picard.plugin3.manager import PluginManager
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             mock_tagger = MockTagger()
@@ -370,6 +398,9 @@ def disable():
 
     def test_manager_install_with_ref(self):
         """Test installing plugin from specific ref."""
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
+
         # Create dev branch
         from picard.git.factory import git_backend
         from picard.plugin3.manager import PluginManager
@@ -408,6 +439,9 @@ def disable():
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin
 
+        # Create plugin with unique UUID for this test
+        test_uuid = self._create_test_plugin()
+
         with tempfile.TemporaryDirectory() as tmpdir:
             mock_tagger = MockTagger()
             manager = PluginManager(mock_tagger)
@@ -422,14 +456,14 @@ def disable():
             plugin.read_manifest()
 
             # Make update in source with new version
-            manifest_content = """name = "Test Plugin"
+            manifest_content = f"""name = "Test Plugin"
 authors = ["Test Author"]
 version = "1.1.0"
 description = "A test plugin - updated"
 api = ["3.0"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
-uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
+uuid = "{test_uuid}"
 """
             (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
             (self.plugin_dir / "update.txt").write_text("updated")
@@ -451,6 +485,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             Plugin,
             PluginSourceGit,
         )
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             target = Path(tmpdir) / "cloned"

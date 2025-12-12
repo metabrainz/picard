@@ -770,7 +770,9 @@ class TestPluginManager(PicardTestCase):
         self.assertEqual(manager._enabled_plugins, set())
 
         # Create a mock plugin with UUID
-        test_uuid = 'test-uuid-1234'
+        from test.test_plugins3_helpers import generate_unique_uuid
+
+        test_uuid = generate_unique_uuid()
         mock_plugin = MockPlugin(uuid=test_uuid)
 
         # Enable plugin - should save to config
