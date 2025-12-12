@@ -138,7 +138,10 @@ class TestPluginInstall(PicardTestCase):
         # Mock GitOperations.switch_ref to return ref changes
         from unittest.mock import patch
 
-        with patch('picard.git.ops.GitOperations.switch_ref') as mock_switch:
+        with (
+            patch('picard.git.ops.GitOperations.switch_ref') as mock_switch,
+            patch.object(manager, 'plugin_ref_switched'),
+        ):
             mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
 
             old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
