@@ -199,7 +199,33 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             current_ref = metadata.ref
 
-            # Check if there's a newer ref available
+            # Check if plugin has versioning scheme (like CLI does)
+            registry_plugin = tagger.pluginmanager3._registry.find_plugin(url=remote_url)
+            if registry_plugin and registry_plugin.get('versioning_scheme'):
+                # For plugins with versioning scheme, check if current ref is a tag
+                # and if there's a newer version tag available
+                try:
+                    from picard.git.factory import git_backend
+
+                    backend = git_backend()
+                    repo = backend.create_repository(plugin.local_path)
+
+                    # Check if currently on a tag
+                    try:
+                        repo.revparse_single(f'refs/tags/{current_ref}')
+                        # Current ref is a tag, check for newer version tags
+                        from picard.plugin3.source import PluginSourceGit
+
+                        source = PluginSourceGit(remote_url, current_ref)
+                        latest_tag = source._find_latest_tag(repo, current_ref)
+                        return latest_tag and latest_tag != current_ref
+                    except KeyError:
+                        # Current ref is not a tag, fall back to regular ref checking
+                        pass
+                except Exception:
+                    pass
+
+            # Regular ref checking (for plugins without versioning scheme or non-tag refs)
             refs_cache = tagger.pluginmanager3._refs_cache
             latest_ref = refs_cache.get_latest_ref(remote_url)
             return latest_ref and latest_ref != current_ref

@@ -228,7 +228,20 @@ class PluginInfoDialog(QtWidgets.QDialog):
         if self._is_registry_plugin():
             return self.plugin_data.get('versioning_scheme', '')
         else:
-            return ''
+            # For installed plugins, get versioning scheme from registry
+            try:
+                tagger = QtCore.QCoreApplication.instance()
+                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+                    plugin_uuid = self.plugin_data.manifest.uuid if self.plugin_data.manifest else None
+                    if plugin_uuid:
+                        metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
+                        if metadata and hasattr(metadata, 'url'):
+                            registry_plugin = tagger.pluginmanager3._registry.find_plugin(url=metadata.url)
+                            if registry_plugin:
+                                return registry_plugin.get('versioning_scheme', '')
+                return ''
+            except (AttributeError, Exception):
+                return ''
 
     def _get_registry_id(self):
         """Get registry ID."""
