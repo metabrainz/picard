@@ -64,16 +64,19 @@ class Plugins3OptionsPage(OptionsPage):
         toolbar_layout.addStretch()
 
         self.install_button = QtWidgets.QPushButton(_("Install Plugin"))
+        self.install_button.setToolTip(_("Install a new plugin from the registry or a custom URL"))
         self.install_button.clicked.connect(self._install_plugin)
         toolbar_layout.addWidget(self.install_button)
 
         self.check_updates_button = QtWidgets.QPushButton(_("Check for Updates"))
+        self.check_updates_button.setToolTip(_("Check all installed plugins for available updates"))
         self.check_updates_button.clicked.connect(self._check_for_updates)
         toolbar_layout.addWidget(self.check_updates_button)
 
         toolbar_layout.addStretch()
 
         self.refresh_button = QtWidgets.QPushButton(_("Refresh"))
+        self.refresh_button.setToolTip(_("Refresh the plugin list to reflect current state"))
         self.refresh_button.clicked.connect(self.load)
         toolbar_layout.addWidget(self.refresh_button)
 
