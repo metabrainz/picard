@@ -43,7 +43,9 @@ class TestPluginCLI(PicardTestCase):
 
     def test_list_plugins_with_plugins(self):
         """Test listing plugins with details."""
-        test_uuid = 'test-uuid-1234'
+        from test.test_plugins3_helpers import generate_unique_uuid
+
+        test_uuid = generate_unique_uuid()
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
@@ -94,8 +96,11 @@ class TestPluginCLI(PicardTestCase):
 
     def test_find_plugin_by_prefix(self):
         """Test finding plugin by Plugin ID prefix."""
+        from test.test_plugins3_helpers import generate_unique_uuid
+
         # Create plugin with full Plugin ID
-        mock_plugin = MockPlugin(name='example_plugin_test-uuid-1234', display_name='Example Plugin')
+        test_uuid = generate_unique_uuid()
+        mock_plugin = MockPlugin(name=f'example_plugin_{test_uuid}', display_name='Example Plugin')
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
         # Mock find_plugin to return the plugin for this test
@@ -509,9 +514,11 @@ class TestPluginCLI(PicardTestCase):
         """Test update command shows warning for commit-pinned plugins."""
         from unittest.mock import PropertyMock
 
+        from test.test_plugins3_helpers import generate_unique_uuid
+
         from picard.plugin3.manager import PluginCommitPinnedError
 
-        test_uuid = 'test-uuid-1234'
+        test_uuid = generate_unique_uuid()
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
