@@ -24,6 +24,7 @@ from PyQt6 import QtCore, QtWidgets
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
+from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
 
@@ -384,16 +385,31 @@ class InstallPluginDialog(QtWidgets.QDialog):
             trust_item = self.plugin_table.item(current_row, 0)
             plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
             url = plugin_data.get('git_url')
-            ref = None  # Use default ref
+            plugin_name = plugin_data.get('name', plugin_data.get('id', ''))
 
             if not url:
                 QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
                 return
+
+            # Show confirmation dialog
+            confirm_dialog = InstallConfirmDialog(plugin_name, url, self)
+            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+                return
+
+            ref = confirm_dialog.selected_ref
         else:  # URL tab
             url = self.url_edit.text().strip()
             ref = self.ref_edit.text().strip() or None
             if not url:
                 return
+
+            # Show confirmation dialog for URL installation too
+            confirm_dialog = InstallConfirmDialog(_("Plugin from URL"), url, self)
+            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+                return
+
+            # Override ref with user selection
+            ref = confirm_dialog.selected_ref or ref
 
         # Disable UI during installation
         self.install_button.setEnabled(False)

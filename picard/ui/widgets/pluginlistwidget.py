@@ -26,6 +26,7 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState, short_commit_id
 from picard.util import temporary_disconnect
 
+from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
 
@@ -454,33 +455,41 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _reinstall_plugin_from_menu(self, plugin):
         """Reinstall plugin from context menu."""
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Reinstall Plugin"),
-            _("Are you sure you want to reinstall '{}'?").format(plugin.name or plugin.plugin_id),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.No,
-        )
-
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
-            tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                try:
-                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
-                    # Get plugin URL from source
-                    if hasattr(plugin, 'source') and hasattr(plugin.source, 'url'):
-                        plugin_url = plugin.source.url
-                        async_manager.install_plugin(
-                            url=plugin_url, ref=None, reinstall=True, callback=self._on_reinstall_complete
-                        )
-                    else:
-                        QtWidgets.QMessageBox.critical(
-                            self, _("Reinstall Failed"), _("Could not find plugin repository URL")
-                        )
-                except Exception as e:
+        tagger = QtCore.QCoreApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            try:
+                # Get plugin URL from metadata
+                uuid = tagger.pluginmanager3._get_plugin_uuid(plugin)
+                metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
+                if not (metadata and hasattr(metadata, 'url')):
                     QtWidgets.QMessageBox.critical(
-                        self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
+                        self, _("Reinstall Failed"), _("Could not find plugin repository URL")
                     )
+                    return
+                plugin_url = metadata.url
+
+                # Get plugin name
+                try:
+                    plugin_name = plugin.manifest.name()
+                except (AttributeError, Exception):
+                    plugin_name = plugin.name or plugin.plugin_id
+
+                # Show confirmation dialog
+                confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self)
+                if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+                    return
+
+                async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                async_manager.install_plugin(
+                    url=plugin_url,
+                    ref=confirm_dialog.selected_ref,
+                    reinstall=True,
+                    callback=self._on_reinstall_complete,
+                )
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(
+                    self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
+                )
 
     def _on_reinstall_complete(self, result):
         """Handle reinstall completion."""
