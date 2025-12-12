@@ -22,6 +22,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
+from picard.plugin3.registry import RegistryPlugin
 
 
 try:
@@ -35,7 +36,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
 
     def __init__(self, plugin_data, parent=None):
         super().__init__(parent)
-        self.plugin_data = plugin_data
+        self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
         tagger = QtCore.QCoreApplication.instance()
@@ -45,6 +46,18 @@ class PluginInfoDialog(QtWidgets.QDialog):
         self.setModal(True)
         self.resize(600, 500)
         self.setup_ui()
+
+    @property
+    def plugin_data(self):
+        """Get plugin data."""
+        return self._plugin_data
+
+    @plugin_data.setter
+    def plugin_data(self, value):
+        """Set plugin data and clear cached registry plugin."""
+        self._plugin_data = value
+        if hasattr(self, '_registry_plugin'):
+            delattr(self, '_registry_plugin')
 
     def setup_ui(self):
         """Setup the dialog UI."""
@@ -129,27 +142,34 @@ class PluginInfoDialog(QtWidgets.QDialog):
         """Check if this is registry plugin data (dict) vs installed plugin (object)."""
         return isinstance(self.plugin_data, dict)
 
+    @property
+    def registry_plugin(self):
+        """Get RegistryPlugin wrapper for registry plugin data."""
+        if not hasattr(self, '_registry_plugin'):
+            self._registry_plugin = RegistryPlugin(self.plugin_data) if self._is_registry_plugin() else None
+        return self._registry_plugin
+
     def _get_plugin_name(self):
         """Get plugin name."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('name', self.plugin_data.get('id', ''))
+            return self.registry_plugin.name_i18n() or self.registry_plugin.id
         else:
             try:
-                return self.plugin_data.manifest.name()
+                return self.plugin_data.manifest.name_i18n()
             except (AttributeError, Exception):
                 return self.plugin_data.name or self.plugin_data.plugin_id
 
     def _get_plugin_id(self):
         """Get plugin ID."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('id', '')
+            return self.registry_plugin.id
         else:
             return self.plugin_data.plugin_id
 
     def _get_plugin_uuid(self):
         """Get plugin UUID."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('uuid', '')
+            return self.registry_plugin.uuid or ''
         else:
             try:
                 return self.plugin_data.manifest.uuid if self.plugin_data.manifest else ''
@@ -180,16 +200,14 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_trust_level(self):
         """Get trust level."""
         if self._is_registry_plugin():
-            trust_level = self.plugin_data.get('trust_level', 'community')
-            return trust_level.title()
+            return self.registry_plugin.trust_level.title()
         else:
             return ''
 
     def _get_categories(self):
         """Get categories."""
         if self._is_registry_plugin():
-            categories = self.plugin_data.get('categories', [])
-            return ', '.join(categories)
+            return ', '.join(self.registry_plugin.categories)
         else:
             try:
                 categories = self.plugin_data.manifest._data.get('categories', []) if self.plugin_data.manifest else []
@@ -200,7 +218,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_authors(self):
         """Get authors."""
         if self._is_registry_plugin():
-            authors = self.plugin_data.get('authors', [])
+            authors = self.registry_plugin.get('authors', [])
             return ', '.join(authors)
         else:
             try:
@@ -212,7 +230,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_maintainers(self):
         """Get maintainers."""
         if self._is_registry_plugin():
-            maintainers = self.plugin_data.get('maintainers', [])
+            maintainers = self.registry_plugin.get('maintainers', [])
             return ', '.join(maintainers)
         else:
             try:
@@ -224,7 +242,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_repository(self):
         """Get repository URL."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('git_url', '')
+            return self.registry_plugin.git_url or ''
         else:
             # For installed plugins, get from manager
             try:
@@ -237,7 +255,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_versioning_scheme(self):
         """Get versioning scheme."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('versioning_scheme', '')
+            return self.registry_plugin.get('versioning_scheme', '')
         else:
             # For installed plugins, get versioning scheme from manager
             try:
@@ -250,7 +268,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_registry_id(self):
         """Get registry ID."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('id', '')
+            return self.registry_plugin.id
         else:
             return getattr(self.plugin_data, 'registry_id', '')
 
@@ -275,7 +293,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_license(self):
         """Get license."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('license', '')
+            return self.registry_plugin.get('license', '')
         else:
             try:
                 return self.plugin_data.manifest.license if self.plugin_data.manifest else ''
@@ -285,7 +303,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_license_url(self):
         """Get license URL."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('license_url', '')
+            return self.registry_plugin.get('license_url', '')
         else:
             try:
                 return self.plugin_data.manifest.license_url if self.plugin_data.manifest else ''
@@ -295,7 +313,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_homepage(self):
         """Get homepage URL."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('homepage', '')
+            return self.registry_plugin.get('homepage', '')
         else:
             try:
                 return self.plugin_data.manifest._data.get('homepage', '') if self.plugin_data.manifest else ''
@@ -313,7 +331,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _get_description(self):
         """Get plugin description."""
         if self._is_registry_plugin():
-            return self.plugin_data.get('description', '')
+            return self.registry_plugin.description_i18n()
         else:
             try:
                 if self.plugin_data.manifest:
