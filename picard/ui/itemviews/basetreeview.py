@@ -350,9 +350,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         action_menu = plugin_menus[key]
                     else:
                         action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
-                # Instantiate action with API
-                api = getattr(ActionClass, '_plugin_api', None)
-                action = ActionClass(api=api)
+                action = ActionClass()
                 action.setParent(action_menu)  # Set parent to keep action alive
                 action_menu.addAction(action)
 

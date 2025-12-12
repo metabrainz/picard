@@ -38,7 +38,6 @@ except ImportError:
 from typing import (
     TYPE_CHECKING,
     Callable,
-    Type,
     TypeAlias,
 )
 
@@ -57,15 +56,15 @@ from picard.config import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.coverart.providers import (
-    CoverArtProvider,
-    ProviderOptions,
+    CoverArtProvider as _CoverArtProvider,
+    ProviderOptions as _ProviderOptions,
 )
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
 )
 from picard.extension_points.cover_art_processors import (
-    ImageProcessor,
+    ImageProcessor as _ImageProcessor,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -80,7 +79,7 @@ from picard.extension_points.event_hooks import (
     register_file_pre_save_processor,
 )
 from picard.extension_points.item_actions import (
-    BaseAction,
+    BaseAction as _BaseAction,
     register_album_action,
     register_cluster_action,
     register_clusterlist_action,
@@ -109,7 +108,7 @@ from picard.webservice import (
 )
 from picard.webservice.api_helpers import MBAPIHelper
 
-from picard.ui.options import OptionsPage
+from picard.ui.options import OptionsPage as _OptionsPage
 
 
 def t_(key, text=None, plural=None):
@@ -146,6 +145,36 @@ __all__ = [
     'PluginApi',
     't_',
 ]
+
+
+class BaseAction(_BaseAction):
+    """Base class for plugin actions"""
+
+    api: 'PluginApi'
+
+
+class CoverArtProvider(_CoverArtProvider):
+    """Base class for cover art providers"""
+
+    api: 'PluginApi'
+
+
+class ImageProcessor(_ImageProcessor):
+    """Base class for cover art image processors"""
+
+    api: 'PluginApi'
+
+
+class OptionsPage(_OptionsPage):
+    """Base class for plugin option pages"""
+
+    api: 'PluginApi'
+
+
+class ProviderOptions(_ProviderOptions):
+    """Base class for plugin cover art option pages"""
+
+    api: 'PluginApi'
 
 
 class PluginApi:
@@ -619,7 +648,8 @@ class PluginApi:
         return register_file_pre_save_processor(wrapped, priority)
 
     # Cover art
-    def register_cover_art_provider(self, provider: Type[CoverArtProvider]) -> None:
+    def register_cover_art_provider(self, provider: type[CoverArtProvider]) -> None:
+        provider.api = self
         return register_cover_art_provider(provider)
 
     def register_cover_art_filter(self, filter: Callable) -> None:
@@ -632,11 +662,12 @@ class PluginApi:
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
 
-    def register_cover_art_processor(self, processor_class: Type[ImageProcessor]) -> None:
+    def register_cover_art_processor(self, processor_class: type[ImageProcessor]) -> None:
+        processor_class.api = self
         return register_cover_art_processor(processor_class)
 
     # File formats
-    def register_format(self, format: Type[File]) -> None:
+    def register_format(self, format: type[File]) -> None:
         return self._tagger.format_registry.register(format)
 
     # Scripting
@@ -653,28 +684,34 @@ class PluginApi:
     def register_script_variable(self, name: str, documentation: str | None = None) -> None:
         return register_script_variable(name, documentation)
 
-    # Context menu actions
-    def register_album_action(self, action: BaseAction) -> None:
-        return register_album_action(action, self)
+    # Menu actions
+    def register_album_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_album_action(action)
 
-    def register_cluster_action(self, action: BaseAction) -> None:
-        return register_cluster_action(action, self)
+    def register_cluster_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_cluster_action(action)
 
-    def register_clusterlist_action(self, action: BaseAction) -> None:
-        return register_clusterlist_action(action, self)
+    def register_clusterlist_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_clusterlist_action(action)
 
-    def register_track_action(self, action: BaseAction) -> None:
-        return register_track_action(action, self)
+    def register_track_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_track_action(action)
 
-    def register_file_action(self, action: BaseAction) -> None:
-        return register_file_action(action, self)
+    def register_file_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_file_action(action)
+
+    def register_tools_menu_action(self, action: type[BaseAction]) -> None:
+        return register_tools_menu_action(action)
 
     # UI
-    def register_options_page(self, page_class: Type[OptionsPage]) -> None:
-        return register_options_page(page_class, self)
-
-    def register_tools_menu_action(self, action: BaseAction) -> None:
-        return register_tools_menu_action(action, self)
+    def register_options_page(self, page_class: type[OptionsPage]) -> None:
+        page_class.api = self
+        return register_options_page(page_class)
 
     # Album task management for plugins
     def add_album_task(

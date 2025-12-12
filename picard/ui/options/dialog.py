@@ -248,12 +248,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.pages = []
         for Page in ext_point_options_pages:
             try:
-                api = getattr(Page, '_plugin_api', None)
-                # Only pass api parameter if the page expects it (plugin pages)
-                if api is not None:
-                    page = Page(api=api)
-                else:
-                    page = Page()
+                page = Page()
                 page.set_dialog(self)
                 page.initialized = True
             except Exception as e:
@@ -569,11 +564,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             if Page not in existing_page_classes:
                 log.debug("refresh_plugin_pages: Adding new page: %s", Page.__name__)
                 try:
-                    api = getattr(Page, '_plugin_api', None)
-                    if api is not None:
-                        page = Page(api=api)
-                    else:
-                        page = Page()
+                    page = Page()
                     page.set_dialog(self)
                     page.initialized = True
                     self.ui.pages_stack.addWidget(page)

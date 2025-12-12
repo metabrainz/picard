@@ -747,15 +747,15 @@ class TestPluginApi(PicardTestCase):
 
         with patch('picard.plugin3.api.register_album_action') as mock:
             api.register_album_action(mock_action)
-            mock.assert_called_once_with(mock_action, api)
+            mock.assert_called_once_with(mock_action)
 
         with patch('picard.plugin3.api.register_track_action') as mock:
             api.register_track_action(mock_action)
-            mock.assert_called_once_with(mock_action, api)
+            mock.assert_called_once_with(mock_action)
 
         with patch('picard.plugin3.api.register_file_action') as mock:
             api.register_file_action(mock_action)
-            mock.assert_called_once_with(mock_action, api)
+            mock.assert_called_once_with(mock_action)
 
 
 class TestPluginManager(PicardTestCase):
