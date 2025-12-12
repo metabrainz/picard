@@ -538,7 +538,7 @@ class UninstallPluginDialog(QtWidgets.QDialog):
 
         # Plugin name
         try:
-            name = self.plugin.manifest.name
+            name = self.plugin.manifest.name()
         except (AttributeError, Exception):
             name = self.plugin.name or self.plugin.plugin_id
 
@@ -586,7 +586,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
 
         # Plugin name
         try:
-            name = self.plugin.manifest.name
+            name = self.plugin.manifest.name()
         except (AttributeError, Exception):
             name = self.plugin.name or self.plugin.plugin_id
 
