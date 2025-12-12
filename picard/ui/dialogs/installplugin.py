@@ -34,6 +34,57 @@ except ImportError:
     render_markdown = None
 
 
+class RegistryPlugin:
+    """Wrapper for registry plugin data with i18n support."""
+
+    def __init__(self, data):
+        self._data = data
+
+    def _get_current_locale(self):
+        """Get current locale from Picard's UI language setting or system locale."""
+        from picard.config import get_config
+
+        config = get_config()
+        locale = config.setting['ui_language']
+        if not locale:
+            from PyQt6 import QtCore
+
+            locale = QtCore.QLocale.system().name()
+        return locale
+
+    def name_i18n(self, locale=None):
+        """Get plugin name with automatic locale detection."""
+        if locale is None:
+            locale = self._get_current_locale()
+
+        i18n = self._data.get('name_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('name', '')
+
+    def description_i18n(self, locale=None):
+        """Get description with automatic locale detection."""
+        if locale is None:
+            locale = self._get_current_locale()
+
+        i18n = self._data.get('description_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('description', '')
+
+    def get(self, key, default=None):
+        """Delegate to underlying data dict."""
+        return self._data.get(key, default)
+
+
 # Tab positions
 TAB_REGISTRY = 0
 TAB_URL = 1
@@ -254,6 +305,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
         }
 
         for plugin in self._all_plugins:
+            # Create registry plugin wrapper for i18n support
+            registry_plugin = RegistryPlugin(plugin)
+
             # Skip if already installed
             plugin_uuid = plugin.get('uuid')
             if plugin_uuid and plugin_uuid in installed_uuids:
@@ -265,7 +319,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
             # Search filter
             if search_text:
-                searchable = f"{plugin.get('name', '')} {plugin.get('description', '')} {' '.join(plugin.get('categories', []))}".lower()
+                searchable = f"{registry_plugin.name_i18n()} {registry_plugin.description_i18n()} {' '.join(plugin.get('categories', []))}".lower()
                 if search_text not in searchable:
                     continue
 
@@ -281,8 +335,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
             self.plugin_table.setItem(row, 0, trust_item)
 
             # Name column
-            name_item = QtWidgets.QTableWidgetItem(plugin.get('name', plugin.get('id', '')))
-            desc = plugin.get('description', '')
+            registry_plugin = RegistryPlugin(plugin)
+            name_item = QtWidgets.QTableWidgetItem(registry_plugin.name_i18n() or plugin.get('id', ''))
+            desc = registry_plugin.description_i18n()
 
             # Build tooltip with description and click hint
             tooltip_parts = []
@@ -433,7 +488,8 @@ class InstallPluginDialog(QtWidgets.QDialog):
             trust_item = self.plugin_table.item(current_row, 0)
             plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
             url = plugin_data.get('git_url')
-            plugin_name = plugin_data.get('name', plugin_data.get('id', ''))
+            registry_plugin = RegistryPlugin(plugin_data)
+            plugin_name = registry_plugin.name_i18n() or plugin_data.get('id', '')
 
             if not url:
                 QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
