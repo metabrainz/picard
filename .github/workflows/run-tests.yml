@@ -23,13 +23,12 @@ jobs:
       matrix:
         os: [macos-14, ubuntu-latest, windows-2022]
         python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
-    env:
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     steps:
     - uses: actions/checkout@v6
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
+      id: setup-python
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
@@ -75,12 +74,12 @@ jobs:
       run: |
         python setup.py build_locales
         pip install pytest pytest-randomly pytest-cov
-        pytest --verbose --cov=picard --cov-report xml:coverage.xml test
-    - name: Submit code coverage to Codacy
-      if: env.CODACY_PROJECT_TOKEN
-      run: |
-        pip install codacy-coverage
-        python-codacy-coverage -r coverage.xml
+        pytest --verbose --cov=picard --cov-report html:htmlcov test
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
+        path: htmlcov/
 
   test-requirements:
     runs-on: ${{ matrix.os }}
@@ -116,7 +115,7 @@ jobs:
     - name: Test with pytest
       timeout-minutes: 30
       run: |
-        pip install pytest pytest-randomly pytest-cov
+        pip install pytest pytest-randomly
         pytest --verbose test
 
   pip-install: # Test whether a clean pip install from source works

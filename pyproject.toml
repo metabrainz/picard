@@ -71,6 +71,7 @@ dev = [
     "pycodestyle",
     "pylint>=2.6.0",
     "pymarkdownlnt>=0.9.33",
+    "pytest-cov>=7.0.0",
     "pytest-randomly>=4.0.1",
     "pytest-xdist>=3.8.0",
     "ruff>=0.12.8",
@@ -201,6 +202,13 @@ docstring-code-line-length = "dynamic"
 
 [tool.uv]
 default-groups = ["build", "dev"]
+
+[tool.coverage.run]
+source = ["picard"]
+omit = [
+  "picard/ui/forms/ui_*.py",
+  "picard/resources.py",
+]
 
 [tool.pymarkdown]
 plugins.blanks-around-fences.enabled = false
