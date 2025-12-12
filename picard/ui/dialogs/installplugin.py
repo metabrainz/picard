@@ -259,17 +259,16 @@ class InstallPluginDialog(QtWidgets.QDialog):
             registry_plugin = RegistryPlugin(plugin)
 
             # Skip if already installed
-            plugin_uuid = plugin.get('uuid')
-            if plugin_uuid and plugin_uuid in installed_uuids:
+            if registry_plugin.uuid and registry_plugin.uuid in installed_uuids:
                 continue
 
             # Category filter
-            if category and category not in plugin.get('categories', []):
+            if category and category not in registry_plugin.categories:
                 continue
 
             # Search filter
             if search_text:
-                searchable = f"{registry_plugin.name_i18n()} {registry_plugin.description_i18n()} {' '.join(plugin.get('categories', []))}".lower()
+                searchable = f"{registry_plugin.name_i18n()} {registry_plugin.description_i18n()} {' '.join(registry_plugin.categories)}".lower()
                 if search_text not in searchable:
                     continue
 
@@ -277,16 +276,15 @@ class InstallPluginDialog(QtWidgets.QDialog):
             self.plugin_table.insertRow(row)
 
             # Trust level column
-            trust_level = plugin.get('trust_level', 'community')
-            trust_item = QtWidgets.QTableWidgetItem(trust_badges.get(trust_level, '?'))
-            trust_item.setToolTip(trust_tooltips.get(trust_level, trust_level))
+            trust_item = QtWidgets.QTableWidgetItem(trust_badges.get(registry_plugin.trust_level, '?'))
+            trust_item.setToolTip(trust_tooltips.get(registry_plugin.trust_level, registry_plugin.trust_level))
             trust_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             trust_item.setData(QtCore.Qt.ItemDataRole.UserRole, plugin)
             self.plugin_table.setItem(row, 0, trust_item)
 
             # Name column
             registry_plugin = RegistryPlugin(plugin)
-            name_item = QtWidgets.QTableWidgetItem(registry_plugin.name_i18n() or plugin.get('id', ''))
+            name_item = QtWidgets.QTableWidgetItem(registry_plugin.name_i18n() or registry_plugin.id)
             desc = registry_plugin.description_i18n()
 
             # Build tooltip with description and click hint
@@ -304,8 +302,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
             self.plugin_table.setItem(row, 1, name_item)
 
             # Categories column
-            categories = plugin.get('categories', [])
-            cat_item = QtWidgets.QTableWidgetItem(', '.join(categories))
+            cat_item = QtWidgets.QTableWidgetItem(', '.join(registry_plugin.categories))
             self.plugin_table.setItem(row, 2, cat_item)
 
     def _get_installed_plugin_uuids(self):
@@ -437,9 +434,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
             trust_item = self.plugin_table.item(current_row, 0)
             plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
-            url = plugin_data.get('git_url')
             registry_plugin = RegistryPlugin(plugin_data)
-            plugin_name = registry_plugin.name_i18n() or plugin_data.get('id', '')
+            url = registry_plugin.git_url
+            plugin_name = registry_plugin.name_i18n() or registry_plugin.id
 
             if not url:
                 QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))

@@ -526,6 +526,31 @@ class RegistryPlugin:
             return i18n[lang]
         return self._data.get('description', '')
 
+    @property
+    def categories(self):
+        """Get plugin categories."""
+        return self._data.get('categories', [])
+
+    @property
+    def trust_level(self):
+        """Get plugin trust level."""
+        return self._data.get('trust_level', 'community')
+
+    @property
+    def uuid(self):
+        """Get plugin UUID."""
+        return self._data.get('uuid')
+
+    @property
+    def id(self):
+        """Get plugin ID."""
+        return self._data.get('id', '')
+
+    @property
+    def git_url(self):
+        """Get plugin git URL."""
+        return self._data.get('git_url')
+
     def get(self, key, default=None):
         """Delegate to underlying data dict."""
         return self._data.get(key, default)
