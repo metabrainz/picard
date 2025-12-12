@@ -194,6 +194,7 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_state_changed(self):
         """Handle plugin state changes (enable/disable/uninstall)."""
+        self._show_status(_("Plugin state changed"))
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
