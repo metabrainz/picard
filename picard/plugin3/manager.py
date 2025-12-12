@@ -1257,7 +1257,13 @@ class PluginManager(QObject):
                     current_is_tag = True
                     current_tag = ref
                 except KeyError:
-                    pass
+                    # Not a tag, check if it's a branch
+                    try:
+                        repo.revparse_single(f'refs/remotes/origin/{ref}')
+                        current_is_tag = False
+                    except KeyError:
+                        # Might be a commit hash or other ref
+                        pass
 
             # If on a tag, check for newer version tag
             if current_is_tag and current_tag:
@@ -1267,14 +1273,18 @@ class PluginManager(QObject):
                     # Found newer tag
                     ref = latest_tag
 
-            # Resolve ref with same logic as update() - try origin/ prefix for branches
+            # Resolve ref with same logic as update() - try appropriate prefix based on ref type
             try:
                 if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                    # For tags, try refs/tags/ first, then origin/ for branches
-                    try:
-                        obj = repo.revparse_single(f'refs/tags/{ref}')
-                    except KeyError:
-                        # Not a tag, try origin/ prefix for branches
+                    # If we know it's a tag, try refs/tags/ first
+                    if current_is_tag:
+                        try:
+                            obj = repo.revparse_single(f'refs/tags/{ref}')
+                        except KeyError:
+                            # Fall back to original ref
+                            obj = repo.revparse_single(ref)
+                    else:
+                        # For branches, try origin/ prefix first
                         try:
                             obj = repo.revparse_single(f'origin/{ref}')
                         except KeyError:
