@@ -1387,12 +1387,12 @@ class PluginManager(QObject):
 
         if ref and commit:
             short_commit = short_commit_id(commit)
-            return f" ({ref} @{short_commit})"
+            return f"{ref} @{short_commit}"
         elif ref:
-            return f" ({ref})"
+            return f"{ref}"
         elif commit:
             short_commit = short_commit_id(commit)
-            return f" (@{short_commit})"
+            return f"@{short_commit}"
 
         return ""
 
