@@ -478,3 +478,54 @@ class PluginRegistry:
             result.append(plugin)
 
         return result
+
+
+class RegistryPlugin:
+    """Wrapper for registry plugin data with i18n support."""
+
+    def __init__(self, data):
+        self._data = data
+
+    def _get_current_locale(self):
+        """Get current locale from Picard's UI language setting or system locale."""
+        from picard.config import get_config
+
+        config = get_config()
+        locale = config.setting['ui_language']
+        if not locale:
+            from PyQt6 import QtCore
+
+            locale = QtCore.QLocale.system().name()
+        return locale
+
+    def name_i18n(self, locale=None):
+        """Get plugin name with automatic locale detection."""
+        if locale is None:
+            locale = self._get_current_locale()
+
+        i18n = self._data.get('name_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('name', '')
+
+    def description_i18n(self, locale=None):
+        """Get description with automatic locale detection."""
+        if locale is None:
+            locale = self._get_current_locale()
+
+        i18n = self._data.get('description_i18n') or {}
+        if locale in i18n:
+            return i18n[locale]
+        # Try language without region
+        lang = locale.split('_')[0]
+        if lang in i18n:
+            return i18n[lang]
+        return self._data.get('description', '')
+
+    def get(self, key, default=None):
+        """Delegate to underlying data dict."""
+        return self._data.get(key, default)
