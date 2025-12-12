@@ -42,7 +42,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     """Widget for displaying and managing plugins."""
 
     plugin_selection_changed = QtCore.pyqtSignal(object)  # Emits selected plugin or None
-    plugin_state_changed = QtCore.pyqtSignal()  # Emitted when plugin state changes
+    plugin_state_changed = QtCore.pyqtSignal(object, str)  # Emits plugin and action
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -209,7 +209,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     self._toggling_plugins.discard(plugin.plugin_id)
 
                     # Emit signal for options dialog to refresh
-                    self.plugin_state_changed.emit()
+                    action = "enabled" if actual_enabled else "disabled"
+                    self.plugin_state_changed.emit(plugin, action)
 
     def _update_item_to_intended_state(self, item, enabled):
         """Update item display to show intended state."""
@@ -312,7 +313,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Refresh immediately now that signal loop is fixed
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
-            self.plugin_state_changed.emit()
+            action = "enabled" if enabled else "disabled"
+            self.plugin_state_changed.emit(plugin, action)
         except Exception as e:
             # Show error message
             QtWidgets.QMessageBox.critical(
@@ -327,6 +329,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Update plugin from context menu."""
         from picard.plugin3.asyncops.manager import AsyncPluginManager
 
+        self._updating_plugin = plugin  # Store for callback
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(plugin=plugin, progress_callback=None, callback=self._on_context_update_complete)
 
@@ -335,6 +338,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if result.success:
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
+            # Emit signal for options dialog to refresh
+            if hasattr(self, '_updating_plugin'):
+                self.plugin_state_changed.emit(self._updating_plugin, "updated")
+                delattr(self, '_updating_plugin')
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Update Failed"), error_msg)
@@ -344,6 +351,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = UninstallPluginDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
+                self._uninstalling_plugin = plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete)
             except Exception as e:
@@ -357,7 +365,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if result.success:
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
-            self.plugin_state_changed.emit()
+            if hasattr(self, '_uninstalling_plugin'):
+                self.plugin_state_changed.emit(self._uninstalling_plugin, "uninstalled")
+                delattr(self, '_uninstalling_plugin')
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
@@ -384,6 +394,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
+            self._reinstalling_plugin = plugin  # Store for callback
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
@@ -401,6 +412,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Handle reinstall completion."""
         if result.success:
             self._refresh_plugin_list()
+            # Emit signal for options dialog to refresh
+            if hasattr(self, '_reinstalling_plugin'):
+                self.plugin_state_changed.emit(self._reinstalling_plugin, "reinstalled")
+                delattr(self, '_reinstalling_plugin')
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), error_msg)
@@ -410,6 +425,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
+                self._switching_ref_plugin = plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete)
             except Exception as e:
@@ -422,6 +438,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Handle switch ref completion."""
         if result.success:
             self._refresh_plugin_list()
+            # Emit signal for options dialog to refresh
+            if hasattr(self, '_switching_ref_plugin'):
+                self.plugin_state_changed.emit(self._switching_ref_plugin, "ref switched")
+                delattr(self, '_switching_ref_plugin')
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), error_msg)
