@@ -318,10 +318,10 @@ class PluginInfoDialog(QtWidgets.QDialog):
             try:
                 if self.plugin_data.manifest:
                     # Try long description first, then short description
-                    long_desc = self.plugin_data.manifest.long_description()
+                    long_desc = self.plugin_data.manifest.long_description_i18n()
                     if long_desc:
                         return long_desc
-                    return self.plugin_data.manifest.description()
+                    return self.plugin_data.manifest.description_i18n()
                 return ''
             except (AttributeError, Exception):
                 return ''
