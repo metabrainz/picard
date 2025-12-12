@@ -259,13 +259,10 @@ class Plugins3OptionsPage(OptionsPage):
                 registry = self.plugin_manager._registry
                 registry.fetch_registry(use_cache=False)
 
-                # Get registry info for status
-                registry_info = registry.get_registry_info()
+                # Get plugin count for status
                 plugin_count = len(registry.list_plugins())
 
-                success_msg = _("Registry refreshed successfully - {} plugins available (version: {})").format(
-                    plugin_count, registry_info.get('version', 'unknown')
-                )
+                success_msg = _("Registry refreshed successfully - {} plugins available").format(plugin_count)
                 self._show_status(success_msg)
             else:
                 self._show_status(_("Plugin registry refreshed"))
