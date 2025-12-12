@@ -37,7 +37,7 @@ jobs:
         cache: 'pip'
         cache-dependency-path: |
           requirements-build.txt
-          requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
+          scripts/package/requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
@@ -60,8 +60,8 @@ jobs:
         echo "LDFLAGS=-L$(brew --prefix)/lib" >> $GITHUB_ENV
     - name: Install dependencies
       run: |
-        arch -${TARGET_ARCH} pip install -r requirements-build.txt || echo "Some packages failed to install"
-        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt || echo "Some packages failed to install"
+        arch -${TARGET_ARCH} pip install -r requirements-build.txt
+        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r scripts/package/requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
         arch -${TARGET_ARCH} pip install zstandard
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
