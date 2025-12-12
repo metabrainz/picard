@@ -293,6 +293,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
             tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes if available
+            if hasattr(tagger.pluginmanager3, 'plugin_installed'):
+                tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
             if hasattr(tagger.pluginmanager3, 'plugin_enabled'):
                 tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
             if hasattr(tagger.pluginmanager3, 'plugin_disabled'):
