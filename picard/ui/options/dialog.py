@@ -288,15 +288,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
         tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
-        # Connect to other plugin state changes if available
-        if hasattr(tagger.pluginmanager3, 'plugin_installed'):
-            tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
-        if hasattr(tagger.pluginmanager3, 'plugin_enabled'):
-            tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
-        if hasattr(tagger.pluginmanager3, 'plugin_disabled'):
-            tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
-        if hasattr(tagger.pluginmanager3, 'plugin_uninstalled'):
-            tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
+        # Connect to other plugin state changes
+        tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
+        tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
+        tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
+        tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
         # Initial refresh to pick up any plugin option pages that were registered
         # since the last time the options dialog was opened
