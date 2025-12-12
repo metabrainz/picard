@@ -27,7 +27,10 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
 from picard.util import temporary_disconnect
 
-from picard.ui.dialogs.installconfirm import InstallConfirmDialog
+from picard.ui.dialogs.installconfirm import (
+    InstallConfirmDialog,
+    get_selected_ref_from_tab,
+)
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
 
@@ -587,18 +590,9 @@ class SwitchRefDialog(QtWidgets.QDialog):
 
     def _switch_ref(self):
         """Handle switch button click."""
-        current_tab = self.tab_widget.currentIndex()
-
-        if current_tab == 0:  # Tags
-            current_item = self.tags_list.currentItem()
-            if current_item:
-                self.selected_ref = current_item.text()
-        elif current_tab == 1:  # Branches
-            current_item = self.branches_list.currentItem()
-            if current_item:
-                self.selected_ref = current_item.text()
-        else:  # Custom
-            self.selected_ref = self.custom_edit.text().strip()
+        self.selected_ref = get_selected_ref_from_tab(
+            self.tab_widget, self.tags_list, self.branches_list, self.custom_edit, has_default_tab=False
+        )
 
         if self.selected_ref:
             self.accept()

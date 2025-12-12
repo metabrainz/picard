@@ -24,6 +24,44 @@ from PyQt6 import QtCore, QtWidgets
 from picard.i18n import gettext as _
 
 
+# Tab index constants
+TAB_DEFAULT = 0
+TAB_TAGS = 1
+TAB_BRANCHES = 2
+TAB_CUSTOM = 3
+
+# For switch ref dialog (no default tab)
+SWITCH_TAB_TAGS = 0
+SWITCH_TAB_BRANCHES = 1
+SWITCH_TAB_CUSTOM = 2
+
+
+def get_selected_ref_from_tab(tab_widget, tags_list, branches_list, custom_edit, has_default_tab=True):
+    """Get selected ref from tab widget - shared logic for install and switch dialogs."""
+    current_tab = tab_widget.currentIndex()
+
+    if has_default_tab:
+        if current_tab == TAB_DEFAULT:
+            return None
+        elif current_tab == TAB_TAGS:
+            current_item = tags_list.currentItem()
+            return current_item.text() if current_item else None
+        elif current_tab == TAB_BRANCHES:
+            current_item = branches_list.currentItem()
+            return current_item.text() if current_item else None
+        else:  # TAB_CUSTOM
+            return custom_edit.text().strip() or None
+    else:
+        if current_tab == SWITCH_TAB_TAGS:
+            current_item = tags_list.currentItem()
+            return current_item.text() if current_item else None
+        elif current_tab == SWITCH_TAB_BRANCHES:
+            current_item = branches_list.currentItem()
+            return current_item.text() if current_item else None
+        else:  # SWITCH_TAB_CUSTOM
+            return custom_edit.text().strip() or None
+
+
 class InstallConfirmDialog(QtWidgets.QDialog):
     """Dialog for confirming plugin installation with trust warnings and ref selection."""
 
@@ -171,19 +209,7 @@ class InstallConfirmDialog(QtWidgets.QDialog):
 
     def _confirm_install(self):
         """Handle install button click."""
-        current_tab = self.ref_tab_widget.currentIndex()
-
-        if current_tab == 0:  # Default
-            self.selected_ref = None
-        elif current_tab == 1:  # Tags
-            current_item = self.tags_list.currentItem()
-            if current_item:
-                self.selected_ref = current_item.text()
-        elif current_tab == 2:  # Branches
-            current_item = self.branches_list.currentItem()
-            if current_item:
-                self.selected_ref = current_item.text()
-        else:  # Custom
-            self.selected_ref = self.custom_edit.text().strip() or None
-
+        self.selected_ref = get_selected_ref_from_tab(
+            self.ref_tab_widget, self.tags_list, self.branches_list, self.custom_edit, has_default_tab=True
+        )
         self.accept()
