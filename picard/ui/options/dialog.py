@@ -157,12 +157,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             api = getattr(page, '_plugin_api', None)
             if api is not None:  # This is a plugin option page
                 tagger = QtCore.QCoreApplication.instance()
-                plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
-                if plugin_uuid:
-                    # Only show page if plugin is enabled
-                    is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
-                    page_active = is_enabled
-                else:
+                try:
+                    plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
+                    if plugin_uuid:
+                        # Only show page if plugin is enabled
+                        is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
+                        page_active = is_enabled
+                    else:
+                        page_active = False
+                except AttributeError:
+                    # Plugin manager not available
                     page_active = False
 
             # Skip disabled plugin pages entirely
@@ -287,16 +291,20 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
-        tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
-        # Connect to other plugin state changes
-        tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
-        tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
-        tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
-        tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
+        try:
+            tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
+            # Connect to other plugin state changes
+            tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
+            tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
+            tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
+            tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
-        # Initial refresh to pick up any plugin option pages that were registered
-        # since the last time the options dialog was opened
-        self.refresh_plugin_pages()
+            # Initial refresh to pick up any plugin option pages that were registered
+            # since the last time the options dialog was opened
+            self.refresh_plugin_pages()
+        except AttributeError:
+            # Plugin manager not available - this should not happen in normal operation
+            pass
 
     @property
     def initialized_pages(self):

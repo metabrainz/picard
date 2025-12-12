@@ -37,6 +37,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         super().__init__(parent)
         # Cache tagger instance for performance
         self.tagger = QtWidgets.QApplication.instance()
+        if not self.tagger or not hasattr(self.tagger, 'pluginmanager3'):
+            raise RuntimeError("Plugin manager not available")
         self.setup_ui()
         self.current_plugin = None
 
