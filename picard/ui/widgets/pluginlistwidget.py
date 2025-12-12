@@ -643,16 +643,16 @@ class SwitchRefDialog(QtWidgets.QDialog):
                 # Get plugin URL from metadata
                 uuid = tagger.pluginmanager3._get_plugin_uuid(self.plugin)
                 metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
-                if metadata and metadata.url:
+                if metadata and hasattr(metadata, 'url'):
                     refs = tagger.pluginmanager3.fetch_all_git_refs(metadata.url)
 
                     # Populate tags
                     for ref in refs.get('tags', []):
-                        self.tags_list.addItem(ref)
+                        self.tags_list.addItem(ref['name'])
 
                     # Populate branches
                     for ref in refs.get('branches', []):
-                        self.branches_list.addItem(ref)
+                        self.branches_list.addItem(ref['name'])
         except Exception:
             # If we can't fetch refs, user can still use custom input
             pass
