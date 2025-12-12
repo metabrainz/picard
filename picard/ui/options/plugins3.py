@@ -88,7 +88,7 @@ class Plugins3OptionsPage(OptionsPage):
 
         toolbar_layout.addStretch()
 
-        self.details_toggle_button = QtWidgets.QPushButton(_("Details"))
+        self.details_toggle_button = QtWidgets.QPushButton(_("Hide Details"))
         self.details_toggle_button.setCheckable(True)
         self.details_toggle_button.setChecked(True)  # Details visible by default
         self.details_toggle_button.setToolTip(_("Show/hide plugin details panel"))
@@ -201,16 +201,22 @@ class Plugins3OptionsPage(OptionsPage):
         """Toggle visibility of the plugin details panel."""
         is_visible = self.plugin_details.isVisible()
         self.plugin_details.setVisible(not is_visible)
+        self._update_details_button_text()
 
-        # Update button text to reflect what clicking will do
-        if not is_visible:  # Now visible, so button should say "Hide"
-            self.details_toggle_button.setText(_("Details"))
-        else:  # Now hidden, so button should say "Show"
+    def _update_details_button_text(self):
+        """Update the details button text based on panel visibility."""
+        if self.plugin_details.isVisible():
+            self.details_toggle_button.setText(_("Hide Details"))
+            self.details_toggle_button.setChecked(True)
+        else:
             self.details_toggle_button.setText(_("Show Details"))
+            self.details_toggle_button.setChecked(False)
 
     def _on_plugin_selected(self, plugin):
         """Handle plugin selection."""
         self.plugin_details.show_plugin(plugin)
+        # Update button text since details are now shown
+        self._update_details_button_text()
 
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
