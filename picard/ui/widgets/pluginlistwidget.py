@@ -66,8 +66,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if not self.tagger or not hasattr(self.tagger, 'pluginmanager3'):
             raise RuntimeError("Plugin manager not available")
 
+        # Cache plugin manager for performance
+        self.plugin_manager = self.plugin_manager
+
         # Connect to plugin manager signals
-        self.tagger.pluginmanager3.plugin_ref_switched.connect(self._on_plugin_ref_switched)
+        self.plugin_manager.plugin_ref_switched.connect(self._on_plugin_ref_switched)
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -116,15 +119,15 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
-        return self.tagger.pluginmanager3.get_plugin_remote_url(plugin)
+        return self.plugin_manager.get_plugin_remote_url(plugin)
 
     def _format_git_info(self, metadata):
         """Format git information for display."""
-        return self.tagger.pluginmanager3.get_plugin_git_info(metadata)
+        return self.plugin_manager.get_plugin_git_info(metadata)
 
     def _get_version_display(self, plugin):
         """Get display text for plugin version."""
-        version_text = self.tagger.pluginmanager3.get_plugin_version_display(plugin)
+        version_text = self.plugin_manager.get_plugin_version_display(plugin)
 
         # Check if update is available and add indicator
         if self._has_update_available(plugin):
@@ -135,7 +138,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         # Use the manager's method which handles versioning schemes correctly
-        return self.tagger.pluginmanager3.get_plugin_update_status(plugin)
+        return self.plugin_manager.get_plugin_update_status(plugin)
 
     def _on_selection_changed(self):
         """Handle selection changes."""
@@ -221,7 +224,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
-        plugins = self.tagger.pluginmanager3.plugins
+        plugins = self.plugin_manager.plugins
 
         # Use utility to temporarily disconnect signal during refresh
         with temporary_disconnect(self.itemClicked, self._on_item_clicked):
@@ -230,9 +233,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _toggle_plugin(self, plugin, enabled):
         """Toggle plugin enabled state."""
         if enabled:
-            self.tagger.pluginmanager3.enable_plugin(plugin)
+            self.plugin_manager.enable_plugin(plugin)
         else:
-            self.tagger.pluginmanager3.disable_plugin(plugin)
+            self.plugin_manager.disable_plugin(plugin)
 
     def _show_context_menu(self, position):
         """Show context menu for plugin list."""
@@ -312,14 +315,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Update plugin from context menu."""
         from picard.plugin3.asyncops.manager import AsyncPluginManager
 
-        async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
+        async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(plugin=plugin, progress_callback=None, callback=self._on_context_update_complete)
 
     def _on_context_update_complete(self, result):
         """Handle context menu update completion."""
         if result.success:
             # Refresh the plugin list
-            self.populate_plugins(self.tagger.pluginmanager3.plugins)
+            self.populate_plugins(self.plugin_manager.plugins)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Update Failed"), error_msg)
@@ -329,7 +332,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = UninstallPluginDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
-                async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
+                async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete)
             except Exception as e:
                 QtWidgets.QMessageBox.critical(
@@ -350,8 +353,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Reinstall plugin from context menu."""
         try:
             # Get plugin URL from metadata
-            uuid = self.tagger.pluginmanager3._get_plugin_uuid(plugin)
-            metadata = self.tagger.pluginmanager3._get_plugin_metadata(uuid)
+            uuid = self.plugin_manager._get_plugin_uuid(plugin)
+            metadata = self.plugin_manager._get_plugin_metadata(uuid)
             if not (metadata and hasattr(metadata, 'url')):
                 QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), _("Could not find plugin repository URL"))
                 return
@@ -368,7 +371,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
-            async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
+            async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
                 ref=confirm_dialog.selected_ref,
@@ -393,7 +396,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
-                async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
+                async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete)
             except Exception as e:
                 QtWidgets.QMessageBox.critical(
@@ -551,10 +554,10 @@ class SwitchRefDialog(QtWidgets.QDialog):
         """Load available refs from repository."""
         try:
             # Get plugin URL from metadata
-            uuid = self.tagger.pluginmanager3._get_plugin_uuid(self.plugin)
-            metadata = self.tagger.pluginmanager3._get_plugin_metadata(uuid)
+            uuid = self.plugin_manager._get_plugin_uuid(self.plugin)
+            metadata = self.plugin_manager._get_plugin_metadata(uuid)
             if metadata and hasattr(metadata, 'url'):
-                refs = self.tagger.pluginmanager3.fetch_all_git_refs(metadata.url)
+                refs = self.plugin_manager.fetch_all_git_refs(metadata.url)
 
                 # Populate tags
                 for ref in refs.get('tags', []):

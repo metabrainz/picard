@@ -49,6 +49,11 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.setWindowTitle(_("Install Plugin"))
         self.setModal(True)
         self.resize(500, 300)
+
+        # Cache frequently accessed objects
+        self.tagger = QtWidgets.QApplication.instance()
+        self.plugin_manager = getattr(self.tagger, 'pluginmanager3', None)
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -170,9 +175,8 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _load_registry_plugins(self):
         """Load plugins from registry."""
-        tagger = QtWidgets.QApplication.instance()
         try:
-            registry = tagger.pluginmanager3._registry
+            registry = self.plugin_manager._registry
             plugins = registry.list_plugins()
 
             # Populate categories
@@ -260,9 +264,8 @@ class InstallPluginDialog(QtWidgets.QDialog):
     def _get_installed_plugin_uuids(self):
         """Get set of installed plugin UUIDs."""
         installed_uuids = set()
-        tagger = QtWidgets.QApplication.instance()
         try:
-            for plugin in tagger.pluginmanager3.plugins:
+            for plugin in self.plugin_manager.plugins:
                 try:
                     uuid = plugin.manifest.uuid
                     if uuid:
@@ -306,9 +309,8 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _check_registry_plugin(self, plugin_id):
         """Check registry plugin and show info if needed."""
-        tagger = QtWidgets.QApplication.instance()
         try:
-            registry = tagger.pluginmanager3._registry
+            registry = self.plugin_manager._registry
             # Try to find plugin in registry
             plugin_data = registry.find_plugin(plugin_id=plugin_id)
             if plugin_data:
@@ -348,12 +350,11 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _check_trust_level(self, url):
         """Check trust level and show warning if needed."""
-        tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
+        if not self.plugin_manager:
             return
 
         try:
-            registry = tagger.pluginmanager3._registry
+            registry = self.plugin_manager._registry
             trust_level = registry.get_trust_level(url)
             self._show_trust_warning(trust_level)
         except Exception:
@@ -362,9 +363,6 @@ class InstallPluginDialog(QtWidgets.QDialog):
     def _install_plugin(self):
         """Install the plugin."""
         current_tab = self.tab_widget.currentIndex()
-
-        # Get plugin manager
-        tagger = QtWidgets.QApplication.instance()
 
         if current_tab == TAB_REGISTRY:  # Registry tab
             current_row = self.plugin_table.currentRow()
@@ -389,7 +387,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
             # Use versioning scheme for registry plugins when no ref specified
             if ref is None:
-                ref = tagger.pluginmanager3.select_ref_for_plugin(plugin_data)
+                ref = self.plugin_manager.select_ref_for_plugin(plugin_data)
         else:  # URL tab
             url = self.url_edit.text().strip()
             ref = self.ref_edit.text().strip() or None
@@ -416,7 +414,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.progress_bar.setValue(0)
 
         # Start async installation
-        async_manager = AsyncPluginManager(tagger.pluginmanager3)
+        async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(url=url, ref=ref, progress_callback=self._on_progress, callback=self._on_complete)
 
     def _on_progress(self, update):

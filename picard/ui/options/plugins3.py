@@ -42,6 +42,10 @@ class Plugins3OptionsPage(OptionsPage):
     def __init__(self, api=None, parent=None):
         super().__init__(api=api, parent=parent)
         self.all_plugins = []  # Store all plugins for filtering
+
+        # Cache plugin manager for performance
+        self.plugin_manager = getattr(self.tagger, 'pluginmanager3', None)
+
         self.setup_ui()
 
     def setup_ui(self):
@@ -104,7 +108,7 @@ class Plugins3OptionsPage(OptionsPage):
     def load(self):
         """Load plugins from plugin manager."""
         try:
-            self.all_plugins = self.tagger.pluginmanager3.plugins
+            self.all_plugins = self.plugin_manager.plugins
             self._filter_plugins()  # Apply current filter
             self.status_label.setText(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
@@ -187,14 +191,14 @@ class Plugins3OptionsPage(OptionsPage):
 
         try:
             # Use the manager's check_updates method (which handles versioning schemes correctly)
-            updates = self.tagger.pluginmanager3.check_updates()
+            updates = self.plugin_manager.check_updates()
 
             if updates:
                 # Convert UpdateCheck objects to plugins for the dialog
                 plugins_with_updates = []
                 for update in updates:
                     # Find the plugin object by plugin_id
-                    for plugin in self.tagger.pluginmanager3.plugins:
+                    for plugin in self.plugin_manager.plugins:
                         if plugin.plugin_id == update.plugin_id:
                             plugins_with_updates.append(plugin)
                             break
@@ -239,7 +243,7 @@ class Plugins3OptionsPage(OptionsPage):
 
         from picard.plugin3.asyncops.manager import AsyncPluginManager
 
-        async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
+        async_manager = AsyncPluginManager(self.plugin_manager)
 
         # For simplicity, update plugins one by one
         # TODO: Could be enhanced to use update_all_plugins for batch updates

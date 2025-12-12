@@ -32,6 +32,11 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         self.plugin_name = plugin_name
         self.url = url
         self.selected_ref = None
+
+        # Cache plugin manager for performance
+        tagger = QtCore.QCoreApplication.instance()
+        self.plugin_manager = getattr(tagger, 'pluginmanager3', None)
+
         self.setWindowTitle(_("Confirm Plugin Installation"))
         self.setModal(True)
         self.resize(500, 400)
@@ -116,9 +121,8 @@ class InstallConfirmDialog(QtWidgets.QDialog):
 
     def check_trust_and_blacklist(self):
         """Check trust level and blacklist status."""
-        tagger = QtCore.QCoreApplication.instance()
         try:
-            registry = tagger.pluginmanager3._registry
+            registry = self.plugin_manager._registry
 
             # Check blacklist first
             is_blacklisted, reason = registry.is_blacklisted(self.url)
@@ -152,8 +156,7 @@ class InstallConfirmDialog(QtWidgets.QDialog):
     def load_refs(self):
         """Load available refs from repository."""
         try:
-            tagger = QtCore.QCoreApplication.instance()
-            refs = tagger.pluginmanager3.fetch_all_git_refs(self.url)
+            refs = self.plugin_manager.fetch_all_git_refs(self.url)
             if refs:
                 # Populate tags
                 for ref in refs.get('tags', []):
