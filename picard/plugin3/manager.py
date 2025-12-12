@@ -1248,22 +1248,20 @@ class PluginManager(QObject):
             old_ref = metadata.ref or 'main'
             ref = old_ref
 
-            # Check if currently on a tag
+            # Check if currently on a tag by checking available refs
             current_is_tag = False
             current_tag = None
             if ref:
+                # Get all refs to check if this ref exists as a tag
                 try:
-                    repo.revparse_single(f'refs/tags/{ref}')
-                    current_is_tag = True
-                    current_tag = ref
-                except KeyError:
-                    # Not a tag, check if it's a branch
-                    try:
-                        repo.revparse_single(f'refs/remotes/origin/{ref}')
-                        current_is_tag = False
-                    except KeyError:
-                        # Might be a commit hash or other ref
-                        pass
+                    references = repo.get_references()
+                    tag_ref = f'refs/tags/{ref}'
+                    if tag_ref in references:
+                        current_is_tag = True
+                        current_tag = ref
+                except Exception:
+                    # If we can't get references, assume it's not a tag
+                    current_is_tag = False
 
             # If on a tag, check for newer version tag
             if current_is_tag and current_tag:
