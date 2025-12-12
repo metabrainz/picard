@@ -487,10 +487,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _switch_ref_from_menu(self, plugin):
         """Switch plugin ref from context menu."""
-        if not (hasattr(plugin, 'source') and hasattr(plugin.source, 'url')):
-            QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), _("Could not find plugin repository URL"))
-            return
-
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtCore.QCoreApplication.instance()
@@ -640,15 +636,19 @@ class SwitchRefDialog(QtWidgets.QDialog):
         try:
             tagger = QtCore.QCoreApplication.instance()
             if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                refs = tagger.pluginmanager3.fetch_all_git_refs(self.plugin.source.url)
+                # Get plugin URL from metadata
+                uuid = tagger.pluginmanager3._get_plugin_uuid(self.plugin)
+                metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
+                if metadata and metadata.url:
+                    refs = tagger.pluginmanager3.fetch_all_git_refs(metadata.url)
 
-                # Populate tags
-                for ref in refs.get('tags', []):
-                    self.tags_list.addItem(ref)
+                    # Populate tags
+                    for ref in refs.get('tags', []):
+                        self.tags_list.addItem(ref)
 
-                # Populate branches
-                for ref in refs.get('branches', []):
-                    self.branches_list.addItem(ref)
+                    # Populate branches
+                    for ref in refs.get('branches', []):
+                        self.branches_list.addItem(ref)
         except Exception:
             # If we can't fetch refs, user can still use custom input
             pass
