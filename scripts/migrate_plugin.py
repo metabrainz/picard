@@ -352,81 +352,28 @@ def convert_plugin_api_v2_to_v3(content):
 
     # Remove imports that will be accessed via api
     # Track, Album, Cluster, Metadata, CoverArtImage
-    # These are now available as api.Track, api.Album, etc.
-    # NOTE: Keep BaseAction, OptionsPage, File, CoverArtProvider - they're base classes for inheritance
+    # These are now available as PluginApi.Track, PluginApi.Album, etc.
     imports_to_remove = [
         'from picard.track import Track',
         'from picard.album import Album',
         'from picard.cluster import Cluster',
         'from picard.metadata import Metadata',
         'from picard.coverart.image import CoverArtImage',
+        'from picard.ui.itemviews import BaseAction',
+        'from picard.ui.options import OptionsPage',
+        'from picard.file import File',
+        'from picard.coverart.providers import CoverArtProvider',
+        'from picard.coverart.providers import ProviderOptions',
     ]
 
+    has_api_imports = False
     for old_import in imports_to_remove:
         if old_import in content:
+            has_api_imports = True
             # Remove the import line
             content = re.sub(rf'^{re.escape(old_import)}.*$', '', content, flags=re.MULTILINE)
             class_name = old_import.split()[-1]
-            warnings.append(f"✓ Removed {class_name} import - use api.{class_name} instead")
-
-    # Helper function to replace multi-line and single-line imports
-    def replace_import(old_module, class_name):
-        nonlocal content
-        if f'from {old_module} import' in content and class_name in content:
-            # Remove the entire import block (multi-line with parentheses or single-line)
-            content = re.sub(
-                rf'from {re.escape(old_module)} import\s*\([^)]*\)',
-                f'from picard.plugin3.api import {class_name}',
-                content,
-                flags=re.MULTILINE | re.DOTALL,
-            )
-            # Also handle single-line imports
-            content = re.sub(
-                rf'from {re.escape(old_module)} import\s+[^\n]+',
-                f'from picard.plugin3.api import {class_name}',
-                content,
-            )
-            warnings.append(f"✓ Updated {class_name} import to plugin3 API")
-
-    # Keep base classes for inheritance but update them to plugin3 API
-    replace_import('picard.ui.itemviews', 'BaseAction')
-    replace_import('picard.ui.options', 'OptionsPage')
-    replace_import('picard.file', 'File')
-    replace_import('picard.coverart.providers', 'CoverArtProvider')
-
-    # Consolidate multiple plugin3 API imports into one block with proper formatting
-    api_imports = []
-    for class_name in ['BaseAction', 'OptionsPage', 'File', 'CoverArtProvider']:
-        if f'from picard.plugin3.api import {class_name}' in content:
-            api_imports.append(class_name)
-            # Remove individual import lines
-            content = re.sub(
-                rf'^from picard\.plugin3\.api import {class_name}\s*$',
-                '',
-                content,
-                flags=re.MULTILINE,
-            )
-
-    # Add consolidated import block if there are any imports (sorted alphabetically)
-    if api_imports:
-        api_imports.sort()
-        import_block = 'from picard.plugin3.api import (\n'
-        for class_name in api_imports:
-            import_block += f'    {class_name},\n'
-        import_block += ')\n'
-
-        # Find the first non-__future__ import statement and insert before it
-        # __future__ imports must be at the top
-        match = re.search(r'^(?!from __future__)(?:from |import )', content, flags=re.MULTILINE)
-        if match:
-            pos = match.start()
-            content = content[:pos] + import_block + '\n' + content[pos:]
-        else:
-            # No imports found, add after docstring/comments/__future__
-            match = re.search(r'(""".*?"""|\'\'\'.*?\'\'\'|from __future__.*?\n)\s*\n', content, flags=re.DOTALL)
-            if match:
-                pos = match.end()
-                content = content[:pos] + '\n' + import_block + '\n' + content[pos:]
+            warnings.append(f"✓ Removed {class_name} import - use PicardApi.{class_name} instead")
 
     # PluginPriority
     if 'PluginPriority' in content:
@@ -435,7 +382,7 @@ def convert_plugin_api_v2_to_v3(content):
         content = re.sub(r'PluginPriority\.LOW', '-100', content)
         warnings.append("✓ Converted PluginPriority constants to integers")
 
-    return content, warnings
+    return content, warnings, has_api_imports
 
 
 def analyze_function_signatures(tree):
@@ -782,8 +729,25 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("   - Add api parameter to OptionsPage/BaseAction __init__")
 
     # Convert API patterns
-    content, api_warnings = convert_plugin_api_v2_to_v3(content)
+    content, api_warnings, has_api_imports = convert_plugin_api_v2_to_v3(content)
     all_warnings.extend(api_warnings)
+
+    # Add PluginApi import
+    if register_calls or instance_registrations or has_api_imports:
+        import_statement = 'from picard.plugin3.api import PluginApi\n'
+
+        # Find the first non-__future__ import statement and insert before it
+        # __future__ imports must be at the top
+        match = re.search(r'^(?!from __future__)(?:from |import )', content, flags=re.MULTILINE)
+        if match:
+            pos = match.start()
+            content = content[:pos] + import_statement + '\n' + content[pos:]
+        else:
+            # No imports found, add after docstring/comments/__future__
+            match = re.search(r'(""".*?"""|\'\'\'.*?\'\'\'|from __future__.*?\n)\s*\n', content, flags=re.DOTALL)
+            if match:
+                pos = match.end()
+                content = content[:pos] + '\n' + import_statement + '\n' + content[pos:]
 
     # Rebuild source without removed nodes
     lines = content.split('\n')
@@ -884,32 +848,43 @@ def convert_plugin_code(content, metadata):
             plugin_name = metadata.get('name', 'Plugin')
             line = line.replace('PLUGIN_NAME', f'"{plugin_name}"')
 
-        # Convert class references to use api from PluginApi
-        # e.g., class MyAction(BaseAction) -> class MyAction(api.BaseAction)
-        # Also convert instantiation: Metadata() -> api.Metadata()
-        # NOTE: BaseAction, OptionsPage, File, CoverArtProvider are imported directly, not via api
+        # Convert class references to use aliases in PluginApi
+        # e.g., class MyAction(BaseAction) -> class MyAction(PluginApi.BaseAction)
+        # Also convert instantiation: Metadata() -> PluginApi.Metadata()
         for class_name in [
-            'Track',
             'Album',
             'Cluster',
+            'Track',
+            'File',
             'Metadata',
             'CoverArtImage',
+            'CoverArtProvider',
+            'ProviderOptions',
+            'OptionsPage',
+            'BaseAction',
         ]:
             # Class inheritance
             if f'({class_name})' in line or f'({class_name},' in line:
                 # Don't convert if already has module prefix
                 if f'api.{class_name}' not in line and 'picard.' not in line:
-                    line = line.replace(f'({class_name})', f'(api.{class_name})')
-                    line = line.replace(f'({class_name},', f'(api.{class_name},')
+                    line = line.replace(f'({class_name})', f'(PluginApi.{class_name})')
+                    line = line.replace(f'({class_name},', f'(PluginApi.{class_name},')
 
             # Class instantiation (e.g., Metadata())
             # Use word boundary to avoid matching substrings like Ui_SomeOptionsPage()
             if f'{class_name}(' in line:
-                if f'api.{class_name}(' not in line and 'picard.' not in line:
+                if f'PluginApi.{class_name}(' not in line and 'picard.' not in line:
                     # Only replace if it's not part of a class definition
                     if not line.strip().startswith('class '):
                         # Use regex with word boundary to match only standalone class names
-                        line = re.sub(rf'\b{re.escape(class_name)}\(', f'api.{class_name}(', line)
+                        line = re.sub(rf'\b{re.escape(class_name)}\(', f'PluginApi.{class_name}(', line)
+
+            # Using class static methods or variables (e.g. CoverArtProvider.WAIT)
+            # Use word boundary to avoid matching substrings like Ui_SomeOptionsPage()
+            if f'{class_name}.' in line:
+                if f'PluginApi.{class_name}.' not in line and 'picard.' not in line:
+                    # Use regex with word boundary to match only standalone class names
+                    line = re.sub(rf'\b{re.escape(class_name)}\.', f'PluginApi.{class_name}.', line)
 
         new_lines.append(line)
 
@@ -921,7 +896,7 @@ def convert_plugin_code(content, metadata):
     if register_calls or instance_registrations:
         new_lines.append('')
         new_lines.append('')
-        new_lines.append('def enable(api):')
+        new_lines.append('def enable(api: PluginApi):')
         new_lines.append('    """Called when plugin is enabled."""')
 
         # Add direct function registrations
@@ -1289,6 +1264,19 @@ def migrate_plugin(input_file, output_dir=None):
     manifest_path = out_path / 'MANIFEST.toml'
     manifest_path.write_text(manifest_content, encoding='utf-8')
     print(f"  Created: {manifest_path}")
+
+    # Generate .gitignore
+    gitignore_content = (
+        "# Byte-compiled / optimized / DLL files",
+        "*.py[cod]",
+        "__pycache__/",
+        "\n# Environments and development tools",
+        ".venv/",
+        ".ruff_cache/",
+    )
+    gitignore_path = out_path / '.gitignore'
+    gitignore_path.write_text("\n".join(gitignore_content), encoding='utf-8')
+    print(f"  Created: {gitignore_path}")
 
     # Convert plugin code
     new_code, code_warnings = convert_plugin_code(content, metadata)

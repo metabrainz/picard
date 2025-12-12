@@ -56,7 +56,10 @@ from picard.config import (
     get_config,
 )
 from picard.coverart.image import CoverArtImage
-from picard.coverart.providers import CoverArtProvider
+from picard.coverart.providers import (
+    CoverArtProvider,
+    ProviderOptions,
+)
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
@@ -154,6 +157,7 @@ class PluginApi:
     Metadata: TypeAlias = Metadata
     CoverArtImage: TypeAlias = CoverArtImage
     CoverArtProvider: TypeAlias = CoverArtProvider
+    ProviderOptions: TypeAlias = ProviderOptions
     BaseAction: TypeAlias = BaseAction
     OptionsPage: TypeAlias = OptionsPage
 
