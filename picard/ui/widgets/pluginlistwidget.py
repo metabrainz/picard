@@ -92,9 +92,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Column 1: Plugin name
             try:
-                # Get current locale for translations
-                locale = QtCore.QLocale.system().name()
-                plugin_name = plugin.manifest.name(locale)
+                plugin_name = plugin.manifest.name_i18n()
             except (AttributeError, Exception):
                 plugin_name = plugin.name or plugin.plugin_id
             item.setText(COLUMN_PLUGIN, plugin_name)
@@ -387,9 +385,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Get plugin name
             try:
-                # Get current locale for translations
-                locale = QtCore.QLocale.system().name()
-                plugin_name = plugin.manifest.name(locale)
+                plugin_name = plugin.manifest.name_i18n()
             except (AttributeError, Exception):
                 plugin_name = plugin.name or plugin.plugin_id
 
@@ -483,9 +479,7 @@ class UninstallPluginDialog(QtWidgets.QDialog):
 
         # Plugin name
         try:
-            # Get current locale for translations
-            locale = QtCore.QLocale.system().name()
-            name = self.plugin.manifest.name(locale)
+            name = self.plugin.manifest.name_i18n()
         except (AttributeError, Exception):
             name = self.plugin.name or self.plugin.plugin_id
 
@@ -543,9 +537,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
 
         # Plugin name
         try:
-            # Get current locale for translations
-            locale = QtCore.QLocale.system().name()
-            name = self.plugin.manifest.name(locale)
+            name = self.plugin.manifest.name_i18n()
         except (AttributeError, Exception):
             name = self.plugin.name or self.plugin.plugin_id
 

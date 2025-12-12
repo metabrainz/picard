@@ -1413,11 +1413,7 @@ class PluginManager(QObject):
             return None
 
         try:
-            # Get current locale for translations
-            from PyQt6 import QtCore
-
-            locale = QtCore.QLocale.system().name()
-            description = plugin.manifest.long_description(locale)
+            description = plugin.manifest.long_description_i18n()
             if description and render_markdown:
                 return render_markdown(description, output_format='html')
             return description

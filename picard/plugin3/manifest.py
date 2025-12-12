@@ -91,6 +91,30 @@ class PluginManifest:
             return i18n[lang]
         return self._data.get('long_description', '')
 
+    def name_i18n(self, locale: str = None) -> str:
+        """Get plugin name with automatic locale detection."""
+        if locale is None:
+            from PyQt6 import QtCore
+
+            locale = QtCore.QLocale.system().name()
+        return self.name(locale)
+
+    def description_i18n(self, locale: str = None) -> str:
+        """Get description with automatic locale detection."""
+        if locale is None:
+            from PyQt6 import QtCore
+
+            locale = QtCore.QLocale.system().name()
+        return self.description(locale)
+
+    def long_description_i18n(self, locale: str = None) -> str:
+        """Get long description with automatic locale detection."""
+        if locale is None:
+            from PyQt6 import QtCore
+
+            locale = QtCore.QLocale.system().name()
+        return self.long_description(locale)
+
     @property
     def version(self) -> Optional[Version]:
         version_str = self._data.get('version')

@@ -129,9 +129,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         plugin_name = plugin.plugin_id  # Default fallback
         if plugin.manifest:
             try:
-                # Get current locale for translations
-                locale = QtCore.QLocale.system().name()
-                plugin_name = plugin.manifest.name(locale) or plugin.name or plugin.plugin_id
+                plugin_name = plugin.manifest.name_i18n() or plugin.name or plugin.plugin_id
             except Exception:
                 plugin_name = plugin.name or plugin.plugin_id
         elif plugin.name:
@@ -141,11 +139,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Get description from manifest
         description = _("No description available")
-        if plugin.manifest and hasattr(plugin.manifest, 'description'):
+        if plugin.manifest and hasattr(plugin.manifest, 'description_i18n'):
             try:
-                # Get current locale for translations
-                locale = QtCore.QLocale.system().name()
-                description = plugin.manifest.description(locale) or description
+                description = plugin.manifest.description_i18n() or description
             except Exception:
                 pass
         self.description_label.setText(description)
@@ -184,9 +180,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Plugin name
         try:
-            # Get current locale for translations
-            locale = QtCore.QLocale.system().name()
-            name = self.current_plugin.manifest.name(locale)
+            name = self.current_plugin.manifest.name_i18n()
         except (AttributeError, Exception):
             name = self.current_plugin.name or self.current_plugin.plugin_id
 
