@@ -161,7 +161,7 @@ def enable(api):
 Access to Picard's global configuration.
 
 ```python
-def my_processor(api, track, metadata):
+def my_processor(api, album, metadata, release):
     # Read settings
     enabled = api.global_config.setting.get('my_plugin_enabled', False)
 
@@ -290,7 +290,7 @@ def enable(api):
 Access to Picard's web service for HTTP requests.
 
 ```python
-def my_processor(api, track, metadata):
+def my_processor(api, album, metadata, release):
     def response_handler(response, reply, error):
         if error:
             api.logger.error(f"Request failed: {error}")
@@ -314,7 +314,7 @@ def my_processor(api, track, metadata):
 Helper for MusicBrainz API requests.
 
 ```python
-def my_processor(api, track, metadata):
+def my_processor(api, album, metadata, release):
     # Simplified MusicBrainz API access
     api.mb_api.get_release_by_id(
         release_id,
@@ -441,10 +441,10 @@ def enable(api):
 
 Register a function to process track metadata.
 
-**Signature**: `function(api, track, metadata)`
+**Signature**: `function(api, album, metadata, track_node, release_node=None)`
 
 ```python
-def process_track(api, track, metadata):
+def process_track(api, album, metadata, track_node, release_node=None):
     """Process track metadata."""
     api.logger.info(f"Processing: {metadata['title']}")
     metadata['custom_tag'] = 'value'
@@ -456,7 +456,7 @@ def enable(api):
 ```
 
 **Parameters**:
-- `function`: Processor function (receives `api`, `track`, `metadata`)
+- `function`: Processor function (receives `api`, `album`, `metadata`, `track_node`, `release_node`)
 - `priority`: Execution priority (higher = earlier, default: 0)
 
 ---
@@ -465,10 +465,10 @@ def enable(api):
 
 Register a function to process album metadata.
 
-**Signature**: `function(api, album, metadata)`
+**Signature**: `function(api, album, metadata, release_node)`
 
 ```python
-def process_album(api, album, metadata):
+def process_album(api, album, metadata, release_node):
     """Process album metadata."""
     metadata['custom_album_tag'] = 'value'
 
@@ -534,7 +534,7 @@ Called when a file is added to a track.
 
 **Signature**: `function(api, track, file)`
 
----
+---W
 
 #### `register_file_post_removal_from_track_processor(function, priority=0)`
 
@@ -894,7 +894,7 @@ Picard uses `functools.partial` to automatically inject the `api` parameter:
 
 **For Processors**:
 ```python
-def my_processor(api, track, metadata):
+def my_processor(api, album, metadata, track_node, release=None):
     # api is automatically injected as first parameter
     api.logger.info("Processing")
 
@@ -969,7 +969,7 @@ class MyOptionsPage(PluginApi.OptionsPage):
         self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, track, metadata):
+def process_track(api, album, metadata, track_node, release=None):
     """Process track metadata."""
     if api.global_config.setting.get('example_enabled', False):
         api.logger.info(f"Processing: {metadata.get('title', 'Unknown')}")
