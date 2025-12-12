@@ -1363,6 +1363,21 @@ class PluginManager(QObject):
 
         return ""
 
+    def get_plugin_versioning_scheme(self, plugin):
+        """Get versioning scheme for plugin from registry."""
+        if not plugin.manifest or not plugin.manifest.uuid:
+            return ""
+
+        try:
+            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            if metadata and hasattr(metadata, 'url'):
+                registry_plugin = self._registry.find_plugin(url=metadata.url)
+                if registry_plugin:
+                    return registry_plugin.get('versioning_scheme', '')
+        except Exception:
+            pass
+        return ""
+
     def uninstall_plugin(self, plugin: Plugin, purge=False):
         """Uninstall a plugin.
 

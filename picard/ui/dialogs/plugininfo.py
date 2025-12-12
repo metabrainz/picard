@@ -211,14 +211,11 @@ class PluginInfoDialog(QtWidgets.QDialog):
         if self._is_registry_plugin():
             return self.plugin_data.get('git_url', '')
         else:
-            # For installed plugins, get from metadata
+            # For installed plugins, get from manager
             try:
                 tagger = QtCore.QCoreApplication.instance()
                 if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    plugin_uuid = self.plugin_data.manifest.uuid if self.plugin_data.manifest else None
-                    if plugin_uuid:
-                        metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                        return getattr(metadata, 'url', '')
+                    return tagger.pluginmanager3.get_plugin_remote_url(self.plugin_data) or ''
                 return ''
             except (AttributeError, Exception):
                 return ''
@@ -228,17 +225,11 @@ class PluginInfoDialog(QtWidgets.QDialog):
         if self._is_registry_plugin():
             return self.plugin_data.get('versioning_scheme', '')
         else:
-            # For installed plugins, get versioning scheme from registry
+            # For installed plugins, get versioning scheme from manager
             try:
                 tagger = QtCore.QCoreApplication.instance()
                 if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    plugin_uuid = self.plugin_data.manifest.uuid if self.plugin_data.manifest else None
-                    if plugin_uuid:
-                        metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                        if metadata and hasattr(metadata, 'url'):
-                            registry_plugin = tagger.pluginmanager3._registry.find_plugin(url=metadata.url)
-                            if registry_plugin:
-                                return registry_plugin.get('versioning_scheme', '')
+                    return tagger.pluginmanager3.get_plugin_versioning_scheme(self.plugin_data)
                 return ''
             except (AttributeError, Exception):
                 return ''
