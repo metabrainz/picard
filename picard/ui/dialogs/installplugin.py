@@ -52,7 +52,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         # Cache frequently accessed objects
         self.tagger = QtWidgets.QApplication.instance()
-        self.plugin_manager = getattr(self.tagger, 'pluginmanager3', None)
+        self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setup_ui()
 
