@@ -1217,7 +1217,7 @@ class PluginManager(QObject):
 
         return updates
 
-    def has_plugin_update(self, plugin):
+    def get_plugin_update_status(self, plugin):
         """Check if a single plugin has an update available."""
         if not plugin.manifest or not plugin.manifest.uuid:
             return False
@@ -1344,7 +1344,7 @@ class PluginManager(QObject):
 
         return version_text or "Unknown"
 
-    def format_git_info(self, metadata):
+    def get_plugin_git_info(self, metadata):
         """Format git information for display."""
         if not metadata:
             return ""

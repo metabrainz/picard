@@ -118,7 +118,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _format_git_info(self, metadata):
         """Format git information for display."""
-        return self.tagger.pluginmanager3.format_git_info(metadata)
+        return self.tagger.pluginmanager3.get_plugin_git_info(metadata)
 
     def _get_version_display(self, plugin):
         """Get display text for plugin version."""
@@ -133,7 +133,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         # Use the manager's method which handles versioning schemes correctly
-        return self.tagger.pluginmanager3.has_plugin_update(plugin)
+        return self.tagger.pluginmanager3.get_plugin_update_status(plugin)
 
     def _on_selection_changed(self):
         """Handle selection changes."""
