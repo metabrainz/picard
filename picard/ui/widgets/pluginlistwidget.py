@@ -152,26 +152,26 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Get display text for plugin version."""
         version_text = ""
 
-        # Try to get version from manifest first
-        if plugin.manifest and hasattr(plugin.manifest, '_data'):
-            version = plugin.manifest._data.get('version')
-            if version:
-                version_text = version
+        # Try to get git ref from metadata first (for better ref tracking)
+        try:
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if plugin_uuid:
+                tagger = QtCore.QCoreApplication.instance()
+                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+                    metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
+                    if metadata:
+                        git_info = self._format_git_info(metadata)
+                        if git_info:
+                            version_text = git_info
+        except Exception:
+            pass
 
-        # Fallback to git ref from metadata if no version in manifest
+        # Fallback to manifest version if no git metadata
         if not version_text:
-            try:
-                plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-                if plugin_uuid:
-                    tagger = QtCore.QCoreApplication.instance()
-                    if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                        metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                        if metadata:
-                            git_info = self._format_git_info(metadata)
-                            if git_info:
-                                version_text = git_info
-            except Exception:
-                pass
+            if plugin.manifest and hasattr(plugin.manifest, '_data'):
+                version = plugin.manifest._data.get('version')
+                if version:
+                    version_text = version
 
         if not version_text:
             version_text = _("Unknown")
