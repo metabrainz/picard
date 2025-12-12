@@ -1290,6 +1290,19 @@ def migrate_plugin(input_file, output_dir=None):
     manifest_path.write_text(manifest_content, encoding='utf-8')
     print(f"  Created: {manifest_path}")
 
+    # Generate .gitignore
+    gitignore_content = (
+        "# Byte-compiled / optimized / DLL files",
+        "*.py[cod]",
+        "__pycache__/",
+        "\n# Environments and development tools",
+        ".venv/",
+        ".ruff_cache/",
+    )
+    gitignore_path = out_path / '.gitignore'
+    gitignore_path.write_text("\n".join(gitignore_content), encoding='utf-8')
+    print(f"  Created: {gitignore_path}")
+
     # Convert plugin code
     new_code, code_warnings = convert_plugin_code(content, metadata)
     # Also convert Qt5 to Qt6 in main code
