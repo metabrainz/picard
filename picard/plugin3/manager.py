@@ -748,9 +748,19 @@ class PluginManager(QObject):
                         break
 
                 if existing_plugin:
-                    # Disable the plugin properly
+                    # Force disable the plugin to ensure all extensions are unregistered
+                    # This is needed even if plugin is not in enabled list
+                    try:
+                        if existing_plugin.state != PluginState.DISABLED:
+                            existing_plugin.disable()
+                    except Exception:
+                        # If disable fails, continue anyway
+                        pass
+
+                    # Remove from enabled plugins list if present
                     if existing_plugin.plugin_id in self._enabled_plugins:
-                        self.disable_plugin(existing_plugin)
+                        self._enabled_plugins.discard(existing_plugin.plugin_id)
+
                     # Remove plugin from plugins list
                     if existing_plugin in self.plugins:
                         self.plugins.remove(existing_plugin)
