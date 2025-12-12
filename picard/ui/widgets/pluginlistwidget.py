@@ -272,10 +272,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         menu.addSeparator()
 
-        # Update action (if update available)
-        if self._has_update_available(plugin):
-            update_action = menu.addAction(_("Update"))
-            update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+        # Update action
+        update_action = menu.addAction(_("Update"))
+        update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+        update_action.setEnabled(self._has_update_available(plugin))
 
         # Uninstall action
         uninstall_action = menu.addAction(_("Uninstall"))

@@ -158,6 +158,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         dialog = UninstallPluginDialog(self.current_plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
+                self._uninstalling_plugin = self.current_plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(
                     self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
@@ -170,6 +171,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _on_uninstall_complete(self, result):
         """Handle uninstall completion."""
         if result.success:
+            # Emit the same signal as context menu for status updates
+            if hasattr(self, '_uninstalling_plugin') and hasattr(self.parent(), 'plugin_state_changed'):
+                self.parent().plugin_state_changed.emit(self._uninstalling_plugin, "uninstalled")
+                delattr(self, '_uninstalling_plugin')
             self.show_plugin(None)  # Clear details
             self.plugin_uninstalled.emit()  # Signal that plugin was uninstalled
         else:
@@ -290,6 +295,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         if result.success:
             self.plugin_updated.emit()  # Signal that plugin was updated
+            # Emit the same signal as context menu for status updates
+            if hasattr(self.parent(), 'plugin_state_changed'):
+                self.parent().plugin_state_changed.emit(self.current_plugin, "updated")
             # Refresh the display
             self.show_plugin(self.current_plugin)
         else:
