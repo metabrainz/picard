@@ -21,6 +21,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from picard import log
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
@@ -177,6 +178,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     self._toggle_plugin(plugin, target_enabled)
                 except Exception as e:
                     # Show error dialog to user
+                    log.error("Failed to toggle plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                     from PyQt6 import QtWidgets
 
                     action = "enable" if target_enabled else "disable"
@@ -343,6 +345,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete)
             except Exception as e:
+                log.error("Failed to uninstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                 QtWidgets.QMessageBox.critical(
                     self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
                 )
@@ -387,6 +390,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 callback=self._on_reinstall_complete,
             )
         except Exception as e:
+            log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             QtWidgets.QMessageBox.critical(
                 self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
             )
@@ -407,6 +411,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete)
             except Exception as e:
+                log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                 QtWidgets.QMessageBox.critical(
                     self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
                 )
