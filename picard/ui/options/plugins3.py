@@ -21,6 +21,7 @@
 
 from PyQt6 import QtWidgets
 
+from picard import log
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_, gettext as _
 
@@ -219,6 +220,7 @@ class Plugins3OptionsPage(OptionsPage):
                 self.status_label.setText(_("All plugins are up to date"))
 
         except Exception as e:
+            log.error("Failed to check for plugin updates: %s", e, exc_info=True)
             self.status_label.setText(_("Error checking for updates: {}").format(str(e)))
         finally:
             self.check_updates_button.setEnabled(True)
@@ -238,6 +240,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Reload the page to show updated registry data
             self.load()
         except Exception as e:
+            log.error("Failed to refresh plugin registry: %s", e, exc_info=True)
             self.status_label.setText(_("Error refreshing registry: {}").format(str(e)))
         finally:
             self.refresh_registry_button.setEnabled(True)
