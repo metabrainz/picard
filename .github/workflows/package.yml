@@ -2,9 +2,8 @@ name: Package and release
 
 on:
   push:
-    paths:
+    paths: &path-list
     - '.github/workflows/package*.yml'
-    - '.github/workflows/pypi-release.yml'
     - 'installer/**'
     - 'picard/**'
     - 'po/**.po'
@@ -22,6 +21,7 @@ on:
     - 'tagger.py.in'
     - 'win.version-info.txt.in'
   pull_request:
+    paths: *path-list
 
 permissions: {}
 
