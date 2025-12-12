@@ -537,5 +537,3 @@ class InstallPluginDialog(QtWidgets.QDialog):
             self.status_label.setText(_("Installation failed"))
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Installation Failed"), error_msg)
-
-    """Dialog showing detailed plugin information."""
