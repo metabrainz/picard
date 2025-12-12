@@ -84,7 +84,7 @@ register_track_metadata_processor(process_metadata)
         self.assertNotIn('PLUGIN_AUTHOR', code)
         # Module-level register call should be removed
         self.assertNotIn('\nregister_track_metadata_processor(process_metadata)', code)
-        self.assertIn('def enable(api):', code)
+        self.assertIn('def enable(api: PluginApi):', code)
         self.assertIn('api.register_track_metadata_processor(process_metadata)', code)
 
     def test_migrate_plugin_with_long_description(self):

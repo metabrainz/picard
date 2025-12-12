@@ -896,7 +896,7 @@ def convert_plugin_code(content, metadata):
     if register_calls or instance_registrations:
         new_lines.append('')
         new_lines.append('')
-        new_lines.append('def enable(api):')
+        new_lines.append('def enable(api: PluginApi):')
         new_lines.append('    """Called when plugin is enabled."""')
 
         # Add direct function registrations
