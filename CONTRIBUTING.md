@@ -4,7 +4,7 @@ Picard and associated plugins and documentation has been a colaborative effort b
 and contributions continue to be welcome from anyone in the community, as:
 
 - Code improvements in Picard itself (as PRs to this repo)
-- Language translations for Picard (see the [Translations README](https://githib.com/metabrainz/picard/blob/master/po/README.md))
+- Language translations for Picard (see the [Translations README](https://github.com/metabrainz/picard/blob/master/po/README.md))
 - New or modified plugins (as PRs on the Picard-Plugins repo)
 - Documentation improvements on the [Picard-Docs website](https://picard-docs.musicbrainz.org/en/about_picard/contributing.html)
 - Answering user questions in the [Picard section of the Community discussion board](https://community.metabrainz.org/c/picard/13)
