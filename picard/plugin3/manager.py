@@ -39,6 +39,10 @@ from picard import (
 )
 from picard.config import get_config
 from picard.const.appdirs import cache_folder
+from picard.extension_points import (
+    set_plugin_uuid,
+    unset_plugin_uuid,
+)
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
 from picard.plugin3.plugin import (
@@ -1233,6 +1237,10 @@ class PluginManager(QObject):
         if plugin.manifest and plugin.manifest.uuid:
             config.setting['plugins3_metadata'].pop(plugin.manifest.uuid, None)
 
+        # Unregister UUID mapping
+        if plugin.manifest and plugin.manifest.uuid:
+            unset_plugin_uuid(plugin.manifest.uuid)
+
         # Remove plugin config if purge requested
         if purge and plugin.manifest and plugin.manifest.uuid:
             self._clean_plugin_config(plugin.manifest.uuid)
@@ -1378,8 +1386,6 @@ class PluginManager(QObject):
 
             # Register UUID mapping early so extension points can find enabled plugins
             if plugin.manifest and plugin.manifest.uuid:
-                from picard.extension_points import set_plugin_uuid
-
                 set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
 
             assert plugin.manifest is not None

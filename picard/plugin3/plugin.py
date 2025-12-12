@@ -28,10 +28,7 @@ import time
 import types
 
 from picard import log
-from picard.extension_points import (
-    unregister_module_extensions,
-    unset_plugin_uuid,
-)
+from picard.extension_points import unregister_module_extensions
 from picard.git.backend import GitBackendError
 from picard.git.factory import git_backend
 from picard.plugin3.api import PluginApi
@@ -634,10 +631,6 @@ class Plugin:
         if self._module is not None and hasattr(self._module, 'disable'):
             self._module.disable()
         unregister_module_extensions(self.plugin_id)
-
-        # Unregister UUID mapping
-        if self.manifest and self.manifest.uuid:
-            unset_plugin_uuid(self.manifest.uuid)
 
         # Cleanup API instance registry - find and remove by module reference
         for name, api in list(PluginApi._instances.items()):
