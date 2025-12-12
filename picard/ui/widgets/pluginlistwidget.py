@@ -497,7 +497,7 @@ class UninstallPluginDialog(QtWidgets.QDialog):
         # Buttons
         button_layout = QtWidgets.QHBoxLayout()
 
-        uninstall_button = QtWidgets.QPushButton(_("Uninstall"))
+        uninstall_button = QtWidgets.QPushButton(_("Yes, Uninstall!"))
         uninstall_button.clicked.connect(self._uninstall)
         button_layout.addWidget(uninstall_button)
 
@@ -552,7 +552,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         # Buttons
         button_layout = QtWidgets.QHBoxLayout()
 
-        switch_button = QtWidgets.QPushButton(_("Switch"))
+        switch_button = QtWidgets.QPushButton(_("Yes, Switch!"))
         switch_button.clicked.connect(self._switch_ref)
         button_layout.addWidget(switch_button)
 
