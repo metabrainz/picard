@@ -215,6 +215,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         homepage_url = self.plugin_manager.get_plugin_homepage(self.current_plugin)
         if homepage_url:
             homepage_button = QtWidgets.QPushButton(_("Open Homepage"))
+            homepage_button.setToolTip(homepage_url)
             homepage_button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(homepage_url)))
             button_layout.addWidget(homepage_button)
 
