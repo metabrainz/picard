@@ -88,6 +88,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.plugin_table.setHorizontalHeaderLabels([_("Trust"), _("Name"), _("Categories")])
         self.plugin_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.plugin_table.setAlternatingRowColors(True)
+        self.plugin_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.plugin_table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.plugin_table.customContextMenuRequested.connect(self._show_context_menu)
         self.plugin_table.itemDoubleClicked.connect(self._on_item_double_clicked)
