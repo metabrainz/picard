@@ -270,7 +270,9 @@ class GitOperations:
                 repo.set_head(commit.id)
                 # Set branch to track remote
                 branches = repo.get_branches()
-                branch = branches.local.create(ref, commit_obj, force=True)
+                # Convert GitObject back to pygit2 object for branch creation
+                pygit_commit = repo._repo.get(commit_obj.id)
+                branch = branches.local.create(ref, pygit_commit, force=True)
                 branch.upstream = branches.remote[f'origin/{ref}']
                 # Now point HEAD to the branch
                 repo.set_head(f'refs/heads/{ref}')

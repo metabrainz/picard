@@ -386,6 +386,10 @@ class InstallPluginDialog(QtWidgets.QDialog):
                 return
 
             ref = confirm_dialog.selected_ref
+
+            # Use versioning scheme for registry plugins when no ref specified
+            if ref is None:
+                ref = tagger.pluginmanager3.select_ref_for_plugin(plugin_data)
         else:  # URL tab
             url = self.url_edit.text().strip()
             ref = self.ref_edit.text().strip() or None
