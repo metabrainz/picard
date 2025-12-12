@@ -182,10 +182,20 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.item_to_page[item] = page
                 self.pagename_to_item[page.NAME] = item
                 profile_groups_order(page.NAME)
+
+                # If this is a plugin page and it matches the saved page, select it
+                if (
+                    api is not None
+                    and not self.default_item
+                    and page.NAME == get_config().persist.get('options_last_active_page')
+                ):
+                    log.debug("add_pages: Found saved plugin page '%s', setting as default_item", page.NAME)
+                    self.default_item = item
             else:
                 item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled)
             self.add_pages(page.NAME, default_pagename, item)
             if page.NAME == default_pagename:
+                log.debug("add_pages: Found matching page '%s', setting as default_item", page.NAME)
                 self.default_item = item
             items.append(item)
         if not self.default_item and not parent_pagename:
@@ -259,6 +269,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.default_item = None
         if not default_page:
             default_page = config.persist['options_last_active_page']
+        log.debug("OptionsDialog init: Trying to restore page '%s'", default_page)
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # work-around to set optimal option pane width
@@ -286,7 +297,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.highlight_enabled_profile_options()
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
-        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
 
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
@@ -304,6 +314,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         except AttributeError:
             # Plugin manager not available - this should not happen in normal operation
             pass
+
+        # Set initial selection after plugin refresh
+        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
 
     @property
     def initialized_pages(self):
@@ -492,6 +505,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.reset_button.setDisabled(not page.loaded)
             self.ui.pages_stack.setCurrentWidget(page)
             config = get_config()
+            log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
 
     def disable_page(self, pagename):
@@ -586,9 +600,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Restore tree state
         self.ui.pages_tree.expandAll()
 
-        # Restore selection if possible
+        # Restore selection if possible - prioritize current_page over default_page
         if current_page and current_page in self.pagename_to_item:
             self.ui.pages_tree.setCurrentItem(self.pagename_to_item[current_page])
+        elif default_page and default_page in self.pagename_to_item:
+            self.ui.pages_tree.setCurrentItem(self.pagename_to_item[default_page])
         elif self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)
 
