@@ -115,13 +115,21 @@ class Plugins3OptionsPage(OptionsPage):
         self.status_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.status_label, 0)  # Minimal space for status
 
+    def _show_status(self, message, clear_after_ms=None):
+        """Show status message and optionally clear it after specified time."""
+        self.status_label.setText(message)
+        QtWidgets.QApplication.processEvents()
+
+        if clear_after_ms:
+            QtCore.QTimer.singleShot(clear_after_ms, lambda: self.status_label.setText(""))
+
     def load(self):
         """Load plugins from plugin manager."""
-        self.status_label.setText(_("Loading plugins..."))
+        self._show_status(_("Loading plugins..."))
         try:
             self.all_plugins = self.plugin_manager.plugins
             self._filter_plugins()  # Apply current filter
-            self.status_label.setText(_("Loaded {} plugins").format(len(self.all_plugins)))
+            self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)), 2000)
             self._show_enabled_state()
         except Exception as e:
             self.status_label.setText(_("Error loading plugins: {}").format(str(e)))
@@ -232,10 +240,7 @@ class Plugins3OptionsPage(OptionsPage):
         """Refresh plugin registry data from server."""
         self.refresh_registry_button.setEnabled(False)
         self.refresh_registry_button.setText(_("Refreshing..."))
-        self.status_label.setText(_("Fetching latest plugin registry from server..."))
-
-        # Force UI update to show the message
-        QtWidgets.QApplication.processEvents()
+        self._show_status(_("Fetching latest plugin registry from server..."))
 
         try:
             # Force refresh the registry cache
@@ -247,20 +252,17 @@ class Plugins3OptionsPage(OptionsPage):
                 registry_info = registry.get_registry_info()
                 plugin_count = len(registry.list_plugins())
 
-                self.status_label.setText(
-                    _("Registry refreshed successfully - {} plugins available (version: {})").format(
-                        plugin_count, registry_info.get('version', 'unknown')
-                    )
+                success_msg = _("Registry refreshed successfully - {} plugins available (version: {})").format(
+                    plugin_count, registry_info.get('version', 'unknown')
                 )
-                # Clear status after 3 seconds
-                QtCore.QTimer.singleShot(3000, lambda: self.status_label.setText(""))
+                self._show_status(success_msg, 3000)
             else:
-                self.status_label.setText(_("Plugin registry refreshed"))
-                # Clear status after 3 seconds
-                QtCore.QTimer.singleShot(3000, lambda: self.status_label.setText(""))
+                self._show_status(_("Plugin registry refreshed"), 3000)
 
-            # Reload the page to show updated registry data
-            self.load()
+            # Reload the page to show updated registry data (but don't overwrite status)
+            self.all_plugins = self.plugin_manager.plugins
+            self._filter_plugins()
+            self._show_enabled_state()
             # Update tooltip with fresh registry info
             self._update_registry_tooltip()
         except Exception as e:
