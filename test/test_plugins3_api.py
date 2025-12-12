@@ -66,6 +66,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_cover_art_provider') as mock:
             api.register_cover_art_provider(mock_provider)
+            self.assertEqual(mock_provider.api, api)
             mock.assert_called_once_with(mock_provider)
 
     def test_register_format(self):
@@ -88,18 +89,22 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_cluster_action') as mock:
             api.register_cluster_action(mock_action)
+            self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
         with patch('picard.plugin3.api.register_clusterlist_action') as mock:
             api.register_clusterlist_action(mock_action)
+            self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
         with patch('picard.plugin3.api.register_track_action') as mock:
             api.register_track_action(mock_action)
+            self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
         with patch('picard.plugin3.api.register_file_action') as mock:
             api.register_file_action(mock_action)
+            self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
     def test_register_options_page(self):
@@ -111,6 +116,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_options_page') as mock:
             api.register_options_page(mock_page)
+            self.assertEqual(mock_page.api, api)
             mock.assert_called_once_with(mock_page)
 
     def test_processor_metadata_preserved(self):
@@ -130,3 +136,15 @@ class TestPluginApiMethods(PicardTestCase):
             self.assertEqual(wrapped.__name__, 'my_processor')
             self.assertEqual(wrapped.__doc__, 'Process track metadata.')
             self.assertEqual(wrapped.func, my_processor)
+
+    def test_register_cover_art_processor(self):
+        """Test options page registration."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        mock_processor = Mock()
+
+        with patch('picard.plugin3.api.register_cover_art_processor') as mock:
+            api.register_cover_art_processor(mock_processor)
+            self.assertEqual(mock_processor.api, api)
+            mock.assert_called_once_with(mock_processor)

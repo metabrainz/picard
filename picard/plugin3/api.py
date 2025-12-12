@@ -38,7 +38,6 @@ except ImportError:
 from typing import (
     TYPE_CHECKING,
     Callable,
-    Type,
     TypeAlias,
 )
 
@@ -57,15 +56,15 @@ from picard.config import (
 )
 from picard.coverart.image import CoverArtImage
 from picard.coverart.providers import (
-    CoverArtProvider,
-    ProviderOptions,
+    CoverArtProvider as _CoverArtProvider,
+    ProviderOptions as _ProviderOptions,
 )
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
 )
 from picard.extension_points.cover_art_processors import (
-    ImageProcessor,
+    ImageProcessor as _ImageProcessor,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -148,14 +147,32 @@ __all__ = [
 ]
 
 
+class BaseAction(_BaseAction):
+    """Base class for plugin actions"""
+
+    api: 'PluginApi'
+
+
+class CoverArtProvider(_CoverArtProvider):
+    """Base class for cover art providers"""
+
+    api: 'PluginApi'
+
+
+class ImageProcessor(_ImageProcessor):
+    """Base class for cover art image processors"""
+
+    api: 'PluginApi'
+
+
 class OptionsPage(_OptionsPage):
     """Base class for plugin option pages"""
 
     api: 'PluginApi'
 
 
-class BaseAction(_BaseAction):
-    """Base class for plugin actions"""
+class ProviderOptions(_ProviderOptions):
+    """Base class for plugin cover art option pages"""
 
     api: 'PluginApi'
 
@@ -631,7 +648,8 @@ class PluginApi:
         return register_file_pre_save_processor(wrapped, priority)
 
     # Cover art
-    def register_cover_art_provider(self, provider: Type[CoverArtProvider]) -> None:
+    def register_cover_art_provider(self, provider: type[CoverArtProvider]) -> None:
+        provider.api = self
         return register_cover_art_provider(provider)
 
     def register_cover_art_filter(self, filter: Callable) -> None:
@@ -644,11 +662,12 @@ class PluginApi:
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
 
-    def register_cover_art_processor(self, processor_class: Type[ImageProcessor]) -> None:
+    def register_cover_art_processor(self, processor_class: type[ImageProcessor]) -> None:
+        processor_class.api = self
         return register_cover_art_processor(processor_class)
 
     # File formats
-    def register_format(self, format: Type[File]) -> None:
+    def register_format(self, format: type[File]) -> None:
         return self._tagger.format_registry.register(format)
 
     # Scripting
