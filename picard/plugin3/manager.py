@@ -1306,6 +1306,63 @@ class PluginManager(QObject):
             log.warning("Failed to check update for plugin %s: %s", plugin.plugin_id, e)
             return False
 
+    def get_plugin_remote_url(self, plugin):
+        """Get plugin remote URL from metadata."""
+        if not plugin.manifest or not plugin.manifest.uuid:
+            return None
+
+        try:
+            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            if metadata and hasattr(metadata, 'url'):
+                return metadata.url
+        except Exception:
+            pass
+        return None
+
+    def get_plugin_version_display(self, plugin):
+        """Get version display text for plugin."""
+        version_text = ""
+
+        try:
+            # Try to get version from git metadata first (prioritize git ref)
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if plugin_uuid:
+                metadata = self._metadata.get_plugin_metadata(plugin_uuid)
+                if metadata:
+                    git_info = self.format_git_info(metadata)
+                    if git_info:
+                        version_text = git_info
+        except Exception:
+            pass
+
+        # Fallback to manifest version if no git metadata
+        if not version_text:
+            if plugin.manifest and hasattr(plugin.manifest, '_data'):
+                version = plugin.manifest._data.get('version')
+                if version:
+                    version_text = version
+
+        return version_text or "Unknown"
+
+    def format_git_info(self, metadata):
+        """Format git information for display."""
+        if not metadata:
+            return ""
+
+        ref = getattr(metadata, 'ref', '')
+        commit = getattr(metadata, 'commit', '')
+
+        if ref and commit:
+            short_commit = short_commit_id(commit)
+            return f" ({ref} @{short_commit})"
+        elif ref:
+            return f" ({ref})"
+        elif commit:
+            short_commit = short_commit_id(commit)
+            return f" (@{short_commit})"
+
+        return ""
+
     def uninstall_plugin(self, plugin: Plugin, purge=False):
         """Uninstall a plugin.
 
