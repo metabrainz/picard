@@ -91,28 +91,35 @@ class PluginManifest:
             return i18n[lang]
         return self._data.get('long_description', '')
 
-    def name_i18n(self, locale: str = None) -> str:
-        """Get plugin name with automatic locale detection."""
-        if locale is None:
+    def _get_current_locale(self) -> str:
+        """Get current locale from Picard's UI language setting or system locale."""
+        from picard.config import get_config
+
+        config = get_config()
+        locale = config.setting['ui_language']
+        if not locale:
+            # Fall back to system locale if no UI language set
             from PyQt6 import QtCore
 
             locale = QtCore.QLocale.system().name()
+        return locale
+
+    def name_i18n(self, locale: str = None) -> str:
+        """Get plugin name with automatic locale detection."""
+        if locale is None:
+            locale = self._get_current_locale()
         return self.name(locale)
 
     def description_i18n(self, locale: str = None) -> str:
         """Get description with automatic locale detection."""
         if locale is None:
-            from PyQt6 import QtCore
-
-            locale = QtCore.QLocale.system().name()
+            locale = self._get_current_locale()
         return self.description(locale)
 
     def long_description_i18n(self, locale: str = None) -> str:
         """Get long description with automatic locale detection."""
         if locale is None:
-            from PyQt6 import QtCore
-
-            locale = QtCore.QLocale.system().name()
+            locale = self._get_current_locale()
         return self.long_description(locale)
 
     @property
