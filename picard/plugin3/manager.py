@@ -1244,6 +1244,11 @@ class PluginManager(QObject):
         # Remove plugin config if purge requested
         if purge and plugin.manifest and plugin.manifest.uuid:
             self._clean_plugin_config(plugin.manifest.uuid)
+
+        # Remove plugin from plugins list
+        if plugin in self.plugins:
+            self.plugins.remove(plugin)
+
         self.plugin_uninstalled.emit(plugin)
 
     def plugin_has_saved_options(self, plugin: Plugin) -> bool:

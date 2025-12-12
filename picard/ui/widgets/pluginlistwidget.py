@@ -64,10 +64,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Populate the widget with plugins."""
         self.clear()
 
-        # Filter out disabled plugins (these are uninstalled)
-        active_plugins = [p for p in plugins if p.state != PluginState.DISABLED]
-
-        for plugin in active_plugins:
+        for plugin in plugins:
             item = QtWidgets.QTreeWidgetItem()
 
             # Column 0: Checkbox only (no text)
