@@ -249,8 +249,12 @@ class Plugins3OptionsPage(OptionsPage):
                         plugin_count, registry_info.get('version', 'unknown')
                     )
                 )
+                # Clear status after 3 seconds
+                QtCore.QTimer.singleShot(3000, lambda: self.status_label.setText(""))
             else:
                 self.status_label.setText(_("Plugin registry refreshed"))
+                # Clear status after 3 seconds
+                QtCore.QTimer.singleShot(3000, lambda: self.status_label.setText(""))
 
             # Reload the page to show updated registry data
             self.load()
