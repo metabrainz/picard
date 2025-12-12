@@ -156,12 +156,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             page_active = page.ACTIVE
             api = getattr(page, '_plugin_api', None)
             if api is not None:  # This is a plugin option page
-                tagger = QtCore.QCoreApplication.instance()
                 try:
                     plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
                     if plugin_uuid:
                         # Only show page if plugin is enabled
-                        is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
+                        is_enabled = plugin_uuid in self.plugin_manager._enabled_plugins
                         page_active = is_enabled
                     else:
                         page_active = False
@@ -291,13 +290,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
+        self.plugin_manager = getattr(tagger, 'pluginmanager3', None)
         try:
-            tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes
-            tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
-            tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
-            tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
-            tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_installed.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_enabled.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_disabled.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
             # Initial refresh to pick up any plugin option pages that were registered
             # since the last time the options dialog was opened
