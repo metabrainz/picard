@@ -40,8 +40,8 @@ class Plugins3OptionsPage(OptionsPage):
     SORT_ORDER = 90
     ACTIVE = True
 
-    def __init__(self, api=None, parent=None):
-        super().__init__(api=api, parent=parent)
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.all_plugins = []  # Store all plugins for filtering
 
         # Cache plugin manager for performance

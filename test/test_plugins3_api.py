@@ -111,7 +111,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         with patch('picard.plugin3.api.register_options_page') as mock:
             api.register_options_page(mock_page)
-            mock.assert_called_once_with(mock_page, api)
+            mock.assert_called_once_with(mock_page)
 
     def test_processor_metadata_preserved(self):
         """Test that processor function metadata is preserved after wrapping."""

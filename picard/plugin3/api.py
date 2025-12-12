@@ -109,7 +109,7 @@ from picard.webservice import (
 )
 from picard.webservice.api_helpers import MBAPIHelper
 
-from picard.ui.options import OptionsPage
+from picard.ui.options import OptionsPage as _OptionsPage
 
 
 def t_(key, text=None, plural=None):
@@ -146,6 +146,12 @@ __all__ = [
     'PluginApi',
     't_',
 ]
+
+
+class OptionsPage(_OptionsPage):
+    """Base class for plugin option pages"""
+
+    api: 'PluginApi'
 
 
 class PluginApi:
@@ -670,8 +676,9 @@ class PluginApi:
         return register_file_action(action, self)
 
     # UI
-    def register_options_page(self, page_class: Type[OptionsPage]) -> None:
-        return register_options_page(page_class, self)
+    def register_options_page(self, page_class: type[OptionsPage]) -> None:
+        page_class.api = self
+        return register_options_page(page_class)
 
     def register_tools_menu_action(self, action: BaseAction) -> None:
         return register_tools_menu_action(action, self)
