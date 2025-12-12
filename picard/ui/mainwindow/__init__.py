@@ -2046,8 +2046,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         for ActionClass in actions:
             # Instantiate action with API
             try:
-                api = getattr(ActionClass, '_plugin_api', None)
-                action = ActionClass(api=api)
+                action = ActionClass()
                 action.setParent(self.plugin_tools_menu)  # Set parent to keep action alive
                 self.plugin_tools_menu.addAction(action)
             except Exception as ex:

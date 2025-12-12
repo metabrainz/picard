@@ -80,7 +80,7 @@ from picard.extension_points.event_hooks import (
     register_file_pre_save_processor,
 )
 from picard.extension_points.item_actions import (
-    BaseAction,
+    BaseAction as _BaseAction,
     register_album_action,
     register_cluster_action,
     register_clusterlist_action,
@@ -150,6 +150,12 @@ __all__ = [
 
 class OptionsPage(_OptionsPage):
     """Base class for plugin option pages"""
+
+    api: 'PluginApi'
+
+
+class BaseAction(_BaseAction):
+    """Base class for plugin actions"""
 
     api: 'PluginApi'
 
@@ -659,29 +665,34 @@ class PluginApi:
     def register_script_variable(self, name: str, documentation: str | None = None) -> None:
         return register_script_variable(name, documentation)
 
-    # Context menu actions
-    def register_album_action(self, action: BaseAction) -> None:
-        return register_album_action(action, self)
+    # Menu actions
+    def register_album_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_album_action(action)
 
-    def register_cluster_action(self, action: BaseAction) -> None:
-        return register_cluster_action(action, self)
+    def register_cluster_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_cluster_action(action)
 
-    def register_clusterlist_action(self, action: BaseAction) -> None:
-        return register_clusterlist_action(action, self)
+    def register_clusterlist_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_clusterlist_action(action)
 
-    def register_track_action(self, action: BaseAction) -> None:
-        return register_track_action(action, self)
+    def register_track_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_track_action(action)
 
-    def register_file_action(self, action: BaseAction) -> None:
-        return register_file_action(action, self)
+    def register_file_action(self, action: type[BaseAction]) -> None:
+        action.api = self
+        return register_file_action(action)
+
+    def register_tools_menu_action(self, action: type[BaseAction]) -> None:
+        return register_tools_menu_action(action)
 
     # UI
     def register_options_page(self, page_class: type[OptionsPage]) -> None:
         page_class.api = self
         return register_options_page(page_class)
-
-    def register_tools_menu_action(self, action: BaseAction) -> None:
-        return register_tools_menu_action(action, self)
 
     # Album task management for plugins
     def add_album_task(

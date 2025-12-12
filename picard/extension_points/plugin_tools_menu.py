@@ -31,8 +31,6 @@ signaler = Signaler()
 ext_point_plugin_tools_items = ExtensionPoint(label='plugin_tools_items')
 
 
-def register_tools_menu_action(action, api=None):
-    if api is not None:
-        action._plugin_api = api
+def register_tools_menu_action(action):
     ext_point_plugin_tools_items.register(action.__module__, action)
     signaler.plugin_tools_updated.emit()
