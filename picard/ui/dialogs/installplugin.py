@@ -90,7 +90,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.plugin_table.setAlternatingRowColors(True)
         self.plugin_table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.plugin_table.customContextMenuRequested.connect(self._show_context_menu)
-        self.plugin_table.itemDoubleClicked.connect(self._install_selected_plugin)
+        self.plugin_table.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.plugin_table.itemSelectionChanged.connect(self._validate_input)
 
         # Set column widths
@@ -249,11 +249,19 @@ class InstallPluginDialog(QtWidgets.QDialog):
             # Name column
             name_item = QtWidgets.QTableWidgetItem(plugin.get('name', plugin.get('id', '')))
             desc = plugin.get('description', '')
-            if desc and render_markdown:
-                html_desc = render_markdown(desc, output_format='html')
-                name_item.setToolTip(html_desc)
-            elif desc:
-                name_item.setToolTip(desc)
+
+            # Build tooltip with description and click hint
+            tooltip_parts = []
+            if desc:
+                if render_markdown:
+                    html_desc = render_markdown(desc, output_format='html')
+                    tooltip_parts.append(html_desc)
+                else:
+                    tooltip_parts.append(desc)
+
+            tooltip_parts.append(_("Double-click to view detailed plugin information"))
+            name_item.setToolTip('\n\n'.join(tooltip_parts))
+
             self.plugin_table.setItem(row, 1, name_item)
 
             # Categories column
@@ -286,6 +294,14 @@ class InstallPluginDialog(QtWidgets.QDialog):
         """Install the selected plugin from registry."""
         if self.plugin_table.currentRow() >= 0:
             self._install_plugin()
+
+    def _on_item_double_clicked(self, item):
+        """Handle item double-click - show plugin info if name column, install otherwise."""
+        if item and item.column() == 1:  # Name column
+            self._show_plugin_info()
+        else:
+            # Double-click on other columns installs the plugin
+            self._install_selected_plugin()
 
     def _show_context_menu(self, position):
         """Show context menu for plugin table."""
