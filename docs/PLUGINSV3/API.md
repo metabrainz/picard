@@ -76,10 +76,11 @@ The following classes are available through the `api` object:
 - `api.File` - File base class (for custom formats)
 - `api.Cluster` - Cluster object
 - `api.Metadata` - Metadata container for tags
-- `api.CoverArtImage` - Cover art image object
-- `api.CoverArtProvider` - Base class for cover art providers
 - `api.BaseAction` - Base class for UI actions
 - `api.OptionsPage` - Base class for options pages
+- `api.CoverArtImage` - Cover art image object
+- `api.CoverArtProvider` - Base class for cover art providers
+- `api.ProviderOptions` - Base class for cover art provider option pages
 
 **Example**:
 ```python
