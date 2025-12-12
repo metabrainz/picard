@@ -375,23 +375,6 @@ def convert_plugin_api_v2_to_v3(content):
             class_name = old_import.split()[-1]
             warnings.append(f"✓ Removed {class_name} import - use PicardApi.{class_name} instead")
 
-    # Add consolidated import block if there are any imports (sorted alphabetically)
-    if has_api_imports:
-        import_statement = 'from picard.plugin3.api import PluginApi\n'
-
-        # Find the first non-__future__ import statement and insert before it
-        # __future__ imports must be at the top
-        match = re.search(r'^(?!from __future__)(?:from |import )', content, flags=re.MULTILINE)
-        if match:
-            pos = match.start()
-            content = content[:pos] + import_statement + '\n' + content[pos:]
-        else:
-            # No imports found, add after docstring/comments/__future__
-            match = re.search(r'(""".*?"""|\'\'\'.*?\'\'\'|from __future__.*?\n)\s*\n', content, flags=re.DOTALL)
-            if match:
-                pos = match.end()
-                content = content[:pos] + '\n' + import_statement + '\n' + content[pos:]
-
     # PluginPriority
     if 'PluginPriority' in content:
         content = re.sub(r'PluginPriority\.HIGH', '100', content)
@@ -399,7 +382,7 @@ def convert_plugin_api_v2_to_v3(content):
         content = re.sub(r'PluginPriority\.LOW', '-100', content)
         warnings.append("✓ Converted PluginPriority constants to integers")
 
-    return content, warnings
+    return content, warnings, has_api_imports
 
 
 def analyze_function_signatures(tree):
@@ -746,8 +729,25 @@ def convert_plugin_code(content, metadata):
         all_warnings.append("   - Add api parameter to OptionsPage/BaseAction __init__")
 
     # Convert API patterns
-    content, api_warnings = convert_plugin_api_v2_to_v3(content)
+    content, api_warnings, has_api_imports = convert_plugin_api_v2_to_v3(content)
     all_warnings.extend(api_warnings)
+
+    # Add PluginApi import
+    if register_calls or instance_registrations or has_api_imports:
+        import_statement = 'from picard.plugin3.api import PluginApi\n'
+
+        # Find the first non-__future__ import statement and insert before it
+        # __future__ imports must be at the top
+        match = re.search(r'^(?!from __future__)(?:from |import )', content, flags=re.MULTILINE)
+        if match:
+            pos = match.start()
+            content = content[:pos] + import_statement + '\n' + content[pos:]
+        else:
+            # No imports found, add after docstring/comments/__future__
+            match = re.search(r'(""".*?"""|\'\'\'.*?\'\'\'|from __future__.*?\n)\s*\n', content, flags=re.DOTALL)
+            if match:
+                pos = match.end()
+                content = content[:pos] + '\n' + import_statement + '\n' + content[pos:]
 
     # Rebuild source without removed nodes
     lines = content.split('\n')
