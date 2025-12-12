@@ -110,18 +110,31 @@ class Plugins3OptionsPage(OptionsPage):
 
         layout.addWidget(splitter, 1)  # Give most space to splitter
 
-        # Status label
-        self.status_label = QtWidgets.QLabel()
-        self.status_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        layout.addWidget(self.status_label, 0)  # Minimal space for status
+        # Status mini-log (shows last 3 messages)
+        self.status_log = QtWidgets.QTextEdit()
+        self.status_log.setMaximumHeight(60)  # About 3 lines
+        self.status_log.setReadOnly(True)
+        self.status_log.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.status_messages = []  # Keep track of last 3 messages
+        layout.addWidget(self.status_log, 0)  # Minimal space for status
 
     def _show_status(self, message, clear_after_ms=None):
-        """Show status message and optionally clear it after specified time."""
-        self.status_label.setText(message)
-        QtWidgets.QApplication.processEvents()
+        """Add message to status log (keeps last 3 messages)."""
+        from datetime import datetime
 
-        if clear_after_ms:
-            QtCore.QTimer.singleShot(clear_after_ms, lambda: self.status_label.setText(""))
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        formatted_message = f"[{timestamp}] {message}"
+
+        # Add to messages list and keep only last 3
+        self.status_messages.append(formatted_message)
+        if len(self.status_messages) > 3:
+            self.status_messages.pop(0)
+
+        # Update display
+        self.status_log.setPlainText("\n".join(self.status_messages))
+        # Scroll to bottom to show latest message
+        self.status_log.verticalScrollBar().setValue(self.status_log.verticalScrollBar().maximum())
+        QtWidgets.QApplication.processEvents()
 
     def load(self):
         """Load plugins from plugin manager."""
@@ -129,10 +142,10 @@ class Plugins3OptionsPage(OptionsPage):
         try:
             self.all_plugins = self.plugin_manager.plugins
             self._filter_plugins()  # Apply current filter
-            self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)), 2000)
+            self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
         except Exception as e:
-            self.status_label.setText(_("Error loading plugins: {}").format(str(e)))
+            self._show_status(_("Error loading plugins: {}").format(str(e)))
 
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
@@ -142,7 +155,7 @@ class Plugins3OptionsPage(OptionsPage):
         self.check_updates_button.setEnabled(False)
         self.refresh_button.setEnabled(False)
         self.search_edit.setEnabled(False)
-        self.status_label.setText(_("Plugin system not available - Git backend required"))
+        self._show_status(_("Plugin system not available - Git backend required"))
 
     def _show_enabled_state(self):
         """Show UI when plugin system is enabled."""
@@ -196,7 +209,7 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
         self.load()  # Refresh plugin list
-        self.status_label.setText(_("Plugin '{}' installed successfully").format(plugin_id))
+        self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
@@ -206,7 +219,7 @@ class Plugins3OptionsPage(OptionsPage):
         # Plugin system availability already checked in load()
         self.check_updates_button.setEnabled(False)
         self.check_updates_button.setText(_("Checking..."))
-        self.status_label.setText(_("Checking for plugin updates..."))
+        self._show_status(_("Checking for plugin updates..."))
 
         try:
             # Use the manager's check_updates method (which handles versioning schemes correctly)
@@ -222,16 +235,14 @@ class Plugins3OptionsPage(OptionsPage):
                             plugins_with_updates.append(plugin)
                             break
 
-                self.status_label.setText(
-                    _("Found {} plugin(s) with updates available").format(len(plugins_with_updates))
-                )
+                self._show_status(_("Found {} plugin(s) with updates available").format(len(plugins_with_updates)))
                 self._show_update_dialog(plugins_with_updates)
             else:
-                self.status_label.setText(_("All plugins are up to date"))
+                self._show_status(_("All plugins are up to date"))
 
         except Exception as e:
             log.error("Failed to check for plugin updates: %s", e, exc_info=True)
-            self.status_label.setText(_("Error checking for updates: {}").format(str(e)))
+            self._show_status(_("Error checking for updates: {}").format(str(e)))
         finally:
             self.check_updates_button.setEnabled(True)
             self.check_updates_button.setText(_("Check for Updates"))
@@ -255,9 +266,9 @@ class Plugins3OptionsPage(OptionsPage):
                 success_msg = _("Registry refreshed successfully - {} plugins available (version: {})").format(
                     plugin_count, registry_info.get('version', 'unknown')
                 )
-                self._show_status(success_msg, 3000)
+                self._show_status(success_msg)
             else:
-                self._show_status(_("Plugin registry refreshed"), 3000)
+                self._show_status(_("Plugin registry refreshed"))
 
             # Reload the page to show updated registry data (but don't overwrite status)
             self.all_plugins = self.plugin_manager.plugins
@@ -267,7 +278,7 @@ class Plugins3OptionsPage(OptionsPage):
             self._update_registry_tooltip()
         except Exception as e:
             log.error("Failed to refresh plugin registry: %s", e, exc_info=True)
-            self.status_label.setText(_("Error refreshing registry: {}").format(str(e)))
+            self._show_status(_("Error refreshing registry: {}").format(str(e)))
         finally:
             self.refresh_registry_button.setEnabled(True)
             self.refresh_registry_button.setText(_("Refresh Registry"))
@@ -333,12 +344,12 @@ class Plugins3OptionsPage(OptionsPage):
             # All updates complete
             self.check_updates_button.setEnabled(True)
             self.install_button.setEnabled(True)
-            self.status_label.setText(_("All plugin updates completed"))
+            self._show_status(_("All plugin updates completed"))
             self.load()  # Refresh plugin list
             return
 
         plugin = self._update_queue.pop(0)
-        self.status_label.setText(_("Updating {}...").format(plugin.name or plugin.plugin_id))
+        self._show_status(_("Updating {}...").format(plugin.name or plugin.plugin_id))
 
         async_manager.update_plugin(
             plugin=plugin,
