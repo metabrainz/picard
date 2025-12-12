@@ -99,7 +99,10 @@ class MyFormat(File):
         return metadata
 ```
 
-**Note**: Base classes for inheritance (`BaseAction`, `OptionsPage`, `File`, `CoverArtProvider`) should be imported directly from `picard.plugin3.api`. Other classes like `Metadata`, `Track`, `Album`, etc. are accessed via the `api` parameter.
+**Note**: Classes that are considered part of the API `Metadata`, `Track`, `Album`, etc.
+should be accessed via their aliases defined in `PluginApi`, e.g. `PluginApi.Track`.
+This is also the case for classes meant for inheritance (`BaseAction`, `OptionsPage`,
+`File`, `CoverArtProvider`).
 
 ---
 
@@ -213,11 +216,12 @@ def enable(api):
 
 **In OptionsPage:**
 ```python
-from picard.plugin3.api import OptionsPage
+from picard.plugin3 import PluginApi
 
-class MyOptionsPage(OptionsPage):
-    def __init__(self, api=None):
-        super().__init__(api=api)
+class MyOptionsPage(PluginApi.OptionsPage):
+    def __init__(self):
+        super().__init__()
+        # Initialize the UI here
 
     def load(self):
         # Load from plugin config
@@ -381,6 +385,7 @@ Mark a string for translation extraction without translating it immediately.
 This is a marker function that allows you to define translatable strings at module level or in data structures before the API is available. At runtime, it simply returns the key (or tuple for plurals) unchanged.
 
 ```python
+from picard.plugin3 import PluginApi
 from picard.plugin3.api import t_
 
 # Define translatable strings at module level
@@ -393,11 +398,11 @@ ERROR_MESSAGES = {
 FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
 # Use in class definitions
-class MyAction(BaseAction):
+class MyAction(PluginApi.BaseAction):
     NAME = "My Custom Action"
 
-    def __init__(self, api: PluginApi = None):
-        super().__init__(api=api)
+    def __init__(self):
+        super().__init__()
         self.setText(self.api.tr("action.name", "My Custom Action"))
 
 def enable(api):
@@ -612,13 +617,10 @@ Plugin Tools menu actions:
 Register menu actions for different object types.
 
 ```python
-from picard.plugin3.api import BaseAction
+from picard.plugin3 import PluginApi
 
-class MyAction(BaseAction):
+class MyAction(PluginApi.BaseAction):
     NAME = "My Custom Action"
-
-    def __init__(self, api=None):
-        super().__init__(api=api)
 
     def callback(self, objs):
         for obj in objs:
@@ -636,7 +638,8 @@ def enable(api):
     register_tools_menu_action(action)
 ```
 
-**Note**: Pass the class, not an instance. Picard instantiates it with `api` parameter. Always call `super().__init__(api=api)` to properly initialize the parent class, which automatically sets `self.api` for you.
+**Note**: Pass the class, not an instance. Picard makes `self.api` available inside
+the class to access the `PluginApi` instance of the plugin.
 
 ---
 
@@ -647,15 +650,15 @@ def enable(api):
 Register a settings page in Picard's options dialog.
 
 ```python
-from picard.plugin3.api import OptionsPage
+from picard.plugin3 import PluginApi
 
-class MyOptionsPage(OptionsPage):
+class MyOptionsPage(PluginApi.OptionsPage):
     NAME = "my_plugin"
     TITLE = "My Plugin"
     PARENT = "plugins"
 
-    def __init__(self, api=None):
-        super().__init__(api=api)
+    def __init__(self):
+        super().__init__()
         # Build UI
 
     def load(self):
@@ -688,9 +691,9 @@ def enable(api):
 Register a custom cover art provider.
 
 ```python
-from picard.plugin3.api import CoverArtProvider
+from picard.plugin3 import PluginApi
 
-class MyProvider(CoverArtProvider):
+class MyProvider(PluginApi.CoverArtProvider):
     NAME = "My Provider"
 
     def queue_images(self):
@@ -770,9 +773,9 @@ def enable(api):
 Register support for a custom file format.
 
 ```python
-from picard.plugin3.api import File
+from picard.plugin3 import PluginApi
 
-class MyFormat(File):
+class MyFormat(PluginApi.File):
     EXTENSIONS = [".myformat"]
     NAME = "My Format"
 
@@ -902,22 +905,15 @@ def enable(api):
 
 **For Classes**:
 ```python
-from picard.plugin3.api import OptionsPage
+from picard.plugin3 import PluginApi
 
-class MyPage(OptionsPage):
-    def __init__(self, api=None):
-        super().__init__(api=api)
-        # self.api is automatically set by parent class
-
+class MyPage(PluginApi.OptionsPage):
     def load(self):
         self.api.logger.info("Loading")
 
 def enable(api):
-    # Picard instantiates as: MyPage(api=api)
     api.register_options_page(MyPage)
 ```
-
-**Note on `api=None` default**: The signature uses `api=None` for compatibility with built-in Picard classes that don't receive an api parameter. For plugin classes, Picard always provides a valid `api` instance, so `self.api` will never be `None` in your plugin code. You can safely use `self.api` without None checks.
 
 ---
 
@@ -952,16 +948,16 @@ def enable(api):
 
 ```python
 from PyQt6.QtWidgets import QCheckBox
-from picard.plugin3.api import OptionsPage, BaseAction
+from picard.plugin3 import PluginApi
 
 
-class MyOptionsPage(OptionsPage):
+class MyOptionsPage(PluginApi.OptionsPage):
     NAME = "example"
     TITLE = "Example Plugin"
     PARENT = "plugins"
 
-    def __init__(self, api=None):
-        super().__init__(api=api)
+    def __init__(self):
+        super().__init__()
         self.checkbox = QCheckBox("Enable processing")
         self.layout().addWidget(self.checkbox)
 
@@ -985,11 +981,8 @@ def on_file_saved(api, file):
     api.logger.info(f"Saved: {file.filename}")
 
 
-class MyAction(BaseAction):
+class MyAction(PluginApi.BaseAction):
     NAME = "Example Action"
-
-    def __init__(self, api=None):
-        super().__init__(api=api)
 
     def callback(self, objs):
         self.api.logger.info(f"Action on {len(objs)} objects")
@@ -1017,7 +1010,9 @@ def enable(api):
 3. **Log appropriately**: Use `debug` for verbose, `info` for important events
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
-6. **Pass api to parent classes**: Always call `super().__init__(api=api)` in BaseAction and OptionsPage subclasses (parent is set automatically by Picard)
+6. **Pass api to parent classes**: You can use `self.api` in classes inherited from
+   base classes meant to be subclassed like `PluginApi.BaseAction` or
+   `PluginApi.OptionsPage`.
 
 ---
 
