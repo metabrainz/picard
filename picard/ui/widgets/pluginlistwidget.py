@@ -99,7 +99,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Add tooltip with description if available
             try:
-                description = plugin.manifest.description()
+                description = plugin.manifest.description_i18n()
                 if description:
                     item.setToolTip(COLUMN_PLUGIN, description)
             except (AttributeError, Exception):
