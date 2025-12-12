@@ -41,6 +41,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     """Widget for displaying and managing plugins."""
 
     plugin_selection_changed = QtCore.pyqtSignal(object)  # Emits selected plugin or None
+    plugin_state_changed = QtCore.pyqtSignal()  # Emitted when plugin state changes
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -302,6 +303,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     # Remove from toggling set
                     self._toggling_plugins.discard(plugin.plugin_id)
 
+                    # Emit signal for options dialog to refresh
+                    self.plugin_state_changed.emit()
+
     def _update_item_to_intended_state(self, item, enabled):
         """Update item display to show intended state."""
         item.setCheckState(COLUMN_ENABLED, QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
@@ -397,6 +401,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self._toggle_plugin(plugin, enabled)
             # Refresh immediately now that signal loop is fixed
             self._refresh_plugin_list()
+            # Emit signal for options dialog to refresh
+            self.plugin_state_changed.emit()
         except Exception as e:
             # Show error message
             QtWidgets.QMessageBox.critical(
@@ -449,6 +455,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Handle uninstall completion."""
         if result.success:
             self._refresh_plugin_list()
+            # Emit signal for options dialog to refresh
+            self.plugin_state_changed.emit()
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)

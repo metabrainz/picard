@@ -82,6 +82,8 @@ class Plugins3OptionsPage(OptionsPage):
         # Plugin list
         self.plugin_list = PluginListWidget()
         self.plugin_list.plugin_selection_changed.connect(self._on_plugin_selected)
+        # Connect plugin state changes to refresh options dialog
+        self.plugin_list.plugin_state_changed.connect(self._on_plugin_state_changed)
         splitter.addWidget(self.plugin_list)
 
         # Plugin details
@@ -159,6 +161,14 @@ class Plugins3OptionsPage(OptionsPage):
         """Handle plugin selection."""
         self.plugin_details.show_plugin(plugin)
 
+    def _on_plugin_state_changed(self):
+        """Handle plugin state changes (enable/disable/uninstall)."""
+        # Refresh the options dialog to update plugin option pages
+        if hasattr(self, 'dialog') and self.dialog:
+            self.dialog.refresh_plugin_pages()
+        else:
+            pass  # No dialog found
+
     def _install_plugin(self):
         """Show install plugin dialog."""
         dialog = InstallPluginDialog(self)
@@ -169,6 +179,9 @@ class Plugins3OptionsPage(OptionsPage):
         """Handle plugin installation completion."""
         self.load()  # Refresh plugin list
         self.status_label.setText(_("Plugin '{}' installed successfully").format(plugin_id))
+        # Refresh the options dialog to show new plugin option pages
+        if hasattr(self, 'dialog') and self.dialog:
+            self.dialog.refresh_plugin_pages()
 
     def _check_for_updates(self):
         """Check for plugin updates."""

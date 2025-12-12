@@ -152,13 +152,33 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         pages = (p for p in self.pages if p.PARENT == parent_pagename)
         items = []
         for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+            # Check if this is a plugin option page and if the plugin is enabled
+            page_active = page.ACTIVE
+            api = getattr(page, '_plugin_api', None)
+            if api is not None:  # This is a plugin option page
+                tagger = QtCore.QCoreApplication.instance()
+                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+                    plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
+                    if plugin_uuid:
+                        # Only show page if plugin is enabled
+                        is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
+                        page_active = is_enabled
+                    else:
+                        page_active = False
+                else:
+                    page_active = False
+
+            # Skip disabled plugin pages entirely
+            if api is not None and not page_active:
+                continue
+
             item = HashableTreeWidgetItem(parent_item)
             if not page.initialized:
                 title = _("%s (error)") % _(page.TITLE)
             else:
                 title = _(page.TITLE)
             item.setText(0, title)
-            if page.ACTIVE:
+            if page_active:
                 self.item_to_page[item] = page
                 self.pagename_to_item[page.NAME] = item
                 profile_groups_order(page.NAME)
@@ -169,7 +189,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 self.default_item = item
             items.append(item)
         if not self.default_item and not parent_pagename:
-            self.default_item = items[0]
+            self.default_item = items[0] if items else None
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
@@ -267,6 +287,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
         self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+        # Connect to plugin manager signals for dynamic updates
+        tagger = QtCore.QCoreApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
+            # Connect to other plugin state changes if available
+            if hasattr(tagger.pluginmanager3, 'plugin_enabled'):
+                tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
+            if hasattr(tagger.pluginmanager3, 'plugin_disabled'):
+                tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
+            if hasattr(tagger.pluginmanager3, 'plugin_uninstalled'):
+                tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
     @property
     def initialized_pages(self):
@@ -460,6 +492,67 @@ class OptionsDialog(PicardDialog, SingletonDialog):
     def disable_page(self, pagename):
         item = self.pagename_to_item[pagename]
         item.setDisabled(True)
+
+    def refresh_plugin_pages(self):
+        """Refresh plugin option pages based on current plugin state."""
+        tagger = QtCore.QCoreApplication.instance()
+        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
+            return
+
+        # Store current selection
+        current_page = None
+        selected_items = self.ui.pages_tree.selectedItems()
+        if selected_items and selected_items[0] in self.item_to_page:
+            current_page = self.item_to_page[selected_items[0]].NAME
+
+        # Check if we need to add new plugin pages
+        config = get_config()
+        existing_page_classes = {type(page) for page in self.pages}
+        new_pages_needed = False
+
+        for Page in ext_point_options_pages:
+            if Page not in existing_page_classes:
+                new_pages_needed = True
+                try:
+                    api = getattr(Page, '_plugin_api', None)
+                    if api is not None:
+                        page = Page(api=api)
+                    else:
+                        page = Page()
+                    page.set_dialog(self)
+                    page.initialized = True
+                    if not page.loaded:
+                        page.load()
+                    self.pages.append(page)
+                except Exception:
+                    pass  # Failed to create page
+
+        if new_pages_needed:
+            pass  # Total pages updated
+
+        # Clear and rebuild the pages tree (this is lightweight)
+        self.ui.pages_tree.clear()
+        self.item_to_page.clear()
+        self.pagename_to_item.clear()
+
+        # Rebuild pages tree
+        default_page = current_page or config.persist['options_last_active_page']
+        self.add_pages(None, default_page, self.ui.pages_tree)
+
+        # Restore tree state
+        self.ui.pages_tree.expandAll()
+
+        # Restore selection if possible
+        if current_page and current_page in self.pagename_to_item:
+            self.ui.pages_tree.setCurrentItem(self.pagename_to_item[current_page])
+        else:
+            pass  # Could not restore selection
+
+    def enable_page(self, pagename):
+        """Enable a page in the options tree."""
+        if pagename in self.pagename_to_item:
+            item = self.pagename_to_item[pagename]
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
 
     @property
     def help_url(self):
