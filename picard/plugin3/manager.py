@@ -748,11 +748,12 @@ class PluginManager(QObject):
                         break
 
                 if existing_plugin:
-                    # Disable and unload the plugin properly
+                    # Disable the plugin properly
                     if existing_plugin.plugin_id in self._enabled_plugins:
                         self.disable_plugin(existing_plugin)
-                    self._unload_plugin(existing_plugin)
-                    self._plugins.remove(existing_plugin)
+                    # Remove plugin from plugins list
+                    if existing_plugin in self.plugins:
+                        self.plugins.remove(existing_plugin)
 
                 # Check for uncommitted changes before removing
                 if not discard_changes:
