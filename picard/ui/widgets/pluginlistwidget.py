@@ -34,7 +34,6 @@ from picard.ui.dialogs.plugininfo import PluginInfoDialog
 COLUMN_ENABLED = 0
 COLUMN_PLUGIN = 1
 COLUMN_VERSION = 2
-COLUMN_TRUST_LEVEL = 3
 
 
 class PluginListWidget(QtWidgets.QTreeWidget):
@@ -51,7 +50,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def setup_ui(self):
         """Setup the tree widget."""
-        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Trust Level")])
+        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version")])
         self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
@@ -98,9 +97,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Column 2: Version
             item.setText(COLUMN_VERSION, self._get_version_display(plugin))
-
-            # Column 3: Trust level
-            item.setText(COLUMN_TRUST_LEVEL, self._get_trust_level_display(plugin))
 
             # Store plugin reference
             item.setData(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole, plugin)
@@ -209,36 +205,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             return latest_ref and latest_ref != current_ref
         except Exception:
             return False
-
-    def _get_trust_level_display(self, plugin):
-        """Get display text for trust level."""
-        tagger = QtCore.QCoreApplication.instance()
-        try:
-            registry = tagger.pluginmanager3._registry
-
-            # Get remote URL from metadata
-            remote_url = self._get_plugin_remote_url(plugin)
-            if remote_url:
-                trust_level = registry.get_trust_level(remote_url)
-                return self._format_trust_level(trust_level)
-
-            # For local plugins without remote_url, show as Local
-            return _("Local")
-
-        except Exception:
-            pass
-
-        return _("Unknown")
-
-    def _format_trust_level(self, trust_level):
-        """Format trust level for display."""
-        trust_map = {
-            "official": _("Official"),
-            "trusted": _("Trusted"),
-            "community": _("Community"),
-            "unregistered": _("Unregistered"),
-        }
-        return trust_map.get(trust_level, _("Unknown"))
 
     def _on_selection_changed(self):
         """Handle selection changes."""

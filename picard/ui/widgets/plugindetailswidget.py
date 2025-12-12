@@ -46,11 +46,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Plugin name
         self.name_label = QtWidgets.QLabel()
         self.name_label.setStyleSheet("font-weight: bold; font-size: 14px;")
+        self.name_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.name_label)
 
         # Description
         self.description_label = QtWidgets.QLabel()
         self.description_label.setWordWrap(True)
+        self.description_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.description_label)
 
         # Details grid
@@ -58,22 +60,28 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         details_layout = QtWidgets.QFormLayout(details_widget)
 
         self.version_label = QtWidgets.QLabel()
+        self.version_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Version:"), self.version_label)
 
         self.authors_label = QtWidgets.QLabel()
+        self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Authors:"), self.authors_label)
 
         self.trust_level_label = QtWidgets.QLabel()
+        self.trust_level_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Trust Level:"), self.trust_level_label)
 
         self.plugin_id_label = QtWidgets.QLabel()
+        self.plugin_id_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Plugin ID:"), self.plugin_id_label)
 
         self.git_ref_label = QtWidgets.QLabel()
+        self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Git Ref:"), self.git_ref_label)
 
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
+        self.git_url_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Repository:"), self.git_url_label)
 
         layout.addWidget(details_widget)
@@ -105,7 +113,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.setVisible(False)
             return
 
-        self.name_label.setText(plugin.name or plugin.plugin_id)
+        # Get plugin name from manifest, fallback to plugin.name or plugin_id
+        plugin_name = plugin.plugin_id  # Default fallback
+        if plugin.manifest:
+            try:
+                plugin_name = plugin.manifest.name() or plugin.name or plugin.plugin_id
+            except Exception:
+                plugin_name = plugin.name or plugin.plugin_id
+        elif plugin.name:
+            plugin_name = plugin.name
+
+        self.name_label.setText(plugin_name)
 
         # Get description from manifest
         description = _("No description available")
