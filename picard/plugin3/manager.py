@@ -1158,7 +1158,7 @@ class PluginManager(QObject):
                     repo.fetch_remote(remote, None, callbacks._callbacks)
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
-                registry_plugin = self._registry.find_plugin(url=metadata.url)
+                registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
                 if registry_plugin and registry_plugin.get('versioning_scheme'):
                     self._refs_cache.update_cache_from_local_repo(
                         plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
@@ -1264,7 +1264,7 @@ class PluginManager(QObject):
                 repo.fetch_remote(remote, None, callbacks._callbacks)
 
             # Update version tag cache from fetched repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(url=metadata.url)
+            registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
             if registry_plugin and registry_plugin.get('versioning_scheme'):
                 self._refs_cache.update_cache_from_local_repo(
                     plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
@@ -1404,7 +1404,7 @@ class PluginManager(QObject):
         try:
             metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
             if metadata and hasattr(metadata, 'url'):
-                registry_plugin = self._registry.find_plugin(url=metadata.url)
+                registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
                 if registry_plugin:
                     return registry_plugin.get('versioning_scheme', '')
         except Exception:
