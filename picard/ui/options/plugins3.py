@@ -86,29 +86,38 @@ class Plugins3OptionsPage(OptionsPage):
         self.refresh_button.clicked.connect(self.load)
         toolbar_layout.addWidget(self.refresh_button)
 
+        toolbar_layout.addStretch()
+
+        self.details_toggle_button = QtWidgets.QPushButton(_("Details"))
+        self.details_toggle_button.setCheckable(True)
+        self.details_toggle_button.setChecked(True)  # Details visible by default
+        self.details_toggle_button.setToolTip(_("Show/hide plugin details panel"))
+        self.details_toggle_button.clicked.connect(self._toggle_details_panel)
+        toolbar_layout.addWidget(self.details_toggle_button)
+
         layout.addLayout(toolbar_layout)
 
         # Main content - splitter with plugin list and details
-        splitter = QtWidgets.QSplitter()
-        splitter.setObjectName("plugin_splitter")
+        self.splitter = QtWidgets.QSplitter()
+        self.splitter.setObjectName("plugin_splitter")
 
         # Plugin list
         self.plugin_list = PluginListWidget()
         self.plugin_list.plugin_selection_changed.connect(self._on_plugin_selected)
         # Connect plugin state changes to refresh options dialog
         self.plugin_list.plugin_state_changed.connect(self._on_plugin_state_changed)
-        splitter.addWidget(self.plugin_list)
+        self.splitter.addWidget(self.plugin_list)
 
         # Plugin details
         self.plugin_details = PluginDetailsWidget()
         self.plugin_details.plugin_uninstalled.connect(self.load)  # Refresh on uninstall
         self.plugin_details.plugin_updated.connect(self.load)  # Refresh on update
-        splitter.addWidget(self.plugin_details)
+        self.splitter.addWidget(self.plugin_details)
 
         # Set splitter proportions
-        splitter.setSizes([300, 200])
+        self.splitter.setSizes([300, 200])
 
-        layout.addWidget(splitter, 1)  # Give most space to splitter
+        layout.addWidget(self.splitter, 1)  # Give most space to splitter
 
         # Status mini-log (shows last 3 messages)
         self.status_log = QtWidgets.QTextEdit()
@@ -187,6 +196,17 @@ class Plugins3OptionsPage(OptionsPage):
     def save(self):
         """Save is handled automatically by plugin enable/disable."""
         pass
+
+    def _toggle_details_panel(self):
+        """Toggle visibility of the plugin details panel."""
+        is_visible = self.plugin_details.isVisible()
+        self.plugin_details.setVisible(not is_visible)
+
+        # Update button text to reflect what clicking will do
+        if not is_visible:  # Now visible, so button should say "Hide"
+            self.details_toggle_button.setText(_("Details"))
+        else:  # Now hidden, so button should say "Show"
+            self.details_toggle_button.setText(_("Show Details"))
 
     def _on_plugin_selected(self, plugin):
         """Handle plugin selection."""
