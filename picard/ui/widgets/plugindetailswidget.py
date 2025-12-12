@@ -102,6 +102,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.uninstall_button.clicked.connect(self._uninstall_plugin)
         button_layout.addWidget(self.uninstall_button)
 
+        self.description_button = QtWidgets.QPushButton(_("Full Description"))
+        self.description_button.clicked.connect(self._show_full_description)
+        button_layout.addWidget(self.description_button)
+
         button_layout.addStretch()
         layout.addLayout(button_layout)
 
@@ -148,7 +152,53 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Check if update is available and enable/disable update button
         self.update_button.setEnabled(self._has_update_available(plugin))
 
+        # Enable/disable description button based on long description availability
+        has_long_desc = self.plugin_manager.long_description_as_html(plugin) is not None
+        self.description_button.setEnabled(has_long_desc)
+
         self.setVisible(True)
+
+    def _show_full_description(self):
+        """Show full plugin description in a dialog."""
+        if not self.current_plugin:
+            return
+
+        html_desc = self.plugin_manager.long_description_as_html(self.current_plugin)
+        if not html_desc:
+            return
+
+        # Create dialog to show full description
+        dialog = QtWidgets.QDialog(self)
+        dialog.setWindowTitle(_("Plugin Description"))
+        dialog.setModal(True)
+        dialog.resize(600, 400)
+
+        layout = QtWidgets.QVBoxLayout(dialog)
+
+        # Plugin name
+        try:
+            name = self.current_plugin.manifest.name()
+        except (AttributeError, Exception):
+            name = self.current_plugin.name or self.current_plugin.plugin_id
+
+        title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
+        layout.addWidget(title_label)
+
+        # Description text browser
+        text_browser = QtWidgets.QTextBrowser()
+        text_browser.setHtml(html_desc)
+        text_browser.setOpenExternalLinks(True)
+        layout.addWidget(text_browser)
+
+        # Close button
+        button_layout = QtWidgets.QHBoxLayout()
+        close_button = QtWidgets.QPushButton(_("Close"))
+        close_button.clicked.connect(dialog.accept)
+        button_layout.addStretch()
+        button_layout.addWidget(close_button)
+        layout.addLayout(button_layout)
+
+        dialog.exec()
 
     def _uninstall_plugin(self):
         """Uninstall the current plugin."""

@@ -1396,6 +1396,24 @@ class PluginManager(QObject):
 
         return ""
 
+    def long_description_as_html(self, plugin):
+        """Get plugin long description converted from markdown to HTML."""
+        try:
+            from markdown import markdown as render_markdown
+        except ImportError:
+            render_markdown = None
+
+        if not plugin.manifest:
+            return None
+
+        try:
+            description = plugin.manifest.long_description()
+            if description and render_markdown:
+                return render_markdown(description, output_format='html')
+            return description
+        except (AttributeError, Exception):
+            return None
+
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
         if not plugin.manifest or not plugin.manifest.uuid:
