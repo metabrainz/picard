@@ -1,6 +1,19 @@
 name: Run tests
 
-on: [push, pull_request]
+on:
+  push:
+    paths: &path-list
+    - '.github/workflows/run-tests.yml'
+    - 'picard/**'
+    - 'po/**.po'
+    - 'test/**'
+    - 'pyproject.toml'
+    - 'requirements*.txt'
+    - 'setup.py'
+    - 'tagger.py.in'
+    - 'win.version-info.txt.in'
+  pull_request:
+    paths: *path-list
 permissions: {}
 
 jobs:
