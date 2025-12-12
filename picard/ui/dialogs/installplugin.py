@@ -143,6 +143,10 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         local_form.addRow(_("Directory:"), path_layout)
 
+        self.local_ref_edit = QtWidgets.QLineEdit()
+        self.local_ref_edit.setPlaceholderText(_("main"))
+        local_form.addRow(_("Ref/Tag:"), self.local_ref_edit)
+
         local_layout.addWidget(local_group)
         local_layout.addStretch()
         self.tab_widget.addTab(local_widget, _("Local"))
@@ -182,6 +186,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         # Connect input changes to validation
         self.url_edit.textChanged.connect(self._validate_input)
         self.path_edit.textChanged.connect(self._validate_input)
+        self.local_ref_edit.textChanged.connect(self._validate_input)
         self.tab_widget.currentChanged.connect(self._validate_input)
         self._load_registry_plugins()
         self._validate_input()
@@ -459,7 +464,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
             ref = confirm_dialog.selected_ref or ref
         else:  # TAB_LOCAL - Local directory tab
             url = self.path_edit.text().strip()
-            ref = None  # Local directories don't use refs
+            ref = self.local_ref_edit.text().strip() or None
             if not url:
                 QtWidgets.QMessageBox.warning(
                     self, _("No Directory Selected"), _("Please select a local plugin directory.")
@@ -493,6 +498,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.url_edit.setEnabled(False)
         self.ref_edit.setEnabled(False)
         self.path_edit.setEnabled(False)
+        self.local_ref_edit.setEnabled(False)
         self.tab_widget.setEnabled(False)
         self.progress_bar.show()
         self.progress_bar.setValue(0)
@@ -516,6 +522,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.url_edit.setEnabled(True)
         self.ref_edit.setEnabled(True)
         self.path_edit.setEnabled(True)
+        self.local_ref_edit.setEnabled(True)
         self.tab_widget.setEnabled(True)
         self.progress_bar.hide()
 
