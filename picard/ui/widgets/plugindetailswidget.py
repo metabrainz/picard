@@ -129,7 +129,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         plugin_name = plugin.plugin_id  # Default fallback
         if plugin.manifest:
             try:
-                plugin_name = plugin.manifest.name() or plugin.name or plugin.plugin_id
+                # Get current locale for translations
+                locale = QtCore.QLocale.system().name()
+                plugin_name = plugin.manifest.name(locale) or plugin.name or plugin.plugin_id
             except Exception:
                 plugin_name = plugin.name or plugin.plugin_id
         elif plugin.name:
@@ -182,7 +184,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Plugin name
         try:
-            name = self.current_plugin.manifest.name()
+            # Get current locale for translations
+            locale = QtCore.QLocale.system().name()
+            name = self.current_plugin.manifest.name(locale)
         except (AttributeError, Exception):
             name = self.current_plugin.name or self.current_plugin.plugin_id
 
