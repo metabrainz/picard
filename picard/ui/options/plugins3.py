@@ -75,7 +75,12 @@ class Plugins3OptionsPage(OptionsPage):
 
         toolbar_layout.addStretch()
 
-        self.refresh_button = QtWidgets.QPushButton(_("Refresh"))
+        self.refresh_registry_button = QtWidgets.QPushButton(_("Refresh Registry"))
+        self.refresh_registry_button.setToolTip(_("Update plugin registry data from server"))
+        self.refresh_registry_button.clicked.connect(self._refresh_registry)
+        toolbar_layout.addWidget(self.refresh_registry_button)
+
+        self.refresh_button = QtWidgets.QPushButton(_("Refresh List"))
         self.refresh_button.setToolTip(_("Refresh the plugin list to reflect current state"))
         self.refresh_button.clicked.connect(self.load)
         toolbar_layout.addWidget(self.refresh_button)
@@ -218,6 +223,25 @@ class Plugins3OptionsPage(OptionsPage):
         finally:
             self.check_updates_button.setEnabled(True)
             self.check_updates_button.setText(_("Check for Updates"))
+
+    def _refresh_registry(self):
+        """Refresh plugin registry data from server."""
+        self.refresh_registry_button.setEnabled(False)
+        self.refresh_registry_button.setText(_("Refreshing..."))
+        self.status_label.setText(_("Refreshing plugin registry..."))
+
+        try:
+            # Force refresh the registry cache
+            if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
+                self.plugin_manager._registry.refresh_cache()
+            self.status_label.setText(_("Plugin registry refreshed"))
+            # Reload the page to show updated registry data
+            self.load()
+        except Exception as e:
+            self.status_label.setText(_("Error refreshing registry: {}").format(str(e)))
+        finally:
+            self.refresh_registry_button.setEnabled(True)
+            self.refresh_registry_button.setText(_("Refresh Registry"))
 
     def _show_update_dialog(self, plugins_with_updates):
         """Show dialog with available updates."""
