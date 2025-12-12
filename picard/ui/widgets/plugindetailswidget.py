@@ -86,7 +86,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
-        self.git_url_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.git_url_label.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+        )
+        self.git_url_label.setOpenExternalLinks(True)
         details_layout.addRow(_("Repository:"), self.git_url_label)
 
         layout.addWidget(details_widget)
@@ -298,9 +301,11 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         return _("N/A")
 
     def _get_git_url_display(self, plugin):
-        """Get git URL display text."""
+        """Get git URL display text as clickable HTML link."""
         remote_url = self._get_plugin_remote_url(plugin)
-        if remote_url:
+        if remote_url and (remote_url.startswith('http://') or remote_url.startswith('https://')):
+            return f'<a href="{remote_url}">{remote_url}</a>'
+        elif remote_url:
             return remote_url
         return _("N/A")
 

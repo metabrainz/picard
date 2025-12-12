@@ -111,8 +111,18 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _add_field(self, layout, label, value):
         """Add field to layout if value exists."""
         if value:
-            value_label = QtWidgets.QLabel(value)
-            value_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+            value_label = QtWidgets.QLabel()
+            # Check if value is a URL and make it clickable
+            if isinstance(value, str) and (value.startswith('http://') or value.startswith('https://')):
+                value_label.setText(f'<a href="{value}">{value}</a>')
+                value_label.setTextInteractionFlags(
+                    QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+                    | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+                )
+                value_label.setOpenExternalLinks(True)
+            else:
+                value_label.setText(str(value))
+                value_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
             layout.addRow(label, value_label)
 
     def _is_registry_plugin(self):
