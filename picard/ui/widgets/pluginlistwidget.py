@@ -27,11 +27,9 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
 from picard.util import temporary_disconnect
 
-from picard.ui.dialogs.installconfirm import (
-    InstallConfirmDialog,
-    get_selected_ref_from_tab,
-)
+from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.widgets.refselector import RefSelectorWidget
 
 
 # Column positions
@@ -527,33 +525,9 @@ class SwitchRefDialog(QtWidgets.QDialog):
         title_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(title_label)
 
-        # Tab widget for different ref types
-        self.tab_widget = QtWidgets.QTabWidget()
-        layout.addWidget(self.tab_widget)
-
-        # Tags tab
-        tags_widget = QtWidgets.QWidget()
-        tags_layout = QtWidgets.QVBoxLayout(tags_widget)
-        self.tags_list = QtWidgets.QListWidget()
-        tags_layout.addWidget(self.tags_list)
-        self.tab_widget.addTab(tags_widget, _("Tags"))
-
-        # Branches tab
-        branches_widget = QtWidgets.QWidget()
-        branches_layout = QtWidgets.QVBoxLayout(branches_widget)
-        self.branches_list = QtWidgets.QListWidget()
-        branches_layout.addWidget(self.branches_list)
-        self.tab_widget.addTab(branches_widget, _("Branches"))
-
-        # Custom tab
-        custom_widget = QtWidgets.QWidget()
-        custom_layout = QtWidgets.QVBoxLayout(custom_widget)
-        custom_label = QtWidgets.QLabel(_("Enter tag, branch, or commit ID:"))
-        custom_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        custom_layout.addWidget(custom_label)
-        self.custom_edit = QtWidgets.QLineEdit()
-        custom_layout.addWidget(self.custom_edit)
-        self.tab_widget.addTab(custom_widget, _("Custom"))
+        # Use the new RefSelectorWidget (no default tab for switch)
+        self.ref_selector = RefSelectorWidget(include_default=False)
+        layout.addWidget(self.ref_selector)
 
         # Buttons
         button_layout = QtWidgets.QHBoxLayout()
@@ -576,23 +550,14 @@ class SwitchRefDialog(QtWidgets.QDialog):
             metadata = self.plugin_manager._get_plugin_metadata(uuid)
             if metadata and hasattr(metadata, 'url'):
                 refs = self.plugin_manager.fetch_all_git_refs(metadata.url)
-
-                # Populate tags
-                for ref in refs.get('tags', []):
-                    self.tags_list.addItem(ref['name'])
-
-                # Populate branches
-                for ref in refs.get('branches', []):
-                    self.branches_list.addItem(ref['name'])
+                self.ref_selector.load_refs(refs)
         except Exception:
             # If we can't fetch refs, user can still use custom input
             pass
 
     def _switch_ref(self):
         """Handle switch button click."""
-        self.selected_ref = get_selected_ref_from_tab(
-            self.tab_widget, self.tags_list, self.branches_list, self.custom_edit, has_default_tab=False
-        )
+        self.selected_ref = self.ref_selector.get_selected_ref()
 
         if self.selected_ref:
             self.accept()

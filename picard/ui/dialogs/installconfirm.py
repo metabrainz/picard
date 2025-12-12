@@ -23,43 +23,7 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
-
-# Tab index constants
-TAB_DEFAULT = 0
-TAB_TAGS = 1
-TAB_BRANCHES = 2
-TAB_CUSTOM = 3
-
-# For switch ref dialog (no default tab)
-SWITCH_TAB_TAGS = 0
-SWITCH_TAB_BRANCHES = 1
-SWITCH_TAB_CUSTOM = 2
-
-
-def get_selected_ref_from_tab(tab_widget, tags_list, branches_list, custom_edit, has_default_tab=True):
-    """Get selected ref from tab widget - shared logic for install and switch dialogs."""
-    current_tab = tab_widget.currentIndex()
-
-    if has_default_tab:
-        if current_tab == TAB_DEFAULT:
-            return None
-        elif current_tab == TAB_TAGS:
-            current_item = tags_list.currentItem()
-            return current_item.text() if current_item else None
-        elif current_tab == TAB_BRANCHES:
-            current_item = branches_list.currentItem()
-            return current_item.text() if current_item else None
-        else:  # TAB_CUSTOM
-            return custom_edit.text().strip() or None
-    else:
-        if current_tab == SWITCH_TAB_TAGS:
-            current_item = tags_list.currentItem()
-            return current_item.text() if current_item else None
-        elif current_tab == SWITCH_TAB_BRANCHES:
-            current_item = branches_list.currentItem()
-            return current_item.text() if current_item else None
-        else:  # SWITCH_TAB_CUSTOM
-            return custom_edit.text().strip() or None
+from picard.ui.widgets.refselector import RefSelectorWidget
 
 
 class InstallConfirmDialog(QtWidgets.QDialog):
@@ -107,40 +71,9 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         ref_group = QtWidgets.QGroupBox(_("Git Reference (Optional)"))
         ref_layout = QtWidgets.QVBoxLayout(ref_group)
 
-        # Tab widget for ref selection
-        self.ref_tab_widget = QtWidgets.QTabWidget()
-
-        # Default tab
-        default_widget = QtWidgets.QWidget()
-        default_layout = QtWidgets.QVBoxLayout(default_widget)
-        default_layout.addWidget(QtWidgets.QLabel(_("Use default branch/tag")))
-        self.ref_tab_widget.addTab(default_widget, _("Default"))
-
-        # Tags tab
-        tags_widget = QtWidgets.QWidget()
-        tags_layout = QtWidgets.QVBoxLayout(tags_widget)
-        self.tags_list = QtWidgets.QListWidget()
-        tags_layout.addWidget(self.tags_list)
-        self.ref_tab_widget.addTab(tags_widget, _("Tags"))
-
-        # Branches tab
-        branches_widget = QtWidgets.QWidget()
-        branches_layout = QtWidgets.QVBoxLayout(branches_widget)
-        self.branches_list = QtWidgets.QListWidget()
-        branches_layout.addWidget(self.branches_list)
-        self.ref_tab_widget.addTab(branches_widget, _("Branches"))
-
-        # Custom tab
-        custom_widget = QtWidgets.QWidget()
-        custom_layout = QtWidgets.QVBoxLayout(custom_widget)
-        custom_label = QtWidgets.QLabel(_("Enter tag, branch, or commit ID:"))
-        custom_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        custom_layout.addWidget(custom_label)
-        self.custom_edit = QtWidgets.QLineEdit()
-        custom_layout.addWidget(self.custom_edit)
-        self.ref_tab_widget.addTab(custom_widget, _("Custom"))
-
-        ref_layout.addWidget(self.ref_tab_widget)
+        # Use the new RefSelectorWidget
+        self.ref_selector = RefSelectorWidget(include_default=True)
+        ref_layout.addWidget(self.ref_selector)
         layout.addWidget(ref_group)
 
         # Buttons
@@ -196,20 +129,12 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         try:
             refs = self.plugin_manager.fetch_all_git_refs(self.url)
             if refs:
-                # Populate tags
-                for ref in refs.get('tags', []):
-                    self.tags_list.addItem(ref['name'])
-
-                # Populate branches
-                for ref in refs.get('branches', []):
-                    self.branches_list.addItem(ref['name'])
+                self.ref_selector.load_refs(refs)
         except Exception:
             # If we can't fetch refs, user can still use default or custom input
             pass
 
     def _confirm_install(self):
         """Handle install button click."""
-        self.selected_ref = get_selected_ref_from_tab(
-            self.ref_tab_widget, self.tags_list, self.branches_list, self.custom_edit, has_default_tab=True
-        )
+        self.selected_ref = self.ref_selector.get_selected_ref()
         self.accept()

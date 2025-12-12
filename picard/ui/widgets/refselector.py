@@ -1,0 +1,102 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2025 Laurent Monin
+# Copyright (C) 2025 Philipp Wolfer
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+from PyQt6 import QtWidgets
+
+from picard.i18n import gettext as _
+
+
+class RefSelectorWidget(QtWidgets.QWidget):
+    """Widget for selecting git refs (tags, branches, or custom input)."""
+
+    def __init__(self, parent=None, include_default=False):
+        super().__init__(parent)
+        self.include_default = include_default
+        self._setup_ui()
+
+    def _setup_ui(self):
+        layout = QtWidgets.QVBoxLayout(self)
+
+        self.tab_widget = QtWidgets.QTabWidget()
+        layout.addWidget(self.tab_widget)
+
+        tab_index = 0
+
+        # Default tab (only for install dialog)
+        if self.include_default:
+            default_widget = QtWidgets.QWidget()
+            default_layout = QtWidgets.QVBoxLayout(default_widget)
+            default_layout.addWidget(QtWidgets.QLabel(_("Use the default ref (usually main/master branch)")))
+            self.tab_widget.addTab(default_widget, _("Default"))
+            self.default_tab_index = tab_index
+            tab_index += 1
+
+        # Tags tab
+        self.tags_list = QtWidgets.QListWidget()
+        self.tab_widget.addTab(self.tags_list, _("Tags"))
+        self.tags_tab_index = tab_index
+        tab_index += 1
+
+        # Branches tab
+        self.branches_list = QtWidgets.QListWidget()
+        self.tab_widget.addTab(self.branches_list, _("Branches"))
+        self.branches_tab_index = tab_index
+        tab_index += 1
+
+        # Custom tab
+        custom_widget = QtWidgets.QWidget()
+        custom_layout = QtWidgets.QVBoxLayout(custom_widget)
+        custom_layout.addWidget(QtWidgets.QLabel(_("Enter custom ref (tag, branch, or commit):")))
+        self.custom_edit = QtWidgets.QLineEdit()
+        custom_layout.addWidget(self.custom_edit)
+        self.tab_widget.addTab(custom_widget, _("Custom"))
+        self.custom_tab_index = tab_index
+
+    def load_refs(self, refs):
+        """Load refs data into the widget."""
+        # Clear existing items
+        self.tags_list.clear()
+        self.branches_list.clear()
+
+        # Populate tags
+        for ref in refs.get('tags', []):
+            self.tags_list.addItem(ref['name'])
+
+        # Populate branches
+        for ref in refs.get('branches', []):
+            self.branches_list.addItem(ref['name'])
+
+    def get_selected_ref(self):
+        """Get the currently selected ref."""
+        current_tab = self.tab_widget.currentIndex()
+
+        if self.include_default and current_tab == self.default_tab_index:
+            return None
+        elif current_tab == self.tags_tab_index:
+            current_item = self.tags_list.currentItem()
+            return current_item.text() if current_item else None
+        elif current_tab == self.branches_tab_index:
+            current_item = self.branches_list.currentItem()
+            return current_item.text() if current_item else None
+        elif current_tab == self.custom_tab_index:
+            return self.custom_edit.text().strip() or None
+
+        return None
