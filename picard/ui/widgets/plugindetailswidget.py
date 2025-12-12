@@ -169,8 +169,18 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return
 
         html_desc = self.plugin_manager.long_description_as_html(self.current_plugin)
+        is_html = True
+
         if not html_desc:
-            return
+            # Fallback to regular description (plain text)
+            try:
+                html_desc = self.current_plugin.manifest.description_i18n()
+                is_html = False
+            except (AttributeError, Exception):
+                html_desc = None
+
+            if not html_desc:
+                return
 
         # Create dialog to show full description
         dialog = QtWidgets.QDialog(self)
@@ -191,7 +201,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Description text browser
         text_browser = QtWidgets.QTextBrowser()
-        text_browser.setHtml(html_desc)
+        if is_html:
+            text_browser.setHtml(html_desc)
+        else:
+            text_browser.setPlainText(html_desc)
         text_browser.setOpenExternalLinks(True)
         layout.addWidget(text_browser)
 
