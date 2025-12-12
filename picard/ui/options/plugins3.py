@@ -235,7 +235,7 @@ class Plugins3OptionsPage(OptionsPage):
         try:
             # Force refresh the registry cache
             if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
-                self.plugin_manager._registry.refresh_cache()
+                self.plugin_manager._registry.fetch_registry(use_cache=False)
             self.status_label.setText(_("Plugin registry refreshed"))
             # Reload the page to show updated registry data
             self.load()
