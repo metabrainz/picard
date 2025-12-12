@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
@@ -48,6 +48,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
         # Plugin name as title
         name = self._get_plugin_name()
         title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
+        title_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(title_label)
 
         # Details in a form layout
@@ -98,7 +99,9 @@ class PluginInfoDialog(QtWidgets.QDialog):
     def _add_field(self, layout, label, value):
         """Add field to layout if value exists."""
         if value:
-            layout.addRow(label, QtWidgets.QLabel(value))
+            value_label = QtWidgets.QLabel(value)
+            value_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+            layout.addRow(label, value_label)
 
     def _is_registry_plugin(self):
         """Check if this is registry plugin data (dict) vs installed plugin (object)."""

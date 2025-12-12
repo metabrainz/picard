@@ -544,6 +544,7 @@ class UninstallPluginDialog(QtWidgets.QDialog):
 
         # Confirmation message
         message = QtWidgets.QLabel(_("Are you sure you want to uninstall '{}'?").format(name))
+        message.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         message.setWordWrap(True)
         layout.addWidget(message)
 
@@ -590,6 +591,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
             name = self.plugin.name or self.plugin.plugin_id
 
         title_label = QtWidgets.QLabel(_("Switch ref for '{}'").format(name))
+        title_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(title_label)
 
         # Tab widget for different ref types
@@ -613,7 +615,9 @@ class SwitchRefDialog(QtWidgets.QDialog):
         # Custom tab
         custom_widget = QtWidgets.QWidget()
         custom_layout = QtWidgets.QVBoxLayout(custom_widget)
-        custom_layout.addWidget(QtWidgets.QLabel(_("Enter tag, branch, or commit ID:")))
+        custom_label = QtWidgets.QLabel(_("Enter tag, branch, or commit ID:"))
+        custom_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        custom_layout.addWidget(custom_label)
         self.custom_edit = QtWidgets.QLineEdit()
         custom_layout.addWidget(self.custom_edit)
         self.tab_widget.addTab(custom_widget, _("Custom"))
