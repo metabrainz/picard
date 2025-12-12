@@ -1217,6 +1217,95 @@ class PluginManager(QObject):
 
         return updates
 
+    def has_plugin_update(self, plugin):
+        """Check if a single plugin has an update available."""
+        if not plugin.manifest or not plugin.manifest.uuid:
+            return False
+
+        metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+        if not metadata or not metadata.url:
+            return False
+
+        try:
+            from picard.git.factory import git_backend
+
+            backend = git_backend()
+            repo = backend.create_repository(plugin.local_path)
+            current_commit = repo.get_head_target()
+
+            # Fetch without updating (suppress progress output)
+            callbacks = backend.create_remote_callbacks()
+            for remote in repo.get_remotes():
+                repo.fetch_remote(remote, None, callbacks._callbacks)
+
+            # Update version tag cache from fetched repo if plugin has versioning_scheme
+            registry_plugin = self._registry.find_plugin(url=metadata.url)
+            if registry_plugin and registry_plugin.get('versioning_scheme'):
+                self._refs_cache.update_cache_from_local_repo(
+                    plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                )
+
+            old_ref = metadata.ref or 'main'
+            ref = old_ref
+
+            # Check if currently on a tag
+            current_is_tag = False
+            current_tag = None
+            if ref:
+                try:
+                    repo.revparse_single(f'refs/tags/{ref}')
+                    current_is_tag = True
+                    current_tag = ref
+                except KeyError:
+                    pass
+
+            # If on a tag, check for newer version tag
+            if current_is_tag and current_tag:
+                source = PluginSourceGit(metadata.url, ref)
+                latest_tag = source._find_latest_tag(repo, current_tag)
+                if latest_tag and latest_tag != current_tag:
+                    # Found newer tag
+                    ref = latest_tag
+
+            # Resolve ref with same logic as update() - try origin/ prefix for branches
+            try:
+                if not ref.startswith('origin/') and not ref.startswith('refs/'):
+                    # For tags, try refs/tags/ first, then origin/ for branches
+                    try:
+                        obj = repo.revparse_single(f'refs/tags/{ref}')
+                    except KeyError:
+                        # Not a tag, try origin/ prefix for branches
+                        try:
+                            obj = repo.revparse_single(f'origin/{ref}')
+                        except KeyError:
+                            # Fall back to original ref (might be commit hash)
+                            obj = repo.revparse_single(ref)
+                else:
+                    obj = repo.revparse_single(ref)
+
+                # Peel annotated tags to get the actual commit
+                from picard.git.backend import GitObjectType
+
+                if obj.type == GitObjectType.TAG:
+                    commit = repo.peel_to_commit(obj)
+                else:
+                    commit = obj
+
+                latest_commit = commit.id
+            except KeyError:
+                # Ref not found, no update available
+                return False
+
+            repo.free()
+            return current_commit != latest_commit
+        except KeyError:
+            # Ref not found, no update available
+            return False
+        except Exception as e:
+            # Log unexpected errors
+            log.warning("Failed to check update for plugin %s: %s", plugin.plugin_id, e)
+            return False
+
     def uninstall_plugin(self, plugin: Plugin, purge=False):
         """Uninstall a plugin.
 

@@ -191,20 +191,19 @@ class Plugins3OptionsPage(OptionsPage):
         self.status_label.setText(_("Checking for plugin updates..."))
 
         try:
-            # Refresh refs cache to get latest information
-            refs_cache = self.tagger.pluginmanager3._refs_cache
-            plugins_with_updates = []
+            # Use the manager's check_updates method (which handles versioning schemes correctly)
+            updates = self.tagger.pluginmanager3.check_updates()
 
-            for plugin in self.tagger.pluginmanager3.plugins:
-                if hasattr(plugin, "source") and hasattr(plugin.source, "url"):
-                    try:
-                        latest_ref = refs_cache.get_latest_ref(plugin.source.url)
-                        if latest_ref and latest_ref != plugin.source.ref:
+            if updates:
+                # Convert UpdateCheck objects to plugins for the dialog
+                plugins_with_updates = []
+                for update in updates:
+                    # Find the plugin object by plugin_id
+                    for plugin in self.tagger.pluginmanager3.plugins:
+                        if plugin.plugin_id == update.plugin_id:
                             plugins_with_updates.append(plugin)
-                    except Exception:
-                        continue
+                            break
 
-            if plugins_with_updates:
                 self.status_label.setText(
                     _("Found {} plugin(s) with updates available").format(len(plugins_with_updates))
                 )
