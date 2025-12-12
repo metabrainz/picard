@@ -155,18 +155,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if not self.current_plugin:
             return
 
-        dialog = UninstallPluginDialog(self.current_plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            try:
-                self._uninstalling_plugin = self.current_plugin  # Store for callback
-                async_manager = AsyncPluginManager(self.plugin_manager)
-                async_manager.uninstall_plugin(
-                    self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
-                )
-            except Exception as e:
-                QtWidgets.QMessageBox.critical(
-                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
-                )
+        # Find the plugin list widget and call its uninstall method
+        plugin_list = self._find_plugin_list_widget()
+        if plugin_list:
+            plugin_list._uninstall_plugin_from_menu(self.current_plugin)
+        else:
+            # Fallback to old method if plugin list not found
+            self._perform_uninstall()
 
     def _on_uninstall_complete(self, result):
         """Handle uninstall completion."""
@@ -261,22 +256,43 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if not self.current_plugin:
             return
 
-        # Confirm update
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Update Plugin"),
-            _("Are you sure you want to update '{}'?").format(
-                self.current_plugin.name or self.current_plugin.plugin_id
-            ),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.Yes,
-        )
-
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+        # Find the plugin list widget and call its update method
+        plugin_list = self._find_plugin_list_widget()
+        if plugin_list:
+            plugin_list._update_plugin_from_menu(self.current_plugin)
+        else:
+            # Fallback to old method if plugin list not found
             self._perform_update()
 
+    def _find_plugin_list_widget(self):
+        """Find the PluginListWidget in the parent hierarchy."""
+        parent = self.parent()
+        while parent:
+            if hasattr(parent, '_update_plugin_from_menu'):
+                return parent
+            # Check if parent has a plugin_list attribute
+            if hasattr(parent, 'plugin_list'):
+                return parent.plugin_list
+            parent = parent.parent()
+        return None
+
+    def _perform_uninstall(self):
+        """Fallback uninstall method."""
+        dialog = UninstallPluginDialog(self.current_plugin, self)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            try:
+                self._uninstalling_plugin = self.current_plugin  # Store for callback
+                async_manager = AsyncPluginManager(self.plugin_manager)
+                async_manager.uninstall_plugin(
+                    self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
+                )
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(
+                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
+                )
+
     def _perform_update(self):
-        """Perform the plugin update."""
+        """Fallback update method."""
         # Disable update button during update
         self.update_button.setEnabled(False)
         self.update_button.setText(_("Updating..."))
