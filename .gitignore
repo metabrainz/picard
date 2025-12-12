@@ -8,6 +8,7 @@ __pycache__/
 .project
 .idea/
 .vscode/
+.zed/
 
 # Environments
 .env
