@@ -294,7 +294,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         try:
             self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes
-            self.plugin_manager.plugin_installed.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_enabled.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_disabled.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_uninstalled.connect(self.refresh_plugin_pages)
@@ -501,20 +500,60 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def refresh_plugin_pages(self):
         """Refresh plugin option pages based on current plugin state."""
+        log.debug("refresh_plugin_pages: Starting refresh")
+
         # Store current selection
         current_page = None
         selected_items = self.ui.pages_tree.selectedItems()
         if selected_items and selected_items[0] in self.item_to_page:
             current_page = self.item_to_page[selected_items[0]].NAME
 
-        # Check if we need to add new plugin pages
         config = get_config()
-        existing_page_classes = {type(page) for page in self.pages}
-        new_pages_needed = False
 
-        for Page in ext_point_options_pages:
+        # Get currently active extension point pages
+        active_page_classes = set(ext_point_options_pages)
+
+        # Debug detailed extension point information (can be enabled for troubleshooting)
+        if False:
+            log.debug("refresh_plugin_pages: Active page classes: %s", [cls.__name__ for cls in active_page_classes])
+
+            # Check what the extension point is actually yielding
+            all_registered_pages = []
+            for page_class in ext_point_options_pages._ExtensionPoint__dict.values():
+                all_registered_pages.extend(page_class)
+            log.debug("refresh_plugin_pages: All registered pages: %s", [cls.__name__ for cls in all_registered_pages])
+
+            # Check enabled plugins and UUID mapping
+            enabled_plugins = config.setting['plugins3_enabled_plugins']
+            log.debug("refresh_plugin_pages: Enabled plugins: %s", enabled_plugins)
+
+            # Check UUID mapping
+            from picard.extension_points import _plugin_uuid_to_module
+
+            log.debug("refresh_plugin_pages: UUID to module mapping: %s", _plugin_uuid_to_module)
+
+        # Remove pages from disabled plugins
+        pages_to_remove = []
+        for page in self.pages:
+            page_class = type(page)
+            if page_class not in active_page_classes and hasattr(page, '_plugin_api'):
+                # This is a plugin page that's no longer active
+                pages_to_remove.append(page)
+                log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
+
+        # Remove disabled plugin pages from UI stack and pages list
+        for page in pages_to_remove:
+            log.debug("refresh_plugin_pages: Removing page: %s", type(page).__name__)
+            self.ui.pages_stack.removeWidget(page)
+            self.pages.remove(page)
+            page.deleteLater()  # Clean up the widget
+
+        # Add new plugin pages
+        existing_page_classes = {type(page) for page in self.pages}
+
+        for Page in active_page_classes:
             if Page not in existing_page_classes:
-                new_pages_needed = True
+                log.debug("refresh_plugin_pages: Adding new page: %s", Page.__name__)
                 try:
                     api = getattr(Page, '_plugin_api', None)
                     if api is not None:
@@ -523,16 +562,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         page = Page()
                     page.set_dialog(self)
                     page.initialized = True
-                    if not page.loaded:
-                        page.load()
+                    self.ui.pages_stack.addWidget(page)
                     self.pages.append(page)
+                    # Load the page if needed
+                    try:
+                        page.load()
+                        page.loaded = True
+                        log.debug("refresh_plugin_pages: Successfully loaded page: %s", Page.__name__)
+                    except Exception:
+                        log.exception("Failed loading options page %r", page)
                 except Exception:
-                    pass  # Failed to create page
+                    log.exception("Failed creating options page %r", Page)
 
-        if new_pages_needed:
-            pass  # Total pages updated
-
-        # Clear and rebuild the pages tree (this is lightweight)
+        # Clear and rebuild the pages tree
         self.ui.pages_tree.clear()
         self.item_to_page.clear()
         self.pagename_to_item.clear()
@@ -547,8 +589,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Restore selection if possible
         if current_page and current_page in self.pagename_to_item:
             self.ui.pages_tree.setCurrentItem(self.pagename_to_item[current_page])
-        else:
-            pass  # Could not restore selection
+        elif self.default_item:
+            self.ui.pages_tree.setCurrentItem(self.default_item)
+
+        log.debug("refresh_plugin_pages: Refresh complete")
 
     def enable_page(self, pagename):
         """Enable a page in the options tree."""

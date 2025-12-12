@@ -1515,6 +1515,10 @@ class PluginManager(QObject):
                 plugin.enable(self._tagger)
                 got_enabled = True
 
+        # Ensure UUID mapping is set for extension points
+        if plugin.manifest and plugin.manifest.uuid:
+            set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
+
         self._enabled_plugins.add(uuid)
         self._save_config()
         log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
