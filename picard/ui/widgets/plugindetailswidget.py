@@ -141,7 +141,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         description = _("No description available")
         if plugin.manifest and hasattr(plugin.manifest, 'description'):
             try:
-                description = plugin.manifest.description() or description
+                # Get current locale for translations
+                locale = QtCore.QLocale.system().name()
+                description = plugin.manifest.description(locale) or description
             except Exception:
                 pass
         self.description_label.setText(description)
