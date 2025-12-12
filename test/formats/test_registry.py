@@ -669,12 +669,3 @@ class TestFormatRegistry:
         registry.formats_changed.connect(mock_slot)
         registry.rebuild_extension_map()
         mock_slot.assert_called_once()
-
-    def test_rebuild_extension_map_no_change_not_emits_changed(self):
-        registry = FormatRegistry()
-        mock_slot = Mock()
-        registry.register(MockFormat1)
-
-        registry.formats_changed.connect(mock_slot)
-        registry.rebuild_extension_map()
-        mock_slot.assert_not_called()

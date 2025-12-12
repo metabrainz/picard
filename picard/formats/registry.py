@@ -183,11 +183,9 @@ class FormatRegistry(QObject):
         This is especially needed after a plugin got disabled, which can result in
         formats being no longer available.
         """
-        old_extension_map = self._extension_map
         self._extension_map = defaultdict(set)
         for format in self._ext_point_formats:
             for ext in format.EXTENSIONS:
                 self._extension_map[ext.lower()].add(format)
 
-        if old_extension_map != self._extension_map:
-            self.formats_changed.emit()
+        self.formats_changed.emit()
