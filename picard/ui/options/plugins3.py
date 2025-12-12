@@ -103,11 +103,6 @@ class Plugins3OptionsPage(OptionsPage):
 
     def load(self):
         """Load plugins from plugin manager."""
-        # Check plugin system availability once
-        if not hasattr(self.tagger, 'pluginmanager3') or not self.tagger.pluginmanager3:
-            self._show_disabled_state()
-            return
-
         try:
             self.all_plugins = self.tagger.pluginmanager3.plugins
             self._filter_plugins()  # Apply current filter

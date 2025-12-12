@@ -117,9 +117,6 @@ class InstallConfirmDialog(QtWidgets.QDialog):
     def check_trust_and_blacklist(self):
         """Check trust level and blacklist status."""
         tagger = QtCore.QCoreApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
-
         try:
             registry = tagger.pluginmanager3._registry
 
@@ -156,16 +153,15 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         """Load available refs from repository."""
         try:
             tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                refs = tagger.pluginmanager3.fetch_all_git_refs(self.url)
-                if refs:
-                    # Populate tags
-                    for ref in refs.get('tags', []):
-                        self.tags_list.addItem(ref['name'])
+            refs = tagger.pluginmanager3.fetch_all_git_refs(self.url)
+            if refs:
+                # Populate tags
+                for ref in refs.get('tags', []):
+                    self.tags_list.addItem(ref['name'])
 
-                    # Populate branches
-                    for ref in refs.get('branches', []):
-                        self.branches_list.addItem(ref['name'])
+                # Populate branches
+                for ref in refs.get('branches', []):
+                    self.branches_list.addItem(ref['name'])
         except Exception:
             # If we can't fetch refs, user can still use default or custom input
             pass

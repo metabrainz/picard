@@ -171,9 +171,6 @@ class InstallPluginDialog(QtWidgets.QDialog):
     def _load_registry_plugins(self):
         """Load plugins from registry."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
-
         try:
             registry = tagger.pluginmanager3._registry
             plugins = registry.list_plugins()
@@ -264,17 +261,16 @@ class InstallPluginDialog(QtWidgets.QDialog):
         """Get set of installed plugin UUIDs."""
         installed_uuids = set()
         tagger = QtWidgets.QApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            try:
-                for plugin in tagger.pluginmanager3.plugins:
-                    try:
-                        uuid = plugin.manifest.uuid
-                        if uuid:
-                            installed_uuids.add(uuid)
-                    except (AttributeError, Exception):
-                        pass
-            except Exception:
-                pass
+        try:
+            for plugin in tagger.pluginmanager3.plugins:
+                try:
+                    uuid = plugin.manifest.uuid
+                    if uuid:
+                        installed_uuids.add(uuid)
+                except (AttributeError, Exception):
+                    pass
+        except Exception:
+            pass
         return installed_uuids
 
     def showEvent(self, event):
@@ -310,11 +306,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _check_registry_plugin(self, plugin_id):
         """Check registry plugin and show info if needed."""
-        """Check registry plugin and show info if needed."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
-
         try:
             registry = tagger.pluginmanager3._registry
             # Try to find plugin in registry
@@ -373,9 +365,6 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         # Get plugin manager
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin system not available"))
-            return
 
         if current_tab == TAB_REGISTRY:  # Registry tab
             current_row = self.plugin_table.currentRow()

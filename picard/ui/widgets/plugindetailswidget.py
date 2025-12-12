@@ -152,16 +152,15 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         dialog = UninstallPluginDialog(self.current_plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtWidgets.QApplication.instance()
-            if hasattr(tagger, 'pluginmanager3') and tagger.pluginmanager3:
-                try:
-                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
-                    async_manager.uninstall_plugin(
-                        self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
-                    )
-                except Exception as e:
-                    QtWidgets.QMessageBox.critical(
-                        self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
-                    )
+            try:
+                async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                async_manager.uninstall_plugin(
+                    self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
+                )
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(
+                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
+                )
 
     def _on_uninstall_complete(self, result):
         """Handle uninstall completion."""
@@ -175,9 +174,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _get_version_display(self, plugin):
         """Get version display text."""
         tagger = QtWidgets.QApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            return tagger.pluginmanager3.get_plugin_version_display(plugin)
-        return _("Unknown")
+        return tagger.pluginmanager3.get_plugin_version_display(plugin)
 
     def _get_authors_display(self, plugin):
         """Get authors display text."""
@@ -190,23 +187,16 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
         tagger = QtWidgets.QApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            return tagger.pluginmanager3.get_plugin_remote_url(plugin)
-        return None
+        return tagger.pluginmanager3.get_plugin_remote_url(plugin)
 
     def _format_git_info(self, metadata):
         """Format git information for display."""
         tagger = QtWidgets.QApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            return tagger.pluginmanager3.format_git_info(metadata)
-        return ""
+        return tagger.pluginmanager3.format_git_info(metadata)
 
     def _get_trust_level_display(self, plugin):
         """Get trust level display text."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return _("Unknown")
-
         try:
             registry = tagger.pluginmanager3._registry
 
@@ -240,12 +230,11 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
             if plugin_uuid:
                 tagger = QtWidgets.QApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                    if metadata:
-                        git_info = self._format_git_info(metadata)
-                        if git_info:
-                            return git_info
+                metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
+                if metadata:
+                    git_info = self._format_git_info(metadata)
+                    if git_info:
+                        return git_info
         except Exception:
             pass
         return _("N/A")
@@ -260,9 +249,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return False
-
         # Use the manager's method which handles versioning schemes correctly
         return tagger.pluginmanager3.has_plugin_update(plugin)
 
@@ -288,8 +274,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _perform_update(self):
         """Perform the plugin update."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
 
         # Disable update button during update
         self.update_button.setEnabled(False)

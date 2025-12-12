@@ -314,9 +314,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _update_plugin_from_menu(self, plugin):
         """Update plugin from context menu."""
         tagger = QtCore.QCoreApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
-
         from picard.plugin3.asyncops.manager import AsyncPluginManager
 
         async_manager = AsyncPluginManager(tagger.pluginmanager3)
@@ -327,8 +324,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if result.success:
             # Refresh the plugin list
             tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                self.populate_plugins(tagger.pluginmanager3.plugins)
+            self.populate_plugins(tagger.pluginmanager3.plugins)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Update Failed"), error_msg)
@@ -338,16 +334,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = UninstallPluginDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                try:
-                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
-                    async_manager.uninstall_plugin(
-                        plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
-                    )
-                except Exception as e:
-                    QtWidgets.QMessageBox.critical(
-                        self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
-                    )
+            try:
+                async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                async_manager.uninstall_plugin(plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete)
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(
+                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
+                )
 
     def _on_uninstall_complete(self, result):
         """Handle uninstall completion."""
@@ -362,40 +355,37 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _reinstall_plugin_from_menu(self, plugin):
         """Reinstall plugin from context menu."""
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+        try:
+            # Get plugin URL from metadata
+            uuid = tagger.pluginmanager3._get_plugin_uuid(plugin)
+            metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
+            if not (metadata and hasattr(metadata, 'url')):
+                QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), _("Could not find plugin repository URL"))
+                return
+            plugin_url = metadata.url
+
+            # Get plugin name
             try:
-                # Get plugin URL from metadata
-                uuid = tagger.pluginmanager3._get_plugin_uuid(plugin)
-                metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
-                if not (metadata and hasattr(metadata, 'url')):
-                    QtWidgets.QMessageBox.critical(
-                        self, _("Reinstall Failed"), _("Could not find plugin repository URL")
-                    )
-                    return
-                plugin_url = metadata.url
+                plugin_name = plugin.manifest.name()
+            except (AttributeError, Exception):
+                plugin_name = plugin.name or plugin.plugin_id
 
-                # Get plugin name
-                try:
-                    plugin_name = plugin.manifest.name()
-                except (AttributeError, Exception):
-                    plugin_name = plugin.name or plugin.plugin_id
+            # Show confirmation dialog
+            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self)
+            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+                return
 
-                # Show confirmation dialog
-                confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self)
-                if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                    return
-
-                async_manager = AsyncPluginManager(tagger.pluginmanager3)
-                async_manager.install_plugin(
-                    url=plugin_url,
-                    ref=confirm_dialog.selected_ref,
-                    reinstall=True,
-                    callback=self._on_reinstall_complete,
-                )
-            except Exception as e:
-                QtWidgets.QMessageBox.critical(
-                    self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
-                )
+            async_manager = AsyncPluginManager(tagger.pluginmanager3)
+            async_manager.install_plugin(
+                url=plugin_url,
+                ref=confirm_dialog.selected_ref,
+                reinstall=True,
+                callback=self._on_reinstall_complete,
+            )
+        except Exception as e:
+            QtWidgets.QMessageBox.critical(
+                self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
+            )
 
     def _on_reinstall_complete(self, result):
         """Handle reinstall completion."""
@@ -410,16 +400,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                try:
-                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
-                    async_manager.switch_ref(
-                        plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete
-                    )
-                except Exception as e:
-                    QtWidgets.QMessageBox.critical(
-                        self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
-                    )
+            try:
+                async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                async_manager.switch_ref(plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete)
+            except Exception as e:
+                QtWidgets.QMessageBox.critical(
+                    self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
+                )
 
     def _on_switch_ref_complete(self, result):
         """Handle switch ref completion."""
@@ -568,20 +555,19 @@ class SwitchRefDialog(QtWidgets.QDialog):
         """Load available refs from repository."""
         try:
             tagger = QtCore.QCoreApplication.instance()
-            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                # Get plugin URL from metadata
-                uuid = tagger.pluginmanager3._get_plugin_uuid(self.plugin)
-                metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
-                if metadata and hasattr(metadata, 'url'):
-                    refs = tagger.pluginmanager3.fetch_all_git_refs(metadata.url)
+            # Get plugin URL from metadata
+            uuid = tagger.pluginmanager3._get_plugin_uuid(self.plugin)
+            metadata = tagger.pluginmanager3._get_plugin_metadata(uuid)
+            if metadata and hasattr(metadata, 'url'):
+                refs = tagger.pluginmanager3.fetch_all_git_refs(metadata.url)
 
-                    # Populate tags
-                    for ref in refs.get('tags', []):
-                        self.tags_list.addItem(ref['name'])
+                # Populate tags
+                for ref in refs.get('tags', []):
+                    self.tags_list.addItem(ref['name'])
 
-                    # Populate branches
-                    for ref in refs.get('branches', []):
-                        self.branches_list.addItem(ref['name'])
+                # Populate branches
+                for ref in refs.get('branches', []):
+                    self.branches_list.addItem(ref['name'])
         except Exception:
             # If we can't fetch refs, user can still use custom input
             pass
