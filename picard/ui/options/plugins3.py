@@ -77,7 +77,7 @@ class Plugins3OptionsPage(OptionsPage):
         toolbar_layout.addStretch()
 
         self.refresh_registry_button = QtWidgets.QPushButton(_("Refresh Registry"))
-        self.refresh_registry_button.setToolTip(_("Update plugin registry data from server"))
+        self._update_registry_tooltip()
         self.refresh_registry_button.clicked.connect(self._refresh_registry)
         toolbar_layout.addWidget(self.refresh_registry_button)
 
@@ -230,21 +230,57 @@ class Plugins3OptionsPage(OptionsPage):
         """Refresh plugin registry data from server."""
         self.refresh_registry_button.setEnabled(False)
         self.refresh_registry_button.setText(_("Refreshing..."))
-        self.status_label.setText(_("Refreshing plugin registry..."))
+        self.status_label.setText(_("Fetching latest plugin registry from server..."))
 
         try:
             # Force refresh the registry cache
             if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
-                self.plugin_manager._registry.fetch_registry(use_cache=False)
-            self.status_label.setText(_("Plugin registry refreshed"))
+                registry = self.plugin_manager._registry
+                registry.fetch_registry(use_cache=False)
+
+                # Get registry info for status
+                registry_info = registry.get_registry_info()
+                plugin_count = len(registry.list_plugins())
+
+                self.status_label.setText(
+                    _("Registry refreshed successfully - {} plugins available (version: {})").format(
+                        plugin_count, registry_info.get('version', 'unknown')
+                    )
+                )
+            else:
+                self.status_label.setText(_("Plugin registry refreshed"))
+
             # Reload the page to show updated registry data
             self.load()
+            # Update tooltip with fresh registry info
+            self._update_registry_tooltip()
         except Exception as e:
             log.error("Failed to refresh plugin registry: %s", e, exc_info=True)
             self.status_label.setText(_("Error refreshing registry: {}").format(str(e)))
         finally:
             self.refresh_registry_button.setEnabled(True)
             self.refresh_registry_button.setText(_("Refresh Registry"))
+
+    def _update_registry_tooltip(self):
+        """Update registry button tooltip with current registry information."""
+        base_tooltip = _("Update plugin registry data from server")
+
+        try:
+            if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
+                registry = self.plugin_manager._registry
+                plugin_count = len(registry.list_plugins())
+
+                detailed_tooltip = _("{}\n\nCurrent Registry Info:\n• Plugins: {}\n• URL: {}").format(
+                    base_tooltip,
+                    plugin_count,
+                    getattr(registry, 'registry_url', 'unknown'),
+                )
+                self.refresh_registry_button.setToolTip(detailed_tooltip)
+            else:
+                self.refresh_registry_button.setToolTip(base_tooltip)
+        except Exception:
+            # Fallback to basic tooltip if registry info fails
+            self.refresh_registry_button.setToolTip(base_tooltip)
 
     def _show_update_dialog(self, plugins_with_updates):
         """Show dialog with available updates."""
