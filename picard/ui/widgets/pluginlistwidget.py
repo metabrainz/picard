@@ -60,6 +60,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self.itemClicked.connect(self._on_item_clicked)
         self.customContextMenuRequested.connect(self._show_context_menu)
 
+        # Connect to plugin manager signals
+        tagger = QtCore.QCoreApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            tagger.pluginmanager3.plugin_ref_switched.connect(self._on_plugin_ref_switched)
+
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
         self.clear()
@@ -508,6 +513,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), error_msg)
+
+    def _on_plugin_ref_switched(self, plugin):
+        """Handle plugin ref switched signal."""
+        self._refresh_plugin_list()
 
     def _view_repository(self, plugin):
         """Open plugin repository in browser."""

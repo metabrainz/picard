@@ -213,6 +213,7 @@ class PluginManager(QObject):
     plugin_uninstalled = pyqtSignal(Plugin)
     plugin_enabled = pyqtSignal(Plugin)
     plugin_disabled = pyqtSignal(Plugin)
+    plugin_ref_switched = pyqtSignal(Plugin)
 
     _primary_plugin_dir: Path | None = None
     _plugin_dirs: List[Path] = []
@@ -643,6 +644,7 @@ class PluginManager(QObject):
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
 
+        self.plugin_ref_switched.emit(plugin)
         return old_ref, new_ref, old_commit, new_commit
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
