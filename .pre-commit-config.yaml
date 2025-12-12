@@ -10,6 +10,9 @@ repos:
         exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
       - id: mixed-line-ending
         exclude: "(.*\\.(po|pot|svg|ui)$|test/data/.*)"
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+        exclude: ".*\\.in"
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.12.9
     hooks:
