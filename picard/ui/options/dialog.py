@@ -300,6 +300,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             if hasattr(tagger.pluginmanager3, 'plugin_uninstalled'):
                 tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
+            # Initial refresh to pick up any plugin option pages that were registered
+            # since the last time the options dialog was opened
+            self.refresh_plugin_pages()
+
     @property
     def initialized_pages(self):
         yield from (page for page in self.pages if page.initialized)
