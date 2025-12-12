@@ -57,6 +57,13 @@ Changelog = "https://picard.musicbrainz.org/changelog/"
 [project.scripts]
 picard-plugins = "picard.plugin3.cli:main"
 
+[project.optional-dependencies]
+plugins = [
+    "aubio>=0.4.9",
+    "opencc>=1.1.9",
+    "zstandard>=0.25.0",
+]
+
 [dependency-groups]
 build = [
     "Babel>=2.10.0",
@@ -77,11 +84,6 @@ dev = [
     "ruff>=0.12.8",
     "urllib3>=2.6.0",
     "wlc",
-]
-plugins = [
-    "aubio~=0.4",
-    "opencc~=1.1",
-    "zstandard~=0.23",
 ]
 
 [tool.setuptools]

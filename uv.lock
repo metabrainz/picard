@@ -745,6 +745,13 @@ dependencies = [
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
 
+[package.optional-dependencies]
+plugins = [
+    { name = "aubio" },
+    { name = "opencc" },
+    { name = "zstandard" },
+]
+
 [package.dev-dependencies]
 build = [
     { name = "babel" },
@@ -766,18 +773,15 @@ dev = [
     { name = "urllib3" },
     { name = "wlc" },
 ]
-plugins = [
-    { name = "aubio" },
-    { name = "opencc" },
-    { name = "zstandard" },
-]
 
 [package.metadata]
 requires-dist = [
+    { name = "aubio", marker = "extra == 'plugins'", specifier = ">=0.4.9" },
     { name = "charset-normalizer", specifier = "~=3.3" },
     { name = "discid", specifier = "~=1.0" },
     { name = "markdown", specifier = "~=3.2" },
     { name = "mutagen", specifier = "~=1.45" },
+    { name = "opencc", marker = "extra == 'plugins'", specifier = ">=1.1.9" },
     { name = "pygit2", marker = "python_full_version < '3.14'", specifier = "~=1.18" },
     { name = "pygit2", marker = "python_full_version >= '3.14'", specifier = "~=1.19" },
     { name = "pyjwt", specifier = "~=2.0" },
@@ -789,7 +793,9 @@ requires-dist = [
     { name = "pywin32", marker = "sys_platform == 'win32'" },
     { name = "pyyaml", specifier = ">=5.1,<7" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.3.0" },
+    { name = "zstandard", marker = "extra == 'plugins'", specifier = ">=0.25.0" },
 ]
+provides-extras = ["plugins"]
 
 [package.metadata.requires-dev]
 build = [
@@ -811,11 +817,6 @@ dev = [
     { name = "ruff", specifier = ">=0.12.8" },
     { name = "urllib3", specifier = ">=2.6.0" },
     { name = "wlc" },
-]
-plugins = [
-    { name = "aubio", specifier = "~=0.4" },
-    { name = "opencc", specifier = "~=1.1" },
-    { name = "zstandard", specifier = "~=0.23" },
 ]
 
 [[package]]
