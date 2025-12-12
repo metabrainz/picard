@@ -69,6 +69,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         details_layout.addRow(_("Version:"), self.version_label)
 
         self.authors_label = QtWidgets.QLabel()
+        self.authors_label.setWordWrap(True)
         self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Authors:"), self.authors_label)
 
@@ -77,6 +78,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         details_layout.addRow(_("Trust Level:"), self.trust_level_label)
 
         self.plugin_id_label = QtWidgets.QLabel()
+        self.plugin_id_label.setWordWrap(True)
         self.plugin_id_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Plugin ID:"), self.plugin_id_label)
 
