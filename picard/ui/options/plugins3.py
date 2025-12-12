@@ -234,6 +234,9 @@ class Plugins3OptionsPage(OptionsPage):
         self.refresh_registry_button.setText(_("Refreshing..."))
         self.status_label.setText(_("Fetching latest plugin registry from server..."))
 
+        # Force UI update to show the message
+        QtWidgets.QApplication.processEvents()
+
         try:
             # Force refresh the registry cache
             if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
