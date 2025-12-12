@@ -35,6 +35,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        # Cache tagger instance for performance
+        self.tagger = QtWidgets.QApplication.instance()
         self.setup_ui()
         self.current_plugin = None
 
@@ -151,9 +153,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         dialog = UninstallPluginDialog(self.current_plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            tagger = QtWidgets.QApplication.instance()
             try:
-                async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
                 async_manager.uninstall_plugin(
                     self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
                 )
@@ -173,8 +174,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _get_version_display(self, plugin):
         """Get version display text."""
-        tagger = QtWidgets.QApplication.instance()
-        return tagger.pluginmanager3.get_plugin_version_display(plugin)
+        return self.tagger.pluginmanager3.get_plugin_version_display(plugin)
 
     def _get_authors_display(self, plugin):
         """Get authors display text."""
@@ -186,19 +186,16 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
-        tagger = QtWidgets.QApplication.instance()
-        return tagger.pluginmanager3.get_plugin_remote_url(plugin)
+        return self.tagger.pluginmanager3.get_plugin_remote_url(plugin)
 
     def _format_git_info(self, metadata):
         """Format git information for display."""
-        tagger = QtWidgets.QApplication.instance()
-        return tagger.pluginmanager3.format_git_info(metadata)
+        return self.tagger.pluginmanager3.format_git_info(metadata)
 
     def _get_trust_level_display(self, plugin):
         """Get trust level display text."""
-        tagger = QtWidgets.QApplication.instance()
         try:
-            registry = tagger.pluginmanager3._registry
+            registry = self.tagger.pluginmanager3._registry
 
             # Get remote URL from metadata
             remote_url = self._get_plugin_remote_url(plugin)
@@ -229,8 +226,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         try:
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
             if plugin_uuid:
-                tagger = QtWidgets.QApplication.instance()
-                metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
+                metadata = self.tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
                 if metadata:
                     git_info = self._format_git_info(metadata)
                     if git_info:
@@ -248,9 +244,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
-        tagger = QtWidgets.QApplication.instance()
         # Use the manager's method which handles versioning schemes correctly
-        return tagger.pluginmanager3.has_plugin_update(plugin)
+        return self.tagger.pluginmanager3.has_plugin_update(plugin)
 
     def _update_plugin(self):
         """Update the current plugin."""
@@ -273,8 +268,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _perform_update(self):
         """Perform the plugin update."""
-        tagger = QtWidgets.QApplication.instance()
-
         # Disable update button during update
         self.update_button.setEnabled(False)
         self.update_button.setText(_("Updating..."))
@@ -282,7 +275,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Import AsyncPluginManager
         from picard.plugin3.asyncops.manager import AsyncPluginManager
 
-        async_manager = AsyncPluginManager(tagger.pluginmanager3)
+        async_manager = AsyncPluginManager(self.tagger.pluginmanager3)
         async_manager.update_plugin(
             plugin=self.current_plugin, progress_callback=None, callback=self._on_update_complete
         )
