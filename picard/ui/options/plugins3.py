@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from picard import log
 from picard.extension_points.options_pages import register_options_page
@@ -112,10 +112,12 @@ class Plugins3OptionsPage(OptionsPage):
 
         # Status label
         self.status_label = QtWidgets.QLabel()
+        self.status_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.status_label, 0)  # Minimal space for status
 
     def load(self):
         """Load plugins from plugin manager."""
+        self.status_label.setText(_("Loading plugins..."))
         try:
             self.all_plugins = self.plugin_manager.plugins
             self._filter_plugins()  # Apply current filter
