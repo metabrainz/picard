@@ -19,7 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
@@ -192,9 +192,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Close button
         button_layout = QtWidgets.QHBoxLayout()
+
+        # Homepage button (if available)
+        homepage_url = self.plugin_manager.get_plugin_homepage(self.current_plugin)
+        if homepage_url:
+            homepage_button = QtWidgets.QPushButton(_("Open Homepage"))
+            homepage_button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(homepage_url)))
+            button_layout.addWidget(homepage_button)
+
+        button_layout.addStretch()
         close_button = QtWidgets.QPushButton(_("Close"))
         close_button.clicked.connect(dialog.accept)
-        button_layout.addStretch()
         button_layout.addWidget(close_button)
         layout.addLayout(button_layout)
 

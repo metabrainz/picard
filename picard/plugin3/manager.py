@@ -1396,6 +1396,12 @@ class PluginManager(QObject):
 
         return ""
 
+    def get_plugin_homepage(self, plugin):
+        """Get plugin homepage URL from manifest."""
+        if not plugin.manifest or not hasattr(plugin.manifest, '_data'):
+            return None
+        return plugin.manifest._data.get('homepage')
+
     def long_description_as_html(self, plugin):
         """Get plugin long description converted from markdown to HTML."""
         try:
