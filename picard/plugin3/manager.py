@@ -725,6 +725,45 @@ class PluginManager(QObject):
         if primary:
             self._primary_plugin_dir = plugin_dir
 
+    def _preserve_original_ref_if_needed(self, url_or_path, ref, reinstall):
+        """Preserve original ref if reinstalling and no ref specified.
+
+        Args:
+            url_or_path: Plugin URL or local path
+            ref: Current ref (may be None)
+            reinstall: Whether this is a reinstall operation
+
+        Returns:
+            str|None: Preserved ref or original ref
+        """
+        if not (reinstall and ref is None):
+            return ref
+
+        try:
+            # Check existing plugins in memory first
+            for existing_plugin in self._plugins:
+                # Ensure manifest is loaded
+                if not existing_plugin.manifest:
+                    try:
+                        existing_plugin.read_manifest()
+                    except Exception:
+                        continue
+
+                if existing_plugin.manifest and existing_plugin.manifest.uuid:
+                    existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                    if (
+                        existing_metadata
+                        and existing_metadata.url
+                        and str(existing_metadata.url).rstrip('/') == str(url_or_path).rstrip('/')
+                    ):
+                        if existing_metadata.ref:
+                            log.debug('Preserving original ref "%s" for plugin reinstall', existing_metadata.ref)
+                            return existing_metadata.ref
+        except Exception as e:
+            log.debug('Could not preserve original ref: %s', e)
+
+        return ref
+
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
     ):
@@ -755,6 +794,9 @@ class PluginManager(QObject):
                 local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
             )
 
+        # Preserve original ref if reinstalling and no ref specified
+        ref = self._preserve_original_ref_if_needed(url, ref, reinstall)
+
         # Handle git URL - use temp dir in plugin directory for atomic rename
 
         url_hash = hash_string(url)
@@ -769,7 +811,16 @@ class PluginManager(QObject):
 
             # Clone or update temporary location with single-branch optimization
             source = PluginSourceGit(url, ref)
-            commit_id = source.sync(temp_path, single_branch=True)
+            try:
+                commit_id = source.sync(temp_path, single_branch=True)
+            except Exception as e:
+                # If sync fails and we're using a preserved ref, try fallback to default
+                if ref and reinstall:
+                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
+                    source = PluginSourceGit(url, None)  # Use default ref
+                    commit_id = source.sync(temp_path, single_branch=True)
+                else:
+                    raise
 
             # Read MANIFEST to get plugin ID
             manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
@@ -895,6 +946,9 @@ class PluginManager(QObject):
             str: Plugin ID
         """
         import tempfile
+
+        # Preserve original ref if reinstalling and no ref specified
+        ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
         # Check if local directory is a git repository
         is_git_repo = (local_path / '.git').exists()

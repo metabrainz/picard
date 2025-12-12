@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
+import sys
 import tempfile
 
 from test.picardtestcase import PicardTestCase
@@ -478,6 +479,53 @@ uuid = "{test_uuid}"
             self.assertEqual(str(result.new_version), '1.1.0.final0')
             self.assertNotEqual(result.old_commit, result.new_commit)
             self.assertTrue((plugin.local_path / "update.txt").exists())
+
+    @pytest.mark.skipif(sys.platform == "win32", reason="Windows file locking issues with git repos in tests")
+    def test_manager_reinstall_preserves_ref(self):
+        """Test that reinstalling a plugin preserves the original ref."""
+        from picard.plugin3.manager import PluginManager
+        from picard.plugin3.plugin import Plugin
+
+        # Create plugin with unique UUID for this test
+        self._create_test_plugin()
+
+        # Create a v1.0.0 tag
+        from picard.git.factory import git_backend
+
+        backend = git_backend()
+        repo = backend.create_repository(self.plugin_dir)
+        repo.free()
+
+        from test.test_plugins3_helpers import backend_create_tag
+
+        backend_create_tag(self.plugin_dir, 'v1.0.0')
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            mock_tagger = MockTagger()
+            manager = PluginManager(mock_tagger)
+            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
+            manager._primary_plugin_dir.mkdir()
+
+            # Install plugin with specific ref (v1.0.0)
+            plugin_id = manager.install_plugin(str(self.plugin_dir), ref='v1.0.0')
+
+            # Load the plugin into the manager's plugins list
+            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin.read_manifest()
+
+            # Verify it was installed with the correct ref
+            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
+            self.assertEqual(metadata.ref, 'v1.0.0')
+
+            # Reinstall without specifying ref - should preserve v1.0.0
+            plugin_id_reinstall = manager.install_plugin(str(self.plugin_dir), reinstall=True)
+            self.assertEqual(plugin_id, plugin_id_reinstall)
+
+            # Verify the ref was preserved
+            plugin_reinstalled = Plugin(manager._primary_plugin_dir, plugin_id_reinstall)
+            plugin_reinstalled.read_manifest()
+            metadata_reinstalled = manager._get_plugin_metadata(plugin_reinstalled.manifest.uuid)
+            self.assertEqual(metadata_reinstalled.ref, 'v1.0.0')
 
     def test_manifest_read_from_git_repo(self):
         """Test reading MANIFEST.toml from cloned git repository."""
