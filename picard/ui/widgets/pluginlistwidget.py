@@ -23,7 +23,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
-from picard.plugin3.plugin import PluginState, short_commit_id
+from picard.plugin3.plugin import PluginState
 from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
@@ -114,71 +114,29 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
         tagger = QtCore.QCoreApplication.instance()
-        # Assume plugin manager is available if this widget is being used
-        try:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid:
-                metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                if metadata and hasattr(metadata, 'url'):
-                    return metadata.url
-        except Exception:
-            pass
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            return tagger.pluginmanager3.get_plugin_remote_url(plugin)
         return None
 
     def _format_git_info(self, metadata):
-        """Format git ref and commit info compactly (reused from CLI).
-
-        Returns string like "ref @commit" or "@commit" if ref is a commit hash.
-        Returns empty string if no metadata.
-        """
-        if not metadata:
-            return ''
-
-        ref = metadata.ref or ''
-        commit = metadata.commit or ''
-
-        if not commit:
-            return ''
-
-        commit_short = short_commit_id(commit)
-        # Skip ref if it's a commit hash (same as or starts with the commit short ID)
-        if ref and not ref.startswith(commit_short):
-            return f'{ref} @{commit_short}'
-        return f'@{commit_short}'
+        """Format git information for display."""
+        tagger = QtCore.QCoreApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            return tagger.pluginmanager3.format_git_info(metadata)
+        return ""
 
     def _get_version_display(self, plugin):
         """Get display text for plugin version."""
-        version_text = ""
+        tagger = QtCore.QCoreApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            version_text = tagger.pluginmanager3.get_plugin_version_display(plugin)
 
-        # Try to get git ref from metadata first (for better ref tracking)
-        try:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid:
-                tagger = QtCore.QCoreApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                    if metadata:
-                        git_info = self._format_git_info(metadata)
-                        if git_info:
-                            version_text = git_info
-        except Exception:
-            pass
+            # Check if update is available and add indicator
+            if self._has_update_available(plugin):
+                version_text += " " + _("(Update available)")
 
-        # Fallback to manifest version if no git metadata
-        if not version_text:
-            if plugin.manifest and hasattr(plugin.manifest, '_data'):
-                version = plugin.manifest._data.get('version')
-                if version:
-                    version_text = version
-
-        if not version_text:
-            version_text = _("Unknown")
-
-        # Check if update is available
-        if self._has_update_available(plugin):
-            version_text += " " + _("(Update available)")
-
-        return version_text
+            return version_text
+        return _("Unknown")
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
