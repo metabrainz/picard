@@ -37,6 +37,7 @@ except ImportError:
 # Tab positions
 TAB_REGISTRY = 0
 TAB_URL = 1
+TAB_LOCAL = 2
 
 
 class InstallPluginDialog(QtWidgets.QDialog):
@@ -123,6 +124,29 @@ class InstallPluginDialog(QtWidgets.QDialog):
         url_layout.addStretch()
         self.tab_widget.addTab(url_widget, _("URL"))
 
+        # Local directory tab
+        local_widget = QtWidgets.QWidget()
+        local_layout = QtWidgets.QVBoxLayout(local_widget)
+
+        local_group = QtWidgets.QGroupBox(_("Install from Local Directory"))
+        local_form = QtWidgets.QFormLayout(local_group)
+
+        # Directory path with browse button
+        path_layout = QtWidgets.QHBoxLayout()
+        self.path_edit = QtWidgets.QLineEdit()
+        self.path_edit.setPlaceholderText(_("/path/to/plugin/directory"))
+        path_layout.addWidget(self.path_edit)
+
+        browse_button = QtWidgets.QPushButton(_("Browse..."))
+        browse_button.clicked.connect(self._browse_directory)
+        path_layout.addWidget(browse_button)
+
+        local_form.addRow(_("Directory:"), path_layout)
+
+        local_layout.addWidget(local_group)
+        local_layout.addStretch()
+        self.tab_widget.addTab(local_widget, _("Local"))
+
         # Warning label
         self.warning_label = QtWidgets.QLabel()
         self.warning_label.setStyleSheet("color: orange; font-weight: bold;")
@@ -157,6 +181,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         # Connect input changes to validation
         self.url_edit.textChanged.connect(self._validate_input)
+        self.path_edit.textChanged.connect(self._validate_input)
         self.tab_widget.currentChanged.connect(self._validate_input)
         self._load_registry_plugins()
         self._validate_input()
@@ -168,11 +193,14 @@ class InstallPluginDialog(QtWidgets.QDialog):
         if current_tab == TAB_REGISTRY:  # Registry tab
             selected = self.plugin_table.currentRow() >= 0
             self.install_button.setEnabled(selected)
-        else:  # URL tab
+        elif current_tab == TAB_URL:  # URL tab
             url = self.url_edit.text().strip()
             self.install_button.setEnabled(bool(url))
             if url:
                 self._check_trust_level(url)
+        else:  # TAB_LOCAL - Local directory tab
+            path = self.path_edit.text().strip()
+            self.install_button.setEnabled(bool(path))
 
     def _load_registry_plugins(self):
         """Load plugins from registry."""
@@ -324,6 +352,17 @@ class InstallPluginDialog(QtWidgets.QDialog):
         dialog = PluginInfoDialog(plugin_data, self)
         dialog.exec()
 
+    def _browse_directory(self):
+        """Open directory browser for local plugin selection."""
+        directory = QtWidgets.QFileDialog.getExistingDirectory(
+            self,
+            _("Select Plugin Directory"),
+            "",
+            QtWidgets.QFileDialog.Option.ShowDirsOnly | QtWidgets.QFileDialog.Option.DontResolveSymlinks,
+        )
+        if directory:
+            self.path_edit.setText(directory)
+
     def _check_registry_plugin(self, plugin_id):
         """Check registry plugin and show info if needed."""
         try:
@@ -405,7 +444,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
             # Use versioning scheme for registry plugins when no ref specified
             if ref is None:
                 ref = self.plugin_manager.select_ref_for_plugin(plugin_data)
-        else:  # URL tab
+        elif current_tab == TAB_URL:  # URL tab
             url = self.url_edit.text().strip()
             ref = self.ref_edit.text().strip() or None
             if not url:
@@ -418,6 +457,33 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
             # Override ref with user selection
             ref = confirm_dialog.selected_ref or ref
+        else:  # TAB_LOCAL - Local directory tab
+            url = self.path_edit.text().strip()
+            ref = None  # Local directories don't use refs
+            if not url:
+                QtWidgets.QMessageBox.warning(
+                    self, _("No Directory Selected"), _("Please select a local plugin directory.")
+                )
+                return
+
+            # Validate that the directory exists and looks like a plugin
+            import os
+
+            if not os.path.isdir(url):
+                QtWidgets.QMessageBox.critical(self, _("Invalid Directory"), _("The selected path is not a directory."))
+                return
+
+            # Check for MANIFEST.toml - required for all plugins
+            manifest_path = os.path.join(url, "MANIFEST.toml")
+            if not os.path.isfile(manifest_path):
+                QtWidgets.QMessageBox.critical(
+                    self,
+                    _("Invalid Plugin Directory"),
+                    _(
+                        "The selected directory does not contain a MANIFEST.toml file. A valid plugin requires both a git repository and a MANIFEST.toml file."
+                    ),
+                )
+                return
 
         # Disable UI during installation
         self.install_button.setEnabled(False)
@@ -426,6 +492,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.category_combo.setEnabled(False)
         self.url_edit.setEnabled(False)
         self.ref_edit.setEnabled(False)
+        self.path_edit.setEnabled(False)
         self.tab_widget.setEnabled(False)
         self.progress_bar.show()
         self.progress_bar.setValue(0)
@@ -448,6 +515,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.category_combo.setEnabled(True)
         self.url_edit.setEnabled(True)
         self.ref_edit.setEnabled(True)
+        self.path_edit.setEnabled(True)
         self.tab_widget.setEnabled(True)
         self.progress_bar.hide()
 
