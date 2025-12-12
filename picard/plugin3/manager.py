@@ -29,13 +29,14 @@ from PyQt6.QtCore import (
     pyqtSignal,
 )
 
+from picard import log
+
 
 if TYPE_CHECKING:
     from picard.tagger import Tagger
 
 from picard import (
     api_versions_tuple,
-    log,
 )
 from picard.config import get_config
 from picard.const.appdirs import cache_folder
@@ -1165,14 +1166,15 @@ class PluginManager(QObject):
                 # Resolve ref with same logic as update() - try origin/ prefix for branches
                 try:
                     if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # Try origin/ prefix first for branches
+                        # For tags, try refs/tags/ first, then origin/ for branches
                         try:
-                            obj = repo.revparse_single(f'origin/{ref}')
+                            obj = repo.revparse_single(f'refs/tags/{ref}')
                         except KeyError:
-                            # Fall back to original ref (might be tag or commit hash)
+                            # Not a tag, try origin/ prefix for branches
                             try:
-                                obj = repo.revparse_single(f'refs/tags/{ref}')
+                                obj = repo.revparse_single(f'origin/{ref}')
                             except KeyError:
+                                # Fall back to original ref (might be commit hash)
                                 obj = repo.revparse_single(ref)
                     else:
                         obj = repo.revparse_single(ref)
@@ -1205,8 +1207,13 @@ class PluginManager(QObject):
                             new_ref=new_ref,
                         )
                     )
-            except Exception:
-                pass
+            except KeyError:
+                # Ref not found, skip this plugin (expected for some cases)
+                continue
+            except Exception as e:
+                # Log unexpected errors but continue with other plugins
+                log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
+                continue
 
         return updates
 
