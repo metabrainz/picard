@@ -740,6 +740,20 @@ class PluginManager(QObject):
                 if not reinstall:
                     raise PluginAlreadyInstalledError(plugin_name, url)
 
+                # Find and unload existing plugin before reinstall
+                existing_plugin = None
+                for plugin in self._plugins:
+                    if plugin.local_path == final_path:
+                        existing_plugin = plugin
+                        break
+
+                if existing_plugin:
+                    # Disable and unload the plugin properly
+                    if existing_plugin.plugin_id in self._enabled_plugins:
+                        self.disable_plugin(existing_plugin)
+                    self._unload_plugin(existing_plugin)
+                    self._plugins.remove(existing_plugin)
+
                 # Check for uncommitted changes before removing
                 if not discard_changes:
                     changes = GitOperations.check_dirty_working_dir(final_path)
