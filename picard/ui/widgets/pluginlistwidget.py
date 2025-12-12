@@ -63,8 +63,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Connect to plugin manager signals
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            tagger.pluginmanager3.plugin_ref_switched.connect(self._on_plugin_ref_switched)
+        tagger.pluginmanager3.plugin_ref_switched.connect(self._on_plugin_ref_switched)
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -114,36 +113,28 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            return tagger.pluginmanager3.get_plugin_remote_url(plugin)
-        return None
+        return tagger.pluginmanager3.get_plugin_remote_url(plugin)
 
     def _format_git_info(self, metadata):
         """Format git information for display."""
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            return tagger.pluginmanager3.format_git_info(metadata)
+        return tagger.pluginmanager3.format_git_info(metadata)
         return ""
 
     def _get_version_display(self, plugin):
         """Get display text for plugin version."""
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            version_text = tagger.pluginmanager3.get_plugin_version_display(plugin)
+        version_text = tagger.pluginmanager3.get_plugin_version_display(plugin)
 
-            # Check if update is available and add indicator
-            if self._has_update_available(plugin):
-                version_text += " " + _("(Update available)")
+        # Check if update is available and add indicator
+        if self._has_update_available(plugin):
+            version_text += " " + _("(Update available)")
 
-            return version_text
-        return _("Unknown")
+        return version_text
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         tagger = QtCore.QCoreApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return False
-
         # Use the manager's method which handles versioning schemes correctly
         return tagger.pluginmanager3.has_plugin_update(plugin)
 

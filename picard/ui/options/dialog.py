@@ -157,14 +157,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             api = getattr(page, '_plugin_api', None)
             if api is not None:  # This is a plugin option page
                 tagger = QtCore.QCoreApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
-                    if plugin_uuid:
-                        # Only show page if plugin is enabled
-                        is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
-                        page_active = is_enabled
-                    else:
-                        page_active = False
+                plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
+                if plugin_uuid:
+                    # Only show page if plugin is enabled
+                    is_enabled = plugin_uuid in tagger.pluginmanager3._enabled_plugins
+                    page_active = is_enabled
                 else:
                     page_active = False
 
@@ -290,21 +287,20 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Connect to plugin manager signals for dynamic updates
         tagger = QtCore.QCoreApplication.instance()
-        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-            tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
-            # Connect to other plugin state changes if available
-            if hasattr(tagger.pluginmanager3, 'plugin_installed'):
-                tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
-            if hasattr(tagger.pluginmanager3, 'plugin_enabled'):
-                tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
-            if hasattr(tagger.pluginmanager3, 'plugin_disabled'):
-                tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
-            if hasattr(tagger.pluginmanager3, 'plugin_uninstalled'):
-                tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
+        tagger.pluginmanager3.plugin_ref_switched.connect(self.refresh_plugin_pages)
+        # Connect to other plugin state changes if available
+        if hasattr(tagger.pluginmanager3, 'plugin_installed'):
+            tagger.pluginmanager3.plugin_installed.connect(self.refresh_plugin_pages)
+        if hasattr(tagger.pluginmanager3, 'plugin_enabled'):
+            tagger.pluginmanager3.plugin_enabled.connect(self.refresh_plugin_pages)
+        if hasattr(tagger.pluginmanager3, 'plugin_disabled'):
+            tagger.pluginmanager3.plugin_disabled.connect(self.refresh_plugin_pages)
+        if hasattr(tagger.pluginmanager3, 'plugin_uninstalled'):
+            tagger.pluginmanager3.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
-            # Initial refresh to pick up any plugin option pages that were registered
-            # since the last time the options dialog was opened
-            self.refresh_plugin_pages()
+        # Initial refresh to pick up any plugin option pages that were registered
+        # since the last time the options dialog was opened
+        self.refresh_plugin_pages()
 
     @property
     def initialized_pages(self):
@@ -501,10 +497,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def refresh_plugin_pages(self):
         """Refresh plugin option pages based on current plugin state."""
-        tagger = QtCore.QCoreApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return
-
         # Store current selection
         current_page = None
         selected_items = self.ui.pages_tree.selectedItems()
