@@ -44,11 +44,6 @@ repos:
         args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal, --python-version=3.10]
         pass_filenames: false
         always_run: true
-      - id: pip-compile
-        name: pip-compile requirements-plugins.txt
-        args: [pyproject.toml, -o, requirements-plugins.txt, --group, plugins, --generate-hashes, --universal, --python-version=3.10]
-        pass_filenames: false
-        always_run: true
   - repo: local
     hooks:
       - id: pytest
