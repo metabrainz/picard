@@ -23,7 +23,6 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
-from picard.plugin3.plugin import short_commit_id
 
 from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
 
@@ -175,26 +174,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _get_version_display(self, plugin):
         """Get version display text."""
-        # Try to get version from manifest first
-        if plugin.manifest and hasattr(plugin.manifest, '_data'):
-            version = plugin.manifest._data.get('version')
-            if version:
-                return version
-
-        # Fallback to git ref from metadata if no version in manifest
-        try:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid:
-                tagger = QtWidgets.QApplication.instance()
-                if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
-                    metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                    if metadata:
-                        git_info = self._format_git_info(metadata)
-                        if git_info:
-                            return git_info
-        except Exception:
-            pass
-
+        tagger = QtWidgets.QApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            return tagger.pluginmanager3.get_plugin_version_display(plugin)
         return _("Unknown")
 
     def _get_authors_display(self, plugin):
@@ -208,39 +190,16 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
         tagger = QtWidgets.QApplication.instance()
-        if not hasattr(tagger, "pluginmanager3") or not tagger.pluginmanager3:
-            return None
-
-        try:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid:
-                metadata = tagger.pluginmanager3._get_plugin_metadata(plugin_uuid)
-                if metadata and hasattr(metadata, 'url'):
-                    return metadata.url
-        except Exception:
-            pass
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            return tagger.pluginmanager3.get_plugin_remote_url(plugin)
         return None
 
     def _format_git_info(self, metadata):
-        """Format git ref and commit info compactly (reused from CLI).
-
-        Returns string like "ref @commit" or "@commit" if ref is a commit hash.
-        Returns empty string if no metadata.
-        """
-        if not metadata:
-            return ''
-
-        ref = metadata.ref or ''
-        commit = metadata.commit or ''
-
-        if not commit:
-            return ''
-
-        commit_short = short_commit_id(commit)
-        # Skip ref if it's a commit hash (same as or starts with the commit short ID)
-        if ref and not ref.startswith(commit_short):
-            return f'{ref} @{commit_short}'
-        return f'@{commit_short}'
+        """Format git information for display."""
+        tagger = QtWidgets.QApplication.instance()
+        if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+            return tagger.pluginmanager3.format_git_info(metadata)
+        return ""
 
     def _get_trust_level_display(self, plugin):
         """Get trust level display text."""
