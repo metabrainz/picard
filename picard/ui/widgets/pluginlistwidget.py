@@ -70,6 +70,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Connect to plugin manager signals
         self.plugin_manager.plugin_ref_switched.connect(self._on_plugin_ref_switched)
 
+        # Guard to prevent double refresh during operations
+        self._refreshing = False
+
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
         self.clear()
@@ -222,11 +225,18 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
-        plugins = self.plugin_manager.plugins
+        if self._refreshing:
+            return
 
-        # Use utility to temporarily disconnect signal during refresh
-        with temporary_disconnect(self.itemClicked, self._on_item_clicked):
-            self.populate_plugins(plugins)
+        self._refreshing = True
+        try:
+            plugins = self.plugin_manager.plugins
+
+            # Use utility to temporarily disconnect signal during refresh
+            with temporary_disconnect(self.itemClicked, self._on_item_clicked):
+                self.populate_plugins(plugins)
+        finally:
+            self._refreshing = False
 
     def _toggle_plugin(self, plugin, enabled):
         """Toggle plugin enabled state."""
