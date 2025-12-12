@@ -404,6 +404,14 @@ class Tagger(QtWidgets.QApplication):
             self.pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
 
+    def get_plugin_manager(self):
+        """Get the plugin manager instance.
+
+        Returns:
+            PluginManager or None: The plugin manager instance if available, None otherwise.
+        """
+        return getattr(self, 'pluginmanager3', None)
+
     def _on_plugin_status_changed(self):
         self.format_registry.rebuild_extension_map()
 

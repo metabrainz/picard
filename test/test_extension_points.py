@@ -32,9 +32,9 @@ from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
 
 
-def create_mock_plugin(uuid) -> Plugin:
-    mock_plugin = Plugin(Path(), 'testplugin')
-    mock_plugin.name = 'testplugin'
+def create_mock_plugin(uuid, plugin_id='testplugin') -> Plugin:
+    mock_plugin = Plugin(Path(), plugin_id)
+    mock_plugin.name = plugin_id
     mock_plugin.manifest = Mock()
     mock_plugin.manifest.uuid = uuid
     mock_plugin.state = Mock()
@@ -94,7 +94,7 @@ class TestExtensionPoints(PicardTestCase):
         self.ep.register('picard.plugins.plugin2', 'item2')
 
         # Only enable plugin1
-        mock_plugin = create_mock_plugin(uuid1)
+        mock_plugin = create_mock_plugin(uuid1, 'plugin1')
         self.manager.enable_plugin(mock_plugin)
 
         items = list(self.ep)
