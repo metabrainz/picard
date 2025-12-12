@@ -364,6 +364,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         reinstall_action = menu.addAction(_("Reinstall"))
         reinstall_action.triggered.connect(lambda: self._reinstall_plugin_from_menu(plugin))
 
+        # Switch ref action
+        switch_ref_action = menu.addAction(_("Switch Ref"))
+        switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
+
         menu.addSeparator()
 
         menu.addSeparator()
@@ -481,6 +485,34 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), error_msg)
 
+    def _switch_ref_from_menu(self, plugin):
+        """Switch plugin ref from context menu."""
+        if not (hasattr(plugin, 'source') and hasattr(plugin.source, 'url')):
+            QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), _("Could not find plugin repository URL"))
+            return
+
+        dialog = SwitchRefDialog(plugin, self)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            tagger = QtCore.QCoreApplication.instance()
+            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+                try:
+                    async_manager = AsyncPluginManager(tagger.pluginmanager3)
+                    async_manager.switch_ref(
+                        plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete
+                    )
+                except Exception as e:
+                    QtWidgets.QMessageBox.critical(
+                        self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
+                    )
+
+    def _on_switch_ref_complete(self, result):
+        """Handle switch ref completion."""
+        if result.success:
+            self._refresh_plugin_list()
+        else:
+            error_msg = str(result.error) if result.error else _("Unknown error")
+            QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), error_msg)
+
     def _view_repository(self, plugin):
         """Open plugin repository in browser."""
         remote_url = self._get_plugin_remote_url(plugin)
@@ -536,6 +568,110 @@ class UninstallPluginDialog(QtWidgets.QDialog):
         button_layout.addWidget(cancel_button)
 
         layout.addLayout(button_layout)
+
+
+class SwitchRefDialog(QtWidgets.QDialog):
+    """Dialog for switching plugin git ref."""
+
+    def __init__(self, plugin, parent=None):
+        super().__init__(parent)
+        self.plugin = plugin
+        self.selected_ref = None
+        self.setWindowTitle(_("Switch Git Ref"))
+        self.setModal(True)
+        self.resize(400, 300)
+        self.setup_ui()
+        self.load_refs()
+
+    def setup_ui(self):
+        """Setup the dialog UI."""
+        layout = QtWidgets.QVBoxLayout(self)
+
+        # Plugin name
+        try:
+            name = self.plugin.manifest.name
+        except (AttributeError, Exception):
+            name = self.plugin.name or self.plugin.plugin_id
+
+        title_label = QtWidgets.QLabel(_("Switch ref for '{}'").format(name))
+        layout.addWidget(title_label)
+
+        # Tab widget for different ref types
+        self.tab_widget = QtWidgets.QTabWidget()
+        layout.addWidget(self.tab_widget)
+
+        # Tags tab
+        tags_widget = QtWidgets.QWidget()
+        tags_layout = QtWidgets.QVBoxLayout(tags_widget)
+        self.tags_list = QtWidgets.QListWidget()
+        tags_layout.addWidget(self.tags_list)
+        self.tab_widget.addTab(tags_widget, _("Tags"))
+
+        # Branches tab
+        branches_widget = QtWidgets.QWidget()
+        branches_layout = QtWidgets.QVBoxLayout(branches_widget)
+        self.branches_list = QtWidgets.QListWidget()
+        branches_layout.addWidget(self.branches_list)
+        self.tab_widget.addTab(branches_widget, _("Branches"))
+
+        # Custom tab
+        custom_widget = QtWidgets.QWidget()
+        custom_layout = QtWidgets.QVBoxLayout(custom_widget)
+        custom_layout.addWidget(QtWidgets.QLabel(_("Enter tag, branch, or commit ID:")))
+        self.custom_edit = QtWidgets.QLineEdit()
+        custom_layout.addWidget(self.custom_edit)
+        self.tab_widget.addTab(custom_widget, _("Custom"))
+
+        # Buttons
+        button_layout = QtWidgets.QHBoxLayout()
+
+        switch_button = QtWidgets.QPushButton(_("Switch"))
+        switch_button.clicked.connect(self._switch_ref)
+        button_layout.addWidget(switch_button)
+
+        cancel_button = QtWidgets.QPushButton(_("Cancel"))
+        cancel_button.clicked.connect(self.reject)
+        button_layout.addWidget(cancel_button)
+
+        layout.addLayout(button_layout)
+
+    def load_refs(self):
+        """Load available refs from repository."""
+        try:
+            tagger = QtCore.QCoreApplication.instance()
+            if hasattr(tagger, "pluginmanager3") and tagger.pluginmanager3:
+                refs = tagger.pluginmanager3.fetch_all_git_refs(self.plugin.source.url)
+
+                # Populate tags
+                for ref in refs.get('tags', []):
+                    self.tags_list.addItem(ref)
+
+                # Populate branches
+                for ref in refs.get('branches', []):
+                    self.branches_list.addItem(ref)
+        except Exception:
+            # If we can't fetch refs, user can still use custom input
+            pass
+
+    def _switch_ref(self):
+        """Handle switch button click."""
+        current_tab = self.tab_widget.currentIndex()
+
+        if current_tab == 0:  # Tags
+            current_item = self.tags_list.currentItem()
+            if current_item:
+                self.selected_ref = current_item.text()
+        elif current_tab == 1:  # Branches
+            current_item = self.branches_list.currentItem()
+            if current_item:
+                self.selected_ref = current_item.text()
+        else:  # Custom
+            self.selected_ref = self.custom_edit.text().strip()
+
+        if self.selected_ref:
+            self.accept()
+        else:
+            QtWidgets.QMessageBox.warning(self, _("No Ref Selected"), _("Please select or enter a ref to switch to."))
 
     def _uninstall(self):
         """Handle uninstall button click."""

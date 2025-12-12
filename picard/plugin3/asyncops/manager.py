@@ -141,6 +141,15 @@ class AsyncPluginManager:
 
         run_async(_uninstall, callback)
 
+    def switch_ref(self, plugin, ref, callback=None):
+        """Switch plugin ref asynchronously."""
+
+        def _switch_ref():
+            self._manager.switch_ref(plugin, ref)
+            return plugin.plugin_id
+
+        run_async(_switch_ref, callback)
+
     # Synchronous operations (fast, no need for async)
     def enable_plugin(self, plugin):
         """Enable plugin (synchronous - fast)."""
