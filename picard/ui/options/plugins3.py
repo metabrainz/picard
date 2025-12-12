@@ -108,11 +108,11 @@ class Plugins3OptionsPage(OptionsPage):
         # Set splitter proportions
         splitter.setSizes([300, 200])
 
-        layout.addWidget(splitter)
+        layout.addWidget(splitter, 1)  # Give most space to splitter
 
         # Status label
         self.status_label = QtWidgets.QLabel()
-        layout.addWidget(self.status_label)
+        layout.addWidget(self.status_label, 0)  # Minimal space for status
 
     def load(self):
         """Load plugins from plugin manager."""
