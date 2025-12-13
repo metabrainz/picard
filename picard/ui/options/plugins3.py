@@ -330,7 +330,16 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _show_update_dialog(self, plugins_with_updates):
         """Show dialog with available updates."""
-        plugin_names = [p.name or p.plugin_id for p in plugins_with_updates]
+        plugin_names = []
+        for plugin in plugins_with_updates:
+            try:
+                # Use translated name from manifest
+                plugin_name = plugin.manifest.name_i18n()
+            except (AttributeError, Exception):
+                # Fallback to raw name or plugin_id
+                plugin_name = plugin.name or plugin.plugin_id
+            plugin_names.append(plugin_name)
+
         reply = QtWidgets.QMessageBox.question(
             self,
             _("Updates Available"),
