@@ -245,6 +245,13 @@ class GitOperations:
         origin_remote = repo.get_remote('origin')
         repo.fetch_remote(origin_remote, None, callbacks._callbacks)
 
+        # Also fetch tags explicitly to ensure they're available
+        try:
+            repo.fetch_remote(origin_remote, '+refs/tags/*:refs/tags/*', callbacks._callbacks)
+        except Exception:
+            # If explicit tag fetch fails, continue with what we have
+            pass
+
         # Find the ref
         try:
             references = repo.get_references()
