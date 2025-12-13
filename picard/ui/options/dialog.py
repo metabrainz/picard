@@ -155,7 +155,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             # Check if this is a plugin option page and if the plugin is enabled
             page_active = page.ACTIVE
-            api = getattr(page, '_plugin_api', None)
+            api = getattr(type(page), 'api', None)
             if api is not None:  # This is a plugin option page
                 try:
                     plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
@@ -549,7 +549,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         pages_to_remove = []
         for page in self.pages:
             page_class = type(page)
-            if page_class not in active_page_classes and hasattr(page, '_plugin_api'):
+            if page_class not in active_page_classes and hasattr(page_class, 'api'):
                 # This is a plugin page that's no longer active
                 pages_to_remove.append(page)
                 log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
