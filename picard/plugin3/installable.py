@@ -28,9 +28,13 @@ class InstallablePlugin(ABC):
         self.source_url = source_url
         self.plugin_uuid = plugin_uuid
         self.name = name
-        self.trust_level = 'unregistered'
-        self.categories = []
-        self.description = ''
+        # Only set attributes if they're not already properties
+        if not hasattr(type(self), 'trust_level') or not isinstance(type(self).trust_level, property):
+            self.trust_level = 'unregistered'
+        if not hasattr(type(self), 'categories') or not isinstance(type(self).categories, property):
+            self.categories = []
+        if not hasattr(type(self), 'description') or not isinstance(type(self).description, property):
+            self.description = ''
 
     @abstractmethod
     def get_display_name(self):
@@ -52,7 +56,7 @@ class InstallablePlugin(ABC):
 
     def get_description(self):
         """Get description of this plugin."""
-        return self.description
+        return getattr(self, 'description', '')
 
 
 class RegistryInstallablePlugin(InstallablePlugin):

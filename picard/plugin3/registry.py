@@ -486,14 +486,12 @@ class RegistryPlugin(InstallablePlugin):
 
     def __init__(self, data):
         self._data = data
-        super().__init__(source_url=data.get('git_url'), plugin_uuid=data.get('uuid'), name=self.name_i18n())
-        self.trust_level = data.get('trust_level', 'community')
-        self.categories = data.get('categories', [])
-        self.description = self.description_i18n()
+        # Call parent constructor with basic values
+        super().__init__(source_url=data.get('git_url'), plugin_uuid=data.get('uuid'), name=data.get('name', ''))
 
     def get_display_name(self):
         """Get display name for this plugin."""
-        return self.name or self.id
+        return self.name_i18n() or self.id
 
     def get_install_url(self):
         """Get URL to install this plugin from."""
@@ -504,11 +502,16 @@ class RegistryPlugin(InstallablePlugin):
         from picard.config import get_config
 
         config = get_config()
+        if config is None:
+            return 'en'  # Default fallback
         locale = config.setting['ui_language']
         if not locale:
-            from PyQt6 import QtCore
+            try:
+                from PyQt6 import QtCore
 
-            locale = QtCore.QLocale.system().name()
+                locale = QtCore.QLocale.system().name()
+            except ImportError:
+                locale = 'en'  # Fallback if PyQt6 not available
         return locale
 
     def name_i18n(self, locale=None):
