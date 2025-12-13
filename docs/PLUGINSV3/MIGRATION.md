@@ -439,7 +439,7 @@ class ExampleOptionsPage(OptionsPage):
     def save(self):
         config.setting['example_enabled'] = self.checkbox.isChecked()
 
-def process_track(album, metadata, track, release):
+def process_track(api, album, metadata, track, release):
     log.info("Processing track: %s", track)
     if config.setting['example_enabled']:
         metadata['example'] = 'processed'
@@ -567,6 +567,44 @@ class MyPage(OptionsPage):
 # V3 - no options attribute needed
 class MyPage(OptionsPage):
     # Just read/write config in load()/save()
+    pass
+```
+
+### Processor functions receive the PluginApi as first parameter
+
+All the metadata and event processor functions now get the `PluginApi` instance
+passed as first parameter. For example a file post load processor previously looked
+like this:
+
+```python
+def file_post_load_processor(file):
+    pass
+```
+
+The new processor must expect the `PluginApi` instance for the plugin as first parameter:
+
+```python
+def file_post_load_processor(api, file):
+    pass
+```
+
+
+### Track metadata processor parameters changed
+
+Track metadata processors now get a `Track` object passed instead of an `Album` object.
+The track's album object can still be accessed using `track.album`.
+
+Old function signature:
+
+```python
+def my_track_metadata_processor(album, metadata, track_node, release_node):
+    pass
+```
+
+The new function signature:
+
+```python
+def my_track_metadata_processor(api, track, metadata, track_node, release_node):
     pass
 ```
 

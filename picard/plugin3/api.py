@@ -673,7 +673,7 @@ class PluginApi:
         return register_album_metadata_processor(wrapped, priority)
 
     def register_track_metadata_processor(
-        self, function: Callable[['PluginApi', Album, Metadata, dict, dict | None], None], priority: int = 0
+        self, function: Callable[['PluginApi', Track, Metadata, dict, dict | None], None], priority: int = 0
     ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)

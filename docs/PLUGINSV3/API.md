@@ -441,10 +441,10 @@ def enable(api):
 
 Register a function to process track metadata.
 
-**Signature**: `function(api, album, metadata, track_node, release_node=None)`
+**Signature**: `function(api, track, metadata, track_node, release_node=None)`
 
 ```python
-def process_track(api, album, metadata, track_node, release_node=None):
+def process_track(api, track, metadata, track_node, release_node=None):
     """Process track metadata."""
     api.logger.info(f"Processing: {metadata['title']}")
     metadata['custom_tag'] = 'value'
@@ -456,7 +456,7 @@ def enable(api):
 ```
 
 **Parameters**:
-- `function`: Processor function (receives `api`, `album`, `metadata`, `track_node`, `release_node`)
+- `function`: Processor function (receives `api`, `track`, `metadata`, `track_node`, `release_node`)
 - `priority`: Execution priority (higher = earlier, default: 0)
 
 ---
@@ -894,7 +894,7 @@ Picard uses `functools.partial` to automatically inject the `api` parameter:
 
 **For Processors**:
 ```python
-def my_processor(api, album, metadata, track_node, release=None):
+def my_processor(api, track, metadata, track_node, release=None):
     # api is automatically injected as first parameter
     api.logger.info("Processing")
 
@@ -969,7 +969,7 @@ class MyOptionsPage(PluginApi.OptionsPage):
         self.api.global_config.setting['example_enabled'] = self.checkbox.isChecked()
 
 
-def process_track(api, album, metadata, track_node, release=None):
+def process_track(api, track, metadata, track_node, release=None):
     """Process track metadata."""
     if api.global_config.setting.get('example_enabled', False):
         api.logger.info(f"Processing: {metadata.get('title', 'Unknown')}")

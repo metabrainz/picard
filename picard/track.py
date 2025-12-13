@@ -482,7 +482,7 @@ class NonAlbumTrack(Track):
         m = self.metadata
         recording_to_metadata(recording, m, self)
         self._customize_metadata()
-        run_track_metadata_processors(self.album, m, recording)
+        run_track_metadata_processors(self, m, recording)
         self.orig_metadata.copy(m)
         self.run_scripts(m, strip_whitespace=True)
         self.loaded = True
