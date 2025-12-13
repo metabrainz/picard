@@ -479,6 +479,11 @@ class PluginApi:
         """
         return self._plugin_dir
 
+    @property
+    def manifest(self) -> PluginManifest:
+        """Return the plugin's manifest."""
+        return self._manifest
+
     def get_locale(self) -> str:
         """Get the current locale used by Picard.
 
