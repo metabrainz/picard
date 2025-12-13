@@ -825,6 +825,14 @@ class PluginManager(QObject):
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
+
+        # Check if plugin is currently enabled
+        was_enabled = plugin.state == PluginState.ENABLED
+
+        # Disable plugin if it's enabled to unload the module
+        if was_enabled:
+            self.disable_plugin(plugin)
+
         old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Update metadata with new ref
@@ -835,6 +843,10 @@ class PluginManager(QObject):
             metadata.ref = new_ref
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
+
+        # Re-enable plugin if it was enabled before to reload the module
+        if was_enabled:
+            self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
         return old_ref, new_ref, old_commit, new_commit
