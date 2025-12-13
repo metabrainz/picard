@@ -1333,6 +1333,11 @@ class PluginManager(QObject):
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
 
+        # Check if plugin is currently enabled - disable it to reload module after update
+        was_enabled = plugin.state == PluginState.ENABLED
+        if was_enabled:
+            self.disable_plugin(plugin)
+
         source = PluginSourceGit(current_url, new_ref)
         assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
@@ -1377,6 +1382,10 @@ class PluginManager(QObject):
             self._refs_cache.update_cache_from_local_repo(
                 plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
+
+        # Re-enable plugin if it was enabled before to reload the module with new code
+        if was_enabled:
+            self.enable_plugin(plugin)
 
         # Emit signal to notify UI that plugin has been updated
         self.plugin_ref_switched.emit(plugin)
