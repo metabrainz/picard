@@ -547,10 +547,31 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         pages_to_remove = []
         for page in self.pages:
             page_class = type(page)
-            if page_class not in active_page_classes and hasattr(page_class, 'api'):
-                # This is a plugin page that's no longer active
-                pages_to_remove.append(page)
-                log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
+            # Check if this is a plugin page that's no longer active
+            if hasattr(page_class, 'api'):
+                # Check if page class is still in active extension point
+                still_registered = page_class in active_page_classes
+
+                # Also check if the plugin is still enabled (if we can determine the UUID)
+                plugin_still_enabled = True
+                try:
+                    api = getattr(page_class, 'api', None)
+                    if api and hasattr(api, '_manifest') and api._manifest:
+                        plugin_uuid = api._manifest.uuid
+                        if plugin_uuid and hasattr(self, 'plugin_manager') and self.plugin_manager:
+                            plugin_still_enabled = plugin_uuid in self.plugin_manager._enabled_plugins
+                except (AttributeError, TypeError):
+                    pass
+
+                # Remove if not registered or plugin not enabled
+                if not still_registered or not plugin_still_enabled:
+                    pages_to_remove.append(page)
+                    log.debug(
+                        "refresh_plugin_pages: Marking page for removal: %s (registered: %s, enabled: %s)",
+                        page_class.__name__,
+                        still_registered,
+                        plugin_still_enabled,
+                    )
 
         # Remove disabled plugin pages from UI stack and pages list
         for page in pages_to_remove:
