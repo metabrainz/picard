@@ -591,6 +591,15 @@ class PluginApi:
                         result = trans[plural_form]
                     elif isinstance(trans, dict) and 'other' in trans:
                         result = trans['other']
+                else:
+                    # Try source locale as fallback
+                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                        trans = self._translations[self._source_locale][key]
+                        source_plural_form = get_plural_form(self._source_locale, n)
+                        if isinstance(trans, dict) and source_plural_form in trans:
+                            result = trans[source_plural_form]
+                        elif isinstance(trans, dict) and 'other' in trans:
+                            result = trans['other']
 
         # Fall back to singular/plural parameters
         if result is None:
