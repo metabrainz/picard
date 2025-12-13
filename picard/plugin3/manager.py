@@ -45,7 +45,6 @@ from picard.extension_points import (
     unset_plugin_uuid,
 )
 from picard.git.ops import GitOperations
-from picard.git.utils import get_local_repository_path
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -859,14 +858,25 @@ class PluginManager(QObject):
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
 
+        # Check if url is a local directory
+        from picard.git.utils import get_local_repository_path
+
+        local_path = get_local_repository_path(url)
+
         # Check blacklist before installing
         if not force_blacklisted:
-            is_blacklisted, reason = self._registry.is_blacklisted(url)
-            if is_blacklisted:
-                raise PluginBlacklistedError(url, reason)
+            from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 
-        # Check if url is a local directory
-        local_path = get_local_repository_path(url)
+            # Create appropriate InstallablePlugin for blacklist checking
+            if local_path:
+                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
+            else:
+                plugin = UrlInstallablePlugin(url, ref, self._registry)
+
+            if plugin.is_blacklisted():
+                raise PluginBlacklistedError(url, plugin.blacklist_reason)
+
+        # Install from local directory or remote URL
         if local_path:
             return self._install_from_local_directory(
                 local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
@@ -908,9 +918,12 @@ class PluginManager(QObject):
 
             # Check blacklist again with UUID
             if not force_blacklisted:
-                is_blacklisted, reason = self._registry.is_blacklisted(url, manifest.uuid)
-                if is_blacklisted:
-                    raise PluginBlacklistedError(url, reason, manifest.uuid)
+                from picard.plugin3.installable import UrlInstallablePlugin
+
+                plugin = UrlInstallablePlugin(url, ref, self._registry)
+                plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
+                if plugin.is_blacklisted():
+                    raise PluginBlacklistedError(url, plugin.blacklist_reason, manifest.uuid)
 
             # Check for UUID conflicts with existing plugins from different sources
             has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
@@ -1709,8 +1722,14 @@ class PluginManager(QObject):
             metadata = self._metadata.get_plugin_metadata(plugin_uuid)
             url = metadata.url if metadata else None
 
-            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
-            if is_blacklisted:
+            # Create InstallablePlugin for blacklist checking
+            from picard.plugin3.installable import UrlInstallablePlugin
+
+            installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
+            installable_plugin.plugin_uuid = plugin_uuid
+
+            if installable_plugin.is_blacklisted():
+                reason = installable_plugin.blacklist_reason
                 log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
                 blacklisted_plugins.append((plugin.plugin_id, reason))
 

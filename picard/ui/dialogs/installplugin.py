@@ -437,7 +437,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         trust_item = self.plugin_table.item(current_row, 0)
         plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
         registry_plugin = RegistryPlugin(plugin_data)
-        return RegistryInstallablePlugin(registry_plugin)
+        return RegistryInstallablePlugin(registry_plugin, self.plugin_manager._registry)
 
     def _create_url_plugin(self):
         """Create UrlInstallablePlugin from URL input."""
@@ -445,7 +445,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         ref = self.ref_edit.text().strip() or None
         if not url:
             return None
-        return UrlInstallablePlugin(url, ref)
+        return UrlInstallablePlugin(url, ref, self.plugin_manager._registry)
 
     def _create_local_plugin(self):
         """Create LocalInstallablePlugin from local path input."""
@@ -476,7 +476,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
             )
             return None
 
-        return LocalInstallablePlugin(url, ref)
+        return LocalInstallablePlugin(url, ref, self.plugin_manager._registry)
 
     def _install_plugin(self):
         """Install the plugin."""

@@ -396,7 +396,7 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('not blacklisted', stdout)
-        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin')
+        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
 
     def test_check_blacklist_is_blacklisted(self):
         """Test --check-blacklist with blacklisted URL."""

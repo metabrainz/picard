@@ -24,10 +24,11 @@ from abc import ABC, abstractmethod
 class InstallablePlugin(ABC):
     """Common base class for all installable plugins."""
 
-    def __init__(self, source_url=None, plugin_uuid=None, name=None):
+    def __init__(self, source_url=None, plugin_uuid=None, name=None, registry=None):
         self.source_url = source_url
         self.plugin_uuid = plugin_uuid
         self.name = name
+        self._registry = registry
         # Only set attributes if they're not already properties
         if not hasattr(type(self), 'trust_level') or not isinstance(type(self).trust_level, property):
             self.trust_level = 'unregistered'
@@ -58,13 +59,31 @@ class InstallablePlugin(ABC):
         """Get description of this plugin."""
         return getattr(self, 'description', '')
 
+    def is_blacklisted(self):
+        """Check if this plugin is blacklisted."""
+        if not self._registry:
+            return False
+        is_blacklisted, _ = self._registry.is_blacklisted(self.source_url, self.plugin_uuid)
+        return is_blacklisted
+
+    @property
+    def blacklist_reason(self):
+        """Get blacklist reason if plugin is blacklisted."""
+        if not self._registry:
+            return None
+        _, reason = self._registry.is_blacklisted(self.source_url, self.plugin_uuid)
+        return reason
+
 
 class RegistryInstallablePlugin(InstallablePlugin):
     """Installable plugin from registry."""
 
-    def __init__(self, registry_plugin):
+    def __init__(self, registry_plugin, registry=None):
         super().__init__(
-            source_url=registry_plugin.git_url, plugin_uuid=registry_plugin.uuid, name=registry_plugin.name_i18n()
+            source_url=registry_plugin.git_url,
+            plugin_uuid=registry_plugin.uuid,
+            name=registry_plugin.name_i18n(),
+            registry=registry,
         )
         self._registry_plugin = registry_plugin
         self.trust_level = registry_plugin.trust_level
@@ -81,8 +100,8 @@ class RegistryInstallablePlugin(InstallablePlugin):
 class UrlInstallablePlugin(InstallablePlugin):
     """Installable plugin from URL."""
 
-    def __init__(self, url, ref=None):
-        super().__init__(source_url=url)
+    def __init__(self, url, ref=None, registry=None):
+        super().__init__(source_url=url, registry=registry)
         self.ref = ref
 
     def get_display_name(self):
@@ -95,8 +114,8 @@ class UrlInstallablePlugin(InstallablePlugin):
 class LocalInstallablePlugin(InstallablePlugin):
     """Installable plugin from local directory."""
 
-    def __init__(self, local_path, ref=None):
-        super().__init__(source_url=local_path)
+    def __init__(self, local_path, ref=None, registry=None):
+        super().__init__(source_url=local_path, registry=registry)
         self.local_path = local_path
         self.ref = ref
 

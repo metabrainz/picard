@@ -761,9 +761,11 @@ class PluginCLI:
                     # Check blacklist by URL (before prompting user)
                     # UUID-based blacklist will be checked during install after cloning
                     if not force_blacklisted:
-                        is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
-                        if is_blacklisted:
-                            self._out.error(f'Plugin is blacklisted: {reason}')
+                        from picard.plugin3.installable import UrlInstallablePlugin
+
+                        plugin = UrlInstallablePlugin(url, ref, self._manager._registry)
+                        if plugin.is_blacklisted():
+                            self._out.error(f'Plugin is blacklisted: {plugin.blacklist_reason}')
                             return ExitCode.ERROR
 
                     # Check trust level and show appropriate warnings
@@ -1622,10 +1624,12 @@ class PluginCLI:
     def _cmd_check_blacklist(self, url):
         """Check if a URL is blacklisted."""
         try:
-            is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+            from picard.plugin3.installable import UrlInstallablePlugin
 
-            if is_blacklisted:
-                self._out.error(f'URL is blacklisted: {reason}')
+            plugin = UrlInstallablePlugin(url, registry=self._manager._registry)
+
+            if plugin.is_blacklisted():
+                self._out.error(f'URL is blacklisted: {plugin.blacklist_reason}')
                 return ExitCode.ERROR
             else:
                 self._out.success('URL is not blacklisted')
