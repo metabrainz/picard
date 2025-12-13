@@ -108,6 +108,7 @@ class ErrorOptionsPage(OptionsPage):
         self.NAME = from_cls.NAME
         self.TITLE = from_cls.TITLE
         self.PARENT = from_cls.PARENT
+        self._original_class = from_cls  # Track original class for duplicate detection
         self.SORT_ORDER = from_cls.SORT_ORDER
         self.ACTIVE = from_cls.ACTIVE
         self.HELP_URL = from_cls.HELP_URL
@@ -562,9 +563,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Add new plugin pages
         existing_page_classes = {type(page) for page in self.pages}
+        # Also track original classes for error pages to prevent duplicates
+        existing_original_classes = {getattr(page, '_original_class', type(page)) for page in self.pages}
 
         for Page in active_page_classes:
-            if Page not in existing_page_classes:
+            if Page not in existing_page_classes and Page not in existing_original_classes:
                 log.debug("refresh_plugin_pages: Adding new page: %s", Page.__name__)
                 try:
                     page = Page()
