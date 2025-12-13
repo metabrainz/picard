@@ -24,6 +24,7 @@ from dataclasses import asdict, dataclass
 
 from picard import log
 from picard.config import get_config
+from picard.git.factory import git_backend
 
 
 @dataclass
@@ -228,8 +229,6 @@ class PluginMetadataManager:
             # Detect current ref from local git repo (overrides metadata)
             if plugin.local_path:
                 try:
-                    from picard.git.factory import git_backend
-
                     backend = git_backend()
                     repo = backend.create_repository(plugin.local_path)
                     current_commit = repo.get_head_target()
