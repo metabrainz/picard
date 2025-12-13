@@ -183,6 +183,15 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 # Don't let update check failures break the UI
                 self._update_status_cache[plugin.plugin_id] = False
 
+    def _refresh_single_plugin_update_status(self, plugin):
+        """Refresh update status for a single plugin."""
+        try:
+            has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+            self._update_status_cache[plugin.plugin_id] = has_update
+        except Exception as e:
+            log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
+            self._update_status_cache[plugin.plugin_id] = False
+
     def _on_selection_changed(self):
         """Handle selection changes."""
         selected_items = self.selectedItems()
@@ -483,6 +492,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_switch_ref_complete(self, result):
         """Handle switch ref completion."""
         if result.success:
+            # Refresh update status for the specific plugin since ref changed
+            if hasattr(self, '_switching_ref_plugin'):
+                self._refresh_single_plugin_update_status(self._switching_ref_plugin)
+
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
             if hasattr(self, '_switching_ref_plugin'):
