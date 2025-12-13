@@ -272,9 +272,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         self._refreshing = True
         try:
-            # Refresh update status for all plugins
-            self._refresh_update_status()
-
             plugins = self.plugin_manager.plugins
 
             # Use utility to temporarily disconnect signal during refresh
