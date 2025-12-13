@@ -31,6 +31,7 @@ from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 from picard.git.utils import (
     normalize_git_url,
 )
+from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
 
 
@@ -480,11 +481,23 @@ class PluginRegistry:
         return result
 
 
-class RegistryPlugin:
+class RegistryPlugin(InstallablePlugin):
     """Wrapper for registry plugin data with i18n support."""
 
     def __init__(self, data):
         self._data = data
+        super().__init__(source_url=data.get('git_url'), plugin_uuid=data.get('uuid'), name=self.name_i18n())
+        self.trust_level = data.get('trust_level', 'community')
+        self.categories = data.get('categories', [])
+        self.description = self.description_i18n()
+
+    def get_display_name(self):
+        """Get display name for this plugin."""
+        return self.name or self.id
+
+    def get_install_url(self):
+        """Get URL to install this plugin from."""
+        return self.source_url
 
     def _get_current_locale(self):
         """Get current locale from Picard's UI language setting or system locale."""
