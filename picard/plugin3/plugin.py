@@ -639,6 +639,13 @@ class Plugin:
         # Register API instance for get_api()
         module_name = getattr(self._module, '__name__', None)
         if module_name:
+            # Check if there's an existing API instance (from UI components)
+            # and reload its translations to reflect any updates
+            existing_api = PluginApi._instances.get(module_name)
+            if existing_api and existing_api._plugin_dir == self.local_path:
+                existing_api._plugin_module = self._module
+                existing_api.reload_translations()
+
             PluginApi._instances[module_name] = api
 
         # Log plugin info
