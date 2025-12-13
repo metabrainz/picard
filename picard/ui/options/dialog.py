@@ -550,7 +550,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for page in self.pages:
             page_class = type(page)
             # Check if this is a plugin page that's no longer active
-            if hasattr(page_class, 'api') and page_class not in active_page_classes:
+            # For error pages, check the original class
+            original_class = getattr(page, '_original_class', page_class)
+            if hasattr(original_class, 'api') and original_class not in active_page_classes:
                 pages_to_remove.append(page)
                 log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
 
