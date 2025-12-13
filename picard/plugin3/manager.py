@@ -323,61 +323,6 @@ class PluginManager(QObject):
             pass
         return None, None
 
-    def _get_ref_type(self, repo, ref):
-        """Determine the type of a git reference.
-
-        Args:
-            repo: Git repository object
-            ref: Reference name to check
-
-        Returns:
-            tuple: (ref_type, resolved_ref) where ref_type is one of:
-                   'tag', 'local_branch', 'remote_branch', 'commit', 'unknown'
-        """
-        if not ref:
-            return 'unknown', ref
-
-        try:
-            # Get all references from the repository
-            references = repo.get_references()
-
-            # Check exact matches first
-            if f'refs/tags/{ref}' in references:
-                return 'tag', f'refs/tags/{ref}'
-            if f'refs/heads/{ref}' in references:
-                return 'local_branch', f'refs/heads/{ref}'
-            if f'refs/remotes/{ref}' in references:
-                return 'remote_branch', f'refs/remotes/{ref}'
-            if f'refs/remotes/origin/{ref}' in references:
-                return 'remote_branch', f'refs/remotes/origin/{ref}'
-
-            # Check if ref is already a full reference
-            if ref in references:
-                if ref.startswith('refs/tags/'):
-                    return 'tag', ref
-                elif ref.startswith('refs/heads/'):
-                    return 'local_branch', ref
-                elif ref.startswith('refs/remotes/'):
-                    return 'remote_branch', ref
-
-            # Try to resolve as commit hash
-            try:
-                repo.revparse_single(ref)
-                return 'commit', ref
-            except KeyError:
-                pass
-
-        except Exception:
-            # If we can't get references, fall back to string analysis
-            if ref.startswith('refs/tags/'):
-                return 'tag', ref
-            elif ref.startswith('refs/heads/'):
-                return 'local_branch', ref
-            elif ref.startswith('refs/remotes/') or ref.startswith('origin/'):
-                return 'remote_branch', ref
-
-        return 'unknown', ref
-
     def format_refs_for_display(self, refs, current_ref=None):
         """Format refs for display with commit IDs and current markers.
 
