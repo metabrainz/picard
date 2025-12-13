@@ -507,6 +507,10 @@ class RegistryPlugin(InstallablePlugin):
         # Call parent constructor with basic values
         super().__init__(source_url=data.get('git_url'), plugin_uuid=data.get('uuid'), name=data.get('name', ''))
 
+    def __getitem__(self, key):
+        """Prevent dict-style access to enforce object-oriented interface."""
+        raise TypeError(f"Use property access instead of dict access. Use .{key} instead of ['{key}']")
+
     def get_display_name(self):
         """Get display name for this plugin."""
         return self.name_i18n() or self.id
