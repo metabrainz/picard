@@ -27,6 +27,7 @@ import urllib.error
 from urllib.request import urlopen
 
 from picard import log
+from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 from picard.git.utils import (
     normalize_git_url,
@@ -534,8 +535,6 @@ class RegistryPlugin(InstallablePlugin):
 
     def _get_current_locale(self):
         """Get current locale from Picard's UI language setting or system locale."""
-        from picard.config import get_config
-
         config = get_config()
         if config is None:
             return 'en'  # Default fallback
