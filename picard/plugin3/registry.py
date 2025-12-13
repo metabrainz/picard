@@ -567,6 +567,46 @@ class RegistryPlugin(InstallablePlugin):
         """Get plugin git URL."""
         return self._data.get('git_url')
 
+    @property
+    def versioning_scheme(self):
+        """Get plugin versioning scheme."""
+        return self._data.get('versioning_scheme')
+
+    @property
+    def refs(self):
+        """Get plugin refs."""
+        return self._data.get('refs', [{'name': 'main'}])
+
+    @property
+    def authors(self):
+        """Get plugin authors."""
+        return self._data.get('authors', [])
+
+    @property
+    def maintainers(self):
+        """Get plugin maintainers."""
+        return self._data.get('maintainers', [])
+
+    @property
+    def added_at(self):
+        """Get plugin added timestamp."""
+        return self._data.get('added_at')
+
+    @property
+    def updated_at(self):
+        """Get plugin updated timestamp."""
+        return self._data.get('updated_at')
+
+    @property
+    def redirect_from(self):
+        """Get plugin redirect URLs."""
+        return self._data.get('redirect_from', [])
+
+    @property
+    def redirect_from_uuid(self):
+        """Get plugin redirect UUIDs."""
+        return self._data.get('redirect_from_uuid', [])
+
     def get(self, key, default=None):
         """Delegate to underlying data dict."""
         return self._data.get(key, default)
