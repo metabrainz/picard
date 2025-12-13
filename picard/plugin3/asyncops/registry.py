@@ -44,8 +44,8 @@ class AsyncPluginRegistry:
             use_cache: Whether to use cached registry
         """
         # Check cache first
-        if use_cache and self._registry._registry_data:
-            callback(OperationResult(success=True, result=self._registry._registry_data))
+        if use_cache and self._registry.is_registry_loaded():
+            callback(OperationResult(success=True, result=self._registry.get_raw_registry_data()))
             return
 
         def _on_response(data, reply, error):
@@ -53,8 +53,9 @@ class AsyncPluginRegistry:
                 callback(OperationResult(success=False, error=error, error_message=str(error)))
             else:
                 try:
-                    self._registry._registry_data = json.loads(data)
-                    callback(OperationResult(success=True, result=self._registry._registry_data))
+                    registry_data = json.loads(data)
+                    self._registry.set_raw_registry_data(registry_data)
+                    callback(OperationResult(success=True, result=registry_data))
                 except json.JSONDecodeError as e:
                     callback(OperationResult(success=False, error=e, error_message=f'Invalid JSON: {e}'))
 

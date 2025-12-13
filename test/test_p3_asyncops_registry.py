@@ -49,7 +49,8 @@ class TestAsyncopsRegistry(PicardTestCase):
     def test_fetch_registry_uses_cache(self):
         """Test fetch_registry returns cached data immediately."""
         mock_registry = Mock()
-        mock_registry._registry_data = {'cached': 'data'}
+        mock_registry.is_registry_loaded.return_value = True
+        mock_registry.get_raw_registry_data.return_value = {'cached': 'data'}
 
         async_registry = AsyncPluginRegistry(mock_registry)
 

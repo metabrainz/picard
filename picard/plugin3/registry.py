@@ -488,6 +488,19 @@ class PluginRegistry:
             return []
         return self._plugins
 
+    def is_registry_loaded(self):
+        """Check if registry data is loaded."""
+        return bool(self._registry_data)
+
+    def get_raw_registry_data(self):
+        """Get raw registry data for async operations."""
+        return self._registry_data
+
+    def set_raw_registry_data(self, data):
+        """Set raw registry data and process plugins."""
+        self._registry_data = data
+        self._process_plugins()
+
     def _process_plugins(self):
         """Process raw plugin data into RegistryPlugin objects."""
         self._plugins = []
