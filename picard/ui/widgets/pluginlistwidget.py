@@ -175,13 +175,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Refresh update status for all plugins."""
         self._update_status_cache.clear()
         for plugin in self.plugin_manager.plugins:
-            try:
-                has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
-                self._update_status_cache[plugin.plugin_id] = has_update
-            except Exception as e:
-                log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
-                # Don't let update check failures break the UI
-                self._update_status_cache[plugin.plugin_id] = False
+            self._refresh_single_plugin_update_status(plugin)
 
     def _refresh_single_plugin_update_status(self, plugin):
         """Refresh update status for a single plugin."""
@@ -190,6 +184,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self._update_status_cache[plugin.plugin_id] = has_update
         except Exception as e:
             log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
+            # Don't let update check failures break the UI
             self._update_status_cache[plugin.plugin_id] = False
 
     def _on_selection_changed(self):
