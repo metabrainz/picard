@@ -1366,6 +1366,9 @@ class PluginManager(QObject):
                 plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
 
+        # Emit signal to notify UI that plugin has been updated
+        self.plugin_ref_switched.emit(plugin)
+
         return UpdateResult(
             old_version or '',
             new_version or '',
