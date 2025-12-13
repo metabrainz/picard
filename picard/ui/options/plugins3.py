@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from datetime import datetime
+from functools import partial
 
 from PyQt6 import QtCore, QtWidgets
 
@@ -405,10 +406,10 @@ class Plugins3OptionsPage(OptionsPage):
         async_manager.update_plugin(
             plugin=plugin,
             progress_callback=None,
-            callback=lambda result, am=async_manager: self._on_plugin_update_complete(result, am),
+            callback=partial(self._on_plugin_update_complete, async_manager),
         )
 
-    def _on_plugin_update_complete(self, result, async_manager):
+    def _on_plugin_update_complete(self, async_manager, result):
         """Handle individual plugin update completion."""
         if not result.success:
             error_msg = str(result.error) if result.error else _("Unknown error")
