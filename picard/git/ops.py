@@ -277,6 +277,19 @@ class GitOperations:
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, commit.id
+            else:
+                # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
+                try:
+                    commit_obj = repo.revparse_single(ref)
+                    # Check if this is actually a tag by seeing if refs/tags/{ref} exists after resolution
+                    if hasattr(commit_obj, 'type') and commit_obj.type in ['tag', 'commit']:
+                        commit = repo.peel_to_commit(commit_obj)
+                        repo.checkout_tree(commit)
+                        repo.set_head(commit.id)
+                        log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                        return old_ref, ref, old_commit, commit.id
+                except KeyError:
+                    pass
 
             # Try as commit hash
             try:
