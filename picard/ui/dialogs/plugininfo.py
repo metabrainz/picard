@@ -125,6 +125,11 @@ class PluginInfoDialog(QtWidgets.QDialog):
         """Add field to layout if value exists."""
         if value:
             value_label = QtWidgets.QLabel()
+            value_label.setWordWrap(True)
+            value_label.setSizePolicy(
+                QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding
+            )
+
             # Check if value is a URL and make it clickable
             if isinstance(value, str) and (value.startswith('http://') or value.startswith('https://')):
                 value_label.setText(f'<a href="{value}">{value}</a>')
