@@ -60,18 +60,19 @@ class InstallablePlugin(ABC):
         return getattr(self, 'description', '')
 
     def is_blacklisted(self):
-        """Check if this plugin is blacklisted."""
+        """Check if this plugin is blacklisted.
+
+        Returns:
+            tuple: (is_blacklisted: bool, reason: str | None)
+        """
         if not self._registry:
-            return False
-        is_blacklisted, _ = self._registry.is_blacklisted(self.source_url, self.plugin_uuid)
-        return is_blacklisted
+            return False, None
+        return self._registry.is_blacklisted(self.source_url, self.plugin_uuid)
 
     @property
     def blacklist_reason(self):
         """Get blacklist reason if plugin is blacklisted."""
-        if not self._registry:
-            return None
-        _, reason = self._registry.is_blacklisted(self.source_url, self.plugin_uuid)
+        _, reason = self.is_blacklisted()
         return reason
 
 

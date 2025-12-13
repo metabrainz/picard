@@ -766,8 +766,9 @@ class PluginCLI:
                     # UUID-based blacklist will be checked during install after cloning
                     if not force_blacklisted:
                         plugin = UrlInstallablePlugin(url, ref, self._manager._registry)
-                        if plugin.is_blacklisted():
-                            self._out.error(f'Plugin is blacklisted: {plugin.blacklist_reason}')
+                        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+                        if is_blacklisted:
+                            self._out.error(f'Plugin is blacklisted: {blacklist_reason}')
                             return ExitCode.ERROR
 
                     # Check trust level and show appropriate warnings
@@ -1621,8 +1622,9 @@ class PluginCLI:
         try:
             plugin = UrlInstallablePlugin(url, registry=self._manager._registry)
 
-            if plugin.is_blacklisted():
-                self._out.error(f'URL is blacklisted: {plugin.blacklist_reason}')
+            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+            if is_blacklisted:
+                self._out.error(f'URL is blacklisted: {blacklist_reason}')
                 return ExitCode.ERROR
             else:
                 self._out.success('URL is not blacklisted')

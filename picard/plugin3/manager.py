@@ -890,8 +890,9 @@ class PluginManager(QObject):
             else:
                 plugin = UrlInstallablePlugin(url, ref, self._registry)
 
-            if plugin.is_blacklisted():
-                raise PluginBlacklistedError(url, plugin.blacklist_reason)
+            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+            if is_blacklisted:
+                raise PluginBlacklistedError(url, blacklist_reason)
 
         # Install from local directory or remote URL
         if local_path:
@@ -937,8 +938,9 @@ class PluginManager(QObject):
             if not force_blacklisted:
                 plugin = UrlInstallablePlugin(url, ref, self._registry)
                 plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
-                if plugin.is_blacklisted():
-                    raise PluginBlacklistedError(url, plugin.blacklist_reason, manifest.uuid)
+                is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+                if is_blacklisted:
+                    raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
 
             # Check for UUID conflicts with existing plugins from different sources
             has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
@@ -1729,8 +1731,8 @@ class PluginManager(QObject):
             installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
             installable_plugin.plugin_uuid = plugin_uuid
 
-            if installable_plugin.is_blacklisted():
-                reason = installable_plugin.blacklist_reason
+            is_blacklisted, reason = installable_plugin.is_blacklisted()
+            if is_blacklisted:
                 log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
                 blacklisted_plugins.append((plugin.plugin_id, reason))
 
