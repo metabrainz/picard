@@ -394,7 +394,9 @@ class Plugins3OptionsPage(OptionsPage):
             self.check_updates_button.setEnabled(True)
             self.install_button.setEnabled(True)
             self._show_status(_("All plugin updates completed"))
-            self.load()  # Refresh plugin list
+            # Refresh update status after batch updates
+            self.plugin_list.refresh_update_status()
+            self._filter_plugins()  # Refresh display to show updated status
             return
 
         plugin = self._update_queue.pop(0)
