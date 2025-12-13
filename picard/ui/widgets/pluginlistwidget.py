@@ -380,6 +380,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_context_update_complete(self, result):
         """Handle context menu update completion."""
         if result.success:
+            # Refresh update status for the specific plugin since it was updated
+            if hasattr(self, '_updating_plugin'):
+                self._refresh_single_plugin_update_status(self._updating_plugin)
+
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh
