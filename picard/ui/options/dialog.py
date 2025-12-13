@@ -158,15 +158,16 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             if api is not None:  # This is a plugin option page
                 try:
                     plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
-                    if plugin_uuid:
+                    if plugin_uuid and hasattr(self, 'plugin_manager') and self.plugin_manager:
                         # Only show page if plugin is enabled
                         is_enabled = plugin_uuid in self.plugin_manager._enabled_plugins
                         page_active = is_enabled
                     else:
-                        page_active = False
+                        # If we can't check plugin status, assume it's active if it has an API
+                        page_active = True
                 except AttributeError:
-                    # Plugin manager not available
-                    page_active = False
+                    # Plugin manager not available, assume active
+                    page_active = True
 
             # Skip disabled plugin pages entirely
             if api is not None and not page_active:
