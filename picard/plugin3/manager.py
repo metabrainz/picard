@@ -301,7 +301,7 @@ class PluginManager(QObject):
                 default_ref = self.select_ref_for_plugin(registry_plugin)
                 if default_ref:
                     # Determine description based on whether it's a version tag or branch
-                    if registry_plugin.get('versioning_scheme'):
+                    if registry_plugin.versioning_scheme:
                         description = "latest version"
                     else:
                         description = "main branch"
@@ -649,21 +649,14 @@ class PluginManager(QObject):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.
 
         Args:
-            plugin: RegistryPlugin object or plugin data from registry
+            plugin: RegistryPlugin object
 
         Returns:
             str: Selected ref name, or None if no refs specified
         """
-        # Handle RegistryPlugin objects
-        if hasattr(plugin, 'versioning_scheme'):
-            versioning_scheme = plugin.versioning_scheme
-            url = plugin.git_url
-            refs = plugin.refs
-        else:
-            # Fallback to dict access
-            versioning_scheme = plugin.get('versioning_scheme')
-            url = plugin.get('git_url')
-            refs = plugin.get('refs', [])
+        versioning_scheme = plugin.versioning_scheme
+        url = plugin.git_url
+        refs = plugin.refs
 
         # Check for versioning_scheme first
         if versioning_scheme:
@@ -724,9 +717,7 @@ class PluginManager(QObject):
         return [
             p
             for p in plugins
-            if query_lower in getattr(p, 'name', '').lower()
-            or query_lower in getattr(p, 'description', '').lower()
-            or query_lower in getattr(p, 'id', '').lower()
+            if query_lower in p.name.lower() or query_lower in p.description.lower() or query_lower in p.id.lower()
         ]
 
     def find_similar_plugin_ids(self, query, max_results=10):
@@ -747,19 +738,13 @@ class PluginManager(QObject):
         """Get latest version tag for a registry plugin.
 
         Args:
-            plugin: RegistryPlugin object or plugin dict from registry
+            plugin: RegistryPlugin object
 
         Returns:
             Version string (latest tag or empty string)
         """
-        # Handle RegistryPlugin objects
-        if hasattr(plugin, 'versioning_scheme'):
-            versioning_scheme = plugin.versioning_scheme
-            url = plugin.git_url
-        else:
-            # Fallback to dict access
-            versioning_scheme = plugin.get('versioning_scheme')
-            url = plugin.get('url')
+        versioning_scheme = plugin.versioning_scheme
+        url = plugin.git_url
 
         if not versioning_scheme:
             return ''
@@ -993,7 +978,7 @@ class PluginManager(QObject):
             # Update version tag cache from cloned repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(url=url)
             if registry_plugin:
-                versioning_scheme = registry_plugin.get('versioning_scheme')
+                versioning_scheme = registry_plugin.versioning_scheme
                 if versioning_scheme:
                     self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
 
@@ -1654,7 +1639,7 @@ class PluginManager(QObject):
             if metadata and hasattr(metadata, 'url'):
                 registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
                 if registry_plugin:
-                    return registry_plugin.get('versioning_scheme', '')
+                    return registry_plugin.versioning_scheme or ''
         except Exception:
             pass
         return ""

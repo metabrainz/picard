@@ -115,7 +115,7 @@ class PluginMetadataManager:
         # Check if UUID exists in registry with different URL
         registry_plugin = self._registry.find_plugin(uuid=old_uuid)
         if registry_plugin:
-            new_url = registry_plugin.get('git_url')
+            new_url = registry_plugin.git_url
             if new_url and new_url != old_url:
                 log.info('Plugin %s redirected from %s to %s', old_uuid, old_url, new_url)
                 return new_url, old_uuid, True
@@ -123,7 +123,7 @@ class PluginMetadataManager:
         # Check if URL exists in registry with different UUID
         registry_plugin = self._registry.find_plugin(url=old_url)
         if registry_plugin:
-            new_uuid = registry_plugin.get('uuid')
+            new_uuid = registry_plugin.uuid
             if new_uuid and new_uuid != old_uuid:
                 log.info('Plugin at %s changed UUID from %s to %s', old_url, old_uuid, new_uuid)
                 return old_url, new_uuid, True

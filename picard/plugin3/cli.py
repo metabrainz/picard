@@ -65,43 +65,20 @@ def get_localized_registry_field(plugin, field, locale='en'):
     """Get localized field from registry plugin data.
 
     Args:
-        plugin: Plugin object (RegistryPlugin) or dictionary from registry
+        plugin: RegistryPlugin object
         field: Field name ('name', 'description', 'long_description')
         locale: Locale string (e.g., 'en_US', 'de_DE')
 
     Returns:
         str: Localized field value, or base field value if translation not found
     """
-    # Handle RegistryPlugin objects
-    if hasattr(plugin, 'name_i18n') and field == 'name':
+    if field == 'name':
         return plugin.name_i18n(locale)
-    elif hasattr(plugin, 'description_i18n') and field == 'description':
+    elif field == 'description':
         return plugin.description_i18n(locale)
-
-    # Fallback to dict access for backward compatibility
-    if hasattr(plugin, 'get'):
-        plugin_dict = plugin
     else:
-        # Convert RegistryPlugin to dict-like access
-        plugin_dict = plugin._data if hasattr(plugin, '_data') else {}
-
-    # Check for i18n version
-    i18n_field = f'{field}_i18n'
-    i18n = plugin_dict.get(i18n_field, {})
-
-    # Try exact locale match (e.g., 'en_US')
-    if locale in i18n:
-        return i18n[locale]
-
-    # Try language without region (e.g., 'en' from 'en_US')
-    lang = locale.split('_')[0]
-    if lang in i18n:
-        return i18n[lang]
-
-    # Fallback to base field
-    if hasattr(plugin, field):
+        # For other fields, return the base field
         return getattr(plugin, field, '')
-    return plugin_dict.get(field, '')
 
 
 class ExitCode(IntEnum):
@@ -573,7 +550,7 @@ class PluginCLI:
 
         # Show registry refs if available
         if registry_plugin:
-            refs = registry_plugin.get('refs', [])
+            refs = registry_plugin.refs
             if refs:
                 self._out.print('Registry Refs:')
                 for ref in refs:
@@ -601,7 +578,7 @@ class PluginCLI:
                 self._out.nl()
 
             # Show version tags if versioning_scheme exists
-            versioning_scheme = registry_plugin.get('versioning_scheme')
+            versioning_scheme = registry_plugin.versioning_scheme
             if versioning_scheme:
                 try:
                     version_tags = self._manager._fetch_version_tags(url, versioning_scheme)
@@ -1552,11 +1529,11 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             # Sort plugins by name
-            sorted_plugins = sorted(plugins, key=lambda p: getattr(p, 'name', '').lower())
+            sorted_plugins = sorted(plugins, key=lambda p: p.name.lower())
 
             # Show plugins
             for plugin in sorted_plugins:
-                trust_badge = self._get_trust_badge(getattr(plugin, 'trust_level', 'community'))
+                trust_badge = self._get_trust_badge(plugin.trust_level)
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
@@ -1610,7 +1587,7 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             for plugin in sorted_results:
-                trust_badge = self._get_trust_badge(getattr(plugin, 'trust_level', 'community'))
+                trust_badge = self._get_trust_badge(plugin.trust_level)
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
