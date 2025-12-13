@@ -634,7 +634,7 @@ class PluginManager(QObject):
         # Create metadata from registry
         metadata_obj = PluginMetadata(
             name=plugin.manifest.name(),
-            url=registry_plugin['git_url'],
+            url=registry_plugin.git_url,
             ref='',
             commit='',
             uuid=uuid,
@@ -649,15 +649,24 @@ class PluginManager(QObject):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.
 
         Args:
-            plugin: Plugin data from registry
+            plugin: RegistryPlugin object or plugin data from registry
 
         Returns:
             str: Selected ref name, or None if no refs specified
         """
-        # Check for versioning_scheme first
-        versioning_scheme = plugin.get('versioning_scheme')
-        if versioning_scheme:
+        # Handle RegistryPlugin objects
+        if hasattr(plugin, 'versioning_scheme'):
+            versioning_scheme = plugin.versioning_scheme
+            url = plugin.git_url
+            refs = plugin.refs
+        else:
+            # Fallback to dict access
+            versioning_scheme = plugin.get('versioning_scheme')
             url = plugin.get('git_url')
+            refs = plugin.get('refs', [])
+
+        # Check for versioning_scheme first
+        if versioning_scheme:
             if url:
                 tags = self._fetch_version_tags(url, versioning_scheme)
                 if tags:
@@ -670,7 +679,6 @@ class PluginManager(QObject):
         # Original ref selection logic
         from picard import api_versions_tuple
 
-        refs = plugin.get('refs')
         if not refs:
             return None
 
@@ -716,9 +724,9 @@ class PluginManager(QObject):
         return [
             p
             for p in plugins
-            if query_lower in p.get('name', '').lower()
-            or query_lower in p.get('description', '').lower()
-            or query_lower in p.get('id', '').lower()
+            if query_lower in getattr(p, 'name', '').lower()
+            or query_lower in getattr(p, 'description', '').lower()
+            or query_lower in getattr(p, 'id', '').lower()
         ]
 
     def find_similar_plugin_ids(self, query, max_results=10):
@@ -735,20 +743,27 @@ class PluginManager(QObject):
         matches = [p for p in all_plugins if query.lower() in p['id'].lower()]
         return matches if 1 <= len(matches) <= max_results else []
 
-    def get_registry_plugin_latest_version(self, plugin_data):
+    def get_registry_plugin_latest_version(self, plugin):
         """Get latest version tag for a registry plugin.
 
         Args:
-            plugin_data: Plugin dict from registry
+            plugin: RegistryPlugin object or plugin dict from registry
 
         Returns:
             Version string (latest tag or empty string)
         """
-        versioning_scheme = plugin_data.get('versioning_scheme')
+        # Handle RegistryPlugin objects
+        if hasattr(plugin, 'versioning_scheme'):
+            versioning_scheme = plugin.versioning_scheme
+            url = plugin.git_url
+        else:
+            # Fallback to dict access
+            versioning_scheme = plugin.get('versioning_scheme')
+            url = plugin.get('url')
+
         if not versioning_scheme:
             return ''
 
-        url = plugin_data.get('url')
         if not url:
             return ''
 
@@ -1264,9 +1279,9 @@ class PluginManager(QObject):
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.get('versioning_scheme') and ref_type == 'tag':
+        if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
             # Try to find newer version tags
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
             if newer_tag:
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
@@ -1314,9 +1329,9 @@ class PluginManager(QObject):
         )
 
         # Update version tag cache from updated repo
-        if registry_plugin and registry_plugin.get('versioning_scheme'):
+        if registry_plugin and registry_plugin.versioning_scheme:
             self._refs_cache.update_cache_from_local_repo(
-                plugin.local_path, current_url, registry_plugin['versioning_scheme']
+                plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
 
         return UpdateResult(
@@ -1368,9 +1383,9 @@ class PluginManager(QObject):
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
                 registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
-                if registry_plugin and registry_plugin.get('versioning_scheme'):
+                if registry_plugin and registry_plugin.versioning_scheme:
                     self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                     )
 
                 old_ref = metadata.ref or 'main'
@@ -1474,9 +1489,9 @@ class PluginManager(QObject):
 
             # Update version tag cache from fetched repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
-            if registry_plugin and registry_plugin.get('versioning_scheme'):
+            if registry_plugin and registry_plugin.versioning_scheme:
                 self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                 )
 
             old_ref = metadata.ref or 'main'

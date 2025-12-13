@@ -61,17 +61,30 @@ def get_display_locale(args):
     return getattr(args, 'locale', 'en')
 
 
-def get_localized_registry_field(plugin_dict, field, locale='en'):
+def get_localized_registry_field(plugin, field, locale='en'):
     """Get localized field from registry plugin data.
 
     Args:
-        plugin_dict: Plugin dictionary from registry
+        plugin: Plugin object (RegistryPlugin) or dictionary from registry
         field: Field name ('name', 'description', 'long_description')
         locale: Locale string (e.g., 'en_US', 'de_DE')
 
     Returns:
         str: Localized field value, or base field value if translation not found
     """
+    # Handle RegistryPlugin objects
+    if hasattr(plugin, 'name_i18n') and field == 'name':
+        return plugin.name_i18n(locale)
+    elif hasattr(plugin, 'description_i18n') and field == 'description':
+        return plugin.description_i18n(locale)
+
+    # Fallback to dict access for backward compatibility
+    if hasattr(plugin, 'get'):
+        plugin_dict = plugin
+    else:
+        # Convert RegistryPlugin to dict-like access
+        plugin_dict = plugin._data if hasattr(plugin, '_data') else {}
+
     # Check for i18n version
     i18n_field = f'{field}_i18n'
     i18n = plugin_dict.get(i18n_field, {})
@@ -86,6 +99,8 @@ def get_localized_registry_field(plugin_dict, field, locale='en'):
         return i18n[lang]
 
     # Fallback to base field
+    if hasattr(plugin, field):
+        return getattr(plugin, field, '')
     return plugin_dict.get(field, '')
 
 
@@ -696,18 +711,18 @@ class PluginCLI:
                     if url_or_id:
                         plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                         if plugin:
-                            url = plugin['git_url']
+                            url = plugin.git_url
 
                             # Auto-select ref if not explicitly specified
                             if not explicit_ref:
                                 selected_ref = self._select_ref_for_plugin(plugin)
                                 if selected_ref:
                                     ref = selected_ref
-                                    self._out.print(f'Found {plugin["name"]} in registry (using ref: {ref})')
+                                    self._out.print(f'Found {plugin.name} in registry (using ref: {ref})')
                                 else:
-                                    self._out.print(f'Found {plugin["name"]} in registry')
+                                    self._out.print(f'Found {plugin.name} in registry')
                             else:
-                                self._out.print(f'Found {plugin["name"]} in registry')
+                                self._out.print(f'Found {plugin.name} in registry')
                         else:
                             self._out.error(f'Plugin "{url_or_id}" not found in registry')
 
@@ -726,7 +741,7 @@ class PluginCLI:
                     # Warn if this URL is in the registry
                     registry_plugin = self._manager._registry.find_plugin(url=url)
                     if registry_plugin:
-                        plugin_id = registry_plugin['id']
+                        plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
                         install_cmd = f'picard plugins --install {plugin_id}'
                         self._out.warning(
@@ -1537,11 +1552,11 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             # Sort plugins by name
-            sorted_plugins = sorted(plugins, key=lambda p: p.get('name', '').lower())
+            sorted_plugins = sorted(plugins, key=lambda p: getattr(p, 'name', '').lower())
 
             # Show plugins
             for plugin in sorted_plugins:
-                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                trust_badge = self._get_trust_badge(getattr(plugin, 'trust_level', 'community'))
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
@@ -1553,10 +1568,10 @@ class PluginCLI:
                 if version:
                     self._out.info(f'  Latest version: {self._out.d_version(version)}')
 
-                categories = plugin.get('categories', [])
+                categories = plugin.categories
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
-                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
@@ -1595,7 +1610,7 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             for plugin in sorted_results:
-                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                trust_badge = self._get_trust_badge(getattr(plugin, 'trust_level', 'community'))
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
@@ -1607,10 +1622,10 @@ class PluginCLI:
                 if version:
                     self._out.info(f'  Latest version: {self._out.d_version(version)}')
 
-                categories = plugin.get('categories', [])
+                categories = plugin.categories
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
-                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
             self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))

@@ -118,12 +118,12 @@ class GitOperations:
         # For registry plugins with versioning_scheme, validate against version tags
         if registry and uuid:
             registry_plugin = registry.find_plugin(uuid=uuid)
-            if registry_plugin and registry_plugin.get('versioning_scheme'):
+            if registry_plugin and registry_plugin.versioning_scheme:
                 # Import here to avoid circular dependency
                 from picard.plugin3.refs_cache import RefsCache
 
                 refs_cache = RefsCache(registry)
-                pattern = refs_cache.parse_versioning_scheme(registry_plugin['versioning_scheme'])
+                pattern = refs_cache.parse_versioning_scheme(registry_plugin.versioning_scheme)
                 if pattern and pattern.match(ref):
                     # It's a version tag - fetch and check
                     version_tags = []
@@ -136,8 +136,8 @@ class GitOperations:
                     return True
 
             # For registry plugins with explicit refs list
-            if registry_plugin and registry_plugin.get('refs'):
-                ref_names = [r['name'] for r in registry_plugin['refs']]
+            if registry_plugin and registry_plugin.refs:
+                ref_names = [r['name'] for r in registry_plugin.refs]
                 if ref not in ref_names:
                     raise PluginRefNotFoundError(uuid, ref)
                 return True

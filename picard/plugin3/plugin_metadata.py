@@ -219,7 +219,7 @@ class PluginMetadataManager:
                 registry_plugin = self._registry.find_plugin(uuid=str(plugin.manifest.uuid))
                 if not registry_plugin:
                     return None
-                url = registry_plugin['git_url']
+                url = registry_plugin.git_url
 
             current_ref = metadata.ref if metadata else None
             current_commit = metadata.commit if metadata else None
@@ -274,8 +274,8 @@ class PluginMetadataManager:
                 if not registry_plugin:
                     return None
 
-                url = registry_plugin['git_url']
-                registry_id = registry_plugin.get('id', identifier)
+                url = registry_plugin.git_url
+                registry_id = registry_plugin.id or identifier
                 current_ref = None
                 current_commit = None
 
