@@ -390,7 +390,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 plugin_name = plugin.name or plugin.plugin_id
 
             # Show confirmation dialog
-            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self)
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin_uuid)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 

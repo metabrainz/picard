@@ -29,10 +29,11 @@ from picard.ui.widgets.refselector import RefSelectorWidget
 class InstallConfirmDialog(QtWidgets.QDialog):
     """Dialog for confirming plugin installation with trust warnings and ref selection."""
 
-    def __init__(self, plugin_name, url, parent=None):
+    def __init__(self, plugin_name, url, parent=None, plugin_uuid=None):
         super().__init__(parent)
         self.plugin_name = plugin_name
         self.url = url
+        self.plugin_uuid = plugin_uuid
         self.selected_ref = None
 
         # Cache plugin manager for performance
@@ -130,6 +131,12 @@ class InstallConfirmDialog(QtWidgets.QDialog):
             refs = self.plugin_manager.fetch_all_git_refs(self.url)
             if refs:
                 self.ref_selector.load_refs(refs)
+
+                # Get default ref info from manager
+                if self.plugin_uuid:
+                    default_ref, description = self.plugin_manager.get_default_ref_info(self.plugin_uuid)
+                    if default_ref:
+                        self.ref_selector.set_default_ref_info(default_ref, _(description))
         except Exception:
             # If we can't fetch refs, user can still use default or custom input
             pass

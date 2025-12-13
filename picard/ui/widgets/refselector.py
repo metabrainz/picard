@@ -44,7 +44,8 @@ class RefSelectorWidget(QtWidgets.QWidget):
         if self.include_default:
             default_widget = QtWidgets.QWidget()
             default_layout = QtWidgets.QVBoxLayout(default_widget)
-            default_layout.addWidget(QtWidgets.QLabel(_("Use the default ref (usually main/master branch)")))
+            self.default_label = QtWidgets.QLabel(_("Use the default ref (usually main/master branch)"))
+            default_layout.addWidget(self.default_label)
             self.tab_widget.addTab(default_widget, _("Default"))
             self.default_tab_index = tab_index
             tab_index += 1
@@ -83,6 +84,11 @@ class RefSelectorWidget(QtWidgets.QWidget):
         # Populate branches
         for ref in refs.get('branches', []):
             self.branches_list.addItem(ref['name'])
+
+    def set_default_ref_info(self, default_ref_name, description):
+        """Update the default tab with specific ref information."""
+        if self.include_default and hasattr(self, 'default_label') and default_ref_name:
+            self.default_label.setText(_("Use default ref: {} ({})").format(default_ref_name, description))
 
     def get_selected_ref(self):
         """Get the currently selected ref."""

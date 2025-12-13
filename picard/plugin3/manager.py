@@ -287,6 +287,30 @@ class PluginManager(QObject):
         self._refs_cache.clear_cache()
         self._cleanup_version_cache()
 
+    def get_default_ref_info(self, plugin_uuid):
+        """Get default ref name and description for a plugin.
+
+        Args:
+            plugin_uuid: Plugin UUID to look up
+
+        Returns:
+            tuple: (ref_name, description) or (None, None) if not found
+        """
+        try:
+            registry_plugin = self.registry.find_plugin(uuid=plugin_uuid)
+            if registry_plugin:
+                default_ref = self.select_ref_for_plugin(registry_plugin)
+                if default_ref:
+                    # Determine description based on whether it's a version tag or branch
+                    if registry_plugin.get('versioning_scheme'):
+                        description = "latest version"
+                    else:
+                        description = "main branch"
+                    return default_ref, description
+        except Exception:
+            pass
+        return None, None
+
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
