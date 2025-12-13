@@ -37,6 +37,7 @@ def create_mock_registry_plugin(data):
     mock_plugin = Mock()
     mock_plugin.id = data.get('id', '')
     mock_plugin.name = data.get('name', '')
+    mock_plugin.description = data.get('description', '')  # Add description as string
     mock_plugin.git_url = data.get('git_url', '')
     mock_plugin.trust_level = data.get('trust_level', 'community')
     mock_plugin.categories = data.get('categories', [])
