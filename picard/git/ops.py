@@ -27,10 +27,10 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
-    GitObjectType,
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
+from picard.git.ref_utils import get_ref_type
 
 
 def clean_python_cache(directory):
@@ -179,27 +179,17 @@ class GitOperations:
         try:
             backend = git_backend()
             repo = backend.create_repository(repo_path)
-            references = repo.get_references()
 
             if ref:
-                # Check if ref exists in standard locations first
-                if f'refs/tags/{ref}' in references:
+                # Use robust reference type detection
+                ref_type, resolved_ref = get_ref_type(repo, ref)
+                if ref_type == 'tag':
                     return 'tag', ref
-                if f'refs/heads/{ref}' in references:
+                elif ref_type in ('local_branch', 'remote_branch'):
                     return 'branch', ref
-                if f'refs/remotes/origin/{ref}' in references:
-                    return 'branch', ref
-
-                # Not found in standard refs, try to resolve it
-                try:
-                    obj = repo.revparse_single(ref)
-                    if obj.type == GitObjectType.COMMIT:
-                        return 'commit', ref
-                    elif obj.type == GitObjectType.TAG:
-                        return 'tag', ref
-                    else:
-                        return None, ref
-                except KeyError:
+                elif ref_type == 'commit':
+                    return 'commit', ref
+                else:
                     return None, ref
             else:
                 # Check current HEAD state

@@ -31,6 +31,7 @@ from picard import log
 from picard.extension_points import unregister_module_extensions
 from picard.git.backend import GitBackendError
 from picard.git.factory import git_backend
+from picard.git.ref_utils import get_ref_type
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
@@ -184,6 +185,33 @@ class PluginSourceGit(PluginSource):
             return repo.peel_to_commit(obj)
         return obj
 
+    def _resolve_ref(self, repo):
+        """Resolve reference using robust type detection.
+
+        Returns:
+            tuple: (commit_object, resolved_ref_name)
+        """
+        if not self.ref:
+            # No specific ref, use HEAD
+            commit = repo.revparse_single('HEAD')
+            return commit, 'HEAD'
+
+        ref_type, resolved_ref = get_ref_type(repo, self.ref)
+        if ref_type in ('tag', 'local_branch', 'remote_branch'):
+            commit = repo.revparse_single(resolved_ref)
+            return commit, resolved_ref if ref_type == 'remote_branch' else self.ref
+        else:
+            # For commits or unknown refs, try as-is
+            commit = repo.revparse_single(self.ref)
+            return commit, self.ref
+
+    def _is_tag_ref(self, repo):
+        """Check if current ref is a tag using robust type detection."""
+        if not self.ref:
+            return False
+        ref_type, _ = get_ref_type(repo, self.ref)
+        return ref_type == 'tag'
+
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
         """Sync plugin from git repository.
 
@@ -296,21 +324,27 @@ class PluginSourceGit(PluginSource):
                             f"Available refs: {available_refs}"
                         ) from None
                 else:
-                    # Try with 'origin/' prefix for remote branches
-                    try:
-                        commit = repo.revparse_single(f'origin/{self.ref}')
-                        self.resolved_ref = f'origin/{self.ref}'
-                    except (KeyError, GitBackendError):
-                        # Try as local branch refs/heads/
+                    # Use robust reference type detection
+                    ref_type, resolved_ref = get_ref_type(repo, self.ref)
+                    if ref_type in ('tag', 'local_branch', 'remote_branch'):
                         try:
-                            commit = repo.revparse_single(f'refs/heads/{self.ref}')
+                            commit = repo.revparse_single(resolved_ref)
+                            self.resolved_ref = resolved_ref if ref_type == 'remote_branch' else self.ref
+                        except (KeyError, GitBackendError):
+                            available_refs = self._list_available_refs(repo)
+                            raise KeyError(
+                                f"Could not resolve ref '{self.ref}' (detected as {ref_type}). "
+                                f"Available refs: {available_refs}"
+                            ) from None
+                    else:
+                        # For commits or unknown refs, try as-is
+                        try:
+                            commit = repo.revparse_single(self.ref)
                             self.resolved_ref = self.ref
                         except (KeyError, GitBackendError):
                             available_refs = self._list_available_refs(repo)
                             raise KeyError(
-                                f"Could not find ref '{self.ref}'. "
-                                f"Tried: '{self.ref}', 'origin/{self.ref}', 'refs/heads/{self.ref}'. "
-                                f"Available refs: {available_refs}"
+                                f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
                             ) from None
         else:
             # Use repository's default branch (HEAD)
@@ -384,13 +418,10 @@ class PluginSourceGit(PluginSource):
         current_is_tag = False
         current_tag = None
         if self.ref:
-            try:
-                # Check if ref is a tag
-                repo.revparse_single(f'refs/tags/{self.ref}')
-                current_is_tag = True
+            # Use robust reference type detection
+            current_is_tag = self._is_tag_ref(repo)
+            if current_is_tag:
                 current_tag = self.ref
-            except (KeyError, GitBackendError):
-                pass
 
         callbacks = backend.create_remote_callbacks()
         try:
@@ -414,22 +445,22 @@ class PluginSourceGit(PluginSource):
                 self.ref = latest_tag
 
         if self.ref:
-            # For branch names without origin/ prefix, try origin/ first
-            ref_to_use = self.ref
-            if not self.ref.startswith('origin/') and not self.ref.startswith('refs/'):
-                # Try origin/ prefix first for branches
+            # For updates, prefer origin/ prefix for branches to get latest changes
+            ref_type, resolved_ref = get_ref_type(repo, self.ref)
+            if ref_type == 'local_branch':
+                # Try origin/ version first for updates
                 try:
                     commit = repo.revparse_single(f'origin/{self.ref}')
-                    ref_to_use = f'origin/{self.ref}'
                 except (KeyError, GitBackendError):
-                    # Fall back to original ref (might be tag or commit hash)
-                    try:
-                        commit = repo.revparse_single(f'refs/tags/{self.ref}')
-                    except (KeyError, GitBackendError):
-                        commit = repo.revparse_single(self.ref)
+                    # Fall back to local branch
+                    commit = repo.revparse_single(resolved_ref)
+            elif ref_type in ('tag', 'remote_branch'):
+                commit = repo.revparse_single(resolved_ref)
             else:
-                commit = repo.revparse_single(ref_to_use)
+                # For commits or unknown refs, try as-is
+                commit = repo.revparse_single(self.ref)
         else:
+            # No specific ref, use HEAD
             commit = repo.revparse_single('HEAD')
 
         commit = self._resolve_to_commit(commit, repo)

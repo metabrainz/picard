@@ -49,6 +49,7 @@ from picard.extension_points import (
 from picard.git.backend import GitObjectType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.ref_utils import get_ref_type
 from picard.git.utils import get_local_repository_path
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
@@ -321,6 +322,61 @@ class PluginManager(QObject):
         except Exception:
             pass
         return None, None
+
+    def _get_ref_type(self, repo, ref):
+        """Determine the type of a git reference.
+
+        Args:
+            repo: Git repository object
+            ref: Reference name to check
+
+        Returns:
+            tuple: (ref_type, resolved_ref) where ref_type is one of:
+                   'tag', 'local_branch', 'remote_branch', 'commit', 'unknown'
+        """
+        if not ref:
+            return 'unknown', ref
+
+        try:
+            # Get all references from the repository
+            references = repo.get_references()
+
+            # Check exact matches first
+            if f'refs/tags/{ref}' in references:
+                return 'tag', f'refs/tags/{ref}'
+            if f'refs/heads/{ref}' in references:
+                return 'local_branch', f'refs/heads/{ref}'
+            if f'refs/remotes/{ref}' in references:
+                return 'remote_branch', f'refs/remotes/{ref}'
+            if f'refs/remotes/origin/{ref}' in references:
+                return 'remote_branch', f'refs/remotes/origin/{ref}'
+
+            # Check if ref is already a full reference
+            if ref in references:
+                if ref.startswith('refs/tags/'):
+                    return 'tag', ref
+                elif ref.startswith('refs/heads/'):
+                    return 'local_branch', ref
+                elif ref.startswith('refs/remotes/'):
+                    return 'remote_branch', ref
+
+            # Try to resolve as commit hash
+            try:
+                repo.revparse_single(ref)
+                return 'commit', ref
+            except KeyError:
+                pass
+
+        except Exception:
+            # If we can't get references, fall back to string analysis
+            if ref.startswith('refs/tags/'):
+                return 'tag', ref
+            elif ref.startswith('refs/heads/'):
+                return 'local_branch', ref
+            elif ref.startswith('refs/remotes/') or ref.startswith('origin/'):
+                return 'remote_branch', ref
+
+        return 'unknown', ref
 
     def format_refs_for_display(self, refs, current_ref=None):
         """Format refs for display with commit IDs and current markers.
@@ -1368,9 +1424,10 @@ class PluginManager(QObject):
                 # Check if currently on a tag
                 current_is_tag = False
                 current_tag = None
-                if ref:
+                ref_type, resolved_ref = get_ref_type(repo, ref)
+                if ref_type == 'tag':
                     try:
-                        repo.revparse_single(f'refs/tags/{ref}')
+                        repo.revparse_single(resolved_ref)
                         current_is_tag = True
                         current_tag = ref
                     except KeyError:
@@ -1399,6 +1456,9 @@ class PluginManager(QObject):
                             except KeyError:
                                 # Fall back to original ref (might be commit hash)
                                 obj = repo.revparse_single(ref)
+                    elif ref.startswith('origin/'):
+                        # Handle origin/ refs - these are branches, not tags
+                        obj = repo.revparse_single(ref)
                     else:
                         obj = repo.revparse_single(ref)
 
@@ -1470,17 +1530,10 @@ class PluginManager(QObject):
             # Check if currently on a tag by checking available refs
             current_is_tag = False
             current_tag = None
-            if ref:
-                # Get all refs to check if this ref exists as a tag
-                try:
-                    references = repo.get_references()
-                    tag_ref = f'refs/tags/{ref}'
-                    if tag_ref in references:
-                        current_is_tag = True
-                        current_tag = ref
-                except Exception:
-                    # If we can't get references, assume it's not a tag
-                    current_is_tag = False
+            ref_type, resolved_ref = get_ref_type(repo, ref)
+            if ref_type == 'tag':
+                current_is_tag = True
+                current_tag = ref
 
             # If on a tag, check for newer version tag
             if current_is_tag and current_tag:
@@ -1507,6 +1560,9 @@ class PluginManager(QObject):
                         except KeyError:
                             # Fall back to original ref (might be commit hash)
                             obj = repo.revparse_single(ref)
+                elif ref.startswith('origin/'):
+                    # Handle origin/ refs - these are branches, not tags
+                    obj = repo.revparse_single(ref)
                 else:
                     obj = repo.revparse_single(ref)
 
