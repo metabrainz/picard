@@ -77,7 +77,6 @@ class PluginInfoDialog(QtWidgets.QDialog):
         self._add_field(details_layout, _("ID:"), self._get_plugin_id())
         self._add_field(details_layout, _("UUID:"), self._get_plugin_uuid())
         self._add_field(details_layout, _("Registry ID:"), self._get_registry_id())
-        self._add_field(details_layout, _("Status:"), self._get_status())
         self._add_field(details_layout, _("State:"), self._get_state())
         self._add_field(details_layout, _("Version:"), self._get_plugin_version())
         self._add_field(details_layout, _("API Version:"), self._get_api_version())
@@ -121,10 +120,19 @@ class PluginInfoDialog(QtWidgets.QDialog):
 
         layout.addLayout(button_layout)
 
-    def _add_field(self, layout, label, value):
+    @staticmethod
+    def _make_label():
+        label = QtWidgets.QLabel()
+        label.setWordWrap(True)
+        label.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
+        label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        return label
+
+    def _add_field(self, layout, name, value):
         """Add field to layout if value exists."""
         if value:
-            value_label = QtWidgets.QLabel()
+            value_label = self._make_label()
+
             # Check if value is a URL and make it clickable
             if isinstance(value, str) and (value.startswith('http://') or value.startswith('https://')):
                 value_label.setText(f'<a href="{value}">{value}</a>')
@@ -135,7 +143,9 @@ class PluginInfoDialog(QtWidgets.QDialog):
                 value_label.setOpenExternalLinks(True)
             else:
                 value_label.setText(str(value))
-                value_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+
+            label = self._make_label()
+            label.setText(name)
             layout.addRow(label, value_label)
 
     def _is_registry_plugin(self):
@@ -271,13 +281,6 @@ class PluginInfoDialog(QtWidgets.QDialog):
             return self.registry_plugin.id
         else:
             return getattr(self.plugin_data, 'registry_id', '')
-
-    def _get_status(self):
-        """Get plugin status (enabled/disabled)."""
-        if self._is_registry_plugin():
-            return ''
-        else:
-            return _("enabled") if self.plugin_data.enable else _("disabled")
 
     def _get_state(self):
         """Get plugin state."""
