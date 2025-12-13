@@ -103,6 +103,7 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
+from picard.script import ScriptParser
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -192,6 +193,7 @@ class PluginApi:
     ProviderOptions: TypeAlias = ProviderOptions
     BaseAction: TypeAlias = BaseAction
     OptionsPage: TypeAlias = OptionsPage
+    ScriptParser: TypeAlias = ScriptParser
 
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
