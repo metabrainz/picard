@@ -18,10 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import gc
 import os
 from pathlib import Path
 import re
 import shutil
+import tempfile
 from typing import TYPE_CHECKING, NamedTuple
 
 from PyQt6.QtCore import (
@@ -44,7 +46,11 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
+from picard.git.backend import GitObjectType
+from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.utils import get_local_repository_path
+from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -57,6 +63,12 @@ from picard.plugin3.refs_cache import RefsCache
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.version import Version
+
+
+try:
+    from markdown import markdown as render_markdown
+except ImportError:
+    render_markdown = None
 
 
 class UpdateResult(NamedTuple):
@@ -320,8 +332,6 @@ class PluginManager(QObject):
         Returns:
             dict: Formatted refs with display_name for each ref
         """
-        from picard.plugin3.plugin import short_commit_id
-
         formatted_refs = {'tags': [], 'branches': []}
 
         # Format tags
@@ -507,8 +517,6 @@ class PluginManager(QObject):
         Returns:
             Version string (git tag if available and looks like version, otherwise manifest version)
         """
-        from picard.plugin3.plugin import short_commit_id
-
         metadata = self._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
         if not metadata:
             return manifest_version
@@ -859,14 +867,10 @@ class PluginManager(QObject):
         """
 
         # Check if url is a local directory
-        from picard.git.utils import get_local_repository_path
-
         local_path = get_local_repository_path(url)
 
         # Check blacklist before installing
         if not force_blacklisted:
-            from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
-
             # Create appropriate InstallablePlugin for blacklist checking
             if local_path:
                 plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
@@ -918,8 +922,6 @@ class PluginManager(QObject):
 
             # Check blacklist again with UUID
             if not force_blacklisted:
-                from picard.plugin3.installable import UrlInstallablePlugin
-
                 plugin = UrlInstallablePlugin(url, ref, self._registry)
                 plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
                 if plugin.is_blacklisted():
@@ -1007,8 +1009,6 @@ class PluginManager(QObject):
         except Exception:
             # Clean up temp directory on failure
             if temp_path.exists():
-                import gc
-
                 # Force garbage collection to release file handles on Windows
                 gc.collect()
                 shutil.rmtree(temp_path, ignore_errors=True)
@@ -1036,8 +1036,6 @@ class PluginManager(QObject):
         Returns:
             str: Plugin ID
         """
-        import tempfile
-
         # Preserve original ref if reinstalling and no ref specified
         ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
@@ -1047,8 +1045,6 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                from picard.git.factory import git_backend
-
                 backend = git_backend()
                 source_repo = backend.create_repository(local_path)
                 if source_repo.get_status():
@@ -1075,8 +1071,6 @@ class PluginManager(QObject):
             except Exception:
                 # Clean up temp directory on failure
                 if temp_path.exists():
-                    import gc
-
                     gc.collect()
                     shutil.rmtree(temp_path, ignore_errors=True)
                 raise
@@ -1276,9 +1270,6 @@ class PluginManager(QObject):
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        from picard.git.backend import GitObjectType
-        from picard.git.factory import git_backend
-
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
         obj = repo.revparse_single(new_commit)
@@ -1355,8 +1346,6 @@ class PluginManager(QObject):
                 continue
 
             try:
-                from picard.git.factory import git_backend
-
                 backend = git_backend()
                 repo = backend.create_repository(plugin.local_path)
                 current_commit = repo.get_head_target()
@@ -1414,8 +1403,6 @@ class PluginManager(QObject):
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    from picard.git.backend import GitObjectType
-
                     if obj.type == GitObjectType.TAG:
                         commit = repo.peel_to_commit(obj)
                     else:
@@ -1461,8 +1448,6 @@ class PluginManager(QObject):
             return False
 
         try:
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(plugin.local_path)
             current_commit = repo.get_head_target()
@@ -1526,8 +1511,6 @@ class PluginManager(QObject):
                     obj = repo.revparse_single(ref)
 
                 # Peel annotated tags to get the actual commit
-                from picard.git.backend import GitObjectType
-
                 if obj.type == GitObjectType.TAG:
                     commit = repo.peel_to_commit(obj)
                 else:
@@ -1613,11 +1596,6 @@ class PluginManager(QObject):
 
     def long_description_as_html(self, plugin):
         """Get plugin long description converted from markdown to HTML."""
-        try:
-            from markdown import markdown as render_markdown
-        except ImportError:
-            render_markdown = None
-
         if not plugin.manifest:
             return None
 
@@ -1723,8 +1701,6 @@ class PluginManager(QObject):
             url = metadata.url if metadata else None
 
             # Create InstallablePlugin for blacklist checking
-            from picard.plugin3.installable import UrlInstallablePlugin
-
             installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
             installable_plugin.plugin_uuid = plugin_uuid
 
