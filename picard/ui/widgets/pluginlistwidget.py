@@ -181,8 +181,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 except Exception as e:
                     # Show error dialog to user
                     log.error("Failed to toggle plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                    from PyQt6 import QtWidgets
-
                     action = "enable" if target_enabled else "disable"
                     QtWidgets.QMessageBox.critical(
                         self,
@@ -327,8 +325,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _update_plugin_from_menu(self, plugin):
         """Update plugin from context menu."""
-        from picard.plugin3.asyncops.manager import AsyncPluginManager
-
         self._updating_plugin = plugin  # Store for callback
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(plugin=plugin, progress_callback=None, callback=self._on_context_update_complete)
@@ -584,8 +580,6 @@ class SwitchRefDialog(QtWidgets.QDialog):
 
                 self.ref_selector.load_refs(refs, current_ref=current_ref, plugin_manager=self.plugin_manager)
         except Exception as e:
-            from picard import log
-
             log.error("SwitchRefDialog: Failed to load refs: %s", e, exc_info=True)
 
     def _switch_ref(self):

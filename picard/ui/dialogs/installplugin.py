@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
+
 from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
@@ -449,8 +451,6 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _create_local_plugin(self):
         """Create LocalInstallablePlugin from local path input."""
-        import os
-
         url = self.path_edit.text().strip()
         ref = self.local_ref_edit.text().strip() or None
         if not url:

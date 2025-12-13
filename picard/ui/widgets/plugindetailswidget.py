@@ -376,9 +376,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.update_button.setEnabled(False)
         self.update_button.setText(_("Updating..."))
 
-        # Import AsyncPluginManager
-        from picard.plugin3.asyncops.manager import AsyncPluginManager
-
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(
             plugin=self.current_plugin, progress_callback=None, callback=self._on_update_complete
