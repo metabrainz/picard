@@ -674,4 +674,13 @@ class Plugin:
                         del PluginApi._module_cache[key]
                 break
 
+        # Clear module from sys.modules to force reload on next enable
+        if self.module_name in sys.modules:
+            del sys.modules[self.module_name]
+        # Also clear any submodules
+        module_prefix = self.module_name + '.'
+        for module_name in list(sys.modules.keys()):
+            if module_name.startswith(module_prefix):
+                del sys.modules[module_name]
+
         self.state = PluginState.DISABLED
