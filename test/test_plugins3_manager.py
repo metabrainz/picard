@@ -288,8 +288,10 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                     mock_backend.create_repository = Mock(return_value=mock_repo)
                     mock_backend_func.return_value = mock_backend
 
-                    # Should not raise with discard_changes=True
-                    result = manager.update_plugin(mock_plugin, discard_changes=True)
+                    # Mock the signal emission to avoid type checking issues
+                    with patch.object(manager, 'plugin_ref_switched'):
+                        # Should not raise with discard_changes=True
+                        result = manager.update_plugin(mock_plugin, discard_changes=True)
 
                     self.assertEqual(result.old_commit, 'old123')
                     self.assertEqual(result.new_commit, 'new456')
