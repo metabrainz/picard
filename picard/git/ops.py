@@ -27,6 +27,7 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
+    GitObjectType,
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
@@ -192,8 +193,6 @@ class GitOperations:
                 # Not found in standard refs, try to resolve it
                 try:
                     obj = repo.revparse_single(ref)
-                    from picard.git.backend import GitObjectType
-
                     if obj.type == GitObjectType.COMMIT:
                         return 'commit', ref
                     elif obj.type == GitObjectType.TAG:
