@@ -22,7 +22,7 @@ import os
 from pathlib import Path
 import re
 import shutil
-from typing import TYPE_CHECKING, List, NamedTuple
+from typing import TYPE_CHECKING, NamedTuple
 
 from PyQt6.QtCore import (
     QObject,
@@ -231,7 +231,7 @@ class PluginManager(QObject):
     plugin_ref_switched = pyqtSignal(Plugin)
 
     _primary_plugin_dir: Path | None = None
-    _plugin_dirs: List[Path] = []
+    _plugin_dirs: list[Path] = []
 
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
@@ -240,7 +240,7 @@ class PluginManager(QObject):
         # hence check type before passing it to QObject.
         super().__init__(parent=tagger if isinstance(tagger, QObject) else None)
         self._tagger: Tagger | None = tagger
-        self._plugins: List[Plugin] = []  # Instance variable, not class variable
+        self._plugins: list[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
         self._load_config()

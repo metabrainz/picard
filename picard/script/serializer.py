@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Mapping
 from copy import deepcopy
 import datetime
 from enum import (
@@ -28,7 +29,6 @@ from enum import (
     unique,
 )
 import os
-from typing import Mapping
 import uuid
 
 import yaml

@@ -22,10 +22,10 @@
 
 """Dark mode detection utilities for various Linux desktop environments."""
 
+from collections.abc import Callable
 import os
 from pathlib import Path
 import subprocess  # noqa: S404
-from typing import Callable
 
 from picard import log
 

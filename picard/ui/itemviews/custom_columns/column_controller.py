@@ -29,8 +29,8 @@ ColumnController
     Facade class that simplifies custom column operations for dialogs.
 """
 
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable
 
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
 from picard.ui.itemviews.custom_columns.spec_list_model import SpecListModel

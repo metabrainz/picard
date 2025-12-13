@@ -20,8 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Iterable
 import io
-from typing import Iterable
 import unittest
 
 from test.picardtestcase import PicardTestCase

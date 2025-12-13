@@ -29,8 +29,8 @@ ColumnSpecService
     Service class for managing custom column specifications.
 """
 
+from collections.abc import Iterable
 from dataclasses import replace
-from typing import Iterable
 
 from picard.config import get_config
 

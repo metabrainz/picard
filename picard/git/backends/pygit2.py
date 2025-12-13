@@ -24,8 +24,6 @@ from pathlib import Path
 import tempfile
 from typing import (
     Any,
-    Dict,
-    List,
     Optional,
 )
 
@@ -89,7 +87,7 @@ class Pygit2Repository(GitRepository):
     def __init__(self, repo):
         self._repo = repo
 
-    def get_status(self) -> Dict[str, GitStatusFlag]:
+    def get_status(self) -> dict[str, GitStatusFlag]:
         _log_git_call("get_status")
         status = self._repo.status()
         result = {}
@@ -157,21 +155,21 @@ class Pygit2Repository(GitRepository):
             # It's a reference name
             self._repo.set_head(target)
 
-    def list_references(self) -> List[str]:
+    def list_references(self) -> list[str]:
         _log_git_call("list_references")
         try:
             return self._repo.listall_references()
         except AttributeError:
             return list(self._repo.references)
 
-    def get_references(self) -> List[str]:
+    def get_references(self) -> list[str]:
         _log_git_call("get_references")
         try:
             return self._repo.listall_references()
         except AttributeError:
             return list(self._repo.references)
 
-    def get_remotes(self) -> List[Any]:
+    def get_remotes(self) -> list[Any]:
         _log_git_call("get_remotes")
         return self._repo.remotes
 
@@ -323,7 +321,7 @@ class Pygit2Backend(GitBackend):
         repo = pygit2.clone_repository(url, str(path.absolute()), **options)
         return Pygit2Repository(repo)
 
-    def fetch_remote_refs(self, url: str, **options) -> Optional[List[GitRef]]:
+    def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
         _log_git_call("fetch_remote_refs", url, **options)
         try:
             with tempfile.TemporaryDirectory() as tmpdir:

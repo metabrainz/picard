@@ -26,7 +26,6 @@ except ImportError:
 from typing import (
     BinaryIO,
     Optional,
-    Tuple,
 )
 
 from picard.plugin3.validator import validate_manifest_dict
@@ -55,12 +54,12 @@ class PluginManifest:
         return self._data.get('name', '')
 
     @property
-    def authors(self) -> Tuple[str]:
+    def authors(self) -> tuple[str]:
         authors = self._data.get('authors', [])
         return tuple(authors) if authors else tuple()
 
     @property
-    def maintainers(self) -> Tuple[str]:
+    def maintainers(self) -> tuple[str]:
         maintainers = self._data.get('maintainers', [])
         return tuple(maintainers) if maintainers else tuple()
 

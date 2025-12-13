@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Callable
 from functools import (
     partial,
     update_wrapper,
@@ -37,7 +38,6 @@ except ImportError:
     import tomli as tomllib  # type: ignore[no-redef,import-not-found]
 from typing import (
     TYPE_CHECKING,
-    Callable,
     TypeAlias,
 )
 

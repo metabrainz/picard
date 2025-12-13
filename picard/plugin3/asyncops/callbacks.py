@@ -21,10 +21,10 @@
 
 """Callback and signal definitions for async operations."""
 
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import (
     Any,
-    Callable,
     Optional,
 )
 

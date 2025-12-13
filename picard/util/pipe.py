@@ -27,15 +27,13 @@ from abc import (
     ABCMeta,
     abstractmethod,
 )
+from collections.abc import Iterable
 import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
 from typing import (
     Any,
-    Iterable,
-    List,
     Optional,
-    Tuple,
 )
 
 from picard import (
@@ -65,9 +63,9 @@ class PipeError(Exception):
 
     def __init__(self, *messages):
         if self.MESSAGE:
-            self.messages: Tuple[str] = (self.MESSAGE,) + tuple(messages)
+            self.messages: tuple[str] = (self.MESSAGE,) + tuple(messages)
         else:
-            self.messages: Tuple[str] = tuple(messages)  # type: ignore
+            self.messages: tuple[str] = tuple(messages)  # type: ignore
 
     def __str__(self) -> str:
         messages_str = "\n  ".join(str(m) for m in self.messages)
@@ -140,7 +138,7 @@ class AbstractPipe(metaclass=ABCMeta):
         :param forced_path: (Optional[str]) Testing-purposes only, bypass of no $HOME on testing machines
         """
         if args is None:
-            self._args: Tuple[str] = tuple()  # type: ignore
+            self._args: tuple[str] = tuple()  # type: ignore
         else:
             try:
                 self._args = tuple(args)  # type: ignore
@@ -191,14 +189,14 @@ class AbstractPipe(metaclass=ABCMeta):
         del self._args
         del self._paths
 
-    def __generate_filenames(self, app_name: str, app_version: str) -> List[str]:
+    def __generate_filenames(self, app_name: str, app_version: str) -> list[str]:
         """
         Returns list of paths available for pipe
 
         :param app_name: (str) Name of the app, included in the pipe name
         :param app_version: (str) Version of the app, included in the pipe name
         :return: List of available pipe paths
-        :rtype: List[str]
+        :rtype: list[str]
         """
         _pipe_names = []
 
@@ -239,12 +237,12 @@ class AbstractPipe(metaclass=ABCMeta):
         """
         raise NotImplementedError()
 
-    def read_from_pipe(self) -> List[str]:
+    def read_from_pipe(self) -> list[str]:
         """
         Common interface for the custom _reader implementations
 
         :return: List of messages or {self.NO_RESPONSE_MESSAGE} (if no messages received)
-        :rtype: List[str]
+        :rtype: list[str]
         """
         try:
             res = self._reader()
@@ -297,7 +295,7 @@ class AbstractPipe(metaclass=ABCMeta):
 
 
 class UnixPipe(AbstractPipe):
-    PIPE_DIRS: Tuple[str] = (
+    PIPE_DIRS: tuple[str] = (
         os.getenv('XDG_RUNTIME_DIR'),
         "~/.config/MusicBrainz/Picard/pipes/",
     )  # type: ignore
@@ -371,11 +369,11 @@ class UnixPipe(AbstractPipe):
 
 
 class MacOSPipe(UnixPipe):
-    PIPE_DIRS: Tuple[str] = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
+    PIPE_DIRS: tuple[str] = (os.path.join("~/Library/Application Support/", PICARD_APP_ID),)
 
 
 class HaikuPipe(UnixPipe):
-    PIPE_DIRS: Tuple[str] = ("~/config/var/MusicBrainz/Picard/",)
+    PIPE_DIRS: tuple[str] = ("~/config/var/MusicBrainz/Picard/",)
 
 
 class WinPipe(AbstractPipe):
@@ -398,7 +396,7 @@ class WinPipe(AbstractPipe):
     __FILE_NOT_FOUND_ERROR_CODE: int = 2
     __BROKEN_PIPE_ERROR_CODE: int = 109
 
-    PIPE_DIRS: Tuple[str] = ("\\\\.\\pipe\\",)
+    PIPE_DIRS: tuple[str] = ("\\\\.\\pipe\\",)
 
     def __init__(
         self,

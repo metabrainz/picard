@@ -28,7 +28,7 @@ Uses pytest fixtures and parametrize to reduce code duplication while adhering
 to DRY, SOC, SRP, IOC, KISS principles.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 from unittest.mock import patch
 
 import pytest
@@ -189,7 +189,7 @@ class TestContextDetectionLogic:
 class TestTagNameArgContextDetection:
     """Test tag name argument context detection logic."""
 
-    def detect_tag_name_arg_context_logic(self, left_text: str) -> Optional[Dict[str, Any]]:
+    def detect_tag_name_arg_context_logic(self, left_text: str) -> Optional[dict[str, Any]]:
         """Test implementation of tag name argument context detection."""
         # Find all $ positions and their corresponding ( positions
         dollar_positions = []
@@ -240,7 +240,7 @@ class TestTagNameArgContextDetection:
         ],
     )
     def test_detect_tag_name_arg_context_valid_cases(
-        self, context_detector: ContextDetector, left_text: str, expected_context: Dict[str, Any]
+        self, context_detector: ContextDetector, left_text: str, expected_context: dict[str, Any]
     ) -> None:
         """Test valid tag name argument context detection."""
         result = context_detector.detect_context_details(left_text)
@@ -369,7 +369,7 @@ class TestCompletionPrefixHandling:
         ],
     )
     def test_completion_prefix_for_context(
-        self, context: Dict[str, Any], selected_text: str, expected_prefix: str
+        self, context: dict[str, Any], selected_text: str, expected_prefix: str
     ) -> None:
         """Test completion prefix setting for different contexts."""
         # Simulate the completion prefix logic

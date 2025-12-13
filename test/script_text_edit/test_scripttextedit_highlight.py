@@ -18,7 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import Any, Callable, Iterable, List, Optional
+from collections.abc import (
+    Callable,
+    Iterable,
+)
+from typing import (
+    Any,
+    Optional,
+)
 
 import pytest
 
@@ -27,7 +34,7 @@ from picard.ui.widgets.scripttextedit import ScriptTextEdit
 
 class _FakeSignal:
     def __init__(self) -> None:
-        self._slots: List[Callable[..., None]] = []
+        self._slots: list[Callable[..., None]] = []
 
     def connect(self, slot: Callable[..., None]) -> None:
         self._slots.append(slot)
@@ -52,7 +59,7 @@ class _FakeIndex:
 
 class _FakeModel:
     def __init__(self, items: Iterable[str]) -> None:
-        self._items: List[str] = list(items)
+        self._items: list[str] = list(items)
         # Qt-like signals
         self.modelReset = _FakeSignal()
         self.layoutChanged = _FakeSignal()
@@ -183,7 +190,7 @@ def fake_edit(monkeypatch: pytest.MonkeyPatch) -> Callable[[Iterable[str]], Scri
     ],
 )
 def test_highlight_first_row_on_show(
-    patch_qtimer_single_shot: None, fake_edit: Callable[[Iterable[str]], ScriptTextEdit], choices: List[str]
+    patch_qtimer_single_shot: None, fake_edit: Callable[[Iterable[str]], ScriptTextEdit], choices: list[str]
 ) -> None:
     edit = fake_edit(choices)
 

@@ -22,9 +22,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import Iterable
 import uuid
 
 from picard.i18n import (

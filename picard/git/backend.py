@@ -28,8 +28,6 @@ from enum import Enum
 from pathlib import Path
 from typing import (
     Any,
-    Dict,
-    List,
     Optional,
 )
 
@@ -102,7 +100,7 @@ class GitRepository(ABC):
     """Abstract interface for repository operations"""
 
     @abstractmethod
-    def get_status(self) -> Dict[str, GitStatusFlag]:
+    def get_status(self) -> dict[str, GitStatusFlag]:
         """Get working directory status"""
 
     @abstractmethod
@@ -142,15 +140,15 @@ class GitRepository(ABC):
         """Set HEAD to target"""
 
     @abstractmethod
-    def list_references(self) -> List[str]:
+    def list_references(self) -> list[str]:
         """List all references"""
 
     @abstractmethod
-    def get_references(self) -> List[str]:
+    def get_references(self) -> list[str]:
         """Get list of reference names"""
 
     @abstractmethod
-    def get_remotes(self) -> List[Any]:
+    def get_remotes(self) -> list[Any]:
         """Get remotes list"""
 
     @abstractmethod
@@ -234,7 +232,7 @@ class GitBackend(ABC):
         """Clone repository from URL"""
 
     @abstractmethod
-    def fetch_remote_refs(self, url: str, **options) -> Optional[List[GitRef]]:
+    def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
         """Fetch remote refs without cloning"""
 
     @abstractmethod
