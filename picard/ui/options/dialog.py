@@ -579,8 +579,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         log.debug("refresh_plugin_pages: Successfully loaded page: %s", Page.__name__)
                     except Exception:
                         log.exception("Failed loading options page %r", page)
-                except Exception:
+                except Exception as e:
                     log.exception("Failed creating options page %r", Page)
+                    # Create an error page in place of the failing page
+                    page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
+                    self.ui.pages_stack.addWidget(page)
+                    self.pages.append(page)
 
         # Clear and rebuild the pages tree
         self.ui.pages_tree.clear()
