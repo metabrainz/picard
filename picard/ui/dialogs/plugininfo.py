@@ -102,7 +102,7 @@ class PluginInfoDialog(QtWidgets.QDialog):
             desc_text = QtWidgets.QTextBrowser()
             desc_text.setMaximumHeight(200)
 
-            if render_markdown and self._is_registry_plugin():
+            if render_markdown:
                 html_desc = render_markdown(description, output_format='html')
                 desc_text.setHtml(html_desc)
             else:
