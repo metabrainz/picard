@@ -391,7 +391,17 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Show confirmation dialog
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin_uuid)
+
+            # Get current ref for reinstall
+            current_ref = None
+            try:
+                refs_info = self.plugin_manager.get_plugin_refs_info(plugin.plugin_id)
+                if refs_info:
+                    current_ref = refs_info.get('current_ref')
+            except Exception:
+                pass
+
+            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin_uuid, current_ref)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
@@ -566,15 +576,17 @@ class SwitchRefDialog(QtWidgets.QDialog):
     def load_refs(self):
         """Load available refs from repository."""
         try:
-            # Get plugin URL from metadata
-            uuid = self.plugin_manager._get_plugin_uuid(self.plugin)
-            metadata = self.plugin_manager._get_plugin_metadata(uuid)
-            if metadata and hasattr(metadata, 'url'):
-                refs = self.plugin_manager.fetch_all_git_refs(metadata.url)
-                self.ref_selector.load_refs(refs)
-        except Exception:
-            # If we can't fetch refs, user can still use custom input
-            pass
+            # Get plugin refs info (includes current ref)
+            refs_info = self.plugin_manager.get_plugin_refs_info(self.plugin.plugin_id)
+            if refs_info and refs_info['url']:
+                refs = self.plugin_manager.fetch_all_git_refs(refs_info['url'])
+                current_ref = refs_info.get('current_ref')
+
+                self.ref_selector.load_refs(refs, current_ref=current_ref, plugin_manager=self.plugin_manager)
+        except Exception as e:
+            from picard import log
+
+            log.error("SwitchRefDialog: Failed to load refs: %s", e, exc_info=True)
 
     def _switch_ref(self):
         """Handle switch button click."""

@@ -444,7 +444,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
             # Show confirmation dialog
             plugin_uuid = registry_plugin.uuid
-            confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid)
+            confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
@@ -460,7 +460,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
                 return
 
             # Show confirmation dialog for URL installation too
-            confirm_dialog = InstallConfirmDialog(_("Plugin from URL"), url, self, None)
+            confirm_dialog = InstallConfirmDialog(_("Plugin from URL"), url, self, None, None)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 

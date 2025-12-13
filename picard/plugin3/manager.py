@@ -311,6 +311,50 @@ class PluginManager(QObject):
             pass
         return None, None
 
+    def format_refs_for_display(self, refs, current_ref=None):
+        """Format refs for display with commit IDs and current markers.
+
+        Args:
+            refs: Dict with 'tags' and 'branches' lists
+            current_ref: Current ref name to mark as (current)
+
+        Returns:
+            dict: Formatted refs with display_name for each ref
+        """
+        from picard.plugin3.plugin import short_commit_id
+
+        formatted_refs = {'tags': [], 'branches': []}
+
+        # Format tags
+        for ref in refs.get('tags', []):
+            ref_name = ref['name']
+            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
+            commit_display = f" @{commit_id}" if commit_id else ""
+
+            if current_ref and ref_name == current_ref:
+                display_name = f"{ref_name}{commit_display} (current)"
+            else:
+                display_name = f"{ref_name}{commit_display}"
+
+            formatted_refs['tags'].append({'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name})
+
+        # Format branches
+        for ref in refs.get('branches', []):
+            ref_name = ref['name']
+            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
+            commit_display = f" @{commit_id}" if commit_id else ""
+
+            if current_ref and ref_name == current_ref:
+                display_name = f"{ref_name}{commit_display} (current)"
+            else:
+                display_name = f"{ref_name}{commit_display}"
+
+            formatted_refs['branches'].append(
+                {'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name}
+            )
+
+        return formatted_refs
+
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
