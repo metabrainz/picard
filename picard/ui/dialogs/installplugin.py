@@ -23,6 +23,11 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
+from picard.plugin3.installable import (
+    LocalInstallablePlugin,
+    RegistryInstallablePlugin,
+    UrlInstallablePlugin,
+)
 from picard.plugin3.registry import RegistryPlugin
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
@@ -423,76 +428,95 @@ class InstallPluginDialog(QtWidgets.QDialog):
         except Exception:
             self.warning_label.hide()
 
+    def _create_registry_plugin(self):
+        """Create RegistryInstallablePlugin from selected registry plugin."""
+        current_row = self.plugin_table.currentRow()
+        if current_row < 0:
+            return None
+
+        trust_item = self.plugin_table.item(current_row, 0)
+        plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
+        registry_plugin = RegistryPlugin(plugin_data)
+        return RegistryInstallablePlugin(registry_plugin)
+
+    def _create_url_plugin(self):
+        """Create UrlInstallablePlugin from URL input."""
+        url = self.url_edit.text().strip()
+        ref = self.ref_edit.text().strip() or None
+        if not url:
+            return None
+        return UrlInstallablePlugin(url, ref)
+
+    def _create_local_plugin(self):
+        """Create LocalInstallablePlugin from local path input."""
+        import os
+
+        url = self.path_edit.text().strip()
+        ref = self.local_ref_edit.text().strip() or None
+        if not url:
+            QtWidgets.QMessageBox.warning(
+                self, _("No Directory Selected"), _("Please select a local plugin directory.")
+            )
+            return None
+
+        # Validate directory
+        if not os.path.isdir(url):
+            QtWidgets.QMessageBox.critical(self, _("Invalid Directory"), _("The selected path is not a directory."))
+            return None
+
+        # Check for MANIFEST.toml
+        manifest_path = os.path.join(url, "MANIFEST.toml")
+        if not os.path.isfile(manifest_path):
+            QtWidgets.QMessageBox.critical(
+                self,
+                _("Invalid Plugin Directory"),
+                _(
+                    "The selected directory does not contain a MANIFEST.toml file. A valid plugin requires both a git repository and a MANIFEST.toml file."
+                ),
+            )
+            return None
+
+        return LocalInstallablePlugin(url, ref)
+
     def _install_plugin(self):
         """Install the plugin."""
         current_tab = self.tab_widget.currentIndex()
 
-        if current_tab == TAB_REGISTRY:  # Registry tab
-            current_row = self.plugin_table.currentRow()
-            if current_row < 0:
-                return
+        # Create appropriate InstallablePlugin instance
+        if current_tab == TAB_REGISTRY:
+            plugin = self._create_registry_plugin()
+        elif current_tab == TAB_URL:
+            plugin = self._create_url_plugin()
+        else:  # TAB_LOCAL
+            plugin = self._create_local_plugin()
 
+        if not plugin:
+            return
+
+        # Validate plugin has install URL
+        url = plugin.get_install_url()
+        if not url:
+            QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
+            return
+
+        # Show confirmation dialog
+        plugin_name = plugin.get_display_name()
+        plugin_uuid = plugin.plugin_uuid
+        confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
+        if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+            return
+
+        ref = confirm_dialog.selected_ref
+
+        # Use versioning scheme for registry plugins when no ref specified
+        if current_tab == TAB_REGISTRY and ref is None:
+            # Get original plugin data for versioning scheme
+            current_row = self.plugin_table.currentRow()
             trust_item = self.plugin_table.item(current_row, 0)
             plugin_data = trust_item.data(QtCore.Qt.ItemDataRole.UserRole)
-            registry_plugin = RegistryPlugin(plugin_data)
-            url = registry_plugin.git_url
-            plugin_name = registry_plugin.name_i18n() or registry_plugin.id
-
-            if not url:
-                QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
-                return
-
-            # Show confirmation dialog
-            plugin_uuid = registry_plugin.uuid
-            confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                return
-
-            ref = confirm_dialog.selected_ref
-
-            # Use versioning scheme for registry plugins when no ref specified
-            if ref is None:
-                ref = self.plugin_manager.select_ref_for_plugin(plugin_data)
-        elif current_tab == TAB_URL:  # URL tab
-            url = self.url_edit.text().strip()
-            ref = self.ref_edit.text().strip() or None
-            if not url:
-                return
-
-            # Show confirmation dialog for URL installation too
-            confirm_dialog = InstallConfirmDialog(_("Plugin from URL"), url, self, None, None)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                return
-
-            # Override ref with user selection
-            ref = confirm_dialog.selected_ref or ref
-        else:  # TAB_LOCAL - Local directory tab
-            url = self.path_edit.text().strip()
-            ref = self.local_ref_edit.text().strip() or None
-            if not url:
-                QtWidgets.QMessageBox.warning(
-                    self, _("No Directory Selected"), _("Please select a local plugin directory.")
-                )
-                return
-
-            # Validate that the directory exists and looks like a plugin
-            import os
-
-            if not os.path.isdir(url):
-                QtWidgets.QMessageBox.critical(self, _("Invalid Directory"), _("The selected path is not a directory."))
-                return
-
-            # Check for MANIFEST.toml - required for all plugins
-            manifest_path = os.path.join(url, "MANIFEST.toml")
-            if not os.path.isfile(manifest_path):
-                QtWidgets.QMessageBox.critical(
-                    self,
-                    _("Invalid Plugin Directory"),
-                    _(
-                        "The selected directory does not contain a MANIFEST.toml file. A valid plugin requires both a git repository and a MANIFEST.toml file."
-                    ),
-                )
-                return
+            ref = self.plugin_manager.select_ref_for_plugin(plugin_data)
+        elif hasattr(plugin, 'ref') and ref is None:
+            ref = plugin.ref
 
         # Disable UI during installation
         self.install_button.setEnabled(False)
