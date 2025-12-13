@@ -536,6 +536,10 @@ class PluginApi:
                 lang = locale.split('_')[0]
                 if lang in self._translations and key in self._translations[lang]:
                     result = self._translations[lang][key]
+                else:
+                    # Try source locale as fallback
+                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                        result = self._translations[self._source_locale][key]
 
         # Fall back to text parameter or key
         if result is None:
