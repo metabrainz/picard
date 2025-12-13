@@ -187,7 +187,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if (
                     api is not None
                     and not self.default_item
-                    and page.NAME == get_config().persist.get('options_last_active_page')
+                    and page.NAME == get_config().persist['options_last_active_page']
                 ):
                     log.debug("add_pages: Found saved plugin page '%s', setting as default_item", page.NAME)
                     self.default_item = item
