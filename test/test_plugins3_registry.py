@@ -115,18 +115,18 @@ class TestPluginRegistry(PicardTestCase):
         # Find by current URL
         plugin = registry.find_plugin(url='https://github.com/test/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old URL (redirect)
         plugin = registry.find_plugin(url='https://github.com/olduser/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
-        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.git_url, 'https://github.com/test/example')
 
         # Find by another old URL
         plugin = registry.find_plugin(url='https://github.com/olduser/old-name')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
     def test_registry_uuid_redirect(self):
         """Test that UUID redirects work."""
@@ -135,13 +135,13 @@ class TestPluginRegistry(PicardTestCase):
         # Find by current UUID
         plugin = registry.find_plugin(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old UUID (redirect)
         plugin = registry.find_plugin(uuid='old-uuid-1234')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
-        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.git_url, 'https://github.com/test/example')
 
     def test_update_plugin_follows_redirect(self):
         """Test that update_plugin follows redirects and updates metadata."""
@@ -530,12 +530,12 @@ class TestPluginRegistry(PicardTestCase):
         # Find by ID
         plugin = registry.find_plugin(plugin_id='example-plugin')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Example plugin')
+        self.assertEqual(plugin.name, 'Example plugin')
 
         # Find by URL
         plugin = registry.find_plugin(url='https://github.com/user/picard-plugin-discogs')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Discogs')
+        self.assertEqual(plugin.name, 'Discogs')
 
         # Not found
         plugin = registry.find_plugin(plugin_id='nonexistent')
@@ -552,8 +552,8 @@ class TestPluginRegistry(PicardTestCase):
         # Filter by trust level
         official = registry.list_plugins(trust_level='official')
         self.assertEqual(len(official), 3)
-        self.assertIn('example-plugin', [p['id'] for p in official])
-        self.assertIn('listenbrainz', [p['id'] for p in official])
+        self.assertIn('example-plugin', [p.id for p in official])
+        self.assertIn('listenbrainz', [p.id for p in official])
 
         # Filter by category
         metadata = registry.list_plugins(category='metadata')

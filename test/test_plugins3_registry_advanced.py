@@ -216,7 +216,7 @@ class TestRegistryAdvanced(PicardTestCase):
             # Don't call fetch_registry() - let find_plugin do it
             plugin = registry.find_plugin(plugin_id='test-plugin')
             self.assertIsNotNone(plugin)
-            self.assertEqual(plugin['id'], 'test-plugin')
+            self.assertEqual(plugin.id, 'test-plugin')
         finally:
             Path(registry_file).unlink(missing_ok=True)
 

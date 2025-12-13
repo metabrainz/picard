@@ -143,6 +143,7 @@ def create_test_registry():
 
     registry = PluginRegistry()
     registry._registry_data = load_test_registry()
+    registry._process_plugins()  # Process plugins into RegistryPlugin objects
     return registry
 
 

@@ -117,6 +117,7 @@ class PluginRegistry:
             self.cache_path = None
 
         self._registry_data = None
+        self._plugins = []  # List of RegistryPlugin objects
         self._fetch_failed = False  # Track permanent fetch failures
 
     def _ensure_registry_loaded(self, operation_name='operation'):
@@ -139,6 +140,11 @@ class PluginRegistry:
                 log.warning('Failed to fetch registry for %s: %s', operation_name, e)
                 self._fetch_failed = True  # Mark as permanently failed
                 return False
+
+        # Process plugins if not already done
+        if self._registry_data and not self._plugins:
+            self._process_plugins()
+
         return True
 
     def fetch_registry(self, use_cache=True):
@@ -356,7 +362,7 @@ class PluginRegistry:
             raise RuntimeError("Registry not loaded")
 
         return {
-            'plugin_count': len(self._registry_data.get('plugins', [])),
+            'plugin_count': len(self._plugins),
             'api_version': self._registry_data.get('api_version'),
             'registry_url': self.registry_url,
         }
@@ -377,11 +383,10 @@ class PluginRegistry:
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url)
 
-        plugins = self._registry_data.get('plugins', [])
-        for plugin in plugins:
-            plugin_url = normalize_git_url(plugin.get('git_url', ''))
+        for plugin in self._plugins:
+            plugin_url = normalize_git_url(plugin.git_url or '')
             if plugin_url == normalized_url:
-                return plugin.get('trust_level', 'community')
+                return plugin.trust_level
 
         return 'unregistered'
 
@@ -403,34 +408,32 @@ class PluginRegistry:
         # Normalize URL for comparison if provided
         normalized_url = normalize_git_url(url) if url else None
 
-        plugins = self._registry_data.get('plugins', [])
-
         # First pass: search by current values (fast path)
-        for plugin in plugins:
-            if plugin_id and plugin.get('id') == plugin_id:
+        for plugin in self._plugins:
+            if plugin_id and plugin.id == plugin_id:
                 return plugin
-            if uuid and plugin.get('uuid') == uuid:
+            if uuid and plugin.uuid == uuid:
                 return plugin
             if normalized_url:
-                plugin_url = normalize_git_url(plugin.get('git_url', ''))
+                plugin_url = normalize_git_url(plugin.git_url or '')
                 if plugin_url == normalized_url:
                     return plugin
 
         # Second pass: search redirects (only if not found above)
         if normalized_url or uuid:
-            for plugin in plugins:
+            for plugin in self._plugins:
                 # Check URL redirects
-                if normalized_url and 'redirect_from' in plugin:
-                    for old_url in plugin['redirect_from']:
+                if normalized_url and plugin.redirect_from:
+                    for old_url in plugin.redirect_from:
                         old_url_normalized = normalize_git_url(old_url)
                         if old_url_normalized == normalized_url:
-                            log.info('Found plugin via URL redirect: %s -> %s', url, plugin.get('git_url'))
+                            log.info('Found plugin via URL redirect: %s -> %s', url, plugin.git_url)
                             return plugin
 
                 # Check UUID redirects
-                if uuid and 'redirect_from_uuid' in plugin:
-                    if uuid in plugin['redirect_from_uuid']:
-                        log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.get('uuid'))
+                if uuid and plugin.redirect_from_uuid:
+                    if uuid in plugin.redirect_from_uuid:
+                        log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.uuid)
                         return plugin
 
         return None
@@ -446,7 +449,7 @@ class PluginRegistry:
             str: Registry ID or None if not found
         """
         plugin = self.find_plugin(url=url, uuid=uuid)
-        return plugin.get('id') if plugin else None
+        return plugin.id if plugin else None
 
     def list_plugins(self, category=None, trust_level=None):
         """List plugins from registry, optionally filtered.
@@ -456,29 +459,44 @@ class PluginRegistry:
             trust_level: Filter by trust level (e.g., 'official', 'trusted')
 
         Returns:
-            list: List of plugin dicts
+            list: List of RegistryPlugin objects
         """
         if not self._ensure_registry_loaded('plugin listing'):
             # Fail safe: if we can't fetch registry, return empty list
             return []
 
-        plugins = self._registry_data.get('plugins', [])
         result = []
 
-        for plugin in plugins:
+        for plugin in self._plugins:
             # Filter by trust level
-            if trust_level and plugin.get('trust_level') != trust_level:
+            if trust_level and plugin.trust_level != trust_level:
                 continue
 
             # Filter by category
             if category:
-                plugin_categories = plugin.get('categories', [])
-                if category not in plugin_categories:
+                if category not in plugin.categories:
                     continue
 
             result.append(plugin)
 
         return result
+
+    @property
+    def plugins(self):
+        """Get list of all RegistryPlugin objects."""
+        if not self._ensure_registry_loaded('plugin access'):
+            return []
+        return self._plugins
+
+    def _process_plugins(self):
+        """Process raw plugin data into RegistryPlugin objects."""
+        self._plugins = []
+        if self._registry_data and 'plugins' in self._registry_data:
+            for plugin_data in self._registry_data['plugins']:
+                try:
+                    self._plugins.append(RegistryPlugin(plugin_data))
+                except Exception as e:
+                    log.warning('Failed to process plugin %s: %s', plugin_data.get('id', 'unknown'), e)
 
 
 class RegistryPlugin(InstallablePlugin):
