@@ -80,6 +80,15 @@ class TestPluginApiMethods(PicardTestCase):
         api.register_format(mock_format)
         mock_tagger.format_registry.register.assert_called_once_with(mock_format)
 
+    def test_manifest(self):
+        manifest = load_plugin_manifest('example')
+        mock_tagger = Mock()
+        api = PluginApi(manifest, mock_tagger)
+
+        self.assertEqual(api.manifest, manifest)
+        with self.assertRaises(AttributeError):
+            api.manifest = Mock()
+
     def test_register_context_menu_actions(self):
         """Test context menu action registration methods."""
         manifest = load_plugin_manifest('example')

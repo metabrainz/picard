@@ -31,6 +31,8 @@ from pathlib import Path
 import sys
 import types
 
+from picard.util.imageinfo import ImageInfo
+
 
 try:
     import tomllib
@@ -101,6 +103,7 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
+from picard.script import ScriptParser
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -185,10 +188,12 @@ class PluginApi:
     Cluster: TypeAlias = Cluster
     Metadata: TypeAlias = Metadata
     CoverArtImage: TypeAlias = CoverArtImage
+    ImageInfo: TypeAlias = ImageInfo
     CoverArtProvider: TypeAlias = CoverArtProvider
     ProviderOptions: TypeAlias = ProviderOptions
     BaseAction: TypeAlias = BaseAction
     OptionsPage: TypeAlias = OptionsPage
+    ScriptParser: TypeAlias = ScriptParser
 
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
@@ -474,6 +479,11 @@ class PluginApi:
         """
         return self._plugin_dir
 
+    @property
+    def manifest(self) -> PluginManifest:
+        """Return the plugin's manifest."""
+        return self._manifest
+
     def get_locale(self) -> str:
         """Get the current locale used by Picard.
 
@@ -655,43 +665,59 @@ class PluginApi:
         return result
 
     # Metadata processors
-    def register_album_metadata_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_album_metadata_processor(
+        self, function: Callable[['PluginApi', Album, Metadata, dict], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_album_metadata_processor(wrapped, priority)
 
-    def register_track_metadata_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_track_metadata_processor(
+        self, function: Callable[['PluginApi', Track, Metadata, dict, dict | None], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_track_metadata_processor(wrapped, priority)
 
     # Event hooks
-    def register_album_post_removal_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_album_post_removal_processor(
+        self, function: Callable[['PluginApi', Album], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_album_post_removal_processor(wrapped, priority)
 
-    def register_file_post_load_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_file_post_load_processor(
+        self, function: Callable[['PluginApi', File], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_load_processor(wrapped, priority)
 
-    def register_file_post_addition_to_track_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_file_post_addition_to_track_processor(
+        self, function: Callable[['PluginApi', Track, File], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_addition_to_track_processor(wrapped, priority)
 
-    def register_file_post_removal_from_track_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_file_post_removal_from_track_processor(
+        self, function: Callable[['PluginApi', Track, File], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_removal_from_track_processor(wrapped, priority)
 
-    def register_file_post_save_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_file_post_save_processor(
+        self, function: Callable[['PluginApi', File], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_save_processor(wrapped, priority)
 
-    def register_file_pre_save_processor(self, function: Callable, priority: int = 0) -> None:
+    def register_file_pre_save_processor(
+        self, function: Callable[['PluginApi', File], None], priority: int = 0
+    ) -> None:
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_pre_save_processor(wrapped, priority)
@@ -701,12 +727,14 @@ class PluginApi:
         provider.api = self
         return register_cover_art_provider(provider)
 
-    def register_cover_art_filter(self, filter: Callable) -> None:
+    def register_cover_art_filter(
+        self, filter: Callable[['PluginApi', bytes, ImageInfo, Album | None, CoverArtImage], bool]
+    ) -> None:
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_filter(wrapped)
 
-    def register_cover_art_metadata_filter(self, filter: Callable) -> None:
+    def register_cover_art_metadata_filter(self, filter: Callable[['PluginApi', dict], bool]) -> None:
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)

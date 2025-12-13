@@ -768,9 +768,9 @@ album_metadata_processors = PluginFunctions(label='album_metadata_processors')
 track_metadata_processors = PluginFunctions(label='track_metadata_processors')
 
 
-def run_album_metadata_processors(album_object, metadata, release):
-    album_metadata_processors.run(album_object, metadata, release)
+def run_album_metadata_processors(album_object, metadata, release_node):
+    album_metadata_processors.run(album_object, metadata, release_node)
 
 
-def run_track_metadata_processors(album_object, metadata, track, release=None):
-    track_metadata_processors.run(album_object, metadata, track, release)
+def run_track_metadata_processors(track_object, metadata, track_node, release_node=None):
+    track_metadata_processors.run(track_object, metadata, track_node, release_node)

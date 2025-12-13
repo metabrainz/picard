@@ -590,7 +590,7 @@ class Album(MetadataItem):
 
         # Run track metadata plugins
         try:
-            run_track_metadata_processors(self, tm, track_node, self._release_node)
+            run_track_metadata_processors(track, tm, track_node, self._release_node)
         except BaseException:
             self.error_append(traceback.format_exc())
 
