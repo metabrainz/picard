@@ -245,6 +245,17 @@ class GitOperations:
         origin_remote = repo.get_remote('origin')
         repo.fetch_remote(origin_remote, None, callbacks._callbacks)
 
+        # If the ref is not found locally, try fetching it specifically
+        references = repo.get_references()
+        tag_ref = f'refs/tags/{ref}'
+        if tag_ref not in references:
+            try:
+                # Fetch the specific tag
+                repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
+            except Exception as e:
+                # If specific fetch fails, continue with what we have
+                log.debug('Failed to fetch specific tag %s: %s', ref, e)
+
         # Find the ref
         try:
             references = repo.get_references()
@@ -277,6 +288,19 @@ class GitOperations:
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, commit.id
+            else:
+                # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
+                try:
+                    commit_obj = repo.revparse_single(ref)
+                    # Check if this is actually a tag by seeing if refs/tags/{ref} exists after resolution
+                    if hasattr(commit_obj, 'type') and commit_obj.type in ['tag', 'commit']:
+                        commit = repo.peel_to_commit(commit_obj)
+                        repo.checkout_tree(commit)
+                        repo.set_head(commit.id)
+                        log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                        return old_ref, ref, old_commit, commit.id
+                except KeyError:
+                    pass
 
             # Try as commit hash
             try:
