@@ -77,7 +77,6 @@ class PluginInfoDialog(QtWidgets.QDialog):
         self._add_field(details_layout, _("ID:"), self._get_plugin_id())
         self._add_field(details_layout, _("UUID:"), self._get_plugin_uuid())
         self._add_field(details_layout, _("Registry ID:"), self._get_registry_id())
-        self._add_field(details_layout, _("Status:"), self._get_status())
         self._add_field(details_layout, _("State:"), self._get_state())
         self._add_field(details_layout, _("Version:"), self._get_plugin_version())
         self._add_field(details_layout, _("API Version:"), self._get_api_version())
@@ -276,13 +275,6 @@ class PluginInfoDialog(QtWidgets.QDialog):
             return self.registry_plugin.id
         else:
             return getattr(self.plugin_data, 'registry_id', '')
-
-    def _get_status(self):
-        """Get plugin status (enabled/disabled)."""
-        if self._is_registry_plugin():
-            return ''
-        else:
-            return _("enabled") if self.plugin_data.enable else _("disabled")
 
     def _get_state(self):
         """Get plugin state."""
