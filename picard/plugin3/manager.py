@@ -1488,12 +1488,7 @@ class PluginManager(QObject):
             for remote in repo.get_remotes():
                 repo.fetch_remote(remote, None, callbacks._callbacks)
 
-            # Update version tag cache from fetched repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
-            if registry_plugin and registry_plugin.versioning_scheme:
-                self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                )
+            # Cache update removed - should happen during actual operations, not status checks
 
             old_ref = metadata.ref or 'main'
             ref = old_ref
