@@ -391,7 +391,7 @@ class PluginManager(QObject):
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-            commit_id = str(ref.id) if hasattr(ref, 'id') else None
+            commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
 
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]
