@@ -36,6 +36,7 @@ from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
+    sip,
 )
 
 from picard import log
@@ -311,7 +312,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             pass
 
         # Set initial selection after plugin refresh
-        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+        if self.default_item and not sip.isdeleted(self.default_item):
+            self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+        else:
+            self.default_item = None
 
     @property
     def initialized_pages(self):
@@ -596,8 +600,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.pages_tree.setCurrentItem(self.pagename_to_item[current_page])
         elif default_page and default_page in self.pagename_to_item:
             self.ui.pages_tree.setCurrentItem(self.pagename_to_item[default_page])
-        elif self.default_item:
+        elif self.default_item and not sip.isdeleted(self.default_item):
             self.ui.pages_tree.setCurrentItem(self.default_item)
+        else:
+            # Reset default_item if it was deleted
+            self.default_item = None
 
         log.debug("refresh_plugin_pages: Refresh complete")
 
