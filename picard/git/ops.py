@@ -252,9 +252,9 @@ class GitOperations:
             try:
                 # Fetch the specific tag
                 repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
-            except Exception:
+            except Exception as e:
                 # If specific fetch fails, continue with what we have
-                pass
+                log.debug('Failed to fetch specific tag %s: %s', ref, e)
 
         # Find the ref
         try:
