@@ -53,3 +53,51 @@ class InstallablePlugin(ABC):
     def get_description(self):
         """Get description of this plugin."""
         return self.description
+
+
+class RegistryInstallablePlugin(InstallablePlugin):
+    """Installable plugin from registry."""
+
+    def __init__(self, registry_plugin):
+        super().__init__(
+            source_url=registry_plugin.git_url, plugin_uuid=registry_plugin.uuid, name=registry_plugin.name_i18n()
+        )
+        self._registry_plugin = registry_plugin
+        self.trust_level = registry_plugin.trust_level
+        self.categories = registry_plugin.categories
+        self.description = registry_plugin.description_i18n()
+
+    def get_display_name(self):
+        return self.name or self._registry_plugin.id
+
+    def get_install_url(self):
+        return self.source_url
+
+
+class UrlInstallablePlugin(InstallablePlugin):
+    """Installable plugin from URL."""
+
+    def __init__(self, url, ref=None):
+        super().__init__(source_url=url)
+        self.ref = ref
+
+    def get_display_name(self):
+        return self.name or "Plugin from URL"
+
+    def get_install_url(self):
+        return self.source_url
+
+
+class LocalInstallablePlugin(InstallablePlugin):
+    """Installable plugin from local directory."""
+
+    def __init__(self, local_path, ref=None):
+        super().__init__(source_url=local_path)
+        self.local_path = local_path
+        self.ref = ref
+
+    def get_display_name(self):
+        return self.name or f"Local plugin ({self.local_path})"
+
+    def get_install_url(self):
+        return self.source_url
