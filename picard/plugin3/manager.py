@@ -287,6 +287,74 @@ class PluginManager(QObject):
         self._refs_cache.clear_cache()
         self._cleanup_version_cache()
 
+    def get_default_ref_info(self, plugin_uuid):
+        """Get default ref name and description for a plugin.
+
+        Args:
+            plugin_uuid: Plugin UUID to look up
+
+        Returns:
+            tuple: (ref_name, description) or (None, None) if not found
+        """
+        try:
+            registry_plugin = self.registry.find_plugin(uuid=plugin_uuid)
+            if registry_plugin:
+                default_ref = self.select_ref_for_plugin(registry_plugin)
+                if default_ref:
+                    # Determine description based on whether it's a version tag or branch
+                    if registry_plugin.get('versioning_scheme'):
+                        description = "latest version"
+                    else:
+                        description = "main branch"
+                    return default_ref, description
+        except Exception:
+            pass
+        return None, None
+
+    def format_refs_for_display(self, refs, current_ref=None):
+        """Format refs for display with commit IDs and current markers.
+
+        Args:
+            refs: Dict with 'tags' and 'branches' lists
+            current_ref: Current ref name to mark as (current)
+
+        Returns:
+            dict: Formatted refs with display_name for each ref
+        """
+        from picard.plugin3.plugin import short_commit_id
+
+        formatted_refs = {'tags': [], 'branches': []}
+
+        # Format tags
+        for ref in refs.get('tags', []):
+            ref_name = ref['name']
+            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
+            commit_display = f" @{commit_id}" if commit_id else ""
+
+            if current_ref and ref_name == current_ref:
+                display_name = f"{ref_name}{commit_display} (current)"
+            else:
+                display_name = f"{ref_name}{commit_display}"
+
+            formatted_refs['tags'].append({'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name})
+
+        # Format branches
+        for ref in refs.get('branches', []):
+            ref_name = ref['name']
+            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
+            commit_display = f" @{commit_id}" if commit_id else ""
+
+            if current_ref and ref_name == current_ref:
+                display_name = f"{ref_name}{commit_display} (current)"
+            else:
+                display_name = f"{ref_name}{commit_display}"
+
+            formatted_refs['branches'].append(
+                {'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name}
+            )
+
+        return formatted_refs
+
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.
 
@@ -323,7 +391,7 @@ class PluginManager(QObject):
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-            commit_id = str(ref.id) if hasattr(ref, 'id') else None
+            commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
 
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]

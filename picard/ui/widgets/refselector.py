@@ -44,7 +44,8 @@ class RefSelectorWidget(QtWidgets.QWidget):
         if self.include_default:
             default_widget = QtWidgets.QWidget()
             default_layout = QtWidgets.QVBoxLayout(default_widget)
-            default_layout.addWidget(QtWidgets.QLabel(_("Use the default ref (usually main/master branch)")))
+            self.default_label = QtWidgets.QLabel(_("Use the default ref (usually main/master branch)"))
+            default_layout.addWidget(self.default_label)
             self.tab_widget.addTab(default_widget, _("Default"))
             self.default_tab_index = tab_index
             tab_index += 1
@@ -70,19 +71,34 @@ class RefSelectorWidget(QtWidgets.QWidget):
         self.tab_widget.addTab(custom_widget, _("Custom"))
         self.custom_tab_index = tab_index
 
-    def load_refs(self, refs):
+    def load_refs(self, refs, current_ref=None, plugin_manager=None):
         """Load refs data into the widget."""
         # Clear existing items
         self.tags_list.clear()
         self.branches_list.clear()
 
-        # Populate tags
-        for ref in refs.get('tags', []):
-            self.tags_list.addItem(ref['name'])
+        # Use shared formatting if plugin_manager is available
+        if plugin_manager:
+            formatted_refs = plugin_manager.format_refs_for_display(refs, current_ref)
 
-        # Populate branches
-        for ref in refs.get('branches', []):
-            self.branches_list.addItem(ref['name'])
+            # Populate tags
+            for ref in formatted_refs['tags']:
+                self.tags_list.addItem(ref['display_name'])
+
+            # Populate branches
+            for ref in formatted_refs['branches']:
+                self.branches_list.addItem(ref['display_name'])
+        else:
+            # Fallback to simple display (for backward compatibility)
+            for ref in refs.get('tags', []):
+                self.tags_list.addItem(ref['name'])
+            for ref in refs.get('branches', []):
+                self.branches_list.addItem(ref['name'])
+
+    def set_default_ref_info(self, default_ref_name, description):
+        """Update the default tab with specific ref information."""
+        if self.include_default and hasattr(self, 'default_label') and default_ref_name:
+            self.default_label.setText(_("Use default ref: {} ({})").format(default_ref_name, description))
 
     def get_selected_ref(self):
         """Get the currently selected ref."""
@@ -92,10 +108,24 @@ class RefSelectorWidget(QtWidgets.QWidget):
             return None
         elif current_tab == self.tags_tab_index:
             current_item = self.tags_list.currentItem()
-            return current_item.text() if current_item else None
+            if current_item:
+                # Extract ref name from "ref_name @commit (current)" format
+                ref_text = current_item.text()
+                # Remove " (current)" suffix if present
+                ref_text = ref_text.replace(" (current)", "")
+                # Extract just the ref name (before @commit)
+                return ref_text.split(" @")[0]
+            return None
         elif current_tab == self.branches_tab_index:
             current_item = self.branches_list.currentItem()
-            return current_item.text() if current_item else None
+            if current_item:
+                # Extract ref name from "ref_name @commit (current)" format
+                ref_text = current_item.text()
+                # Remove " (current)" suffix if present
+                ref_text = ref_text.replace(" (current)", "")
+                # Extract just the ref name (before @commit)
+                return ref_text.split(" @")[0]
+            return None
         elif current_tab == self.custom_tab_index:
             return self.custom_edit.text().strip() or None
 
