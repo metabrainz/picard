@@ -282,14 +282,12 @@ class Plugins3OptionsPage(OptionsPage):
         self._show_status(_("Fetching latest plugin registry from server..."))
 
         try:
-            # Force refresh the registry cache
-            if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
-                registry = self.plugin_manager._registry
-                registry.fetch_registry(use_cache=False)
+            # Use the manager's centralized refresh method
+            if self.plugin_manager:
+                self.plugin_manager.refresh_registry_and_caches()
 
                 # Get plugin count for status
-                plugin_count = len(registry.list_plugins())
-
+                plugin_count = len(self.plugin_manager.registry.list_plugins())
                 success_msg = _("Registry refreshed successfully - {} plugins available").format(plugin_count)
                 self._show_status(success_msg)
             else:
@@ -313,8 +311,8 @@ class Plugins3OptionsPage(OptionsPage):
         base_tooltip = _("Update plugin registry data from server")
 
         try:
-            if self.plugin_manager and hasattr(self.plugin_manager, '_registry'):
-                registry = self.plugin_manager._registry
+            if self.plugin_manager:
+                registry = self.plugin_manager.registry
                 plugin_count = len(registry.list_plugins())
 
                 detailed_tooltip = _("{}\n\nCurrent Registry Info:\n• Plugins: {}\n• URL: {}").format(

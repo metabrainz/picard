@@ -448,7 +448,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import ExitCode
 
         mock_manager = MockPluginManager()
-        mock_manager._registry.fetch_registry = Mock()
+        mock_manager.refresh_registry_and_caches = Mock()
         mock_manager._registry.get_registry_info.return_value = {
             'plugin_count': 42,
             'api_version': '3.0',
@@ -458,7 +458,7 @@ class TestPluginCLI(PicardTestCase):
         exit_code, stdout, _ = run_cli(mock_manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.fetch_registry.assert_called_once_with(use_cache=False)
+        mock_manager.refresh_registry_and_caches.assert_called_once()
         mock_manager._registry.get_registry_info.assert_called_once()
         self.assertIn('Registry refreshed successfully', stdout)
         self.assertIn('Plugins available: 42', stdout)
@@ -468,7 +468,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import ExitCode
 
         mock_manager = MockPluginManager()
-        mock_manager._registry.fetch_registry.side_effect = Exception('Network error')
+        mock_manager.refresh_registry_and_caches.side_effect = Exception('Network error')
 
         exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
 
@@ -482,7 +482,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.registry import RegistryFetchError
 
         mock_manager = MockPluginManager()
-        mock_manager._registry.fetch_registry.side_effect = RegistryFetchError(
+        mock_manager.refresh_registry_and_caches.side_effect = RegistryFetchError(
             'https://test.example.com/registry.toml', Exception('Connection timeout')
         )
 
@@ -499,7 +499,7 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.registry import RegistryParseError
 
         mock_manager = MockPluginManager()
-        mock_manager._registry.fetch_registry.side_effect = RegistryParseError(
+        mock_manager.refresh_registry_and_caches.side_effect = RegistryParseError(
             'https://test.example.com/registry.toml', Exception('Invalid JSON')
         )
 

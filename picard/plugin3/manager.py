@@ -267,6 +267,10 @@ class PluginManager(QObject):
     def plugins(self):
         return self._plugins
 
+    @property
+    def registry(self):
+        return self._registry
+
     def _cleanup_temp_directories(self):
         """Remove leftover temporary plugin directories from failed installs."""
         if not self._primary_plugin_dir or not self._primary_plugin_dir.exists():
@@ -276,6 +280,12 @@ class PluginManager(QObject):
             if entry.is_dir() and entry.name.startswith('.tmp-'):
                 shutil.rmtree(entry, ignore_errors=True)
                 log.debug('Cleaned up temporary plugin directory: %s', entry)
+
+    def refresh_registry_and_caches(self):
+        """Refresh plugin registry and clear related caches."""
+        self._registry.fetch_registry(use_cache=False)
+        self._refs_cache.clear_cache()
+        self._cleanup_version_cache()
 
     def fetch_all_git_refs(self, url, use_cache=True):
         """Fetch all branches and tags from a git repository.

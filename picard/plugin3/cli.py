@@ -1645,13 +1645,7 @@ class PluginCLI:
         try:
             self._out.print('Refreshing plugin registry...')
 
-            self._manager._registry.fetch_registry(use_cache=False)
-
-            # Clear refs cache to ensure fresh data
-            self._manager._refs_cache.clear_cache()
-
-            # Clean up stale version cache entries
-            self._manager._cleanup_version_cache()
+            self._manager.refresh_registry_and_caches()
 
             info = self._manager._registry.get_registry_info()
             self._out.success('Registry refreshed successfully')
