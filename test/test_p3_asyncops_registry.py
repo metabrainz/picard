@@ -30,7 +30,8 @@ class TestAsyncopsRegistry(PicardTestCase):
     def test_async_registry_wraps_registry(self):
         """Test AsyncPluginRegistry wraps PluginRegistry."""
         mock_registry = Mock()
-        mock_registry._registry_data = {'test': 'data'}
+        mock_registry.is_registry_loaded.return_value = True
+        mock_registry.get_raw_registry_data.return_value = {'test': 'data'}
 
         async_registry = AsyncPluginRegistry(mock_registry)
         self.assertEqual(async_registry._registry, mock_registry)

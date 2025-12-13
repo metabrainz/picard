@@ -390,8 +390,8 @@ class TestPluginRegistry(PicardTestCase):
 
             registry.fetch_registry(use_cache=False)
 
-            self.assertIsNotNone(registry._registry_data)
-            self.assertEqual(registry._registry_data['blacklist'], [])
+            self.assertTrue(registry.is_registry_loaded())
+            self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
@@ -424,7 +424,7 @@ class TestPluginRegistry(PicardTestCase):
             registry2.fetch_registry(use_cache=True)
 
             # Should have loaded from cache
-            self.assertEqual(registry2._registry_data['blacklist'], [{'url': 'test'}])
+            self.assertEqual(registry2.get_raw_registry_data()['blacklist'], [{'url': 'test'}])
 
     def test_registry_fetch_error_fallback(self):
         """Test registry fetch error handling."""
@@ -616,7 +616,7 @@ class TestPluginRegistry(PicardTestCase):
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
-        registry._registry_data = {'plugins': []}
+        registry.set_raw_registry_data({'plugins': []})
 
         # Already loaded
         result = registry._ensure_registry_loaded('test')
@@ -667,7 +667,7 @@ class TestPluginRegistry(PicardTestCase):
                 registry.fetch_registry()
 
         self.assertEqual(call_count, 3)
-        self.assertEqual(registry._registry_data, {'plugins': []})
+        self.assertEqual(registry.get_raw_registry_data(), {'plugins': []})
 
     def test_registry_fetch_no_retry_on_client_error(self):
         """Test that registry fetch does not retry on 4xx errors."""
