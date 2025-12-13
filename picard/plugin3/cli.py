@@ -20,11 +20,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import argparse
+from datetime import datetime
 from enum import IntEnum
 import logging
 from pathlib import Path
+
+# Additional imports for CLI operations
 import sys
 import tempfile
+import traceback
 
 from PyQt6 import QtCore
 
@@ -40,9 +44,23 @@ from picard.config import (
 )
 from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
+from picard.git.factory import has_git_backend
+from picard.git.utils import check_local_repo_dirty, get_local_repository_path
 from picard.options import init_options
+from picard.plugin3.installable import UrlInstallablePlugin
+from picard.plugin3.manager import (
+    PluginManager,
+)
+from picard.plugin3.manifest import generate_manifest_template
 from picard.plugin3.output import PluginOutput
-from picard.plugin3.plugin import short_commit_id
+from picard.plugin3.plugin import (
+    PluginSourceGit,
+    short_commit_id,
+)
+from picard.plugin3.registry import (
+    RegistryFetchError,
+    RegistryParseError,
+)
 from picard.util import (
     cli,
     versions,
@@ -120,8 +138,6 @@ class PluginCLI:
             self._out.error(f'Error: {e}')
 
         if self._is_debug_mode():
-            import traceback
-
             self._out.nl()
             self._out.error('Traceback:')
             for line in traceback.format_exc().splitlines():
@@ -172,8 +188,6 @@ class PluginCLI:
 
         # Append date if available
         if hasattr(result, 'commit_date'):
-            from datetime import datetime
-
             date_str = datetime.fromtimestamp(result.commit_date).strftime(DATETIME_FORMAT)
             version_info = f'{version_info} {self._out.d_date(f"({date_str})")}'
 
@@ -601,8 +615,6 @@ class PluginCLI:
         if not git_refs:
             self._out.error('Failed to fetch refs from git')
             if self._is_debug_mode():
-                import traceback
-
                 self._out.nl()
                 self._out.error('Traceback:')
                 for line in traceback.format_exc().splitlines():
@@ -753,8 +765,6 @@ class PluginCLI:
                     # Check blacklist by URL (before prompting user)
                     # UUID-based blacklist will be checked during install after cloning
                     if not force_blacklisted:
-                        from picard.plugin3.installable import UrlInstallablePlugin
-
                         plugin = UrlInstallablePlugin(url, ref, self._manager._registry)
                         if plugin.is_blacklisted():
                             self._out.error(f'Plugin is blacklisted: {plugin.blacklist_reason}')
@@ -794,8 +804,6 @@ class PluginCLI:
                     self._out.print(f'Installing plugin from {url}...')
 
                 # Check if installing from dirty local git repository
-                from picard.git.utils import check_local_repo_dirty
-
                 if check_local_repo_dirty(url):
                     self._out.warning('Local repository has uncommitted changes')
 
@@ -1278,15 +1286,10 @@ class PluginCLI:
 
     def _cmd_validate(self, url, ref=None):
         """Validate a plugin from git URL or local directory."""
-        import shutil
-
-        from picard.plugin3.plugin import PluginSourceGit
 
         self._out.print(f'Validating plugin from: {url}')
 
         # Check if url is a local directory
-        from picard.git.utils import get_local_repository_path
-
         local_path = get_local_repository_path(url)
         if local_path:
             # Validate local directory directly
@@ -1616,8 +1619,6 @@ class PluginCLI:
     def _cmd_check_blacklist(self, url):
         """Check if a URL is blacklisted."""
         try:
-            from picard.plugin3.installable import UrlInstallablePlugin
-
             plugin = UrlInstallablePlugin(url, registry=self._manager._registry)
 
             if plugin.is_blacklisted():
@@ -1633,11 +1634,6 @@ class PluginCLI:
 
     def _cmd_refresh_registry(self):
         """Force refresh of plugin registry cache."""
-        from picard.plugin3.registry import (
-            RegistryFetchError,
-            RegistryParseError,
-        )
-
         try:
             self._out.print('Refreshing plugin registry...')
 
@@ -1674,8 +1670,6 @@ class PluginCLI:
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
         if not target:
-            from picard.plugin3.manifest import generate_manifest_template
-
             template = generate_manifest_template()
             self._out.print(template)
             return ExitCode.SUCCESS
@@ -1691,8 +1685,6 @@ class PluginCLI:
             return ExitCode.ERROR
 
         # Check if it's a local directory
-        from picard.git.utils import get_local_repository_path
-
         local_path = get_local_repository_path(target)
         if local_path:
             content = self._read_manifest(local_path)
@@ -1706,8 +1698,6 @@ class PluginCLI:
         temp_path = Path(tempfile.mkdtemp(prefix='picard-manifest-'))
 
         try:
-            from picard.plugin3.plugin import PluginSourceGit
-
             self._out.print(f'Fetching from {target}...')
             source = PluginSourceGit(target, None)
             # Remove temp dir so git can create it
@@ -1852,8 +1842,6 @@ def minimal_init(config_file=None):
 
 def main():
     try:
-        from picard.git.factory import has_git_backend
-
         if not has_git_backend():
             cli.print_message_and_exit("git backend not available", status=1)
     except ImportError as err:
@@ -1880,9 +1868,6 @@ def main():
     # Initialize debug options for CLI
     if cmdline_args.debug_opts:
         DebugOpt.from_string(cmdline_args.debug_opts)
-
-    from picard.plugin3.manager import PluginManager
-    from picard.plugin3.output import PluginOutput
 
     manager = PluginManager()
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
