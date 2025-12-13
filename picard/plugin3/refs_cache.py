@@ -395,3 +395,35 @@ class RefsCache:
         except Exception as e:
             log.debug('Failed to update cache from local repo: %s', e)
             return []
+
+    def cache_update_status(self, plugin_id, has_update, current_ref=None):
+        """Cache update status for a plugin."""
+        cache = self.load_cache()
+        if 'update_status' not in cache:
+            cache['update_status'] = {}
+
+        cache['update_status'][plugin_id] = {
+            'has_update': has_update,
+            'current_ref': current_ref,
+            'timestamp': time.time(),
+        }
+        self.save_cache(cache)
+
+    def get_cached_update_status(self, plugin_id, current_ref=None, ttl=REFS_CACHE_TTL):
+        """Get cached update status for a plugin."""
+        cache = self.load_cache()
+        update_cache = cache.get('update_status', {})
+
+        if plugin_id not in update_cache:
+            return None
+
+        entry = update_cache[plugin_id]
+
+        # Check if ref has changed (invalidates cache)
+        if current_ref and entry.get('current_ref') != current_ref:
+            return None
+
+        if time.time() - entry['timestamp'] > ttl:
+            return None  # Expired
+
+        return entry['has_update']

@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
@@ -75,6 +77,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Guard to prevent double refresh during operations
         self._refreshing = False
+
+        # Cache update status to avoid repeated network calls during search
+        self._update_status_cache = {}
+
+        # Load cached update status from disk
+        self._load_cached_update_status()
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -133,16 +141,53 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Get display text for plugin version."""
         version_text = self.plugin_manager.get_plugin_version_display(plugin)
 
-        # Check if update is available and add indicator
-        if self._has_update_available(plugin):
+        # Check if update is available using cached result
+        if self._has_update_available_cached(plugin):
             version_text += " " + _("(Update available)")
 
         return version_text
 
+    def _load_cached_update_status(self):
+        """Load cached update status from disk."""
+        for plugin in self.plugin_manager.plugins:
+            if plugin.manifest and plugin.manifest.uuid:
+                metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.manifest.uuid)
+                if metadata:
+                    current_ref = metadata.ref or 'main'
+                    cached_result = self.plugin_manager._refs_cache.get_cached_update_status(
+                        plugin.plugin_id, current_ref
+                    )
+                    if cached_result is not None:
+                        self._update_status_cache[plugin.plugin_id] = cached_result
+
+    def refresh_update_status(self):
+        """Public method to refresh update status for all plugins."""
+        self._refresh_update_status()
+
+    def _has_update_available_cached(self, plugin):
+        """Check if plugin has update available using cache."""
+        return self._update_status_cache.get(plugin.plugin_id, False)
+
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
-        # Use the manager's method which handles versioning schemes correctly
+        # This is only called from context menu, so network call is acceptable
         return self.plugin_manager.get_plugin_update_status(plugin)
+
+    def _refresh_update_status(self):
+        """Refresh update status for all plugins."""
+        self._update_status_cache.clear()
+        for plugin in self.plugin_manager.plugins:
+            self._refresh_single_plugin_update_status(plugin)
+
+    def _refresh_single_plugin_update_status(self, plugin):
+        """Refresh update status for a single plugin."""
+        try:
+            has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+            self._update_status_cache[plugin.plugin_id] = has_update
+        except Exception as e:
+            log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
+            # Don't let update check failures break the UI
+            self._update_status_cache[plugin.plugin_id] = False
 
     def _on_selection_changed(self):
         """Handle selection changes."""
@@ -325,19 +370,21 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _update_plugin_from_menu(self, plugin):
         """Update plugin from context menu."""
-        self._updating_plugin = plugin  # Store for callback
         async_manager = AsyncPluginManager(self.plugin_manager)
-        async_manager.update_plugin(plugin=plugin, progress_callback=None, callback=self._on_context_update_complete)
+        async_manager.update_plugin(
+            plugin=plugin, progress_callback=None, callback=partial(self._on_context_update_complete, plugin)
+        )
 
-    def _on_context_update_complete(self, result):
+    def _on_context_update_complete(self, plugin, result):
         """Handle context menu update completion."""
         if result.success:
+            # Refresh update status for the specific plugin since it was updated
+            self._refresh_single_plugin_update_status(plugin)
+
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh
-            if hasattr(self, '_updating_plugin'):
-                self.plugin_state_changed.emit(self._updating_plugin, "updated")
-                delattr(self, '_updating_plugin')
+            self.plugin_state_changed.emit(plugin, "updated")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Update Failed"), error_msg)
@@ -347,23 +394,22 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = UninstallPluginDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
-                self._uninstalling_plugin = plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
-                async_manager.uninstall_plugin(plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete)
+                async_manager.uninstall_plugin(
+                    plugin, purge=dialog.purge_config, callback=partial(self._on_uninstall_complete, plugin)
+                )
             except Exception as e:
                 log.error("Failed to uninstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                 QtWidgets.QMessageBox.critical(
                     self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
                 )
 
-    def _on_uninstall_complete(self, result):
+    def _on_uninstall_complete(self, plugin, result):
         """Handle uninstall completion."""
         if result.success:
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
-            if hasattr(self, '_uninstalling_plugin'):
-                self.plugin_state_changed.emit(self._uninstalling_plugin, "uninstalled")
-                delattr(self, '_uninstalling_plugin')
+            self.plugin_state_changed.emit(plugin, "uninstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
@@ -401,13 +447,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
-            self._reinstalling_plugin = plugin  # Store for callback
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
                 ref=confirm_dialog.selected_ref,
                 reinstall=True,
-                callback=self._on_reinstall_complete,
+                callback=partial(self._on_reinstall_complete, plugin),
             )
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
@@ -415,14 +460,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
             )
 
-    def _on_reinstall_complete(self, result):
+    def _on_reinstall_complete(self, plugin, result):
         """Handle reinstall completion."""
         if result.success:
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
-            if hasattr(self, '_reinstalling_plugin'):
-                self.plugin_state_changed.emit(self._reinstalling_plugin, "reinstalled")
-                delattr(self, '_reinstalling_plugin')
+            self.plugin_state_changed.emit(plugin, "reinstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), error_msg)
@@ -432,23 +475,25 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
-                self._switching_ref_plugin = plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
-                async_manager.switch_ref(plugin=plugin, ref=dialog.selected_ref, callback=self._on_switch_ref_complete)
+                async_manager.switch_ref(
+                    plugin=plugin, ref=dialog.selected_ref, callback=partial(self._on_switch_ref_complete, plugin)
+                )
             except Exception as e:
                 log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                 QtWidgets.QMessageBox.critical(
                     self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
                 )
 
-    def _on_switch_ref_complete(self, result):
+    def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
         if result.success:
+            # Refresh update status for the specific plugin since ref changed
+            self._refresh_single_plugin_update_status(plugin)
+
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
-            if hasattr(self, '_switching_ref_plugin'):
-                self.plugin_state_changed.emit(self._switching_ref_plugin, "ref switched")
-                delattr(self, '_switching_ref_plugin')
+            self.plugin_state_changed.emit(plugin, "ref switched")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), error_msg)

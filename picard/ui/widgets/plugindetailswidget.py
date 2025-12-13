@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from functools import partial
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard.i18n import gettext as _
@@ -119,8 +121,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Initially hide everything
         self.setVisible(False)
 
-    def show_plugin(self, plugin):
-        """Show details for the given plugin."""
+    def show_plugin(self, plugin, has_update=None):
+        """Show details for the given plugin.
+
+        Args:
+            plugin: Plugin to show
+            has_update: Optional cached update status to avoid network call
+        """
         self.current_plugin = plugin
 
         if plugin is None:
@@ -154,8 +161,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.git_ref_label.setText(self._get_git_ref_display(plugin))
         self.git_url_label.setText(self._get_git_url_display(plugin))
 
-        # Check if update is available and enable/disable update button
-        self.update_button.setEnabled(self._has_update_available(plugin))
+        # Check if update is available - use cached value if provided, otherwise disable button
+        if has_update is not None:
+            self.update_button.setEnabled(has_update)
+        else:
+            # Don't check for updates during normal display to avoid network calls
+            self.update_button.setEnabled(False)
 
         # Enable/disable description button based on long description availability
         has_long_desc = self.plugin_manager.long_description_as_html(plugin) is not None
@@ -240,13 +251,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             # Fallback to old method if plugin list not found
             self._perform_uninstall()
 
-    def _on_uninstall_complete(self, result):
+    def _on_uninstall_complete(self, plugin, result):
         """Handle uninstall completion."""
         if result.success:
             # Emit the same signal as context menu for status updates
-            if hasattr(self, '_uninstalling_plugin') and hasattr(self.parent(), 'plugin_state_changed'):
-                self.parent().plugin_state_changed.emit(self._uninstalling_plugin, "uninstalled")
-                delattr(self, '_uninstalling_plugin')
+            if hasattr(self.parent(), 'plugin_state_changed'):
+                self.parent().plugin_state_changed.emit(plugin, "uninstalled")
             self.show_plugin(None)  # Clear details
             self.plugin_uninstalled.emit()  # Signal that plugin was uninstalled
         else:
@@ -360,10 +370,11 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         dialog = UninstallPluginDialog(self.current_plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
             try:
-                self._uninstalling_plugin = self.current_plugin  # Store for callback
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(
-                    self.current_plugin, purge=dialog.purge_config, callback=self._on_uninstall_complete
+                    self.current_plugin,
+                    purge=dialog.purge_config,
+                    callback=partial(self._on_uninstall_complete, self.current_plugin),
                 )
             except Exception as e:
                 QtWidgets.QMessageBox.critical(
@@ -378,10 +389,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(
-            plugin=self.current_plugin, progress_callback=None, callback=self._on_update_complete
+            plugin=self.current_plugin,
+            progress_callback=None,
+            callback=partial(self._on_update_complete, self.current_plugin),
         )
 
-    def _on_update_complete(self, result):
+    def _on_update_complete(self, plugin, result):
         """Handle update completion."""
         self.update_button.setText(_("Update"))
 
@@ -389,9 +402,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.plugin_updated.emit()  # Signal that plugin was updated
             # Emit the same signal as context menu for status updates
             if hasattr(self.parent(), 'plugin_state_changed'):
-                self.parent().plugin_state_changed.emit(self.current_plugin, "updated")
-            # Refresh the display
-            self.show_plugin(self.current_plugin)
+                self.parent().plugin_state_changed.emit(plugin, "updated")
+            # Refresh the display - plugin should no longer have update available
+            self.show_plugin(plugin, False)
         else:
             self.update_button.setEnabled(True)
             error_msg = str(result.error) if result.error else _("Unknown error")
