@@ -76,6 +76,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Guard to prevent double refresh during operations
         self._refreshing = False
 
+        # Cache update status to avoid repeated network calls during search
+        self._update_status_cache = {}
+
+        # Load cached update status from disk
+        self._load_cached_update_status()
+
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
         self.clear()
@@ -133,16 +139,49 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Get display text for plugin version."""
         version_text = self.plugin_manager.get_plugin_version_display(plugin)
 
-        # Check if update is available and add indicator
-        if self._has_update_available(plugin):
+        # Check if update is available using cached result
+        if self._has_update_available_cached(plugin):
             version_text += " " + _("(Update available)")
 
         return version_text
 
+    def _load_cached_update_status(self):
+        """Load cached update status from disk."""
+        for plugin in self.plugin_manager.plugins:
+            if plugin.manifest and plugin.manifest.uuid:
+                metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.manifest.uuid)
+                if metadata:
+                    current_ref = metadata.ref or 'main'
+                    cached_result = self.plugin_manager._refs_cache.get_cached_update_status(
+                        plugin.plugin_id, current_ref
+                    )
+                    if cached_result is not None:
+                        self._update_status_cache[plugin.plugin_id] = cached_result
+
+    def refresh_update_status(self):
+        """Public method to refresh update status for all plugins."""
+        self._refresh_update_status()
+
+    def _has_update_available_cached(self, plugin):
+        """Check if plugin has update available using cache."""
+        return self._update_status_cache.get(plugin.plugin_id, False)
+
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
-        # Use the manager's method which handles versioning schemes correctly
+        # This is only called from context menu, so network call is acceptable
         return self.plugin_manager.get_plugin_update_status(plugin)
+
+    def _refresh_update_status(self):
+        """Refresh update status for all plugins."""
+        self._update_status_cache.clear()
+        for plugin in self.plugin_manager.plugins:
+            try:
+                has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+                self._update_status_cache[plugin.plugin_id] = has_update
+            except Exception as e:
+                log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
+                # Don't let update check failures break the UI
+                self._update_status_cache[plugin.plugin_id] = False
 
     def _on_selection_changed(self):
         """Handle selection changes."""
@@ -233,6 +272,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         self._refreshing = True
         try:
+            # Refresh update status for all plugins
+            self._refresh_update_status()
+
             plugins = self.plugin_manager.plugins
 
             # Use utility to temporarily disconnect signal during refresh

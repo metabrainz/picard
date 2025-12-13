@@ -1469,8 +1469,10 @@ class PluginManager(QObject):
 
         return updates
 
-    def get_plugin_update_status(self, plugin):
+    def get_plugin_update_status(self, plugin, force_refresh=False):
         """Check if a single plugin has an update available."""
+        log.debug("Checking update status for plugin: %s", plugin.plugin_id)
+
         if not plugin.manifest or not plugin.manifest.uuid:
             return False
 
@@ -1478,12 +1480,22 @@ class PluginManager(QObject):
         if not metadata or not metadata.url:
             return False
 
+        current_ref = metadata.ref or 'main'
+
+        # Try cached result first (unless force refresh)
+        if not force_refresh:
+            cached_result = self._refs_cache.get_cached_update_status(plugin.plugin_id, current_ref)
+            if cached_result is not None:
+                log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
+                return cached_result
+
         try:
             backend = git_backend()
             repo = backend.create_repository(plugin.local_path)
             current_commit = repo.get_head_target()
 
             # Fetch without updating (suppress progress output)
+            log.debug("Making network request for plugin: %s", plugin.plugin_id)
             callbacks = backend.create_remote_callbacks()
             for remote in repo.get_remotes():
                 repo.fetch_remote(remote, None, callbacks._callbacks)
@@ -1549,13 +1561,18 @@ class PluginManager(QObject):
                 return False
 
             repo.free()
-            return current_commit != latest_commit
+            has_update = current_commit != latest_commit
+            # Cache the result with current ref
+            self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref)
+            return has_update
         except KeyError:
             # Ref not found, no update available
+            self._refs_cache.cache_update_status(plugin.plugin_id, False, current_ref)
             return False
         except Exception as e:
             # Log unexpected errors
             log.warning("Failed to check update for plugin %s: %s", plugin.plugin_id, e)
+            # Don't cache errors
             return False
 
     def get_plugin_remote_url(self, plugin):

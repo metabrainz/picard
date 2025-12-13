@@ -119,8 +119,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Initially hide everything
         self.setVisible(False)
 
-    def show_plugin(self, plugin):
-        """Show details for the given plugin."""
+    def show_plugin(self, plugin, has_update=None):
+        """Show details for the given plugin.
+
+        Args:
+            plugin: Plugin to show
+            has_update: Optional cached update status to avoid network call
+        """
         self.current_plugin = plugin
 
         if plugin is None:
@@ -154,8 +159,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.git_ref_label.setText(self._get_git_ref_display(plugin))
         self.git_url_label.setText(self._get_git_url_display(plugin))
 
-        # Check if update is available and enable/disable update button
-        self.update_button.setEnabled(self._has_update_available(plugin))
+        # Check if update is available - use cached value if provided, otherwise disable button
+        if has_update is not None:
+            self.update_button.setEnabled(has_update)
+        else:
+            # Don't check for updates during normal display to avoid network calls
+            self.update_button.setEnabled(False)
 
         # Enable/disable description button based on long description availability
         has_long_desc = self.plugin_manager.long_description_as_html(plugin) is not None
@@ -390,8 +399,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             # Emit the same signal as context menu for status updates
             if hasattr(self.parent(), 'plugin_state_changed'):
                 self.parent().plugin_state_changed.emit(self.current_plugin, "updated")
-            # Refresh the display
-            self.show_plugin(self.current_plugin)
+            # Refresh the display - plugin should no longer have update available
+            self.show_plugin(self.current_plugin, False)
         else:
             self.update_button.setEnabled(True)
             error_msg = str(result.error) if result.error else _("Unknown error")

@@ -86,7 +86,7 @@ class Plugins3OptionsPage(OptionsPage):
 
         self.refresh_button = QtWidgets.QPushButton(_("Refresh List"))
         self.refresh_button.setToolTip(_("Refresh the plugin list to reflect current state"))
-        self.refresh_button.clicked.connect(self.load)
+        self.refresh_button.clicked.connect(self._refresh_list)
         toolbar_layout.addWidget(self.refresh_button)
 
         toolbar_layout.addStretch()
@@ -157,6 +157,13 @@ class Plugins3OptionsPage(OptionsPage):
         except Exception as e:
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
+    def _refresh_list(self):
+        """Refresh plugin list and update status."""
+        self.load()
+        # Also refresh update status
+        self.plugin_list.refresh_update_status()
+        self._filter_plugins()  # Refresh display to show update indicators
+
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
         self.plugin_list.clear()
@@ -215,7 +222,12 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_selected(self, plugin):
         """Handle plugin selection."""
-        self.plugin_details.show_plugin(plugin)
+        # Get cached update status to avoid network call
+        has_update = None
+        if plugin and hasattr(self.plugin_list, '_update_status_cache'):
+            has_update = self.plugin_list._update_status_cache.get(plugin.plugin_id)
+
+        self.plugin_details.show_plugin(plugin, has_update)
         # Update button text since details are now shown
         self._update_details_button_text()
 
@@ -253,6 +265,10 @@ class Plugins3OptionsPage(OptionsPage):
         try:
             # Use the manager's check_updates method (which handles versioning schemes correctly)
             updates = self.plugin_manager.check_updates()
+
+            # Refresh update status in UI after checking
+            self.plugin_list.refresh_update_status()
+            self._filter_plugins()  # Refresh display to show update indicators
 
             if updates:
                 # Convert UpdateCheck objects to plugins for the dialog
@@ -296,7 +312,9 @@ class Plugins3OptionsPage(OptionsPage):
 
             # Reload the page to show updated registry data (but don't overwrite status)
             self.all_plugins = self.plugin_manager.plugins
-            self._filter_plugins()
+            # Refresh update status after registry refresh
+            self.plugin_list.refresh_update_status()
+            self._filter_plugins()  # Refresh display to show update indicators
             self._show_enabled_state()
             # Update tooltip with fresh registry info
             self._update_registry_tooltip()
