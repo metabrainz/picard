@@ -77,7 +77,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
                 registry.fetch_registry()
                 # Should have fetched and created data
-                self.assertIsNotNone(registry._registry_data)
+                self.assertTrue(registry.is_registry_loaded())
 
     def test_registry_fetch_local_file(self):
         """Test registry can load from local file path."""
@@ -91,8 +91,9 @@ class TestRegistryAdvanced(PicardTestCase):
             registry = PluginRegistry(registry_url=registry_file)
             registry.fetch_registry()
 
-            self.assertEqual(len(registry._registry_data['plugins']), 1)
-            self.assertEqual(registry._registry_data['plugins'][0]['id'], 'test')
+            registry_data = registry.get_raw_registry_data()
+            self.assertEqual(len(registry_data['plugins']), 1)
+            self.assertEqual(registry_data['plugins'][0]['id'], 'test')
         finally:
             Path(registry_file).unlink(missing_ok=True)
 
@@ -120,7 +121,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 with patch('picard.plugin3.registry.json.dump', side_effect=failing_dump):
                     registry.fetch_registry()
                     # Should not raise, just log warning
-                    self.assertIsNotNone(registry._registry_data)
+                    self.assertTrue(registry.is_registry_loaded())
         finally:
             Path(registry_file).unlink(missing_ok=True)
 
@@ -132,7 +133,7 @@ class TestRegistryAdvanced(PicardTestCase):
         }
 
         registry = PluginRegistry()
-        registry._registry_data = registry_data
+        registry.set_raw_registry_data(registry_data)
 
         # Same UUID and URL - should be blacklisted
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/bad.git', plugin_uuid='test-uuid-123')
@@ -148,7 +149,7 @@ class TestRegistryAdvanced(PicardTestCase):
         registry_data = {'plugins': [], 'blacklist': [{'uuid': 'bad-uuid-456', 'reason': 'Malware'}]}
 
         registry = PluginRegistry()
-        registry._registry_data = registry_data
+        registry.set_raw_registry_data(registry_data)
 
         # Any URL with this UUID should be blacklisted
         is_blacklisted, reason = registry.is_blacklisted('https://any-url.com/repo.git', plugin_uuid='bad-uuid-456')
@@ -160,7 +161,7 @@ class TestRegistryAdvanced(PicardTestCase):
         registry_data = {'plugins': [], 'blacklist': [{'url_regex': '[invalid(regex', 'reason': 'Bad pattern'}]}
 
         registry = PluginRegistry()
-        registry._registry_data = registry_data
+        registry.set_raw_registry_data(registry_data)
 
         # Should not raise, just log warning
         is_blacklisted, _ = registry.is_blacklisted('https://example.com/repo.git')
@@ -180,7 +181,7 @@ class TestRegistryAdvanced(PicardTestCase):
     def test_list_plugins_empty_registry(self):
         """Test list_plugins with empty registry."""
         registry = PluginRegistry()
-        registry._registry_data = {'plugins': []}
+        registry.set_raw_registry_data({'plugins': []})
 
         result = registry.list_plugins()
         self.assertEqual(result, [])
@@ -216,7 +217,7 @@ class TestRegistryAdvanced(PicardTestCase):
             # Don't call fetch_registry() - let find_plugin do it
             plugin = registry.find_plugin(plugin_id='test-plugin')
             self.assertIsNotNone(plugin)
-            self.assertEqual(plugin['id'], 'test-plugin')
+            self.assertEqual(plugin.id, 'test-plugin')
         finally:
             Path(registry_file).unlink(missing_ok=True)
 

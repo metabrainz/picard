@@ -30,6 +30,7 @@ from picard.git.backend import (
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
+from picard.git.ref_utils import get_ref_type
 
 
 def clean_python_cache(directory):
@@ -118,12 +119,12 @@ class GitOperations:
         # For registry plugins with versioning_scheme, validate against version tags
         if registry and uuid:
             registry_plugin = registry.find_plugin(uuid=uuid)
-            if registry_plugin and registry_plugin.get('versioning_scheme'):
+            if registry_plugin and registry_plugin.versioning_scheme:
                 # Import here to avoid circular dependency
                 from picard.plugin3.refs_cache import RefsCache
 
                 refs_cache = RefsCache(registry)
-                pattern = refs_cache.parse_versioning_scheme(registry_plugin['versioning_scheme'])
+                pattern = refs_cache.parse_versioning_scheme(registry_plugin.versioning_scheme)
                 if pattern and pattern.match(ref):
                     # It's a version tag - fetch and check
                     version_tags = []
@@ -136,8 +137,8 @@ class GitOperations:
                     return True
 
             # For registry plugins with explicit refs list
-            if registry_plugin and registry_plugin.get('refs'):
-                ref_names = [r['name'] for r in registry_plugin['refs']]
+            if registry_plugin and registry_plugin.refs:
+                ref_names = [r['name'] for r in registry_plugin.refs]
                 if ref not in ref_names:
                     raise PluginRefNotFoundError(uuid, ref)
                 return True
@@ -178,29 +179,17 @@ class GitOperations:
         try:
             backend = git_backend()
             repo = backend.create_repository(repo_path)
-            references = repo.get_references()
 
             if ref:
-                # Check if ref exists in standard locations first
-                if f'refs/tags/{ref}' in references:
+                # Use robust reference type detection
+                ref_type, resolved_ref = get_ref_type(repo, ref)
+                if ref_type == 'tag':
                     return 'tag', ref
-                if f'refs/heads/{ref}' in references:
+                elif ref_type in ('local_branch', 'remote_branch'):
                     return 'branch', ref
-                if f'refs/remotes/origin/{ref}' in references:
-                    return 'branch', ref
-
-                # Not found in standard refs, try to resolve it
-                try:
-                    obj = repo.revparse_single(ref)
-                    from picard.git.backend import GitObjectType
-
-                    if obj.type == GitObjectType.COMMIT:
-                        return 'commit', ref
-                    elif obj.type == GitObjectType.TAG:
-                        return 'tag', ref
-                    else:
-                        return None, ref
-                except KeyError:
+                elif ref_type == 'commit':
+                    return 'commit', ref
+                else:
                     return None, ref
             else:
                 # Check current HEAD state

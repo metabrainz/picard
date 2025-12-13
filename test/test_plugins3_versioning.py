@@ -32,10 +32,10 @@ class TestVersioningScheme(PicardTestCase):
         # Mock manager's _fetch_version_tags to return tags
         manager._fetch_version_tags = Mock(return_value=['v2.1.0', 'v2.0.0', 'v1.0.0'])
 
-        plugin = {
-            'git_url': 'https://github.com/user/plugin',
-            'versioning_scheme': 'semver',
-        }
+        plugin = Mock()
+        plugin.git_url = 'https://github.com/user/plugin'
+        plugin.versioning_scheme = 'semver'
+        plugin.refs = []
 
         ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'v2.1.0')
@@ -47,11 +47,10 @@ class TestVersioningScheme(PicardTestCase):
         # Mock manager's _fetch_version_tags to return empty list
         manager._fetch_version_tags = Mock(return_value=[])
 
-        plugin = {
-            'git_url': 'https://github.com/user/plugin',
-            'versioning_scheme': 'semver',
-            'refs': [{'name': 'main'}],
-        }
+        plugin = Mock()
+        plugin.git_url = 'https://github.com/user/plugin'
+        plugin.versioning_scheme = 'semver'
+        plugin.refs = [{'name': 'main'}]
 
         ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'main')
@@ -61,11 +60,12 @@ class TestVersioningScheme(PicardTestCase):
         """Test ref selection falls back to refs when no versioning_scheme."""
         manager = MockPluginManager()
 
-        plugin = {
-            'refs': [
-                {'name': 'main', 'min_api_version': '3.0'},
-            ]
-        }
+        plugin = Mock()
+        plugin.versioning_scheme = None
+        plugin.git_url = 'https://github.com/user/plugin'
+        plugin.refs = [
+            {'name': 'main', 'min_api_version': '3.0'},
+        ]
 
         ref = manager.select_ref_for_plugin(plugin)
         self.assertEqual(ref, 'main')

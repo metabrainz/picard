@@ -24,6 +24,7 @@ from dataclasses import asdict, dataclass
 
 from picard import log
 from picard.config import get_config
+from picard.git.factory import git_backend
 
 
 @dataclass
@@ -115,7 +116,7 @@ class PluginMetadataManager:
         # Check if UUID exists in registry with different URL
         registry_plugin = self._registry.find_plugin(uuid=old_uuid)
         if registry_plugin:
-            new_url = registry_plugin.get('git_url')
+            new_url = registry_plugin.git_url
             if new_url and new_url != old_url:
                 log.info('Plugin %s redirected from %s to %s', old_uuid, old_url, new_url)
                 return new_url, old_uuid, True
@@ -123,7 +124,7 @@ class PluginMetadataManager:
         # Check if URL exists in registry with different UUID
         registry_plugin = self._registry.find_plugin(url=old_url)
         if registry_plugin:
-            new_uuid = registry_plugin.get('uuid')
+            new_uuid = registry_plugin.uuid
             if new_uuid and new_uuid != old_uuid:
                 log.info('Plugin at %s changed UUID from %s to %s', old_url, old_uuid, new_uuid)
                 return old_url, new_uuid, True
@@ -219,7 +220,7 @@ class PluginMetadataManager:
                 registry_plugin = self._registry.find_plugin(uuid=str(plugin.manifest.uuid))
                 if not registry_plugin:
                     return None
-                url = registry_plugin['git_url']
+                url = registry_plugin.git_url
 
             current_ref = metadata.ref if metadata else None
             current_commit = metadata.commit if metadata else None
@@ -228,8 +229,6 @@ class PluginMetadataManager:
             # Detect current ref from local git repo (overrides metadata)
             if plugin.local_path:
                 try:
-                    from picard.git.factory import git_backend
-
                     backend = git_backend()
                     repo = backend.create_repository(plugin.local_path)
                     current_commit = repo.get_head_target()
@@ -274,8 +273,8 @@ class PluginMetadataManager:
                 if not registry_plugin:
                     return None
 
-                url = registry_plugin['git_url']
-                registry_id = registry_plugin.get('id', identifier)
+                url = registry_plugin.git_url
+                registry_id = registry_plugin.id or identifier
                 current_ref = None
                 current_commit = None
 

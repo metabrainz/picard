@@ -108,6 +108,7 @@ class ErrorOptionsPage(OptionsPage):
         self.NAME = from_cls.NAME
         self.TITLE = from_cls.TITLE
         self.PARENT = from_cls.PARENT
+        self._original_class = from_cls  # Track original class for duplicate detection
         self.SORT_ORDER = from_cls.SORT_ORDER
         self.ACTIVE = from_cls.ACTIVE
         self.HELP_URL = from_cls.HELP_URL
@@ -154,19 +155,20 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         for page in sorted(pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
             # Check if this is a plugin option page and if the plugin is enabled
             page_active = page.ACTIVE
-            api = getattr(page, '_plugin_api', None)
+            api = getattr(type(page), 'api', None)
             if api is not None:  # This is a plugin option page
                 try:
                     plugin_uuid = api._manifest.uuid if hasattr(api, '_manifest') and api._manifest else None
-                    if plugin_uuid:
+                    if plugin_uuid and hasattr(self, 'plugin_manager') and self.plugin_manager:
                         # Only show page if plugin is enabled
                         is_enabled = plugin_uuid in self.plugin_manager._enabled_plugins
                         page_active = is_enabled
                     else:
-                        page_active = False
+                        # If we can't check plugin status, assume it's active if it has an API
+                        page_active = True
                 except AttributeError:
-                    # Plugin manager not available
-                    page_active = False
+                    # Plugin manager not available, assume active
+                    page_active = True
 
             # Skip disabled plugin pages entirely
             if api is not None and not page_active:
@@ -187,7 +189,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if (
                     api is not None
                     and not self.default_item
-                    and page.NAME == get_config().persist.get('options_last_active_page')
+                    and page.NAME == get_config().persist['options_last_active_page']
                 ):
                     log.debug("add_pages: Found saved plugin page '%s', setting as default_item", page.NAME)
                     self.default_item = item
@@ -299,6 +301,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         try:
             self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes
+            self.plugin_manager.plugin_installed.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_enabled.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_disabled.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_uninstalled.connect(self.refresh_plugin_pages)
@@ -311,7 +314,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             pass
 
         # Set initial selection after plugin refresh
-        self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+        if self.default_item:
+            self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
 
     @property
     def initialized_pages(self):
@@ -545,8 +549,10 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         pages_to_remove = []
         for page in self.pages:
             page_class = type(page)
-            if page_class not in active_page_classes and hasattr(page, '_plugin_api'):
-                # This is a plugin page that's no longer active
+            # Check if this is a plugin page that's no longer active
+            # For error pages, check the original class
+            original_class = getattr(page, '_original_class', page_class)
+            if hasattr(original_class, 'api') and original_class not in active_page_classes:
                 pages_to_remove.append(page)
                 log.debug("refresh_plugin_pages: Marking page for removal: %s", page_class.__name__)
 
@@ -559,9 +565,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Add new plugin pages
         existing_page_classes = {type(page) for page in self.pages}
+        # Also track original classes for error pages to prevent duplicates
+        existing_original_classes = {getattr(page, '_original_class', type(page)) for page in self.pages}
 
         for Page in active_page_classes:
-            if Page not in existing_page_classes:
+            if Page not in existing_page_classes and Page not in existing_original_classes:
                 log.debug("refresh_plugin_pages: Adding new page: %s", Page.__name__)
                 try:
                     page = Page()
@@ -576,13 +584,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         log.debug("refresh_plugin_pages: Successfully loaded page: %s", Page.__name__)
                     except Exception:
                         log.exception("Failed loading options page %r", page)
-                except Exception:
+                except Exception as e:
                     log.exception("Failed creating options page %r", Page)
+                    # Create an error page in place of the failing page
+                    page = ErrorOptionsPage(from_cls=Page, errmsg=str(e), dialog=self)
+                    self.ui.pages_stack.addWidget(page)
+                    self.pages.append(page)
 
         # Clear and rebuild the pages tree
         self.ui.pages_tree.clear()
         self.item_to_page.clear()
         self.pagename_to_item.clear()
+        self.default_item = None  # Clear reference to deleted tree item
 
         # Rebuild pages tree
         default_page = current_page or config.persist['options_last_active_page']

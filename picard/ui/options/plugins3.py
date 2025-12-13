@@ -19,11 +19,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from datetime import datetime
+
 from PyQt6 import QtCore, QtWidgets
 
 from picard import log
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_, gettext as _
+from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog
 from picard.ui.options import OptionsPage
@@ -129,8 +132,6 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _show_status(self, message, clear_after_ms=None):
         """Add message to status log (keeps last 3 messages)."""
-        from datetime import datetime
-
         timestamp = datetime.now().strftime("%H:%M:%S")
         formatted_message = f"[{timestamp}] {message}"
 
@@ -351,8 +352,6 @@ class Plugins3OptionsPage(OptionsPage):
         # Disable UI during updates
         self.check_updates_button.setEnabled(False)
         self.install_button.setEnabled(False)
-
-        from picard.plugin3.asyncops.manager import AsyncPluginManager
 
         async_manager = AsyncPluginManager(self.plugin_manager)
 

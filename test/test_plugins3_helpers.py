@@ -47,6 +47,9 @@ class MockPluginManager(Mock):
         defaults.update(kwargs)
         super().__init__(**defaults)
 
+        # Add mock for _fetch_version_tags that returns empty list by default
+        self._fetch_version_tags = Mock(return_value=[])
+
         # Add get_plugin_registry_id method that returns None by default
         self.get_plugin_registry_id = Mock(return_value=None)
 
@@ -142,7 +145,8 @@ def create_test_registry():
     from picard.plugin3.registry import PluginRegistry
 
     registry = PluginRegistry()
-    registry._registry_data = load_test_registry()
+    registry.set_raw_registry_data(load_test_registry())
+    registry._process_plugins()  # Process plugins into RegistryPlugin objects
     return registry
 
 

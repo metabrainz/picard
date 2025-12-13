@@ -27,10 +27,12 @@ import urllib.error
 from urllib.request import urlopen
 
 from picard import log
+from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 from picard.git.utils import (
     normalize_git_url,
 )
+from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
 
 
@@ -116,6 +118,7 @@ class PluginRegistry:
             self.cache_path = None
 
         self._registry_data = None
+        self._plugins = []  # List of RegistryPlugin objects
         self._fetch_failed = False  # Track permanent fetch failures
 
     def _ensure_registry_loaded(self, operation_name='operation'):
@@ -138,6 +141,11 @@ class PluginRegistry:
                 log.warning('Failed to fetch registry for %s: %s', operation_name, e)
                 self._fetch_failed = True  # Mark as permanently failed
                 return False
+
+        # Process plugins if not already done
+        if self._registry_data and not self._plugins:
+            self._process_plugins()
+
         return True
 
     def fetch_registry(self, use_cache=True):
@@ -355,7 +363,7 @@ class PluginRegistry:
             raise RuntimeError("Registry not loaded")
 
         return {
-            'plugin_count': len(self._registry_data.get('plugins', [])),
+            'plugin_count': len(self._plugins),
             'api_version': self._registry_data.get('api_version'),
             'registry_url': self.registry_url,
         }
@@ -376,11 +384,10 @@ class PluginRegistry:
         # Normalize URL for comparison
         normalized_url = normalize_git_url(url)
 
-        plugins = self._registry_data.get('plugins', [])
-        for plugin in plugins:
-            plugin_url = normalize_git_url(plugin.get('git_url', ''))
+        for plugin in self._plugins:
+            plugin_url = normalize_git_url(plugin.git_url or '')
             if plugin_url == normalized_url:
-                return plugin.get('trust_level', 'community')
+                return plugin.trust_level
 
         return 'unregistered'
 
@@ -402,34 +409,32 @@ class PluginRegistry:
         # Normalize URL for comparison if provided
         normalized_url = normalize_git_url(url) if url else None
 
-        plugins = self._registry_data.get('plugins', [])
-
         # First pass: search by current values (fast path)
-        for plugin in plugins:
-            if plugin_id and plugin.get('id') == plugin_id:
+        for plugin in self._plugins:
+            if plugin_id and plugin.id == plugin_id:
                 return plugin
-            if uuid and plugin.get('uuid') == uuid:
+            if uuid and plugin.uuid == uuid:
                 return plugin
             if normalized_url:
-                plugin_url = normalize_git_url(plugin.get('git_url', ''))
+                plugin_url = normalize_git_url(plugin.git_url or '')
                 if plugin_url == normalized_url:
                     return plugin
 
         # Second pass: search redirects (only if not found above)
         if normalized_url or uuid:
-            for plugin in plugins:
+            for plugin in self._plugins:
                 # Check URL redirects
-                if normalized_url and 'redirect_from' in plugin:
-                    for old_url in plugin['redirect_from']:
+                if normalized_url and plugin.redirect_from:
+                    for old_url in plugin.redirect_from:
                         old_url_normalized = normalize_git_url(old_url)
                         if old_url_normalized == normalized_url:
-                            log.info('Found plugin via URL redirect: %s -> %s', url, plugin.get('git_url'))
+                            log.info('Found plugin via URL redirect: %s -> %s', url, plugin.git_url)
                             return plugin
 
                 # Check UUID redirects
-                if uuid and 'redirect_from_uuid' in plugin:
-                    if uuid in plugin['redirect_from_uuid']:
-                        log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.get('uuid'))
+                if uuid and plugin.redirect_from_uuid:
+                    if uuid in plugin.redirect_from_uuid:
+                        log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.uuid)
                         return plugin
 
         return None
@@ -445,7 +450,7 @@ class PluginRegistry:
             str: Registry ID or None if not found
         """
         plugin = self.find_plugin(url=url, uuid=uuid)
-        return plugin.get('id') if plugin else None
+        return plugin.id if plugin else None
 
     def list_plugins(self, category=None, trust_level=None):
         """List plugins from registry, optionally filtered.
@@ -455,47 +460,92 @@ class PluginRegistry:
             trust_level: Filter by trust level (e.g., 'official', 'trusted')
 
         Returns:
-            list: List of plugin dicts
+            list: List of RegistryPlugin objects
         """
         if not self._ensure_registry_loaded('plugin listing'):
             # Fail safe: if we can't fetch registry, return empty list
             return []
 
-        plugins = self._registry_data.get('plugins', [])
         result = []
 
-        for plugin in plugins:
+        for plugin in self._plugins:
             # Filter by trust level
-            if trust_level and plugin.get('trust_level') != trust_level:
+            if trust_level and plugin.trust_level != trust_level:
                 continue
 
             # Filter by category
             if category:
-                plugin_categories = plugin.get('categories', [])
-                if category not in plugin_categories:
+                if category not in plugin.categories:
                     continue
 
             result.append(plugin)
 
         return result
 
+    @property
+    def plugins(self):
+        """Get list of all RegistryPlugin objects."""
+        if not self._ensure_registry_loaded('plugin access'):
+            return []
+        return self._plugins
 
-class RegistryPlugin:
+    def is_registry_loaded(self):
+        """Check if registry data is loaded."""
+        return bool(self._registry_data)
+
+    def get_raw_registry_data(self):
+        """Get raw registry data for async operations."""
+        return self._registry_data
+
+    def set_raw_registry_data(self, data):
+        """Set raw registry data and process plugins."""
+        self._registry_data = data
+        self._process_plugins()
+
+    def _process_plugins(self):
+        """Process raw plugin data into RegistryPlugin objects."""
+        self._plugins = []
+        if self._registry_data and 'plugins' in self._registry_data:
+            for plugin_data in self._registry_data['plugins']:
+                try:
+                    self._plugins.append(RegistryPlugin(plugin_data))
+                except Exception as e:
+                    log.warning('Failed to process plugin %s: %s', plugin_data.get('id', 'unknown'), e)
+
+
+class RegistryPlugin(InstallablePlugin):
     """Wrapper for registry plugin data with i18n support."""
 
     def __init__(self, data):
         self._data = data
+        # Call parent constructor with basic values
+        super().__init__(source_url=data.get('git_url'), plugin_uuid=data.get('uuid'), name=data.get('name', ''))
+
+    def __getitem__(self, key):
+        """Prevent dict-style access to enforce object-oriented interface."""
+        raise TypeError(f"Use property access instead of dict access. Use .{key} instead of ['{key}']")
+
+    def get_display_name(self):
+        """Get display name for this plugin."""
+        return self.name_i18n() or self.id
+
+    def get_install_url(self):
+        """Get URL to install this plugin from."""
+        return self.source_url
 
     def _get_current_locale(self):
         """Get current locale from Picard's UI language setting or system locale."""
-        from picard.config import get_config
-
         config = get_config()
+        if config is None:
+            return 'en'  # Default fallback
         locale = config.setting['ui_language']
         if not locale:
-            from PyQt6 import QtCore
+            try:
+                from PyQt6 import QtCore
 
-            locale = QtCore.QLocale.system().name()
+                locale = QtCore.QLocale.system().name()
+            except ImportError:
+                locale = 'en'  # Fallback if PyQt6 not available
         return locale
 
     def name_i18n(self, locale=None):
@@ -550,6 +600,46 @@ class RegistryPlugin:
     def git_url(self):
         """Get plugin git URL."""
         return self._data.get('git_url')
+
+    @property
+    def versioning_scheme(self):
+        """Get plugin versioning scheme."""
+        return self._data.get('versioning_scheme')
+
+    @property
+    def refs(self):
+        """Get plugin refs."""
+        return self._data.get('refs', [{'name': 'main'}])
+
+    @property
+    def authors(self):
+        """Get plugin authors."""
+        return self._data.get('authors', [])
+
+    @property
+    def maintainers(self):
+        """Get plugin maintainers."""
+        return self._data.get('maintainers', [])
+
+    @property
+    def added_at(self):
+        """Get plugin added timestamp."""
+        return self._data.get('added_at')
+
+    @property
+    def updated_at(self):
+        """Get plugin updated timestamp."""
+        return self._data.get('updated_at')
+
+    @property
+    def redirect_from(self):
+        """Get plugin redirect URLs."""
+        return self._data.get('redirect_from', [])
+
+    @property
+    def redirect_from_uuid(self):
+        """Get plugin redirect UUIDs."""
+        return self._data.get('redirect_from_uuid', [])
 
     def get(self, key, default=None):
         """Delegate to underlying data dict."""

@@ -273,6 +273,11 @@ class PluginApi:
             self._qt_translator._current_locale = self.get_locale()
             self._tagger._qt_translators.add_translator(self._qt_translator)
 
+            # Only emit signal if application is already running (not during startup)
+            # This ensures UI retranslation when plugins are installed dynamically
+            if hasattr(self._tagger, 'window') and self._tagger.window:
+                self._tagger._qt_translators_updated.emit()
+
     def _remove_qt_translator(self) -> None:
         """Remove Qt translator for .ui file translations."""
         if not self._qt_translator:
@@ -280,6 +285,27 @@ class PluginApi:
 
         self._tagger._qt_translators.remove_translator(self._qt_translator)
         self._qt_translator = None
+
+    def reload_translations(self) -> None:
+        """Reload translations and reinstall Qt translator.
+
+        Used when plugin is updated to refresh translations without recreating API instance.
+        """
+        # Clear existing translations
+        self._translations.clear()
+
+        # Remove old Qt translator
+        self._remove_qt_translator()
+
+        # Reload translations from disk
+        self._load_translations()
+
+        # Reinstall Qt translator with new translations
+        self._install_qt_translator()
+
+        # Emit signal to trigger Qt translator reinstall and UI retranslation
+        # This is only called during plugin updates, not normal installation
+        self._tagger._qt_translators_updated.emit()
 
     def _is_valid_locale(self, locale: str) -> bool:
         """Check if locale string is valid (basic sanity check).
@@ -402,6 +428,9 @@ class PluginApi:
             data = self._load_translation_file(file_path, format, locale)
             if data:
                 self._translations[locale] = data
+                self._logger.debug(
+                    "Loaded %d translations for locale '%s': %s", len(data), locale, list(data.keys())[:10]
+                )
                 return True
         return False
 
@@ -531,20 +560,31 @@ class PluginApi:
             # Try exact locale match (e.g., de_DE)
             if locale in self._translations and key in self._translations[locale]:
                 result = self._translations[locale][key]
+                self._logger.debug("tr() found exact locale match: '%s' -> '%s'", key, result)
             else:
                 # Try language without region (e.g., de from de_DE)
                 lang = locale.split('_')[0]
                 if lang in self._translations and key in self._translations[lang]:
                     result = self._translations[lang][key]
+                    self._logger.debug("tr() found language match: '%s' -> '%s'", key, result)
+                else:
+                    # Try source locale as fallback
+                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                        result = self._translations[self._source_locale][key]
+                        self._logger.debug("tr() found source locale match: '%s' -> '%s'", key, result)
+                    else:
+                        self._logger.debug("tr() no translation found for key '%s' in any locale", key)
 
         # Fall back to text parameter or key
         if result is None:
             result = text if text is not None else key
+            self._logger.debug("tr() using fallback: '%s' -> '%s'", key, result)
 
         # Apply placeholder substitution
         if kwargs:
             result = result.format(**kwargs)
 
+        self._logger.debug("tr() final result: '%s' -> '%s'", key, result)
         return result
 
     def trn(self, key: str, singular: str | None = None, plural: str | None = None, n: int = 0, **kwargs) -> str:
@@ -587,6 +627,15 @@ class PluginApi:
                         result = trans[plural_form]
                     elif isinstance(trans, dict) and 'other' in trans:
                         result = trans['other']
+                else:
+                    # Try source locale as fallback
+                    if self._source_locale in self._translations and key in self._translations[self._source_locale]:
+                        trans = self._translations[self._source_locale][key]
+                        source_plural_form = get_plural_form(self._source_locale, n)
+                        if isinstance(trans, dict) and source_plural_form in trans:
+                            result = trans[source_plural_form]
+                        elif isinstance(trans, dict) and 'other' in trans:
+                            result = trans['other']
 
         # Fall back to singular/plural parameters
         if result is None:

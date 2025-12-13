@@ -27,6 +27,7 @@ import time
 
 from picard import log
 from picard.const.appdirs import cache_folder
+from picard.git.factory import git_backend
 from picard.version import Version
 
 
@@ -251,8 +252,8 @@ class RefsCache:
 
         # Get all URLs from registry
         registry_urls = set()
-        for plugin in self._registry._registry_data.get('plugins', []):
-            url = plugin.get('git_url')
+        for plugin in self._registry.list_plugins():
+            url = plugin.git_url
             if url:
                 registry_urls.add(url)
 
@@ -371,8 +372,6 @@ class RefsCache:
         Returns:
             list: Filtered tags or empty list
         """
-        from picard.git.factory import git_backend
-
         # Parse versioning scheme
         pattern = self.parse_versioning_scheme(versioning_scheme)
         if not pattern:

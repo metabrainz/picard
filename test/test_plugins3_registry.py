@@ -115,18 +115,18 @@ class TestPluginRegistry(PicardTestCase):
         # Find by current URL
         plugin = registry.find_plugin(url='https://github.com/test/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old URL (redirect)
         plugin = registry.find_plugin(url='https://github.com/olduser/example')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
-        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.git_url, 'https://github.com/test/example')
 
         # Find by another old URL
         plugin = registry.find_plugin(url='https://github.com/olduser/old-name')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
     def test_registry_uuid_redirect(self):
         """Test that UUID redirects work."""
@@ -135,13 +135,13 @@ class TestPluginRegistry(PicardTestCase):
         # Find by current UUID
         plugin = registry.find_plugin(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
 
         # Find by old UUID (redirect)
         plugin = registry.find_plugin(uuid='old-uuid-1234')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['uuid'], 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
-        self.assertEqual(plugin['git_url'], 'https://github.com/test/example')
+        self.assertEqual(plugin.uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+        self.assertEqual(plugin.git_url, 'https://github.com/test/example')
 
     def test_update_plugin_follows_redirect(self):
         """Test that update_plugin follows redirects and updates metadata."""
@@ -192,7 +192,7 @@ class TestPluginRegistry(PicardTestCase):
                             with patch('picard.git.ops.GitOperations.check_dirty_working_dir') as mock_check_dirty:
                                 mock_check_dirty.return_value = []  # No uncommitted changes
 
-                                with patch('picard.git.factory.git_backend') as mock_backend_func:
+                                with patch('picard.plugin3.manager.git_backend') as mock_backend_func:
                                     mock_backend = Mock()
                                     mock_repo = Mock()
                                     mock_repo.get_commit_date = Mock(return_value=1234567890)
@@ -390,8 +390,8 @@ class TestPluginRegistry(PicardTestCase):
 
             registry.fetch_registry(use_cache=False)
 
-            self.assertIsNotNone(registry._registry_data)
-            self.assertEqual(registry._registry_data['blacklist'], [])
+            self.assertTrue(registry.is_registry_loaded())
+            self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
@@ -424,7 +424,7 @@ class TestPluginRegistry(PicardTestCase):
             registry2.fetch_registry(use_cache=True)
 
             # Should have loaded from cache
-            self.assertEqual(registry2._registry_data['blacklist'], [{'url': 'test'}])
+            self.assertEqual(registry2.get_raw_registry_data()['blacklist'], [{'url': 'test'}])
 
     def test_registry_fetch_error_fallback(self):
         """Test registry fetch error handling."""
@@ -530,12 +530,12 @@ class TestPluginRegistry(PicardTestCase):
         # Find by ID
         plugin = registry.find_plugin(plugin_id='example-plugin')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Example plugin')
+        self.assertEqual(plugin.name, 'Example plugin')
 
         # Find by URL
         plugin = registry.find_plugin(url='https://github.com/user/picard-plugin-discogs')
         self.assertIsNotNone(plugin)
-        self.assertEqual(plugin['name'], 'Discogs')
+        self.assertEqual(plugin.name, 'Discogs')
 
         # Not found
         plugin = registry.find_plugin(plugin_id='nonexistent')
@@ -552,8 +552,8 @@ class TestPluginRegistry(PicardTestCase):
         # Filter by trust level
         official = registry.list_plugins(trust_level='official')
         self.assertEqual(len(official), 3)
-        self.assertIn('example-plugin', [p['id'] for p in official])
-        self.assertIn('listenbrainz', [p['id'] for p in official])
+        self.assertIn('example-plugin', [p.id for p in official])
+        self.assertIn('listenbrainz', [p.id for p in official])
 
         # Filter by category
         metadata = registry.list_plugins(category='metadata')
@@ -616,7 +616,7 @@ class TestPluginRegistry(PicardTestCase):
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
-        registry._registry_data = {'plugins': []}
+        registry.set_raw_registry_data({'plugins': []})
 
         # Already loaded
         result = registry._ensure_registry_loaded('test')
@@ -667,7 +667,7 @@ class TestPluginRegistry(PicardTestCase):
                 registry.fetch_registry()
 
         self.assertEqual(call_count, 3)
-        self.assertEqual(registry._registry_data, {'plugins': []})
+        self.assertEqual(registry.get_raw_registry_data(), {'plugins': []})
 
     def test_registry_fetch_no_retry_on_client_error(self):
         """Test that registry fetch does not retry on 4xx errors."""

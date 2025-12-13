@@ -32,6 +32,28 @@ from picard.git.factory import has_git_backend
 from picard.plugin3.manager import UpdateResult
 
 
+def create_mock_registry_plugin(data):
+    """Create a mock RegistryPlugin object from dict data."""
+    mock_plugin = Mock()
+    mock_plugin.id = data.get('id', '')
+    mock_plugin.name = data.get('name', '')
+    mock_plugin.description = data.get('description', '')  # Add description as string
+    mock_plugin.git_url = data.get('git_url', '')
+    mock_plugin.trust_level = data.get('trust_level', 'community')
+    mock_plugin.categories = data.get('categories', [])
+    mock_plugin.versioning_scheme = data.get('versioning_scheme')
+    mock_plugin.refs = data.get('refs', [])
+
+    # Add i18n methods that return the base values
+    mock_plugin.name_i18n = Mock(return_value=data.get('name', ''))
+    mock_plugin.description_i18n = Mock(return_value=data.get('description', ''))
+
+    # Add _data for backward compatibility with helper functions
+    mock_plugin._data = data
+
+    return mock_plugin
+
+
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
@@ -306,20 +328,24 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
-            {
-                'id': 'plugin1',
-                'name': 'Plugin 1',
-                'description': 'Test plugin 1',
-                'trust_level': 'official',
-                'categories': ['metadata'],
-            },
-            {
-                'id': 'plugin2',
-                'name': 'Plugin 2',
-                'description': 'Test plugin 2',
-                'trust_level': 'trusted',
-                'categories': ['coverart'],
-            },
+            create_mock_registry_plugin(
+                {
+                    'id': 'plugin1',
+                    'name': 'Plugin 1',
+                    'description': 'Test plugin 1',
+                    'trust_level': 'official',
+                    'categories': ['metadata'],
+                }
+            ),
+            create_mock_registry_plugin(
+                {
+                    'id': 'plugin2',
+                    'name': 'Plugin 2',
+                    'description': 'Test plugin 2',
+                    'trust_level': 'trusted',
+                    'categories': ['coverart'],
+                }
+            ),
         ]
 
         exit_code, _, _ = run_cli(mock_manager, browse=True)
@@ -333,13 +359,15 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
-            {
-                'id': 'plugin1',
-                'name': 'Plugin 1',
-                'description': 'Test',
-                'trust_level': 'official',
-                'categories': ['metadata'],
-            },
+            create_mock_registry_plugin(
+                {
+                    'id': 'plugin1',
+                    'name': 'Plugin 1',
+                    'description': 'Test',
+                    'trust_level': 'official',
+                    'categories': ['metadata'],
+                }
+            ),
         ]
 
         exit_code, _, _ = run_cli(mock_manager, browse=True, category='metadata', trust='official')
@@ -353,13 +381,17 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
-            {
-                'id': 'listenbrainz',
-                'name': 'ListenBrainz',
-                'description': 'Submit to ListenBrainz',
-                'trust_level': 'official',
-            },
-            {'id': 'discogs', 'name': 'Discogs', 'description': 'Discogs metadata', 'trust_level': 'trusted'},
+            create_mock_registry_plugin(
+                {
+                    'id': 'listenbrainz',
+                    'name': 'ListenBrainz',
+                    'description': 'Submit to ListenBrainz',
+                    'trust_level': 'official',
+                }
+            ),
+            create_mock_registry_plugin(
+                {'id': 'discogs', 'name': 'Discogs', 'description': 'Discogs metadata', 'trust_level': 'trusted'}
+            ),
         ]
 
         exit_code, _, _ = run_cli(mock_manager, search='listen')
@@ -368,14 +400,19 @@ class TestPluginCLI(PicardTestCase):
 
     def test_install_by_plugin_id(self):
         """Test installing plugin by ID from registry."""
+        from unittest.mock import Mock
+
         from picard.plugin3.cli import ExitCode
 
+        mock_plugin = Mock()
+        mock_plugin.id = 'test-plugin'
+        mock_plugin.name = 'Test Plugin'
+        mock_plugin.git_url = 'https://github.com/test/plugin'
+        mock_plugin.versioning_scheme = None  # No versioning scheme
+        mock_plugin.refs = []  # No explicit refs
+
         mock_manager = MockPluginManager()
-        mock_manager._registry.find_plugin.return_value = {
-            'id': 'test-plugin',
-            'name': 'Test Plugin',
-            'git_url': 'https://github.com/test/plugin',
-        }
+        mock_manager._registry.find_plugin.return_value = mock_plugin
         mock_manager._find_plugin_by_url.return_value = None  # Not already installed
         mock_manager.install_plugin.return_value = 'test-plugin'
 
@@ -396,7 +433,7 @@ class TestPluginCLI(PicardTestCase):
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('not blacklisted', stdout)
-        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin')
+        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
 
     def test_check_blacklist_is_blacklisted(self):
         """Test --check-blacklist with blacklisted URL."""
@@ -417,13 +454,15 @@ class TestPluginCLI(PicardTestCase):
 
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
-            {
-                'id': 'metadata-plugin',
-                'name': 'Metadata Plugin',
-                'description': 'Test metadata',
-                'trust_level': 'official',
-                'categories': ['metadata'],
-            },
+            create_mock_registry_plugin(
+                {
+                    'id': 'metadata-plugin',
+                    'name': 'Metadata Plugin',
+                    'description': 'Test metadata',
+                    'trust_level': 'official',
+                    'categories': ['metadata'],
+                }
+            ),
         ]
 
         exit_code, _, _ = run_cli(mock_manager, search='test', category='metadata')

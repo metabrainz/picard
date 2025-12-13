@@ -20,11 +20,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import argparse
+from datetime import datetime
 from enum import IntEnum
 import logging
 from pathlib import Path
+
+# Additional imports for CLI operations
 import sys
 import tempfile
+import traceback
 
 from PyQt6 import QtCore
 
@@ -40,9 +44,23 @@ from picard.config import (
 )
 from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
+from picard.git.factory import has_git_backend
+from picard.git.utils import check_local_repo_dirty, get_local_repository_path
 from picard.options import init_options
+from picard.plugin3.installable import UrlInstallablePlugin
+from picard.plugin3.manager import (
+    PluginManager,
+)
+from picard.plugin3.manifest import generate_manifest_template
 from picard.plugin3.output import PluginOutput
-from picard.plugin3.plugin import short_commit_id
+from picard.plugin3.plugin import (
+    PluginSourceGit,
+    short_commit_id,
+)
+from picard.plugin3.registry import (
+    RegistryFetchError,
+    RegistryParseError,
+)
 from picard.util import (
     cli,
     versions,
@@ -61,32 +79,24 @@ def get_display_locale(args):
     return getattr(args, 'locale', 'en')
 
 
-def get_localized_registry_field(plugin_dict, field, locale='en'):
+def get_localized_registry_field(plugin, field, locale='en'):
     """Get localized field from registry plugin data.
 
     Args:
-        plugin_dict: Plugin dictionary from registry
+        plugin: RegistryPlugin object
         field: Field name ('name', 'description', 'long_description')
         locale: Locale string (e.g., 'en_US', 'de_DE')
 
     Returns:
         str: Localized field value, or base field value if translation not found
     """
-    # Check for i18n version
-    i18n_field = f'{field}_i18n'
-    i18n = plugin_dict.get(i18n_field, {})
-
-    # Try exact locale match (e.g., 'en_US')
-    if locale in i18n:
-        return i18n[locale]
-
-    # Try language without region (e.g., 'en' from 'en_US')
-    lang = locale.split('_')[0]
-    if lang in i18n:
-        return i18n[lang]
-
-    # Fallback to base field
-    return plugin_dict.get(field, '')
+    if field == 'name':
+        return plugin.name_i18n(locale)
+    elif field == 'description':
+        return plugin.description_i18n(locale)
+    else:
+        # For other fields, return the base field
+        return getattr(plugin, field, '')
 
 
 class ExitCode(IntEnum):
@@ -128,8 +138,6 @@ class PluginCLI:
             self._out.error(f'Error: {e}')
 
         if self._is_debug_mode():
-            import traceback
-
             self._out.nl()
             self._out.error('Traceback:')
             for line in traceback.format_exc().splitlines():
@@ -180,8 +188,6 @@ class PluginCLI:
 
         # Append date if available
         if hasattr(result, 'commit_date'):
-            from datetime import datetime
-
             date_str = datetime.fromtimestamp(result.commit_date).strftime(DATETIME_FORMAT)
             version_info = f'{version_info} {self._out.d_date(f"({date_str})")}'
 
@@ -558,7 +564,7 @@ class PluginCLI:
 
         # Show registry refs if available
         if registry_plugin:
-            refs = registry_plugin.get('refs', [])
+            refs = registry_plugin.refs
             if refs:
                 self._out.print('Registry Refs:')
                 for ref in refs:
@@ -586,7 +592,7 @@ class PluginCLI:
                 self._out.nl()
 
             # Show version tags if versioning_scheme exists
-            versioning_scheme = registry_plugin.get('versioning_scheme')
+            versioning_scheme = registry_plugin.versioning_scheme
             if versioning_scheme:
                 try:
                     version_tags = self._manager._fetch_version_tags(url, versioning_scheme)
@@ -609,8 +615,6 @@ class PluginCLI:
         if not git_refs:
             self._out.error('Failed to fetch refs from git')
             if self._is_debug_mode():
-                import traceback
-
                 self._out.nl()
                 self._out.error('Traceback:')
                 for line in traceback.format_exc().splitlines():
@@ -696,18 +700,18 @@ class PluginCLI:
                     if url_or_id:
                         plugin = self._manager._registry.find_plugin(plugin_id=url_or_id)
                         if plugin:
-                            url = plugin['git_url']
+                            url = plugin.git_url
 
                             # Auto-select ref if not explicitly specified
                             if not explicit_ref:
                                 selected_ref = self._select_ref_for_plugin(plugin)
                                 if selected_ref:
                                     ref = selected_ref
-                                    self._out.print(f'Found {plugin["name"]} in registry (using ref: {ref})')
+                                    self._out.print(f'Found {plugin.name} in registry (using ref: {ref})')
                                 else:
-                                    self._out.print(f'Found {plugin["name"]} in registry')
+                                    self._out.print(f'Found {plugin.name} in registry')
                             else:
-                                self._out.print(f'Found {plugin["name"]} in registry')
+                                self._out.print(f'Found {plugin.name} in registry')
                         else:
                             self._out.error(f'Plugin "{url_or_id}" not found in registry')
 
@@ -726,7 +730,7 @@ class PluginCLI:
                     # Warn if this URL is in the registry
                     registry_plugin = self._manager._registry.find_plugin(url=url)
                     if registry_plugin:
-                        plugin_id = registry_plugin['id']
+                        plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
                         install_cmd = f'picard plugins --install {plugin_id}'
                         self._out.warning(
@@ -761,9 +765,10 @@ class PluginCLI:
                     # Check blacklist by URL (before prompting user)
                     # UUID-based blacklist will be checked during install after cloning
                     if not force_blacklisted:
-                        is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+                        plugin = UrlInstallablePlugin(url, ref, self._manager._registry)
+                        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
                         if is_blacklisted:
-                            self._out.error(f'Plugin is blacklisted: {reason}')
+                            self._out.error(f'Plugin is blacklisted: {blacklist_reason}')
                             return ExitCode.ERROR
 
                     # Check trust level and show appropriate warnings
@@ -800,8 +805,6 @@ class PluginCLI:
                     self._out.print(f'Installing plugin from {url}...')
 
                 # Check if installing from dirty local git repository
-                from picard.git.utils import check_local_repo_dirty
-
                 if check_local_repo_dirty(url):
                     self._out.warning('Local repository has uncommitted changes')
 
@@ -1284,15 +1287,10 @@ class PluginCLI:
 
     def _cmd_validate(self, url, ref=None):
         """Validate a plugin from git URL or local directory."""
-        import shutil
-
-        from picard.plugin3.plugin import PluginSourceGit
 
         self._out.print(f'Validating plugin from: {url}')
 
         # Check if url is a local directory
-        from picard.git.utils import get_local_repository_path
-
         local_path = get_local_repository_path(url)
         if local_path:
             # Validate local directory directly
@@ -1535,11 +1533,11 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             # Sort plugins by name
-            sorted_plugins = sorted(plugins, key=lambda p: p.get('name', '').lower())
+            sorted_plugins = sorted(plugins, key=lambda p: p.name.lower())
 
             # Show plugins
             for plugin in sorted_plugins:
-                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                trust_badge = self._get_trust_badge(plugin.trust_level)
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
@@ -1551,10 +1549,10 @@ class PluginCLI:
                 if version:
                     self._out.info(f'  Latest version: {self._out.d_version(version)}')
 
-                categories = plugin.get('categories', [])
+                categories = plugin.categories
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
-                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
@@ -1593,7 +1591,7 @@ class PluginCLI:
             locale_str = get_display_locale(self._args)
 
             for plugin in sorted_results:
-                trust_badge = self._get_trust_badge(plugin.get('trust_level', 'community'))
+                trust_badge = self._get_trust_badge(plugin.trust_level)
                 name = get_localized_registry_field(plugin, 'name', locale_str)
                 description = get_localized_registry_field(plugin, 'description', locale_str)
 
@@ -1605,10 +1603,10 @@ class PluginCLI:
                 if version:
                     self._out.info(f'  Latest version: {self._out.d_version(version)}')
 
-                categories = plugin.get('categories', [])
+                categories = plugin.categories
                 if categories:
                     self._out.info(f'  Categories: {", ".join(categories)}')
-                self._out.info(f'  Registry ID: {self._out.d_id(plugin["id"])}')
+                self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
             self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))
@@ -1622,10 +1620,11 @@ class PluginCLI:
     def _cmd_check_blacklist(self, url):
         """Check if a URL is blacklisted."""
         try:
-            is_blacklisted, reason = self._manager._registry.is_blacklisted(url)
+            plugin = UrlInstallablePlugin(url, registry=self._manager._registry)
 
+            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
             if is_blacklisted:
-                self._out.error(f'URL is blacklisted: {reason}')
+                self._out.error(f'URL is blacklisted: {blacklist_reason}')
                 return ExitCode.ERROR
             else:
                 self._out.success('URL is not blacklisted')
@@ -1637,11 +1636,6 @@ class PluginCLI:
 
     def _cmd_refresh_registry(self):
         """Force refresh of plugin registry cache."""
-        from picard.plugin3.registry import (
-            RegistryFetchError,
-            RegistryParseError,
-        )
-
         try:
             self._out.print('Refreshing plugin registry...')
 
@@ -1678,8 +1672,6 @@ class PluginCLI:
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
         if not target:
-            from picard.plugin3.manifest import generate_manifest_template
-
             template = generate_manifest_template()
             self._out.print(template)
             return ExitCode.SUCCESS
@@ -1695,8 +1687,6 @@ class PluginCLI:
             return ExitCode.ERROR
 
         # Check if it's a local directory
-        from picard.git.utils import get_local_repository_path
-
         local_path = get_local_repository_path(target)
         if local_path:
             content = self._read_manifest(local_path)
@@ -1710,8 +1700,6 @@ class PluginCLI:
         temp_path = Path(tempfile.mkdtemp(prefix='picard-manifest-'))
 
         try:
-            from picard.plugin3.plugin import PluginSourceGit
-
             self._out.print(f'Fetching from {target}...')
             source = PluginSourceGit(target, None)
             # Remove temp dir so git can create it
@@ -1856,8 +1844,6 @@ def minimal_init(config_file=None):
 
 def main():
     try:
-        from picard.git.factory import has_git_backend
-
         if not has_git_backend():
             cli.print_message_and_exit("git backend not available", status=1)
     except ImportError as err:
@@ -1884,9 +1870,6 @@ def main():
     # Initialize debug options for CLI
     if cmdline_args.debug_opts:
         DebugOpt.from_string(cmdline_args.debug_opts)
-
-    from picard.plugin3.manager import PluginManager
-    from picard.plugin3.output import PluginOutput
 
     manager = PluginManager()
     manager.add_directory(USER_PLUGIN_DIR, primary=True)

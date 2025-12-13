@@ -18,10 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import gc
 import os
 from pathlib import Path
 import re
 import shutil
+import tempfile
 from typing import TYPE_CHECKING, NamedTuple
 
 from PyQt6.QtCore import (
@@ -44,8 +46,12 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
+from picard.git.backend import GitObjectType
+from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.ref_utils import get_ref_type
 from picard.git.utils import get_local_repository_path
+from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -58,6 +64,12 @@ from picard.plugin3.refs_cache import RefsCache
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.version import Version
+
+
+try:
+    from markdown import markdown as render_markdown
+except ImportError:
+    render_markdown = None
 
 
 class UpdateResult(NamedTuple):
@@ -302,7 +314,7 @@ class PluginManager(QObject):
                 default_ref = self.select_ref_for_plugin(registry_plugin)
                 if default_ref:
                     # Determine description based on whether it's a version tag or branch
-                    if registry_plugin.get('versioning_scheme'):
+                    if registry_plugin.versioning_scheme:
                         description = "latest version"
                     else:
                         description = "main branch"
@@ -321,8 +333,6 @@ class PluginManager(QObject):
         Returns:
             dict: Formatted refs with display_name for each ref
         """
-        from picard.plugin3.plugin import short_commit_id
-
         formatted_refs = {'tags': [], 'branches': []}
 
         # Format tags
@@ -508,8 +518,6 @@ class PluginManager(QObject):
         Returns:
             Version string (git tag if available and looks like version, otherwise manifest version)
         """
-        from picard.plugin3.plugin import short_commit_id
-
         metadata = self._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
         if not metadata:
             return manifest_version
@@ -635,7 +643,7 @@ class PluginManager(QObject):
         # Create metadata from registry
         metadata_obj = PluginMetadata(
             name=plugin.manifest.name(),
-            url=registry_plugin['git_url'],
+            url=registry_plugin.git_url,
             ref='',
             commit='',
             uuid=uuid,
@@ -650,15 +658,17 @@ class PluginManager(QObject):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.
 
         Args:
-            plugin: Plugin data from registry
+            plugin: RegistryPlugin object
 
         Returns:
             str: Selected ref name, or None if no refs specified
         """
+        versioning_scheme = plugin.versioning_scheme
+        url = plugin.git_url
+        refs = plugin.refs
+
         # Check for versioning_scheme first
-        versioning_scheme = plugin.get('versioning_scheme')
         if versioning_scheme:
-            url = plugin.get('git_url')
             if url:
                 tags = self._fetch_version_tags(url, versioning_scheme)
                 if tags:
@@ -671,7 +681,6 @@ class PluginManager(QObject):
         # Original ref selection logic
         from picard import api_versions_tuple
 
-        refs = plugin.get('refs')
         if not refs:
             return None
 
@@ -717,9 +726,7 @@ class PluginManager(QObject):
         return [
             p
             for p in plugins
-            if query_lower in p.get('name', '').lower()
-            or query_lower in p.get('description', '').lower()
-            or query_lower in p.get('id', '').lower()
+            if query_lower in p.name.lower() or query_lower in p.description.lower() or query_lower in p.id.lower()
         ]
 
     def find_similar_plugin_ids(self, query, max_results=10):
@@ -736,20 +743,21 @@ class PluginManager(QObject):
         matches = [p for p in all_plugins if query.lower() in p['id'].lower()]
         return matches if 1 <= len(matches) <= max_results else []
 
-    def get_registry_plugin_latest_version(self, plugin_data):
+    def get_registry_plugin_latest_version(self, plugin):
         """Get latest version tag for a registry plugin.
 
         Args:
-            plugin_data: Plugin dict from registry
+            plugin: RegistryPlugin object
 
         Returns:
             Version string (latest tag or empty string)
         """
-        versioning_scheme = plugin_data.get('versioning_scheme')
+        versioning_scheme = plugin.versioning_scheme
+        url = plugin.git_url
+
         if not versioning_scheme:
             return ''
 
-        url = plugin_data.get('url')
         if not url:
             return ''
 
@@ -762,6 +770,14 @@ class PluginManager(QObject):
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
+
+        # Check if plugin is currently enabled
+        was_enabled = plugin.state == PluginState.ENABLED
+
+        # Disable plugin if it's enabled to unload the module
+        if was_enabled:
+            self.disable_plugin(plugin)
+
         old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Update metadata with new ref
@@ -772,6 +788,10 @@ class PluginManager(QObject):
             metadata.ref = new_ref
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
+
+        # Re-enable plugin if it was enabled before to reload the module
+        if was_enabled:
+            self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
         return old_ref, new_ref, old_commit, new_commit
@@ -859,14 +879,22 @@ class PluginManager(QObject):
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
 
-        # Check blacklist before installing
-        if not force_blacklisted:
-            is_blacklisted, reason = self._registry.is_blacklisted(url)
-            if is_blacklisted:
-                raise PluginBlacklistedError(url, reason)
-
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
+
+        # Check blacklist before installing
+        if not force_blacklisted:
+            # Create appropriate InstallablePlugin for blacklist checking
+            if local_path:
+                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
+            else:
+                plugin = UrlInstallablePlugin(url, ref, self._registry)
+
+            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+            if is_blacklisted:
+                raise PluginBlacklistedError(url, blacklist_reason)
+
+        # Install from local directory or remote URL
         if local_path:
             return self._install_from_local_directory(
                 local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
@@ -908,9 +936,11 @@ class PluginManager(QObject):
 
             # Check blacklist again with UUID
             if not force_blacklisted:
-                is_blacklisted, reason = self._registry.is_blacklisted(url, manifest.uuid)
+                plugin = UrlInstallablePlugin(url, ref, self._registry)
+                plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
+                is_blacklisted, blacklist_reason = plugin.is_blacklisted()
                 if is_blacklisted:
-                    raise PluginBlacklistedError(url, reason, manifest.uuid)
+                    raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
 
             # Check for UUID conflicts with existing plugins from different sources
             has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
@@ -965,7 +995,7 @@ class PluginManager(QObject):
             # Update version tag cache from cloned repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(url=url)
             if registry_plugin:
-                versioning_scheme = registry_plugin.get('versioning_scheme')
+                versioning_scheme = registry_plugin.versioning_scheme
                 if versioning_scheme:
                     self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
 
@@ -994,8 +1024,6 @@ class PluginManager(QObject):
         except Exception:
             # Clean up temp directory on failure
             if temp_path.exists():
-                import gc
-
                 # Force garbage collection to release file handles on Windows
                 gc.collect()
                 shutil.rmtree(temp_path, ignore_errors=True)
@@ -1023,8 +1051,6 @@ class PluginManager(QObject):
         Returns:
             str: Plugin ID
         """
-        import tempfile
-
         # Preserve original ref if reinstalling and no ref specified
         ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
@@ -1034,8 +1060,6 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                from picard.git.factory import git_backend
-
                 backend = git_backend()
                 source_repo = backend.create_repository(local_path)
                 if source_repo.get_status():
@@ -1062,8 +1086,6 @@ class PluginManager(QObject):
             except Exception:
                 # Clean up temp directory on failure
                 if temp_path.exists():
-                    import gc
-
                     gc.collect()
                     shutil.rmtree(temp_path, ignore_errors=True)
                 raise
@@ -1251,21 +1273,23 @@ class PluginManager(QObject):
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.get('versioning_scheme') and ref_type == 'tag':
+        if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
             # Try to find newer version tags
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin['versioning_scheme'])
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
             if newer_tag:
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
+
+        # Check if plugin is currently enabled - disable it to reload module after update
+        was_enabled = plugin.state == PluginState.ENABLED
+        if was_enabled:
+            self.disable_plugin(plugin)
 
         source = PluginSourceGit(current_url, new_ref)
         assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        from picard.git.backend import GitObjectType
-        from picard.git.factory import git_backend
-
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
         obj = repo.revparse_single(new_commit)
@@ -1301,10 +1325,17 @@ class PluginManager(QObject):
         )
 
         # Update version tag cache from updated repo
-        if registry_plugin and registry_plugin.get('versioning_scheme'):
+        if registry_plugin and registry_plugin.versioning_scheme:
             self._refs_cache.update_cache_from_local_repo(
-                plugin.local_path, current_url, registry_plugin['versioning_scheme']
+                plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
+
+        # Re-enable plugin if it was enabled before to reload the module with new code
+        if was_enabled:
+            self.enable_plugin(plugin)
+
+        # Emit signal to notify UI that plugin has been updated
+        self.plugin_ref_switched.emit(plugin)
 
         return UpdateResult(
             old_version or '',
@@ -1342,8 +1373,6 @@ class PluginManager(QObject):
                 continue
 
             try:
-                from picard.git.factory import git_backend
-
                 backend = git_backend()
                 repo = backend.create_repository(plugin.local_path)
                 current_commit = repo.get_head_target()
@@ -1355,9 +1384,9 @@ class PluginManager(QObject):
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
                 registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
-                if registry_plugin and registry_plugin.get('versioning_scheme'):
+                if registry_plugin and registry_plugin.versioning_scheme:
                     self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                     )
 
                 old_ref = metadata.ref or 'main'
@@ -1366,9 +1395,10 @@ class PluginManager(QObject):
                 # Check if currently on a tag
                 current_is_tag = False
                 current_tag = None
-                if ref:
+                ref_type, resolved_ref = get_ref_type(repo, ref)
+                if ref_type == 'tag':
                     try:
-                        repo.revparse_single(f'refs/tags/{ref}')
+                        repo.revparse_single(resolved_ref)
                         current_is_tag = True
                         current_tag = ref
                     except KeyError:
@@ -1397,12 +1427,13 @@ class PluginManager(QObject):
                             except KeyError:
                                 # Fall back to original ref (might be commit hash)
                                 obj = repo.revparse_single(ref)
+                    elif ref.startswith('origin/'):
+                        # Handle origin/ refs - these are branches, not tags
+                        obj = repo.revparse_single(ref)
                     else:
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    from picard.git.backend import GitObjectType
-
                     if obj.type == GitObjectType.TAG:
                         commit = repo.peel_to_commit(obj)
                     else:
@@ -1448,8 +1479,6 @@ class PluginManager(QObject):
             return False
 
         try:
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(plugin.local_path)
             current_commit = repo.get_head_target()
@@ -1461,9 +1490,9 @@ class PluginManager(QObject):
 
             # Update version tag cache from fetched repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
-            if registry_plugin and registry_plugin.get('versioning_scheme'):
+            if registry_plugin and registry_plugin.versioning_scheme:
                 self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin['versioning_scheme']
+                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                 )
 
             old_ref = metadata.ref or 'main'
@@ -1472,17 +1501,10 @@ class PluginManager(QObject):
             # Check if currently on a tag by checking available refs
             current_is_tag = False
             current_tag = None
-            if ref:
-                # Get all refs to check if this ref exists as a tag
-                try:
-                    references = repo.get_references()
-                    tag_ref = f'refs/tags/{ref}'
-                    if tag_ref in references:
-                        current_is_tag = True
-                        current_tag = ref
-                except Exception:
-                    # If we can't get references, assume it's not a tag
-                    current_is_tag = False
+            ref_type, resolved_ref = get_ref_type(repo, ref)
+            if ref_type == 'tag':
+                current_is_tag = True
+                current_tag = ref
 
             # If on a tag, check for newer version tag
             if current_is_tag and current_tag:
@@ -1509,12 +1531,13 @@ class PluginManager(QObject):
                         except KeyError:
                             # Fall back to original ref (might be commit hash)
                             obj = repo.revparse_single(ref)
+                elif ref.startswith('origin/'):
+                    # Handle origin/ refs - these are branches, not tags
+                    obj = repo.revparse_single(ref)
                 else:
                     obj = repo.revparse_single(ref)
 
                 # Peel annotated tags to get the actual commit
-                from picard.git.backend import GitObjectType
-
                 if obj.type == GitObjectType.TAG:
                     commit = repo.peel_to_commit(obj)
                 else:
@@ -1600,11 +1623,6 @@ class PluginManager(QObject):
 
     def long_description_as_html(self, plugin):
         """Get plugin long description converted from markdown to HTML."""
-        try:
-            from markdown import markdown as render_markdown
-        except ImportError:
-            render_markdown = None
-
         if not plugin.manifest:
             return None
 
@@ -1626,7 +1644,7 @@ class PluginManager(QObject):
             if metadata and hasattr(metadata, 'url'):
                 registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
                 if registry_plugin:
-                    return registry_plugin.get('versioning_scheme', '')
+                    return registry_plugin.versioning_scheme or ''
         except Exception:
             pass
         return ""
@@ -1709,7 +1727,11 @@ class PluginManager(QObject):
             metadata = self._metadata.get_plugin_metadata(plugin_uuid)
             url = metadata.url if metadata else None
 
-            is_blacklisted, reason = self._registry.is_blacklisted(url, plugin_uuid)
+            # Create InstallablePlugin for blacklist checking
+            installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
+            installable_plugin.plugin_uuid = plugin_uuid
+
+            is_blacklisted, reason = installable_plugin.is_blacklisted()
             if is_blacklisted:
                 log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
                 blacklisted_plugins.append((plugin.plugin_id, reason))
