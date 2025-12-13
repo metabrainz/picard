@@ -27,6 +27,7 @@ import time
 
 from picard import log
 from picard.const.appdirs import cache_folder
+from picard.git.factory import git_backend
 from picard.version import Version
 
 
@@ -371,8 +372,6 @@ class RefsCache:
         Returns:
             list: Filtered tags or empty list
         """
-        from picard.git.factory import git_backend
-
         # Parse versioning scheme
         pattern = self.parse_versioning_scheme(versioning_scheme)
         if not pattern:
