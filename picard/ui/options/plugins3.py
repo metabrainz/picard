@@ -73,22 +73,16 @@ class Plugins3OptionsPage(OptionsPage):
         self.install_button.clicked.connect(self._install_plugin)
         toolbar_layout.addWidget(self.install_button)
 
-        self.check_updates_button = QtWidgets.QPushButton(_("Check for Updates"))
-        self.check_updates_button.setToolTip(_("Check all installed plugins for available updates"))
-        self.check_updates_button.clicked.connect(self._check_for_updates)
-        toolbar_layout.addWidget(self.check_updates_button)
+        self.refresh_all_button = QtWidgets.QPushButton(_("Refresh All"))
+        self.refresh_all_button.setToolTip(_("Refresh plugin registry, list, and check for updates"))
+        self.refresh_all_button.clicked.connect(self._refresh_all)
+        toolbar_layout.addWidget(self.refresh_all_button)
 
-        toolbar_layout.addStretch()
-
-        self.refresh_registry_button = QtWidgets.QPushButton(_("Refresh Registry"))
-        self._update_registry_tooltip()
-        self.refresh_registry_button.clicked.connect(self._refresh_registry)
-        toolbar_layout.addWidget(self.refresh_registry_button)
-
-        self.refresh_button = QtWidgets.QPushButton(_("Refresh List"))
-        self.refresh_button.setToolTip(_("Refresh the plugin list to reflect current state"))
-        self.refresh_button.clicked.connect(self._refresh_list)
-        toolbar_layout.addWidget(self.refresh_button)
+        self.update_all_button = QtWidgets.QPushButton(_("Update All"))
+        self.update_all_button.setToolTip(_("Update all plugins with available updates"))
+        self.update_all_button.clicked.connect(self._update_all_available)
+        self.update_all_button.setVisible(False)  # Hidden by default
+        toolbar_layout.addWidget(self.update_all_button)
 
         toolbar_layout.addStretch()
 
@@ -155,31 +149,85 @@ class Plugins3OptionsPage(OptionsPage):
             self._filter_plugins()  # Apply current filter
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
+            self._toggle_update_all_button()
         except Exception as e:
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
-    def _refresh_list(self):
-        """Refresh plugin list and update status."""
-        self.load()
-        # Also refresh update status
-        self.plugin_list.refresh_update_status()
-        self._filter_plugins()  # Refresh display to show update indicators
+    def _refresh_all(self):
+        """Refresh registry, list, and update status."""
+        self.refresh_all_button.setEnabled(False)
+        self.refresh_all_button.setText(_("Refreshing..."))
+        self._show_status(_("Refreshing plugin registry, list, and checking for updates..."))
+
+        try:
+            # Refresh registry from server
+            if self.plugin_manager:
+                self.plugin_manager.refresh_registry_and_caches()
+
+            # Reload plugin list
+            self.all_plugins = self.plugin_manager.plugins
+
+            # Check for updates (silent - no dialog)
+            updates = self.plugin_manager.check_updates()
+
+            # Refresh UI
+            self.plugin_list.refresh_update_status()
+            self._filter_plugins()
+            self._update_registry_tooltip()
+
+            # Show/hide Update All button
+            self._toggle_update_all_button()
+
+            update_count = len(updates) if updates else 0
+            self._show_status(
+                _("Refreshed - {} plugins, {} updates available").format(len(self.all_plugins), update_count)
+            )
+
+        except Exception as e:
+            log.error("Failed to refresh all: %s", e, exc_info=True)
+            self._show_status(_("Error refreshing: {}").format(str(e)))
+        finally:
+            self.refresh_all_button.setEnabled(True)
+            self.refresh_all_button.setText(_("Refresh All"))
+
+    def _toggle_update_all_button(self):
+        """Show/hide Update All button based on available updates."""
+        update_count = self._count_available_updates()
+        self.update_all_button.setVisible(update_count > 1)
+        if update_count > 1:
+            self.update_all_button.setText(_("Update All ({})").format(update_count))
+
+    def _count_available_updates(self):
+        """Count plugins with available updates."""
+        if not hasattr(self.plugin_list, '_update_status_cache'):
+            return 0
+        return sum(1 for has_update in self.plugin_list._update_status_cache.values() if has_update)
+
+    def _update_all_available(self):
+        """Update all plugins with available updates."""
+        plugins_with_updates = [
+            plugin
+            for plugin in self.all_plugins
+            if hasattr(self.plugin_list, '_update_status_cache')
+            and self.plugin_list._update_status_cache.get(plugin.plugin_id, False)
+        ]
+        if plugins_with_updates:
+            self._update_plugins(plugins_with_updates)
 
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
         self.plugin_list.clear()
         self.plugin_details.setVisible(False)
         self.install_button.setEnabled(False)
-        self.check_updates_button.setEnabled(False)
-        self.refresh_button.setEnabled(False)
+        self.refresh_all_button.setEnabled(False)
+        self.update_all_button.setVisible(False)
         self.search_edit.setEnabled(False)
         self._show_status(_("Plugin system not available - Git backend required"))
 
     def _show_enabled_state(self):
         """Show UI when plugin system is enabled."""
         self.install_button.setEnabled(True)
-        self.check_updates_button.setEnabled(True)
-        self.refresh_button.setEnabled(True)
+        self.refresh_all_button.setEnabled(True)
         self.search_edit.setEnabled(True)
 
     def _filter_plugins(self):
@@ -256,96 +304,11 @@ class Plugins3OptionsPage(OptionsPage):
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
 
-    def _check_for_updates(self):
-        """Check for plugin updates."""
-        # Plugin system availability already checked in load()
-        self.check_updates_button.setEnabled(False)
-        self.check_updates_button.setText(_("Checking..."))
-        self._show_status(_("Checking for plugin updates..."))
-
-        try:
-            # Use the manager's check_updates method (which handles versioning schemes correctly)
-            updates = self.plugin_manager.check_updates()
-
-            # Refresh update status in UI after checking
-            self.plugin_list.refresh_update_status()
-            self._filter_plugins()  # Refresh display to show update indicators
-
-            if updates:
-                # Convert UpdateCheck objects to plugins for the dialog
-                plugins_with_updates = []
-                for update in updates:
-                    # Find the plugin object by plugin_id
-                    for plugin in self.plugin_manager.plugins:
-                        if plugin.plugin_id == update.plugin_id:
-                            plugins_with_updates.append(plugin)
-                            break
-
-                self._show_status(_("Found {} plugin(s) with updates available").format(len(plugins_with_updates)))
-                self._show_update_dialog(plugins_with_updates)
-            else:
-                self._show_status(_("All plugins are up to date"))
-
-        except Exception as e:
-            log.error("Failed to check for plugin updates: %s", e, exc_info=True)
-            self._show_status(_("Error checking for updates: {}").format(str(e)))
-        finally:
-            self.check_updates_button.setEnabled(True)
-            self.check_updates_button.setText(_("Check for Updates"))
-
-    def _refresh_registry(self):
-        """Refresh plugin registry data from server."""
-        self.refresh_registry_button.setEnabled(False)
-        self.refresh_registry_button.setText(_("Refreshing..."))
-        self._show_status(_("Fetching latest plugin registry from server..."))
-
-        try:
-            # Use the manager's centralized refresh method
-            if self.plugin_manager:
-                self.plugin_manager.refresh_registry_and_caches()
-
-                # Get plugin count for status
-                plugin_count = len(self.plugin_manager.registry.list_plugins())
-                success_msg = _("Registry refreshed successfully - {} plugins available").format(plugin_count)
-                self._show_status(success_msg)
-            else:
-                self._show_status(_("Plugin registry refreshed"))
-
-            # Reload the page to show updated registry data (but don't overwrite status)
-            self.all_plugins = self.plugin_manager.plugins
-            # Refresh update status after registry refresh
-            self.plugin_list.refresh_update_status()
-            self._filter_plugins()  # Refresh display to show update indicators
-            self._show_enabled_state()
-            # Update tooltip with fresh registry info
-            self._update_registry_tooltip()
-        except Exception as e:
-            log.error("Failed to refresh plugin registry: %s", e, exc_info=True)
-            self._show_status(_("Error refreshing registry: {}").format(str(e)))
-        finally:
-            self.refresh_registry_button.setEnabled(True)
-            self.refresh_registry_button.setText(_("Refresh Registry"))
-
     def _update_registry_tooltip(self):
         """Update registry button tooltip with current registry information."""
-        base_tooltip = _("Update plugin registry data from server")
-
-        try:
-            if self.plugin_manager:
-                registry = self.plugin_manager.registry
-                plugin_count = len(registry.list_plugins())
-
-                detailed_tooltip = _("{}\n\nCurrent Registry Info:\n• Plugins: {}\n• URL: {}").format(
-                    base_tooltip,
-                    plugin_count,
-                    getattr(registry, 'registry_url', 'unknown'),
-                )
-                self.refresh_registry_button.setToolTip(detailed_tooltip)
-            else:
-                self.refresh_registry_button.setToolTip(base_tooltip)
-        except Exception:
-            # Fallback to basic tooltip if registry info fails
-            self.refresh_registry_button.setToolTip(base_tooltip)
+        # This method is kept for potential future use but currently not needed
+        # since we removed the separate registry button
+        pass
 
     def _show_update_dialog(self, plugins_with_updates):
         """Show dialog with available updates."""
@@ -378,7 +341,7 @@ class Plugins3OptionsPage(OptionsPage):
             return
 
         # Disable UI during updates
-        self.check_updates_button.setEnabled(False)
+        self.refresh_all_button.setEnabled(False)
         self.install_button.setEnabled(False)
 
         async_manager = AsyncPluginManager(self.plugin_manager)
@@ -392,12 +355,13 @@ class Plugins3OptionsPage(OptionsPage):
         """Update the next plugin in the queue."""
         if not self._update_queue:
             # All updates complete
-            self.check_updates_button.setEnabled(True)
+            self.refresh_all_button.setEnabled(True)
             self.install_button.setEnabled(True)
             self._show_status(_("All plugin updates completed"))
             # Refresh update status after batch updates
             self.plugin_list.refresh_update_status()
             self._filter_plugins()  # Refresh display to show updated status
+            self._toggle_update_all_button()
             return
 
         plugin = self._update_queue.pop(0)
