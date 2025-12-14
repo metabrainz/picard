@@ -61,7 +61,7 @@ def create_fake_image(width, height, image_format):
         info = imageinfo.identify(data)
     except imageinfo.IdentificationError:
         info = None
-    return data, info
+    return data.data(), info
 
 
 class ImageFiltersTest(PicardTestCase):
@@ -324,3 +324,25 @@ class ImageProcessorsTest(PicardTestCase):
         image, info = create_fake_image(500, 500, "jpg")
         info.extension = ".test"
         self._check_processing_error(image, info)
+
+
+class ProcessingImageTest(PicardTestCase):
+    def test_image_from_binary(self):
+        data, info = create_fake_image(500, 500, "jpg")
+        image = ProcessingImage(data, info)
+        self.assertEqual(image.info, info)
+        self.assertIsInstance(image._qimage, QImage)
+
+    def test_image_from_binary_identify_info(self):
+        data, info = create_fake_image(500, 500, "jpg")
+        image = ProcessingImage(data)
+        self.assertEqual(image.info, info)
+        self.assertIsInstance(image._qimage, QImage)
+
+    def test_image_from_qimage(self):
+        data, info = create_fake_image(500, 500, "jpg")
+        qimage = QImage.fromData(data)
+        image = ProcessingImage(qimage)
+        self.assertEqual(image.info.height, info.height)
+        self.assertEqual(image.info.width, info.width)
+        self.assertEqual(image._qimage, qimage)

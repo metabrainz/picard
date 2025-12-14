@@ -29,7 +29,10 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QImage
 
 from picard.plugin import ExtensionPoint
-from picard.util import imageinfo
+from picard.util.imageinfo import (
+    ImageInfo,
+    identify,
+)
 
 
 ext_point_cover_art_processors = ExtensionPoint(label='cover_art_processors')
@@ -44,12 +47,14 @@ class CoverArtEncodingError(CoverArtProcessingError):
 
 
 class ProcessingImage:
-    def __init__(self, image, info: imageinfo.ImageInfo | None = None):
+    def __init__(self, image: QImage | bytes, info: ImageInfo | None = None):
         self.set_result(image)
-        if info is None and not isinstance(image, QImage):
-            self.info = imageinfo.identify(image)
-        else:
+        if info is not None:
             self.info = info
+        elif isinstance(image, QImage):
+            self._set_imageinfo_from_qimage(image)
+        elif info is None:
+            self.info = identify(image)
 
     def copy(self):
         return ProcessingImage(self._qimage.copy(), copy(self.info))
@@ -79,8 +84,7 @@ class ProcessingImage:
             if not image_format:
                 raise CoverArtEncodingError("No image format specified and info.format is missing.")
 
-        qimage = getattr(self, "_qimage", None)
-        if qimage is None:
+        if self._qimage is None:
             raise CoverArtEncodingError("No QImage available to encode.")
 
         buffer = QBuffer()
@@ -88,11 +92,20 @@ class ProcessingImage:
             raise CoverArtEncodingError("Failed to open QBuffer for writing.")
 
         try:
-            if not qimage.save(buffer, image_format, quality=quality):
+            if not self._qimage.save(buffer, image_format, quality=quality):
                 raise CoverArtEncodingError(f"Failed to encode image into format '{image_format}'")
-            return bytes(buffer.data())
+            return buffer.data().data()
         finally:
             buffer.close()
+
+    def _set_imageinfo_from_qimage(self, image: QImage):
+        self.info = ImageInfo(
+            width=image.width(),
+            height=image.height(),
+            mime="",
+            extension="",
+            datalen=0,
+        )
 
 
 class ImageProcessor:
