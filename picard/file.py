@@ -995,7 +995,7 @@ class File(MetadataItem):
 
     def clear_lookup_task(self):
         if self._lookup_task:
-            self.tagger.webservice.remove_task(self._lookup_task)
+            self.tagger.webservice.abort_task(self._lookup_task)
             self._lookup_task = None
 
     def set_pending(self):

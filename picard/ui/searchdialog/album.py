@@ -330,7 +330,7 @@ class AlbumSearchDialog(SearchDialog):
         for cell in self.cover_cells:
             if cell.fetch_task is not None:
                 log.debug("Removing cover art fetch task for %s", cell.mbid)
-                self.tagger.webservice.remove_task(cell.fetch_task)
+                self.tagger.webservice.abort_task(cell.fetch_task)
                 cell.fetch_task = None
 
     def closeEvent(self, event):
