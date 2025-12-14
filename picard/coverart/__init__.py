@@ -173,7 +173,7 @@ class CoverArt:
             return
 
         # coverart has already data
-        if image.data:
+        if image.datahash:
             info = imageinfo.ImageInfo(
                 width=image.width,
                 height=image.height,
