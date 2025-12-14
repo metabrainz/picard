@@ -789,6 +789,7 @@ class PluginApi:
         return register_file_action(action)
 
     def register_tools_menu_action(self, action: type[BaseAction]) -> None:
+        action.api = self
         return register_tools_menu_action(action)
 
     # UI
