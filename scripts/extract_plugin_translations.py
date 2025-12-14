@@ -68,6 +68,9 @@ def extract_from_code(plugin_dir):
                         extract_translation_call(node, translations, py_file, lines, t_variables)
                     elif isinstance(node.func, ast.Name) and node.func.id == 't_':
                         extract_translation_call(node, translations, py_file, lines, t_variables)
+                    elif isinstance(node.func, ast.Name) and node.func.id == '_translate':
+                        extract_qt_translation_call(node, translations)
+                        # extract_translation_call(node, translations, py_file, lines, t_variables)
         except Exception as e:
             print(f"Warning: Failed to parse {py_file}: {e}", file=sys.stderr)
 
@@ -174,6 +177,14 @@ def extract_translation_call(node, translations, py_file, lines, t_variables):
             warn("Cannot extract singular/plural from trn() call")
 
         translations[key] = {'one': singular or f"?{key}?", 'other': plural or f"?{key}?"}
+
+
+def extract_qt_translation_call(node, translations):
+    if len(node.args) == 2:
+        context = get_string_value(node.args[0])
+        value = get_string_value(node.args[1])
+        key = f"qt.{context}.{value}"
+        translations[key] = f"?{value}?"
 
 
 def get_string_value(node):
