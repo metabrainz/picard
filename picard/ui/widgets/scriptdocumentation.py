@@ -32,8 +32,10 @@ from picard.const.tags import (
     ALL_TAGS,
     TagVar,
 )
+from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
+from picard.tags.docs import display_tag_full_description
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -134,15 +136,16 @@ class FunctionsDocumentationPage(DocumentationPage):
 
 class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        def process_tag(tag: TagVar):
-            tag_name = tag.script_name()
-            tag_desc = ALL_TAGS.full_description_content(tag)
+        def process_tag(tag_name: TagVar):
+            tag_desc = display_tag_full_description(tag_name)
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
         html = ''
-        for tag in sorted(ALL_TAGS, key=lambda x: x.name):
-            html += process_tag(tag)
+        tag_list = [tag.script_name() for tag in ALL_TAGS]
+        tag_list += [name for (name, _doc) in ext_point_script_variables]
+        for tag_name in sorted(tag_list):
+            html += process_tag(tag_name)
         return html
 
 

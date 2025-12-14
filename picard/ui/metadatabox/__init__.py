@@ -53,10 +53,8 @@ from picard.i18n import (
     ngettext,
 )
 from picard.metadata import MULTI_VALUED_JOINER
-from picard.tags import (
-    display_tag_name,
-    display_tag_tooltip,
-)
+from picard.tags import display_tag_name
+from picard.tags.docs import display_tag_tooltip
 from picard.tags.preserved import UserPreservedTags
 from picard.track import Track
 from picard.util import (

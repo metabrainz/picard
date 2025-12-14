@@ -265,13 +265,6 @@ class TagVars(MutableSequence):
         else:
             return title
 
-    @staticmethod
-    def _format_display(name, content, tagdesc):
-        fmt_tagdesc = _("<p><em>%{name}%</em> [{tagdesc}]</p>{content}")
-        fmt_normal = _("<p><em>%{name}%</em></p>{content}")
-        fmt = fmt_tagdesc if tagdesc else fmt_normal
-        return fmt.format(name=name, content=content, tagdesc=tagdesc)
-
     def notes(self, item: TagVar):
         for attrib, note in ATTRIB2NOTE.items():
             if getattr(item, attrib):
@@ -341,16 +334,6 @@ class TagVars(MutableSequence):
         content += self._add_sections(item, include_sections)
 
         return content
-
-    def display_tooltip(self, tagname):
-        name, tagdesc, _search_name, item = self.item_from_name(tagname)
-        content = self.tooltip_content(item) if item else _markdown(_(TEXT_NO_DESCRIPTION))
-        return self._format_display(name, content, tagdesc)
-
-    def display_full_description(self, tagname):
-        name, tagdesc, _search_name, item = self.item_from_name(tagname)
-        content = self.full_description_content(item) if item else _markdown(_(TEXT_NO_DESCRIPTION))
-        return self._format_display(name, content, tagdesc)
 
     def names(self, selector=None):
         for item in self._items:
