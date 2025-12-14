@@ -506,7 +506,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
             return
 
-        ref = confirm_dialog.selected_ref
+        ref = confirm_dialog.selected_ref.name if confirm_dialog.selected_ref else None
 
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:

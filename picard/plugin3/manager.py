@@ -337,30 +337,28 @@ class PluginManager(QObject):
 
         # Format tags
         for ref in refs.get('tags', []):
-            ref_name = ref['name']
-            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
-            commit_display = f" @{commit_id}" if commit_id else ""
+            from picard.git.utils import RefItem
 
-            if current_ref and ref_name == current_ref:
-                display_name = f"{ref_name}{commit_display} (current)"
-            else:
-                display_name = f"{ref_name}{commit_display}"
-
-            formatted_refs['tags'].append({'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name})
+            ref_item = RefItem(
+                name=ref['name'],
+                commit=ref.get('commit', ''),
+                is_current=(current_ref and ref['name'] == current_ref),
+                is_tag=True,
+            )
+            formatted_refs['tags'].append(
+                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
+            )
 
         # Format branches
         for ref in refs.get('branches', []):
-            ref_name = ref['name']
-            commit_id = short_commit_id(ref['commit']) if ref.get('commit') else ''
-            commit_display = f" @{commit_id}" if commit_id else ""
-
-            if current_ref and ref_name == current_ref:
-                display_name = f"{ref_name}{commit_display} (current)"
-            else:
-                display_name = f"{ref_name}{commit_display}"
-
+            ref_item = RefItem(
+                name=ref['name'],
+                commit=ref.get('commit', ''),
+                is_current=(current_ref and ref['name'] == current_ref),
+                is_branch=True,
+            )
             formatted_refs['branches'].append(
-                {'name': ref_name, 'commit': ref.get('commit'), 'display_name': display_name}
+                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
             )
 
         return formatted_refs
@@ -1618,19 +1616,10 @@ class PluginManager(QObject):
         if not metadata:
             return ""
 
-        ref = getattr(metadata, 'ref', '')
-        commit = getattr(metadata, 'commit', '')
+        from picard.git.utils import RefItem
 
-        if ref and commit:
-            short_commit = short_commit_id(commit)
-            return f"{ref} @{short_commit}"
-        elif ref:
-            return f"{ref}"
-        elif commit:
-            short_commit = short_commit_id(commit)
-            return f"@{short_commit}"
-
-        return ""
+        ref_item = RefItem(name=getattr(metadata, 'ref', ''), commit=getattr(metadata, 'commit', ''))
+        return ref_item.format()
 
     def get_plugin_homepage(self, plugin):
         """Get plugin homepage URL from manifest."""

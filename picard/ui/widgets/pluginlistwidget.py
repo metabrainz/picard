@@ -24,6 +24,7 @@ from functools import partial
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
@@ -38,6 +39,7 @@ from picard.ui.widgets.refselector import RefSelectorWidget
 COLUMN_ENABLED = 0
 COLUMN_PLUGIN = 1
 COLUMN_VERSION = 2
+COLUMN_UPDATE = 3
 
 
 class PluginListWidget(QtWidgets.QTreeWidget):
@@ -45,21 +47,26 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     plugin_selection_changed = QtCore.pyqtSignal(object)  # Emits selected plugin or None
     plugin_state_changed = QtCore.pyqtSignal(object, str)  # Emits plugin and action
+    update_selected_plugins = QtCore.pyqtSignal(list)  # Emits list of plugins to update
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self._toggling_plugins = set()  # Track plugins being toggled
         self._failed_enables = set()  # Track plugins that failed to enable
+        self._updating_plugins = set()  # Track plugins being updated
         self.setup_ui()
 
     def setup_ui(self):
         """Setup the tree widget."""
-        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version")])
+        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Update")])
         self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+
+        # Create header with update button
+        self._setup_header_widget()
 
         # Connect selection changes
         self.itemSelectionChanged.connect(self._on_selection_changed)
@@ -81,8 +88,23 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Cache update status to avoid repeated network calls during search
         self._update_status_cache = {}
 
+        # Cache version info to avoid repeated expensive calls
+        self._version_cache = {}
+
         # Load cached update status from disk
         self._load_cached_update_status()
+
+    def _setup_header_widget(self):
+        """Setup header widget with update button."""
+        # Create update button that will be positioned over the header
+        self.update_button = QtWidgets.QPushButton(_("Update"), self)
+        self.update_button.setMaximumHeight(20)
+        self.update_button.setEnabled(False)  # Disabled by default
+        self.update_button.setToolTip(_("Update selected plugins to their latest versions"))
+        self.update_button.clicked.connect(self._update_selected_plugins)
+
+        # Position the button over the update column header
+        self._position_update_button()
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -113,13 +135,19 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             except (AttributeError, Exception):
                 pass
 
-            # Column 2: Version
-            item.setText(COLUMN_VERSION, self._get_version_display(plugin))
+            # Column 2: Version (without update suffix)
+            item.setText(COLUMN_VERSION, self._get_clean_version_display(plugin))
+
+            # Column 3: Update checkbox and new version
+            self._setup_update_column(item, plugin)
 
             # Store plugin reference
             item.setData(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole, plugin)
 
             self.addTopLevelItem(item)
+
+        # Update header button visibility
+        self._update_header_button()
 
         # Resize columns to content
         for i in range(self.columnCount()):
@@ -137,15 +165,157 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Format git information for display."""
         return self.plugin_manager.get_plugin_git_info(metadata)
 
-    def _get_version_display(self, plugin):
-        """Get display text for plugin version."""
-        version_text = self.plugin_manager.get_plugin_version_display(plugin)
+    def _get_clean_version_display(self, plugin):
+        """Get display text for plugin version without update suffix."""
+        return self.plugin_manager.get_plugin_version_display(plugin)
 
-        # Check if update is available using cached result
-        if self._has_update_available_cached(plugin):
-            version_text += " " + _("(Update available)")
+    def _set_update_checkbox_tooltip(self, item, is_checked):
+        """Set tooltip for update checkbox based on its state."""
+        if is_checked:
+            item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
+        else:
+            item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
 
-        return version_text
+    def _setup_update_column(self, item, plugin):
+        """Setup update column with checkbox and new version."""
+        if plugin.plugin_id in self._updating_plugins:
+            # Show in progress for updating plugins
+            item.setText(COLUMN_UPDATE, _("In Progress..."))
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        elif self._has_update_available_cached(plugin):
+            # Get new version info from cache first to avoid expensive calls during updates
+            try:
+                new_version = self._get_cached_new_version(plugin)
+                item.setText(COLUMN_UPDATE, new_version)
+            except Exception:
+                item.setText(COLUMN_UPDATE, _("Available"))
+
+            # Add checkbox for update selection
+            item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+
+            # Check if user has previously unchecked this plugin
+            config = get_config()
+            do_not_update = config.setting['plugins3_do_not_update_plugins']
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+
+            if plugin_uuid and plugin_uuid in do_not_update:
+                item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
+                self._set_update_checkbox_tooltip(item, False)
+            else:
+                item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Checked)
+                self._set_update_checkbox_tooltip(item, True)
+        else:
+            # No update available - no text, no checkbox
+            item.setText(COLUMN_UPDATE, "")
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+
+    def _get_cached_new_version(self, plugin):
+        """Get new version from cache or compute if not cached."""
+        # Return cached version if available
+        if plugin.plugin_id in self._version_cache:
+            return self._version_cache[plugin.plugin_id]
+
+        # Compute and cache the version
+        new_version = self._get_new_version(plugin)
+        self._version_cache[plugin.plugin_id] = new_version
+        return new_version
+
+    def _format_update_version(self, update):
+        """Format update version info for display (matching git info format)."""
+        from picard.git.utils import RefItem
+
+        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
+        commit = getattr(update, 'new_commit', None)
+
+        ref_item = RefItem(name=ref, commit=commit)
+        return ref_item.format() or _("Available")
+
+    def _get_new_version(self, plugin):
+        """Get the new version available for update."""
+        try:
+            # Get update info from check_updates
+            updates = self.plugin_manager.check_updates()
+            for update in updates:
+                if update.plugin_id == plugin.plugin_id:
+                    return self._format_update_version(update)
+        except Exception:
+            pass
+        return _("Available")
+
+    def _update_header_button(self):
+        """Update header button state based on checked items."""
+        checked_count = self._count_checked_updates()
+        self.update_button.setEnabled(checked_count > 0)
+        if checked_count > 0:
+            self.update_button.setText(_("Update ({})").format(checked_count))
+        else:
+            self.update_button.setText(_("Update"))
+
+    def _count_checked_updates(self):
+        """Count items with checked update checkboxes."""
+        count = 0
+        for i in range(self.topLevelItemCount()):
+            item = self.topLevelItem(i)
+            if (
+                item.flags() & QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                and item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
+            ):
+                count += 1
+        return count
+
+    def _update_selected_plugins(self):
+        """Emit signal to update selected plugins."""
+        plugins_to_update = []
+        for i in range(self.topLevelItemCount()):
+            item = self.topLevelItem(i)
+            if (
+                item.flags() & QtCore.Qt.ItemFlag.ItemIsUserCheckable
+                and item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
+            ):
+                plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
+                if plugin:
+                    plugins_to_update.append(plugin)
+
+        if plugins_to_update:
+            self.update_selected_plugins.emit(plugins_to_update)
+
+    def mark_plugin_updating(self, plugin):
+        """Mark a plugin as being updated."""
+        self._updating_plugins.add(plugin.plugin_id)
+        self._refresh_plugin_display(plugin)
+
+    def mark_plugin_update_complete(self, plugin):
+        """Mark a plugin update as complete."""
+        self._updating_plugins.discard(plugin.plugin_id)
+        # Clear caches for updated plugin - it should no longer have updates available
+        self._version_cache.pop(plugin.plugin_id, None)
+        self._update_status_cache.pop(plugin.plugin_id, None)
+        self._refresh_plugin_display(plugin)
+
+    def _refresh_plugin_display(self, plugin):
+        """Refresh display for a specific plugin."""
+        for i in range(self.topLevelItemCount()):
+            item = self.topLevelItem(i)
+            item_plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
+            if item_plugin and item_plugin.plugin_id == plugin.plugin_id:
+                self._setup_update_column(item, plugin)
+                self._update_header_button()
+                break
+
+    def _position_update_button(self):
+        """Position the update button over the update column header."""
+        if hasattr(self, 'update_button'):
+            # Get the position and size of the update column header
+            header_rect = self.header().sectionViewportPosition(COLUMN_UPDATE)
+            header_width = self.header().sectionSize(COLUMN_UPDATE)
+
+            # Position the button
+            self.update_button.setGeometry(header_rect, 0, header_width, 20)
+
+    def resizeEvent(self, event):
+        """Handle resize events to reposition the update button."""
+        super().resizeEvent(event)
+        self._position_update_button()
 
     def _load_cached_update_status(self):
         """Load cached update status from disk."""
@@ -176,6 +346,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _refresh_update_status(self):
         """Refresh update status for all plugins."""
         self._update_status_cache.clear()
+        self._version_cache.clear()  # Clear version cache too
         for plugin in self.plugin_manager.plugins:
             self._refresh_single_plugin_update_status(plugin)
 
@@ -200,7 +371,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _on_item_clicked(self, item, column):
         """Handle item clicks (checkbox clicks)."""
-        if column == COLUMN_ENABLED:  # Only handle clicks on the checkbox column
+        if column == COLUMN_ENABLED:  # Handle enabled checkbox
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if plugin:
                 # Prevent rapid toggling of the same plugin
@@ -254,6 +425,31 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     # Emit signal for options dialog to refresh
                     action = "enabled" if actual_enabled else "disabled"
                     self.plugin_state_changed.emit(plugin, action)
+
+        elif column == COLUMN_UPDATE:  # Handle update checkbox
+            # Save checkbox state preference
+            plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
+            if plugin and plugin.manifest and plugin.manifest.uuid:
+                config = get_config()
+                do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+                plugin_uuid = plugin.manifest.uuid
+
+                is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
+
+                # Update tooltip based on new state
+                self._set_update_checkbox_tooltip(item, is_checked)
+
+                if not is_checked and plugin_uuid not in do_not_update:
+                    # User unchecked - add to do not update list
+                    do_not_update.append(plugin_uuid)
+                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                elif is_checked and plugin_uuid in do_not_update:
+                    # User checked - remove from do not update list
+                    do_not_update.remove(plugin_uuid)
+                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+
+            # Update header button when update checkboxes change
+            self._update_header_button()
 
     def _update_item_to_intended_state(self, item, enabled):
         """Update item display to show intended state."""
@@ -378,6 +574,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_context_update_complete(self, plugin, result):
         """Handle context menu update completion."""
         if result.success:
+            # Clear version cache for updated plugin
+            self._version_cache.pop(plugin.plugin_id, None)
+
             # Refresh update status for the specific plugin since it was updated
             self._refresh_single_plugin_update_status(plugin)
 
@@ -450,7 +649,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
-                ref=confirm_dialog.selected_ref,
+                ref=confirm_dialog.selected_ref.name if confirm_dialog.selected_ref else None,
                 reinstall=True,
                 callback=partial(self._on_reinstall_complete, plugin),
             )
@@ -477,7 +676,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             try:
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(
-                    plugin=plugin, ref=dialog.selected_ref, callback=partial(self._on_switch_ref_complete, plugin)
+                    plugin=plugin,
+                    ref=dialog.selected_ref.name if dialog.selected_ref else None,
+                    callback=partial(self._on_switch_ref_complete, plugin),
                 )
             except Exception as e:
                 log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)

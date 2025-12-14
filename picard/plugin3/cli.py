@@ -45,7 +45,11 @@ from picard.config import (
 from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
 from picard.git.factory import has_git_backend
-from picard.git.utils import check_local_repo_dirty, get_local_repository_path
+from picard.git.utils import (
+    RefItem,
+    check_local_repo_dirty,
+    get_local_repository_path,
+)
 from picard.options import init_options
 from picard.plugin3.installable import UrlInstallablePlugin
 from picard.plugin3.manager import (
@@ -325,23 +329,20 @@ class PluginCLI:
     def _format_git_info(self, metadata):
         """Format git ref and commit info compactly.
 
-        Returns string like "(ref @commit)" or "(@commit)" if ref is a commit hash.
+        Returns string like "(@commit)" for commit info only.
         Returns empty string if no metadata.
         """
         if not metadata:
             return ''
 
-        ref = metadata.ref or ''
         commit = metadata.commit or ''
-
         if not commit:
             return ''
 
-        commit_short = short_commit_id(commit)
-        # Skip ref if it's a commit hash (same as or starts with the commit short ID)
-        if ref and not ref.startswith(commit_short):
-            return f' ({ref} @{commit_short})'
-        return f' (@{commit_short})'
+        ref_item = RefItem(name=metadata.ref or '', commit=commit)
+        formatted = ref_item.format()
+
+        return f' ({formatted})' if formatted else ''
 
     def _select_ref_for_plugin(self, plugin):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.

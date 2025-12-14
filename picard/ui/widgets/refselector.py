@@ -21,6 +21,7 @@
 
 from PyQt6 import QtWidgets
 
+from picard.git.utils import RefItem
 from picard.i18n import gettext as _
 
 
@@ -77,23 +78,29 @@ class RefSelectorWidget(QtWidgets.QWidget):
         self.tags_list.clear()
         self.branches_list.clear()
 
-        # Use shared formatting if plugin_manager is available
-        if plugin_manager:
-            formatted_refs = plugin_manager.format_refs_for_display(refs, current_ref)
+        # Populate tags
+        for ref in refs.get('tags', []):
+            ref_item = RefItem(
+                name=ref['name'],
+                commit=ref.get('commit'),
+                is_current=(current_ref and ref['name'] == current_ref),
+                is_tag=True,
+            )
+            list_item = QtWidgets.QListWidgetItem(ref_item.format())
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            self.tags_list.addItem(list_item)
 
-            # Populate tags
-            for ref in formatted_refs['tags']:
-                self.tags_list.addItem(ref['display_name'])
-
-            # Populate branches
-            for ref in formatted_refs['branches']:
-                self.branches_list.addItem(ref['display_name'])
-        else:
-            # Fallback to simple display (for backward compatibility)
-            for ref in refs.get('tags', []):
-                self.tags_list.addItem(ref['name'])
-            for ref in refs.get('branches', []):
-                self.branches_list.addItem(ref['name'])
+        # Populate branches
+        for ref in refs.get('branches', []):
+            ref_item = RefItem(
+                name=ref['name'],
+                commit=ref.get('commit'),
+                is_current=(current_ref and ref['name'] == current_ref),
+                is_branch=True,
+            )
+            list_item = QtWidgets.QListWidgetItem(ref_item.format())
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            self.branches_list.addItem(list_item)
 
     def set_default_ref_info(self, default_ref_name, description):
         """Update the default tab with specific ref information."""
@@ -108,25 +115,12 @@ class RefSelectorWidget(QtWidgets.QWidget):
             return None
         elif current_tab == self.tags_tab_index:
             current_item = self.tags_list.currentItem()
-            if current_item:
-                # Extract ref name from "ref_name @commit (current)" format
-                ref_text = current_item.text()
-                # Remove " (current)" suffix if present
-                ref_text = ref_text.replace(" (current)", "")
-                # Extract just the ref name (before @commit)
-                return ref_text.split(" @")[0]
-            return None
+            return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.branches_tab_index:
             current_item = self.branches_list.currentItem()
-            if current_item:
-                # Extract ref name from "ref_name @commit (current)" format
-                ref_text = current_item.text()
-                # Remove " (current)" suffix if present
-                ref_text = ref_text.replace(" (current)", "")
-                # Extract just the ref name (before @commit)
-                return ref_text.split(" @")[0]
-            return None
+            return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.custom_tab_index:
-            return self.custom_edit.text().strip() or None
+            text = self.custom_edit.text().strip()
+            return RefItem(name=text) if text else None
 
         return None

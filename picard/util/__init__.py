@@ -1270,3 +1270,38 @@ def titlecase(text):
             capital = False
         capitalized += t
     return capitalized
+
+
+def format_ref_commit(ref, commit, ref_formatter=None, commit_formatter=None):
+    """Format ref and commit for display.
+
+    Args:
+        ref: Git reference (branch, tag, etc.)
+        commit: Git commit hash (full length)
+        ref_formatter: Optional function to format the ref part
+        commit_formatter: Optional function to format the commit part
+
+    Returns:
+        Formatted string: "ref @commit", "@commit", "ref", or empty string
+    """
+    # Import here to avoid circular imports
+    from picard.plugin3.plugin import short_commit_id
+
+    # Shorten commit for display
+    short_commit = short_commit_id(commit) if commit else ''
+
+    # Apply formatters if provided
+    formatted_ref = ref_formatter(ref) if ref_formatter and ref else ref
+    formatted_commit = commit_formatter(short_commit) if commit_formatter and short_commit else short_commit
+
+    if ref and short_commit:
+        # If ref is the same as commit (commit hash used as ref), just show @commit
+        if ref == commit or ref == short_commit:
+            return f"@{formatted_commit}"
+        return f"{formatted_ref} @{formatted_commit}"
+    elif ref:
+        return formatted_ref
+    elif short_commit:
+        return f"@{formatted_commit}"
+    else:
+        return ""
