@@ -58,12 +58,19 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def setup_ui(self):
         """Setup the tree widget."""
-        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Update")])
+        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), ""])
         self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+
+        # Set column sizing
+        header = self.header()
+        header.setSectionResizeMode(COLUMN_ENABLED, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COLUMN_PLUGIN, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COLUMN_UPDATE, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
 
         # Create header with update button
         self._setup_header_widget()
@@ -113,12 +120,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         for plugin in plugins:
             item = QtWidgets.QTreeWidgetItem()
 
-            # Column 0: Checkbox only (no text)
+            # Column 0: Checkbox only (no text), centered
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(
                 COLUMN_ENABLED,
                 QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked,
             )
+            item.setTextAlignment(COLUMN_ENABLED, QtCore.Qt.AlignmentFlag.AlignCenter)
 
             # Column 1: Plugin name
             try:
@@ -148,10 +156,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Update header button visibility
         self._update_header_button()
-
-        # Resize columns to content
-        for i in range(self.columnCount()):
-            self.resizeColumnToContents(i)
 
     def _is_plugin_enabled(self, plugin):
         """Check if plugin is enabled."""
