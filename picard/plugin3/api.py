@@ -189,6 +189,7 @@ class PluginApi:
     Metadata: TypeAlias = Metadata
     CoverArtImage: TypeAlias = CoverArtImage
     ImageInfo: TypeAlias = ImageInfo
+    ImageProcessor: TypeAlias = ImageProcessor
     CoverArtProvider: TypeAlias = CoverArtProvider
     ProviderOptions: TypeAlias = ProviderOptions
     BaseAction: TypeAlias = BaseAction
