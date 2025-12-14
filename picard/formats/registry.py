@@ -154,14 +154,11 @@ class FormatRegistry(QObject):
                 # Score each format
                 results = []
                 for file_format in options:
-                    # Check if format has a _File attribute (Mutagen-based formats)
-                    mutagen_file = getattr(file_format, '_File', None)
-                    if mutagen_file and hasattr(mutagen_file, 'score'):
-                        try:
-                            score = mutagen_file.score(str(path), fileobj, header)
-                            results.append((score, file_format.__name__, file_format))
-                        except Exception as e:
-                            log.debug("Failed to score %r with %s: %s", str(path), file_format.__name__, e)
+                    try:
+                        score = file_format.score(str(path), fileobj, header)
+                        results.append((score, file_format.__name__, file_format))
+                    except Exception as e:
+                        log.debug("Failed to score %r with %s: %s", str(path), file_format.__name__, e)
 
                 if results:
                     # Sort by score and return format with highest positive score

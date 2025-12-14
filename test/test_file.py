@@ -26,7 +26,10 @@ import os
 import re
 from types import GeneratorType
 import unittest
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    Mock,
+)
 
 from test.picardtestcase import PicardTestCase
 from test.test_coverart_image import create_image
@@ -771,3 +774,29 @@ class FileCopyMetadataTest(PicardTestCase):
         )
         self.file.copy_metadata(new_metadata)
         self.assertEqual(self.file.metadata['~filename'], 'orig.flac')
+
+    def test_score_with_mutagen_file(self):
+        mock_mutagen_file = Mock()
+        mock_mutagen_file.score.return_value = 3
+
+        class MyFormat(File):
+            _File = mock_mutagen_file
+
+        score = MyFormat.score('/somepath/somefile.mp3', Mock(), b"abc")
+        self.assertEqual(score, 3)
+
+    def test_score_match_extension(self):
+        mock_mutagen_file = Mock()
+        mock_mutagen_file.score.return_value = 3
+
+        class MyFormat(File):
+            EXTENSIONS = ['.mp3']
+
+        score = MyFormat.score('/somepath/somefile.mp3', Mock(), b"abc")
+        self.assertEqual(score, 1)
+
+        score = MyFormat.score('/somepath/somefile.MP3', Mock(), b"abc")
+        self.assertEqual(score, 1)
+
+        score = MyFormat.score('/somepath/somefile.ogg', Mock(), b"abc")
+        self.assertEqual(score, 0)
