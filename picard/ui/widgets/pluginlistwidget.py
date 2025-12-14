@@ -330,9 +330,18 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     if cached_result is not None:
                         self._update_status_cache[plugin.plugin_id] = cached_result
 
-    def refresh_update_status(self):
-        """Public method to refresh update status for all plugins."""
-        self._refresh_update_status()
+    def refresh_update_status(self, force_network_check=False):
+        """Public method to refresh update status for all plugins.
+
+        Args:
+            force_network_check: If True, make network calls to check for updates.
+                                If False, only use cached data.
+        """
+        if force_network_check:
+            self._refresh_update_status()
+        else:
+            # Only refresh display with cached data, no network calls
+            self._refresh_cached_update_status()
 
     def _has_update_available_cached(self, plugin):
         """Check if plugin has update available using cache."""
@@ -342,6 +351,15 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Check if plugin has update available."""
         # This is only called from context menu, so network call is acceptable
         return self.plugin_manager.get_plugin_update_status(plugin)
+
+    def _refresh_cached_update_status(self):
+        """Refresh update status using only cached data - no network calls."""
+        # Clear caches to reload from disk cache
+        self._update_status_cache.clear()
+        self._version_cache.clear()
+
+        # Load cached update status from disk
+        self._load_cached_update_status()
 
     def _refresh_update_status(self):
         """Refresh update status for all plugins."""
