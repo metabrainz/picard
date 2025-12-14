@@ -34,7 +34,7 @@ from PyQt6 import QtCore
 from picard import log
 from picard.album_requests import TaskType
 from picard.config import get_config
-from picard.coverart.image import CoverArtImageIOError
+from picard.coverart.image import CoverArtImage, CoverArtImageIOError
 from picard.coverart.processing import (
     CoverArtImageProcessing,
     run_image_filters,
@@ -164,22 +164,33 @@ class CoverArt:
                 return
 
         # We still have some items to try!
-        coverartimage = self._queue_get()
-        if not coverartimage.support_types and self.front_image_found:
+        image = self._queue_get()
+        if not image.support_types and self.front_image_found:
             # we already have one front image, no need to try other type-less
             # sources
-            log.debug("Skipping %r, one front image is already available", coverartimage)
+            log.debug("Skipping %r, one front image is already available", image)
             self.next_in_queue()
             return
 
+        # coverart has already data
+        if image.data:
+            info = imageinfo.ImageInfo(
+                width=image.width,
+                height=image.height,
+                mime=image.mimetype,
+                extension=image.extension,
+                datalen=image.datalength,
+            )
+            self._set_metadata(image, image.data, info)
+            return
         # local files
-        if coverartimage.url and coverartimage.url.scheme() == 'file':
+        elif image.url and image.url.scheme() == 'file':
             try:
-                path = coverartimage.url.toLocalFile()
+                path = image.url.toLocalFile()
                 with open(path, 'rb') as file:
                     data = file.read()
                     image_info = imageinfo.identify(data)
-                    self._set_metadata(coverartimage, data, image_info)
+                    self._set_metadata(image, data, image_info)
             except imageinfo.IdentificationError as e:
                 log.error("Couldn't identify image file %r: %s", path, e)
             except OSError as exc:
@@ -196,35 +207,35 @@ class CoverArt:
         self._message(
             N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"),
             {
-                'type': coverartimage.types_as_string(),
+                'type': image.types_as_string(),
                 'albumid': self.album.id,
-                'host': coverartimage.url.host(),
+                'host': image.url.host(),
             },
             echo=None,
         )
-        log.debug("Downloading %r", coverartimage)
-        task_id = f'coverart_{id(coverartimage)}'
+        log.debug("Downloading %r", image)
+        task_id = f'coverart_{id(image)}'
 
         def create_request():
             return self.album.tagger.webservice.download_url(
-                url=coverartimage.url,
-                handler=partial(self._coverart_downloaded, coverartimage),
+                url=image.url,
+                handler=partial(self._coverart_downloaded, image),
                 priority=True,
             )
 
         self.album.add_task(
             task_id,
             TaskType.OPTIONAL,
-            f'Cover art download: {coverartimage.types_as_string(translate=False)}',
+            f'Cover art download: {image.types_as_string(translate=False)}',
             request_factory=create_request,
         )
 
-    def queue_put(self, coverartimage):
+    def queue_put(self, image: CoverArtImage):
         """Add an image to queue"""
-        log.debug("Queuing cover art image %r", coverartimage)
-        self.__queue.append(coverartimage)
+        log.debug("Queuing cover art image %r", image)
+        self.__queue.append(image)
 
-    def _queue_get(self):
+    def _queue_get(self) -> CoverArtImage:
         """Get next image and remove it from queue"""
         return self.__queue.pop(0)
 
@@ -234,7 +245,7 @@ class CoverArt:
 
     def _queue_new(self):
         """Initialize the queue"""
-        self.__queue = []
+        self.__queue: list[CoverArtImage] = []
 
     def _message(self, *args, **kwargs):
         """Display message to status bar"""
