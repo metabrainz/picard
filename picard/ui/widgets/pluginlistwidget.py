@@ -100,6 +100,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self.update_button = QtWidgets.QPushButton(_("Update"), self)
         self.update_button.setMaximumHeight(20)
         self.update_button.setEnabled(False)  # Disabled by default
+        self.update_button.setToolTip(_("Update selected plugins to their latest versions"))
         self.update_button.clicked.connect(self._update_selected_plugins)
 
         # Position the button over the update column header
@@ -184,6 +185,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Add checkbox for update selection
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+
+            # Add tooltip to explain checkbox behavior
+            item.setToolTip(
+                COLUMN_UPDATE,
+                _(
+                    "Check to include this plugin in updates. Unchecked plugins will be remembered and excluded from future updates."
+                ),
+            )
 
             # Check if user has previously unchecked this plugin
             config = get_config()
