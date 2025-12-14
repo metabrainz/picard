@@ -70,7 +70,6 @@ def extract_from_code(plugin_dir):
                         extract_translation_call(node, translations, py_file, lines, t_variables)
                     elif isinstance(node.func, ast.Name) and node.func.id == '_translate':
                         extract_qt_translation_call(node, translations)
-                        # extract_translation_call(node, translations, py_file, lines, t_variables)
         except Exception as e:
             print(f"Warning: Failed to parse {py_file}: {e}", file=sys.stderr)
 
@@ -184,7 +183,11 @@ def extract_qt_translation_call(node, translations):
         context = get_string_value(node.args[0])
         value = get_string_value(node.args[1])
         key = f"qt.{context}.{value}"
-        translations[key] = f"?{value}?"
+
+        # Do not overwrite existing values. For Qt the values often will be only
+        # keys, so they will get replaced in the source language file as well.
+        if key not in translations:
+            translations[key] = f"?{value}?"
 
 
 def get_string_value(node):
