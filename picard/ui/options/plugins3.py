@@ -333,14 +333,20 @@ class Plugins3OptionsPage(OptionsPage):
         plugin = self._update_queue.pop(0)
         self._show_status(_("Updating {}...").format(plugin.name or plugin.plugin_id))
 
+        # Mark plugin as updating in UI
+        self.plugin_list.mark_plugin_updating(plugin)
+
         async_manager.update_plugin(
             plugin=plugin,
             progress_callback=None,
-            callback=partial(self._on_plugin_update_complete, async_manager),
+            callback=partial(self._on_plugin_update_complete, async_manager, plugin),
         )
 
-    def _on_plugin_update_complete(self, async_manager, result):
+    def _on_plugin_update_complete(self, async_manager, plugin, result):
         """Handle individual plugin update completion."""
+        # Mark plugin update as complete in UI
+        self.plugin_list.mark_plugin_update_complete(plugin)
+
         if not result.success:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))

@@ -52,6 +52,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         super().__init__(parent)
         self._toggling_plugins = set()  # Track plugins being toggled
         self._failed_enables = set()  # Track plugins that failed to enable
+        self._updating_plugins = set()  # Track plugins being updated
         self.setup_ui()
 
     def setup_ui(self):
@@ -168,7 +169,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version."""
-        if self._has_update_available_cached(plugin):
+        if plugin.plugin_id in self._updating_plugins:
+            # Show in progress for updating plugins
+            item.setText(COLUMN_UPDATE, _("In Progress..."))
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+        elif self._has_update_available_cached(plugin):
             # Get new version info from cache first to avoid expensive calls during updates
             try:
                 new_version = self._get_cached_new_version(plugin)
@@ -250,6 +255,28 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         if plugins_to_update:
             self.update_selected_plugins.emit(plugins_to_update)
+
+    def mark_plugin_updating(self, plugin):
+        """Mark a plugin as being updated."""
+        self._updating_plugins.add(plugin.plugin_id)
+        self._refresh_plugin_display(plugin)
+
+    def mark_plugin_update_complete(self, plugin):
+        """Mark a plugin update as complete."""
+        self._updating_plugins.discard(plugin.plugin_id)
+        # Clear version cache for updated plugin
+        self._version_cache.pop(plugin.plugin_id, None)
+        self._refresh_plugin_display(plugin)
+
+    def _refresh_plugin_display(self, plugin):
+        """Refresh display for a specific plugin."""
+        for i in range(self.topLevelItemCount()):
+            item = self.topLevelItem(i)
+            item_plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
+            if item_plugin and item_plugin.plugin_id == plugin.plugin_id:
+                self._setup_update_column(item, plugin)
+                self._update_header_button()
+                break
 
     def _position_update_button(self):
         """Position the update button over the update column header."""
