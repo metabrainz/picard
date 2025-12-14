@@ -52,6 +52,7 @@ from enum import (
 )
 import fnmatch
 from functools import partial
+from io import FileIO
 import os
 import os.path
 import re
@@ -794,6 +795,48 @@ class File(MetadataItem):
         else:
             metadata['~format'] = self.__class__.__name__.replace('File', '')
         self._update_filesystem_metadata(metadata)
+
+    @classmethod
+    def score(cls, filename: str, fileobj: FileIO, header_data: bytes) -> int:
+        """Used to guess if the provided file matches this file format.
+
+        If Picard needs to choose between multiple file formats it uses the returned
+        score to select one. The score is an integer, and typically implementations
+        check if the file extension matches and whether there are some expected
+        magic bytes in the header data.
+
+        When implementing a new file format by sub-classing `File`:
+
+        1. If the new format is based on the mutagen library, set the class `_File`
+           attribute to the mutagen file type class being used. You don't need to
+           override this score method then. The default implementation will use the
+           `score` method in the mutagen file type class.
+        2. If you are implementing a file format without using mutagen, the default
+           implementation of `score` will only check whether the file extension of the
+           passed `filename` matches any extension in the class `EXTENSION` attribute.
+           For better matching you can override `score`. A typical implementation will
+           check for matching file extension and some magic bytes in the provided
+           header_data.
+
+        Example:
+
+            @classmethod
+            def score(cls, filename: str, fileobj: FileIO, header_data: bytes) -> int:
+                filename = filename.lower()
+                return return header.startswith(b"qoaf") + filename.lower().endswith(".qoa")
+
+        Args:
+            filename: Path to the file to check.
+            fileobj: An open file handle for reading from the file.
+            header_data: This will be passed some bytes form the file header. By
+              default Picard passed in the first 128 bytes of data.
+        """
+        mutagen_file = getattr(cls, '_File', None)
+        if mutagen_file and hasattr(mutagen_file, 'score'):
+            return mutagen_file.score(str(filename), fileobj, header_data)
+        else:
+            _name, ext = os.path.splitext(filename)
+            return ext.lower() in cls.EXTENSIONS
 
     def _update_filesystem_metadata(self, metadata):
         metadata['~dirname'] = os.path.dirname(self.filename)
