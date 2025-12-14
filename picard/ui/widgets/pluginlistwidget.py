@@ -91,8 +91,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Cache version info to avoid repeated expensive calls
         self._version_cache = {}
 
-        # Load cached update status from disk
-        self._load_cached_update_status()
+        # Don't load cached update status during initialization to avoid any network activity
+        # It will be loaded when actually needed during populate_plugins()
 
     def _setup_header_widget(self):
         """Setup header widget with update button."""
@@ -318,17 +318,18 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._position_update_button()
 
     def _load_cached_update_status(self):
-        """Load cached update status from disk."""
-        for plugin in self.plugin_manager.plugins:
-            if plugin.manifest and plugin.manifest.uuid:
-                metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.manifest.uuid)
-                if metadata:
-                    current_ref = metadata.ref or 'main'
-                    cached_result = self.plugin_manager._refs_cache.get_cached_update_status(
-                        plugin.plugin_id, current_ref
-                    )
-                    if cached_result is not None:
-                        self._update_status_cache[plugin.plugin_id] = cached_result
+        """Load cached update status from disk - completely passive, no plugin access."""
+        # Don't access plugin_manager.plugins here as it might trigger cache updates
+        # Just load what's already in the cache file without triggering any operations
+        try:
+            cache = self.plugin_manager._refs_cache.load_cache()
+            update_cache = cache.get('update_status', {})
+            for plugin_id, entry in update_cache.items():
+                if isinstance(entry, dict) and 'has_update' in entry:
+                    self._update_status_cache[plugin_id] = entry['has_update']
+        except Exception:
+            # Silently ignore cache loading errors
+            pass
 
     def refresh_update_status(self, force_network_check=False):
         """Public method to refresh update status for all plugins.
@@ -354,11 +355,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _refresh_cached_update_status(self):
         """Refresh update status using only cached data - no network calls."""
-        # Clear caches to reload from disk cache
-        self._update_status_cache.clear()
-        self._version_cache.clear()
-
-        # Load cached update status from disk
+        # Load cached update status from disk only when needed
         self._load_cached_update_status()
 
     def _refresh_update_status(self):
@@ -710,7 +707,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Refresh update status for the specific plugin since ref changed
             self._refresh_single_plugin_update_status(plugin)
 
-            self._refresh_plugin_list()
+            # Only refresh the display for this specific plugin, not all plugins
+            self._refresh_plugin_display(plugin)
             # Emit signal for options dialog to refresh
             self.plugin_state_changed.emit(plugin, "ref switched")
         else:

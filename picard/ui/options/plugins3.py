@@ -138,13 +138,13 @@ class Plugins3OptionsPage(OptionsPage):
         QtWidgets.QApplication.processEvents()
 
     def load(self):
-        """Load plugins from plugin manager without making network calls."""
+        """Load plugins from plugin manager."""
         self._show_status(_("Loading plugins..."))
         try:
+            # Load plugins immediately when page is loaded
             self.all_plugins = self.plugin_manager.plugins
-            # Refresh update status using only cached data - no network calls
             self.plugin_list.refresh_update_status(force_network_check=False)
-            self._filter_plugins()  # Apply current filter - uses only cached data
+            self._filter_plugins()
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
         except Exception as e:

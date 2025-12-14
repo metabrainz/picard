@@ -363,12 +363,13 @@ class PluginManager(QObject):
 
         return formatted_refs
 
-    def fetch_all_git_refs(self, url, use_cache=True):
+    def fetch_all_git_refs(self, url, use_cache=True, force_refresh=False):
         """Fetch all branches and tags from a git repository.
 
         Args:
             url: Git repository URL
             use_cache: Whether to use cached data if available
+            force_refresh: If True, ignore cache and fetch from network
 
         Returns:
             dict with keys:
@@ -377,7 +378,13 @@ class PluginManager(QObject):
             or None on error
         """
         # Check cache first
-        if use_cache:
+        if use_cache and not force_refresh:
+            # Use cached data even if expired to avoid network calls
+            cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
+            if cached_refs is not None:
+                return cached_refs
+        elif use_cache:
+            # Only use non-expired cache when force refreshing
             cached_refs = self._refs_cache.get_cached_all_refs(url)
             if cached_refs is not None:
                 return cached_refs
@@ -1482,10 +1489,15 @@ class PluginManager(QObject):
 
         # Try cached result first (unless force refresh)
         if not force_refresh:
-            cached_result = self._refs_cache.get_cached_update_status(plugin.plugin_id, current_ref)
+            # Use cached result even if expired to avoid network calls
+            cached_result = self._refs_cache.get_cached_update_status(plugin.plugin_id, current_ref, ttl=float('inf'))
             if cached_result is not None:
                 log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
                 return cached_result
+            else:
+                # No cached data and not force refreshing - assume no update to avoid network calls
+                log.debug("No cached update status for plugin %s, assuming no update available", plugin.plugin_id)
+                return False
 
         try:
             backend = git_backend()
