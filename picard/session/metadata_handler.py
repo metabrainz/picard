@@ -161,7 +161,7 @@ class MetadataHandler:
         pending: list[Path] = []
         for fpath, md in file_path_to_md.items():
             file = tagger.files.get(str(fpath))
-            if not file or file.state == File.PENDING:
+            if not file or file.state == File.State.PENDING:
                 pending.append(fpath)
                 continue
 
@@ -194,7 +194,7 @@ class MetadataHandler:
         pending: list[Path] = []
         for fpath, tags in file_path_to_tags.items():
             file = tagger.files.get(str(fpath))
-            if not file or file.state == File.PENDING:
+            if not file or file.state == File.State.PENDING:
                 pending.append(fpath)
                 continue
 

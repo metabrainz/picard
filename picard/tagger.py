@@ -1256,7 +1256,7 @@ class Tagger(QtWidgets.QApplication):
         for file in iter_files_from_objects(objs):
             if file.can_analyze:
                 file.set_pending()
-                self._acoustid.analyze(file, partial(file._lookup_finished, File.LOOKUP_ACOUSTID))
+                self._acoustid.analyze(file, partial(file._lookup_finished, File.LookupType.ACOUSTID))
 
     def generate_fingerprints(self, objs):
         """Generate the fingerprints without matching the files."""

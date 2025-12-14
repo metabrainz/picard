@@ -56,10 +56,7 @@ from PyQt6 import (
 from picard import log
 from picard.album import NatAlbum
 from picard.cluster import Cluster, ClusterList
-from picard.file import (
-    File,
-    FileErrorType,
-)
+from picard.file import File
 from picard.i18n import (
     N_,
     gettext as _,
@@ -143,19 +140,19 @@ class MainPanel(QtWidgets.QSplitter):
         TrackItem.track_colors = defaultdict(
             lambda: TreeItem.text_color,
             {
-                File.NORMAL: interface_colors.get_qcolor('entity_saved'),
-                File.CHANGED: TreeItem.text_color,
-                File.PENDING: interface_colors.get_qcolor('entity_pending'),
-                File.ERROR: interface_colors.get_qcolor('entity_error'),
+                File.State.NORMAL: interface_colors.get_qcolor('entity_saved'),
+                File.State.CHANGED: TreeItem.text_color,
+                File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
         )
         FileItem.file_colors = defaultdict(
             lambda: TreeItem.text_color,
             {
-                File.NORMAL: TreeItem.text_color,
-                File.CHANGED: TreeItem.text_color,
-                File.PENDING: interface_colors.get_qcolor('entity_pending'),
-                File.ERROR: interface_colors.get_qcolor('entity_error'),
+                File.State.NORMAL: TreeItem.text_color,
+                File.State.CHANGED: TreeItem.text_color,
+                File.State.PENDING: interface_colors.get_qcolor('entity_pending'),
+                File.State.ERROR: interface_colors.get_qcolor('entity_error'),
             },
         )
 
@@ -653,21 +650,21 @@ class FileItem(TreeItem):
     @staticmethod
     def decide_file_icon_info(file):
         tooltip = ""
-        if file.state == File.ERROR:
-            if file.error_type == FileErrorType.NOTFOUND:
+        if file.state == File.State.ERROR:
+            if File.State.ERROR_type == File.ErrorType.NOTFOUND:
                 icon = FileItem.icon_error_not_found
                 tooltip = _("File not found")
-            elif file.error_type == FileErrorType.NOACCESS:
+            elif File.State.ERROR_type == File.ErrorType.NOACCESS:
                 icon = FileItem.icon_error_no_access
                 tooltip = _("File permission error")
             else:
                 icon = FileItem.icon_error
                 tooltip = _("Processing error(s): See the Errors tab in the File Info dialog")
         elif isinstance(file.parent_item, Track):
-            if file.state == File.NORMAL:
+            if file.state == File.State.NORMAL:
                 icon = FileItem.icon_saved
                 tooltip = _("Track saved")
-            elif file.state == File.PENDING:
+            elif file.state == File.State.PENDING:
                 index = FileItem._match_icon_index(file.similarity)
                 icon = FileItem.match_pending_icons[index]
                 tooltip = _("Pending")
@@ -675,7 +672,7 @@ class FileItem(TreeItem):
                 index = FileItem._match_icon_index(file.similarity)
                 icon = FileItem.match_icons[index]
                 tooltip = _(FileItem.match_icons_info[index])
-        elif file.state == File.PENDING:
+        elif file.state == File.State.PENDING:
             icon = FileItem.icon_file_pending
             tooltip = _("Pending")
         else:

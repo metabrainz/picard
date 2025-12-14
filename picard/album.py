@@ -892,7 +892,7 @@ class Album(MetadataItem):
         tracks_cache = TracksCache()
 
         for file in list(files):
-            if file.state == File.REMOVED:
+            if file.state == File.State.REMOVED:
                 continue
 
             # If we have a recordingid or trackid to match against, use that in priority

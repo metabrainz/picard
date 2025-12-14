@@ -134,13 +134,6 @@ FILE_COMPARISON_WEIGHTS = {
 }
 
 
-class FileErrorType(Enum):
-    UNKNOWN = auto()
-    NOTFOUND = auto()
-    NOACCESS = auto()
-    PARSER = auto()
-
-
 class File(MetadataItem):
     NAME = None
     # Logical tag format key and description for the family of this handler.
@@ -150,17 +143,25 @@ class File(MetadataItem):
     # Whether date sanitization can be toggled for this format family via settings
     DATE_SANITIZATION_TOGGLEABLE = False
 
-    UNDEFINED = -1
-    PENDING = 0
-    NORMAL = 1
-    CHANGED = 2
-    ERROR = 3
-    REMOVED = 4
-
-    LOOKUP_METADATA = 1
-    LOOKUP_ACOUSTID = 2
-
     EXTENSIONS = []
+
+    class State(Enum):
+        UNDEFINED = -1
+        PENDING = 0
+        NORMAL = 1
+        CHANGED = 2
+        ERROR = 3
+        REMOVED = 4
+
+    class LookupType(Enum):
+        METADATA = auto()
+        ACOUSTID = auto()
+
+    class ErrorType(Enum):
+        UNKNOWN = auto()
+        NOTFOUND = auto()
+        NOACCESS = auto()
+        PARSER = auto()
 
     class PreserveTimesStatError(Exception):
         pass
@@ -176,9 +177,9 @@ class File(MetadataItem):
         super().__init__()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
-        self._state = File.UNDEFINED
-        self.state = File.PENDING
-        self.error_type: FileErrorType = FileErrorType.UNKNOWN
+        self._state = File.State.UNDEFINED
+        self.state: File.State = File.State.PENDING
+        self.error_type: File.ErrorType = File.ErrorType.UNKNOWN
 
         self.similarity = 1.0
         self.parent_item: 'Cluster | Track | None' = None
@@ -221,18 +222,18 @@ class File(MetadataItem):
         return copy
 
     def _set_error(self, error):
-        self.state = File.ERROR
+        self.state = File.State.ERROR
         if any_exception_isinstance(error, FileNotFoundError):
-            self.error_type = FileErrorType.NOTFOUND
+            self.error_type = File.ErrorType.NOTFOUND
         elif any_exception_isinstance(error, PermissionError):
-            self.error_type = FileErrorType.NOACCESS
+            self.error_type = File.ErrorType.NOACCESS
         elif any_exception_isinstance(error, MutagenError):
-            self.error_type = FileErrorType.PARSER
+            self.error_type = File.ErrorType.PARSER
             self.error_append(
                 _("The file failed to parse, either the file is damaged or has an unsupported file format.")
             )
         else:
-            self.error_type = FileErrorType.UNKNOWN
+            self.error_type = File.ErrorType.UNKNOWN
         self.error_append(str(error))
 
     def load(self, callback):
@@ -245,7 +246,7 @@ class File(MetadataItem):
     def _load_check(self, filename):
         # Check that file has not been removed since thread was queued
         # Don't load if we are stopping.
-        if self.state != File.PENDING:
+        if self.state != File.State.PENDING:
             log.debug("File not loaded because it was removed: %r", self.filename)
             return None
         if self.tagger.stopping:
@@ -258,7 +259,7 @@ class File(MetadataItem):
         raise NotImplementedError
 
     def _loading_finished(self, callback, result=None, error=None):
-        if self.state != File.PENDING or self.tagger.stopping:
+        if self.state != File.State.PENDING or self.tagger.stopping:
             return
         config = get_config()
         if error is not None:
@@ -354,7 +355,7 @@ class File(MetadataItem):
             self.metadata_images_changed.emit()
 
     def has_error(self):
-        return self.state == File.ERROR
+        return self.state == File.State.ERROR
 
     def save(self):
         self.set_pending()
@@ -392,7 +393,7 @@ class File(MetadataItem):
         config = get_config()
         # Check that file has not been removed since thread was queued
         # Also don't save if we are stopping.
-        if self.state == File.REMOVED:
+        if self.state == File.State.REMOVED:
             log.debug("File not saved because it was removed: %r", self.filename)
             return None
         if self.tagger.stopping:
@@ -436,7 +437,7 @@ class File(MetadataItem):
     def _saving_finished(self, result=None, error=None):
         # Handle file removed before save
         # Result is None if save was skipped
-        if (self.state == File.REMOVED or self.tagger.stopping) and result is None:
+        if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
             return
         old_filename = new_filename = self.filename
         if error is not None:
@@ -474,7 +475,7 @@ class File(MetadataItem):
         # Force update to ensure file status icon changes immediately after save
         self.update()
 
-        if self.state != File.REMOVED:
+        if self.state != File.State.REMOVED:
             del self.tagger.files[old_filename]
             self.tagger.files[new_filename] = self
 
@@ -649,7 +650,7 @@ class File(MetadataItem):
             log.debug("Removing %r from %r", self, self.parent_item)
             self.parent_item.remove_file(self)
         self.tagger.acoustidmanager.remove(self)
-        self.state = File.REMOVED
+        self.state = File.State.REMOVED
 
     def move(self, to_parent_item):
         # To be able to move a file the target must implement add_file(file)
@@ -706,7 +707,7 @@ class File(MetadataItem):
         return True
 
     def is_saved(self) -> bool:
-        return self.similarity == 1.0 and self.state == File.NORMAL
+        return self.similarity == 1.0 and self.state == File.State.NORMAL
 
     def _tags_to_update(self, ignored_tags):
         for name in set(self.metadata) | set(self.orig_metadata):
@@ -719,7 +720,7 @@ class File(MetadataItem):
             yield name
 
     def update(self, signal=True):
-        if not (self.state == File.ERROR and self.errors):
+        if not (self.state == File.State.ERROR and self.errors):
             config = get_config()
             clear_existing_tags = config.setting['clear_existing_tags']
             ignored_tags = set(config.setting['compare_ignore_tags'])
@@ -731,16 +732,16 @@ class File(MetadataItem):
                 orig_values = self.orig_metadata.getall(name)
                 if orig_values != new_values:
                     self.similarity = self.orig_metadata.compare(self.metadata, ignored_tags)
-                    if self.state == File.NORMAL:
-                        self.state = File.CHANGED
+                    if self.state == File.State.NORMAL:
+                        self.state = File.State.CHANGED
                     break
             else:
                 self.similarity = 1.0
-                if self.state in (File.CHANGED, File.NORMAL):
+                if self.state in (File.State.CHANGED, File.State.NORMAL):
                     if self.metadata.images and self.orig_metadata.images != self.metadata.images:
-                        self.state = File.CHANGED
+                        self.state = File.State.CHANGED
                     else:
-                        self.state = File.NORMAL
+                        self.state = File.State.NORMAL
         if signal:
             log.debug("Updating file %r", self)
             self.update_item()
@@ -823,10 +824,10 @@ class File(MetadataItem):
     def state(self, state):
         if state == self._state:
             return
-        if state == File.PENDING:
+        if state == File.State.PENDING:
             File.num_pending_files += 1
             self.tagger.tagger_stats_changed.emit()
-        elif self._state == File.PENDING:
+        elif self._state == File.State.PENDING:
             File.num_pending_files -= 1
             self.tagger.tagger_stats_changed.emit()
         self._state = state
@@ -858,7 +859,7 @@ class File(MetadataItem):
     def _lookup_finished(self, lookuptype, document, http, error):
         self._lookup_task = None
 
-        if self.state == File.REMOVED:
+        if self.state == File.State.REMOVED:
             return
         if error:
             log.error(
@@ -879,7 +880,7 @@ class File(MetadataItem):
             )
 
         if tracks:
-            if lookuptype == File.LOOKUP_ACOUSTID:
+            if lookuptype == File.LookupType.ACOUSTID:
                 threshold = 0
             else:
                 config = get_config()
@@ -891,7 +892,7 @@ class File(MetadataItem):
             else:
                 statusbar(N_("File '%(filename)s' identified!"))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
-                if lookuptype == File.LOOKUP_ACOUSTID:
+                if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
                     self.tagger.acoustidmanager.add(self, recording_id)
                 if release_group_id is not None:
@@ -938,7 +939,7 @@ class File(MetadataItem):
         self.set_pending()
         config = get_config()
         self._lookup_task = self.tagger.mb_api.find_tracks(
-            partial(self._lookup_finished, File.LOOKUP_METADATA),
+            partial(self._lookup_finished, File.LookupType.METADATA),
             track=metadata['title'],
             artist=metadata['artist'],
             release=metadata['album'],
@@ -955,13 +956,13 @@ class File(MetadataItem):
             self._lookup_task = None
 
     def set_pending(self):
-        if self.state != File.REMOVED:
-            self.state = File.PENDING
+        if self.state != File.State.REMOVED:
+            self.state = File.State.PENDING
             self.update_item(update_selection=False)
 
     def clear_pending(self, signal=True):
-        if self.state == File.PENDING:
-            self.state = File.NORMAL
+        if self.state == File.State.PENDING:
+            self.state = File.State.NORMAL
             # Update file to recalculate changed state
             self.update(signal=False)
             if signal:

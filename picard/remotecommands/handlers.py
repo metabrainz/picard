@@ -264,7 +264,7 @@ class RemoteCommandHandlers:
     @remote_command("Remove all saved files from the album pane.")
     def remove_saved(self, argstring):
         for track in self.tagger.iter_album_files():
-            if track.state == File.NORMAL:
+            if track.state == File.State.NORMAL:
                 self.tagger.remove([track])
 
     @remote_command("Remove all unclustered files from the cluster pane.")
@@ -280,7 +280,7 @@ class RemoteCommandHandlers:
     @remote_command("Save all modified files from the album pane.")
     def save_modified(self, argstring):
         for track in self.tagger.iter_album_files():
-            if track.state == File.CHANGED:
+            if track.state == File.State.CHANGED:
                 track.save()
 
     @remote_command("Scan all files in the cluster pane.")
