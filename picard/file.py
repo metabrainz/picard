@@ -59,7 +59,10 @@ import shutil
 import time
 from typing import TYPE_CHECKING
 
-from mutagen import MutagenError
+from mutagen import (
+    FileType,
+    MutagenError,
+)
 
 from picard import (
     PICARD_APP_NAME,
@@ -250,7 +253,7 @@ class File(MetadataItem):
             return None
         return self._load(filename)
 
-    def _load(self, filename):
+    def _load(self, filename: str) -> Metadata:
         """Load metadata from the file."""
         raise NotImplementedError
 
@@ -478,7 +481,7 @@ class File(MetadataItem):
         if self.tagger.stopping:
             log.debug("Save of %r completed before stopping Picard", self.filename)
 
-    def _save(self, filename, metadata):
+    def _save(self, filename: str, metadata: Metadata) -> None:
         """Save the metadata."""
         raise NotImplementedError
 
@@ -698,11 +701,11 @@ class File(MetadataItem):
         self.update_item()
 
     @classmethod
-    def supports_tag(cls, name):
+    def supports_tag(cls, name: str) -> bool:
         """Returns whether tag ``name`` can be saved to the file."""
         return True
 
-    def is_saved(self):
+    def is_saved(self) -> bool:
         return self.similarity == 1.0 and self.state == File.NORMAL
 
     def _tags_to_update(self, ignored_tags):
@@ -743,38 +746,38 @@ class File(MetadataItem):
             self.update_item()
 
     @property
-    def can_save(self):
+    def can_save(self) -> bool:
         """Return if this object can be saved."""
         return True
 
     @property
-    def can_remove(self):
+    def can_remove(self) -> bool:
         """Return if this object can be removed."""
         return True
 
     @property
-    def can_edit_tags(self):
+    def can_edit_tags(self) -> bool:
         """Return if this object supports tag editing."""
         return True
 
     @property
-    def can_analyze(self):
+    def can_analyze(self) -> bool:
         """Return if this object can be fingerprinted."""
         return True
 
     @property
-    def can_autotag(self):
+    def can_autotag(self) -> bool:
         return True
 
     @property
-    def can_refresh(self):
+    def can_refresh(self) -> bool:
         return False
 
     @property
-    def can_view_info(self):
+    def can_view_info(self) -> bool:
         return True
 
-    def _info(self, metadata, file):
+    def _info(self, metadata: Metadata, file: FileType):
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
         if hasattr(file.info, 'bitrate') and file.info.bitrate:
