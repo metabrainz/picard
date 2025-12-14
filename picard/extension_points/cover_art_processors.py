@@ -50,7 +50,7 @@ class ProcessingTarget(IntEnum):
 
 
 class ProcessingImage:
-    def __init__(self, image, info=None):
+    def __init__(self, image, info: imageinfo.ImageInfo | None = None):
         self.set_result(image)
         if info is None and not isinstance(image, QImage):
             self.info = imageinfo.identify(image)
@@ -60,7 +60,7 @@ class ProcessingImage:
     def copy(self):
         return ProcessingImage(self._qimage.copy(), copy(self.info))
 
-    def set_result(self, image):
+    def set_result(self, image: QImage | bytes):
         if isinstance(image, QImage):
             self._qimage = image
         else:
@@ -102,16 +102,16 @@ class ProcessingImage:
 
 
 class ImageProcessor:
-    def save_to_tags(self):
+    def save_to_tags(self) -> bool:
         return False
 
-    def save_to_file(self):
+    def save_to_file(self) -> bool:
         return False
 
-    def same_processing(self):
+    def same_processing(self) -> bool:
         return False
 
-    def run(self, image, target):
+    def run(self, image: ProcessingImage, target: ProcessingTarget):
         pass
 
 
