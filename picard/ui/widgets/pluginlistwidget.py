@@ -71,6 +71,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         header.setSectionResizeMode(COLUMN_PLUGIN, QtWidgets.QHeaderView.ResizeMode.Stretch)
         header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(COLUMN_UPDATE, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setStretchLastSection(False)
 
         # Create header with update button
         self._setup_header_widget()
