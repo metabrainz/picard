@@ -112,7 +112,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self.update_button.clicked.connect(self._update_selected_plugins)
 
         # Position the button over the update column header
-        self._position_update_button()
+        self._position_update_button()  # FIXME: hacky
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -211,7 +211,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 self._set_update_checkbox_tooltip(item, True)
         else:
             # No update available - no text, no checkbox
-            item.setText(COLUMN_UPDATE, "")
+            item.setText(COLUMN_UPDATE, "                   ")  # hacky
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
     def _get_cached_new_version(self, plugin):
