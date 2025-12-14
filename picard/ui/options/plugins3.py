@@ -145,6 +145,7 @@ class Plugins3OptionsPage(OptionsPage):
             self._filter_plugins()  # Apply current filter
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
+            self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
@@ -216,6 +217,7 @@ class Plugins3OptionsPage(OptionsPage):
                     filtered_plugins.append(plugin)
 
         self.plugin_list.populate_plugins(filtered_plugins)
+        self._update_details_button_text()  # Update button state based on filtered plugin count
 
     def save(self):
         """Save is handled automatically by plugin enable/disable."""
@@ -224,11 +226,24 @@ class Plugins3OptionsPage(OptionsPage):
     def _toggle_details_panel(self):
         """Toggle visibility of the plugin details panel."""
         is_visible = self.plugin_details.isVisible()
+
+        if not is_visible:
+            # Showing details - ensure a plugin is selected
+            selected_items = self.plugin_list.selectedItems()
+            if not selected_items and self.plugin_list.topLevelItemCount() > 0:
+                # No selection but plugins available - select first plugin
+                first_item = self.plugin_list.topLevelItem(0)
+                self.plugin_list.setCurrentItem(first_item)
+
         self.plugin_details.setVisible(not is_visible)
         self._update_details_button_text()
 
     def _update_details_button_text(self):
         """Update the details button text based on panel visibility."""
+        # Disable button if no plugins available
+        has_plugins = self.plugin_list.topLevelItemCount() > 0
+        self.details_toggle_button.setEnabled(has_plugins)
+
         if self.plugin_details.isVisible():
             self.details_toggle_button.setText(_("Hide Details"))
             self.details_toggle_button.setChecked(True)
