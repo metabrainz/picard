@@ -98,7 +98,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Create update button that will be positioned over the header
         self.update_button = QtWidgets.QPushButton(_("Update"), self)
         self.update_button.setMaximumHeight(20)
-        self.update_button.setVisible(False)
+        self.update_button.setEnabled(False)  # Disabled by default
         self.update_button.clicked.connect(self._update_selected_plugins)
 
         # Position the button over the update column header
@@ -222,11 +222,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         return _("Available")
 
     def _update_header_button(self):
-        """Update header button visibility based on checked items."""
+        """Update header button state based on checked items."""
         checked_count = self._count_checked_updates()
-        self.update_button.setVisible(checked_count > 0)
+        self.update_button.setEnabled(checked_count > 0)
         if checked_count > 0:
             self.update_button.setText(_("Update ({})").format(checked_count))
+        else:
+            self.update_button.setText(_("Update"))
 
     def _count_checked_updates(self):
         """Count items with checked update checkboxes."""
