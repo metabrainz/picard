@@ -28,6 +28,7 @@ from picard.config import get_config
 from picard.const.cover_processing import ResizeModes
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
+    ProcessingImage,
     ProcessingTarget,
     register_cover_art_processor,
 )
@@ -51,7 +52,7 @@ class ResizeImage(ImageProcessor):
         same_resize_mode = setting['cover_tags_resize_mode'] == setting['cover_file_resize_mode']
         return both_resize and same_enlarge and same_width and same_height and same_resize_mode
 
-    def run(self, image, target):
+    def run(self, image: ProcessingImage, target):
         start_time = time.time()
         config = get_config()
         if target == ProcessingTarget.TAGS:
