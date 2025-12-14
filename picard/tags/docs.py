@@ -40,6 +40,11 @@ def display_tag_full_description(tagname):
     return _finalize_content(name, content, tagdesc)
 
 
+def display_plugin_tag_full_description(name, description):
+    content = _markdown(description or _(TEXT_NO_DESCRIPTION))
+    return _format_display(name, content, '')
+
+
 def _finalize_content(name, content, tagdesc):
     if not content:
         content = _markdown(get_plugin_variable_documentation(name) or _(TEXT_NO_DESCRIPTION))

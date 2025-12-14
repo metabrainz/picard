@@ -19,11 +19,25 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.i18n import _
 from picard.plugin import ExtensionPoint
 from picard.script.variable_pattern import VARIABLE_NAME_FULLMATCH_RE
+from picard.tags import script_variable_tag_names
 
 
 ext_point_script_variables = ExtensionPoint(label='script_variables')
+
+
+def _check_if_duplicate_variable_name(name: str) -> str | None:
+    sources = []
+    if name in set(script_variable_tag_names()):
+        sources.append("System Variables")
+
+    for var_name, _description, plugin in ext_point_script_variables:
+        if name == var_name:
+            sources.append(f'"{plugin}"')
+
+    return ', '.join(sources) if sources else None
 
 
 def _is_valid_plugin_variable_name(name: str | None) -> bool:
@@ -35,7 +49,7 @@ def _is_valid_plugin_variable_name(name: str | None) -> bool:
     return bool(VARIABLE_NAME_FULLMATCH_RE.match(name))
 
 
-def register_script_variable(name: str, documentation: str | None = None) -> None:
+def register_script_variable(name: str, documentation: str | None = None, api=None) -> None:
     """Register a variable that plugins can provide for script completion.
 
     Parameters
@@ -55,12 +69,20 @@ def register_script_variable(name: str, documentation: str | None = None) -> Non
         msg = "Invalid script variable name; use letters, digits, underscores."
         raise ValueError(msg)
 
+    duplicate = _check_if_duplicate_variable_name(name)
+    if api and duplicate:
+        api.logger.warning("Tag '%s' also found in %s.", name, duplicate)
+
     frame = inspect.currentframe()
     if frame is not None and frame.f_back is not None:
         module_name = frame.f_back.f_globals['__name__']
     else:
         module_name = 'unknown'
-    ext_point_script_variables.register(module_name, (name, documentation))
+
+    plugin_name = api.manifest.name_i18n() if api else _("Unknown plugin")
+    plugin_documentation = documentation + "\n\n" + (_("Plugin: %s") % plugin_name)
+
+    ext_point_script_variables.register(module_name, (name, plugin_documentation, plugin_name))
 
 
 def get_plugin_variable_names():
@@ -71,7 +93,7 @@ def get_plugin_variable_names():
     set[str]
         Set of variable names provided by plugins
     """
-    return {name for name, __unused in ext_point_script_variables}
+    return {name for name, _documentation, _plugin in ext_point_script_variables}
 
 
 def get_plugin_variable_documentation(name):
@@ -87,7 +109,7 @@ def get_plugin_variable_documentation(name):
     str or None
         Documentation string if available, None otherwise
     """
-    for var_name, documentation in ext_point_script_variables:
+    for var_name, documentation, _plugin in ext_point_script_variables:
         if var_name == name:
             return documentation
     return None

@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
+
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -28,18 +30,20 @@ from PyQt6 import (
 )
 
 from picard.const import PICARD_URLS
-from picard.const.tags import (
-    ALL_TAGS,
-    TagVar,
-)
+from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
 from picard.script import script_function_documentation_all
-from picard.tags.docs import display_tag_full_description
+from picard.tags.docs import (
+    display_plugin_tag_full_description,
+    display_tag_full_description,
+)
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
 
+
+DocItem = namedtuple('DocItem', 'name desc plugin')
 
 DOCUMENTATION_HTML_TEMPLATE = '''
 <!DOCTYPE html>
@@ -136,16 +140,38 @@ class FunctionsDocumentationPage(DocumentationPage):
 
 class TagsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        def process_tag(tag_name: TagVar):
-            tag_desc = display_tag_full_description(tag_name)
+        def process_tag(tag_name: str, tag_desc: str):
             tag_title = f'<a id="{tag_name}"><code>%{tag_name}%</code></a>'
             return f'<dt>{tag_title}</dt><dd>{tag_desc}</dd>'
 
+        tags: list[DocItem] = []
+
+        # Process system-defined tags and variables
+        for tag_name in [tag.script_name() for tag in ALL_TAGS]:
+            tags.append(
+                DocItem(
+                    name=tag_name,
+                    desc=display_tag_full_description(tag_name),
+                    plugin='',
+                )
+            )
+
+        # Process plugin variables separately to allow plugin descriptions for duplicated variables.
+        for tag_name, tag_desc, plugin in ext_point_script_variables:
+            tags.append(
+                DocItem(
+                    name=tag_name,
+                    desc=display_plugin_tag_full_description(tag_name, tag_desc),
+                    plugin=plugin,
+                )
+            )
+
         html = ''
-        tag_list = [tag.script_name() for tag in ALL_TAGS]
-        tag_list += [name for (name, _doc) in ext_point_script_variables]
-        for tag_name in sorted(tag_list, key=lambda x: x.lstrip('_')):
-            html += process_tag(tag_name)
+        # Sort tags alphabetically regardless of whether they are hidden, with system tags shown
+        # before plugin tags having the same name.
+        for tag in sorted(tags, key=lambda x: f"{x.name.lstrip('_')}:{x.plugin}"):
+            html += process_tag(tag.name, tag.desc)
+
         return html
 
 
