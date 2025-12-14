@@ -37,12 +37,17 @@
 
 from collections.abc import MutableSequence
 from queue import LifoQueue
+from typing import TYPE_CHECKING
 
 from picard.extension_points import script_functions
 from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
 )
+
+
+if TYPE_CHECKING:
+    from picard.file import File
 
 
 class ScriptError(Exception):
@@ -361,7 +366,7 @@ class ScriptParser:
             self.load_functions()
         return self.parse_expression(True)[0]
 
-    def eval(self, script, context=None, file=None):
+    def eval(self, script: str, context: Metadata | None = None, file: 'File | None' = None):
         """Parse and evaluate the script."""
         self.context = context if context is not None else Metadata()
         self.file = file

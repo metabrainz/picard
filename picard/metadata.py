@@ -39,10 +39,12 @@
 
 from collections import namedtuple
 from collections.abc import (
+    Callable,
     Iterable,
     MutableMapping,
 )
 from functools import partial
+from typing import TYPE_CHECKING
 
 from PyQt6 import QtCore
 
@@ -61,6 +63,9 @@ from picard.util import (
 )
 from picard.util.imagelist import ImageList
 
+
+if TYPE_CHECKING:
+    from picard.coverart.image import CoverArtImage
 
 MULTI_VALUED_JOINER = '; '
 
@@ -149,7 +154,7 @@ def trackcount_score(actual, expected):
     return 0.0 if actual > expected else 0.3 if actual < expected else 1.0
 
 
-class Metadata(MutableMapping):
+class Metadata(MutableMapping[str, str | list[str] | None]):
     """List of metadata items with dict-like access."""
 
     __weights = [
@@ -173,15 +178,24 @@ class Metadata(MutableMapping):
 
     multi_valued_joiner = MULTI_VALUED_JOINER
 
-    def __init__(self, *args, deleted_tags=None, images=None, length=None, **kwargs):
+    def __init__(
+        self,
+        *args,
+        deleted_tags: Iterable[str] | None = None,
+        images: Iterable['CoverArtImage'] | None = None,
+        length: int | None = None,
+        **kwargs,
+    ):
         self._lock = ReadWriteLockContext()
-        self._length = None
-        self._store = dict()
-        self.deleted_tags = set()
-        self.length = 0
-        self.images = ImageList()
+        self._store: dict[str, list[str]] = dict()
+        self.deleted_tags: set[str] = set()
+        self.images: ImageList = ImageList()
         self.has_common_images = True
 
+        if length is not None:
+            self.length = length
+        else:
+            self.length = 0
         if args or kwargs:
             self.update(*args, **kwargs)
         if images is not None:
@@ -190,8 +204,6 @@ class Metadata(MutableMapping):
         if deleted_tags is not None:
             for tag in deleted_tags:
                 del self[tag]
-        if length is not None:
-            self.length = length
 
     def __bool__(self):
         return bool(len(self))
@@ -204,19 +216,19 @@ class Metadata(MutableMapping):
         return self._length
 
     @length.setter
-    def length(self, value):
+    def length(self, value: int):
         length = int(value)
         if length < 0:
             raise ValueError("negative value: %d" % length)
         self._length = length
 
     @staticmethod
-    def length_score(a, b):
+    def length_score(a: int, b: int):
         if a is None or b is None:
             return 0.0
         return 1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) / float(LENGTH_SCORE_THRES_MS)
 
-    def compare(self, other, ignored=None):
+    def compare(self, other: 'Metadata', ignored: Iterable[str] | None = None):
         parts = []
         if ignored is None:
             ignored = []
@@ -248,7 +260,7 @@ class Metadata(MutableMapping):
 
         return linear_combination_of_weights(parts)
 
-    def compare_to_release(self, release, weights):
+    def compare_to_release(self, release: dict, weights: dict[str, int]):
         """
         Compare metadata to a MusicBrainz release. Produces a probability as a
         linear combination of weights that the metadata matches a certain album.
@@ -257,7 +269,7 @@ class Metadata(MutableMapping):
         sim = linear_combination_of_weights(parts) * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
-    def compare_to_release_parts(self, release, weights):
+    def compare_to_release_parts(self, release: dict, weights: dict[str, int]):
         parts = []
 
         with self._lock.lock_for_read():
@@ -366,7 +378,7 @@ class Metadata(MutableMapping):
 
         return parts
 
-    def compare_to_track(self, track, weights):
+    def compare_to_track(self, track: dict, weights: dict[str, int]):
         parts = []
         releases = []
 
@@ -414,7 +426,7 @@ class Metadata(MutableMapping):
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
         return result
 
-    def copy(self, other, copy_images=True):
+    def copy(self, other: 'Metadata', copy_images=True):
         self.clear()
         with self._lock.lock_for_write():
             self._update_from_metadata(other, copy_images)
@@ -436,7 +448,7 @@ class Metadata(MutableMapping):
                 # no argument, raise TypeError to mimic dict.update()
                 raise TypeError("descriptor 'update' of '%s' object needs an argument" % self.__class__.__name__)
 
-    def diff(self, other):
+    def diff(self, other: 'Metadata'):
         """Returns a new Metadata object with only the tags that changed in self compared to other"""
         with self._lock.lock_for_read():
             m = Metadata()
@@ -470,27 +482,27 @@ class Metadata(MutableMapping):
         self.deleted_tags = set()
 
     @staticmethod
-    def normalize_tag(name):
+    def normalize_tag(name: str):
         return name.rstrip(':')
 
-    def getall(self, name):
+    def getall(self, name: str) -> list[str]:
         with self._lock.lock_for_read():
             return self._store.get(self.normalize_tag(name), [])
 
-    def getraw(self, name):
+    def getraw(self, name: str):
         with self._lock.lock_for_read():
             return self._store[self.normalize_tag(name)]
 
-    def get(self, key, default=None):
+    def get(self, name: str, default=None) -> str | None:
         with self._lock.lock_for_read():
-            values = self._store.get(self.normalize_tag(key), None)
+            values = self._store.get(self.normalize_tag(name), None)
             if values:
                 return self.multi_valued_joiner.join(values)
             else:
                 return default
 
-    def __getitem__(self, name):
-        return self.get(name, '')
+    def __getitem__(self, name: str) -> str:
+        return self.get(name) or ''
 
     def _set(self, name, values):
         name = self.normalize_tag(name)
@@ -504,7 +516,7 @@ class Metadata(MutableMapping):
         elif name in self._store:
             self._del(name)
 
-    def set(self, name, values):
+    def set(self, name: str, values: str | list[str]):
         with self._lock.lock_for_write():
             self._set(name, values)
 
@@ -524,26 +536,26 @@ class Metadata(MutableMapping):
         finally:
             self.deleted_tags.add(name)
 
-    def __delitem__(self, name):
+    def __delitem__(self, name: str):
         with self._lock.lock_for_write():
             self._del(name)
 
-    def delete(self, name):
+    def delete(self, name: str):
         del self[self.normalize_tag(name)]
 
-    def add(self, name, value):
+    def add(self, name: str, value: str):
         if value or value == 0:
             with self._lock.lock_for_write():
                 name = self.normalize_tag(name)
                 self._store.setdefault(name, []).append(str(value))
                 self.deleted_tags.discard(name)
 
-    def add_unique(self, name, value):
+    def add_unique(self, name: str, value: str):
         name = self.normalize_tag(name)
         if value not in self.getall(name):
             self.add(name, value)
 
-    def unset(self, name):
+    def unset(self, name: str):
         """Removes a tag from the metadata, but does not mark it for deletion.
 
         Args:
@@ -574,7 +586,7 @@ class Metadata(MutableMapping):
         """
         return self._store.items()
 
-    def apply_func(self, func):
+    def apply_func(self, func: Callable[[str], str]):
         with self._lock.lock_for_write():
             default_preserved_tags = set(preserved_tag_names())
             for name, values in list(self.rawitems()):

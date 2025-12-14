@@ -32,6 +32,7 @@ from collections import (
     Counter,
     UserList,
 )
+from collections.abc import Iterable
 
 from PyQt6 import QtCore
 
@@ -48,59 +49,59 @@ class Item:
         self.ui_item = None
 
     @property
-    def can_save(self):
+    def can_save(self) -> bool:
         """Return if this object can be saved."""
         return False
 
     @property
-    def can_remove(self):
+    def can_remove(self) -> bool:
         """Return if this object can be removed."""
         return False
 
     @property
-    def can_edit_tags(self):
+    def can_edit_tags(self) -> bool:
         """Return if this object supports tag editing."""
         return False
 
     @property
-    def can_analyze(self):
+    def can_analyze(self) -> bool:
         """Return if this object can be fingerprinted."""
         return False
 
     @property
-    def can_autotag(self):
+    def can_autotag(self) -> bool:
         """Return if this object can be autotagged."""
         return False
 
     @property
-    def can_refresh(self):
+    def can_refresh(self) -> bool:
         """Return if this object can be refreshed."""
         return False
 
     @property
-    def can_view_info(self):
+    def can_view_info(self) -> bool:
         return False
 
     @property
-    def can_submit(self):
+    def can_submit(self) -> bool:
         """Return True if this object can be submitted to MusicBrainz.org."""
         return False
 
     @property
-    def can_show_coverart(self):
+    def can_show_coverart(self) -> bool:
         """Return if this object supports cover art."""
         return self.can_edit_tags
 
     @property
-    def can_browser_lookup(self):
+    def can_browser_lookup(self) -> bool:
         return True
 
     @property
-    def is_album_like(self):
+    def is_album_like(self) -> bool:
         return False
 
     @property
-    def can_link_fingerprint(self):
+    def can_link_fingerprint(self) -> bool:
         """Return True if this item can provide a recording ID for linking to AcoustID."""
         return False
 
@@ -125,12 +126,12 @@ class Item:
             return 0
 
     @property
-    def errors(self):
+    def errors(self) -> list[str]:
         if not hasattr(self, '_errors'):
             self._errors = []
         return self._errors
 
-    def error_append(self, msg):
+    def error_append(self, msg: str):
         log.error("%r: %s", self, msg)
         self.errors.append(msg)
 
@@ -171,7 +172,7 @@ class Item:
                 % number_of_images
             )
 
-    def cover_art_dimensions(self):
+    def cover_art_dimensions(self) -> str:
         front_image = self.metadata.images.get_front_image()
         if front_image:
             return front_image.dimensions_as_string()
@@ -204,7 +205,7 @@ class MetadataItem(QtCore.QObject, Item):
         self.metadata = Metadata()
         self.orig_metadata = Metadata()
         self.update_children_metadata_attrs = {}
-        self.iter_children_items_metadata_ignore_attrs = {}
+        self._iter_children_items_metadata_ignore_attrs = {}
         self.suspend_metadata_images_update = IgnoreUpdatesContext()
         self._genres = Counter()
         self._folksonomy_tags = Counter()
@@ -235,12 +236,13 @@ class MetadataItem(QtCore.QObject, Item):
                     file.keep_original_images()
         self.update_metadata_images()
 
-    def children_metadata_items(self):
+    def children_metadata_items(self) -> Iterable['MetadataItem']:
         """Yield MetadataItems that are children of the current object"""
+        return []
 
     def iter_children_items_metadata(self, metadata_attr):
         for s in self.children_metadata_items():
-            if metadata_attr in s.iter_children_items_metadata_ignore_attrs:
+            if metadata_attr in s._iter_children_items_metadata_ignore_attrs:
                 continue
             yield getattr(s, metadata_attr)
 
@@ -311,18 +313,18 @@ class MetadataItem(QtCore.QObject, Item):
         return changed
 
     @property
-    def genres(self):
+    def genres(self) -> Counter[str]:
         return self._genres
 
-    def add_genre(self, name, count):
+    def add_genre(self, name: str, count: int):
         if name:
             self._genres[name] += count
 
     @property
-    def folksonomy_tags(self):
+    def folksonomy_tags(self) -> Counter[str]:
         return self._folksonomy_tags
 
-    def add_folksonomy_tag(self, name, count):
+    def add_folksonomy_tag(self, name: str, count: int):
         if name:
             self._folksonomy_tags[name] += count
 

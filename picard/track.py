@@ -46,9 +46,11 @@ from collections import (
     Counter,
     defaultdict,
 )
+from collections.abc import Callable
 from operator import attrgetter
 import re
 import traceback
+from typing import TYPE_CHECKING
 
 from PyQt6 import QtCore
 
@@ -85,6 +87,10 @@ from picard.util import (
 )
 from picard.util.imagelist import ImageList
 from picard.util.textencoding import asciipunct
+
+
+if TYPE_CHECKING:
+    from picard.album import Album
 
 
 class TagGenreFilter:
@@ -142,13 +148,13 @@ class TrackArtist(MetadataItem):
 
 
 class Track(FileListItem):
-    def __init__(self, track_id, album=None):
+    def __init__(self, track_id, album: 'Album | None' = None):
         super().__init__(track_id)
         self.album = album
         self.scripted_metadata = Metadata()
         self._track_artists = []
         self._orig_images = None
-        self.iter_children_items_metadata_ignore_attrs = {'orig_metadata'}
+        self._iter_children_items_metadata_ignore_attrs = {'orig_metadata'}
 
     @property
     def num_linked_files(self):
@@ -255,7 +261,7 @@ class Track(FileListItem):
         """Return True if this item can provide a recording ID for linking to AcoustID."""
         return True
 
-    def column(self, column):
+    def column(self, column: str) -> str:
         m = self.metadata
         if column == 'title':
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
@@ -268,6 +274,8 @@ class Track(FileListItem):
             return m[column]
         elif self.num_linked_files == 1:
             return self.files[0].column(column)
+        else:
+            return ''
 
     def is_video(self):
         return self.metadata['~video'] == '1'
@@ -499,7 +507,7 @@ class NonAlbumTrack(Track):
             self.metadata['originaldate'] = self.metadata['~recording_firstreleasedate']
             self.metadata['originalyear'] = self.metadata['originaldate'][:4]
 
-    def run_when_loaded(self, func):
+    def run_when_loaded(self, func: Callable):
         if self.loaded:
             func()
         else:

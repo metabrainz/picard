@@ -57,6 +57,7 @@ import os.path
 import re
 import shutil
 import time
+from typing import TYPE_CHECKING
 
 from mutagen import MutagenError
 
@@ -111,6 +112,11 @@ from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.ui.filter import Filter
 
 
+if TYPE_CHECKING:
+    from picard.cluster import Cluster
+    from picard.track import Track
+
+
 FILE_COMPARISON_WEIGHTS = {
     'album': 5,
     'artist': 4,
@@ -163,18 +169,18 @@ class File(MetadataItem):
     # files is cached, set @state.setter
     num_pending_files = 0
 
-    def __init__(self, filename):
+    def __init__(self, filename: str):
         super().__init__()
         self.filename = filename
         self.base_filename = os.path.basename(filename)
         self._state = File.UNDEFINED
         self.state = File.PENDING
-        self.error_type = FileErrorType.UNKNOWN
+        self.error_type: FileErrorType = FileErrorType.UNKNOWN
 
         self.similarity = 1.0
-        self.parent_item = None
+        self.parent_item: 'Cluster | Track | None' = None
 
-        self.lookup_task = None
+        self._lookup_task = None
 
         self.acoustid_fingerprint = None
         self.acoustid_length = 0
@@ -822,7 +828,7 @@ class File(MetadataItem):
             self.tagger.tagger_stats_changed.emit()
         self._state = state
 
-    def column(self, column):
+    def column(self, column: str) -> str:
         m = self.metadata
         if column == 'title' and not m['title']:
             return self.base_filename
@@ -847,7 +853,7 @@ class File(MetadataItem):
         return value
 
     def _lookup_finished(self, lookuptype, document, http, error):
-        self.lookup_task = None
+        self._lookup_task = None
 
         if self.state == File.REMOVED:
             return
@@ -918,7 +924,7 @@ class File(MetadataItem):
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
-        if self.lookup_task:
+        if self._lookup_task:
             return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for file %(filename)s …"),
@@ -928,7 +934,7 @@ class File(MetadataItem):
         metadata = self.metadata
         self.set_pending()
         config = get_config()
-        self.lookup_task = self.tagger.mb_api.find_tracks(
+        self._lookup_task = self.tagger.mb_api.find_tracks(
             partial(self._lookup_finished, File.LOOKUP_METADATA),
             track=metadata['title'],
             artist=metadata['artist'],
@@ -941,9 +947,9 @@ class File(MetadataItem):
         )
 
     def clear_lookup_task(self):
-        if self.lookup_task:
-            self.tagger.webservice.remove_task(self.lookup_task)
-            self.lookup_task = None
+        if self._lookup_task:
+            self.tagger.webservice.remove_task(self._lookup_task)
+            self._lookup_task = None
 
     def set_pending(self):
         if self.state != File.REMOVED:

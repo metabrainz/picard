@@ -40,8 +40,10 @@ from collections import (
     Counter,
     defaultdict,
 )
+from collections.abc import Iterable
 from operator import attrgetter
 import re
+from typing import TYPE_CHECKING
 
 from picard.config import get_config
 from picard.file import File
@@ -63,6 +65,9 @@ from picard.util import (
 
 from picard.ui.enums import MainAction
 
+
+if TYPE_CHECKING:
+    from picard.album import Album
 
 # Weights for different elements when comparing a cluster to a release
 CLUSTER_COMPARISON_WEIGHTS = {
@@ -88,12 +93,12 @@ class FileList(FileListItem):
         pass
 
     @property
-    def can_show_coverart(self):
+    def can_show_coverart(self) -> bool:
         return True
 
 
 class Cluster(FileList):
-    def __init__(self, name, artist="", special=False, related_album=None, hide_if_empty=False):
+    def __init__(self, name: str, artist="", special=False, related_album: 'Album | None' = None, hide_if_empty=False):
         super().__init__()
         self.metadata['album'] = name
         self.metadata['albumartist'] = artist
@@ -101,7 +106,7 @@ class Cluster(FileList):
         self.special = special
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
-        self.lookup_task = None
+        self._lookup_task = None
 
     def __repr__(self):
         if self.related_album:
@@ -126,7 +131,7 @@ class Cluster(FileList):
                 self.related_album.remove_metadata_images_from_children(removed_files)
             self.related_album.update()
 
-    def add_files(self, files, new_album=True):
+    def add_files(self, files: Iterable[File], new_album=True):
         added_files = set(files) - set(self.files)
         if not added_files:
             return
@@ -144,10 +149,10 @@ class Cluster(FileList):
         if new_album:
             self._update_related_album(added_files=added_files)
 
-    def add_file(self, file, new_album=True):
+    def add_file(self, file: File, new_album=True):
         self.add_files([file], new_album=new_album)
 
-    def remove_file(self, file, new_album=True):
+    def remove_file(self, file: File, new_album=True):
         self.tagger.window.set_processing(True)
         self.files.remove(file)
         self.update(signal=False)
@@ -180,40 +185,40 @@ class Cluster(FileList):
         return not self.special
 
     @property
-    def can_edit_tags(self):
+    def can_edit_tags(self) -> bool:
         """Return if this object supports tag editing."""
         return True
 
     @property
-    def can_analyze(self):
+    def can_analyze(self) -> bool:
         """Return if this object can be fingerprinted."""
         return any(_file.can_analyze for _file in self.files)
 
     @property
-    def can_autotag(self):
+    def can_autotag(self) -> bool:
         return True
 
     @property
-    def can_refresh(self):
+    def can_refresh(self) -> bool:
         return False
 
     @property
-    def can_browser_lookup(self):
+    def can_browser_lookup(self) -> bool:
         return not self.special
 
     @property
-    def can_view_info(self):
+    def can_view_info(self) -> bool:
         return bool(self.files)
 
     @property
-    def can_submit(self):
+    def can_submit(self) -> bool:
         return not self.special and bool(self.files)
 
     @property
-    def is_album_like(self):
+    def is_album_like(self) -> bool:
         return True
 
-    def column(self, column):
+    def column(self, column: str) -> str:
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], len(self.files))
         elif self.special and column in {'~length', 'album', 'covercount'}:
@@ -233,7 +238,7 @@ class Cluster(FileList):
         return self.metadata[column]
 
     def _lookup_finished(self, document, http, error):
-        self.lookup_task = None
+        self._lookup_task = None
 
         try:
             releases = document['releases']
@@ -272,14 +277,14 @@ class Cluster(FileList):
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""
-        if self.lookup_task:
+        if self._lookup_task:
             return
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
         )
         config = get_config()
-        self.lookup_task = self.tagger.mb_api.find_releases(
+        self._lookup_task = self.tagger.mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
@@ -288,12 +293,12 @@ class Cluster(FileList):
         )
 
     def clear_lookup_task(self):
-        if self.lookup_task:
-            self.tagger.webservice.remove_task(self.lookup_task)
-            self.lookup_task = None
+        if self._lookup_task:
+            self.tagger.webservice.remove_task(self._lookup_task)
+            self._lookup_task = None
 
     @staticmethod
-    def cluster(files):
+    def cluster(files: Iterable[File]):
         """Group the provided files into clusters, based on album tag in metadata.
 
         Args:

@@ -46,6 +46,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from collections.abc import Callable, Iterable
 from enum import IntEnum
 import traceback
 
@@ -78,6 +79,7 @@ from picard.metadata import (
     run_track_metadata_processors,
 )
 from picard.plugin import PluginFunctions
+from picard.releasegroup import ReleaseGroup
 from picard.script import (
     ScriptError,
     ScriptParser,
@@ -90,6 +92,7 @@ from picard.util import (
     mbid_validate,
 )
 from picard.util.textencoding import asciipunct
+from picard.webservice import PendingRequest
 
 
 RECORDING_QUERY_LIMIT = 100
@@ -180,10 +183,10 @@ class TracksCache:
 class Album(MetadataItem):
     def __init__(self, album_id, discid=None):
         super().__init__(album_id)
-        self.tracks = []
+        self.tracks: list[Track] = []
         self.loaded = False
-        self.load_request = None
-        self.release_group = None
+        self._load_request = None
+        self.release_group: ReleaseGroup | None = None
         self._files_count = 0
         self._pending_tasks = {}
         self._tracks_loaded = False
@@ -201,7 +204,15 @@ class Album(MetadataItem):
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
 
-    def add_task(self, task_id, task_type, description, timeout=None, plugin_id=None, request_factory=None):
+    def add_task(
+        self,
+        task_id: str,
+        task_type: TaskType,
+        description: str,
+        timeout: float | None = None,
+        plugin_id: str | None = None,
+        request_factory: Callable[[], PendingRequest] | None = None,
+    ):
         """Add a pending task that must complete before album finalization."""
         import time
 
@@ -233,7 +244,7 @@ class Album(MetadataItem):
             request = request_factory()
             self._pending_tasks[task_id].request = request
 
-    def complete_task(self, task_id):
+    def complete_task(self, task_id: str):
         """Mark a task as complete."""
         if task_id in self._pending_tasks:
             task_info = self._pending_tasks.pop(task_id)
@@ -302,7 +313,7 @@ class Album(MetadataItem):
         Logs a warning but doesn't break functionality."""
         self._warn_deprecated_requests('write')
 
-    def iterfiles(self, save=False):
+    def iterfiles(self, save=False) -> Iterable[File]:
         for track in self.tracks:
             yield from track.iterfiles()
         if not save:
@@ -446,9 +457,9 @@ class Album(MetadataItem):
         return False
 
     def _release_request_finished(self, document, http, error):
-        if self.load_request is None:
+        if self._load_request is None:
             return
-        self.load_request = None
+        self._load_request = None
         parse_result = None
         try:
             if error:
@@ -503,14 +514,14 @@ class Album(MetadataItem):
         request_id = f'recording_rels_{offset}'
 
         def create_request():
-            self.load_request = self.tagger.mb_api.browse_recordings(
+            self._load_request = self.tagger.mb_api.browse_recordings(
                 self._recordings_request_finished,
                 inc=inc,
                 release=self.id,
                 limit=limit,
                 offset=offset,
             )
-            return self.load_request
+            return self._load_request
 
         self.add_task(
             request_id,
@@ -828,7 +839,7 @@ class Album(MetadataItem):
             inc |= {'user-ratings'}
 
         def create_request():
-            self.load_request = self.tagger.mb_api.get_release_by_id(
+            self._load_request = self.tagger.mb_api.get_release_by_id(
                 self.id,
                 self._release_request_finished,
                 inc=inc,
@@ -836,7 +847,7 @@ class Album(MetadataItem):
                 priority=priority,
                 refresh=refresh,
             )
-            return self.load_request
+            return self._load_request
 
         self.add_task(
             'release_metadata',
@@ -852,9 +863,9 @@ class Album(MetadataItem):
             self._after_load_callbacks.append((func, run_on_error))
 
     def stop_loading(self):
-        if self.load_request:
-            self.tagger.webservice.remove_task(self.load_request)
-            self.load_request = None
+        if self._load_request:
+            self.tagger.webservice.remove_task(self._load_request)
+            self._load_request = None
 
     def update(self, update_tracks=True, update_selection=True):
         if self.ui_item:
@@ -990,7 +1001,7 @@ class Album(MetadataItem):
     def _iter_unsaved_files(self):
         yield from (file for file in self.iterfiles(save=True) if not file.is_saved())
 
-    def column(self, column):
+    def column(self, column: str) -> str:
         if column == 'title':
             if self.status == AlbumStatus.LOADING:
                 title = _("[loading album information]")
