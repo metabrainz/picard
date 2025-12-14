@@ -35,6 +35,7 @@ from picard.tags import (
     ALL_TAGS,
     filterable_tag_names,
 )
+from picard.tags.docs import display_tag_tooltip
 
 
 class Filter(QtWidgets.QWidget):
@@ -115,7 +116,7 @@ class Filter(QtWidgets.QWidget):
         for tag in sorted(Filter.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
             checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
             checkbox.setChecked(str(tag) in self.selected_filters)
-            checkbox.setToolTip(ALL_TAGS.display_tooltip(tag))
+            checkbox.setToolTip(display_tag_tooltip(tag))
             scroll_layout.addWidget(checkbox)
             self.checkboxes[str(tag)] = checkbox
 

@@ -34,9 +34,7 @@ from picard.options import (
 )
 from picard.profile import profile_groups_add_setting
 from picard.tags import (
-    display_tag_full_description,
     display_tag_name,
-    display_tag_tooltip,
     filterable_tag_names,
     hidden_tag_names,
     parse_comment_tag,
@@ -45,6 +43,10 @@ from picard.tags import (
     script_variable_tag_names,
     tag_names,
     visible_tag_names,
+)
+from picard.tags.docs import (
+    display_tag_full_description,
+    display_tag_tooltip,
 )
 from picard.tags.tagvar import (
     DocumentLink,
@@ -304,7 +306,7 @@ class TagVarsTest(PicardTestCase):
                 ('nodesc', '_hidden', '_hidden_sd', 'only_sd'),
             )
 
-    def test_tagvars_display_tooltip(self):
+    def test_tagvars_tooltip_content(self):
         tagvars = TagVars(
             self.tagvar_nodesc,
             self.tagvar_only_sd,
@@ -312,56 +314,40 @@ class TagVarsTest(PicardTestCase):
             self.tagvar_notes2,
             self.tagvar_notes3,
         )
-        self.assertEqual(
-            tagvars.display_tooltip('unknown'), '<p><em>%unknown%</em></p><p>No description available.</p>'
-        )
 
-        self.assertEqual(tagvars.display_tooltip('nodesc'), '<p><em>%nodesc%</em></p><p>nodesc</p>')
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_nodesc), '<p>nodesc</p>')
 
-        self.assertEqual(tagvars.display_tooltip('only_sd'), '<p><em>%only_sd%</em></p><p>only_sd_shortdesc</p>')
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_only_sd), '<p>only_sd_shortdesc</p>')
 
-        result = (
-            '<p><em>%_notes1%</em></p><p>notes1_ld</p>'
-            '<p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
-        )
-        self.assertEqual(tagvars.display_tooltip('_notes1'), result)
-        self.assertEqual(tagvars.display_tooltip('~notes1'), result)
+        result = '<p>notes1_ld</p><p><strong>Notes:</strong> preserved read-only; not for use in scripts; calculated; info from audio file.</p>'
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_notes1), result)
 
         result = (
-            '<p><em>%notes2%</em></p><p>notes2_ld</p>'
-            '<p><strong>Notes:</strong> info from audio file; not provided from MusicBrainz data.</p>'
+            '<p>notes2_ld</p><p><strong>Notes:</strong> info from audio file; not provided from MusicBrainz data.</p>'
         )
-        self.assertEqual(tagvars.display_tooltip('notes2'), result)
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_notes2), result)
 
-        result = (
-            '<p><em>%notes3%</em></p><p>notes3_ld</p><p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
-        )
-        self.assertEqual(tagvars.display_tooltip('notes3'), result)
+        result = '<p>notes3_ld</p><p><strong>Notes:</strong> not provided from MusicBrainz data.</p>'
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_notes3), result)
 
     @mock.patch("picard.tags.tagvar._", side_effect=_translate_patch)
-    def test_tagvars_display_tooltip_translate(self, mock):
+    def test_tagvars_tooltip_content_translate(self, mock):
         tagvars = TagVars(
             self.tagvar_nodesc,
             self.tagvar_only_sd,
             self.tagvar_hidden_sd,
             self.tagvar_notes1,
         )
-        self.assertEqual(tagvars.display_tooltip('nodesc'), '<p dir="rtl"><em>%nodesc%</em></p><p>_(nodesc)</p>')
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_nodesc), '<p>_(nodesc)</p>')
         self.assertEqual(
-            tagvars.display_tooltip('only_sd'), '<p dir="rtl"><em>%only_sd%</em></p><p>_(only_sd_shortdesc)</p>'
-        )
-        self.assertEqual(
-            tagvars.display_tooltip('~hidden:xxx'),
-            '<p dir="rtl"><em>%_hidden%</em> [xxx]</p><p>_(No description available.)</p>',
+            tagvars.tooltip_content(self.tagvar_only_sd),
+            '<p>_(only_sd_shortdesc)</p>',
         )
 
-        result = (
-            '<p dir="rtl"><em>%_notes1%</em></p><p>_(notes1_ld)</p>'
-            '<p dir="rtl"><strong>_(Notes):</strong> _(preserved read-only); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
-        )
-        self.assertEqual(tagvars.display_tooltip('_notes1'), result)
+        result = '<p>_(notes1_ld)</p><p dir="rtl"><strong>_(Notes):</strong> _(preserved read-only); _(not for use in scripts); _(calculated); _(info from audio file).</p>'
+        self.assertEqual(tagvars.tooltip_content(self.tagvar_notes1), result)
 
-    def test_tagvars_full_description(self):
+    def test_tagvars_full_description_content(self):
         # Test tag with values in all attributes (notes, related options, links, and see also)
         tagvars = TagVars(
             self.tagvar_everything,
@@ -370,7 +356,7 @@ class TagVarsTest(PicardTestCase):
         )
         profile_groups_add_setting('junk', 'everything_test', None, 'Everything test option setting')
         result = (
-            '<p><em>%everything%</em></p><p>everything ld.</p>'
+            '<p>everything ld.</p>'
             '<p>Test additional description.</p>'
             '<p><strong>Notes:</strong> multi-value variable; preserved read-only; not for use in scripts; '
             'calculated; info from audio file; not provided from MusicBrainz data; not populated by stock '
@@ -379,7 +365,7 @@ class TagVarsTest(PicardTestCase):
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/test'>Test link</a>.</p>"
             '<p><strong>See Also:</strong> <a href="#_hidden_sd">%_hidden_sd%</a>; <a href="#sd_ld">%sd_ld%</a>.</p>'
         )
-        self.assertEqual(tagvars.display_full_description('everything'), result)
+        self.assertEqual(tagvars.full_description_content(self.tagvar_everything), result)
 
 
 class UtilTagsTest(PicardTestCase):
