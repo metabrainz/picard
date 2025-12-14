@@ -289,7 +289,7 @@ class File(MetadataItem):
                 return
         else:
             self.clear_errors()
-            self.state = self.NORMAL
+            self.state = self.State.NORMAL
             postprocessors = []
             if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
