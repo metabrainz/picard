@@ -58,12 +58,20 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def setup_ui(self):
         """Setup the tree widget."""
-        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), _("Update")])
+        self.setHeaderLabels([_("Enabled"), _("Plugin"), _("Version"), ""])
         self.setRootIsDecorated(False)
         self.setAlternatingRowColors(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+
+        # Set column sizing
+        header = self.header()
+        header.setSectionResizeMode(COLUMN_ENABLED, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COLUMN_PLUGIN, QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(COLUMN_UPDATE, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+        header.setStretchLastSection(False)
 
         # Create header with update button
         self._setup_header_widget()
@@ -104,7 +112,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self.update_button.clicked.connect(self._update_selected_plugins)
 
         # Position the button over the update column header
-        self._position_update_button()
+        self._position_update_button()  # FIXME: hacky
 
     def populate_plugins(self, plugins):
         """Populate the widget with plugins."""
@@ -113,12 +121,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         for plugin in plugins:
             item = QtWidgets.QTreeWidgetItem()
 
-            # Column 0: Checkbox only (no text)
+            # Column 0: Checkbox only (no text), centered
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             item.setCheckState(
                 COLUMN_ENABLED,
                 QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked,
             )
+            item.setTextAlignment(COLUMN_ENABLED, QtCore.Qt.AlignmentFlag.AlignCenter)
 
             # Column 1: Plugin name
             try:
@@ -148,10 +157,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Update header button visibility
         self._update_header_button()
-
-        # Resize columns to content
-        for i in range(self.columnCount()):
-            self.resizeColumnToContents(i)
 
     def _is_plugin_enabled(self, plugin):
         """Check if plugin is enabled."""
@@ -195,7 +200,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Check if user has previously unchecked this plugin
             config = get_config()
-            do_not_update = config.setting['plugins3_do_not_update_plugins']
+            do_not_update = config.persist['plugins3_do_not_update_plugins']
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
 
             if plugin_uuid and plugin_uuid in do_not_update:
@@ -206,7 +211,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 self._set_update_checkbox_tooltip(item, True)
         else:
             # No update available - no text, no checkbox
-            item.setText(COLUMN_UPDATE, "")
+            item.setText(COLUMN_UPDATE, "                   ")  # hacky
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
     def _get_cached_new_version(self, plugin):
@@ -446,7 +451,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if plugin and plugin.manifest and plugin.manifest.uuid:
                 config = get_config()
-                do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+                do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
                 plugin_uuid = plugin.manifest.uuid
 
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
@@ -457,11 +462,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 if not is_checked and plugin_uuid not in do_not_update:
                     # User unchecked - add to do not update list
                     do_not_update.append(plugin_uuid)
-                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
                 elif is_checked and plugin_uuid in do_not_update:
                     # User checked - remove from do not update list
                     do_not_update.remove(plugin_uuid)
-                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
             # Update header button when update checkboxes change
             self._update_header_button()

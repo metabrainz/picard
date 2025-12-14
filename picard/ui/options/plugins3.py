@@ -147,6 +147,7 @@ class Plugins3OptionsPage(OptionsPage):
             self._filter_plugins()
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
+            self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
@@ -218,6 +219,7 @@ class Plugins3OptionsPage(OptionsPage):
                     filtered_plugins.append(plugin)
 
         self.plugin_list.populate_plugins(filtered_plugins)
+        self._update_details_button_text()  # Update button state based on filtered plugin count
 
     def save(self):
         """Save is handled automatically by plugin enable/disable."""
@@ -226,11 +228,24 @@ class Plugins3OptionsPage(OptionsPage):
     def _toggle_details_panel(self):
         """Toggle visibility of the plugin details panel."""
         is_visible = self.plugin_details.isVisible()
+
+        if not is_visible:
+            # Showing details - ensure a plugin is selected
+            selected_items = self.plugin_list.selectedItems()
+            if not selected_items and self.plugin_list.topLevelItemCount() > 0:
+                # No selection but plugins available - select first plugin
+                first_item = self.plugin_list.topLevelItem(0)
+                self.plugin_list.setCurrentItem(first_item)
+
         self.plugin_details.setVisible(not is_visible)
         self._update_details_button_text()
 
     def _update_details_button_text(self):
         """Update the details button text based on panel visibility."""
+        # Disable button if no plugins available
+        has_plugins = self.plugin_list.topLevelItemCount() > 0
+        self.details_toggle_button.setEnabled(has_plugins)
+
         if self.plugin_details.isVisible():
             self.details_toggle_button.setText(_("Hide Details"))
             self.details_toggle_button.setChecked(True)
@@ -253,11 +268,28 @@ class Plugins3OptionsPage(OptionsPage):
         """Handle plugin state changes (enable/disable/uninstall)."""
         plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
+
+        # Clean up do_not_update setting when plugin is uninstalled
+        if action == "uninstalled" and plugin.manifest and plugin.manifest.uuid:
+            self._cleanup_plugin_settings(plugin.manifest.uuid)
+
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
         else:
             pass  # No dialog found
+
+    def _cleanup_plugin_settings(self, plugin_uuid):
+        """Clean up plugin settings when plugin is uninstalled."""
+        from picard.config import get_config
+
+        config = get_config()
+
+        # Remove from do_not_update list
+        do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
+        if plugin_uuid in do_not_update:
+            do_not_update.remove(plugin_uuid)
+            config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
     def _install_plugin(self):
         """Show install plugin dialog."""
@@ -268,6 +300,8 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
         self.load()  # Refresh plugin list
+        # Refresh update status to check for newer versions
+        self.plugin_list.refresh_update_status()
         self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
