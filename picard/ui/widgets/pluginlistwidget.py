@@ -169,6 +169,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Get display text for plugin version without update suffix."""
         return self.plugin_manager.get_plugin_version_display(plugin)
 
+    def _set_update_checkbox_tooltip(self, item, is_checked):
+        """Set tooltip for update checkbox based on its state."""
+        if is_checked:
+            item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
+        else:
+            item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
+
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version."""
         if plugin.plugin_id in self._updating_plugins:
@@ -193,10 +200,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             if plugin_uuid and plugin_uuid in do_not_update:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
-                item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
+                self._set_update_checkbox_tooltip(item, False)
             else:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Checked)
-                item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
+                self._set_update_checkbox_tooltip(item, True)
         else:
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "")
@@ -429,10 +436,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
 
                 # Update tooltip based on new state
-                if is_checked:
-                    item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
-                else:
-                    item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
+                self._set_update_checkbox_tooltip(item, is_checked)
 
                 if not is_checked and plugin_uuid not in do_not_update:
                     # User unchecked - add to do not update list
