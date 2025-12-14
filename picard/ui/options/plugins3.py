@@ -63,6 +63,7 @@ class Plugins3OptionsPage(OptionsPage):
         # Search box
         self.search_edit = QtWidgets.QLineEdit()
         self.search_edit.setPlaceholderText(_("Search plugins..."))
+        self.search_edit.setClearButtonEnabled(True)
         self.search_edit.textChanged.connect(self._filter_plugins)
         toolbar_layout.addWidget(self.search_edit)
 
