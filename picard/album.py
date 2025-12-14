@@ -864,7 +864,7 @@ class Album(MetadataItem):
 
     def stop_loading(self):
         if self._load_request:
-            self.tagger.webservice.remove_task(self._load_request)
+            self.tagger.webservice.abort_task(self._load_request)
             self._load_request = None
 
     def update(self, update_tracks=True, update_selection=True):
