@@ -1663,7 +1663,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if len(objects) == 1:
             obj = list(objects)[0]
             if isinstance(obj, File):
-                if obj.state == obj.ERROR:
+                if obj.state == File.State.ERROR:
                     msg = N_("%(filename)s (error: %(error)s)")
                     mparms = {
                         'filename': obj.filename,
