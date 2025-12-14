@@ -55,14 +55,10 @@ from picard.script import (
     script_function_documentation,
     script_function_names,
 )
-from picard.script.parser import (
-    ScriptParser,
-)
+from picard.script.parser import ScriptParser
 from picard.script.variable_pattern import GET_VARIABLE_RE, PERCENT_VARIABLE_RE
-from picard.tags import (
-    display_tag_tooltip,
-    script_variable_tag_names,
-)
+from picard.tags import script_variable_tag_names
+from picard.tags.docs import display_tag_tooltip
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors

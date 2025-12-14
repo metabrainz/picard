@@ -128,11 +128,3 @@ def script_variable_tag_names():
 
 def display_tag_name(name):
     return ALL_TAGS.display_name(name)
-
-
-def display_tag_tooltip(name):
-    return ALL_TAGS.display_tooltip(name)
-
-
-def display_tag_full_description(name):
-    return ALL_TAGS.display_full_description(name)
