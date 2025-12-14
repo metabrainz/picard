@@ -48,6 +48,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def setup_ui(self):
         """Setup the details widget."""
+        # Set minimum width to prevent resizing when content changes
+        self.setMinimumWidth(250)
+
         layout = QtWidgets.QVBoxLayout(self)
 
         # Plugin name
