@@ -24,6 +24,7 @@ from functools import partial
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
+from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
@@ -183,7 +184,16 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Add checkbox for update selection
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Checked)
+
+            # Check if user has previously unchecked this plugin
+            config = get_config()
+            do_not_update = config.setting['plugins3_do_not_update_plugins']
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+
+            if plugin_uuid and plugin_uuid in do_not_update:
+                item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
+            else:
+                item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Checked)
         else:
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "")
@@ -406,6 +416,24 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     self.plugin_state_changed.emit(plugin, action)
 
         elif column == COLUMN_UPDATE:  # Handle update checkbox
+            # Save checkbox state preference
+            plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
+            if plugin and plugin.manifest and plugin.manifest.uuid:
+                config = get_config()
+                do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+                plugin_uuid = plugin.manifest.uuid
+
+                is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
+
+                if not is_checked and plugin_uuid not in do_not_update:
+                    # User unchecked - add to do not update list
+                    do_not_update.append(plugin_uuid)
+                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                elif is_checked and plugin_uuid in do_not_update:
+                    # User checked - remove from do not update list
+                    do_not_update.remove(plugin_uuid)
+                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+
             # Update header button when update checkboxes change
             self._update_header_button()
 
