@@ -199,7 +199,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Check if user has previously unchecked this plugin
             config = get_config()
-            do_not_update = config.setting['plugins3_do_not_update_plugins']
+            do_not_update = config.persist['plugins3_do_not_update_plugins']
             plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
 
             if plugin_uuid and plugin_uuid in do_not_update:
@@ -435,7 +435,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if plugin and plugin.manifest and plugin.manifest.uuid:
                 config = get_config()
-                do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+                do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
                 plugin_uuid = plugin.manifest.uuid
 
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
@@ -446,11 +446,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 if not is_checked and plugin_uuid not in do_not_update:
                     # User unchecked - add to do not update list
                     do_not_update.append(plugin_uuid)
-                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
                 elif is_checked and plugin_uuid in do_not_update:
                     # User checked - remove from do not update list
                     do_not_update.remove(plugin_uuid)
-                    config.setting['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
             # Update header button when update checkboxes change
             self._update_header_button()

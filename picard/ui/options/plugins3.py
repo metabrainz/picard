@@ -269,10 +269,10 @@ class Plugins3OptionsPage(OptionsPage):
         config = get_config()
 
         # Remove from do_not_update list
-        do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+        do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
         if plugin_uuid in do_not_update:
             do_not_update.remove(plugin_uuid)
-            config.setting['plugins3_do_not_update_plugins'] = do_not_update
+            config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
     def _install_plugin(self):
         """Show install plugin dialog."""
