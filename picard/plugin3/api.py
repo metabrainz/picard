@@ -67,6 +67,7 @@ from picard.extension_points.cover_art_filters import (
 )
 from picard.extension_points.cover_art_processors import (
     ImageProcessor as _ImageProcessor,
+    ProcessingImage,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -190,6 +191,7 @@ class PluginApi:
     CoverArtImage: TypeAlias = CoverArtImage
     ImageInfo: TypeAlias = ImageInfo
     ImageProcessor: TypeAlias = ImageProcessor
+    ProcessingImage: TypeAlias = ProcessingImage
     CoverArtProvider: TypeAlias = CoverArtProvider
     ProviderOptions: TypeAlias = ProviderOptions
     BaseAction: TypeAlias = BaseAction
