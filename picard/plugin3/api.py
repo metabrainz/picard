@@ -762,7 +762,7 @@ class PluginApi:
         return register_script_function(function, name, eval_args, check_argcount, documentation)
 
     def register_script_variable(self, name: str, documentation: str | None = None) -> None:
-        return register_script_variable(name, documentation)
+        return register_script_variable(name, documentation, self)
 
     # Menu actions
     def register_album_action(self, action: type[BaseAction]) -> None:
