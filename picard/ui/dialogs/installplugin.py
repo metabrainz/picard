@@ -489,6 +489,18 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
         return LocalInstallablePlugin(url, ref, self.plugin_manager._registry)
 
+    def _disable_ui_for_installation(self):
+        """Disable UI elements during installation."""
+        for widget in self.findChildren(QtWidgets.QWidget):
+            if widget != self.progress_bar and widget != self.status_label:
+                widget.setEnabled(False)
+
+    def _enable_ui_after_installation(self):
+        """Re-enable UI elements after installation."""
+        for widget in self.findChildren(QtWidgets.QWidget):
+            widget.setEnabled(True)
+        self._validate_input()  # Restore proper button states
+
     def _install_plugin(self):
         """Install the plugin."""
         current_tab = self.tab_widget.currentIndex()
@@ -510,6 +522,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
             return
 
+        # Disable UI before showing confirmation dialog to prevent interaction
+        self._disable_ui_for_installation()
+
         ref = None
         if getattr(plugin, 'ref', None) is None:
             # Show confirmation dialog
@@ -517,6 +532,8 @@ class InstallPluginDialog(QtWidgets.QDialog):
             plugin_uuid = plugin.plugin_uuid
             confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
+                # Re-enable UI if user cancels
+                self._enable_ui_after_installation()
                 return
             if confirm_dialog.selected_ref:
                 ref = confirm_dialog.selected_ref.name
@@ -531,16 +548,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         elif hasattr(plugin, 'ref') and ref is None:
             ref = plugin.ref
 
-        # Disable UI during installation
-        self.install_button.setEnabled(False)
-        self.plugin_table.setEnabled(False)
-        self.search_edit.setEnabled(False)
-        self.category_combo.setEnabled(False)
-        self.url_edit.setEnabled(False)
-        self.ref_edit.setEnabled(False)
-        self.path_edit.setEnabled(False)
-        self.local_ref_edit.setEnabled(False)
-        self.tab_widget.setEnabled(False)
+        # Show progress bar
         self.progress_bar.show()
         self.progress_bar.setValue(0)
 
@@ -555,23 +563,16 @@ class InstallPluginDialog(QtWidgets.QDialog):
 
     def _on_complete(self, result):
         """Handle installation completion."""
-        # Re-enable UI
-        self.install_button.setEnabled(True)
-        self.plugin_table.setEnabled(True)
-        self.search_edit.setEnabled(True)
-        self.category_combo.setEnabled(True)
-        self.url_edit.setEnabled(True)
-        self.ref_edit.setEnabled(True)
-        self.path_edit.setEnabled(True)
-        self.local_ref_edit.setEnabled(True)
-        self.tab_widget.setEnabled(True)
         self.progress_bar.hide()
 
         if result.success:
             self.status_label.setText(_("Plugin installed successfully"))
             self.plugin_installed.emit(result.result)
+            # No need to re-enable UI, we're closing the dialog
             QtCore.QTimer.singleShot(1000, self.accept)  # Close after 1 second
         else:
             self.status_label.setText(_("Installation failed"))
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Installation Failed"), error_msg)
+            # Re-enable UI
+            self._enable_ui_after_installation()
