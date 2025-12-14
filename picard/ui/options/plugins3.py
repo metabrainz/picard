@@ -78,12 +78,6 @@ class Plugins3OptionsPage(OptionsPage):
         self.refresh_all_button.clicked.connect(self._refresh_all)
         toolbar_layout.addWidget(self.refresh_all_button)
 
-        self.update_all_button = QtWidgets.QPushButton(_("Update All"))
-        self.update_all_button.setToolTip(_("Update all plugins with available updates"))
-        self.update_all_button.clicked.connect(self._update_all_available)
-        self.update_all_button.setVisible(False)  # Hidden by default
-        toolbar_layout.addWidget(self.update_all_button)
-
         toolbar_layout.addStretch()
 
         self.details_toggle_button = QtWidgets.QPushButton(_("Hide Details"))
@@ -104,6 +98,8 @@ class Plugins3OptionsPage(OptionsPage):
         self.plugin_list.plugin_selection_changed.connect(self._on_plugin_selected)
         # Connect plugin state changes to refresh options dialog
         self.plugin_list.plugin_state_changed.connect(self._on_plugin_state_changed)
+        # Connect update selected plugins signal
+        self.plugin_list.update_selected_plugins.connect(self._update_plugins)
         self.splitter.addWidget(self.plugin_list)
 
         # Plugin details
@@ -149,7 +145,6 @@ class Plugins3OptionsPage(OptionsPage):
             self._filter_plugins()  # Apply current filter
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
-            self._toggle_update_all_button()
         except Exception as e:
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
@@ -175,9 +170,6 @@ class Plugins3OptionsPage(OptionsPage):
             self._filter_plugins()
             self._update_registry_tooltip()
 
-            # Show/hide Update All button
-            self._toggle_update_all_button()
-
             update_count = len(updates) if updates else 0
             self._show_status(
                 _("Refreshed - {} plugins, {} updates available").format(len(self.all_plugins), update_count)
@@ -190,37 +182,12 @@ class Plugins3OptionsPage(OptionsPage):
             self.refresh_all_button.setEnabled(True)
             self.refresh_all_button.setText(_("Refresh All"))
 
-    def _toggle_update_all_button(self):
-        """Show/hide Update All button based on available updates."""
-        update_count = self._count_available_updates()
-        self.update_all_button.setVisible(update_count > 1)
-        if update_count > 1:
-            self.update_all_button.setText(_("Update All ({})").format(update_count))
-
-    def _count_available_updates(self):
-        """Count plugins with available updates."""
-        if not hasattr(self.plugin_list, '_update_status_cache'):
-            return 0
-        return sum(1 for has_update in self.plugin_list._update_status_cache.values() if has_update)
-
-    def _update_all_available(self):
-        """Update all plugins with available updates."""
-        plugins_with_updates = [
-            plugin
-            for plugin in self.all_plugins
-            if hasattr(self.plugin_list, '_update_status_cache')
-            and self.plugin_list._update_status_cache.get(plugin.plugin_id, False)
-        ]
-        if plugins_with_updates:
-            self._update_plugins(plugins_with_updates)
-
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
         self.plugin_list.clear()
         self.plugin_details.setVisible(False)
         self.install_button.setEnabled(False)
         self.refresh_all_button.setEnabled(False)
-        self.update_all_button.setVisible(False)
         self.search_edit.setEnabled(False)
         self._show_status(_("Plugin system not available - Git backend required"))
 
@@ -361,7 +328,6 @@ class Plugins3OptionsPage(OptionsPage):
             # Refresh update status after batch updates
             self.plugin_list.refresh_update_status()
             self._filter_plugins()  # Refresh display to show updated status
-            self._toggle_update_all_button()
             return
 
         plugin = self._update_queue.pop(0)
