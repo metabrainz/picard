@@ -184,11 +184,20 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
         try:
-            # Try to get version from update check
+            # Get update info from check_updates
             updates = self.plugin_manager.check_updates()
             for update in updates:
                 if update.plugin_id == plugin.plugin_id:
-                    return getattr(update, 'new_version', _("Available"))
+                    # Use new_ref if available (for version tags), otherwise use new_commit
+                    if hasattr(update, 'new_ref') and update.new_ref:
+                        return update.new_ref
+                    elif hasattr(update, 'new_commit') and update.new_commit:
+                        # Get current ref for display
+                        metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.manifest.uuid)
+                        current_ref = metadata.ref if metadata else 'main'
+                        return f"{current_ref}@{update.new_commit}"
+                    else:
+                        return _("Available")
         except Exception:
             pass
         return _("Available")
