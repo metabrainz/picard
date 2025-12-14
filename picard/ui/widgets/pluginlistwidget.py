@@ -264,8 +264,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def mark_plugin_update_complete(self, plugin):
         """Mark a plugin update as complete."""
         self._updating_plugins.discard(plugin.plugin_id)
-        # Clear version cache for updated plugin
+        # Clear caches for updated plugin - it should no longer have updates available
         self._version_cache.pop(plugin.plugin_id, None)
+        self._update_status_cache.pop(plugin.plugin_id, None)
         self._refresh_plugin_display(plugin)
 
     def _refresh_plugin_display(self, plugin):
