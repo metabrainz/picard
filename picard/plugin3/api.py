@@ -172,6 +172,9 @@ class ImageProcessor(_ImageProcessor):
 class OptionsPage(_OptionsPage):
     """Base class for plugin option pages"""
 
+    # Default to have the parent set as plugins
+    PARENT = 'plugins'
+
     api: 'PluginApi'
 
 
@@ -791,6 +794,11 @@ class PluginApi:
     # UI
     def register_options_page(self, page_class: type[OptionsPage]) -> None:
         page_class.api = self
+        # The options page needs a unique name if no name was given
+        if not hasattr(page_class, 'NAME') or not page_class.NAME:
+            page_class.NAME = f'{self.plugin_id}.{page_class.__name__}'
+        if not hasattr(page_class, 'TITLE') or not page_class.TITLE:
+            page_class.TITLE = self.manifest.name()
         return register_options_page(page_class)
 
     # Album task management for plugins
