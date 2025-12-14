@@ -85,7 +85,7 @@ class TrackMover:
 
         def _get_file_and_track() -> tuple[File | None, Any | None]:
             file = self.tagger.files.get(str(fpath))
-            if not file or file.state == File.PENDING:
+            if not file or file.state == File.State.PENDING:
                 return None, None
 
             rec_to_track = {t.id: t for t in album.tracks}
@@ -119,13 +119,13 @@ class TrackMover:
 
         def attempt_nat_move() -> None:
             file = self.tagger.files.get(str(fpath))
-            if not file or file.state == File.PENDING:
+            if not file or file.state == File.State.PENDING:
                 return
             self.tagger.move_file_to_nat(file, recording_id)
 
         def is_file_ready() -> bool:
             file = self.tagger.files.get(str(fpath))
-            return file is not None and file.state != File.PENDING
+            return file is not None and file.state != File.State.PENDING
 
         RetryHelper.retry_until(
             condition_fn=is_file_ready, action_fn=attempt_nat_move, delay_ms=SessionConstants.DEFAULT_RETRY_DELAY_MS

@@ -426,7 +426,7 @@ class FileCluster:
 
     @property
     def files(self):
-        yield from (file for file in self._files if file.state != File.REMOVED)
+        yield from (file for file in self._files if file.state != File.State.REMOVED)
 
     @property
     def artist(self):

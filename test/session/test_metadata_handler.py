@@ -232,7 +232,7 @@ def test_apply_saved_metadata_if_any_file_pending(mock_retry_helper: Mock) -> No
     """Test applying saved metadata with file in PENDING state."""
     tagger_mock = Mock()
     file_mock = Mock(spec=File)
-    file_mock.state = File.PENDING
+    file_mock.state = File.State.PENDING
 
     tagger_mock.files.get.return_value = file_mock
 
@@ -305,7 +305,7 @@ def test_apply_saved_metadata_if_any_mixed_states(mock_retry_helper: Mock) -> No
 
     # File 2: pending
     file2_mock = Mock(spec=File)
-    file2_mock.state = File.PENDING
+    file2_mock.state = File.State.PENDING
 
     # File 3: ready but failed
     file3_mock = Mock(spec=File)

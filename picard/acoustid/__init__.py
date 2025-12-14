@@ -160,7 +160,7 @@ class AcoustIDClient(QtCore.QObject):
         task.next_func({'recordings': recording_list}, http, error)
 
     def _lookup_fingerprint(self, task, result=None, error=None):
-        if task.file.state == File.REMOVED:
+        if task.file.state == File.State.REMOVED:
             log.debug("File %r was removed", task.file)
             return
         mparms = {
@@ -264,7 +264,7 @@ class AcoustIDClient(QtCore.QObject):
             task = self._queue.popleft()
         except IndexError:
             return
-        if task.file.state == File.REMOVED:
+        if task.file.state == File.State.REMOVED:
             log.debug("File %r was removed", task.file)
             return
         self._running += 1
@@ -303,7 +303,7 @@ class AcoustIDClient(QtCore.QObject):
         self._fingerprint(task)
 
     def _fingerprint(self, task):
-        if task.file.state == File.REMOVED:
+        if task.file.state == File.State.REMOVED:
             log.debug("File %r was removed", task.file)
             return
         self._queue.append(task)
@@ -317,6 +317,6 @@ class AcoustIDClient(QtCore.QObject):
     def stop_analyze(self, file):
         new_queue = deque()
         for task in self._queue:
-            if task.file != file and task.file.state != File.REMOVED:
+            if task.file != file and task.file.state != File.State.REMOVED:
                 new_queue.appendleft(task)
         self._queue = new_queue

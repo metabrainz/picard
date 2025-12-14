@@ -609,10 +609,10 @@ class CommonId3Tests:
                     'artists': ['foo', 'bar'],
                 }
             )
-            file.state = File.NORMAL
+            file.state = File.State.NORMAL
             file.update(signal=False)
             self.assertEqual(file.similarity, 1.0)
-            self.assertEqual(file.state, File.NORMAL)
+            self.assertEqual(file.state, File.State.NORMAL)
 
         @skipUnlessTestfile
         def test_releasedate_v23(self):

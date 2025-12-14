@@ -192,7 +192,7 @@ class ScriptEditorExamples:
         """
         # example 1
         efile = File("ticket_to_ride.mp3")
-        efile.state = File.NORMAL
+        efile.state = File.State.NORMAL
         efile.metadata.update(
             {
                 'album': 'Help!',
@@ -246,7 +246,7 @@ class ScriptEditorExamples:
         # example 2
         config = get_config()
         efile = File("track05.flac")
-        efile.state = File.NORMAL
+        efile.state = File.State.NORMAL
         efile.metadata.update(
             {
                 'album': "Coup d'État, Volume 1: Ku De Ta / Prologue",

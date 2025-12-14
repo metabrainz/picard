@@ -92,7 +92,7 @@ def test_track_mover_schedule_move_file_pending(track_mover: TrackMover, mock_al
 
     # Mock file in PENDING state
     file_mock = Mock(spec=File)
-    file_mock.state = File.PENDING
+    file_mock.state = File.State.PENDING
     track_mover.tagger.files.get.return_value = file_mock
 
     # Mock the run_when_loaded to call the callback immediately
@@ -197,7 +197,7 @@ def test_track_mover_move_file_to_nat_file_pending(track_mover: TrackMover) -> N
 
     # Mock file in PENDING state
     file_mock = Mock(spec=File)
-    file_mock.state = File.PENDING
+    file_mock.state = File.State.PENDING
     track_mover.tagger.files.get.return_value = file_mock
 
     with patch("picard.session.track_mover.RetryHelper"):

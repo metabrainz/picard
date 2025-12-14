@@ -459,11 +459,11 @@ class FileUpdateTest(PicardTestCase):
         image = create_image(b'a')
         self.file.metadata.images = [image]
         self.file.orig_metadata.images = [image]
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)  # it should be modified
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_same_image_pending(self):
         image = create_image(b'a')
@@ -472,28 +472,28 @@ class FileUpdateTest(PicardTestCase):
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.PENDING)
+        self.assertEqual(self.file.state, File.State.PENDING)
 
     def test_same_image_changed_state(self):
         image = create_image(b'a')
         self.file.metadata.images = [image]
         self.file.orig_metadata.images = [image]
-        self.file.state = File.CHANGED
+        self.file.state = File.State.CHANGED
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_changed_image(self):
         old_image = create_image(b'a')
         new_image = create_image(b'b')
         self.file.metadata.images = [new_image]
         self.file.orig_metadata.images = [old_image]
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.CHANGED)
+        self.assertEqual(self.file.state, File.State.CHANGED)
 
     def test_signal(self):
         #  just for coverage
@@ -540,11 +540,11 @@ class FileUpdateTest(PicardTestCase):
                 'title': 'sometitle',
             }
         )
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_changed_metadata(self):
         self.file.orig_metadata = Metadata(
@@ -559,11 +559,11 @@ class FileUpdateTest(PicardTestCase):
                 'title': 'sometitle2',
             }
         )
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertLess(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.CHANGED)
+        self.assertEqual(self.file.state, File.State.CHANGED)
 
     def test_changed_metadata_pending(self):
         self.file.orig_metadata = Metadata(
@@ -581,7 +581,7 @@ class FileUpdateTest(PicardTestCase):
 
         self.file.update(signal=False)
         self.assertLess(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.PENDING)  # it shouldn't be modified
+        self.assertEqual(self.file.state, File.State.PENDING)  # it shouldn't be modified
 
     def test_clear_existing(self):
         self.file.orig_metadata = Metadata(
@@ -591,13 +591,13 @@ class FileUpdateTest(PicardTestCase):
             }
         )
         self.file.metadata = Metadata()
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         config.setting["clear_existing_tags"] = True
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 0.0)
-        self.assertEqual(self.file.state, File.CHANGED)
+        self.assertEqual(self.file.state, File.State.CHANGED)
 
     def test_no_new_metadata(self):
         self.file.orig_metadata = Metadata(
@@ -607,40 +607,40 @@ class FileUpdateTest(PicardTestCase):
             }
         )
         self.file.metadata = Metadata()
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_tilde_tag(self):
         self.file.orig_metadata = Metadata()
         self.file.metadata = Metadata({'~tag': 'value'})
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_ignored_tag(self):
         self.file.orig_metadata = Metadata()
         self.file.metadata = Metadata({'tag': 'value'})
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         config.setting["compare_ignore_tags"] = ['tag']
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_unsupported_tag(self):
         self.file.orig_metadata = Metadata()
         self.file.metadata = Metadata({'unsupported': 'value'})
-        self.file.state = File.NORMAL
+        self.file.state = File.State.NORMAL
 
         self.file.update(signal=False)
         self.assertEqual(self.file.similarity, 1.0)
-        self.assertEqual(self.file.state, File.NORMAL)
+        self.assertEqual(self.file.state, File.State.NORMAL)
 
     def test_copy_file_info_tags(self):
         info_tags = {}
