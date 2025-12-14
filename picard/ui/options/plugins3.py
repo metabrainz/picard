@@ -251,11 +251,28 @@ class Plugins3OptionsPage(OptionsPage):
         """Handle plugin state changes (enable/disable/uninstall)."""
         plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
+
+        # Clean up do_not_update setting when plugin is uninstalled
+        if action == "uninstalled" and plugin.manifest and plugin.manifest.uuid:
+            self._cleanup_plugin_settings(plugin.manifest.uuid)
+
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
         else:
             pass  # No dialog found
+
+    def _cleanup_plugin_settings(self, plugin_uuid):
+        """Clean up plugin settings when plugin is uninstalled."""
+        from picard.config import get_config
+
+        config = get_config()
+
+        # Remove from do_not_update list
+        do_not_update = list(config.setting['plugins3_do_not_update_plugins'])
+        if plugin_uuid in do_not_update:
+            do_not_update.remove(plugin_uuid)
+            config.setting['plugins3_do_not_update_plugins'] = do_not_update
 
     def _install_plugin(self):
         """Show install plugin dialog."""
