@@ -186,14 +186,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Add checkbox for update selection
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
-            # Add tooltip to explain checkbox behavior
-            item.setToolTip(
-                COLUMN_UPDATE,
-                _(
-                    "Check to include this plugin in updates. Unchecked plugins will be remembered and excluded from future updates."
-                ),
-            )
-
             # Check if user has previously unchecked this plugin
             config = get_config()
             do_not_update = config.setting['plugins3_do_not_update_plugins']
@@ -201,8 +193,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             if plugin_uuid and plugin_uuid in do_not_update:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
+                item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
             else:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Checked)
+                item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
         else:
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "")
@@ -433,6 +427,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 plugin_uuid = plugin.manifest.uuid
 
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
+
+                # Update tooltip based on new state
+                if is_checked:
+                    item.setToolTip(COLUMN_UPDATE, _("This plugin is included in updates"))
+                else:
+                    item.setToolTip(COLUMN_UPDATE, _("This plugin is excluded from updates"))
 
                 if not is_checked and plugin_uuid not in do_not_update:
                     # User unchecked - add to do not update list
