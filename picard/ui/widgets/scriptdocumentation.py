@@ -144,7 +144,7 @@ class TagsDocumentationPage(DocumentationPage):
         html = ''
         tag_list = [tag.script_name() for tag in ALL_TAGS]
         tag_list += [name for (name, _doc) in ext_point_script_variables]
-        for tag_name in sorted(tag_list):
+        for tag_name in sorted(tag_list, key=lambda x: x.lstrip('_')):
             html += process_tag(tag_name)
         return html
 
