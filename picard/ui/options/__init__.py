@@ -48,6 +48,8 @@ class OptionsCheckError(Exception):
 
 
 class OptionsPage(QtWidgets.QWidget):
+    NAME: str
+    TITLE: str
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True

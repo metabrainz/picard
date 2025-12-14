@@ -103,7 +103,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
 
 
 class ErrorOptionsPage(OptionsPage):
-    def __init__(self, parent=None, errmsg='', from_cls=None, dialog=None):
+    def __init__(self, parent=None, errmsg='', from_cls: OptionsPage = None, dialog=None):
         # copy properties from failing page
         self.NAME = from_cls.NAME
         self.TITLE = from_cls.TITLE
