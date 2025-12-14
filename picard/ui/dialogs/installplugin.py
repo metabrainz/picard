@@ -23,6 +23,7 @@ import os
 
 from PyQt6 import QtCore, QtWidgets
 
+from picard import log
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.installable import (
@@ -62,6 +63,15 @@ class InstallPluginDialog(QtWidgets.QDialog):
         # Cache frequently accessed objects
         self.tagger = QtWidgets.QApplication.instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
+
+        # Fetch registry on dialog open, fallback to cache if network fails
+        log.debug('InstallPluginDialog: Fetching registry on dialog open')
+        try:
+            self.plugin_manager._registry.fetch_registry(use_cache=True)
+            log.debug('InstallPluginDialog: Registry fetch completed successfully')
+        except Exception as e:
+            # Network failed, use cache
+            log.debug('InstallPluginDialog: Registry fetch failed: %s', e)
 
         self.setup_ui()
 

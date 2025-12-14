@@ -18,13 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
 import re
 import time
 import urllib.error
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from picard import log
 from picard.config import get_config
@@ -205,7 +206,20 @@ class PluginRegistry:
                     for attempt in range(REGISTRY_FETCH_MAX_RETRIES):
                         try:
                             timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
-                            with urlopen(url, timeout=timeout) as response:
+
+                            # Create request with conditional headers if cache exists
+                            request = Request(url)
+                            if use_cache and self.cache_path and Path(self.cache_path).exists():
+                                try:
+                                    cache_mtime = Path(self.cache_path).stat().st_mtime
+                                    date = datetime.fromtimestamp(cache_mtime, tz=timezone.utc)
+                                    http_date = date.strftime("%a, %d %b %Y %H:%M:%S GMT")
+                                    request.add_header('If-Modified-Since', http_date)
+                                    log.debug('Added If-Modified-Since header: %s', http_date)
+                                except Exception:
+                                    pass  # Ignore errors, proceed without conditional header
+
+                            with urlopen(request, timeout=timeout) as response:
                                 data = response.read()
                                 self._registry_data = tomllib.loads(data.decode('utf-8'))
                                 self.registry_url = url  # Update to successful URL
@@ -213,6 +227,17 @@ class PluginRegistry:
                         except tomllib.TOMLDecodeError as e:
                             raise RegistryParseError(url, e) from e
                         except urllib.error.HTTPError as e:
+                            # Handle 304 Not Modified - use cache
+                            if e.code == 304 and use_cache and self.cache_path and Path(self.cache_path).exists():
+                                log.debug('Registry not modified (304), using cache: %s', self.cache_path)
+                                try:
+                                    with open(self.cache_path, 'r') as f:
+                                        data = json.load(f)
+                                        self._registry_data = data.get('data', {})
+                                        return
+                                except Exception:
+                                    pass  # Fall through to error handling
+
                             # Don't retry 4xx client errors (except 404 which might mean intentional removal)
                             if 400 <= e.code < 500 and e.code != 404:
                                 raise RegistryFetchError(url, e) from e

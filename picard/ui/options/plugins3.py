@@ -141,8 +141,10 @@ class Plugins3OptionsPage(OptionsPage):
         """Load plugins from plugin manager."""
         self._show_status(_("Loading plugins..."))
         try:
+            # Load plugins immediately when page is loaded
             self.all_plugins = self.plugin_manager.plugins
-            self._filter_plugins()  # Apply current filter
+            self.plugin_list.refresh_update_status(force_network_check=False)
+            self._filter_plugins()
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
         except Exception as e:
@@ -162,11 +164,11 @@ class Plugins3OptionsPage(OptionsPage):
             # Reload plugin list
             self.all_plugins = self.plugin_manager.plugins
 
-            # Check for updates (silent - no dialog)
+            # Check for updates (silent - no dialog) - THIS IS WHERE NETWORK CALLS HAPPEN
             updates = self.plugin_manager.check_updates()
 
-            # Refresh UI
-            self.plugin_list.refresh_update_status()
+            # Refresh UI with network-fetched update status
+            self.plugin_list.refresh_update_status(force_network_check=True)
             self._filter_plugins()
             self._update_registry_tooltip()
 
@@ -326,7 +328,7 @@ class Plugins3OptionsPage(OptionsPage):
             self.install_button.setEnabled(True)
             self._show_status(_("All plugin updates completed"))
             # Refresh update status after batch updates
-            self.plugin_list.refresh_update_status()
+            self.plugin_list.refresh_update_status(force_network_check=True)
             self._filter_plugins()  # Refresh display to show updated status
             return
 
