@@ -220,6 +220,16 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._version_cache[plugin.plugin_id] = new_version
         return new_version
 
+    def _format_update_version(self, update):
+        """Format update version info for display (matching git info format)."""
+        from picard.git.utils import RefItem
+
+        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
+        commit = getattr(update, 'new_commit', None)
+
+        ref_item = RefItem(name=ref, commit=commit)
+        return ref_item.format() or _("Available")
+
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
         try:
@@ -227,16 +237,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             updates = self.plugin_manager.check_updates()
             for update in updates:
                 if update.plugin_id == plugin.plugin_id:
-                    # Use new_ref if available (for version tags), otherwise use new_commit
-                    if hasattr(update, 'new_ref') and update.new_ref:
-                        return update.new_ref
-                    elif hasattr(update, 'new_commit') and update.new_commit:
-                        # Get current ref for display
-                        metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.manifest.uuid)
-                        current_ref = metadata.ref if metadata else 'main'
-                        return f"{current_ref}@{update.new_commit}"
-                    else:
-                        return _("Available")
+                    return self._format_update_version(update)
         except Exception:
             pass
         return _("Available")
@@ -648,7 +649,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
-                ref=confirm_dialog.selected_ref,
+                ref=confirm_dialog.selected_ref.name if confirm_dialog.selected_ref else None,
                 reinstall=True,
                 callback=partial(self._on_reinstall_complete, plugin),
             )
@@ -675,7 +676,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             try:
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(
-                    plugin=plugin, ref=dialog.selected_ref, callback=partial(self._on_switch_ref_complete, plugin)
+                    plugin=plugin,
+                    ref=dialog.selected_ref.name if dialog.selected_ref else None,
+                    callback=partial(self._on_switch_ref_complete, plugin),
                 )
             except Exception as e:
                 log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
