@@ -44,8 +44,8 @@ from picard.coverart.processing.processors import (
 )
 from picard.extension_points.cover_art_processors import (
     CoverArtProcessingError,
+    ImageProcessor,
     ProcessingImage,
-    ProcessingTarget,
 )
 from picard.util import imageinfo
 from picard.util.imagelist import ImageList
@@ -207,7 +207,7 @@ class ImageProcessorsTest(PicardTestCase):
     def _check_resize_image(self, size, expected_size):
         image = ProcessingImage(*create_fake_image(size[0], size[1], 'jpg'))
         processor = ResizeImage()
-        processor.run(image, ProcessingTarget.TAGS)
+        processor.run(image, ImageProcessor.Target.TAGS)
         new_size = (image.get_qimage().width(), image.get_qimage().height())
         new_info_size = (image.info.width, image.info.height)
         self.assertEqual(new_size, expected_size)
@@ -290,7 +290,7 @@ class ImageProcessorsTest(PicardTestCase):
     def _check_convert_image(self, format, expected_format):
         image = ProcessingImage(*create_fake_image(100, 100, format))
         processor = ConvertImage()
-        processor.run(image, ProcessingTarget.TAGS)
+        processor.run(image, ImageProcessor.Target.TAGS)
         new_image = image.get_result()
         new_info = imageinfo.identify(new_image)
         self.assertIn(new_info.format, ConvertImage._format_aliases[expected_format])

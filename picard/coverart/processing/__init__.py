@@ -40,8 +40,8 @@ from picard.extension_points.cover_art_filters import (
 )
 from picard.extension_points.cover_art_processors import (
     CoverArtProcessingError,
+    ImageProcessor,
     ProcessingImage,
-    ProcessingTarget,
     get_cover_art_processors,
 )
 from picard.util import thread
@@ -91,7 +91,7 @@ class CoverArtImageProcessing:
         except CoverArtProcessingError as e:
             raise e
         finally:
-            if target == ProcessingTarget.TAGS:
+            if target == ImageProcessor.Target.TAGS:
                 coverartimage.set_tags_data(data)
             else:
                 coverartimage.set_external_file_data(data)
@@ -108,15 +108,15 @@ class CoverArtImageProcessing:
         try:
             start_time = time.time()
             image = ProcessingImage(initial_data, image_info)
-            for processor in self.queues[ProcessingTarget.BOTH]:
-                processor.run(image, ProcessingTarget.BOTH)
+            for processor in self.queues[ImageProcessor.Target.BOTH]:
+                processor.run(image, ImageProcessor.Target.BOTH)
                 time.sleep(COVER_PROCESSING_SLEEP)
             run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
             if config.setting['save_images_to_files']:
-                run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.FILE)
+                run_queue = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
                 thread.run_task(run_queue, task_counter=self.task_counter)
             if config.setting['save_images_to_tags']:
-                run_queue = partial(run_queue_common, image.copy(), ProcessingTarget.TAGS)
+                run_queue = partial(run_queue_common, image.copy(), ImageProcessor.Target.TAGS)
                 thread.run_task(run_queue, task_counter=self.task_counter)
             else:
                 coverartimage.set_tags_data(initial_data)

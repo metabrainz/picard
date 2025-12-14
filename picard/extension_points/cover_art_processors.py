@@ -43,12 +43,6 @@ class CoverArtEncodingError(CoverArtProcessingError):
     pass
 
 
-class ProcessingTarget(IntEnum):
-    TAGS = 0
-    FILE = 1
-    BOTH = 2
-
-
 class ProcessingImage:
     def __init__(self, image, info: imageinfo.ImageInfo | None = None):
         self.set_result(image)
@@ -102,6 +96,11 @@ class ProcessingImage:
 
 
 class ImageProcessor:
+    class Target(IntEnum):
+        TAGS = 0
+        FILE = 1
+        BOTH = 2
+
     def save_to_tags(self) -> bool:
         return False
 
@@ -111,20 +110,20 @@ class ImageProcessor:
     def same_processing(self) -> bool:
         return False
 
-    def run(self, image: ProcessingImage, target: ProcessingTarget):
+    def run(self, image: ProcessingImage, target: Target):
         pass
 
 
 def get_cover_art_processors():
-    queues = dict.fromkeys(list(ProcessingTarget), [])
+    queues = dict.fromkeys(list(ImageProcessor.Target), [])
     for processor in ext_point_cover_art_processors:
         if processor.same_processing():
-            queues[ProcessingTarget.BOTH].append(processor)
+            queues[ImageProcessor.Target.BOTH].append(processor)
         else:
             if processor.save_to_tags():
-                queues[ProcessingTarget.TAGS].append(processor)
+                queues[ImageProcessor.Target.TAGS].append(processor)
             if processor.save_to_file():
-                queues[ProcessingTarget.FILE].append(processor)
+                queues[ImageProcessor.Target.FILE].append(processor)
     return queues
 
 
