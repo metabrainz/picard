@@ -266,6 +266,8 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
         self.load()  # Refresh plugin list
+        # Refresh update status to check for newer versions
+        self.plugin_list.refresh_update_status()
         self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
