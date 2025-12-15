@@ -150,6 +150,7 @@ class Plugins3OptionsPage(OptionsPage):
             self._show_enabled_state()
             self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
+            log.debug("Error loading plugins", exc_info=True)
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
     def _refresh_all(self):
@@ -271,8 +272,8 @@ class Plugins3OptionsPage(OptionsPage):
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
 
         # Clean up do_not_update setting when plugin is uninstalled
-        if action == "uninstalled" and plugin.manifest and plugin.manifest.uuid:
-            self._cleanup_plugin_settings(plugin.manifest.uuid)
+        if action == "uninstalled" and plugin.uuid:
+            self._cleanup_plugin_settings(plugin.uuid)
 
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:

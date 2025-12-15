@@ -569,6 +569,7 @@ class Plugin:
         self.module_name = f'picard.plugins.{self.plugin_id}'
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
+        self.uuid = None
 
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
@@ -581,9 +582,15 @@ class Plugin:
 
     def read_manifest(self):
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
-        manifest_path = self.local_path.joinpath('MANIFEST.toml')
-        with open(manifest_path, 'rb') as manifest_file:
-            self.manifest = PluginManifest(self.plugin_id, manifest_file)
+        from picard.plugin3.manager import PluginManifestReadError
+
+        self.uuid = None
+        try:
+            manifest_path = self.local_path.joinpath('MANIFEST.toml')
+            with open(manifest_path, 'rb') as manifest_file:
+                self.manifest = PluginManifest(self.plugin_id, manifest_file)
+        except Exception as e:
+            raise PluginManifestReadError(e, manifest_path) from e
 
         # Validate manifest
         errors = self.manifest.validate()
@@ -591,6 +598,9 @@ class Plugin:
             from picard.plugin3.manager import PluginManifestInvalidError
 
             raise PluginManifestInvalidError(errors)
+
+        # Add a shortcut
+        self.uuid = self.manifest.uuid
 
     def get_current_commit_id(self):
         """Get the current commit ID of the plugin if it's a git repository."""

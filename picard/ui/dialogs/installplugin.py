@@ -329,7 +329,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
         try:
             for plugin in self.plugin_manager.plugins:
                 try:
-                    uuid = plugin.manifest.uuid
+                    uuid = plugin.uuid
                     if uuid:
                         installed_uuids.add(uuid)
                 except (AttributeError, Exception):

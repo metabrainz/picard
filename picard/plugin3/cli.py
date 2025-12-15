@@ -376,8 +376,7 @@ class PluginCLI:
             )
             for plugin in sorted_plugins:
                 # Get plugin UUID for checking enabled state
-                plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-                is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
+                is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
 
                 # Show manifest name (human-readable) with localization
                 display_name = plugin.manifest.name(locale_str) if plugin.manifest else plugin.plugin_id
@@ -396,7 +395,7 @@ class PluginCLI:
                         self._out.info(f'  {desc}')
 
                     # UUID
-                    self._out.info(f'  UUID: {self._out.d_uuid(plugin_uuid)}')
+                    self._out.info(f'  UUID: {self._out.d_uuid(plugin.uuid)}')
 
                     # Registry ID if available
                     registry_id = self._manager.get_plugin_registry_id(plugin)
@@ -407,9 +406,9 @@ class PluginCLI:
                     self._out.info(f'  State: {plugin.state.value}')
 
                     # Version with git info
-                    metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+                    metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
                     git_info = self._format_git_info(metadata)
-                    version = self._get_version_display(plugin_uuid, plugin.manifest._data.get('version', ''))
+                    version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
                     if git_info:
                         self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
                     else:
@@ -423,9 +422,7 @@ class PluginCLI:
                 self._out.print()
 
             total = len(self._manager.plugins)
-            enabled = sum(
-                1 for p in self._manager.plugins if p.manifest and p.manifest.uuid in self._manager._enabled_plugins
-            )
+            enabled = sum(1 for p in self._manager.plugins if p.uuid and p.uuid in self._manager._enabled_plugins)
             disabled = total - enabled
             self._out.print(
                 f'Total: {self._out.d_number(total)} plugin{"s" if total != 1 else ""} '
@@ -453,9 +450,8 @@ class PluginCLI:
         if error:
             return error
 
-        plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-        is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
-        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+        is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
+        metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
         git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
@@ -465,7 +461,7 @@ class PluginCLI:
         if desc:
             self._out.print(f'Description: {desc}')
 
-        self._out.print(f'UUID: {self._out.d_uuid(plugin_uuid)}')
+        self._out.print(f'UUID: {self._out.d_uuid(plugin.uuid)}')
 
         # Show registry ID if available (lookup dynamically from current registry)
         registry_id = self._manager.get_plugin_registry_id(plugin)
@@ -481,7 +477,7 @@ class PluginCLI:
         self._out.print(f'State: {plugin.state.value}')
 
         # Version
-        version = self._get_version_display(plugin.manifest.uuid, plugin.manifest._data.get('version', ''))
+        version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
         if git_info:
             self._out.print(f'Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
         else:
@@ -1202,13 +1198,13 @@ class PluginCLI:
             matches = [p for p in self._manager.plugins if p.manifest and p.manifest.name().lower() == identifier_lower]
             self._out.error(f'Multiple plugins found with name "{plugin_identifier}":')
             for p in matches:
-                self._out.error(f'  - {self._out.d_id(p.plugin_id)} (UUID: {self._out.d_uuid(p.manifest.uuid)})')
+                self._out.error(f'  - {self._out.d_id(p.plugin_id)} (UUID: {self._out.d_uuid(p.uuid)})')
             self._out.error('Please use the Plugin ID or UUID to be more specific')
             return ExitCode.ERROR
 
-        if plugin and plugin.manifest and plugin.manifest.uuid:
+        if plugin and plugin.uuid:
             # Plugin is installed, use its UUID
-            plugin_uuid = plugin.manifest.uuid
+            plugin_uuid = plugin.uuid
             display_name = plugin.plugin_id
         else:
             # Not installed, assume identifier is a UUID
@@ -1264,9 +1260,7 @@ class PluginCLI:
 
             self._out.error(f'Multiple plugins found with name "{identifier}":')
             for plugin in matches:
-                self._out.error(
-                    f'  - {self._out.d_id(plugin.plugin_id)} (UUID: {self._out.d_uuid(plugin.manifest.uuid)})'
-                )
+                self._out.error(f'  - {self._out.d_id(plugin.plugin_id)} (UUID: {self._out.d_uuid(plugin.uuid)})')
             self._out.error('Please use the Plugin ID or UUID to be more specific')
             return None, ExitCode.ERROR
 

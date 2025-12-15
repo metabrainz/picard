@@ -167,11 +167,11 @@ class PluginMetadataManager:
         Returns:
             str: Registry ID or None if not in registry
         """
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if not plugin.uuid:
             return None
 
         # Look up plugin in registry by UUID
-        registry_plugin = self._registry.find_plugin(uuid=str(plugin.manifest.uuid))
+        registry_plugin = self._registry.find_plugin(uuid=str(plugin.uuid))
         if registry_plugin:
             return registry_plugin.get('id')
 
@@ -201,7 +201,7 @@ class PluginMetadataManager:
             if (
                 p.plugin_id == identifier
                 or (p.manifest and p.manifest.name() == identifier)
-                or (p.manifest and str(p.manifest.uuid) == identifier)
+                or (p.uuid and str(p.uuid) == identifier)
                 or registry_id == identifier
             ):
                 plugin = p
@@ -212,12 +212,12 @@ class PluginMetadataManager:
             if not plugin.manifest:
                 return None
 
-            metadata = self.get_plugin_metadata(plugin.manifest.uuid)
+            metadata = self.get_plugin_metadata(plugin.uuid)
             url = metadata.url if metadata else None
 
             # If no URL in metadata, try to get from registry
             if not url:
-                registry_plugin = self._registry.find_plugin(uuid=str(plugin.manifest.uuid))
+                registry_plugin = self._registry.find_plugin(uuid=str(plugin.uuid))
                 if not registry_plugin:
                     return None
                 url = registry_plugin.git_url

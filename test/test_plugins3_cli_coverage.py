@@ -231,12 +231,14 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         plugin1.manifest = Mock()
         plugin1.manifest.name.return_value = 'Test Plugin'
         plugin1.manifest.uuid = 'uuid-1'
+        plugin1.uuid = 'uuid-1'
 
         plugin2 = Mock()
         plugin2.plugin_id = 'plugin_def456'
         plugin2.manifest = Mock()
         plugin2.manifest.name.return_value = 'Test Plugin'
         plugin2.manifest.uuid = 'uuid-2'
+        plugin2.uuid = 'uuid-2'
 
         manager.plugins = [plugin1, plugin2]
 

@@ -62,6 +62,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
+        mock_plugin.uuid = None
 
         with self.assertRaises(PluginNoUUIDError) as context:
             PluginValidation.get_plugin_uuid(mock_plugin)
@@ -72,6 +73,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         """Test _get_plugin_uuid with valid UUID."""
         mock_plugin = MockPlugin()
         mock_plugin.manifest.uuid = 'test-uuid-123'
+        mock_plugin.uuid = 'test-uuid-123'
 
         result = PluginValidation.get_plugin_uuid(mock_plugin)
 
@@ -228,6 +230,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.local_path = Mock()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
+        mock_plugin.uuid = 'test-uuid'
 
         manager = PluginManager(None)
 
@@ -260,6 +263,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'test-uuid'
         mock_plugin.manifest.version = '1.0.0'
+        mock_plugin.uuid = 'test-uuid'
 
         manager = PluginManager(None)
         manager._metadata.get_plugin_metadata = Mock(
@@ -371,6 +375,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         mock_plugin = MockPlugin()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        mock_plugin.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
         registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
         self.assertEqual(registry_id, 'example-plugin')
@@ -521,6 +526,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         existing_plugin.local_path = '/path/to/plugin'
         existing_plugin.manifest = Mock()
         existing_plugin.manifest.uuid = 'test-uuid-123'
+        existing_plugin.uuid = 'test-uuid-123'
 
         # Mock metadata to return different source URL
         manager._metadata = Mock()

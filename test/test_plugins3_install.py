@@ -76,6 +76,7 @@ class TestPluginInstall(PicardTestCase):
 
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
+        mock_plugin.uuid = 'test-uuid-123'
 
         # Should raise PluginNoSourceError when no metadata
         with self.assertRaises(PluginNoSourceError) as context:
@@ -126,6 +127,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.read_manifest = Mock()
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
+        mock_plugin.uuid = test_uuid
 
         manager._save_plugin_metadata(
             PluginMetadata(
@@ -166,6 +168,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Path('/tmp/test-plugin')
+        mock_plugin.uuid = 'test-uuid-456'
 
         with self.assertRaises(PluginNoSourceError) as context:
             manager.switch_ref(mock_plugin, 'v1.0.0')
@@ -403,6 +406,7 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
+        mock_plugin.uuid = test_uuid
 
         # Mock config with no options
         mock_config_empty = Mock()
@@ -425,6 +429,7 @@ class TestPluginInstall(PicardTestCase):
         # Test plugin without manifest/UUID
         mock_plugin_no_uuid = Mock(spec=Plugin)
         mock_plugin_no_uuid.manifest = None
+        mock_plugin_no_uuid.uuid = None
         self.assertFalse(manager.plugin_has_saved_options(mock_plugin_no_uuid))
 
     def test_install_command_execution(self):

@@ -236,6 +236,9 @@ class MockPlugin(Plugin):
             self.manifest.version = version
             self.manifest.name = Mock(return_value=display_name)
 
+        # Set uuid shortcut property
+        self.uuid = uuid
+
         # Mock all methods
         self.load_module = Mock()
         self.enable = Mock()
