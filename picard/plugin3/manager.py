@@ -479,8 +479,8 @@ class PluginManager(QObject):
             identifiers.append(plugin.plugin_id.lower())
 
             # UUID (case-insensitive)
-            if plugin.manifest and plugin.manifest.uuid:
-                identifiers.append(str(plugin.manifest.uuid).lower())
+            if plugin.uuid:
+                identifiers.append(str(plugin.uuid).lower())
 
             # Display name (case-insensitive)
             if plugin.manifest:
@@ -578,7 +578,7 @@ class PluginManager(QObject):
             list: List of plugin UUIDs that have config but no installed plugin
         """
         config = get_config()
-        installed_uuids = {p.manifest.uuid for p in self.plugins if p.manifest and p.manifest.uuid}
+        installed_uuids = {p.uuid for p in self.plugins if p.uuid}
 
         orphaned = []
         for group in config.childGroups():
@@ -609,13 +609,9 @@ class PluginManager(QObject):
         source_url = str(source_url).rstrip('/')
 
         for existing_plugin in self._plugins:
-            if (
-                existing_plugin.manifest
-                and existing_plugin.manifest.uuid
-                and str(existing_plugin.manifest.uuid).lower() == str(manifest.uuid).lower()
-            ):
+            if existing_plugin.uuid and str(existing_plugin.uuid).lower() == str(manifest.uuid).lower():
                 # Get existing plugin's source URL
-                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
                 existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
                 existing_source = str(existing_source).rstrip('/')
 
@@ -860,8 +856,8 @@ class PluginManager(QObject):
                     except Exception:
                         continue
 
-                if existing_plugin.manifest and existing_plugin.manifest.uuid:
-                    existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                if existing_plugin.uuid:
+                    existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
                     if (
                         existing_metadata
                         and existing_metadata.url
@@ -958,7 +954,7 @@ class PluginManager(QObject):
             # Check for UUID conflicts with existing plugins from different sources
             has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
             if has_conflict and not reinstall:
-                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
                 existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
                 raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
 
@@ -1114,7 +1110,7 @@ class PluginManager(QObject):
         # Check for UUID conflicts with existing plugins from different sources
         has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
         if has_conflict and not reinstall:
-            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.manifest.uuid)
+            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
             existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
             raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, str(local_path))
 
@@ -1378,10 +1374,10 @@ class PluginManager(QObject):
         """Check which plugins have updates available without installing."""
         updates = []
         for plugin in self._plugins:
-            if not plugin.manifest or not plugin.manifest.uuid:
+            if not plugin.uuid:
                 continue
 
-            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
             if not metadata or not metadata.url:
                 continue
 
@@ -1396,7 +1392,7 @@ class PluginManager(QObject):
                     repo.fetch_remote(remote, None, callbacks._callbacks)
 
                 # Update version tag cache from fetched repo if plugin has versioning_scheme
-                registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
+                registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
                 if registry_plugin and registry_plugin.versioning_scheme:
                     self._refs_cache.update_cache_from_local_repo(
                         plugin.local_path, metadata.url, registry_plugin.versioning_scheme
@@ -1486,10 +1482,10 @@ class PluginManager(QObject):
         """Check if a single plugin has an update available."""
         log.debug("Checking update status for plugin: %s", plugin.plugin_id)
 
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if not plugin.uuid:
             return False
 
-        metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+        metadata = self._metadata.get_plugin_metadata(plugin.uuid)
         if not metadata or not metadata.url:
             return False
 
@@ -1519,7 +1515,7 @@ class PluginManager(QObject):
                 repo.fetch_remote(remote, None, callbacks._callbacks)
 
             # Update version tag cache from fetched repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
+            registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
             if registry_plugin and registry_plugin.versioning_scheme:
                 self._refs_cache.update_cache_from_local_repo(
                     plugin.local_path, metadata.url, registry_plugin.versioning_scheme
@@ -1595,11 +1591,11 @@ class PluginManager(QObject):
 
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if not plugin.uuid:
             return None
 
         try:
-            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
             if metadata and hasattr(metadata, 'url'):
                 return metadata.url
         except Exception:
@@ -1612,9 +1608,8 @@ class PluginManager(QObject):
 
         try:
             # Try to get version from git metadata first (prioritize git ref)
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid:
-                metadata = self._metadata.get_plugin_metadata(plugin_uuid)
+            if plugin.uuid:
+                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
                 if metadata:
                     git_info = self.get_plugin_git_info(metadata)
                     if git_info:
@@ -1662,13 +1657,13 @@ class PluginManager(QObject):
 
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if plugin.uuid:
             return ""
 
         try:
-            metadata = self._metadata.get_plugin_metadata(plugin.manifest.uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
             if metadata and hasattr(metadata, 'url'):
-                registry_plugin = self._registry.find_plugin(uuid=plugin.manifest.uuid)
+                registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
                 if registry_plugin:
                     return registry_plugin.versioning_scheme or ''
         except Exception:
@@ -1701,16 +1696,16 @@ class PluginManager(QObject):
         # Remove metadata
         config = get_config()
         # Remove metadata by UUID if available
-        if plugin.manifest and plugin.manifest.uuid:
-            config.setting['plugins3_metadata'].pop(plugin.manifest.uuid, None)
+        if plugin.uuid:
+            config.setting['plugins3_metadata'].pop(plugin.uuid, None)
 
         # Unregister UUID mapping
-        if plugin.manifest and plugin.manifest.uuid:
-            unset_plugin_uuid(plugin.manifest.uuid)
+        if plugin.uuid:
+            unset_plugin_uuid(plugin.uuid)
 
         # Remove plugin config if purge requested
-        if purge and plugin.manifest and plugin.manifest.uuid:
-            self._clean_plugin_config(plugin.manifest.uuid)
+        if purge and plugin.uuid:
+            self._clean_plugin_config(plugin.uuid)
 
         # Remove plugin from plugins list
         if plugin in self.plugins:
@@ -1727,10 +1722,10 @@ class PluginManager(QObject):
         Returns:
             True if plugin has saved options, False otherwise
         """
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if not plugin.uuid:
             return False
         config = get_config()
-        config_key = f'plugin.{plugin.manifest.uuid}'
+        config_key = f'plugin.{plugin.uuid}'
         config.beginGroup(config_key)
         has_options = len(config.childKeys()) > 0
         config.endGroup()
@@ -1746,25 +1741,24 @@ class PluginManager(QObject):
 
         for plugin in self._plugins:
             # Get UUID from plugin manifest
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if not plugin_uuid:
+            if not plugin.uuid:
                 continue
 
-            metadata = self._metadata.get_plugin_metadata(plugin_uuid)
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
             url = metadata.url if metadata else None
 
             # Create InstallablePlugin for blacklist checking
             installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
-            installable_plugin.plugin_uuid = plugin_uuid
+            installable_plugin.plugin_uuid = plugin.uuid
 
             is_blacklisted, reason = installable_plugin.is_blacklisted()
             if is_blacklisted:
                 log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
                 blacklisted_plugins.append((plugin.plugin_id, reason))
 
-                if plugin_uuid in self._enabled_plugins:
+                if plugin.uuid in self._enabled_plugins:
                     log.warning('Disabling blacklisted plugin %s', plugin.plugin_id)
-                    self._enabled_plugins.discard(plugin_uuid)
+                    self._enabled_plugins.discard(plugin.uuid)
                     self._save_config()
 
         return blacklisted_plugins
@@ -1784,8 +1778,8 @@ class PluginManager(QObject):
                 got_enabled = True
 
         # Ensure UUID mapping is set for extension points
-        if plugin.manifest and plugin.manifest.uuid:
-            set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
+        if plugin.uuid:
+            set_plugin_uuid(plugin.uuid, plugin.plugin_id)
 
         self._enabled_plugins.add(uuid)
         self._save_config()
@@ -1806,8 +1800,7 @@ class PluginManager(QObject):
 
         enabled_count = 0
         for plugin in self._plugins:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid and plugin_uuid in self._enabled_plugins:
+            if plugin.uuid and plugin.uuid in self._enabled_plugins:
                 try:
                     log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
                     plugin.load_module()
@@ -1865,8 +1858,8 @@ class PluginManager(QObject):
             plugin.read_manifest()
 
             # Register UUID mapping early so extension points can find enabled plugins
-            if plugin.manifest and plugin.manifest.uuid:
-                set_plugin_uuid(plugin.manifest.uuid, plugin.plugin_id)
+            if plugin.uuid:
+                set_plugin_uuid(plugin.uuid, plugin.plugin_id)
 
             assert plugin.manifest is not None
             compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)

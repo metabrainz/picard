@@ -120,9 +120,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         installed_plugins_uuids = set()
         for plugin in plugins:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-            if plugin_uuid is not None:
-                installed_plugins_uuids.add(plugin_uuid)
+            if plugin.uuid is not None:
+                installed_plugins_uuids.add(plugin.uuid)
 
             item = QtWidgets.QTreeWidgetItem()
 
@@ -217,9 +216,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Check if user has previously unchecked this plugin
             config = get_config()
             do_not_update = config.persist['plugins3_do_not_update_plugins']
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
 
-            if plugin_uuid and plugin_uuid in do_not_update:
+            if plugin.uuid and plugin.uuid in do_not_update:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
                 self._set_update_checkbox_tooltip(item, False)
             else:
@@ -465,23 +463,22 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         elif column == COLUMN_UPDATE:  # Handle update checkbox
             # Save checkbox state preference
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
-            if plugin and plugin.manifest and plugin.manifest.uuid:
+            if plugin and plugin.uuid:
                 config = get_config()
                 do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
-                plugin_uuid = plugin.manifest.uuid
 
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
 
                 # Update tooltip based on new state
                 self._set_update_checkbox_tooltip(item, is_checked)
 
-                if not is_checked and plugin_uuid not in do_not_update:
+                if not is_checked and plugin.uuid not in do_not_update:
                     # User unchecked - add to do not update list
-                    do_not_update.append(plugin_uuid)
+                    do_not_update.append(plugin.uuid)
                     config.persist['plugins3_do_not_update_plugins'] = do_not_update
-                elif is_checked and plugin_uuid in do_not_update:
+                elif is_checked and plugin.uuid in do_not_update:
                     # User checked - remove from do not update list
-                    do_not_update.remove(plugin_uuid)
+                    do_not_update.remove(plugin.uuid)
                     config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
             # Update header button when update checkboxes change
@@ -666,9 +663,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             except (AttributeError, Exception):
                 plugin_name = plugin.name or plugin.plugin_id
 
-            # Show confirmation dialog
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
-
             # Get current ref for reinstall
             current_ref = None
             try:
@@ -678,7 +672,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             except Exception:
                 pass
 
-            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin_uuid, current_ref)
+            # Show confirmation dialog
+            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin.uuid, current_ref)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
