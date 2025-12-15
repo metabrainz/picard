@@ -50,7 +50,7 @@ class PluginTranslator(QTranslator):
             Translated text or source_text if not found
         """
         if not context or not source_text:
-            return source_text or ''
+            return None
 
         # Generate key: qt.context.source_text
         key = f'qt.{context}.{source_text}'
