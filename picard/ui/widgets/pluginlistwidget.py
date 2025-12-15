@@ -118,7 +118,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Populate the widget with plugins."""
         self.clear()
 
+        installed_plugins_uuids = set()
         for plugin in plugins:
+            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            if plugin_uuid is not None:
+                installed_plugins_uuids.add(plugin_uuid)
+
             item = QtWidgets.QTreeWidgetItem()
 
             # Column 0: Checkbox only (no text), centered
@@ -157,6 +162,17 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Update header button visibility
         self._update_header_button()
+
+        # Update do not update list to match installed plugins list
+        self._resync_do_not_update(installed_plugins_uuids)
+
+    def _resync_do_not_update(self, uuid_set):
+        """Resync do not update persist list with installed plugins list"""
+        # A plugin could have been removed by another mean, so this ensures we removed old entries
+        config = get_config()
+        do_not_update = set(config.persist['plugins3_do_not_update_plugins'])
+        resynced_do_not_update = do_not_update.intersection(uuid_set)
+        config.persist['plugins3_do_not_update_plugins'] = list(resynced_do_not_update)
 
     def _is_plugin_enabled(self, plugin):
         """Check if plugin is enabled."""
