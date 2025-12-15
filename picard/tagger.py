@@ -756,8 +756,9 @@ class Tagger(QtWidgets.QApplication):
         self.window.show()
 
         blacklisted_plugins = []
-        if self.pluginmanager3:
-            blacklisted_plugins = self.pluginmanager3.init_plugins()
+        plugin_manager = self.get_plugin_manager()
+        if plugin_manager:
+            blacklisted_plugins = plugin_manager.init_plugins()
 
         # Show warning if any plugins were blacklisted
         if blacklisted_plugins:
