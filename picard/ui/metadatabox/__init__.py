@@ -167,6 +167,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         self.tagger = QtCore.QCoreApplication.instance()
         config = get_config()
         config.setting.setting_changed.connect(self._on_setting_changed)
+
+        # Connect to plugin manager signals to refresh when plugins change
+        plugin_manager = self.tagger.get_plugin_manager()
+        if plugin_manager:
+            plugin_manager.plugin_enabled.connect(self._on_plugin_changed)
+            plugin_manager.plugin_disabled.connect(self._on_plugin_changed)
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)
@@ -231,7 +237,6 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _on_setting_changed(self, name, old_value, new_value):
         settings_to_watch = {
-            "enabled_plugins",
             "clear_existing_tags",
             "file_naming_scripts",
             "move_files_to",
@@ -246,6 +251,10 @@ class MetadataBox(QtWidgets.QTableWidget):
         }
         if name in settings_to_watch:
             self.update(drop_album_caches=False)
+
+    def _on_plugin_changed(self, plugin):
+        """Handle plugin enabled/disabled - refresh metadata display"""
+        self.update(drop_album_caches=False)
 
     def _get_file_lookup(self):
         """Return a FileLookup object."""

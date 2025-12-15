@@ -588,6 +588,17 @@ def upgrade_to_v3_0_0dev8(config):
     rename_option(config, old_opt, new_opt, BoolOption, False, reverse=True)
 
 
+def upgrade_to_v3_0_0dev9(config):
+    """Remove obsolete old plugin system options"""
+    # Remove old plugin UI state options (unused)
+    config.persist.remove('plugins_list_sort_order')
+    config.persist.remove('plugins_list_sort_section')
+    config.persist.remove('plugins_list_state')
+
+    # Remove old plugin configuration (replaced by plugins3_enabled_plugins)
+    config.setting.remove('enabled_plugins')
+
+
 def rename_option(config, old_opt, new_opt, option_type, default, reverse=False):
     _s = config.setting
     if old_opt in _s:
