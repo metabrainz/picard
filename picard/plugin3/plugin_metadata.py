@@ -201,7 +201,7 @@ class PluginMetadataManager:
             if (
                 p.plugin_id == identifier
                 or (p.manifest and p.manifest.name() == identifier)
-                or (p.manifest and str(p.uuid) == identifier)
+                or (p.uuid and str(p.uuid) == identifier)
                 or registry_id == identifier
             ):
                 plugin = p
