@@ -39,7 +39,7 @@ class TestPluginApiMethods(PicardTestCase):
         def dummy_processor():
             pass
 
-        with patch('picard.plugin3.api.register_file_post_addition_to_track_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_file_post_addition_to_track_processor') as mock:
             api.register_file_post_addition_to_track_processor(dummy_processor, priority=5)
             # Should be called with partial(dummy_processor, api)
             args, kwargs = mock.call_args
@@ -48,7 +48,7 @@ class TestPluginApiMethods(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 5)
 
-        with patch('picard.plugin3.api.register_file_post_removal_from_track_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_file_post_removal_from_track_processor') as mock:
             api.register_file_post_removal_from_track_processor(dummy_processor, priority=3)
             # Should be called with partial(dummy_processor, api)
             args, kwargs = mock.call_args
@@ -64,7 +64,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         mock_provider = Mock()
 
-        with patch('picard.plugin3.api.register_cover_art_provider') as mock:
+        with patch('picard.plugin3.api_impl.register_cover_art_provider') as mock:
             api.register_cover_art_provider(mock_provider)
             self.assertEqual(mock_provider.api, api)
             mock.assert_called_once_with(mock_provider)
@@ -96,22 +96,22 @@ class TestPluginApiMethods(PicardTestCase):
 
         mock_action = Mock()
 
-        with patch('picard.plugin3.api.register_cluster_action') as mock:
+        with patch('picard.plugin3.api_impl.register_cluster_action') as mock:
             api.register_cluster_action(mock_action)
             self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
-        with patch('picard.plugin3.api.register_clusterlist_action') as mock:
+        with patch('picard.plugin3.api_impl.register_clusterlist_action') as mock:
             api.register_clusterlist_action(mock_action)
             self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
-        with patch('picard.plugin3.api.register_track_action') as mock:
+        with patch('picard.plugin3.api_impl.register_track_action') as mock:
             api.register_track_action(mock_action)
             self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
 
-        with patch('picard.plugin3.api.register_file_action') as mock:
+        with patch('picard.plugin3.api_impl.register_file_action') as mock:
             api.register_file_action(mock_action)
             self.assertEqual(mock_action.api, api)
             mock.assert_called_once_with(mock_action)
@@ -123,7 +123,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         mock_page = Mock()
 
-        with patch('picard.plugin3.api.register_options_page') as mock:
+        with patch('picard.plugin3.api_impl.register_options_page') as mock:
             api.register_options_page(mock_page)
             self.assertEqual(mock_page.api, api)
             mock.assert_called_once_with(mock_page)
@@ -137,7 +137,7 @@ class TestPluginApiMethods(PicardTestCase):
             """Process track metadata."""
             pass
 
-        with patch('picard.plugin3.api.register_track_metadata_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_track_metadata_processor') as mock:
             api.register_track_metadata_processor(my_processor)
             # Get the wrapped function that was passed
             wrapped = mock.call_args[0][0]
@@ -153,7 +153,7 @@ class TestPluginApiMethods(PicardTestCase):
 
         mock_processor = Mock()
 
-        with patch('picard.plugin3.api.register_cover_art_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_cover_art_processor') as mock:
             api.register_cover_art_processor(mock_processor)
             self.assertEqual(mock_processor.api, api)
             mock.assert_called_once_with(mock_processor)

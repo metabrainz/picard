@@ -663,7 +663,7 @@ class TestPluginApi(PicardTestCase):
         def dummy_processor():
             pass
 
-        with patch('picard.plugin3.api.register_album_metadata_processor') as mock_album:
+        with patch('picard.plugin3.api_impl.register_album_metadata_processor') as mock_album:
             api.register_album_metadata_processor(dummy_processor, priority=5)
             args, kwargs = mock_album.call_args
             self.assertIsInstance(args[0], partial)
@@ -671,7 +671,7 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 5)
 
-        with patch('picard.plugin3.api.register_track_metadata_processor') as mock_track:
+        with patch('picard.plugin3.api_impl.register_track_metadata_processor') as mock_track:
             api.register_track_metadata_processor(dummy_processor, priority=10)
             args, kwargs = mock_track.call_args
             self.assertIsInstance(args[0], partial)
@@ -690,7 +690,7 @@ class TestPluginApi(PicardTestCase):
         def dummy_hook():
             pass
 
-        with patch('picard.plugin3.api.register_album_post_removal_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_album_post_removal_processor') as mock:
             api.register_album_post_removal_processor(dummy_hook)
             args, kwargs = mock.call_args
             self.assertIsInstance(args[0], partial)
@@ -698,7 +698,7 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 0)
 
-        with patch('picard.plugin3.api.register_file_post_load_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_file_post_load_processor') as mock:
             api.register_file_post_load_processor(dummy_hook)
             args, kwargs = mock.call_args
             self.assertIsInstance(args[0], partial)
@@ -706,7 +706,7 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 0)
 
-        with patch('picard.plugin3.api.register_file_post_save_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_file_post_save_processor') as mock:
             api.register_file_post_save_processor(dummy_hook)
             args, kwargs = mock.call_args
             self.assertIsInstance(args[0], partial)
@@ -714,7 +714,7 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(args[0].args, (api,))
             self.assertEqual(args[1], 0)
 
-        with patch('picard.plugin3.api.register_file_pre_save_processor') as mock:
+        with patch('picard.plugin3.api_impl.register_file_pre_save_processor') as mock:
             api.register_file_pre_save_processor(dummy_hook)
             args, kwargs = mock.call_args
             self.assertIsInstance(args[0], partial)
@@ -732,7 +732,7 @@ class TestPluginApi(PicardTestCase):
         def dummy_func():
             pass
 
-        with patch('picard.plugin3.api.register_script_function') as mock:
+        with patch('picard.plugin3.api_impl.register_script_function') as mock:
             api.register_script_function(dummy_func, name='test', eval_args=False)
             mock.assert_called_once_with(dummy_func, 'test', False, True, None)
 
@@ -745,15 +745,15 @@ class TestPluginApi(PicardTestCase):
 
         mock_action = Mock()
 
-        with patch('picard.plugin3.api.register_album_action') as mock:
+        with patch('picard.plugin3.api_impl.register_album_action') as mock:
             api.register_album_action(mock_action)
             mock.assert_called_once_with(mock_action)
 
-        with patch('picard.plugin3.api.register_track_action') as mock:
+        with patch('picard.plugin3.api_impl.register_track_action') as mock:
             api.register_track_action(mock_action)
             mock.assert_called_once_with(mock_action)
 
-        with patch('picard.plugin3.api.register_file_action') as mock:
+        with patch('picard.plugin3.api_impl.register_file_action') as mock:
             api.register_file_action(mock_action)
             mock.assert_called_once_with(mock_action)
 
