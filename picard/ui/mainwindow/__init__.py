@@ -148,9 +148,6 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-
-# FIXME: Plugins v3 - re-enable when plugin update dialog is implemented
-# from picard.ui.pluginupdatedialog import PluginUpdatesDialog
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -216,9 +213,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.player.error.connect(self._on_player_error)
 
         self.script_editor_dialog = None
-
-        # FIXME: Plugins v3 - implement plugin update UI
-        # self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
 
         self._check_and_repair_naming_scripts()
         self._check_and_repair_profiles()
@@ -2105,17 +2099,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     # FIXME: Plugins v3 - implement plugin update UI
     def check_for_plugin_update(self):
+        # TODO: Plugins v3 - implement plugin update checking
         pass
-        # config = get_config()
-        # if config.setting['check_for_plugin_updates']:
-        #     self.tagger.pluginmanager.check_update()
 
-    # FIXME: Plugins v3 - implement plugin update dialog
+    # TODO: Plugins v3 - implement plugin update dialog
     def show_plugin_update_dialog(self, plugin_names):
+        # TODO: Implement plugin update dialog for plugin3 system
         pass
-        # if not plugin_names:
-        #     return
-        # msg = PluginUpdatesDialog(self, plugin_names)
         # show_options_page, perform_check = msg.show()
         # config = get_config()
         # config.setting['check_for_plugin_updates'] = perform_check
