@@ -340,7 +340,7 @@ register_file_action(action)
 from picard.plugin3.api import BaseAction
 
 class MyAction(BaseAction):
-    NAME = 'My Action'
+    TITLE = 'My Action'
 
     def __init__(self, api=None):
         super().__init__()

@@ -69,28 +69,29 @@ class MyWidget(QWidget):
 
 ## Class References
 
-The following classes are available through the `api` object:
+The following classes are available through the `api` module:
 
-- `api.Album` - Album object
-- `api.Track` - Track object
-- `api.File` - File base class (for custom formats)
-- `api.Cluster` - Cluster object
-- `api.Metadata` - Metadata container for tags
-- `api.BaseAction` - Base class for UI actions
-- `api.OptionsPage` - Base class for options pages
-- `api.CoverArtImage` - Cover art image object
-- `api.CoverArtProvider` - Base class for cover art providers
-- `api.ProviderOptions` - Base class for cover art provider option pages
+- `Album` - Album object
+- `Track` - Track object
+- `File` - File base class (for custom formats)
+- `Cluster` - Cluster object
+- `Metadata` - Metadata container for tags
+- `BaseAction` - Base class for UI actions
+- `OptionsPage` - Base class for options pages
+- `CoverArtImage` - Cover art image object
+- `CoverArtProvider` - Base class for cover art providers
+- `ProviderOptions` - Base class for cover art provider option pages
+- `ScriptParser` - A parser for parsing tagger scripts
 
 **Example**:
 ```python
-from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider
-from picard.metadata import Metadata
+from picard.plugin3.api import BaseAction, OptionsPage, File, CoverArtProvider, Metadata
 
 class MyProvider(CoverArtProvider):
     NAME = "My Provider"
 
 class MyFormat(File):
+    NAME = "Custom Format"
     EXTENSIONS = [".custom"]
 
     def _load(self, filename):
@@ -99,10 +100,9 @@ class MyFormat(File):
         return metadata
 ```
 
-**Note**: Classes that are considered part of the API `Metadata`, `Track`, `Album`, etc.
-should be accessed via their aliases defined in `PluginApi`, e.g. `PluginApi.Track`.
-This is also the case for classes meant for inheritance (`BaseAction`, `OptionsPage`,
-`File`, `CoverArtProvider`).
+**Note**: Classes that are considered part of the API like `Metadata`, `Track`, `Album`,
+etc. should be imported directly from `picard.plugin3.api` instead from elsewhere
+in Picard.
 
 ---
 
@@ -216,9 +216,9 @@ def enable(api):
 
 **In OptionsPage:**
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi, OptionsPage
 
-class MyOptionsPage(PluginApi.OptionsPage):
+class MyOptionsPage(OptionsPage):
     def __init__(self):
         super().__init__()
         # Initialize the UI here
@@ -385,8 +385,7 @@ Mark a string for translation extraction without translating it immediately.
 This is a marker function that allows you to define translatable strings at module level or in data structures before the API is available. At runtime, it simply returns the key (or tuple for plurals) unchanged.
 
 ```python
-from picard.plugin3 import PluginApi
-from picard.plugin3.api import t_
+from picard.plugin3.api import PluginApi, BaseAction, t_
 
 # Define translatable strings at module level
 ERROR_MESSAGES = {
@@ -398,8 +397,8 @@ ERROR_MESSAGES = {
 FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
 # Use in class definitions
-class MyAction(PluginApi.BaseAction):
-    NAME = "My Custom Action"
+class MyAction(BaseAction):
+    TITLE = "My Custom Action"
 
     def __init__(self):
         super().__init__()
@@ -617,10 +616,10 @@ Plugin Tools menu actions:
 Register menu actions for different object types.
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import BaseAction
 
-class MyAction(PluginApi.BaseAction):
-    NAME = "My Custom Action"
+class MyAction(BaseAction):
+    TITLE = "My Custom Action"
 
     def callback(self, objs):
         for obj in objs:
@@ -650,9 +649,9 @@ the class to access the `PluginApi` instance of the plugin.
 Register a settings page in Picard's options dialog.
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import OptionsPage
 
-class MyOptionsPage(PluginApi.OptionsPage):
+class MyOptionsPage(OptionsPage):
     NAME = "my_plugin"
     TITLE = "My Plugin"
     PARENT = "plugins"
@@ -691,9 +690,9 @@ def enable(api):
 Register a custom cover art provider.
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import CoverArtProvider
 
-class MyProvider(PluginApi.CoverArtProvider):
+class MyProvider(CoverArtProvider):
     NAME = "My Provider"
 
     def queue_images(self):
@@ -773,9 +772,9 @@ def enable(api):
 Register support for a custom file format.
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import File
 
-class MyFormat(PluginApi.File):
+class MyFormat(File):
     EXTENSIONS = [".myformat"]
     NAME = "My Format"
 
@@ -905,9 +904,9 @@ def enable(api):
 
 **For Classes**:
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import OptionsPage
 
-class MyPage(PluginApi.OptionsPage):
+class MyPage(OptionsPage):
     def load(self):
         self.api.logger.info("Loading")
 
@@ -948,12 +947,12 @@ def enable(api):
 
 ```python
 from PyQt6.QtWidgets import QCheckBox
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi, BaseAction, OptionsPage, t_
 
 
-class MyOptionsPage(PluginApi.OptionsPage):
+class MyOptionsPage(OptionsPage):
     NAME = "example"
-    TITLE = "Example Plugin"
+    TITLE = t_("Example Plugin")
     PARENT = "plugins"
 
     def __init__(self):
@@ -981,8 +980,8 @@ def on_file_saved(api, file):
     api.logger.info(f"Saved: {file.filename}")
 
 
-class MyAction(PluginApi.BaseAction):
-    NAME = "Example Action"
+class MyAction(BaseAction):
+    TITLE = t_("Example Action")
 
     def callback(self, objs):
         self.api.logger.info(f"Action on {len(objs)} objects")
@@ -1011,8 +1010,8 @@ def enable(api):
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
 6. **Pass api to parent classes**: You can use `self.api` in classes inherited from
-   base classes meant to be subclassed like `PluginApi.BaseAction` or
-   `PluginApi.OptionsPage`.
+   base classes meant to be subclassed and imported from `picard.plugin3.api`,
+   like `BaseAction` or `OptionsPage`.
 
 ---
 

@@ -29,7 +29,7 @@ api = ["3.0"]
 
 ```python
 # __init__.py
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi):
     """Called when plugin is enabled"""
@@ -416,7 +416,7 @@ Vollständige deutsche Beschreibung hier...
 Every plugin must have an `__init__.py` file with an `enable()` function:
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi):
     """
@@ -571,7 +571,7 @@ def enable(api: PluginApi):
 
 ```python
 # __init__.py
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi):
     @api.on_album_metadata_loaded
@@ -584,7 +584,7 @@ def enable(api: PluginApi):
 
 ```python
 # __init__.py
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi):
     @api.register_cover_art_provider
@@ -599,7 +599,7 @@ def enable(api: PluginApi):
 
 ```python
 # __init__.py
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 
 def enable(api: PluginApi):
     @api.register_album_action("Export to CSV")

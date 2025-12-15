@@ -56,7 +56,7 @@ Simple flat JSON structure with dot notation for namespacing:
 ### Usage in Plugin Code
 
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 from picard.i18n import gettext as _  # Picard's translations
 
 def enable(api: PluginApi):
@@ -102,7 +102,7 @@ FILE_COUNT = t_('files.count', '{n} file', '{n} files')
 
 # Use in class definitions
 class MyAction(BaseAction):
-    NAME = "My Custom Action"
+    TITLE = t_("My Custom Action")
 
 def enable(api):
     # Translate at runtime
@@ -666,7 +666,7 @@ fr = "Soumettez votre musique sur ListenBrainz"
 
 ### __init__.py
 ```python
-from picard.plugin3 import PluginApi
+from picard.plugin3.api import PluginApi
 from picard.i18n import gettext as _
 
 def enable(api: PluginApi):
