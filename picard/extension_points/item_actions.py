@@ -53,7 +53,7 @@ from picard.util.display_title_base import HasDisplayTitle
 
 
 class BaseAction(QtGui.QAction, HasDisplayTitle):
-    NAME = "Unknown"
+    TITLE = "Unknown"
     MENU = []
 
     def __init__(self, api=None, parent=None):
@@ -69,7 +69,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
             from picard import log
 
             plugin_id = getattr(self.api, 'plugin_id', 'unknown')
-            log.error("Error in action %s (plugin: %s):", self.NAME, plugin_id, exc_info=True)
+            log.error("Error in action %s (plugin: %s):", self.display_title(), plugin_id, exc_info=True)
 
     def callback(self, objs):
         raise NotImplementedError
