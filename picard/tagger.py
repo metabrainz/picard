@@ -396,8 +396,7 @@ class Tagger(QtWidgets.QApplication):
         """Initialize and load plugins"""
         if HAS_PLUGIN3:
             self._pluginmanager3 = PluginManager(self)
-            self._pluginmanager3.plugin_enabled.connect(self._on_plugin_status_changed)
-            self._pluginmanager3.plugin_disabled.connect(self._on_plugin_status_changed)
+            self._pluginmanager3.plugin_state_changed.connect(self._on_plugin_status_changed)
             if not self._no_plugins:
                 self._pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:

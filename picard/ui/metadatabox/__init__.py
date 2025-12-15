@@ -171,8 +171,7 @@ class MetadataBox(QtWidgets.QTableWidget):
         # Connect to plugin manager signals to refresh when plugins change
         plugin_manager = self.tagger.get_plugin_manager()
         if plugin_manager:
-            plugin_manager.plugin_enabled.connect(self._on_plugin_changed)
-            plugin_manager.plugin_disabled.connect(self._on_plugin_changed)
+            plugin_manager.plugin_state_changed.connect(self._on_plugin_changed)
         self.setAccessibleName(_("metadata view"))
         self.setAccessibleDescription(_("Displays original and new tags for the selected files"))
         self.setColumnCount(3)

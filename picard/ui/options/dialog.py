@@ -302,8 +302,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)
             # Connect to other plugin state changes
             self.plugin_manager.plugin_installed.connect(self.refresh_plugin_pages)
-            self.plugin_manager.plugin_enabled.connect(self.refresh_plugin_pages)
-            self.plugin_manager.plugin_disabled.connect(self.refresh_plugin_pages)
+            self.plugin_manager.plugin_state_changed.connect(self.refresh_plugin_pages)
             self.plugin_manager.plugin_uninstalled.connect(self.refresh_plugin_pages)
 
             # Initial refresh to pick up any plugin option pages that were registered
