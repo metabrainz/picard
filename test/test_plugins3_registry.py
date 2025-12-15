@@ -302,6 +302,7 @@ class TestPluginRegistry(PicardTestCase):
         mock_plugin.local_path = Path('/tmp/test-plugin')
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
+        mock_plugin.uuid = test_uuid
 
         manager._plugins = [mock_plugin]
         manager._enabled_plugins = {'test-plugin'}
@@ -343,6 +344,7 @@ class TestPluginRegistry(PicardTestCase):
         mock_plugin.local_path = Path('/tmp/malicious-plugin')
         mock_plugin.manifest = Mock()
         mock_plugin.manifest.uuid = test_uuid
+        mock_plugin.uuid = test_uuid
 
         manager._plugins = [mock_plugin]
         manager._enabled_plugins = {'malicious-plugin'}

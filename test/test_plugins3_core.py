@@ -807,6 +807,7 @@ class TestPluginManager(PicardTestCase):
         enabled_plugin.plugin_id = 'enabled-plugin'
         enabled_plugin.manifest = Mock()
         enabled_plugin.manifest.uuid = enabled_uuid
+        enabled_plugin.uuid = enabled_uuid
         enabled_plugin.load_module = Mock()
         enabled_plugin.enable = Mock()
 
@@ -815,6 +816,7 @@ class TestPluginManager(PicardTestCase):
         disabled_plugin.plugin_id = 'disabled-plugin'
         disabled_plugin.manifest = Mock()
         disabled_plugin.manifest.uuid = disabled_uuid
+        disabled_plugin.uuid = disabled_uuid
         disabled_plugin.load_module = Mock()
         disabled_plugin.enable = Mock()
 
@@ -906,6 +908,7 @@ class TestPluginErrors(PicardTestCase):
         bad_plugin.plugin_id = 'bad-plugin'
         bad_plugin.manifest = Mock()
         bad_plugin.manifest.uuid = bad_uuid
+        bad_plugin.uuid = bad_uuid
         bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
 
         manager._plugins = [bad_plugin]

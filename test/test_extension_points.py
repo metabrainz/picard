@@ -37,6 +37,7 @@ def create_mock_plugin(uuid, plugin_id='testplugin') -> Plugin:
     mock_plugin.name = plugin_id
     mock_plugin.manifest = Mock()
     mock_plugin.manifest.uuid = uuid
+    mock_plugin.uuid = uuid
     mock_plugin.state = Mock()
     mock_plugin.state.value = 'enabled'
     mock_plugin.load_module = Mock()
