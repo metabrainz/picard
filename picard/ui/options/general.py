@@ -65,7 +65,6 @@ class GeneralOptionsPage(OptionsPage):
         ('analyze_new_files', ['analyze_new_files']),
         ('cluster_new_files', ['cluster_new_files']),
         ('ignore_file_mbids', ['ignore_file_mbids']),
-        ('check_for_plugin_updates', ['check_for_plugin_updates']),
         ('check_for_updates', ['check_for_updates']),
         ('update_check_days', ['update_check_days']),
         ('update_level', ['update_level']),
@@ -95,7 +94,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
-        self.ui.check_for_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
         self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
         self.set_update_level(config.setting['update_level'])
         self.ui.update_check_days.setValue(config.setting['update_check_days'])
@@ -123,7 +121,6 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
-        config.setting['check_for_plugin_updates'] = self.ui.check_for_plugin_updates.isChecked()
         config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
         config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
         config.setting['update_check_days'] = self.ui.update_check_days.value()

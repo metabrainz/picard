@@ -355,7 +355,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self._auto_update_check()
-        self.check_for_plugin_update()
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
@@ -2096,21 +2095,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
-
-    # FIXME: Plugins v3 - implement plugin update UI
-    def check_for_plugin_update(self):
-        # TODO: Plugins v3 - implement plugin update checking
-        pass
-
-    # TODO: Plugins v3 - implement plugin update dialog
-    def show_plugin_update_dialog(self, plugin_names):
-        # TODO: Implement plugin update dialog for plugin3 system
-        pass
-        # show_options_page, perform_check = msg.show()
-        # config = get_config()
-        # config.setting['check_for_plugin_updates'] = perform_check
-        # if show_options_page:
-        #     self.show_plugins_options_page()
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

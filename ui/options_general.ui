@@ -221,13 +221,6 @@ QCheckBox { color: black }</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QCheckBox" name="check_for_plugin_updates">
-        <property name="text">
-         <string>Check for plugin updates during startup</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QWidget" name="program_update_check_group" native="true">
         <property name="minimumSize">
          <size>
@@ -378,7 +371,6 @@ QCheckBox { color: black }</string>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>cluster_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>
-  <tabstop>check_for_plugin_updates</tabstop>
   <tabstop>check_for_updates</tabstop>
   <tabstop>update_check_days</tabstop>
   <tabstop>update_level</tabstop>
