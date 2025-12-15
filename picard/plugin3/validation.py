@@ -90,6 +90,6 @@ class PluginValidation:
             if manifest_path.exists():
                 plugin.read_manifest()
 
-        if not plugin.manifest or not plugin.manifest.uuid:
+        if not plugin.uuid:
             raise PluginNoUUIDError(plugin.plugin_id)
-        return plugin.manifest.uuid
+        return plugin.uuid

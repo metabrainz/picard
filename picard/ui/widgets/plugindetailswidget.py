@@ -318,7 +318,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _get_git_ref_display(self, plugin):
         """Get git ref display text."""
         try:
-            plugin_uuid = plugin.manifest.uuid if plugin.manifest else None
+            plugin_uuid = plugin.uuid
             if plugin_uuid:
                 metadata = self.plugin_manager._get_plugin_metadata(plugin_uuid)
                 if metadata:
@@ -349,12 +349,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return
 
         # Check if plugin is in do_not_update list and ask for confirmation
-        if self.current_plugin.manifest and self.current_plugin.manifest.uuid:
+        if self.current_plugin.uuid:
             from picard.config import get_config
 
             config = get_config()
             do_not_update = config.persist['plugins3_do_not_update_plugins']
-            plugin_uuid = self.current_plugin.manifest.uuid
+            plugin_uuid = self.current_plugin.uuid
 
             if plugin_uuid in do_not_update:
                 # Ask for confirmation

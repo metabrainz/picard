@@ -272,8 +272,8 @@ class Plugins3OptionsPage(OptionsPage):
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
 
         # Clean up do_not_update setting when plugin is uninstalled
-        if action == "uninstalled" and plugin.manifest and plugin.manifest.uuid:
-            self._cleanup_plugin_settings(plugin.manifest.uuid)
+        if action == "uninstalled" and plugin.uuid:
+            self._cleanup_plugin_settings(plugin.uuid)
 
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:

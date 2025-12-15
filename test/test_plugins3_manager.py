@@ -62,6 +62,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
+        mock_plugin.uuid = None
 
         with self.assertRaises(PluginNoUUIDError) as context:
             PluginValidation.get_plugin_uuid(mock_plugin)
@@ -72,6 +73,7 @@ class TestPluginManagerHelpers(PicardTestCase):
         """Test _get_plugin_uuid with valid UUID."""
         mock_plugin = MockPlugin()
         mock_plugin.manifest.uuid = 'test-uuid-123'
+        mock_plugin.uuid = 'test-uuid-123'
 
         result = PluginValidation.get_plugin_uuid(mock_plugin)
 
