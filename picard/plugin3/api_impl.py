@@ -39,10 +39,7 @@ try:
     import tomllib
 except ImportError:
     import tomli as tomllib  # type: ignore[no-redef,import-not-found]
-from typing import (
-    TYPE_CHECKING,
-    TypeAlias,
-)
+from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
@@ -51,7 +48,6 @@ if TYPE_CHECKING:
 
 from picard.album import Album
 from picard.album_requests import TaskType
-from picard.cluster import Cluster
 from picard.config import (
     Config,
     ConfigSection,
@@ -68,7 +64,6 @@ from picard.extension_points.cover_art_filters import (
 )
 from picard.extension_points.cover_art_processors import (
     ImageProcessor as _ImageProcessor,
-    ProcessingImage,
     register_cover_art_processor,
 )
 from picard.extension_points.cover_art_providers import (
@@ -105,7 +100,6 @@ from picard.plugin3.i18n import (
     get_plural_form,
 )
 from picard.plugin3.manifest import PluginManifest
-from picard.script import ScriptParser
 from picard.track import Track
 from picard.webservice import (
     PendingRequest,
@@ -145,13 +139,6 @@ def t_(key: str, text: str | None = None, plural: str | None = None) -> str | tu
     return key
 
 
-# Classes that plugins can import directly for inheritance
-__all__ = [
-    'PluginApi',
-    't_',
-]
-
-
 class BaseAction(_BaseAction):
     """Base class for plugin actions"""
 
@@ -186,22 +173,6 @@ class ProviderOptions(_ProviderOptions):
 
 
 class PluginApi:
-    # Class references for plugins to use
-    Album: TypeAlias = Album
-    Track: TypeAlias = Track
-    File: TypeAlias = File
-    Cluster: TypeAlias = Cluster
-    Metadata: TypeAlias = Metadata
-    CoverArtImage: TypeAlias = CoverArtImage
-    ImageInfo: TypeAlias = ImageInfo
-    ImageProcessor: TypeAlias = ImageProcessor
-    ProcessingImage: TypeAlias = ProcessingImage
-    CoverArtProvider: TypeAlias = CoverArtProvider
-    ProviderOptions: TypeAlias = ProviderOptions
-    BaseAction: TypeAlias = BaseAction
-    OptionsPage: TypeAlias = OptionsPage
-    ScriptParser: TypeAlias = ScriptParser
-
     # Class-level registries for get_api()
     _instances: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance
     _module_cache: dict[str, 'PluginApi'] = {}  # Maps module name -> PluginApi instance (for faster lookup)

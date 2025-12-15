@@ -17,13 +17,41 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from picard.cluster import Cluster
+from picard.extension_points.cover_art_processors import ProcessingImage
 from picard.plugin3.api_impl import (
+    Album,
+    BaseAction,
+    CoverArtImage,
+    CoverArtProvider,
+    File,
+    ImageInfo,
+    ImageProcessor,
+    Metadata,
+    OptionsPage,
     PluginApi,
+    ProviderOptions,
+    Track,
     t_,
 )
+from picard.script import ScriptParser
 
 
 __all__ = [
+    'Album',
+    'BaseAction',
+    'Cluster',
+    'CoverArtImage',
+    'CoverArtProvider',
+    'File',
+    'ImageInfo',
+    'ImageProcessor',
+    'Metadata',
+    'OptionsPage',
     'PluginApi',
+    'ProcessingImage',
+    'ProviderOptions',
+    'ScriptParser',
+    'Track',
     't_',
 ]

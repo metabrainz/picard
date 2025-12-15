@@ -24,11 +24,9 @@ from picard.git.backend import (
     GitReferenceError,
     GitRepositoryError,
 )
-from picard.plugin3.api import PluginApi
 
 
 __all__ = [
-    'PluginApi',
     'GitBackendError',
     'GitRepositoryError',
     'GitReferenceError',
