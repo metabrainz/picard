@@ -56,7 +56,7 @@ class PluginTranslator(QTranslator):
         key = f'qt.{context}.{source_text}'
 
         # Try to get translation
-        for locale in {self._current_locale, self._source_locale}:
+        for locale in (self._current_locale, self._source_locale):
             if locale in self._translations and key in self._translations[locale]:
                 return self._translations[locale][key]
 
