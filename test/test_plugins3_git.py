@@ -392,7 +392,7 @@ def disable():
 
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
-            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.url, str(self.plugin_dir))
             self.assertEqual(metadata.ref, 'main')
             self.assertIsNotNone(metadata.commit)
@@ -432,7 +432,7 @@ def disable():
 
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
-            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.ref, 'origin/dev')
 
     def test_manager_update_plugin_from_git(self):
@@ -514,7 +514,7 @@ uuid = "{test_uuid}"
             plugin.read_manifest()
 
             # Verify it was installed with the correct ref
-            metadata = manager._get_plugin_metadata(plugin.manifest.uuid)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.ref, 'v1.0.0')
 
             # Reinstall without specifying ref - should preserve v1.0.0
@@ -524,7 +524,7 @@ uuid = "{test_uuid}"
             # Verify the ref was preserved
             plugin_reinstalled = Plugin(manager._primary_plugin_dir, plugin_id_reinstall)
             plugin_reinstalled.read_manifest()
-            metadata_reinstalled = manager._get_plugin_metadata(plugin_reinstalled.manifest.uuid)
+            metadata_reinstalled = manager._get_plugin_metadata(plugin_reinstalled.uuid)
             self.assertEqual(metadata_reinstalled.ref, 'v1.0.0')
 
     def test_manifest_read_from_git_repo(self):
