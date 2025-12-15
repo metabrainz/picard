@@ -221,7 +221,7 @@ class PluginApi:
         self._qt_translator: PluginTranslator | None = None
 
     @staticmethod
-    def get_caller_info(frame_depth=2):
+    def _get_caller_info(frame_depth=2):
         """Get caller information for deprecation warnings.
 
         Args:
@@ -260,7 +260,7 @@ class PluginApi:
         """
         from picard import log
 
-        plugin_name, filename, lineno = cls.get_caller_info(frame_depth=frame_depth)
+        plugin_name, filename, lineno = cls._get_caller_info(frame_depth=frame_depth)
         warning_key = (plugin_name, filename, lineno)
         if warning_key not in cls._deprecation_warnings_emitted:
             cls._deprecation_warnings_emitted.add(warning_key)
