@@ -248,6 +248,7 @@ class PluginManager(QObject):
     plugin_uninstalled = pyqtSignal(Plugin)
     plugin_enabled = pyqtSignal(Plugin)
     plugin_disabled = pyqtSignal(Plugin)
+    plugin_state_changed = pyqtSignal(Plugin)  # Emitted for both enable/disable
     plugin_ref_switched = pyqtSignal(Plugin)
 
     _primary_plugin_dir: Path | None = None
@@ -1788,6 +1789,7 @@ class PluginManager(QObject):
         # Only trigger signal, if plugin wasn't already enabled
         if got_enabled:
             self.plugin_enabled.emit(plugin)
+            self.plugin_state_changed.emit(plugin)
 
     def init_plugins(self):
         """Initialize and enable plugins that are enabled in configuration.
@@ -1831,6 +1833,7 @@ class PluginManager(QObject):
         # Only trigger signal, if plugin wasn't already disabled
         if got_disabled:
             self.plugin_disabled.emit(plugin)
+            self.plugin_state_changed.emit(plugin)
 
     def _load_config(self):
         """Load enabled plugins list from config."""
