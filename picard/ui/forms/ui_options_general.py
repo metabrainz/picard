@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -119,9 +119,6 @@ class Ui_GeneralOptionsPage(object):
         self.update_check_groupbox.setObjectName("update_check_groupbox")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.update_check_groupbox)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.check_for_plugin_updates = QtWidgets.QCheckBox(parent=self.update_check_groupbox)
-        self.check_for_plugin_updates.setObjectName("check_for_plugin_updates")
-        self.verticalLayout_2.addWidget(self.check_for_plugin_updates)
         self.program_update_check_group = QtWidgets.QWidget(parent=self.update_check_groupbox)
         self.program_update_check_group.setMinimumSize(QtCore.QSize(0, 0))
         self.program_update_check_group.setObjectName("program_update_check_group")
@@ -196,8 +193,7 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.logout, self.analyze_new_files)
         GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.cluster_new_files)
         GeneralOptionsPage.setTabOrder(self.cluster_new_files, self.ignore_file_mbids)
-        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_for_plugin_updates)
-        GeneralOptionsPage.setTabOrder(self.check_for_plugin_updates, self.check_for_updates)
+        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_for_updates)
         GeneralOptionsPage.setTabOrder(self.check_for_updates, self.update_check_days)
         GeneralOptionsPage.setTabOrder(self.update_check_days, self.update_level)
 
@@ -215,7 +211,6 @@ class Ui_GeneralOptionsPage(object):
         self.cluster_new_files.setText(_("Automatically cluster all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
         self.update_check_groupbox.setTitle(_("Update Checking"))
-        self.check_for_plugin_updates.setText(_("Check for plugin updates during startup"))
         self.check_for_updates.setText(_("Check for program updates during startup"))
         self.label_2.setText(_("Days between checks:"))
         self.label_3.setText(_("Updates to check:"))

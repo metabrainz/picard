@@ -148,9 +148,6 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
-
-# FIXME: Plugins v3 - re-enable when plugin update dialog is implemented
-# from picard.ui.pluginupdatedialog import PluginUpdatesDialog
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -216,9 +213,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.player.error.connect(self._on_player_error)
 
         self.script_editor_dialog = None
-
-        # FIXME: Plugins v3 - implement plugin update UI
-        # self.tagger.pluginmanager.updates_available.connect(self.show_plugin_update_dialog)
 
         self._check_and_repair_naming_scripts()
         self._check_and_repair_profiles()
@@ -303,9 +297,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
-        signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
-        self.tagger.pluginmanager3.plugin_enabled.connect(self._make_plugin_tools_menu)
-        self.tagger.pluginmanager3.plugin_disabled.connect(self._make_plugin_tools_menu)
+        plugin_manager = self.tagger.get_plugin_manager()
+        if plugin_manager:
+            signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
+            plugin_manager.plugin_enabled.connect(self._make_plugin_tools_menu)
+            plugin_manager.plugin_disabled.connect(self._make_plugin_tools_menu)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
@@ -359,7 +355,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self._auto_update_check()
-        self.check_for_plugin_update()
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
@@ -2100,25 +2095,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
-
-    # FIXME: Plugins v3 - implement plugin update UI
-    def check_for_plugin_update(self):
-        pass
-        # config = get_config()
-        # if config.setting['check_for_plugin_updates']:
-        #     self.tagger.pluginmanager.check_update()
-
-    # FIXME: Plugins v3 - implement plugin update dialog
-    def show_plugin_update_dialog(self, plugin_names):
-        pass
-        # if not plugin_names:
-        #     return
-        # msg = PluginUpdatesDialog(self, plugin_names)
-        # show_options_page, perform_check = msg.show()
-        # config = get_config()
-        # config.setting['check_for_plugin_updates'] = perform_check
-        # if show_options_page:
-        #     self.show_plugins_options_page()
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

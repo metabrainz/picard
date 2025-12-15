@@ -395,13 +395,13 @@ class Tagger(QtWidgets.QApplication):
     def _init_plugins(self):
         """Initialize and load plugins"""
         if HAS_PLUGIN3:
-            self.pluginmanager3 = PluginManager(self)
-            self.pluginmanager3.plugin_enabled.connect(self._on_plugin_status_changed)
-            self.pluginmanager3.plugin_disabled.connect(self._on_plugin_status_changed)
+            self._pluginmanager3 = PluginManager(self)
+            self._pluginmanager3.plugin_enabled.connect(self._on_plugin_status_changed)
+            self._pluginmanager3.plugin_disabled.connect(self._on_plugin_status_changed)
             if not self._no_plugins:
-                self.pluginmanager3.add_directory(plugin_folder(), primary=True)
+                self._pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
-            self.pluginmanager3 = None
+            self._pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
 
     def get_plugin_manager(self):
@@ -410,7 +410,7 @@ class Tagger(QtWidgets.QApplication):
         Returns:
             PluginManager or None: The plugin manager instance if available, None otherwise.
         """
-        return getattr(self, 'pluginmanager3', None)
+        return getattr(self, '_pluginmanager3', None)
 
     def _on_plugin_status_changed(self):
         self.format_registry.rebuild_extension_map()
@@ -756,8 +756,9 @@ class Tagger(QtWidgets.QApplication):
         self.window.show()
 
         blacklisted_plugins = []
-        if self.pluginmanager3:
-            blacklisted_plugins = self.pluginmanager3.init_plugins()
+        plugin_manager = self.get_plugin_manager()
+        if plugin_manager:
+            blacklisted_plugins = plugin_manager.init_plugins()
 
         # Show warning if any plugins were blacklisted
         if blacklisted_plugins:
