@@ -150,6 +150,7 @@ class Plugins3OptionsPage(OptionsPage):
             self._show_enabled_state()
             self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
+            log.debug("Error loading plugins", exc_info=True)
             self._show_status(_("Error loading plugins: {}").format(str(e)))
 
     def _refresh_all(self):
