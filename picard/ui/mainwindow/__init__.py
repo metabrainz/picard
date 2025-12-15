@@ -304,6 +304,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
         signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
+        self.tagger.pluginmanager3.plugin_enabled.connect(self._make_plugin_tools_menu)
+        self.tagger.pluginmanager3.plugin_disabled.connect(self._make_plugin_tools_menu)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
