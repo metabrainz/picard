@@ -49,14 +49,15 @@ from PyQt6 import (
 )
 
 from picard.plugin import ExtensionPoint
+from picard.util.display_title_base import HasDisplayTitle
 
 
-class BaseAction(QtGui.QAction):
-    NAME = "Unknown"
+class BaseAction(QtGui.QAction, HasDisplayTitle):
+    TITLE = "Unknown"
     MENU = []
 
     def __init__(self, api=None, parent=None):
-        super().__init__(self.NAME, parent=parent)
+        super().__init__(self.display_title(), parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.triggered.connect(self.__callback)
 
@@ -68,7 +69,7 @@ class BaseAction(QtGui.QAction):
             from picard import log
 
             plugin_id = getattr(self.api, 'plugin_id', 'unknown')
-            log.error("Error in action %s (plugin: %s):", self.NAME, plugin_id, exc_info=True)
+            log.error("Error in action %s (plugin: %s):", self.display_title(), plugin_id, exc_info=True)
 
     def callback(self, objs):
         raise NotImplementedError

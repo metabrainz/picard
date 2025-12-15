@@ -39,6 +39,7 @@ from picard.config import (
 )
 from picard.i18n import gettext as _
 from picard.profile import profile_groups_add_setting
+from picard.util.display_title_base import HasDisplayTitle
 
 
 class OptionsCheckError(Exception):
@@ -47,9 +48,8 @@ class OptionsCheckError(Exception):
         self.info = info
 
 
-class OptionsPage(QtWidgets.QWidget):
+class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     NAME: str
-    TITLE: str
     PARENT = None
     SORT_ORDER = 1000
     ACTIVE = True
@@ -145,6 +145,6 @@ class OptionsPage(QtWidgets.QWidget):
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings.append(option)
-        register_quick_menu_item(cls.SORT_ORDER, cls.TITLE, option)
+        register_quick_menu_item(cls.SORT_ORDER, cls.display_title(), option)
         if highlights is not None:
-            profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.TITLE)
+            profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.display_title())

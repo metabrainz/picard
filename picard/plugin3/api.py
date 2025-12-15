@@ -31,6 +31,7 @@ from pathlib import Path
 import sys
 import types
 
+from picard.util.display_title_base import HasDisplayTitle
 from picard.util.imageinfo import ImageInfo
 
 
@@ -115,7 +116,7 @@ from picard.webservice.api_helpers import MBAPIHelper
 from picard.ui.options import OptionsPage as _OptionsPage
 
 
-def t_(key, text=None, plural=None):
+def t_(key: str, text: str | None = None, plural: str | None = None) -> str | tuple[str, str, str]:
     """Mark a string for translation extraction (no-op at runtime).
 
     This is a marker function for the translation extractor. At runtime,
@@ -140,7 +141,7 @@ def t_(key, text=None, plural=None):
         # Use: api.trn(*FILE_COUNT, n=count)
     """
     if plural is not None:
-        return (key, text, plural)
+        return (key, str(text), plural)
     return key
 
 
@@ -729,9 +730,10 @@ class PluginApi:
         return register_file_pre_save_processor(wrapped, priority)
 
     # Cover art
-    def register_cover_art_provider(self, provider: type[CoverArtProvider]) -> None:
-        provider.api = self
-        return register_cover_art_provider(provider)
+    def register_cover_art_provider(self, provider_class: type[CoverArtProvider]) -> None:
+        provider_class.api = self
+        self._set_class_name_and_title(provider_class)
+        return register_cover_art_provider(provider_class)
 
     def register_cover_art_filter(
         self, filter: Callable[['PluginApi', bytes, ImageInfo, Album | None, CoverArtImage], bool]
@@ -796,10 +798,7 @@ class PluginApi:
     def register_options_page(self, page_class: type[OptionsPage]) -> None:
         page_class.api = self
         # The options page needs a unique name if no name was given
-        if not hasattr(page_class, 'NAME') or not page_class.NAME:
-            page_class.NAME = f'{self.plugin_id}.{page_class.__name__}'
-        if not hasattr(page_class, 'TITLE') or not page_class.TITLE:
-            page_class.TITLE = self.manifest.name()
+        self._set_class_name_and_title(page_class)
         return register_options_page(page_class)
 
     # Album task management for plugins
@@ -868,3 +867,9 @@ class PluginApi:
     # Register page for file properties. Same for track and album
     # def register_file_info_page(self, page_class):
     #     pass
+
+    def _set_class_name_and_title(self, cls: type[HasDisplayTitle]):
+        if not hasattr(cls, 'NAME') or not cls.NAME:
+            cls.NAME = f'{self.plugin_id}.{cls.__name__}'
+        if not hasattr(cls, 'TITLE') or not cls.TITLE:
+            cls.TITLE = self.manifest.name_i18n()
