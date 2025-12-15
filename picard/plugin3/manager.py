@@ -146,6 +146,14 @@ class PluginManifestNotFoundError(PluginManagerError):
         super().__init__(f"No MANIFEST.toml found in {source}")
 
 
+class PluginManifestReadError(PluginManagerError):
+    """Raised when MANIFEST.toml cannot be read."""
+
+    def __init__(self, e, source):
+        self.source = source
+        super().__init__(f"Failed to read MANIFEST.toml in {source}: {e}")
+
+
 class PluginManifestInvalidError(PluginManagerError):
     """Raised when MANIFEST.toml validation fails."""
 

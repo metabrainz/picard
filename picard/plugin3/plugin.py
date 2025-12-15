@@ -581,9 +581,14 @@ class Plugin:
 
     def read_manifest(self):
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
-        manifest_path = self.local_path.joinpath('MANIFEST.toml')
-        with open(manifest_path, 'rb') as manifest_file:
-            self.manifest = PluginManifest(self.plugin_id, manifest_file)
+        from picard.plugin3.manager import PluginManifestReadError
+
+        try:
+            manifest_path = self.local_path.joinpath('MANIFEST.toml')
+            with open(manifest_path, 'rb') as manifest_file:
+                self.manifest = PluginManifest(self.plugin_id, manifest_file)
+        except Exception as e:
+            raise PluginManifestReadError(e, manifest_path) from e
 
         # Validate manifest
         errors = self.manifest.validate()
