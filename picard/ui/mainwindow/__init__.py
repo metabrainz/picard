@@ -297,9 +297,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
-        signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
         plugin_manager = self.tagger.get_plugin_manager()
         if plugin_manager:
+            signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
             plugin_manager.plugin_enabled.connect(self._make_plugin_tools_menu)
             plugin_manager.plugin_disabled.connect(self._make_plugin_tools_menu)
 
