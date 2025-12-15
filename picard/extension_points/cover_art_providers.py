@@ -37,5 +37,5 @@ def register_cover_art_provider(provider):
         if not hasattr(provider.OPTIONS, 'NAME'):
             provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
         if not hasattr(provider.OPTIONS, 'TITLE'):
-            provider.OPTIONS.TITLE = provider.title
+            provider.OPTIONS.TITLE = provider.display_title()
         register_options_page(provider.OPTIONS)

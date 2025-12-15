@@ -176,9 +176,9 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
             item = HashableTreeWidgetItem(parent_item)
             if not page.initialized:
-                title = _("%s (error)") % _(page.TITLE)
+                title = _("%s (error)") % page.display_title()
             else:
-                title = _(page.TITLE)
+                title = page.display_title()
             item.setText(0, title)
             if page_active:
                 self.item_to_page[item] = page

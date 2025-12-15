@@ -62,6 +62,7 @@ from picard.util import (
     unique_numbered_title,
     webbrowser2,
 )
+from picard.util.display_title_base import HasDisplayTitle
 
 from .utils import (
     confirmation_dialog,
@@ -96,7 +97,7 @@ class NotEmptyValidator(QtGui.QValidator):
         return state, text, pos
 
 
-class ScriptEditorDialog(PicardDialog, SingletonDialog):
+class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     """File Naming Script Editor Page"""
 
     TITLE = N_("File naming script editor")
@@ -145,7 +146,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         super().__init__(parent=parent)
         self.examples = examples
 
-        self.setWindowTitle(_(self.TITLE))
+        self.setWindowTitle(self.display_title())
         self.loading = True
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
@@ -1001,7 +1002,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog):
         self.set_button_states(save_enabled=save_enabled)
 
 
-class ScriptDetailsEditor(PicardDialog):
+class ScriptDetailsEditor(PicardDialog, HasDisplayTitle):
     """View / edit the metadata details for a script."""
 
     NAME = 'scriptdetails'
@@ -1035,7 +1036,7 @@ class ScriptDetailsEditor(PicardDialog):
         self.ui.buttonBox.setFocus()
 
         self.setModal(True)
-        self.setWindowTitle(_(self.TITLE))
+        self.setWindowTitle(_(self.display_title()))
         self.skip_change_check = False
 
     def has_changed(self):

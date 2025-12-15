@@ -26,6 +26,8 @@
 
 import traceback
 
+from picard.util.display_title_base import HasDisplayTitle
+
 from picard.ui.options import OptionsPage
 
 
@@ -70,12 +72,8 @@ class CoverArtProviderMetaClass(type):
     def name(cls):
         return getattr(cls, 'NAME', cls.__name__)
 
-    @property
-    def title(cls):
-        return getattr(cls, 'TITLE', cls.name)
 
-
-class CoverArtProvider(metaclass=CoverArtProviderMetaClass):
+class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
     """Subclasses of this class need to reimplement at least `queue_images()`.
     `__init__()` does not have to do anything.
     `queue_images()` will be called if `enabled()` returns `True`.

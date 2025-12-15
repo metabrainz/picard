@@ -49,14 +49,15 @@ from PyQt6 import (
 )
 
 from picard.plugin import ExtensionPoint
+from picard.util.display_title_base import HasDisplayTitle
 
 
-class BaseAction(QtGui.QAction):
+class BaseAction(QtGui.QAction, HasDisplayTitle):
     NAME = "Unknown"
     MENU = []
 
     def __init__(self, api=None, parent=None):
-        super().__init__(self.NAME, parent=parent)
+        super().__init__(self.display_title(), parent=parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.triggered.connect(self.__callback)
 
