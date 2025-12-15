@@ -376,8 +376,7 @@ class PluginCLI:
             )
             for plugin in sorted_plugins:
                 # Get plugin UUID for checking enabled state
-                plugin_uuid = plugin.uuid
-                is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
+                is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
 
                 # Show manifest name (human-readable) with localization
                 display_name = plugin.manifest.name(locale_str) if plugin.manifest else plugin.plugin_id
@@ -396,7 +395,7 @@ class PluginCLI:
                         self._out.info(f'  {desc}')
 
                     # UUID
-                    self._out.info(f'  UUID: {self._out.d_uuid(plugin_uuid)}')
+                    self._out.info(f'  UUID: {self._out.d_uuid(plugin.uuid)}')
 
                     # Registry ID if available
                     registry_id = self._manager.get_plugin_registry_id(plugin)
@@ -407,9 +406,9 @@ class PluginCLI:
                     self._out.info(f'  State: {plugin.state.value}')
 
                     # Version with git info
-                    metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+                    metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
                     git_info = self._format_git_info(metadata)
-                    version = self._get_version_display(plugin_uuid, plugin.manifest._data.get('version', ''))
+                    version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
                     if git_info:
                         self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
                     else:
@@ -451,9 +450,8 @@ class PluginCLI:
         if error:
             return error
 
-        plugin_uuid = plugin.uuid
-        is_enabled = plugin_uuid and plugin_uuid in self._manager._enabled_plugins
-        metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else {}
+        is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
+        metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
         git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
@@ -463,7 +461,7 @@ class PluginCLI:
         if desc:
             self._out.print(f'Description: {desc}')
 
-        self._out.print(f'UUID: {self._out.d_uuid(plugin_uuid)}')
+        self._out.print(f'UUID: {self._out.d_uuid(plugin.uuid)}')
 
         # Show registry ID if available (lookup dynamically from current registry)
         registry_id = self._manager.get_plugin_registry_id(plugin)

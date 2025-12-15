@@ -318,9 +318,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _get_git_ref_display(self, plugin):
         """Get git ref display text."""
         try:
-            plugin_uuid = plugin.uuid
-            if plugin_uuid:
-                metadata = self.plugin_manager._get_plugin_metadata(plugin_uuid)
+            if plugin.uuid:
+                metadata = self.plugin_manager._get_plugin_metadata(plugin.uuid)
                 if metadata:
                     git_info = self._format_git_info(metadata)
                     if git_info:
