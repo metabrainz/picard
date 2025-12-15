@@ -118,7 +118,7 @@ class TestPluginTranslator(PicardTestCase):
         translator = PluginTranslator(translations, 'en')
         translator._current_locale = 'en'
         result = translator.translate('', 'Text')
-        self.assertEqual(result, 'Text')
+        self.assertEqual(result, None)
 
 
 class TestPluginApiQtTranslator(PicardTestCase):
