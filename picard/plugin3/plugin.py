@@ -575,13 +575,16 @@ class Plugin:
     _module: types.ModuleType | None = None
     ref_item: 'RefItem | None' = None  # Current ref information
 
-    def __init__(self, plugins_dir: Path, plugin_name: str):
+    def __init__(self, plugins_dir: Path, plugin_name: str, manifest: PluginManifest | None = None):
         self.plugin_id = plugin_name
         self.module_name = f'picard.plugins.{self.plugin_id}'
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
         self.uuid = None
         self.ref_item = None
+        self.manifest = manifest
+        if self.manifest and self.manifest.uuid:
+            self.uuid = self.manifest.uuid
 
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""

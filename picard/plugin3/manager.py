@@ -1276,7 +1276,7 @@ class PluginManager(QObject):
             )
         )
 
-        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        plugin = Plugin(self._primary_plugin_dir, plugin_name, manifest=manifest)
         self._plugins.append(plugin)
         self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_id, "install")
 
@@ -1435,7 +1435,7 @@ class PluginManager(QObject):
             )
         )
 
-        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        plugin = Plugin(self._primary_plugin_dir, plugin_name, manifest=manifest)
         self._plugins.append(plugin)
 
         if is_git_repo:
