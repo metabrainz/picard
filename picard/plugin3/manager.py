@@ -2032,16 +2032,30 @@ class PluginManager(QObject):
         # Check for blacklisted plugins on startup
         blacklisted_plugins = self._check_blacklisted_plugins()
 
-        enabled_count = 0
-        for plugin in self._plugins:
-            if plugin.uuid and plugin.uuid in self._enabled_plugins:
-                try:
-                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
-                    plugin.load_module()
-                    plugin.enable(self._tagger)
-                    enabled_count += 1
-                except Exception as ex:
-                    log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
+        # Use batch mode for cache updates during initialization
+        with self._refs_cache.batch_updates():
+            enabled_count = 0
+            for plugin in self._plugins:
+                if plugin.uuid and plugin.uuid in self._enabled_plugins:
+                    try:
+                        log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
+                        plugin.load_module()
+                        plugin.enable(self._tagger)
+                        enabled_count += 1
+
+                        # Update cache for plugins with versioning schemes
+                        if plugin.local_path:
+                            registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
+                            if registry_plugin and registry_plugin.versioning_scheme:
+                                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+                                if metadata and metadata.url:
+                                    self._refs_cache.update_cache_from_local_repo(
+                                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
+                                    )
+                    except Exception as ex:
+                        log.error(
+                            'Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex
+                        )
 
         log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
         return blacklisted_plugins

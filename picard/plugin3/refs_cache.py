@@ -36,12 +36,29 @@ REFS_CACHE_TTL = 3600  # 1 hour in seconds
 REFS_CACHE_VERSION = 2  # Increment when cache format changes
 
 
+class RefsCacheBatch:
+    """Context manager for batching refs cache updates."""
+
+    def __init__(self, cache):
+        self._cache = cache
+
+    def __enter__(self):
+        self._cache._batch_mode = True
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self._cache._batch_mode = False
+        self._cache._flush_cache()
+
+
 class RefsCache:
     """Manages caching of git refs and version tags."""
 
     def __init__(self, registry):
         self._registry = registry
         self._cache = None
+        self._dirty = False  # Track if cache needs saving
+        self._batch_mode = False  # Enable batching mode
 
     def get_cache_path(self):
         """Get path to refs cache file."""
@@ -103,18 +120,34 @@ class RefsCache:
         Args:
             cache: Cache data to save
         """
+        self._cache = cache
+        self._dirty = True
+
+        # Only save immediately if not in batch mode
+        if not self._batch_mode:
+            self._flush_cache()
+
+    def _flush_cache(self):
+        """Actually write cache to disk."""
+        if not self._dirty or self._cache is None:
+            return
+
         cache_path = self.get_cache_path()
         cache_path.parent.mkdir(parents=True, exist_ok=True)
 
         try:
             # Wrap cache data with version
-            data = {'version': REFS_CACHE_VERSION, 'data': cache}
+            data = {'version': REFS_CACHE_VERSION, 'data': self._cache}
             with open(cache_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2)
-            self._cache = cache
             log.debug('Saved refs cache to %s', cache_path)
+            self._dirty = False
         except Exception as e:
             log.error('Failed to save refs cache: %s', e)
+
+    def batch_updates(self):
+        """Context manager for batching cache updates."""
+        return RefsCacheBatch(self)
 
     def get_cached_tags(self, url, versioning_scheme, allow_expired=False):
         """Get cached tags if valid (not expired).
