@@ -217,6 +217,177 @@ class PluginSourceGit(PluginSource):
         _, is_tag, _ = resolve_ref(repo, self.ref)
         return is_tag
 
+    def _fetch_existing_repo(self, repo, backend, fetch_ref):
+        """Fetch updates for existing repository."""
+        callbacks = backend.create_remote_callbacks()
+        try:
+            origin_remote = repo.get_remote('origin')
+            if fetch_ref and self.ref:
+                refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
+                try:
+                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, refspec, callbacks._callbacks))
+                except Exception:
+                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+            else:
+                self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+        except (KeyError, GitBackendError):
+            pass
+
+    def _clone_new_repo(self, backend, target_directory, shallow, single_branch):
+        """Clone new repository."""
+        depth = 1 if shallow else 0
+        checkout_branch = None
+        if self.ref and single_branch and not self.ref.startswith('refs/'):
+            checkout_branch = self.ref[7:] if self.ref.startswith('origin/') else self.ref
+
+        def clone_operation():
+            return backend.clone_repository(
+                self.url,
+                target_directory,
+                callbacks=backend.create_remote_callbacks(),
+                depth=depth,
+                checkout_branch=checkout_branch,
+            )
+
+        try:
+            repo = self._retry_git_operation(clone_operation)
+        except Exception as e:
+            error_msg = str(e).lower()
+            if (
+                '404' in error_msg or 'repository not found' in error_msg or 'does not exist' in error_msg
+            ) and checkout_branch is None:
+                raise PluginSourceSyncError(f"Repository not found: {self.url}") from e
+            elif 'authentication' in error_msg or 'credentials' in error_msg or 'forbidden' in error_msg:
+                raise PluginSourceSyncError(
+                    f"Authentication failed for {self.url}. "
+                    "For private repositories, use SSH URLs (git@github.com:user/repo.git) "
+                    "or configure git credential helpers."
+                ) from e
+            elif checkout_branch:
+
+                def fallback_clone():
+                    return backend.clone_repository(
+                        self.url,
+                        target_directory,
+                        callbacks=backend.create_remote_callbacks(),
+                        depth=depth,
+                    )
+
+                repo = self._retry_git_operation(fallback_clone)
+            else:
+                raise
+
+        if shallow and self.ref:
+            self._fetch_tags_for_shallow(repo, backend)
+        return repo
+
+    def _fetch_tags_for_shallow(self, repo, backend):
+        """Fetch tags for shallow clone to ensure tags are available for updates."""
+        callbacks = backend.create_remote_callbacks()
+        try:
+            origin_remote = repo.get_remote('origin')
+            repo.fetch_remote(origin_remote, '+refs/tags/*:refs/tags/*', callbacks._callbacks)
+        except Exception:
+            pass
+
+    def _resolve_ref_to_commit(self, repo):
+        """Resolve reference to commit object."""
+        if self.ref:
+            try:
+                commit = repo.revparse_single(self.ref)
+                self.resolved_ref = self.ref
+                return commit
+            except (KeyError, Exception):
+                return self._handle_ref_resolution_error(repo)
+        else:
+            return self._resolve_default_branch(repo)
+
+    def _handle_ref_resolution_error(self, repo):
+        """Handle reference resolution errors with fallback strategies."""
+        if self.ref.startswith('origin/'):
+            try:
+                ref_without_origin = self.ref[7:]
+                commit = repo.revparse_single(ref_without_origin)
+                self.resolved_ref = ref_without_origin
+                return commit
+            except (KeyError, GitBackendError):
+                available_refs = self._list_available_refs(repo)
+                raise KeyError(
+                    f"Could not find ref '{self.ref}' or '{ref_without_origin}'. Available refs: {available_refs}"
+                ) from None
+        else:
+            resolved_ref, is_tag, is_branch = resolve_ref(repo, self.ref)
+            if is_tag or is_branch:
+                try:
+                    commit = repo.revparse_single(resolved_ref)
+                    self.resolved_ref = resolved_ref if resolved_ref.startswith('refs/remotes/') else self.ref
+                    return commit
+                except (KeyError, GitBackendError):
+                    available_refs = self._list_available_refs(repo)
+                    ref_type = 'tag' if is_tag else 'branch'
+                    raise KeyError(
+                        f"Could not resolve ref '{self.ref}' (detected as {ref_type}). Available refs: {available_refs}"
+                    ) from None
+            else:
+                try:
+                    commit = repo.revparse_single(self.ref)
+                    self.resolved_ref = self.ref
+                    return commit
+                except (KeyError, GitBackendError):
+                    available_refs = self._list_available_refs(repo)
+                    raise KeyError(f"Could not find ref '{self.ref}'. Available refs: {available_refs}") from None
+
+    def _resolve_default_branch(self, repo):
+        """Resolve repository's default branch (HEAD)."""
+        try:
+            commit = repo.revparse_single('HEAD')
+            if repo.is_head_detached():
+                self.resolved_ref = short_commit_id(commit.id)
+            else:
+                head_ref = repo.get_head_name()
+                if head_ref.startswith('refs/heads/'):
+                    self.resolved_ref = head_ref[11:]
+                else:
+                    self.resolved_ref = head_ref
+            return commit
+        except (KeyError, GitBackendError):
+            return self._find_fallback_branch(repo)
+
+    def _find_fallback_branch(self, repo):
+        """Find fallback branch when HEAD is not available."""
+        try:
+            commit = repo.revparse_single('main')
+            self.resolved_ref = 'main'
+            return commit
+        except (KeyError, GitBackendError):
+            branches = list(repo.branches.local)
+            if branches:
+                branch_name = branches[0]
+                commit = repo.revparse_single(branch_name)
+                self.resolved_ref = branch_name
+                return commit
+            else:
+                return self._find_any_reference(repo)
+
+    def _find_any_reference(self, repo):
+        """Find any available reference as last resort."""
+        refs = repo.listall_references()
+        for ref in refs:
+            if ref.startswith('refs/heads/'):
+                branch_name = ref[11:]
+                commit = repo.revparse_single(ref)
+                self.resolved_ref = branch_name
+                return commit
+
+        for ref in refs:
+            if ref.startswith('refs/remotes/origin/') and not ref.endswith('/HEAD'):
+                branch_name = ref[20:]
+                commit = repo.revparse_single(ref)
+                self.resolved_ref = f'origin/{branch_name}'
+                return commit
+
+        raise PluginSourceSyncError('No branches found in repository') from None
+
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
         """Sync plugin from git repository.
 
@@ -230,178 +401,12 @@ class PluginSourceGit(PluginSource):
 
         if target_directory.is_dir():
             repo = backend.create_repository(target_directory.absolute())
-            # If fetch_ref is True, fetch the specific ref we're switching to
-            if fetch_ref and self.ref:
-                callbacks = backend.create_remote_callbacks()
-                try:
-                    origin_remote = repo.get_remote('origin')
-                    refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
-                    try:
-                        self._retry_git_operation(
-                            lambda: repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
-                        )
-                    except Exception:
-                        # If specific refspec fails, try fetching all (might be a tag or commit)
-                        self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
-                except (KeyError, GitBackendError):
-                    # No origin remote, skip fetch
-                    pass
-            else:
-                callbacks = backend.create_remote_callbacks()
-                try:
-                    origin_remote = repo.get_remote('origin')
-                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
-                except (KeyError, GitBackendError):
-                    # No origin remote, skip fetch
-                    pass
+            self._fetch_existing_repo(repo, backend, fetch_ref)
         else:
-            depth = 1 if shallow else 0
-            # Strip origin/ prefix if present for checkout_branch
-            checkout_branch = None
-            if self.ref and single_branch and not self.ref.startswith('refs/'):
-                checkout_branch = self.ref[7:] if self.ref.startswith('origin/') else self.ref
+            repo = self._clone_new_repo(backend, target_directory, shallow, single_branch)
 
-            def clone_operation():
-                return backend.clone_repository(
-                    self.url,
-                    target_directory,
-                    callbacks=backend.create_remote_callbacks(),
-                    depth=depth,
-                    checkout_branch=checkout_branch,
-                )
-
-            try:
-                repo = self._retry_git_operation(clone_operation)
-            except Exception as e:
-                # Check if it's a repository-level 404/not found error (not branch-level)
-                error_msg = str(e).lower()
-                # Only catch repository not found, not branch/ref not found
-                if (
-                    '404' in error_msg or 'repository not found' in error_msg or 'does not exist' in error_msg
-                ) and checkout_branch is None:
-                    raise PluginSourceSyncError(f"Repository not found: {self.url}") from e
-                elif 'authentication' in error_msg or 'credentials' in error_msg or 'forbidden' in error_msg:
-                    raise PluginSourceSyncError(
-                        f"Authentication failed for {self.url}. "
-                        "For private repositories, use SSH URLs (git@github.com:user/repo.git) "
-                        "or configure git credential helpers."
-                    ) from e
-                # checkout_branch failed (likely a tag or commit, not a branch)
-                # Fall back to full clone without single-branch optimization
-                elif checkout_branch:
-
-                    def fallback_clone():
-                        return backend.clone_repository(
-                            self.url,
-                            target_directory,
-                            callbacks=backend.create_remote_callbacks(),
-                            depth=depth,
-                        )
-
-                    repo = self._retry_git_operation(fallback_clone)
-                else:
-                    raise
-
-            # If shallow clone and ref specified, fetch tags to ensure tags are available for updates
-            if shallow and self.ref:
-                callbacks = backend.create_remote_callbacks()
-                try:
-                    origin_remote = repo.get_remote('origin')
-                    repo.fetch_remote(origin_remote, '+refs/tags/*:refs/tags/*', callbacks._callbacks)
-                except Exception:
-                    pass  # Tags might not exist or fetch might fail
-
-        if self.ref:
-            try:
-                commit = repo.revparse_single(self.ref)
-                self.resolved_ref = self.ref
-            except (KeyError, Exception):
-                # If ref starts with 'origin/', try without it
-                if self.ref.startswith('origin/'):
-                    try:
-                        ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
-                        commit = repo.revparse_single(ref_without_origin)
-                        self.resolved_ref = ref_without_origin
-                    except (KeyError, GitBackendError):
-                        available_refs = self._list_available_refs(repo)
-                        raise KeyError(
-                            f"Could not find ref '{self.ref}' or '{ref_without_origin}'. "
-                            f"Available refs: {available_refs}"
-                        ) from None
-                else:
-                    # Resolve reference using utility function
-                    resolved_ref, is_tag, is_branch = resolve_ref(repo, self.ref)
-
-                    if is_tag or is_branch:
-                        try:
-                            commit = repo.revparse_single(resolved_ref)
-                            self.resolved_ref = resolved_ref if resolved_ref.startswith('refs/remotes/') else self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            ref_type = 'tag' if is_tag else 'branch'
-                            raise KeyError(
-                                f"Could not resolve ref '{self.ref}' (detected as {ref_type}). "
-                                f"Available refs: {available_refs}"
-                            ) from None
-                    else:
-                        # For commits or unknown refs, try as-is
-                        try:
-                            commit = repo.revparse_single(self.ref)
-                            self.resolved_ref = self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            raise KeyError(
-                                f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
-                            ) from None
-        else:
-            # Use repository's default branch (HEAD)
-            try:
-                commit = repo.revparse_single('HEAD')
-                # Get the branch name that HEAD points to
-                if repo.is_head_detached():
-                    self.resolved_ref = short_commit_id(commit.id)
-                else:
-                    # Get branch name from HEAD
-                    head_ref = repo.get_head_name()
-                    if head_ref.startswith('refs/heads/'):
-                        self.resolved_ref = head_ref[11:]  # Remove 'refs/heads/' prefix
-                    else:
-                        self.resolved_ref = head_ref
-            except (KeyError, GitBackendError):
-                # HEAD not set, try 'main' or first available branch
-                try:
-                    commit = repo.revparse_single('main')
-                    self.resolved_ref = 'main'
-                except (KeyError, GitBackendError):
-                    # Find first available branch
-                    branches = list(repo.branches.local)
-                    if branches:
-                        branch_name = branches[0]
-                        commit = repo.revparse_single(branch_name)
-                        self.resolved_ref = branch_name
-                    else:
-                        # Last resort: find any reference
-                        refs = repo.listall_references()
-                        for ref in refs:
-                            if ref.startswith('refs/heads/'):
-                                branch_name = ref[11:]  # Remove 'refs/heads/' prefix
-                                commit = repo.revparse_single(ref)
-                                self.resolved_ref = branch_name
-                                break
-                        else:
-                            # Try remote refs as absolute last resort
-                            for ref in refs:
-                                if ref.startswith('refs/remotes/origin/') and not ref.endswith('/HEAD'):
-                                    branch_name = ref[20:]  # Remove 'refs/remotes/origin/' prefix
-                                    commit = repo.revparse_single(ref)
-                                    self.resolved_ref = f'origin/{branch_name}'
-                                    break
-                            else:
-                                raise PluginSourceSyncError('No branches found in repository') from None
-
-        # hard reset to passed ref or HEAD
+        commit = self._resolve_ref_to_commit(repo)
         commit = self._resolve_to_commit(commit, repo)
-        # Use backend for reset operation
         repo.reset(commit.id, GitResetMode.HARD)
         commit_id = commit.id
         repo.free()
