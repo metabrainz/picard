@@ -1359,95 +1359,101 @@ class PluginManager(QObject):
         Returns:
             str: Plugin ID
         """
-        # Normalize ref parameter to RefItem
         target_ref_item = self._normalize_ref_parameter(ref)
-        ref_name = target_ref_item.name if target_ref_item else None
-        # Preserve original ref if reinstalling and no ref specified
         ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
-        # Check if local directory is a git repository
         is_git_repo = (local_path / '.git').exists()
+        install_path, ref_to_save, commit_to_save = self._prepare_local_source(
+            local_path, ref, target_ref_item, is_git_repo
+        )
 
+        try:
+            manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+            plugin_name = get_plugin_directory_name(manifest)
+
+            self._check_uuid_conflicts(manifest, str(local_path), reinstall)
+
+            final_path = self._primary_plugin_dir / plugin_name
+            old_metadata = self._handle_reinstall(
+                final_path, plugin_name, str(local_path), reinstall, discard_changes, manifest.uuid
+            )
+
+            self._copy_local_plugin_files(install_path, final_path, is_git_repo)
+
+            plugin = self._finalize_local_plugin_installation(
+                local_path,
+                plugin_name,
+                ref_to_save,
+                commit_to_save,
+                manifest,
+                target_ref_item,
+                is_git_repo,
+                enable_after_install,
+            )
+
+            self._log_local_installation(plugin_name, plugin, reinstall, old_metadata)
+
+            return InstallResult(
+                plugin_name, *self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
+            )
+
+        finally:
+            if is_git_repo and install_path != local_path and install_path.exists():
+                self._cleanup_temp_directory(install_path)
+
+    def _prepare_local_source(self, local_path, ref, target_ref_item, is_git_repo):
+        """Prepare local source for installation, handling git repos and direct copies."""
+        if not is_git_repo:
+            return local_path, '', ''
+
+        self._check_local_git_status(local_path, ref)
+
+        url_hash = hash_string(str(local_path))
+        temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+
+        try:
+            ref_name = target_ref_item.name if target_ref_item else None
+            source = PluginSourceGit(str(local_path), ref_name)
+            commit_id = source.sync(temp_path, single_branch=True)
+            return temp_path, source.resolved_ref, commit_id
+        except Exception:
+            if temp_path.exists():
+                self._cleanup_temp_directory(temp_path)
+            raise
+
+    def _check_local_git_status(self, local_path, ref):
+        """Check git repository status and determine ref to use."""
+        try:
+            backend = git_backend()
+            source_repo = backend.create_repository(local_path)
+            if source_repo.get_status():
+                log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+
+            if not ref and not source_repo.is_head_detached():
+                ref = source_repo.get_head_shorthand()
+                log.debug('Using current branch from local repo: %s', ref)
+        except Exception:
+            pass
+
+    def _copy_local_plugin_files(self, install_path, final_path, is_git_repo):
+        """Copy plugin files from source to final location."""
         if is_git_repo:
-            # Check if source repository has uncommitted changes
-            try:
-                backend = git_backend()
-                source_repo = backend.create_repository(local_path)
-                if source_repo.get_status():
-                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
-
-                # If no ref specified, use the current branch
-                if not ref and not source_repo.is_head_detached():
-                    ref = source_repo.get_head_shorthand()
-                    log.debug('Using current branch from local repo: %s', ref)
-            except Exception:
-                pass  # Ignore errors checking status
-
-            # Use git operations to get ref and commit info
-
-            url_hash = hash_string(str(local_path))
-            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
-
-            try:
-                source = PluginSourceGit(str(local_path), ref_name)
-                commit_id = source.sync(temp_path, single_branch=True)
-                install_path = temp_path
-                ref_to_save = source.resolved_ref
-                commit_to_save = commit_id
-            except Exception:
-                # Clean up temp directory on failure
-                if temp_path.exists():
-                    gc.collect()
-                    shutil.rmtree(temp_path, ignore_errors=True)
-                raise
-        else:
-            # Direct copy for non-git directories
-            install_path = local_path
-            ref_to_save = ''
-            commit_to_save = ''
-
-        # Read MANIFEST to get plugin ID
-        manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
-
-        # Check for UUID conflicts with existing plugins from different sources
-        has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
-        if has_conflict and not reinstall:
-            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
-            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, str(local_path))
-
-        # Generate plugin directory name from sanitized name + UUID
-        plugin_name = get_plugin_directory_name(manifest)
-        assert self._primary_plugin_dir is not None
-        final_path = self._primary_plugin_dir / plugin_name
-
-        # Capture old metadata for logging before reinstall
-        old_metadata = None
-        if reinstall:
-            old_metadata = self._metadata.get_plugin_metadata(manifest.uuid)
-
-        # Check if already installed and handle reinstall
-        if final_path.exists():
-            if not reinstall:
-                raise PluginAlreadyInstalledError(plugin_name, local_path)
-
-            # Check for uncommitted changes before removing
-            if not discard_changes:
-                changes = GitOperations.check_dirty_working_dir(final_path)
-                if changes:
-                    raise PluginDirtyError(plugin_name, changes)
-
-            shutil.rmtree(final_path)
-
-        # Copy to plugin directory
-        if is_git_repo:
-            # Move from temp location (git repo was cloned to temp)
             shutil.move(str(install_path), str(final_path))
         else:
-            # Copy from local directory (non-git)
             shutil.copytree(install_path, final_path)
 
-        # Store metadata
+    def _finalize_local_plugin_installation(
+        self,
+        local_path,
+        plugin_name,
+        ref_to_save,
+        commit_to_save,
+        manifest,
+        target_ref_item,
+        is_git_repo,
+        enable_after_install,
+    ):
+        """Finalize local plugin installation by saving metadata and setting up plugin."""
         self._metadata.save_plugin_metadata(
             PluginMetadata(
                 name=plugin_name,
@@ -1458,22 +1464,18 @@ class PluginManager(QObject):
             )
         )
 
-        # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_name)
         self._plugins.append(plugin)
 
-        # Set RefItem from install operation (only for git repos)
         if is_git_repo:
             self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_to_save, "install")
         else:
             plugin.sync_ref_item_from_git(self)
 
-        # Enable plugin if requested and sync RefItem
-        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
-            plugin, "install", enable=enable_after_install
-        )
+        return plugin
 
-        # Log plugin installation with RefItem information
+    def _log_local_installation(self, plugin_name, plugin, reinstall, old_metadata):
+        """Log local plugin installation with RefItem information."""
         if reinstall and old_metadata:
             old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
             log.info(
@@ -1489,10 +1491,7 @@ class PluginManager(QObject):
                 plugin.ref_item.format() if plugin.ref_item else 'unknown',
             )
 
-        # Check for available updates after installation
         self._check_plugin_update_status_after_install(plugin)
-
-        return InstallResult(plugin_name, enable_success, enable_error)
 
     def _fetch_version_tags_impl(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
