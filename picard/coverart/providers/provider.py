@@ -25,10 +25,15 @@
 
 
 import traceback
+from typing import TYPE_CHECKING
 
 from picard.util.display_title_base import HasDisplayTitle
 
 from picard.ui.options import OptionsPage
+
+
+if TYPE_CHECKING:
+    from picard.coverart import CoverArt
 
 
 class ProviderOptions(OptionsPage):
@@ -95,7 +100,7 @@ class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
     # next_in_queue() has to be called explicitly by provider
     WAIT = 2
 
-    def __init__(self, coverart):
+    def __init__(self, coverart: 'CoverArt'):
         self.coverart = coverart
         self.release = coverart.release
         self.metadata = coverart.metadata

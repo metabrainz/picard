@@ -74,8 +74,8 @@ _datafile_mutex = QMutex()
 
 
 class DataHash:
-    def __init__(self, data, prefix='picard', suffix=''):
-        self._filename = None
+    def __init__(self, data: bytes, prefix='picard', suffix=''):
+        self._filename: str | None = None
         _datafile_mutex.lock()
         try:
             self._hash = blake2b(data).hexdigest()
@@ -156,11 +156,18 @@ class CoverArtImage:
     support_multi_types = False
     # `is_front` has to be explicitly set, it is used to handle CAA is_front
     # indicator
-    is_front = None
-    sourceprefix = 'URL'
+    is_front: bool | None = None
+    sourceprefix: str = 'URL'
 
     def __init__(
-        self, url=None, types=None, comment='', data=None, support_types=None, support_multi_types=None, id3_type=None
+        self,
+        url=None,
+        types: list[str] | None = None,
+        comment: str = '',
+        data: bytes | None = None,
+        support_types: bool | None = None,
+        support_multi_types: bool | None = None,
+        id3_type: Id3ImageType | None = None,
     ):
         if types is None:
             self.types = []
@@ -306,7 +313,7 @@ class CoverArtImage:
             return 0
         return hash(self.datahash.hash())
 
-    def set_tags_data(self, data):
+    def set_tags_data(self, data: bytes):
         """Store image data in a file, if data already exists in such file
         it will be re-used and no file write occurs
         """
@@ -328,7 +335,7 @@ class CoverArtImage:
         except OSError as e:
             raise CoverArtImageIOError(e) from e
 
-    def set_external_file_data(self, data):
+    def set_external_file_data(self, data: bytes):
         self.external_file_coverart = CoverArtImage(data=data, url=self.url)
 
     @property
@@ -344,7 +351,7 @@ class CoverArtImage:
         return self.types[0]
 
     @property
-    def id3_type(self):
+    def id3_type(self) -> Id3ImageType:
         """Returns the ID3 APIC image type.
         If explicitly set the type is returned as is, otherwise it is derived
         from `maintype`. See http://www.id3.org/id3v2.4.0-frames"""
@@ -354,7 +361,7 @@ class CoverArtImage:
             return image_type_as_id3_num(self.maintype)
 
     @id3_type.setter
-    def id3_type(self, type):
+    def id3_type(self, type: Id3ImageType | None):
         """Explicitly sets the ID3 APIC image type.
         If set to None the type will be derived from `maintype`."""
         if type is not None:
@@ -387,7 +394,7 @@ class CoverArtImage:
         filename = make_save_path(filename, win_compat=win_compat, mac_compat=IS_MACOS)
         return encode_filename(filename)
 
-    def save(self, dirname, metadata, counters):
+    def save(self, dirname: str, metadata: Metadata, counters: dict[str, int]):
         """Saves this image.
 
         :dirname: The name of the directory that contains the audio file
@@ -459,8 +466,9 @@ class CoverArtImage:
             raise CoverArtImageIOError(e) from e
 
     @property
-    def tempfile_filename(self):
-        return self.datahash.filename
+    def tempfile_filename(self) -> str | None:
+        if self.datahash:
+            return self.datahash.filename
 
     def normalized_types(self):
         if self.types and self.support_types:
@@ -475,7 +483,7 @@ class CoverArtImage:
             types = ['-']
         return tuple(types)
 
-    def types_as_string(self, translate=True, separator=TYPES_SEPARATOR):
+    def types_as_string(self, translate=True, separator: str = TYPES_SEPARATOR):
         types = self.normalized_types()
         if translate:
             return translated_types_as_string(types, separator)
