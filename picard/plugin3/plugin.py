@@ -26,8 +26,13 @@ import re
 import sys
 import time
 import types
+from typing import TYPE_CHECKING
 
 from picard import log
+
+
+if TYPE_CHECKING:
+    from picard.git.utils import RefItem
 from picard.extension_points import unregister_module_extensions
 from picard.git.backend import GitBackendError
 from picard.git.factory import git_backend
@@ -563,6 +568,7 @@ class Plugin:
     manifest: PluginManifest | None = None
     state: PluginState | None = None
     _module: types.ModuleType | None = None
+    ref_item: 'RefItem | None' = None  # Current ref information
 
     def __init__(self, plugins_dir: Path, plugin_name: str):
         self.plugin_id = plugin_name
@@ -570,6 +576,7 @@ class Plugin:
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
         self.uuid = None
+        self.ref_item = None
 
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
@@ -601,6 +608,21 @@ class Plugin:
 
         # Add a shortcut
         self.uuid = self.manifest.uuid
+
+    def sync_ref_item_from_git(self, manager_instance):
+        """Sync ref_item with actual git repository state."""
+        if not self.local_path or not (self.local_path / '.git').exists():
+            self.ref_item = None
+            return
+
+        try:
+            from picard.git.factory import git_backend
+
+            repo = git_backend().create_repository(self.local_path)
+            self.ref_item = manager_instance._get_ref_item_from_git_state(self.uuid, repo)
+            repo.free()
+        except Exception:
+            self.ref_item = None
 
     def get_current_commit_id(self):
         """Get the current commit ID of the plugin if it's a git repository."""
