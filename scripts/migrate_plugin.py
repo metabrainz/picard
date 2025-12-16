@@ -1289,7 +1289,7 @@ def migrate_plugin(input_file, output_dir=None):
         "__pycache__/",
         "\n# Environments and development tools",
         ".venv/",
-        ".ruff_cache/",
+        ".ruff_cache/\n",
     )
     gitignore_path = out_path / '.gitignore'
     gitignore_path.write_text("\n".join(gitignore_content), encoding='utf-8')
