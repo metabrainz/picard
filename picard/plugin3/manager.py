@@ -378,8 +378,9 @@ class PluginManager(QObject):
 
         # Convert remote refs to RefItems
         refs = []
-        annotated_tags = {}  # Track annotated tags to merge with their commits
+        deref_commits = {}  # Map tag names to their dereferenced commits
 
+        # First pass: collect all refs and dereferenced commits
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
             commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
@@ -390,15 +391,17 @@ class PluginManager(QObject):
             elif ref_name.startswith('refs/tags/'):
                 name = ref_name[len('refs/tags/') :]
                 if name.endswith('^{}'):
-                    # Dereferenced annotated tag - update existing tag with actual commit
+                    # Dereferenced annotated tag - store the actual commit
                     base_name = name[:-3]
-                    if base_name in annotated_tags:
-                        annotated_tags[base_name].commit = commit_id
+                    deref_commits[base_name] = commit_id
                 else:
-                    # Regular or annotated tag
-                    ref_item = RefItem(name=name, commit=commit_id, is_tag=True)
-                    refs.append(ref_item)
-                    annotated_tags[name] = ref_item
+                    # Regular or annotated tag object
+                    refs.append(RefItem(name=name, commit=commit_id, is_tag=True))
+
+        # Second pass: update annotated tags with their dereferenced commits
+        for ref in refs:
+            if ref.is_tag and ref.name in deref_commits:
+                ref.commit = deref_commits[ref.name]
 
         # Sort: tags first (reverse by name), then branches (by name)
         refs.sort(key=lambda x: (not x.is_tag, x.name if x.is_branch else x.name), reverse=False)
