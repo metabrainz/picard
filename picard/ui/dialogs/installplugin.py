@@ -566,8 +566,26 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.progress_bar.hide()
 
         if result.success:
-            self.status_label.setText(_("Plugin installed successfully"))
-            self.plugin_installed.emit(result.result)
+            install_result = result.result
+            if hasattr(install_result, 'enable_success') and not install_result.enable_success:
+                # Plugin installed but failed to enable
+                self.status_label.setText(_("Plugin installed but failed to enable"))
+                error_msg = (
+                    str(install_result.enable_error) if install_result.enable_error else _("Unknown enable error")
+                )
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    _("Plugin Enable Failed"),
+                    _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
+                        install_result.plugin_name, error_msg
+                    ),
+                )
+                self.plugin_installed.emit(install_result.plugin_name)
+            else:
+                # Plugin installed and enabled successfully
+                self.status_label.setText(_("Plugin installed successfully"))
+                plugin_name = install_result.plugin_name if hasattr(install_result, 'plugin_name') else install_result
+                self.plugin_installed.emit(plugin_name)
             # No need to re-enable UI, we're closing the dialog
             QtCore.QTimer.singleShot(1000, self.accept)  # Close after 1 second
         else:

@@ -299,12 +299,36 @@ class Plugins3OptionsPage(OptionsPage):
         dialog.plugin_installed.connect(self._on_plugin_installed)
         dialog.exec()
 
-    def _on_plugin_installed(self, plugin_id):
+    def _on_plugin_installed(self, plugin_name_or_result):
         """Handle plugin installation completion."""
+        # Handle both old string format and new InstallResult format
+        if hasattr(plugin_name_or_result, 'plugin_name'):
+            # New InstallResult format
+            install_result = plugin_name_or_result
+            plugin_name = install_result.plugin_name
+            if not install_result.enable_success:
+                # Show warning about enable failure
+                error_msg = (
+                    str(install_result.enable_error) if install_result.enable_error else _("Unknown enable error")
+                )
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    _("Plugin Enable Failed"),
+                    _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
+                        plugin_name, error_msg
+                    ),
+                )
+                self._show_status(_("Plugin '{}' installed but failed to enable").format(plugin_name))
+            else:
+                self._show_status(_("Plugin '{}' installed successfully").format(plugin_name))
+        else:
+            # Old string format (backward compatibility)
+            plugin_name = plugin_name_or_result
+            self._show_status(_("Plugin '{}' installed successfully").format(plugin_name))
+
         self.load()  # Refresh plugin list
         # Refresh update status to check for newer versions
         self.plugin_list.refresh_update_status()
-        self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()

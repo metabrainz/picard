@@ -26,6 +26,7 @@ import shutil
 import tempfile
 from typing import TYPE_CHECKING, NamedTuple
 
+from PyQt6 import QtWidgets
 from PyQt6.QtCore import (
     QObject,
     pyqtSignal,
@@ -70,6 +71,15 @@ try:
     from markdown import markdown as render_markdown
 except ImportError:
     render_markdown = None
+
+
+class InstallResult:
+    """Result of plugin installation operation."""
+
+    def __init__(self, plugin_name, enable_success=True, enable_error=None):
+        self.plugin_name = plugin_name
+        self.enable_success = enable_success
+        self.enable_error = enable_error
 
 
 class UpdateResult(NamedTuple):
@@ -776,15 +786,24 @@ class PluginManager(QObject):
             return ''
 
     def _enable_plugin_and_sync_ref_item(self, plugin, operation_name="operation", enable=True):
-        """Helper to optionally enable plugin and always sync RefItem, with error handling."""
+        """Helper to optionally enable plugin and always sync RefItem, with error handling.
+
+        Returns:
+            tuple: (enable_success: bool, error: Exception or None)
+        """
+        enable_success = True
+        error = None
         if enable:
             try:
                 self.enable_plugin(plugin)
             except Exception as e:
-                log.error('Failed to enable plugin %s after %s: %s', plugin.plugin_id, operation_name, e)
+                log.error('Failed to enable plugin %s after %s: %s', plugin.plugin_id, operation_name, e, exc_info=True)
+                enable_success = False
+                error = e
 
         # Always sync RefItem from actual git state
         plugin.sync_ref_item_from_git(self)
+        return enable_success, error
 
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
@@ -813,7 +832,13 @@ class PluginManager(QObject):
             self._metadata.save_plugin_metadata(metadata)
 
         # Re-enable plugin if it was enabled before to reload the module
-        self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
+        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
+
+        # Show error dialog if enabling failed
+        if was_enabled and not enable_success:
+            QtWidgets.QMessageBox.warning(
+                None, "Plugin Enable Failed", f"Plugin switched successfully but failed to enable:\n{enable_error}"
+            )
 
         # Log plugin ref switch with RefItem formatting (after potential re-sync)
         old_ref_item = RefItem.for_logging(old_ref, old_commit)
@@ -1205,7 +1230,9 @@ class PluginManager(QObject):
             self._plugins.append(plugin)
 
             # Enable plugin if requested and sync RefItem
-            self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
+            enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
+                plugin, "install", enable=enable_after_install
+            )
 
             # Log plugin installation with RefItem information
             if reinstall and old_metadata:
@@ -1225,7 +1252,7 @@ class PluginManager(QObject):
 
             self.plugin_installed.emit(plugin)
 
-            return plugin_name
+            return InstallResult(plugin_name, enable_success, enable_error)
 
         except Exception:
             # Clean up temp directory on failure
@@ -1361,7 +1388,9 @@ class PluginManager(QObject):
         self._plugins.append(plugin)
 
         # Enable plugin if requested and sync RefItem
-        self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
+        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
+            plugin, "install", enable=enable_after_install
+        )
 
         # Log plugin installation with RefItem information
         if reinstall and old_metadata:
@@ -1379,7 +1408,7 @@ class PluginManager(QObject):
                 plugin.ref_item.format() if plugin.ref_item else 'unknown',
             )
 
-        return plugin_name
+        return InstallResult(plugin_name, enable_success, enable_error)
 
     def _fetch_version_tags_impl(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
@@ -1562,7 +1591,13 @@ class PluginManager(QObject):
             )
 
         # Re-enable plugin if it was enabled before and sync RefItem
-        self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
+        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
+
+        # Show error dialog if enabling failed
+        if was_enabled and not enable_success:
+            QtWidgets.QMessageBox.warning(
+                None, "Plugin Enable Failed", f"Plugin updated successfully but failed to enable:\n{enable_error}"
+            )
 
         # Log update with RefItem formatting
         new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
