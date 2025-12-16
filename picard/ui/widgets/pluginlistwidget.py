@@ -201,17 +201,23 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version."""
+        from picard import log
+
         if plugin.plugin_id in self._updating_plugins:
             # Show in progress for updating plugins
             item.setText(COLUMN_UPDATE, _("In Progress..."))
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            log.debug("Plugin %s: Update column set to 'In Progress'", plugin.plugin_id)
         elif self._has_update_available_cached(plugin):
             # Get new version info from cache first to avoid expensive calls during updates
+            log.debug("Plugin %s: Has update available", plugin.plugin_id)
             try:
                 new_version = self._get_cached_new_version(plugin)
                 item.setText(COLUMN_UPDATE, new_version)
+                log.debug("Plugin %s: Update column set to '%s'", plugin.plugin_id, new_version)
             except Exception:
                 item.setText(COLUMN_UPDATE, _("Available"))
+                log.debug("Plugin %s: Update column set to 'Available' (fallback)", plugin.plugin_id)
 
             # Add checkbox for update selection
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
@@ -230,6 +236,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "                   ")  # hacky
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            log.debug("Plugin %s: No update available", plugin.plugin_id)
 
     def _get_cached_new_version(self, plugin):
         """Get new version from cache or compute if not cached."""
@@ -260,6 +267,25 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             for update in self._cached_updates:
                 if update.plugin_id == plugin.plugin_id:
                     return self._format_update_version(update)
+
+        # If we don't have detailed update info but know there's an update,
+        # try to get version info from refs cache
+        if self._has_update_available_cached(plugin):
+            try:
+                # Try to get the latest version from refs cache
+                refs_info = self.plugin_manager.get_plugin_refs_info(plugin.plugin_id)
+                if refs_info and refs_info.get('url'):
+                    refs = self.plugin_manager.fetch_all_git_refs(refs_info['url'])
+                    if refs and refs.get('tags'):
+                        # Get the latest tag (first in sorted list)
+                        latest_tag = refs['tags'][0]
+                        from picard.git.utils import RefItem
+
+                        ref_item = RefItem(name=latest_tag['name'], commit=latest_tag.get('commit'))
+                        return ref_item.format()
+            except Exception:
+                pass
+
         return _("Available")
 
     def _update_header_button(self):
@@ -368,8 +394,16 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self._refresh_cached_update_status()
 
     def _has_update_available_cached(self, plugin):
-        """Check if plugin has update available using cache."""
-        return self._update_status_cache.get(plugin.plugin_id, False)
+        """Check if plugin has update available using manager's cached data."""
+        try:
+            # Use manager's method which handles all caching internally
+            has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=False)
+            from picard import log
+
+            log.debug("Plugin %s: _has_update_available_cached = %s", plugin.plugin_id, has_update)
+            return has_update
+        except Exception:
+            return False
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""

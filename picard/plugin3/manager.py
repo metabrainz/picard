@@ -824,6 +824,14 @@ class PluginManager(QObject):
         else:
             plugin.sync_ref_item_from_git(self)
 
+    def _check_plugin_update_status_after_install(self, plugin):
+        """Check and cache update status for newly installed plugin."""
+        try:
+            has_update = self.get_plugin_update_status(plugin, force_refresh=True)
+            log.debug("Plugin %s: Update status after install = %s", plugin.plugin_id, has_update)
+        except Exception as e:
+            log.debug("Failed to check update status for newly installed plugin %s: %s", plugin.plugin_id, e)
+
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
@@ -1282,6 +1290,9 @@ class PluginManager(QObject):
 
             self.plugin_installed.emit(plugin)
 
+            # Check for available updates after installation
+            self._check_plugin_update_status_after_install(plugin)
+
             return InstallResult(plugin_name, enable_success, enable_error)
 
         except Exception:
@@ -1443,6 +1454,9 @@ class PluginManager(QObject):
                 plugin_name,
                 plugin.ref_item.format() if plugin.ref_item else 'unknown',
             )
+
+        # Check for available updates after installation
+        self._check_plugin_update_status_after_install(plugin)
 
         return InstallResult(plugin_name, enable_success, enable_error)
 
@@ -1789,12 +1803,18 @@ class PluginManager(QObject):
         if not metadata or not metadata.url:
             return False
 
-        current_ref = metadata.ref or 'main'
+        # Get current RefItem from live state if available, fallback to metadata
+        if hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid():
+            current_ref_item = plugin.ref_item
+        else:
+            current_ref_item = RefItem(name=metadata.ref or 'main', commit=metadata.commit or '')
 
         # Try cached result first (unless force refresh)
         if not force_refresh:
             # Use cached result even if expired to avoid network calls
-            cached_result = self._refs_cache.get_cached_update_status(plugin.plugin_id, current_ref, ttl=float('inf'))
+            cached_result = self._refs_cache.get_cached_update_status(
+                plugin.plugin_id, current_ref_item.name, ttl=float('inf')
+            )
             if cached_result is not None:
                 log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
                 return cached_result
@@ -1877,11 +1897,11 @@ class PluginManager(QObject):
             repo.free()
             has_update = current_commit != latest_commit
             # Cache the result with current ref
-            self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref)
+            self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref_item.name)
             return has_update
         except KeyError:
             # Ref not found, no update available
-            self._refs_cache.cache_update_status(plugin.plugin_id, False, current_ref)
+            self._refs_cache.cache_update_status(plugin.plugin_id, False, current_ref_item.name)
             return False
         except Exception as e:
             # Log unexpected errors
