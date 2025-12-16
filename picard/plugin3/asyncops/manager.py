@@ -38,7 +38,7 @@ class AsyncPluginManager:
 
         Args:
             url: Plugin URL or registry ID
-            ref: Optional git ref
+            ref: Optional git ref (RefItem, string, or None)
             reinstall: Whether to reinstall if exists
             progress_callback: Optional callback for progress updates
             callback: Called with OperationResult on completion
@@ -142,7 +142,13 @@ class AsyncPluginManager:
         run_async(_uninstall, callback)
 
     def switch_ref(self, plugin, ref, callback=None):
-        """Switch plugin ref asynchronously."""
+        """Switch plugin ref asynchronously.
+
+        Args:
+            plugin: Plugin to switch
+            ref: Git ref to switch to (RefItem, string, or None)
+            callback: Called with OperationResult on completion
+        """
 
         def _switch_ref():
             self._manager.switch_ref(plugin, ref)

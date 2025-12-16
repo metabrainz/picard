@@ -229,30 +229,36 @@ class PluginMetadataManager:
             # Detect current ref from local git repo (overrides metadata)
             if plugin.local_path:
                 try:
-                    backend = git_backend()
-                    repo = backend.create_repository(plugin.local_path)
-                    current_commit = repo.get_head_target()
+                    # Use existing RefItem if available (more efficient)
+                    if hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid():
+                        current_ref = plugin.ref_item.name
+                        current_commit = plugin.ref_item.commit or current_commit
+                    else:
+                        # Fallback to direct git detection
+                        backend = git_backend()
+                        repo = backend.create_repository(plugin.local_path)
+                        current_commit = repo.get_head_target()
 
-                    # Check if current commit matches a tag (prefer tag over branch)
-                    current_ref = None
-                    for ref_name in repo.list_references():
-                        if ref_name.startswith('refs/tags/'):
-                            tag_name = ref_name[10:]
-                            if tag_name.endswith('^{}'):
-                                continue
-                            try:
-                                obj = repo.revparse_single(ref_name)
-                                target = repo.peel_to_commit(obj)
-                                if target.id == current_commit:
-                                    current_ref = tag_name
-                                    break
-                            except Exception:
-                                # Skip invalid tags and continue to next one
-                                continue  # nosec try_except_continue
+                        # Check if current commit matches a tag (prefer tag over branch)
+                        current_ref = None
+                        for ref_name in repo.list_references():
+                            if ref_name.startswith('refs/tags/'):
+                                tag_name = ref_name[10:]
+                                if tag_name.endswith('^{}'):
+                                    continue
+                                try:
+                                    obj = repo.revparse_single(ref_name)
+                                    target = repo.peel_to_commit(obj)
+                                    if target.id == current_commit:
+                                        current_ref = tag_name
+                                        break
+                                except Exception:
+                                    # Skip invalid tags and continue to next one
+                                    continue  # nosec try_except_continue
 
-                    # If no tag found, use branch name
-                    if not current_ref and not repo.is_head_detached():
-                        current_ref = repo.get_head_shorthand()
+                        # If no tag found, use branch name
+                        if not current_ref and not repo.is_head_detached():
+                            current_ref = repo.get_head_shorthand()
                 except Exception:
                     pass  # Ignore errors, use metadata values
         else:
