@@ -808,6 +808,32 @@ class PluginManager(QObject):
             plugin.sync_ref_item_from_git(self)
         return enable_success, error
 
+    def _set_plugin_ref_item_from_operation(self, plugin, target_ref, commit_id, operation_type="operation"):
+        """Set plugin RefItem after any git operation, preserving the target ref name.
+
+        Args:
+            plugin: Plugin object
+            target_ref: Target ref name (string) or RefItem object
+            commit_id: Commit ID from the operation
+            operation_type: Type of operation for logging (install/switch/update)
+        """
+        if target_ref:
+            # Handle both string and RefItem inputs
+            if hasattr(target_ref, 'name'):
+                # RefItem object
+                plugin.ref_item = self._create_ref_item_from_target(target_ref, commit_id)
+            else:
+                # String ref name - create RefItem
+                plugin.ref_item = RefItem(
+                    name=target_ref,
+                    commit=commit_id,
+                    is_tag=not target_ref.startswith('origin/'),  # Assume tags unless origin/ prefix
+                    is_branch=target_ref.startswith('origin/'),
+                )
+        else:
+            # No target ref - sync from git state
+            plugin.sync_ref_item_from_git(self)
+
     def _create_ref_item_from_target(self, target_ref_item, commit_id):
         """Create RefItem from target ref and commit, preserving ref type."""
         return RefItem(
@@ -816,13 +842,6 @@ class PluginManager(QObject):
             is_tag=target_ref_item.is_tag,
             is_branch=target_ref_item.is_branch,
         )
-
-    def _set_plugin_ref_item_after_install(self, plugin, target_ref_item, commit_id):
-        """Set plugin RefItem after installation, using requested ref or detecting from git."""
-        if target_ref_item:
-            plugin.ref_item = self._create_ref_item_from_target(target_ref_item, commit_id)
-        else:
-            plugin.sync_ref_item_from_git(self)
 
     def _check_plugin_update_status_after_install(self, plugin):
         """Check and cache update status for newly installed plugin."""
@@ -859,12 +878,7 @@ class PluginManager(QObject):
             self._metadata.save_plugin_metadata(metadata)
 
         # Immediately sync RefItem after git switch so it's available for UI
-        # Set RefItem directly from switch operation to preserve tag/branch name
-        if target_ref_item:
-            plugin.ref_item = self._create_ref_item_from_target(target_ref_item, new_commit)
-        else:
-            # Fallback to git detection for commit hashes or unknown refs
-            plugin.sync_ref_item_from_git(self)
+        self._set_plugin_ref_item_from_operation(plugin, target_ref_item, new_commit, "switch")
 
         # Re-enable plugin if it was enabled before to reload the module
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
@@ -1265,7 +1279,7 @@ class PluginManager(QObject):
             self._plugins.append(plugin)
 
             # Set RefItem from install operation
-            self._set_plugin_ref_item_after_install(plugin, target_ref_item, commit_id)
+            self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_id, "install")
 
             # Enable plugin if requested and sync RefItem
             enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
@@ -1430,7 +1444,7 @@ class PluginManager(QObject):
 
         # Set RefItem from install operation (only for git repos)
         if is_git_repo:
-            self._set_plugin_ref_item_after_install(plugin, target_ref_item, commit_to_save)
+            self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_to_save, "install")
         else:
             plugin.sync_ref_item_from_git(self)
 
@@ -1640,6 +1654,9 @@ class PluginManager(QObject):
                 self._refs_cache.update_cache_from_local_repo(
                     plugin.local_path, current_url, registry_plugin.versioning_scheme
                 )
+
+        # Set RefItem from update operation to preserve tag name
+        self._set_plugin_ref_item_from_operation(plugin, new_ref, new_commit, "update")
 
         # Re-enable plugin if it was enabled before and sync RefItem
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
