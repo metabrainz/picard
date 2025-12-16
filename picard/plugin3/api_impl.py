@@ -704,6 +704,8 @@ class PluginApi:
     def register_cover_art_provider(self, provider_class: type[CoverArtProvider]) -> None:
         provider_class.api = self
         self._set_class_name_and_title(provider_class)
+        if hasattr(provider_class, 'OPTIONS') and provider_class.OPTIONS:
+            provider_class.OPTIONS.api = self
         return register_cover_art_provider(provider_class)
 
     def register_cover_art_filter(
