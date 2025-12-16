@@ -356,14 +356,9 @@ class PluginManager(QObject):
             list of RefItem objects for all refs, or None on error
         """
         # Check cache first
-        if use_cache and not force_refresh:
-            cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
-            if cached_refs is not None:
-                converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
-                if converted_refs is not None:
-                    return converted_refs
-        elif use_cache:
-            cached_refs = self._refs_cache.get_cached_all_refs(url)
+        if use_cache:
+            allow_expired = not force_refresh
+            cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=allow_expired)
             if cached_refs is not None:
                 converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
                 if converted_refs is not None:
