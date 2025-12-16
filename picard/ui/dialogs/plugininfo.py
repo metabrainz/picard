@@ -23,6 +23,8 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
+from picard.ui import PicardDialog
+
 
 try:
     from markdown import markdown as render_markdown
@@ -30,7 +32,7 @@ except ImportError:
     render_markdown = None
 
 
-class PluginInfoDialog(QtWidgets.QDialog):
+class PluginInfoDialog(PicardDialog):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
 
     def __init__(self, plugin_data, parent=None):
@@ -38,12 +40,12 @@ class PluginInfoDialog(QtWidgets.QDialog):
         self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
-        tagger = QtCore.QCoreApplication.instance()
-        self.plugin_manager = tagger.get_plugin_manager()
+        self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
         self.resize(600, 500)
+        self.setMinimumSize(500, 300)
         self.setup_ui()
 
     @property
@@ -136,14 +138,11 @@ class PluginInfoDialog(QtWidgets.QDialog):
         layout.addWidget(scroll_area)
 
         # Close button
-        button_layout = QtWidgets.QHBoxLayout()
-        button_layout.addStretch()
-
-        close_button = QtWidgets.QPushButton(_("Close"))
-        close_button.clicked.connect(self.accept)
-        button_layout.addWidget(close_button)
-
-        layout.addLayout(button_layout)
+        # # Buttons
+        button_box = QtWidgets.QDialogButtonBox()
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
+        button_box.rejected.connect(self.accept)
+        layout.addWidget(button_box)
 
     @staticmethod
     def _make_label():
