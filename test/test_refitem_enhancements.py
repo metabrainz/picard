@@ -119,8 +119,9 @@ class TestRefItemEnhancements(PicardTestCase):
 
         # Test serialization
         data = ref.to_dict()
-        self.assertIn('ref_type', data)
-        self.assertEqual(data['ref_type'], 'tag')
+        self.assertIn('name', data)
+        self.assertIn('commit', data)
+        self.assertIn('is_tag', data)
 
         # Test deserialization
         restored = RefItem.from_dict(data)
@@ -174,3 +175,25 @@ class TestRefItemEnhancements(PicardTestCase):
         self.assertEqual(empty_ref.commit, "mno345")
         self.assertFalse(empty_ref.is_tag)
         self.assertFalse(empty_ref.is_branch)
+
+    def test_refitem_for_logging_factory(self):
+        """Test RefItem.for_logging factory method."""
+        # Test with name and commit
+        ref = RefItem.for_logging("v1.0.0", "abc123")
+        self.assertIsNotNone(ref)
+        self.assertEqual(ref.name, "v1.0.0")
+        self.assertEqual(ref.commit, "abc123")
+
+        # Test with only name
+        ref = RefItem.for_logging("v1.0.0")
+        self.assertIsNotNone(ref)
+        self.assertEqual(ref.name, "v1.0.0")
+        self.assertEqual(ref.commit, "")
+
+        # Test with empty values
+        ref = RefItem.for_logging("", "")
+        self.assertIsNone(ref)
+
+        # Test with None values
+        ref = RefItem.for_logging()
+        self.assertIsNone(ref)

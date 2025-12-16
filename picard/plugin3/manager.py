@@ -50,7 +50,7 @@ from picard.git.backend import GitObjectType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.ref_utils import get_ref_type
-from picard.git.utils import get_local_repository_path
+from picard.git.utils import RefItem, get_local_repository_path
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
     Plugin,
@@ -346,8 +346,6 @@ class PluginManager(QObject):
 
         # Format tags
         for ref in refs.get('tags', []):
-            from picard.git.utils import RefItem
-
             ref_item = RefItem(
                 name=ref['name'],
                 commit=ref.get('commit', ''),
@@ -807,15 +805,13 @@ class PluginManager(QObject):
         plugin.sync_ref_item_from_git(self)
 
         # Log plugin ref switch with RefItem formatting
-        from picard.git.utils import RefItem
-
-        old_ref_item = RefItem(name=old_ref or '', commit=old_commit or '')
-        new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
+        old_ref_item = RefItem.for_logging(old_ref, old_commit)
+        new_ref_item = plugin.ref_item or RefItem.for_logging(new_ref, new_commit)
         log.info(
             'Plugin %s switching ref from %s to %s (switch-ref)',
             plugin.plugin_id,
-            old_ref_item.format(),
-            new_ref_item.format(),
+            old_ref_item.format() if old_ref_item else 'none',
+            new_ref_item.format() if new_ref_item and new_ref_item.is_valid() else 'none',
         )
 
         # Re-enable plugin if it was enabled before to reload the module
@@ -901,8 +897,6 @@ class PluginManager(QObject):
         Returns:
             RefItem: Current ref state from git repository
         """
-        from picard.git.utils import RefItem
-
         current_commit = repo.get_head_target()
 
         if repo.is_head_detached():
@@ -956,8 +950,6 @@ class PluginManager(QObject):
         Returns:
             RefItem: Best matching RefItem or fallback RefItem
         """
-        from picard.git.utils import RefItem
-
         ref_items = self._refs_cache.get_ref_items_for_commit(plugin_uuid, commit_id)
         if not ref_items:
             return RefItem(name='', commit=commit_id or '')
@@ -1038,8 +1030,6 @@ class PluginManager(QObject):
         Returns:
             RefItem or None
         """
-        from picard.git.utils import RefItem
-
         if isinstance(ref, RefItem):
             return ref
         elif isinstance(ref, str):
@@ -1211,14 +1201,12 @@ class PluginManager(QObject):
             plugin.sync_ref_item_from_git(self)
 
             # Log plugin installation with RefItem information
-            from picard.git.utils import RefItem
-
             if reinstall and old_metadata:
-                old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
+                old_ref_item = RefItem.for_logging(old_metadata.ref, old_metadata.commit)
                 log.info(
                     'Plugin %s switching ref from %s to %s (reinstall)',
                     plugin_name,
-                    old_ref_item.format(),
+                    old_ref_item.format() if old_ref_item else 'none',
                     plugin.ref_item.format() if plugin.ref_item else 'unknown',
                 )
             else:
@@ -1373,8 +1361,6 @@ class PluginManager(QObject):
         plugin.sync_ref_item_from_git(self)
 
         # Log plugin installation with RefItem information
-        from picard.git.utils import RefItem
-
         if reinstall and old_metadata:
             old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
             log.info(
@@ -1499,8 +1485,6 @@ class PluginManager(QObject):
         old_ref = metadata.ref
 
         # Get current RefItem state for better logging
-        from picard.git.utils import RefItem
-
         old_ref_item = plugin.ref_item or RefItem(name=old_ref or '', commit=metadata.commit or '')
 
         # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
@@ -1881,8 +1865,6 @@ class PluginManager(QObject):
         """Format git information for display."""
         if not metadata:
             return ""
-
-        from picard.git.utils import RefItem
 
         ref_item = RefItem(name=getattr(metadata, 'ref', ''), commit=getattr(metadata, 'commit', ''))
         return ref_item.format()

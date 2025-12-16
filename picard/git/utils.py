@@ -252,7 +252,6 @@ class RefItem:
             'is_tag': self.is_tag,
             'is_branch': self.is_branch,
             'is_current': self.is_current,
-            'ref_type': self.get_ref_type(),  # Add computed field for debugging
         }
 
     @classmethod
@@ -302,3 +301,10 @@ class RefItem:
             is_tag=is_tag,
             is_branch=is_branch,
         )
+
+    @classmethod
+    def for_logging(cls, name: str = '', commit: str = ''):
+        """Create minimal RefItem for logging purposes only."""
+        if not name and not commit:
+            return None
+        return cls(name=name, commit=commit)
