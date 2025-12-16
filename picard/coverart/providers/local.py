@@ -89,7 +89,7 @@ class CoverArtProviderLocal(CoverArtProvider):
                 dirs_done.add(current_dir)
                 for image in self.find_local_images(current_dir, _match_re):
                     self.queue_put(image)
-        return CoverArtProvider.FINISHED
+        return CoverArtProvider.QueueState.FINISHED
 
     def get_types(self, string):
         found = {x.lower() for x in self._types_split_re.split(string) if x}

@@ -40,7 +40,7 @@ class CoverArtProviderUrlRelationships(CoverArtProvider):
 
     def queue_images(self):
         self.match_url_relations(('cover art link', 'has_cover_art_at'), self._queue_from_relationship)
-        return CoverArtProvider.FINISHED
+        return CoverArtProvider.QueueState.FINISHED
 
     def _queue_from_relationship(self, url):
         log.debug("Found cover art link in URL relationship")

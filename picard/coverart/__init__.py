@@ -144,7 +144,7 @@ class CoverArt:
             try:
                 # requeue from next provider
                 provider = next(self.providers)
-                ret = CoverArtProvider._STARTED
+                ret = CoverArtProvider.QueueState._STARTED
                 try:
                     instance = provider.cls(self)
                     if provider.enabled and instance.enabled():
@@ -156,7 +156,7 @@ class CoverArt:
                     log.error(traceback.format_exc())
                     raise
                 finally:
-                    if ret != CoverArtProvider.WAIT:
+                    if ret != CoverArtProvider.QueueState.WAIT:
                         self.next_in_queue()
                 return
             except StopIteration:

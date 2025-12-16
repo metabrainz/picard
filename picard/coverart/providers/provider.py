@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from enum import Enum
 import traceback
 from typing import TYPE_CHECKING
 
@@ -82,23 +83,24 @@ class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
     """Subclasses of this class need to reimplement at least `queue_images()`.
     `__init__()` does not have to do anything.
     `queue_images()` will be called if `enabled()` returns `True`.
-    `queue_images()` must return `FINISHED` when it finished to queue
+    `queue_images()` must return `QueueState.FINISHED` when it finished to queue
     potential cover art downloads (using `queue_put(<CoverArtImage object>).
     If `queue_images()` delegates the job of queuing downloads to another
-    method (asynchronous) it should return `WAIT` and the other method has to
+    method (asynchronous) it should return `QueueState.WAIT` and the other method has to
     explicitly call `next_in_queue()`.
-    If `FINISHED` is returned, `next_in_queue()` will be automatically called
+    If `QueueState.FINISHED` is returned, `next_in_queue()` will be automatically called
     by CoverArt object.
     """
 
-    # default state, internal use
-    _STARTED = 0
-    # returned by queue_images():
-    # next_in_queue() will be automatically called
-    FINISHED = 1
-    # returned by queue_images():
-    # next_in_queue() has to be called explicitly by provider
-    WAIT = 2
+    class QueueState(Enum):
+        # default state, internal use
+        _STARTED = 0
+        # returned by queue_images():
+        # next_in_queue() will be automatically called
+        FINISHED = 1
+        # returned by queue_images():
+        # next_in_queue() has to be called explicitly by provider
+        WAIT = 2
 
     def __init__(self, coverart: 'CoverArt'):
         self.coverart = coverart
@@ -109,9 +111,9 @@ class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
     def enabled(self):
         return not self.coverart.front_image_found
 
-    def queue_images(self):
-        # this method has to return CoverArtProvider.FINISHED or
-        # CoverArtProvider.WAIT
+    def queue_images(self) -> QueueState:
+        # this method has to return CoverArtProvider.QueueState.FINISHED or
+        # CoverArtProvider.QueueState.WAIT
         raise NotImplementedError
 
     def error(self, msg):
