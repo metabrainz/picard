@@ -44,6 +44,7 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         self.setWindowTitle(_("Confirm Plugin Installation"))
         self.setModal(True)
         self.resize(500, 400)
+        self.setMinimumSize(500, 300)
         self.setup_ui()
         self.check_trust_and_blacklist()
         self.load_refs()
@@ -79,18 +80,13 @@ class InstallConfirmDialog(QtWidgets.QDialog):
         layout.addWidget(ref_group)
 
         # Buttons
-        button_layout = QtWidgets.QHBoxLayout()
-
+        button_box = QtWidgets.QDialogButtonBox()
         self.install_button = QtWidgets.QPushButton(_("Yes, Install!"))
-        self.install_button.clicked.connect(self._confirm_install)
-        self.install_button.setDefault(True)
-        button_layout.addWidget(self.install_button)
-
-        cancel_button = QtWidgets.QPushButton(_("Cancel"))
-        cancel_button.clicked.connect(self.reject)
-        button_layout.addWidget(cancel_button)
-
-        layout.addLayout(button_layout)
+        button_box.addButton(self.install_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self._confirm_install)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
 
     def check_trust_and_blacklist(self):
         """Check trust level and blacklist status."""
