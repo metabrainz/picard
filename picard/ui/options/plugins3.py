@@ -31,6 +31,7 @@ from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog
 from picard.ui.options import OptionsPage
+from picard.ui.util import handle_plugin_enable_failure
 from picard.ui.widgets.plugindetailswidget import PluginDetailsWidget
 from picard.ui.widgets.pluginlistwidget import PluginListWidget
 
@@ -124,29 +125,7 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _handle_enable_failure(self, plugin_name, operation, enable_error):
         """Common handler for plugin enable failures across all operations."""
-        error_msg = str(enable_error) if enable_error else _("Unknown enable error")
-
-        # Use proper translatable messages for each operation
-        if operation == "install":
-            message = _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "reinstall":
-            message = _("Plugin '{}' was reinstalled successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "update":
-            message = _("Plugin '{}' was updated successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "switch":
-            message = _("Plugin '{}' switched successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
-        else:
-            message = _("Plugin '{}' operation completed successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-
-        QtWidgets.QMessageBox.warning(self, _("Plugin Enable Failed"), message)
+        handle_plugin_enable_failure(plugin_name, operation, enable_error)
 
     def _show_status(self, message, clear_after_ms=None):
         """Add message to status log (keeps last 3 messages)."""

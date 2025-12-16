@@ -32,6 +32,7 @@ from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import handle_plugin_enable_failure
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -558,29 +559,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _handle_enable_failure(self, plugin_name, operation, enable_error):
         """Common handler for plugin enable failures across all operations."""
-        error_msg = str(enable_error) if enable_error else _("Unknown enable error")
-
-        # Use proper translatable messages for each operation
-        if operation == "install":
-            message = _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "reinstall":
-            message = _("Plugin '{}' was reinstalled successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "update":
-            message = _("Plugin '{}' was updated successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-        elif operation == "switch":
-            message = _("Plugin '{}' switched successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
-        else:
-            message = _("Plugin '{}' operation completed successfully but failed to enable:\n\n{}").format(
-                plugin_name, error_msg
-            )
-
-        QtWidgets.QMessageBox.warning(self, _("Plugin Enable Failed"), message)
+        handle_plugin_enable_failure(plugin_name, operation, enable_error)
 
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""

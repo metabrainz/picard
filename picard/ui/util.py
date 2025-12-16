@@ -222,3 +222,28 @@ def menu_builder(menu, main_actions, *args):
             menu.addAction(main_actions[arg])
         elif isinstance(arg, QtWidgets.QWidgetAction):
             menu.addAction(arg)
+
+
+def handle_plugin_enable_failure(plugin_name, operation, enable_error):
+    """Common handler for plugin enable failures across all operations."""
+    from picard.i18n import gettext as _
+
+    error_msg = str(enable_error) if enable_error else _("Unknown enable error")
+
+    # Use proper translatable messages for each operation
+    if operation == "install":
+        message = _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
+    elif operation == "reinstall":
+        message = _("Plugin '{}' was reinstalled successfully but failed to enable:\n\n{}").format(
+            plugin_name, error_msg
+        )
+    elif operation == "update":
+        message = _("Plugin '{}' was updated successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
+    elif operation == "switch":
+        message = _("Plugin '{}' switched successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
+    else:
+        message = _("Plugin '{}' operation completed successfully but failed to enable:\n\n{}").format(
+            plugin_name, error_msg
+        )
+
+    QtWidgets.QMessageBox.warning(None, _("Plugin Enable Failed"), message)
