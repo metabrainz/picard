@@ -784,6 +784,9 @@ class PluginManager(QObject):
         # Check if plugin is currently enabled
         was_enabled = plugin.state == PluginState.ENABLED
 
+        # Capture old metadata before git operation
+        old_metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+
         # Disable plugin if it's enabled to unload the module
         if was_enabled:
             self.disable_plugin(plugin)
@@ -791,8 +794,7 @@ class PluginManager(QObject):
         old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Update metadata with new ref
-        uuid = PluginValidation.get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
+        metadata = self._metadata.get_plugin_metadata(plugin.uuid)
         if metadata:
             # Update existing metadata
             metadata.ref = new_ref
@@ -802,7 +804,10 @@ class PluginManager(QObject):
         # Log plugin ref switch with RefItem formatting
         from picard.git.utils import RefItem
 
-        old_ref_item = RefItem(name=old_ref or '', commit=old_commit or '')
+        if old_metadata:
+            old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
+        else:
+            old_ref_item = RefItem(name=old_ref or '', commit=old_commit or '')
         new_ref_item = RefItem(name=new_ref or '', commit=new_commit or '')
         log.info(
             'Plugin %s switching ref from %s to %s (switch-ref)',
@@ -883,6 +888,31 @@ class PluginManager(QObject):
             log.debug('Could not preserve original ref: %s', e)
 
         return ref
+
+    def _log_plugin_ref_operation(self, plugin_name, old_metadata, new_ref, new_commit, reinstall):
+        """Generate log message for plugin ref operation with RefItem formatting.
+
+        Args:
+            plugin_name: Plugin name/ID
+            old_metadata: Old plugin metadata (for reinstall) or None
+            new_ref: New ref name
+            new_commit: New commit ID
+            reinstall: Whether this is a reinstall operation
+
+        Returns:
+            str: Formatted log message
+        """
+        from picard.git.utils import RefItem
+
+        if reinstall and old_metadata:
+            # For reinstall, use the captured old metadata
+            old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
+            new_ref_item = RefItem(name=new_ref or '', commit=new_commit or '')
+            return f'Plugin {plugin_name} switching ref from {old_ref_item.format()} to {new_ref_item.format()} (reinstall)'
+        else:
+            # For new install, no "from" part
+            new_ref_item = RefItem(name=new_ref or '', commit=new_commit or '')
+            return f'Plugin {plugin_name} switching ref to {new_ref_item.format()} (install)'
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
@@ -1038,22 +1068,9 @@ class PluginManager(QObject):
             )
 
             # Log plugin installation with ref information
-            from picard.git.utils import RefItem
-
-            if reinstall and old_metadata:
-                # For reinstall, use the captured old metadata
-                old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
-                new_ref_item = RefItem(name=source.resolved_ref or '', commit=commit_id or '')
-                log.info(
-                    'Plugin %s switching ref from %s to %s (reinstall)',
-                    plugin_name,
-                    old_ref_item.format(),
-                    new_ref_item.format(),
-                )
-            else:
-                # For new install, no "from" part
-                new_ref_item = RefItem(name=source.resolved_ref or '', commit=commit_id or '')
-                log.info('Plugin %s switching ref to %s (install)', plugin_name, new_ref_item.format())
+            log.info(
+                self._log_plugin_ref_operation(plugin_name, old_metadata, source.resolved_ref, commit_id, reinstall)
+            )
 
             # Add newly installed plugin to the plugins list
             plugin = Plugin(self._primary_plugin_dir, plugin_name)
@@ -1193,22 +1210,7 @@ class PluginManager(QObject):
         )
 
         # Log plugin installation with ref information
-        from picard.git.utils import RefItem
-
-        if reinstall and old_metadata:
-            # For reinstall, use the captured old metadata
-            old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
-            new_ref_item = RefItem(name=ref_to_save or '', commit=commit_to_save or '')
-            log.info(
-                'Plugin %s switching ref from %s to %s (reinstall)',
-                plugin_name,
-                old_ref_item.format(),
-                new_ref_item.format(),
-            )
-        else:
-            # For new install, no "from" part
-            new_ref_item = RefItem(name=ref_to_save or '', commit=commit_to_save or '')
-            log.info('Plugin %s switching ref to %s (install)', plugin_name, new_ref_item.format())
+        log.info(self._log_plugin_ref_operation(plugin_name, old_metadata, ref_to_save, commit_to_save, reinstall))
 
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_name)
