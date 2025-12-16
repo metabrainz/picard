@@ -18,60 +18,48 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Git reference utilities for robust reference type detection."""
+"""Minimal git reference utilities."""
 
 
-def get_ref_type(repo, ref):
-    """Determine the type of a git reference.
+def resolve_ref(repo, ref):
+    """Resolve a reference to its full path and type.
 
     Args:
         repo: Git repository object
-        ref: Reference name to check
+        ref: Reference name to resolve
 
     Returns:
-        tuple: (ref_type, resolved_ref) where ref_type is one of:
-               'tag', 'local_branch', 'remote_branch', 'commit', 'unknown'
+        tuple: (resolved_ref_path, is_tag, is_branch)
     """
     if not ref:
-        return 'unknown', ref
+        return ref, False, False
 
     try:
-        # Get all references from the repository
         references = repo.get_references()
 
-        # Check exact matches first
-        if f'refs/tags/{ref}' in references:
-            return 'tag', f'refs/tags/{ref}'
-        if f'refs/heads/{ref}' in references:
-            return 'local_branch', f'refs/heads/{ref}'
-        if f'refs/remotes/{ref}' in references:
-            return 'remote_branch', f'refs/remotes/{ref}'
-        if f'refs/remotes/origin/{ref}' in references:
-            return 'remote_branch', f'refs/remotes/origin/{ref}'
+        # Check for tag
+        tag_ref = f'refs/tags/{ref}'
+        if tag_ref in references:
+            return tag_ref, True, False
 
-        # Check if ref is already a full reference
+        # Check for local branch
+        branch_ref = f'refs/heads/{ref}'
+        if branch_ref in references:
+            return branch_ref, False, True
+
+        # Check for remote branch
+        remote_ref = f'refs/remotes/origin/{ref}'
+        if remote_ref in references:
+            return remote_ref, False, True
+
+        # Check if already full reference
         if ref in references:
-            if ref.startswith('refs/tags/'):
-                return 'tag', ref
-            elif ref.startswith('refs/heads/'):
-                return 'local_branch', ref
-            elif ref.startswith('refs/remotes/'):
-                return 'remote_branch', ref
+            is_tag = ref.startswith('refs/tags/')
+            is_branch = ref.startswith(('refs/heads/', 'refs/remotes/'))
+            return ref, is_tag, is_branch
 
-        # Try to resolve as commit hash
-        try:
-            repo.revparse_single(ref)
-            return 'commit', ref
-        except KeyError:
-            pass
+        # Not a named reference, assume commit
+        return ref, False, False
 
     except Exception:
-        # If we can't get references, fall back to string analysis
-        if ref.startswith('refs/tags/'):
-            return 'tag', ref
-        elif ref.startswith('refs/heads/'):
-            return 'local_branch', ref
-        elif ref.startswith('refs/remotes/') or ref.startswith('origin/'):
-            return 'remote_branch', ref
-
-    return 'unknown', ref
+        return ref, False, False
