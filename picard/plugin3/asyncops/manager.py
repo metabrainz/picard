@@ -151,8 +151,7 @@ class AsyncPluginManager:
         """
 
         def _switch_ref():
-            self._manager.switch_ref(plugin, ref)
-            return plugin.plugin_id
+            return self._manager.switch_ref(plugin, ref)
 
         run_async(_switch_ref, callback)
 

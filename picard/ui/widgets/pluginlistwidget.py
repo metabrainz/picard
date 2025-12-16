@@ -206,6 +206,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if plugin.plugin_id in self._updating_plugins:
             # Show in progress for updating plugins
             item.setText(COLUMN_UPDATE, _("In Progress..."))
+            # Hide checkbox by clearing CheckStateRole
+            item.setData(COLUMN_UPDATE, QtCore.Qt.ItemDataRole.CheckStateRole, QtCore.QVariant())
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             log.debug("Plugin %s: Update column set to 'In Progress'", plugin.plugin_id)
         elif self._has_update_available_cached(plugin):
@@ -219,7 +221,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 item.setText(COLUMN_UPDATE, _("Available"))
                 log.debug("Plugin %s: Update column set to 'Available' (fallback)", plugin.plugin_id)
 
-            # Add checkbox for update selection
+            # Add checkbox for update selection only when update is available
             item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
 
             # Check if user has previously unchecked this plugin
@@ -235,6 +237,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         else:
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "                   ")  # hacky
+            # Hide checkbox by clearing CheckStateRole
+            item.setData(COLUMN_UPDATE, QtCore.Qt.ItemDataRole.CheckStateRole, QtCore.QVariant())
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             log.debug("Plugin %s: No update available", plugin.plugin_id)
 
@@ -343,7 +347,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         for i in range(self.topLevelItemCount()):
             item = self.topLevelItem(i)
             item_plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
-            if item_plugin and item_plugin.plugin_id == plugin.plugin_id:
+            if item_plugin and item_plugin.uuid == plugin.uuid:
+                # Update enabled checkbox state
+                item.setCheckState(
+                    COLUMN_ENABLED,
+                    QtCore.Qt.CheckState.Checked if plugin.state.name == 'enabled' else QtCore.Qt.CheckState.Unchecked,
+                )
                 # Update version column to show new ref
                 item.setText(COLUMN_VERSION, self._get_clean_version_display(plugin))
                 # Update update column
@@ -547,6 +556,32 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._toggling_plugins.discard(plugin_id)
         self._refresh_plugin_list()
 
+    def _handle_enable_failure(self, plugin_name, operation, enable_error):
+        """Common handler for plugin enable failures across all operations."""
+        error_msg = str(enable_error) if enable_error else _("Unknown enable error")
+
+        # Use proper translatable messages for each operation
+        if operation == "install":
+            message = _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "reinstall":
+            message = _("Plugin '{}' was reinstalled successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "update":
+            message = _("Plugin '{}' was updated successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "switch":
+            message = _("Plugin '{}' switched successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
+        else:
+            message = _("Plugin '{}' operation completed successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+
+        QtWidgets.QMessageBox.warning(self, _("Plugin Enable Failed"), message)
+
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
         if self._refreshing:
@@ -740,6 +775,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_reinstall_complete(self, plugin, result):
         """Handle reinstall completion."""
         if result.success:
+            # Check for enable failures
+            install_result = result.result
+            if not install_result.enable_success:
+                self._handle_enable_failure(plugin.name or plugin.plugin_id, "reinstall", install_result.enable_error)
+
             self._refresh_plugin_list()
             # Emit signal for options dialog to refresh
             self.plugin_state_changed.emit(plugin, "reinstalled")
@@ -767,22 +807,19 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
         if result.success:
-            # Check for enable failures
+            # Check for enable failures - result.result is now the dictionary directly
             switch_result = result.result
             if (
                 isinstance(switch_result, dict)
                 and switch_result.get('was_enabled')
                 and not switch_result.get('enable_success')
             ):
-                # Plugin switched but failed to enable
-                error_msg = str(switch_result.get('enable_error', 'Unknown enable error'))
-                QtWidgets.QMessageBox.warning(
-                    self,
-                    _("Plugin Enable Failed"),
-                    _("Plugin switched successfully but failed to enable:\n\n{}").format(error_msg),
+                self._handle_enable_failure(
+                    plugin.name or plugin.plugin_id, "switch", switch_result.get('enable_error')
                 )
 
             # Refresh update status for the specific plugin since ref changed
+            self._version_cache.pop(plugin.plugin_id, None)  # Clear version cache
             self._refresh_single_plugin_update_status(plugin)
 
             # Only refresh the display for this specific plugin, not all plugins

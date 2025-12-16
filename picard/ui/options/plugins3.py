@@ -122,6 +122,32 @@ class Plugins3OptionsPage(OptionsPage):
         self.status_messages = []  # Keep track of last 3 messages
         layout.addWidget(self.status_log, 0)  # Minimal space for status
 
+    def _handle_enable_failure(self, plugin_name, operation, enable_error):
+        """Common handler for plugin enable failures across all operations."""
+        error_msg = str(enable_error) if enable_error else _("Unknown enable error")
+
+        # Use proper translatable messages for each operation
+        if operation == "install":
+            message = _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "reinstall":
+            message = _("Plugin '{}' was reinstalled successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "update":
+            message = _("Plugin '{}' was updated successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+        elif operation == "switch":
+            message = _("Plugin '{}' switched successfully but failed to enable:\n\n{}").format(plugin_name, error_msg)
+        else:
+            message = _("Plugin '{}' operation completed successfully but failed to enable:\n\n{}").format(
+                plugin_name, error_msg
+            )
+
+        QtWidgets.QMessageBox.warning(self, _("Plugin Enable Failed"), message)
+
     def _show_status(self, message, clear_after_ms=None):
         """Add message to status log (keeps last 3 messages)."""
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -307,17 +333,7 @@ class Plugins3OptionsPage(OptionsPage):
             install_result = plugin_name_or_result
             plugin_name = install_result.plugin_name
             if not install_result.enable_success:
-                # Show warning about enable failure
-                error_msg = (
-                    str(install_result.enable_error) if install_result.enable_error else _("Unknown enable error")
-                )
-                QtWidgets.QMessageBox.warning(
-                    self,
-                    _("Plugin Enable Failed"),
-                    _("Plugin '{}' was installed successfully but failed to enable:\n\n{}").format(
-                        plugin_name, error_msg
-                    ),
-                )
+                self._handle_enable_failure(plugin_name, "install", install_result.enable_error)
                 self._show_status(_("Plugin '{}' installed but failed to enable").format(plugin_name))
             else:
                 self._show_status(_("Plugin '{}' installed successfully").format(plugin_name))
@@ -413,15 +429,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Check for enable failures
             update_result = result.result
             if hasattr(update_result, 'was_enabled') and update_result.was_enabled and not update_result.enable_success:
-                # Plugin updated but failed to enable
-                error_msg = str(update_result.enable_error) if update_result.enable_error else _("Unknown enable error")
-                QtWidgets.QMessageBox.warning(
-                    self,
-                    _("Plugin Enable Failed"),
-                    _("Plugin '{}' updated successfully but failed to enable:\n\n{}").format(
-                        plugin.name or plugin.plugin_id, error_msg
-                    ),
-                )
+                self._handle_enable_failure(plugin.name or plugin.plugin_id, "update", update_result.enable_error)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))
