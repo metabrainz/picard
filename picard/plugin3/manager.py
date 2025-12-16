@@ -1802,10 +1802,19 @@ class PluginManager(QObject):
         # Check if currently on a tag using RefItem
         if plugin.ref_item and plugin.ref_item.is_tag:
             current_tag = old_ref
-            source = PluginSourceGit(metadata.url, old_ref)
-            latest_tag = source._find_latest_tag(repo, current_tag)
-            if latest_tag and latest_tag != current_tag:
-                new_ref = latest_tag
+
+            # Check if plugin has versioning_scheme for smarter version detection
+            registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
+            if registry_plugin and registry_plugin.versioning_scheme:
+                newer_tag = self._find_newer_version_tag(metadata.url, current_tag, registry_plugin.versioning_scheme)
+                if newer_tag:
+                    new_ref = newer_tag
+            else:
+                # Fallback to basic latest tag detection
+                source = PluginSourceGit(metadata.url, old_ref)
+                latest_tag = source._find_latest_tag(repo, current_tag)
+                if latest_tag and latest_tag != current_tag:
+                    new_ref = latest_tag
 
         return old_ref, new_ref
 
