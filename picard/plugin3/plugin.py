@@ -34,7 +34,7 @@ from picard import log
 if TYPE_CHECKING:
     from picard.git.utils import RefItem
 from picard.extension_points import unregister_module_extensions
-from picard.git.backend import GitBackendError
+from picard.git.backend import GitBackendError, GitObjectType, GitResetMode
 from picard.git.factory import git_backend
 from picard.git.ref_utils import resolve_ref
 from picard.plugin3.api import PluginApi
@@ -184,8 +184,6 @@ class PluginSourceGit(PluginSource):
 
     def _resolve_to_commit(self, obj, repo=None):
         """Resolve a git object to a commit, peeling tags if needed."""
-        from picard.git.backend import GitObjectType
-
         if hasattr(obj, 'type') and obj.type == GitObjectType.TAG and repo:
             return repo.peel_to_commit(obj)
         return obj
@@ -404,8 +402,6 @@ class PluginSourceGit(PluginSource):
         # hard reset to passed ref or HEAD
         commit = self._resolve_to_commit(commit, repo)
         # Use backend for reset operation
-        from picard.git.backend import GitResetMode
-
         repo.reset(commit.id, GitResetMode.HARD)
         commit_id = commit.id
         repo.free()
@@ -474,8 +470,6 @@ class PluginSourceGit(PluginSource):
             commit = repo.revparse_single('HEAD')
 
         commit = self._resolve_to_commit(commit, repo)
-        from picard.git.backend import GitResetMode
-
         repo.reset(commit.id, GitResetMode.HARD)
         new_commit = commit.id
         repo.free()

@@ -226,8 +226,6 @@ def menu_builder(menu, main_actions, *args):
 
 def handle_plugin_enable_failure(plugin_name, operation, enable_error):
     """Common handler for plugin enable failures across all operations."""
-    from picard.i18n import gettext as _
-
     error_msg = str(enable_error) if enable_error else _("Unknown enable error")
 
     # Use proper translatable messages for each operation
