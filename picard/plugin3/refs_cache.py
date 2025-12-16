@@ -443,16 +443,7 @@ class RefsCache:
             cache['ref_items'][plugin_uuid] = {}
 
         # Store RefItems as serializable dicts
-        cache['ref_items'][plugin_uuid][commit_id] = [
-            {
-                'name': item.name,
-                'commit': item.commit,
-                'is_tag': getattr(item, 'is_tag', False),
-                'is_branch': getattr(item, 'is_branch', False),
-                'is_current': getattr(item, 'is_current', False),
-            }
-            for item in ref_items
-        ]
+        cache['ref_items'][plugin_uuid][commit_id] = [item.to_dict() for item in ref_items]
         self.save_cache(cache)
 
     def get_ref_items_for_commit(self, plugin_uuid, commit_id):
@@ -475,16 +466,7 @@ class RefsCache:
             return []
 
         # Reconstruct RefItem objects from cached data
-        return [
-            RefItem(
-                name=item['name'],
-                commit=item['commit'],
-                is_tag=item.get('is_tag', False),
-                is_branch=item.get('is_branch', False),
-                is_current=item.get('is_current', False),
-            )
-            for item in plugin_cache[commit_id]
-        ]
+        return [RefItem.from_dict(item) for item in plugin_cache[commit_id]]
 
     def add_ref_item_to_commit(self, plugin_uuid, commit_id, ref_item):
         """Add a single RefItem to a commit's cache.

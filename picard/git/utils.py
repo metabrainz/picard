@@ -190,3 +190,24 @@ class RefItem:
             return _("{base} (current)").format(base=base)
         else:
             return base
+
+    def to_dict(self):
+        """Serialize RefItem to dictionary for caching."""
+        return {
+            'name': self.name,
+            'commit': self.commit,
+            'is_tag': self.is_tag,
+            'is_branch': self.is_branch,
+            'is_current': self.is_current,
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        """Deserialize RefItem from dictionary."""
+        return cls(
+            name=data['name'],
+            commit=data['commit'],
+            is_tag=data.get('is_tag', False),
+            is_branch=data.get('is_branch', False),
+            is_current=data.get('is_current', False),
+        )
