@@ -49,6 +49,7 @@ from picard.extension_points import (
 from picard.git.backend import GitObjectType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.ref_utils import resolve_ref
 from picard.git.utils import RefItem, get_local_repository_path
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
@@ -1757,22 +1758,9 @@ class PluginManager(QObject):
 
                     # Resolve ref with same logic as update() - try origin/ prefix for branches
                     try:
-                        if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                            # For tags, try refs/tags/ first, then origin/ for branches
-                            try:
-                                obj = repo.revparse_single(f'refs/tags/{ref}')
-                            except KeyError:
-                                # Not a tag, try origin/ prefix for branches
-                                try:
-                                    obj = repo.revparse_single(f'origin/{ref}')
-                                except KeyError:
-                                    # Fall back to original ref (might be commit hash)
-                                    obj = repo.revparse_single(ref)
-                        elif ref.startswith('origin/'):
-                            # Handle origin/ refs - these are branches, not tags
-                            obj = repo.revparse_single(ref)
-                        else:
-                            obj = repo.revparse_single(ref)
+                        # Use resolve_ref for proper reference resolution
+                        resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
+                        obj = repo.revparse_single(resolved_ref)
 
                         # Peel annotated tags to get the actual commit
                         if obj.type == GitObjectType.TAG:
@@ -1877,28 +1865,10 @@ class PluginManager(QObject):
                     # Found newer tag
                     ref = latest_tag
 
-            # Resolve ref with same logic as update() - try appropriate prefix based on ref type
+            # Resolve ref using utility function
             try:
-                if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                    # If we know it's a tag, try refs/tags/ first
-                    if current_is_tag:
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except KeyError:
-                            # Fall back to original ref
-                            obj = repo.revparse_single(ref)
-                    else:
-                        # For branches, try origin/ prefix first
-                        try:
-                            obj = repo.revparse_single(f'origin/{ref}')
-                        except KeyError:
-                            # Fall back to original ref (might be commit hash)
-                            obj = repo.revparse_single(ref)
-                elif ref.startswith('origin/'):
-                    # Handle origin/ refs - these are branches, not tags
-                    obj = repo.revparse_single(ref)
-                else:
-                    obj = repo.revparse_single(ref)
+                resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
+                obj = repo.revparse_single(resolved_ref)
 
                 # Peel annotated tags to get the actual commit
                 if obj.type == GitObjectType.TAG:
