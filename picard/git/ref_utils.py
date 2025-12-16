@@ -47,8 +47,14 @@ def resolve_ref(repo, ref):
         if branch_ref in references:
             return branch_ref, False, True
 
-        # Check for remote branch
-        remote_ref = f'refs/remotes/origin/{ref}'
+        # Check for remote branch (handle both "branch" and "origin/branch" formats)
+        if ref.startswith('origin/'):
+            # Already has origin/ prefix
+            remote_ref = f'refs/remotes/{ref}'
+        else:
+            # Add origin/ prefix
+            remote_ref = f'refs/remotes/origin/{ref}'
+
         if remote_ref in references:
             return remote_ref, False, True
 
