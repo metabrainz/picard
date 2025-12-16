@@ -1583,51 +1583,101 @@ class PluginManager(QObject):
         uuid = PluginValidation.get_plugin_uuid(plugin)
         metadata = self._metadata.get_plugin_metadata(uuid)
 
-        # Check for uncommitted changes
+        self._validate_update_preconditions(plugin, discard_changes)
+
+        old_state = self._capture_plugin_state_before_update(plugin, metadata)
+        self._check_commit_pinning(plugin, old_state['ref'])
+
+        current_url, current_uuid, redirected = self._metadata.check_redirects(old_state['url'], old_state['uuid'])
+        new_ref = self._determine_update_ref(plugin, current_url, current_uuid, old_state['ref'])
+
+        was_enabled = self._prepare_plugin_for_update(plugin)
+        old_commit, new_commit, commit_date, updated_ref = self._perform_plugin_update(plugin, current_url, new_ref)
+
+        # Use the updated ref from the source (may have been updated to a newer tag)
+        final_ref = updated_ref or new_ref
+
+        self._finalize_plugin_update(
+            plugin, metadata, current_url, current_uuid, final_ref, new_commit, redirected, old_state
+        )
+
+        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
+
+        self._log_plugin_update(plugin, old_state, final_ref, new_commit)
+
+        return UpdateResult(
+            old_state['version'] or '',
+            str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else '',
+            old_commit,
+            new_commit,
+            old_state['ref'] or '',
+            final_ref or '',
+            commit_date,
+            enable_success=enable_success,
+            enable_error=enable_error,
+            was_enabled=was_enabled,
+        )
+
+    def _validate_update_preconditions(self, plugin, discard_changes):
+        """Validate that plugin can be updated."""
         if not discard_changes:
             assert plugin.local_path is not None
             changes = GitOperations.check_dirty_working_dir(plugin.local_path)
             if changes:
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
+    def _capture_plugin_state_before_update(self, plugin, metadata):
+        """Capture plugin state before update for comparison."""
         old_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
-        old_url = metadata.url
-        old_uuid = metadata.uuid
-        old_ref = metadata.ref
+        old_ref_item = plugin.ref_item or RefItem(name=metadata.ref or '', commit=metadata.commit or '')
 
-        # Get current RefItem state for better logging
-        old_ref_item = plugin.ref_item or RefItem(name=old_ref or '', commit=metadata.commit or '')
+        return {
+            'version': old_version,
+            'url': metadata.url,
+            'uuid': metadata.uuid,
+            'ref': metadata.ref,
+            'ref_item': old_ref_item,
+        }
 
-        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
-        # Check the stored ref, not current HEAD (tags create detached HEAD but are still updatable)
+    def _check_commit_pinning(self, plugin, old_ref):
+        """Check if plugin is pinned to a specific commit."""
         if old_ref:
             ref_type, _ = GitOperations.check_ref_type(plugin.local_path, old_ref)
             if ref_type == 'commit':
                 raise PluginCommitPinnedError(plugin.plugin_id, old_ref)
         else:
-            # No stored ref, check current HEAD state
             ref_type, ref_name = GitOperations.check_ref_type(plugin.local_path)
             if ref_type == 'commit':
                 raise PluginCommitPinnedError(plugin.plugin_id, ref_name)
 
-        # Check registry for redirects
-        current_url, current_uuid, redirected = self._metadata.check_redirects(old_url, old_uuid)
-
-        # Check if plugin has versioning_scheme and current ref is a version tag
+    def _determine_update_ref(self, plugin, current_url, current_uuid, old_ref):
+        """Determine the ref to update to, checking for newer version tags."""
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
-            # Try to find newer version tags using RefItem system
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
-            if newer_tag:
-                new_ref = newer_tag
-                log.info('Found newer version: %s -> %s', old_ref, new_ref)
 
-        # Check if plugin is currently enabled - disable it to reload module after update
+        if registry_plugin and registry_plugin.versioning_scheme:
+            ref_type, _ = (
+                GitOperations.check_ref_type(plugin.local_path, old_ref)
+                if old_ref
+                else GitOperations.check_ref_type(plugin.local_path)
+            )
+            if ref_type == 'tag':
+                newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
+                if newer_tag:
+                    new_ref = newer_tag
+                    log.info('Found newer version: %s -> %s', old_ref, new_ref)
+
+        return new_ref
+
+    def _prepare_plugin_for_update(self, plugin):
+        """Prepare plugin for update by disabling if enabled."""
         was_enabled = plugin.state == PluginState.ENABLED
         if was_enabled:
             self.disable_plugin(plugin)
+        return was_enabled
 
+    def _perform_plugin_update(self, plugin, current_url, new_ref):
+        """Perform the actual git update and get commit information."""
         source = PluginSourceGit(current_url, new_ref)
         assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
@@ -1636,25 +1686,28 @@ class PluginManager(QObject):
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
         obj = repo.revparse_single(new_commit)
-        # Peel tag to commit if needed
+
         if obj.type == GitObjectType.TAG:
             commit = repo.peel_to_commit(obj)
-            new_commit = commit.id  # Use actual commit ID, not tag object ID
+            new_commit = commit.id
         else:
             commit = obj
-        # Get commit date using backend
+
         commit_date = repo.get_commit_date(commit.id)
         repo.free()
 
-        # Reload manifest to get new version
         plugin.read_manifest()
-        new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
-        new_ref = source.ref  # May have been updated to a newer tag
+        # Return the updated ref from source (may have been updated to a newer tag)
+        return old_commit, new_commit, commit_date, source.ref
 
-        # Update metadata with current URL and UUID
-        # If redirected, preserve original URL/UUID
-        # Use source.ref which may have been updated to a newer tag
-        original_url, original_uuid = self._metadata.get_original_metadata(metadata, redirected, old_url, old_uuid)
+    def _finalize_plugin_update(
+        self, plugin, metadata, current_url, current_uuid, new_ref, new_commit, redirected, old_state
+    ):
+        """Finalize plugin update by saving metadata and updating caches."""
+        original_url, original_uuid = self._metadata.get_original_metadata(
+            metadata, redirected, old_state['url'], old_state['uuid']
+        )
+
         self._metadata.save_plugin_metadata(
             PluginMetadata(
                 name=plugin.plugin_id,
@@ -1667,43 +1720,27 @@ class PluginManager(QObject):
             )
         )
 
-        # Update version tag cache from updated repo
+        # Update version cache if plugin has versioning scheme
+        registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
         if registry_plugin and registry_plugin.versioning_scheme:
             with RefsCacheBatch(self._refs_cache):
                 self._refs_cache.update_cache_from_local_repo(
                     plugin.local_path, current_url, registry_plugin.versioning_scheme
                 )
 
-        # Set RefItem from update operation to preserve tag name
         self._set_plugin_ref_item_from_operation(plugin, new_ref, new_commit, "update")
 
-        # Re-enable plugin if it was enabled before and sync RefItem
-        enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
-
-        # Log update with RefItem formatting
+    def _log_plugin_update(self, plugin, old_state, new_ref, new_commit):
+        """Log plugin update with RefItem formatting."""
         new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
         log.info(
             'Plugin %s updated from %s to %s (update)',
             plugin.plugin_id,
-            old_ref_item.format(),
+            old_state['ref_item'].format(),
             new_ref_item.format(),
         )
 
-        # Emit signal to notify UI that plugin has been updated
         self.plugin_ref_switched.emit(plugin)
-
-        return UpdateResult(
-            old_version or '',
-            new_version or '',
-            old_commit,
-            new_commit,
-            old_ref or '',
-            new_ref or '',
-            commit_date,
-            enable_success=enable_success,
-            enable_error=enable_error,
-            was_enabled=was_enabled,
-        )
 
     def update_all_plugins(self):
         """Update all installed plugins."""
