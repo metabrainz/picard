@@ -414,7 +414,9 @@ class TestPluginCLI(PicardTestCase):
         mock_manager = MockPluginManager()
         mock_manager._registry.find_plugin.return_value = mock_plugin
         mock_manager._find_plugin_by_url.return_value = None  # Not already installed
-        mock_manager.install_plugin.return_value = 'test-plugin'
+        mock_manager.install_plugin.return_value = Mock(
+            plugin_name='test-plugin', enable_success=True, enable_error=None
+        )
 
         exit_code, _, _ = run_cli(mock_manager, install=['test-plugin'])
 

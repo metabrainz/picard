@@ -181,7 +181,17 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.find_plugin = Mock(return_value=mock_plugin)
-        mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
+        mock_manager.switch_ref = Mock(
+            return_value={
+                'old_ref': 'main',
+                'new_ref': 'v1.0.0',
+                'old_commit': 'abc1234',
+                'new_commit': 'def5678',
+                'enable_success': True,
+                'enable_error': None,
+                'was_enabled': True,
+            }
+        )
 
         exit_code, stdout, _ = run_cli(mock_manager, switch_ref=['test-plugin', 'v1.0.0'])
 
@@ -446,7 +456,9 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
-        mock_manager.install_plugin = Mock(return_value='test-plugin')
+        mock_manager.install_plugin = Mock(
+            return_value=Mock(plugin_name='test-plugin', enable_success=True, enable_error=None)
+        )
         mock_manager._find_plugin_by_url = Mock(return_value=None)
         mock_manager._registry = Mock()
         mock_manager._registry.find_plugin = Mock(return_value=None)
