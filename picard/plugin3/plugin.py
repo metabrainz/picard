@@ -412,6 +412,53 @@ class PluginSourceGit(PluginSource):
         repo.free()
         return commit_id
 
+    def _check_current_tag_status(self, repo):
+        """Check if currently on a tag and return tag information."""
+        current_is_tag = False
+        current_tag = None
+        if self.ref:
+            current_is_tag = self._is_tag_ref(repo)
+            if current_is_tag:
+                current_tag = self.ref
+        return current_is_tag, current_tag
+
+    def _fetch_updates(self, repo, backend, single_branch, current_is_tag):
+        """Fetch updates from remote repository."""
+        callbacks = backend.create_remote_callbacks()
+        try:
+            origin_remote = repo.get_remote('origin')
+            if single_branch and self.ref and not current_is_tag:
+                refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
+                repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
+            else:
+                repo.fetch_remote(origin_remote, None, callbacks._callbacks)
+        except (KeyError, GitBackendError):
+            pass
+
+    def _update_to_latest_tag(self, repo, current_is_tag, current_tag):
+        """Update to latest tag if currently on a tag."""
+        if current_is_tag and current_tag:
+            latest_tag = self._find_latest_tag(repo, current_tag)
+            if latest_tag and latest_tag != current_tag:
+                self.ref = latest_tag
+
+    def _resolve_update_commit(self, repo):
+        """Resolve commit for update, preferring remote branches."""
+        if self.ref:
+            resolved_ref, is_tag, is_branch = resolve_ref(repo, self.ref)
+
+            if is_branch and not resolved_ref.startswith('refs/remotes/'):
+                try:
+                    return repo.revparse_single(f'origin/{self.ref}')
+                except (KeyError, GitBackendError):
+                    return repo.revparse_single(resolved_ref)
+            elif is_tag or is_branch:
+                return repo.revparse_single(resolved_ref)
+            else:
+                return repo.revparse_single(self.ref)
+        else:
+            return repo.revparse_single('HEAD')
+
     def update(self, target_directory: Path, single_branch: bool = False):
         """Update plugin to latest version on current ref.
 
@@ -419,61 +466,15 @@ class PluginSourceGit(PluginSource):
             target_directory: Path to plugin directory
             single_branch: If True, only fetch the current ref
         """
-
         backend = git_backend()
         repo = backend.create_repository(target_directory.absolute())
         old_commit = repo.get_head_target()
 
-        # Check if currently on a tag
-        current_is_tag = False
-        current_tag = None
-        if self.ref:
-            # Use robust reference type detection
-            current_is_tag = self._is_tag_ref(repo)
-            if current_is_tag:
-                current_tag = self.ref
+        current_is_tag, current_tag = self._check_current_tag_status(repo)
+        self._fetch_updates(repo, backend, single_branch, current_is_tag)
+        self._update_to_latest_tag(repo, current_is_tag, current_tag)
 
-        callbacks = backend.create_remote_callbacks()
-        try:
-            origin_remote = repo.get_remote('origin')
-            if single_branch and self.ref and not current_is_tag:
-                # Fetch only the specific ref (branch)
-                refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
-                repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
-            else:
-                # Fetch all refs (including tags if on a tag)
-                repo.fetch_remote(origin_remote, None, callbacks._callbacks)
-        except (KeyError, GitBackendError):
-            # No origin remote, skip fetch
-            pass
-
-        # If on a tag, try to find latest tag
-        if current_is_tag and current_tag:
-            latest_tag = self._find_latest_tag(repo, current_tag)
-            if latest_tag and latest_tag != current_tag:
-                # Update to latest tag
-                self.ref = latest_tag
-
-        if self.ref:
-            # For updates, prefer origin/ prefix for branches to get latest changes
-            resolved_ref, is_tag, is_branch = resolve_ref(repo, self.ref)
-
-            if is_branch and not resolved_ref.startswith('refs/remotes/'):
-                # Try origin/ version first for updates (local branch)
-                try:
-                    commit = repo.revparse_single(f'origin/{self.ref}')
-                except (KeyError, GitBackendError):
-                    # Fall back to local branch
-                    commit = repo.revparse_single(resolved_ref)
-            elif is_tag or is_branch:
-                commit = repo.revparse_single(resolved_ref)
-            else:
-                # For commits or unknown refs, try as-is
-                commit = repo.revparse_single(self.ref)
-        else:
-            # No specific ref, use HEAD
-            commit = repo.revparse_single('HEAD')
-
+        commit = self._resolve_update_commit(repo)
         commit = self._resolve_to_commit(commit, repo)
         repo.reset(commit.id, GitResetMode.HARD)
         new_commit = commit.id
