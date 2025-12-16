@@ -775,6 +775,17 @@ class PluginManager(QObject):
         except Exception:
             return ''
 
+    def _enable_plugin_and_sync_ref_item(self, plugin, operation_name="operation", enable=True):
+        """Helper to optionally enable plugin and always sync RefItem, with error handling."""
+        if enable:
+            try:
+                self.enable_plugin(plugin)
+            except Exception as e:
+                log.error('Failed to enable plugin %s after %s: %s', plugin.plugin_id, operation_name, e)
+
+        # Always sync RefItem from actual git state
+        plugin.sync_ref_item_from_git(self)
+
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
@@ -801,10 +812,10 @@ class PluginManager(QObject):
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
 
-        # Sync RefItem from actual git state
-        plugin.sync_ref_item_from_git(self)
+        # Re-enable plugin if it was enabled before to reload the module
+        self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
 
-        # Log plugin ref switch with RefItem formatting
+        # Log plugin ref switch with RefItem formatting (after potential re-sync)
         old_ref_item = RefItem.for_logging(old_ref, old_commit)
         new_ref_item = plugin.ref_item or RefItem.for_logging(new_ref, new_commit)
         log.info(
@@ -813,10 +824,6 @@ class PluginManager(QObject):
             old_ref_item.format() if old_ref_item else 'none',
             new_ref_item.format() if new_ref_item and new_ref_item.is_valid() else 'none',
         )
-
-        # Re-enable plugin if it was enabled before to reload the module
-        if was_enabled:
-            self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
         return old_ref, new_ref, old_commit, new_commit
@@ -1197,8 +1204,8 @@ class PluginManager(QObject):
             plugin = Plugin(self._primary_plugin_dir, plugin_name)
             self._plugins.append(plugin)
 
-            # Sync RefItem from actual git state
-            plugin.sync_ref_item_from_git(self)
+            # Enable plugin if requested and sync RefItem
+            self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
 
             # Log plugin installation with RefItem information
             if reinstall and old_metadata:
@@ -1217,10 +1224,6 @@ class PluginManager(QObject):
                 )
 
             self.plugin_installed.emit(plugin)
-
-            # Enable plugin if requested
-            if enable_after_install:
-                self.enable_plugin(plugin)
 
             return plugin_name
 
@@ -1357,8 +1360,8 @@ class PluginManager(QObject):
         plugin = Plugin(self._primary_plugin_dir, plugin_name)
         self._plugins.append(plugin)
 
-        # Sync RefItem from actual git state
-        plugin.sync_ref_item_from_git(self)
+        # Enable plugin if requested and sync RefItem
+        self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
 
         # Log plugin installation with RefItem information
         if reinstall and old_metadata:
@@ -1375,10 +1378,6 @@ class PluginManager(QObject):
                 plugin_name,
                 plugin.ref_item.format() if plugin.ref_item else 'unknown',
             )
-
-        # Enable plugin if requested
-        if enable_after_install:
-            self.enable_plugin(plugin)
 
         return plugin_name
 
@@ -1556,14 +1555,14 @@ class PluginManager(QObject):
             )
         )
 
-        # Sync RefItem from actual git state
-        plugin.sync_ref_item_from_git(self)
-
         # Update version tag cache from updated repo
         if registry_plugin and registry_plugin.versioning_scheme:
             self._refs_cache.update_cache_from_local_repo(
                 plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
+
+        # Re-enable plugin if it was enabled before and sync RefItem
+        self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
 
         # Log update with RefItem formatting
         new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
@@ -1573,10 +1572,6 @@ class PluginManager(QObject):
             old_ref_item.format(),
             new_ref_item.format(),
         )
-
-        # Re-enable plugin if it was enabled before to reload the module with new code
-        if was_enabled:
-            self.enable_plugin(plugin)
 
         # Emit signal to notify UI that plugin has been updated
         self.plugin_ref_switched.emit(plugin)
