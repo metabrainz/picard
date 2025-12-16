@@ -25,6 +25,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
 from picard.config import get_config
+from picard.git.utils import RefItem
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
@@ -202,8 +203,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version."""
-        from picard import log
-
         if plugin.plugin_id in self._updating_plugins:
             # Show in progress for updating plugins
             item.setText(COLUMN_UPDATE, _("In Progress..."))
@@ -256,7 +255,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
-        from picard.git.utils import RefItem
 
         ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
         commit = getattr(update, 'new_commit', None)
@@ -284,8 +282,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     if refs and refs.get('tags'):
                         # Get the latest tag (first in sorted list)
                         latest_tag = refs['tags'][0]
-                        from picard.git.utils import RefItem
-
                         ref_item = RefItem(name=latest_tag['name'], commit=latest_tag.get('commit'))
                         return ref_item.format()
             except Exception:
