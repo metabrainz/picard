@@ -158,7 +158,6 @@ PLUGIN_DESCRIPTION = "Example plugin for demonstration"
 ```toml
 uuid = "550e8400-e29b-41d4-a716-446655440000"  # Generate with: uuidgen
 name = "Example Plugin"
-version = "1.0.0"
 description = "Example plugin for demonstration"
 api = ["3.0"]
 authors = ["John Doe"]
@@ -464,7 +463,6 @@ picard-plugin-example/
 ```toml
 uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Example Plugin"
-version = "1.0.0"
 description = "Example plugin for demonstration"
 api = ["3.0"]
 authors = ["John Doe"]
