@@ -207,14 +207,14 @@ class RefsCache:
         log.debug('Cached %d tags for %s (%s)', len(tags), url, versioning_scheme)
 
     def get_cached_all_refs(self, url, allow_expired=False):
-        """Get cached all refs (branches and tags) if valid.
+        """Get cached all refs if valid.
 
         Args:
             url: Git repository URL
             allow_expired: If True, return expired cache
 
         Returns:
-            dict with branches and tags, or None if not cached/expired
+            list of RefItem dicts, or None if not cached/expired
         """
 
         cache = self.load_cache()
@@ -233,33 +233,24 @@ class RefsCache:
 
         refs = entry.get('refs')
         if refs:
-            # Validate cache format - reject old format (list of strings)
-            branches = refs.get('branches', [])
-            tags = refs.get('tags', [])
-
-            # Check if new format (list of dicts with 'name' and 'commit')
-            if branches and isinstance(branches[0], str):
-                log.debug('Refs cache has old format for %s, invalidating', url)
-                return None
-            if tags and isinstance(tags[0], str):
+            # Validate cache format - reject old dict format
+            if isinstance(refs, dict):
                 log.debug('Refs cache has old format for %s, invalidating', url)
                 return None
 
-            log.debug(
-                'Using cached refs for %s: %d branches, %d tags',
-                url,
-                len(branches),
-                len(tags),
-            )
+            # Count refs by type for logging
+            branches = sum(1 for ref in refs if ref.get('is_branch', False))
+            tags = sum(1 for ref in refs if ref.get('is_tag', False))
+            log.debug('Using cached refs for %s: %d branches, %d tags', url, branches, tags)
 
         return refs
 
     def cache_all_refs(self, url, refs):
-        """Cache all refs (branches and tags) for url.
+        """Cache all refs for url.
 
         Args:
             url: Git repository URL
-            refs: Dict with 'branches' and 'tags' lists
+            refs: List of RefItem dicts
         """
 
         cache = self.load_cache()
@@ -270,9 +261,11 @@ class RefsCache:
         cache[url]['all_refs'] = {'refs': refs, 'timestamp': int(time.time())}
 
         self.save_cache(cache)
-        log.debug(
-            'Cached refs for %s: %d branches, %d tags', url, len(refs.get('branches', [])), len(refs.get('tags', []))
-        )
+
+        # Count refs by type for logging
+        branches = sum(1 for ref in refs if ref.get('is_branch', False))
+        tags = sum(1 for ref in refs if ref.get('is_tag', False))
+        log.debug('Cached refs for %s: %d branches, %d tags', url, branches, tags)
 
     def cleanup_cache(self):
         """Remove cache entries for URLs no longer in registry.
