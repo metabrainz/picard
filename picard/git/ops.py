@@ -276,7 +276,7 @@ class GitOperations:
                 branch.upstream = branches.remote[f'origin/{ref}']
                 # Now point HEAD to the branch
                 repo.set_head(f'refs/heads/{ref}')
-                log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
+                log.debug('Switched plugin %s to branch %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, commit.id
 
             # Try as tag
@@ -286,7 +286,7 @@ class GitOperations:
                 commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
-                log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                log.debug('Switched plugin %s to tag %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, commit.id
             else:
                 # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
@@ -297,7 +297,7 @@ class GitOperations:
                         commit = repo.peel_to_commit(commit_obj)
                         repo.checkout_tree(commit)
                         repo.set_head(commit.id)
-                        log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                        log.debug('Switched plugin %s to tag %s', plugin.plugin_id, ref)
                         return old_ref, ref, old_commit, commit.id
                 except KeyError:
                     pass
@@ -307,7 +307,7 @@ class GitOperations:
                 commit = repo.revparse_single(ref)
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
-                log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
+                log.debug('Switched plugin %s to commit %s', plugin.plugin_id, ref)
                 return old_ref, ref[:7], old_commit, commit.id
             except KeyError:
                 pass
