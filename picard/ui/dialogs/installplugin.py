@@ -189,18 +189,13 @@ class InstallPluginDialog(QtWidgets.QDialog):
         layout.addStretch()
 
         # Buttons
-        button_layout = QtWidgets.QHBoxLayout()
-
+        button_box = QtWidgets.QDialogButtonBox()
         self.install_button = QtWidgets.QPushButton(_("Install"))
-        self.install_button.clicked.connect(self._install_plugin)
-        self.install_button.setDefault(True)
-        button_layout.addWidget(self.install_button)
-
-        self.cancel_button = QtWidgets.QPushButton(_("Cancel"))
-        self.cancel_button.clicked.connect(self.reject)
-        button_layout.addWidget(self.cancel_button)
-
-        layout.addLayout(button_layout)
+        button_box.addButton(self.install_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self._install_plugin)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
 
         # Connect input changes to validation
         self.url_edit.textChanged.connect(self._validate_input)
