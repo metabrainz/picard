@@ -884,6 +884,122 @@ class PluginManager(QObject):
 
         return ref
 
+    def _get_ref_item_from_git_state(self, plugin_uuid, repo):
+        """Get RefItem from actual git repository state, handling annotated tags.
+
+        Args:
+            plugin_uuid: Plugin UUID for refs_cache lookup
+            repo: Git repository object
+
+        Returns:
+            RefItem: Current ref state from git repository
+        """
+        from picard.git.utils import RefItem
+
+        current_commit = repo.get_head_target()
+
+        if repo.is_head_detached():
+            # Check if this commit corresponds to any annotated tags
+            matching_tags = self._resolve_annotated_tag_info(repo, current_commit)
+            if matching_tags:
+                # Use refs_cache to pick the best tag name
+                return self._get_ref_item_from_commit(
+                    plugin_uuid, current_commit, lambda refs: self._prefer_known_tag(refs, matching_tags)
+                )
+            else:
+                # Detached HEAD with no known tags - use commit hash
+                return RefItem(name=current_commit[:7] if current_commit else '', commit=current_commit or '')
+        else:
+            # On a branch
+            ref_name = repo.get_head_shorthand()
+            return RefItem(name=ref_name or '', commit=current_commit or '', is_branch=True)
+
+    def _resolve_annotated_tag_info(self, repo, commit_id):
+        """Resolve if current commit corresponds to any annotated tags."""
+        try:
+            # Get all tags that point to this commit
+            refs = repo.get_references()
+            matching_tags = []
+
+            for ref_name, _ref_target in refs.items():
+                if ref_name.startswith('refs/tags/'):
+                    tag_name = ref_name[10:]  # Remove 'refs/tags/'
+
+                    # For annotated tags, we need to peel to the commit
+                    try:
+                        tag_obj = repo.revparse_single(ref_name)
+                        target_commit = repo.peel_to_commit(tag_obj)
+                        if target_commit.id == commit_id:
+                            matching_tags.append(tag_name)
+                    except Exception:
+                        continue
+
+            return matching_tags
+        except Exception:
+            return []
+
+    def _get_ref_item_from_commit(self, plugin_uuid, commit_id, preferred_ref_method=None):
+        """Get best RefItem for plugin based on commit ID using cache.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            commit_id: Full commit ID
+            preferred_ref_method: Optional function to select preferred RefItem from list
+
+        Returns:
+            RefItem: Best matching RefItem or fallback RefItem
+        """
+        from picard.git.utils import RefItem
+
+        ref_items = self._refs_cache.get_ref_items_for_commit(plugin_uuid, commit_id)
+        if not ref_items:
+            return RefItem(name='', commit=commit_id or '')
+
+        if len(ref_items) == 1:
+            return ref_items[0]
+
+        # Use preference method if provided
+        if preferred_ref_method:
+            return preferred_ref_method(ref_items)
+
+        # Default preference: tags over branches
+        return self._default_ref_preference(ref_items)
+
+    def _default_ref_preference(self, ref_items):
+        """Default preference: tags over branches, semantic versions over others."""
+        tags = [item for item in ref_items if getattr(item, 'is_tag', False)]
+        if tags:
+            # Could sort by semantic version here in the future
+            return tags[0]
+        return ref_items[0]
+
+    def _prefer_known_tag(self, ref_items, known_tag_names):
+        """Prefer refs that match known tag names."""
+        for tag_name in known_tag_names:
+            for item in ref_items:
+                if item.name == tag_name:
+                    return item
+        # Fallback to default preference
+        return self._default_ref_preference(ref_items)
+
+    def _normalize_ref_parameter(self, ref):
+        """Convert ref parameter to RefItem.
+
+        Args:
+            ref: RefItem, string, or None
+
+        Returns:
+            RefItem or None
+        """
+        from picard.git.utils import RefItem
+
+        if isinstance(ref, RefItem):
+            return ref
+        elif isinstance(ref, str):
+            return RefItem(name=ref, commit='')  # Commit will be resolved later
+        else:
+            return None
+
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
     ):
