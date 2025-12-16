@@ -360,12 +360,16 @@ class PluginManager(QObject):
             # Use cached data even if expired to avoid network calls
             cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
             if cached_refs is not None:
-                return self._convert_cached_refs_to_refitems(cached_refs)
+                converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
+                if converted_refs is not None:
+                    return converted_refs
         elif use_cache:
             # Only use non-expired cache when force refreshing
             cached_refs = self._refs_cache.get_cached_all_refs(url)
             if cached_refs is not None:
-                return self._convert_cached_refs_to_refitems(cached_refs)
+                converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
+                if converted_refs is not None:
+                    return converted_refs
 
         remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
         if not remote_refs:
@@ -373,8 +377,10 @@ class PluginManager(QObject):
             if use_cache:
                 stale_cache = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
                 if stale_cache:
-                    log.info('Using stale refs cache for %s due to fetch error', url)
-                    return self._convert_cached_refs_to_refitems(stale_cache)
+                    converted_refs = self._convert_cached_refs_to_refitems(stale_cache)
+                    if converted_refs is not None:
+                        log.info('Using stale refs cache for %s due to fetch error', url)
+                        return converted_refs
             return None
 
         # Collect all refs with their commit IDs
@@ -415,15 +421,11 @@ class PluginManager(QObject):
 
     def _convert_cached_refs_to_refitems(self, cached_refs):
         """Convert cached refs to RefItem objects."""
-        if isinstance(cached_refs, list):
-            # New format: single list of RefItem dicts
+        try:
             return [RefItem.from_dict(ref) for ref in cached_refs]
-        else:
-            # Legacy format: separate branches and tags
-            refs = []
-            refs.extend([RefItem.from_dict(ref) for ref in cached_refs.get('branches', [])])
-            refs.extend([RefItem.from_dict(ref) for ref in cached_refs.get('tags', [])])
-            return refs
+        except (TypeError, ValueError, KeyError):
+            # Cache format invalid, ignore and fetch fresh
+            return None
 
     def get_plugin_refs_info(self, identifier):
         """Get plugin refs information from identifier.
