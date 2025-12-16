@@ -803,9 +803,26 @@ class PluginManager(QObject):
                 enable_success = False
                 error = e
 
-        # Always sync RefItem from actual git state
-        plugin.sync_ref_item_from_git(self)
+        # Only sync RefItem from git if not already set (e.g., during install)
+        if not (hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid()):
+            plugin.sync_ref_item_from_git(self)
         return enable_success, error
+
+    def _create_ref_item_from_target(self, target_ref_item, commit_id):
+        """Create RefItem from target ref and commit, preserving ref type."""
+        return RefItem(
+            name=target_ref_item.name,
+            commit=commit_id,
+            is_tag=target_ref_item.is_tag,
+            is_branch=target_ref_item.is_branch,
+        )
+
+    def _set_plugin_ref_item_after_install(self, plugin, target_ref_item, commit_id):
+        """Set plugin RefItem after installation, using requested ref or detecting from git."""
+        if target_ref_item:
+            plugin.ref_item = self._create_ref_item_from_target(target_ref_item, commit_id)
+        else:
+            plugin.sync_ref_item_from_git(self)
 
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
@@ -833,17 +850,27 @@ class PluginManager(QObject):
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
 
+        # Immediately sync RefItem after git switch so it's available for UI
+        # Set RefItem directly from switch operation to preserve tag/branch name
+        if target_ref_item:
+            plugin.ref_item = self._create_ref_item_from_target(target_ref_item, new_commit)
+        else:
+            # Fallback to git detection for commit hashes or unknown refs
+            plugin.sync_ref_item_from_git(self)
+
         # Re-enable plugin if it was enabled before to reload the module
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
 
         # Log plugin ref switch with RefItem formatting (after potential re-sync)
-        old_ref_item = RefItem.for_logging(old_ref, old_commit)
-        new_ref_item = plugin.ref_item or RefItem.for_logging(new_ref, new_commit)
+        # Use the original ref parameter and resolved ref for better logging
+        old_ref_display = old_ref if old_ref else f"@{old_commit[:7]}" if old_commit else 'none'
+        new_ref_display = ref_name if ref_name else f"@{new_commit[:7]}" if new_commit else 'none'
+
         log.info(
             'Plugin %s switching ref from %s to %s (switch-ref)',
             plugin.plugin_id,
-            old_ref_item.format() if old_ref_item else 'none',
-            new_ref_item.format() if new_ref_item and new_ref_item.is_valid() else 'none',
+            old_ref_display,
+            new_ref_display,
         )
 
         # Return enable status for UI handling
@@ -1229,6 +1256,9 @@ class PluginManager(QObject):
             plugin = Plugin(self._primary_plugin_dir, plugin_name)
             self._plugins.append(plugin)
 
+            # Set RefItem from install operation
+            self._set_plugin_ref_item_after_install(plugin, target_ref_item, commit_id)
+
             # Enable plugin if requested and sync RefItem
             enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
                 plugin, "install", enable=enable_after_install
@@ -1386,6 +1416,12 @@ class PluginManager(QObject):
         # Add newly installed plugin to the plugins list
         plugin = Plugin(self._primary_plugin_dir, plugin_name)
         self._plugins.append(plugin)
+
+        # Set RefItem from install operation (only for git repos)
+        if is_git_repo:
+            self._set_plugin_ref_item_after_install(plugin, target_ref_item, commit_to_save)
+        else:
+            plugin.sync_ref_item_from_git(self)
 
         # Enable plugin if requested and sync RefItem
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
@@ -1781,10 +1817,9 @@ class PluginManager(QObject):
             # Update version tag cache from fetched repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
             if registry_plugin and registry_plugin.versioning_scheme:
-                with RefsCacheBatch(self._refs_cache):
-                    self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                    )
+                self._refs_cache.update_cache_from_local_repo(
+                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
+                )
 
             old_ref = metadata.ref or 'main'
             ref = old_ref
@@ -1896,6 +1931,18 @@ class PluginManager(QObject):
         if not metadata:
             return ""
 
+        # Try to get plugin object to use live RefItem if available
+        plugin = None
+        for p in self._plugins:
+            if p.uuid == metadata.uuid:
+                plugin = p
+                break
+
+        # Prioritize live RefItem over stored metadata
+        if plugin and hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid():
+            return plugin.ref_item.format()
+
+        # Fallback to stored metadata
         ref_item = RefItem(name=getattr(metadata, 'ref', ''), commit=getattr(metadata, 'commit', ''))
         return ref_item.format()
 
