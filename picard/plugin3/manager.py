@@ -967,11 +967,51 @@ class PluginManager(QObject):
 
     def _default_ref_preference(self, ref_items):
         """Default preference: tags over branches, semantic versions over others."""
-        tags = [item for item in ref_items if getattr(item, 'is_tag', False)]
+        # Since RefItems are now sortable, use the built-in sorting
+        sorted_items = sorted(ref_items)
+
+        tags = [item for item in sorted_items if item.is_tag]
         if tags:
-            # Could sort by semantic version here in the future
-            return tags[0]
-        return ref_items[0]
+            # Try to find semantic version tags first
+            semantic_tags = self._sort_by_semantic_version(tags)
+            if semantic_tags:
+                return semantic_tags[0]  # Return highest semantic version
+            return tags[0]  # Fallback to first sorted tag
+
+        # No tags, return first sorted item (branches come after tags in sorting)
+        return sorted_items[0] if sorted_items else ref_items[0]
+
+    def _sort_by_semantic_version(self, ref_items):
+        """Sort RefItems by semantic version (highest first).
+
+        Args:
+            ref_items: List of RefItem objects
+
+        Returns:
+            List of RefItems sorted by semantic version, or empty list if none are semantic versions
+        """
+        import re
+
+        # Regex for semantic version (e.g., v1.2.3, 2.0.1, v10.5.0-beta)
+        semver_pattern = re.compile(r'^v?(\d+)\.(\d+)\.(\d+)(?:-([a-zA-Z0-9.-]+))?$')
+
+        semantic_versions = []
+        for item in ref_items:
+            match = semver_pattern.match(item.name)
+            if match:
+                major, minor, patch = map(int, match.groups()[:3])
+                prerelease = match.group(4) or ''
+                # Sort key: (major, minor, patch, not has_prerelease, prerelease)
+                # This puts stable versions before prereleases
+                sort_key = (major, minor, patch, not bool(prerelease), prerelease)
+                semantic_versions.append((sort_key, item))
+
+        if not semantic_versions:
+            return []
+
+        # Sort by version (highest first)
+        semantic_versions.sort(key=lambda x: x[0], reverse=True)
+        return [item for _, item in semantic_versions]
 
     def _prefer_known_tag(self, ref_items, known_tag_names):
         """Prefer refs that match known tag names."""
@@ -1007,7 +1047,7 @@ class PluginManager(QObject):
 
         Args:
             url: Git repository URL or local directory path
-            ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
+            ref: Target ref - can be RefItem (with commit info), string (ref name), or None (default)
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             discard_changes: If True, discard uncommitted changes on reinstall
@@ -1016,6 +1056,9 @@ class PluginManager(QObject):
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
+        # Normalize ref parameter to RefItem
+        target_ref_item = self._normalize_ref_parameter(ref)
+        ref_name = target_ref_item.name if target_ref_item else None
 
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
@@ -1054,13 +1097,13 @@ class PluginManager(QObject):
                     shutil.rmtree(temp_path)
 
             # Clone or update temporary location with single-branch optimization
-            source = PluginSourceGit(url, ref)
+            source = PluginSourceGit(url, ref_name)
             try:
                 commit_id = source.sync(temp_path, single_branch=True)
             except Exception as e:
                 # If sync fails and we're using a preserved ref, try fallback to default
-                if ref and reinstall:
-                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
+                if ref_name and reinstall:
+                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref_name, e)
                     source = PluginSourceGit(url, None)  # Use default ref
                     commit_id = source.sync(temp_path, single_branch=True)
                 else:
@@ -1153,27 +1196,31 @@ class PluginManager(QObject):
                 )
             )
 
-            # Log plugin installation with ref information
+            # Add newly installed plugin to the plugins list
+            plugin = Plugin(self._primary_plugin_dir, plugin_name)
+            self._plugins.append(plugin)
+
+            # Sync RefItem from actual git state
+            plugin.sync_ref_item_from_git(self)
+
+            # Log plugin installation with RefItem information
             from picard.git.utils import RefItem
 
             if reinstall and old_metadata:
-                # For reinstall, use the captured old metadata
                 old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
-                new_ref_item = RefItem(name=source.resolved_ref or '', commit=commit_id or '')
                 log.info(
                     'Plugin %s switching ref from %s to %s (reinstall)',
                     plugin_name,
                     old_ref_item.format(),
-                    new_ref_item.format(),
+                    plugin.ref_item.format() if plugin.ref_item else 'unknown',
                 )
             else:
-                # For new install, no "from" part
-                new_ref_item = RefItem(name=source.resolved_ref or '', commit=commit_id or '')
-                log.info('Plugin %s switching ref to %s (install)', plugin_name, new_ref_item.format())
+                log.info(
+                    'Plugin %s switching ref to %s (install)',
+                    plugin_name,
+                    plugin.ref_item.format() if plugin.ref_item else 'unknown',
+                )
 
-            # Add newly installed plugin to the plugins list
-            plugin = Plugin(self._primary_plugin_dir, plugin_name)
-            self._plugins.append(plugin)
             self.plugin_installed.emit(plugin)
 
             # Enable plugin if requested
@@ -1205,13 +1252,16 @@ class PluginManager(QObject):
             local_path: Path to local plugin directory
             reinstall: If True, reinstall even if already exists
             force_blacklisted: If True, bypass blacklist check (dangerous!)
-            ref: Git ref to checkout if local_path is a git repository
+            ref: Target ref - can be RefItem (with commit info), string (ref name), or None (default)
             discard_changes: If True, discard uncommitted changes on reinstall
             enable_after_install: If True, enable the plugin after successful installation
 
         Returns:
             str: Plugin ID
         """
+        # Normalize ref parameter to RefItem
+        target_ref_item = self._normalize_ref_parameter(ref)
+        ref_name = target_ref_item.name if target_ref_item else None
         # Preserve original ref if reinstalling and no ref specified
         ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
@@ -1239,7 +1289,7 @@ class PluginManager(QObject):
             temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
 
             try:
-                source = PluginSourceGit(str(local_path), ref)
+                source = PluginSourceGit(str(local_path), ref_name)
                 commit_id = source.sync(temp_path, single_branch=True)
                 install_path = temp_path
                 ref_to_save = source.resolved_ref
@@ -1308,33 +1358,35 @@ class PluginManager(QObject):
             )
         )
 
-        # Log plugin installation with ref information
+        # Add newly installed plugin to the plugins list
+        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        self._plugins.append(plugin)
+
+        # Sync RefItem from actual git state
+        plugin.sync_ref_item_from_git(self)
+
+        # Log plugin installation with RefItem information
         from picard.git.utils import RefItem
 
         if reinstall and old_metadata:
-            # For reinstall, use the captured old metadata
             old_ref_item = RefItem(name=old_metadata.ref or '', commit=old_metadata.commit or '')
-            new_ref_item = RefItem(name=ref_to_save or '', commit=commit_to_save or '')
             log.info(
                 'Plugin %s switching ref from %s to %s (reinstall)',
                 plugin_name,
                 old_ref_item.format(),
-                new_ref_item.format(),
+                plugin.ref_item.format() if plugin.ref_item else 'unknown',
             )
         else:
-            # For new install, no "from" part
-            new_ref_item = RefItem(name=ref_to_save or '', commit=commit_to_save or '')
-            log.info('Plugin %s switching ref to %s (install)', plugin_name, new_ref_item.format())
-
-        # Add newly installed plugin to the plugins list
-        plugin = Plugin(self._primary_plugin_dir, plugin_name)
-        self._plugins.append(plugin)
+            log.info(
+                'Plugin %s switching ref to %s (install)',
+                plugin_name,
+                plugin.ref_item.format() if plugin.ref_item else 'unknown',
+            )
 
         # Enable plugin if requested
         if enable_after_install:
             self.enable_plugin(plugin)
 
-        log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
     def _fetch_version_tags_impl(self, url, versioning_scheme):

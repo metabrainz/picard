@@ -42,6 +42,7 @@ class TestRefItemSerialization(PicardTestCase):
             'is_tag': True,
             'is_branch': False,
             'is_current': True,
+            'ref_type': 'tag',  # Added by enhancement
         }
 
         self.assertEqual(result, expected)

@@ -454,7 +454,7 @@ class RefsCache:
             commit_id: Full commit ID
 
         Returns:
-            List of RefItem objects, or empty list if not found
+            List of RefItem objects, sorted by preference (tags first, then branches)
         """
         from picard.git.utils import RefItem
 
@@ -465,8 +465,17 @@ class RefsCache:
         if commit_id not in plugin_cache:
             return []
 
-        # Reconstruct RefItem objects from cached data
-        return [RefItem.from_dict(item) for item in plugin_cache[commit_id]]
+        try:
+            # Reconstruct RefItem objects from cached data with error handling
+            ref_items = [RefItem.from_dict(item) for item in plugin_cache[commit_id]]
+            # Sort RefItems by preference (tags first, then branches, then by name)
+            return sorted(ref_items)
+        except (ValueError, KeyError) as e:
+            # Handle corrupted cache data gracefully
+            from picard import log
+
+            log.debug(f"Failed to deserialize RefItems for {plugin_uuid}:{commit_id}: {e}")
+            return []
 
     def add_ref_item_to_commit(self, plugin_uuid, commit_id, ref_item):
         """Add a single RefItem to a commit's cache.
@@ -485,3 +494,92 @@ class RefsCache:
 
         existing_items.append(ref_item)
         self.cache_ref_items_for_commit(plugin_uuid, commit_id, existing_items)
+
+    def get_sorted_ref_items_for_commit(self, plugin_uuid, commit_id, prefer_tags=True):
+        """Get sorted RefItems for a commit with preference options.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            commit_id: Full commit ID
+            prefer_tags: If True, prioritize tags over branches
+
+        Returns:
+            List of RefItem objects, sorted by preference
+        """
+        ref_items = self.get_ref_items_for_commit(plugin_uuid, commit_id)
+
+        if not prefer_tags:
+            # Reverse the default sorting to prefer branches
+            return sorted(ref_items, key=lambda x: (x.is_tag, x.name))
+
+        return ref_items
+
+    def find_ref_items_by_name(self, plugin_uuid, ref_name):
+        """Find all RefItems matching a specific ref name across all commits.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            ref_name: Reference name to search for
+
+        Returns:
+            List of (commit_id, RefItem) tuples
+        """
+        from picard.git.utils import RefItem
+
+        cache = self.load_cache()
+        plugin_cache = cache.get('ref_items', {}).get(plugin_uuid, {})
+
+        matches = []
+        for commit_id, ref_items_data in plugin_cache.items():
+            try:
+                for item_data in ref_items_data:
+                    ref_item = RefItem.from_dict(item_data)
+                    if ref_item.name == ref_name:
+                        matches.append((commit_id, ref_item))
+            except (ValueError, KeyError):
+                continue
+
+        return matches
+
+    def cleanup_invalid_ref_items(self, plugin_uuid):
+        """Remove invalid RefItems from cache for a plugin.
+
+        Args:
+            plugin_uuid: Plugin UUID
+
+        Returns:
+            int: Number of invalid items removed
+        """
+        from picard.git.utils import RefItem
+
+        cache = self.load_cache()
+        plugin_cache = cache.get('ref_items', {}).get(plugin_uuid, {})
+
+        removed_count = 0
+        commits_to_remove = []
+
+        for commit_id, ref_items_data in plugin_cache.items():
+            valid_items = []
+            for item_data in ref_items_data:
+                try:
+                    ref_item = RefItem.from_dict(item_data)
+                    if ref_item.is_valid():
+                        valid_items.append(item_data)
+                    else:
+                        removed_count += 1
+                except (ValueError, KeyError):
+                    removed_count += 1
+
+            if valid_items:
+                plugin_cache[commit_id] = valid_items
+            else:
+                commits_to_remove.append(commit_id)
+
+        # Remove commits with no valid RefItems
+        for commit_id in commits_to_remove:
+            del plugin_cache[commit_id]
+
+        if removed_count > 0:
+            self.save_cache(cache)
+
+        return removed_count

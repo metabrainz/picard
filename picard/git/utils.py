@@ -159,6 +159,30 @@ class RefItem:
     is_tag: bool = False
     is_branch: bool = False
 
+    def __eq__(self, other):
+        """Check equality based on name and commit."""
+        if not isinstance(other, RefItem):
+            return False
+        return self.name == other.name and self.commit == other.commit
+
+    def __hash__(self):
+        """Make RefItem hashable for use in sets and dicts."""
+        return hash((self.name, self.commit))
+
+    def __lt__(self, other):
+        """Enable sorting of RefItems (tags first, then branches, then by name)."""
+        if not isinstance(other, RefItem):
+            return NotImplemented
+
+        # Tags come before branches
+        if self.is_tag and not other.is_tag:
+            return True
+        if not self.is_tag and other.is_tag:
+            return False
+
+        # Within same type, sort by name
+        return self.name < other.name
+
     def format(self, ref_formatter=None, commit_formatter=None, current_formatter=None) -> str:
         """Format ref and commit for display."""
         from picard.plugin3.plugin import short_commit_id
@@ -191,6 +215,35 @@ class RefItem:
         else:
             return base
 
+    def is_valid(self) -> bool:
+        """Check if RefItem has valid data."""
+        return bool(self.name or self.commit)
+
+    def is_commit_only(self) -> bool:
+        """Check if this RefItem represents a commit without a named ref."""
+        return bool(self.commit and (not self.name or self.name == self.commit or self.name == self.commit[:7]))
+
+    def get_ref_type(self) -> str:
+        """Get the type of reference as a string."""
+        if self.is_tag:
+            return "tag"
+        elif self.is_branch:
+            return "branch"
+        elif self.is_commit_only():
+            return "commit"
+        else:
+            return "unknown"
+
+    def copy(self, **kwargs):
+        """Create a copy of this RefItem with optional field overrides."""
+        return RefItem(
+            name=kwargs.get('name', self.name),
+            commit=kwargs.get('commit', self.commit),
+            is_current=kwargs.get('is_current', self.is_current),
+            is_tag=kwargs.get('is_tag', self.is_tag),
+            is_branch=kwargs.get('is_branch', self.is_branch),
+        )
+
     def to_dict(self):
         """Serialize RefItem to dictionary for caching."""
         return {
@@ -199,15 +252,53 @@ class RefItem:
             'is_tag': self.is_tag,
             'is_branch': self.is_branch,
             'is_current': self.is_current,
+            'ref_type': self.get_ref_type(),  # Add computed field for debugging
         }
 
     @classmethod
     def from_dict(cls, data):
-        """Deserialize RefItem from dictionary."""
+        """Deserialize RefItem from dictionary with validation."""
+        if not isinstance(data, dict):
+            raise ValueError("RefItem data must be a dictionary")
+
+        # Validate required fields
+        name = data.get('name', '')
+        commit = data.get('commit', '')
+
+        if not name and not commit:
+            raise ValueError("RefItem must have either name or commit")
+
         return cls(
-            name=data['name'],
-            commit=data['commit'],
+            name=name,
+            commit=commit,
             is_tag=data.get('is_tag', False),
             is_branch=data.get('is_branch', False),
             is_current=data.get('is_current', False),
+        )
+
+    @classmethod
+    def create_from_ref_name(cls, ref_name: str, commit: str = '', is_current: bool = False):
+        """Create RefItem from ref name with automatic type detection."""
+        if not ref_name:
+            return cls(name='', commit=commit, is_current=is_current)
+
+        # Detect ref type from name
+        is_tag = ref_name.startswith('refs/tags/') or not ref_name.startswith('refs/')
+        is_branch = ref_name.startswith('refs/heads/') or ref_name.startswith('refs/remotes/')
+
+        # Clean up ref name for display
+        display_name = ref_name
+        if ref_name.startswith('refs/tags/'):
+            display_name = ref_name[10:]  # Remove 'refs/tags/'
+        elif ref_name.startswith('refs/heads/'):
+            display_name = ref_name[11:]  # Remove 'refs/heads/'
+        elif ref_name.startswith('refs/remotes/origin/'):
+            display_name = ref_name[20:]  # Remove 'refs/remotes/origin/'
+
+        return cls(
+            name=display_name,
+            commit=commit,
+            is_current=is_current,
+            is_tag=is_tag,
+            is_branch=is_branch,
         )
