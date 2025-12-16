@@ -279,10 +279,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 refs_info = self.plugin_manager.get_plugin_refs_info(plugin.plugin_id)
                 if refs_info and refs_info.get('url'):
                     refs = self.plugin_manager.fetch_all_git_refs(refs_info['url'])
-                    if refs and refs.get('tags'):
-                        # Get the latest tag (first in sorted list)
-                        latest_tag = refs['tags'][0]
-                        return latest_tag.format()
+                    if refs:
+                        # Get the latest tag (tags are sorted first, then by name)
+                        tags = [ref for ref in refs if ref.is_tag]
+                        if tags:
+                            return tags[0].format()
             except Exception:
                 pass
 

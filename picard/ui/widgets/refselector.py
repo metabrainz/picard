@@ -82,7 +82,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
         current_tab_index = None
 
         # Populate tags
-        for ref_item in refs.get('tags', []):
+        for ref_item in [ref for ref in refs if ref.is_tag]:
             is_current = current_ref and ref_item.name == current_ref
             # Update the is_current flag
             ref_item_copy = RefItem(
@@ -102,7 +102,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
                 current_item_found = True
 
         # Populate branches
-        for ref_item in refs.get('branches', []):
+        for ref_item in [ref for ref in refs if ref.is_branch]:
             is_current = current_ref and ref_item.name == current_ref
             # Update the is_current flag
             ref_item_copy = RefItem(

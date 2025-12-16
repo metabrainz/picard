@@ -353,10 +353,7 @@ class PluginManager(QObject):
             force_refresh: If True, ignore cache and fetch from network
 
         Returns:
-            dict with keys:
-                - branches: List of RefItem objects for branches
-                - tags: List of RefItem objects for tags
-            or None on error
+            list of RefItem objects for all refs, or None on error
         """
         # Check cache first
         if use_cache and not force_refresh:
@@ -380,9 +377,9 @@ class PluginManager(QObject):
                     return self._convert_cached_refs_to_refitems(stale_cache)
             return None
 
-        # Separate branches and tags with their commit IDs
+        # Collect all refs with their commit IDs
         # For annotated tags, git provides both the tag object and dereferenced commit (^{})
-        branches = []
+        refs = []
         tags = {}  # Use dict to merge tag object with dereferenced commit
 
         for ref in remote_refs:
@@ -391,7 +388,7 @@ class PluginManager(QObject):
 
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]
-                branches.append(RefItem(name=branch_name, commit=commit_id, is_tag=False))
+                refs.append(RefItem(name=branch_name, commit=commit_id, is_branch=True))
             elif ref_name.startswith('refs/tags/'):
                 tag_name = ref_name[len('refs/tags/') :]
                 # Check if this is a dereferenced tag (^{})
@@ -405,27 +402,28 @@ class PluginManager(QObject):
                     if tag_name not in tags:
                         tags[tag_name] = RefItem(name=tag_name, commit=commit_id, is_tag=True)
 
-        result = {
-            'branches': sorted(branches, key=lambda x: x.name),
-            'tags': sorted(tags.values(), key=lambda x: x.name, reverse=True),
-        }
+        # Add tags to refs list and sort
+        refs.extend(tags.values())
+        refs.sort(key=lambda x: (not x.is_tag, x.name))  # Tags first, then branches, both sorted by name
 
         # Cache the result using RefItem serialization
         if use_cache:
-            cache_result = {
-                'branches': [ref.to_dict() for ref in result['branches']],
-                'tags': [ref.to_dict() for ref in result['tags']],
-            }
+            cache_result = [ref.to_dict() for ref in refs]
             self._refs_cache.cache_all_refs(url, cache_result)
 
-        return result
+        return refs
 
     def _convert_cached_refs_to_refitems(self, cached_refs):
-        """Convert cached refs dictionaries to RefItem objects."""
-        return {
-            'branches': [RefItem.from_dict(ref) for ref in cached_refs['branches']],
-            'tags': [RefItem.from_dict(ref) for ref in cached_refs['tags']],
-        }
+        """Convert cached refs to RefItem objects."""
+        if isinstance(cached_refs, list):
+            # New format: single list of RefItem dicts
+            return [RefItem.from_dict(ref) for ref in cached_refs]
+        else:
+            # Legacy format: separate branches and tags
+            refs = []
+            refs.extend([RefItem.from_dict(ref) for ref in cached_refs.get('branches', [])])
+            refs.extend([RefItem.from_dict(ref) for ref in cached_refs.get('tags', [])])
+            return refs
 
     def get_plugin_refs_info(self, identifier):
         """Get plugin refs information from identifier.
@@ -1492,7 +1490,7 @@ class PluginManager(QObject):
             return []
 
         # Filter and sort tags from cached refs
-        tags = [tag.name for tag in all_refs.get('tags', []) if pattern.match(tag.name)]
+        tags = [ref.name for ref in all_refs if ref.is_tag and pattern.match(ref.name)]
         tags = self._refs_cache.sort_tags(tags, versioning_scheme)
 
         # Cache the result

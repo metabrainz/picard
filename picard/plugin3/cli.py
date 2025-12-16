@@ -618,8 +618,8 @@ class PluginCLI:
                     self._out.error(f'  {line}')
             return ExitCode.ERROR
 
-        branches = git_refs['branches']
-        tags = git_refs['tags']
+        branches = [ref for ref in git_refs if ref.is_branch]
+        tags = [ref for ref in git_refs if ref.is_tag]
 
         # Show branches
         if branches:
