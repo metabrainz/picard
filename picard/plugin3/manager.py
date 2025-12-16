@@ -1761,91 +1761,98 @@ class PluginManager(QObject):
         updates = []
         with RefsCacheBatch(self._refs_cache):
             for plugin in self._plugins:
-                if not plugin.uuid:
-                    continue
-
-                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-                if not metadata or not metadata.url:
-                    continue
-
-                try:
-                    backend = git_backend()
-                    repo = backend.create_repository(plugin.local_path)
-                    current_commit = repo.get_head_target()
-
-                    # Fetch without updating (suppress progress output)
-                    callbacks = backend.create_remote_callbacks()
-                    for remote in repo.get_remotes():
-                        repo.fetch_remote(remote, None, callbacks._callbacks)
-
-                    # Update version tag cache from fetched repo if plugin has versioning_scheme
-                    registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
-                    if registry_plugin and registry_plugin.versioning_scheme:
-                        self._refs_cache.update_cache_from_local_repo(
-                            plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                        )
-
-                    old_ref = metadata.ref or 'main'
-                    ref = old_ref
-
-                    # Check if currently on a tag using RefItem
-                    current_is_tag = False
-                    current_tag = None
-                    if plugin.ref_item and plugin.ref_item.is_tag:
-                        current_is_tag = True
-                        current_tag = ref
-
-                    # If on a tag, check for newer version tag
-                    new_ref = None
-                    if current_is_tag and current_tag:
-                        source = PluginSourceGit(metadata.url, ref)
-                        latest_tag = source._find_latest_tag(repo, current_tag)
-                        if latest_tag and latest_tag != current_tag:
-                            # Found newer tag
-                            ref = latest_tag
-                            new_ref = latest_tag
-
-                    # Resolve ref with same logic as update() - try origin/ prefix for branches
-                    try:
-                        # Use resolve_ref for proper reference resolution
-                        resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
-                        obj = repo.revparse_single(resolved_ref)
-
-                        # Peel annotated tags to get the actual commit
-                        if obj.type == GitObjectType.TAG:
-                            commit = repo.peel_to_commit(obj)
-                        else:
-                            commit = obj
-
-                        latest_commit = commit.id
-                        # Get commit date using backend
-                        latest_commit_date = repo.get_commit_date(commit.id)
-                    except KeyError:
-                        # Ref not found, skip this plugin
-                        continue
-
-                    repo.free()
-
-                    if current_commit != latest_commit:
-                        updates.append(
-                            UpdateCheck(
-                                plugin_id=plugin.plugin_id,
-                                old_commit=short_commit_id(current_commit),
-                                new_commit=short_commit_id(latest_commit),
-                                commit_date=latest_commit_date,
-                                old_ref=old_ref,
-                                new_ref=new_ref,
-                            )
-                        )
-                except KeyError:
-                    # Ref not found, skip this plugin (expected for some cases)
-                    continue
-                except Exception as e:
-                    # Log unexpected errors but continue with other plugins
-                    log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
-                    continue
-
+                update_info = self._check_single_plugin_update(plugin)
+                if update_info:
+                    updates.append(update_info)
         return updates
+
+    def _check_single_plugin_update(self, plugin):
+        """Check if a single plugin has updates available."""
+        if not plugin.uuid:
+            return None
+
+        metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+        if not metadata or not metadata.url:
+            return None
+
+        try:
+            return self._perform_update_check(plugin, metadata)
+        except KeyError:
+            # Ref not found, skip this plugin (expected for some cases)
+            return None
+        except Exception as e:
+            # Log unexpected errors but continue with other plugins
+            log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
+            return None
+
+    def _perform_update_check(self, plugin, metadata):
+        """Perform the actual update check for a plugin."""
+        backend = git_backend()
+        repo = backend.create_repository(plugin.local_path)
+        current_commit = repo.get_head_target()
+
+        self._fetch_plugin_updates(repo, plugin, metadata)
+
+        old_ref, new_ref = self._determine_update_refs(plugin, metadata, repo)
+        latest_commit, latest_commit_date = self._resolve_latest_commit(repo, new_ref or old_ref)
+
+        repo.free()
+
+        if current_commit != latest_commit:
+            return UpdateCheck(
+                plugin_id=plugin.plugin_id,
+                old_commit=short_commit_id(current_commit),
+                new_commit=short_commit_id(latest_commit),
+                commit_date=latest_commit_date,
+                old_ref=old_ref,
+                new_ref=new_ref,
+            )
+        return None
+
+    def _fetch_plugin_updates(self, repo, plugin, metadata):
+        """Fetch updates from remote without updating local files."""
+        # Fetch without updating (suppress progress output)
+        callbacks = git_backend().create_remote_callbacks()
+        for remote in repo.get_remotes():
+            repo.fetch_remote(remote, None, callbacks._callbacks)
+
+        # Update version tag cache from fetched repo if plugin has versioning_scheme
+        registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
+        if registry_plugin and registry_plugin.versioning_scheme:
+            self._refs_cache.update_cache_from_local_repo(
+                plugin.local_path, metadata.url, registry_plugin.versioning_scheme
+            )
+
+    def _determine_update_refs(self, plugin, metadata, repo):
+        """Determine old and new refs for update check."""
+        old_ref = metadata.ref or 'main'
+        new_ref = None
+
+        # Check if currently on a tag using RefItem
+        if plugin.ref_item and plugin.ref_item.is_tag:
+            current_tag = old_ref
+            source = PluginSourceGit(metadata.url, old_ref)
+            latest_tag = source._find_latest_tag(repo, current_tag)
+            if latest_tag and latest_tag != current_tag:
+                new_ref = latest_tag
+
+        return old_ref, new_ref
+
+    def _resolve_latest_commit(self, repo, ref):
+        """Resolve ref to latest commit and get commit date."""
+        # Resolve ref with same logic as update() - try origin/ prefix for branches
+        resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
+        obj = repo.revparse_single(resolved_ref)
+
+        # Peel annotated tags to get the actual commit
+        if obj.type == GitObjectType.TAG:
+            commit = repo.peel_to_commit(obj)
+        else:
+            commit = obj
+
+        latest_commit = commit.id
+        latest_commit_date = repo.get_commit_date(commit.id)
+        return latest_commit, latest_commit_date
 
     def get_plugin_update_status(self, plugin, force_refresh=False):
         """Check if a single plugin has an update available."""
