@@ -1865,83 +1865,61 @@ class PluginManager(QObject):
         if not metadata or not metadata.url:
             return False
 
-        # Get current RefItem from live state if available, fallback to metadata
-        if hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid():
-            current_ref_item = plugin.ref_item
-        else:
-            current_ref_item = RefItem(name=metadata.ref or 'main', commit=metadata.commit or '')
+        current_ref_item = self._get_current_ref_item(plugin, metadata)
 
         # Try cached result first (unless force refresh)
         if not force_refresh:
-            # Use cached result even if expired to avoid network calls
-            cached_result = self._refs_cache.get_cached_update_status(
-                plugin.plugin_id, current_ref_item.name, ttl=float('inf')
-            )
+            cached_result = self._get_cached_update_status(plugin, current_ref_item)
             if cached_result is not None:
-                log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
                 return cached_result
-            else:
-                # No cached data and not force refreshing - assume no update to avoid network calls
-                log.debug("No cached update status for plugin %s, assuming no update available", plugin.plugin_id)
-                return False
 
+        return self._check_live_update_status(plugin, metadata, current_ref_item)
+
+    def _get_current_ref_item(self, plugin, metadata):
+        """Get current RefItem from live state or metadata."""
+        if hasattr(plugin, 'ref_item') and plugin.ref_item and plugin.ref_item.is_valid():
+            return plugin.ref_item
+        return RefItem(name=metadata.ref or 'main', commit=metadata.commit or '')
+
+    def _get_cached_update_status(self, plugin, current_ref_item):
+        """Get cached update status if available."""
+        cached_result = self._refs_cache.get_cached_update_status(
+            plugin.plugin_id, current_ref_item.name, ttl=float('inf')
+        )
+        if cached_result is not None:
+            log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
+            return cached_result
+
+        # No cached data and not force refreshing - assume no update to avoid network calls
+        log.debug("No cached update status for plugin %s, assuming no update available", plugin.plugin_id)
+        return False
+
+    def _check_live_update_status(self, plugin, metadata, current_ref_item):
+        """Check live update status by fetching from remote."""
         try:
             backend = git_backend()
             repo = backend.create_repository(plugin.local_path)
             current_commit = repo.get_head_target()
 
-            # Fetch without updating (suppress progress output)
             log.debug("Making network request for plugin: %s", plugin.plugin_id)
-            callbacks = backend.create_remote_callbacks()
-            for remote in repo.get_remotes():
-                repo.fetch_remote(remote, None, callbacks._callbacks)
+            self._fetch_plugin_updates(repo, plugin, metadata)
 
-            # Update version tag cache from fetched repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
-            if registry_plugin and registry_plugin.versioning_scheme:
-                self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                )
+            old_ref, new_ref = self._determine_update_refs(plugin, metadata, repo)
+            target_ref = new_ref or old_ref
 
-            old_ref = metadata.ref or 'main'
-            ref = old_ref
-
-            # Check if currently on a tag using RefItem
-            current_is_tag = False
-            current_tag = None
-            if plugin.ref_item and plugin.ref_item.is_tag:
-                current_is_tag = True
-                current_tag = ref
-
-            # If on a tag, check for newer version tag
-            if current_is_tag and current_tag:
-                source = PluginSourceGit(metadata.url, ref)
-                latest_tag = source._find_latest_tag(repo, current_tag)
-                if latest_tag and latest_tag != current_tag:
-                    # Found newer tag
-                    ref = latest_tag
-
-            # Resolve ref using utility function
             try:
-                resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
-                obj = repo.revparse_single(resolved_ref)
-
-                # Peel annotated tags to get the actual commit
-                if obj.type == GitObjectType.TAG:
-                    commit = repo.peel_to_commit(obj)
-                else:
-                    commit = obj
-
-                latest_commit = commit.id
+                latest_commit = self._resolve_target_commit(repo, target_ref)
+                has_update = current_commit != latest_commit
             except KeyError:
                 # Ref not found, no update available
-                return False
+                has_update = False
 
             repo.free()
-            has_update = current_commit != latest_commit
+
             # Cache the result with current ref
             self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref_item.name)
             return has_update
+
         except KeyError:
             # Ref not found, no update available
             self._refs_cache.cache_update_status(plugin.plugin_id, False, current_ref_item.name)
@@ -1951,6 +1929,19 @@ class PluginManager(QObject):
             log.warning("Failed to check update for plugin %s: %s", plugin.plugin_id, e)
             # Don't cache errors
             return False
+
+    def _resolve_target_commit(self, repo, ref):
+        """Resolve target ref to commit ID."""
+        resolved_ref, is_tag, is_branch = resolve_ref(repo, ref)
+        obj = repo.revparse_single(resolved_ref)
+
+        # Peel annotated tags to get the actual commit
+        if obj.type == GitObjectType.TAG:
+            commit = repo.peel_to_commit(obj)
+        else:
+            commit = obj
+
+        return commit.id
 
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
