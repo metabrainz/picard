@@ -427,3 +427,79 @@ class RefsCache:
             return None  # Expired
 
         return entry['has_update']
+
+    def cache_ref_items_for_commit(self, plugin_uuid, commit_id, ref_items):
+        """Cache RefItems for a specific commit.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            commit_id: Full commit ID
+            ref_items: List of RefItem objects for this commit
+        """
+        cache = self.load_cache()
+        if 'ref_items' not in cache:
+            cache['ref_items'] = {}
+        if plugin_uuid not in cache['ref_items']:
+            cache['ref_items'][plugin_uuid] = {}
+
+        # Store RefItems as serializable dicts
+        cache['ref_items'][plugin_uuid][commit_id] = [
+            {
+                'name': item.name,
+                'commit': item.commit,
+                'is_tag': getattr(item, 'is_tag', False),
+                'is_branch': getattr(item, 'is_branch', False),
+                'is_current': getattr(item, 'is_current', False),
+            }
+            for item in ref_items
+        ]
+        self.save_cache(cache)
+
+    def get_ref_items_for_commit(self, plugin_uuid, commit_id):
+        """Get RefItems for a specific commit.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            commit_id: Full commit ID
+
+        Returns:
+            List of RefItem objects, or empty list if not found
+        """
+        from picard.git.utils import RefItem
+
+        cache = self.load_cache()
+        ref_items_cache = cache.get('ref_items', {})
+        plugin_cache = ref_items_cache.get(plugin_uuid, {})
+
+        if commit_id not in plugin_cache:
+            return []
+
+        # Reconstruct RefItem objects from cached data
+        return [
+            RefItem(
+                name=item['name'],
+                commit=item['commit'],
+                is_tag=item.get('is_tag', False),
+                is_branch=item.get('is_branch', False),
+                is_current=item.get('is_current', False),
+            )
+            for item in plugin_cache[commit_id]
+        ]
+
+    def add_ref_item_to_commit(self, plugin_uuid, commit_id, ref_item):
+        """Add a single RefItem to a commit's cache.
+
+        Args:
+            plugin_uuid: Plugin UUID
+            commit_id: Full commit ID
+            ref_item: RefItem object to add
+        """
+        existing_items = self.get_ref_items_for_commit(plugin_uuid, commit_id)
+
+        # Check if this RefItem already exists (by name)
+        for existing in existing_items:
+            if existing.name == ref_item.name:
+                return  # Already exists
+
+        existing_items.append(ref_item)
+        self.cache_ref_items_for_commit(plugin_uuid, commit_id, existing_items)
