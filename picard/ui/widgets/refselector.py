@@ -132,16 +132,25 @@ class RefSelectorWidget(QtWidgets.QWidget):
         """Get the currently selected ref."""
         current_tab = self.tab_widget.currentIndex()
 
+        selected_ref = None
         if self.include_default and current_tab == self.default_tab_index:
-            return None
+            selected_ref = None
         elif current_tab == self.tags_tab_index:
             current_item = self.tags_list.currentItem()
-            return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
+            selected_ref = current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.branches_tab_index:
             current_item = self.branches_list.currentItem()
-            return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
+            selected_ref = current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.custom_tab_index:
             text = self.custom_edit.text().strip()
-            return RefItem(name=text) if text else None
+            selected_ref = RefItem(name=text) if text else None
 
-        return None
+        # Debug logging
+        from picard import log
+
+        if selected_ref:
+            log.debug("RefSelector: Selected ref %s", selected_ref.format())
+        else:
+            log.debug("RefSelector: No ref selected (default)")
+
+        return selected_ref
