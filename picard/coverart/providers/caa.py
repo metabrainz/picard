@@ -277,7 +277,7 @@ class CoverArtProviderCaa(CoverArtProvider):
             request_factory=create_request,
         )
         # we will call next_in_queue() after json parsing
-        return CoverArtProvider.WAIT
+        return CoverArtProvider.QueueState.WAIT
 
     def _caa_json_downloaded(self, data, http, error):
         """Parse CAA JSON file and queue CAA cover art images for download"""

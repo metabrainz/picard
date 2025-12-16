@@ -24,6 +24,7 @@ from queue import Queue
 import time
 
 from picard import log
+from picard.album import Album
 from picard.config import get_config
 from picard.const.cover_processing import COVER_PROCESSING_SLEEP
 from picard.coverart.image import (
@@ -73,7 +74,7 @@ def handle_processing_exceptions(func):
 
 
 class CoverArtImageProcessing:
-    def __init__(self, album):
+    def __init__(self, album: Album):
         self.album = album
         self.queues = get_cover_art_processors()
         self.task_counter = thread.TaskCounter()

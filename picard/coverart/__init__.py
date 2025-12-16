@@ -32,6 +32,7 @@ import traceback
 from PyQt6 import QtCore
 
 from picard import log
+from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import get_config
 from picard.coverart.image import CoverArtImage, CoverArtImageIOError
@@ -45,16 +46,17 @@ from picard.coverart.providers import (
 )
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
+from picard.metadata import Metadata
 from picard.util import imageinfo
 
 
 class CoverArt:
-    def __init__(self, album, metadata, release):
+    def __init__(self, album: Album, metadata: Metadata, release: dict):
         self._queue_new()
         self.album = album
         self.metadata = metadata
         self.release = release  # not used in this class, but used by providers
-        self.front_image_found = False
+        self.front_image_found: bool = False
         self.image_processing = CoverArtImageProcessing(album)
 
     def __repr__(self):
@@ -142,7 +144,7 @@ class CoverArt:
             try:
                 # requeue from next provider
                 provider = next(self.providers)
-                ret = CoverArtProvider._STARTED
+                ret = CoverArtProvider.QueueState._STARTED
                 try:
                     instance = provider.cls(self)
                     if provider.enabled and instance.enabled():
@@ -154,7 +156,7 @@ class CoverArt:
                     log.error(traceback.format_exc())
                     raise
                 finally:
-                    if ret != CoverArtProvider.WAIT:
+                    if ret != CoverArtProvider.QueueState.WAIT:
                         self.next_in_queue()
                 return
             except StopIteration:

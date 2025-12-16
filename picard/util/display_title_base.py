@@ -52,7 +52,7 @@ class HasDisplayTitle:
     """
 
     @classmethod
-    def display_title(cls):
+    def display_title(cls) -> str:
         """Returns the display title for this class.
         This will attempt to translate the title with the API translation system if
         available, otherwise use gettext.
