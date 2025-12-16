@@ -895,11 +895,18 @@ class PluginManager(QObject):
             new_ref_display,
         )
 
-        # Return enable status for UI handling
-        return {'enable_success': enable_success, 'enable_error': enable_error, 'was_enabled': was_enabled}
-
         self.plugin_ref_switched.emit(plugin)
-        return old_ref, new_ref, old_commit, new_commit
+
+        # Return dictionary with both formats for UI and CLI compatibility
+        return {
+            'enable_success': enable_success,
+            'enable_error': enable_error,
+            'was_enabled': was_enabled,
+            'old_ref': old_ref,
+            'new_ref': new_ref,
+            'old_commit': old_commit,
+            'new_commit': new_commit,
+        }
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.

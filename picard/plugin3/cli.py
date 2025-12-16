@@ -805,10 +805,8 @@ class PluginCLI:
                 if check_local_repo_dirty(url):
                     self._out.warning('Local repository has uncommitted changes')
 
-                plugin_id = self._manager.install_plugin(
-                    url, ref, reinstall, force_blacklisted, enable_after_install=True
-                )
-                self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
+                result = self._manager.install_plugin(url, ref, reinstall, force_blacklisted, enable_after_install=True)
+                self._out.success(f'Plugin {self._out.d_id(result.plugin_name)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
                 from picard.plugin3.manager import (
@@ -835,8 +833,7 @@ class PluginCLI:
                     )
                     if not success:
                         return ExitCode.ERROR if yes else ExitCode.SUCCESS
-                    plugin_id = result
-                    self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
+                    self._out.success(f'Plugin {self._out.d_id(result.plugin_name)} installed successfully')
                     self._out.info('Restart Picard to load the plugin')
                 elif isinstance(e, PluginBlacklistedError):
                     self._out.error(f'Plugin is blacklisted: {e.reason}')
@@ -1117,7 +1114,13 @@ class PluginCLI:
 
         try:
             self._out.print(f'Switching {self._out.d_id(plugin.plugin_id)} to ref: {ref}...')
-            old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
+            result = self._manager.switch_ref(plugin, ref)
+            old_ref, new_ref, old_commit, new_commit = (
+                result['old_ref'],
+                result['new_ref'],
+                result['old_commit'],
+                result['new_commit'],
+            )
 
             self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
             self._out.info(
@@ -1137,7 +1140,12 @@ class PluginCLI:
                 success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
                 if not success:
                     return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
-                old_ref, new_ref, old_commit, new_commit = result
+                old_ref, new_ref, old_commit, new_commit = (
+                    result['old_ref'],
+                    result['new_ref'],
+                    result['old_commit'],
+                    result['new_commit'],
+                )
                 self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
                 self._out.info(
                     f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'

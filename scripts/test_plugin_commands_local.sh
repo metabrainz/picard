@@ -18,6 +18,11 @@ echo "Test directory: $TEST_DIR"
 echo "Registry file: $REGISTRY_FILE"
 echo
 
+# Cleanup any existing test plugins from previous runs
+echo "Cleanup: Removing any existing test plugins"
+$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>/dev/null || true
+echo
+
 # Setup: Create a dummy plugin with git repository
 echo "Setup: Creating dummy plugin repository"
 mkdir -p "$PLUGIN_REPO"
