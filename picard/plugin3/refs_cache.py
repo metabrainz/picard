@@ -28,6 +28,7 @@ import time
 from picard import log
 from picard.const.appdirs import cache_folder
 from picard.git.factory import git_backend
+from picard.git.utils import RefItem
 from picard.version import Version
 
 
@@ -489,8 +490,6 @@ class RefsCache:
         Returns:
             List of RefItem objects, sorted by preference (tags first, then branches)
         """
-        from picard.git.utils import RefItem
-
         cache = self.load_cache()
         ref_items_cache = cache.get('ref_items', {})
         plugin_cache = ref_items_cache.get(plugin_uuid, {})
@@ -557,8 +556,6 @@ class RefsCache:
         Returns:
             List of (commit_id, RefItem) tuples
         """
-        from picard.git.utils import RefItem
-
         cache = self.load_cache()
         plugin_cache = cache.get('ref_items', {}).get(plugin_uuid, {})
 
@@ -583,8 +580,6 @@ class RefsCache:
         Returns:
             int: Number of invalid items removed
         """
-        from picard.git.utils import RefItem
-
         cache = self.load_cache()
         plugin_cache = cache.get('ref_items', {}).get(plugin_uuid, {})
 
