@@ -357,14 +357,12 @@ class PluginManager(QObject):
         """
         # Check cache first
         if use_cache and not force_refresh:
-            # Use cached data even if expired to avoid network calls
             cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
             if cached_refs is not None:
                 converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
                 if converted_refs is not None:
                     return converted_refs
         elif use_cache:
-            # Only use non-expired cache when force refreshing
             cached_refs = self._refs_cache.get_cached_all_refs(url)
             if cached_refs is not None:
                 converted_refs = self._convert_cached_refs_to_refitems(cached_refs)
@@ -383,39 +381,41 @@ class PluginManager(QObject):
                         return converted_refs
             return None
 
-        # Collect all refs with their commit IDs
-        # For annotated tags, git provides both the tag object and dereferenced commit (^{})
+        # Convert remote refs to RefItems
         refs = []
-        tags = {}  # Use dict to merge tag object with dereferenced commit
+        annotated_tags = {}  # Track annotated tags to merge with their commits
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
             commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
 
             if ref_name.startswith('refs/heads/'):
-                branch_name = ref_name[len('refs/heads/') :]
-                refs.append(RefItem(name=branch_name, commit=commit_id, is_branch=True))
+                name = ref_name[len('refs/heads/') :]
+                refs.append(RefItem(name=name, commit=commit_id, is_branch=True))
             elif ref_name.startswith('refs/tags/'):
-                tag_name = ref_name[len('refs/tags/') :]
-                # Check if this is a dereferenced tag (^{})
-                if tag_name.endswith('^{}'):
-                    # This is the actual commit for an annotated tag
-                    base_tag = tag_name[:-3]  # Remove ^{}
-                    if base_tag in tags:
-                        tags[base_tag] = RefItem(name=base_tag, commit=commit_id, is_tag=True)
+                name = ref_name[len('refs/tags/') :]
+                if name.endswith('^{}'):
+                    # Dereferenced annotated tag - update existing tag with actual commit
+                    base_name = name[:-3]
+                    if base_name in annotated_tags:
+                        annotated_tags[base_name].commit = commit_id
                 else:
-                    # Regular tag or annotated tag object
-                    if tag_name not in tags:
-                        tags[tag_name] = RefItem(name=tag_name, commit=commit_id, is_tag=True)
+                    # Regular or annotated tag
+                    ref_item = RefItem(name=name, commit=commit_id, is_tag=True)
+                    refs.append(ref_item)
+                    annotated_tags[name] = ref_item
 
-        # Add tags to refs list and sort
-        refs.extend(tags.values())
-        refs.sort(key=lambda x: (not x.is_tag, x.name))  # Tags first, then branches, both sorted by name
+        # Sort: tags first (reverse by name), then branches (by name)
+        refs.sort(key=lambda x: (not x.is_tag, x.name if x.is_branch else x.name), reverse=False)
+        if any(ref.is_tag for ref in refs):
+            # Sort tags in reverse order (newest first), keep branches in normal order
+            tags = sorted([ref for ref in refs if ref.is_tag], key=lambda x: x.name, reverse=True)
+            branches = sorted([ref for ref in refs if ref.is_branch], key=lambda x: x.name)
+            refs = tags + branches
 
-        # Cache the result using RefItem serialization
+        # Cache and return
         if use_cache:
-            cache_result = [ref.to_dict() for ref in refs]
-            self._refs_cache.cache_all_refs(url, cache_result)
+            self._refs_cache.cache_all_refs(url, [ref.to_dict() for ref in refs])
 
         return refs
 
