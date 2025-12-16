@@ -78,29 +78,50 @@ class RefSelectorWidget(QtWidgets.QWidget):
         self.tags_list.clear()
         self.branches_list.clear()
 
+        current_item_found = False
+        current_tab_index = None
+
         # Populate tags
         for ref in refs.get('tags', []):
+            is_current = current_ref and ref['name'] == current_ref
             ref_item = RefItem(
                 name=ref['name'],
                 commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
+                is_current=is_current,
                 is_tag=True,
             )
             list_item = QtWidgets.QListWidgetItem(ref_item.format())
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.tags_list.addItem(list_item)
 
+            # Select current ref and remember tab
+            if is_current:
+                self.tags_list.setCurrentItem(list_item)
+                current_tab_index = self.tags_tab_index
+                current_item_found = True
+
         # Populate branches
         for ref in refs.get('branches', []):
+            is_current = current_ref and ref['name'] == current_ref
             ref_item = RefItem(
                 name=ref['name'],
                 commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
+                is_current=is_current,
                 is_branch=True,
             )
             list_item = QtWidgets.QListWidgetItem(ref_item.format())
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.branches_list.addItem(list_item)
+
+            # Select current ref and remember tab (only if not already found in tags)
+            if is_current and not current_item_found:
+                self.branches_list.setCurrentItem(list_item)
+                current_tab_index = self.branches_tab_index
+                current_item_found = True
+
+        # Switch to the tab containing the current ref
+        if current_tab_index is not None:
+            self.tab_widget.setCurrentIndex(current_tab_index)
 
     def set_default_ref_info(self, default_ref_name, description):
         """Update the default tab with specific ref information."""
