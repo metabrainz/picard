@@ -781,6 +781,10 @@ class PluginManager(QObject):
         """Switch plugin to a different git ref."""
         self._ensure_plugin_url(plugin, 'switch ref')
 
+        # Normalize ref parameter to RefItem
+        target_ref_item = self._normalize_ref_parameter(ref)
+        ref_name = target_ref_item.name if target_ref_item else None
+
         # Check if plugin is currently enabled
         was_enabled = plugin.state == PluginState.ENABLED
 
@@ -788,7 +792,7 @@ class PluginManager(QObject):
         if was_enabled:
             self.disable_plugin(plugin)
 
-        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref_name, discard_changes)
 
         # Update metadata with new ref
         uuid = PluginValidation.get_plugin_uuid(plugin)
@@ -799,11 +803,14 @@ class PluginManager(QObject):
             metadata.commit = new_commit
             self._metadata.save_plugin_metadata(metadata)
 
+        # Sync RefItem from actual git state
+        plugin.sync_ref_item_from_git(self)
+
         # Log plugin ref switch with RefItem formatting
         from picard.git.utils import RefItem
 
         old_ref_item = RefItem(name=old_ref or '', commit=old_commit or '')
-        new_ref_item = RefItem(name=new_ref or '', commit=new_commit or '')
+        new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
         log.info(
             'Plugin %s switching ref from %s to %s (switch-ref)',
             plugin.plugin_id,
@@ -1491,6 +1498,11 @@ class PluginManager(QObject):
         old_uuid = metadata.uuid
         old_ref = metadata.ref
 
+        # Get current RefItem state for better logging
+        from picard.git.utils import RefItem
+
+        old_ref_item = plugin.ref_item or RefItem(name=old_ref or '', commit=metadata.commit or '')
+
         # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
         # Check the stored ref, not current HEAD (tags create detached HEAD but are still updatable)
         if old_ref:
@@ -1510,7 +1522,7 @@ class PluginManager(QObject):
         new_ref = old_ref
         registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
         if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
-            # Try to find newer version tags
+            # Try to find newer version tags using RefItem system
             newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
             if newer_tag:
                 new_ref = newer_tag
@@ -1560,11 +1572,23 @@ class PluginManager(QObject):
             )
         )
 
+        # Sync RefItem from actual git state
+        plugin.sync_ref_item_from_git(self)
+
         # Update version tag cache from updated repo
         if registry_plugin and registry_plugin.versioning_scheme:
             self._refs_cache.update_cache_from_local_repo(
                 plugin.local_path, current_url, registry_plugin.versioning_scheme
             )
+
+        # Log update with RefItem formatting
+        new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
+        log.info(
+            'Plugin %s updated from %s to %s (update)',
+            plugin.plugin_id,
+            old_ref_item.format(),
+            new_ref_item.format(),
+        )
 
         # Re-enable plugin if it was enabled before to reload the module with new code
         if was_enabled:
