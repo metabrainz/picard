@@ -680,7 +680,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.install_plugin(
                 url=plugin_url,
-                ref=confirm_dialog.selected_ref.name if confirm_dialog.selected_ref else None,
+                ref=confirm_dialog.selected_ref,  # Pass RefItem directly
                 reinstall=True,
                 callback=partial(self._on_reinstall_complete, plugin),
             )
@@ -708,7 +708,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(
                     plugin=plugin,
-                    ref=dialog.selected_ref.name if dialog.selected_ref else None,
+                    ref=dialog.selected_ref,  # Pass RefItem directly
                     callback=partial(self._on_switch_ref_complete, plugin),
                 )
             except Exception as e:

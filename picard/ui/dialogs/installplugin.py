@@ -536,7 +536,7 @@ class InstallPluginDialog(QtWidgets.QDialog):
                 self._enable_ui_after_installation()
                 return
             if confirm_dialog.selected_ref:
-                ref = confirm_dialog.selected_ref.name
+                ref = confirm_dialog.selected_ref  # Pass RefItem directly
 
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:
