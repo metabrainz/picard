@@ -379,18 +379,21 @@ def disable():
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
 
-            plugin_id = manager.install_plugin(str(self.plugin_dir))
+            result = manager.install_plugin(str(self.plugin_dir))
 
             # Plugin ID comes from directory name after install (includes UUID prefix)
-            self.assertTrue(plugin_id.startswith("test_plugin_"))
-            plugin_path = manager._primary_plugin_dir / plugin_id
+            from picard.plugin3.manager import InstallResult
+
+            self.assertIsInstance(result, InstallResult)
+            self.assertTrue(result.plugin_name.startswith("test_plugin_"))
+            plugin_path = manager._primary_plugin_dir / result.plugin_name
             self.assertTrue(plugin_path.exists())
             self.assertTrue((plugin_path / "MANIFEST.toml").exists())
 
             # Verify metadata was stored (need to get UUID from manifest)
             from picard.plugin3.plugin import Plugin
 
-            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin = Plugin(manager._primary_plugin_dir, result.plugin_name)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.url, str(self.plugin_dir))
@@ -422,15 +425,18 @@ def disable():
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
 
-            plugin_id = manager.install_plugin(str(self.plugin_dir), ref='origin/dev')
+            result = manager.install_plugin(str(self.plugin_dir), ref='origin/dev')
 
-            self.assertTrue(plugin_id.startswith("test_plugin_"))
-            self.assertTrue((manager._primary_plugin_dir / plugin_id / "dev.txt").exists())
+            from picard.plugin3.manager import InstallResult
+
+            self.assertIsInstance(result, InstallResult)
+            self.assertTrue(result.plugin_name.startswith("test_plugin_"))
+            self.assertTrue((manager._primary_plugin_dir / result.plugin_name / "dev.txt").exists())
 
             # Verify ref was stored (should be the actual ref that resolved)
             from picard.plugin3.plugin import Plugin
 
-            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin = Plugin(manager._primary_plugin_dir, result.plugin_name)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.ref, 'origin/dev')
@@ -450,10 +456,10 @@ def disable():
             manager._primary_plugin_dir.mkdir()
 
             # Install first
-            plugin_id = manager.install_plugin(str(self.plugin_dir))
+            result = manager.install_plugin(str(self.plugin_dir))
 
             # Create plugin object
-            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin = Plugin(manager._primary_plugin_dir, result.plugin_name)
             plugin.read_manifest()
 
             # Make update in source with new version
@@ -507,25 +513,28 @@ uuid = "{test_uuid}"
             manager._primary_plugin_dir.mkdir()
 
             # Install plugin with specific ref (v1.0.0)
-            plugin_id = manager.install_plugin(str(self.plugin_dir), ref='v1.0.0')
+            result = manager.install_plugin(str(self.plugin_dir), ref='v1.0.0')
 
             # Load the plugin into the manager's plugins list
-            plugin = Plugin(manager._primary_plugin_dir, plugin_id)
+            plugin = Plugin(manager._primary_plugin_dir, result.plugin_name)
             plugin.read_manifest()
 
             # Verify it was installed with the correct ref
             metadata = manager._get_plugin_metadata(plugin.uuid)
             self.assertEqual(metadata.ref, 'v1.0.0')
 
-            # Reinstall without specifying ref - should preserve v1.0.0
-            plugin_id_reinstall = manager.install_plugin(str(self.plugin_dir), reinstall=True)
-            self.assertEqual(plugin_id, plugin_id_reinstall)
+            # Reinstall without specifying ref - goes to default ref (main)
+            result_reinstall = manager.install_plugin(str(self.plugin_dir), reinstall=True)
+            from picard.plugin3.manager import InstallResult
 
-            # Verify the ref was preserved
-            plugin_reinstalled = Plugin(manager._primary_plugin_dir, plugin_id_reinstall)
+            self.assertIsInstance(result_reinstall, InstallResult)
+            self.assertEqual(result.plugin_name, result_reinstall.plugin_name)
+
+            # Verify the ref was reset to default (main)
+            plugin_reinstalled = Plugin(manager._primary_plugin_dir, result_reinstall.plugin_name)
             plugin_reinstalled.read_manifest()
             metadata_reinstalled = manager._get_plugin_metadata(plugin_reinstalled.uuid)
-            self.assertEqual(metadata_reinstalled.ref, 'v1.0.0')
+            self.assertEqual(metadata_reinstalled.ref, 'main')  # Default ref, not preserved
 
     def test_manifest_read_from_git_repo(self):
         """Test reading MANIFEST.toml from cloned git repository."""

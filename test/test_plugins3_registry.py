@@ -277,10 +277,13 @@ class TestPluginRegistry(PicardTestCase):
 
                         with patch('shutil.move'):
                             # Should not raise with force_blacklisted=True
-                            plugin_id = manager.install_plugin(
+                            result = manager.install_plugin(
                                 'https://github.com/badactor/malicious-plugin', force_blacklisted=True
                             )
-                            self.assertEqual(plugin_id, f'test_plugin_{test_uuid}')
+                            from picard.plugin3.manager import InstallResult
+
+                            self.assertIsInstance(result, InstallResult)
+                            self.assertEqual(result.plugin_name, f'test_plugin_{test_uuid}')
 
     def test_check_blacklisted_plugins_on_startup(self):
         """Test that blacklisted plugins are disabled on startup."""

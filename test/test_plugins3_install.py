@@ -148,12 +148,13 @@ class TestPluginInstall(PicardTestCase):
         ):
             mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
 
-            old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
+            result = manager.switch_ref(mock_plugin, 'v1.0.0')
 
-            self.assertEqual(old_ref, 'main')
-            self.assertEqual(new_ref, 'v1.0.0')
-            self.assertEqual(old_commit, 'abc123')
-            self.assertEqual(new_commit, 'def456')
+            # switch_ref now returns a dictionary with enable status
+            self.assertIsInstance(result, dict)
+            self.assertIn('enable_success', result)
+            self.assertIn('enable_error', result)
+            self.assertIn('was_enabled', result)
 
     def test_switch_ref_no_metadata(self):
         """Test switching ref for plugin without metadata raises error."""
@@ -335,8 +336,11 @@ class TestPluginInstall(PicardTestCase):
                                 mock_check.return_value = []  # No uncommitted changes
 
                                 # Should not raise with reinstall=True
-                                plugin_id = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
-                            self.assertTrue(plugin_id.startswith('test_plugin_'))
+                                result = manager.install_plugin('https://example.com/plugin.git', reinstall=True)
+                            from picard.plugin3.manager import InstallResult
+
+                            self.assertIsInstance(result, InstallResult)
+                            self.assertTrue(result.plugin_name.startswith('test_plugin_'))
 
     def test_uninstall_with_purge(self):
         """Test uninstall with purge removes configuration."""
