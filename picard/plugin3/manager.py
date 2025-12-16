@@ -410,11 +410,11 @@ class PluginManager(QObject):
             'tags': sorted(tags.values(), key=lambda x: x.name, reverse=True),
         }
 
-        # Cache the result (convert RefItems back to dicts for caching)
+        # Cache the result using RefItem serialization
         if use_cache:
             cache_result = {
-                'branches': [{'name': ref.name, 'commit': ref.commit} for ref in result['branches']],
-                'tags': [{'name': ref.name, 'commit': ref.commit} for ref in result['tags']],
+                'branches': [ref.to_dict() for ref in result['branches']],
+                'tags': [ref.to_dict() for ref in result['tags']],
             }
             self._refs_cache.cache_all_refs(url, cache_result)
 
@@ -423,10 +423,8 @@ class PluginManager(QObject):
     def _convert_cached_refs_to_refitems(self, cached_refs):
         """Convert cached refs dictionaries to RefItem objects."""
         return {
-            'branches': [
-                RefItem(name=ref['name'], commit=ref['commit'], is_tag=False) for ref in cached_refs['branches']
-            ],
-            'tags': [RefItem(name=ref['name'], commit=ref['commit'], is_tag=True) for ref in cached_refs['tags']],
+            'branches': [RefItem.from_dict(ref) for ref in cached_refs['branches']],
+            'tags': [RefItem.from_dict(ref) for ref in cached_refs['tags']],
         }
 
     def get_plugin_refs_info(self, identifier):
