@@ -26,7 +26,6 @@ import shutil
 import tempfile
 from typing import TYPE_CHECKING, NamedTuple
 
-from PyQt6 import QtWidgets
 from PyQt6.QtCore import (
     QObject,
     pyqtSignal,
@@ -61,7 +60,7 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
-from picard.plugin3.refs_cache import RefsCache
+from picard.plugin3.refs_cache import RefsCache, RefsCacheBatch
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.version import Version
@@ -92,6 +91,9 @@ class UpdateResult(NamedTuple):
     old_ref: str
     new_ref: str
     commit_date: int
+    enable_success: bool = True
+    enable_error: Exception = None
+    was_enabled: bool = False
 
 
 class UpdateCheck(NamedTuple):
@@ -834,12 +836,6 @@ class PluginManager(QObject):
         # Re-enable plugin if it was enabled before to reload the module
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "ref switch", enable=was_enabled)
 
-        # Show error dialog if enabling failed
-        if was_enabled and not enable_success:
-            QtWidgets.QMessageBox.warning(
-                None, "Plugin Enable Failed", f"Plugin switched successfully but failed to enable:\n{enable_error}"
-            )
-
         # Log plugin ref switch with RefItem formatting (after potential re-sync)
         old_ref_item = RefItem.for_logging(old_ref, old_commit)
         new_ref_item = plugin.ref_item or RefItem.for_logging(new_ref, new_commit)
@@ -849,6 +845,9 @@ class PluginManager(QObject):
             old_ref_item.format() if old_ref_item else 'none',
             new_ref_item.format() if new_ref_item and new_ref_item.is_valid() else 'none',
         )
+
+        # Return enable status for UI handling
+        return {'enable_success': enable_success, 'enable_error': enable_error, 'was_enabled': was_enabled}
 
         self.plugin_ref_switched.emit(plugin)
         return old_ref, new_ref, old_commit, new_commit
@@ -1212,7 +1211,8 @@ class PluginManager(QObject):
             if registry_plugin:
                 versioning_scheme = registry_plugin.versioning_scheme
                 if versioning_scheme:
-                    self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
+                    with RefsCacheBatch(self._refs_cache):
+                        self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
 
             # Store plugin metadata
             self._metadata.save_plugin_metadata(
@@ -1586,18 +1586,13 @@ class PluginManager(QObject):
 
         # Update version tag cache from updated repo
         if registry_plugin and registry_plugin.versioning_scheme:
-            self._refs_cache.update_cache_from_local_repo(
-                plugin.local_path, current_url, registry_plugin.versioning_scheme
-            )
+            with RefsCacheBatch(self._refs_cache):
+                self._refs_cache.update_cache_from_local_repo(
+                    plugin.local_path, current_url, registry_plugin.versioning_scheme
+                )
 
         # Re-enable plugin if it was enabled before and sync RefItem
         enable_success, enable_error = self._enable_plugin_and_sync_ref_item(plugin, "update", enable=was_enabled)
-
-        # Show error dialog if enabling failed
-        if was_enabled and not enable_success:
-            QtWidgets.QMessageBox.warning(
-                None, "Plugin Enable Failed", f"Plugin updated successfully but failed to enable:\n{enable_error}"
-            )
 
         # Log update with RefItem formatting
         new_ref_item = plugin.ref_item or RefItem(name=new_ref or '', commit=new_commit or '')
@@ -1619,6 +1614,9 @@ class PluginManager(QObject):
             old_ref or '',
             new_ref or '',
             commit_date,
+            enable_success=enable_success,
+            enable_error=enable_error,
+            was_enabled=was_enabled,
         )
 
     def update_all_plugins(self):
@@ -1638,108 +1636,109 @@ class PluginManager(QObject):
     def check_updates(self):
         """Check which plugins have updates available without installing."""
         updates = []
-        for plugin in self._plugins:
-            if not plugin.uuid:
-                continue
-
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if not metadata or not metadata.url:
-                continue
-
-            try:
-                backend = git_backend()
-                repo = backend.create_repository(plugin.local_path)
-                current_commit = repo.get_head_target()
-
-                # Fetch without updating (suppress progress output)
-                callbacks = backend.create_remote_callbacks()
-                for remote in repo.get_remotes():
-                    repo.fetch_remote(remote, None, callbacks._callbacks)
-
-                # Update version tag cache from fetched repo if plugin has versioning_scheme
-                registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
-                if registry_plugin and registry_plugin.versioning_scheme:
-                    self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                    )
-
-                old_ref = metadata.ref or 'main'
-                ref = old_ref
-
-                # Check if currently on a tag
-                current_is_tag = False
-                current_tag = None
-                ref_type, resolved_ref = get_ref_type(repo, ref)
-                if ref_type == 'tag':
-                    try:
-                        repo.revparse_single(resolved_ref)
-                        current_is_tag = True
-                        current_tag = ref
-                    except KeyError:
-                        pass
-
-                # If on a tag, check for newer version tag
-                new_ref = None
-                if current_is_tag and current_tag:
-                    source = PluginSourceGit(metadata.url, ref)
-                    latest_tag = source._find_latest_tag(repo, current_tag)
-                    if latest_tag and latest_tag != current_tag:
-                        # Found newer tag
-                        ref = latest_tag
-                        new_ref = latest_tag
-
-                # Resolve ref with same logic as update() - try origin/ prefix for branches
-                try:
-                    if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # For tags, try refs/tags/ first, then origin/ for branches
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except KeyError:
-                            # Not a tag, try origin/ prefix for branches
-                            try:
-                                obj = repo.revparse_single(f'origin/{ref}')
-                            except KeyError:
-                                # Fall back to original ref (might be commit hash)
-                                obj = repo.revparse_single(ref)
-                    elif ref.startswith('origin/'):
-                        # Handle origin/ refs - these are branches, not tags
-                        obj = repo.revparse_single(ref)
-                    else:
-                        obj = repo.revparse_single(ref)
-
-                    # Peel annotated tags to get the actual commit
-                    if obj.type == GitObjectType.TAG:
-                        commit = repo.peel_to_commit(obj)
-                    else:
-                        commit = obj
-
-                    latest_commit = commit.id
-                    # Get commit date using backend
-                    latest_commit_date = repo.get_commit_date(commit.id)
-                except KeyError:
-                    # Ref not found, skip this plugin
+        with RefsCacheBatch(self._refs_cache):
+            for plugin in self._plugins:
+                if not plugin.uuid:
                     continue
 
-                repo.free()
+                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+                if not metadata or not metadata.url:
+                    continue
 
-                if current_commit != latest_commit:
-                    updates.append(
-                        UpdateCheck(
-                            plugin_id=plugin.plugin_id,
-                            old_commit=short_commit_id(current_commit),
-                            new_commit=short_commit_id(latest_commit),
-                            commit_date=latest_commit_date,
-                            old_ref=old_ref,
-                            new_ref=new_ref,
+                try:
+                    backend = git_backend()
+                    repo = backend.create_repository(plugin.local_path)
+                    current_commit = repo.get_head_target()
+
+                    # Fetch without updating (suppress progress output)
+                    callbacks = backend.create_remote_callbacks()
+                    for remote in repo.get_remotes():
+                        repo.fetch_remote(remote, None, callbacks._callbacks)
+
+                    # Update version tag cache from fetched repo if plugin has versioning_scheme
+                    registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
+                    if registry_plugin and registry_plugin.versioning_scheme:
+                        self._refs_cache.update_cache_from_local_repo(
+                            plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                         )
-                    )
-            except KeyError:
-                # Ref not found, skip this plugin (expected for some cases)
-                continue
-            except Exception as e:
-                # Log unexpected errors but continue with other plugins
-                log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
-                continue
+
+                    old_ref = metadata.ref or 'main'
+                    ref = old_ref
+
+                    # Check if currently on a tag
+                    current_is_tag = False
+                    current_tag = None
+                    ref_type, resolved_ref = get_ref_type(repo, ref)
+                    if ref_type == 'tag':
+                        try:
+                            repo.revparse_single(resolved_ref)
+                            current_is_tag = True
+                            current_tag = ref
+                        except KeyError:
+                            pass
+
+                    # If on a tag, check for newer version tag
+                    new_ref = None
+                    if current_is_tag and current_tag:
+                        source = PluginSourceGit(metadata.url, ref)
+                        latest_tag = source._find_latest_tag(repo, current_tag)
+                        if latest_tag and latest_tag != current_tag:
+                            # Found newer tag
+                            ref = latest_tag
+                            new_ref = latest_tag
+
+                    # Resolve ref with same logic as update() - try origin/ prefix for branches
+                    try:
+                        if not ref.startswith('origin/') and not ref.startswith('refs/'):
+                            # For tags, try refs/tags/ first, then origin/ for branches
+                            try:
+                                obj = repo.revparse_single(f'refs/tags/{ref}')
+                            except KeyError:
+                                # Not a tag, try origin/ prefix for branches
+                                try:
+                                    obj = repo.revparse_single(f'origin/{ref}')
+                                except KeyError:
+                                    # Fall back to original ref (might be commit hash)
+                                    obj = repo.revparse_single(ref)
+                        elif ref.startswith('origin/'):
+                            # Handle origin/ refs - these are branches, not tags
+                            obj = repo.revparse_single(ref)
+                        else:
+                            obj = repo.revparse_single(ref)
+
+                        # Peel annotated tags to get the actual commit
+                        if obj.type == GitObjectType.TAG:
+                            commit = repo.peel_to_commit(obj)
+                        else:
+                            commit = obj
+
+                        latest_commit = commit.id
+                        # Get commit date using backend
+                        latest_commit_date = repo.get_commit_date(commit.id)
+                    except KeyError:
+                        # Ref not found, skip this plugin
+                        continue
+
+                    repo.free()
+
+                    if current_commit != latest_commit:
+                        updates.append(
+                            UpdateCheck(
+                                plugin_id=plugin.plugin_id,
+                                old_commit=short_commit_id(current_commit),
+                                new_commit=short_commit_id(latest_commit),
+                                commit_date=latest_commit_date,
+                                old_ref=old_ref,
+                                new_ref=new_ref,
+                            )
+                        )
+                except KeyError:
+                    # Ref not found, skip this plugin (expected for some cases)
+                    continue
+                except Exception as e:
+                    # Log unexpected errors but continue with other plugins
+                    log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
+                    continue
 
         return updates
 
@@ -1782,9 +1781,10 @@ class PluginManager(QObject):
             # Update version tag cache from fetched repo if plugin has versioning_scheme
             registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
             if registry_plugin and registry_plugin.versioning_scheme:
-                self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                )
+                with RefsCacheBatch(self._refs_cache):
+                    self._refs_cache.update_cache_from_local_repo(
+                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
+                    )
 
             old_ref = metadata.ref or 'main'
             ref = old_ref

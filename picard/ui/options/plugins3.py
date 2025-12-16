@@ -409,7 +409,20 @@ class Plugins3OptionsPage(OptionsPage):
         # Mark plugin update as complete in UI
         self.plugin_list.mark_plugin_update_complete(plugin)
 
-        if not result.success:
+        if result.success:
+            # Check for enable failures
+            update_result = result.result
+            if hasattr(update_result, 'was_enabled') and update_result.was_enabled and not update_result.enable_success:
+                # Plugin updated but failed to enable
+                error_msg = str(update_result.enable_error) if update_result.enable_error else _("Unknown enable error")
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    _("Plugin Enable Failed"),
+                    _("Plugin '{}' updated successfully but failed to enable:\n\n{}").format(
+                        plugin.name or plugin.plugin_id, error_msg
+                    ),
+                )
+        else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))
 

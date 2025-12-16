@@ -99,6 +99,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Cache version info to avoid repeated expensive calls
         self._version_cache = {}
 
+        # Cache update results to avoid repeated check_updates() calls
+        self._cached_updates = []
+
         # Don't load cached update status during initialization to avoid any network activity
         # It will be loaded when actually needed during populate_plugins()
 
@@ -251,14 +254,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
-        try:
-            # Get update info from check_updates
-            updates = self.plugin_manager.check_updates()
-            for update in updates:
+        # Use cached update info instead of calling check_updates()
+        # This prevents network calls during UI rendering
+        if hasattr(self, '_cached_updates'):
+            for update in self._cached_updates:
                 if update.plugin_id == plugin.plugin_id:
                     return self._format_update_version(update)
-        except Exception:
-            pass
         return _("Available")
 
     def _update_header_button(self):
@@ -317,6 +318,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             item = self.topLevelItem(i)
             item_plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if item_plugin and item_plugin.plugin_id == plugin.plugin_id:
+                # Update version column to show new ref
+                item.setText(COLUMN_VERSION, self._get_clean_version_display(plugin))
+                # Update update column
                 self._setup_update_column(item, plugin)
                 self._update_header_button()
                 break
@@ -381,6 +385,15 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Refresh update status for all plugins."""
         self._update_status_cache.clear()
         self._version_cache.clear()  # Clear version cache too
+
+        # Get all updates at once and cache them
+        try:
+            self._cached_updates = self.plugin_manager.check_updates()
+        except Exception as e:
+            log.debug("check_updates() failed: %s", e)
+            self._cached_updates = []
+
+        # Update individual plugin status cache
         for plugin in self.plugin_manager.plugins:
             self._refresh_single_plugin_update_status(plugin)
 
@@ -720,6 +733,21 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
         if result.success:
+            # Check for enable failures
+            switch_result = result.result
+            if (
+                isinstance(switch_result, dict)
+                and switch_result.get('was_enabled')
+                and not switch_result.get('enable_success')
+            ):
+                # Plugin switched but failed to enable
+                error_msg = str(switch_result.get('enable_error', 'Unknown enable error'))
+                QtWidgets.QMessageBox.warning(
+                    self,
+                    _("Plugin Enable Failed"),
+                    _("Plugin switched successfully but failed to enable:\n\n{}").format(error_msg),
+                )
+
             # Refresh update status for the specific plugin since ref changed
             self._refresh_single_plugin_update_status(plugin)
 
