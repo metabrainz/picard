@@ -625,8 +625,8 @@ class PluginCLI:
         if branches:
             self._out.print('Branches:')
             for branch in branches:
-                name = branch['name']
-                commit = short_commit_id(branch['commit']) if branch.get('commit') else ''
+                name = branch.name
+                commit = short_commit_id(branch.commit) if branch.commit else ''
                 is_current = current_ref == name
                 # Use green for current commit, old color otherwise
                 commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
@@ -636,12 +636,12 @@ class PluginCLI:
 
         # Show tags (filter out ^{} dereferenced annotated tags)
         if tags:
-            filtered_tags = [tag for tag in tags if not tag['name'].endswith('^{}')]
+            filtered_tags = [tag for tag in tags if not tag.name.endswith('^{}')]
             if filtered_tags:
                 self._out.print('Tags:')
                 for tag in filtered_tags:
-                    name = tag['name']
-                    commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
+                    name = tag.name
+                    commit = short_commit_id(tag.commit) if tag.commit else ''
                     is_current = current_ref == name
                     # Use green for current commit, old color otherwise
                     commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old

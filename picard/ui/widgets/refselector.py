@@ -82,16 +82,17 @@ class RefSelectorWidget(QtWidgets.QWidget):
         current_tab_index = None
 
         # Populate tags
-        for ref in refs.get('tags', []):
-            is_current = current_ref and ref['name'] == current_ref
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
+        for ref_item in refs.get('tags', []):
+            is_current = current_ref and ref_item.name == current_ref
+            # Update the is_current flag
+            ref_item_copy = RefItem(
+                name=ref_item.name,
+                commit=ref_item.commit,
                 is_current=is_current,
                 is_tag=True,
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
-            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            list_item = QtWidgets.QListWidgetItem(ref_item_copy.format())
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item_copy)
             self.tags_list.addItem(list_item)
 
             # Select current ref and remember tab
@@ -101,16 +102,17 @@ class RefSelectorWidget(QtWidgets.QWidget):
                 current_item_found = True
 
         # Populate branches
-        for ref in refs.get('branches', []):
-            is_current = current_ref and ref['name'] == current_ref
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
+        for ref_item in refs.get('branches', []):
+            is_current = current_ref and ref_item.name == current_ref
+            # Update the is_current flag
+            ref_item_copy = RefItem(
+                name=ref_item.name,
+                commit=ref_item.commit,
                 is_current=is_current,
                 is_branch=True,
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
-            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            list_item = QtWidgets.QListWidgetItem(ref_item_copy.format())
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item_copy)
             self.branches_list.addItem(list_item)
 
             # Select current ref and remember tab (only if not already found in tags)

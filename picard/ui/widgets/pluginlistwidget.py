@@ -282,8 +282,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                     if refs and refs.get('tags'):
                         # Get the latest tag (first in sorted list)
                         latest_tag = refs['tags'][0]
-                        ref_item = RefItem(name=latest_tag['name'], commit=latest_tag.get('commit'))
-                        return ref_item.format()
+                        return latest_tag.format()
             except Exception:
                 pass
 

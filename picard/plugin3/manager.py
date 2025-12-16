@@ -354,8 +354,8 @@ class PluginManager(QObject):
 
         Returns:
             dict with keys:
-                - branches: List of branch names
-                - tags: List of tag names
+                - branches: List of RefItem objects for branches
+                - tags: List of RefItem objects for tags
             or None on error
         """
         # Check cache first
@@ -363,12 +363,12 @@ class PluginManager(QObject):
             # Use cached data even if expired to avoid network calls
             cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
             if cached_refs is not None:
-                return cached_refs
+                return self._convert_cached_refs_to_refitems(cached_refs)
         elif use_cache:
             # Only use non-expired cache when force refreshing
             cached_refs = self._refs_cache.get_cached_all_refs(url)
             if cached_refs is not None:
-                return cached_refs
+                return self._convert_cached_refs_to_refitems(cached_refs)
 
         remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
         if not remote_refs:
@@ -377,7 +377,7 @@ class PluginManager(QObject):
                 stale_cache = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
                 if stale_cache:
                     log.info('Using stale refs cache for %s due to fetch error', url)
-                    return stale_cache
+                    return self._convert_cached_refs_to_refitems(stale_cache)
             return None
 
         # Separate branches and tags with their commit IDs
@@ -391,7 +391,7 @@ class PluginManager(QObject):
 
             if ref_name.startswith('refs/heads/'):
                 branch_name = ref_name[len('refs/heads/') :]
-                branches.append({'name': branch_name, 'commit': commit_id})
+                branches.append(RefItem(name=branch_name, commit=commit_id, is_tag=False))
             elif ref_name.startswith('refs/tags/'):
                 tag_name = ref_name[len('refs/tags/') :]
                 # Check if this is a dereferenced tag (^{})
@@ -399,22 +399,35 @@ class PluginManager(QObject):
                     # This is the actual commit for an annotated tag
                     base_tag = tag_name[:-3]  # Remove ^{}
                     if base_tag in tags:
-                        tags[base_tag]['commit'] = commit_id  # Update with actual commit
+                        tags[base_tag] = RefItem(name=base_tag, commit=commit_id, is_tag=True)
                 else:
                     # Regular tag or annotated tag object
                     if tag_name not in tags:
-                        tags[tag_name] = {'name': tag_name, 'commit': commit_id}
+                        tags[tag_name] = RefItem(name=tag_name, commit=commit_id, is_tag=True)
 
         result = {
-            'branches': sorted(branches, key=lambda x: x['name']),
-            'tags': sorted(tags.values(), key=lambda x: x['name'], reverse=True),
+            'branches': sorted(branches, key=lambda x: x.name),
+            'tags': sorted(tags.values(), key=lambda x: x.name, reverse=True),
         }
 
-        # Cache the result
+        # Cache the result (convert RefItems back to dicts for caching)
         if use_cache:
-            self._refs_cache.cache_all_refs(url, result)
+            cache_result = {
+                'branches': [{'name': ref.name, 'commit': ref.commit} for ref in result['branches']],
+                'tags': [{'name': ref.name, 'commit': ref.commit} for ref in result['tags']],
+            }
+            self._refs_cache.cache_all_refs(url, cache_result)
 
         return result
+
+    def _convert_cached_refs_to_refitems(self, cached_refs):
+        """Convert cached refs dictionaries to RefItem objects."""
+        return {
+            'branches': [
+                RefItem(name=ref['name'], commit=ref['commit'], is_tag=False) for ref in cached_refs['branches']
+            ],
+            'tags': [RefItem(name=ref['name'], commit=ref['commit'], is_tag=True) for ref in cached_refs['tags']],
+        }
 
     def get_plugin_refs_info(self, identifier):
         """Get plugin refs information from identifier.
@@ -1481,7 +1494,7 @@ class PluginManager(QObject):
             return []
 
         # Filter and sort tags from cached refs
-        tags = [tag['name'] for tag in all_refs.get('tags', []) if pattern.match(tag['name'])]
+        tags = [tag.name for tag in all_refs.get('tags', []) if pattern.match(tag.name)]
         tags = self._refs_cache.sort_tags(tags, versioning_scheme)
 
         # Cache the result
