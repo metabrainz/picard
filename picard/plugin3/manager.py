@@ -1140,189 +1140,202 @@ class PluginManager(QObject):
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
-        # Normalize ref parameter to RefItem
         target_ref_item = self._normalize_ref_parameter(ref)
-        ref_name = target_ref_item.name if target_ref_item else None
-
-        # Check if url is a local directory
         local_path = get_local_repository_path(url)
 
-        # Check blacklist before installing
-        if not force_blacklisted:
-            # Create appropriate InstallablePlugin for blacklist checking
-            if local_path:
-                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
-            else:
-                plugin = UrlInstallablePlugin(url, ref, self._registry)
+        self._check_blacklist_before_install(url, ref, local_path, force_blacklisted)
 
-            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-            if is_blacklisted:
-                raise PluginBlacklistedError(url, blacklist_reason)
-
-        # Install from local directory or remote URL
         if local_path:
             return self._install_from_local_directory(
                 local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
             )
 
-        # Preserve original ref if reinstalling and no ref specified
-        ref = self._preserve_original_ref_if_needed(url, ref, reinstall)
+        return self._install_from_git_url(
+            url, ref, target_ref_item, reinstall, force_blacklisted, discard_changes, enable_after_install
+        )
 
-        # Handle git URL - use temp dir in plugin directory for atomic rename
+    def _check_blacklist_before_install(self, url, ref, local_path, force_blacklisted):
+        """Check if plugin is blacklisted before installation."""
+        if force_blacklisted:
+            return
+
+        if local_path:
+            plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
+        else:
+            plugin = UrlInstallablePlugin(url, ref, self._registry)
+
+        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+        if is_blacklisted:
+            raise PluginBlacklistedError(url, blacklist_reason)
+
+    def _install_from_git_url(
+        self, url, ref, target_ref_item, reinstall, force_blacklisted, discard_changes, enable_after_install
+    ):
+        """Install plugin from git URL."""
+        ref = self._preserve_original_ref_if_needed(url, ref, reinstall)
+        ref_name = target_ref_item.name if target_ref_item else None
 
         url_hash = hash_string(url)
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
         try:
-            # Reuse temp dir if it's already a git repo, otherwise remove it
-            if temp_path.exists():
-                if not (temp_path / '.git').exists():
-                    # Not a git repo, remove it
-                    shutil.rmtree(temp_path)
-
-            # Clone or update temporary location with single-branch optimization
-            source = PluginSourceGit(url, ref_name)
-            try:
-                commit_id = source.sync(temp_path, single_branch=True)
-            except Exception as e:
-                # If sync fails and we're using a preserved ref, try fallback to default
-                if ref_name and reinstall:
-                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref_name, e)
-                    source = PluginSourceGit(url, None)  # Use default ref
-                    commit_id = source.sync(temp_path, single_branch=True)
-                else:
-                    raise
-
-            # Read MANIFEST to get plugin ID
-            manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
-
-            # Generate plugin directory name from sanitized name + UUID
+            commit_id, manifest = self._clone_and_validate_plugin(url, ref_name, temp_path, reinstall)
             plugin_name = get_plugin_directory_name(manifest)
 
-            # Check blacklist again with UUID
-            if not force_blacklisted:
-                plugin = UrlInstallablePlugin(url, ref, self._registry)
-                plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
-                is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-                if is_blacklisted:
-                    raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
-
-            # Check for UUID conflicts with existing plugins from different sources
-            has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
-            if has_conflict and not reinstall:
-                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
-                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-                raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
+            self._check_blacklist_with_uuid(url, ref, manifest.uuid, force_blacklisted)
+            self._check_uuid_conflicts(manifest, url, reinstall)
 
             final_path = self._primary_plugin_dir / plugin_name
+            old_metadata = self._handle_reinstall(
+                final_path, plugin_name, url, reinstall, discard_changes, manifest.uuid
+            )
 
-            # Capture old metadata for logging before reinstall
-            old_metadata = None
-            if reinstall:
-                old_metadata = self._metadata.get_plugin_metadata(manifest.uuid)
-
-            # Check if already installed and handle reinstall
-            if final_path.exists():
-                if not reinstall:
-                    raise PluginAlreadyInstalledError(plugin_name, url)
-
-                # Find and unload existing plugin before reinstall
-                existing_plugin = None
-                for plugin in self._plugins:
-                    if plugin.local_path == final_path:
-                        existing_plugin = plugin
-                        break
-
-                if existing_plugin:
-                    # Force disable the plugin to ensure all extensions are unregistered
-                    # This is needed even if plugin is not in enabled list
-                    try:
-                        if existing_plugin.state != PluginState.DISABLED:
-                            existing_plugin.disable()
-                    except Exception:
-                        # If disable fails, continue anyway
-                        pass
-
-                    # Remove from enabled plugins list if present
-                    if existing_plugin.plugin_id in self._enabled_plugins:
-                        self._enabled_plugins.discard(existing_plugin.plugin_id)
-
-                    # Remove plugin from plugins list
-                    if existing_plugin in self.plugins:
-                        self.plugins.remove(existing_plugin)
-
-                # Check for uncommitted changes before removing
-                if not discard_changes:
-                    changes = GitOperations.check_dirty_working_dir(final_path)
-                    if changes:
-                        raise PluginDirtyError(plugin_name, changes)
-
-                shutil.rmtree(final_path)
-
-            # Atomic rename from temp to final location
             temp_path.rename(final_path)
+            self._update_version_cache(url, final_path)
 
-            # Update version tag cache from cloned repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(url=url)
-            if registry_plugin:
-                versioning_scheme = registry_plugin.versioning_scheme
-                if versioning_scheme:
-                    with RefsCacheBatch(self._refs_cache):
-                        self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
-
-            # Store plugin metadata
-            self._metadata.save_plugin_metadata(
-                PluginMetadata(
-                    name=plugin_name,
-                    url=url,
-                    ref=source.resolved_ref,
-                    commit=commit_id,
-                    uuid=manifest.uuid,
-                )
+            plugin = self._finalize_plugin_installation(
+                url, ref_name, commit_id, manifest, plugin_name, target_ref_item, enable_after_install
             )
+            self._log_installation(plugin_name, plugin, reinstall, old_metadata)
 
-            # Add newly installed plugin to the plugins list
-            plugin = Plugin(self._primary_plugin_dir, plugin_name)
-            self._plugins.append(plugin)
-
-            # Set RefItem from install operation
-            self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_id, "install")
-
-            # Enable plugin if requested and sync RefItem
-            enable_success, enable_error = self._enable_plugin_and_sync_ref_item(
-                plugin, "install", enable=enable_after_install
+            return InstallResult(
+                plugin_name, *self._enable_plugin_and_sync_ref_item(plugin, "install", enable=enable_after_install)
             )
-
-            # Log plugin installation with RefItem information
-            if reinstall and old_metadata:
-                old_ref_item = RefItem.for_logging(old_metadata.ref, old_metadata.commit)
-                log.info(
-                    'Plugin %s switching ref from %s to %s (reinstall)',
-                    plugin_name,
-                    old_ref_item.format() if old_ref_item else 'none',
-                    plugin.ref_item.format() if plugin.ref_item else 'unknown',
-                )
-            else:
-                log.info(
-                    'Plugin %s switching ref to %s (install)',
-                    plugin_name,
-                    plugin.ref_item.format() if plugin.ref_item else 'unknown',
-                )
-
-            self.plugin_installed.emit(plugin)
-
-            # Check for available updates after installation
-            self._check_plugin_update_status_after_install(plugin)
-
-            return InstallResult(plugin_name, enable_success, enable_error)
 
         except Exception:
-            # Clean up temp directory on failure
-            if temp_path.exists():
-                # Force garbage collection to release file handles on Windows
-                gc.collect()
-                shutil.rmtree(temp_path, ignore_errors=True)
+            self._cleanup_temp_directory(temp_path)
             raise
+
+    def _clone_and_validate_plugin(self, url, ref_name, temp_path, reinstall):
+        """Clone plugin repository and validate manifest."""
+        if temp_path.exists() and not (temp_path / '.git').exists():
+            shutil.rmtree(temp_path)
+
+        source = PluginSourceGit(url, ref_name)
+        try:
+            commit_id = source.sync(temp_path, single_branch=True)
+        except Exception as e:
+            if ref_name and reinstall:
+                log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref_name, e)
+                source = PluginSourceGit(url, None)
+                commit_id = source.sync(temp_path, single_branch=True)
+            else:
+                raise
+
+        manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
+        return commit_id, manifest
+
+    def _check_blacklist_with_uuid(self, url, ref, uuid, force_blacklisted):
+        """Check blacklist again with actual UUID from manifest."""
+        if force_blacklisted:
+            return
+
+        plugin = UrlInstallablePlugin(url, ref, self._registry)
+        plugin.plugin_uuid = uuid
+        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+        if is_blacklisted:
+            raise PluginBlacklistedError(url, blacklist_reason, uuid)
+
+    def _check_uuid_conflicts(self, manifest, url, reinstall):
+        """Check for UUID conflicts with existing plugins."""
+        has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
+        if has_conflict and not reinstall:
+            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
+            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
+
+    def _handle_reinstall(self, final_path, plugin_name, url, reinstall, discard_changes, uuid):
+        """Handle plugin reinstallation logic."""
+        old_metadata = None
+
+        if not final_path.exists():
+            return old_metadata
+
+        if not reinstall:
+            raise PluginAlreadyInstalledError(plugin_name, url)
+
+        old_metadata = self._metadata.get_plugin_metadata(uuid)
+        self._unload_existing_plugin(final_path)
+
+        if not discard_changes:
+            changes = GitOperations.check_dirty_working_dir(final_path)
+            if changes:
+                raise PluginDirtyError(plugin_name, changes)
+
+        shutil.rmtree(final_path)
+        return old_metadata
+
+    def _unload_existing_plugin(self, final_path):
+        """Unload existing plugin before reinstall."""
+        existing_plugin = None
+        for plugin in self._plugins:
+            if plugin.local_path == final_path:
+                existing_plugin = plugin
+                break
+
+        if existing_plugin:
+            try:
+                if existing_plugin.state != PluginState.DISABLED:
+                    existing_plugin.disable()
+            except Exception:
+                pass
+
+            self._enabled_plugins.discard(existing_plugin.plugin_id)
+            if existing_plugin in self.plugins:
+                self.plugins.remove(existing_plugin)
+
+    def _update_version_cache(self, url, final_path):
+        """Update version tag cache from cloned repository."""
+        registry_plugin = self._registry.find_plugin(url=url)
+        if registry_plugin and registry_plugin.versioning_scheme:
+            with RefsCacheBatch(self._refs_cache):
+                self._refs_cache.update_cache_from_local_repo(final_path, url, registry_plugin.versioning_scheme)
+
+    def _finalize_plugin_installation(
+        self, url, ref_name, commit_id, manifest, plugin_name, target_ref_item, enable_after_install
+    ):
+        """Finalize plugin installation by saving metadata and adding to plugins list."""
+        self._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=plugin_name,
+                url=url,
+                ref=ref_name,
+                commit=commit_id,
+                uuid=manifest.uuid,
+            )
+        )
+
+        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        self._plugins.append(plugin)
+        self._set_plugin_ref_item_from_operation(plugin, target_ref_item, commit_id, "install")
+
+        return plugin
+
+    def _log_installation(self, plugin_name, plugin, reinstall, old_metadata):
+        """Log plugin installation with RefItem information."""
+        if reinstall and old_metadata:
+            old_ref_item = RefItem.for_logging(old_metadata.ref, old_metadata.commit)
+            log.info(
+                'Plugin %s switching ref from %s to %s (reinstall)',
+                plugin_name,
+                old_ref_item.format() if old_ref_item else 'none',
+                plugin.ref_item.format() if plugin.ref_item else 'unknown',
+            )
+        else:
+            log.info(
+                'Plugin %s switching ref to %s (install)',
+                plugin_name,
+                plugin.ref_item.format() if plugin.ref_item else 'unknown',
+            )
+
+        self.plugin_installed.emit(plugin)
+        self._check_plugin_update_status_after_install(plugin)
+
+    def _cleanup_temp_directory(self, temp_path):
+        """Clean up temporary directory on installation failure."""
+        if temp_path.exists():
+            gc.collect()  # Force garbage collection to release file handles on Windows
+            shutil.rmtree(temp_path, ignore_errors=True)
 
     def _install_from_local_directory(
         self,
