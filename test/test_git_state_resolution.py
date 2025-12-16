@@ -69,7 +69,7 @@ class TestGitStateResolution(PicardTestCase):
         ]
 
         result = self.manager._default_ref_preference(ref_items)
-        self.assertEqual(result.name, "main")  # First item
+        self.assertEqual(result.name, "develop")  # First item alphabetically
 
     def test_prefer_known_tag(self):
         """Test preferring known tag names."""
