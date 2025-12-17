@@ -21,10 +21,16 @@
 """Plugin metadata storage and retrieval."""
 
 from dataclasses import asdict, dataclass
+from typing import TYPE_CHECKING
 
 from picard import log
 from picard.config import get_config
 from picard.git.factory import git_backend
+from picard.git.utils import RefItem
+
+
+if TYPE_CHECKING:
+    from picard.plugin3.plugin import Plugin
 
 
 @dataclass
@@ -222,39 +228,16 @@ class PluginMetadataManager:
                     return None
                 url = registry_plugin.git_url
 
-            current_ref = metadata.ref if metadata else None
-            current_commit = metadata.commit if metadata else None
             registry_id = self.get_plugin_registry_id(plugin)
 
-            # Detect current ref from local git repo (overrides metadata)
-            if plugin.local_path:
-                try:
-                    backend = git_backend()
-                    repo = backend.create_repository(plugin.local_path)
-                    current_commit = repo.get_head_target()
+            refs = self.read_references_from_local_repo(plugin)
+            if refs is not None and refs['current'] is not None:
+                current_ref = refs['current'].name
+                current_commit = refs['current'].commit
+            else:
+                current_ref = metadata.ref if metadata else None
+                current_commit = metadata.commit if metadata else None
 
-                    # Check if current commit matches a tag (prefer tag over branch)
-                    current_ref = None
-                    for ref_name in repo.list_references():
-                        if ref_name.startswith('refs/tags/'):
-                            tag_name = ref_name[10:]
-                            if tag_name.endswith('^{}'):
-                                continue
-                            try:
-                                obj = repo.revparse_single(ref_name)
-                                target = repo.peel_to_commit(obj)
-                                if target.id == current_commit:
-                                    current_ref = tag_name
-                                    break
-                            except Exception:
-                                # Skip invalid tags and continue to next one
-                                continue  # nosec try_except_continue
-
-                    # If no tag found, use branch name
-                    if not current_ref and not repo.is_head_detached():
-                        current_ref = repo.get_head_shorthand()
-                except Exception:
-                    pass  # Ignore errors, use metadata values
         else:
             # Not installed - try registry ID, UUID, or URL
             if '://' in identifier or '/' in identifier:
@@ -289,3 +272,80 @@ class PluginMetadataManager:
             'plugin': plugin,
             'registry_plugin': registry_plugin,
         }
+
+    def read_references_from_local_repo(self, plugin: 'Plugin | None'):
+        """Return all references along the target commit for installed plugin
+
+        Args:
+            plugin: Plugin instance
+
+        Returns:
+            dict with keys:
+                - branches: list of RefItem objects
+                - tags: list of RefItem objects
+                - current: Current RefItem (if installed)
+            or None if not found
+        """
+        if not plugin or not plugin.local_path:
+            return None
+
+        refs = {
+            'branches': [],
+            'tags': [],
+            'current': None,
+        }
+        try:
+            backend = git_backend()
+            repo = backend.create_repository(plugin.local_path)
+            current_commit = repo.get_head_target()
+
+            # Check if current commit matches a tag (prefer tag over branch)
+            current_ref = None
+            for ref_name in repo.list_references():
+                obj = repo.revparse_single(ref_name)
+                target = repo.peel_to_commit(obj)
+
+                # name target.id obj.id
+                # refs/heads/test_branch 00d5be778187d89c6ce7b25f14ccdc0dd288844c 00d5be778187d89c6ce7b25f14ccdc0dd288844c
+                # refs/remotes/origin/HEAD 00d5be778187d89c6ce7b25f14ccdc0dd288844c 00d5be778187d89c6ce7b25f14ccdc0dd288844c
+                # refs/remotes/origin/main 1809609a3a5394bde1fbc6376e7e5b735cf685c3 1809609a3a5394bde1fbc6376e7e5b735cf685c3
+                # refs/remotes/origin/test_branch 00d5be778187d89c6ce7b25f14ccdc0dd288844c 00d5be778187d89c6ce7b25f14ccdc0dd288844c
+                # refs/tags/annotated d1c27a14dbced50bf83582a5659f297726afa0fd d9be64483044d03ecede5a27224665d6a1d5bcc1
+                # refs/tags/v1.2.3 e73ccc18568111111e79c21c6bfe706304bdf9a3 e73ccc18568111111e79c21c6bfe706304bdf9a3
+
+                if ref_name.startswith('refs/tags/'):
+                    tag_name = ref_name[10:]
+                    if current_ref is None and target.id == current_commit:
+                        current_ref = RefItem(name=tag_name, commit=current_commit, is_tag=True, is_current=True)
+                    refs['tags'].append(RefItem(name=tag_name, commit=target.id, is_tag=True))
+                elif ref_name.startswith('refs/remotes/origin/'):
+                    branch_name = ref_name[20:]
+                    if branch_name == 'HEAD':
+                        continue
+                    refs['branches'].append(RefItem(name=branch_name, commit=target.id, is_branch=True))
+
+            if not current_ref:
+                if not repo.is_head_detached():
+                    # branch
+                    current_branch = repo.get_head_shorthand()
+                    current_ref = RefItem(
+                        name=current_branch,
+                        commit=current_commit,
+                        is_current=True,
+                        is_branch=True,
+                    )
+                else:
+                    # commit
+                    current_ref = RefItem(
+                        name=current_commit,
+                        commit=current_commit,
+                        is_current=True,
+                    )
+
+            if current_ref is not None:
+                refs['current'] = current_ref
+
+        except Exception:
+            pass  # Ignore errors, use metadata values
+
+        return refs
