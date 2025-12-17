@@ -97,7 +97,8 @@ def register_script_function(function, name=None, eval_args=True, check_argcount
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being
     passed to ``function``.
     If ``check_argcount`` is ``False`` the number of arguments passed to the
-    function will not be verified."""
+    function will not be verified.
+    If ``documentation`` is ``None``, ``function.__doc__`` will be used."""
 
     args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
 
@@ -112,6 +113,9 @@ def register_script_function(function, name=None, eval_args=True, check_argcount
     defaults = len(defaults) if defaults else 0
 
     argcount = Bound(args - defaults, args if not varargs else None)
+
+    if not documentation:
+        documentation = function.__doc__
 
     if name is None:
         name = function.__name__
