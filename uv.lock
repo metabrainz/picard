@@ -2,8 +2,7 @@ version = 1
 revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
-    "python_full_version >= '3.14'",
-    "python_full_version >= '3.12' and python_full_version < '3.14'",
+    "python_full_version >= '3.12'",
     "python_full_version == '3.11.*'",
     "python_full_version < '3.11'",
 ]
@@ -608,8 +607,7 @@ name = "numpy"
 version = "2.3.5"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14'",
-    "python_full_version >= '3.12' and python_full_version < '3.14'",
+    "python_full_version >= '3.12'",
     "python_full_version == '3.11.*'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/65/21b3bc86aac7b8f2862db1e808f1ea22b028e30a225a34a5ede9bf8678f2/numpy-2.3.5.tar.gz", hash = "sha256:784db1dcdab56bf0517743e746dfb0f885fc68d948aba86eeec2cba234bdf1c0", size = 20584950, upload-time = "2025-11-16T22:52:42.067Z" }
@@ -782,8 +780,8 @@ requires-dist = [
     { name = "markdown", specifier = "~=3.2" },
     { name = "mutagen", specifier = "~=1.45" },
     { name = "opencc", marker = "extra == 'plugins'", specifier = ">=1.1.9" },
-    { name = "pygit2", marker = "python_full_version < '3.14'", specifier = "~=1.18" },
-    { name = "pygit2", marker = "python_full_version >= '3.14'", specifier = "~=1.19" },
+    { name = "pygit2", marker = "python_full_version < '3.11'", specifier = "~=1.18" },
+    { name = "pygit2", marker = "python_full_version >= '3.11'", specifier = "~=1.19" },
     { name = "pyjwt", specifier = "~=2.0" },
     { name = "pyobjc-core", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
     { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<12" },
@@ -926,8 +924,7 @@ name = "pygit2"
 version = "1.19.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.14'",
-    "python_full_version >= '3.12' and python_full_version < '3.14'",
+    "python_full_version >= '3.12'",
     "python_full_version == '3.11.*'",
 ]
 dependencies = [
