@@ -52,13 +52,15 @@ from enum import (
 )
 import fnmatch
 from functools import partial
-from io import FileIO
 import os
 import os.path
 import re
 import shutil
 import time
-from typing import TYPE_CHECKING
+from typing import (
+    IO,
+    TYPE_CHECKING,
+)
 
 from mutagen import (
     FileType,
@@ -797,7 +799,7 @@ class File(MetadataItem):
         self._update_filesystem_metadata(metadata)
 
     @classmethod
-    def score(cls, filename: str, fileobj: FileIO, header_data: bytes) -> int:
+    def score(cls, filename: str, fileobj: IO[bytes], header_data: bytes) -> int:
         """Used to guess if the provided file matches this file format.
 
         If Picard needs to choose between multiple file formats it uses the returned
