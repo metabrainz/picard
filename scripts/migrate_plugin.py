@@ -772,6 +772,8 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         all_warnings.append("ℹ️  API access pattern:")
         all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
+        if 'register_track_metadata_processor' in content:
+            all_warnings.append("   - Processors: Parameters of track metadata processors have changed")
         all_warnings.append("   - Classes: Use 'self.api' in OptionsPage, BaseAction, CoverArtProvider")
 
     # Convert API patterns
