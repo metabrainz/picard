@@ -76,6 +76,9 @@ class GitRef:
         self.name = name
         self.target = target
 
+    def __repr__(self):
+        return f"GitRef({self.name}, {self.target})"
+
 
 class GitObject:
     def __init__(self, id: str, obj_type: GitObjectType):
