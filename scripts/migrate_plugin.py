@@ -772,8 +772,9 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         all_warnings.append("ℹ️  API access pattern:")
         all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
-        all_warnings.append("   - Classes: Use 'self.api' (passed to __init__)")
-        all_warnings.append("   - Add api parameter to OptionsPage/BaseAction __init__")
+        if 'register_track_metadata_processor' in content:
+            all_warnings.append("   - Processors: Parameters of track metadata processors have changed")
+        all_warnings.append("   - Classes: Use 'self.api' in OptionsPage, BaseAction, CoverArtProvider")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
@@ -949,19 +950,19 @@ def fix_function_signatures(content, tree):
             # Track metadata processor with tagger: (tagger, metadata, track, release) -> (api, track, metadata)
             if len(args) == 4 and 'tagger' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(tagger, metadata, track, release)"
-                new_sig = f"def {node.name}(api, track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata, track_node, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # Track metadata processor: (album, metadata, track, release) -> (api, track, metadata)
             elif len(args) == 4 and 'album' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(album, metadata, track, release)"
-                new_sig = f"def {node.name}(api, track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata, track_node, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # Album metadata processor: (album, metadata, release) -> (api, album, metadata)
             elif len(args) == 3 and 'album' in args and 'metadata' in args and 'release' in args:
                 old_sig = f"def {node.name}(album, metadata, release)"
-                new_sig = f"def {node.name}(api, album, metadata)"
+                new_sig = f"def {node.name}(api, album, metadata, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # File processor: (track, file) -> (api, file)
