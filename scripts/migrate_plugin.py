@@ -949,13 +949,13 @@ def fix_function_signatures(content, tree):
             # Track metadata processor with tagger: (tagger, metadata, track, release) -> (api, track, metadata)
             if len(args) == 4 and 'tagger' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(tagger, metadata, track, release)"
-                new_sig = f"def {node.name}(api, track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata, track_node, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # Track metadata processor: (album, metadata, track, release) -> (api, track, metadata)
             elif len(args) == 4 and 'album' in args and 'track' in args and 'metadata' in args:
                 old_sig = f"def {node.name}(album, metadata, track, release)"
-                new_sig = f"def {node.name}(api, track, metadata)"
+                new_sig = f"def {node.name}(api, track, metadata, track_node, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # Album metadata processor: (album, metadata, release) -> (api, album, metadata)
