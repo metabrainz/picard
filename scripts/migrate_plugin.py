@@ -161,7 +161,6 @@ def generate_manifest_toml(metadata, module_name):
     toml = f'''uuid = "{plugin_uuid}"
 name = "{name}"
 authors = ["{author}"]
-version = "{metadata.get('version', '1.0.0')}"
 '''
 
     if use_multiline:
@@ -1463,6 +1462,7 @@ def migrate_plugin(input_file, output_dir=None):
     print("  3. Update function signatures as needed")
     print("  4. Test the plugin with Picard 3.0")
     print("  5. See docs/PLUGINSV3/MIGRATION.md for details")
+    print(f"  6. Create a tag for the current version '{metadata.get('version', '1.0.0')}'")
 
     return 0
 
