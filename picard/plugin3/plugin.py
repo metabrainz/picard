@@ -564,12 +564,12 @@ class Plugin:
     state: PluginState | None = None
     _module: types.ModuleType | None = None
 
-    def __init__(self, plugins_dir: Path, plugin_name: str):
+    def __init__(self, plugins_dir: Path, plugin_name: str, uuid: str | None = None):
         self.plugin_id = plugin_name
         self.module_name = f'picard.plugins.{self.plugin_id}'
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
-        self.uuid = None
+        self.uuid = uuid
 
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
