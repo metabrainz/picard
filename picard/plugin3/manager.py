@@ -1021,7 +1021,7 @@ class PluginManager(QObject):
             )
 
             # Add newly installed plugin to the plugins list
-            plugin = Plugin(self._primary_plugin_dir, plugin_name)
+            plugin = Plugin(self._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
             self._plugins.append(plugin)
             self.plugin_installed.emit(plugin)
 
@@ -1153,7 +1153,7 @@ class PluginManager(QObject):
         )
 
         # Add newly installed plugin to the plugins list
-        plugin = Plugin(self._primary_plugin_dir, plugin_name)
+        plugin = Plugin(self._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
         self._plugins.append(plugin)
 
         # Enable plugin if requested
