@@ -961,7 +961,7 @@ def fix_function_signatures(content, tree):
             # Album metadata processor: (album, metadata, release) -> (api, album, metadata)
             elif len(args) == 3 and 'album' in args and 'metadata' in args and 'release' in args:
                 old_sig = f"def {node.name}(album, metadata, release)"
-                new_sig = f"def {node.name}(api, album, metadata)"
+                new_sig = f"def {node.name}(api, album, metadata, release_node)"
                 replacements.append((old_sig, new_sig))
 
             # File processor: (track, file) -> (api, file)
