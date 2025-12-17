@@ -548,18 +548,15 @@ class PluginApi:
             # Try exact locale match (e.g., de_DE)
             if locale in self._translations and key in self._translations[locale]:
                 result = self._translations[locale][key]
-                self._logger.debug("tr() found exact locale match: '%s' -> '%s'", key, result)
             else:
                 # Try language without region (e.g., de from de_DE)
                 lang = locale.split('_')[0]
                 if lang in self._translations and key in self._translations[lang]:
                     result = self._translations[lang][key]
-                    self._logger.debug("tr() found language match: '%s' -> '%s'", key, result)
                 else:
                     # Try source locale as fallback
                     if self._source_locale in self._translations and key in self._translations[self._source_locale]:
                         result = self._translations[self._source_locale][key]
-                        self._logger.debug("tr() found source locale match: '%s' -> '%s'", key, result)
                     else:
                         self._logger.debug("tr() no translation found for key '%s' in any locale", key)
 
@@ -572,7 +569,6 @@ class PluginApi:
         if kwargs:
             result = result.format(**kwargs)
 
-        self._logger.debug("tr() final result: '%s' -> '%s'", key, result)
         return result
 
     def trn(self, key: str, singular: str | None = None, plural: str | None = None, n: int = 0, **kwargs) -> str:
