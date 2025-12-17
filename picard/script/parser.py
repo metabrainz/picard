@@ -368,7 +368,7 @@ class ScriptParser:
 
     def eval(self, script: str, context: Metadata | None = None, file: 'File | None' = None):
         """Parse and evaluate the script."""
-        self.context = context if context is not None else Metadata()
+        self.context: Metadata = context if context is not None else Metadata()
         self.file = file
         self.load_functions()
         key = hash(script)
