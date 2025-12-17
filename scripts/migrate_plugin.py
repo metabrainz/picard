@@ -772,8 +772,7 @@ def convert_plugin_code(content, metadata):
     if register_calls:
         all_warnings.append("ℹ️  API access pattern:")
         all_warnings.append("   - Processors: Use 'api' parameter (first argument)")
-        all_warnings.append("   - Classes: Use 'self.api' (passed to __init__)")
-        all_warnings.append("   - Add api parameter to OptionsPage/BaseAction __init__")
+        all_warnings.append("   - Classes: Use 'self.api' in OptionsPage, BaseAction, CoverArtProvider")
 
     # Convert API patterns
     content, api_warnings = convert_plugin_api_v2_to_v3(content)
