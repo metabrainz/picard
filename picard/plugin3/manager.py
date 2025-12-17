@@ -412,6 +412,7 @@ class PluginManager(QObject):
         # For annotated tags, git provides both the tag object and dereferenced commit (^{})
         branches = []
         tags = {}  # Use dict to merge tag object with dereferenced commit
+        annotated_tags = {}
 
         for ref in remote_refs:
             ref_name = ref.name if hasattr(ref, 'name') else str(ref)
@@ -424,14 +425,23 @@ class PluginManager(QObject):
                 tag_name = ref_name[len('refs/tags/') :]
                 # Check if this is a dereferenced tag (^{})
                 if tag_name.endswith('^{}'):
-                    # This is the actual commit for an annotated tag
                     base_tag = tag_name[:-3]  # Remove ^{}
-                    if base_tag in tags:
-                        tags[base_tag]['commit'] = commit_id  # Update with actual commit
+                    # This is the actual commit for an annotated tag
+                    annotated_tags[base_tag] = commit_id
                 else:
-                    # Regular tag or annotated tag object
-                    if tag_name not in tags:
-                        tags[tag_name] = {'name': tag_name, 'commit': commit_id}
+                    # For annotated tags, we have 2 tags:
+                    # GitRef(refs/tags/v1.1.2, 858ec02a1983cc8448ff7c57426bcbb9db2f0e76)
+                    # GitRef(refs/tags/v1.1.2^{}, ad21dafef15e0a73aea626ceab77684064b11089)
+                    # GitRef(refs/heads/main, ad21dafef15e0a73aea626ceab77684064b11089)
+                    # but we need to resolve them in 2 passes
+                    tags[tag_name] = {'name': tag_name, 'commit': commit_id}
+
+        # Resolved annotated tags
+        # In this case, the tag points at the annotated commit,
+        # so we replace it with the target commit id
+        for tag, commit_id in annotated_tags.items():
+            if tag in tags:
+                tags[tag]['commit'] = commit_id
 
         result = {
             'branches': sorted(branches, key=lambda x: x['name']),
