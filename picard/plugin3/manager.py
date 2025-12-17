@@ -51,6 +51,7 @@ from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.ref_utils import get_ref_type
 from picard.git.utils import get_local_repository_path
+from picard.plugin3 import GitReferenceError
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
 from picard.plugin3.plugin import (
     Plugin,
@@ -1440,11 +1441,11 @@ class PluginManager(QObject):
                         # For tags, try refs/tags/ first, then origin/ for branches
                         try:
                             obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except KeyError:
+                        except GitReferenceError:
                             # Not a tag, try origin/ prefix for branches
                             try:
                                 obj = repo.revparse_single(f'origin/{ref}')
-                            except KeyError:
+                            except GitReferenceError:
                                 # Fall back to original ref (might be commit hash)
                                 obj = repo.revparse_single(ref)
                     elif ref.startswith('origin/'):
@@ -1462,11 +1463,11 @@ class PluginManager(QObject):
                     latest_commit = commit.id
                     # Get commit date using backend
                     latest_commit_date = repo.get_commit_date(commit.id)
-                except KeyError:
+                except GitReferenceError:
                     # Ref not found, skip this plugin
                     continue
-
-                repo.free()
+                finally:
+                    repo.free()
 
                 if current_commit != latest_commit:
                     updates.append(
@@ -1484,7 +1485,7 @@ class PluginManager(QObject):
                 continue
             except Exception as e:
                 # Log unexpected errors but continue with other plugins
-                log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e)
+                log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
                 continue
 
         return updates
