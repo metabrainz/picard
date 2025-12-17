@@ -33,6 +33,7 @@ from picard.plugin3.installable import (
 )
 from picard.plugin3.registry import RegistryPlugin
 
+from picard.ui import PicardDialog
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
@@ -49,7 +50,7 @@ TAB_URL = 1
 TAB_LOCAL = 2
 
 
-class InstallPluginDialog(QtWidgets.QDialog):
+class InstallPluginDialog(PicardDialog):
     """Dialog for installing plugins."""
 
     plugin_installed = QtCore.pyqtSignal(str)  # Emits plugin_id when installed
@@ -59,9 +60,9 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.setWindowTitle(_("Install Plugin"))
         self.setModal(True)
         self.resize(500, 300)
+        self.setMinimumSize(500, 300)
 
         # Cache frequently accessed objects
-        self.tagger = QtWidgets.QApplication.instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         # Fetch registry on dialog open, fallback to cache if network fails
@@ -186,21 +187,14 @@ class InstallPluginDialog(QtWidgets.QDialog):
         self.status_label = QtWidgets.QLabel()
         layout.addWidget(self.status_label)
 
-        layout.addStretch()
-
         # Buttons
-        button_layout = QtWidgets.QHBoxLayout()
-
+        button_box = QtWidgets.QDialogButtonBox()
         self.install_button = QtWidgets.QPushButton(_("Install"))
-        self.install_button.clicked.connect(self._install_plugin)
-        self.install_button.setDefault(True)
-        button_layout.addWidget(self.install_button)
-
-        self.cancel_button = QtWidgets.QPushButton(_("Cancel"))
-        self.cancel_button.clicked.connect(self.reject)
-        button_layout.addWidget(self.cancel_button)
-
-        layout.addLayout(button_layout)
+        button_box.addButton(self.install_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self._install_plugin)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
 
         # Connect input changes to validation
         self.url_edit.textChanged.connect(self._validate_input)
