@@ -803,6 +803,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         self.setWindowTitle(_("Switch Git Ref"))
         self.setModal(True)
         self.resize(400, 300)
+        self.setMinimumSize(400, 300)
         self.setup_ui()
         self.load_refs()
 
@@ -825,17 +826,13 @@ class SwitchRefDialog(QtWidgets.QDialog):
         layout.addWidget(self.ref_selector)
 
         # Buttons
-        button_layout = QtWidgets.QHBoxLayout()
-
-        switch_button = QtWidgets.QPushButton(_("Yes, Switch!"))
-        switch_button.clicked.connect(self._switch_ref)
-        button_layout.addWidget(switch_button)
-
-        cancel_button = QtWidgets.QPushButton(_("Cancel"))
-        cancel_button.clicked.connect(self.reject)
-        button_layout.addWidget(cancel_button)
-
-        layout.addLayout(button_layout)
+        button_box = QtWidgets.QDialogButtonBox()
+        self.install_button = QtWidgets.QPushButton(_("Yes, Switch!"))
+        button_box.addButton(self.install_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(self._switch_ref)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
 
     def load_refs(self):
         """Load available refs from repository."""
