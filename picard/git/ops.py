@@ -243,9 +243,9 @@ class GitOperations:
 
         # If the ref is not found locally, try fetching it specifically
         references = repo.list_references()
-        tag_ref = f'refs/tags/{ref}'
-        ref_names = [r.name for r in references]
-        if tag_ref not in ref_names:
+        # Check if tag exists using GitRef properties
+        tag_exists = any(r.ref_type.value == 'tag' and r.shortname == ref for r in references)
+        if not tag_exists:
             try:
                 # Fetch the specific tag
                 repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
@@ -256,11 +256,15 @@ class GitOperations:
         # Find the ref
         try:
             references = repo.list_references()
-            ref_names = [r.name for r in references]
 
-            # Try as branch first
-            branch_ref = f'refs/remotes/origin/{ref}'
-            if branch_ref in ref_names:
+            # Try as branch first using GitRef properties
+            branch_ref = None
+            for git_ref in references:
+                if git_ref.ref_type.value == 'branch' and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
+                    branch_ref = git_ref.name
+                    break
+
+            if branch_ref:
                 commit_obj = repo.revparse_single(branch_ref)
                 commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)
@@ -277,9 +281,14 @@ class GitOperations:
                 log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
                 return old_ref, ref, old_commit, commit.id
 
-            # Try as tag
-            tag_ref = f'refs/tags/{ref}'
-            if tag_ref in ref_names:
+            # Try as tag using GitRef properties
+            tag_ref = None
+            for git_ref in references:
+                if git_ref.ref_type.value == 'tag' and git_ref.shortname == ref:
+                    tag_ref = git_ref.name
+                    break
+
+            if tag_ref:
                 commit_obj = repo.revparse_single(tag_ref)
                 commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)

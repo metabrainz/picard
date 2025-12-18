@@ -301,8 +301,8 @@ class PluginMetadataManager:
 
             # Check if current commit matches a tag (prefer tag over branch)
             current_ref = None
-            for ref_name in repo.list_references():
-                obj = repo.revparse_single(ref_name)
+            for git_ref in repo.list_references():
+                obj = repo.revparse_single(git_ref.name)
                 target = repo.peel_to_commit(obj)
 
                 # name target.id obj.id
@@ -313,15 +313,19 @@ class PluginMetadataManager:
                 # refs/tags/annotated d1c27a14dbced50bf83582a5659f297726afa0fd d9be64483044d03ecede5a27224665d6a1d5bcc1
                 # refs/tags/v1.2.3 e73ccc18568111111e79c21c6bfe706304bdf9a3 e73ccc18568111111e79c21c6bfe706304bdf9a3
 
-                if ref_name.startswith('refs/tags/'):
-                    tag_name = ref_name[10:]
+                if git_ref.ref_type.value == 'tag':
                     if current_ref is None and target.id == current_commit:
-                        current_ref = RefItem(name=tag_name, commit=current_commit, is_tag=True, is_current=True)
-                    refs['tags'].append(RefItem(name=tag_name, commit=target.id, is_tag=True))
-                elif ref_name.startswith('refs/remotes/origin/'):
-                    branch_name = ref_name[20:]
-                    if branch_name == 'HEAD':
+                        current_ref = RefItem(
+                            name=git_ref.shortname, commit=current_commit, is_tag=True, is_current=True
+                        )
+                    refs['tags'].append(RefItem(name=git_ref.shortname, commit=target.id, is_tag=True))
+                elif git_ref.ref_type.value == 'branch' and git_ref.is_remote:
+                    if git_ref.shortname == 'origin/HEAD':
                         continue
+                    # Remove 'origin/' prefix for display
+                    branch_name = (
+                        git_ref.shortname[7:] if git_ref.shortname.startswith('origin/') else git_ref.shortname
+                    )
                     refs['branches'].append(RefItem(name=branch_name, commit=target.id, is_branch=True))
 
             if not current_ref:

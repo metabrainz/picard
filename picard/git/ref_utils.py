@@ -38,26 +38,28 @@ def get_ref_type(repo, ref):
     try:
         # Get all references from the repository
         references = repo.list_references()
-        ref_names = [r.name for r in references]
 
-        # Check exact matches first
-        if f'refs/tags/{ref}' in ref_names:
-            return 'tag', f'refs/tags/{ref}'
-        if f'refs/heads/{ref}' in ref_names:
-            return 'local_branch', f'refs/heads/{ref}'
-        if f'refs/remotes/{ref}' in ref_names:
-            return 'remote_branch', f'refs/remotes/{ref}'
-        if f'refs/remotes/origin/{ref}' in ref_names:
-            return 'remote_branch', f'refs/remotes/origin/{ref}'
+        # Check exact matches first using GitRef properties
+        for git_ref in references:
+            if git_ref.shortname == ref:
+                if git_ref.ref_type.value == 'tag':
+                    return 'tag', git_ref.name
+                elif git_ref.ref_type.value == 'branch':
+                    if git_ref.is_remote:
+                        return 'remote_branch', git_ref.name
+                    else:
+                        return 'local_branch', git_ref.name
 
         # Check if ref is already a full reference
-        if ref in ref_names:
-            if ref.startswith('refs/tags/'):
-                return 'tag', ref
-            elif ref.startswith('refs/heads/'):
-                return 'local_branch', ref
-            elif ref.startswith('refs/remotes/'):
-                return 'remote_branch', ref
+        for git_ref in references:
+            if git_ref.name == ref:
+                if git_ref.ref_type.value == 'tag':
+                    return 'tag', ref
+                elif git_ref.ref_type.value == 'branch':
+                    if git_ref.is_remote:
+                        return 'remote_branch', ref
+                    else:
+                        return 'local_branch', ref
 
         # Try to resolve as commit hash
         try:
