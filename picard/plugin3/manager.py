@@ -1417,23 +1417,43 @@ class PluginManager(QObject):
                 old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
                 ref = old_ref
 
-                # Check if currently on a tag
+                # Check if currently on a tag (check current commit, not ref)
                 current_is_tag = False
                 current_tag = None
-                # Find the GitRef object for this ref
-                git_ref = None
-                for r in repo.list_references():
-                    if r.shortname == ref or r.name == ref:
-                        git_ref = r
-                        break
 
-                if git_ref and git_ref.ref_type == GitRefType.TAG:
-                    try:
-                        repo.revparse_single(git_ref.name)
-                        current_is_tag = True
-                        current_tag = ref
-                    except KeyError:
-                        pass
+                if is_detached:
+                    # For detached HEAD, check if current commit matches any tag
+                    for r in repo.list_references():
+                        if r.ref_type == GitRefType.TAG:
+                            try:
+                                tag_obj = repo.revparse_single(r.name)
+                                # Peel annotated tags to get commit
+                                if tag_obj.type == GitObjectType.TAG:
+                                    tag_commit = repo.peel_to_commit(tag_obj)
+                                else:
+                                    tag_commit = tag_obj
+
+                                if tag_commit.id == current_commit:
+                                    current_is_tag = True
+                                    current_tag = r.shortname
+                                    break
+                            except Exception:
+                                continue
+                else:
+                    # For regular branches, check if ref is a tag
+                    git_ref = None
+                    for r in repo.list_references():
+                        if r.shortname == ref or r.name == ref:
+                            git_ref = r
+                            break
+
+                    if git_ref and git_ref.ref_type == GitRefType.TAG:
+                        try:
+                            repo.revparse_single(git_ref.name)
+                            current_is_tag = True
+                            current_tag = ref
+                        except KeyError:
+                            pass
 
                 # If on a tag, check for newer version tag
                 new_ref = None
@@ -1491,9 +1511,15 @@ class PluginManager(QObject):
                     repo.free()
 
                 if current_commit != latest_commit:
-                    # For detached HEAD, show commit hashes instead of branch names
-                    display_old_ref = short_commit_id(current_commit) if is_detached else old_ref
-                    display_new_ref = short_commit_id(latest_commit) if is_detached else new_ref
+                    # For display: use tag names if available, otherwise commit hashes for detached HEAD
+                    if current_is_tag and current_tag:
+                        display_old_ref = current_tag
+                    elif is_detached:
+                        display_old_ref = short_commit_id(current_commit)
+                    else:
+                        display_old_ref = old_ref
+
+                    display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
 
                     updates.append(
                         UpdateCheck(
