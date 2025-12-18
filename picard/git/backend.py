@@ -120,6 +120,9 @@ class GitObject:
         self.id = id
         self.type = obj_type
 
+    def __repr__(self):
+        return 'GitObject(%r, %r)' % (self.id, self.type)
+
 
 class GitRemoteCallbacks:
     """Abstract remote callbacks for authentication"""
@@ -128,10 +131,16 @@ class GitRemoteCallbacks:
 def _log_git_call(method_name: str, *args, **kwargs):
     """Log git backend method calls if debug option enabled"""
     if DebugOpt.GIT_BACKEND.enabled:
+        has_retval = 'retval' in kwargs
+        if has_retval:
+            retval = kwargs.pop('retval')
         args_str = ', '.join(str(arg)[:100] for arg in args)  # Truncate long args
         kwargs_str = ', '.join(f'{k}={str(v)[:50]}' for k, v in kwargs.items())
         all_args = ', '.join(filter(None, [args_str, kwargs_str]))
-        log.debug("Git backend call: %s(%s)", method_name, all_args)
+        msg = "Git backend call: %s(%s)" % (method_name, all_args)
+        if has_retval:
+            msg += ' => %r' % retval
+        log.debug(msg)
 
 
 class GitRepository(ABC):
