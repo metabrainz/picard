@@ -30,7 +30,7 @@ from picard.git.backend import (
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
-from picard.git.ref_utils import get_ref_type
+from picard.git.ref_utils import find_git_ref
 
 
 def clean_python_cache(directory):
@@ -177,16 +177,20 @@ class GitOperations:
             repo = backend.create_repository(repo_path)
 
             if ref:
-                # Use robust reference type detection
-                ref_type, resolved_ref = get_ref_type(repo, ref)
-                if ref_type == 'tag':
-                    return 'tag', ref
-                elif ref_type in ('local_branch', 'remote_branch'):
-                    return 'branch', ref
-                elif ref_type == 'commit':
-                    return 'commit', ref
+                # Use GitRef-based detection
+                git_ref = find_git_ref(repo, ref)
+                if git_ref:
+                    if git_ref.ref_type.value == 'tag':
+                        return 'tag', ref
+                    elif git_ref.ref_type.value == 'branch':
+                        return 'branch', ref
                 else:
-                    return None, ref
+                    # Try as commit hash
+                    try:
+                        repo.revparse_single(ref)
+                        return 'commit', ref
+                    except Exception:
+                        return None, ref
             else:
                 # Check current HEAD state
                 if repo.is_head_detached():
