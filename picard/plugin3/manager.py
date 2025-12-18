@@ -424,8 +424,8 @@ class PluginManager(QObject):
         for ref in remote_refs:
             if ref.ref_type == GitRefType.BRANCH:
                 branches.append({'name': ref.shortname, 'commit': ref.target})
-            elif ref.ref_type == GitRefType.TAG and not ref.shortname.endswith('^{}'):
-                # Skip dereferenced tag refs (^{}) - we get commit info from is_annotated
+            elif ref.ref_type == GitRefType.TAG:
+                # GitRef backend handles dereferencing using pygit2.peel()
                 tags.append({'name': ref.shortname, 'commit': ref.target})
 
         result = {

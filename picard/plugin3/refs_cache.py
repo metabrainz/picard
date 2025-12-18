@@ -307,7 +307,7 @@ class RefsCache:
         """
         tags = []
         for ref in ref_names:
-            if ref.ref_type == GitRefType.TAG and not ref.shortname.endswith('^{}'):
+            if ref.ref_type == GitRefType.TAG:
                 if pattern.match(ref.shortname):
                     tags.append(ref.shortname)
         return tags

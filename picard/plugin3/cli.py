@@ -634,19 +634,17 @@ class PluginCLI:
                 self._out.print(f'  {name}{commit_display}')
             self._out.nl()
 
-        # Show tags (filter out ^{} dereferenced annotated tags)
+        # Show tags
         if tags:
-            filtered_tags = [tag for tag in tags if not tag['name'].endswith('^{}')]
-            if filtered_tags:
-                self._out.print('Tags:')
-                for tag in filtered_tags:
-                    name = tag['name']
-                    commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
-                    is_current = current_ref == name
-                    # Use green for current commit, old color otherwise
-                    commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
-                    commit_display = f' @{commit_color(commit)}' if commit else ''
-                    self._out.print(f'  {name}{commit_display}')
+            self._out.print('Tags:')
+            for tag in tags:
+                name = tag['name']
+                commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
+                is_current = current_ref == name
+                # Use green for current commit, old color otherwise
+                commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
+                commit_display = f' @{commit_color(commit)}' if commit else ''
+                self._out.print(f'  {name}{commit_display}')
 
         return ExitCode.SUCCESS
 
