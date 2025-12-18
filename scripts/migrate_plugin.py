@@ -9,6 +9,7 @@ Usage:
 
 import argparse
 import ast
+from io import StringIO
 from pathlib import Path
 import re
 import sys
@@ -1495,14 +1496,20 @@ def format_with_ruff(file_path, warnings_list=None):
 
 def regenerate_ui_file(ui_file, output_py):
     """Regenerate .py file from .ui using pyuic6."""
-    import subprocess
+    try:
+        from PyQt6 import uic
+        from PyQt6.uic.exceptions import UIFileException
+    except ImportError:
+        print("  PyQt6 not available, regenerate UI file by running pyuic6")
+        return False
 
     try:
-        subprocess.run(['pyuic6', str(ui_file), '-o', str(output_py)], capture_output=True, check=True, text=True)
+        tmp_out = StringIO()
+        uic.compileUi(ui_file, tmp_out)
 
         # Post-process to add noqa comments for unused imports
         # pyuic6 generates imports that may not all be used
-        content = output_py.read_text(encoding='utf-8')
+        content = tmp_out.getvalue()
         lines = content.split('\n')
 
         # Add header comment
@@ -1532,7 +1539,8 @@ def regenerate_ui_file(ui_file, output_py):
 
         output_py.write_text('\n'.join(lines), encoding='utf-8')
         return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    except UIFileException as err:
+        print(f"  pyuic6 failed: {err}")
         return False
 
 
