@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+from pathlib import Path
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -376,6 +377,42 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Refresh update status using only cached data - no network calls."""
         # Load cached update status from disk only when needed
         self._load_cached_update_status()
+
+        # For local repositories, also do a quick check since no network is involved
+        for plugin in self.plugin_manager.plugins:
+            if plugin.plugin_id not in self._update_status_cache:
+                # No cached data - check if it's a local repository
+                if self._is_local_repository(plugin):
+                    try:
+                        has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+                        self._update_status_cache[plugin.plugin_id] = has_update
+                    except Exception as e:
+                        log.debug("Failed to check local repository %s: %s", plugin.plugin_id, e)
+                        self._update_status_cache[plugin.plugin_id] = False
+
+    def _is_local_repository(self, plugin):
+        """Check if plugin is a local repository."""
+        if not plugin.local_path or not Path(plugin.local_path).exists():
+            return False
+
+        try:
+            from picard.git.backend import git_backend
+
+            backend = git_backend()
+            repo = backend.create_repository(plugin.local_path)
+
+            # Check if any remote points to a local path
+            remotes = repo.get_remotes()
+            for remote in remotes:
+                remote_url = repo.get_remote_url(remote)
+                if remote_url and (remote_url.startswith('/') or remote_url.startswith('file://')):
+                    repo.free()
+                    return True
+
+            repo.free()
+            return False
+        except Exception:
+            return False
 
     def _refresh_update_status(self):
         """Refresh update status for all plugins."""
