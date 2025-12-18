@@ -235,11 +235,14 @@ class Pygit2Repository(GitRepository):
             if ref_name.startswith('refs/heads/'):
                 ref_type = GitRefType.BRANCH
                 is_annotated = False
+                ref_is_remote = False
             elif ref_name.startswith('refs/remotes/'):
                 ref_type = GitRefType.BRANCH
                 is_annotated = False
+                ref_is_remote = True
             elif ref_name.startswith('refs/tags/'):
                 ref_type = GitRefType.TAG
+                ref_is_remote = is_remote  # Tags use the method parameter
                 # Check if it's an annotated tag and dereference to commit
                 try:
                     if hasattr(ref, 'target'):
@@ -260,8 +263,9 @@ class Pygit2Repository(GitRepository):
             else:
                 ref_type = GitRefType.HEAD
                 is_annotated = False
+                ref_is_remote = is_remote
 
-            git_refs.append(GitRef(ref_name, target, ref_type, is_remote, is_annotated))
+            git_refs.append(GitRef(ref_name, target, ref_type, ref_is_remote, is_annotated))
         except Exception:
             # Skip refs that can't be resolved
             pass
