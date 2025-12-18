@@ -153,13 +153,18 @@ class GitOperations:
         # Check if ref exists in remote
         ref_names = []
         for remote_ref in remote_refs:
-            name = remote_ref.name if hasattr(remote_ref, 'name') else str(remote_ref)
-            # Strip refs/heads/ and refs/tags/ prefixes
-            if name.startswith('refs/heads/'):
-                ref_names.append(name[11:])
-            elif name.startswith('refs/tags/'):
-                ref_names.append(name[10:])
-            ref_names.append(name)  # Also add full name
+            # Handle both GitRef objects and legacy string refs
+            if hasattr(remote_ref, 'shortname'):
+                ref_names.append(remote_ref.shortname)
+                ref_names.append(remote_ref.name)  # Also add full name
+            else:
+                name = remote_ref.name if hasattr(remote_ref, 'name') else str(remote_ref)
+                # Strip refs/heads/ and refs/tags/ prefixes
+                if name.startswith('refs/heads/'):
+                    ref_names.append(name[11:])
+                elif name.startswith('refs/tags/'):
+                    ref_names.append(name[10:])
+                ref_names.append(name)  # Also add full name
 
         if ref not in ref_names:
             raise PluginRefNotFoundError(uuid or url, ref)
