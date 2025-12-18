@@ -1370,17 +1370,20 @@ class PluginManager(QObject):
         """Get the current ref to use for update checking.
 
         When in detached HEAD, finds the first local branch instead of using commit hash.
+
+        Returns:
+            tuple: (ref_name, is_detached_head)
         """
         if repo.is_head_detached():
             # Detached HEAD - use the first local branch for update checking
             for git_ref in repo.list_references():
                 if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
-                    return git_ref.shortname
+                    return git_ref.shortname, True
             # Fall back to stored metadata ref or default to main
-            return metadata.ref or 'main'
+            return metadata.ref or 'main', True
         else:
             # On a branch - use the actual branch name
-            return repo.get_head_shorthand()
+            return repo.get_head_shorthand(), False
 
     def check_updates(self):
         """Check which plugins have updates available without installing."""
@@ -1411,7 +1414,7 @@ class PluginManager(QObject):
                     )
 
                 # Get current ref from repository instead of metadata
-                old_ref = self._get_current_ref_for_updates(repo, metadata)
+                old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
                 ref = old_ref
 
                 # Check if currently on a tag
@@ -1488,14 +1491,18 @@ class PluginManager(QObject):
                     repo.free()
 
                 if current_commit != latest_commit:
+                    # For detached HEAD, show commit hashes instead of branch names
+                    display_old_ref = short_commit_id(current_commit) if is_detached else old_ref
+                    display_new_ref = short_commit_id(latest_commit) if is_detached else new_ref
+
                     updates.append(
                         UpdateCheck(
                             plugin_id=plugin.plugin_id,
                             old_commit=short_commit_id(current_commit),
                             new_commit=short_commit_id(latest_commit),
                             commit_date=latest_commit_date,
-                            old_ref=old_ref,
-                            new_ref=new_ref,
+                            old_ref=display_old_ref,
+                            new_ref=display_new_ref,
                         )
                     )
             except KeyError:
@@ -1552,7 +1559,7 @@ class PluginManager(QObject):
                 )
 
             # Get current ref from repository instead of metadata
-            old_ref = self._get_current_ref_for_updates(repo, metadata)
+            old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
             ref = old_ref
 
             # Check if currently on a tag by checking available refs
