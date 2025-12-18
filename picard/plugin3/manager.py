@@ -1437,7 +1437,8 @@ class PluginManager(QObject):
                                     current_is_tag = True
                                     current_tag = r.shortname
                                     break
-                            except Exception:
+                            except Exception as e:
+                                log.debug("Failed to check tag %s for commit match: %s", r.name, e)
                                 continue
                 else:
                     # For regular branches, check if ref is a tag
