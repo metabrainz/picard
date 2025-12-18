@@ -298,29 +298,17 @@ class RefsCache:
         """Filter tag names by pattern.
 
         Args:
-            ref_names: Iterator of GitRef objects or ref name strings
+            ref_names: Iterator of GitRef objects
             pattern: Compiled regex pattern to match
 
         Returns:
             list: Filtered tag names (without refs/tags/ prefix)
         """
         tags = []
-        for ref_name in ref_names:
-            # Handle both GitRef objects and string refs
-            if hasattr(ref_name, 'ref_type'):
-                # GitRef object
-                if ref_name.ref_type.value == 'tag' and not ref_name.shortname.endswith('^{}'):
-                    if pattern.match(ref_name.shortname):
-                        tags.append(ref_name.shortname)
-            else:
-                # Legacy string handling
-                name = ref_name.name if hasattr(ref_name, 'name') else ref_name
-                if name.startswith('refs/tags/'):
-                    tag = name[10:]
-                    if tag.endswith('^{}'):
-                        continue
-                    if pattern.match(tag):
-                        tags.append(tag)
+        for ref in ref_names:
+            if ref.ref_type.value == 'tag' and not ref.shortname.endswith('^{}'):
+                if pattern.match(ref.shortname):
+                    tags.append(ref.shortname)
         return tags
 
     def sort_tags(self, tags, versioning_scheme):
