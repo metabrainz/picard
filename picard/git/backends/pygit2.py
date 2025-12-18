@@ -44,6 +44,7 @@ from picard.git.backend import (
     GitObjectType,
     GitRef,
     GitReferenceError,
+    GitRefType,
     GitRemoteCallbacks,
     GitRepository,
     GitRepositoryError,
@@ -338,7 +339,7 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                return [GitRef(ref.name, str(ref.oid)) for ref in remote_refs]
+                return self._create_git_refs(remote_refs, repo)
             except Exception as e:
                 log.debug('Failed to use existing repo at %s: %s', repo_path, e)
                 # Fall through to temporary repository method
@@ -356,10 +357,40 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                return [GitRef(ref.name, str(ref.oid)) for ref in remote_refs]
+                return self._create_git_refs(remote_refs, repo)
         except Exception as e:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None
+
+    def _create_git_refs(self, remote_refs, repo):
+        """Create GitRef objects with type information"""
+        git_refs = []
+        for ref in remote_refs:
+            ref_name = ref.name
+            target = str(ref.oid)
+
+            # Determine ref type and flags
+            if ref_name.startswith('refs/heads/'):
+                ref_type = GitRefType.BRANCH
+                is_remote = True
+                is_annotated = False
+            elif ref_name.startswith('refs/tags/'):
+                ref_type = GitRefType.TAG
+                is_remote = True
+                # Check if it's an annotated tag
+                try:
+                    obj = repo.get(ref.oid)
+                    is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
+                except Exception:
+                    is_annotated = False
+            else:
+                ref_type = GitRefType.HEAD
+                is_remote = True
+                is_annotated = False
+
+            git_refs.append(GitRef(ref_name, target, ref_type, is_remote, is_annotated))
+
+        return git_refs
 
     def create_remote_callbacks(self) -> GitRemoteCallbacks:
         _log_git_call("create_remote_callbacks")

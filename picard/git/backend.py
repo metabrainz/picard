@@ -71,13 +71,48 @@ class GitCredentialType(Enum):
     USERPASS = 2
 
 
+class GitRefType(Enum):
+    BRANCH = "branch"
+    TAG = "tag"
+    HEAD = "head"
+
+
 class GitRef:
-    def __init__(self, name: str, target: str = None):
+    def __init__(
+        self,
+        name: str,
+        target: str = None,
+        ref_type: GitRefType = None,
+        is_remote: bool = False,
+        is_annotated: bool = False,
+    ):
         self.name = name
         self.target = target
+        self.ref_type = ref_type
+        self.is_remote = is_remote
+        self.is_annotated = is_annotated
+        self.shortname = self._extract_shortname()
+
+    def _extract_shortname(self) -> str:
+        """Extract short name from full ref name"""
+        if self.name.startswith('refs/heads/'):
+            return self.name[11:]  # len('refs/heads/')
+        elif self.name.startswith('refs/tags/'):
+            return self.name[10:]  # len('refs/tags/')
+        elif self.name.startswith('refs/remotes/'):
+            return self.name[13:]  # len('refs/remotes/')
+        else:
+            return self.name  # HEAD, etc.
 
     def __repr__(self):
-        return f"GitRef({self.name}, {self.target})"
+        parts = [f"name='{self.name}'", f"target='{self.target}'"]
+        if self.ref_type:
+            parts.append(f"type={self.ref_type.value}")
+        if self.is_remote:
+            parts.append("remote=True")
+        if self.is_annotated:
+            parts.append("annotated=True")
+        return f"GitRef({', '.join(parts)})"
 
 
 class GitObject:

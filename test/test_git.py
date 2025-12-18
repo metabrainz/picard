@@ -27,6 +27,7 @@ from picard.git.backend import (
     GitObject,
     GitObjectType,
     GitRef,
+    GitRefType,
     GitRepository,
     GitStatusFlag,
 )
@@ -121,8 +122,14 @@ class MockGitBackend(GitBackend):
         # Return different refs to test repo_path usage
         repo_path = options.get('repo_path')
         if repo_path:
-            return [GitRef("refs/heads/main", "abc123"), GitRef("refs/tags/v1.0", "def456")]
-        return [GitRef("refs/heads/main", "abc123"), GitRef("refs/tags/v1.0", "def456")]
+            return [
+                GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=True),
+                GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=True),
+            ]
+        return [
+            GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=True),
+            GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=False),
+        ]
 
     def create_remote_callbacks(self):
         return Mock()
@@ -300,6 +307,38 @@ class TestGitBackend(unittest.TestCase):
         # Test with non-existent repo_path
         refs = backend.fetch_remote_refs("https://example.com/repo.git", repo_path="/nonexistent/path")
         self.assertEqual(len(refs), 2)  # Should fallback to temporary repo
+
+    def test_git_ref_shortname(self):
+        """Test GitRef shortname extraction"""
+        # Branch
+        ref = GitRef("refs/heads/main", "abc123", GitRefType.BRANCH)
+        self.assertEqual(ref.shortname, "main")
+
+        # Tag
+        ref = GitRef("refs/tags/v1.0", "def456", GitRefType.TAG)
+        self.assertEqual(ref.shortname, "v1.0")
+
+        # Remote branch
+        ref = GitRef("refs/remotes/origin/main", "xyz789", GitRefType.BRANCH, is_remote=True)
+        self.assertEqual(ref.shortname, "origin/main")
+
+        # HEAD
+        ref = GitRef("HEAD", "abc123", GitRefType.HEAD)
+        self.assertEqual(ref.shortname, "HEAD")
+
+    def test_git_ref_repr(self):
+        """Test GitRef string representation"""
+        # Simple ref
+        ref = GitRef("refs/heads/main", "abc123", GitRefType.BRANCH)
+        self.assertIn("name='refs/heads/main'", repr(ref))
+        self.assertIn("target='abc123'", repr(ref))
+        self.assertIn("type=branch", repr(ref))
+
+        # Annotated remote tag
+        ref = GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=True)
+        self.assertIn("name='refs/tags/v1.0'", repr(ref))
+        self.assertIn("remote=True", repr(ref))
+        self.assertIn("annotated=True", repr(ref))
 
 
 if __name__ == '__main__':
