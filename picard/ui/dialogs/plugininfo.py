@@ -23,10 +23,10 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
-from picard.ui import PicardDialog
+from picard.ui import PreserveGeometry
 
 
-class PluginInfoDialog(PicardDialog):
+class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
 
     defaultsize = QtCore.QSize(600, 500)
@@ -36,12 +36,17 @@ class PluginInfoDialog(PicardDialog):
         self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
-        self.plugin_manager = self.tagger.get_plugin_manager()
+        tagger = QtCore.QCoreApplication.instance()
+        self.plugin_manager = tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
         self.setMinimumSize(500, 300)
         self.setup_ui()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.restore_geometry()
 
     @property
     def plugin_data(self):
