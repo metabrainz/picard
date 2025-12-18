@@ -135,12 +135,13 @@ class PluginSourceGit(PluginSource):
         refs = []
         all_refs = repo.list_references()
         for ref in all_refs:
-            if ref.startswith('refs/heads/'):
-                refs.append(ref[11:])  # Remove 'refs/heads/' prefix
-            elif ref.startswith('refs/remotes/origin/'):
-                refs.append(f"origin/{ref[20:]}")  # Remove 'refs/remotes/origin/' prefix
-            elif ref.startswith('refs/tags/'):
-                refs.append(ref[10:])  # Remove 'refs/tags/' prefix
+            if ref.ref_type.value == 'branch':
+                if ref.is_remote:
+                    refs.append(ref.shortname)  # Already includes origin/ prefix
+                else:
+                    refs.append(ref.shortname)
+            elif ref.ref_type.value == 'tag':
+                refs.append(ref.shortname)
 
         if not refs:
             return "none"
@@ -485,10 +486,9 @@ class PluginSourceGit(PluginSource):
         tags = []
         all_refs = repo.list_references()
 
-        for ref_name in all_refs:
-            if ref_name.startswith('refs/tags/'):
-                tag_name = ref_name[len('refs/tags/') :]
-                tags.append(tag_name)
+        for ref in all_refs:
+            if ref.ref_type.value == 'tag':
+                tags.append(ref.shortname)
 
         if not tags:
             return None
