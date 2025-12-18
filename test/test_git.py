@@ -118,7 +118,11 @@ class MockGitBackend(GitBackend):
         return self.repo
 
     def fetch_remote_refs(self, url, **options):
-        return [GitRef("main", "abc123")]
+        # Return different refs to test repo_path usage
+        repo_path = options.get('repo_path')
+        if repo_path:
+            return [GitRef("refs/heads/main", "abc123"), GitRef("refs/tags/v1.0", "def456")]
+        return [GitRef("refs/heads/main", "abc123"), GitRef("refs/tags/v1.0", "def456")]
 
     def create_remote_callbacks(self):
         return Mock()
@@ -276,6 +280,26 @@ class TestGitBackend(unittest.TestCase):
 
         self.assertIs(backend1, backend2)
         mock_get_backend.assert_called_once()
+
+    def test_fetch_remote_refs_with_repo_path(self):
+        """Test fetch_remote_refs uses existing repository when repo_path provided"""
+        backend = MockGitBackend()
+
+        # Test with repo_path
+        refs = backend.fetch_remote_refs("https://example.com/repo.git", repo_path="/path/to/repo")
+        self.assertEqual(len(refs), 2)
+
+        # Test without repo_path (fallback)
+        refs = backend.fetch_remote_refs("https://example.com/repo.git")
+        self.assertEqual(len(refs), 2)
+
+    def test_fetch_remote_refs_invalid_repo_path(self):
+        """Test fetch_remote_refs falls back when repo_path is invalid"""
+        backend = MockGitBackend()
+
+        # Test with non-existent repo_path
+        refs = backend.fetch_remote_refs("https://example.com/repo.git", repo_path="/nonexistent/path")
+        self.assertEqual(len(refs), 2)  # Should fallback to temporary repo
 
 
 if __name__ == '__main__':

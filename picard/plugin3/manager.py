@@ -399,7 +399,16 @@ class PluginManager(QObject):
             if cached_refs is not None:
                 return cached_refs
 
-        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
+        # Check if we have an installed plugin for this URL to reuse its repository
+        repo_path = None
+        for plugin in self._plugins:
+            if plugin.uuid:
+                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+                if metadata and metadata.url == url and plugin.local_path:
+                    repo_path = plugin.local_path
+                    break
+
+        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True, repo_path=repo_path)
         if not remote_refs:
             # Try to use expired cache as fallback
             if use_cache:

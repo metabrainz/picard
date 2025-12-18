@@ -323,6 +323,27 @@ class Pygit2Backend(GitBackend):
 
     def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
         _log_git_call("fetch_remote_refs", url, **options)
+
+        # Check if we can use an existing repository
+        repo_path = options.get('repo_path')
+        if repo_path and Path(repo_path).exists() and (Path(repo_path) / '.git').exists():
+            try:
+                repo = pygit2.Repository(str(repo_path))
+                remote = repo.remotes['origin']
+
+                use_callbacks = options.get('use_callbacks', True)
+                if use_callbacks:
+                    callbacks = self.create_remote_callbacks()
+                    remote_refs = remote.list_heads(callbacks=callbacks._callbacks)
+                else:
+                    remote_refs = remote.list_heads()
+
+                return [GitRef(ref.name, str(ref.oid)) for ref in remote_refs]
+            except Exception as e:
+                log.debug('Failed to use existing repo at %s: %s', repo_path, e)
+                # Fall through to temporary repository method
+
+        # Fallback to temporary bare repository
         try:
             with tempfile.TemporaryDirectory() as tmpdir:
                 repo = pygit2.init_repository(tmpdir, bare=True)

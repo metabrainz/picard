@@ -236,7 +236,13 @@ class GitBackend(ABC):
 
     @abstractmethod
     def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
-        """Fetch remote refs without cloning"""
+        """Fetch remote refs without cloning
+
+        Args:
+            url: Git repository URL
+            **options: Additional options including:
+                - repo_path: Optional Path to existing repository to use instead of creating temporary one
+        """
 
     @abstractmethod
     def create_remote_callbacks(self) -> GitRemoteCallbacks:

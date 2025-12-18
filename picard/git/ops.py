@@ -85,18 +85,19 @@ class GitOperations:
         return modified_files
 
     @staticmethod
-    def fetch_remote_refs(url, use_callbacks=True):
+    def fetch_remote_refs(url, use_callbacks=True, repo_path=None):
         """Fetch remote refs from a git repository.
 
         Args:
             url: Git repository URL
             use_callbacks: Whether to use GitRemoteCallbacks for authentication
+            repo_path: Optional path to existing repository to use instead of creating temporary one
 
         Returns:
             list: Remote refs, or None on error
         """
         backend = git_backend()
-        return backend.fetch_remote_refs(url, use_callbacks=use_callbacks)
+        return backend.fetch_remote_refs(url, use_callbacks=use_callbacks, repo_path=repo_path)
 
     @staticmethod
     def validate_ref(url, ref, uuid=None, registry=None):
