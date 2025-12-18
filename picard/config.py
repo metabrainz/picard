@@ -33,6 +33,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from enum import Enum
 import os
 import shutil
 from typing import Any
@@ -156,6 +157,8 @@ class ConfigSection(QtCore.QObject):
     def __setitem__(self, name, value):
         old_value = self.__getitem__(name)
         key = self.key(name)
+        if isinstance(value, Enum):
+            value = value.value
         self.__qt_config.setValue(key, value)
         self._memoization[key].dirty = True
         if value != old_value:
@@ -218,16 +221,17 @@ class ConfigSection(QtCore.QObject):
         if default is None:
             raise TypeError('Option default value must not be None')
 
-        value_type = type(default)
-        if value_type is str:
+        if isinstance(default, Enum):
+            option_type = Option
+        elif isinstance(default, str):
             option_type = TextOption
-        elif value_type is bool:
+        elif isinstance(default, bool):
             option_type = BoolOption
-        elif value_type is int:
+        elif isinstance(default, int):
             option_type = IntOption
-        elif value_type is float:
+        elif isinstance(default, float):
             option_type = FloatOption
-        elif value_type is list or value_type is tuple:
+        elif isinstance(default, list) or isinstance(default, tuple):
             option_type = ListOption
         else:
             option_type = Option
