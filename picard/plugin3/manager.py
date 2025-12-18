@@ -1576,6 +1576,7 @@ class PluginManager(QObject):
             log.debug("Making network request for plugin: %s", plugin.plugin_id)
             callbacks = backend.create_remote_callbacks()
             for remote in repo.get_remotes():
+                log.debug("Fetching from remote %s for plugin %s", remote, plugin.plugin_id)
                 repo.fetch_remote(remote, None, callbacks._callbacks)
 
             # Update version tag cache from fetched repo if plugin has versioning_scheme
@@ -1652,6 +1653,13 @@ class PluginManager(QObject):
 
             repo.free()
             has_update = current_commit != latest_commit
+            log.debug(
+                "Plugin %s: current=%s, latest=%s, has_update=%s",
+                plugin.plugin_id,
+                current_commit,
+                latest_commit,
+                has_update,
+            )
             # Cache the result with current ref
             self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref)
             return has_update

@@ -418,6 +418,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Refresh update status for all plugins."""
         self._update_status_cache.clear()
         self._version_cache.clear()  # Clear version cache too
+
+        # Also clear the manager's cache to ensure fresh results
+        if hasattr(self.plugin_manager, '_refs_cache'):
+            self.plugin_manager._refs_cache.clear_cache()
+
         for plugin in self.plugin_manager.plugins:
             self._refresh_single_plugin_update_status(plugin)
 
