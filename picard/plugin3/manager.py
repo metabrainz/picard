@@ -1434,10 +1434,16 @@ class PluginManager(QObject):
                         new_ref = latest_tag
 
                 # Resolve ref using GitRef lookup first, then fallback
+                # For update checking, prefer remote branches over local ones
                 try:
                     from picard.git.ref_utils import find_git_ref
 
-                    git_ref = find_git_ref(repo, ref)
+                    # For branches, try origin/ version first to get latest from remote
+                    git_ref = find_git_ref(repo, f'origin/{ref}')
+                    if not git_ref:
+                        # Fall back to local ref (for tags or local-only branches)
+                        git_ref = find_git_ref(repo, ref)
+
                     if git_ref:
                         obj = repo.revparse_single(git_ref.name)
                     elif not ref.startswith('origin/') and not ref.startswith('refs/'):
