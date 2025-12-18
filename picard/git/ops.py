@@ -33,6 +33,7 @@ from picard.git.backend import (
 )
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
+from picard.util import parse_versioning_scheme
 
 
 def clean_python_cache(directory):
@@ -123,21 +124,20 @@ class GitOperations:
         if registry and uuid:
             registry_plugin = registry.find_plugin(uuid=uuid)
             if registry_plugin and registry_plugin.versioning_scheme:
-                # Import here to avoid circular dependency
-                from picard.plugin3.refs_cache import RefsCache
-
-                refs_cache = RefsCache(registry)
-                pattern = refs_cache.parse_versioning_scheme(registry_plugin.versioning_scheme)
-                if pattern and pattern.match(ref):
+                # Parse versioning scheme
+                compiled_pattern = parse_versioning_scheme(registry_plugin.versioning_scheme)
+                if compiled_pattern and compiled_pattern.match(ref):
                     # It's a version tag - fetch and check
-                    version_tags = []
                     remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=False)
                     if remote_refs:
-                        version_tags = refs_cache.filter_tags(remote_refs, pattern)
+                        version_tags = []
+                        for git_ref in remote_refs:
+                            if git_ref.ref_type == GitRefType.TAG and compiled_pattern.match(git_ref.shortname):
+                                version_tags.append(git_ref.shortname)
 
-                    if ref not in version_tags:
-                        raise PluginRefNotFoundError(uuid, ref)
-                    return True
+                        if ref not in version_tags:
+                            raise PluginRefNotFoundError(uuid, ref)
+                        return True
 
             # For registry plugins with explicit refs list
             if registry_plugin and registry_plugin.refs:

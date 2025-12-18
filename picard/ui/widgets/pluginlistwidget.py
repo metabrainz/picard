@@ -337,20 +337,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         super().resizeEvent(event)
         self._position_update_button()
 
-    def _load_cached_update_status(self):
-        """Load cached update status from disk - completely passive, no plugin access."""
-        # Don't access plugin_manager.plugins here as it might trigger cache updates
-        # Just load what's already in the cache file without triggering any operations
-        try:
-            cache = self.plugin_manager._refs_cache.load_cache()
-            update_cache = cache.get('update_status', {})
-            for plugin_id, entry in update_cache.items():
-                if isinstance(entry, dict) and 'has_update' in entry:
-                    self._update_status_cache[plugin_id] = entry['has_update']
-        except Exception:
-            # Silently ignore cache loading errors
-            pass
-
     def refresh_update_status(self, force_network_check=False):
         """Public method to refresh update status for all plugins.
 
@@ -375,16 +361,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _refresh_cached_update_status(self):
         """Refresh update status using only cached data - no network calls."""
-        # Load cached update status from disk only when needed
-        self._load_cached_update_status()
-
-        # For local repositories, also do a quick check since no network is involved
+        # For local repositories, do a quick check since no network is involved
         for plugin in self.plugin_manager.plugins:
             if plugin.plugin_id not in self._update_status_cache:
                 # No cached data - check if it's a local repository
                 if self._is_local_repository(plugin):
                     try:
-                        has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+                        has_update = self.plugin_manager.get_plugin_update_status(plugin)
                         self._update_status_cache[plugin.plugin_id] = has_update
                     except Exception as e:
                         log.debug("Failed to check local repository %s: %s", plugin.plugin_id, e)
@@ -419,17 +402,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._update_status_cache.clear()
         self._version_cache.clear()  # Clear version cache too
 
-        # Also clear the manager's cache to ensure fresh results
-        if hasattr(self.plugin_manager, '_refs_cache'):
-            self.plugin_manager._refs_cache.clear_cache()
-
         for plugin in self.plugin_manager.plugins:
             self._refresh_single_plugin_update_status(plugin)
 
     def _refresh_single_plugin_update_status(self, plugin):
         """Refresh update status for a single plugin."""
         try:
-            has_update = self.plugin_manager.get_plugin_update_status(plugin, force_refresh=True)
+            has_update = self.plugin_manager.get_plugin_update_status(plugin)
             self._update_status_cache[plugin.plugin_id] = has_update
         except Exception as e:
             log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)

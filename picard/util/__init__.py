@@ -1305,3 +1305,33 @@ def format_ref_commit(ref, commit, ref_formatter=None, commit_formatter=None):
         return f"@{formatted_commit}"
     else:
         return ""
+
+
+def parse_versioning_scheme(versioning_scheme):
+    """Parse versioning scheme into compiled regex pattern.
+
+    Args:
+        versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+    Returns:
+        re.Pattern: Compiled regex pattern or None if unknown/invalid scheme
+    """
+    import re
+
+    from picard import log
+
+    if versioning_scheme == 'semver':
+        pattern = r'^\D*\d+\.\d+\.\d+$'
+    elif versioning_scheme == 'calver':
+        pattern = r'^\d{4}\.\d{2}\.\d{2}$'
+    elif versioning_scheme.startswith('regex:'):
+        pattern = versioning_scheme[6:]
+    else:
+        log.warning('Unknown versioning scheme: %s', versioning_scheme)
+        return None
+
+    try:
+        return re.compile(pattern)
+    except re.error as e:
+        log.error('Invalid regex pattern in versioning scheme %s: %s', versioning_scheme, e)
+        return None
