@@ -170,3 +170,59 @@ def my_function():
         code = (output_dir / '__init__.py').read_text()
         self.assertNotIn('PLUGIN_NAME', code)
         self.assertEqual(code.count('"Name Test"'), 2)
+
+    def test_migrate_plugin_action(self):
+        """Test migrating a simple V2 plugin."""
+        v2_plugin = '''# -*- coding: utf-8 -*-
+PLUGIN_NAME = "Test Plugin"
+PLUGIN_AUTHOR = "Test Author"
+PLUGIN_DESCRIPTION = "A test plugin"
+PLUGIN_VERSION = "1.0.0"
+PLUGIN_API_VERSIONS = ["2.0"]
+PLUGIN_LICENSE = "GPL-2.0-or-later"
+PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
+
+from picard.ui.itemviews import BaseAction, register_album_action
+
+class MyAlbumAction(BaseAction):
+    NAME = 'My Action'
+
+    def callback(self, objs):
+        pass
+
+register_album_action(MyAlbumAction())
+'''
+
+        input_file = self.temp_path / 'test_plugin.py'
+        input_file.write_text(v2_plugin)
+
+        # Import migration tool
+        sys.path.insert(0, str(self.scripts_path))
+        import migrate_plugin
+
+        output_dir = self.temp_path / 'test_plugin_v3'
+        result = migrate_plugin.migrate_plugin(str(input_file), str(output_dir))
+
+        self.assertEqual(result, 0)
+        self.assertTrue((output_dir / 'MANIFEST.toml').exists())
+        self.assertTrue((output_dir / '__init__.py').exists())
+
+        # Validate MANIFEST using tomllib
+
+        with open(output_dir / 'MANIFEST.toml', 'rb') as f:
+            data = tomllib.load(f)
+            self.assertEqual(data['name'], 'Test Plugin')
+            self.assertEqual(data['authors'], ['Test Author'])
+
+        # Check code conversion
+        code = (output_dir / '__init__.py').read_text()
+        print(code)
+
+        # Action class should have TITLE instead of NAME
+        self.assertNotIn("    NAME = 'My Action'", code)
+        self.assertIn('    TITLE = "My Action"', code)
+
+        # Action class register should be called
+        self.assertNotIn('\nregister_track_metadata_processor(MyAlbumAction())', code)
+        self.assertIn('def enable(api: PluginApi):', code)
+        self.assertIn('  api.register_album_action(MyAlbumAction)', code)

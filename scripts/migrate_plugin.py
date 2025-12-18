@@ -554,6 +554,7 @@ def convert_plugin_code(content, metadata):
     imports_to_remove = set()
     decorators_to_remove = {}  # func_name -> decorator_name
     method_processors = []  # Track processors that are class methods
+    replace_assignments = set()  # set of tuples (old_var, value, new_var)
 
     # First pass: collect potential instantiated action/page variables
     # e.g., vv = ViewVariables()
@@ -646,11 +647,24 @@ def convert_plugin_code(content, metadata):
                                 register_calls.append((func_name, arg.func.id))
                                 nodes_to_remove.add(node)
 
-        # Check for class methods that might be processors
+        # Handle classes
         elif isinstance(node, ast.ClassDef):
             class_methods = {}
             has_registration = False
 
+            # Rewrite action class titles
+            if any('BaseAction' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases):
+                for item in node.body:
+                    if isinstance(item, ast.Assign):
+                        target = item.targets[0]
+                        if (
+                            isinstance(target, ast.Name)
+                            and target.id == 'NAME'
+                            and isinstance(item.value, ast.Constant)
+                        ):
+                            replace_assignments.add((target.id, item.value.value, 'TITLE'))
+
+            # Check for class methods that might be processors
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
                     # Skip private/helper methods (start with _)
@@ -711,6 +725,11 @@ def convert_plugin_code(content, metadata):
 
     # Convert function signatures
     content = fix_function_signatures(content, tree)
+
+    # Convert assignments to new variable names
+    for old_var, value, new_var in replace_assignments:
+        pattern = rf'''{re.escape(old_var)}\s*=\s*["']{re.escape(value)}["']'''
+        content = re.sub(pattern, f'{new_var} = "{value}"', content, flags=re.MULTILINE)
 
     # Convert config/log/tagger access
     if has_log_import:
@@ -1198,7 +1217,7 @@ def convert_api_in_classes(content):
         is_api_base = any(
             any(class_name in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
             for class_name in (
-                'Action',
+                'BaseAction',
                 'CoverArtProvider',
                 'ImageProcessor',
                 'OptionsPage',
