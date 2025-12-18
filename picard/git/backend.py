@@ -182,10 +182,6 @@ class GitRepository(ABC):
         """List all references"""
 
     @abstractmethod
-    def get_references(self) -> list[GitRef]:
-        """Get list of reference names"""
-
-    @abstractmethod
     def get_remotes(self) -> list[Any]:
         """Get remotes list"""
 

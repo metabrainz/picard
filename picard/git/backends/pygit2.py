@@ -165,15 +165,6 @@ class Pygit2Repository(GitRepository):
 
         return self._create_git_refs(ref_objects, is_remote=False, repo=self._repo)
 
-    def get_references(self) -> list[GitRef]:
-        _log_git_call("get_references")
-        # Get actual reference objects instead of just names
-        ref_objects = []
-        for ref_name in self._repo.references:
-            ref_objects.append(self._repo.references[ref_name])
-
-        return self._create_git_refs(ref_objects, is_remote=False, repo=self._repo)
-
     def get_remotes(self) -> list[Any]:
         _log_git_call("get_remotes")
         return self._repo.remotes

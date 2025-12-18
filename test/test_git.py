@@ -81,9 +81,6 @@ class MockGitRepository(GitRepository):
             GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=False),
         ]
 
-    def get_references(self):
-        return self.list_references()
-
     def get_remotes(self):
         return {}
 

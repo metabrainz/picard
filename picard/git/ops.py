@@ -242,9 +242,10 @@ class GitOperations:
         repo.fetch_remote(origin_remote, None, callbacks._callbacks)
 
         # If the ref is not found locally, try fetching it specifically
-        references = repo.get_references()
+        references = repo.list_references()
         tag_ref = f'refs/tags/{ref}'
-        if tag_ref not in references:
+        ref_names = [r.name for r in references]
+        if tag_ref not in ref_names:
             try:
                 # Fetch the specific tag
                 repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
@@ -254,11 +255,12 @@ class GitOperations:
 
         # Find the ref
         try:
-            references = repo.get_references()
+            references = repo.list_references()
+            ref_names = [r.name for r in references]
 
             # Try as branch first
             branch_ref = f'refs/remotes/origin/{ref}'
-            if branch_ref in references:
+            if branch_ref in ref_names:
                 commit_obj = repo.revparse_single(branch_ref)
                 commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)
@@ -277,7 +279,7 @@ class GitOperations:
 
             # Try as tag
             tag_ref = f'refs/tags/{ref}'
-            if tag_ref in references:
+            if tag_ref in ref_names:
                 commit_obj = repo.revparse_single(tag_ref)
                 commit = repo.peel_to_commit(commit_obj)
                 repo.checkout_tree(commit)

@@ -37,20 +37,21 @@ def get_ref_type(repo, ref):
 
     try:
         # Get all references from the repository
-        references = repo.get_references()
+        references = repo.list_references()
+        ref_names = [r.name for r in references]
 
         # Check exact matches first
-        if f'refs/tags/{ref}' in references:
+        if f'refs/tags/{ref}' in ref_names:
             return 'tag', f'refs/tags/{ref}'
-        if f'refs/heads/{ref}' in references:
+        if f'refs/heads/{ref}' in ref_names:
             return 'local_branch', f'refs/heads/{ref}'
-        if f'refs/remotes/{ref}' in references:
+        if f'refs/remotes/{ref}' in ref_names:
             return 'remote_branch', f'refs/remotes/{ref}'
-        if f'refs/remotes/origin/{ref}' in references:
+        if f'refs/remotes/origin/{ref}' in ref_names:
             return 'remote_branch', f'refs/remotes/origin/{ref}'
 
         # Check if ref is already a full reference
-        if ref in references:
+        if ref in ref_names:
             if ref.startswith('refs/tags/'):
                 return 'tag', ref
             elif ref.startswith('refs/heads/'):

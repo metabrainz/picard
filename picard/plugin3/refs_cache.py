@@ -376,7 +376,7 @@ class RefsCache:
             repo = backend.create_repository(repo_path)
 
             # Filter and sort tags
-            tags = self.filter_tags(repo.get_references(), pattern)
+            tags = self.filter_tags(repo.list_references(), pattern)
             tags = self.sort_tags(tags, versioning_scheme)
 
             # Update cache
