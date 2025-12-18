@@ -158,21 +158,21 @@ class Pygit2Repository(GitRepository):
 
     def list_references(self) -> list[GitRef]:
         _log_git_call("list_references")
-        try:
-            ref_names = self._repo.listall_references()
-        except AttributeError:
-            ref_names = list(self._repo.references)
+        # Get actual reference objects instead of just names
+        ref_objects = []
+        for ref_name in self._repo.references:
+            ref_objects.append(self._repo.references[ref_name])
 
-        return Pygit2Backend._create_git_refs_from_repo(self._repo, ref_names, is_remote=False)
+        return self._create_git_refs(ref_objects, is_remote=False, repo=self._repo)
 
     def get_references(self) -> list[GitRef]:
         _log_git_call("get_references")
-        try:
-            ref_names = self._repo.listall_references()
-        except AttributeError:
-            ref_names = list(self._repo.references)
+        # Get actual reference objects instead of just names
+        ref_objects = []
+        for ref_name in self._repo.references:
+            ref_objects.append(self._repo.references[ref_name])
 
-        return Pygit2Backend._create_git_refs_from_repo(self._repo, ref_names, is_remote=False)
+        return self._create_git_refs(ref_objects, is_remote=False, repo=self._repo)
 
     def get_remotes(self) -> list[Any]:
         _log_git_call("get_remotes")
@@ -367,63 +367,23 @@ class Pygit2Backend(GitBackend):
             return None
 
     def _create_git_refs(self, refs, is_remote=False, repo=None):
-        """Create GitRef objects from reference names or remote ref objects"""
+        """Create GitRef objects from pygit2 reference objects"""
         git_refs = []
         for ref in refs:
             try:
-                # Handle both string names (local refs) and pygit2 objects (remote refs)
-                if isinstance(ref, str):
-                    # Local reference name - need repo context
-                    ref_name = ref
-                    if repo:
-                        ref_obj = repo.references[ref_name]
-                        target = str(ref_obj.target)
-                    else:
-                        # This shouldn't happen, but handle gracefully
-                        continue
-                else:
-                    # Remote reference object
-                    ref_name = ref.name
+                # Handle both local Reference objects and remote RemoteHead objects
+                ref_name = ref.name
+
+                # Extract target based on object type
+                if hasattr(ref, 'target'):
+                    # Local Reference object
+                    target = str(ref.target)
+                elif hasattr(ref, 'oid'):
+                    # Remote reference object (from list_heads)
                     target = str(ref.oid)
-
-                # Determine ref type and flags
-                if ref_name.startswith('refs/heads/'):
-                    ref_type = GitRefType.BRANCH
-                    is_annotated = False
-                elif ref_name.startswith('refs/remotes/'):
-                    ref_type = GitRefType.BRANCH
-                    is_annotated = False
-                elif ref_name.startswith('refs/tags/'):
-                    ref_type = GitRefType.TAG
-                    # Check if it's an annotated tag
-                    try:
-                        if isinstance(ref, str):
-                            obj = repo.get(ref_obj.target)
-                        else:
-                            obj = repo.get(ref.oid)
-                        is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
-                    except Exception:
-                        is_annotated = False
                 else:
-                    ref_type = GitRefType.HEAD
-                    is_annotated = False
-
-                git_refs.append(GitRef(ref_name, target, ref_type, is_remote, is_annotated))
-            except Exception:
-                # Skip refs that can't be resolved
-                continue
-
-        return git_refs
-
-    @staticmethod
-    def _create_git_refs_from_repo(repo, ref_names, is_remote=False):
-        """Create GitRef objects from reference names using a specific repo"""
-        git_refs = []
-        for ref_name in ref_names:
-            try:
-                # Get the target commit for this ref
-                ref_obj = repo.references[ref_name]
-                target = str(ref_obj.target)
+                    # Unknown object type, skip
+                    continue
 
                 # Determine ref type and flags
                 if ref_name.startswith('refs/heads/'):
@@ -436,7 +396,12 @@ class Pygit2Backend(GitBackend):
                     ref_type = GitRefType.TAG
                     # Check if it's an annotated tag
                     try:
-                        obj = repo.get(ref_obj.target)
+                        if hasattr(ref, 'target'):
+                            # Local reference
+                            obj = repo.get(ref.target)
+                        else:
+                            # Remote reference
+                            obj = repo.get(ref.oid)
                         is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
                     except Exception:
                         is_annotated = False
