@@ -1544,7 +1544,7 @@ class PluginManager(QObject):
 
     def get_plugin_update_status(self, plugin, force_refresh=False):
         """Check if a single plugin has an update available."""
-        log.debug("Checking update status for plugin: %s", plugin.plugin_id)
+        log.debug("Checking update status for plugin: %s (force_refresh=%s)", plugin.plugin_id, force_refresh)
 
         if not plugin.uuid:
             return False
