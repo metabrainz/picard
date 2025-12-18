@@ -26,12 +26,6 @@ from picard.i18n import gettext as _
 from picard.ui import PicardDialog
 
 
-try:
-    from markdown import markdown as render_markdown
-except ImportError:
-    render_markdown = None
-
-
 class PluginInfoDialog(PicardDialog):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
 
@@ -119,16 +113,20 @@ class PluginInfoDialog(PicardDialog):
         description = self._get_description()
         if description:
             desc_label = QtWidgets.QLabel(_("Description:"))
+            font = desc_label.font()
+            font.setBold(True)
+            desc_label.setFont(font)
             content_layout.addWidget(desc_label)
 
-            desc_text = QtWidgets.QTextBrowser()
+            desc_text = QtWidgets.QLabel()
+            desc_text.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
+            desc_text.setText(description.rstrip())
             desc_text.setMinimumHeight(50)
-            if render_markdown:
-                html_desc = render_markdown(description.rstrip(), output_format='html')
-                desc_text.setHtml(html_desc)
-            else:
-                desc_text.setPlainText(description.rstrip())
-
+            desc_text.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+            desc_text.setOpenExternalLinks(True)
+            desc_text.setSizePolicy(
+                QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding
+            )
             content_layout.addWidget(desc_text)
 
         # Set content widget to scroll area and add to main layout
@@ -136,7 +134,6 @@ class PluginInfoDialog(PicardDialog):
         layout.addWidget(scroll_area)
 
         # Close button
-        # # Buttons
         button_box = QtWidgets.QDialogButtonBox()
         button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         button_box.rejected.connect(self.accept)
