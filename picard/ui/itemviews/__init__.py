@@ -651,10 +651,10 @@ class FileItem(TreeItem):
     def decide_file_icon_info(file):
         tooltip = ""
         if file.state == File.State.ERROR:
-            if File.State.ERROR_type == File.ErrorType.NOTFOUND:
+            if file.error_type == File.ErrorType.NOTFOUND:
                 icon = FileItem.icon_error_not_found
                 tooltip = _("File not found")
-            elif File.State.ERROR_type == File.ErrorType.NOACCESS:
+            elif file.error_type == File.ErrorType.NOACCESS:
                 icon = FileItem.icon_error_no_access
                 tooltip = _("File permission error")
             else:
