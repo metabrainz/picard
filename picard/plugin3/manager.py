@@ -49,7 +49,6 @@ from picard.extension_points import (
 from picard.git.backend import GitObjectType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
-from picard.git.ref_utils import get_ref_type
 from picard.git.utils import get_local_repository_path
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
@@ -1401,10 +1400,16 @@ class PluginManager(QObject):
                 # Check if currently on a tag
                 current_is_tag = False
                 current_tag = None
-                ref_type, resolved_ref = get_ref_type(repo, ref)
-                if ref_type == 'tag':
+                # Find the GitRef object for this ref
+                git_ref = None
+                for r in repo.list_references():
+                    if r.shortname == ref or r.name == ref:
+                        git_ref = r
+                        break
+
+                if git_ref and git_ref.ref_type.value == 'tag':
                     try:
-                        repo.revparse_single(resolved_ref)
+                        repo.revparse_single(git_ref.name)
                         current_is_tag = True
                         current_tag = ref
                     except KeyError:
@@ -1524,8 +1529,14 @@ class PluginManager(QObject):
             # Check if currently on a tag by checking available refs
             current_is_tag = False
             current_tag = None
-            ref_type, resolved_ref = get_ref_type(repo, ref)
-            if ref_type == 'tag':
+            # Find the GitRef object for this ref
+            git_ref = None
+            for r in repo.list_references():
+                if r.shortname == ref or r.name == ref:
+                    git_ref = r
+                    break
+
+            if git_ref and git_ref.ref_type.value == 'tag':
                 current_is_tag = True
                 current_tag = ref
 
