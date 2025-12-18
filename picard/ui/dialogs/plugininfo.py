@@ -35,6 +35,8 @@ except ImportError:
 class PluginInfoDialog(PicardDialog):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
 
+    defaultsize = QtCore.QSize(600, 500)
+
     def __init__(self, plugin_data, parent=None):
         super().__init__(parent)
         self._plugin_data = plugin_data
@@ -44,7 +46,6 @@ class PluginInfoDialog(PicardDialog):
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
-        self.resize(600, 500)
         self.setMinimumSize(500, 300)
         self.setup_ui()
 
