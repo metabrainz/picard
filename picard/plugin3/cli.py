@@ -1873,3 +1873,7 @@ def main():
 
     exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
     sys.exit(exit_code)
+
+
+if __name__ == "__main__":
+    main()
