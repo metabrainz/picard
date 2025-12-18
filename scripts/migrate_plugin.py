@@ -1144,7 +1144,7 @@ def convert_config_access(content):
 
 
 def convert_api_in_classes(content):
-    """Convert api.* to self.api.* in class methods and add api parameter to __init__."""
+    """Convert api.* to self.api.* in class methods."""
     try:
         tree = ast.parse(content)
     except (SyntaxError, ValueError):
@@ -1170,45 +1170,6 @@ def convert_api_in_classes(content):
 
         if not is_api_base:
             continue
-
-        # Find __init__ method
-        init_method = None
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef) and item.name == '__init__':
-                init_method = item
-                break
-
-        # Add api parameter to __init__ if it exists
-        if init_method:
-            args = [arg.arg for arg in init_method.args.args]
-            if 'api' not in args:
-                # Update __init__ signature
-                init_line_idx = init_method.lineno - 1
-                init_line = lines[init_line_idx]
-
-                # Add api parameter after self
-                if 'def __init__(self' in init_line:
-                    lines[init_line_idx] = init_line.replace('def __init__(self,', 'def __init__(self, api=None,')
-                    if 'api=None' not in lines[init_line_idx]:
-                        lines[init_line_idx] = lines[init_line_idx].replace(
-                            'def __init__(self)', 'def __init__(self, api=None)'
-                        )
-
-                    # Add self.api = api after super().__init__() or at start of method
-                    body_start = init_method.lineno
-                    indent = len(lines[body_start]) - len(lines[body_start].lstrip())
-
-                    # Insert self.api = api after super().__init__() if present
-                    inserted = False
-                    for i in range(body_start, min(init_method.end_lineno, len(lines))):
-                        if 'super(' in lines[i] and '__init__' in lines[i]:
-                            lines.insert(i + 1, ' ' * indent + 'self.api = api')
-                            inserted = True
-                            break
-
-                    if not inserted:
-                        # Insert at start of method body
-                        lines.insert(body_start, ' ' * indent + 'self.api = api')
 
         # Convert api.* to self.api.* in class methods
         for item in node.body:
