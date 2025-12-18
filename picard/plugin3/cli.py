@@ -156,11 +156,21 @@ class PluginCLI:
         """
         # Show tag with commit ID if available
         if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-            version_info = (
-                f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                f'{self._out.d_arrow()} '
-                f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-            )
+            old_short = short_commit_id(result.old_commit)
+            new_short = short_commit_id(result.new_commit)
+
+            # Avoid redundancy: if ref is same as commit, just show @commit
+            if result.old_ref == old_short:
+                old_display = f'@{self._out.d_commit_old(old_short)}'
+            else:
+                old_display = f'{self._out.d_version(result.old_ref)} @{self._out.d_commit_old(old_short)}'
+
+            if result.new_ref == new_short:
+                new_display = f'@{self._out.d_commit_new(new_short)}'
+            else:
+                new_display = f'{self._out.d_version(result.new_ref)} @{self._out.d_commit_new(new_short)}'
+
+            version_info = f'{old_display} {self._out.d_arrow()} {new_display}'
         # Show version with commit ID if version changed
         elif (
             hasattr(result, 'old_version')
