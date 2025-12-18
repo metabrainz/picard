@@ -76,10 +76,13 @@ class MockGitRepository(GitRepository):
         pass
 
     def list_references(self):
-        return list(self.references.keys())
+        return [
+            GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=False),
+            GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=False),
+        ]
 
     def get_references(self):
-        return self.references
+        return self.list_references()
 
     def get_remotes(self):
         return {}
