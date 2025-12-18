@@ -1425,10 +1425,15 @@ class PluginManager(QObject):
                         ref = latest_tag
                         new_ref = latest_tag
 
-                # Resolve ref with same logic as update() - try origin/ prefix for branches
+                # Resolve ref using GitRef lookup first, then fallback
                 try:
-                    if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # For tags, try refs/tags/ first, then origin/ for branches
+                    from picard.git.ref_utils import find_git_ref
+
+                    git_ref = find_git_ref(repo, ref)
+                    if git_ref:
+                        obj = repo.revparse_single(git_ref.name)
+                    elif not ref.startswith('origin/') and not ref.startswith('refs/'):
+                        # Fallback: try refs/tags/ first, then origin/ for branches
                         try:
                             obj = repo.revparse_single(f'refs/tags/{ref}')
                         except GitReferenceError:
@@ -1548,9 +1553,14 @@ class PluginManager(QObject):
                     # Found newer tag
                     ref = latest_tag
 
-            # Resolve ref with same logic as update() - try appropriate prefix based on ref type
+            # Resolve ref using GitRef lookup first, then fallback
             try:
-                if not ref.startswith('origin/') and not ref.startswith('refs/'):
+                from picard.git.ref_utils import find_git_ref
+
+                git_ref = find_git_ref(repo, ref)
+                if git_ref:
+                    obj = repo.revparse_single(git_ref.name)
+                elif not ref.startswith('origin/') and not ref.startswith('refs/'):
                     # If we know it's a tag, try refs/tags/ first
                     if current_is_tag:
                         try:
