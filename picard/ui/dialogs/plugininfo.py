@@ -131,9 +131,6 @@ class PluginInfoDialog(PicardDialog):
 
             content_layout.addWidget(desc_text)
 
-        # vertical_spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        content_layout.addStretch()
-
         # Set content widget to scroll area and add to main layout
         scroll_area.setWidget(content_widget)
         layout.addWidget(scroll_area)
