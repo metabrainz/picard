@@ -25,6 +25,7 @@ from typing import TYPE_CHECKING
 
 from picard import log
 from picard.config import get_config
+from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 
 
@@ -286,7 +287,7 @@ class PluginMetadataManager:
 
             # Check if current commit matches a tag (prefer tag over branch)
             for git_ref in repo.list_references():
-                if git_ref.ref_type.value == 'tag':
+                if git_ref.ref_type == GitRefType.TAG:
                     obj = repo.revparse_single(git_ref.name)
                     target = repo.peel_to_commit(obj)
                     if target.id == current_commit:

@@ -27,6 +27,7 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
+    GitRefType,
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
@@ -180,9 +181,9 @@ class GitOperations:
                 # Use GitRef-based detection
                 git_ref = find_git_ref(repo, ref)
                 if git_ref:
-                    if git_ref.ref_type.value == 'tag':
+                    if git_ref.ref_type == GitRefType.TAG:
                         return 'tag', ref
-                    elif git_ref.ref_type.value == 'branch':
+                    elif git_ref.ref_type == GitRefType.BRANCH:
                         return 'branch', ref
                 else:
                     # Try as commit hash
@@ -248,7 +249,7 @@ class GitOperations:
         # If the ref is not found locally, try fetching it specifically
         references = repo.list_references()
         # Check if tag exists using GitRef properties
-        tag_exists = any(r.ref_type.value == 'tag' and r.shortname == ref for r in references)
+        tag_exists = any(r.ref_type == GitRefType.TAG and r.shortname == ref for r in references)
         if not tag_exists:
             try:
                 # Fetch the specific tag
@@ -264,7 +265,7 @@ class GitOperations:
             # Try as branch first using GitRef properties
             branch_ref = None
             for git_ref in references:
-                if git_ref.ref_type.value == 'branch' and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
+                if git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
                     branch_ref = git_ref.name
                     break
 
@@ -288,7 +289,7 @@ class GitOperations:
             # Try as tag using GitRef properties
             tag_ref = None
             for git_ref in references:
-                if git_ref.ref_type.value == 'tag' and git_ref.shortname == ref:
+                if git_ref.ref_type == GitRefType.TAG and git_ref.shortname == ref:
                     tag_ref = git_ref.name
                     break
 

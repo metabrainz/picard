@@ -27,6 +27,7 @@ import time
 
 from picard import log
 from picard.const.appdirs import cache_folder
+from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.version import Version
 
@@ -306,7 +307,7 @@ class RefsCache:
         """
         tags = []
         for ref in ref_names:
-            if ref.ref_type.value == 'tag' and not ref.shortname.endswith('^{}'):
+            if ref.ref_type == GitRefType.TAG and not ref.shortname.endswith('^{}'):
                 if pattern.match(ref.shortname):
                     tags.append(ref.shortname)
         return tags

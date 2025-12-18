@@ -46,7 +46,7 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitObjectType
+from picard.git.backend import GitObjectType, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
@@ -422,9 +422,9 @@ class PluginManager(QObject):
         tags = []
 
         for ref in remote_refs:
-            if ref.ref_type.value == 'branch':
+            if ref.ref_type == GitRefType.BRANCH:
                 branches.append({'name': ref.shortname, 'commit': ref.target})
-            elif ref.ref_type.value == 'tag' and not ref.shortname.endswith('^{}'):
+            elif ref.ref_type == GitRefType.TAG and not ref.shortname.endswith('^{}'):
                 # Skip dereferenced tag refs (^{}) - we get commit info from is_annotated
                 tags.append({'name': ref.shortname, 'commit': ref.target})
 
@@ -1407,7 +1407,7 @@ class PluginManager(QObject):
                         git_ref = r
                         break
 
-                if git_ref and git_ref.ref_type.value == 'tag':
+                if git_ref and git_ref.ref_type == GitRefType.TAG:
                     try:
                         repo.revparse_single(git_ref.name)
                         current_is_tag = True
@@ -1541,7 +1541,7 @@ class PluginManager(QObject):
                     git_ref = r
                     break
 
-            if git_ref and git_ref.ref_type.value == 'tag':
+            if git_ref and git_ref.ref_type == GitRefType.TAG:
                 current_is_tag = True
                 current_tag = ref
 
