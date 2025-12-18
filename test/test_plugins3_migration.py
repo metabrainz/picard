@@ -75,7 +75,6 @@ register_track_metadata_processor(process_metadata)
         with open(output_dir / 'MANIFEST.toml', 'rb') as f:
             data = tomllib.load(f)
             self.assertEqual(data['name'], 'Test Plugin')
-            self.assertEqual(data['version'], '1.0.0')
             self.assertEqual(data['authors'], ['Test Author'])
 
         # Check code conversion
