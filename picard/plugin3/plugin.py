@@ -29,7 +29,7 @@ import types
 
 from picard import log
 from picard.extension_points import unregister_module_extensions
-from picard.git.backend import GitBackendError
+from picard.git.backend import GitBackendError, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
 from picard.plugin3.api import PluginApi
@@ -135,12 +135,12 @@ class PluginSourceGit(PluginSource):
         refs = []
         all_refs = repo.list_references()
         for ref in all_refs:
-            if ref.ref_type.value == 'branch':
+            if ref.ref_type == GitRefType.BRANCH:
                 if ref.is_remote:
                     refs.append(ref.shortname)  # Already includes origin/ prefix
                 else:
                     refs.append(ref.shortname)
-            elif ref.ref_type.value == 'tag':
+            elif ref.ref_type == GitRefType.TAG:
                 refs.append(ref.shortname)
 
         if not refs:
@@ -211,7 +211,7 @@ class PluginSourceGit(PluginSource):
         if not self.ref:
             return False
         git_ref = find_git_ref(repo, self.ref)
-        return git_ref and git_ref.ref_type.value == 'tag'
+        return git_ref and git_ref.ref_type == GitRefType.TAG
 
     def sync(self, target_directory: Path, shallow: bool = False, single_branch: bool = False, fetch_ref: bool = False):
         """Sync plugin from git repository.
@@ -377,7 +377,7 @@ class PluginSourceGit(PluginSource):
                         # Last resort: find any reference
                         refs = repo.list_references()
                         for git_ref in refs:
-                            if git_ref.ref_type.value == 'branch' and not git_ref.is_remote:
+                            if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
                                 commit = repo.revparse_single(git_ref.name)
                                 self.resolved_ref = git_ref.shortname
                                 break
@@ -385,7 +385,7 @@ class PluginSourceGit(PluginSource):
                             # Try remote refs as absolute last resort
                             for git_ref in refs:
                                 if (
-                                    git_ref.ref_type.value == 'branch'
+                                    git_ref.ref_type == GitRefType.BRANCH
                                     and git_ref.is_remote
                                     and not git_ref.shortname.endswith('/HEAD')
                                 ):
@@ -450,14 +450,14 @@ class PluginSourceGit(PluginSource):
         if self.ref:
             # For updates, prefer origin/ prefix for branches to get latest changes
             git_ref = find_git_ref(repo, self.ref)
-            if git_ref and git_ref.ref_type.value == 'branch' and not git_ref.is_remote:
+            if git_ref and git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
                 # Try origin/ version first for updates
                 try:
                     commit = repo.revparse_single(f'origin/{self.ref}')
                 except (KeyError, GitBackendError):
                     # Fall back to local branch
                     commit = repo.revparse_single(git_ref.name)
-            elif git_ref and git_ref.ref_type.value in ('tag', 'branch'):
+            elif git_ref and git_ref.ref_type in (GitRefType.TAG, GitRefType.BRANCH):
                 commit = repo.revparse_single(git_ref.name)
             else:
                 # For commits or unknown refs, try as-is
@@ -489,7 +489,7 @@ class PluginSourceGit(PluginSource):
         all_refs = repo.list_references()
 
         for ref in all_refs:
-            if ref.ref_type.value == 'tag':
+            if ref.ref_type == GitRefType.TAG:
                 tags.append(ref.shortname)
 
         if not tags:
