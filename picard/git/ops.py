@@ -27,6 +27,7 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
+    GitReferenceError,
     GitRefType,
     GitStatusFlag,
 )
@@ -330,17 +331,27 @@ class GitOperations:
                         repo.set_head(commit.id)
                         log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
                         return old_ref, ref, old_commit, commit.id
-                except KeyError:
+                except GitReferenceError:
                     pass
 
-            # Try as commit hash
+            # Try as commit hash or git revision syntax
             try:
                 commit = repo.revparse_single(ref)
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
                 return old_ref, ref[:7], old_commit, commit.id
-            except KeyError:
+            except GitReferenceError:
+                # For git revision syntax, provide helpful error message
+                if any(char in ref for char in ['^', '~', ':', '@']):
+                    base_ref = ref.split('^')[0].split('~')[0].split(':')[0].split('@')[0]
+                    # Check if the base ref exists as origin/base_ref
+                    try:
+                        origin_ref = f'origin/{base_ref}'
+                        repo.revparse_single(origin_ref)
+                        raise ValueError(f"Ref '{ref}' not found. Did you mean '{origin_ref}{ref[len(base_ref) :]}'?")
+                    except GitReferenceError:
+                        pass
                 pass
 
             raise ValueError(f'Ref {ref} not found')
