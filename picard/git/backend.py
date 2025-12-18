@@ -178,11 +178,11 @@ class GitRepository(ABC):
         """Set HEAD to target"""
 
     @abstractmethod
-    def list_references(self) -> list[str]:
+    def list_references(self) -> list[GitRef]:
         """List all references"""
 
     @abstractmethod
-    def get_references(self) -> list[str]:
+    def get_references(self) -> list[GitRef]:
         """Get list of reference names"""
 
     @abstractmethod
