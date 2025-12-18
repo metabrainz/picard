@@ -418,44 +418,20 @@ class PluginManager(QObject):
                     return stale_cache
             return None
 
-        # Separate branches and tags with their commit IDs
-        # For annotated tags, git provides both the tag object and dereferenced commit (^{})
+        # Separate branches and tags using GitRef metadata
         branches = []
-        tags = {}  # Use dict to merge tag object with dereferenced commit
-        annotated_tags = {}
+        tags = []
 
         for ref in remote_refs:
-            ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-            commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
-
-            if ref_name.startswith('refs/heads/'):
-                branch_name = ref_name[len('refs/heads/') :]
-                branches.append({'name': branch_name, 'commit': commit_id})
-            elif ref_name.startswith('refs/tags/'):
-                tag_name = ref_name[len('refs/tags/') :]
-                # Check if this is a dereferenced tag (^{})
-                if tag_name.endswith('^{}'):
-                    base_tag = tag_name[:-3]  # Remove ^{}
-                    # This is the actual commit for an annotated tag
-                    annotated_tags[base_tag] = commit_id
-                else:
-                    # For annotated tags, we have 2 tags:
-                    # GitRef(refs/tags/v1.1.2, 858ec02a1983cc8448ff7c57426bcbb9db2f0e76)
-                    # GitRef(refs/tags/v1.1.2^{}, ad21dafef15e0a73aea626ceab77684064b11089)
-                    # GitRef(refs/heads/main, ad21dafef15e0a73aea626ceab77684064b11089)
-                    # but we need to resolve them in 2 passes
-                    tags[tag_name] = {'name': tag_name, 'commit': commit_id}
-
-        # Resolved annotated tags
-        # In this case, the tag points at the annotated commit,
-        # so we replace it with the target commit id
-        for tag, commit_id in annotated_tags.items():
-            if tag in tags:
-                tags[tag]['commit'] = commit_id
+            if ref.ref_type.value == 'branch':
+                branches.append({'name': ref.shortname, 'commit': ref.target})
+            elif ref.ref_type.value == 'tag' and not ref.shortname.endswith('^{}'):
+                # Skip dereferenced tag refs (^{}) - we get commit info from is_annotated
+                tags.append({'name': ref.shortname, 'commit': ref.target})
 
         result = {
             'branches': sorted(branches, key=lambda x: x['name']),
-            'tags': sorted(tags.values(), key=lambda x: x['name'], reverse=True),
+            'tags': sorted(tags, key=lambda x: x['name'], reverse=True),
         }
 
         # Cache the result
