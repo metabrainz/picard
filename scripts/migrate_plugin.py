@@ -9,6 +9,7 @@ Usage:
 
 import argparse
 import ast
+from io import StringIO
 from pathlib import Path
 import re
 import sys
@@ -553,6 +554,7 @@ def convert_plugin_code(content, metadata):
     imports_to_remove = set()
     decorators_to_remove = {}  # func_name -> decorator_name
     method_processors = []  # Track processors that are class methods
+    replace_assignments = set()  # set of tuples (old_var, value, new_var)
 
     # First pass: collect potential instantiated action/page variables
     # e.g., vv = ViewVariables()
@@ -645,11 +647,24 @@ def convert_plugin_code(content, metadata):
                                 register_calls.append((func_name, arg.func.id))
                                 nodes_to_remove.add(node)
 
-        # Check for class methods that might be processors
+        # Handle classes
         elif isinstance(node, ast.ClassDef):
             class_methods = {}
             has_registration = False
 
+            # Rewrite action class titles
+            if any('BaseAction' in (base.id if isinstance(base, ast.Name) else '') for base in node.bases):
+                for item in node.body:
+                    if isinstance(item, ast.Assign):
+                        target = item.targets[0]
+                        if (
+                            isinstance(target, ast.Name)
+                            and target.id == 'NAME'
+                            and isinstance(item.value, ast.Constant)
+                        ):
+                            replace_assignments.add((target.id, item.value.value, 'TITLE'))
+
+            # Check for class methods that might be processors
             for item in node.body:
                 if isinstance(item, ast.FunctionDef):
                     # Skip private/helper methods (start with _)
@@ -711,13 +726,18 @@ def convert_plugin_code(content, metadata):
     # Convert function signatures
     content = fix_function_signatures(content, tree)
 
+    # Convert assignments to new variable names
+    for old_var, value, new_var in replace_assignments:
+        pattern = rf'''{re.escape(old_var)}\s*=\s*["']{re.escape(value)}["']'''
+        content = re.sub(pattern, f'{new_var} = "{value}"', content, flags=re.MULTILINE)
+
     # Convert config/log/tagger access
     if has_log_import:
         content = convert_log_access(content)
         all_warnings.append("✓ Converted log.* calls to api.logger.*")
 
     # Convert config option definitions (TextOption, BoolOption, etc.)
-    content, option_warnings = convert_config_options(content)
+    content, option_warnings, option_map = convert_config_options(content)
     all_warnings.extend(option_warnings)
 
     # Remove 'options = [...]' class attribute from OptionsPage classes
@@ -902,11 +922,15 @@ def convert_plugin_code(content, metadata):
         new_lines.pop()
 
     # Add enable function with all register calls
-    if register_calls or instance_registrations:
+    if register_calls or instance_registrations or option_map:
         new_lines.append('')
         new_lines.append('')
         new_lines.append('def enable(api: PluginApi):')
         new_lines.append('    """Called when plugin is enabled."""')
+
+        # Add config option registrations
+        for key, default, _type, _var_name in option_map:
+            new_lines.append(f'    api.plugin_config.register_option("{key}", {default})')
 
         # Add direct function registrations
         for reg_type, func_name in register_calls:
@@ -997,18 +1021,22 @@ def convert_config_options(content):
         value = my_text.value
         my_text.value = "new"
 
+        config.setting["my_key"]
+
     To:
         # (definition removed)
-        value = api.plugin_config.setting.get('my_key', 'default')
-        api.plugin_config.setting['my_key'] = "new"
+        value = api.plugin_config.get('my_key', 'default')
+        api.plugin_config['my_key'] = "new"
+
+        api.plugin_config["my_key"]
     """
     try:
         tree = ast.parse(content)
     except (SyntaxError, ValueError):
-        return content, []
+        return content, [], []
 
     option_types = ['TextOption', 'BoolOption', 'IntOption', 'FloatOption', 'ListOption', 'Option']
-    option_map = {}  # var_name -> (key, default_value, option_type)
+    option_list = []  # (var_name, key, default_value, option_type)
     lines_to_remove = set()
 
     # Find option definitions
@@ -1037,11 +1065,32 @@ def convert_config_options(content):
                                 default_value = ast.unparse(default_node)
                                 option_type = node.value.func.id
 
-                                option_map[var_name] = (key, default_value, option_type)
+                                option_list.append((key, default_value, option_type, var_name))
                                 lines_to_remove.add(node.lineno)
+        # Find options that are not assigned
+        elif isinstance(node, ast.Call):
+            if isinstance(node.func, ast.Name):
+                if node.func.id in option_types:
+                    # Extract arguments: Option(section, key, default)
+                    if len(node.args) >= 3:
+                        # section = node.value.args[0]  # Usually "setting"
+                        key_node = node.args[1]
+                        default_node = node.args[2]
 
-    if not option_map:
-        return content, []
+                        # Get key as string
+                        if isinstance(key_node, ast.Constant):
+                            key = key_node.value
+                        else:
+                            continue  # Skip complex key expressions
+
+                        # Get default value as code
+                        default_value = ast.unparse(default_node)
+                        option_type = node.func.id
+
+                        option_list.append((key, default_value, option_type, None))
+
+    if not option_list:
+        return content, [], []
 
     # Convert content line by line
     lines = content.split('\n')
@@ -1054,30 +1103,39 @@ def convert_config_options(content):
             continue
 
         # Convert .value access for each option variable
-        for var_name, (key, default, _opt_type) in option_map.items():
-            # Write access: my_var.value = x -> api.plugin_config['key'] = x
-            # Check this first to avoid false positives
-            write_pattern = rf'\b{re.escape(var_name)}\.value\s*='
-            if re.search(write_pattern, line):
-                line = re.sub(write_pattern, f"api.plugin_config['{key}'] =", line)
-                continue  # Skip read conversion for this line
+        for key, default, _opt_type, var_name in option_list:
+            if var_name:
+                # Write access: my_var.value = x -> api.plugin_config['key'] = x
+                # Check this first to avoid false positives
+                write_pattern = rf'\b{re.escape(var_name)}\.value\s*='
+                if re.search(write_pattern, line):
+                    line = re.sub(write_pattern, f"api.plugin_config['{key}'] =", line)
+                    continue  # Skip read conversion for this line
 
-            # Read access: my_var.value -> api.plugin_config.get('key', default)
-            if f'{var_name}.value' in line:
-                line = re.sub(
-                    rf'\b{re.escape(var_name)}\.value\b',
-                    f"api.plugin_config.get('{key}', {default})",
-                    line,
-                )
+                # Read access: my_var.value -> api.plugin_config.get('key', default)
+                if f'{var_name}.value' in line:
+                    line = re.sub(
+                        rf'\b{re.escape(var_name)}\.value\b',
+                        f"api.plugin_config.get('{key}', {default})",
+                        line,
+                    )
+            else:
+                access_pattern = rf'''\bconfig.setting\[["']{re.escape(key)}["']\]'''
+                print(access_pattern)
+                if re.search(access_pattern, line):
+                    line = re.sub(access_pattern, f"api.plugin_config['{key}']", line)
 
         new_lines.append(line)
 
-    if option_map:
-        warnings.append(f"✓ Converted {len(option_map)} config option(s) to api.plugin_config.setting")
-        for var_name, (key, _default, opt_type) in option_map.items():
-            warnings.append(f"  - {var_name} ({opt_type}) -> '{key}'")
+    if option_list:
+        warnings.append(f"✓ Converted {len(option_list)} config option(s) to api.plugin_config.setting")
+        for key, _default, opt_type, var_name in option_list:
+            if var_name:
+                warnings.append(f"  - {var_name} ({opt_type}) -> '{key}'")
+            else:
+                warnings.append(f"  - {opt_type} -> '{key}'")
 
-    return '\n'.join(new_lines), warnings
+    return '\n'.join(new_lines), warnings, option_list
 
 
 def remove_options_class_attribute(content):
@@ -1143,7 +1201,7 @@ def convert_config_access(content):
 
 
 def convert_api_in_classes(content):
-    """Convert api.* to self.api.* in class methods and add api parameter to __init__."""
+    """Convert api.* to self.api.* in class methods."""
     try:
         tree = ast.parse(content)
     except (SyntaxError, ValueError):
@@ -1159,7 +1217,7 @@ def convert_api_in_classes(content):
         is_api_base = any(
             any(class_name in (base.id if isinstance(base, ast.Name) else '') for base in node.bases)
             for class_name in (
-                'Action',
+                'BaseAction',
                 'CoverArtProvider',
                 'ImageProcessor',
                 'OptionsPage',
@@ -1169,45 +1227,6 @@ def convert_api_in_classes(content):
 
         if not is_api_base:
             continue
-
-        # Find __init__ method
-        init_method = None
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef) and item.name == '__init__':
-                init_method = item
-                break
-
-        # Add api parameter to __init__ if it exists
-        if init_method:
-            args = [arg.arg for arg in init_method.args.args]
-            if 'api' not in args:
-                # Update __init__ signature
-                init_line_idx = init_method.lineno - 1
-                init_line = lines[init_line_idx]
-
-                # Add api parameter after self
-                if 'def __init__(self' in init_line:
-                    lines[init_line_idx] = init_line.replace('def __init__(self,', 'def __init__(self, api=None,')
-                    if 'api=None' not in lines[init_line_idx]:
-                        lines[init_line_idx] = lines[init_line_idx].replace(
-                            'def __init__(self)', 'def __init__(self, api=None)'
-                        )
-
-                    # Add self.api = api after super().__init__() or at start of method
-                    body_start = init_method.lineno
-                    indent = len(lines[body_start]) - len(lines[body_start].lstrip())
-
-                    # Insert self.api = api after super().__init__() if present
-                    inserted = False
-                    for i in range(body_start, min(init_method.end_lineno, len(lines))):
-                        if 'super(' in lines[i] and '__init__' in lines[i]:
-                            lines.insert(i + 1, ' ' * indent + 'self.api = api')
-                            inserted = True
-                            break
-
-                    if not inserted:
-                        # Insert at start of method body
-                        lines.insert(body_start, ' ' * indent + 'self.api = api')
 
         # Convert api.* to self.api.* in class methods
         for item in node.body:
@@ -1495,14 +1514,20 @@ def format_with_ruff(file_path, warnings_list=None):
 
 def regenerate_ui_file(ui_file, output_py):
     """Regenerate .py file from .ui using pyuic6."""
-    import subprocess
+    try:
+        from PyQt6 import uic
+        from PyQt6.uic.exceptions import UIFileException
+    except ImportError:
+        print("  PyQt6 not available, regenerate UI file by running pyuic6")
+        return False
 
     try:
-        subprocess.run(['pyuic6', str(ui_file), '-o', str(output_py)], capture_output=True, check=True, text=True)
+        tmp_out = StringIO()
+        uic.compileUi(ui_file, tmp_out)
 
         # Post-process to add noqa comments for unused imports
         # pyuic6 generates imports that may not all be used
-        content = output_py.read_text(encoding='utf-8')
+        content = tmp_out.getvalue()
         lines = content.split('\n')
 
         # Add header comment
@@ -1532,7 +1557,8 @@ def regenerate_ui_file(ui_file, output_py):
 
         output_py.write_text('\n'.join(lines), encoding='utf-8')
         return True
-    except (subprocess.CalledProcessError, FileNotFoundError):
+    except UIFileException as err:
+        print(f"  pyuic6 failed: {err}")
         return False
 
 
