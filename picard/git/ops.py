@@ -340,7 +340,7 @@ class GitOperations:
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-                return old_ref, ref[:7], old_commit, commit.id
+                return old_ref, commit.id[:7], old_commit, commit.id
             except GitReferenceError:
                 # For git revision syntax, provide helpful error message
                 if any(char in ref for char in ['^', '~', ':', '@']):
