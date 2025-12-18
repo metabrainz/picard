@@ -375,20 +375,22 @@ class PluginSourceGit(PluginSource):
                         self.resolved_ref = branch_name
                     else:
                         # Last resort: find any reference
-                        refs = repo.listall_references()
-                        for ref in refs:
-                            if ref.startswith('refs/heads/'):
-                                branch_name = ref[11:]  # Remove 'refs/heads/' prefix
-                                commit = repo.revparse_single(ref)
-                                self.resolved_ref = branch_name
+                        refs = repo.list_references()
+                        for git_ref in refs:
+                            if git_ref.ref_type.value == 'branch' and not git_ref.is_remote:
+                                commit = repo.revparse_single(git_ref.name)
+                                self.resolved_ref = git_ref.shortname
                                 break
                         else:
                             # Try remote refs as absolute last resort
-                            for ref in refs:
-                                if ref.startswith('refs/remotes/origin/') and not ref.endswith('/HEAD'):
-                                    branch_name = ref[20:]  # Remove 'refs/remotes/origin/' prefix
-                                    commit = repo.revparse_single(ref)
-                                    self.resolved_ref = f'origin/{branch_name}'
+                            for git_ref in refs:
+                                if (
+                                    git_ref.ref_type.value == 'branch'
+                                    and git_ref.is_remote
+                                    and not git_ref.shortname.endswith('/HEAD')
+                                ):
+                                    commit = repo.revparse_single(git_ref.name)
+                                    self.resolved_ref = git_ref.shortname
                                     break
                             else:
                                 raise PluginSourceSyncError('No branches found in repository') from None
