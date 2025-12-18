@@ -1552,7 +1552,25 @@ class PluginManager(QObject):
                     plugin.local_path, metadata.url, registry_plugin.versioning_scheme
                 )
 
-            old_ref = metadata.ref or 'main'
+            # Get current ref from repository instead of metadata
+            # This ensures we detect the actual current branch/tag
+            if repo.is_head_detached():
+                # Detached HEAD - use the first local branch for update checking
+                # This handles cases like switching to branch^ where we want to
+                # compare against a branch for updates
+                old_ref = None
+                for git_ref in repo.list_references():
+                    if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
+                        old_ref = git_ref.shortname
+                        break
+
+                if not old_ref:
+                    # Fall back to stored metadata ref or default to main
+                    old_ref = metadata.ref or 'main'
+            else:
+                # On a branch - use the actual branch name
+                old_ref = repo.get_head_shorthand()
+
             ref = old_ref
 
             # Check if currently on a tag by checking available refs
