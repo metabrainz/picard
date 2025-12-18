@@ -21,10 +21,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from enum import (
+    Enum,
+    IntEnum,
+)
 import logging
 import os
 import shutil
-from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -152,21 +155,33 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         self.assertEqual(expected, self.config.setting.as_dict())
 
     def test_register_option(self):
+        class TestEnum(Enum):
+            A = "a"
+            B = "b"
+
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
         test_cases = [
-            ("text_option", "the default", TextOption),
-            ("bool_option", True, BoolOption),
-            ("int_option", 42, IntOption),
-            ("float_option", 4.2, FloatOption),
-            ("list_option", [1, 2], ListOption),
-            ("list_option_from_tuple", (1, 2), ListOption),
-            ("other_option", Mock(), Option),
+            ("text_option", "the default", TextOption, "s"),
+            ("bool_option", True, BoolOption, False),
+            ("int_option", 42, IntOption, 1),
+            ("float_option", 4.2, FloatOption, 1.0),
+            ("list_option", [1, 2], ListOption, ["a"]),
+            ("list_option_from_tuple", (1, 2), ListOption, ["a"]),
+            ("enum_option", TestEnum.A, Option, TestEnum.B),
+            ("int_enum_option", TestIntEnum.A, Option, TestIntEnum.B),
+            ("other_option", b"foo", Option, b"bar"),
         ]
-        for name, default, expected_type in test_cases:
+        for name, default, expected_type, test_value in test_cases:
             opt = self.config.setting.register_option(name, default)
             self.assertEqual(Option.registry[('setting', name)], opt)
             self.assertIsInstance(opt, expected_type)
             self.assertEqual(opt.default, default)
             self.assertEqual(self.config.setting[name], default)
+            self.config.setting[name] = test_value
+            self.assertEqual(self.config.setting[name], test_value)
 
     def test_register_option_default_none(self):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):
