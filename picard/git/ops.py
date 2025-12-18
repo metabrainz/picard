@@ -249,10 +249,11 @@ class GitOperations:
         # If the ref is not found locally, try fetching it specifically
         references = repo.list_references()
         # Check if tag exists using GitRef properties
+        # Skip tag fetch for git revision syntax (contains ^, ~, :, etc.)
         tag_exists = any(r.ref_type == GitRefType.TAG and r.shortname == ref for r in references)
-        if not tag_exists:
+        if not tag_exists and not any(char in ref for char in ['^', '~', ':', '@']):
             try:
-                # Fetch the specific tag
+                # Fetch the specific tag (only for simple ref names)
                 repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
             except Exception as e:
                 # If specific fetch fails, continue with what we have
