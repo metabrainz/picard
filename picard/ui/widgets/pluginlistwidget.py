@@ -624,7 +624,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
         dialog = UninstallPluginDialog(plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        dialog.exec()
+        if dialog.uninstall_confirmed:
             try:
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(
@@ -747,20 +748,18 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         dialog.exec()
 
 
-class UninstallPluginDialog(QtWidgets.QDialog):
+class UninstallPluginDialog(QtWidgets.QMessageBox):
     """Dialog for uninstalling plugins with purge option."""
 
     def __init__(self, plugin, parent=None):
         super().__init__(parent)
         self.plugin = plugin
-        self.purge_config = False
         self.setWindowTitle(_("Uninstall Plugin"))
-        self.setModal(True)
         self.setup_ui()
 
     def setup_ui(self):
         """Setup the dialog UI."""
-        layout = QtWidgets.QVBoxLayout(self)
+        self.setIcon(QtWidgets.QMessageBox.Icon.Warning)
 
         # Plugin name
         try:
@@ -769,33 +768,24 @@ class UninstallPluginDialog(QtWidgets.QDialog):
             name = self.plugin.name or self.plugin.plugin_id
 
         # Confirmation message
-        message = QtWidgets.QLabel(_("Are you sure you want to uninstall '{}'?").format(name))
-        message.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        message.setWordWrap(True)
-        layout.addWidget(message)
+        self.setText(_("Are you sure you want to uninstall '{}'?").format(name))
 
         # Purge configuration checkbox
-        self.purge_checkbox = QtWidgets.QCheckBox(_("Also remove plugin configuration"))
-        self.purge_checkbox.setToolTip(_("Remove all saved settings and configuration for this plugin"))
-        layout.addWidget(self.purge_checkbox)
+        self._purge_checkbox = QtWidgets.QCheckBox(_("Also remove plugin configuration"))
+        self._purge_checkbox.setToolTip(_("Remove all saved settings and configuration for this plugin"))
+        self.setCheckBox(self._purge_checkbox)
 
         # Buttons
-        button_layout = QtWidgets.QHBoxLayout()
+        self._btn_confirm_uninstall = self.addButton(_("Yes, Uninstall!"), QtWidgets.QMessageBox.ButtonRole.AcceptRole)
+        self.addButton(QtWidgets.QMessageBox.StandardButton.Cancel)
 
-        uninstall_button = QtWidgets.QPushButton(_("Yes, Uninstall!"))
-        uninstall_button.clicked.connect(self._uninstall)
-        button_layout.addWidget(uninstall_button)
+    @property
+    def purge_config(self) -> bool:
+        return self._purge_checkbox.isChecked()
 
-        cancel_button = QtWidgets.QPushButton(_("Cancel"))
-        cancel_button.clicked.connect(self.reject)
-        button_layout.addWidget(cancel_button)
-
-        layout.addLayout(button_layout)
-
-    def _uninstall(self):
-        """Handle uninstall button click."""
-        self.purge_config = self.purge_checkbox.isChecked()
-        self.accept()
+    @property
+    def uninstall_confirmed(self) -> bool:
+        return self.clickedButton() == self._btn_confirm_uninstall
 
 
 class SwitchRefDialog(QtWidgets.QDialog):
