@@ -96,9 +96,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Updates dict from options page (plugin_id -> UpdateCheck)
         self._updates = {}
 
-        # Cache version info to avoid repeated expensive calls
-        self._version_cache = {}
-
         # Don't load cached update status during initialization to avoid any network activity
         # It will be loaded when actually needed during populate_plugins()
 
@@ -198,10 +195,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Show in progress for updating plugins
             item.setText(COLUMN_UPDATE, _("In Progress..."))
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-        elif self._has_update_available_cached(plugin):
+        elif self._has_update_available(plugin):
             # Get new version info from cache first to avoid expensive calls during updates
             try:
-                new_version = self._get_cached_new_version(plugin)
+                new_version = self._get_new_version(plugin)
                 item.setText(COLUMN_UPDATE, new_version)
             except Exception:
                 item.setText(COLUMN_UPDATE, _("Available"))
@@ -223,17 +220,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # No update available - no text, no checkbox
             item.setText(COLUMN_UPDATE, "                   ")  # hacky
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-
-    def _get_cached_new_version(self, plugin):
-        """Get new version from cache or compute if not cached."""
-        # Return cached version if available
-        if plugin.plugin_id in self._version_cache:
-            return self._version_cache[plugin.plugin_id]
-
-        # Compute and cache the version
-        new_version = self._get_new_version(plugin)
-        self._version_cache[plugin.plugin_id] = new_version
-        return new_version
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
@@ -298,7 +284,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Mark a plugin update as complete."""
         self._updating_plugins.discard(plugin.plugin_id)
         # Clear caches for updated plugin - it should no longer have updates available
-        self._version_cache.pop(plugin.plugin_id, None)
         self._refresh_plugin_display(plugin)
 
     def _refresh_plugin_display(self, plugin):
@@ -329,8 +314,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def set_updates(self, updates):
         """Set the updates dict from the options page."""
         self._updates = updates
-        # Clear version cache to ensure fresh version display
-        self._version_cache.clear()
 
     def refresh_update_status(self, force_network_check=False):
         """Public method to refresh update status for all plugins.
@@ -342,10 +325,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Updates are now managed by the options page via set_updates()
         # Version cache is cleared when updates are set
         pass
-
-    def _has_update_available_cached(self, plugin):
-        """Check if plugin has update available using cache."""
-        return plugin.plugin_id in self._updates
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
@@ -548,9 +527,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_context_update_complete(self, plugin, result):
         """Handle context menu update completion."""
         if result.success:
-            # Clear version cache for updated plugin
-            self._version_cache.pop(plugin.plugin_id, None)
-
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh
