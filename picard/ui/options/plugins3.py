@@ -271,11 +271,13 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
+        log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
         plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
 
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):
+            log.debug("Removing plugin %s from updates dict due to action: %s", plugin.plugin_id, action)
             # Remove from updates dict since plugin may now be up-to-date
             self.updates.pop(plugin.plugin_id, None)
             # Update the plugin list widget with new updates dict
