@@ -145,7 +145,8 @@ class Plugins3OptionsPage(OptionsPage):
         try:
             # Load plugins immediately when page is loaded
             self.all_plugins = self.plugin_manager.plugins
-            self.plugin_list.refresh_update_status(force_network_check=False)
+            # Pass current updates dict to plugin list widget
+            self.plugin_list.set_updates(self.updates)
             self._filter_plugins()
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
