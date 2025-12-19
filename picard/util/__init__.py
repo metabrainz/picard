@@ -1321,7 +1321,7 @@ def parse_versioning_scheme(versioning_scheme):
     from picard import log
 
     if versioning_scheme == 'semver':
-        pattern = r'^\D*\d+\.\d+\.\d+$'
+        pattern = r'^\D*\d+\.\d+(\.\d+)?$'
     elif versioning_scheme == 'calver':
         pattern = r'^\d{4}\.\d{2}\.\d{2}$'
     elif versioning_scheme.startswith('regex:'):
