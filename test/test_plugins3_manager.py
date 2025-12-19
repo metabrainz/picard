@@ -287,6 +287,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
                     mock_commit.id = 'new456'
                     mock_commit.type = Mock()  # Not a tag
                     mock_repo.revparse_single = Mock(return_value=mock_commit)
+                    mock_repo.revparse_to_commit = Mock(return_value=mock_commit)
                     mock_repo.get_commit_date = Mock(return_value=1234567890)
                     mock_repo.free = Mock()
                     mock_backend.create_repository = Mock(return_value=mock_repo)

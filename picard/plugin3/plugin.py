@@ -180,9 +180,7 @@ class PluginSourceGit(PluginSource):
 
     def _resolve_to_commit(self, obj, repo=None):
         """Resolve a git object to a commit, peeling tags if needed."""
-        from picard.git.backend import GitObjectType
-
-        if hasattr(obj, 'type') and obj.type == GitObjectType.TAG and repo:
+        if repo:
             return repo.peel_to_commit(obj)
         return obj
 

@@ -288,8 +288,7 @@ class PluginMetadataManager:
             # Check if current commit matches a tag (prefer tag over branch)
             for git_ref in repo.list_references():
                 if git_ref.ref_type == GitRefType.TAG:
-                    obj = repo.revparse_single(git_ref.name)
-                    target = repo.peel_to_commit(obj)
+                    target = repo.revparse_to_commit(git_ref.name)
                     if target.id == current_commit:
                         return git_ref.shortname, current_commit
 

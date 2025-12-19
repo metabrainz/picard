@@ -277,8 +277,7 @@ class GitOperations:
                     break
 
             if branch_ref:
-                commit_obj = repo.revparse_single(branch_ref)
-                commit = repo.peel_to_commit(commit_obj)
+                commit = repo.revparse_to_commit(branch_ref)
                 repo.checkout_tree(commit)
 
                 # Handle remote vs local branches differently
@@ -294,7 +293,7 @@ class GitOperations:
                     # Set branch to track remote
                     branches = repo.get_branches()
                     # Convert GitObject back to pygit2 object for branch creation
-                    pygit_commit = repo._repo.get(commit_obj.id)
+                    pygit_commit = repo._repo.get(commit.id)
                     branch = branches.local.create(ref, pygit_commit, force=True)
                     branch.upstream = branches.remote[f'origin/{ref}']
                     # Now point HEAD to the branch
@@ -314,8 +313,7 @@ class GitOperations:
                     break
 
             if tag_ref:
-                commit_obj = repo.revparse_single(tag_ref)
-                commit = repo.peel_to_commit(commit_obj)
+                commit = repo.revparse_to_commit(tag_ref)
                 repo.checkout_tree(commit)
                 repo.set_head(commit.id)
                 log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
@@ -323,14 +321,11 @@ class GitOperations:
             else:
                 # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
                 try:
-                    commit_obj = repo.revparse_single(ref)
-                    # Check if this is actually a tag by seeing if refs/tags/{ref} exists after resolution
-                    if hasattr(commit_obj, 'type') and commit_obj.type in ['tag', 'commit']:
-                        commit = repo.peel_to_commit(commit_obj)
-                        repo.checkout_tree(commit)
-                        repo.set_head(commit.id)
-                        log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                        return old_ref, ref, old_commit, commit.id
+                    commit = repo.revparse_to_commit(ref)
+                    repo.checkout_tree(commit)
+                    repo.set_head(commit.id)
+                    log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+                    return old_ref, ref, old_commit, commit.id
                 except GitReferenceError:
                     pass
 

@@ -46,7 +46,7 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitObjectType, GitRefType
+from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
@@ -1291,13 +1291,8 @@ class PluginManager(QObject):
         # Get commit date and resolve annotated tags to actual commit
         backend = git_backend()
         repo = backend.create_repository(plugin.local_path)
-        obj = repo.revparse_single(new_commit)
-        # Peel tag to commit if needed
-        if obj.type == GitObjectType.TAG:
-            commit = repo.peel_to_commit(obj)
-            new_commit = commit.id  # Use actual commit ID, not tag object ID
-        else:
-            commit = obj
+        commit = repo.revparse_to_commit(new_commit)
+        new_commit = commit.id  # Use actual commit ID, not tag object ID
         # Get commit date using backend
         commit_date = repo.get_commit_date(commit.id)
         repo.free()
@@ -1407,12 +1402,7 @@ class PluginManager(QObject):
                     for r in repo.list_references():
                         if r.ref_type == GitRefType.TAG:
                             try:
-                                tag_obj = repo.revparse_single(r.name)
-                                # Peel annotated tags to get commit
-                                if tag_obj.type == GitObjectType.TAG:
-                                    tag_commit = repo.peel_to_commit(tag_obj)
-                                else:
-                                    tag_commit = tag_obj
+                                tag_commit = repo.revparse_to_commit(r.name)
 
                                 if tag_commit.id == current_commit:
                                     current_is_tag = True
@@ -1478,10 +1468,7 @@ class PluginManager(QObject):
                         obj = repo.revparse_single(ref)
 
                     # Peel annotated tags to get the actual commit
-                    if obj.type == GitObjectType.TAG:
-                        commit = repo.peel_to_commit(obj)
-                    else:
-                        commit = obj
+                    commit = repo.peel_to_commit(obj)
 
                     latest_commit = commit.id
                     # Get commit date using backend
