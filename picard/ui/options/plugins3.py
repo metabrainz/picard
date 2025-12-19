@@ -315,13 +315,16 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
+        log.debug("_on_plugin_installed called for plugin: %s", plugin_id)
         self.load()  # Refresh plugin list
         # Check for updates for the newly installed plugin
         try:
+            log.debug("Checking for updates after plugin installation")
             new_updates = self.plugin_manager.check_updates()
             self.updates.update(new_updates)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(self.updates)
+            log.debug("Updated plugin list with %d updates", len(self.updates))
         except Exception as e:
             log.error("Failed to check updates after plugin installation: %s", e)
         self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
