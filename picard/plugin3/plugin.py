@@ -454,6 +454,10 @@ class PluginSourceGit(PluginSource):
         - release-1.0.0, release/1.0.0
         - 2024.11.30 (date-based)
         """
+        from picard import log
+
+        log.debug("_find_latest_tag: checking for updates from current tag %s", current_tag)
+
         # Get all tags (use abstracted list_references)
         tags = []
         all_refs = repo.list_references()
@@ -461,6 +465,8 @@ class PluginSourceGit(PluginSource):
         for ref in all_refs:
             if ref.ref_type == GitRefType.TAG:
                 tags.append(ref.shortname)
+
+        log.debug("_find_latest_tag: found %d tags: %s", len(tags), tags)
 
         if not tags:
             return None
@@ -484,13 +490,16 @@ class PluginSourceGit(PluginSource):
 
         # Parse current tag version
         current_version_str = extract_version(current_tag)
+        log.debug("_find_latest_tag: current tag %s -> version %s", current_tag, current_version_str)
         if not current_version_str:
             # Can't parse current tag, don't update
             return None
 
         try:
             current_version = Version.from_string(current_version_str)
-        except Exception:
+            log.debug("_find_latest_tag: parsed current version: %s", current_version)
+        except Exception as e:
+            log.debug("_find_latest_tag: failed to parse current version %s: %s", current_version_str, e)
             return None
 
         # Find all tags with parseable versions
@@ -501,7 +510,9 @@ class PluginSourceGit(PluginSource):
                 try:
                     ver = Version.from_string(version_str)
                     versioned_tags.append((tag, ver))
-                except Exception:
+                    log.debug("_find_latest_tag: tag %s -> version %s", tag, ver)
+                except Exception as e:
+                    log.debug("_find_latest_tag: failed to parse tag %s version %s: %s", tag, version_str, e)
                     continue
 
         if not versioned_tags:
@@ -510,11 +521,14 @@ class PluginSourceGit(PluginSource):
         # Sort by version and get latest
         versioned_tags.sort(key=lambda x: x[1], reverse=True)
         latest_tag, latest_version = versioned_tags[0]
+        log.debug("_find_latest_tag: latest tag %s with version %s", latest_tag, latest_version)
 
         # Only return if it's newer than current
         if latest_version > current_version:
+            log.debug("_find_latest_tag: %s > %s, returning %s", latest_version, current_version, latest_tag)
             return latest_tag
 
+        log.debug("_find_latest_tag: %s <= %s, no update needed", latest_version, current_version)
         return None
 
 

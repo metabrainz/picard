@@ -1398,6 +1398,9 @@ class PluginManager(QObject):
 
                     if is_detached:
                         # For detached HEAD, check if current commit matches any tag
+                        log.debug(
+                            "Plugin %s: detached HEAD, checking if current commit matches any tag", plugin.plugin_id
+                        )
                         for r in repo.list_references():
                             if r.ref_type == GitRefType.TAG:
                                 try:
@@ -1406,12 +1409,18 @@ class PluginManager(QObject):
                                     if tag_commit.id == current_commit:
                                         current_is_tag = True
                                         current_tag = r.shortname
+                                        log.debug(
+                                            "Plugin %s: found matching tag %s for current commit",
+                                            plugin.plugin_id,
+                                            current_tag,
+                                        )
                                         break
                                 except Exception as e:
                                     log.debug("Failed to check tag %s for commit match: %s", r.name, e)
                                     continue
                     else:
                         # For regular branches, check if ref is a tag
+                        log.debug("Plugin %s: on branch %s, checking if it's a tag", plugin.plugin_id, ref)
                         git_ref = None
                         for r in repo.list_references():
                             if r.shortname == ref or r.name == ref:
@@ -1423,20 +1432,25 @@ class PluginManager(QObject):
                                 repo.revparse_single(git_ref.name)
                                 current_is_tag = True
                                 current_tag = ref
+                                log.debug("Plugin %s: confirmed on tag %s", plugin.plugin_id, current_tag)
                             except KeyError:
                                 pass
 
                     # If on a tag, check for newer version tag
                     new_ref = None
                     if current_is_tag and current_tag:
+                        log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
                         source = PluginSourceGit(metadata.url, ref)
                         latest_tag = source._find_latest_tag(repo, current_tag)
+                        log.debug("Plugin %s: latest_tag = %s", plugin.plugin_id, latest_tag)
                         if latest_tag and latest_tag != current_tag:
                             # Found newer tag
+                            log.debug("Plugin %s: found newer tag %s", plugin.plugin_id, latest_tag)
                             ref = latest_tag
                             new_ref = latest_tag
                         else:
                             # Already on latest tag, no update needed
+                            log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
                             continue
 
                     # Resolve ref using GitRef lookup first, then fallback
