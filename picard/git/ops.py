@@ -242,22 +242,7 @@ class GitOperations:
         old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
 
         # Fetch latest from remote
-        callbacks = backend.create_remote_callbacks()
-        origin_remote = repo.get_remote('origin')
-        repo.fetch_remote(origin_remote, None, callbacks._callbacks)
-
-        # If the ref is not found locally, try fetching it specifically
-        references = repo.list_references()
-        # Check if tag exists using GitRef properties
-        # Skip tag fetch for git revision syntax (contains ^, ~, :, etc.)
-        tag_exists = any(r.ref_type == GitRefType.TAG and r.shortname == ref for r in references)
-        if not tag_exists and not any(char in ref for char in ['^', '~', ':', '@']):
-            try:
-                # Fetch the specific tag (only for simple ref names)
-                repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
-            except Exception as e:
-                # If specific fetch fails, continue with what we have
-                log.debug('Failed to fetch specific tag %s: %s', ref, e)
+        GitOperations._fetch_remote_refs(repo, ref, backend)
 
         # Find the ref
         try:
@@ -353,3 +338,21 @@ class GitOperations:
         except Exception as e:
             log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
             raise
+
+    @staticmethod
+    def _fetch_remote_refs(repo, ref, backend):
+        """Fetch remote refs and optionally specific tag."""
+        callbacks = backend.create_remote_callbacks()
+        origin_remote = repo.get_remote('origin')
+        repo.fetch_remote(origin_remote, None, callbacks._callbacks)
+
+        # If the ref is not found locally, try fetching it specifically
+        references = repo.list_references()
+        tag_exists = any(r.ref_type == GitRefType.TAG and r.shortname == ref for r in references)
+        if not tag_exists and not any(char in ref for char in ['^', '~', ':', '@']):
+            try:
+                # Fetch the specific tag (only for simple ref names)
+                repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
+            except Exception as e:
+                # If specific fetch fails, continue with what we have
+                log.debug('Failed to fetch specific tag %s: %s', ref, e)
