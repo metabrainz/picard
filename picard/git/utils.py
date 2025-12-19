@@ -142,9 +142,9 @@ def check_local_repo_dirty(url):
         from picard.git.factory import git_backend
 
         backend = git_backend()
-        repo = backend.create_repository(local_path)
-        status = repo.get_status()
-        return bool(status)
+        with backend.create_repository(local_path) as repo:
+            status = repo.get_status()
+            return bool(status)
     except Exception:
         return False
 
