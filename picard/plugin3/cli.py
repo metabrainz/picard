@@ -156,11 +156,21 @@ class PluginCLI:
         """
         # Show tag with commit ID if available
         if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-            version_info = (
-                f'{self._out.d_version(result.old_ref)} ({self._out.d_commit_old(short_commit_id(result.old_commit))}) '
-                f'{self._out.d_arrow()} '
-                f'{self._out.d_version(result.new_ref)} ({self._out.d_commit_new(short_commit_id(result.new_commit))})'
-            )
+            old_short = short_commit_id(result.old_commit)
+            new_short = short_commit_id(result.new_commit)
+
+            # Avoid redundancy: if ref is same as commit, just show @commit
+            if result.old_ref == old_short:
+                old_display = f'@{self._out.d_commit_old(old_short)}'
+            else:
+                old_display = f'{self._out.d_version(result.old_ref)} @{self._out.d_commit_old(old_short)}'
+
+            if result.new_ref == new_short:
+                new_display = f'@{self._out.d_commit_new(new_short)}'
+            else:
+                new_display = f'{self._out.d_version(result.new_ref)} @{self._out.d_commit_new(new_short)}'
+
+            version_info = f'{old_display} {self._out.d_arrow()} {new_display}'
         # Show version with commit ID if version changed
         elif (
             hasattr(result, 'old_version')
@@ -634,19 +644,17 @@ class PluginCLI:
                 self._out.print(f'  {name}{commit_display}')
             self._out.nl()
 
-        # Show tags (filter out ^{} dereferenced annotated tags)
+        # Show tags
         if tags:
-            filtered_tags = [tag for tag in tags if not tag['name'].endswith('^{}')]
-            if filtered_tags:
-                self._out.print('Tags:')
-                for tag in filtered_tags:
-                    name = tag['name']
-                    commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
-                    is_current = current_ref == name
-                    # Use green for current commit, old color otherwise
-                    commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
-                    commit_display = f' @{commit_color(commit)}' if commit else ''
-                    self._out.print(f'  {name}{commit_display}')
+            self._out.print('Tags:')
+            for tag in tags:
+                name = tag['name']
+                commit = short_commit_id(tag['commit']) if tag.get('commit') else ''
+                is_current = current_ref == name
+                # Use green for current commit, old color otherwise
+                commit_color = self._out.d_commit_new if is_current else self._out.d_commit_old
+                commit_display = f' @{commit_color(commit)}' if commit else ''
+                self._out.print(f'  {name}{commit_display}')
 
         return ExitCode.SUCCESS
 
@@ -1101,7 +1109,7 @@ class PluginCLI:
         else:
             self._out.print('Updates available:')
             self._out.nl()
-            for update in updates:
+            for update in updates.values():
                 version_info = self._format_version_info(update)
                 self._out.info(f'{self._out.d_name(update.plugin_id)}: {version_info}')
             self._out.nl()
@@ -1875,3 +1883,7 @@ def main():
 
     exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
     sys.exit(exit_code)
+
+
+if __name__ == "__main__":
+    main()

@@ -21,57 +21,33 @@
 """Git reference utilities for robust reference type detection."""
 
 
-def get_ref_type(repo, ref):
-    """Determine the type of a git reference.
+def find_git_ref(repo, ref_name):
+    """Find a GitRef object by shortname or full name.
 
     Args:
         repo: Git repository object
-        ref: Reference name to check
+        ref_name: Reference name to find (shortname or full name)
 
     Returns:
-        tuple: (ref_type, resolved_ref) where ref_type is one of:
-               'tag', 'local_branch', 'remote_branch', 'commit', 'unknown'
+        GitRef object if found, None otherwise
     """
-    if not ref:
-        return 'unknown', ref
+    if not ref_name:
+        return None
 
     try:
-        # Get all references from the repository
-        references = repo.get_references()
+        references = repo.list_references()
 
-        # Check exact matches first
-        if f'refs/tags/{ref}' in references:
-            return 'tag', f'refs/tags/{ref}'
-        if f'refs/heads/{ref}' in references:
-            return 'local_branch', f'refs/heads/{ref}'
-        if f'refs/remotes/{ref}' in references:
-            return 'remote_branch', f'refs/remotes/{ref}'
-        if f'refs/remotes/origin/{ref}' in references:
-            return 'remote_branch', f'refs/remotes/origin/{ref}'
+        # Check shortname first (most common case)
+        for git_ref in references:
+            if git_ref.shortname == ref_name:
+                return git_ref
 
-        # Check if ref is already a full reference
-        if ref in references:
-            if ref.startswith('refs/tags/'):
-                return 'tag', ref
-            elif ref.startswith('refs/heads/'):
-                return 'local_branch', ref
-            elif ref.startswith('refs/remotes/'):
-                return 'remote_branch', ref
-
-        # Try to resolve as commit hash
-        try:
-            repo.revparse_single(ref)
-            return 'commit', ref
-        except KeyError:
-            pass
+        # Check full name
+        for git_ref in references:
+            if git_ref.name == ref_name:
+                return git_ref
 
     except Exception:
-        # If we can't get references, fall back to string analysis
-        if ref.startswith('refs/tags/'):
-            return 'tag', ref
-        elif ref.startswith('refs/heads/'):
-            return 'local_branch', ref
-        elif ref.startswith('refs/remotes/') or ref.startswith('origin/'):
-            return 'remote_branch', ref
+        pass
 
-    return 'unknown', ref
+    return None

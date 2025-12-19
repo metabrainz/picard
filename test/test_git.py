@@ -27,6 +27,7 @@ from picard.git.backend import (
     GitObject,
     GitObjectType,
     GitRef,
+    GitRefType,
     GitRepository,
     GitStatusFlag,
 )
@@ -75,10 +76,10 @@ class MockGitRepository(GitRepository):
         pass
 
     def list_references(self):
-        return list(self.references.keys())
-
-    def get_references(self):
-        return self.references
+        return [
+            GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=False),
+            GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=False),
+        ]
 
     def get_remotes(self):
         return {}
@@ -118,7 +119,17 @@ class MockGitBackend(GitBackend):
         return self.repo
 
     def fetch_remote_refs(self, url, **options):
-        return [GitRef("main", "abc123")]
+        # Return different refs to test repo_path usage
+        repo_path = options.get('repo_path')
+        if repo_path:
+            return [
+                GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=True),
+                GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=True),
+            ]
+        return [
+            GitRef("refs/heads/main", "abc123", GitRefType.BRANCH, is_remote=True),
+            GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=False),
+        ]
 
     def create_remote_callbacks(self):
         return Mock()
@@ -221,6 +232,16 @@ class TestGitBackend(unittest.TestCase):
         self.assertEqual(obj.id, "abc123")
         self.assertEqual(obj.type, GitObjectType.COMMIT)
 
+    def test_revparse_to_commit(self):
+        """Test revparse_to_commit method"""
+        backend = MockGitBackend()
+        repo = backend.create_repository(Path("/test"))
+
+        # Test that revparse_to_commit returns a commit object
+        commit = repo.revparse_to_commit("HEAD")
+        self.assertIsInstance(commit, GitObject)
+        self.assertEqual(commit.type, GitObjectType.COMMIT)
+
     def test_mock_backend_operations(self):
         """Test mock backend basic operations"""
         backend = MockGitBackend()
@@ -276,6 +297,58 @@ class TestGitBackend(unittest.TestCase):
 
         self.assertIs(backend1, backend2)
         mock_get_backend.assert_called_once()
+
+    def test_fetch_remote_refs_with_repo_path(self):
+        """Test fetch_remote_refs uses existing repository when repo_path provided"""
+        backend = MockGitBackend()
+
+        # Test with repo_path
+        refs = backend.fetch_remote_refs("https://example.com/repo.git", repo_path="/path/to/repo")
+        self.assertEqual(len(refs), 2)
+
+        # Test without repo_path (fallback)
+        refs = backend.fetch_remote_refs("https://example.com/repo.git")
+        self.assertEqual(len(refs), 2)
+
+    def test_fetch_remote_refs_invalid_repo_path(self):
+        """Test fetch_remote_refs falls back when repo_path is invalid"""
+        backend = MockGitBackend()
+
+        # Test with non-existent repo_path
+        refs = backend.fetch_remote_refs("https://example.com/repo.git", repo_path="/nonexistent/path")
+        self.assertEqual(len(refs), 2)  # Should fallback to temporary repo
+
+    def test_git_ref_shortname(self):
+        """Test GitRef shortname extraction"""
+        # Branch
+        ref = GitRef("refs/heads/main", "abc123", GitRefType.BRANCH)
+        self.assertEqual(ref.shortname, "main")
+
+        # Tag
+        ref = GitRef("refs/tags/v1.0", "def456", GitRefType.TAG)
+        self.assertEqual(ref.shortname, "v1.0")
+
+        # Remote branch
+        ref = GitRef("refs/remotes/origin/main", "xyz789", GitRefType.BRANCH, is_remote=True)
+        self.assertEqual(ref.shortname, "origin/main")
+
+        # HEAD
+        ref = GitRef("HEAD", "abc123", GitRefType.HEAD)
+        self.assertEqual(ref.shortname, "HEAD")
+
+    def test_git_ref_repr(self):
+        """Test GitRef string representation"""
+        # Simple ref
+        ref = GitRef("refs/heads/main", "abc123", GitRefType.BRANCH)
+        self.assertIn("name='refs/heads/main'", repr(ref))
+        self.assertIn("target='abc123'", repr(ref))
+        self.assertIn("type=branch", repr(ref))
+
+        # Annotated remote tag
+        ref = GitRef("refs/tags/v1.0", "def456", GitRefType.TAG, is_remote=True, is_annotated=True)
+        self.assertIn("name='refs/tags/v1.0'", repr(ref))
+        self.assertIn("remote=True", repr(ref))
+        self.assertIn("annotated=True", repr(ref))
 
 
 if __name__ == '__main__':

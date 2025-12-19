@@ -46,10 +46,9 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitObjectType
+from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
-from picard.git.ref_utils import get_ref_type
 from picard.git.utils import get_local_repository_path
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
@@ -61,9 +60,9 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
-from picard.plugin3.refs_cache import RefsCache
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
+from picard.util import parse_versioning_scheme
 from picard.version import Version
 
 
@@ -272,10 +271,6 @@ class PluginManager(QObject):
         cache_dir = cache_folder()
         self._registry = PluginRegistry(cache_dir=cache_dir)
 
-        # Initialize refs cache
-
-        self._refs_cache = RefsCache(self._registry)
-
         # Initialize metadata manager
 
         self._metadata = PluginMetadataManager(self._registry)
@@ -306,8 +301,6 @@ class PluginManager(QObject):
     def refresh_registry_and_caches(self):
         """Refresh plugin registry and clear related caches."""
         self._registry.fetch_registry(use_cache=False)
-        self._refs_cache.clear_cache()
-        self._cleanup_version_cache()
 
     def get_default_ref_info(self, plugin_uuid):
         """Get default ref name and description for a plugin.
@@ -373,13 +366,11 @@ class PluginManager(QObject):
 
         return formatted_refs
 
-    def fetch_all_git_refs(self, url, use_cache=True, force_refresh=False):
+    def fetch_all_git_refs(self, url):
         """Fetch all branches and tags from a git repository.
 
         Args:
             url: Git repository URL
-            use_cache: Whether to use cached data if available
-            force_refresh: If True, ignore cache and fetch from network
 
         Returns:
             dict with keys:
@@ -387,71 +378,34 @@ class PluginManager(QObject):
                 - tags: List of tag names
             or None on error
         """
-        # Check cache first
-        if use_cache and not force_refresh:
-            # Use cached data even if expired to avoid network calls
-            cached_refs = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
-            if cached_refs is not None:
-                return cached_refs
-        elif use_cache:
-            # Only use non-expired cache when force refreshing
-            cached_refs = self._refs_cache.get_cached_all_refs(url)
-            if cached_refs is not None:
-                return cached_refs
+        # Check if we have an installed plugin for this URL to reuse its repository
+        repo_path = None
+        for plugin in self._plugins:
+            if plugin.uuid:
+                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+                if metadata and metadata.url == url and plugin.local_path:
+                    repo_path = plugin.local_path
+                    break
 
-        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True)
+        remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=True, repo_path=repo_path)
         if not remote_refs:
-            # Try to use expired cache as fallback
-            if use_cache:
-                stale_cache = self._refs_cache.get_cached_all_refs(url, allow_expired=True)
-                if stale_cache:
-                    log.info('Using stale refs cache for %s due to fetch error', url)
-                    return stale_cache
             return None
 
-        # Separate branches and tags with their commit IDs
-        # For annotated tags, git provides both the tag object and dereferenced commit (^{})
+        # Separate branches and tags using GitRef metadata
         branches = []
-        tags = {}  # Use dict to merge tag object with dereferenced commit
-        annotated_tags = {}
+        tags = []
 
         for ref in remote_refs:
-            ref_name = ref.name if hasattr(ref, 'name') else str(ref)
-            commit_id = str(ref.target) if hasattr(ref, 'target') and ref.target else None
-
-            if ref_name.startswith('refs/heads/'):
-                branch_name = ref_name[len('refs/heads/') :]
-                branches.append({'name': branch_name, 'commit': commit_id})
-            elif ref_name.startswith('refs/tags/'):
-                tag_name = ref_name[len('refs/tags/') :]
-                # Check if this is a dereferenced tag (^{})
-                if tag_name.endswith('^{}'):
-                    base_tag = tag_name[:-3]  # Remove ^{}
-                    # This is the actual commit for an annotated tag
-                    annotated_tags[base_tag] = commit_id
-                else:
-                    # For annotated tags, we have 2 tags:
-                    # GitRef(refs/tags/v1.1.2, 858ec02a1983cc8448ff7c57426bcbb9db2f0e76)
-                    # GitRef(refs/tags/v1.1.2^{}, ad21dafef15e0a73aea626ceab77684064b11089)
-                    # GitRef(refs/heads/main, ad21dafef15e0a73aea626ceab77684064b11089)
-                    # but we need to resolve them in 2 passes
-                    tags[tag_name] = {'name': tag_name, 'commit': commit_id}
-
-        # Resolved annotated tags
-        # In this case, the tag points at the annotated commit,
-        # so we replace it with the target commit id
-        for tag, commit_id in annotated_tags.items():
-            if tag in tags:
-                tags[tag]['commit'] = commit_id
+            if ref.ref_type == GitRefType.BRANCH:
+                branches.append({'name': ref.shortname, 'commit': ref.target})
+            elif ref.ref_type == GitRefType.TAG:
+                # GitRef backend handles dereferencing using pygit2.peel()
+                tags.append({'name': ref.shortname, 'commit': ref.target})
 
         result = {
             'branches': sorted(branches, key=lambda x: x['name']),
-            'tags': sorted(tags.values(), key=lambda x: x['name'], reverse=True),
+            'tags': sorted(tags, key=lambda x: x['name'], reverse=True),
         }
-
-        # Cache the result
-        if use_cache:
-            self._refs_cache.cache_all_refs(url, result)
 
         return result
 
@@ -635,10 +589,6 @@ class PluginManager(QObject):
                 return True, existing_plugin
 
         return False, None
-
-    def _cleanup_version_cache(self):
-        """Remove cache entries for URLs no longer in registry."""
-        return self._refs_cache.cleanup_cache()
 
     def _ensure_plugin_url(self, plugin, operation):
         """Ensure plugin has URL metadata, creating it from registry if needed.
@@ -1013,13 +963,6 @@ class PluginManager(QObject):
             # Atomic rename from temp to final location
             temp_path.rename(final_path)
 
-            # Update version tag cache from cloned repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(url=url)
-            if registry_plugin:
-                versioning_scheme = registry_plugin.versioning_scheme
-                if versioning_scheme:
-                    self._refs_cache.update_cache_from_local_repo(final_path, url, versioning_scheme)
-
             # Store plugin metadata
             self._metadata.save_plugin_metadata(
                 PluginMetadata(
@@ -1082,14 +1025,14 @@ class PluginManager(QObject):
             # Check if source repository has uncommitted changes
             try:
                 backend = git_backend()
-                source_repo = backend.create_repository(local_path)
-                if source_repo.get_status():
-                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+                with backend.create_repository(local_path) as source_repo:
+                    if source_repo.get_status():
+                        log.warning('Installing from local repository with uncommitted changes: %s', local_path)
 
-                # If no ref specified, use the current branch
-                if not ref and not source_repo.is_head_detached():
-                    ref = source_repo.get_head_shorthand()
-                    log.debug('Using current branch from local repo: %s', ref)
+                    # If no ref specified, use the current branch
+                    if not ref and not source_repo.is_head_detached():
+                        ref = source_repo.get_head_shorthand()
+                        log.debug('Using current branch from local repo: %s', ref)
             except Exception:
                 pass  # Ignore errors checking status
 
@@ -1174,6 +1117,50 @@ class PluginManager(QObject):
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
 
+    def _sort_tags(self, tags, versioning_scheme):
+        """Sort tags based on versioning scheme.
+
+        Args:
+            tags: List of tag names
+            versioning_scheme: Versioning scheme (semver, calver, or regex:<pattern>)
+
+        Returns:
+            list: Sorted tags (newest first)
+        """
+
+        # Strip any non-digit prefix for version comparison
+        def strip_prefix(tag):
+            match = re.search(r'\d', tag)
+            return tag[match.start() :] if match else tag
+
+        if versioning_scheme == 'semver':
+            # Use picard.version for proper semver sorting
+            try:
+                return sorted(tags, key=lambda t: Version.from_string(strip_prefix(t)), reverse=True)
+            except Exception as e:
+                log.warning('Failed to parse semver tags: %s', e)
+                return sorted(tags, key=strip_prefix, reverse=True)
+        elif versioning_scheme == 'calver':
+            # CalVer: YYYY.MM.DD format, sort by stripped version (newest first)
+            return sorted(tags, key=strip_prefix, reverse=True)
+        else:
+            # Custom regex: try version parsing, fall back to natural sort
+            def sort_key(tag):
+                stripped = strip_prefix(tag)
+                try:
+                    return (0, Version.from_string(stripped))
+                except Exception:
+                    # Natural sort: split into text and number parts
+                    parts = []
+                    for part in re.split(r'(\d+)', stripped):
+                        if part.isdigit():
+                            parts.append((0, int(part)))
+                        else:
+                            parts.append((1, part))
+                    return (1, parts)
+
+            return sorted(tags, key=sort_key, reverse=True)
+
     def _fetch_version_tags_impl(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
 
@@ -1185,27 +1172,18 @@ class PluginManager(QObject):
             list: Sorted list of version tags (newest first), or empty list on error
         """
         # Parse versioning scheme
-        pattern = self._refs_cache.parse_versioning_scheme(versioning_scheme)
+        pattern = parse_versioning_scheme(versioning_scheme)
         if not pattern:
             return []
 
-        # Try to reuse all_refs cache to avoid redundant fetch
-        all_refs = self.fetch_all_git_refs(url, use_cache=True)
+        # Fetch all refs from repository
+        all_refs = self.fetch_all_git_refs(url)
         if not all_refs:
-            # Try to use expired cache as fallback
-            stale_cache = self._refs_cache.get_cached_tags(url, versioning_scheme, allow_expired=True)
-            if stale_cache:
-                log.info('Using stale cache for %s due to fetch error', url)
-                return stale_cache
             return []
 
-        # Filter and sort tags from cached refs
+        # Filter and sort tags
         tags = [tag['name'] for tag in all_refs.get('tags', []) if pattern.match(tag['name'])]
-        tags = self._refs_cache.sort_tags(tags, versioning_scheme)
-
-        # Cache the result
-        if tags:
-            self._refs_cache.cache_tags(url, versioning_scheme, tags)
+        tags = self._sort_tags(tags, versioning_scheme)
 
         return tags
 
@@ -1312,17 +1290,11 @@ class PluginManager(QObject):
 
         # Get commit date and resolve annotated tags to actual commit
         backend = git_backend()
-        repo = backend.create_repository(plugin.local_path)
-        obj = repo.revparse_single(new_commit)
-        # Peel tag to commit if needed
-        if obj.type == GitObjectType.TAG:
-            commit = repo.peel_to_commit(obj)
+        with backend.create_repository(plugin.local_path) as repo:
+            commit = repo.revparse_to_commit(new_commit)
             new_commit = commit.id  # Use actual commit ID, not tag object ID
-        else:
-            commit = obj
-        # Get commit date using backend
-        commit_date = repo.get_commit_date(commit.id)
-        repo.free()
+            # Get commit date using backend
+            commit_date = repo.get_commit_date(commit.id)
 
         # Reload manifest to get new version
         plugin.read_manifest()
@@ -1344,12 +1316,6 @@ class PluginManager(QObject):
                 original_uuid=original_uuid,
             )
         )
-
-        # Update version tag cache from updated repo
-        if registry_plugin and registry_plugin.versioning_scheme:
-            self._refs_cache.update_cache_from_local_repo(
-                plugin.local_path, current_url, registry_plugin.versioning_scheme
-            )
 
         # Re-enable plugin if it was enabled before to reload the module with new code
         if was_enabled:
@@ -1382,9 +1348,28 @@ class PluginManager(QObject):
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
         return results
 
+    def _get_current_ref_for_updates(self, repo, metadata):
+        """Get the current ref to use for update checking.
+
+        When in detached HEAD, finds the first local branch instead of using commit hash.
+
+        Returns:
+            tuple: (ref_name, is_detached_head)
+        """
+        if repo.is_head_detached():
+            # Detached HEAD - use the first local branch for update checking
+            for git_ref in repo.list_references():
+                if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
+                    return git_ref.shortname, True
+            # Fall back to stored metadata ref or default to main
+            return metadata.ref or 'main', True
+        else:
+            # On a branch - use the actual branch name
+            return repo.get_head_shorthand(), False
+
     def check_updates(self):
         """Check which plugins have updates available without installing."""
-        updates = []
+        updates = {}
         for plugin in self._plugins:
             if not plugin.uuid:
                 continue
@@ -1395,91 +1380,125 @@ class PluginManager(QObject):
 
             try:
                 backend = git_backend()
-                repo = backend.create_repository(plugin.local_path)
-                current_commit = repo.get_head_target()
+                with backend.create_repository(plugin.local_path) as repo:
+                    current_commit = repo.get_head_target()
 
-                # Fetch without updating (suppress progress output)
-                callbacks = backend.create_remote_callbacks()
-                for remote in repo.get_remotes():
-                    repo.fetch_remote(remote, None, callbacks._callbacks)
+                    # Fetch without updating (suppress progress output)
+                    callbacks = backend.create_remote_callbacks()
+                    for remote in repo.get_remotes():
+                        repo.fetch_remote(remote, None, callbacks._callbacks)
 
-                # Update version tag cache from fetched repo if plugin has versioning_scheme
-                registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
-                if registry_plugin and registry_plugin.versioning_scheme:
-                    self._refs_cache.update_cache_from_local_repo(
-                        plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                    )
+                    # Get current ref from repository instead of metadata
+                    old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
+                    ref = old_ref
 
-                old_ref = metadata.ref or 'main'
-                ref = old_ref
+                    # Check if currently on a tag (check current commit, not ref)
+                    current_is_tag = False
+                    current_tag = None
 
-                # Check if currently on a tag
-                current_is_tag = False
-                current_tag = None
-                ref_type, resolved_ref = get_ref_type(repo, ref)
-                if ref_type == 'tag':
-                    try:
-                        repo.revparse_single(resolved_ref)
-                        current_is_tag = True
-                        current_tag = ref
-                    except KeyError:
-                        pass
+                    if is_detached:
+                        # For detached HEAD, check if current commit matches any tag
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG:
+                                try:
+                                    tag_commit = repo.revparse_to_commit(r.name)
 
-                # If on a tag, check for newer version tag
-                new_ref = None
-                if current_is_tag and current_tag:
-                    source = PluginSourceGit(metadata.url, ref)
-                    latest_tag = source._find_latest_tag(repo, current_tag)
-                    if latest_tag and latest_tag != current_tag:
-                        # Found newer tag
-                        ref = latest_tag
-                        new_ref = latest_tag
+                                    if tag_commit.id == current_commit:
+                                        current_is_tag = True
+                                        current_tag = r.shortname
+                                        break
+                                except Exception as e:
+                                    log.debug("Failed to check tag %s for commit match: %s", r.name, e)
+                                    continue
+                    else:
+                        # For regular branches, check if ref is a tag
+                        git_ref = None
+                        for r in repo.list_references():
+                            if r.shortname == ref or r.name == ref:
+                                git_ref = r
+                                break
 
-                # Resolve ref with same logic as update() - try origin/ prefix for branches
-                try:
-                    if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # For tags, try refs/tags/ first, then origin/ for branches
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except GitReferenceError:
-                            # Not a tag, try origin/ prefix for branches
+                        if git_ref and git_ref.ref_type == GitRefType.TAG:
                             try:
-                                obj = repo.revparse_single(f'origin/{ref}')
+                                repo.revparse_single(git_ref.name)
+                                current_is_tag = True
+                                current_tag = ref
+                            except KeyError:
+                                pass
+
+                    # If on a tag, check for newer version tag
+                    new_ref = None
+                    if current_is_tag and current_tag:
+                        source = PluginSourceGit(metadata.url, ref)
+                        latest_tag = source._find_latest_tag(repo, current_tag)
+                        if latest_tag and latest_tag != current_tag:
+                            # Found newer tag
+                            ref = latest_tag
+                            new_ref = latest_tag
+                        else:
+                            # Already on latest tag, no update needed
+                            continue
+
+                    # Resolve ref using GitRef lookup first, then fallback
+                    # For update checking, prefer remote branches over local ones
+                    try:
+                        from picard.git.ref_utils import find_git_ref
+
+                        # For branches, try origin/ version first to get latest from remote
+                        git_ref = find_git_ref(repo, f'origin/{ref}')
+                        if not git_ref:
+                            # Fall back to local ref (for tags or local-only branches)
+                            git_ref = find_git_ref(repo, ref)
+
+                        if git_ref:
+                            obj = repo.revparse_single(git_ref.name)
+                        elif not ref.startswith('origin/') and not ref.startswith('refs/'):
+                            # Fallback: try refs/tags/ first, then origin/ for branches
+                            try:
+                                obj = repo.revparse_single(f'refs/tags/{ref}')
                             except GitReferenceError:
-                                # Fall back to original ref (might be commit hash)
-                                obj = repo.revparse_single(ref)
-                    elif ref.startswith('origin/'):
-                        # Handle origin/ refs - these are branches, not tags
-                        obj = repo.revparse_single(ref)
-                    else:
-                        obj = repo.revparse_single(ref)
+                                # Not a tag, try origin/ prefix for branches
+                                try:
+                                    obj = repo.revparse_single(f'origin/{ref}')
+                                except GitReferenceError:
+                                    # Fall back to original ref (might be commit hash)
+                                    obj = repo.revparse_single(ref)
+                        elif ref.startswith('origin/'):
+                            # Handle origin/ refs - these are branches, not tags
+                            obj = repo.revparse_single(ref)
+                        else:
+                            obj = repo.revparse_single(ref)
 
-                    # Peel annotated tags to get the actual commit
-                    if obj.type == GitObjectType.TAG:
+                        # Peel annotated tags to get the actual commit
                         commit = repo.peel_to_commit(obj)
-                    else:
-                        commit = obj
 
-                    latest_commit = commit.id
-                    # Get commit date using backend
-                    latest_commit_date = repo.get_commit_date(commit.id)
-                except GitReferenceError:
-                    # Ref not found, skip this plugin
-                    continue
-                finally:
-                    repo.free()
+                        latest_commit = commit.id
+                        # Get commit date using backend
+                        latest_commit_date = repo.get_commit_date(commit.id)
+                    except GitReferenceError:
+                        # Ref not found, skip this plugin
+                        continue
 
                 if current_commit != latest_commit:
-                    updates.append(
-                        UpdateCheck(
-                            plugin_id=plugin.plugin_id,
-                            old_commit=short_commit_id(current_commit),
-                            new_commit=short_commit_id(latest_commit),
-                            commit_date=latest_commit_date,
-                            old_ref=old_ref,
-                            new_ref=new_ref,
-                        )
+                    # For display: use tag names if available, otherwise commit hashes for detached HEAD
+                    if current_is_tag and current_tag:
+                        display_old_ref = current_tag
+                    elif is_detached:
+                        display_old_ref = short_commit_id(current_commit)
+                    else:
+                        display_old_ref = old_ref
+
+                    display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
+
+                    update_check = UpdateCheck(
+                        plugin_id=plugin.plugin_id,
+                        old_commit=short_commit_id(current_commit),
+                        new_commit=short_commit_id(latest_commit),
+                        commit_date=latest_commit_date,
+                        old_ref=display_old_ref,
+                        new_ref=display_new_ref,
                     )
+                    updates[plugin.plugin_id] = update_check
             except KeyError:
                 # Ref not found, skip this plugin (expected for some cases)
                 continue
@@ -1490,116 +1509,12 @@ class PluginManager(QObject):
 
         return updates
 
-    def get_plugin_update_status(self, plugin, force_refresh=False):
+    def get_plugin_update_status(self, plugin):
         """Check if a single plugin has an update available."""
         log.debug("Checking update status for plugin: %s", plugin.plugin_id)
 
-        if not plugin.uuid:
-            return False
-
-        metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-        if not metadata or not metadata.url:
-            return False
-
-        current_ref = metadata.ref or 'main'
-
-        # Try cached result first (unless force refresh)
-        if not force_refresh:
-            # Use cached result even if expired to avoid network calls
-            cached_result = self._refs_cache.get_cached_update_status(plugin.plugin_id, current_ref, ttl=float('inf'))
-            if cached_result is not None:
-                log.debug("Using cached update status for plugin: %s", plugin.plugin_id)
-                return cached_result
-            else:
-                # No cached data and not force refreshing - assume no update to avoid network calls
-                log.debug("No cached update status for plugin %s, assuming no update available", plugin.plugin_id)
-                return False
-
-        try:
-            backend = git_backend()
-            repo = backend.create_repository(plugin.local_path)
-            current_commit = repo.get_head_target()
-
-            # Fetch without updating (suppress progress output)
-            log.debug("Making network request for plugin: %s", plugin.plugin_id)
-            callbacks = backend.create_remote_callbacks()
-            for remote in repo.get_remotes():
-                repo.fetch_remote(remote, None, callbacks._callbacks)
-
-            # Update version tag cache from fetched repo if plugin has versioning_scheme
-            registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
-            if registry_plugin and registry_plugin.versioning_scheme:
-                self._refs_cache.update_cache_from_local_repo(
-                    plugin.local_path, metadata.url, registry_plugin.versioning_scheme
-                )
-
-            old_ref = metadata.ref or 'main'
-            ref = old_ref
-
-            # Check if currently on a tag by checking available refs
-            current_is_tag = False
-            current_tag = None
-            ref_type, resolved_ref = get_ref_type(repo, ref)
-            if ref_type == 'tag':
-                current_is_tag = True
-                current_tag = ref
-
-            # If on a tag, check for newer version tag
-            if current_is_tag and current_tag:
-                source = PluginSourceGit(metadata.url, ref)
-                latest_tag = source._find_latest_tag(repo, current_tag)
-                if latest_tag and latest_tag != current_tag:
-                    # Found newer tag
-                    ref = latest_tag
-
-            # Resolve ref with same logic as update() - try appropriate prefix based on ref type
-            try:
-                if not ref.startswith('origin/') and not ref.startswith('refs/'):
-                    # If we know it's a tag, try refs/tags/ first
-                    if current_is_tag:
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except KeyError:
-                            # Fall back to original ref
-                            obj = repo.revparse_single(ref)
-                    else:
-                        # For branches, try origin/ prefix first
-                        try:
-                            obj = repo.revparse_single(f'origin/{ref}')
-                        except KeyError:
-                            # Fall back to original ref (might be commit hash)
-                            obj = repo.revparse_single(ref)
-                elif ref.startswith('origin/'):
-                    # Handle origin/ refs - these are branches, not tags
-                    obj = repo.revparse_single(ref)
-                else:
-                    obj = repo.revparse_single(ref)
-
-                # Peel annotated tags to get the actual commit
-                if obj.type == GitObjectType.TAG:
-                    commit = repo.peel_to_commit(obj)
-                else:
-                    commit = obj
-
-                latest_commit = commit.id
-            except KeyError:
-                # Ref not found, no update available
-                return False
-
-            repo.free()
-            has_update = current_commit != latest_commit
-            # Cache the result with current ref
-            self._refs_cache.cache_update_status(plugin.plugin_id, has_update, current_ref)
-            return has_update
-        except KeyError:
-            # Ref not found, no update available
-            self._refs_cache.cache_update_status(plugin.plugin_id, False, current_ref)
-            return False
-        except Exception as e:
-            # Log unexpected errors
-            log.warning("Failed to check update for plugin %s: %s", plugin.plugin_id, e)
-            # Don't cache errors
-            return False
+        # FIXME
+        return False
 
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""

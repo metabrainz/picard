@@ -44,6 +44,7 @@ from picard.git.backend import (
     GitObjectType,
     GitRef,
     GitReferenceError,
+    GitRefType,
     GitRemoteCallbacks,
     GitRepository,
     GitRepositoryError,
@@ -88,7 +89,6 @@ class Pygit2Repository(GitRepository):
         self._repo = repo
 
     def get_status(self) -> dict[str, GitStatusFlag]:
-        _log_git_call("get_status")
         status = self._repo.status()
         result = {}
         for filepath, flags in status.items():
@@ -99,26 +99,31 @@ class Pygit2Repository(GitRepository):
             else:
                 # Any other status means the file is modified/added/deleted/untracked
                 result[filepath] = GitStatusFlag.MODIFIED
+        _log_git_call("get_status", retval=result)
         return result
 
     def get_head_target(self) -> str:
-        _log_git_call("get_head_target")
-        return str(self._repo.head.target)
+        ret = str(self._repo.head.target)
+        _log_git_call("get_head_target", retval=ret)
+        return ret
 
     def is_head_detached(self) -> bool:
-        _log_git_call("is_head_detached")
-        return self._repo.head_is_detached
+        ret = self._repo.head_is_detached
+        _log_git_call("is_head_detached", retval=ret)
+        return ret
 
     def get_head_shorthand(self) -> str:
-        _log_git_call("get_head_shorthand")
-        return self._repo.head.shorthand
+        ret = self._repo.head.shorthand
+        _log_git_call("get_head_shorthand", retval=ret)
+        return ret
 
     def revparse_single(self, ref: str) -> GitObject:
-        _log_git_call("revparse_single", ref)
         try:
             obj = self._repo.revparse_single(ref)
             obj_type = GitObjectType.COMMIT if obj.type == pygit2.GIT_OBJECT_COMMIT else GitObjectType.TAG
-            return GitObject(str(obj.id), obj_type)
+            ret = GitObject(str(obj.id), obj_type)
+            _log_git_call("revparse_single", ref, retval=ret)
+            return ret
         except (pygit2.GitError, KeyError) as e:
             raise GitReferenceError(f"Failed to resolve reference '{ref}': {e}") from e
 
@@ -127,19 +132,21 @@ class Pygit2Repository(GitRepository):
         return self._repo.head.name
 
     def peel_to_commit(self, obj: GitObject) -> GitObject:
-        _log_git_call("peel_to_commit", obj.id)
         pygit_obj = self._repo.get(obj.id)
         if pygit_obj.type == pygit2.GIT_OBJECT_TAG:
             commit = pygit_obj.peel(pygit2.GIT_OBJECT_COMMIT)
-            return GitObject(str(commit.id), GitObjectType.COMMIT)
-        return obj
+            ret = GitObject(str(commit.id), GitObjectType.COMMIT)
+        else:
+            ret = obj
+        _log_git_call("peel_to_commit", obj, retval=ret)
+        return ret
 
     def reset(self, commit_id: str, mode: GitResetMode):
         _log_git_call("reset", commit_id, mode.value)
         self._repo.reset(commit_id, pygit2.enums.ResetMode.HARD)
 
     def checkout_tree(self, obj: GitObject):
-        _log_git_call("checkout_tree", obj.id)
+        _log_git_call("checkout_tree", obj)
         pygit_obj = self._repo.get(obj.id)
         self._repo.checkout_tree(pygit_obj)
 
@@ -147,51 +154,154 @@ class Pygit2Repository(GitRepository):
         _log_git_call("set_head", target)
         # If target looks like a commit hash (40 hex chars), convert to pygit2.Oid
         if len(target) == 40 and all(c in '0123456789abcdef' for c in target.lower()):
-            import pygit2
-
             oid = pygit2.Oid(hex=target)
             self._repo.set_head(oid)
         else:
             # It's a reference name
             self._repo.set_head(target)
 
-    def list_references(self) -> list[str]:
-        _log_git_call("list_references")
-        try:
-            return self._repo.listall_references()
-        except AttributeError:
-            return list(self._repo.references)
+    def list_references(self) -> list[GitRef]:
+        # Get actual reference objects instead of just names
+        ref_objects = []
+        for ref_name in self._repo.references:
+            ref_objects.append(self._repo.references[ref_name])
 
-    def get_references(self) -> list[str]:
-        _log_git_call("get_references")
+        ret = self._create_git_refs(ref_objects, is_remote=False, repo=self._repo)
+        _log_git_call("list_references", retval=ret)
+        return ret
+
+    def _create_git_refs(self, refs, is_remote=False, repo=None):
+        """Create GitRef objects from pygit2 reference objects"""
+        git_refs = []
+
+        # For remote refs, collect all refs first to handle ^{} pairs
+        if is_remote:
+            ref_dict = {}
+            for ref in refs:
+                ref_dict[ref.name] = ref
+
+            # Process refs, preferring ^{} versions for tags
+            processed_refs = set()
+            for ref in refs:
+                ref_name = ref.name
+                if ref_name in processed_refs:
+                    continue
+
+                if ref_name.startswith('refs/tags/') and ref_name.endswith('^{}'):
+                    # This is a dereferenced tag - use it and mark the base tag as processed
+                    base_name = ref_name[:-3]  # Remove '^{}'
+                    processed_refs.add(base_name)
+                    processed_refs.add(ref_name)
+
+                    # Create GitRef with clean name but dereferenced target
+                    target = str(ref.oid) if hasattr(ref, 'oid') else str(ref.target)
+                    git_refs.append(GitRef(base_name, target, GitRefType.TAG, is_remote, True))
+
+                elif ref_name.startswith('refs/tags/'):
+                    # Check if there's a ^{} version
+                    deref_name = ref_name + '^{}'
+                    if deref_name in ref_dict:
+                        # Skip this one, the ^{} version will be processed
+                        continue
+                    else:
+                        # No ^{} version, process this tag normally
+                        processed_refs.add(ref_name)
+                        target = str(ref.oid) if hasattr(ref, 'oid') else str(ref.target)
+                        git_refs.append(GitRef(ref_name, target, GitRefType.TAG, is_remote, False))
+
+                else:
+                    # Non-tag ref, process normally
+                    processed_refs.add(ref_name)
+                    self._process_single_ref(ref, git_refs, is_remote, repo)
+        else:
+            # Local refs - process normally with dereferencing
+            for ref in refs:
+                self._process_single_ref(ref, git_refs, is_remote, repo)
+
+        return git_refs
+
+    def _process_single_ref(self, ref, git_refs, is_remote, repo):
+        """Process a single reference"""
         try:
-            return self._repo.listall_references()
-        except AttributeError:
-            return list(self._repo.references)
+            ref_name = ref.name
+
+            # Extract target based on object type
+            if hasattr(ref, 'target'):
+                # Local Reference object
+                target = str(ref.target)
+            elif hasattr(ref, 'oid'):
+                # Remote reference object (from list_heads)
+                target = str(ref.oid)
+            else:
+                # Unknown object type, skip
+                return
+
+            # Determine ref type and flags
+            if ref_name.startswith('refs/heads/'):
+                ref_type = GitRefType.BRANCH
+                is_annotated = False
+                ref_is_remote = False
+            elif ref_name.startswith('refs/remotes/'):
+                ref_type = GitRefType.BRANCH
+                is_annotated = False
+                ref_is_remote = True
+            elif ref_name.startswith('refs/tags/'):
+                ref_type = GitRefType.TAG
+                ref_is_remote = is_remote  # Tags use the method parameter
+                # Check if it's an annotated tag and dereference to commit
+                try:
+                    if hasattr(ref, 'target'):
+                        # Local reference
+                        obj = repo.get(ref.target)
+                    else:
+                        # Remote reference
+                        obj = repo.get(ref.oid)
+                    is_annotated = obj.type == pygit2.GIT_OBJECT_TAG
+
+                    # For annotated tags, dereference to get the commit ID
+                    if is_annotated:
+                        commit = obj.peel(pygit2.GIT_OBJECT_COMMIT)
+                        target = str(commit.id)
+                    # For lightweight tags, target is already the commit ID
+                except Exception:
+                    is_annotated = False
+            else:
+                ref_type = GitRefType.HEAD
+                is_annotated = False
+                ref_is_remote = is_remote
+
+            git_refs.append(GitRef(ref_name, target, ref_type, ref_is_remote, is_annotated))
+        except Exception:
+            # Skip refs that can't be resolved
+            pass
 
     def get_remotes(self) -> list[Any]:
-        _log_git_call("get_remotes")
-        return self._repo.remotes
+        ret = self._repo.remotes
+        _log_git_call("get_remotes", retval=[name for name in self._repo.remotes.names()])
+        return ret
 
     def get_remote(self, name: str) -> Any:
-        _log_git_call("get_remote", name)
-        return self._repo.remotes[name]
+        ret = self._repo.remotes[name]
+        _log_git_call("get_remote", name, retval=ret)
+        return ret
 
     def create_remote(self, name: str, url: str) -> Any:
-        _log_git_call("create_remote", name, url)
-        return self._repo.remotes.create(name, url)
+        ret = self._repo.remotes.create(name, url)
+        _log_git_call("create_remote", name, url, retval=ret)
+        return ret
 
     def get_branches(self) -> Any:
-        _log_git_call("get_branches")
-        return self._repo.branches
+        ret = self._repo.branches
+        _log_git_call("get_branches", retval=ret)
+        return ret
 
     def get_commit_date(self, commit_id: str) -> int:
-        _log_git_call("get_commit_date", commit_id)
         commit = self._repo.get(commit_id)
+        _log_git_call("get_commit_date", commit_id, retval=commit.commit_time)
         return commit.commit_time
 
     def fetch_remote(self, remote, refspec: str = None, callbacks=None):
-        _log_git_call("fetch_remote", str(remote), refspec)
+        _log_git_call("fetch_remote", str(remote.name), refspec)
         if refspec:
             remote.fetch([refspec], callbacks=callbacks)
         else:
@@ -223,7 +333,6 @@ class Pygit2Backend(GitBackend):
     def create_commit(
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
-        _log_git_call("create_commit", message, author_name, author_email)
         pygit_repo = repo._repo
         index = pygit_repo.index
         index.add_all()
@@ -232,7 +341,9 @@ class Pygit2Backend(GitBackend):
         author = pygit2.Signature(author_name, author_email)
         commit_id = pygit_repo.create_commit('refs/heads/main', author, author, message, tree, [])
         pygit_repo.set_head('refs/heads/main')
-        return str(commit_id)
+        ret = str(commit_id)
+        _log_git_call("create_commit", message, author_name, author_email, retval=ret)
+        return ret
 
     def create_tag(
         self,
@@ -257,7 +368,6 @@ class Pygit2Backend(GitBackend):
     def add_and_commit_files(
         self, repo: GitRepository, message: str, author_name: str = "Test", author_email: str = "test@example.com"
     ) -> str:
-        _log_git_call("add_and_commit_files", message, author_name, author_email)
         try:
             pygit_repo = repo._repo
             index = pygit_repo.index
@@ -275,7 +385,9 @@ class Pygit2Backend(GitBackend):
             commit_id = pygit_repo.create_commit('refs/heads/main', author, author, message, tree, parent)
             if not parent:  # First commit, set HEAD
                 pygit_repo.set_head('refs/heads/main')
-            return str(commit_id)
+            ret = str(commit_id)
+            _log_git_call("add_and_commit_files", message, author_name, author_email, retval=ret)
+            return ret
         except pygit2.GitError as e:
             raise GitCommitError(f"Failed to create commit: {e}") from e
 
@@ -323,6 +435,27 @@ class Pygit2Backend(GitBackend):
 
     def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
         _log_git_call("fetch_remote_refs", url, **options)
+
+        # Check if we can use an existing repository
+        repo_path = options.get('repo_path')
+        if repo_path and Path(repo_path).exists() and (Path(repo_path) / '.git').exists():
+            try:
+                repo = pygit2.Repository(str(repo_path))
+                remote = repo.remotes['origin']
+
+                use_callbacks = options.get('use_callbacks', True)
+                if use_callbacks:
+                    callbacks = self.create_remote_callbacks()
+                    remote_refs = remote.list_heads(callbacks=callbacks._callbacks)
+                else:
+                    remote_refs = remote.list_heads()
+
+                return repo._create_git_refs(remote_refs, is_remote=True, repo=repo)
+            except Exception as e:
+                log.debug('Failed to use existing repo at %s: %s', repo_path, e)
+                # Fall through to temporary repository method
+
+        # Fallback to temporary bare repository
         try:
             with tempfile.TemporaryDirectory() as tmpdir:
                 repo = pygit2.init_repository(tmpdir, bare=True)
@@ -335,7 +468,9 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                return [GitRef(ref.name, str(ref.oid)) for ref in remote_refs]
+                # Create a temporary Pygit2Repository wrapper to use _create_git_refs
+                temp_repo_wrapper = Pygit2Repository(repo)
+                return temp_repo_wrapper._create_git_refs(remote_refs, is_remote=True, repo=repo)
         except Exception as e:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None

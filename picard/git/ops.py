@@ -27,10 +27,13 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
+    GitReferenceError,
+    GitRefType,
     GitStatusFlag,
 )
 from picard.git.factory import git_backend
-from picard.git.ref_utils import get_ref_type
+from picard.git.ref_utils import find_git_ref
+from picard.util import parse_versioning_scheme
 
 
 def clean_python_cache(directory):
@@ -66,37 +69,38 @@ class GitOperations:
             Exception: If path is not a git repository
         """
         backend = git_backend()
-        repo = backend.create_repository(path)
-        status = repo.get_status()
+        with backend.create_repository(path) as repo:
+            status = repo.get_status()
 
-        # Check for any changes (modified, added, deleted, renamed, etc.)
-        modified_files = []
-        for filepath, flag in status.items():
-            if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
-                # Ignore Python cache files
-                if (
-                    filepath.endswith(('.pyc', '.pyo'))
-                    or '/__pycache__/' in filepath
-                    or filepath.startswith('__pycache__/')
-                ):
-                    continue
-                modified_files.append(filepath)
+            # Check for any changes (modified, added, deleted, renamed, etc.)
+            modified_files = []
+            for filepath, flag in status.items():
+                if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
+                    # Ignore Python cache files
+                    if (
+                        filepath.endswith(('.pyc', '.pyo'))
+                        or '/__pycache__/' in filepath
+                        or filepath.startswith('__pycache__/')
+                    ):
+                        continue
+                    modified_files.append(filepath)
 
-        return modified_files
+            return modified_files
 
     @staticmethod
-    def fetch_remote_refs(url, use_callbacks=True):
+    def fetch_remote_refs(url, use_callbacks=True, repo_path=None):
         """Fetch remote refs from a git repository.
 
         Args:
             url: Git repository URL
             use_callbacks: Whether to use GitRemoteCallbacks for authentication
+            repo_path: Optional path to existing repository to use instead of creating temporary one
 
         Returns:
             list: Remote refs, or None on error
         """
         backend = git_backend()
-        return backend.fetch_remote_refs(url, use_callbacks=use_callbacks)
+        return backend.fetch_remote_refs(url, use_callbacks=use_callbacks, repo_path=repo_path)
 
     @staticmethod
     def validate_ref(url, ref, uuid=None, registry=None):
@@ -120,21 +124,20 @@ class GitOperations:
         if registry and uuid:
             registry_plugin = registry.find_plugin(uuid=uuid)
             if registry_plugin and registry_plugin.versioning_scheme:
-                # Import here to avoid circular dependency
-                from picard.plugin3.refs_cache import RefsCache
-
-                refs_cache = RefsCache(registry)
-                pattern = refs_cache.parse_versioning_scheme(registry_plugin.versioning_scheme)
-                if pattern and pattern.match(ref):
+                # Parse versioning scheme
+                compiled_pattern = parse_versioning_scheme(registry_plugin.versioning_scheme)
+                if compiled_pattern and compiled_pattern.match(ref):
                     # It's a version tag - fetch and check
-                    version_tags = []
                     remote_refs = GitOperations.fetch_remote_refs(url, use_callbacks=False)
                     if remote_refs:
-                        version_tags = refs_cache.filter_tags(remote_refs, pattern)
+                        version_tags = []
+                        for git_ref in remote_refs:
+                            if git_ref.ref_type == GitRefType.TAG and compiled_pattern.match(git_ref.shortname):
+                                version_tags.append(git_ref.shortname)
 
-                    if ref not in version_tags:
-                        raise PluginRefNotFoundError(uuid, ref)
-                    return True
+                        if ref not in version_tags:
+                            raise PluginRefNotFoundError(uuid, ref)
+                        return True
 
             # For registry plugins with explicit refs list
             if registry_plugin and registry_plugin.refs:
@@ -152,13 +155,8 @@ class GitOperations:
         # Check if ref exists in remote
         ref_names = []
         for remote_ref in remote_refs:
-            name = remote_ref.name if hasattr(remote_ref, 'name') else str(remote_ref)
-            # Strip refs/heads/ and refs/tags/ prefixes
-            if name.startswith('refs/heads/'):
-                ref_names.append(name[11:])
-            elif name.startswith('refs/tags/'):
-                ref_names.append(name[10:])
-            ref_names.append(name)  # Also add full name
+            ref_names.append(remote_ref.shortname)
+            ref_names.append(remote_ref.name)  # Also add full name
 
         if ref not in ref_names:
             raise PluginRefNotFoundError(uuid or url, ref)
@@ -178,28 +176,31 @@ class GitOperations:
         """
         try:
             backend = git_backend()
-            repo = backend.create_repository(repo_path)
-
-            if ref:
-                # Use robust reference type detection
-                ref_type, resolved_ref = get_ref_type(repo, ref)
-                if ref_type == 'tag':
-                    return 'tag', ref
-                elif ref_type in ('local_branch', 'remote_branch'):
-                    return 'branch', ref
-                elif ref_type == 'commit':
-                    return 'commit', ref
+            with backend.create_repository(repo_path) as repo:
+                if ref:
+                    # Use GitRef-based detection
+                    git_ref = find_git_ref(repo, ref)
+                    if git_ref:
+                        if git_ref.ref_type == GitRefType.TAG:
+                            return 'tag', ref
+                        elif git_ref.ref_type == GitRefType.BRANCH:
+                            return 'branch', ref
+                    else:
+                        # Try as commit hash
+                        try:
+                            repo.revparse_single(ref)
+                            return 'commit', ref
+                        except Exception:
+                            return None, ref
                 else:
-                    return None, ref
-            else:
-                # Check current HEAD state
-                if repo.is_head_detached():
-                    commit = repo.get_head_target()[:7]
-                    return 'commit', commit
-                else:
-                    # HEAD points to a branch
-                    branch_name = repo.get_head_shorthand()
-                    return 'branch', branch_name
+                    # Check current HEAD state
+                    if repo.is_head_detached():
+                        commit = repo.get_head_target()[:7]
+                        return 'commit', commit
+                    else:
+                        # HEAD points to a branch
+                        branch_name = repo.get_head_shorthand()
+                        return 'branch', branch_name
 
         except GitBackendError:
             return None, ref
@@ -234,86 +235,142 @@ class GitOperations:
 
         # Use abstracted git operations for ref switching
         backend = git_backend()
-        repo = backend.create_repository(plugin.local_path)
 
-        # Get old ref and commit
-        old_commit = repo.get_head_target()
-        old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
+        try:
+            with backend.create_repository(plugin.local_path) as repo:
+                # Get old ref and commit
+                old_commit = repo.get_head_target()
+                old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
 
-        # Fetch latest from remote
+                # Fetch latest from remote
+                GitOperations._fetch_remote_refs(repo, ref, backend)
+
+                # Find the ref
+                references = repo.list_references()
+
+                # Try as branch first
+                result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit)
+                if result:
+                    return result
+
+                # Try as tag
+                result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
+                if result:
+                    return result
+
+                # Try as commit hash or git revision syntax
+                result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
+                if result:
+                    return result
+
+                raise ValueError(f'Ref {ref} not found')
+
+        except Exception as e:
+            log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
+            raise
+
+    @staticmethod
+    def _fetch_remote_refs(repo, ref, backend):
+        """Fetch remote refs and optionally specific tag."""
         callbacks = backend.create_remote_callbacks()
         origin_remote = repo.get_remote('origin')
         repo.fetch_remote(origin_remote, None, callbacks._callbacks)
 
         # If the ref is not found locally, try fetching it specifically
-        references = repo.get_references()
-        tag_ref = f'refs/tags/{ref}'
-        if tag_ref not in references:
+        references = repo.list_references()
+        tag_exists = any(r.ref_type == GitRefType.TAG and r.shortname == ref for r in references)
+        if not tag_exists and not any(char in ref for char in ['^', '~', ':', '@']):
             try:
-                # Fetch the specific tag
+                # Fetch the specific tag (only for simple ref names)
                 repo.fetch_remote(origin_remote, f'+refs/tags/{ref}:refs/tags/{ref}', callbacks._callbacks)
             except Exception as e:
                 # If specific fetch fails, continue with what we have
                 log.debug('Failed to fetch specific tag %s: %s', ref, e)
 
-        # Find the ref
+    @staticmethod
+    def _try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit):
+        """Try to switch to a branch. Returns tuple or None if not a branch."""
+        # Find branch reference
+        branch_ref = None
+        for git_ref in references:
+            if git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
+                branch_ref = git_ref.name
+                break
+            elif git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote and git_ref.shortname == ref:
+                branch_ref = git_ref.name
+                break
+
+        if not branch_ref:
+            return None
+
+        commit = repo.revparse_to_commit(branch_ref)
+        repo.checkout_tree(commit)
+
+        # Handle remote vs local branches differently
+        is_remote_branch = any(
+            git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}'
+            for git_ref in references
+        )
+
+        if is_remote_branch:
+            # Remote branch - set up tracking
+            repo.set_head(commit.id)
+            branches = repo.get_branches()
+            pygit_commit = repo._repo.get(commit.id)
+            branch = branches.local.create(ref, pygit_commit, force=True)
+            branch.upstream = branches.remote[f'origin/{ref}']
+            repo.set_head(f'refs/heads/{ref}')
+        else:
+            # Local branch - just switch to it
+            repo.set_head(branch_ref)
+
+        log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
+        return old_ref, ref, old_commit, commit.id
+
+    @staticmethod
+    def _try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit):
+        """Try to switch to a tag. Returns tuple or None if not a tag."""
+        # Find tag reference
+        tag_ref = None
+        for git_ref in references:
+            if git_ref.ref_type == GitRefType.TAG and git_ref.shortname == ref:
+                tag_ref = git_ref.name
+                break
+
+        if tag_ref:
+            commit = repo.revparse_to_commit(tag_ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+            return old_ref, ref, old_commit, commit.id
+
+        # Try resolving tag by short name
         try:
-            references = repo.get_references()
+            commit = repo.revparse_to_commit(ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+            return old_ref, ref, old_commit, commit.id
+        except GitReferenceError:
+            return None
 
-            # Try as branch first
-            branch_ref = f'refs/remotes/origin/{ref}'
-            if branch_ref in references:
-                commit_obj = repo.revparse_single(branch_ref)
-                commit = repo.peel_to_commit(commit_obj)
-                repo.checkout_tree(commit)
-                # Detach HEAD first to avoid "cannot force update current branch" error
-                repo.set_head(commit.id)
-                # Set branch to track remote
-                branches = repo.get_branches()
-                # Convert GitObject back to pygit2 object for branch creation
-                pygit_commit = repo._repo.get(commit_obj.id)
-                branch = branches.local.create(ref, pygit_commit, force=True)
-                branch.upstream = branches.remote[f'origin/{ref}']
-                # Now point HEAD to the branch
-                repo.set_head(f'refs/heads/{ref}')
-                log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
-                return old_ref, ref, old_commit, commit.id
-
-            # Try as tag
-            tag_ref = f'refs/tags/{ref}'
-            if tag_ref in references:
-                commit_obj = repo.revparse_single(tag_ref)
-                commit = repo.peel_to_commit(commit_obj)
-                repo.checkout_tree(commit)
-                repo.set_head(commit.id)
-                log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                return old_ref, ref, old_commit, commit.id
-            else:
-                # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
+    @staticmethod
+    def _try_switch_to_commit(repo, plugin, ref, old_ref, old_commit):
+        """Try to switch to a commit hash or git revision syntax. Returns tuple or None."""
+        try:
+            commit = repo.revparse_single(ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
+            return old_ref, commit.id[:7], old_commit, commit.id
+        except GitReferenceError:
+            # For git revision syntax, provide helpful error message
+            if any(char in ref for char in ['^', '~', ':', '@']):
+                base_ref = ref.split('^')[0].split('~')[0].split(':')[0].split('@')[0]
                 try:
-                    commit_obj = repo.revparse_single(ref)
-                    # Check if this is actually a tag by seeing if refs/tags/{ref} exists after resolution
-                    if hasattr(commit_obj, 'type') and commit_obj.type in ['tag', 'commit']:
-                        commit = repo.peel_to_commit(commit_obj)
-                        repo.checkout_tree(commit)
-                        repo.set_head(commit.id)
-                        log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                        return old_ref, ref, old_commit, commit.id
-                except KeyError:
+                    origin_ref = f'origin/{base_ref}'
+                    repo.revparse_single(origin_ref)
+                    raise ValueError(f"Ref '{ref}' not found. Did you mean '{origin_ref}{ref[len(base_ref) :]}'?")
+                except GitReferenceError:
                     pass
-
-            # Try as commit hash
-            try:
-                commit = repo.revparse_single(ref)
-                repo.checkout_tree(commit)
-                repo.set_head(commit.id)
-                log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-                return old_ref, ref[:7], old_commit, commit.id
-            except KeyError:
-                pass
-
-            raise ValueError(f'Ref {ref} not found')
-
-        except Exception as e:
-            log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
-            raise
+            return None
