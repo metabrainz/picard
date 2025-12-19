@@ -247,14 +247,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
-        try:
-            # Get update info from check_updates
-            updates = self.plugin_manager.check_updates()
-            update = updates.get(plugin.plugin_id)
-            if update:
-                return self._format_update_version(update)
-        except Exception:
-            pass
+        update = self._updates.get(plugin.plugin_id)
+        if update:
+            return self._format_update_version(update)
         return _("Available")
 
     def _update_header_button(self):
@@ -344,9 +339,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """
         if force_network_check:
             self._refresh_update_status()
-        else:
-            # Only refresh display with cached data, no network calls
-            self._refresh_cached_update_status()
 
     def _has_update_available_cached(self, plugin):
         """Check if plugin has update available using cache."""
@@ -354,14 +346,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
-        # This is only called from context menu, so network call is acceptable
-        return self.plugin_manager.get_plugin_update_status(plugin)
-
-    def _refresh_cached_update_status(self):
-        """Refresh update status using only cached data - no network calls."""
-        # Updates are now managed by the options page via set_updates()
-        # This method is kept for compatibility but does nothing
-        pass
+        return plugin.plugin_id in self._updates
 
     def _refresh_update_status(self):
         """Refresh update status for all plugins."""
