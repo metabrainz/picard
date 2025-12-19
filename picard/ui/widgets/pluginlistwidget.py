@@ -181,10 +181,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Get plugin remote URL from metadata."""
         return self.plugin_manager.get_plugin_remote_url(plugin)
 
-    def _format_git_info(self, metadata):
-        """Format git information for display."""
-        return self.plugin_manager.get_plugin_git_info(metadata)
-
     def _get_clean_version_display(self, plugin):
         """Get display text for plugin version without update suffix."""
         return self.plugin_manager.get_plugin_version_display(plugin)
@@ -462,22 +458,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Update header button when update checkboxes change
             self._update_header_button()
-
-    def _update_item_to_intended_state(self, item, enabled):
-        """Update item display to show intended state."""
-        item.setCheckState(COLUMN_ENABLED, QtCore.Qt.CheckState.Checked if enabled else QtCore.Qt.CheckState.Unchecked)
-
-    def _update_item_display(self, item, plugin):
-        """Update display for a specific item."""
-        item.setCheckState(
-            COLUMN_ENABLED,
-            QtCore.Qt.CheckState.Checked if self._is_plugin_enabled(plugin) else QtCore.Qt.CheckState.Unchecked,
-        )
-
-    def _clear_toggle_and_refresh(self, plugin_id):
-        """Clear toggle state and refresh plugin list."""
-        self._toggling_plugins.discard(plugin_id)
-        self._refresh_plugin_list()
 
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
