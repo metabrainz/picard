@@ -307,14 +307,14 @@ class PluginSourceGit(PluginSource):
 
         if self.ref:
             try:
-                commit = repo.revparse_single(self.ref)
+                commit = repo.revparse_to_commit(self.ref)
                 self.resolved_ref = self.ref
             except (KeyError, Exception):
                 # If ref starts with 'origin/', try without it
                 if self.ref.startswith('origin/'):
                     try:
                         ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
-                        commit = repo.revparse_single(ref_without_origin)
+                        commit = repo.revparse_to_commit(ref_without_origin)
                         self.resolved_ref = ref_without_origin
                     except (KeyError, GitBackendError):
                         available_refs = self._list_available_refs(repo)
@@ -327,7 +327,7 @@ class PluginSourceGit(PluginSource):
                     git_ref = find_git_ref(repo, self.ref)
                     if git_ref:
                         try:
-                            commit = repo.revparse_single(git_ref.name)
+                            commit = repo.revparse_to_commit(git_ref.name)
                             self.resolved_ref = git_ref.name if git_ref.is_remote else self.ref
                         except (KeyError, GitBackendError):
                             available_refs = self._list_available_refs(repo)
@@ -338,7 +338,7 @@ class PluginSourceGit(PluginSource):
                     else:
                         # For commits or unknown refs, try as-is
                         try:
-                            commit = repo.revparse_single(self.ref)
+                            commit = repo.revparse_to_commit(self.ref)
                             self.resolved_ref = self.ref
                         except (KeyError, GitBackendError):
                             available_refs = self._list_available_refs(repo)
@@ -348,7 +348,7 @@ class PluginSourceGit(PluginSource):
         else:
             # Use repository's default branch (HEAD)
             try:
-                commit = repo.revparse_single('HEAD')
+                commit = repo.revparse_to_commit('HEAD')
                 # Get the branch name that HEAD points to
                 if repo.is_head_detached():
                     self.resolved_ref = short_commit_id(commit.id)
@@ -362,21 +362,21 @@ class PluginSourceGit(PluginSource):
             except (KeyError, GitBackendError):
                 # HEAD not set, try 'main' or first available branch
                 try:
-                    commit = repo.revparse_single('main')
+                    commit = repo.revparse_to_commit('main')
                     self.resolved_ref = 'main'
                 except (KeyError, GitBackendError):
                     # Find first available branch
                     branches = list(repo.branches.local)
                     if branches:
                         branch_name = branches[0]
-                        commit = repo.revparse_single(branch_name)
+                        commit = repo.revparse_to_commit(branch_name)
                         self.resolved_ref = branch_name
                     else:
                         # Last resort: find any reference
                         refs = repo.list_references()
                         for git_ref in refs:
                             if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
-                                commit = repo.revparse_single(git_ref.name)
+                                commit = repo.revparse_to_commit(git_ref.name)
                                 self.resolved_ref = git_ref.shortname
                                 break
                         else:
@@ -387,14 +387,13 @@ class PluginSourceGit(PluginSource):
                                     and git_ref.is_remote
                                     and not git_ref.shortname.endswith('/HEAD')
                                 ):
-                                    commit = repo.revparse_single(git_ref.name)
+                                    commit = repo.revparse_to_commit(git_ref.name)
                                     self.resolved_ref = git_ref.shortname
                                     break
                             else:
                                 raise PluginSourceSyncError('No branches found in repository') from None
 
         # hard reset to passed ref or HEAD
-        commit = self._resolve_to_commit(commit, repo)
         # Use backend for reset operation
         from picard.git.backend import GitResetMode
 
@@ -451,20 +450,19 @@ class PluginSourceGit(PluginSource):
             if git_ref and git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
                 # Try origin/ version first for updates
                 try:
-                    commit = repo.revparse_single(f'origin/{self.ref}')
+                    commit = repo.revparse_to_commit(f'origin/{self.ref}')
                 except (KeyError, GitBackendError):
                     # Fall back to local branch
-                    commit = repo.revparse_single(git_ref.name)
+                    commit = repo.revparse_to_commit(git_ref.name)
             elif git_ref and git_ref.ref_type in (GitRefType.TAG, GitRefType.BRANCH):
-                commit = repo.revparse_single(git_ref.name)
+                commit = repo.revparse_to_commit(git_ref.name)
             else:
                 # For commits or unknown refs, try as-is
-                commit = repo.revparse_single(self.ref)
+                commit = repo.revparse_to_commit(self.ref)
         else:
             # No specific ref, use HEAD
-            commit = repo.revparse_single('HEAD')
+            commit = repo.revparse_to_commit('HEAD')
 
-        commit = self._resolve_to_commit(commit, repo)
         from picard.git.backend import GitResetMode
 
         repo.reset(commit.id, GitResetMode.HARD)
