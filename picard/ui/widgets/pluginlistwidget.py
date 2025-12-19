@@ -329,6 +329,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def set_updates(self, updates):
         """Set the updates dict from the options page."""
         self._updates = updates
+        # Clear version cache to ensure fresh version display
+        self._version_cache.clear()
 
     def refresh_update_status(self, force_network_check=False):
         """Public method to refresh update status for all plugins.
@@ -337,8 +339,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             force_network_check: If True, make network calls to check for updates.
                                 If False, only use cached data.
         """
-        if force_network_check:
-            self._refresh_update_status()
+        # Updates are now managed by the options page via set_updates()
+        # Version cache is cleared when updates are set
+        pass
 
     def _has_update_available_cached(self, plugin):
         """Check if plugin has update available using cache."""
@@ -347,12 +350,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         return plugin.plugin_id in self._updates
-
-    def _refresh_update_status(self):
-        """Refresh update status for all plugins."""
-        # Updates are now managed by the options page via set_updates()
-        # Just clear version cache to ensure fresh version display
-        self._version_cache.clear()
 
     def _on_selection_changed(self):
         """Handle selection changes."""
