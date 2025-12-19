@@ -277,9 +277,20 @@ class Plugins3OptionsPage(OptionsPage):
 
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):
-            log.debug("Removing plugin %s from updates dict due to action: %s", plugin.plugin_id, action)
-            # Remove from updates dict since plugin may now be up-to-date
-            self.updates.pop(plugin.plugin_id, None)
+            log.debug("Re-checking updates for plugin %s after action: %s", plugin.plugin_id, action)
+            # Re-check for updates after the action
+            try:
+                new_updates = self.plugin_manager.check_updates()
+                if plugin.plugin_id in new_updates:
+                    log.debug("Plugin %s has update available after %s", plugin.plugin_id, action)
+                    self.updates[plugin.plugin_id] = new_updates[plugin.plugin_id]
+                else:
+                    log.debug("Plugin %s has no updates after %s", plugin.plugin_id, action)
+                    self.updates.pop(plugin.plugin_id, None)
+            except Exception as e:
+                log.error("Failed to check updates after %s: %s", action, e)
+                # Fallback: remove from updates dict
+                self.updates.pop(plugin.plugin_id, None)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(self.updates)
             # Refresh the plugin list display to show the changes
