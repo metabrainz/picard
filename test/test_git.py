@@ -232,6 +232,16 @@ class TestGitBackend(unittest.TestCase):
         self.assertEqual(obj.id, "abc123")
         self.assertEqual(obj.type, GitObjectType.COMMIT)
 
+    def test_revparse_to_commit(self):
+        """Test revparse_to_commit method"""
+        backend = MockGitBackend()
+        repo = backend.create_repository(Path("/test"))
+
+        # Test that revparse_to_commit returns a commit object
+        commit = repo.revparse_to_commit("HEAD")
+        self.assertIsInstance(commit, GitObject)
+        self.assertEqual(commit.type, GitObjectType.COMMIT)
+
     def test_mock_backend_operations(self):
         """Test mock backend basic operations"""
         backend = MockGitBackend()

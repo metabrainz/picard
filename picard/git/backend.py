@@ -174,6 +174,11 @@ class GitRepository(ABC):
     def peel_to_commit(self, obj: GitObject) -> GitObject:
         """Peel tag to underlying commit"""
 
+    def revparse_to_commit(self, ref: str) -> GitObject:
+        """Resolve reference to commit, peeling tags if necessary"""
+        obj = self.revparse_single(ref)
+        return self.peel_to_commit(obj)
+
     @abstractmethod
     def reset(self, commit_id: str, mode: GitResetMode):
         """Reset repository to commit"""
