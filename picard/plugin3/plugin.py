@@ -178,32 +178,6 @@ class PluginSourceGit(PluginSource):
                 else:
                     raise
 
-    def _resolve_to_commit(self, obj, repo=None):
-        """Resolve a git object to a commit, peeling tags if needed."""
-        if repo:
-            return repo.peel_to_commit(obj)
-        return obj
-
-    def _resolve_ref(self, repo):
-        """Resolve reference using robust type detection.
-
-        Returns:
-            tuple: (commit_object, resolved_ref_name)
-        """
-        if not self.ref:
-            # No specific ref, use HEAD
-            commit = repo.revparse_single('HEAD')
-            return commit, 'HEAD'
-
-        git_ref = find_git_ref(repo, self.ref)
-        if git_ref:
-            commit = repo.revparse_single(git_ref.name)
-            return commit, git_ref.name if git_ref.is_remote else self.ref
-        else:
-            # For commits or unknown refs, try as-is
-            commit = repo.revparse_single(self.ref)
-            return commit, self.ref
-
     def _is_tag_ref(self, repo):
         """Check if current ref is a tag using robust type detection."""
         if not self.ref:
