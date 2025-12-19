@@ -373,12 +373,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Just clear version cache to ensure fresh version display
         self._version_cache.clear()
 
-    def _refresh_single_plugin_update_status(self, plugin):
-        """Refresh update status for a single plugin."""
-        # Updates are now managed by the options page via set_updates()
-        # This method is kept for compatibility but does nothing
-        pass
-
     def _on_selection_changed(self):
         """Handle selection changes."""
         selected_items = self.selectedItems()
@@ -595,9 +589,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             # Clear version cache for updated plugin
             self._version_cache.pop(plugin.plugin_id, None)
 
-            # Refresh update status for the specific plugin since it was updated
-            self._refresh_single_plugin_update_status(plugin)
-
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh
@@ -705,8 +696,8 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
         if result.success:
-            # Refresh update status for the specific plugin since ref changed
-            self._refresh_single_plugin_update_status(plugin)
+            # Update status will be refreshed by the options page
+            pass
 
             # Only refresh the display for this specific plugin, not all plugins
             self._refresh_plugin_display(plugin)
