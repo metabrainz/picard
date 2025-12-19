@@ -224,4 +224,4 @@ plugins.no-emphasis-as-heading.enabled = true
 plugins.no-duplicate-header.enabled = true
 plugins.no-duplicate-header.allow_different_nesting = true
 plugins.no-multiple-blanks.enabled = false
-plugins.single-h1.enabled = false
+plugins.single-h1.enabled = true
