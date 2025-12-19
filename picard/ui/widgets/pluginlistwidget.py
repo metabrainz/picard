@@ -20,7 +20,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
-from pathlib import Path
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
@@ -96,9 +95,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
         # Updates dict from options page (plugin_id -> UpdateCheck)
         self._updates = {}
-
-        # Cache update status to avoid repeated network calls during search
-        self._update_status_cache = {}
 
         # Cache version info to avoid repeated expensive calls
         self._version_cache = {}
@@ -312,7 +308,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._updating_plugins.discard(plugin.plugin_id)
         # Clear caches for updated plugin - it should no longer have updates available
         self._version_cache.pop(plugin.plugin_id, None)
-        self._update_status_cache.pop(plugin.plugin_id, None)
         self._refresh_plugin_display(plugin)
 
     def _refresh_plugin_display(self, plugin):
@@ -359,11 +354,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _has_update_available_cached(self, plugin):
         """Check if plugin has update available using cache."""
-        # First check _updates dict from options page
-        if plugin.plugin_id in self._updates:
-            return True
-        # Fallback to old cache
-        return self._update_status_cache.get(plugin.plugin_id, False)
+        return plugin.plugin_id in self._updates
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
@@ -372,59 +363,21 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _refresh_cached_update_status(self):
         """Refresh update status using only cached data - no network calls."""
-        # For local repositories, do a quick check since no network is involved
-        for plugin in self.plugin_manager.plugins:
-            if plugin.plugin_id not in self._update_status_cache:
-                # No cached data - check if it's a local repository
-                if self._is_local_repository(plugin):
-                    try:
-                        has_update = self.plugin_manager.get_plugin_update_status(plugin)
-                        self._update_status_cache[plugin.plugin_id] = has_update
-                    except Exception as e:
-                        log.debug("Failed to check local repository %s: %s", plugin.plugin_id, e)
-                        self._update_status_cache[plugin.plugin_id] = False
-
-    def _is_local_repository(self, plugin):
-        """Check if plugin is a local repository."""
-        if not plugin.local_path or not Path(plugin.local_path).exists():
-            return False
-
-        try:
-            from picard.git.backend import git_backend
-
-            backend = git_backend()
-            repo = backend.create_repository(plugin.local_path)
-
-            # Check if any remote points to a local path
-            remotes = repo.get_remotes()
-            for remote in remotes:
-                remote_url = repo.get_remote_url(remote)
-                if remote_url and (remote_url.startswith('/') or remote_url.startswith('file://')):
-                    repo.free()
-                    return True
-
-            repo.free()
-            return False
-        except Exception:
-            return False
+        # Updates are now managed by the options page via set_updates()
+        # This method is kept for compatibility but does nothing
+        pass
 
     def _refresh_update_status(self):
         """Refresh update status for all plugins."""
-        self._update_status_cache.clear()
-        self._version_cache.clear()  # Clear version cache too
-
-        for plugin in self.plugin_manager.plugins:
-            self._refresh_single_plugin_update_status(plugin)
+        # Updates are now managed by the options page via set_updates()
+        # Just clear version cache to ensure fresh version display
+        self._version_cache.clear()
 
     def _refresh_single_plugin_update_status(self, plugin):
         """Refresh update status for a single plugin."""
-        try:
-            has_update = self.plugin_manager.get_plugin_update_status(plugin)
-            self._update_status_cache[plugin.plugin_id] = has_update
-        except Exception as e:
-            log.debug("get_plugin_update_status() for %s failed: %s", plugin.plugin_id, e)
-            # Don't let update check failures break the UI
-            self._update_status_cache[plugin.plugin_id] = False
+        # Updates are now managed by the options page via set_updates()
+        # This method is kept for compatibility but does nothing
+        pass
 
     def _on_selection_changed(self):
         """Handle selection changes."""
