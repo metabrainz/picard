@@ -1,25 +1,27 @@
-# Version 2.13.3 - 2025-02-17
+# MusicBrainz Picard Changes
 
-## Bugfixes
+## Version 2.13.3 - 2025-02-17
+
+### Bugfixes
 - [PICARD-2909](https://tickets.metabrainz.org/browse/PICARD-2909) - libopus fails to read METADATA_BLOCK_PICTURE without bit depth set
 - [PICARD-3034](https://tickets.metabrainz.org/browse/PICARD-3034) - Windows: SSL errors if conflicting libssl is installed system wide
 
 
-# Version 2.13.2 - 2025-02-07
+## Version 2.13.2 - 2025-02-07
 
-## Bugfixes
+### Bugfixes
 - [PICARD-3030](https://tickets.metabrainz.org/browse/PICARD-3030) - Crash when right-clicking on multi-selection of new tag values
 
 
-# Version 2.13.1 - 2025-02-05
+## Version 2.13.1 - 2025-02-05
 
-## Tasks
+### Tasks
 - [PICARD-3027](https://tickets.metabrainz.org/browse/PICARD-3027) - Fix PyPI packaging task
 
 
-# Version 2.13 - 2025-02-04
+## Version 2.13 - 2025-02-04
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2989](https://tickets.metabrainz.org/browse/PICARD-2989) - Endless recursion when reading settings after script editor dialog was opened
 - [PICARD-2991](https://tickets.metabrainz.org/browse/PICARD-2991) - File naming options inaccessible on permission errors to target path
 - [PICARD-3000](https://tickets.metabrainz.org/browse/PICARD-3000) - Children's Music is shown as "Children'S Music" in Picard
@@ -29,43 +31,43 @@
 - [PICARD-3013](https://tickets.metabrainz.org/browse/PICARD-3013) - Case only renaming broken on case-insensitive filesystems
 - [PICARD-3014](https://tickets.metabrainz.org/browse/PICARD-3014) - Sorting on macOS does not sort empty values as expected
 
-## Tasks
+### Tasks
 - [PICARD-3002](https://tickets.metabrainz.org/browse/PICARD-3002) - Update Windows code signing certificate
 - [PICARD-3018](https://tickets.metabrainz.org/browse/PICARD-3018) - Drop support for Python 3.7
 - [PICARD-3022](https://tickets.metabrainz.org/browse/PICARD-3022) - Support Python 3.13
 
-## Improvements
+### Improvements
 - [PICARD-736](https://tickets.metabrainz.org/browse/PICARD-736) - Avoid manual copying of authentication token
 - [PICARD-2882](https://tickets.metabrainz.org/browse/PICARD-2882) - Support PKCE for OAuth2 authorization
 - [PICARD-2886](https://tickets.metabrainz.org/browse/PICARD-2886) - OAuth2: Implement token revocation on the server
 - [PICARD-3021](https://tickets.metabrainz.org/browse/PICARD-3021) - Add context menu action to metadata box to merge original and new values
 
 
-# Version 2.12.3 - 2024-09-04
+## Version 2.12.3 - 2024-09-04
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2958](https://tickets.metabrainz.org/browse/PICARD-2958) - Hovering over unmatched files shows a tooltip with the PO translation file header for the active locale
 - [PICARD-2960](https://tickets.metabrainz.org/browse/PICARD-2960) - Replacement for directory separators can itself be set to a directory separator
 
 
-# Version 2.12.2 - 2024-08-27
+## Version 2.12.2 - 2024-08-27
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2953](https://tickets.metabrainz.org/browse/PICARD-2953) - Windows: Incorrect sort order in list views and search result
 
 
-# Version 2.12.1 - 2024-08-13
+## Version 2.12.1 - 2024-08-13
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2914](https://tickets.metabrainz.org/browse/PICARD-2914) - macOS: Crash when opening options with Spanish UI
 - [PICARD-2939](https://tickets.metabrainz.org/browse/PICARD-2939) - Crash when loading release with genre filters resulting in empty genre list
 - [PICARD-2940](https://tickets.metabrainz.org/browse/PICARD-2940) - Possible bug with locking in `Metadata.__iter__`
 - [PICARD-2946](https://tickets.metabrainz.org/browse/PICARD-2946) - Fix display length value in AppStream metadata
 
 
-# Version 2.12 - 2024-06-27
+## Version 2.12 - 2024-06-27
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2468](https://tickets.metabrainz.org/browse/PICARD-2468) - Unexpected behavior of MP3 comment tags when language isn't set
 - [PICARD-2846](https://tickets.metabrainz.org/browse/PICARD-2846) - macOS package MusicBrainz-Picard-2.11-macOS-10.12.dmg is not compatible with macOS 10.12 and 10.13
 - [PICARD-2850](https://tickets.metabrainz.org/browse/PICARD-2850) - `%_filename%` tag displays as "_mp3" in preview
@@ -81,21 +83,21 @@
 - [PICARD-2918](https://tickets.metabrainz.org/browse/PICARD-2918) - Crash when quitting Picard after saving large number of files
 - [PICARD-2919](https://tickets.metabrainz.org/browse/PICARD-2919) - "Unrecognized image data" error when fetching GIF Cover Art
 
-## Improvements
+### Improvements
 - [PICARD-2716](https://tickets.metabrainz.org/browse/PICARD-2716) - Accept encodings other than UTF-8 when opening CD extraction logs
 - [PICARD-2896](https://tickets.metabrainz.org/browse/PICARD-2896) - Support .ogx extension for Ogg container
 - [PICARD-2935](https://tickets.metabrainz.org/browse/PICARD-2935) - Improve results of genre filter options
 
 
-# Version 2.11 - 2024-01-25
+## Version 2.11 - 2024-01-25
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2819](https://tickets.metabrainz.org/browse/PICARD-2819) - Track/release relationship settings not being respected as described
 
 
-# Version 2.11.0rc1 - 2024-01-11
+## Version 2.11.0rc1 - 2024-01-11
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2602](https://tickets.metabrainz.org/browse/PICARD-2602) - macOS: Spaces not visible between items after comma use
 - [PICARD-2780](https://tickets.metabrainz.org/browse/PICARD-2780) - Weighting search results does match non-video tracks incorrectly
 - [PICARD-2781](https://tickets.metabrainz.org/browse/PICARD-2781) - Weighting search results does apply extremely low matching if a release on MB has no release types at all
@@ -104,28 +106,28 @@
 - [PICARD-2805](https://tickets.metabrainz.org/browse/PICARD-2805) - Metadata comparison for recordings raises exception if length is None
 - [PICARD-2814](https://tickets.metabrainz.org/browse/PICARD-2814) - Error loading files with invalid / unknown ID3 cover art type
 
-## Improvements
+### Improvements
 - [PICARD-2584](https://tickets.metabrainz.org/browse/PICARD-2584) - Handle AcoustID missing metadata
 - [PICARD-2777](https://tickets.metabrainz.org/browse/PICARD-2777) - Options indicate that enabling track relationships automatically includes release relationships
 - [PICARD-2795](https://tickets.metabrainz.org/browse/PICARD-2795) - Display currently selected verbosity in log view verbosity selection
 - [PICARD-2813](https://tickets.metabrainz.org/browse/PICARD-2813) - AcoustID lookup on recoverable decoding errors
 
 
-# Version 2.10 - 2023-10-12
+## Version 2.10 - 2023-10-12
 
-# Bugfixes
+### Bugfixes
 - [PICARD-2768](https://tickets.metabrainz.org/browse/PICARD-2768) - Series relationships are not loaded for standalone recordings
 - [PICARD-2774](https://tickets.metabrainz.org/browse/PICARD-2774) - Error: 255 is not a valid Id3ImageType
 - [PICARD-2775](https://tickets.metabrainz.org/browse/PICARD-2775) - Disable Qt WebP plugin for Windows and macOS binary builds to mitigate libwebp vulnerability ([CVE-2023-4863](https://github.com/advisories/GHSA-j7hp-h8jx-5ppr))
 - [PICARD-2776](https://tickets.metabrainz.org/browse/PICARD-2776) - Track metadata compare ignores video flag check if there is no release
 
-# Improvements
+### Improvements
 - [PICARD-2769](https://tickets.metabrainz.org/browse/PICARD-2769) - If a tag got unset by scripting display a file's original tag value in the columns
 
 
-# Version 2.10.0rc1 - 2023-09-26
+## Version 2.10.0rc1 - 2023-09-26
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2748](https://tickets.metabrainz.org/browse/PICARD-2748) - KeyError when saving options with removed profile
 - [PICARD-2749](https://tickets.metabrainz.org/browse/PICARD-2749) - Python 3.12: AttributeError: 'PathFinder' object has no attribute 'find_module'
 - [PICARD-2751](https://tickets.metabrainz.org/browse/PICARD-2751) - The plugin system uses deprecated APIs, incompatible with Python 3.12
@@ -134,14 +136,14 @@
 - [PICARD-2762](https://tickets.metabrainz.org/browse/PICARD-2762) - Linux packaged version does not show the "check for new plugins" option setting
 - [PICARD-2764](https://tickets.metabrainz.org/browse/PICARD-2764) - Attached profiles dialog does not display on option sub-pages
 
-## New Features
+### New Features
 - [PICARD-2757](https://tickets.metabrainz.org/browse/PICARD-2757) - Add command-line option `--audit` making use of `sys.addaudithook()`
 
-## Tasks
+### Tasks
 - [PICARD-2690](https://tickets.metabrainz.org/browse/PICARD-2690) - Move locale name translations into separate translation resource
 - [PICARD-2731](https://tickets.metabrainz.org/browse/PICARD-2731) - Move translations to Weblate
 
-## Improvements
+### Improvements
 - [PICARD-1377](https://tickets.metabrainz.org/browse/PICARD-1377) - New icons for plugin options
 - [PICARD-2717](https://tickets.metabrainz.org/browse/PICARD-2717) - Starting a second instance with no commands should change to the running instance
 - [PICARD-2740](https://tickets.metabrainz.org/browse/PICARD-2740) - Improve SSL error logging
@@ -149,9 +151,9 @@
 - [PICARD-2760](https://tickets.metabrainz.org/browse/PICARD-2760) - Windows: Timestamp the code signed packages
 
 
-# Version 2.9.2 - 2023-09-12
+## Version 2.9.2 - 2023-09-12
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2700](https://tickets.metabrainz.org/browse/PICARD-2700) - Content of series variables gets duplicated on each refresh
 - [PICARD-2712](https://tickets.metabrainz.org/browse/PICARD-2712) - "00" is always stripped from `date` tag on save
 - [PICARD-2722](https://tickets.metabrainz.org/browse/PICARD-2722) - Windows version can crash on exit and prevent restart of Picard
@@ -159,16 +161,16 @@
 - [PICARD-2733](https://tickets.metabrainz.org/browse/PICARD-2733) - Crash when saving files with UI language set to Finnish
 - [PICARD-2736](https://tickets.metabrainz.org/browse/PICARD-2736) - Windows: SSL errors if conflicting libssl is installed system wide
 
-## Tasks
+### Tasks
 - [PICARD-2752](https://tickets.metabrainz.org/browse/PICARD-2752) - Include resource/images in source archive
 
-## Improvements
+### Improvements
 - [PICARD-2720](https://tickets.metabrainz.org/browse/PICARD-2720) - Linux: Allow opening new instance via XDG desktop entry application action
 
 
-# Version 2.9.1 - 2023-08-16
+## Version 2.9.1 - 2023-08-16
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2186](https://tickets.metabrainz.org/browse/PICARD-2186) - Windows installer fails to detect already running instance
 - [PICARD-2688](https://tickets.metabrainz.org/browse/PICARD-2688) - Windows: Portable version crashes when launched with `-h`
 - [PICARD-2692](https://tickets.metabrainz.org/browse/PICARD-2692) - Windows: Crash on startup after upgrade from 2.8 to 2.9
@@ -183,36 +185,36 @@
 - [PICARD-2714](https://tickets.metabrainz.org/browse/PICARD-2714) - Windows: Portable installs should run as separate instances
 - [PICARD-2718](https://tickets.metabrainz.org/browse/PICARD-2718) - File selector for ripping log files does not show *.log files with the "All supported log files" filter
 
-## New Features
+### New Features
 - [PICARD-1815](https://tickets.metabrainz.org/browse/PICARD-1815) - Notification on plugin updates available
 - [PICARD-2705](https://tickets.metabrainz.org/browse/PICARD-2705) - Provide the new audio director relationship as tag
 
-## Improvements
+### Improvements
 - [PICARD-2691](https://tickets.metabrainz.org/browse/PICARD-2691) - Provide code signed source archives
 
 
-# Version 2.9 - 2023-07-26
+## Version 2.9 - 2023-07-26
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2011](https://tickets.metabrainz.org/browse/PICARD-2011) - "RuntimeError: dictionary changed size during iteration" in metadatabox
 - [PICARD-2685](https://tickets.metabrainz.org/browse/PICARD-2685) - Moving files between tracks looses AcoustID fingerprint and ReplayGain tags
 - [PICARD-2689](https://tickets.metabrainz.org/browse/PICARD-2689) - If the first dragged element is not visible an empty rectangle is shown during drag
 
-## Improvements
+### Improvements
 - [PICARD-2680](https://tickets.metabrainz.org/browse/PICARD-2680) - Modal first use and file save confirmation dialogs
 - [PICARD-2681](https://tickets.metabrainz.org/browse/PICARD-2681) - Revise wording of first use and file save confirmation dialogs
 
 
-# Version 2.9.0b3 - 2023-07-06
+## Version 2.9.0b3 - 2023-07-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2658](https://tickets.metabrainz.org/browse/PICARD-2658) - macOS 10.12 build is not responding after launch, no UI shown
 - [PICARD-2659](https://tickets.metabrainz.org/browse/PICARD-2659) - Picard 2.9.0b2 stuck in login loop if MusicBrainz server port is not set to 443
 - [PICARD-2660](https://tickets.metabrainz.org/browse/PICARD-2660) - RecursionError: maximum recursion depth exceeded while calling a Python object
 - [PICARD-2668](https://tickets.metabrainz.org/browse/PICARD-2668) - On application crash the main process does not exist, waits for interprocess communication pipe threads
 - [PICARD-2669](https://tickets.metabrainz.org/browse/PICARD-2669) - File status icon sometimes shows wrong status
 
-## Improvements
+### Improvements
 - [PICARD-2662](https://tickets.metabrainz.org/browse/PICARD-2662) - Give better user message with corrupted file
 - [PICARD-2665](https://tickets.metabrainz.org/browse/PICARD-2665) - Ignoring artist credits shouldn't be default behavior
 - [PICARD-2671](https://tickets.metabrainz.org/browse/PICARD-2671) - Show a first run information dialog
@@ -220,20 +222,20 @@
 - [PICARD-2679](https://tickets.metabrainz.org/browse/PICARD-2679) - "Open folder" does not work on Snap install
 
 
-# Version 2.9.0b2 - 2023-06-15
+## Version 2.9.0b2 - 2023-06-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2481](https://tickets.metabrainz.org/browse/PICARD-2481) - Shorten long country lists in search results
 - [PICARD-2651](https://tickets.metabrainz.org/browse/PICARD-2651) - Repeated / duplicate log lines on console output
 
-## Improvements
+### Improvements
 - [PICARD-2653](https://tickets.metabrainz.org/browse/PICARD-2653) - Update alias locales for updated server list
 - [PICARD-2654](https://tickets.metabrainz.org/browse/PICARD-2654) - Show error message on rating submission failure due to server error
 
 
-# Version 2.9.0b1 - 2023-05-31
+## Version 2.9.0b1 - 2023-05-31
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2534](https://tickets.metabrainz.org/browse/PICARD-2534) - Vorbis / FLAC: Trailing null char in `date` tag causes date to be ignored
 - [PICARD-2605](https://tickets.metabrainz.org/browse/PICARD-2605) - Windows: libssl-1_1-x64.dll missing
 - [PICARD-2608](https://tickets.metabrainz.org/browse/PICARD-2608) - Application exit waits for outstanding loading request
@@ -246,12 +248,12 @@
 - [PICARD-2642](https://tickets.metabrainz.org/browse/PICARD-2642) - Submit cluster as release opens on 0.0.0.0 if "Listen only on localhost" is disabled
 - [PICARD-2645](https://tickets.metabrainz.org/browse/PICARD-2645) - QUIT command only works if there are files that need saving and user cancels the quit
 
-## New Features
+### New Features
 - [PICARD-711](https://tickets.metabrainz.org/browse/PICARD-711) - New variables for release group, release, recording and work series
 - [PICARD-2617](https://tickets.metabrainz.org/browse/PICARD-2617) - Add variables for file creation (`_file_created_timestamp`) and modification date(time) (`_file_modified_timestamp`)
 - [PICARD-2606](https://tickets.metabrainz.org/browse/PICARD-2606) - Add `_writersort` and `_lyricistsort` variables
 
-## Improvements
+### Improvements
 - [PICARD-900](https://tickets.metabrainz.org/browse/PICARD-900) - Use Id3v24 by default instead of id3v23
 - [PICARD-1649](https://tickets.metabrainz.org/browse/PICARD-1649) - Allow plugins to link to documentation
 - [PICARD-1945](https://tickets.metabrainz.org/browse/PICARD-1945) - Option to set the number of parallel fpcalc processes
@@ -264,18 +266,18 @@
 - [PICARD-2634](https://tickets.metabrainz.org/browse/PICARD-2634) - Use standardized artist names by default
 
 
-# Version 2.9.0a1 - 2023-01-03
+## Version 2.9.0a1 - 2023-01-03
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2576](https://tickets.metabrainz.org/browse/PICARD-2576) - Options window minimum height does not fit on smaller screens
 - [PICARD-2599](https://tickets.metabrainz.org/browse/PICARD-2599) - Crash on plugin install / update
 
-## New Features
+### New Features
 - [PICARD-2471](https://tickets.metabrainz.org/browse/PICARD-2471) - Restrict Picard to a single instance, open new files in existing instance
 - [PICARD-2519](https://tickets.metabrainz.org/browse/PICARD-2519) - Allow passing supported URLs on command line
 - [PICARD-2526](https://tickets.metabrainz.org/browse/PICARD-2526) - Allow starting processing actions from the command line
 
-## Improvements
+### Improvements
 - [PICARD-356](https://tickets.metabrainz.org/browse/PICARD-356) - Replace Windows incompatible characters with user defined character
 - [PICARD-2486](https://tickets.metabrainz.org/browse/PICARD-2486) - Add text-based comparison scripting functions
 - [PICARD-2550](https://tickets.metabrainz.org/browse/PICARD-2550) - Support dBpoweramp secure ripping log files for disc ID lookup
@@ -284,17 +286,17 @@
 - [PICARD-2595](https://tickets.metabrainz.org/browse/PICARD-2595) - Customizable replacement character for directory separators
 
 
-# Version 2.8.5 - 2022-12-06
+## Version 2.8.5 - 2022-12-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2590](https://tickets.metabrainz.org/browse/PICARD-2590) - Relative paths for cover art file names no longer work
 - [PICARD-2593](https://tickets.metabrainz.org/browse/PICARD-2593) - Toolbar icon text disappears when saving options
 - [PICARD-2596](https://tickets.metabrainz.org/browse/PICARD-2596) - "Show icons in menus" option is applied without saving options
 
 
-# Version 2.8.4 - 2022-11-22
+## Version 2.8.4 - 2022-11-22
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2520](https://tickets.metabrainz.org/browse/PICARD-2520) - Null bytes in tag values can cause crashes when sorting
 - [PICARD-2539](https://tickets.metabrainz.org/browse/PICARD-2539) - Picard crashes on huge releases if no cover art provider is active
 - [PICARD-2548](https://tickets.metabrainz.org/browse/PICARD-2548) - Loaded album does not update cover art display
@@ -310,19 +312,19 @@
 - [PICARD-2582](https://tickets.metabrainz.org/browse/PICARD-2582) - `distutils.errors.DistutilsClassError` when building with `setup.py`
 - [PICARD-2588](https://tickets.metabrainz.org/browse/PICARD-2588) - `QObject::startTimer`: Timers can only be used with threads started with QThread
 
-## Improvements
+### Improvements
 - [PICARD-2589](https://tickets.metabrainz.org/browse/PICARD-2589) - Support media types "DualDisc (DVD side)" and "Betacam SP"
 
 
-# Version 2.8.3 - 2022-08-17
+## Version 2.8.3 - 2022-08-17
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2524](https://tickets.metabrainz.org/browse/PICARD-2524) - Random crash on album search
 
 
-# Version 2.8.2 - 2022-07-07
+## Version 2.8.2 - 2022-07-07
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2480](https://tickets.metabrainz.org/browse/PICARD-2480) - Lookup CD from EAC log generates incorrect Disc ID from Enhanced CDs
 - [PICARD-2498](https://tickets.metabrainz.org/browse/PICARD-2498) - Except for the description no HTML should be allowed in plugin metadata
 - [PICARD-2505](https://tickets.metabrainz.org/browse/PICARD-2505) - Cover art type "matrix/runout" causes a folder "matrix" being created when saving cover art
@@ -332,30 +334,30 @@
 - [PICARD-2515](https://tickets.metabrainz.org/browse/PICARD-2515) - macOS: Swatches not coloured in Options > User Interface > Colours
 - [PICARD-2518](https://tickets.metabrainz.org/browse/PICARD-2518) - Keyboard shortcuts not working in Italian localization
 
-## Improvements
+### Improvements
 - [PICARD-2504](https://tickets.metabrainz.org/browse/PICARD-2504) - Increase default query limit and make it configurable
 - [PICARD-2516](https://tickets.metabrainz.org/browse/PICARD-2516) - Support CAA cover art types "Top" and "Bottom"
 - [PICARD-2517](https://tickets.metabrainz.org/browse/PICARD-2517) - Support media type "Mixed Mode CD"
 
 
-# Version 2.8.1 - 2022-06-07
+## Version 2.8.1 - 2022-06-07
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2489](https://tickets.metabrainz.org/browse/PICARD-2489) - Preferred Releases UI not loading in Options menu on FreeBSD
 - [PICARD-2491](https://tickets.metabrainz.org/browse/PICARD-2491) - Crash upon loading album information for releases with MBID redirects
 - [PICARD-2493](https://tickets.metabrainz.org/browse/PICARD-2493) - If locales for picard-countries or picard-attributes are missing UI translation is completely skipped
 - [PICARD-2494](https://tickets.metabrainz.org/browse/PICARD-2494) - Remove empty info dialog for "[standalone-recordings]" special album entry
 
 
-# Version 2.8 - 2022-05-24
+## Version 2.8 - 2022-05-24
 
-## Tasks
+### Tasks
 - [PICARD-2484](https://tickets.metabrainz.org/browse/PICARD-2484) - Update bundled PyJWT to 2.4.0 for Windows and macOS builds
 
 
-# Version 2.8.0rc2 - 2022-05-12
+## Version 2.8.0rc2 - 2022-05-12
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2465](https://tickets.metabrainz.org/browse/PICARD-2465) - RecursionError after dragging folder from file browser
 - [PICARD-2470](https://tickets.metabrainz.org/browse/PICARD-2470) - CD Lookup error: utf-8 codec can't decode byte 0xff in position 0: invalid start byte
 - [PICARD-2472](https://tickets.metabrainz.org/browse/PICARD-2472) - Cluster action applies to already matched albums
@@ -364,9 +366,9 @@
 - [PICARD-2475](https://tickets.metabrainz.org/browse/PICARD-2475) - If search dialog query contains an MBID "Lookup in browser" will not open in browser
 
 
-# Version 2.8.0rc1 - 2022-05-03
+## Version 2.8.0rc1 - 2022-05-03
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1570](https://tickets.metabrainz.org/browse/PICARD-1570) - Windows: Files with path length > 259 char fail to load
 - [PICARD-2292](https://tickets.metabrainz.org/browse/PICARD-2292) - When a recording is a performance of multiple works, any instrumental performance attribute erases all other lyrics languages
 - [PICARD-2368](https://tickets.metabrainz.org/browse/PICARD-2368) - Matching files compares `totaltracks` to the total no. of tracks across all mediums on the release
@@ -387,16 +389,16 @@
 - [PICARD-2463](https://tickets.metabrainz.org/browse/PICARD-2463) - Cover art box does not handle different screen scalings on multi-screen setups
 - [PICARD-2464](https://tickets.metabrainz.org/browse/PICARD-2464) - Cover art stack on HiDPI displays rendered too small
 
-## New Features
+### New Features
 - [PICARD-1455](https://tickets.metabrainz.org/browse/PICARD-1455) - Use EAC / XLD log files for disc ID lookup
 - [PICARD-2410](https://tickets.metabrainz.org/browse/PICARD-2410) - Use Whipper log files for disc ID lookup
 - [PICARD-2411](https://tickets.metabrainz.org/browse/PICARD-2411) - Add option to remove broken seektable from FLAC files
 
-## Tasks
+### Tasks
 - [PICARD-2332](https://tickets.metabrainz.org/browse/PICARD-2332) - Convert code to use scoped PyQt enums
 - [PICARD-2422](https://tickets.metabrainz.org/browse/PICARD-2422) - Remove AcousticBrainz analysis and submission features
 
-## Improvements
+### Improvements
 - [PICARD-993](https://tickets.metabrainz.org/browse/PICARD-993) - Better error icons for file loading / saving errors
 - [PICARD-2076](https://tickets.metabrainz.org/browse/PICARD-2076) - Respect Windows 10 > 1607 removal of 260 limit on filenames
 - [PICARD-2282](https://tickets.metabrainz.org/browse/PICARD-2282) - Provide ability to import and export Picard config
@@ -417,15 +419,15 @@
 - [PICARD-2437](https://tickets.metabrainz.org/browse/PICARD-2437) - Tag editor dialog box should say “OK” instead of “Save"
 
 
-# Version 2.7.3 - 2022-01-13
+## Version 2.7.3 - 2022-01-13
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2395](https://tickets.metabrainz.org/browse/PICARD-2395) - macOS 10.13: On launch app is reported as damaged
 
 
-# Version 2.7.2 - 2022-01-11
+## Version 2.7.2 - 2022-01-11
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2375](https://tickets.metabrainz.org/browse/PICARD-2375) - Loading indicator when loading releases stays near zero
 - [PICARD-2377](https://tickets.metabrainz.org/browse/PICARD-2377) - Crash on start if system reports a standard location path that no longer exists
 - [PICARD-2378](https://tickets.metabrainz.org/browse/PICARD-2378) - Windows: AcousticBrainz submission submits full path to files instead of just the basename
@@ -433,27 +435,27 @@
 - [PICARD-2389](https://tickets.metabrainz.org/browse/PICARD-2389) - Unsupported locale error on Windows
 - [PICARD-2390](https://tickets.metabrainz.org/browse/PICARD-2390) - "Default listening port" label only partially shown
 
-## Improvements
+### Improvements
 - [PICARD-2373](https://tickets.metabrainz.org/browse/PICARD-2373) - Make `$slice()` "end" parameter optional
 - [PICARD-2374](https://tickets.metabrainz.org/browse/PICARD-2374) - Remove rate limit for archive.org
 - [PICARD-2388](https://tickets.metabrainz.org/browse/PICARD-2388) - Support .m4r file extension for MP4 (iTunes Ringtone files)
 
 
-# Version 2.7.1 - 2021-12-21
+## Version 2.7.1 - 2021-12-21
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2363](https://tickets.metabrainz.org/browse/PICARD-2363) - ID3 v2.3 files show as changed directly after saving
 - [PICARD-2366](https://tickets.metabrainz.org/browse/PICARD-2366) - Auto analyze / auto cluster only works if files are loaded via built-in file browser
 - [PICARD-2367](https://tickets.metabrainz.org/browse/PICARD-2367) - Crash when dropping an album onto "Clusters"
 - [PICARD-2372](https://tickets.metabrainz.org/browse/PICARD-2372) - Settings changed in profile not always saved
 
-## Improvements
+### Improvements
 - [PICARD-2365](https://tickets.metabrainz.org/browse/PICARD-2365) - Allow building / packaging with PyYAML 6
 
 
-# Version 2.7 - 2021-12-16
+## Version 2.7 - 2021-12-16
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2346](https://tickets.metabrainz.org/browse/PICARD-2346) - ID3v2.3 files show as changed, even if no tags changed and no tag changes are indicated
 - [PICARD-2351](https://tickets.metabrainz.org/browse/PICARD-2351) - Windows: System language detection broken
 - [PICARD-2352](https://tickets.metabrainz.org/browse/PICARD-2352) - Log view colors are not restored after a clear
@@ -462,16 +464,16 @@
 - [PICARD-2362](https://tickets.metabrainz.org/browse/PICARD-2362) - Added \_\_pycache__ directories make builds unreproducible
 
 
-# Version 2.7.0b3 - 2021-12-02
+## Version 2.7.0b3 - 2021-12-02
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2320](https://tickets.metabrainz.org/browse/PICARD-2320) - macOS: Picard 2.6.4 segfault upon authorization/login prompt
 - [PICARD-2328](https://tickets.metabrainz.org/browse/PICARD-2328) - Crash on startup with Python 3.10
 - [PICARD-2329](https://tickets.metabrainz.org/browse/PICARD-2329) - Changing the enabled options doesn't update the naming script
 - [PICARD-2330](https://tickets.metabrainz.org/browse/PICARD-2330) - Changes do not show when script editor is closed and re-opened from Options dialog
 - [PICARD-2342](https://tickets.metabrainz.org/browse/PICARD-2342) - Saving cover images to WMA or MP4 files fails if "clear existing tags" and "keep embedded images" are active
 
-## Improvements
+### Improvements
 - [PICARD-2325](https://tickets.metabrainz.org/browse/PICARD-2325) - Show MusicBrainz login errors
 - [PICARD-2327](https://tickets.metabrainz.org/browse/PICARD-2327) - macOS: Treat files with hidden attribute as hidden files
 - [PICARD-2334](https://tickets.metabrainz.org/browse/PICARD-2334) - Have script editor consistently save to configuration
@@ -480,9 +482,9 @@
 - [PICARD-2344](https://tickets.metabrainz.org/browse/PICARD-2344) - Add more settings to option profiles
 
 
-# Version 2.7.0b2 - 2021-11-09
+## Version 2.7.0b2 - 2021-11-09
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2290](https://tickets.metabrainz.org/browse/PICARD-2290) - macOS: System wide dark mode is not respected
 - [PICARD-2291](https://tickets.metabrainz.org/browse/PICARD-2291) - Portable Picard 2.7.0b1 on Windows can conflict with system wide Qt5 install
 - [PICARD-2293](https://tickets.metabrainz.org/browse/PICARD-2293) - macOS: 2.7 beta 1 for macOS 10.12+ requires macOS 10.14
@@ -498,10 +500,10 @@
 - [PICARD-2322](https://tickets.metabrainz.org/browse/PICARD-2322) - If files are attached to album on load cover art changes are not shown on album level
 - [PICARD-2324](https://tickets.metabrainz.org/browse/PICARD-2324) - WavPack correction files are identified as duplicates to their WavPack files and renamed
 
-## New Features
+### New Features
 - [PICARD-2304](https://tickets.metabrainz.org/browse/PICARD-2304) - Add option to show/hide icons in menus
 
-## Improvements
+### Improvements
 - [PICARD-2239](https://tickets.metabrainz.org/browse/PICARD-2239) - Save option settings to specified profile
 - [PICARD-2299](https://tickets.metabrainz.org/browse/PICARD-2299) - Extend genre wildcard filtering with "?" and "\[...\]" matching
 - [PICARD-2301](https://tickets.metabrainz.org/browse/PICARD-2301) - Slight rewording of "CAA" cover art provider options
@@ -509,9 +511,9 @@
 - [PICARD-2306](https://tickets.metabrainz.org/browse/PICARD-2306) - Disable "Convert Unicode Punctuation" option by default
 
 
-# Version 2.7.0b1 - 2021-10-07
+## Version 2.7.0b1 - 2021-10-07
 
-## Bugfixes
+### Bugfixes
 - [PICARD-157](https://tickets.metabrainz.org/browse/PICARD-157) - "Translate artist names to this locale where possible" also translates ones already in the correct locale
 - [PICARD-1645](https://tickets.metabrainz.org/browse/PICARD-1645) - Picard doesn't respect MusicBrainz server settings for the CD lookup in browser functionality
 - [PICARD-2189](https://tickets.metabrainz.org/browse/PICARD-2189) - Network cache directory at wrong location on Windows
@@ -522,7 +524,7 @@
 - [PICARD-2261](https://tickets.metabrainz.org/browse/PICARD-2261) - Any tagger script causes multi-line fields to become changed
 - [PICARD-2276](https://tickets.metabrainz.org/browse/PICARD-2276) - Fix browser integration on Windows if hostname contains non-ASCII characters
 
-## New Features
+### New Features
 - [PICARD-9](https://tickets.metabrainz.org/browse/PICARD-9) - Options profiles / quick presets
 - [PICARD-257](https://tickets.metabrainz.org/browse/PICARD-257) - Option to preserve artwork when selecting "clear existing tags"
 - [PICARD-1127](https://tickets.metabrainz.org/browse/PICARD-1127) - Filename presets
@@ -534,10 +536,10 @@
 - [PICARD-2277](https://tickets.metabrainz.org/browse/PICARD-2277) - When translating artist names ignore selected scripts
 - [PICARD-2279](https://tickets.metabrainz.org/browse/PICARD-2279) - Allow saving AcoustID fingerprint in `acoustid_fingerprint` tag
 
-## Tasks
+### Tasks
 - [PICARD-2231](https://tickets.metabrainz.org/browse/PICARD-2231) - Fix packaging Picard on Windows with Python 3.8 or later
 
-## Improvements
+### Improvements
 - [PICARD-226](https://tickets.metabrainz.org/browse/PICARD-226) - Cluster automatically
 - [PICARD-412](https://tickets.metabrainz.org/browse/PICARD-412) - Allow several locales to be selected for "Translate artist names to this locale where possible"
 - [PICARD-524](https://tickets.metabrainz.org/browse/PICARD-524) - Ability to have more that one rename script and choose desired
@@ -571,9 +573,9 @@
 - [PICARD-2288](https://tickets.metabrainz.org/browse/PICARD-2288) - Add variable `%_workcomment%` for the work disambiguation comment
 
 
-# Version 2.6.4 - 2021-10-06
+## Version 2.6.4 - 2021-10-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2199](https://tickets.metabrainz.org/browse/PICARD-2199) - Saving ID3 ratings fails, if rating e-mail contains non latin-1 characters
 - [PICARD-2200](https://tickets.metabrainz.org/browse/PICARD-2200) - Copy and pasting function names from inline scripting docs can copy Unicode left-to-right mark
 - [PICARD-2230](https://tickets.metabrainz.org/browse/PICARD-2230) - Picard fails to start on Windows if the hostname contains non-ASCII characters and browser integration is enabled
@@ -581,9 +583,9 @@
 - [PICARD-2274](https://tickets.metabrainz.org/browse/PICARD-2274) - Picard 2.6.3 crashes when track is removed or moved during lookup
 
 
-# Version 2.6.3 - 2021-06-07
+## Version 2.6.3 - 2021-06-07
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2205](https://tickets.metabrainz.org/browse/PICARD-2205) - Syntax highlighting ignores functions starting with underscore or numbers
 - [PICARD-2206](https://tickets.metabrainz.org/browse/PICARD-2206) - Fix tab order in option pages
 - [PICARD-2209](https://tickets.metabrainz.org/browse/PICARD-2209) - Minimizing / maximizing Picard window registers desktop status indicator multiple times
@@ -592,16 +594,16 @@
 - [PICARD-2226](https://tickets.metabrainz.org/browse/PICARD-2226) - Some config changes are not applied until restart
 
 
-# Version 2.6.2 - 2021-04-27
+## Version 2.6.2 - 2021-04-27
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2188](https://tickets.metabrainz.org/browse/PICARD-2188) - Plugin update can fetch old version from network cache
 - [PICARD-2191](https://tickets.metabrainz.org/browse/PICARD-2191) - Revert title and track number guessed from filename should show up as changed metadata
 
 
-# Version 2.6.1 - 2021-04-15
+## Version 2.6.1 - 2021-04-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2160](https://tickets.metabrainz.org/browse/PICARD-2160) - Switching dark mode in macOS preferences does not change list elements leading to mix of light and dark mode
 - [PICARD-2166](https://tickets.metabrainz.org/browse/PICARD-2166) - "Use original values" for a tag on a large selection takes very long with a high CPU usage
 - [PICARD-2168](https://tickets.metabrainz.org/browse/PICARD-2168) - Keyboard shortcut to trigger script editor auto completion does not work on macOS
@@ -609,51 +611,51 @@
 - [PICARD-2173](https://tickets.metabrainz.org/browse/PICARD-2173) - "Search for similar tracks" is enabled by default, causes crash if used without selection
 - [PICARD-2187](https://tickets.metabrainz.org/browse/PICARD-2187) - Scripting error in file naming options is not displayed properly
 
-## New Features
+### New Features
 - [PICARD-2161](https://tickets.metabrainz.org/browse/PICARD-2161) - Add script function `$unique` to remove duplicate values from multi-value variables
 - [PICARD-2177](https://tickets.metabrainz.org/browse/PICARD-2177) - Add script function `$replacemulti` to replace entries in multi-value variables
 
-## Improvements
+### Improvements
 - [PICARD-2157](https://tickets.metabrainz.org/browse/PICARD-2157) - Reduce comparison overhead of logging window
 - [PICARD-2162](https://tickets.metabrainz.org/browse/PICARD-2162) - Coverart box is slow to update when many files are selected
 - [PICARD-2185](https://tickets.metabrainz.org/browse/PICARD-2185) - Remove empty elements from `$map()` output
 
 
-# Version 2.6 - 2021-03-30
+## Version 2.6 - 2021-03-30
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2156](https://tickets.metabrainz.org/browse/PICARD-2156) - macOS: Use Cmd+Shift+H instead of Cmd+H for opening history view to avoid conflicts with system keyboard shortcut to hide window
 - [PICARD-2159](https://tickets.metabrainz.org/browse/PICARD-2159) - macOS: Scripting Documentation dialog opens behind options dialog
 
-## Improvements
+### Improvements
 - [PICARD-2158](https://tickets.metabrainz.org/browse/PICARD-2158) - Make Scripting Documentation dialog available in renaming script
 - [PICARD-2164](https://tickets.metabrainz.org/browse/PICARD-2164) - Add shortcut Ctrl+T for "Search for similar tracks"
 
 
-# Version 2.6.0b3 - 2021-03-20
+## Version 2.6.0b3 - 2021-03-20
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2135](https://tickets.metabrainz.org/browse/PICARD-2135) - Tags `license` and `website` cannot be deleted and get duplicated on update for ID3
 - [PICARD-2136](https://tickets.metabrainz.org/browse/PICARD-2136) - macOS: File browser does not use user's home folder by default
 - [PICARD-2138](https://tickets.metabrainz.org/browse/PICARD-2138) - macOS: After saving options the toolbar style changes
 
-## Improvements
+### Improvements
 - [PICARD-1357](https://tickets.metabrainz.org/browse/PICARD-1357) - Support dark mode on macOS Mojave 10.14 and later
 - [PICARD-2095](https://tickets.metabrainz.org/browse/PICARD-2095) - Allow the user to choose between light or dark theme on Windows and macOS
 
 
-# Version 2.6.0b2 - 2021-03-06
+## Version 2.6.0b2 - 2021-03-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2131](https://tickets.metabrainz.org/browse/PICARD-2131) - Tagger button reacts slow in Firefox
 
-## Improvements
+### Improvements
 - [PICARD-2130](https://tickets.metabrainz.org/browse/PICARD-2130) - Restructure cover art options to make them easier to understand
 
 
-# Version 2.6.0b1 - 2021-03-02
+## Version 2.6.0b1 - 2021-03-02
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1528](https://tickets.metabrainz.org/browse/PICARD-1528) - "Search for similar albums" causes crashes if the selection includes clusters and files
 - [PICARD-1689](https://tickets.metabrainz.org/browse/PICARD-1689) - Freezes when adding tags to large album
 - [PICARD-1747](https://tickets.metabrainz.org/browse/PICARD-1747) - macOS: Tearing when scrolling list of plugins
@@ -664,17 +666,17 @@
 - [PICARD-2113](https://tickets.metabrainz.org/browse/PICARD-2113) - Script can change title of "Unclustered files" special cluster
 - [PICARD-2127](https://tickets.metabrainz.org/browse/PICARD-2127) - "Lookup in browser" in metadata box does not pass tagger port
 
-## New Features
+### New Features
 - [PICARD-204](https://tickets.metabrainz.org/browse/PICARD-204) - Support for track-level original release date
 - [PICARD-1998](https://tickets.metabrainz.org/browse/PICARD-1998) - Add "director" (for videos) tag
 - [PICARD-2089](https://tickets.metabrainz.org/browse/PICARD-2089) - Support WebP images for cover art
 - [PICARD-2124](https://tickets.metabrainz.org/browse/PICARD-2124) - Add MB release annotation field as `%_releaseannotation%` variable
 
-## Tasks
+### Tasks
 - [PICARD-715](https://tickets.metabrainz.org/browse/PICARD-715) - Chrome to block browser access to localhost
 - [PICARD-1950](https://tickets.metabrainz.org/browse/PICARD-1950) - Fix macOS builds with PyQt > 5.13.2
 
-## Improvements
+### Improvements
 - [PICARD-2084](https://tickets.metabrainz.org/browse/PICARD-2084) - Use TLS for AcoustID web service requests
 - [PICARD-2090](https://tickets.metabrainz.org/browse/PICARD-2090) - Reenable TIFF support for cover art images
 - [PICARD-2092](https://tickets.metabrainz.org/browse/PICARD-2092) - Improve script editor function/variable auto completion
@@ -685,31 +687,31 @@
 - [PICARD-2126](https://tickets.metabrainz.org/browse/PICARD-2126) - Allow cross origin access to browser integration
 
 
-# Version 2.5.6 - 2021-01-05
+## Version 2.5.6 - 2021-01-05
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1943](https://tickets.metabrainz.org/browse/PICARD-1943) - App does not start on macOS 10.12 / 10.13, Gatekeeper reports it as damaged
 - [PICARD-2074](https://tickets.metabrainz.org/browse/PICARD-2074) - Crash when trying to add new tags
 - [PICARD-2083](https://tickets.metabrainz.org/browse/PICARD-2083) - Snap version: path to fpcalc gets invalid after update
 - [PICARD-2087](https://tickets.metabrainz.org/browse/PICARD-2087) - Adding new tags crashes Picard with Qt < 5.10
 
 
-# Version 2.5.5 - 2020-12-17
+## Version 2.5.5 - 2020-12-17
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2070](https://tickets.metabrainz.org/browse/PICARD-2070) - Lookup on cluster only moves every other file
 - [PICARD-2071](https://tickets.metabrainz.org/browse/PICARD-2071) - Track listings sometimes in reverse order
 
 
-# Version 2.5.4 - 2020-12-15
+## Version 2.5.4 - 2020-12-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2067](https://tickets.metabrainz.org/browse/PICARD-2067) - 2.5.3 crashes on start on Windows
 
 
-# Version 2.5.3 - 2020-12-15
+## Version 2.5.3 - 2020-12-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-2016](https://tickets.metabrainz.org/browse/PICARD-2016) - AcoustID API Key is not stripped
 - [PICARD-2017](https://tickets.metabrainz.org/browse/PICARD-2017) - Picard crashes when removing entries on the right side while loading
 - [PICARD-2019](https://tickets.metabrainz.org/browse/PICARD-2019) - Saving tracks to SMB share on Windows 10 results in ever more nested folders
@@ -729,7 +731,7 @@
 - [PICARD-2062](https://tickets.metabrainz.org/browse/PICARD-2062) - Searching for similar tracks can remove current album even if there are unmatched tracks
 - [PICARD-2064](https://tickets.metabrainz.org/browse/PICARD-2064) - Cluster shows empty album column
 
-## Improvements
+### Improvements
 - [PICARD-2034](https://tickets.metabrainz.org/browse/PICARD-2034) - Add context menu entry for copy and paste to metadata view
 - [PICARD-2035](https://tickets.metabrainz.org/browse/PICARD-2035) - More verbose tooltip for album error icon
 - [PICARD-2038](https://tickets.metabrainz.org/browse/PICARD-2038) - Integrate metadata box clipboard with system clipboard
@@ -741,9 +743,9 @@
 - [PICARD-2063](https://tickets.metabrainz.org/browse/PICARD-2063) - Add an option to disable automatic horizontal scrolling in file browser
 
 
-# Version 2.5.2 - 2020-11-15
+## Version 2.5.2 - 2020-11-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1948](https://tickets.metabrainz.org/browse/PICARD-1948) - ScaleFactorRoundPolicy breaks text rendering on Linux
 - [PICARD-1991](https://tickets.metabrainz.org/browse/PICARD-1991) - Case-only changes to file names are not applied on case insensitive file systems on Linux
 - [PICARD-1992](https://tickets.metabrainz.org/browse/PICARD-1992) - Case-only changes to file names are not applied on FAT32 and exFAT file systems on Windows 10
@@ -754,29 +756,29 @@
 - [PICARD-2012](https://tickets.metabrainz.org/browse/PICARD-2012) - Loaded files not shown in UI if release MBID is a redirect
 - [PICARD-2014](https://tickets.metabrainz.org/browse/PICARD-2014) - Config upgrade from Picard < 1.3.0 to version 2.4 or later fails
 
-## Improvements
+### Improvements
 - [PICARD-1828](https://tickets.metabrainz.org/browse/PICARD-1828) - Allow assigning cover art to multiple selected files
 - [PICARD-1999](https://tickets.metabrainz.org/browse/PICARD-1999) - Provide binary distributions for Windows and macOS on PyPI
 - [PICARD-2007](https://tickets.metabrainz.org/browse/PICARD-2007) - Disable analyze / audio fingerprinting for MIDI files
 
 
-# Version 2.5.1 - 2020-10-28
+## Version 2.5.1 - 2020-10-28
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1987](https://tickets.metabrainz.org/browse/PICARD-1987) - Special variables `%_multiartist%`, `%_pregap%`, `%_datatrack%` and `%_totalalbumtracks%` missing after files got matched to a track
 - [PICARD-1988](https://tickets.metabrainz.org/browse/PICARD-1988) - Aborts if directory scan finds a directory which cannot be read
 - [PICARD-1989](https://tickets.metabrainz.org/browse/PICARD-1989) - Auto-sizing does not work right on first column
 - [PICARD-1990](https://tickets.metabrainz.org/browse/PICARD-1990) - Case-only changes to file names are not applied on Windows if running with Python >= 3.8
 
-## Improvements
+### Improvements
 - [PICARD-1985](https://tickets.metabrainz.org/browse/PICARD-1985) - Support chorus master recording relationships as "performer:chorus master" instead of second conductor
 - [PICARD-1995](https://tickets.metabrainz.org/browse/PICARD-1995) - Add command line parameter `--no-player` to disable media player
 - [PICARD-1997](https://tickets.metabrainz.org/browse/PICARD-1997) - Reduce performance impact of fingerprinting column
 
 
-# Version 2.5 - 2020-10-22
+## Version 2.5 - 2020-10-22
 
-## Bugfixes
+### Bugfixes
 - [PICARD-214](https://tickets.metabrainz.org/browse/PICARD-214) - Take case insensitive file systems into account when renaming files
 - [PICARD-1972](https://tickets.metabrainz.org/browse/PICARD-1972) - Times missing in bottom panel
 - [PICARD-1973](https://tickets.metabrainz.org/browse/PICARD-1973) - Multi-value tags getting flattened when files get matched to tracks
@@ -786,13 +788,13 @@
 - [PICARD-1979](https://tickets.metabrainz.org/browse/PICARD-1979) - Comment tag in MP4 not saved correctly
 - [PICARD-1982](https://tickets.metabrainz.org/browse/PICARD-1982) - Cover art not saving properly
 
-## Improvements
+### Improvements
 - [PICARD-1978](https://tickets.metabrainz.org/browse/PICARD-1978) - Add keyboard shortcut for Tags From Filenames and allow to place it in toolbar
 
 
-# Version 2.5.0b1 - 2020-10-15
+## Version 2.5.0b1 - 2020-10-15
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1858](https://tickets.metabrainz.org/browse/PICARD-1858) - MusicBrainz Picard does not respond on macOS 11 Big Sur Beta
 - [PICARD-1882](https://tickets.metabrainz.org/browse/PICARD-1882) - Scripting text not well readable with dark theme on KDE
 - [PICARD-1888](https://tickets.metabrainz.org/browse/PICARD-1888) - Returning tracks to cluster uses matched release rather than what's in the files
@@ -807,14 +809,14 @@
 - [PICARD-1969](https://tickets.metabrainz.org/browse/PICARD-1969) - Browser integration port changes without saving options
 - [PICARD-1971](https://tickets.metabrainz.org/browse/PICARD-1971) - Tags from file names dialog does not restore window size
 
-## New Features
+### New Features
 - [PICARD-259](https://tickets.metabrainz.org/browse/PICARD-259) - Make file-specific variables and metadata available to tagger script
 - [PICARD-534](https://tickets.metabrainz.org/browse/PICARD-534) - Support SOCKS proxy
 - [PICARD-1908](https://tickets.metabrainz.org/browse/PICARD-1908) - Allow loading release group URLs / MBIDs
 - [PICARD-1942](https://tickets.metabrainz.org/browse/PICARD-1942) - Display tracklist in Info dialog for loaded releases
 - [PICARD-1946](https://tickets.metabrainz.org/browse/PICARD-1946) - Map "vocal arranger" rel to arranger tag
 
-## Improvements
+### Improvements
 - [PICARD-1390](https://tickets.metabrainz.org/browse/PICARD-1390) - Apply a network timeout to avoid network requests hanging indefinitely
 - [PICARD-1782](https://tickets.metabrainz.org/browse/PICARD-1782) - Allow locking table headers to prevent accidental resorting
 - [PICARD-1879](https://tickets.metabrainz.org/browse/PICARD-1879) - When dragging tracks onto a release add those tracks sequentially
@@ -831,32 +833,32 @@
 - [PICARD-1960](https://tickets.metabrainz.org/browse/PICARD-1960) - Allow adding new items in list editor views using Insert key
 - [PICARD-1965](https://tickets.metabrainz.org/browse/PICARD-1965) - Allow opening fingerprinting options in AcoustID missing API key dialog
 
-## Tasks
+### Tasks
 - [PICARD-1929](https://tickets.metabrainz.org/browse/PICARD-1929) - Make NSIS installer translations available on Transifex
 
 
-# Version 2.4.4 - 2020-09-04
+## Version 2.4.4 - 2020-09-04
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1931](https://tickets.metabrainz.org/browse/PICARD-1931) - Regression: "Unmatched Files" do not appear when release was deleted from MB
 
 
-# Version 2.4.3 - 2020-09-04
+## Version 2.4.3 - 2020-09-04
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1916](https://tickets.metabrainz.org/browse/PICARD-1916) - Picard crashes on older releases of macOS due to theming exception
 - [PICARD-1918](https://tickets.metabrainz.org/browse/PICARD-1918) - Saving files fails if there is no front image and "Save only one front image as separate file" is enabled
 - [PICARD-1921](https://tickets.metabrainz.org/browse/PICARD-1921) - Windows 10: With dark theme inactive checkboxes cannot be distinguished from active ones
 - [PICARD-1928](https://tickets.metabrainz.org/browse/PICARD-1928) - After clustering fingerprint icon disappears
 - [PICARD-1931](https://tickets.metabrainz.org/browse/PICARD-1931) - Regression: "Unmatched Files" do not appear when release was deleted from MB
 
-## Improvements
+### Improvements
 - [PICARD-1935](https://tickets.metabrainz.org/browse/PICARD-1935) - Include tests in PyPI sdist tarball
 
 
-# Version 2.4.2 - 2020-08-18
+## Version 2.4.2 - 2020-08-18
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1909](https://tickets.metabrainz.org/browse/PICARD-1909) - No refresh of metadata on "Use Original Value" or remove tags
 - [PICARD-1911](https://tickets.metabrainz.org/browse/PICARD-1911) - Removing tags does not update list views
 - [PICARD-1913](https://tickets.metabrainz.org/browse/PICARD-1913) - Changing tags of a track without matched files changes original metadata
@@ -864,21 +866,21 @@
 - [PICARD-1915](https://tickets.metabrainz.org/browse/PICARD-1915) - An album selected during loading should update the metadata view when loading has finished
 - [PICARD-1916](https://tickets.metabrainz.org/browse/PICARD-1916) - Picard crashes on older releases of macOS due to theming exception
 
-## Improvements
+### Improvements
 - [PICARD-1860](https://tickets.metabrainz.org/browse/PICARD-1860) - New added tag should open field to enter value automatically
 - [PICARD-1899](https://tickets.metabrainz.org/browse/PICARD-1899) - Update help links to go to <https://picard-docs.musicbrainz.org>
 - [PICARD-1920](https://tickets.metabrainz.org/browse/PICARD-1920) - Open documentation in options dialog using the platform's help shortcut (e.g. F1 on Windows or Ctrl+? on macOS)
 
 
-# Version 2.4.1 - 2020-08-11
+## Version 2.4.1 - 2020-08-11
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1904](https://tickets.metabrainz.org/browse/PICARD-1904) - Picard 2.4 does not start on Windows 7 and Windows 8
 
 
-# Version 2.4 - 2020-08-10
+## Version 2.4 - 2020-08-10
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1763](https://tickets.metabrainz.org/browse/PICARD-1763) - App does not start on macOS 10.13 High Sierra
 - [PICARD-1873](https://tickets.metabrainz.org/browse/PICARD-1873) - Scripting documentation uses an ugly font on Windows
 - [PICARD-1881](https://tickets.metabrainz.org/browse/PICARD-1881) - Function names in script documentation not readable with dark theme
@@ -891,11 +893,11 @@
 - [PICARD-1896](https://tickets.metabrainz.org/browse/PICARD-1896) - Instrument arranger is not being mapped for tagging using the correct key
 - [PICARD-1902](https://tickets.metabrainz.org/browse/PICARD-1902) - Crash when typing `$noop(\)` in the script editor
 
-## New Features
+### New Features
 - [PICARD-1128](https://tickets.metabrainz.org/browse/PICARD-1128) - Support Microsoft WAVE format (RIFF/WAVE) tagging with ID3
 - [PICARD-1839](https://tickets.metabrainz.org/browse/PICARD-1839) - Support DSDIFF (DFF) files
 
-## Improvements
+### Improvements
 - [PICARD-1812](https://tickets.metabrainz.org/browse/PICARD-1812) - Support RIFF INFO chunks for WAVE files
 - [PICARD-1871](https://tickets.metabrainz.org/browse/PICARD-1871) - Use tag list editor for preserved tags
 - [PICARD-1875](https://tickets.metabrainz.org/browse/PICARD-1875) - Improve function documentation for `$firstalphachar`
@@ -904,18 +906,18 @@
 - [PICARD-1887](https://tickets.metabrainz.org/browse/PICARD-1887) - On macOS use dark syntax theme if dark mode is enabled (currently only when running from source)
 
 
-# Version 2.4.0b2 - 2020-07-05
+## Version 2.4.0b2 - 2020-07-05
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1864](https://tickets.metabrainz.org/browse/PICARD-1864) - Adding single files does ignore existing MBIDs
 - [PICARD-1866](https://tickets.metabrainz.org/browse/PICARD-1866) - Coverart pane does not update during / after saving files
 - [PICARD-1867](https://tickets.metabrainz.org/browse/PICARD-1867) - Guess format fallback is broken
 - [PICARD-1868](https://tickets.metabrainz.org/browse/PICARD-1868) - CAA type selection dialog does not translate "Unknown"
 
 
-# Version 2.4.0b1 - 2020-07-01
+## Version 2.4.0b1 - 2020-07-01
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1753](https://tickets.metabrainz.org/browse/PICARD-1753) - Fix font size of script editor and log view on Windows
 - [PICARD-1807](https://tickets.metabrainz.org/browse/PICARD-1807) - Wrong error handling when using python-libdiscid
 - [PICARD-1813](https://tickets.metabrainz.org/browse/PICARD-1813) - `$title` function throws error on empty value
@@ -927,12 +929,12 @@
 - [PICARD-1855](https://tickets.metabrainz.org/browse/PICARD-1855) - Relationships not tagged for non-album track
 - [PICARD-1859](https://tickets.metabrainz.org/browse/PICARD-1859) - "ValueError: Invalid literal" followed by crash when opening certain files
 
-## New Features
+### New Features
 - [PICARD-1704](https://tickets.metabrainz.org/browse/PICARD-1704) - Support Windows 10 dark mode
 - [PICARD-1797](https://tickets.metabrainz.org/browse/PICARD-1797) - Autocompletion for script functions and variables
 - [PICARD-1798](https://tickets.metabrainz.org/browse/PICARD-1798) - Add support for inline translatable documentation
 
-## Improvements
+### Improvements
 - [PICARD-824](https://tickets.metabrainz.org/browse/PICARD-824) - Expand all option submenus by default
 - [PICARD-920](https://tickets.metabrainz.org/browse/PICARD-920) - Remember selected options page
 - [PICARD-1117](https://tickets.metabrainz.org/browse/PICARD-1117) - Instrumental recordings of a work should set language to "No lyrics"
@@ -953,9 +955,9 @@
 - [PICARD-1856](https://tickets.metabrainz.org/browse/PICARD-1856) - Use pgettext function in Python 3.8
 
 
-# Version 2.3.2 - 2020-05-06
+## Version 2.3.2 - 2020-05-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1775](https://tickets.metabrainz.org/browse/PICARD-1775) - `$firstwords` function doesn't catch IndexError
 - [PICARD-1776](https://tickets.metabrainz.org/browse/PICARD-1776) - `$datetime` crashes when invalid format specified
 - [PICARD-1781](https://tickets.metabrainz.org/browse/PICARD-1781) - Have `$find` return "" rather than "-1" on not found
@@ -971,15 +973,15 @@
 - [PICARD-1801](https://tickets.metabrainz.org/browse/PICARD-1801) - List index out of range when saving Vorbis file
 - [PICARD-1803](https://tickets.metabrainz.org/browse/PICARD-1803) - Instrument EWI is rewritten "e w i"
 
-## Improvements
+### Improvements
 - [PICARD-1777](https://tickets.metabrainz.org/browse/PICARD-1777) - Support fractional scaling on Windows 10
 - [PICARD-1800](https://tickets.metabrainz.org/browse/PICARD-1800) - Simplify Unicode 'Bullet' to ASCII 'Hyphen-minus'
 - [PICARD-1809](https://tickets.metabrainz.org/browse/PICARD-1809) - Optimize format detection logic
 
 
-# Version 2.3.1 - 2020-02-27
+## Version 2.3.1 - 2020-02-27
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1745](https://tickets.metabrainz.org/browse/PICARD-1745) - Packaged libdiscid is not compatible with macOS 10.12
 - [PICARD-1748](https://tickets.metabrainz.org/browse/PICARD-1748) - Many release events can cause the versions context menu to overflow
 - [PICARD-1750](https://tickets.metabrainz.org/browse/PICARD-1750) - Existing acoustid_fingerprint tags are not considered for AcoustID submission
@@ -993,11 +995,11 @@
 - [PICARD-1773](https://tickets.metabrainz.org/browse/PICARD-1773) - Untrapped error on `$mod` with zero input
 - [PICARD-1774](https://tickets.metabrainz.org/browse/PICARD-1774) - `$lenmulti` with missing name returns "1"
 
-## New Features
+### New Features
 - [PICARD-1743](https://tickets.metabrainz.org/browse/PICARD-1743) - Add script functions `$sortmulti` and `$reversemulti` to sort and reverse multi-value variables
 - [PICARD-1751](https://tickets.metabrainz.org/browse/PICARD-1751) - Provide a `%_releasecountries%` variable
 
-## Improvements
+### Improvements
 - [PICARD-1746](https://tickets.metabrainz.org/browse/PICARD-1746) - Change Generate AcoustID Fingerprints shortcut to Ctrl+Shift+Y / ⌘⇧Y
 - [PICARD-1752](https://tickets.metabrainz.org/browse/PICARD-1752) - Use preferred release countries to select a matching release country if there are multiple
 - [PICARD-1755](https://tickets.metabrainz.org/browse/PICARD-1755) - "Supported Languages" on Microsoft Store shows only English (United States)
@@ -1005,19 +1007,19 @@
 - [PICARD-1771](https://tickets.metabrainz.org/browse/PICARD-1771) - Completely ignore release types set to zero in preferred releases
 
 
-# Version 2.3 - 2020-02-17
+## Version 2.3 - 2020-02-17
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1739](https://tickets.metabrainz.org/browse/PICARD-1739) - Update check does not handle alpha, beta and rc versions properly
 - [PICARD-1744](https://tickets.metabrainz.org/browse/PICARD-1744) - Invalid ignore path regex can crash Picard
 
-## Improvements
+### Improvements
 - [PICARD-1740](https://tickets.metabrainz.org/browse/PICARD-1740) - Save originalfilename to ASF tags
 
 
-# Version 2.3.0rc1 - 2020-02-11
+## Version 2.3.0rc1 - 2020-02-11
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1688](https://tickets.metabrainz.org/browse/PICARD-1688) - "Submit AcoustIDs" fails with many tracks
 - [PICARD-1719](https://tickets.metabrainz.org/browse/PICARD-1719) - `$unset` marks tag for deletion
 - [PICARD-1724](https://tickets.metabrainz.org/browse/PICARD-1724) - Fingerprint status on left should not be submittable (red)
@@ -1027,7 +1029,7 @@
 - [PICARD-1733](https://tickets.metabrainz.org/browse/PICARD-1733) - App does not start on macOS 10.12
 - [PICARD-1736](https://tickets.metabrainz.org/browse/PICARD-1736) - "Generate AcoustID Fingerprints" is too long for the toolbar
 
-## Improvements
+### Improvements
 - [PICARD-1716](https://tickets.metabrainz.org/browse/PICARD-1716) - Add script functions for strings (`$find`, `$reverse`, `$substr`), multi-value variables (`$getmulti`), and loops (`$foreach`, `$while`, `$map`)
 - [PICARD-1717](https://tickets.metabrainz.org/browse/PICARD-1717) - Backup config file on update
 - [PICARD-1720](https://tickets.metabrainz.org/browse/PICARD-1720) - Add script function `$slice` to extract a portion of a multi-value variable
@@ -1038,9 +1040,9 @@
 - [PICARD-1738](https://tickets.metabrainz.org/browse/PICARD-1738) - Load a recording URL entered into the search field as standalone recording
 
 
-# Version 2.3.0b1 - 2020-01-30
+## Version 2.3.0b1 - 2020-01-30
 
-## Bugfixes
+### Bugfixes
 - [PICARD-239](https://tickets.metabrainz.org/browse/PICARD-239) - Using tag "comment" should behave the same as "comment:" (with colon) in tagger script
 - [PICARD-965](https://tickets.metabrainz.org/browse/PICARD-965) - Items in tagger scripts list are squished
 - [PICARD-1054](https://tickets.metabrainz.org/browse/PICARD-1054) - Picard swallows values of Qt command line arguments
@@ -1064,7 +1066,7 @@
 - [PICARD-1709](https://tickets.metabrainz.org/browse/PICARD-1709) - Saving AIFF files can make them unreadable (requires mutagen >= 1.43)
 - [PICARD-1711](https://tickets.metabrainz.org/browse/PICARD-1711) - Cannot delete lyrics from ASF, ID3, MP4 and APE files
 
-## New Features
+### New Features
 - [PICARD-34](https://tickets.metabrainz.org/browse/PICARD-34) - Add a fingerprint indicator
 - [PICARD-118](https://tickets.metabrainz.org/browse/PICARD-118) - Windows: Provide a portable Picard version
 - [PICARD-125](https://tickets.metabrainz.org/browse/PICARD-125) - Support for AC3
@@ -1079,7 +1081,7 @@
 - [PICARD-1677](https://tickets.metabrainz.org/browse/PICARD-1677) - Option to ignore tags for file changed status
 - [PICARD-1684](https://tickets.metabrainz.org/browse/PICARD-1684) - Allow re-ordering multi-value tags
 
-## Improvements
+### Improvements
 - [PICARD-115](https://tickets.metabrainz.org/browse/PICARD-115) - Display 'YYYY', 'MM' and 'DD' in date input field when value not available
 - [PICARD-321](https://tickets.metabrainz.org/browse/PICARD-321) - Backslash support in filenames if Windows compatibility is disabled
 - [PICARD-1260](https://tickets.metabrainz.org/browse/PICARD-1260) - Sort entries in Clusters more "naturally"
@@ -1110,7 +1112,7 @@
 - [PICARD-1714](https://tickets.metabrainz.org/browse/PICARD-1714) - Focus search input with Ctrl+F
 - [PICARD-1715](https://tickets.metabrainz.org/browse/PICARD-1715) - Allow changing file extension by manipulating the `%_extension%` variable in renaming script
 
-## Tasks
+### Tasks
 - [PICARD-1406](https://tickets.metabrainz.org/browse/PICARD-1406) - Refactor `Metadata.set` and `Metadata.__setitem__`
 - [PICARD-1465](https://tickets.metabrainz.org/browse/PICARD-1465) - Add Picard to Windows Store
 - [PICARD-1596](https://tickets.metabrainz.org/browse/PICARD-1596) - Automate PyPI deployment
@@ -1119,9 +1121,9 @@
 - [PICARD-1703](https://tickets.metabrainz.org/browse/PICARD-1703) - Upgrade to PyInstaller 3.6
 
 
-# Version 2.2.3 - 2019-11-06
+## Version 2.2.3 - 2019-11-06
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1633](https://tickets.metabrainz.org/browse/PICARD-1633) - macOS: Automatic locale detection broken
 - [PICARD-1634](https://tickets.metabrainz.org/browse/PICARD-1634) - macOS: File browser sets wrong horizontal scroll position
 - [PICARD-1635](https://tickets.metabrainz.org/browse/PICARD-1635) - Terminated randomly when deleting files when saving
@@ -1137,14 +1139,14 @@
 - [PICARD-1654](https://tickets.metabrainz.org/browse/PICARD-1654) - macOS: Logout button / username stays visible after logout
 - [PICARD-1655](https://tickets.metabrainz.org/browse/PICARD-1655) - macOS: Login dialog can be hidden behind options
 
-## Improvements
+### Improvements
 - [PICARD-1630](https://tickets.metabrainz.org/browse/PICARD-1630) - Ensure FLAC metadata is visible/editable in Windows Explorer
 - [PICARD-1632](https://tickets.metabrainz.org/browse/PICARD-1632) - Tooltips for genre filter help hide too quickly
 
 
-# Version 2.2.2 - 2019-10-08
+## Version 2.2.2 - 2019-10-08
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1606](https://tickets.metabrainz.org/browse/PICARD-1606) - Crashes on opening options with broken plugin
 - [PICARD-1612](https://tickets.metabrainz.org/browse/PICARD-1612) - Trackpad tap is not working properly on macOS
 - [PICARD-1614](https://tickets.metabrainz.org/browse/PICARD-1614) - macOS: Incorrect 'LSMinimumSystemVersion'
@@ -1152,27 +1154,27 @@
 - [PICARD-1621](https://tickets.metabrainz.org/browse/PICARD-1621) - Lookup CD dropdown does not list additional drives
 - [PICARD-1624](https://tickets.metabrainz.org/browse/PICARD-1624) - Updating default CD device in options does not change default for keyboard shortcut
 
-## Improvements
+### Improvements
 - [PICARD-1610](https://tickets.metabrainz.org/browse/PICARD-1610) - Make the labels in Options > User Interface > Colours wider
 - [PICARD-1619](https://tickets.metabrainz.org/browse/PICARD-1619) - Grey out cover art providers list when cover art is disabled
 
 
-# Version 2.2.1 - 2019-09-20
+## Version 2.2.1 - 2019-09-20
 
-## Bugfixes
+### Bugfixes
 - [PICARD-1603](https://tickets.metabrainz.org/browse/PICARD-1603) - Translations from picard/ui/colors.py don’t show up in Picard
 - [PICARD-1604](https://tickets.metabrainz.org/browse/PICARD-1604) - Windows install is not using Qt default translations
 - [PICARD-1607](https://tickets.metabrainz.org/browse/PICARD-1607) - Upgrading a plugin displays the dialog box multiple times
 - [PICARD-1608](https://tickets.metabrainz.org/browse/PICARD-1608) - "\[non-album tracks\]" can not directly be removed
 - [PICARD-1609](https://tickets.metabrainz.org/browse/PICARD-1609) - Picard About shows Qt version PyQt was build against, not actually used Qt
 
-## Improvements
+### Improvements
 - [PICARD-1602](https://tickets.metabrainz.org/browse/PICARD-1602) - Tests should not be included in the sdist package
 
 
-# Version 2.2 - 2019-09-14
+## Version 2.2 - 2019-09-14
 
-## Bugfixes
+### Bugfixes
 - [PICARD-456](https://tickets.metabrainz.org/browse/PICARD-456) - "Delete empty directories" should not delete special folders such as the desktop
 - [PICARD-571](https://tickets.metabrainz.org/browse/PICARD-571) - Scripting and renaming font on macOS and Windows not monospace
 - [PICARD-622](https://tickets.metabrainz.org/browse/PICARD-622) - File Browser resets horizontal scrolling on selection change
@@ -1221,7 +1223,7 @@
 - [PICARD-1598](https://tickets.metabrainz.org/browse/PICARD-1598) - Metadata box hidden when album gets updated
 - [PICARD-1601](https://tickets.metabrainz.org/browse/PICARD-1601) - PyPI source tarball misses some test data
 
-## New Features
+### New Features
 - [PICARD-143](https://tickets.metabrainz.org/browse/PICARD-143) - Add a plugin hook for a file-added-to-a-track event
 - [PICARD-1130](https://tickets.metabrainz.org/browse/PICARD-1130) - Post save plugins
 - [PICARD-1488](https://tickets.metabrainz.org/browse/PICARD-1488) - Built-in media player (beta feature)
@@ -1232,13 +1234,13 @@
 - [PICARD-1560](https://tickets.metabrainz.org/browse/PICARD-1560) - Add a plugin hook for a file loaded event
 - [PICARD-1594](https://tickets.metabrainz.org/browse/PICARD-1594) - Provide `$is_video()` / `$is_audio()` scripting functions
 
-## Tasks
+### Tasks
 - [PICARD-1353](https://tickets.metabrainz.org/browse/PICARD-1353) - Update Travis CI to use newer Xcode
 - [PICARD-1388](https://tickets.metabrainz.org/browse/PICARD-1388) - Document how to uninstall local built version of picard from CLI
 - [PICARD-1561](https://tickets.metabrainz.org/browse/PICARD-1561) - test_file.TestPreserveTimes fails on macOS 10.14
 - [PICARD-1563](https://tickets.metabrainz.org/browse/PICARD-1563) - Add 'picard.egg-info' file to .gitignore
 
-## Improvements
+### Improvements
 - [PICARD-1235](https://tickets.metabrainz.org/browse/PICARD-1235) - Picard is not responding during start while CD is being inserted
 - [PICARD-1361](https://tickets.metabrainz.org/browse/PICARD-1361) - Add "Launch Picard" to Windows installer
 - [PICARD-1400](https://tickets.metabrainz.org/browse/PICARD-1400) - Remove Amazon cover art provider from Picard and place it into a plugin
@@ -1260,8 +1262,8 @@
 - [PICARD-1599](https://tickets.metabrainz.org/browse/PICARD-1599) - Use fpcalc json output for more robust output parsing
 
 
-# Version 2.1.3 - 2019-03-03
-## Bugfixes
+## Version 2.1.3 - 2019-03-03
+### Bugfixes
 - [PICARD-323](https://tickets.metabrainz.org/browse/PICARD-323) - Only the discid of the first disc in a release is written to tags
 - [PICARD-455](https://tickets.metabrainz.org/browse/PICARD-455) - Picard setting cover art height, width and depth to 0 for FLAC files --> breaks libFLAC
 - [PICARD-729](https://tickets.metabrainz.org/browse/PICARD-729) - Tracks get stuck at "\[loading track information\]" on Bad Gateway errors
@@ -1282,41 +1284,41 @@
 - [PICARD-1478](https://tickets.metabrainz.org/browse/PICARD-1478) - Changing MB server requires a restart
 - [PICARD-1480](https://tickets.metabrainz.org/browse/PICARD-1480) - Search line input clear button icon is too small
 
-## Tasks
+### Tasks
 - [PICARD-1459](https://tickets.metabrainz.org/browse/PICARD-1459) - Remove OptionsPage.info method
 - [PICARD-1472](https://tickets.metabrainz.org/browse/PICARD-1472) - macOS code signing on Travis CI fails for xcode7.3 image
 
-## Improvements
+### Improvements
 - [PICARD-1242](https://tickets.metabrainz.org/browse/PICARD-1242) - Consider the number of AcoustID sources for linked recordings
 - [PICARD-1457](https://tickets.metabrainz.org/browse/PICARD-1457) - "Check for Update" should be in the Picard menu
 - [PICARD-1458](https://tickets.metabrainz.org/browse/PICARD-1458) - "Check for Update" should have an ellipsis at the end
 - [PICARD-1470](https://tickets.metabrainz.org/browse/PICARD-1470) - Make warning about Qt locale loading less prominent
 
 
-# Version 2.1.2 - 2019-01-29
-## Bugfixes
+## Version 2.1.2 - 2019-01-29
+### Bugfixes
 - [PICARD-1382](https://tickets.metabrainz.org/browse/PICARD-1382) - macOS packaging script ignores all errors
 
-## Tasks
+### Tasks
 - [PICARD-1456](https://tickets.metabrainz.org/browse/PICARD-1456) - macOS packaging fails due to PIP bug
 
 
-# Version 2.1.1 - 2019-01-29
-## Bugfixes
+## Version 2.1.1 - 2019-01-29
+### Bugfixes
 - [PICARD-1451](https://tickets.metabrainz.org/browse/PICARD-1451) - Redirects of authenticated requests fail with 401 error
 - [PICARD-1453](https://tickets.metabrainz.org/browse/PICARD-1453) - Dropping events do not work in CoverArtBox
 - [PICARD-1454](https://tickets.metabrainz.org/browse/PICARD-1454) - Crashes when adding action to toolbar in options
 
 
-## Tasks
+### Tasks
 - [PICARD-1452](https://tickets.metabrainz.org/browse/PICARD-1452) - Appveyor auto-deploy not working
 
-## Improvements
+### Improvements
 - [PICARD-1450](https://tickets.metabrainz.org/browse/PICARD-1450) - Fix language label for zh_CN and zh_TW
 
 
-# Version 2.1.0 - 2018-12-20
-## Bugfixes
+## Version 2.1.0 - 2018-12-20
+### Bugfixes
 - [PICARD-105](https://tickets.metabrainz.org/browse/PICARD-105) - Picard won't load non-album tracks from fingerprints
 - [PICARD-421](https://tickets.metabrainz.org/browse/PICARD-421) - Releases in private collections are not shown as being in them
 - [PICARD-518](https://tickets.metabrainz.org/browse/PICARD-518) - Sliders without labels in "Options - Metadata - Preferred Releases"
@@ -1371,7 +1373,7 @@
 - [PICARD-1438](https://tickets.metabrainz.org/browse/PICARD-1438) - Message box buttons Yes/No aren't translated
 - [PICARD-1439](https://tickets.metabrainz.org/browse/PICARD-1439) - Newline character in cover art naming script causes exception on saving
 
-## New Features
+### New Features
 - [PICARD-490](https://tickets.metabrainz.org/browse/PICARD-490) - Allow tagging AAC/ADTS files with APEv2 tags
 - [PICARD-1043](https://tickets.metabrainz.org/browse/PICARD-1043) - Support reading & writing iTunes Classical tags
 - [PICARD-1045](https://tickets.metabrainz.org/browse/PICARD-1045) - Check for new version
@@ -1387,17 +1389,17 @@
 - [PICARD-1395](https://tickets.metabrainz.org/browse/PICARD-1395) - Support genres from MusicBrainz
 - [PICARD-1440](https://tickets.metabrainz.org/browse/PICARD-1440) - Support loading and renaming Standard MIDI Files (SMF)
 
-## Tasks
+### Tasks
 - [PICARD-1333](https://tickets.metabrainz.org/browse/PICARD-1333) - Run CI tests agaist oldest supported mutagen
 - [PICARD-1347](https://tickets.metabrainz.org/browse/PICARD-1347) - Refactor script.py to avoid code duplication
 - [PICARD-1365](https://tickets.metabrainz.org/browse/PICARD-1365) - Allow building with PyQt 5.11 or later
 - [PICARD-1442](https://tickets.metabrainz.org/browse/PICARD-1442) - Support new Audio Play secondary type
 
-## Sub-tasks
+### Sub-tasks
 - [PICARD-1407](https://tickets.metabrainz.org/browse/PICARD-1407) - Save originalalbum / originalartist to ASF/WMA
 - [PICARD-1408](https://tickets.metabrainz.org/browse/PICARD-1408) - Save originalalbum / originalartist to APE
 
-## Improvements
+### Improvements
 - [PICARD-664](https://tickets.metabrainz.org/browse/PICARD-664) - When dragging a recording, show the actual file name instead of the path
 - [PICARD-792](https://tickets.metabrainz.org/browse/PICARD-792) - Package a start menu tile for Windows 10 on the windows version
 - [PICARD-1039](https://tickets.metabrainz.org/browse/PICARD-1039) - Use forward delete instead of delete button on macOS
@@ -1422,8 +1424,8 @@
 - [PICARD-1443](https://tickets.metabrainz.org/browse/PICARD-1443) - Sort secondary release types in UI alphabetically
 
 
-# Version 2.0.4 - 2018-09-05
-## Bugfixes
+## Version 2.0.4 - 2018-09-05
+### Bugfixes
 - [PICARD-803](https://tickets.metabrainz.org/browse/PICARD-803) - tagging "8½ Minutes" with "replace with non-ascii characters" results in a directory being created
 - [PICARD-1216](https://tickets.metabrainz.org/browse/PICARD-1216) - Does not display version information
 - [PICARD-1267](https://tickets.metabrainz.org/browse/PICARD-1267) - 2.0.0dev6 crash in debug mode on Windows April Update (1803)
@@ -1442,51 +1444,51 @@
 - [PICARD-1331](https://tickets.metabrainz.org/browse/PICARD-1331) - Picard crashes on error during plugin install
 
 
-# Version 2.0.3 - 2018-08-10
-## Bugfixes
+## Version 2.0.3 - 2018-08-10
+### Bugfixes
 - [PICARD-1122](https://tickets.metabrainz.org/browse/PICARD-1122) - Preffered release type settings are exclusive and should be inclusive
 - [PICARD-1207](https://tickets.metabrainz.org/browse/PICARD-1207) - Move additional files feature fails when source directory contains non-ascii characters
 - [PICARD-1247](https://tickets.metabrainz.org/browse/PICARD-1247) - Not all "preserved" tags are preserved
 - [PICARD-1305](https://tickets.metabrainz.org/browse/PICARD-1305) - Search dialog crashes picard when record doesn't have an album
 - [PICARD-1306](https://tickets.metabrainz.org/browse/PICARD-1306) - picard crashes when opening the options dialog if the cwd doesn't exist
 
-## New Features
+### New Features
 - [PICARD-1289](https://tickets.metabrainz.org/browse/PICARD-1289) - Allow manually running any tagger script
 
 
-## Improvements
+### Improvements
 - [PICARD-1292](https://tickets.metabrainz.org/browse/PICARD-1292) - MusicBrainz Picard 2.01 64-bit for windows installs to "C:\Program Files (x86)" by default
 - [PICARD-1302](https://tickets.metabrainz.org/browse/PICARD-1302) - Dropping an image from Google image crashes picard
 - [PICARD-1303](https://tickets.metabrainz.org/browse/PICARD-1303) - picard crashes when matching a cluster with a release with no tracks
 - [PICARD-1304](https://tickets.metabrainz.org/browse/PICARD-1304) - Info dialog for album crashes because track doesn't have a tracknumber
 
-## Regression
+### Regression
 - [PICARD-259](https://tickets.metabrainz.org/browse/PICARD-259) - Make file-specific variables available to tagger script
 
 
-# Version 2.0.2 - 2018-07-30
-## Sub-tasks
+## Version 2.0.2 - 2018-07-30
+### Sub-tasks
 - [PICARD-1296](https://tickets.metabrainz.org/browse/PICARD-1296) - Code sign Picard for macOS
 
-## Tasks
+### Tasks
 - [PICARD-1301](https://tickets.metabrainz.org/browse/PICARD-1301) - Use PyQT 5.10 for macOS
 
-## Bugfixes
+### Bugfixes
 - [PICARD-342](https://tickets.metabrainz.org/browse/PICARD-342) - Picard is not properly signed for Mac OS X Gatekeeper
 - [PICARD-1212](https://tickets.metabrainz.org/browse/PICARD-1212) - Picard 2.0.0dev4 crashing at startup
 - [PICARD-1300](https://tickets.metabrainz.org/browse/PICARD-1300) - Picard crashes when logging lots of events
 
-# Version 2.0.1 - 2018-07-21
-## Bugfixes
+## Version 2.0.1 - 2018-07-21
+### Bugfixes
 - [PICARD-1283](https://tickets.metabrainz.org/browse/PICARD-1283) - Fingerprinting not working on macOS in Picard 2.0
 - [PICARD-1286](https://tickets.metabrainz.org/browse/PICARD-1286) - Error creating SSL context on Windows
 
-## Improvements
+### Improvements
 - [PICARD-1290](https://tickets.metabrainz.org/browse/PICARD-1290) - Improve slow start up times by moving to a non single file exe
 - [PICARD-1291](https://tickets.metabrainz.org/browse/PICARD-1291) - Use an installer for Picard 2.x windows exe
 
-# Version 2.0 - 2018-07-18
-## Bugfixes
+## Version 2.0 - 2018-07-18
+### Bugfixes
 - [PICARD-153](https://tickets.metabrainz.org/browse/PICARD-153) - Non-configuration data is saved in Picard.conf
 - [PICARD-173](https://tickets.metabrainz.org/browse/PICARD-173) - ID3 tag TSOP appears to be stored blank
 - [PICARD-340](https://tickets.metabrainz.org/browse/PICARD-340) - Cover art embedding will overwrite existing ones
@@ -1544,15 +1546,15 @@
 - [PICARD-1271](https://tickets.metabrainz.org/browse/PICARD-1271) - Artist credit saved in tags sometimes loses closing parenthesis
 - [PICARD-1277](https://tickets.metabrainz.org/browse/PICARD-1277) - Picard crashes on unknown cover art types
 
-## New Features
+### New Features
 - [PICARD-1187](https://tickets.metabrainz.org/browse/PICARD-1187) - Add DSF file support
 - [PICARD-1220](https://tickets.metabrainz.org/browse/PICARD-1220) - Add keyboard shortcut for deleting scripts from options > scripting page
 
-## Tasks
+### Tasks
 - [PICARD-960](https://tickets.metabrainz.org/browse/PICARD-960) - Migrate to PyQt5
 - [PICARD-1186](https://tickets.metabrainz.org/browse/PICARD-1186) - Support only 64 bit Picard builds from 2.0
 
-## Improvements
+### Improvements
 - [PICARD-259](https://tickets.metabrainz.org/browse/PICARD-259) - Make file-specific variables available to tagger script
 - [PICARD-581](https://tickets.metabrainz.org/browse/PICARD-581) - Picard XML processing should use lxml module rather than QXmlStreamReader
 - [PICARD-588](https://tickets.metabrainz.org/browse/PICARD-588) - Picard 2.0 based on Python 3
@@ -1569,19 +1571,19 @@
 - [PICARD-1201](https://tickets.metabrainz.org/browse/PICARD-1201) - Add a command-line option to not restore persisted UI sizes or positions
 - [PICARD-1211](https://tickets.metabrainz.org/browse/PICARD-1211) - The “X” close button doesn’t work on the options dialogue
 
-# Version 1.4.2 - 2017-05-08
-## Bugfixes
+## Version 1.4.2 - 2017-05-08
+### Bugfixes
 - [PICARD-1053](https://tickets.metabrainz.org/browse/PICARD-1053) - Picard does not stop analyzer while moving
 - [PICARD-1055](https://tickets.metabrainz.org/browse/PICARD-1055) - picard hangs with: RuntimeError: maximum recursion depth exceeded in cmp
 - [PICARD-1070](https://tickets.metabrainz.org/browse/PICARD-1070) - The "Convert Unicode punctuation characters to ASCII" function only works in certain tags
 - [PICARD-1077](https://tickets.metabrainz.org/browse/PICARD-1077) - ID3v2.4 text encoding settings are not saved correctly
 
-## Improvements
+### Improvements
 - [PICARD-969](https://tickets.metabrainz.org/browse/PICARD-969) - Search dialog webservices get queued behind matched album requests
 - [PICARD-1034](https://tickets.metabrainz.org/browse/PICARD-1034) - Picard not seeing TOPE and TOAL
 
-# Version 1.4.1 - 2017-04-01
-## Bugfixes
+## Version 1.4.1 - 2017-04-01
+### Bugfixes
 - [PICARD-953](https://tickets.metabrainz.org/browse/PICARD-953) - Album shown matched even if extra unmatched files
 - [PICARD-972](https://tickets.metabrainz.org/browse/PICARD-972) - Removing album with saves pending does not remove pending saves
 - [PICARD-973](https://tickets.metabrainz.org/browse/PICARD-973) - Pending log messages not flushed to stderr on quit
@@ -1600,15 +1602,15 @@
 - [PICARD-1029](https://tickets.metabrainz.org/browse/PICARD-1029) - Fix ~artists_sort metadata variable
 - [PICARD-1042](https://tickets.metabrainz.org/browse/PICARD-1042) - Missing import for PICARD_APP_NAME
 
-## New Features
+### New Features
 - [PICARD-258](https://tickets.metabrainz.org/browse/PICARD-258) - Visual feedback for changes to artwork in before-after pane.
 - [PICARD-1000](https://tickets.metabrainz.org/browse/PICARD-1000) - Implement artwork diff for albums
 
-## Tasks
+### Tasks
 - [PICARD-943](https://tickets.metabrainz.org/browse/PICARD-943) - Remove monkey patching of file write methods in picard formats
 - [PICARD-1041](https://tickets.metabrainz.org/browse/PICARD-1041) - Replace Ok button text by Make It So! in Options dialog
 
-## Improvements
+### Improvements
 - [PICARD-223](https://tickets.metabrainz.org/browse/PICARD-223) - Remove should work when Unmatched Files is selected
 - [PICARD-951](https://tickets.metabrainz.org/browse/PICARD-951) - Always use HTTPS for musicbrainz.org
 - [PICARD-952](https://tickets.metabrainz.org/browse/PICARD-952) - Use Cover Art Archive over HTTPS
@@ -1621,8 +1623,8 @@
 - [PICARD-1030](https://tickets.metabrainz.org/browse/PICARD-1030) - Allow to add/replace cover art images and keep existing cover art
 
 
-# Version 1.4 - 2017-02-14
-## Bugfixes
+## Version 1.4 - 2017-02-14
+### Bugfixes
 - [PICARD-82](https://tickets.metabrainz.org/browse/PICARD-82) - AcoustID submission fails with code 299
 - [PICARD-335](https://tickets.metabrainz.org/browse/PICARD-335) - Ignoring "hip hop rap" folksonomy tags also ignores "rap", "hip hop", etc.
 - [PICARD-350](https://tickets.metabrainz.org/browse/PICARD-350) - Picard downloads multiple 'front' images instead of just first one.
@@ -1697,7 +1699,7 @@
 - [PICARD-950](https://tickets.metabrainz.org/browse/PICARD-950) - Open Containing Folder duplicates
 - [PICARD-958](https://tickets.metabrainz.org/browse/PICARD-958) - Errors when directory / file names contain unicode characters
 
-## New Features
+### New Features
 - [PICARD-42](https://tickets.metabrainz.org/browse/PICARD-42) - AIFF support (ID3)
 - [PICARD-137](https://tickets.metabrainz.org/browse/PICARD-137) - Test and integrate support for "local" cover art into Picard
 - [PICARD-680](https://tickets.metabrainz.org/browse/PICARD-680) - Display infos (album, artist, tracklist) for clusters without release match
@@ -1711,7 +1713,7 @@
 - [PICARD-928](https://tickets.metabrainz.org/browse/PICARD-928) - Searching tracks and displaying similar tracks in a dialog box
 - [PICARD-929](https://tickets.metabrainz.org/browse/PICARD-929) - Search for artists from dialog
 
-## Tasks
+### Tasks
 - [PICARD-717](https://tickets.metabrainz.org/browse/PICARD-717) - Picard default name files script refinement
 - [PICARD-760](https://tickets.metabrainz.org/browse/PICARD-760) - Update Picard logo/icons
 - [PICARD-779](https://tickets.metabrainz.org/browse/PICARD-779) - Link to the Scripting documentation on the Scripting options page
@@ -1725,7 +1727,7 @@
 - [PICARD-652](https://tickets.metabrainz.org/browse/PICARD-652) - Provide ~video variable for video tracks
 - [PICARD-708](https://tickets.metabrainz.org/browse/PICARD-708) - Improve error logging on AcoustId submission
 
-## Improvements
+### Improvements
 - [PICARD-22](https://tickets.metabrainz.org/browse/PICARD-22) - Link to Picard Scripting page under 'File Naming'
 - [PICARD-116](https://tickets.metabrainz.org/browse/PICARD-116) - Restore default settings button/s
 - [PICARD-133](https://tickets.metabrainz.org/browse/PICARD-133) - Speed of Ogg tag writing/updating
@@ -1785,12 +1787,12 @@
 - [PICARD-970](https://tickets.metabrainz.org/browse/PICARD-970) - New guess format functionality should use explicit buffer size
 
 
-# Version 1.3.2 - 2015-01-07
+## Version 1.3.2 - 2015-01-07
 - Bugfix: Fixed tags from filename dialog not opening on new installations
 
 
-# Version 1.3.1 - 2014-12-20
-## Bugfixes
+## Version 1.3.1 - 2014-12-20
+### Bugfixes
 - [PICARD-273](https://tickets.metabrainz.org/browse/PICARD-273) - Picard should use the correct Accept header when talking to web services.
 - [PICARD-589](https://tickets.metabrainz.org/browse/PICARD-589) - Picard refuses to load files if any path component happens to be hidden
 - [PICARD-642](https://tickets.metabrainz.org/browse/PICARD-642) - ConfigUpgradeError: Error during config upgrade from version 0.0.0dev0 to 1.0.0final0
@@ -1800,13 +1802,13 @@
 - [PICARD-662](https://tickets.metabrainz.org/browse/PICARD-662) - Retrieving collections causes AttributeError: release_list
 - [PICARD-663](https://tickets.metabrainz.org/browse/PICARD-663) - Artist name makes it impossible to save
 
-## Improvements
+### Improvements
 - [PICARD-658](https://tickets.metabrainz.org/browse/PICARD-658) - Support the new pregap and data tracks
 - [PICARD-659](https://tickets.metabrainz.org/browse/PICARD-659) - Set the originalyear tag when loading a release
 - [PICARD-665](https://tickets.metabrainz.org/browse/PICARD-665) - Web service calls to ports 80 and 443 do not need explicit port specification. 443 should be automatically made https.
 
 
-# Version 1.3 - 2014-10-20
+## Version 1.3 - 2014-10-20
 - The "About" window now displays the versions of libraries used by Picard
 - Picard now correctly handles matching of MP3 files saved in ID3v2.3 tags
   (which is the version that Microsoft Windows and iTunes both use).
@@ -1871,7 +1873,7 @@
 - [PICARD-630](https://tickets.metabrainz.org/browse/PICARD-630) - Prevent ZeroDivisionError in some rare cases
 
 
-# Version 1.2 - 2013-03-30
+## Version 1.2 - 2013-03-30
 - Picard now requires at least Python 2.6
 - Removed support for AmpliFIND/PUIDs
 - Add support for the Ogg Opus file format
@@ -1887,7 +1889,7 @@
 - [PICARD-378](https://tickets.metabrainz.org/browse/PICARD-378) - Accept HTTPS URLs on drag-and-drop
 
 
-# Version 1.1 - 2012-09-03
+## Version 1.1 - 2012-09-03
 - [PICARD-201](https://tickets.metabrainz.org/browse/PICARD-201) - Always show basic tags in metadata comparison box, even if empty (title, artist, album, tracknumber, ~length, date)
 - [PICARD-82](https://tickets.metabrainz.org/browse/PICARD-82) - Fixed AcoustID submission failure after removing files from Picard
 - [PICARD-194](https://tickets.metabrainz.org/browse/PICARD-194) - Allow multi-select in new MetaDataBox for delete/remove tags
@@ -1900,7 +1902,7 @@
 - [PICARD-255](https://tickets.metabrainz.org/browse/PICARD-255), [PICARD-256](https://tickets.metabrainz.org/browse/PICARD-256) - Fix various oddities in the metadata comparison box
 
 
-# Version 1.0 - 2012-06-02
+## Version 1.0 - 2012-06-02
 - [PICARD-43](https://tickets.metabrainz.org/browse/PICARD-43) - New UI: Extended comparison of existing vs. MB metadata & tags
 - Merged the renaming and moving options pages
 - [PICARD-159](https://tickets.metabrainz.org/browse/PICARD-159) - Removed the VA file naming format option (there is now a single format option)
@@ -1934,7 +1936,7 @@
 - [PICARD-74](https://tickets.metabrainz.org/browse/PICARD-74) - Couldn't select multiple directories in "Add Folder" window on OS X
 
 
-# Version 0.16 - 2011-10-23
+## Version 0.16 - 2011-10-23
 - Added AcoustID support.
 - Fixed track metadata plugins.
 - [PICARD-16](https://tickets.metabrainz.org/browse/PICARD-16) - Added new internal `%_totalalbumtracks%` tag field.
@@ -1957,7 +1959,7 @@
 - [PICARD-14](https://tickets.metabrainz.org/browse/PICARD-14) - The status bar/new metadata box is updated when a selected file/track is changed.
 
 
-# Version 0.15.1 - 2011-07-31
+## Version 0.15.1 - 2011-07-31
 - "Other versions" menu now displays release labels and catalog numbers.
 - Added CD-R, 8cm CD to the format mapping.
 - Picard no longer fails to load releases with new or unknown media formats.
@@ -1970,7 +1972,7 @@
 - Fixed use of numerical functions in advanced scripting.
 
 
-# Version 0.15 - 2011-07-17
+## Version 0.15 - 2011-07-17
 - Added options for using standardized track, release, and artist metadata.
 - Added preferred release format support.
 - Expanded preferred release country support to allow multiple countries.
@@ -1984,11 +1986,11 @@
 - Miscellaneous bug fixes.
 
 
-# Version 0.15beta1 - 2011-05-29
+## Version 0.15beta1 - 2011-05-29
 - Support for the NGS web service
 
 
-# Version 0.14 - 2011-05-15
+## Version 0.14 - 2011-05-15
 - Fixed a problem with network operations hanging after a network error (#5794, #5884)
 - ID3v2.3 with UTF-16 is now the default ID3 version
 - Option to set preferred release types for improved album matching
@@ -2003,7 +2005,7 @@
 - Allowed external drives to be visible in the file browser panel on OS X (#5308)
 
 
-# Version 0.13 - 2011-03-06
+## Version 0.13 - 2011-03-06
 - Changed Picard icon license to CC by-sa
 - Small UI consistency changes
 - Albums with tracks linked to more than one file are never marked as
@@ -2025,13 +2027,13 @@
 - Fixed a bug with albums missing the expand/collapse icons
 
 
-# Version 0.12.1 - 2009-11-01
+## Version 0.12.1 - 2009-11-01
 - Fixed deletion of all COMM frames in ID3, which was introduced with the
   iTunNORM fix in Picard 0.12.0.
 - Restored native add folder dialog.
 
 
-# Version 0.12 - 2009-10-25
+## Version 0.12 - 2009-10-25
 - Live syntax checking for tagger script and naming strings.
   (Nikolai Prokoschenko)
 - Support ratings. (Philipp Wolfer)
@@ -2084,7 +2086,7 @@
 - Updated translations.
 
 
-# Version 0.11 - 2008-12-02
+## Version 0.11 - 2008-12-02
 - Support for new FFmpeg install locations
 - Automatically remove whitespaces from MB hostname in options
 - Release date from MB is now optional
@@ -2106,7 +2108,7 @@
   artist name
 
 
-# Version 0.10 - 2008-07-27
+## Version 0.10 - 2008-07-27
 - Fixed crash when reading CD TOC on 64-bit systems
 - Fixed handling of MP4 files with no metadata
 - Change the hotkey for help to the right key for OS X
@@ -2117,7 +2119,7 @@
 - Escape ampersand in release selection (#3748)
 
 
-# Version 0.10.0rc1 - 2008-05-25
+## Version 0.10.0rc1 - 2008-05-25
 - Stop analyzing files that have been removed. (#3352, Gary van der Merwe)
 - Automatically disable CD lookup if no CD device is specified.
   (Will Holcomb)
@@ -2157,7 +2159,7 @@
 - Don't use mmap to resize files on Windows. (Lukáš Lalinský)
 
 
-# Version 0.9.0 - 2007-12-16
+## Version 0.9.0 - 2007-12-16
 - More custom tags in MP4 files (compatible with MediaMonkey and Jaikoz) (#3379)
 - Fixed MP4 fingerprinting on Windows. (#3454, #3374)
 - Fixed CD lookups on Windows. (#3462, #3362, #3386)
@@ -2172,7 +2174,7 @@
 - Use the earliest release date by default. (#3456)
 
 
-# Version 0.9.0beta1 - 2007-10-28
+## Version 0.9.0beta1 - 2007-10-28
 - Save ASIN to MP4 files.
 - Add a `--disable-locales` option to `setup.py build`. (Santiago M. Mola)
 - New threading code, should make Picard crash less and be faster.
@@ -2185,7 +2187,7 @@
 - Lookup files individually for "Unmatched Files", not as a cluster.
 
 
-# Version 0.9.0alpha14 - 2007-08-05
+## Version 0.9.0alpha14 - 2007-08-05
 - Fixed PUID submissions.
 - Fixed drag&drop from Finder to Picard on Mac OS X.
 - Don't save files from "Unmatched Files" when saving an album.
@@ -2198,14 +2200,14 @@
   non-ASCII characters.
 
 
-# Version 0.9.0alpha13 - 2007-07-29
-## Bugfixes
+## Version 0.9.0alpha13 - 2007-07-29
+### Bugfixes
 - Fixed drag&drop issue on Windows Vista.
   <https://web.archive.org/web/20090923160023/forums.musicbrainz.org/viewtopic.php?id=693>
 
 
-# Version 0.9.0alpha12 - 2007-07-29
-## Changes
+## Version 0.9.0alpha12 - 2007-07-29
+### Changes
 - "User directory" location changed:
   - On Windows from "%HOMEPATH%\Local Settings\Application Data\MusicBrainz Picard"
     to "%HOMEPATH%\Application Data\MusicBrainz\Picard"
@@ -2218,13 +2220,13 @@
   - `metadata["~#length"]` is now `metadata.length`
   - `metadata["~#artwork"]` is now `metadata.images`
 
-## New Features
+### New Features
 - Save embedded images to MP4 files.
 - Added option to select release events for albums.
 - Added internal log viewer.
 - Track and file context menu hooks for plugins.
 
-## Bugfixes
+### Bugfixes
 - Deleting files from clusters increments total time rather than
   decrementing it. (#2965)
 - Update metadata boxes and cover art for selected items. (#2498)
@@ -2234,16 +2236,16 @@
 - Cluster multi-disc albums identified by tags, not (disc x). (#2555)
 
 
-# Version 0.9.0alpha11 - 2007-05-27
-## New Features
+## Version 0.9.0alpha11 - 2007-05-27
+### New Features
 - Added "Edit" button to the tag editor.
 
-## Bugfixes
+### Bugfixes
 - Fixed initialization of gettext translations.
 
 
-# Version 0.9.0alpha10 - 2007-05-27
-## New Features
+## Version 0.9.0alpha10 - 2007-05-27
+### New Features
 - New TaggerScript function `$len(text)`. (#2843)
 - Don't compress huge ID3 frames. (#2850)
 - Move "Add Cluster As Release" to a plugin.
@@ -2251,7 +2253,7 @@
 - Removed "Basic" tab from the "Details" window, "Advanced" tab renamed to "Metadata".
 - The tag editor can be used to edit multiple files. (#2893)
 
-## Bugfixes
+### Bugfixes
 - F1 for Help instead of CTRL+H on Windows and Linux. (#2485, Nikolai Prokoschenko)
 - Tabbing focus transition from search isn't as expected. (#2546, Nikolai Prokoschenko)
 - Display an error message if launching a web browser failed.
@@ -2262,8 +2264,8 @@
 - Don't try to auto-analyze files with "loading" errors. (#2862)
 
 
-# Version 0.9.0alpha9 - 2007-05-12
-## New Features
+## Version 0.9.0alpha9 - 2007-05-12
+### New Features
 - The tag editor now accepts free-text tag names.
 - Load 'DJ-mixed by' AR data to `%djmixer%` tag.
 - Load 'Mixed by' AR data to `%mixer%` tag.
@@ -2275,7 +2277,7 @@
   - Removed DirectX-based decoder.
   - FFmpeg compiled with AAC (faad2) support.
 
-## Bugfixes
+### Bugfixes
 - Save XSOP frame to ID3v2.3 tags. (#2484)
 - Use attributes like 'guest' or 'additional' also from generic performer ARs.
 - Fixed capitalization of `%releasetype%` in file naming preview. (#2762)
@@ -2289,11 +2291,11 @@
 - Read only text values from APEv2 tags. (#2828)
 
 
-# Version 0.9.0alpha8 - 2007-04-15
-## New Features
+## Version 0.9.0alpha8 - 2007-04-15
+### New Features
 - Notification of changed files in releases. (#2632, #2702)
 
-## Bugfixes
+### Bugfixes
 - Don't open the file for analyzing twice. (#2733, #2734)
 - Save ASIN and release country to ID3 tags. (#2484, #2456)
 - Variable `%country%` renamed to `%releasecountry%`.
@@ -2305,8 +2307,8 @@
 - Ignore missing tag in `$unset()`.
 
 
-# Version 0.9.0alpha7 - 2007-04-14
-## New Features
+## Version 0.9.0alpha7 - 2007-04-14
+### New Features
 - Remember location in the file browser. (#2618)
 - Added FFmpeg support on Windows (MP3, Vorbis,
   FLAC, WavPack and many other audio formats).
@@ -2323,7 +2325,7 @@
 - Removed GStreamer-based decoder.
 - Implemented `python setup.py install_locales`.
 
-## Bugfixes
+### Bugfixes
 - Failed PUID submission deactivates the submit button. (#2673)
 - Unable to specify album art file name mask. (#2655)
 - Fixed incorrect copying of album metadata to tracks. (#2698)
@@ -2335,8 +2337,8 @@
   removed, try to find an existing directory in the same path.
 
 
-# Version 0.9.0alpha6 - 2007-04-04
-## New Features
+## Version 0.9.0alpha6 - 2007-04-04
+### New Features
 - Added option --disable-autoupdate for 'build' and 'install' commands
   of the setup script. (#2551)
 - Automatically parse track numbers from file names like 01.flac for better
@@ -2350,7 +2352,7 @@
   (#892, #2665)
 - Support for labels, catalog numbers and barcodes.
 
-## Bugfixes
+### Bugfixes
 - Artist names from ARs should be translated, too.
 - Freeze after answering no to "download the new version" prompt. (#2542)
 - `%musicbrainz_albumid%` not working in file renaming. (#2543)
@@ -2360,17 +2362,17 @@
 - The user's script should be applied also to album metadata.
 - Fixed moving of additional files from paths with "special" characters.
 
-## Internals
+### Internals
 - The browser integration HTTP server rewritten using QTcpServer.
 
 
-# Version 0.9.0alpha5 - 2007-03-18
-## New Features
+## Version 0.9.0alpha5 - 2007-03-18
+### New Features
 - Replace Æ with AE in file/directory names. (#2512)
 - "Add cluster as release" (#1049)
 - Text labels under icon buttons. (#2476)
 
-## Bugfixes
+### Bugfixes
 - Fixed fileId generator (caused problems with drag&drop
   if files with multiple formats are used).
 - Original Metadata not greyed out when no tracks are attached. (#2461)
@@ -2384,19 +2386,19 @@
   images correctly. (#2478)
 
 
-# Version 0.9.0alpha4 - 2007-03-09
-## Bugfixes
+## Version 0.9.0alpha4 - 2007-03-09
+### Bugfixes
 - Fixed case-insentive file renaming. (#2457, #2513)
 
 
-# Version 0.9.0alpha3 - 2007-03-08
-## New Features
+## Version 0.9.0alpha3 - 2007-03-08
+### New Features
 - Using of 'performed by' AR types (without instrument or vocal).
 - The "Replace non-ASCII characters" option will try to remove
   accents first. (#2466)
 - Added option to auto-analyze all files. (#2465)
 
-## Bugfixes
+### Bugfixes
 - Fixed file clustering.
 - Added `%albumartistsort%`, `%releasetype%` and `%releasestatus%` to the
   file naming example (#2458)
@@ -2409,16 +2411,16 @@
 - Release type and status should be in lower case. (#2489)
 
 
-# Version 0.9.0alpha2 - 2007-03-04
-## New Features
+## Version 0.9.0alpha2 - 2007-03-04
+### New Features
 - New variable `%_extension%` (#2447)
 - File naming format tester. (#2448)
 - Added automatic checking for new versions.
 
-## Bugfixes
+### Bugfixes
 - Fixed window position saving/restoring. (#2449)
 - Fixed iTunes compilation flag saving. (#2450)
 
 
-# Version 0.9.0alpha1 - 2007-03-03
+## Version 0.9.0alpha1 - 2007-03-03
 - First release.

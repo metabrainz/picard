@@ -11,7 +11,8 @@
     [CONTRIBUTING.md](https://github.com/metabrainz/picard/blob/master/CONTRIBUTING.md).
 -->
 
-# Summary
+<!-- pyml disable-next-line first-line-heading-->
+## Summary
 
 <!--
     Update the checkbox with an [x] for the type of contribution you are making.
@@ -25,7 +26,7 @@
   * [ ] Other
 * **Describe this change in 1-2 sentences**:
 
-# Problem
+## Problem
 
 <!--
     Anything that helps us understand why you are making this change goes here.
@@ -40,7 +41,7 @@
 
 
 
-# Solution
+## Solution
 
 <!--
     The details of your change. Talk about technical details, considerations, or
@@ -49,7 +50,7 @@
 -->
 
 
-# Action
+## Action
 
 Additional actions required:
 * [ ] Update Picard [documentation](https://github.com/metabrainz/picard-docs) (please include a reference to this PR)
