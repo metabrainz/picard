@@ -450,7 +450,9 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                return repo._create_git_refs(remote_refs, is_remote=True, repo=repo)
+                # Create a temporary Pygit2Repository wrapper to use _create_git_refs
+                temp_repo_wrapper = Pygit2Repository(repo)
+                return temp_repo_wrapper._create_git_refs(remote_refs, is_remote=True, repo=repo)
             except Exception as e:
                 log.debug('Failed to use existing repo at %s: %s', repo_path, e)
                 # Fall through to temporary repository method
