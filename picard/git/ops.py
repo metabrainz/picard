@@ -176,32 +176,31 @@ class GitOperations:
         """
         try:
             backend = git_backend()
-            repo = backend.create_repository(repo_path)
-
-            if ref:
-                # Use GitRef-based detection
-                git_ref = find_git_ref(repo, ref)
-                if git_ref:
-                    if git_ref.ref_type == GitRefType.TAG:
-                        return 'tag', ref
-                    elif git_ref.ref_type == GitRefType.BRANCH:
-                        return 'branch', ref
+            with backend.create_repository(repo_path) as repo:
+                if ref:
+                    # Use GitRef-based detection
+                    git_ref = find_git_ref(repo, ref)
+                    if git_ref:
+                        if git_ref.ref_type == GitRefType.TAG:
+                            return 'tag', ref
+                        elif git_ref.ref_type == GitRefType.BRANCH:
+                            return 'branch', ref
+                    else:
+                        # Try as commit hash
+                        try:
+                            repo.revparse_single(ref)
+                            return 'commit', ref
+                        except Exception:
+                            return None, ref
                 else:
-                    # Try as commit hash
-                    try:
-                        repo.revparse_single(ref)
-                        return 'commit', ref
-                    except Exception:
-                        return None, ref
-            else:
-                # Check current HEAD state
-                if repo.is_head_detached():
-                    commit = repo.get_head_target()[:7]
-                    return 'commit', commit
-                else:
-                    # HEAD points to a branch
-                    branch_name = repo.get_head_shorthand()
-                    return 'branch', branch_name
+                    # Check current HEAD state
+                    if repo.is_head_detached():
+                        commit = repo.get_head_target()[:7]
+                        return 'commit', commit
+                    else:
+                        # HEAD points to a branch
+                        branch_name = repo.get_head_shorthand()
+                        return 'branch', branch_name
 
         except GitBackendError:
             return None, ref
