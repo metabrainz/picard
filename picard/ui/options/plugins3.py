@@ -145,7 +145,8 @@ class Plugins3OptionsPage(OptionsPage):
         try:
             # Load plugins immediately when page is loaded
             self.all_plugins = self.plugin_manager.plugins
-            self.plugin_list.refresh_update_status(force_network_check=False)
+            # Pass current updates dict to plugin list widget
+            self.plugin_list.set_updates(self.updates)
             self._filter_plugins()
             self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
             self._show_enabled_state()
@@ -175,7 +176,6 @@ class Plugins3OptionsPage(OptionsPage):
             self.plugin_list.set_updates(self.updates)
 
             # Refresh UI with network-fetched update status
-            self.plugin_list.refresh_update_status(force_network_check=True)
             self._filter_plugins()
             self._update_registry_tooltip()
 
@@ -271,12 +271,40 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
+        log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
         plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
 
-        # Clean up do_not_update setting when plugin is uninstalled
-        if action == "uninstalled" and plugin.uuid:
-            self._cleanup_plugin_settings(plugin.uuid)
+        # Update the updates dict based on the action
+        if action in ("updated", "reinstalled", "ref switched"):
+            log.debug("Re-checking updates for plugin %s after action: %s", plugin.plugin_id, action)
+            # Re-check for updates after the action
+            try:
+                new_updates = self.plugin_manager.check_updates()
+                if plugin.plugin_id in new_updates:
+                    log.debug("Plugin %s has update available after %s", plugin.plugin_id, action)
+                    self.updates[plugin.plugin_id] = new_updates[plugin.plugin_id]
+                else:
+                    log.debug("Plugin %s has no updates after %s", plugin.plugin_id, action)
+                    self.updates.pop(plugin.plugin_id, None)
+            except Exception as e:
+                log.error("Failed to check updates after %s: %s", action, e)
+                # Fallback: remove from updates dict
+                self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+            # Refresh the plugin list display to show the changes
+            self._filter_plugins()
+        elif action == "uninstalled":
+            # Remove from updates dict since plugin no longer exists
+            self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+            # Refresh the plugin list display to show the changes
+            self._filter_plugins()
+            # Clean up plugin settings
+            if plugin.uuid:
+                self._cleanup_plugin_settings(plugin.uuid)
 
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
@@ -304,9 +332,20 @@ class Plugins3OptionsPage(OptionsPage):
 
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
-        self.load()  # Refresh plugin list
-        # Refresh update status to check for newer versions
-        self.plugin_list.refresh_update_status()
+        log.debug("_on_plugin_installed called for plugin: %s", plugin_id)
+
+        # Check for updates BEFORE loading the plugin list
+        try:
+            log.debug("Checking for updates after plugin installation")
+            new_updates = self.plugin_manager.check_updates()
+            self.updates.update(new_updates)
+            log.debug("Updated plugin list with %d updates", len(self.updates))
+        except Exception as e:
+            log.error("Failed to check updates after plugin installation: %s", e)
+
+        # Now load and refresh the plugin list with updates available
+        self.load()  # This will call set_updates() with the current updates dict
+
         self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
@@ -366,9 +405,8 @@ class Plugins3OptionsPage(OptionsPage):
             self.refresh_all_button.setEnabled(True)
             self.install_button.setEnabled(True)
             self._show_status(_("All plugin updates completed"))
-            # Refresh update status after batch updates
-            self.plugin_list.refresh_update_status(force_network_check=True)
-            self._filter_plugins()  # Refresh display to show updated status
+            # Refresh display to show updated status
+            self._filter_plugins()
             return
 
         plugin = self._update_queue.pop(0)
@@ -388,7 +426,12 @@ class Plugins3OptionsPage(OptionsPage):
         # Mark plugin update as complete in UI
         self.plugin_list.mark_plugin_update_complete(plugin)
 
-        if not result.success:
+        if result.success:
+            # Remove updated plugin from updates dict since it's now up-to-date
+            self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+        else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))
 

@@ -315,17 +315,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Set the updates dict from the options page."""
         self._updates = updates
 
-    def refresh_update_status(self, force_network_check=False):
-        """Public method to refresh update status for all plugins.
-
-        Args:
-            force_network_check: If True, make network calls to check for updates.
-                                If False, only use cached data.
-        """
-        # Updates are now managed by the options page via set_updates()
-        # Version cache is cleared when updates are set
-        pass
-
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         return plugin.plugin_id in self._updates
@@ -529,7 +518,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         if result.success:
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
-            # Emit signal for options dialog to refresh
+            # Emit signal for options dialog to refresh and update updates dict
             self.plugin_state_changed.emit(plugin, "updated")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
@@ -555,7 +544,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Handle uninstall completion."""
         if result.success:
             self._refresh_plugin_list()
-            # Emit signal for options dialog to refresh
+            # Emit signal for options dialog to refresh and update updates dict
             self.plugin_state_changed.emit(plugin, "uninstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
@@ -609,7 +598,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Handle reinstall completion."""
         if result.success:
             self._refresh_plugin_list()
-            # Emit signal for options dialog to refresh
+            # Emit signal for options dialog to refresh and update updates dict
             self.plugin_state_changed.emit(plugin, "reinstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
@@ -635,12 +624,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
         if result.success:
-            # Update status will be refreshed by the options page
-            pass
-
             # Only refresh the display for this specific plugin, not all plugins
             self._refresh_plugin_display(plugin)
-            # Emit signal for options dialog to refresh
+            # Emit signal for options dialog to refresh and update updates dict
             self.plugin_state_changed.emit(plugin, "ref switched")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")

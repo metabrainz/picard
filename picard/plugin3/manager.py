@@ -971,6 +971,7 @@ class PluginManager(QObject):
                     ref=source.resolved_ref,
                     commit=commit_id,
                     uuid=manifest.uuid,
+                    ref_type=source.resolved_ref_type,
                 )
             )
 
@@ -1396,8 +1397,61 @@ class PluginManager(QObject):
                     current_is_tag = False
                     current_tag = None
 
-                    if is_detached:
-                        # For detached HEAD, check if current commit matches any tag
+                    # Use stored ref_type to determine if plugin was installed from a tag
+                    # For existing plugins without ref_type, fall back to checking if ref matches a tag
+                    is_tag_installation = False
+                    resolved_ref_info = ""
+
+                    if metadata.ref_type == 'tag':
+                        is_tag_installation = True
+                        resolved_ref_info = f"tag {metadata.ref}"
+                    elif metadata.ref_type == 'branch':
+                        resolved_ref_info = f"branch {metadata.ref}"
+                    elif metadata.ref_type is None and metadata.ref:
+                        # Fallback for existing plugins: check what the ref actually resolves to
+                        log.debug(
+                            "Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref
+                        )
+
+                        # Check if ref matches a tag name
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
+                                is_tag_installation = True
+                                resolved_ref_info = f"tag {metadata.ref}"
+                                break
+
+                        if not is_tag_installation:
+                            # Check if current commit matches any tag
+                            for r in repo.list_references():
+                                if r.ref_type == GitRefType.TAG:
+                                    try:
+                                        tag_commit = repo.revparse_to_commit(r.name)
+                                        if tag_commit.id == current_commit:
+                                            is_tag_installation = True
+                                            resolved_ref_info = f"commit {metadata.ref} (resolves to tag {r.shortname})"
+                                            break
+                                    except Exception:
+                                        continue
+
+                        if not is_tag_installation:
+                            resolved_ref_info = f"commit/branch {metadata.ref}"
+
+                    # Check if plugin has versioning_scheme before doing tag-based updates
+                    registry_plugin = self._registry.find_plugin(url=metadata.url, uuid=plugin.uuid)
+                    if is_tag_installation and not (registry_plugin and registry_plugin.versioning_scheme):
+                        log.debug(
+                            "Plugin %s: originally installed from %s, but no versioning_scheme - skipping tag-based updates",
+                            plugin.plugin_id,
+                            resolved_ref_info,
+                        )
+                        is_tag_installation = False
+
+                    if is_tag_installation:
+                        log.debug(
+                            "Plugin %s: originally installed from %s, checking if current commit matches any tag",
+                            plugin.plugin_id,
+                            resolved_ref_info,
+                        )
                         for r in repo.list_references():
                             if r.ref_type == GitRefType.TAG:
                                 try:
@@ -1406,37 +1460,36 @@ class PluginManager(QObject):
                                     if tag_commit.id == current_commit:
                                         current_is_tag = True
                                         current_tag = r.shortname
+                                        log.debug(
+                                            "Plugin %s: found matching tag %s for current commit",
+                                            plugin.plugin_id,
+                                            current_tag,
+                                        )
                                         break
                                 except Exception as e:
                                     log.debug("Failed to check tag %s for commit match: %s", r.name, e)
                                     continue
                     else:
-                        # For regular branches, check if ref is a tag
-                        git_ref = None
-                        for r in repo.list_references():
-                            if r.shortname == ref or r.name == ref:
-                                git_ref = r
-                                break
-
-                        if git_ref and git_ref.ref_type == GitRefType.TAG:
-                            try:
-                                repo.revparse_single(git_ref.name)
-                                current_is_tag = True
-                                current_tag = ref
-                            except KeyError:
-                                pass
+                        log.debug(
+                            "Plugin %s: originally installed from %s, skipping tag-based updates",
+                            plugin.plugin_id,
+                            resolved_ref_info,
+                        )
 
                     # If on a tag, check for newer version tag
                     new_ref = None
                     if current_is_tag and current_tag:
+                        log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
                         source = PluginSourceGit(metadata.url, ref)
                         latest_tag = source._find_latest_tag(repo, current_tag)
                         if latest_tag and latest_tag != current_tag:
-                            # Found newer tag
+                            # Found newer tag - log in concise format
+                            log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
                             ref = latest_tag
                             new_ref = latest_tag
                         else:
                             # Already on latest tag, no update needed
+                            log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
                             continue
 
                     # Resolve ref using GitRef lookup first, then fallback
