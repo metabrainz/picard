@@ -1400,20 +1400,47 @@ class PluginManager(QObject):
                     # Use stored ref_type to determine if plugin was installed from a tag
                     # For existing plugins without ref_type, fall back to checking if ref matches a tag
                     is_tag_installation = False
+                    resolved_ref_info = ""
+
                     if metadata.ref_type == 'tag':
                         is_tag_installation = True
+                        resolved_ref_info = f"tag {metadata.ref}"
+                    elif metadata.ref_type == 'branch':
+                        resolved_ref_info = f"branch {metadata.ref}"
                     elif metadata.ref_type is None and metadata.ref:
-                        # Fallback for existing plugins: check if ref matches a tag name
+                        # Fallback for existing plugins: check what the ref actually resolves to
+                        log.debug(
+                            "Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref
+                        )
+
+                        # Check if ref matches a tag name
                         for r in repo.list_references():
                             if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
                                 is_tag_installation = True
+                                resolved_ref_info = f"tag {metadata.ref}"
                                 break
+
+                        if not is_tag_installation:
+                            # Check if current commit matches any tag
+                            for r in repo.list_references():
+                                if r.ref_type == GitRefType.TAG:
+                                    try:
+                                        tag_commit = repo.revparse_to_commit(r.name)
+                                        if tag_commit.id == current_commit:
+                                            is_tag_installation = True
+                                            resolved_ref_info = f"commit {metadata.ref} (resolves to tag {r.shortname})"
+                                            break
+                                    except Exception:
+                                        continue
+
+                        if not is_tag_installation:
+                            resolved_ref_info = f"commit/branch {metadata.ref}"
 
                     if is_tag_installation:
                         log.debug(
-                            "Plugin %s: originally installed from tag %s, checking if current commit matches any tag",
+                            "Plugin %s: originally installed from %s, checking if current commit matches any tag",
                             plugin.plugin_id,
-                            metadata.ref,
+                            resolved_ref_info,
                         )
                         for r in repo.list_references():
                             if r.ref_type == GitRefType.TAG:
@@ -1434,9 +1461,9 @@ class PluginManager(QObject):
                                     continue
                     else:
                         log.debug(
-                            "Plugin %s: originally installed from branch (ref_type=%s), skipping tag-based updates",
+                            "Plugin %s: originally installed from %s, skipping tag-based updates",
                             plugin.plugin_id,
-                            metadata.ref_type,
+                            resolved_ref_info,
                         )
 
                     # If on a tag, check for newer version tag
