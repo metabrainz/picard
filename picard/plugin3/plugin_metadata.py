@@ -282,23 +282,23 @@ class PluginMetadataManager:
 
         try:
             backend = git_backend()
-            repo = backend.create_repository(plugin.local_path)
-            current_commit = repo.get_head_target()
+            with backend.create_repository(plugin.local_path) as repo:
+                current_commit = repo.get_head_target()
 
-            # Check if current commit matches a tag (prefer tag over branch)
-            for git_ref in repo.list_references():
-                if git_ref.ref_type == GitRefType.TAG:
-                    target = repo.revparse_to_commit(git_ref.name)
-                    if target.id == current_commit:
-                        return git_ref.shortname, current_commit
+                # Check if current commit matches a tag (prefer tag over branch)
+                for git_ref in repo.list_references():
+                    if git_ref.ref_type == GitRefType.TAG:
+                        target = repo.revparse_to_commit(git_ref.name)
+                        if target.id == current_commit:
+                            return git_ref.shortname, current_commit
 
-            # No tag match, check if on a branch
-            if not repo.is_head_detached():
-                current_branch = repo.get_head_shorthand()
-                return current_branch, current_commit
-            else:
-                # Detached HEAD
-                return current_commit, current_commit
+                # No tag match, check if on a branch
+                if not repo.is_head_detached():
+                    current_branch = repo.get_head_shorthand()
+                    return current_branch, current_commit
+                else:
+                    # Detached HEAD
+                    return current_commit, current_commit
 
         except Exception:
             return None, None
