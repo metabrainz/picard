@@ -1472,10 +1472,9 @@ class PluginManager(QObject):
                         log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
                         source = PluginSourceGit(metadata.url, ref)
                         latest_tag = source._find_latest_tag(repo, current_tag)
-                        log.debug("Plugin %s: latest_tag = %s", plugin.plugin_id, latest_tag)
                         if latest_tag and latest_tag != current_tag:
-                            # Found newer tag
-                            log.debug("Plugin %s: found newer tag %s", plugin.plugin_id, latest_tag)
+                            # Found newer tag - log in concise format
+                            log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
                             ref = latest_tag
                             new_ref = latest_tag
                         else:
