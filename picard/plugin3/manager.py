@@ -1436,6 +1436,10 @@ class PluginManager(QObject):
                         # Found newer tag
                         ref = latest_tag
                         new_ref = latest_tag
+                    else:
+                        # Already on latest tag, no update needed
+                        repo.free()
+                        continue
 
                 # Resolve ref using GitRef lookup first, then fallback
                 # For update checking, prefer remote branches over local ones
