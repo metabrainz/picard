@@ -315,17 +315,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Set the updates dict from the options page."""
         self._updates = updates
 
-    def refresh_update_status(self, force_network_check=False):
-        """Public method to refresh update status for all plugins.
-
-        Args:
-            force_network_check: If True, make network calls to check for updates.
-                                If False, only use cached data.
-        """
-        # Updates are now managed by the options page via set_updates()
-        # Version cache is cleared when updates are set
-        pass
-
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
         return plugin.plugin_id in self._updates

@@ -176,7 +176,6 @@ class Plugins3OptionsPage(OptionsPage):
             self.plugin_list.set_updates(self.updates)
 
             # Refresh UI with network-fetched update status
-            self.plugin_list.refresh_update_status(force_network_check=True)
             self._filter_plugins()
             self._update_registry_tooltip()
 
@@ -384,9 +383,8 @@ class Plugins3OptionsPage(OptionsPage):
             self.refresh_all_button.setEnabled(True)
             self.install_button.setEnabled(True)
             self._show_status(_("All plugin updates completed"))
-            # Refresh update status after batch updates
-            self.plugin_list.refresh_update_status(force_network_check=True)
-            self._filter_plugins()  # Refresh display to show updated status
+            # Refresh display to show updated status
+            self._filter_plugins()
             return
 
         plugin = self._update_queue.pop(0)
