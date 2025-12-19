@@ -94,6 +94,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Guard to prevent double refresh during operations
         self._refreshing = False
 
+        # Updates dict from options page (plugin_id -> UpdateCheck)
+        self._updates = {}
+
         # Cache update status to avoid repeated network calls during search
         self._update_status_cache = {}
 
@@ -337,6 +340,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         super().resizeEvent(event)
         self._position_update_button()
 
+    def set_updates(self, updates):
+        """Set the updates dict from the options page."""
+        self._updates = updates
+
     def refresh_update_status(self, force_network_check=False):
         """Public method to refresh update status for all plugins.
 
@@ -352,6 +359,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _has_update_available_cached(self, plugin):
         """Check if plugin has update available using cache."""
+        # First check _updates dict from options page
+        if plugin.plugin_id in self._updates:
+            return True
+        # Fallback to old cache
         return self._update_status_cache.get(plugin.plugin_id, False)
 
     def _has_update_available(self, plugin):

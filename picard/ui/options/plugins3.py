@@ -171,6 +171,9 @@ class Plugins3OptionsPage(OptionsPage):
             # Check for updates (silent - no dialog) - THIS IS WHERE NETWORK CALLS HAPPEN
             self.updates = self.plugin_manager.check_updates()
 
+            # Pass updates to widget
+            self.plugin_list.set_updates(self.updates)
+
             # Refresh UI with network-fetched update status
             self.plugin_list.refresh_update_status(force_network_check=True)
             self._filter_plugins()
@@ -259,8 +262,8 @@ class Plugins3OptionsPage(OptionsPage):
         """Handle plugin selection."""
         # Get cached update status to avoid network call
         has_update = None
-        if plugin and hasattr(self.plugin_list, '_update_status_cache'):
-            has_update = self.plugin_list._update_status_cache.get(plugin.plugin_id)
+        if plugin:
+            has_update = plugin.plugin_id in self.updates
 
         self.plugin_details.show_plugin(plugin, has_update)
         # Update button text since details are now shown
