@@ -197,6 +197,9 @@ class TestPluginRegistry(PicardTestCase):
                                     mock_repo = Mock()
                                     mock_repo.get_commit_date = Mock(return_value=1234567890)
                                     mock_repo.free = Mock()
+                                    # Make mock_repo support context manager protocol
+                                    mock_repo.__enter__ = Mock(return_value=mock_repo)
+                                    mock_repo.__exit__ = Mock(return_value=False)
                                     mock_backend.create_repository = Mock(return_value=mock_repo)
                                     mock_backend_func.return_value = mock_backend
 
