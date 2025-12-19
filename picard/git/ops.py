@@ -235,35 +235,35 @@ class GitOperations:
 
         # Use abstracted git operations for ref switching
         backend = git_backend()
-        repo = backend.create_repository(plugin.local_path)
 
-        # Get old ref and commit
-        old_commit = repo.get_head_target()
-        old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
-
-        # Fetch latest from remote
-        GitOperations._fetch_remote_refs(repo, ref, backend)
-
-        # Find the ref
         try:
-            references = repo.list_references()
+            with backend.create_repository(plugin.local_path) as repo:
+                # Get old ref and commit
+                old_commit = repo.get_head_target()
+                old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
 
-            # Try as branch first
-            result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit)
-            if result:
-                return result
+                # Fetch latest from remote
+                GitOperations._fetch_remote_refs(repo, ref, backend)
 
-            # Try as tag
-            result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
-            if result:
-                return result
+                # Find the ref
+                references = repo.list_references()
 
-            # Try as commit hash or git revision syntax
-            result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
-            if result:
-                return result
+                # Try as branch first
+                result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit)
+                if result:
+                    return result
 
-            raise ValueError(f'Ref {ref} not found')
+                # Try as tag
+                result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
+                if result:
+                    return result
+
+                # Try as commit hash or git revision syntax
+                result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
+                if result:
+                    return result
+
+                raise ValueError(f'Ref {ref} not found')
 
         except Exception as e:
             log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
