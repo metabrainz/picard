@@ -69,23 +69,23 @@ class GitOperations:
             Exception: If path is not a git repository
         """
         backend = git_backend()
-        repo = backend.create_repository(path)
-        status = repo.get_status()
+        with backend.create_repository(path) as repo:
+            status = repo.get_status()
 
-        # Check for any changes (modified, added, deleted, renamed, etc.)
-        modified_files = []
-        for filepath, flag in status.items():
-            if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
-                # Ignore Python cache files
-                if (
-                    filepath.endswith(('.pyc', '.pyo'))
-                    or '/__pycache__/' in filepath
-                    or filepath.startswith('__pycache__/')
-                ):
-                    continue
-                modified_files.append(filepath)
+            # Check for any changes (modified, added, deleted, renamed, etc.)
+            modified_files = []
+            for filepath, flag in status.items():
+                if flag not in (GitStatusFlag.CURRENT, GitStatusFlag.IGNORED):
+                    # Ignore Python cache files
+                    if (
+                        filepath.endswith(('.pyc', '.pyo'))
+                        or '/__pycache__/' in filepath
+                        or filepath.startswith('__pycache__/')
+                    ):
+                        continue
+                    modified_files.append(filepath)
 
-        return modified_files
+            return modified_files
 
     @staticmethod
     def fetch_remote_refs(url, use_callbacks=True, repo_path=None):
