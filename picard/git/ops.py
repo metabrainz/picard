@@ -259,24 +259,9 @@ class GitOperations:
                 return result
 
             # Try as commit hash or git revision syntax
-            try:
-                commit = repo.revparse_single(ref)
-                repo.checkout_tree(commit)
-                repo.set_head(commit.id)
-                log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-                return old_ref, commit.id[:7], old_commit, commit.id
-            except GitReferenceError:
-                # For git revision syntax, provide helpful error message
-                if any(char in ref for char in ['^', '~', ':', '@']):
-                    base_ref = ref.split('^')[0].split('~')[0].split(':')[0].split('@')[0]
-                    # Check if the base ref exists as origin/base_ref
-                    try:
-                        origin_ref = f'origin/{base_ref}'
-                        repo.revparse_single(origin_ref)
-                        raise ValueError(f"Ref '{ref}' not found. Did you mean '{origin_ref}{ref[len(base_ref) :]}'?")
-                    except GitReferenceError:
-                        pass
-                pass
+            result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
+            if result:
+                return result
 
             raise ValueError(f'Ref {ref} not found')
 
@@ -367,4 +352,25 @@ class GitOperations:
             log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
             return old_ref, ref, old_commit, commit.id
         except GitReferenceError:
+            return None
+
+    @staticmethod
+    def _try_switch_to_commit(repo, plugin, ref, old_ref, old_commit):
+        """Try to switch to a commit hash or git revision syntax. Returns tuple or None."""
+        try:
+            commit = repo.revparse_single(ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
+            return old_ref, commit.id[:7], old_commit, commit.id
+        except GitReferenceError:
+            # For git revision syntax, provide helpful error message
+            if any(char in ref for char in ['^', '~', ':', '@']):
+                base_ref = ref.split('^')[0].split('~')[0].split(':')[0].split('@')[0]
+                try:
+                    origin_ref = f'origin/{base_ref}'
+                    repo.revparse_single(origin_ref)
+                    raise ValueError(f"Ref '{ref}' not found. Did you mean '{origin_ref}{ref[len(base_ref) :]}'?")
+                except GitReferenceError:
+                    pass
             return None
