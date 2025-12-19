@@ -188,7 +188,7 @@ class TestPluginCLI(PicardTestCase):
         """Test that update CLI commands are properly routed."""
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
-        mock_manager.check_updates = Mock(return_value=[])
+        mock_manager.check_updates = Mock(return_value={})
         mock_manager.update_all_plugins = Mock(return_value=[])
 
         # Test --check-updates
@@ -245,7 +245,7 @@ class TestPluginCLI(PicardTestCase):
         manager._plugins = []
 
         updates = manager.check_updates()
-        self.assertEqual(updates, [])
+        self.assertEqual(updates, {})
 
     def test_clean_config_command(self):
         """Test --clean-config command."""

@@ -255,9 +255,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         try:
             # Get update info from check_updates
             updates = self.plugin_manager.check_updates()
-            for update in updates:
-                if update.plugin_id == plugin.plugin_id:
-                    return self._format_update_version(update)
+            update = updates.get(plugin.plugin_id)
+            if update:
+                return self._format_update_version(update)
         except Exception:
             pass
         return _("Available")

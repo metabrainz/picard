@@ -1370,7 +1370,7 @@ class PluginManager(QObject):
 
     def check_updates(self):
         """Check which plugins have updates available without installing."""
-        updates = []
+        updates = {}
         for plugin in self._plugins:
             if not plugin.uuid:
                 continue
@@ -1490,16 +1490,15 @@ class PluginManager(QObject):
 
                     display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
 
-                    updates.append(
-                        UpdateCheck(
-                            plugin_id=plugin.plugin_id,
-                            old_commit=short_commit_id(current_commit),
-                            new_commit=short_commit_id(latest_commit),
-                            commit_date=latest_commit_date,
-                            old_ref=display_old_ref,
-                            new_ref=display_new_ref,
-                        )
+                    update_check = UpdateCheck(
+                        plugin_id=plugin.plugin_id,
+                        old_commit=short_commit_id(current_commit),
+                        new_commit=short_commit_id(latest_commit),
+                        commit_date=latest_commit_date,
+                        old_ref=display_old_ref,
+                        new_ref=display_new_ref,
                     )
+                    updates[plugin.plugin_id] = update_check
             except KeyError:
                 # Ref not found, skip this plugin (expected for some cases)
                 continue

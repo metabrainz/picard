@@ -1109,7 +1109,7 @@ class PluginCLI:
         else:
             self._out.print('Updates available:')
             self._out.nl()
-            for update in updates:
+            for update in updates.values():
                 version_info = self._format_version_info(update)
                 self._out.info(f'{self._out.d_name(update.plugin_id)}: {version_info}')
             self._out.nl()
