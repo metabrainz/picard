@@ -53,13 +53,13 @@ TAB_LOCAL = 2
 class InstallPluginDialog(PicardDialog):
     """Dialog for installing plugins."""
 
+    defaultsize = QtCore.QSize(500, 300)
     plugin_installed = QtCore.pyqtSignal(str)  # Emits plugin_id when installed
 
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(_("Install Plugin"))
         self.setModal(True)
-        self.resize(500, 300)
         self.setMinimumSize(500, 300)
 
         # Cache frequently accessed objects

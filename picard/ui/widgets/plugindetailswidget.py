@@ -403,7 +403,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _perform_uninstall(self):
         """Fallback uninstall method."""
         dialog = UninstallPluginDialog(self.current_plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        dialog.exec()
+        if dialog.uninstall_confirmed:
             try:
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.uninstall_plugin(

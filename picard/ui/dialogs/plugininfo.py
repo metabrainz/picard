@@ -23,30 +23,30 @@ from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 
-from picard.ui import PicardDialog
+from picard.ui import PreserveGeometry
 
 
-try:
-    from markdown import markdown as render_markdown
-except ImportError:
-    render_markdown = None
-
-
-class PluginInfoDialog(PicardDialog):
+class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
+
+    defaultsize = QtCore.QSize(600, 500)
 
     def __init__(self, plugin_data, parent=None):
         super().__init__(parent)
         self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
-        self.plugin_manager = self.tagger.get_plugin_manager()
+        tagger = QtCore.QCoreApplication.instance()
+        self.plugin_manager = tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
-        self.resize(600, 500)
         self.setMinimumSize(500, 300)
         self.setup_ui()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.restore_geometry()
 
     @property
     def plugin_data(self):
@@ -118,27 +118,27 @@ class PluginInfoDialog(PicardDialog):
         description = self._get_description()
         if description:
             desc_label = QtWidgets.QLabel(_("Description:"))
+            font = desc_label.font()
+            font.setBold(True)
+            desc_label.setFont(font)
             content_layout.addWidget(desc_label)
 
-            desc_text = QtWidgets.QTextBrowser()
+            desc_text = QtWidgets.QLabel()
+            desc_text.setTextFormat(QtCore.Qt.TextFormat.MarkdownText)
+            desc_text.setText(description.rstrip())
             desc_text.setMinimumHeight(50)
-            if render_markdown:
-                html_desc = render_markdown(description.rstrip(), output_format='html')
-                desc_text.setHtml(html_desc)
-            else:
-                desc_text.setPlainText(description.rstrip())
-
+            desc_text.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+            desc_text.setOpenExternalLinks(True)
+            desc_text.setSizePolicy(
+                QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding
+            )
             content_layout.addWidget(desc_text)
-
-        # vertical_spacer = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
-        content_layout.addStretch()
 
         # Set content widget to scroll area and add to main layout
         scroll_area.setWidget(content_widget)
         layout.addWidget(scroll_area)
 
         # Close button
-        # # Buttons
         button_box = QtWidgets.QDialogButtonBox()
         button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         button_box.rejected.connect(self.accept)
