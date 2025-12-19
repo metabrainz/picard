@@ -1398,7 +1398,18 @@ class PluginManager(QObject):
                     current_tag = None
 
                     # Use stored ref_type to determine if plugin was installed from a tag
+                    # For existing plugins without ref_type, fall back to checking if ref matches a tag
+                    is_tag_installation = False
                     if metadata.ref_type == 'tag':
+                        is_tag_installation = True
+                    elif metadata.ref_type is None and metadata.ref:
+                        # Fallback for existing plugins: check if ref matches a tag name
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
+                                is_tag_installation = True
+                                break
+
+                    if is_tag_installation:
                         log.debug(
                             "Plugin %s: originally installed from tag %s, checking if current commit matches any tag",
                             plugin.plugin_id,
