@@ -170,6 +170,12 @@ class Pygit2Repository(GitRepository):
         _log_git_call("list_references", retval=ret)
         return ret
 
+    @staticmethod
+    def _create_git_refs_from_raw_repo(repo, remote_refs, is_remote=True):
+        """Helper to create GitRef objects from a raw pygit2.Repository."""
+        temp_repo_wrapper = Pygit2Repository(repo)
+        return temp_repo_wrapper._create_git_refs(remote_refs, is_remote=is_remote, repo=repo)
+
     def _create_git_refs(self, refs, is_remote=False, repo=None):
         """Create GitRef objects from pygit2 reference objects"""
         git_refs = []
@@ -450,9 +456,7 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                # Create a temporary Pygit2Repository wrapper to use _create_git_refs
-                temp_repo_wrapper = Pygit2Repository(repo)
-                return temp_repo_wrapper._create_git_refs(remote_refs, is_remote=True, repo=repo)
+                return Pygit2Repository._create_git_refs_from_raw_repo(repo, remote_refs, is_remote=True)
             except Exception as e:
                 log.debug('Failed to use existing repo at %s: %s', repo_path, e)
                 # Fall through to temporary repository method
@@ -470,9 +474,7 @@ class Pygit2Backend(GitBackend):
                 else:
                     remote_refs = remote.list_heads()
 
-                # Create a temporary Pygit2Repository wrapper to use _create_git_refs
-                temp_repo_wrapper = Pygit2Repository(repo)
-                return temp_repo_wrapper._create_git_refs(remote_refs, is_remote=True, repo=repo)
+                return Pygit2Repository._create_git_refs_from_raw_repo(repo, remote_refs, is_remote=True)
         except Exception as e:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None
