@@ -1436,6 +1436,16 @@ class PluginManager(QObject):
                         if not is_tag_installation:
                             resolved_ref_info = f"commit/branch {metadata.ref}"
 
+                    # Check if plugin has versioning_scheme before doing tag-based updates
+                    registry_plugin = self._registry.find_plugin(url=metadata.url, uuid=plugin.uuid)
+                    if is_tag_installation and not (registry_plugin and registry_plugin.versioning_scheme):
+                        log.debug(
+                            "Plugin %s: originally installed from %s, but no versioning_scheme - skipping tag-based updates",
+                            plugin.plugin_id,
+                            resolved_ref_info,
+                        )
+                        is_tag_installation = False
+
                     if is_tag_installation:
                         log.debug(
                             "Plugin %s: originally installed from %s, checking if current commit matches any tag",
