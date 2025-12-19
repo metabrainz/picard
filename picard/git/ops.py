@@ -253,29 +253,10 @@ class GitOperations:
             if result:
                 return result
 
-            # Try as tag using GitRef properties
-            tag_ref = None
-            for git_ref in references:
-                if git_ref.ref_type == GitRefType.TAG and git_ref.shortname == ref:
-                    tag_ref = git_ref.name
-                    break
-
-            if tag_ref:
-                commit = repo.revparse_to_commit(tag_ref)
-                repo.checkout_tree(commit)
-                repo.set_head(commit.id)
-                log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                return old_ref, ref, old_commit, commit.id
-            else:
-                # Try resolving tag by short name (git can sometimes resolve tags without refs/tags/ prefix)
-                try:
-                    commit = repo.revparse_to_commit(ref)
-                    repo.checkout_tree(commit)
-                    repo.set_head(commit.id)
-                    log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-                    return old_ref, ref, old_commit, commit.id
-                except GitReferenceError:
-                    pass
+            # Try as tag
+            result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
+            if result:
+                return result
 
             # Try as commit hash or git revision syntax
             try:
@@ -360,3 +341,30 @@ class GitOperations:
 
         log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
         return old_ref, ref, old_commit, commit.id
+
+    @staticmethod
+    def _try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit):
+        """Try to switch to a tag. Returns tuple or None if not a tag."""
+        # Find tag reference
+        tag_ref = None
+        for git_ref in references:
+            if git_ref.ref_type == GitRefType.TAG and git_ref.shortname == ref:
+                tag_ref = git_ref.name
+                break
+
+        if tag_ref:
+            commit = repo.revparse_to_commit(tag_ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+            return old_ref, ref, old_commit, commit.id
+
+        # Try resolving tag by short name
+        try:
+            commit = repo.revparse_to_commit(ref)
+            repo.checkout_tree(commit)
+            repo.set_head(commit.id)
+            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
+            return old_ref, ref, old_commit, commit.id
+        except GitReferenceError:
+            return None
