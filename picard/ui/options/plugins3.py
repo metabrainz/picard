@@ -274,9 +274,20 @@ class Plugins3OptionsPage(OptionsPage):
         plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
         self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
 
-        # Clean up do_not_update setting when plugin is uninstalled
-        if action == "uninstalled" and plugin.uuid:
-            self._cleanup_plugin_settings(plugin.uuid)
+        # Update the updates dict based on the action
+        if action in ("updated", "reinstalled", "ref switched"):
+            # Remove from updates dict since plugin may now be up-to-date
+            self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+        elif action == "uninstalled":
+            # Remove from updates dict since plugin no longer exists
+            self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+            # Clean up plugin settings
+            if plugin.uuid:
+                self._cleanup_plugin_settings(plugin.uuid)
 
         # Refresh the options dialog to update plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
@@ -305,8 +316,14 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_installed(self, plugin_id):
         """Handle plugin installation completion."""
         self.load()  # Refresh plugin list
-        # Refresh update status to check for newer versions
-        self.plugin_list.refresh_update_status()
+        # Check for updates for the newly installed plugin
+        try:
+            new_updates = self.plugin_manager.check_updates()
+            self.updates.update(new_updates)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+        except Exception as e:
+            log.error("Failed to check updates after plugin installation: %s", e)
         self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
@@ -388,7 +405,12 @@ class Plugins3OptionsPage(OptionsPage):
         # Mark plugin update as complete in UI
         self.plugin_list.mark_plugin_update_complete(plugin)
 
-        if not result.success:
+        if result.success:
+            # Remove updated plugin from updates dict since it's now up-to-date
+            self.updates.pop(plugin.plugin_id, None)
+            # Update the plugin list widget with new updates dict
+            self.plugin_list.set_updates(self.updates)
+        else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))
 
