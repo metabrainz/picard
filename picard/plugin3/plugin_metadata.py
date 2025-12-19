@@ -44,6 +44,7 @@ class PluginMetadata:
     uuid: str | None = None
     original_url: str | None = None
     original_uuid: str | None = None
+    ref_type: str | None = None  # 'tag' or 'branch' to indicate installation method
 
     @classmethod
     def from_dict(cls, data: dict):

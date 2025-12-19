@@ -121,6 +121,7 @@ class PluginSourceGit(PluginSource):
         self.url = url
         self.ref = ref
         self.resolved_ref: str | None = None  # Will be set after sync
+        self.resolved_ref_type: str | None = None  # 'tag' or 'branch', set after sync
 
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
@@ -298,6 +299,8 @@ class PluginSourceGit(PluginSource):
                         ) from None
                 else:
                     # Use robust reference type detection
+                    from picard.git.ref_utils import find_git_ref
+
                     git_ref = find_git_ref(repo, self.ref)
                     if git_ref:
                         try:
@@ -366,6 +369,17 @@ class PluginSourceGit(PluginSource):
                                     break
                             else:
                                 raise PluginSourceSyncError('No branches found in repository') from None
+
+        # Determine ref type for the resolved ref
+        if self.resolved_ref:
+            from picard.git.ref_utils import find_git_ref
+
+            git_ref = find_git_ref(repo, self.resolved_ref)
+            if git_ref:
+                self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
+            else:
+                # Fallback: assume branch if not found (could be commit hash)
+                self.resolved_ref_type = 'branch'
 
         # hard reset to passed ref or HEAD
         # Use backend for reset operation

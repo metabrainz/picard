@@ -971,6 +971,7 @@ class PluginManager(QObject):
                     ref=source.resolved_ref,
                     commit=commit_id,
                     uuid=manifest.uuid,
+                    ref_type=source.resolved_ref_type,
                 )
             )
 
@@ -1396,17 +1397,8 @@ class PluginManager(QObject):
                     current_is_tag = False
                     current_tag = None
 
-                    # Check if the plugin was originally installed from a tag
-                    original_ref_is_tag = False
-                    if metadata.ref:
-                        # Check if the original ref was a tag
-                        for r in repo.list_references():
-                            if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
-                                original_ref_is_tag = True
-                                break
-
-                    # Only check for tag-based updates if originally installed from a tag
-                    if original_ref_is_tag:
+                    # Use stored ref_type to determine if plugin was installed from a tag
+                    if metadata.ref_type == 'tag':
                         log.debug(
                             "Plugin %s: originally installed from tag %s, checking if current commit matches any tag",
                             plugin.plugin_id,
@@ -1431,7 +1423,9 @@ class PluginManager(QObject):
                                     continue
                     else:
                         log.debug(
-                            "Plugin %s: originally installed from branch, skipping tag-based updates", plugin.plugin_id
+                            "Plugin %s: originally installed from branch (ref_type=%s), skipping tag-based updates",
+                            plugin.plugin_id,
+                            metadata.ref_type,
                         )
 
                     # If on a tag, check for newer version tag
