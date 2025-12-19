@@ -1396,25 +1396,43 @@ class PluginManager(QObject):
                     current_is_tag = False
                     current_tag = None
 
-                    # Always check if current commit matches any tag, regardless of HEAD state
-                    log.debug("Plugin %s: checking if current commit matches any tag", plugin.plugin_id)
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG:
-                            try:
-                                tag_commit = repo.revparse_to_commit(r.name)
+                    # Check if the plugin was originally installed from a tag
+                    original_ref_is_tag = False
+                    if metadata.ref:
+                        # Check if the original ref was a tag
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
+                                original_ref_is_tag = True
+                                break
 
-                                if tag_commit.id == current_commit:
-                                    current_is_tag = True
-                                    current_tag = r.shortname
-                                    log.debug(
-                                        "Plugin %s: found matching tag %s for current commit",
-                                        plugin.plugin_id,
-                                        current_tag,
-                                    )
-                                    break
-                            except Exception as e:
-                                log.debug("Failed to check tag %s for commit match: %s", r.name, e)
-                                continue
+                    # Only check for tag-based updates if originally installed from a tag
+                    if original_ref_is_tag:
+                        log.debug(
+                            "Plugin %s: originally installed from tag %s, checking if current commit matches any tag",
+                            plugin.plugin_id,
+                            metadata.ref,
+                        )
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG:
+                                try:
+                                    tag_commit = repo.revparse_to_commit(r.name)
+
+                                    if tag_commit.id == current_commit:
+                                        current_is_tag = True
+                                        current_tag = r.shortname
+                                        log.debug(
+                                            "Plugin %s: found matching tag %s for current commit",
+                                            plugin.plugin_id,
+                                            current_tag,
+                                        )
+                                        break
+                                except Exception as e:
+                                    log.debug("Failed to check tag %s for commit match: %s", r.name, e)
+                                    continue
+                    else:
+                        log.debug(
+                            "Plugin %s: originally installed from branch, skipping tag-based updates", plugin.plugin_id
+                        )
 
                     # If on a tag, check for newer version tag
                     new_ref = None
