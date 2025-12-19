@@ -1025,14 +1025,14 @@ class PluginManager(QObject):
             # Check if source repository has uncommitted changes
             try:
                 backend = git_backend()
-                source_repo = backend.create_repository(local_path)
-                if source_repo.get_status():
-                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+                with backend.create_repository(local_path) as source_repo:
+                    if source_repo.get_status():
+                        log.warning('Installing from local repository with uncommitted changes: %s', local_path)
 
-                # If no ref specified, use the current branch
-                if not ref and not source_repo.is_head_detached():
-                    ref = source_repo.get_head_shorthand()
-                    log.debug('Using current branch from local repo: %s', ref)
+                    # If no ref specified, use the current branch
+                    if not ref and not source_repo.is_head_detached():
+                        ref = source_repo.get_head_shorthand()
+                        log.debug('Using current branch from local repo: %s', ref)
             except Exception:
                 pass  # Ignore errors checking status
 
@@ -1290,12 +1290,11 @@ class PluginManager(QObject):
 
         # Get commit date and resolve annotated tags to actual commit
         backend = git_backend()
-        repo = backend.create_repository(plugin.local_path)
-        commit = repo.revparse_to_commit(new_commit)
-        new_commit = commit.id  # Use actual commit ID, not tag object ID
-        # Get commit date using backend
-        commit_date = repo.get_commit_date(commit.id)
-        repo.free()
+        with backend.create_repository(plugin.local_path) as repo:
+            commit = repo.revparse_to_commit(new_commit)
+            new_commit = commit.id  # Use actual commit ID, not tag object ID
+            # Get commit date using backend
+            commit_date = repo.get_commit_date(commit.id)
 
         # Reload manifest to get new version
         plugin.read_manifest()
@@ -1381,107 +1380,104 @@ class PluginManager(QObject):
 
             try:
                 backend = git_backend()
-                repo = backend.create_repository(plugin.local_path)
-                current_commit = repo.get_head_target()
+                with backend.create_repository(plugin.local_path) as repo:
+                    current_commit = repo.get_head_target()
 
-                # Fetch without updating (suppress progress output)
-                callbacks = backend.create_remote_callbacks()
-                for remote in repo.get_remotes():
-                    repo.fetch_remote(remote, None, callbacks._callbacks)
+                    # Fetch without updating (suppress progress output)
+                    callbacks = backend.create_remote_callbacks()
+                    for remote in repo.get_remotes():
+                        repo.fetch_remote(remote, None, callbacks._callbacks)
 
-                # Get current ref from repository instead of metadata
-                old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
-                ref = old_ref
+                    # Get current ref from repository instead of metadata
+                    old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
+                    ref = old_ref
 
-                # Check if currently on a tag (check current commit, not ref)
-                current_is_tag = False
-                current_tag = None
+                    # Check if currently on a tag (check current commit, not ref)
+                    current_is_tag = False
+                    current_tag = None
 
-                if is_detached:
-                    # For detached HEAD, check if current commit matches any tag
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG:
-                            try:
-                                tag_commit = repo.revparse_to_commit(r.name)
+                    if is_detached:
+                        # For detached HEAD, check if current commit matches any tag
+                        for r in repo.list_references():
+                            if r.ref_type == GitRefType.TAG:
+                                try:
+                                    tag_commit = repo.revparse_to_commit(r.name)
 
-                                if tag_commit.id == current_commit:
-                                    current_is_tag = True
-                                    current_tag = r.shortname
-                                    break
-                            except Exception as e:
-                                log.debug("Failed to check tag %s for commit match: %s", r.name, e)
-                                continue
-                else:
-                    # For regular branches, check if ref is a tag
-                    git_ref = None
-                    for r in repo.list_references():
-                        if r.shortname == ref or r.name == ref:
-                            git_ref = r
-                            break
-
-                    if git_ref and git_ref.ref_type == GitRefType.TAG:
-                        try:
-                            repo.revparse_single(git_ref.name)
-                            current_is_tag = True
-                            current_tag = ref
-                        except KeyError:
-                            pass
-
-                # If on a tag, check for newer version tag
-                new_ref = None
-                if current_is_tag and current_tag:
-                    source = PluginSourceGit(metadata.url, ref)
-                    latest_tag = source._find_latest_tag(repo, current_tag)
-                    if latest_tag and latest_tag != current_tag:
-                        # Found newer tag
-                        ref = latest_tag
-                        new_ref = latest_tag
+                                    if tag_commit.id == current_commit:
+                                        current_is_tag = True
+                                        current_tag = r.shortname
+                                        break
+                                except Exception as e:
+                                    log.debug("Failed to check tag %s for commit match: %s", r.name, e)
+                                    continue
                     else:
-                        # Already on latest tag, no update needed
-                        repo.free()
-                        continue
+                        # For regular branches, check if ref is a tag
+                        git_ref = None
+                        for r in repo.list_references():
+                            if r.shortname == ref or r.name == ref:
+                                git_ref = r
+                                break
 
-                # Resolve ref using GitRef lookup first, then fallback
-                # For update checking, prefer remote branches over local ones
-                try:
-                    from picard.git.ref_utils import find_git_ref
-
-                    # For branches, try origin/ version first to get latest from remote
-                    git_ref = find_git_ref(repo, f'origin/{ref}')
-                    if not git_ref:
-                        # Fall back to local ref (for tags or local-only branches)
-                        git_ref = find_git_ref(repo, ref)
-
-                    if git_ref:
-                        obj = repo.revparse_single(git_ref.name)
-                    elif not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # Fallback: try refs/tags/ first, then origin/ for branches
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except GitReferenceError:
-                            # Not a tag, try origin/ prefix for branches
+                        if git_ref and git_ref.ref_type == GitRefType.TAG:
                             try:
-                                obj = repo.revparse_single(f'origin/{ref}')
+                                repo.revparse_single(git_ref.name)
+                                current_is_tag = True
+                                current_tag = ref
+                            except KeyError:
+                                pass
+
+                    # If on a tag, check for newer version tag
+                    new_ref = None
+                    if current_is_tag and current_tag:
+                        source = PluginSourceGit(metadata.url, ref)
+                        latest_tag = source._find_latest_tag(repo, current_tag)
+                        if latest_tag and latest_tag != current_tag:
+                            # Found newer tag
+                            ref = latest_tag
+                            new_ref = latest_tag
+                        else:
+                            # Already on latest tag, no update needed
+                            continue
+
+                    # Resolve ref using GitRef lookup first, then fallback
+                    # For update checking, prefer remote branches over local ones
+                    try:
+                        from picard.git.ref_utils import find_git_ref
+
+                        # For branches, try origin/ version first to get latest from remote
+                        git_ref = find_git_ref(repo, f'origin/{ref}')
+                        if not git_ref:
+                            # Fall back to local ref (for tags or local-only branches)
+                            git_ref = find_git_ref(repo, ref)
+
+                        if git_ref:
+                            obj = repo.revparse_single(git_ref.name)
+                        elif not ref.startswith('origin/') and not ref.startswith('refs/'):
+                            # Fallback: try refs/tags/ first, then origin/ for branches
+                            try:
+                                obj = repo.revparse_single(f'refs/tags/{ref}')
                             except GitReferenceError:
-                                # Fall back to original ref (might be commit hash)
-                                obj = repo.revparse_single(ref)
-                    elif ref.startswith('origin/'):
-                        # Handle origin/ refs - these are branches, not tags
-                        obj = repo.revparse_single(ref)
-                    else:
-                        obj = repo.revparse_single(ref)
+                                # Not a tag, try origin/ prefix for branches
+                                try:
+                                    obj = repo.revparse_single(f'origin/{ref}')
+                                except GitReferenceError:
+                                    # Fall back to original ref (might be commit hash)
+                                    obj = repo.revparse_single(ref)
+                        elif ref.startswith('origin/'):
+                            # Handle origin/ refs - these are branches, not tags
+                            obj = repo.revparse_single(ref)
+                        else:
+                            obj = repo.revparse_single(ref)
 
-                    # Peel annotated tags to get the actual commit
-                    commit = repo.peel_to_commit(obj)
+                        # Peel annotated tags to get the actual commit
+                        commit = repo.peel_to_commit(obj)
 
-                    latest_commit = commit.id
-                    # Get commit date using backend
-                    latest_commit_date = repo.get_commit_date(commit.id)
-                except GitReferenceError:
-                    # Ref not found, skip this plugin
-                    continue
-                finally:
-                    repo.free()
+                        latest_commit = commit.id
+                        # Get commit date using backend
+                        latest_commit_date = repo.get_commit_date(commit.id)
+                    except GitReferenceError:
+                        # Ref not found, skip this plugin
+                        continue
 
                 if current_commit != latest_commit:
                     # For display: use tag names if available, otherwise commit hashes for detached HEAD

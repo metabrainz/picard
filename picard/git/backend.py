@@ -223,6 +223,15 @@ class GitRepository(ABC):
     def free(self):
         """Free repository resources"""
 
+    def __enter__(self):
+        """Context manager entry"""
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit - always free resources"""
+        self.free()
+        return False
+
 
 class GitBackend(ABC):
     """Abstract interface for git operations"""
