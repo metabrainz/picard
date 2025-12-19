@@ -282,11 +282,15 @@ class Plugins3OptionsPage(OptionsPage):
             self.updates.pop(plugin.plugin_id, None)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(self.updates)
+            # Refresh the plugin list display to show the changes
+            self._filter_plugins()
         elif action == "uninstalled":
             # Remove from updates dict since plugin no longer exists
             self.updates.pop(plugin.plugin_id, None)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(self.updates)
+            # Refresh the plugin list display to show the changes
+            self._filter_plugins()
             # Clean up plugin settings
             if plugin.uuid:
                 self._cleanup_plugin_settings(plugin.uuid)
