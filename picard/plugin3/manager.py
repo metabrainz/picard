@@ -1316,7 +1316,27 @@ class PluginManager(QObject):
             commit_date = repo.get_commit_date(commit.id)
 
         # Reload manifest to get new version
-        plugin.read_manifest()
+        try:
+            plugin.read_manifest()
+        except (PluginManifestInvalidError, PluginManifestReadError) as e:
+            # Rollback to previous commit on manifest validation failure
+            log.error('Plugin update failed due to invalid manifest: %s', e)
+            try:
+                self._rollback_plugin_to_commit(plugin, old_commit)
+                log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
+            except Exception as rollback_error:
+                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
+
+            # Re-enable plugin if it was enabled before rollback
+            if was_enabled:
+                try:
+                    self.enable_plugin(plugin)
+                except Exception as enable_error:
+                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
+
+            # Re-raise the original manifest error
+            raise
+
         new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
         new_ref = source.ref  # May have been updated to a newer tag
 
