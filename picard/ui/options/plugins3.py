@@ -342,10 +342,10 @@ class Plugins3OptionsPage(OptionsPage):
         config = get_config()
 
         # Remove from do_not_update list
-        do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
+        do_not_update = list(config.persist['plugins3_do_not_update'])
         if plugin_id in do_not_update:
             do_not_update.remove(plugin_id)
-            config.persist['plugins3_do_not_update_plugins'] = do_not_update
+            config.persist['plugins3_do_not_update'] = do_not_update
 
         # Remove from updates dict
         if plugin_id in config.persist['plugins3_updates']:

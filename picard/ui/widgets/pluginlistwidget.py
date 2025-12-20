@@ -167,9 +167,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         """Resync do not update persist list with installed plugins list"""
         # A plugin could have been removed by another mean, so this ensures we removed old entries
         config = get_config()
-        do_not_update = set(config.persist['plugins3_do_not_update_plugins'])
+        do_not_update = set(config.persist['plugins3_do_not_update'])
         resynced_do_not_update = do_not_update.intersection(plugin_id_set)
-        config.persist['plugins3_do_not_update_plugins'] = list(resynced_do_not_update)
+        config.persist['plugins3_do_not_update'] = list(resynced_do_not_update)
 
     def _is_plugin_enabled(self, plugin):
         """Check if plugin is enabled."""
@@ -209,7 +209,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
             # Check if user has previously unchecked this plugin
             config = get_config()
-            do_not_update = config.persist['plugins3_do_not_update_plugins']
+            do_not_update = config.persist['plugins3_do_not_update']
 
             if plugin.plugin_id in do_not_update:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
@@ -391,7 +391,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
             if plugin:
                 config = get_config()
-                do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
+                do_not_update = list(config.persist['plugins3_do_not_update'])
 
                 is_checked = item.checkState(COLUMN_UPDATE) == QtCore.Qt.CheckState.Checked
 
@@ -401,11 +401,11 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 if not is_checked and plugin.plugin_id not in do_not_update:
                     # User unchecked - add to do not update list
                     do_not_update.append(plugin.plugin_id)
-                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update'] = do_not_update
                 elif is_checked and plugin.plugin_id in do_not_update:
                     # User checked - remove from do not update list
                     do_not_update.remove(plugin.plugin_id)
-                    config.persist['plugins3_do_not_update_plugins'] = do_not_update
+                    config.persist['plugins3_do_not_update'] = do_not_update
 
             # Update header button when update checkboxes change
             self._update_header_button()
