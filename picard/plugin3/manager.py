@@ -752,26 +752,7 @@ class PluginManager(QObject):
         old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Validate manifest after ref switch
-        try:
-            plugin.read_manifest()
-        except (PluginManifestInvalidError, PluginManifestReadError) as e:
-            # Rollback to previous commit on manifest validation failure
-            log.error('Plugin ref switch failed due to invalid manifest: %s', e)
-            try:
-                self._rollback_plugin_to_commit(plugin, old_commit)
-                log.info('Successfully rolled back plugin %s to previous ref', plugin.plugin_id)
-            except Exception as rollback_error:
-                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
-
-            # Re-enable plugin if it was enabled before rollback
-            if was_enabled:
-                try:
-                    self.enable_plugin(plugin)
-                except Exception as enable_error:
-                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
-
-            # Re-raise the original manifest error
-            raise
+        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
 
         # Update metadata with new ref
         uuid = PluginValidation.get_plugin_uuid(plugin)
@@ -872,6 +853,38 @@ class PluginManager(QObject):
 
         # Re-read manifest from rolled back version
         plugin.read_manifest()
+
+    def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
+        """Validate plugin manifest after git operations, rollback on failure.
+
+        Args:
+            plugin: Plugin to validate
+            old_commit: Commit ID to rollback to on failure
+            was_enabled: Whether plugin was enabled before operation
+
+        Raises:
+            PluginManifestInvalidError, PluginManifestReadError: If manifest validation fails
+        """
+        try:
+            plugin.read_manifest()
+        except (PluginManifestInvalidError, PluginManifestReadError) as e:
+            # Rollback to previous commit on manifest validation failure
+            log.error('Plugin operation failed due to invalid manifest: %s', e)
+            try:
+                self._rollback_plugin_to_commit(plugin, old_commit)
+                log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
+            except Exception as rollback_error:
+                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
+
+            # Re-enable plugin if it was enabled before rollback
+            if was_enabled:
+                try:
+                    self.enable_plugin(plugin)
+                except Exception as enable_error:
+                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
+
+            # Re-raise the original manifest error
+            raise
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
@@ -1354,26 +1367,7 @@ class PluginManager(QObject):
             commit_date = repo.get_commit_date(commit.id)
 
         # Reload manifest to get new version
-        try:
-            plugin.read_manifest()
-        except (PluginManifestInvalidError, PluginManifestReadError) as e:
-            # Rollback to previous commit on manifest validation failure
-            log.error('Plugin update failed due to invalid manifest: %s', e)
-            try:
-                self._rollback_plugin_to_commit(plugin, old_commit)
-                log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
-            except Exception as rollback_error:
-                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
-
-            # Re-enable plugin if it was enabled before rollback
-            if was_enabled:
-                try:
-                    self.enable_plugin(plugin)
-                except Exception as enable_error:
-                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
-
-            # Re-raise the original manifest error
-            raise
+        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
 
         new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
         new_ref = source.ref  # May have been updated to a newer tag

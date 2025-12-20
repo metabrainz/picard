@@ -578,6 +578,50 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         # Verify manifest was re-read
         plugin.read_manifest.assert_called_once()
 
+    @patch('picard.plugin3.manager.git_backend')
+    def test_validate_manifest_or_rollback_success(self, mock_git_backend):
+        """Test _validate_manifest_or_rollback with successful validation."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.read_manifest = Mock()
+
+        # Test successful validation
+        manager._validate_manifest_or_rollback(plugin, 'old_commit', False)
+
+        # Verify manifest was read
+        plugin.read_manifest.assert_called_once()
+
+    @patch('picard.plugin3.manager.git_backend')
+    def test_validate_manifest_or_rollback_failure(self, mock_git_backend):
+        """Test _validate_manifest_or_rollback with validation failure."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+
+        # Mock git backend
+        mock_repo = Mock()
+        mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
+
+        with patch.object(manager, 'enable_plugin') as mock_enable:
+            # Make read_manifest fail on first call, succeed on second (after rollback)
+            plugin.read_manifest = Mock(side_effect=[PluginManifestInvalidError(['Missing UUID']), None])
+
+            # Test validation failure with rollback
+            with self.assertRaises(PluginManifestInvalidError):
+                manager._validate_manifest_or_rollback(plugin, 'old_commit', True)
+
+            # Verify rollback was attempted
+            mock_repo.reset_to_commit.assert_called_once_with('old_commit', hard=True)
+
+            # Verify plugin was re-enabled after rollback
+            mock_enable.assert_called_once()
+
     @patch('picard.plugin3.manager.PluginSourceGit')
     @patch('picard.plugin3.manager.git_backend')
     def test_update_plugin_rollback_on_manifest_error(self, mock_git_backend, mock_source_git):
