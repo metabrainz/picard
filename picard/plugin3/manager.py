@@ -751,6 +751,28 @@ class PluginManager(QObject):
 
         old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
+        # Validate manifest after ref switch
+        try:
+            plugin.read_manifest()
+        except (PluginManifestInvalidError, PluginManifestReadError) as e:
+            # Rollback to previous commit on manifest validation failure
+            log.error('Plugin ref switch failed due to invalid manifest: %s', e)
+            try:
+                self._rollback_plugin_to_commit(plugin, old_commit)
+                log.info('Successfully rolled back plugin %s to previous ref', plugin.plugin_id)
+            except Exception as rollback_error:
+                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
+
+            # Re-enable plugin if it was enabled before rollback
+            if was_enabled:
+                try:
+                    self.enable_plugin(plugin)
+                except Exception as enable_error:
+                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
+
+            # Re-raise the original manifest error
+            raise
+
         # Update metadata with new ref
         uuid = PluginValidation.get_plugin_uuid(plugin)
         metadata = self._metadata.get_plugin_metadata(uuid)
