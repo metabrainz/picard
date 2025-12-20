@@ -1022,7 +1022,23 @@ class PluginManager(QObject):
 
             # Enable plugin if requested
             if enable_after_install:
-                self.enable_plugin(plugin)
+                try:
+                    self.enable_plugin(plugin)
+                except (PluginManifestInvalidError, PluginManifestReadError, PluginNoUUIDError) as e:
+                    # Remove installed plugin on manifest validation failure during enable
+                    log.error('Plugin installation failed during enable due to manifest error: %s', e)
+                    try:
+                        # Remove from plugins list
+                        if plugin in self._plugins:
+                            self._plugins.remove(plugin)
+                        # Remove plugin directory
+                        if final_path.exists():
+                            shutil.rmtree(final_path)
+                        log.info('Successfully cleaned up failed plugin installation: %s', plugin_name)
+                    except Exception as cleanup_error:
+                        log.error('Failed to cleanup plugin %s after enable failure: %s', plugin_name, cleanup_error)
+                    # Re-raise the original error
+                    raise
 
             return plugin_name
 

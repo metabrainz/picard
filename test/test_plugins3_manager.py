@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from pathlib import Path
 from unittest.mock import (
     Mock,
     patch,
@@ -678,3 +679,49 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Verify plugin was re-enabled after rollback
             manager.enable_plugin.assert_called()
+
+    @patch('picard.plugin3.manager.PluginSourceGit')
+    @patch('picard.plugin3.manager.PluginValidation')
+    @patch('picard.plugin3.manager.shutil')
+    def test_install_plugin_cleanup_on_enable_failure(self, mock_shutil, mock_validation, mock_source_git):
+        """Test install_plugin cleans up on manifest validation failure during enable."""
+        manager = PluginManager(MockTagger())
+        manager._registry = Mock()
+        manager._metadata = Mock()
+        manager._primary_plugin_dir = Path('/plugins')
+
+        # Mock successful manifest validation during install
+        mock_manifest = Mock()
+        mock_manifest.uuid = 'test-uuid'
+        mock_manifest.name = Mock(return_value='Test Plugin')
+        mock_validation.read_and_validate_manifest.return_value = mock_manifest
+
+        # Mock source
+        mock_source = Mock()
+        mock_source.sync.return_value = 'commit123'
+        mock_source.resolved_ref = 'v1.0.0'
+        mock_source.resolved_ref_type = 'tag'
+        mock_source_git.return_value = mock_source
+
+        # Mock no UUID conflicts
+        with (
+            patch('picard.plugin3.manager.UrlInstallablePlugin') as mock_installable,
+            patch.object(manager, '_check_uuid_conflict', return_value=(False, None)),
+            patch('picard.plugin3.manager.get_plugin_directory_name', return_value='test_plugin'),
+            patch.object(Path, 'exists', return_value=False),
+            patch.object(Path, 'rename'),
+            patch.object(manager, 'enable_plugin') as mock_enable,
+        ):
+            # Mock blacklist check
+            mock_plugin = Mock()
+            mock_plugin.is_blacklisted.return_value = (False, None)
+            mock_installable.return_value = mock_plugin
+            # Make enable_plugin fail with manifest error
+            mock_enable.side_effect = PluginManifestInvalidError(['Missing UUID'])
+
+            # Test install with enable failure
+            with self.assertRaises(PluginManifestInvalidError):
+                manager.install_plugin('https://example.com/plugin.git', enable_after_install=True)
+
+            # Verify plugin was not left in plugins list
+            self.assertEqual(len(manager._plugins), 0, "Plugin should be removed from plugins list on failure")
