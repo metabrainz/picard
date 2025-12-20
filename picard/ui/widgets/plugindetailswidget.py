@@ -21,11 +21,12 @@
 
 from functools import partial
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
+from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
 
 
@@ -67,29 +68,21 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Details grid
         details_widget = QtWidgets.QWidget()
-        details_layout = QtWidgets.QFormLayout(details_widget)
+        self.details_layout = QtWidgets.QFormLayout(details_widget)
 
-        self.version_label = QtWidgets.QLabel()
-        self.version_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Version:"), self.version_label)
+        self.git_ref_label = QtWidgets.QLabel()
+        self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.details_layout.addRow(_("Version:"), self.git_ref_label)
 
         self.authors_label = QtWidgets.QLabel()
         self.authors_label.setWordWrap(True)
         self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Authors:"), self.authors_label)
+        self.details_layout.addRow(_("Authors:"), self.authors_label)
 
-        self.trust_level_label = QtWidgets.QLabel()
-        self.trust_level_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Trust Level:"), self.trust_level_label)
-
-        self.plugin_id_label = QtWidgets.QLabel()
-        self.plugin_id_label.setWordWrap(True)
-        self.plugin_id_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Plugin ID:"), self.plugin_id_label)
-
-        self.git_ref_label = QtWidgets.QLabel()
-        self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Git Ref:"), self.git_ref_label)
+        self.maintainers_label = QtWidgets.QLabel()
+        self.maintainers_label.setWordWrap(True)
+        self.maintainers_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.details_layout.addRow(_("Maintainers:"), self.maintainers_label)
 
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
@@ -97,7 +90,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
         self.git_url_label.setOpenExternalLinks(True)
-        details_layout.addRow(_("Repository:"), self.git_url_label)
+        self.details_layout.addRow(_("Repository:"), self.git_url_label)
 
         layout.addWidget(details_widget)
 
@@ -112,7 +105,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.uninstall_button.clicked.connect(self._uninstall_plugin)
         button_layout.addWidget(self.uninstall_button)
 
-        self.description_button = QtWidgets.QPushButton(_("Full Description"))
+        self.description_button = QtWidgets.QPushButton(_("Information"))
         self.description_button.clicked.connect(self._show_full_description)
         button_layout.addWidget(self.description_button)
 
@@ -157,12 +150,27 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             except Exception:
                 pass
         self.description_label.setText(description)
-        self.version_label.setText(self._get_version_display(plugin))
-        self.authors_label.setText(self._get_authors_display(plugin))
-        self.trust_level_label.setText(self._get_trust_level_display(plugin))
-        self.plugin_id_label.setText(plugin.plugin_id)
-        self.git_ref_label.setText(self._get_git_ref_display(plugin))
-        self.git_url_label.setText(self._get_git_url_display(plugin))
+
+        # Show/hide rows based on available data
+        git_ref = self._get_git_ref_display(plugin)
+        self.details_layout.setRowVisible(self.git_ref_label, bool(git_ref))
+        if git_ref:
+            self.git_ref_label.setText(git_ref)
+
+        authors = self._get_authors_display(plugin)
+        self.details_layout.setRowVisible(self.authors_label, bool(authors))
+        if authors:
+            self.authors_label.setText(authors)
+
+        maintainers = self._get_maintainers_display(plugin)
+        self.details_layout.setRowVisible(self.maintainers_label, bool(maintainers))
+        if maintainers:
+            self.maintainers_label.setText(maintainers)
+
+        git_url = self._get_git_url_display(plugin)
+        self.details_layout.setRowVisible(self.git_url_label, bool(git_url))
+        if git_url:
+            self.git_url_label.setText(git_url)
 
         # Check if update is available - use cached value if provided, otherwise disable button
         if has_update is not None:
@@ -171,74 +179,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             # Don't check for updates during normal display to avoid network calls
             self.update_button.setEnabled(False)
 
-        # Enable/disable description button based on long description availability
-        has_long_desc = self.plugin_manager.long_description_as_html(plugin) is not None
-        self.description_button.setEnabled(has_long_desc)
+        # Always enable description button since PluginInfoDialog shows comprehensive info
+        self.description_button.setEnabled(True)
 
         self.setVisible(True)
 
     def _show_full_description(self):
-        """Show full plugin description in a dialog."""
+        """Show plugin information dialog (same as context menu Information)."""
         if not self.current_plugin:
             return
 
-        html_desc = self.plugin_manager.long_description_as_html(self.current_plugin)
-        is_html = True
-
-        if not html_desc:
-            # Fallback to regular description (plain text)
-            try:
-                html_desc = self.current_plugin.manifest.description_i18n()
-                is_html = False
-            except (AttributeError, Exception):
-                html_desc = None
-
-            if not html_desc:
-                return
-
-        # Create dialog to show full description
-        dialog = QtWidgets.QDialog(self)
-        dialog.setWindowTitle(_("Plugin Description"))
-        dialog.setModal(True)
-        dialog.resize(600, 400)
-
-        layout = QtWidgets.QVBoxLayout(dialog)
-
-        # Plugin name
-        try:
-            name = self.current_plugin.manifest.name_i18n()
-        except (AttributeError, Exception):
-            name = self.current_plugin.name or self.current_plugin.plugin_id
-
-        title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
-        layout.addWidget(title_label)
-
-        # Description text browser
-        text_browser = QtWidgets.QTextBrowser()
-        if is_html:
-            text_browser.setHtml(html_desc)
-        else:
-            text_browser.setPlainText(html_desc)
-        text_browser.setOpenExternalLinks(True)
-        layout.addWidget(text_browser)
-
-        # Close button
-        button_layout = QtWidgets.QHBoxLayout()
-
-        # Homepage button (if available)
-        homepage_url = self.plugin_manager.get_plugin_homepage(self.current_plugin)
-        if homepage_url:
-            homepage_button = QtWidgets.QPushButton(_("Open Homepage"))
-            homepage_button.setToolTip(homepage_url)
-            homepage_button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(homepage_url)))
-            button_layout.addWidget(homepage_button)
-
-        button_layout.addStretch()
-        close_button = QtWidgets.QPushButton(_("Close"))
-        close_button.clicked.connect(dialog.accept)
-        button_layout.addWidget(close_button)
-        layout.addLayout(button_layout)
-
+        dialog = PluginInfoDialog(self.current_plugin, self)
         dialog.exec()
 
     def _uninstall_plugin(self):
@@ -266,17 +217,21 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
 
-    def _get_version_display(self, plugin):
-        """Get version display text."""
-        return self.plugin_manager.get_plugin_version_display(plugin)
-
     def _get_authors_display(self, plugin):
         """Get authors display text."""
         if plugin.manifest and hasattr(plugin.manifest, 'authors'):
             authors = plugin.manifest.authors
             if authors:
                 return ", ".join(authors)
-        return _("Unknown")
+        return ""
+
+    def _get_maintainers_display(self, plugin):
+        """Get maintainers display text."""
+        if plugin.manifest and hasattr(plugin.manifest, 'maintainers'):
+            maintainers = plugin.manifest.maintainers
+            if maintainers:
+                return ", ".join(maintainers)
+        return ""
 
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
@@ -285,35 +240,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def _format_git_info(self, metadata):
         """Format git information for display."""
         return self.plugin_manager.get_plugin_git_info(metadata)
-
-    def _get_trust_level_display(self, plugin):
-        """Get trust level display text."""
-        try:
-            registry = self.plugin_manager._registry
-
-            # Get remote URL from metadata
-            remote_url = self._get_plugin_remote_url(plugin)
-            if remote_url:
-                trust_level = registry.get_trust_level(remote_url)
-                return self._format_trust_level(trust_level)
-
-            # For local plugins without remote_url, show as Local
-            return _("Local")
-
-        except Exception:
-            pass
-
-        return _("Unknown")
-
-    def _format_trust_level(self, trust_level):
-        """Format trust level for display."""
-        trust_map = {
-            "official": _("Official"),
-            "trusted": _("Trusted"),
-            "community": _("Community"),
-            "unregistered": _("Unregistered"),
-        }
-        return trust_map.get(trust_level, _("Unknown"))
 
     def _get_git_ref_display(self, plugin):
         """Get git ref display text."""
@@ -335,12 +261,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return f'<a href="{remote_url}">{remote_url}</a>'
         elif remote_url:
             return remote_url
-        return _("N/A")
-
-    def _has_update_available(self, plugin):
-        """Check if plugin has update available."""
-        # Use the manager's method which handles versioning schemes correctly
-        return self.plugin_manager.get_plugin_update_status(plugin)
+        return ""
 
     def _update_plugin(self):
         """Update the current plugin."""
