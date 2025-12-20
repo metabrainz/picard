@@ -21,11 +21,12 @@
 
 from functools import partial
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
+from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
 
 
@@ -112,7 +113,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.uninstall_button.clicked.connect(self._uninstall_plugin)
         button_layout.addWidget(self.uninstall_button)
 
-        self.description_button = QtWidgets.QPushButton(_("Full Description"))
+        self.description_button = QtWidgets.QPushButton(_("Information"))
         self.description_button.clicked.connect(self._show_full_description)
         button_layout.addWidget(self.description_button)
 
@@ -171,74 +172,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             # Don't check for updates during normal display to avoid network calls
             self.update_button.setEnabled(False)
 
-        # Enable/disable description button based on long description availability
-        has_long_desc = self.plugin_manager.long_description_as_html(plugin) is not None
-        self.description_button.setEnabled(has_long_desc)
+        # Always enable description button since PluginInfoDialog shows comprehensive info
+        self.description_button.setEnabled(True)
 
         self.setVisible(True)
 
     def _show_full_description(self):
-        """Show full plugin description in a dialog."""
+        """Show plugin information dialog (same as context menu Information)."""
         if not self.current_plugin:
             return
 
-        html_desc = self.plugin_manager.long_description_as_html(self.current_plugin)
-        is_html = True
-
-        if not html_desc:
-            # Fallback to regular description (plain text)
-            try:
-                html_desc = self.current_plugin.manifest.description_i18n()
-                is_html = False
-            except (AttributeError, Exception):
-                html_desc = None
-
-            if not html_desc:
-                return
-
-        # Create dialog to show full description
-        dialog = QtWidgets.QDialog(self)
-        dialog.setWindowTitle(_("Plugin Description"))
-        dialog.setModal(True)
-        dialog.resize(600, 400)
-
-        layout = QtWidgets.QVBoxLayout(dialog)
-
-        # Plugin name
-        try:
-            name = self.current_plugin.manifest.name_i18n()
-        except (AttributeError, Exception):
-            name = self.current_plugin.name or self.current_plugin.plugin_id
-
-        title_label = QtWidgets.QLabel(f"<h2>{name}</h2>")
-        layout.addWidget(title_label)
-
-        # Description text browser
-        text_browser = QtWidgets.QTextBrowser()
-        if is_html:
-            text_browser.setHtml(html_desc)
-        else:
-            text_browser.setPlainText(html_desc)
-        text_browser.setOpenExternalLinks(True)
-        layout.addWidget(text_browser)
-
-        # Close button
-        button_layout = QtWidgets.QHBoxLayout()
-
-        # Homepage button (if available)
-        homepage_url = self.plugin_manager.get_plugin_homepage(self.current_plugin)
-        if homepage_url:
-            homepage_button = QtWidgets.QPushButton(_("Open Homepage"))
-            homepage_button.setToolTip(homepage_url)
-            homepage_button.clicked.connect(lambda: QtGui.QDesktopServices.openUrl(QtCore.QUrl(homepage_url)))
-            button_layout.addWidget(homepage_button)
-
-        button_layout.addStretch()
-        close_button = QtWidgets.QPushButton(_("Close"))
-        close_button.clicked.connect(dialog.accept)
-        button_layout.addWidget(close_button)
-        layout.addLayout(button_layout)
-
+        dialog = PluginInfoDialog(self.current_plugin, self)
         dialog.exec()
 
     def _uninstall_plugin(self):
