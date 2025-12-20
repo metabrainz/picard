@@ -138,7 +138,13 @@ class PluginBlacklistedError(PluginManagerError):
         super().__init__(f"Plugin is blacklisted: {reason}")
 
 
-class PluginManifestNotFoundError(PluginManagerError):
+class PluginManifestError(PluginManagerError):
+    """Base class for plugin manifest-related errors."""
+
+    pass
+
+
+class PluginManifestNotFoundError(PluginManifestError):
     """Raised when MANIFEST.toml is not found in plugin source."""
 
     def __init__(self, source):
@@ -146,7 +152,7 @@ class PluginManifestNotFoundError(PluginManagerError):
         super().__init__(f"No MANIFEST.toml found in {source}")
 
 
-class PluginManifestReadError(PluginManagerError):
+class PluginManifestReadError(PluginManifestError):
     """Raised when MANIFEST.toml cannot be read."""
 
     def __init__(self, e, source):
@@ -154,7 +160,7 @@ class PluginManifestReadError(PluginManagerError):
         super().__init__(f"Failed to read MANIFEST.toml in {source}: {e}")
 
 
-class PluginManifestInvalidError(PluginManagerError):
+class PluginManifestInvalidError(PluginManifestError):
     """Raised when MANIFEST.toml validation fails."""
 
     def __init__(self, errors):
@@ -191,7 +197,7 @@ class PluginRefNotFoundError(PluginManagerError):
         super().__init__(f"Ref '{ref}' not found for plugin {plugin_id}")
 
 
-class PluginNoUUIDError(PluginManagerError):
+class PluginNoUUIDError(PluginManifestError):
     """Raised when plugin has no UUID in manifest."""
 
     def __init__(self, plugin_id):
@@ -886,7 +892,7 @@ class PluginManager(QObject):
         """
         try:
             plugin.read_manifest()
-        except (PluginManifestInvalidError, PluginManifestReadError) as e:
+        except PluginManifestError as e:
             # Rollback to previous commit on manifest validation failure
             log.error('Plugin operation failed due to invalid manifest: %s', e)
             try:
@@ -1056,7 +1062,7 @@ class PluginManager(QObject):
             if enable_after_install:
                 try:
                     self.enable_plugin(plugin)
-                except (PluginManifestInvalidError, PluginManifestReadError, PluginNoUUIDError) as e:
+                except PluginManifestError as e:
                     # Remove installed plugin on manifest validation failure during enable
                     log.error('Plugin installation failed during enable due to manifest error: %s', e)
                     self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
@@ -1194,7 +1200,7 @@ class PluginManager(QObject):
         if enable_after_install:
             try:
                 self.enable_plugin(plugin)
-            except (PluginManifestInvalidError, PluginManifestReadError, PluginNoUUIDError) as e:
+            except PluginManifestError as e:
                 # Remove installed plugin on manifest validation failure during enable
                 log.error('Local plugin installation failed during enable due to manifest error: %s', e)
                 self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)

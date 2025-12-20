@@ -1302,6 +1302,7 @@ class PluginCLI:
             try:
                 # Read and validate manifest using manager method
                 from picard.plugin3.manager import (
+                    PluginManifestError,
                     PluginManifestInvalidError,
                     PluginManifestNotFoundError,
                 )
@@ -1381,6 +1382,9 @@ class PluginCLI:
                 self._out.nl()
                 self._out.error(f'  • {e}')
                 return ExitCode.ERROR
+            except PluginManifestError as e:
+                self._out.error(f'Manifest error: {e}')
+                return ExitCode.ERROR
             except Exception as e:
                 self._handle_exception(e, 'Validation error')
                 return ExitCode.ERROR
@@ -1405,6 +1409,7 @@ class PluginCLI:
             self._out.success('MANIFEST.toml found')
 
             from picard.plugin3.manager import (
+                PluginManifestError,
                 PluginManifestInvalidError,
                 PluginManifestNotFoundError,
             )
@@ -1419,6 +1424,9 @@ class PluginCLI:
                 self._out.error('Validation failed:')
                 self._out.nl()
                 self._out.error(f'  • {e}')
+                return ExitCode.ERROR
+            except PluginManifestError as e:
+                self._out.error(f'Manifest error: {e}')
                 return ExitCode.ERROR
 
             # Show plugin info
