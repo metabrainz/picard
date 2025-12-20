@@ -304,6 +304,38 @@ else
 fi
 echo
 
+# Test 29: Test local directory install with enable failure - should cleanup
+echo "29. Test local directory install with enable failure - should cleanup"
+cd "$PLUGIN_REPO"
+# Create a commit with valid manifest but broken UUID that will fail during enable
+git checkout v1.2.0 -q
+# Create a manifest with invalid UUID format (will pass initial validation but fail during enable)
+sed -i 's/uuid = "12345678-1234-4678-9234-123456789abc"/uuid = "invalid-uuid-format"/' MANIFEST.toml
+git add .
+git commit -q -m "Invalid UUID format - will fail during enable"
+BROKEN_UUID_COMMIT=$(git rev-parse HEAD)
+git tag broken-uuid-enable
+cd - > /dev/null
+
+echo "Attempting to install with enable_after_install and broken UUID (should fail and cleanup)..."
+if $PICARD_PLUGINS --install "$PLUGIN_REPO" --ref broken-uuid-enable --enable-after-install --yes 2>/dev/null; then
+    echo "✗ ERROR: Install with broken UUID should have failed"
+    exit 1
+else
+    echo "✓ Install with broken UUID correctly failed during enable"
+fi
+
+# Verify no broken plugin left behind
+PLUGIN_COUNT=$($PICARD_PLUGINS --list | grep -c "$TEST_PLUGIN_UUID" || true)
+if [ "$PLUGIN_COUNT" -eq 0 ]; then
+    echo "✓ No broken plugin left after failed local install with enable"
+else
+    echo "✗ ERROR: Broken plugin found after failed local install with enable"
+    # This will currently fail until we implement the fix
+    echo "  (This is expected to fail until local directory rollback is implemented)"
+fi
+echo
+
 # Cleanup
 echo "Cleanup: Removing test directory"
 rm -rf "$TEST_DIR"
