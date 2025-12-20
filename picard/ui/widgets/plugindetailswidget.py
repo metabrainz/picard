@@ -68,21 +68,21 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Details grid
         details_widget = QtWidgets.QWidget()
-        details_layout = QtWidgets.QFormLayout(details_widget)
+        self.details_layout = QtWidgets.QFormLayout(details_widget)
 
         self.git_ref_label = QtWidgets.QLabel()
         self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Version:"), self.git_ref_label)
+        self.details_layout.addRow(_("Version:"), self.git_ref_label)
 
         self.authors_label = QtWidgets.QLabel()
         self.authors_label.setWordWrap(True)
         self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Authors:"), self.authors_label)
+        self.details_layout.addRow(_("Authors:"), self.authors_label)
 
         self.maintainers_label = QtWidgets.QLabel()
         self.maintainers_label.setWordWrap(True)
         self.maintainers_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Maintainers:"), self.maintainers_label)
+        self.details_layout.addRow(_("Maintainers:"), self.maintainers_label)
 
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
@@ -90,7 +90,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
         self.git_url_label.setOpenExternalLinks(True)
-        details_layout.addRow(_("Repository:"), self.git_url_label)
+        self.details_layout.addRow(_("Repository:"), self.git_url_label)
 
         layout.addWidget(details_widget)
 
@@ -150,10 +150,27 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             except Exception:
                 pass
         self.description_label.setText(description)
-        self.authors_label.setText(self._get_authors_display(plugin))
-        self.maintainers_label.setText(self._get_maintainers_display(plugin))
-        self.git_ref_label.setText(self._get_git_ref_display(plugin))
-        self.git_url_label.setText(self._get_git_url_display(plugin))
+
+        # Show/hide rows based on available data
+        git_ref = self._get_git_ref_display(plugin)
+        self.details_layout.setRowVisible(self.git_ref_label, bool(git_ref))
+        if git_ref:
+            self.git_ref_label.setText(git_ref)
+
+        authors = self._get_authors_display(plugin)
+        self.details_layout.setRowVisible(self.authors_label, bool(authors))
+        if authors:
+            self.authors_label.setText(authors)
+
+        maintainers = self._get_maintainers_display(plugin)
+        self.details_layout.setRowVisible(self.maintainers_label, bool(maintainers))
+        if maintainers:
+            self.maintainers_label.setText(maintainers)
+
+        git_url = self._get_git_url_display(plugin)
+        self.details_layout.setRowVisible(self.git_url_label, bool(git_url))
+        if git_url:
+            self.git_url_label.setText(git_url)
 
         # Check if update is available - use cached value if provided, otherwise disable button
         if has_update is not None:
@@ -206,7 +223,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             authors = plugin.manifest.authors
             if authors:
                 return ", ".join(authors)
-        return _("Unknown")
+        return ""
 
     def _get_maintainers_display(self, plugin):
         """Get maintainers display text."""
@@ -273,7 +290,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return f'<a href="{remote_url}">{remote_url}</a>'
         elif remote_url:
             return remote_url
-        return _("N/A")
+        return ""
 
     def _has_update_available(self, plugin):
         """Check if plugin has update available."""
