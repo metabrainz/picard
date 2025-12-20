@@ -79,6 +79,11 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Authors:"), self.authors_label)
 
+        self.maintainers_label = QtWidgets.QLabel()
+        self.maintainers_label.setWordWrap(True)
+        self.maintainers_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        details_layout.addRow(_("Maintainers:"), self.maintainers_label)
+
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
         self.git_url_label.setTextInteractionFlags(
@@ -146,6 +151,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                 pass
         self.description_label.setText(description)
         self.authors_label.setText(self._get_authors_display(plugin))
+        self.maintainers_label.setText(self._get_maintainers_display(plugin))
         self.git_ref_label.setText(self._get_git_ref_display(plugin))
         self.git_url_label.setText(self._get_git_url_display(plugin))
 
@@ -201,6 +207,14 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             if authors:
                 return ", ".join(authors)
         return _("Unknown")
+
+    def _get_maintainers_display(self, plugin):
+        """Get maintainers display text."""
+        if plugin.manifest and hasattr(plugin.manifest, 'maintainers'):
+            maintainers = plugin.manifest.maintainers
+            if maintainers:
+                return ", ".join(maintainers)
+        return ""
 
     def _get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
