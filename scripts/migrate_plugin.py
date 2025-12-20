@@ -1121,7 +1121,6 @@ def convert_config_options(content):
                     )
             else:
                 access_pattern = rf'''\bconfig.setting\[["']{re.escape(key)}["']\]'''
-                print(access_pattern)
                 if re.search(access_pattern, line):
                     line = re.sub(access_pattern, f"api.plugin_config['{key}']", line)
 
