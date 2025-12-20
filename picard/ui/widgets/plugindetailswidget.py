@@ -263,11 +263,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return remote_url
         return ""
 
-    def _has_update_available(self, plugin):
-        """Check if plugin has update available."""
-        # Use the manager's method which handles versioning schemes correctly
-        return self.plugin_manager.get_plugin_update_status(plugin)
-
     def _update_plugin(self):
         """Update the current plugin."""
         if not self.current_plugin:
