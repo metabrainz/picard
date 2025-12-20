@@ -803,3 +803,27 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Verify cleanup was attempted - check that plugin was removed from list
             self.assertEqual(len(manager._plugins), 0, "Plugin should be removed from plugins list on failure")
+
+    @patch('picard.plugin3.manager.shutil')
+    def test_cleanup_failed_plugin_install(self, mock_shutil):
+        """Test _cleanup_failed_plugin_install helper method."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin and path
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        final_path = Path('/plugins/test_plugin')
+
+        # Add plugin to manager's plugins list
+        manager._plugins = [plugin]
+
+        # Mock path exists
+        with patch.object(Path, 'exists', return_value=True):
+            # Test cleanup
+            manager._cleanup_failed_plugin_install(plugin, 'test_plugin', final_path)
+
+        # Verify plugin was removed from list
+        self.assertEqual(len(manager._plugins), 0)
+
+        # Verify directory removal was attempted
+        mock_shutil.rmtree.assert_called_once_with(final_path)

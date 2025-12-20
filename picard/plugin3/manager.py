@@ -854,6 +854,25 @@ class PluginManager(QObject):
         # Re-read manifest from rolled back version
         plugin.read_manifest()
 
+    def _cleanup_failed_plugin_install(self, plugin, plugin_name, final_path):
+        """Clean up failed plugin installation by removing plugin and directory.
+
+        Args:
+            plugin: Plugin object to remove
+            plugin_name: Name of the plugin for logging
+            final_path: Path to plugin directory to remove
+        """
+        try:
+            # Remove from plugins list
+            if plugin in self._plugins:
+                self._plugins.remove(plugin)
+            # Remove plugin directory
+            if final_path.exists():
+                shutil.rmtree(final_path)
+            log.info('Successfully cleaned up failed plugin installation: %s', plugin_name)
+        except Exception as cleanup_error:
+            log.error('Failed to cleanup plugin %s after enable failure: %s', plugin_name, cleanup_error)
+
     def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
         """Validate plugin manifest after git operations, rollback on failure.
 
@@ -1040,16 +1059,7 @@ class PluginManager(QObject):
                 except (PluginManifestInvalidError, PluginManifestReadError, PluginNoUUIDError) as e:
                     # Remove installed plugin on manifest validation failure during enable
                     log.error('Plugin installation failed during enable due to manifest error: %s', e)
-                    try:
-                        # Remove from plugins list
-                        if plugin in self._plugins:
-                            self._plugins.remove(plugin)
-                        # Remove plugin directory
-                        if final_path.exists():
-                            shutil.rmtree(final_path)
-                        log.info('Successfully cleaned up failed plugin installation: %s', plugin_name)
-                    except Exception as cleanup_error:
-                        log.error('Failed to cleanup plugin %s after enable failure: %s', plugin_name, cleanup_error)
+                    self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
                     # Re-raise the original error
                     raise
 
@@ -1187,16 +1197,7 @@ class PluginManager(QObject):
             except (PluginManifestInvalidError, PluginManifestReadError, PluginNoUUIDError) as e:
                 # Remove installed plugin on manifest validation failure during enable
                 log.error('Local plugin installation failed during enable due to manifest error: %s', e)
-                try:
-                    # Remove from plugins list
-                    if plugin in self._plugins:
-                        self._plugins.remove(plugin)
-                    # Remove plugin directory
-                    if final_path.exists():
-                        shutil.rmtree(final_path)
-                    log.info('Successfully cleaned up failed local plugin installation: %s', plugin_name)
-                except Exception as cleanup_error:
-                    log.error('Failed to cleanup local plugin %s after enable failure: %s', plugin_name, cleanup_error)
+                self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
                 # Re-raise the original error
                 raise
 
