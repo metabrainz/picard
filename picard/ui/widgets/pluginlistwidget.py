@@ -160,14 +160,15 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self._update_header_button()
 
         # Update do not update list to match installed plugins list
-        self._resync_do_not_update(installed_plugins_uuids)
+        installed_plugins_ids = {plugin.plugin_id for plugin in plugins}
+        self._resync_do_not_update(installed_plugins_ids)
 
-    def _resync_do_not_update(self, uuid_set):
+    def _resync_do_not_update(self, plugin_id_set):
         """Resync do not update persist list with installed plugins list"""
         # A plugin could have been removed by another mean, so this ensures we removed old entries
         config = get_config()
         do_not_update = set(config.persist['plugins3_do_not_update_plugins'])
-        resynced_do_not_update = do_not_update.intersection(uuid_set)
+        resynced_do_not_update = do_not_update.intersection(plugin_id_set)
         config.persist['plugins3_do_not_update_plugins'] = list(resynced_do_not_update)
 
     def _is_plugin_enabled(self, plugin):
@@ -210,7 +211,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             config = get_config()
             do_not_update = config.persist['plugins3_do_not_update_plugins']
 
-            if plugin.uuid and plugin.uuid in do_not_update:
+            if plugin.plugin_id in do_not_update:
                 item.setCheckState(COLUMN_UPDATE, QtCore.Qt.CheckState.Unchecked)
                 self._set_update_checkbox_tooltip(item, False)
             else:
@@ -388,7 +389,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         elif column == COLUMN_UPDATE:  # Handle update checkbox
             # Save checkbox state preference
             plugin = item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole)
-            if plugin and plugin.uuid:
+            if plugin:
                 config = get_config()
                 do_not_update = list(config.persist['plugins3_do_not_update_plugins'])
 
@@ -397,13 +398,13 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 # Update tooltip based on new state
                 self._set_update_checkbox_tooltip(item, is_checked)
 
-                if not is_checked and plugin.uuid not in do_not_update:
+                if not is_checked and plugin.plugin_id not in do_not_update:
                     # User unchecked - add to do not update list
-                    do_not_update.append(plugin.uuid)
+                    do_not_update.append(plugin.plugin_id)
                     config.persist['plugins3_do_not_update_plugins'] = do_not_update
-                elif is_checked and plugin.uuid in do_not_update:
+                elif is_checked and plugin.plugin_id in do_not_update:
                     # User checked - remove from do not update list
-                    do_not_update.remove(plugin.uuid)
+                    do_not_update.remove(plugin.plugin_id)
                     config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
             # Update header button when update checkboxes change
