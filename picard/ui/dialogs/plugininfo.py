@@ -226,7 +226,38 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
             trust_level = getattr(self.plugin_data, 'trust_level', '')
             return trust_level.title() if trust_level else ''
         else:
-            return ''
+            # For installed plugins, use the plugin manager to get trust level
+            try:
+                registry = self.plugin_manager._registry
+                # Get remote URL from metadata
+                remote_url = self._get_plugin_remote_url()
+                if remote_url:
+                    trust_level = registry.get_trust_level(remote_url)
+                    return self._format_trust_level(trust_level)
+                # For local plugins without remote_url, show as Local
+                return _("Local")
+            except Exception:
+                return _("Unknown")
+
+    def _format_trust_level(self, trust_level):
+        """Format trust level for display."""
+        trust_map = {
+            "official": _("Official"),
+            "trusted": _("Trusted"),
+            "community": _("Community"),
+            "unregistered": _("Unregistered"),
+        }
+        return trust_map.get(trust_level, _("Unknown"))
+
+    def _get_plugin_remote_url(self):
+        """Get plugin remote URL from metadata."""
+        if self._is_installable_plugin():
+            return getattr(self.plugin_data, 'git_url', getattr(self.plugin_data, 'source_url', '')) or ''
+        else:
+            try:
+                return self.plugin_manager.get_plugin_remote_url(self.plugin_data) or '' if self.plugin_manager else ''
+            except (AttributeError, Exception):
+                return ''
 
     def _get_categories(self):
         """Get categories."""

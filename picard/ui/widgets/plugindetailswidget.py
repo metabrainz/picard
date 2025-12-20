@@ -79,10 +79,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.authors_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Authors:"), self.authors_label)
 
-        self.trust_level_label = QtWidgets.QLabel()
-        self.trust_level_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Trust Level:"), self.trust_level_label)
-
         self.plugin_id_label = QtWidgets.QLabel()
         self.plugin_id_label.setWordWrap(True)
         self.plugin_id_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
@@ -155,7 +151,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                 pass
         self.description_label.setText(description)
         self.authors_label.setText(self._get_authors_display(plugin))
-        self.trust_level_label.setText(self._get_trust_level_display(plugin))
         self.plugin_id_label.setText(plugin.plugin_id)
         self.git_ref_label.setText(self._get_git_ref_display(plugin))
         self.git_url_label.setText(self._get_git_url_display(plugin))
