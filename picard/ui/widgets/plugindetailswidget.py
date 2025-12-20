@@ -70,9 +70,9 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         details_widget = QtWidgets.QWidget()
         details_layout = QtWidgets.QFormLayout(details_widget)
 
-        self.version_label = QtWidgets.QLabel()
-        self.version_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Version:"), self.version_label)
+        self.git_ref_label = QtWidgets.QLabel()
+        self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        details_layout.addRow(_("Version:"), self.git_ref_label)
 
         self.authors_label = QtWidgets.QLabel()
         self.authors_label.setWordWrap(True)
@@ -87,10 +87,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.plugin_id_label.setWordWrap(True)
         self.plugin_id_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         details_layout.addRow(_("Plugin ID:"), self.plugin_id_label)
-
-        self.git_ref_label = QtWidgets.QLabel()
-        self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        details_layout.addRow(_("Git Ref:"), self.git_ref_label)
 
         self.git_url_label = QtWidgets.QLabel()
         self.git_url_label.setWordWrap(True)
@@ -158,7 +154,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             except Exception:
                 pass
         self.description_label.setText(description)
-        self.version_label.setText(self._get_version_display(plugin))
         self.authors_label.setText(self._get_authors_display(plugin))
         self.trust_level_label.setText(self._get_trust_level_display(plugin))
         self.plugin_id_label.setText(plugin.plugin_id)
@@ -209,10 +204,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
-
-    def _get_version_display(self, plugin):
-        """Get version display text."""
-        return self.plugin_manager.get_plugin_version_display(plugin)
 
     def _get_authors_display(self, plugin):
         """Get authors display text."""
