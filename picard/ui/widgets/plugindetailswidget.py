@@ -273,7 +273,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             from picard.config import get_config
 
             config = get_config()
-            do_not_update = config.persist['plugins3_do_not_update_plugins']
+            do_not_update = config.persist['plugins3_do_not_update']
             plugin_id = self.current_plugin.plugin_id
 
             if plugin_id in do_not_update:
@@ -299,7 +299,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                 # Clear the do_not_update flag if user confirmed
                 do_not_update = list(do_not_update)
                 do_not_update.remove(plugin_id)
-                config.persist['plugins3_do_not_update_plugins'] = do_not_update
+                config.persist['plugins3_do_not_update'] = do_not_update
 
         # Find the plugin list widget and call its update method
         plugin_list = self._find_plugin_list_widget()
