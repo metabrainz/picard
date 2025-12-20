@@ -563,6 +563,7 @@ BoolOption('persist', 'script_editor_wordwrap', False)
 Option('setting', 'plugins3_metadata', {})
 ListOption('setting', 'plugins3_enabled_plugins', [])
 ListOption('persist', 'plugins3_do_not_update_plugins', [], title=N_("Plugins to exclude from updates"))
+Option('persist', 'plugins3_updates', {})
 
 
 def init_options():

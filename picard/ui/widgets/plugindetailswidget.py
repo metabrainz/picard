@@ -269,14 +269,14 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             return
 
         # Check if plugin is in do_not_update list and ask for confirmation
-        if self.current_plugin.uuid:
+        if self.current_plugin:
             from picard.config import get_config
 
             config = get_config()
             do_not_update = config.persist['plugins3_do_not_update_plugins']
-            plugin_uuid = self.current_plugin.uuid
+            plugin_id = self.current_plugin.plugin_id
 
-            if plugin_uuid in do_not_update:
+            if plugin_id in do_not_update:
                 # Ask for confirmation
                 try:
                     plugin_name = self.current_plugin.manifest.name_i18n()
@@ -298,7 +298,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
                 # Clear the do_not_update flag if user confirmed
                 do_not_update = list(do_not_update)
-                do_not_update.remove(plugin_uuid)
+                do_not_update.remove(plugin_id)
                 config.persist['plugins3_do_not_update_plugins'] = do_not_update
 
         # Find the plugin list widget and call its update method

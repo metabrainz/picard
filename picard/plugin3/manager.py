@@ -1545,8 +1545,8 @@ class PluginManager(QObject):
 
                     update_check = UpdateCheck(
                         plugin_id=plugin.plugin_id,
-                        old_commit=short_commit_id(current_commit),
-                        new_commit=short_commit_id(latest_commit),
+                        old_commit=current_commit,
+                        new_commit=latest_commit,
                         commit_date=latest_commit_date,
                         old_ref=display_old_ref,
                         new_ref=display_new_ref,

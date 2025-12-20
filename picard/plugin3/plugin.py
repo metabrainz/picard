@@ -602,7 +602,7 @@ class Plugin:
         # Add a shortcut
         self.uuid = self.manifest.uuid
 
-    def get_current_commit_id(self):
+    def get_current_commit_id(self, short=False):
         """Get the current commit ID of the plugin if it's a git repository."""
         git_dir = self.local_path / '.git'
         if not git_dir.exists():
@@ -613,7 +613,7 @@ class Plugin:
             repo = backend.create_repository(self.local_path)
             commit_id = repo.get_head_target()
             repo.free()
-            return short_commit_id(commit_id)
+            return short_commit_id(commit_id) if short else commit_id
         except Exception:
             return None
 
@@ -660,7 +660,7 @@ class Plugin:
 
         # Log plugin info
         version = self.manifest.version if self.manifest else None
-        commit_id = self.get_current_commit_id()
+        commit_id = self.get_current_commit_id(short=True)
         version_str = f" v{version}" if version else ""
         if commit_id:
             api.logger.info(f"Enabling plugin {self.plugin_id}{version_str} (commit {commit_id})")
