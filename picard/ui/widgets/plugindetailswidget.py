@@ -241,35 +241,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         """Format git information for display."""
         return self.plugin_manager.get_plugin_git_info(metadata)
 
-    def _get_trust_level_display(self, plugin):
-        """Get trust level display text."""
-        try:
-            registry = self.plugin_manager._registry
-
-            # Get remote URL from metadata
-            remote_url = self._get_plugin_remote_url(plugin)
-            if remote_url:
-                trust_level = registry.get_trust_level(remote_url)
-                return self._format_trust_level(trust_level)
-
-            # For local plugins without remote_url, show as Local
-            return _("Local")
-
-        except Exception:
-            pass
-
-        return _("Unknown")
-
-    def _format_trust_level(self, trust_level):
-        """Format trust level for display."""
-        trust_map = {
-            "official": _("Official"),
-            "trusted": _("Trusted"),
-            "community": _("Community"),
-            "unregistered": _("Unregistered"),
-        }
-        return trust_map.get(trust_level, _("Unknown"))
-
     def _get_git_ref_display(self, plugin):
         """Get git ref display text."""
         try:
