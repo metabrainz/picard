@@ -833,6 +833,24 @@ class PluginManager(QObject):
 
         return ref
 
+    def _rollback_plugin_to_commit(self, plugin, commit_id):
+        """Rollback plugin to a specific commit after failed update.
+
+        Args:
+            plugin: Plugin to rollback
+            commit_id: Commit ID to rollback to
+
+        Raises:
+            Exception: If rollback fails
+        """
+        log.warning('Rolling back plugin %s to commit %s', plugin.plugin_id, commit_id)
+        backend = git_backend()
+        with backend.create_repository(plugin.local_path) as repo:
+            repo.reset_to_commit(commit_id, hard=True)
+
+        # Re-read manifest from rolled back version
+        plugin.read_manifest()
+
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
     ):

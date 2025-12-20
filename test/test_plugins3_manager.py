@@ -547,3 +547,28 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         has_conflict, conflict_plugin = manager._check_uuid_conflict(new_manifest, 'https://example.com/different.git')
         self.assertTrue(has_conflict)
         self.assertEqual(conflict_plugin, existing_plugin)
+
+    @patch('picard.plugin3.manager.git_backend')
+    def test_rollback_plugin_to_commit(self, mock_git_backend):
+        """Test _rollback_plugin_to_commit method."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+        plugin.read_manifest = Mock()
+
+        # Mock git backend
+        mock_repo = Mock()
+        mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
+
+        # Test rollback
+        commit_id = 'abc123'
+        manager._rollback_plugin_to_commit(plugin, commit_id)
+
+        # Verify git reset was called
+        mock_repo.reset_to_commit.assert_called_once_with(commit_id, hard=True)
+
+        # Verify manifest was re-read
+        plugin.read_manifest.assert_called_once()
