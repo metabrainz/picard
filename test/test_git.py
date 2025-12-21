@@ -99,6 +99,9 @@ class MockGitRepository(GitRepository):
     def fetch_remote(self, remote, refspec=None, callbacks=None):
         pass
 
+    def fetch_remote_with_tags(self, remote, refspec=None, callbacks=None):
+        pass
+
     def free(self):
         pass
 

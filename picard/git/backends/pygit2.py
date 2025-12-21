@@ -152,13 +152,17 @@ class Pygit2Repository(GitRepository):
 
     def set_head(self, target: str):
         _log_git_call("set_head", target)
-        # If target looks like a commit hash (40 hex chars), convert to pygit2.Oid
-        if len(target) == 40 and all(c in '0123456789abcdef' for c in target.lower()):
-            oid = pygit2.Oid(hex=target)
-            self._repo.set_head(oid)
-        else:
-            # It's a reference name
+        # Try as reference name first, then as commit ID
+        try:
             self._repo.set_head(target)
+        except (pygit2.GitError, ValueError):
+            # If it fails as reference, try as commit ID
+            try:
+                oid = pygit2.Oid(hex=target)
+                self._repo.set_head(oid)
+            except (pygit2.GitError, ValueError):
+                # Re-raise original error
+                self._repo.set_head(target)
 
     def list_references(self) -> list[GitRef]:
         # Get actual reference objects instead of just names
@@ -248,9 +252,14 @@ class Pygit2Repository(GitRepository):
                 is_annotated = False
                 ref_is_remote = False
             elif ref_name.startswith('refs/remotes/'):
-                ref_type = GitRefType.BRANCH
-                is_annotated = False
-                ref_is_remote = True
+                if ref_name.endswith('/HEAD'):
+                    ref_type = GitRefType.HEAD
+                    is_annotated = False
+                    ref_is_remote = True
+                else:
+                    ref_type = GitRefType.BRANCH
+                    is_annotated = False
+                    ref_is_remote = True
             elif ref_name.startswith('refs/tags/'):
                 ref_type = GitRefType.TAG
                 ref_is_remote = is_remote  # Tags use the method parameter
@@ -312,6 +321,17 @@ class Pygit2Repository(GitRepository):
             remote.fetch([refspec], callbacks=callbacks)
         else:
             remote.fetch(callbacks=callbacks)
+
+    def fetch_remote_with_tags(self, remote, refspec: str = None, callbacks=None):
+        """Fetch from remote including tags."""
+        _log_git_call("fetch_remote_with_tags", str(remote.name), refspec)
+        if refspec:
+            # Combine provided refspec with tag refspec
+            refspecs = [refspec, '+refs/tags/*:refs/tags/*']
+        else:
+            # Combine default fetch refspecs with tag refspec
+            refspecs = list(remote.fetch_refspecs) + ['+refs/tags/*:refs/tags/*']
+        remote.fetch(refspecs, callbacks=callbacks)
 
     def free(self):
         _log_git_call("free")
@@ -447,16 +467,12 @@ class Pygit2Backend(GitBackend):
         if repo_path and Path(repo_path).exists() and (Path(repo_path) / '.git').exists():
             try:
                 repo = pygit2.Repository(str(repo_path))
-                remote = repo.remotes['origin']
 
-                use_callbacks = options.get('use_callbacks', True)
-                if use_callbacks:
-                    callbacks = self.create_remote_callbacks()
-                    remote_refs = remote.list_heads(callbacks=callbacks._callbacks)
-                else:
-                    remote_refs = remote.list_heads()
+                # Get all references and filter to show clean branch names
+                all_refs = [repo.references[name] for name in repo.references]
+                git_refs = Pygit2Repository._create_git_refs_from_raw_repo(repo, all_refs, is_remote=False)
 
-                return Pygit2Repository._create_git_refs_from_raw_repo(repo, remote_refs, is_remote=True)
+                return self._filter_refs_for_display(git_refs)
             except Exception as e:
                 log.debug('Failed to use existing repo at %s: %s', repo_path, e)
                 # Fall through to temporary repository method
@@ -478,6 +494,27 @@ class Pygit2Backend(GitBackend):
         except Exception as e:
             log.warning('Failed to fetch remote refs from %s: %s', url, e)
             return None
+
+    def _filter_refs_for_display(self, git_refs):
+        """Filter refs to show clean branch names (local over remote)."""
+        local_branches = {r.shortname for r in git_refs if r.ref_type == GitRefType.BRANCH and not r.is_remote}
+
+        filtered = []
+        for ref in git_refs:
+            # Skip remote branches if local equivalent exists
+            if (
+                ref.ref_type == GitRefType.BRANCH
+                and ref.is_remote
+                and ref.shortname.startswith('origin/')
+                and ref.shortname[7:] in local_branches
+            ):
+                continue
+            # Skip remote HEAD references
+            if ref.ref_type == GitRefType.HEAD and ref.is_remote:
+                continue
+            filtered.append(ref)
+
+        return filtered
 
     def create_remote_callbacks(self) -> GitRemoteCallbacks:
         _log_git_call("create_remote_callbacks")

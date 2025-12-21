@@ -46,7 +46,7 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitRefType
+from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
@@ -60,6 +60,7 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
+from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.util import parse_versioning_scheme
@@ -79,8 +80,8 @@ class UpdateResult(NamedTuple):
     new_version: str
     old_commit: str
     new_commit: str
-    old_ref: str
-    new_ref: str
+    old_ref_item: RefItem
+    new_ref_item: RefItem
     commit_date: int
 
 
@@ -138,7 +139,13 @@ class PluginBlacklistedError(PluginManagerError):
         super().__init__(f"Plugin is blacklisted: {reason}")
 
 
-class PluginManifestNotFoundError(PluginManagerError):
+class PluginManifestError(PluginManagerError):
+    """Base class for plugin manifest-related errors."""
+
+    pass
+
+
+class PluginManifestNotFoundError(PluginManifestError):
     """Raised when MANIFEST.toml is not found in plugin source."""
 
     def __init__(self, source):
@@ -146,7 +153,7 @@ class PluginManifestNotFoundError(PluginManagerError):
         super().__init__(f"No MANIFEST.toml found in {source}")
 
 
-class PluginManifestReadError(PluginManagerError):
+class PluginManifestReadError(PluginManifestError):
     """Raised when MANIFEST.toml cannot be read."""
 
     def __init__(self, e, source):
@@ -154,7 +161,7 @@ class PluginManifestReadError(PluginManagerError):
         super().__init__(f"Failed to read MANIFEST.toml in {source}: {e}")
 
 
-class PluginManifestInvalidError(PluginManagerError):
+class PluginManifestInvalidError(PluginManifestError):
     """Raised when MANIFEST.toml validation fails."""
 
     def __init__(self, errors):
@@ -191,7 +198,7 @@ class PluginRefNotFoundError(PluginManagerError):
         super().__init__(f"Ref '{ref}' not found for plugin {plugin_id}")
 
 
-class PluginNoUUIDError(PluginManagerError):
+class PluginNoUUIDError(PluginManifestError):
     """Raised when plugin has no UUID in manifest."""
 
     def __init__(self, plugin_id):
@@ -340,28 +347,36 @@ class PluginManager(QObject):
 
         # Format tags
         for ref in refs.get('tags', []):
-            from picard.git.utils import RefItem
-
+            # Create RefItem object for formatting
             ref_item = RefItem(
-                name=ref['name'],
+                shortname=ref['name'],
+                ref_type=RefItem.Type.TAG,
                 commit=ref.get('commit', ''),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_tag=True,
             )
+            is_current = current_ref and ref['name'] == current_ref
             formatted_refs['tags'].append(
-                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
+                {
+                    'name': ref['name'],
+                    'commit': ref.get('commit'),
+                    'display_name': ref_item.format(is_current=is_current),
+                }
             )
 
         # Format branches
         for ref in refs.get('branches', []):
+            # Create RefItem object for formatting
             ref_item = RefItem(
-                name=ref['name'],
+                shortname=ref['name'],
+                ref_type=RefItem.Type.BRANCH,
                 commit=ref.get('commit', ''),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_branch=True,
             )
+            is_current = current_ref and ref['name'] == current_ref
             formatted_refs['branches'].append(
-                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
+                {
+                    'name': ref['name'],
+                    'commit': ref.get('commit'),
+                    'display_name': ref_item.format(is_current=is_current),
+                }
             )
 
         return formatted_refs
@@ -397,7 +412,9 @@ class PluginManager(QObject):
 
         for ref in remote_refs:
             if ref.ref_type == GitRefType.BRANCH:
-                branches.append({'name': ref.shortname, 'commit': ref.target})
+                # Strip remote prefix (e.g., "origin/main" -> "main")
+                branch_name = ref.shortname.split('/', 1)[-1] if '/' in ref.shortname else ref.shortname
+                branches.append({'name': branch_name, 'commit': ref.target})
             elif ref.ref_type == GitRefType.TAG:
                 # GitRef backend handles dereferencing using pygit2.peel()
                 tags.append({'name': ref.shortname, 'commit': ref.target})
@@ -501,12 +518,13 @@ class PluginManager(QObject):
         if not metadata:
             return manifest_version
 
-        ref = metadata.ref or ''
+        git_ref = metadata.get_git_ref()
+        ref_shortname = git_ref.shortname
         commit = metadata.commit or ''
 
         # If ref looks like a version tag (not a commit hash), use it
-        if ref and commit and not ref.startswith(short_commit_id(commit)):
-            return ref
+        if ref_shortname and commit and not ref_shortname.startswith(short_commit_id(commit)):
+            return ref_shortname
 
         return manifest_version
 
@@ -739,8 +757,17 @@ class PluginManager(QObject):
             return ''
 
     def switch_ref(self, plugin, ref, discard_changes=False):
-        """Switch plugin to a different git ref."""
+        """Switch plugin to a different git ref.
+
+        Args:
+            plugin: Plugin to switch
+            ref: Git ref to switch to (string or GitRef object)
+            discard_changes: If True, discard uncommitted changes
+        """
         self._ensure_plugin_url(plugin, 'switch ref')
+
+        # Convert GitRef to string for GitOperations (which still expects strings)
+        ref_str = ref.shortname if isinstance(ref, GitRef) else ref
 
         # Check if plugin is currently enabled
         was_enabled = plugin.state == PluginState.ENABLED
@@ -749,15 +776,19 @@ class PluginManager(QObject):
         if was_enabled:
             self.disable_plugin(plugin)
 
-        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_git_ref, new_git_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref_str, discard_changes)
+
+        # Validate manifest after ref switch
+        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
 
         # Update metadata with new ref
         uuid = PluginValidation.get_plugin_uuid(plugin)
         metadata = self._metadata.get_plugin_metadata(uuid)
         if metadata:
             # Update existing metadata
-            metadata.ref = new_ref
+            metadata.ref = new_git_ref.shortname
             metadata.commit = new_commit
+            metadata.ref_type = new_git_ref.ref_type.value if new_git_ref.ref_type else 'commit'
             self._metadata.save_plugin_metadata(metadata)
 
         # Re-enable plugin if it was enabled before to reload the module
@@ -765,7 +796,7 @@ class PluginManager(QObject):
             self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
-        return old_ref, new_ref, old_commit, new_commit
+        return old_git_ref, new_git_ref, old_commit, new_commit
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.
@@ -832,6 +863,111 @@ class PluginManager(QObject):
             log.debug('Could not preserve original ref: %s', e)
 
         return ref
+
+    def _rollback_plugin_to_commit(self, plugin, commit_id):
+        """Rollback plugin to a specific commit after failed update.
+
+        Args:
+            plugin: Plugin to rollback
+            commit_id: Commit ID to rollback to
+
+        Raises:
+            Exception: If rollback fails
+        """
+        log.warning('Rolling back plugin %s to commit %s', plugin.plugin_id, commit_id)
+        try:
+            backend = git_backend()
+            with backend.create_repository(plugin.local_path) as repo:
+                repo.reset_to_commit(commit_id, hard=True)
+            log.debug('Git rollback completed for plugin %s', plugin.plugin_id)
+        except Exception as git_error:
+            log.error('Git rollback failed for plugin %s: %s', plugin.plugin_id, git_error)
+            raise
+
+        # Re-read manifest from rolled back version
+        try:
+            plugin.read_manifest()
+            log.debug('Manifest re-read successful after rollback for plugin %s', plugin.plugin_id)
+        except Exception as manifest_error:
+            log.error('Failed to read manifest after rollback for plugin %s: %s', plugin.plugin_id, manifest_error)
+            raise
+
+    def _cleanup_failed_plugin_install(self, plugin, plugin_name, final_path):
+        """Clean up failed plugin installation by removing plugin and directory.
+
+        Args:
+            plugin: Plugin object to remove
+            plugin_name: Name of the plugin for logging
+            final_path: Path to plugin directory to remove
+        """
+        try:
+            # Remove from plugins list
+            if plugin in self._plugins:
+                self._plugins.remove(plugin)
+            # Remove plugin directory
+            self._safe_remove_directory(final_path, f"failed plugin directory for {plugin_name}")
+            log.info('Successfully cleaned up failed plugin installation: %s', plugin_name)
+        except Exception as cleanup_error:
+            log.error('Failed to cleanup plugin %s after enable failure: %s', plugin_name, cleanup_error)
+
+    def _safe_remove_directory(self, path, description="directory"):
+        """Safely remove a directory with error logging.
+
+        Args:
+            path: Path to remove (Path object or string)
+            description: Description for logging (default: "directory")
+        """
+        path = Path(path)
+        if path.exists():
+            try:
+                # Force garbage collection to release file handles on Windows
+                gc.collect()
+                shutil.rmtree(path)
+                log.debug('Cleaned up %s: %s', description, path)
+            except Exception as e:
+                log.error('Failed to remove %s %s: %s', description, path, e)
+
+    def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
+        """Validate plugin manifest after git operations, rollback on failure.
+
+        Args:
+            plugin: Plugin to validate
+            old_commit: Commit ID to rollback to on failure
+            was_enabled: Whether plugin was enabled before operation
+
+        Raises:
+            PluginManifestInvalidError, PluginManifestReadError: If manifest validation fails
+        """
+        try:
+            plugin.read_manifest()
+        except PluginManifestError as e:
+            # Rollback to previous commit on manifest validation failure
+            log.error('Plugin operation failed due to invalid manifest: %s', e)
+            try:
+                self._rollback_plugin_to_commit(plugin, old_commit)
+                log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
+            except Exception as rollback_error:
+                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
+                # If rollback fails, remove the broken plugin to prevent it from disappearing
+                try:
+                    log.warning('Removing broken plugin %s after failed rollback', plugin.plugin_id)
+                    if plugin in self._plugins:
+                        self._plugins.remove(plugin)
+                    self._safe_remove_directory(plugin.local_path, f"broken plugin directory for {plugin.plugin_id}")
+                except Exception as cleanup_error:
+                    log.error('Failed to cleanup broken plugin %s: %s', plugin.plugin_id, cleanup_error)
+                # Raise rollback error instead of original error since rollback failed
+                raise rollback_error
+
+            # Re-enable plugin if it was enabled before rollback
+            if was_enabled:
+                try:
+                    self.enable_plugin(plugin)
+                except Exception as enable_error:
+                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
+
+            # Re-raise the original manifest error
+            raise
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
@@ -958,7 +1094,7 @@ class PluginManager(QObject):
                     if changes:
                         raise PluginDirtyError(plugin_name, changes)
 
-                shutil.rmtree(final_path)
+                self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
             # Atomic rename from temp to final location
             temp_path.rename(final_path)
@@ -982,16 +1118,20 @@ class PluginManager(QObject):
 
             # Enable plugin if requested
             if enable_after_install:
-                self.enable_plugin(plugin)
+                try:
+                    self.enable_plugin(plugin)
+                except PluginManifestError as e:
+                    # Remove installed plugin on manifest validation failure during enable
+                    log.error('Plugin installation failed during enable due to manifest error: %s', e)
+                    self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
+                    # Re-raise the original error
+                    raise
 
             return plugin_name
 
         except Exception:
             # Clean up temp directory on failure
-            if temp_path.exists():
-                # Force garbage collection to release file handles on Windows
-                gc.collect()
-                shutil.rmtree(temp_path, ignore_errors=True)
+            self._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
 
     def _install_from_local_directory(
@@ -1047,21 +1187,25 @@ class PluginManager(QObject):
                 commit_id = source.sync(temp_path, single_branch=True)
                 install_path = temp_path
                 ref_to_save = source.resolved_ref
+                ref_type_to_save = source.resolved_ref_type
                 commit_to_save = commit_id
             except Exception:
                 # Clean up temp directory on failure
-                if temp_path.exists():
-                    gc.collect()
-                    shutil.rmtree(temp_path, ignore_errors=True)
+                self._safe_remove_directory(temp_path, "temp directory after git sync failure")
                 raise
         else:
-            # Direct copy for non-git directories
-            install_path = local_path
-            ref_to_save = ''
-            commit_to_save = ''
+            # All plugins must be git repositories
+            raise ValueError(
+                f"Plugin directory {local_path} is not a git repository. All plugins must be git repositories."
+            )
 
         # Read MANIFEST to get plugin ID
-        manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+        try:
+            manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+        except Exception:
+            # Clean up temp directory if manifest validation fails
+            self._safe_remove_directory(temp_path, "temp directory after manifest validation failure")
+            raise
 
         # Check for UUID conflicts with existing plugins from different sources
         has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
@@ -1086,15 +1230,11 @@ class PluginManager(QObject):
                 if changes:
                     raise PluginDirtyError(plugin_name, changes)
 
-            shutil.rmtree(final_path)
+            self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
         # Copy to plugin directory
-        if is_git_repo:
-            # Move from temp location (git repo was cloned to temp)
-            shutil.move(str(install_path), str(final_path))
-        else:
-            # Copy from local directory (non-git)
-            shutil.copytree(install_path, final_path)
+        # Move from temp location (git repo was cloned to temp)
+        shutil.move(str(install_path), str(final_path))
 
         # Store metadata
         self._metadata.save_plugin_metadata(
@@ -1104,6 +1244,7 @@ class PluginManager(QObject):
                 ref=ref_to_save or '',
                 commit=commit_to_save or '',
                 uuid=manifest.uuid,
+                ref_type=ref_type_to_save,
             )
         )
 
@@ -1113,7 +1254,14 @@ class PluginManager(QObject):
 
         # Enable plugin if requested
         if enable_after_install:
-            self.enable_plugin(plugin)
+            try:
+                self.enable_plugin(plugin)
+            except PluginManifestError as e:
+                # Remove installed plugin on manifest validation failure during enable
+                log.error('Local plugin installation failed during enable due to manifest error: %s', e)
+                self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
+                # Re-raise the original error
+                raise
 
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
@@ -1272,10 +1420,11 @@ class PluginManager(QObject):
 
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
-        registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
-            # Try to find newer version tags
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
+
+        # Use the new has_versioning method to determine if we should look for newer tags
+        if ref_type == 'tag' and plugin.has_versioning(self._registry, True):
+            versioning_scheme = plugin.get_versioning_scheme(self._registry)
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, versioning_scheme)
             if newer_tag:
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
@@ -1286,6 +1435,9 @@ class PluginManager(QObject):
             self.disable_plugin(plugin)
 
         source = PluginSourceGit(current_url, new_ref)
+        # Set resolved_ref_type if we updated to a newer tag
+        if new_ref != old_ref and ref_type == 'tag':
+            source.resolved_ref_type = 'tag'
         assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
@@ -1298,7 +1450,8 @@ class PluginManager(QObject):
             commit_date = repo.get_commit_date(commit.id)
 
         # Reload manifest to get new version
-        plugin.read_manifest()
+        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
+
         new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
         new_ref = source.ref  # May have been updated to a newer tag
 
@@ -1330,10 +1483,47 @@ class PluginManager(QObject):
             new_version or '',
             old_commit,
             new_commit,
-            old_ref or '',
-            new_ref or '',
+            self._create_ref_item_from_metadata(old_ref, old_commit, ref_type),
+            self._create_ref_item_from_source(source, new_commit),
             commit_date,
         )
+
+    def _create_ref_item_from_metadata(self, ref_name, commit, ref_type):
+        """Create RefItem from metadata information."""
+        if not ref_name and not commit:
+            return RefItem('')
+
+        if ref_type == 'tag':
+            item_ref_type = RefItem.Type.TAG
+            shortname = ref_name if ref_name else commit
+        elif ref_type == 'branch':
+            item_ref_type = RefItem.Type.BRANCH
+            shortname = ref_name if ref_name else commit
+        else:  # commit
+            item_ref_type = RefItem.Type.COMMIT
+            shortname = commit or ref_name
+
+        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
+
+    def _create_ref_item_from_source(self, source, commit):
+        """Create RefItem from PluginSourceGit with accurate ref type information."""
+        ref_name = source.ref
+        ref_type_str = getattr(source, 'resolved_ref_type', None)
+
+        if not ref_name and not commit:
+            return RefItem('')
+
+        if ref_type_str == 'tag':
+            item_ref_type = RefItem.Type.TAG
+            shortname = ref_name if ref_name else commit
+        elif ref_type_str == 'branch':
+            item_ref_type = RefItem.Type.BRANCH
+            shortname = ref_name if ref_name else commit
+        else:  # commit or None
+            item_ref_type = RefItem.Type.COMMIT
+            shortname = commit or ref_name
+
+        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
@@ -1348,6 +1538,11 @@ class PluginManager(QObject):
             except Exception as e:
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
         return results
+
+    def _is_commit_pin(self, metadata):
+        """Check if plugin is pinned to a commit (not updatable)."""
+        # Use ref_type to reliably determine if plugin was installed as a commit
+        return metadata.ref_type == 'commit'
 
     def _get_current_ref_for_updates(self, repo, metadata):
         """Get the current ref to use for update checking.
@@ -1368,15 +1563,44 @@ class PluginManager(QObject):
             # On a branch - use the actual branch name
             return repo.get_head_shorthand(), False
 
-    def check_updates(self):
-        """Check which plugins have updates available without installing."""
-        updates = {}
+    def _should_fetch_plugin_refs(self, plugin, metadata):
+        """Check if a plugin should have its refs fetched."""
+        if not plugin.uuid or not metadata or not metadata.url:
+            return False
+
+        # Only fetch refs for plugins with remote URLs or local git repos
+        # Local plugins without remotes can't be updated anyway
+        return True
+
+    def refresh_all_plugin_refs(self):
+        """Fetch remote refs for all plugins to ensure ref selectors have latest data."""
         for plugin in self._plugins:
-            if not plugin.uuid:
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+            if not self._should_fetch_plugin_refs(plugin, metadata):
                 continue
 
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if not metadata or not metadata.url:
+            try:
+                backend = git_backend()
+                with backend.create_repository(plugin.local_path) as repo:
+                    # Fetch without updating (suppress progress output)
+                    callbacks = backend.create_remote_callbacks()
+                    for remote in repo.get_remotes():
+                        # Fetch all refs including tags in a single operation
+                        repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
+                        log.debug("Fetched refs for plugin %s from remote %s", plugin.plugin_id, remote.name)
+            except Exception as e:
+                log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
+
+    def check_updates(self, skip_fetch=False):
+        """Check which plugins have updates available without installing.
+
+        Args:
+            skip_fetch: If True, skip fetching remote refs (assume already done)
+        """
+        updates = {}
+        for plugin in self._plugins:
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+            if not self._should_fetch_plugin_refs(plugin, metadata):
                 continue
 
             try:
@@ -1384,10 +1608,12 @@ class PluginManager(QObject):
                 with backend.create_repository(plugin.local_path) as repo:
                     current_commit = repo.get_head_target()
 
-                    # Fetch without updating (suppress progress output)
-                    callbacks = backend.create_remote_callbacks()
-                    for remote in repo.get_remotes():
-                        repo.fetch_remote(remote, None, callbacks._callbacks)
+                    # Fetch without updating (suppress progress output) - unless skipped
+                    if not skip_fetch:
+                        callbacks = backend.create_remote_callbacks()
+                        for remote in repo.get_remotes():
+                            # Fetch all refs including tags in a single operation
+                            repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
 
                     # Get current ref from repository instead of metadata
                     old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
@@ -1436,15 +1662,24 @@ class PluginManager(QObject):
                         if not is_tag_installation:
                             resolved_ref_info = f"commit/branch {metadata.ref}"
 
-                    # Check if plugin has versioning_scheme before doing tag-based updates
-                    registry_plugin = self._registry.find_plugin(url=metadata.url, uuid=plugin.uuid)
-                    if is_tag_installation and not (registry_plugin and registry_plugin.versioning_scheme):
+                    # Check if plugin supports versioning before doing tag-based updates
+                    if is_tag_installation and not plugin.has_versioning(self._registry, is_tag_installation):
                         log.debug(
-                            "Plugin %s: originally installed from %s, but no versioning_scheme - skipping tag-based updates",
+                            "Plugin %s: originally installed from %s, but no versioning support - skipping tag-based updates",
                             plugin.plugin_id,
                             resolved_ref_info,
                         )
                         is_tag_installation = False
+
+                    # Check if plugin is pinned to a commit (direct hash or relative reference)
+                    is_commit_pin = self._is_commit_pin(metadata)
+                    if is_commit_pin:
+                        log.debug(
+                            "Plugin %s: pinned to commit %s - skipping updates",
+                            plugin.plugin_id,
+                            metadata.ref,
+                        )
+                        continue
 
                     if is_tag_installation:
                         log.debug(
@@ -1611,9 +1846,9 @@ class PluginManager(QObject):
         if not metadata:
             return ""
 
-        from picard.git.utils import RefItem
-
-        ref_item = RefItem(name=getattr(metadata, 'ref', ''), commit=getattr(metadata, 'commit', ''))
+        git_ref = metadata.get_git_ref()
+        # Convert GitRef to RefItem for formatting
+        ref_item = RefItem.from_git_ref(git_ref)
         return ref_item.format()
 
     def get_plugin_homepage(self, plugin):
@@ -1671,7 +1906,7 @@ class PluginManager(QObject):
             os.remove(plugin_path)
         elif os.path.isdir(plugin_path):
             log.debug("Removing directory %r", plugin_path)
-            shutil.rmtree(plugin_path)
+            self._safe_remove_directory(plugin_path, f"plugin directory for {plugin.plugin_id}")
 
         # Remove metadata
         config = get_config()

@@ -187,11 +187,14 @@ class Plugins3OptionsPage(OptionsPage):
             if self.plugin_manager:
                 self.plugin_manager.refresh_registry_and_caches()
 
+                # Fetch remote refs for all plugins (for ref selectors)
+                self.plugin_manager.refresh_all_plugin_refs()
+
             # Reload plugin list
             self.all_plugins = self.plugin_manager.plugins
 
-            # Check for updates (silent - no dialog) - THIS IS WHERE NETWORK CALLS HAPPEN
-            new_updates = self.plugin_manager.check_updates()
+            # Check for updates (silent - no dialog) - skip fetching since we just did it
+            new_updates = self.plugin_manager.check_updates(skip_fetch=True)
             self._save_updates(new_updates)
 
             # Pass updates to widget

@@ -123,6 +123,25 @@ class PluginSourceGit(PluginSource):
         self.resolved_ref: str | None = None  # Will be set after sync
         self.resolved_ref_type: str | None = None  # 'tag' or 'branch', set after sync
 
+    def _resolve_ref(self, repo, ref):
+        """Resolve a ref to a commit, handling origin/ prefix automatically."""
+        # Try direct resolution first
+        normalized_ref = ref[7:] if ref.startswith('origin/') else ref
+
+        for attempt_ref in [normalized_ref, f'origin/{normalized_ref}', ref]:
+            try:
+                return repo.revparse_to_commit(attempt_ref)
+            except (KeyError, GitBackendError):
+                continue
+
+        # If all attempts fail, provide helpful error
+        available_refs = self._list_available_refs(repo)
+        raise KeyError(f"Could not find ref '{ref}'. Available refs: {available_refs}")
+
+    def _is_relative_ref(self, ref):
+        """Check if ref is a relative reference (contains git notation like ^, ~, @)."""
+        return ref and any(char in ref for char in ['^', '~', '@', ':'])
+
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
 
@@ -211,7 +230,9 @@ class PluginSourceGit(PluginSource):
                         )
                     except Exception:
                         # If specific refspec fails, try fetching all (might be a tag or commit)
-                        self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                        self._retry_git_operation(
+                            lambda: repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
+                        )
                 except (KeyError, GitBackendError):
                     # No origin remote, skip fetch
                     pass
@@ -219,7 +240,9 @@ class PluginSourceGit(PluginSource):
                 callbacks = backend.create_remote_callbacks()
                 try:
                     origin_remote = repo.get_remote('origin')
-                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                    self._retry_git_operation(
+                        lambda: repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
+                    )
                 except (KeyError, GitBackendError):
                     # No origin remote, skip fetch
                     pass
@@ -281,47 +304,14 @@ class PluginSourceGit(PluginSource):
                     pass  # Tags might not exist or fetch might fail
 
         if self.ref:
-            try:
-                commit = repo.revparse_to_commit(self.ref)
-                self.resolved_ref = self.ref
-            except (KeyError, Exception):
-                # If ref starts with 'origin/', try without it
-                if self.ref.startswith('origin/'):
-                    try:
-                        ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
-                        commit = repo.revparse_to_commit(ref_without_origin)
-                        self.resolved_ref = ref_without_origin
-                    except (KeyError, GitBackendError):
-                        available_refs = self._list_available_refs(repo)
-                        raise KeyError(
-                            f"Could not find ref '{self.ref}' or '{ref_without_origin}'. "
-                            f"Available refs: {available_refs}"
-                        ) from None
-                else:
-                    # Use robust reference type detection
-                    from picard.git.ref_utils import find_git_ref
-
-                    git_ref = find_git_ref(repo, self.ref)
-                    if git_ref:
-                        try:
-                            commit = repo.revparse_to_commit(git_ref.name)
-                            self.resolved_ref = git_ref.name if git_ref.is_remote else self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            raise KeyError(
-                                f"Could not resolve ref '{self.ref}' (detected as {git_ref.ref_type.value}). "
-                                f"Available refs: {available_refs}"
-                            ) from None
-                    else:
-                        # For commits or unknown refs, try as-is
-                        try:
-                            commit = repo.revparse_to_commit(self.ref)
-                            self.resolved_ref = self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            raise KeyError(
-                                f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
-                            ) from None
+            # Handle relative references (git notation like main^, HEAD~1)
+            if self._is_relative_ref(self.ref):
+                self.resolved_ref = self.ref  # Keep original for metadata
+                commit = None  # Will be resolved after repo setup
+            else:
+                # Try to resolve the ref, handling origin/ prefix automatically
+                commit = self._resolve_ref(repo, self.ref)
+                self.resolved_ref = self.ref  # Keep original for metadata
         else:
             # Use repository's default branch (HEAD)
             try:
@@ -354,7 +344,11 @@ class PluginSourceGit(PluginSource):
                         for git_ref in refs:
                             if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
                                 commit = repo.revparse_to_commit(git_ref.name)
-                                self.resolved_ref = git_ref.shortname
+                                # Strip origin/ prefix for consistency with display
+                                if git_ref.is_remote and git_ref.shortname.startswith('origin/'):
+                                    self.resolved_ref = git_ref.shortname[7:]  # Remove 'origin/' prefix
+                                else:
+                                    self.resolved_ref = git_ref.shortname
                                 break
                         else:
                             # Try remote refs as absolute last resort
@@ -370,20 +364,32 @@ class PluginSourceGit(PluginSource):
                             else:
                                 raise PluginSourceSyncError('No branches found in repository') from None
 
-        # Determine ref type for the resolved ref
-        if self.resolved_ref:
+        # Determine ref type for the resolved ref (non-relative refs only)
+        if self.resolved_ref and not self._is_relative_ref(self.ref):
             from picard.git.ref_utils import find_git_ref
 
             git_ref = find_git_ref(repo, self.resolved_ref)
             if git_ref:
                 self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
             else:
-                # Fallback: assume branch if not found (could be commit hash)
-                self.resolved_ref_type = 'branch'
+                # If not found as branch or tag, assume it's a commit
+                self.resolved_ref_type = 'commit'
 
         # hard reset to passed ref or HEAD
         # Use backend for reset operation
         from picard.git.backend import GitResetMode
+
+        # Handle relative references that need to be resolved after repo setup
+        if commit is None and self.resolved_ref and self._is_relative_ref(self.resolved_ref):
+            try:
+                commit = repo.revparse_to_commit(self.resolved_ref)
+                self.resolved_ref = short_commit_id(commit.id)
+                self.resolved_ref_type = 'commit'  # Set ref_type here after resolution
+            except (KeyError, GitBackendError):
+                available_refs = self._list_available_refs(repo)
+                raise KeyError(
+                    f"Could not resolve relative ref '{self.ref}' after repository setup. Available refs: {available_refs}"
+                ) from None
 
         repo.reset(commit.id, GitResetMode.HARD)
         commit_id = commit.id
@@ -419,8 +425,8 @@ class PluginSourceGit(PluginSource):
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                 repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
             else:
-                # Fetch all refs (including tags if on a tag)
-                repo.fetch_remote(origin_remote, None, callbacks._callbacks)
+                # Fetch all refs including tags
+                repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
         except (KeyError, GitBackendError):
             # No origin remote, skip fetch
             pass
@@ -431,6 +437,8 @@ class PluginSourceGit(PluginSource):
             if latest_tag and latest_tag != current_tag:
                 # Update to latest tag
                 self.ref = latest_tag
+                # Set resolved_ref_type to indicate this is a tag
+                self.resolved_ref_type = 'tag'
 
         if self.ref:
             # For updates, prefer origin/ prefix for branches to get latest changes
@@ -601,6 +609,43 @@ class Plugin:
 
         # Add a shortcut
         self.uuid = self.manifest.uuid
+
+    def has_versioning(self, registry=None, is_tag_installation=False):
+        """Check if plugin supports version-based updates.
+
+        Args:
+            registry: PluginRegistry instance to check for versioning_scheme
+            is_tag_installation: Whether plugin was installed from a tag
+
+        Returns:
+            bool: True if plugin supports versioning (has registry versioning_scheme
+                  or is a local/URL plugin installed from tags)
+        """
+        if registry and self.uuid:
+            registry_plugin = registry.find_plugin(uuid=self.uuid)
+            if registry_plugin and registry_plugin.versioning_scheme:
+                return True
+
+        # Local/URL plugins installed from tags support versioning (assume semver)
+        return is_tag_installation and not (registry and registry.find_plugin(uuid=self.uuid))
+
+    def get_versioning_scheme(self, registry=None):
+        """Get versioning scheme for this plugin.
+
+        Args:
+            registry: PluginRegistry instance to check for versioning_scheme
+
+        Returns:
+            str: Versioning scheme ('semver', 'calver', 'regex:pattern') or 'semver'
+                 for local plugins, empty string if no versioning support
+        """
+        if registry and self.uuid:
+            registry_plugin = registry.find_plugin(uuid=self.uuid)
+            if registry_plugin and registry_plugin.versioning_scheme:
+                return registry_plugin.versioning_scheme
+
+        # Default to semver for local/URL plugins (when they have versioning support)
+        return 'semver'
 
     def get_current_commit_id(self, short=False):
         """Get the current commit ID of the plugin if it's a git repository."""

@@ -27,6 +27,7 @@ import shutil
 from picard import log
 from picard.git.backend import (
     GitBackendError,
+    GitRef,
     GitReferenceError,
     GitRefType,
     GitStatusFlag,
@@ -217,7 +218,7 @@ class GitOperations:
             discard_changes: If True, discard uncommitted changes
 
         Returns:
-            tuple: (old_ref, new_ref, old_commit, new_commit)
+            tuple: (old_git_ref, new_git_ref, old_commit, new_commit)
 
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
@@ -240,7 +241,10 @@ class GitOperations:
             with backend.create_repository(plugin.local_path) as repo:
                 # Get old ref and commit
                 old_commit = repo.get_head_target()
-                old_ref = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
+                old_ref_name = repo.get_head_shorthand() if not repo.is_head_detached() else old_commit[:7]
+
+                # Create old GitRef object
+                old_git_ref = GitOperations._create_git_ref_from_current_state(repo, old_ref_name, old_commit)
 
                 # Fetch latest from remote
                 GitOperations._fetch_remote_refs(repo, ref, backend)
@@ -249,25 +253,48 @@ class GitOperations:
                 references = repo.list_references()
 
                 # Try as branch first
-                result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit)
+                result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    return result
+                    new_ref_name, new_commit = result
+                    new_git_ref = GitRef(
+                        name=f"refs/heads/{new_ref_name}", target=new_commit, ref_type=GitRefType.BRANCH
+                    )
+                    return old_git_ref, new_git_ref, old_commit, new_commit
 
                 # Try as tag
-                result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
+                result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    return result
+                    new_ref_name, new_commit = result
+                    new_git_ref = GitRef(name=f"refs/tags/{new_ref_name}", target=new_commit, ref_type=GitRefType.TAG)
+                    return old_git_ref, new_git_ref, old_commit, new_commit
 
                 # Try as commit hash or git revision syntax
-                result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
+                result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref_name, old_commit)
                 if result:
-                    return result
+                    new_ref_name, new_commit = result
+                    new_git_ref = GitRef(name=new_commit, target=new_commit, ref_type=None)
+                    return old_git_ref, new_git_ref, old_commit, new_commit
 
                 raise ValueError(f'Ref {ref} not found')
 
         except Exception as e:
             log.error('Failed to switch plugin %s to ref %s: %s', plugin.plugin_id, ref, e)
             raise
+
+    @staticmethod
+    def _create_git_ref_from_current_state(repo, ref_name, commit):
+        """Create GitRef from current repository state."""
+        if repo.is_head_detached():
+            # Detached HEAD - just a commit
+            return GitRef(name=commit[:7], target=commit, ref_type=None)
+
+        # HEAD points to a branch - find the actual GitRef
+        git_ref = find_git_ref(repo, ref_name)
+        if git_ref:
+            return git_ref
+
+        # Fallback: create a basic GitRef
+        return GitRef(name=f"refs/heads/{ref_name}", target=commit, ref_type=GitRefType.BRANCH)
 
     @staticmethod
     def _fetch_remote_refs(repo, ref, backend):
@@ -290,13 +317,16 @@ class GitOperations:
     @staticmethod
     def _try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit):
         """Try to switch to a branch. Returns tuple or None if not a branch."""
-        # Find branch reference
+        # Normalize ref (strip origin/ prefix if present)
+        local_ref = ref[7:] if ref.startswith('origin/') else ref
+
+        # Find branch reference (local or remote)
         branch_ref = None
         for git_ref in references:
-            if git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
-                branch_ref = git_ref.name
-                break
-            elif git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote and git_ref.shortname == ref:
+            if git_ref.ref_type == GitRefType.BRANCH and (
+                (not git_ref.is_remote and git_ref.shortname == local_ref)
+                or (git_ref.is_remote and git_ref.shortname == f'origin/{local_ref}')
+            ):
                 branch_ref = git_ref.name
                 break
 
@@ -306,26 +336,26 @@ class GitOperations:
         commit = repo.revparse_to_commit(branch_ref)
         repo.checkout_tree(commit)
 
-        # Handle remote vs local branches differently
+        # Check if we're switching to a remote branch
         is_remote_branch = any(
-            git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}'
+            git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{local_ref}'
             for git_ref in references
         )
 
         if is_remote_branch:
-            # Remote branch - set up tracking
+            # Create local tracking branch
             repo.set_head(commit.id)
             branches = repo.get_branches()
             pygit_commit = repo._repo.get(commit.id)
-            branch = branches.local.create(ref, pygit_commit, force=True)
-            branch.upstream = branches.remote[f'origin/{ref}']
-            repo.set_head(f'refs/heads/{ref}')
+            branch = branches.local.create(local_ref, pygit_commit, force=True)
+            branch.upstream = branches.remote[f'origin/{local_ref}']
+            repo.set_head(f'refs/heads/{local_ref}')
         else:
-            # Local branch - just switch to it
+            # Switch to existing local branch
             repo.set_head(branch_ref)
 
-        log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
-        return old_ref, ref, old_commit, commit.id
+        log.info('Switched plugin %s to branch %s', plugin.plugin_id, local_ref)
+        return local_ref, commit.id
 
     @staticmethod
     def _try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit):
@@ -342,17 +372,9 @@ class GitOperations:
             repo.checkout_tree(commit)
             repo.set_head(commit.id)
             log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-            return old_ref, ref, old_commit, commit.id
+            return ref, commit.id
 
-        # Try resolving tag by short name
-        try:
-            commit = repo.revparse_to_commit(ref)
-            repo.checkout_tree(commit)
-            repo.set_head(commit.id)
-            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-            return old_ref, ref, old_commit, commit.id
-        except GitReferenceError:
-            return None
+        return None
 
     @staticmethod
     def _try_switch_to_commit(repo, plugin, ref, old_ref, old_commit):
@@ -362,7 +384,7 @@ class GitOperations:
             repo.checkout_tree(commit)
             repo.set_head(commit.id)
             log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-            return old_ref, commit.id[:7], old_commit, commit.id
+            return commit.id[:7], commit.id
         except GitReferenceError:
             # For git revision syntax, provide helpful error message
             if any(char in ref for char in ['^', '~', ':', '@']):

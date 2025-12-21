@@ -530,7 +530,7 @@ class InstallPluginDialog(PicardDialog):
                 self._enable_ui_after_installation()
                 return
             if confirm_dialog.selected_ref:
-                ref = confirm_dialog.selected_ref.name
+                ref = confirm_dialog.selected_ref.shortname
 
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:

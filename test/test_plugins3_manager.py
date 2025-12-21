@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from pathlib import Path
 from unittest.mock import (
     Mock,
     patch,
@@ -30,7 +31,11 @@ from test.test_plugins3_helpers import (
 )
 
 from picard.git.ops import GitOperations
-from picard.plugin3.manager import PluginManager
+from picard.plugin3.manager import (
+    PluginManager,
+    PluginManifestInvalidError,
+)
+from picard.plugin3.plugin import PluginState
 from picard.plugin3.validation import PluginValidation
 
 
@@ -547,3 +552,248 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         has_conflict, conflict_plugin = manager._check_uuid_conflict(new_manifest, 'https://example.com/different.git')
         self.assertTrue(has_conflict)
         self.assertEqual(conflict_plugin, existing_plugin)
+
+    @patch('picard.plugin3.manager.git_backend')
+    def test_rollback_plugin_to_commit(self, mock_git_backend):
+        """Test _rollback_plugin_to_commit method."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+        plugin.read_manifest = Mock()
+
+        # Mock git backend
+        mock_repo = Mock()
+        mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
+
+        # Test rollback
+        commit_id = 'abc123'
+        manager._rollback_plugin_to_commit(plugin, commit_id)
+
+        # Verify git reset was called
+        mock_repo.reset_to_commit.assert_called_once_with(commit_id, hard=True)
+
+        # Verify manifest was re-read
+        plugin.read_manifest.assert_called_once()
+
+    @patch('picard.plugin3.manager.git_backend')
+    def test_validate_manifest_or_rollback_success(self, mock_git_backend):
+        """Test _validate_manifest_or_rollback with successful validation."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.read_manifest = Mock()
+
+        # Test successful validation
+        manager._validate_manifest_or_rollback(plugin, 'old_commit', False)
+
+        # Verify manifest was read
+        plugin.read_manifest.assert_called_once()
+
+    @patch('picard.plugin3.manager.git_backend')
+    def test_validate_manifest_or_rollback_failure(self, mock_git_backend):
+        """Test _validate_manifest_or_rollback with validation failure."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+
+        # Mock git backend
+        mock_repo = Mock()
+        mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
+
+        with patch.object(manager, 'enable_plugin') as mock_enable:
+            # Make read_manifest fail on first call, succeed on second (after rollback)
+            plugin.read_manifest = Mock(side_effect=[PluginManifestInvalidError(['Missing UUID']), None])
+
+            # Test validation failure with rollback
+            with self.assertRaises(PluginManifestInvalidError):
+                manager._validate_manifest_or_rollback(plugin, 'old_commit', True)
+
+            # Verify rollback was attempted
+            mock_repo.reset_to_commit.assert_called_once_with('old_commit', hard=True)
+
+            # Verify plugin was re-enabled after rollback
+            mock_enable.assert_called_once()
+
+    @patch('picard.plugin3.manager.PluginSourceGit')
+    @patch('picard.plugin3.manager.git_backend')
+    def test_update_plugin_rollback_on_manifest_error(self, mock_git_backend, mock_source_git):
+        """Test update_plugin rolls back on manifest validation failure."""
+        manager = PluginManager(MockTagger())
+        manager._registry = Mock()
+        manager._metadata = Mock()
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+        plugin.state = PluginState.ENABLED
+        plugin.manifest = Mock()
+        plugin.manifest.version = '1.0.0'
+        plugin.uuid = 'test-uuid'
+
+        # Mock metadata
+        metadata = Mock()
+        metadata.url = 'https://example.com/plugin.git'
+        metadata.uuid = 'test-uuid'
+        metadata.ref = 'v1.0.0'
+        manager._metadata.get_plugin_metadata.return_value = metadata
+        manager._metadata.check_redirects.return_value = ('https://example.com/plugin.git', 'test-uuid', False)
+
+        # Mock registry - no versioning scheme to avoid complex tag logic
+        manager._registry.find_plugin.return_value = None
+
+        # Mock git operations
+        mock_source = Mock()
+        mock_source.update.return_value = ('old_commit', 'new_commit')
+        mock_source.ref = 'v1.1.0'
+        mock_source_git.return_value = mock_source
+
+        mock_repo = Mock()
+        mock_commit = Mock()
+        mock_commit.id = 'new_commit'
+        mock_repo.revparse_to_commit.return_value = mock_commit
+        mock_repo.get_commit_date.return_value = 1234567890
+        mock_git_backend.return_value.create_repository.return_value.__enter__.return_value = mock_repo
+
+        # Mock GitOperations
+        with (
+            patch.object(GitOperations, 'check_dirty_working_dir', return_value=None),
+            patch.object(GitOperations, 'check_ref_type', return_value=('tag', 'v1.0.0')),
+            patch.object(manager, 'disable_plugin'),
+            patch.object(manager, 'enable_plugin'),
+            patch.object(manager, '_rollback_plugin_to_commit') as mock_rollback,
+        ):
+            # Make read_manifest fail on first call (after update), succeed on second (after rollback)
+            plugin.read_manifest = Mock(side_effect=[PluginManifestInvalidError(['Missing UUID']), None])
+
+            # Test update with manifest failure
+            with self.assertRaises(PluginManifestInvalidError):
+                manager.update_plugin(plugin)
+
+            # Verify rollback was called
+            mock_rollback.assert_called_once_with(plugin, 'old_commit')
+
+            # Verify plugin was re-enabled after rollback
+            manager.enable_plugin.assert_called()
+
+    @patch('picard.plugin3.manager.GitOperations')
+    def test_switch_ref_rollback_on_manifest_error(self, mock_git_ops):
+        """Test switch_ref rolls back on manifest validation failure."""
+        manager = PluginManager(MockTagger())
+        manager._metadata = Mock()
+
+        # Create mock plugin
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.local_path = '/path/to/plugin'
+        plugin.state = PluginState.ENABLED
+        plugin.uuid = 'test-uuid'
+
+        # Mock metadata
+        metadata = Mock()
+        metadata.ref = 'v1.0.0'
+        metadata.commit = 'old_commit'
+        manager._metadata.get_plugin_metadata.return_value = metadata
+
+        # Mock GitOperations.switch_ref
+        from picard.git.backend import GitRef, GitRefType
+
+        old_git_ref = GitRef(name='refs/tags/v1.0.0', target='old_commit', ref_type=GitRefType.TAG)
+        new_git_ref = GitRef(name='refs/tags/v1.1.0', target='new_commit', ref_type=GitRefType.TAG)
+        mock_git_ops.switch_ref.return_value = (old_git_ref, new_git_ref, 'old_commit', 'new_commit')
+
+        with (
+            patch.object(manager, 'disable_plugin'),
+            patch.object(manager, 'enable_plugin'),
+            patch.object(manager, '_rollback_plugin_to_commit') as mock_rollback,
+        ):
+            # Make read_manifest fail on first call (after switch), succeed on second (after rollback)
+            plugin.read_manifest = Mock(side_effect=[PluginManifestInvalidError(['Missing UUID']), None])
+
+            # Test ref switch with manifest failure
+            with self.assertRaises(PluginManifestInvalidError):
+                manager.switch_ref(plugin, 'v1.1.0')
+
+            # Verify rollback was called
+            mock_rollback.assert_called_once_with(plugin, 'old_commit')
+
+            # Verify plugin was re-enabled after rollback
+            manager.enable_plugin.assert_called()
+
+    @patch('picard.plugin3.manager.PluginSourceGit')
+    @patch('picard.plugin3.manager.PluginValidation')
+    @patch('picard.plugin3.manager.shutil')
+    def test_install_plugin_cleanup_on_enable_failure(self, mock_shutil, mock_validation, mock_source_git):
+        """Test install_plugin cleans up on manifest validation failure during enable."""
+        manager = PluginManager(MockTagger())
+        manager._registry = Mock()
+        manager._metadata = Mock()
+        manager._primary_plugin_dir = Path('/plugins')
+
+        # Mock successful manifest validation during install
+        mock_manifest = Mock()
+        mock_manifest.uuid = 'test-uuid'
+        mock_manifest.name = Mock(return_value='Test Plugin')
+        mock_validation.read_and_validate_manifest.return_value = mock_manifest
+
+        # Mock source
+        mock_source = Mock()
+        mock_source.sync.return_value = 'commit123'
+        mock_source.resolved_ref = 'v1.0.0'
+        mock_source.resolved_ref_type = 'tag'
+        mock_source_git.return_value = mock_source
+
+        # Mock no UUID conflicts
+        with (
+            patch('picard.plugin3.manager.UrlInstallablePlugin') as mock_installable,
+            patch.object(manager, '_check_uuid_conflict', return_value=(False, None)),
+            patch('picard.plugin3.manager.get_plugin_directory_name', return_value='test_plugin'),
+            patch.object(Path, 'exists', return_value=False),
+            patch.object(Path, 'rename'),
+            patch.object(manager, 'enable_plugin') as mock_enable,
+        ):
+            # Mock blacklist check
+            mock_plugin = Mock()
+            mock_plugin.is_blacklisted.return_value = (False, None)
+            mock_installable.return_value = mock_plugin
+            # Make enable_plugin fail with manifest error
+            mock_enable.side_effect = PluginManifestInvalidError(['Missing UUID'])
+
+            # Test install with enable failure
+            with self.assertRaises(PluginManifestInvalidError):
+                manager.install_plugin('https://example.com/plugin.git', enable_after_install=True)
+
+            # Verify plugin was not left in plugins list
+            self.assertEqual(len(manager._plugins), 0, "Plugin should be removed from plugins list on failure")
+
+    @patch('picard.plugin3.manager.shutil')
+    def test_cleanup_failed_plugin_install(self, mock_shutil):
+        """Test _cleanup_failed_plugin_install helper method."""
+        manager = PluginManager(MockTagger())
+
+        # Create mock plugin and path
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        final_path = Path('/plugins/test_plugin')
+
+        # Add plugin to manager's plugins list
+        manager._plugins = [plugin]
+
+        # Mock path exists
+        with patch.object(Path, 'exists', return_value=True):
+            # Test cleanup
+            manager._cleanup_failed_plugin_install(plugin, 'test_plugin', final_path)
+
+        # Verify plugin was removed from list
+        self.assertEqual(len(manager._plugins), 0)
+
+        # Verify directory removal was attempted
+        mock_shutil.rmtree.assert_called_once_with(final_path)

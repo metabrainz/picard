@@ -29,7 +29,9 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
+from picard.git.backend import GitRef, GitRefType
 from picard.plugin3.manager import UpdateResult
+from picard.plugin3.ref_item import RefItem
 
 
 class TestPluginInstall(PicardTestCase):
@@ -146,12 +148,15 @@ class TestPluginInstall(PicardTestCase):
             patch('picard.git.ops.GitOperations.switch_ref') as mock_switch,
             patch.object(manager, 'plugin_ref_switched'),
         ):
-            mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
+            # Create mock GitRef objects (switch_ref still returns GitRef for git operations)
+            old_git_ref = GitRef('refs/heads/main', target='abc123', ref_type=GitRefType.BRANCH)
+            new_git_ref = GitRef('refs/tags/v1.0.0', target='def456', ref_type=GitRefType.TAG)
+            mock_switch.return_value = (old_git_ref, new_git_ref, 'abc123', 'def456')
 
-            old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
+            old_git_ref_result, new_git_ref_result, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
 
-            self.assertEqual(old_ref, 'main')
-            self.assertEqual(new_ref, 'v1.0.0')
+            self.assertEqual(old_git_ref_result.shortname, 'main')
+            self.assertEqual(new_git_ref_result.shortname, 'v1.0.0')
             self.assertEqual(old_commit, 'abc123')
             self.assertEqual(new_commit, 'def456')
 
@@ -180,7 +185,11 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_manager = MockPluginManager(plugins=[mock_plugin])
         mock_manager.find_plugin = Mock(return_value=mock_plugin)
-        mock_manager.switch_ref = Mock(return_value=('main', 'v1.0.0', 'abc1234', 'def5678'))
+
+        # Create mock GitRef objects
+        old_git_ref = GitRef('refs/heads/main', ref_type=GitRefType.BRANCH)
+        new_git_ref = GitRef('refs/tags/v1.0.0', ref_type=GitRefType.TAG)
+        mock_manager.switch_ref = Mock(return_value=(old_git_ref, new_git_ref, 'abc1234', 'def5678'))
 
         exit_code, stdout, _ = run_cli(mock_manager, switch_ref=['test-plugin', 'v1.0.0'])
 
@@ -579,8 +588,11 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         mock_manager.find_plugin = Mock(return_value=mock_plugin)
+        # Create RefItem objects for UpdateResult
+        old_ref_item = RefItem('v1.0.0', RefItem.Type.TAG, 'abc1234')
+        new_ref_item = RefItem('v1.1.0', RefItem.Type.TAG, 'def5678')
         mock_manager.update_plugin = Mock(
-            return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', 'v1.0.0', 'v1.1.0', 1234567890)
+            return_value=UpdateResult('1.0.0', '1.1.0', 'abc1234', 'def5678', old_ref_item, new_ref_item, 1234567890)
         )
         mock_tagger._pluginmanager3 = mock_manager
 
@@ -621,9 +633,12 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
-        # Same commit = already up to date
+        # Same commit = already up to date - use empty RefItems
+        empty_ref_item = RefItem('abc1234', RefItem.Type.COMMIT, 'abc1234')
         mock_manager.update_plugin = Mock(
-            return_value=UpdateResult('1.0.0', '1.0.0', 'abc1234', 'abc1234', None, None, 1234567890)
+            return_value=UpdateResult(
+                '1.0.0', '1.0.0', 'abc1234', 'abc1234', empty_ref_item, empty_ref_item, 1234567890
+            )
         )
         mock_tagger._pluginmanager3 = mock_manager
 
@@ -666,13 +681,19 @@ class TestPluginInstall(PicardTestCase):
         mock_plugin.plugin_id = 'test-plugin'
         mock_manager.plugins = [mock_plugin]
         # Return mixed results: updated, unchanged, failed
+        ref_item1_old = RefItem('abc', RefItem.Type.COMMIT, 'abc')
+        ref_item1_new = RefItem('def', RefItem.Type.COMMIT, 'def')
+        ref_item2 = RefItem('ghi', RefItem.Type.COMMIT, 'ghi')
         mock_manager.update_all_plugins = Mock(
             return_value=[
                 UpdateAllResult(
-                    'plugin1', True, UpdateResult('1.0', '1.1', 'abc', 'def', None, None, 1234567890), None
+                    'plugin1',
+                    True,
+                    UpdateResult('1.0', '1.1', 'abc', 'def', ref_item1_old, ref_item1_new, 1234567890),
+                    None,
                 ),
                 UpdateAllResult(
-                    'plugin2', True, UpdateResult('2.0', '2.0', 'ghi', 'ghi', None, None, 1234567890), None
+                    'plugin2', True, UpdateResult('2.0', '2.0', 'ghi', 'ghi', ref_item2, ref_item2, 1234567890), None
                 ),
                 UpdateAllResult('plugin3', False, None, 'Error'),
             ]

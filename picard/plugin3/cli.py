@@ -46,7 +46,6 @@ from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
 from picard.git.factory import has_git_backend
 from picard.git.utils import (
-    RefItem,
     check_local_repo_dirty,
     get_local_repository_path,
 )
@@ -155,20 +154,20 @@ class PluginCLI:
                    (and optionally old_version, new_version, commit_date)
         """
         # Show tag with commit ID if available
-        if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
+        old_ref_item = getattr(result, 'old_ref_item', None)
+        new_ref_item = getattr(result, 'new_ref_item', None)
+
+        if old_ref_item and new_ref_item and old_ref_item.shortname != new_ref_item.shortname:
             old_short = short_commit_id(result.old_commit)
             new_short = short_commit_id(result.new_commit)
 
-            # Avoid redundancy: if ref is same as commit, just show @commit
-            if result.old_ref == old_short:
-                old_display = f'@{self._out.d_commit_old(old_short)}'
-            else:
-                old_display = f'{self._out.d_version(result.old_ref)} @{self._out.d_commit_old(old_short)}'
-
-            if result.new_ref == new_short:
-                new_display = f'@{self._out.d_commit_new(new_short)}'
-            else:
-                new_display = f'{self._out.d_version(result.new_ref)} @{self._out.d_commit_new(new_short)}'
+            # Use RefItem.format() for consistent display
+            old_display = old_ref_item.format(
+                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+            )
+            new_display = new_ref_item.format(
+                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_new
+            )
 
             version_info = f'{old_display} {self._out.d_arrow()} {new_display}'
         # Show version with commit ID if version changed
@@ -189,10 +188,11 @@ class PluginCLI:
 
             # If commits are the same, just show the ref change or "already up to date"
             if old_short == new_short:
-                if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                    version_info = (
-                        f'{result.old_ref} {self._out.d_arrow()} {result.new_ref} ({self._out.d_commit_new(new_short)})'
-                    )
+                old_ref_item = getattr(result, 'old_ref_item', None)
+                new_ref_item = getattr(result, 'new_ref_item', None)
+
+                if old_ref_item and new_ref_item and old_ref_item.shortname != new_ref_item.shortname:
+                    version_info = f'{old_ref_item.shortname} {self._out.d_arrow()} {new_ref_item.shortname} ({self._out.d_commit_new(new_short)})'
                 else:
                     version_info = f'{self._out.d_commit_new(new_short)}'
             else:
@@ -345,14 +345,17 @@ class PluginCLI:
         if not metadata:
             return ''
 
-        commit = metadata.commit or ''
-        if not commit:
-            return ''
+        git_ref = metadata.get_git_ref()
+        # Only format if we have both ref and commit
+        if git_ref.shortname and git_ref.target:
+            # Convert GitRef to RefItem for formatting
+            from picard.plugin3.ref_item import RefItem
 
-        ref_item = RefItem(name=metadata.ref or '', commit=commit)
-        formatted = ref_item.format()
+            ref_item = RefItem.from_git_ref(git_ref)
+            formatted = ref_item.format()
+            return f' ({formatted})' if formatted else ''
 
-        return f' ({formatted})' if formatted else ''
+        return ''
 
     def _select_ref_for_plugin(self, plugin):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.
@@ -417,11 +420,24 @@ class PluginCLI:
 
                     # Version with git info
                     metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
-                    git_info = self._format_git_info(metadata)
-                    version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
-                    if git_info:
-                        self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+                    if metadata:
+                        git_ref = metadata.get_git_ref()
+                        if git_ref.shortname and git_ref.target:
+                            # Convert GitRef to RefItem for formatting
+                            from picard.plugin3.ref_item import RefItem
+
+                            ref_item = RefItem.from_git_ref(git_ref)
+                            version_display = ref_item.format(
+                                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+                            )
+                            self._out.info(f'  Version: {version_display}')
+                        else:
+                            # Fallback to manifest version
+                            version = plugin.manifest._data.get('version', '')
+                            self._out.info(f'  Version: {self._out.d_version(version)}')
                     else:
+                        # No metadata, use manifest version
+                        version = plugin.manifest._data.get('version', '')
                         self._out.info(f'  Version: {self._out.d_version(version)}')
 
                     # Source URL if available
@@ -462,7 +478,6 @@ class PluginCLI:
 
         is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
         metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
-        git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
 
@@ -487,10 +502,24 @@ class PluginCLI:
         self._out.print(f'State: {plugin.state.value}')
 
         # Version
-        version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
-        if git_info:
-            self._out.print(f'Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+        if metadata:
+            git_ref = metadata.get_git_ref()
+            if git_ref.shortname and git_ref.target:
+                # Convert GitRef to RefItem for formatting
+                from picard.plugin3.ref_item import RefItem
+
+                ref_item = RefItem.from_git_ref(git_ref)
+                version_display = ref_item.format(
+                    ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+                )
+                self._out.print(f'Version: {version_display}')
+            else:
+                # Fallback to manifest version
+                version = plugin.manifest._data.get('version', '')
+                self._out.print(f'Version: {self._out.d_version(version)}')
         else:
+            # No metadata, use manifest version
+            version = plugin.manifest._data.get('version', '')
             self._out.print(f'Version: {self._out.d_version(version)}')
 
         # Show source URL if available
@@ -551,6 +580,7 @@ class PluginCLI:
         url = info['url']
         current_ref = info['current_ref']
         current_commit = info['current_commit']
+        current_ref_type = info['current_ref_type']
         registry_id = info['registry_id']
         plugin = info['plugin']
         registry_plugin = info['registry_plugin']
@@ -565,7 +595,14 @@ class PluginCLI:
 
         if current_ref:
             commit_short = short_commit_id(current_commit) if current_commit else ''
-            self._out.print(f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_new(commit_short)})')
+            if current_ref_type == 'commit':
+                # For commit pins, show as commit hash
+                self._out.print(f'Current: commit {self._out.d_commit_new(commit_short)}')
+            else:
+                # For branches and tags, show the ref name
+                self._out.print(
+                    f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_new(commit_short)})'
+                )
 
         self._out.nl()
 
@@ -1125,9 +1162,9 @@ class PluginCLI:
 
         try:
             self._out.print(f'Switching {self._out.d_id(plugin.plugin_id)} to ref: {ref}...')
-            old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
+            old_git_ref, new_git_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
-            self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+            self._out.success(f'Switched: {old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname}')
             self._out.info(
                 f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
             )
@@ -1145,8 +1182,8 @@ class PluginCLI:
                 success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
                 if not success:
                     return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
-                old_ref, new_ref, old_commit, new_commit = result
-                self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+                old_git_ref, new_git_ref, old_commit, new_commit = result
+                self._out.success(f'Switched: {old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname}')
                 self._out.info(
                     f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
                 )
@@ -1302,6 +1339,7 @@ class PluginCLI:
             try:
                 # Read and validate manifest using manager method
                 from picard.plugin3.manager import (
+                    PluginManifestError,
                     PluginManifestInvalidError,
                     PluginManifestNotFoundError,
                 )
@@ -1381,6 +1419,9 @@ class PluginCLI:
                 self._out.nl()
                 self._out.error(f'  • {e}')
                 return ExitCode.ERROR
+            except PluginManifestError as e:
+                self._out.error(f'Manifest error: {e}')
+                return ExitCode.ERROR
             except Exception as e:
                 self._handle_exception(e, 'Validation error')
                 return ExitCode.ERROR
@@ -1405,6 +1446,7 @@ class PluginCLI:
             self._out.success('MANIFEST.toml found')
 
             from picard.plugin3.manager import (
+                PluginManifestError,
                 PluginManifestInvalidError,
                 PluginManifestNotFoundError,
             )
@@ -1419,6 +1461,9 @@ class PluginCLI:
                 self._out.error('Validation failed:')
                 self._out.nl()
                 self._out.error(f'  • {e}')
+                return ExitCode.ERROR
+            except PluginManifestError as e:
+                self._out.error(f'Manifest error: {e}')
                 return ExitCode.ERROR
 
             # Show plugin info

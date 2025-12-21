@@ -23,13 +23,9 @@
 
 """Git URL and path utility functions."""
 
-from dataclasses import dataclass
 from functools import lru_cache
 import os
 from pathlib import Path
-from typing import Optional
-
-from picard.i18n import gettext as _
 
 
 @lru_cache(maxsize=256)
@@ -147,46 +143,3 @@ def check_local_repo_dirty(url):
             return bool(status)
     except Exception:
         return False
-
-
-@dataclass
-class RefItem:
-    """Represents a git reference with display formatting."""
-
-    name: str
-    commit: Optional[str] = None
-    is_current: bool = False
-    is_tag: bool = False
-    is_branch: bool = False
-
-    def format(self, ref_formatter=None, commit_formatter=None, current_formatter=None) -> str:
-        """Format ref and commit for display."""
-        from picard.plugin3.plugin import short_commit_id
-
-        # Shorten commit for display
-        short_commit = short_commit_id(self.commit) if self.commit else ""
-
-        # Apply formatters if provided
-        formatted_ref = ref_formatter(self.name) if ref_formatter and self.name else self.name
-        formatted_commit = commit_formatter(short_commit) if commit_formatter and short_commit else short_commit
-
-        if self.name and short_commit:
-            # If ref is the same as commit (commit hash used as ref), just show @commit
-            if self.name == self.commit or self.name == short_commit:
-                base = f"@{formatted_commit}"
-            else:
-                base = f"{formatted_ref} @{formatted_commit}"
-        elif self.name:
-            base = formatted_ref
-        elif short_commit:
-            base = f"@{formatted_commit}"
-        else:
-            base = ""
-
-        # Apply current formatter if this is the current ref
-        if self.is_current and current_formatter:
-            return current_formatter(base)
-        elif self.is_current:
-            return _("{base} (current)").format(base=base)
-        else:
-            return base

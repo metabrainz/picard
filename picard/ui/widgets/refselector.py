@@ -21,8 +21,8 @@
 
 from PyQt6 import QtWidgets
 
-from picard.git.utils import RefItem
 from picard.i18n import gettext as _
+from picard.plugin3.ref_item import RefItem
 
 
 class RefSelectorWidget(QtWidgets.QWidget):
@@ -80,25 +80,27 @@ class RefSelectorWidget(QtWidgets.QWidget):
 
         # Populate tags
         for ref in refs.get('tags', []):
+            # Create RefItem object for formatting
             ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_tag=True,
+                shortname=ref['name'],
+                ref_type=RefItem.Type.TAG,
+                commit=ref.get('commit', ''),
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
+            is_current = current_ref and ref['name'] == current_ref
+            list_item = QtWidgets.QListWidgetItem(ref_item.format(is_current=is_current))
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.tags_list.addItem(list_item)
 
         # Populate branches
         for ref in refs.get('branches', []):
+            # Create RefItem object for formatting
             ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_branch=True,
+                shortname=ref['name'],
+                ref_type=RefItem.Type.BRANCH,
+                commit=ref.get('commit', ''),
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
+            is_current = current_ref and ref['name'] == current_ref
+            list_item = QtWidgets.QListWidgetItem(ref_item.format(is_current=is_current))
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.branches_list.addItem(list_item)
 
@@ -121,6 +123,6 @@ class RefSelectorWidget(QtWidgets.QWidget):
             return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.custom_tab_index:
             text = self.custom_edit.text().strip()
-            return RefItem(name=text) if text else None
+            return RefItem(shortname=text) if text else None
 
         return None
