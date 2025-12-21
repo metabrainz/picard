@@ -187,6 +187,8 @@ class TestPluginRegistry(PicardTestCase):
                         with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
                             mock_source = Mock()
                             mock_source.update.return_value = ('abc123', 'def456')
+                            mock_source.ref = 'main'  # Add ref attribute
+                            mock_source.resolved_ref_type = 'branch'  # Add ref type
                             mock_source_class.return_value = mock_source
 
                             with patch('picard.git.ops.GitOperations.check_dirty_working_dir') as mock_check_dirty:
