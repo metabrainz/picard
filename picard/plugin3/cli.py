@@ -423,8 +423,11 @@ class PluginCLI:
                     if metadata:
                         git_ref = metadata.get_git_ref()
                         if git_ref.shortname and git_ref.target:
-                            # Use GitRef.format() with proper color formatters
-                            version_display = git_ref.format(
+                            # Convert GitRef to RefItem for formatting
+                            from picard.plugin3.ref_item import RefItem
+
+                            ref_item = RefItem.from_git_ref(git_ref)
+                            version_display = ref_item.format(
                                 ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
                             )
                             self._out.info(f'  Version: {version_display}')
@@ -502,8 +505,11 @@ class PluginCLI:
         if metadata:
             git_ref = metadata.get_git_ref()
             if git_ref.shortname and git_ref.target:
-                # Use GitRef.format() with proper color formatters
-                version_display = git_ref.format(
+                # Convert GitRef to RefItem for formatting
+                from picard.plugin3.ref_item import RefItem
+
+                ref_item = RefItem.from_git_ref(git_ref)
+                version_display = ref_item.format(
                     ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
                 )
                 self._out.print(f'Version: {version_display}')
