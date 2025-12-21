@@ -1813,7 +1813,9 @@ class PluginManager(QObject):
             return ""
 
         git_ref = metadata.get_git_ref()
-        return git_ref.format()
+        # Convert GitRef to RefItem for formatting
+        ref_item = RefItem.from_git_ref(git_ref)
+        return ref_item.format()
 
     def get_plugin_homepage(self, plugin):
         """Get plugin homepage URL from manifest."""

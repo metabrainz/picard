@@ -342,9 +342,16 @@ class PluginCLI:
             return ''
 
         git_ref = metadata.get_git_ref()
-        formatted = git_ref.format()
+        # Only format if we have both ref and commit
+        if git_ref.shortname and git_ref.target:
+            # Convert GitRef to RefItem for formatting
+            from picard.plugin3.ref_item import RefItem
 
-        return f' ({formatted})' if formatted else ''
+            ref_item = RefItem.from_git_ref(git_ref)
+            formatted = ref_item.format()
+            return f' ({formatted})' if formatted else ''
+
+        return ''
 
     def _select_ref_for_plugin(self, plugin):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version.
