@@ -225,6 +225,12 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
+        # Use the new GitRef directly from UpdateResult - no more guesswork!
+        new_git_ref = getattr(update, 'new_git_ref', None)
+        if new_git_ref:
+            return new_git_ref.format() or _("Available")
+
+        # Fallback for old UpdateResult format (backward compatibility)
         ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
         commit = getattr(update, 'new_commit', None)
 

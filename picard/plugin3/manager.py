@@ -79,8 +79,8 @@ class UpdateResult(NamedTuple):
     new_version: str
     old_commit: str
     new_commit: str
-    old_ref: str
-    new_ref: str
+    old_git_ref: GitRef
+    new_git_ref: GitRef
     commit_date: int
 
 
@@ -1468,10 +1468,47 @@ class PluginManager(QObject):
             new_version or '',
             old_commit,
             new_commit,
-            old_ref or '',
-            new_ref or '',
+            self._create_git_ref_from_metadata(old_ref, old_commit, ref_type),
+            self._create_git_ref_from_ref_name(new_ref, new_commit),
             commit_date,
         )
+
+    def _create_git_ref_from_metadata(self, ref_name, commit, ref_type):
+        """Create GitRef from metadata information."""
+        if not ref_name and not commit:
+            return GitRef(name='', target='')
+
+        if ref_type == 'tag':
+            full_name = f"refs/tags/{ref_name}" if ref_name else commit
+            git_ref_type = GitRefType.TAG
+        elif ref_type == 'branch':
+            full_name = f"refs/heads/{ref_name}" if ref_name else commit
+            git_ref_type = GitRefType.BRANCH
+        else:  # commit
+            full_name = commit or ref_name
+            git_ref_type = None
+
+        return GitRef(name=full_name, target=commit, ref_type=git_ref_type)
+
+    def _create_git_ref_from_ref_name(self, ref_name, commit):
+        """Create GitRef from ref name, inferring type from name pattern."""
+        if not ref_name and not commit:
+            return GitRef(name='', target='')
+
+        if ref_name:
+            # Infer ref type from name pattern
+            if ref_name.startswith('v') or '.' in ref_name:
+                full_name = f"refs/tags/{ref_name}"
+                ref_type = GitRefType.TAG
+            else:
+                full_name = f"refs/heads/{ref_name}"
+                ref_type = GitRefType.BRANCH
+        else:
+            # Just a commit hash
+            full_name = commit
+            ref_type = None
+
+        return GitRef(name=full_name, target=commit, ref_type=ref_type)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
