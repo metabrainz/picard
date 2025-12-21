@@ -46,7 +46,7 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitRefType
+from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
@@ -346,28 +346,36 @@ class PluginManager(QObject):
 
         # Format tags
         for ref in refs.get('tags', []):
-            from picard.git.utils import RefItem
-
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit', ''),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_tag=True,
+            # Create GitRef object for formatting
+            git_ref = GitRef(
+                name=f"refs/tags/{ref['name']}",
+                target=ref.get('commit', ''),
+                ref_type=GitRefType.TAG,
             )
+            is_current = current_ref and ref['name'] == current_ref
             formatted_refs['tags'].append(
-                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
+                {
+                    'name': ref['name'],
+                    'commit': ref.get('commit'),
+                    'display_name': git_ref.format(is_current=is_current),
+                }
             )
 
         # Format branches
         for ref in refs.get('branches', []):
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit', ''),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_branch=True,
+            # Create GitRef object for formatting
+            git_ref = GitRef(
+                name=f"refs/heads/{ref['name']}",
+                target=ref.get('commit', ''),
+                ref_type=GitRefType.BRANCH,
             )
+            is_current = current_ref and ref['name'] == current_ref
             formatted_refs['branches'].append(
-                {'name': ref['name'], 'commit': ref.get('commit'), 'display_name': ref_item.format()}
+                {
+                    'name': ref['name'],
+                    'commit': ref.get('commit'),
+                    'display_name': git_ref.format(is_current=is_current),
+                }
             )
 
         return formatted_refs
@@ -1756,10 +1764,29 @@ class PluginManager(QObject):
         if not metadata:
             return ""
 
-        from picard.git.utils import RefItem
+        ref_name = getattr(metadata, 'ref', '')
+        commit = getattr(metadata, 'commit', '')
 
-        ref_item = RefItem(name=getattr(metadata, 'ref', ''), commit=getattr(metadata, 'commit', ''))
-        return ref_item.format()
+        if not ref_name and not commit:
+            return ""
+
+        # Create GitRef object for formatting - we need to guess the ref type
+        # This is a temporary solution until metadata stores GitRef directly
+        if ref_name:
+            # Try to determine ref type from name pattern
+            if ref_name.startswith('v') or '.' in ref_name:
+                full_name = f"refs/tags/{ref_name}"
+                ref_type = GitRefType.TAG
+            else:
+                full_name = f"refs/heads/{ref_name}"
+                ref_type = GitRefType.BRANCH
+        else:
+            # Just a commit hash
+            full_name = commit
+            ref_type = None
+
+        git_ref = GitRef(name=full_name, target=commit, ref_type=ref_type)
+        return git_ref.format()
 
     def get_plugin_homepage(self, plugin):
         """Get plugin homepage URL from manifest."""
