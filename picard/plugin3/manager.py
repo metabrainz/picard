@@ -60,6 +60,7 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
+from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation
 from picard.util import parse_versioning_scheme
@@ -79,8 +80,8 @@ class UpdateResult(NamedTuple):
     new_version: str
     old_commit: str
     new_commit: str
-    old_git_ref: GitRef
-    new_git_ref: GitRef
+    old_ref_item: RefItem
+    new_ref_item: RefItem
     commit_date: int
 
 
@@ -346,35 +347,35 @@ class PluginManager(QObject):
 
         # Format tags
         for ref in refs.get('tags', []):
-            # Create GitRef object for formatting
-            git_ref = GitRef(
-                name=f"refs/tags/{ref['name']}",
-                target=ref.get('commit', ''),
-                ref_type=GitRefType.TAG,
+            # Create RefItem object for formatting
+            ref_item = RefItem(
+                shortname=ref['name'],
+                ref_type=RefItem.Type.TAG,
+                commit=ref.get('commit', ''),
             )
             is_current = current_ref and ref['name'] == current_ref
             formatted_refs['tags'].append(
                 {
                     'name': ref['name'],
                     'commit': ref.get('commit'),
-                    'display_name': git_ref.format(is_current=is_current),
+                    'display_name': ref_item.format(is_current=is_current),
                 }
             )
 
         # Format branches
         for ref in refs.get('branches', []):
-            # Create GitRef object for formatting
-            git_ref = GitRef(
-                name=f"refs/heads/{ref['name']}",
-                target=ref.get('commit', ''),
-                ref_type=GitRefType.BRANCH,
+            # Create RefItem object for formatting
+            ref_item = RefItem(
+                shortname=ref['name'],
+                ref_type=RefItem.Type.BRANCH,
+                commit=ref.get('commit', ''),
             )
             is_current = current_ref and ref['name'] == current_ref
             formatted_refs['branches'].append(
                 {
                     'name': ref['name'],
                     'commit': ref.get('commit'),
-                    'display_name': git_ref.format(is_current=is_current),
+                    'display_name': ref_item.format(is_current=is_current),
                 }
             )
 
@@ -1478,47 +1479,47 @@ class PluginManager(QObject):
             new_version or '',
             old_commit,
             new_commit,
-            self._create_git_ref_from_metadata(old_ref, old_commit, ref_type),
-            self._create_git_ref_from_source(source, new_commit),
+            self._create_ref_item_from_metadata(old_ref, old_commit, ref_type),
+            self._create_ref_item_from_source(source, new_commit),
             commit_date,
         )
 
-    def _create_git_ref_from_metadata(self, ref_name, commit, ref_type):
-        """Create GitRef from metadata information."""
+    def _create_ref_item_from_metadata(self, ref_name, commit, ref_type):
+        """Create RefItem from metadata information."""
         if not ref_name and not commit:
-            return GitRef(name='', target='')
+            return RefItem('')
 
         if ref_type == 'tag':
-            full_name = f"refs/tags/{ref_name}" if ref_name else commit
-            git_ref_type = GitRefType.TAG
+            item_ref_type = RefItem.Type.TAG
+            shortname = ref_name if ref_name else commit
         elif ref_type == 'branch':
-            full_name = f"refs/heads/{ref_name}" if ref_name else commit
-            git_ref_type = GitRefType.BRANCH
+            item_ref_type = RefItem.Type.BRANCH
+            shortname = ref_name if ref_name else commit
         else:  # commit
-            full_name = commit or ref_name
-            git_ref_type = None
+            item_ref_type = RefItem.Type.COMMIT
+            shortname = commit or ref_name
 
-        return GitRef(name=full_name, target=commit, ref_type=git_ref_type)
+        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
 
-    def _create_git_ref_from_source(self, source, commit):
-        """Create GitRef from PluginSourceGit with accurate ref type information."""
+    def _create_ref_item_from_source(self, source, commit):
+        """Create RefItem from PluginSourceGit with accurate ref type information."""
         ref_name = source.ref
         ref_type_str = getattr(source, 'resolved_ref_type', None)
 
         if not ref_name and not commit:
-            return GitRef(name='', target='')
+            return RefItem('')
 
         if ref_type_str == 'tag':
-            full_name = f"refs/tags/{ref_name}" if ref_name else commit
-            ref_type = GitRefType.TAG
+            item_ref_type = RefItem.Type.TAG
+            shortname = ref_name if ref_name else commit
         elif ref_type_str == 'branch':
-            full_name = f"refs/heads/{ref_name}" if ref_name else commit
-            ref_type = GitRefType.BRANCH
+            item_ref_type = RefItem.Type.BRANCH
+            shortname = ref_name if ref_name else commit
         else:  # commit or None
-            full_name = commit or ref_name
-            ref_type = None
+            item_ref_type = RefItem.Type.COMMIT
+            shortname = commit or ref_name
 
-        return GitRef(name=full_name, target=commit, ref_type=ref_type)
+        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
