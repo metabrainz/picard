@@ -255,7 +255,7 @@ class GitOperations:
                 # Try as branch first
                 result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
+                    new_ref_name, new_commit = result
                     new_git_ref = GitRef(
                         name=f"refs/heads/{new_ref_name}", target=new_commit, ref_type=GitRefType.BRANCH
                     )
@@ -264,14 +264,14 @@ class GitOperations:
                 # Try as tag
                 result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
+                    new_ref_name, new_commit = result
                     new_git_ref = GitRef(name=f"refs/tags/{new_ref_name}", target=new_commit, ref_type=GitRefType.TAG)
                     return old_git_ref, new_git_ref, old_commit, new_commit
 
                 # Try as commit hash or git revision syntax
                 result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref_name, old_commit)
                 if result:
-                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
+                    new_ref_name, new_commit = result
                     new_git_ref = GitRef(name=new_commit, target=new_commit, ref_type=None)
                     return old_git_ref, new_git_ref, old_commit, new_commit
 
@@ -355,7 +355,7 @@ class GitOperations:
             repo.set_head(branch_ref)
 
         log.info('Switched plugin %s to branch %s', plugin.plugin_id, local_ref)
-        return old_ref, local_ref, old_commit, commit.id
+        return local_ref, commit.id
 
     @staticmethod
     def _try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit):
@@ -372,7 +372,7 @@ class GitOperations:
             repo.checkout_tree(commit)
             repo.set_head(commit.id)
             log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-            return old_ref, ref, old_commit, commit.id
+            return ref, commit.id
 
         return None
 
@@ -384,7 +384,7 @@ class GitOperations:
             repo.checkout_tree(commit)
             repo.set_head(commit.id)
             log.info('Switched plugin %s to commit %s', plugin.plugin_id, ref)
-            return old_ref, commit.id[:7], old_commit, commit.id
+            return commit.id[:7], commit.id
         except GitReferenceError:
             # For git revision syntax, provide helpful error message
             if any(char in ref for char in ['^', '~', ':', '@']):
