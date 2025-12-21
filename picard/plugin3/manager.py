@@ -1648,7 +1648,15 @@ class PluginManager(QObject):
 
                     # Check if plugin has versioning_scheme before doing tag-based updates
                     registry_plugin = self._registry.find_plugin(url=metadata.url, uuid=plugin.uuid)
-                    if is_tag_installation and not (registry_plugin and registry_plugin.versioning_scheme):
+
+                    # Allow tag-based updates for:
+                    # 1. Registry plugins with versioning_scheme
+                    # 2. URL/local plugins installed from tags (assume semantic versioning)
+                    has_versioning_scheme = (registry_plugin and registry_plugin.versioning_scheme) or (
+                        is_tag_installation and not registry_plugin
+                    )
+
+                    if is_tag_installation and not has_versioning_scheme:
                         log.debug(
                             "Plugin %s: originally installed from %s, but no versioning_scheme - skipping tag-based updates",
                             plugin.plugin_id,
