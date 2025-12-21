@@ -795,7 +795,7 @@ class PluginManager(QObject):
             self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
-        return old_git_ref.shortname, new_git_ref.shortname, old_commit, new_commit
+        return old_git_ref, new_git_ref, old_commit, new_commit
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.

@@ -154,20 +154,16 @@ class PluginCLI:
                    (and optionally old_version, new_version, commit_date)
         """
         # Show tag with commit ID if available
-        if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
+        old_git_ref = getattr(result, 'old_git_ref', None)
+        new_git_ref = getattr(result, 'new_git_ref', None)
+
+        if old_git_ref and new_git_ref and old_git_ref.shortname != new_git_ref.shortname:
             old_short = short_commit_id(result.old_commit)
             new_short = short_commit_id(result.new_commit)
 
-            # Avoid redundancy: if ref is same as commit, just show @commit
-            if result.old_ref == old_short:
-                old_display = f'@{self._out.d_commit_old(old_short)}'
-            else:
-                old_display = f'{self._out.d_version(result.old_ref)} @{self._out.d_commit_old(old_short)}'
-
-            if result.new_ref == new_short:
-                new_display = f'@{self._out.d_commit_new(new_short)}'
-            else:
-                new_display = f'{self._out.d_version(result.new_ref)} @{self._out.d_commit_new(new_short)}'
+            # Use GitRef.format() for consistent display
+            old_display = old_git_ref.format(ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old)
+            new_display = new_git_ref.format(ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_new)
 
             version_info = f'{old_display} {self._out.d_arrow()} {new_display}'
         # Show version with commit ID if version changed
@@ -188,10 +184,11 @@ class PluginCLI:
 
             # If commits are the same, just show the ref change or "already up to date"
             if old_short == new_short:
-                if result.old_ref and result.new_ref and result.old_ref != result.new_ref:
-                    version_info = (
-                        f'{result.old_ref} {self._out.d_arrow()} {result.new_ref} ({self._out.d_commit_new(new_short)})'
-                    )
+                old_git_ref = getattr(result, 'old_git_ref', None)
+                new_git_ref = getattr(result, 'new_git_ref', None)
+
+                if old_git_ref and new_git_ref and old_git_ref.shortname != new_git_ref.shortname:
+                    version_info = f'{old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname} ({self._out.d_commit_new(new_short)})'
                 else:
                     version_info = f'{self._out.d_commit_new(new_short)}'
             else:
@@ -1148,9 +1145,9 @@ class PluginCLI:
 
         try:
             self._out.print(f'Switching {self._out.d_id(plugin.plugin_id)} to ref: {ref}...')
-            old_ref, new_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
+            old_git_ref, new_git_ref, old_commit, new_commit = self._manager.switch_ref(plugin, ref)
 
-            self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+            self._out.success(f'Switched: {old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname}')
             self._out.info(
                 f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
             )
@@ -1168,8 +1165,8 @@ class PluginCLI:
                 success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
                 if not success:
                     return ExitCode.ERROR if self._args.yes else ExitCode.SUCCESS
-                old_ref, new_ref, old_commit, new_commit = result
-                self._out.success(f'Switched: {old_ref} {self._out.d_arrow()} {new_ref}')
+                old_git_ref, new_git_ref, old_commit, new_commit = result
+                self._out.success(f'Switched: {old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname}')
                 self._out.info(
                     f'Commit: {self._out.d_commit_old(short_commit_id(old_commit))} {self._out.d_arrow()} {self._out.d_commit_new(short_commit_id(new_commit))}'
                 )
