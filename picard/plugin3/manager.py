@@ -1567,7 +1567,26 @@ class PluginManager(QObject):
                 continue
 
             metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if not metadata or not metadata.url:
+            if not metadata:
+                continue
+
+            # Skip plugins without URL unless they have git remotes
+            if not metadata.url:
+                continue
+
+            # Check if plugin has git remotes (for local plugins)
+            has_remotes = False
+            if metadata.url and not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')):
+                try:
+                    backend = git_backend()
+                    with backend.create_repository(plugin.local_path) as repo:
+                        remotes = repo.get_remotes()
+                        has_remotes = len(remotes) > 0
+                except Exception:
+                    pass
+
+            # Skip if no remote URL and no git remotes
+            if not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')) and not has_remotes:
                 continue
 
             try:
