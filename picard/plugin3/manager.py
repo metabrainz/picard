@@ -873,11 +873,24 @@ class PluginManager(QObject):
             if plugin in self._plugins:
                 self._plugins.remove(plugin)
             # Remove plugin directory
-            if final_path.exists():
-                shutil.rmtree(final_path)
+            self._safe_remove_directory(final_path, f"failed plugin directory for {plugin_name}")
             log.info('Successfully cleaned up failed plugin installation: %s', plugin_name)
         except Exception as cleanup_error:
             log.error('Failed to cleanup plugin %s after enable failure: %s', plugin_name, cleanup_error)
+
+    def _safe_remove_directory(self, path, description="directory"):
+        """Safely remove a directory with error logging.
+
+        Args:
+            path: Path to remove (Path object or string)
+            description: Description for logging (default: "directory")
+        """
+        path = Path(path)
+        if path.exists():
+            try:
+                shutil.rmtree(path)
+            except Exception as e:
+                log.error('Failed to remove %s %s: %s', description, path, e)
 
     def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
         """Validate plugin manifest after git operations, rollback on failure.
@@ -1036,7 +1049,7 @@ class PluginManager(QObject):
                     if changes:
                         raise PluginDirtyError(plugin_name, changes)
 
-                shutil.rmtree(final_path)
+                self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
             # Atomic rename from temp to final location
             temp_path.rename(final_path)
@@ -1171,7 +1184,7 @@ class PluginManager(QObject):
                 if changes:
                     raise PluginDirtyError(plugin_name, changes)
 
-            shutil.rmtree(final_path)
+            self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
         # Copy to plugin directory
         if is_git_repo:
@@ -1764,7 +1777,7 @@ class PluginManager(QObject):
             os.remove(plugin_path)
         elif os.path.isdir(plugin_path):
             log.debug("Removing directory %r", plugin_path)
-            shutil.rmtree(plugin_path)
+            self._safe_remove_directory(plugin_path, f"plugin directory for {plugin.plugin_id}")
 
         # Remove metadata
         config = get_config()
