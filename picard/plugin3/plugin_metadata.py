@@ -25,7 +25,7 @@ from typing import TYPE_CHECKING
 
 from picard import log
 from picard.config import get_config
-from picard.git.backend import GitRefType
+from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import git_backend
 
 
@@ -45,6 +45,7 @@ class PluginMetadata:
     original_url: str | None = None
     original_uuid: str | None = None
     ref_type: str | None = None  # 'tag' or 'branch' to indicate installation method
+    git_ref: GitRef | None = None  # New GitRef object (preferred over ref/ref_type)
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -53,7 +54,31 @@ class PluginMetadata:
 
     def to_dict(self):
         """Convert to dict for config storage, excluding None values."""
-        return {k: v for k, v in asdict(self).items() if v is not None}
+        data = {k: v for k, v in asdict(self).items() if v is not None}
+        # Remove git_ref from serialization (it's not JSON serializable)
+        data.pop('git_ref', None)
+        return data
+
+    def get_git_ref(self):
+        """Get GitRef object, creating it from ref/ref_type if needed."""
+        if self.git_ref:
+            return self.git_ref
+
+        # Reconstruct GitRef from legacy ref/ref_type data
+        if self.ref or self.commit:
+            if self.ref_type == 'tag':
+                full_name = f"refs/tags/{self.ref}" if self.ref else self.commit
+                ref_type = GitRefType.TAG
+            elif self.ref_type == 'branch':
+                full_name = f"refs/heads/{self.ref}" if self.ref else self.commit
+                ref_type = GitRefType.BRANCH
+            else:  # commit or None
+                full_name = self.commit or self.ref
+                ref_type = None
+
+            return GitRef(name=full_name, target=self.commit, ref_type=ref_type)
+
+        return GitRef(name='', target='')
 
 
 class PluginMetadataManager:

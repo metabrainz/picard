@@ -1801,28 +1801,7 @@ class PluginManager(QObject):
         if not metadata:
             return ""
 
-        ref_name = getattr(metadata, 'ref', '')
-        commit = getattr(metadata, 'commit', '')
-
-        if not ref_name and not commit:
-            return ""
-
-        # Create GitRef object for formatting - we need to guess the ref type
-        # This is a temporary solution until metadata stores GitRef directly
-        if ref_name:
-            # Try to determine ref type from name pattern
-            if ref_name.startswith('v') or '.' in ref_name:
-                full_name = f"refs/tags/{ref_name}"
-                ref_type = GitRefType.TAG
-            else:
-                full_name = f"refs/heads/{ref_name}"
-                ref_type = GitRefType.BRANCH
-        else:
-            # Just a commit hash
-            full_name = commit
-            ref_type = None
-
-        git_ref = GitRef(name=full_name, target=commit, ref_type=ref_type)
+        git_ref = metadata.get_git_ref()
         return git_ref.format()
 
     def get_plugin_homepage(self, plugin):
