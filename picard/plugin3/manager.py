@@ -1469,7 +1469,7 @@ class PluginManager(QObject):
             old_commit,
             new_commit,
             self._create_git_ref_from_metadata(old_ref, old_commit, ref_type),
-            self._create_git_ref_from_ref_name(new_ref, new_commit),
+            self._create_git_ref_from_source(source, new_commit),
             commit_date,
         )
 
@@ -1490,22 +1490,22 @@ class PluginManager(QObject):
 
         return GitRef(name=full_name, target=commit, ref_type=git_ref_type)
 
-    def _create_git_ref_from_ref_name(self, ref_name, commit):
-        """Create GitRef from ref name, inferring type from name pattern."""
+    def _create_git_ref_from_source(self, source, commit):
+        """Create GitRef from PluginSourceGit with accurate ref type information."""
+        ref_name = source.ref
+        ref_type_str = getattr(source, 'resolved_ref_type', None)
+
         if not ref_name and not commit:
             return GitRef(name='', target='')
 
-        if ref_name:
-            # Infer ref type from name pattern
-            if ref_name.startswith('v') or '.' in ref_name:
-                full_name = f"refs/tags/{ref_name}"
-                ref_type = GitRefType.TAG
-            else:
-                full_name = f"refs/heads/{ref_name}"
-                ref_type = GitRefType.BRANCH
-        else:
-            # Just a commit hash
-            full_name = commit
+        if ref_type_str == 'tag':
+            full_name = f"refs/tags/{ref_name}" if ref_name else commit
+            ref_type = GitRefType.TAG
+        elif ref_type_str == 'branch':
+            full_name = f"refs/heads/{ref_name}" if ref_name else commit
+            ref_type = GitRefType.BRANCH
+        else:  # commit or None
+            full_name = commit or ref_name
             ref_type = None
 
         return GitRef(name=full_name, target=commit, ref_type=ref_type)
