@@ -172,7 +172,7 @@ echo
 
 # Test 18: Verify lightweight tag resolves to commit
 echo "18. Verify lightweight tag resolves to commit"
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
 echo "Stored commit: $STORED_COMMIT"
 echo "Expected commit: ${COMMIT_V1_0_0:0:7}"
 if [ "$STORED_COMMIT" = "${COMMIT_V1_0_0:0:7}" ]; then
@@ -190,7 +190,7 @@ echo
 
 # Test 20: Verify annotated tag resolves to commit (not tag object)
 echo "20. Verify annotated tag resolves to commit (not tag object)"
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
 echo "Stored commit: $STORED_COMMIT"
 echo "Expected commit: ${COMMIT_V1_1_0:0:7}"
 if [ "$STORED_COMMIT" = "${COMMIT_V1_1_0:0:7}" ]; then
@@ -208,7 +208,7 @@ echo
 
 # Test 22: Verify commit after update
 echo "22. Verify commit after update"
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
 echo "Stored commit after update: $STORED_COMMIT"
 # Should be either v1.1.0 or v1.2.0 depending on versioning detection
 echo "✓ Update completed"
@@ -221,7 +221,7 @@ echo
 
 # Test 24: Verify new annotated tag resolves correctly
 echo "24. Verify new annotated tag resolves correctly"
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
 echo "Stored commit: $STORED_COMMIT"
 echo "Expected commit: ${COMMIT_V1_2_0:0:7}"
 if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
@@ -276,7 +276,7 @@ fi
 
 # Verify plugin is still functional on original version
 if $PICARD_PLUGINS --info $TEST_PLUGIN_UUID >/dev/null 2>&1; then
-    STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+    STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
     if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
         echo "✓ Plugin correctly rolled back to previous version"
     else
@@ -320,7 +320,7 @@ fi
 
 # Verify plugin is still functional on original version
 if $PICARD_PLUGINS --info $TEST_PLUGIN_UUID >/dev/null 2>&1; then
-    STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+    STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
     if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
         echo "✓ Plugin correctly rolled back to previous version after TOML error"
     else
