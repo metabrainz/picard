@@ -1173,18 +1173,17 @@ class PluginManager(QObject):
                     shutil.rmtree(temp_path, ignore_errors=True)
                 raise
         else:
-            # Direct copy for non-git directories
-            install_path = local_path
-            ref_to_save = ''
-            commit_to_save = ''
-            temp_path = None  # No temp directory for direct copy
+            # All plugins must be git repositories
+            raise ValueError(
+                f"Plugin directory {local_path} is not a git repository. All plugins must be git repositories."
+            )
 
         # Read MANIFEST to get plugin ID
         try:
             manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
         except Exception:
             # Clean up temp directory if manifest validation fails
-            if is_git_repo and temp_path and temp_path.exists():
+            if temp_path.exists():
                 gc.collect()
                 shutil.rmtree(temp_path, ignore_errors=True)
             raise
@@ -1215,12 +1214,8 @@ class PluginManager(QObject):
             self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
         # Copy to plugin directory
-        if is_git_repo:
-            # Move from temp location (git repo was cloned to temp)
-            shutil.move(str(install_path), str(final_path))
-        else:
-            # Copy from local directory (non-git)
-            shutil.copytree(install_path, final_path)
+        # Move from temp location (git repo was cloned to temp)
+        shutil.move(str(install_path), str(final_path))
 
         # Store metadata
         self._metadata.save_plugin_metadata(
