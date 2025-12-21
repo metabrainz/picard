@@ -25,6 +25,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
 from picard.config import get_config
+from picard.git.backend import GitRef, GitRefType
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
@@ -224,13 +225,25 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
-        from picard.git.utils import RefItem
-
         ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
         commit = getattr(update, 'new_commit', None)
 
-        ref_item = RefItem(name=ref, commit=commit)
-        return ref_item.format() or _("Available")
+        # Create GitRef object for formatting - we need to guess the ref type
+        if ref:
+            # Try to determine ref type from name pattern
+            if ref.startswith('v') or '.' in ref:
+                full_name = f"refs/tags/{ref}"
+                ref_type = GitRefType.TAG
+            else:
+                full_name = f"refs/heads/{ref}"
+                ref_type = GitRefType.BRANCH
+        else:
+            # Just a commit hash
+            full_name = commit
+            ref_type = None
+
+        git_ref = GitRef(name=full_name, target=commit, ref_type=ref_type)
+        return git_ref.format() or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""

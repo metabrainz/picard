@@ -21,7 +21,7 @@
 
 from PyQt6 import QtWidgets
 
-from picard.git.utils import RefItem
+from picard.git.backend import GitRef, GitRefType
 from picard.i18n import gettext as _
 
 
@@ -80,26 +80,28 @@ class RefSelectorWidget(QtWidgets.QWidget):
 
         # Populate tags
         for ref in refs.get('tags', []):
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_tag=True,
+            # Create GitRef object for formatting
+            git_ref = GitRef(
+                name=f"refs/tags/{ref['name']}",
+                target=ref.get('commit', ''),
+                ref_type=GitRefType.TAG,
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
-            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            is_current = current_ref and ref['name'] == current_ref
+            list_item = QtWidgets.QListWidgetItem(git_ref.format(is_current=is_current))
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, git_ref)
             self.tags_list.addItem(list_item)
 
         # Populate branches
         for ref in refs.get('branches', []):
-            ref_item = RefItem(
-                name=ref['name'],
-                commit=ref.get('commit'),
-                is_current=(current_ref and ref['name'] == current_ref),
-                is_branch=True,
+            # Create GitRef object for formatting
+            git_ref = GitRef(
+                name=f"refs/heads/{ref['name']}",
+                target=ref.get('commit', ''),
+                ref_type=GitRefType.BRANCH,
             )
-            list_item = QtWidgets.QListWidgetItem(ref_item.format())
-            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
+            is_current = current_ref and ref['name'] == current_ref
+            list_item = QtWidgets.QListWidgetItem(git_ref.format(is_current=is_current))
+            list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, git_ref)
             self.branches_list.addItem(list_item)
 
     def set_default_ref_info(self, default_ref_name, description):
@@ -121,6 +123,6 @@ class RefSelectorWidget(QtWidgets.QWidget):
             return current_item.data(QtWidgets.QListWidgetItem.ItemType.UserType) if current_item else None
         elif current_tab == self.custom_tab_index:
             text = self.custom_edit.text().strip()
-            return RefItem(name=text) if text else None
+            return GitRef(name=text) if text else None
 
         return None
