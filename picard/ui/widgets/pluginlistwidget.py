@@ -25,10 +25,10 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 
 from picard import log
 from picard.config import get_config
-from picard.git.backend import GitRef, GitRefType
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
+from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
@@ -225,31 +225,29 @@ class PluginListWidget(QtWidgets.QTreeWidget):
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
-        # Use the new GitRef directly from UpdateResult - no more guesswork!
-        new_git_ref = getattr(update, 'new_git_ref', None)
-        if new_git_ref:
-            return new_git_ref.format() or _("Available")
+        # Use the new RefItem directly from UpdateResult
+        new_ref_item = getattr(update, 'new_ref_item', None)
+        if new_ref_item:
+            return new_ref_item.format() or _("Available")
 
         # Fallback for old UpdateResult format (backward compatibility)
         ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
         commit = getattr(update, 'new_commit', None)
 
-        # Create GitRef object for formatting - we need to guess the ref type
+        # Create RefItem object for formatting - we need to guess the ref type
         if ref:
             # Try to determine ref type from name pattern
             if ref.startswith('v') or '.' in ref:
-                full_name = f"refs/tags/{ref}"
-                ref_type = GitRefType.TAG
+                ref_type = RefItem.Type.TAG
             else:
-                full_name = f"refs/heads/{ref}"
-                ref_type = GitRefType.BRANCH
+                ref_type = RefItem.Type.BRANCH
         else:
             # Just a commit hash
-            full_name = commit
-            ref_type = None
+            ref = commit
+            ref_type = RefItem.Type.COMMIT
 
-        git_ref = GitRef(name=full_name, target=commit, ref_type=ref_type)
-        return git_ref.format() or _("Available")
+        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=commit)
+        return ref_item.format() or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
