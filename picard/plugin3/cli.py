@@ -412,11 +412,21 @@ class PluginCLI:
 
                     # Version with git info
                     metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
-                    git_info = self._format_git_info(metadata)
-                    version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
-                    if git_info:
-                        self._out.info(f'  Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+                    if metadata:
+                        git_ref = metadata.get_git_ref()
+                        if git_ref.shortname and git_ref.target:
+                            # Use GitRef.format() with proper color formatters
+                            version_display = git_ref.format(
+                                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+                            )
+                            self._out.info(f'  Version: {version_display}')
+                        else:
+                            # Fallback to manifest version
+                            version = plugin.manifest._data.get('version', '')
+                            self._out.info(f'  Version: {self._out.d_version(version)}')
                     else:
+                        # No metadata, use manifest version
+                        version = plugin.manifest._data.get('version', '')
                         self._out.info(f'  Version: {self._out.d_version(version)}')
 
                     # Source URL if available
@@ -457,7 +467,6 @@ class PluginCLI:
 
         is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
         metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
-        git_info = self._format_git_info(metadata)
 
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
 
@@ -482,10 +491,21 @@ class PluginCLI:
         self._out.print(f'State: {plugin.state.value}')
 
         # Version
-        version = self._get_version_display(plugin.uuid, plugin.manifest._data.get('version', ''))
-        if git_info:
-            self._out.print(f'Version: {self._out.d_version(version)}{self._out.d_git_info(git_info)}')
+        if metadata:
+            git_ref = metadata.get_git_ref()
+            if git_ref.shortname and git_ref.target:
+                # Use GitRef.format() with proper color formatters
+                version_display = git_ref.format(
+                    ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+                )
+                self._out.print(f'Version: {version_display}')
+            else:
+                # Fallback to manifest version
+                version = plugin.manifest._data.get('version', '')
+                self._out.print(f'Version: {self._out.d_version(version)}')
         else:
+            # No metadata, use manifest version
+            version = plugin.manifest._data.get('version', '')
             self._out.print(f'Version: {self._out.d_version(version)}')
 
         # Show source URL if available
