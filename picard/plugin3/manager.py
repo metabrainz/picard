@@ -765,7 +765,7 @@ class PluginManager(QObject):
         if was_enabled:
             self.disable_plugin(plugin)
 
-        old_ref, new_ref, old_commit, new_commit, ref_type = GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_git_ref, new_git_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Validate manifest after ref switch
         self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
@@ -775,9 +775,9 @@ class PluginManager(QObject):
         metadata = self._metadata.get_plugin_metadata(uuid)
         if metadata:
             # Update existing metadata
-            metadata.ref = new_ref
+            metadata.ref = new_git_ref.shortname
             metadata.commit = new_commit
-            metadata.ref_type = ref_type
+            metadata.ref_type = new_git_ref.ref_type.value if new_git_ref.ref_type else 'commit'
             self._metadata.save_plugin_metadata(metadata)
 
         # Re-enable plugin if it was enabled before to reload the module
@@ -785,7 +785,7 @@ class PluginManager(QObject):
             self.enable_plugin(plugin)
 
         self.plugin_ref_switched.emit(plugin)
-        return old_ref, new_ref, old_commit, new_commit
+        return old_git_ref.shortname, new_git_ref.shortname, old_commit, new_commit
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.

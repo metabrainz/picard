@@ -704,7 +704,11 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata.get_plugin_metadata.return_value = metadata
 
         # Mock GitOperations.switch_ref
-        mock_git_ops.switch_ref.return_value = ('v1.0.0', 'v1.1.0', 'old_commit', 'new_commit', 'tag')
+        from picard.git.backend import GitRef, GitRefType
+
+        old_git_ref = GitRef(name='refs/tags/v1.0.0', target='old_commit', ref_type=GitRefType.TAG)
+        new_git_ref = GitRef(name='refs/tags/v1.1.0', target='new_commit', ref_type=GitRefType.TAG)
+        mock_git_ops.switch_ref.return_value = (old_git_ref, new_git_ref, 'old_commit', 'new_commit')
 
         with (
             patch.object(manager, 'disable_plugin'),
