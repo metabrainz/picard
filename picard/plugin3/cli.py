@@ -44,7 +44,6 @@ from picard.config import (
 )
 from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
-from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import has_git_backend
 from picard.git.utils import (
     check_local_repo_dirty,
@@ -345,28 +344,7 @@ class PluginCLI:
         if not metadata:
             return ''
 
-        ref_name = metadata.ref or ''
-        commit = metadata.commit or ''
-
-        if not commit:
-            return ''
-
-        # Create GitRef object for formatting - we need to guess the ref type
-        # This is a temporary solution until metadata stores GitRef directly
-        if ref_name:
-            # Try to determine ref type from name pattern
-            if ref_name.startswith('v') or '.' in ref_name:
-                full_name = f"refs/tags/{ref_name}"
-                ref_type = GitRefType.TAG
-            else:
-                full_name = f"refs/heads/{ref_name}"
-                ref_type = GitRefType.BRANCH
-        else:
-            # Just a commit hash
-            full_name = commit
-            ref_type = None
-
-        git_ref = GitRef(name=full_name, target=commit, ref_type=ref_type)
+        git_ref = metadata.get_git_ref()
         formatted = git_ref.format()
 
         return f' ({formatted})' if formatted else ''

@@ -517,12 +517,13 @@ class PluginManager(QObject):
         if not metadata:
             return manifest_version
 
-        ref = metadata.ref or ''
+        git_ref = metadata.get_git_ref()
+        ref_shortname = git_ref.shortname
         commit = metadata.commit or ''
 
         # If ref looks like a version tag (not a commit hash), use it
-        if ref and commit and not ref.startswith(short_commit_id(commit)):
-            return ref
+        if ref_shortname and commit and not ref_shortname.startswith(short_commit_id(commit)):
+            return ref_shortname
 
         return manifest_version
 
