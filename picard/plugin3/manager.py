@@ -1559,6 +1559,46 @@ class PluginManager(QObject):
             # On a branch - use the actual branch name
             return repo.get_head_shorthand(), False
 
+    def refresh_all_plugin_refs(self):
+        """Fetch remote refs for all plugins to ensure ref selectors have latest data."""
+        for plugin in self._plugins:
+            if not plugin.uuid:
+                continue
+
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+            if not metadata:
+                continue
+
+            # Skip plugins without URL unless they have git remotes
+            if not metadata.url:
+                continue
+
+            # Check if plugin has git remotes (for local plugins)
+            has_remotes = False
+            if metadata.url and not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')):
+                try:
+                    backend = git_backend()
+                    with backend.create_repository(plugin.local_path) as repo:
+                        remotes = repo.get_remotes()
+                        has_remotes = len(remotes) > 0
+                except Exception:
+                    pass
+
+            # Skip if no remote URL and no git remotes
+            if not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')) and not has_remotes:
+                continue
+
+            try:
+                backend = git_backend()
+                with backend.create_repository(plugin.local_path) as repo:
+                    # Fetch without updating (suppress progress output)
+                    callbacks = backend.create_remote_callbacks()
+                    for remote in repo.get_remotes():
+                        repo.fetch_remote(remote, None, callbacks._callbacks)
+                        log.debug("Fetched refs for plugin %s from remote %s", plugin.plugin_id, remote.name)
+            except Exception as e:
+                log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
+
     def check_updates(self):
         """Check which plugins have updates available without installing."""
         updates = {}

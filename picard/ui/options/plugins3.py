@@ -187,6 +187,9 @@ class Plugins3OptionsPage(OptionsPage):
             if self.plugin_manager:
                 self.plugin_manager.refresh_registry_and_caches()
 
+                # Fetch remote refs for all plugins (for ref selectors)
+                self.plugin_manager.refresh_all_plugin_refs()
+
             # Reload plugin list
             self.all_plugins = self.plugin_manager.plugins
 
