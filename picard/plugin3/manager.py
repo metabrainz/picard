@@ -1177,9 +1177,17 @@ class PluginManager(QObject):
             install_path = local_path
             ref_to_save = ''
             commit_to_save = ''
+            temp_path = None  # No temp directory for direct copy
 
         # Read MANIFEST to get plugin ID
-        manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+        try:
+            manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+        except Exception:
+            # Clean up temp directory if manifest validation fails
+            if is_git_repo and temp_path and temp_path.exists():
+                gc.collect()
+                shutil.rmtree(temp_path, ignore_errors=True)
+            raise
 
         # Check for UUID conflicts with existing plugins from different sources
         has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
