@@ -218,6 +218,10 @@ class Cluster(FileList):
     def is_album_like(self) -> bool:
         return True
 
+    @property
+    def is_permanently_hidden(self) -> bool:
+        return self.hide_if_empty and not self.files
+
     def column(self, column: str) -> str:
         if column == 'title':
             return '%s (%d)' % (self.metadata['album'], len(self.files))

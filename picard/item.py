@@ -105,6 +105,14 @@ class Item:
         """Return True if this item can provide a recording ID for linking to AcoustID."""
         return False
 
+    @property
+    def is_permanently_hidden(self) -> bool:
+        """Indicates, that this item should be considered hidden.
+
+        By default items are visible, but can be overridden by subclasses.
+        """
+        return False
+
     def load(self, priority=False, refresh=False):
         pass
 

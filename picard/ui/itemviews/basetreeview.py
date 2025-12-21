@@ -789,7 +789,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         """Recursively show all items."""
         for i in range(parent.childCount()):
             child = parent.child(i)
-            child.setHidden(False)
+            if not getattr(child.obj, 'is_permanently_hidden', False):
+                child.setHidden(False)
             self._set_item_tooltip(child, '')
             if child.childCount() > 0:
                 self._restore_tree_items(child)
