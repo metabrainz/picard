@@ -630,7 +630,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 async_manager = AsyncPluginManager(self.plugin_manager)
                 async_manager.switch_ref(
                     plugin=plugin,
-                    ref=dialog.selected_ref.name if dialog.selected_ref else None,
+                    ref=dialog.selected_ref.shortname if dialog.selected_ref else None,
                     callback=partial(self._on_switch_ref_complete, plugin),
                 )
             except Exception as e:
