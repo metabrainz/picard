@@ -33,6 +33,7 @@ from typing import (
 
 from picard import log
 from picard.debug_opts import DebugOpt
+from picard.i18n import gettext as _
 
 
 class GitBackendError(Exception):
@@ -103,6 +104,38 @@ class GitRef:
             return self.name[13:]  # len('refs/remotes/')
         else:
             return self.name  # HEAD, etc.
+
+    def format(self, is_current=False, ref_formatter=None, commit_formatter=None, current_formatter=None) -> str:
+        """Format ref and commit for display."""
+        from picard.plugin3.plugin import short_commit_id
+
+        # Shorten commit for display
+        short_commit = short_commit_id(self.target) if self.target else ""
+
+        # Apply formatters if provided
+        formatted_ref = ref_formatter(self.shortname) if ref_formatter and self.shortname else self.shortname
+        formatted_commit = commit_formatter(short_commit) if commit_formatter and short_commit else short_commit
+
+        if self.shortname and short_commit:
+            # If ref is the same as commit (commit hash used as ref), just show @commit
+            if self.shortname == self.target or self.shortname == short_commit:
+                base = f"@{formatted_commit}"
+            else:
+                base = f"{formatted_ref} @{formatted_commit}"
+        elif self.shortname:
+            base = formatted_ref
+        elif short_commit:
+            base = f"@{formatted_commit}"
+        else:
+            base = ""
+
+        # Apply current formatter if this is the current ref
+        if is_current and current_formatter:
+            return current_formatter(base)
+        elif is_current:
+            return _("{base} (current)").format(base=base)
+        else:
+            return base
 
     def __repr__(self):
         parts = [f"name='{self.name}'", f"target='{self.target}'"]
