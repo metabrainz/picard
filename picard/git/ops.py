@@ -255,7 +255,7 @@ class GitOperations:
                 # Try as branch first
                 result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    _, new_ref_name, _, new_commit = result
+                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
                     new_git_ref = GitRef(
                         name=f"refs/heads/{new_ref_name}", target=new_commit, ref_type=GitRefType.BRANCH
                     )
@@ -264,14 +264,14 @@ class GitOperations:
                 # Try as tag
                 result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref_name, old_commit)
                 if result:
-                    _, new_ref_name, _, new_commit = result
+                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
                     new_git_ref = GitRef(name=f"refs/tags/{new_ref_name}", target=new_commit, ref_type=GitRefType.TAG)
                     return old_git_ref, new_git_ref, old_commit, new_commit
 
                 # Try as commit hash or git revision syntax
                 result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref_name, old_commit)
                 if result:
-                    _, new_ref_name, _, new_commit = result
+                    old_ref_unused, new_ref_name, old_commit_unused, new_commit = result
                     new_git_ref = GitRef(name=new_commit, target=new_commit, ref_type=None)
                     return old_git_ref, new_git_ref, old_commit, new_commit
 
