@@ -47,20 +47,31 @@ class PluginMetadata:
     ref_type: str | None = None  # 'tag' or 'branch' to indicate installation method
     git_ref: GitRef | None = None  # New GitRef object (preferred over ref/ref_type)
 
-    @classmethod
-    def from_dict(cls, data: dict):
-        """Create PluginMetadata from dict, filtering unknown fields."""
-        return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
-
     def to_dict(self):
         """Convert to dict for config storage, excluding None values."""
         data = {k: v for k, v in asdict(self).items() if v is not None}
-        # Remove git_ref from serialization (it's not JSON serializable)
-        data.pop('git_ref', None)
+        # Serialize git_ref to tuple for storage
+        if self.git_ref:
+            data['git_ref_tuple'] = self.git_ref.to_tuple()
+        data.pop('git_ref', None)  # Remove non-serializable GitRef object
         return data
 
+    @classmethod
+    def from_dict(cls, data: dict):
+        """Create PluginMetadata from dict, reconstructing GitRef from tuple."""
+        # Reconstruct GitRef from tuple if present
+        git_ref = None
+        if 'git_ref_tuple' in data:
+            git_ref = GitRef.from_tuple(data.pop('git_ref_tuple'))
+
+        # Filter unknown fields and create instance
+        filtered_data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
+        instance = cls(**filtered_data)
+        instance.git_ref = git_ref
+        return instance
+
     def get_git_ref(self):
-        """Get GitRef object, creating it from ref/ref_type if needed."""
+        """Get GitRef object, preferring stored GitRef over reconstructed from ref/ref_type."""
         if self.git_ref:
             return self.git_ref
 

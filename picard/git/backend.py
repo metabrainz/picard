@@ -137,6 +137,41 @@ class GitRef:
         else:
             return base
 
+    def to_tuple(self):
+        """Serialize GitRef to tuple for storage."""
+        return (
+            self.name,
+            self.target,
+            self.ref_type.value if self.ref_type else None,
+            self.is_remote,
+            self.is_annotated,
+        )
+
+    @classmethod
+    def from_tuple(cls, data):
+        """Deserialize GitRef from tuple."""
+        if not data or len(data) < 3:
+            return cls(name='', target='')
+
+        name, target, ref_type_str = data[:3]
+        is_remote = data[3] if len(data) > 3 else False
+        is_annotated = data[4] if len(data) > 4 else False
+
+        ref_type = None
+        if ref_type_str:
+            try:
+                ref_type = GitRefType(ref_type_str)
+            except ValueError:
+                pass  # Invalid ref_type, keep as None
+
+        return cls(
+            name=name or '',
+            target=target or '',
+            ref_type=ref_type,
+            is_remote=is_remote,
+            is_annotated=is_annotated,
+        )
+
     def __repr__(self):
         parts = [f"name='{self.name}'", f"target='{self.target}'"]
         if self.ref_type:
