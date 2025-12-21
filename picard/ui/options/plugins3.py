@@ -193,8 +193,8 @@ class Plugins3OptionsPage(OptionsPage):
             # Reload plugin list
             self.all_plugins = self.plugin_manager.plugins
 
-            # Check for updates (silent - no dialog) - THIS IS WHERE NETWORK CALLS HAPPEN
-            new_updates = self.plugin_manager.check_updates()
+            # Check for updates (silent - no dialog) - skip fetching since we just did it
+            new_updates = self.plugin_manager.check_updates(skip_fetch=True)
             self._save_updates(new_updates)
 
             # Pass updates to widget

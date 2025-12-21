@@ -1599,8 +1599,12 @@ class PluginManager(QObject):
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
-    def check_updates(self):
-        """Check which plugins have updates available without installing."""
+    def check_updates(self, skip_fetch=False):
+        """Check which plugins have updates available without installing.
+
+        Args:
+            skip_fetch: If True, skip fetching remote refs (assume already done)
+        """
         updates = {}
         for plugin in self._plugins:
             if not plugin.uuid:
@@ -1634,10 +1638,11 @@ class PluginManager(QObject):
                 with backend.create_repository(plugin.local_path) as repo:
                     current_commit = repo.get_head_target()
 
-                    # Fetch without updating (suppress progress output)
-                    callbacks = backend.create_remote_callbacks()
-                    for remote in repo.get_remotes():
-                        repo.fetch_remote(remote, None, callbacks._callbacks)
+                    # Fetch without updating (suppress progress output) - unless skipped
+                    if not skip_fetch:
+                        callbacks = backend.create_remote_callbacks()
+                        for remote in repo.get_remotes():
+                            repo.fetch_remote(remote, None, callbacks._callbacks)
 
                     # Get current ref from repository instead of metadata
                     old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
