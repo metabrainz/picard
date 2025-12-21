@@ -287,8 +287,53 @@ else
 fi
 echo
 
-# Test 28: Test install with invalid manifest - should cleanup
-echo "28. Test install with invalid manifest - should cleanup"
+# Test 28: Test invalid TOML syntax - should rollback
+echo "28. Test invalid TOML syntax - should rollback"
+cd "$PLUGIN_REPO"
+# Create a commit with completely invalid TOML (not just missing fields)
+git checkout v1.2.0 -q
+# Create manifest with invalid TOML syntax
+cat > MANIFEST.toml << 'EOF'
+This is not valid TOML at all
+Just some random text
+No proper structure
+EOF
+git add .
+git commit -q -m "Invalid TOML syntax - not parseable"
+INVALID_TOML_COMMIT=$(git rev-parse HEAD)
+git tag invalid-toml-syntax
+cd - > /dev/null
+
+# Install valid version first
+$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --yes 2>/dev/null || true
+$PICARD_PLUGINS --install "$PLUGIN_REPO" --ref v1.2.0 --yes
+echo "✓ Installed valid version"
+
+# Try to switch to invalid TOML - should fail and rollback
+echo "Attempting to switch to invalid TOML syntax (should rollback)..."
+if $PICARD_PLUGINS --switch-ref $TEST_PLUGIN_UUID invalid-toml-syntax 2>/dev/null; then
+    echo "✗ ERROR: Switch to invalid TOML should have failed"
+    exit 1
+else
+    echo "✓ Switch to invalid TOML correctly failed and rolled back"
+fi
+
+# Verify plugin is still functional on original version
+if $PICARD_PLUGINS --info $TEST_PLUGIN_UUID >/dev/null 2>&1; then
+    STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+    if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
+        echo "✓ Plugin correctly rolled back to previous version after TOML error"
+    else
+        echo "✓ Plugin rolled back after TOML error (commit: $STORED_COMMIT, expected: ${COMMIT_V1_2_0:0:7})"
+    fi
+else
+    echo "✗ ERROR: Plugin disappeared after TOML error - rollback failed!"
+    exit 1
+fi
+echo
+
+# Test 29: Test install with invalid manifest - should cleanup
+echo "29. Test install with invalid manifest - should cleanup"
 $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --yes 2>/dev/null || true
 echo "Attempting to install invalid manifest (should fail and cleanup)..."
 if $PICARD_PLUGINS --install "$PLUGIN_REPO" --ref invalid-manifest --yes 2>/dev/null; then
@@ -310,8 +355,8 @@ else
 fi
 echo
 
-# Test 29: Test local directory install with enable failure - should cleanup
-echo "29. Test local directory install with enable failure - should cleanup"
+# Test 30: Test local directory install with enable failure - should cleanup
+echo "30. Test local directory install with enable failure - should cleanup"
 cd "$PLUGIN_REPO"
 # Create a commit with valid manifest but broken UUID that will fail during enable
 git checkout v1.2.0 -q

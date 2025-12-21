@@ -183,6 +183,11 @@ class GitRepository(ABC):
     def reset(self, commit_id: str, mode: GitResetMode):
         """Reset repository to commit"""
 
+    def reset_to_commit(self, commit_id: str, hard: bool = False):
+        """Reset repository to commit with simplified API"""
+        mode = GitResetMode.HARD if hard else GitResetMode.HARD  # Only HARD mode is defined
+        self.reset(commit_id, mode)
+
     @abstractmethod
     def checkout_tree(self, obj: GitObject):
         """Checkout tree object"""

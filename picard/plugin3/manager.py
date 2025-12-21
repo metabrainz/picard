@@ -853,12 +853,22 @@ class PluginManager(QObject):
             Exception: If rollback fails
         """
         log.warning('Rolling back plugin %s to commit %s', plugin.plugin_id, commit_id)
-        backend = git_backend()
-        with backend.create_repository(plugin.local_path) as repo:
-            repo.reset_to_commit(commit_id, hard=True)
+        try:
+            backend = git_backend()
+            with backend.create_repository(plugin.local_path) as repo:
+                repo.reset_to_commit(commit_id, hard=True)
+            log.debug('Git rollback completed for plugin %s', plugin.plugin_id)
+        except Exception as git_error:
+            log.error('Git rollback failed for plugin %s: %s', plugin.plugin_id, git_error)
+            raise
 
         # Re-read manifest from rolled back version
-        plugin.read_manifest()
+        try:
+            plugin.read_manifest()
+            log.debug('Manifest re-read successful after rollback for plugin %s', plugin.plugin_id)
+        except Exception as manifest_error:
+            log.error('Failed to read manifest after rollback for plugin %s: %s', plugin.plugin_id, manifest_error)
+            raise
 
     def _cleanup_failed_plugin_install(self, plugin, plugin_name, final_path):
         """Clean up failed plugin installation by removing plugin and directory.
@@ -913,6 +923,16 @@ class PluginManager(QObject):
                 log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
             except Exception as rollback_error:
                 log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
+                # If rollback fails, remove the broken plugin to prevent it from disappearing
+                try:
+                    log.warning('Removing broken plugin %s after failed rollback', plugin.plugin_id)
+                    if plugin in self._plugins:
+                        self._plugins.remove(plugin)
+                    self._safe_remove_directory(plugin.local_path, f"broken plugin directory for {plugin.plugin_id}")
+                except Exception as cleanup_error:
+                    log.error('Failed to cleanup broken plugin %s: %s', plugin.plugin_id, cleanup_error)
+                # Raise rollback error instead of original error since rollback failed
+                raise rollback_error
 
             # Re-enable plugin if it was enabled before rollback
             if was_enabled:
