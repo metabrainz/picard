@@ -154,16 +154,20 @@ class PluginCLI:
                    (and optionally old_version, new_version, commit_date)
         """
         # Show tag with commit ID if available
-        old_git_ref = getattr(result, 'old_git_ref', None)
-        new_git_ref = getattr(result, 'new_git_ref', None)
+        old_ref_item = getattr(result, 'old_ref_item', None)
+        new_ref_item = getattr(result, 'new_ref_item', None)
 
-        if old_git_ref and new_git_ref and old_git_ref.shortname != new_git_ref.shortname:
+        if old_ref_item and new_ref_item and old_ref_item.shortname != new_ref_item.shortname:
             old_short = short_commit_id(result.old_commit)
             new_short = short_commit_id(result.new_commit)
 
-            # Use GitRef.format() for consistent display
-            old_display = old_git_ref.format(ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old)
-            new_display = new_git_ref.format(ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_new)
+            # Use RefItem.format() for consistent display
+            old_display = old_ref_item.format(
+                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
+            )
+            new_display = new_ref_item.format(
+                ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_new
+            )
 
             version_info = f'{old_display} {self._out.d_arrow()} {new_display}'
         # Show version with commit ID if version changed
@@ -184,11 +188,11 @@ class PluginCLI:
 
             # If commits are the same, just show the ref change or "already up to date"
             if old_short == new_short:
-                old_git_ref = getattr(result, 'old_git_ref', None)
-                new_git_ref = getattr(result, 'new_git_ref', None)
+                old_ref_item = getattr(result, 'old_ref_item', None)
+                new_ref_item = getattr(result, 'new_ref_item', None)
 
-                if old_git_ref and new_git_ref and old_git_ref.shortname != new_git_ref.shortname:
-                    version_info = f'{old_git_ref.shortname} {self._out.d_arrow()} {new_git_ref.shortname} ({self._out.d_commit_new(new_short)})'
+                if old_ref_item and new_ref_item and old_ref_item.shortname != new_ref_item.shortname:
+                    version_info = f'{old_ref_item.shortname} {self._out.d_arrow()} {new_ref_item.shortname} ({self._out.d_commit_new(new_short)})'
                 else:
                     version_info = f'{self._out.d_commit_new(new_short)}'
             else:
