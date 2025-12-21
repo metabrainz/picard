@@ -202,8 +202,8 @@ class MetadataItem(QtCore.QObject, Item):
     def __init__(self, obj_id=None):
         super().__init__()
         self.id = obj_id
-        self.metadata = Metadata()
-        self.orig_metadata = Metadata()
+        self.metadata: Metadata = Metadata()
+        self.orig_metadata: Metadata = Metadata()
         self.update_children_metadata_attrs = {}
         self._iter_children_items_metadata_ignore_attrs = {}
         self.suspend_metadata_images_update = IgnoreUpdatesContext()

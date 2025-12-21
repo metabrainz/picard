@@ -24,14 +24,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import MutableSequence
+from collections.abc import (
+    Iterable,
+    MutableSequence,
+)
+from typing import TYPE_CHECKING
 
 from picard.config import get_config
 
 
-class ImageList(MutableSequence):
-    def __init__(self, iterable=()):
-        self._images = list(iterable)
+if TYPE_CHECKING:
+    from picard.coverart import CoverArtImage
+
+
+class ImageList(MutableSequence['CoverArtImage']):
+    def __init__(self, iterable: Iterable['CoverArtImage'] | None = None):
+        self._images: list['CoverArtImage'] = list(iterable or ())
         self._hash_dict = {}
         self._dirty = True
 
@@ -50,7 +58,7 @@ class ImageList(MutableSequence):
         del self._images[index]
         self._dirty = True
 
-    def insert(self, index, value):
+    def insert(self, index, value: 'CoverArtImage'):
         self._images.insert(index, value)
         self._dirty = True
 
@@ -60,7 +68,7 @@ class ImageList(MutableSequence):
     def _sorted(self):
         return sorted(self, key=lambda image: image.normalized_types())
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if len(self) != len(other):
             return False
         return self._sorted() == other._sorted()
@@ -68,7 +76,7 @@ class ImageList(MutableSequence):
     def copy(self):
         return self.__class__(self._images)
 
-    def get_front_image(self):
+    def get_front_image(self) -> 'CoverArtImage | None':
         for img in self:
             if img.is_front_image():
                 return img

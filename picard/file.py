@@ -178,8 +178,8 @@ class File(MetadataItem):
 
     def __init__(self, filename: str):
         super().__init__()
-        self.filename = filename
-        self.base_filename = os.path.basename(filename)
+        self.filename: str = filename
+        self.base_filename: str = os.path.basename(filename)
         self._state = File.State.UNDEFINED
         self.state: File.State = File.State.PENDING
         self.error_type: File.ErrorType = File.ErrorType.UNKNOWN
