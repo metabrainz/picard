@@ -77,14 +77,37 @@ class PluginMetadata:
 
         # Reconstruct GitRef from legacy ref/ref_type data
         if self.ref or self.commit:
+            # Ensure we always store full canonical ref names in GitRef
+            if self.ref:
+                if self.ref.startswith('refs/'):
+                    # Already a full name, use as-is
+                    full_name = self.ref
+                else:
+                    # Short name, construct full name based on ref_type
+                    if self.ref_type == 'tag':
+                        full_name = f"refs/tags/{self.ref}"
+                    elif self.ref_type == 'branch':
+                        full_name = f"refs/heads/{self.ref}"
+                    else:
+                        # Unknown type, assume it's a short name and guess
+                        if self.ref.startswith('v') or '.' in self.ref:
+                            full_name = f"refs/tags/{self.ref}"
+                        else:
+                            full_name = f"refs/heads/{self.ref}"
+            else:
+                # Only commit, no ref name
+                full_name = self.commit
+
+            # Determine ref_type from full name if not already set
             if self.ref_type == 'tag':
-                full_name = f"refs/tags/{self.ref}" if self.ref else self.commit
                 ref_type = GitRefType.TAG
             elif self.ref_type == 'branch':
-                full_name = f"refs/heads/{self.ref}" if self.ref else self.commit
                 ref_type = GitRefType.BRANCH
-            else:  # commit or None
-                full_name = self.commit or self.ref
+            elif full_name.startswith('refs/tags/'):
+                ref_type = GitRefType.TAG
+            elif full_name.startswith('refs/heads/'):
+                ref_type = GitRefType.BRANCH
+            else:
                 ref_type = None
 
             return GitRef(name=full_name, target=self.commit, ref_type=ref_type)
@@ -270,12 +293,15 @@ class PluginMetadataManager:
             # Get current ref info from local repo
             current_ref, current_commit = self._get_current_ref_info(plugin)
             if not current_ref:
-                current_ref = metadata.ref if metadata else None
-                current_commit = metadata.commit if metadata else None
+                if metadata:
+                    git_ref = metadata.get_git_ref()
+                    current_ref = git_ref.shortname if git_ref.shortname else None
+                    current_commit = metadata.commit
             else:
                 # Prefer metadata ref over detected ref for consistency
                 if metadata and metadata.ref:
-                    current_ref = metadata.ref
+                    git_ref = metadata.get_git_ref()
+                    current_ref = git_ref.shortname if git_ref.shortname else metadata.ref
 
         else:
             # Not installed - try registry ID, UUID, or URL
