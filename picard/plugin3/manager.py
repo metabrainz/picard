@@ -403,7 +403,9 @@ class PluginManager(QObject):
 
         for ref in remote_refs:
             if ref.ref_type == GitRefType.BRANCH:
-                branches.append({'name': ref.shortname, 'commit': ref.target})
+                # Strip remote prefix (e.g., "origin/main" -> "main")
+                branch_name = ref.shortname.split('/', 1)[-1] if '/' in ref.shortname else ref.shortname
+                branches.append({'name': branch_name, 'commit': ref.target})
             elif ref.ref_type == GitRefType.TAG:
                 # GitRef backend handles dereferencing using pygit2.peel()
                 tags.append({'name': ref.shortname, 'commit': ref.target})
