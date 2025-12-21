@@ -92,6 +92,9 @@ class Option(QtCore.QObject):
         return (section, name) in cls.registry
 
     def convert(self, value):
+        if isinstance(self.default, Enum):
+            # Convert underlying value type first
+            value = type(self.default.value)(value)
         return type(self.default)(value)
 
 
