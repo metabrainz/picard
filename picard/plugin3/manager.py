@@ -1427,6 +1427,12 @@ class PluginManager(QObject):
             if newer_tag:
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
+        elif ref_type == 'tag' and not registry_plugin:
+            # For local/URL plugins without registry entry, assume semver for tag-based updates
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, 'semver')
+            if newer_tag:
+                new_ref = newer_tag
+                log.info('Found newer version (no registry): %s -> %s', old_ref, new_ref)
 
         # Check if plugin is currently enabled - disable it to reload module after update
         was_enabled = plugin.state == PluginState.ENABLED
@@ -1434,6 +1440,9 @@ class PluginManager(QObject):
             self.disable_plugin(plugin)
 
         source = PluginSourceGit(current_url, new_ref)
+        # Set resolved_ref_type if we updated to a newer tag
+        if new_ref != old_ref and ref_type == 'tag':
+            source.resolved_ref_type = 'tag'
         assert plugin.local_path is not None
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 

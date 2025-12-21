@@ -433,6 +433,8 @@ class PluginSourceGit(PluginSource):
             if latest_tag and latest_tag != current_tag:
                 # Update to latest tag
                 self.ref = latest_tag
+                # Set resolved_ref_type to indicate this is a tag
+                self.resolved_ref_type = 'tag'
 
         if self.ref:
             # For updates, prefer origin/ prefix for branches to get latest changes
