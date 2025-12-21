@@ -755,8 +755,17 @@ class PluginManager(QObject):
             return ''
 
     def switch_ref(self, plugin, ref, discard_changes=False):
-        """Switch plugin to a different git ref."""
+        """Switch plugin to a different git ref.
+
+        Args:
+            plugin: Plugin to switch
+            ref: Git ref to switch to (string or GitRef object)
+            discard_changes: If True, discard uncommitted changes
+        """
         self._ensure_plugin_url(plugin, 'switch ref')
+
+        # Convert GitRef to string for GitOperations (which still expects strings)
+        ref_str = ref.shortname if isinstance(ref, GitRef) else ref
 
         # Check if plugin is currently enabled
         was_enabled = plugin.state == PluginState.ENABLED
@@ -765,7 +774,7 @@ class PluginManager(QObject):
         if was_enabled:
             self.disable_plugin(plugin)
 
-        old_git_ref, new_git_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_git_ref, new_git_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref_str, discard_changes)
 
         # Validate manifest after ref switch
         self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
