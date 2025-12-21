@@ -30,6 +30,7 @@ from test.test_plugins3_helpers import (
 
 from picard.git.factory import has_git_backend
 from picard.plugin3.manager import UpdateResult
+from picard.plugin3.ref_item import RefItem
 
 
 def create_mock_registry_plugin(data):
@@ -224,8 +225,8 @@ class TestPluginCLI(PicardTestCase):
                 new_version='1.1.0',
                 old_commit='abc1234567890',
                 new_commit='def9876543210',
-                old_ref=None,
-                new_ref=None,
+                old_ref_item=RefItem('v1.0.0', RefItem.Type.TAG, 'abc1234567890'),
+                new_ref_item=RefItem('v1.1.0', RefItem.Type.TAG, 'def9876543210'),
                 commit_date=1234567890,
             )
         )
