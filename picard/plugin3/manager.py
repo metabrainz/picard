@@ -1420,19 +1420,14 @@ class PluginManager(QObject):
 
         # Check if plugin has versioning_scheme and current ref is a version tag
         new_ref = old_ref
-        registry_plugin = self._registry.find_plugin(url=current_url, uuid=current_uuid)
-        if registry_plugin and registry_plugin.versioning_scheme and ref_type == 'tag':
-            # Try to find newer version tags
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, registry_plugin.versioning_scheme)
+
+        # Use the new has_versioning method to determine if we should look for newer tags
+        if ref_type == 'tag' and plugin.has_versioning(self._registry, True):
+            versioning_scheme = plugin.get_versioning_scheme(self._registry)
+            newer_tag = self._find_newer_version_tag(current_url, old_ref, versioning_scheme)
             if newer_tag:
                 new_ref = newer_tag
                 log.info('Found newer version: %s -> %s', old_ref, new_ref)
-        elif ref_type == 'tag' and not registry_plugin:
-            # For local/URL plugins without registry entry, assume semver for tag-based updates
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, 'semver')
-            if newer_tag:
-                new_ref = newer_tag
-                log.info('Found newer version (no registry): %s -> %s', old_ref, new_ref)
 
         # Check if plugin is currently enabled - disable it to reload module after update
         was_enabled = plugin.state == PluginState.ENABLED
@@ -1682,19 +1677,10 @@ class PluginManager(QObject):
                         if not is_tag_installation:
                             resolved_ref_info = f"commit/branch {metadata.ref}"
 
-                    # Check if plugin has versioning_scheme before doing tag-based updates
-                    registry_plugin = self._registry.find_plugin(url=metadata.url, uuid=plugin.uuid)
-
-                    # Allow tag-based updates for:
-                    # 1. Registry plugins with versioning_scheme
-                    # 2. URL/local plugins installed from tags (assume semantic versioning)
-                    has_versioning_scheme = (registry_plugin and registry_plugin.versioning_scheme) or (
-                        is_tag_installation and not registry_plugin
-                    )
-
-                    if is_tag_installation and not has_versioning_scheme:
+                    # Check if plugin supports versioning before doing tag-based updates
+                    if is_tag_installation and not plugin.has_versioning(self._registry, is_tag_installation):
                         log.debug(
-                            "Plugin %s: originally installed from %s, but no versioning_scheme - skipping tag-based updates",
+                            "Plugin %s: originally installed from %s, but no versioning support - skipping tag-based updates",
                             plugin.plugin_id,
                             resolved_ref_info,
                         )

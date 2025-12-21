@@ -606,6 +606,43 @@ class Plugin:
         # Add a shortcut
         self.uuid = self.manifest.uuid
 
+    def has_versioning(self, registry=None, is_tag_installation=False):
+        """Check if plugin supports version-based updates.
+
+        Args:
+            registry: PluginRegistry instance to check for versioning_scheme
+            is_tag_installation: Whether plugin was installed from a tag
+
+        Returns:
+            bool: True if plugin supports versioning (has registry versioning_scheme
+                  or is a local/URL plugin installed from tags)
+        """
+        if registry and self.uuid:
+            registry_plugin = registry.find_plugin(uuid=self.uuid)
+            if registry_plugin and registry_plugin.versioning_scheme:
+                return True
+
+        # Local/URL plugins installed from tags support versioning (assume semver)
+        return is_tag_installation and not (registry and registry.find_plugin(uuid=self.uuid))
+
+    def get_versioning_scheme(self, registry=None):
+        """Get versioning scheme for this plugin.
+
+        Args:
+            registry: PluginRegistry instance to check for versioning_scheme
+
+        Returns:
+            str: Versioning scheme ('semver', 'calver', 'regex:pattern') or 'semver'
+                 for local plugins, empty string if no versioning support
+        """
+        if registry and self.uuid:
+            registry_plugin = registry.find_plugin(uuid=self.uuid)
+            if registry_plugin and registry_plugin.versioning_scheme:
+                return registry_plugin.versioning_scheme
+
+        # Default to semver for local/URL plugins (when they have versioning support)
+        return 'semver'
+
     def get_current_commit_id(self, short=False):
         """Get the current commit ID of the plugin if it's a git repository."""
         git_dir = self.local_path / '.git'
