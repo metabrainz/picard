@@ -236,6 +236,10 @@ class PluginMetadataManager:
             if not current_ref:
                 current_ref = metadata.ref if metadata else None
                 current_commit = metadata.commit if metadata else None
+            else:
+                # Prefer metadata ref over detected ref for consistency
+                if metadata and metadata.ref:
+                    current_ref = metadata.ref
 
         else:
             # Not installed - try registry ID, UUID, or URL
@@ -267,6 +271,7 @@ class PluginMetadataManager:
             'url': url,
             'current_ref': current_ref,
             'current_commit': current_commit,
+            'current_ref_type': metadata.ref_type if metadata else None,
             'registry_id': registry_id,
             'plugin': plugin,
             'registry_plugin': registry_plugin,

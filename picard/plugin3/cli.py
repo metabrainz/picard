@@ -551,6 +551,7 @@ class PluginCLI:
         url = info['url']
         current_ref = info['current_ref']
         current_commit = info['current_commit']
+        current_ref_type = info['current_ref_type']
         registry_id = info['registry_id']
         plugin = info['plugin']
         registry_plugin = info['registry_plugin']
@@ -565,7 +566,14 @@ class PluginCLI:
 
         if current_ref:
             commit_short = short_commit_id(current_commit) if current_commit else ''
-            self._out.print(f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_new(commit_short)})')
+            if current_ref_type == 'commit':
+                # For commit pins, show as commit hash
+                self._out.print(f'Current: commit {self._out.d_commit_new(commit_short)}')
+            else:
+                # For branches and tags, show the ref name
+                self._out.print(
+                    f'Current: {self._out.d_version(current_ref)} (@{self._out.d_commit_new(commit_short)})'
+                )
 
         self._out.nl()
 
