@@ -260,6 +260,10 @@ class GitRepository(ABC):
         """Fetch from remote with optional refspec"""
 
     @abstractmethod
+    def fetch_remote_with_tags(self, remote, refspec: str = None, callbacks=None):
+        """Fetch from remote including tags"""
+
+    @abstractmethod
     def free(self):
         """Free repository resources"""
 

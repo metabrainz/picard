@@ -322,6 +322,17 @@ class Pygit2Repository(GitRepository):
         else:
             remote.fetch(callbacks=callbacks)
 
+    def fetch_remote_with_tags(self, remote, refspec: str = None, callbacks=None):
+        """Fetch from remote including tags."""
+        _log_git_call("fetch_remote_with_tags", str(remote.name), refspec)
+        if refspec:
+            # Combine provided refspec with tag refspec
+            refspecs = [refspec, '+refs/tags/*:refs/tags/*']
+        else:
+            # Combine default fetch refspecs with tag refspec
+            refspecs = list(remote.fetch_refspecs) + ['+refs/tags/*:refs/tags/*']
+        remote.fetch(refspecs, callbacks=callbacks)
+
     def free(self):
         _log_git_call("free")
         self._repo.free()

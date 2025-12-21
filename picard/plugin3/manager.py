@@ -1585,7 +1585,8 @@ class PluginManager(QObject):
                     # Fetch without updating (suppress progress output)
                     callbacks = backend.create_remote_callbacks()
                     for remote in repo.get_remotes():
-                        repo.fetch_remote(remote, None, callbacks._callbacks)
+                        # Fetch all refs including tags in a single operation
+                        repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
                         log.debug("Fetched refs for plugin %s from remote %s", plugin.plugin_id, remote.name)
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
@@ -1611,7 +1612,8 @@ class PluginManager(QObject):
                     if not skip_fetch:
                         callbacks = backend.create_remote_callbacks()
                         for remote in repo.get_remotes():
-                            repo.fetch_remote(remote, None, callbacks._callbacks)
+                            # Fetch all refs including tags in a single operation
+                            repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
 
                     # Get current ref from repository instead of metadata
                     old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)

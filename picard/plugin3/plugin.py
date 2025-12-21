@@ -230,7 +230,9 @@ class PluginSourceGit(PluginSource):
                         )
                     except Exception:
                         # If specific refspec fails, try fetching all (might be a tag or commit)
-                        self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                        self._retry_git_operation(
+                            lambda: repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
+                        )
                 except (KeyError, GitBackendError):
                     # No origin remote, skip fetch
                     pass
@@ -238,7 +240,9 @@ class PluginSourceGit(PluginSource):
                 callbacks = backend.create_remote_callbacks()
                 try:
                     origin_remote = repo.get_remote('origin')
-                    self._retry_git_operation(lambda: repo.fetch_remote(origin_remote, None, callbacks._callbacks))
+                    self._retry_git_operation(
+                        lambda: repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
+                    )
                 except (KeyError, GitBackendError):
                     # No origin remote, skip fetch
                     pass
@@ -421,8 +425,8 @@ class PluginSourceGit(PluginSource):
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                 repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
             else:
-                # Fetch all refs (including tags if on a tag)
-                repo.fetch_remote(origin_remote, None, callbacks._callbacks)
+                # Fetch all refs including tags
+                repo.fetch_remote_with_tags(origin_remote, None, callbacks._callbacks)
         except (KeyError, GitBackendError):
             # No origin remote, skip fetch
             pass
