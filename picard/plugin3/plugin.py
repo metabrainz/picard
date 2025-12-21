@@ -123,6 +123,25 @@ class PluginSourceGit(PluginSource):
         self.resolved_ref: str | None = None  # Will be set after sync
         self.resolved_ref_type: str | None = None  # 'tag' or 'branch', set after sync
 
+    def _resolve_ref(self, repo, ref):
+        """Resolve a ref to a commit, handling origin/ prefix automatically."""
+        # Try direct resolution first
+        normalized_ref = ref[7:] if ref.startswith('origin/') else ref
+
+        for attempt_ref in [normalized_ref, f'origin/{normalized_ref}', ref]:
+            try:
+                return repo.revparse_to_commit(attempt_ref)
+            except (KeyError, GitBackendError):
+                continue
+
+        # If all attempts fail, provide helpful error
+        available_refs = self._list_available_refs(repo)
+        raise KeyError(f"Could not find ref '{ref}'. Available refs: {available_refs}")
+
+    def _is_relative_ref(self, ref):
+        """Check if ref is a relative reference (contains git notation like ^, ~, @)."""
+        return any(char in ref for char in ['^', '~', '@', ':'])
+
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
 
@@ -281,61 +300,14 @@ class PluginSourceGit(PluginSource):
                     pass  # Tags might not exist or fetch might fail
 
         if self.ref:
-            try:
-                commit = repo.revparse_to_commit(self.ref)
-                self.resolved_ref = self.ref
-            except (KeyError, Exception):
-                # If ref starts with 'origin/', try without it
-                if self.ref.startswith('origin/'):
-                    try:
-                        ref_without_origin = self.ref[7:]  # Remove 'origin/' prefix
-                        commit = repo.revparse_to_commit(ref_without_origin)
-                        self.resolved_ref = ref_without_origin
-                    except (KeyError, GitBackendError):
-                        available_refs = self._list_available_refs(repo)
-                        raise KeyError(
-                            f"Could not find ref '{self.ref}' or '{ref_without_origin}'. "
-                            f"Available refs: {available_refs}"
-                        ) from None
-                else:
-                    # Use robust reference type detection
-                    from picard.git.ref_utils import find_git_ref
-
-                    git_ref = find_git_ref(repo, self.ref)
-                    if git_ref:
-                        try:
-                            commit = repo.revparse_to_commit(git_ref.name)
-                            self.resolved_ref = git_ref.name if git_ref.is_remote else self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            raise KeyError(
-                                f"Could not resolve ref '{self.ref}' (detected as {git_ref.ref_type.value}). "
-                                f"Available refs: {available_refs}"
-                            ) from None
-                    else:
-                        # Try with 'origin/' prefix for branch names
-                        origin_ref = f'origin/{self.ref}'
-                        git_ref = find_git_ref(repo, origin_ref)
-                        if git_ref:
-                            try:
-                                commit = repo.revparse_to_commit(git_ref.name)
-                                self.resolved_ref = git_ref.name
-                            except (KeyError, GitBackendError):
-                                available_refs = self._list_available_refs(repo)
-                                raise KeyError(
-                                    f"Could not resolve ref '{origin_ref}' (detected as {git_ref.ref_type.value}). "
-                                    f"Available refs: {available_refs}"
-                                ) from None
-                        else:
-                            # For commits or unknown refs, try as-is
-                            try:
-                                commit = repo.revparse_to_commit(self.ref)
-                                self.resolved_ref = self.ref
-                            except (KeyError, GitBackendError):
-                                available_refs = self._list_available_refs(repo)
-                                raise KeyError(
-                                    f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
-                                ) from None
+            # Handle relative references (git notation like main^, HEAD~1)
+            if self._is_relative_ref(self.ref):
+                self.resolved_ref = self.ref  # Keep original for metadata
+                commit = None  # Will be resolved after repo setup
+            else:
+                # Try to resolve the ref, handling origin/ prefix automatically
+                commit = self._resolve_ref(repo, self.ref)
+                self.resolved_ref = self.ref  # Keep original for metadata
         else:
             # Use repository's default branch (HEAD)
             try:
@@ -368,7 +340,11 @@ class PluginSourceGit(PluginSource):
                         for git_ref in refs:
                             if git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote:
                                 commit = repo.revparse_to_commit(git_ref.name)
-                                self.resolved_ref = git_ref.shortname
+                                # Strip origin/ prefix for consistency with display
+                                if git_ref.is_remote and git_ref.shortname.startswith('origin/'):
+                                    self.resolved_ref = git_ref.shortname[7:]  # Remove 'origin/' prefix
+                                else:
+                                    self.resolved_ref = git_ref.shortname
                                 break
                         else:
                             # Try remote refs as absolute last resort
@@ -398,6 +374,17 @@ class PluginSourceGit(PluginSource):
         # hard reset to passed ref or HEAD
         # Use backend for reset operation
         from picard.git.backend import GitResetMode
+
+        # Handle relative references that need to be resolved after repo setup
+        if commit is None and self.resolved_ref and self._is_relative_ref(self.resolved_ref):
+            try:
+                commit = repo.revparse_to_commit(self.resolved_ref)
+                self.resolved_ref = short_commit_id(commit.id)
+            except (KeyError, GitBackendError):
+                available_refs = self._list_available_refs(repo)
+                raise KeyError(
+                    f"Could not resolve relative ref '{self.ref}' after repository setup. Available refs: {available_refs}"
+                ) from None
 
         repo.reset(commit.id, GitResetMode.HARD)
         commit_id = commit.id

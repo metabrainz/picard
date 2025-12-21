@@ -290,13 +290,16 @@ class GitOperations:
     @staticmethod
     def _try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit):
         """Try to switch to a branch. Returns tuple or None if not a branch."""
-        # Find branch reference
+        # Normalize ref (strip origin/ prefix if present)
+        local_ref = ref[7:] if ref.startswith('origin/') else ref
+
+        # Find branch reference (local or remote)
         branch_ref = None
         for git_ref in references:
-            if git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}':
-                branch_ref = git_ref.name
-                break
-            elif git_ref.ref_type == GitRefType.BRANCH and not git_ref.is_remote and git_ref.shortname == ref:
+            if git_ref.ref_type == GitRefType.BRANCH and (
+                (not git_ref.is_remote and git_ref.shortname == local_ref)
+                or (git_ref.is_remote and git_ref.shortname == f'origin/{local_ref}')
+            ):
                 branch_ref = git_ref.name
                 break
 
@@ -306,26 +309,26 @@ class GitOperations:
         commit = repo.revparse_to_commit(branch_ref)
         repo.checkout_tree(commit)
 
-        # Handle remote vs local branches differently
+        # Check if we're switching to a remote branch
         is_remote_branch = any(
-            git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{ref}'
+            git_ref.ref_type == GitRefType.BRANCH and git_ref.is_remote and git_ref.shortname == f'origin/{local_ref}'
             for git_ref in references
         )
 
         if is_remote_branch:
-            # Remote branch - set up tracking
+            # Create local tracking branch
             repo.set_head(commit.id)
             branches = repo.get_branches()
             pygit_commit = repo._repo.get(commit.id)
-            branch = branches.local.create(ref, pygit_commit, force=True)
-            branch.upstream = branches.remote[f'origin/{ref}']
-            repo.set_head(f'refs/heads/{ref}')
+            branch = branches.local.create(local_ref, pygit_commit, force=True)
+            branch.upstream = branches.remote[f'origin/{local_ref}']
+            repo.set_head(f'refs/heads/{local_ref}')
         else:
-            # Local branch - just switch to it
+            # Switch to existing local branch
             repo.set_head(branch_ref)
 
-        log.info('Switched plugin %s to branch %s', plugin.plugin_id, ref)
-        return old_ref, ref, old_commit, commit.id
+        log.info('Switched plugin %s to branch %s', plugin.plugin_id, local_ref)
+        return old_ref, local_ref, old_commit, commit.id
 
     @staticmethod
     def _try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit):
