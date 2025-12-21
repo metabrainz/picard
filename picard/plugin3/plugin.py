@@ -140,7 +140,7 @@ class PluginSourceGit(PluginSource):
 
     def _is_relative_ref(self, ref):
         """Check if ref is a relative reference (contains git notation like ^, ~, @)."""
-        return any(char in ref for char in ['^', '~', '@', ':'])
+        return ref and any(char in ref for char in ['^', '~', '@', ':'])
 
     def _list_available_refs(self, repo, limit=20):
         """List available refs in repository.
@@ -360,16 +360,16 @@ class PluginSourceGit(PluginSource):
                             else:
                                 raise PluginSourceSyncError('No branches found in repository') from None
 
-        # Determine ref type for the resolved ref
-        if self.resolved_ref:
+        # Determine ref type for the resolved ref (non-relative refs only)
+        if self.resolved_ref and not self._is_relative_ref(self.ref):
             from picard.git.ref_utils import find_git_ref
 
             git_ref = find_git_ref(repo, self.resolved_ref)
             if git_ref:
                 self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
             else:
-                # Fallback: assume branch if not found (could be commit hash)
-                self.resolved_ref_type = 'branch'
+                # If not found as branch or tag, assume it's a commit
+                self.resolved_ref_type = 'commit'
 
         # hard reset to passed ref or HEAD
         # Use backend for reset operation
@@ -380,6 +380,7 @@ class PluginSourceGit(PluginSource):
             try:
                 commit = repo.revparse_to_commit(self.resolved_ref)
                 self.resolved_ref = short_commit_id(commit.id)
+                self.resolved_ref_type = 'commit'  # Set ref_type here after resolution
             except (KeyError, GitBackendError):
                 available_refs = self._list_available_refs(repo)
                 raise KeyError(

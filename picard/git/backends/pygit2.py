@@ -152,13 +152,17 @@ class Pygit2Repository(GitRepository):
 
     def set_head(self, target: str):
         _log_git_call("set_head", target)
-        # If target looks like a commit hash (40 hex chars), convert to pygit2.Oid
-        if len(target) == 40 and all(c in '0123456789abcdef' for c in target.lower()):
-            oid = pygit2.Oid(hex=target)
-            self._repo.set_head(oid)
-        else:
-            # It's a reference name
+        # Try as reference name first, then as commit ID
+        try:
             self._repo.set_head(target)
+        except (pygit2.GitError, ValueError):
+            # If it fails as reference, try as commit ID
+            try:
+                oid = pygit2.Oid(hex=target)
+                self._repo.set_head(oid)
+            except (pygit2.GitError, ValueError):
+                # Re-raise original error
+                self._repo.set_head(target)
 
     def list_references(self) -> list[GitRef]:
         # Get actual reference objects instead of just names

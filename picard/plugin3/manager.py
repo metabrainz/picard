@@ -755,7 +755,7 @@ class PluginManager(QObject):
         if was_enabled:
             self.disable_plugin(plugin)
 
-        old_ref, new_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref, discard_changes)
+        old_ref, new_ref, old_commit, new_commit, ref_type = GitOperations.switch_ref(plugin, ref, discard_changes)
 
         # Validate manifest after ref switch
         self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
@@ -767,6 +767,7 @@ class PluginManager(QObject):
             # Update existing metadata
             metadata.ref = new_ref
             metadata.commit = new_commit
+            metadata.ref_type = ref_type
             self._metadata.save_plugin_metadata(metadata)
 
         # Re-enable plugin if it was enabled before to reload the module
@@ -1165,6 +1166,7 @@ class PluginManager(QObject):
                 commit_id = source.sync(temp_path, single_branch=True)
                 install_path = temp_path
                 ref_to_save = source.resolved_ref
+                ref_type_to_save = source.resolved_ref_type
                 commit_to_save = commit_id
             except Exception:
                 # Clean up temp directory on failure
@@ -1221,6 +1223,7 @@ class PluginManager(QObject):
                 ref=ref_to_save or '',
                 commit=commit_to_save or '',
                 uuid=manifest.uuid,
+                ref_type=ref_type_to_save,
             )
         )
 
@@ -1474,6 +1477,11 @@ class PluginManager(QObject):
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
         return results
 
+    def _is_commit_pin(self, metadata):
+        """Check if plugin is pinned to a commit (not updatable)."""
+        # Use ref_type to reliably determine if plugin was installed as a commit
+        return metadata.ref_type == 'commit'
+
     def _get_current_ref_for_updates(self, repo, metadata):
         """Get the current ref to use for update checking.
 
@@ -1570,6 +1578,16 @@ class PluginManager(QObject):
                             resolved_ref_info,
                         )
                         is_tag_installation = False
+
+                    # Check if plugin is pinned to a commit (direct hash or relative reference)
+                    is_commit_pin = self._is_commit_pin(metadata)
+                    if is_commit_pin:
+                        log.debug(
+                            "Plugin %s: pinned to commit %s - skipping updates",
+                            plugin.plugin_id,
+                            metadata.ref,
+                        )
+                        continue
 
                     if is_tag_installation:
                         log.debug(

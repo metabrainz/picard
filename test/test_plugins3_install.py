@@ -146,7 +146,7 @@ class TestPluginInstall(PicardTestCase):
             patch('picard.git.ops.GitOperations.switch_ref') as mock_switch,
             patch.object(manager, 'plugin_ref_switched'),
         ):
-            mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456')
+            mock_switch.return_value = ('main', 'v1.0.0', 'abc123', 'def456', 'tag')
 
             old_ref, new_ref, old_commit, new_commit = manager.switch_ref(mock_plugin, 'v1.0.0')
 

@@ -217,7 +217,7 @@ class GitOperations:
             discard_changes: If True, discard uncommitted changes
 
         Returns:
-            tuple: (old_ref, new_ref, old_commit, new_commit)
+            tuple: (old_ref, new_ref, old_commit, new_commit, ref_type)
 
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
@@ -251,17 +251,17 @@ class GitOperations:
                 # Try as branch first
                 result = GitOperations._try_switch_to_branch(repo, plugin, ref, references, old_ref, old_commit)
                 if result:
-                    return result
+                    return result + ('branch',)
 
                 # Try as tag
                 result = GitOperations._try_switch_to_tag(repo, plugin, ref, references, old_ref, old_commit)
                 if result:
-                    return result
+                    return result + ('tag',)
 
                 # Try as commit hash or git revision syntax
                 result = GitOperations._try_switch_to_commit(repo, plugin, ref, old_ref, old_commit)
                 if result:
-                    return result
+                    return result + ('commit',)
 
                 raise ValueError(f'Ref {ref} not found')
 
@@ -347,15 +347,7 @@ class GitOperations:
             log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
             return old_ref, ref, old_commit, commit.id
 
-        # Try resolving tag by short name
-        try:
-            commit = repo.revparse_to_commit(ref)
-            repo.checkout_tree(commit)
-            repo.set_head(commit.id)
-            log.info('Switched plugin %s to tag %s', plugin.plugin_id, ref)
-            return old_ref, ref, old_commit, commit.id
-        except GitReferenceError:
-            return None
+        return None
 
     @staticmethod
     def _try_switch_to_commit(repo, plugin, ref, old_ref, old_commit):

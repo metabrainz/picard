@@ -704,7 +704,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata.get_plugin_metadata.return_value = metadata
 
         # Mock GitOperations.switch_ref
-        mock_git_ops.switch_ref.return_value = ('v1.0.0', 'v1.1.0', 'old_commit', 'new_commit')
+        mock_git_ops.switch_ref.return_value = ('v1.0.0', 'v1.1.0', 'old_commit', 'new_commit', 'tag')
 
         with (
             patch.object(manager, 'disable_plugin'),
