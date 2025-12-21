@@ -1559,33 +1559,37 @@ class PluginManager(QObject):
             # On a branch - use the actual branch name
             return repo.get_head_shorthand(), False
 
+    def _should_fetch_plugin_refs(self, plugin, metadata):
+        """Check if a plugin should have its refs fetched."""
+        if not plugin.uuid or not metadata:
+            return False
+
+        # Skip plugins without URL unless they have git remotes
+        if not metadata.url:
+            return False
+
+        # Check if plugin has git remotes (for local plugins)
+        has_remotes = False
+        if metadata.url and not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')):
+            try:
+                backend = git_backend()
+                with backend.create_repository(plugin.local_path) as repo:
+                    remotes = repo.get_remotes()
+                    has_remotes = len(remotes) > 0
+            except Exception:
+                pass
+
+        # Skip if no remote URL and no git remotes
+        if not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')) and not has_remotes:
+            return False
+
+        return True
+
     def refresh_all_plugin_refs(self):
         """Fetch remote refs for all plugins to ensure ref selectors have latest data."""
         for plugin in self._plugins:
-            if not plugin.uuid:
-                continue
-
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if not metadata:
-                continue
-
-            # Skip plugins without URL unless they have git remotes
-            if not metadata.url:
-                continue
-
-            # Check if plugin has git remotes (for local plugins)
-            has_remotes = False
-            if metadata.url and not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')):
-                try:
-                    backend = git_backend()
-                    with backend.create_repository(plugin.local_path) as repo:
-                        remotes = repo.get_remotes()
-                        has_remotes = len(remotes) > 0
-                except Exception:
-                    pass
-
-            # Skip if no remote URL and no git remotes
-            if not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')) and not has_remotes:
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+            if not self._should_fetch_plugin_refs(plugin, metadata):
                 continue
 
             try:
@@ -1607,30 +1611,8 @@ class PluginManager(QObject):
         """
         updates = {}
         for plugin in self._plugins:
-            if not plugin.uuid:
-                continue
-
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if not metadata:
-                continue
-
-            # Skip plugins without URL unless they have git remotes
-            if not metadata.url:
-                continue
-
-            # Check if plugin has git remotes (for local plugins)
-            has_remotes = False
-            if metadata.url and not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')):
-                try:
-                    backend = git_backend()
-                    with backend.create_repository(plugin.local_path) as repo:
-                        remotes = repo.get_remotes()
-                        has_remotes = len(remotes) > 0
-                except Exception:
-                    pass
-
-            # Skip if no remote URL and no git remotes
-            if not metadata.url.startswith(('http://', 'https://', 'git://', 'ssh://')) and not has_remotes:
+            metadata = self._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+            if not self._should_fetch_plugin_refs(plugin, metadata):
                 continue
 
             try:
