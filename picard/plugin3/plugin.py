@@ -313,15 +313,29 @@ class PluginSourceGit(PluginSource):
                                 f"Available refs: {available_refs}"
                             ) from None
                     else:
-                        # For commits or unknown refs, try as-is
-                        try:
-                            commit = repo.revparse_to_commit(self.ref)
-                            self.resolved_ref = self.ref
-                        except (KeyError, GitBackendError):
-                            available_refs = self._list_available_refs(repo)
-                            raise KeyError(
-                                f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
-                            ) from None
+                        # Try with 'origin/' prefix for branch names
+                        origin_ref = f'origin/{self.ref}'
+                        git_ref = find_git_ref(repo, origin_ref)
+                        if git_ref:
+                            try:
+                                commit = repo.revparse_to_commit(git_ref.name)
+                                self.resolved_ref = git_ref.name
+                            except (KeyError, GitBackendError):
+                                available_refs = self._list_available_refs(repo)
+                                raise KeyError(
+                                    f"Could not resolve ref '{origin_ref}' (detected as {git_ref.ref_type.value}). "
+                                    f"Available refs: {available_refs}"
+                                ) from None
+                        else:
+                            # For commits or unknown refs, try as-is
+                            try:
+                                commit = repo.revparse_to_commit(self.ref)
+                                self.resolved_ref = self.ref
+                            except (KeyError, GitBackendError):
+                                available_refs = self._list_available_refs(repo)
+                                raise KeyError(
+                                    f"Could not find ref '{self.ref}'. Available refs: {available_refs}"
+                                ) from None
         else:
             # Use repository's default branch (HEAD)
             try:
