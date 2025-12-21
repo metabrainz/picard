@@ -898,7 +898,10 @@ class PluginManager(QObject):
         path = Path(path)
         if path.exists():
             try:
+                # Force garbage collection to release file handles on Windows
+                gc.collect()
                 shutil.rmtree(path)
+                log.debug('Cleaned up %s: %s', description, path)
             except Exception as e:
                 log.error('Failed to remove %s %s: %s', description, path, e)
 
@@ -1106,10 +1109,7 @@ class PluginManager(QObject):
 
         except Exception:
             # Clean up temp directory on failure
-            if temp_path.exists():
-                # Force garbage collection to release file handles on Windows
-                gc.collect()
-                shutil.rmtree(temp_path, ignore_errors=True)
+            self._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
 
     def _install_from_local_directory(
@@ -1168,9 +1168,7 @@ class PluginManager(QObject):
                 commit_to_save = commit_id
             except Exception:
                 # Clean up temp directory on failure
-                if temp_path.exists():
-                    gc.collect()
-                    shutil.rmtree(temp_path, ignore_errors=True)
+                self._safe_remove_directory(temp_path, "temp directory after git sync failure")
                 raise
         else:
             # All plugins must be git repositories
@@ -1183,9 +1181,7 @@ class PluginManager(QObject):
             manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
         except Exception:
             # Clean up temp directory if manifest validation fails
-            if temp_path.exists():
-                gc.collect()
-                shutil.rmtree(temp_path, ignore_errors=True)
+            self._safe_remove_directory(temp_path, "temp directory after manifest validation failure")
             raise
 
         # Check for UUID conflicts with existing plugins from different sources
