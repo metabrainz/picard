@@ -30,7 +30,7 @@ from test.test_plugins3_helpers import (
 )
 
 from picard.git.backend import GitRef, GitRefType
-from picard.plugin3.manager import UpdateResult
+from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
 
 
@@ -224,7 +224,7 @@ class TestPluginInstall(PicardTestCase):
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Mock PluginSourceGit to create temp dir without MANIFEST
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
@@ -266,7 +266,7 @@ class TestPluginInstall(PicardTestCase):
             plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
@@ -318,7 +318,7 @@ class TestPluginInstall(PicardTestCase):
             plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
@@ -390,7 +390,10 @@ class TestPluginInstall(PicardTestCase):
             # Mock only the metadata part of config
             test_config.setting = {'plugins3_metadata': {}, 'plugins3_enabled_plugins': []}
 
-            with patch('picard.plugin3.manager.get_config', return_value=test_config):
+            with (
+                patch('picard.plugin3.manager.lifecycle.get_config', return_value=test_config),
+                patch('picard.plugin3.manager.clean.get_config', return_value=test_config),
+            ):
                 # Uninstall with purge
                 manager.uninstall_plugin(mock_plugin, purge=True)
 
@@ -423,7 +426,7 @@ class TestPluginInstall(PicardTestCase):
         mock_config_empty.beginGroup = Mock()
         mock_config_empty.endGroup = Mock()
 
-        with patch('picard.plugin3.manager.get_config', return_value=mock_config_empty):
+        with patch('picard.plugin3.manager.lifecycle.get_config', return_value=mock_config_empty):
             self.assertFalse(manager.plugin_has_saved_options(mock_plugin))
 
         # Mock config with options
@@ -432,7 +435,7 @@ class TestPluginInstall(PicardTestCase):
         mock_config_with_options.beginGroup = Mock()
         mock_config_with_options.endGroup = Mock()
 
-        with patch('picard.plugin3.manager.get_config', return_value=mock_config_with_options):
+        with patch('picard.plugin3.manager.lifecycle.get_config', return_value=mock_config_with_options):
             self.assertTrue(manager.plugin_has_saved_options(mock_plugin))
 
         # Test plugin without manifest/UUID
@@ -671,7 +674,7 @@ class TestPluginInstall(PicardTestCase):
         from io import StringIO
 
         from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.manager import UpdateAllResult, UpdateResult
+        from picard.plugin3.manager.update import UpdateAllResult, UpdateResult
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = MockTagger()

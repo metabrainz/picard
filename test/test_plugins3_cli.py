@@ -29,7 +29,7 @@ from test.test_plugins3_helpers import (
 )
 
 from picard.git.factory import has_git_backend
-from picard.plugin3.manager import UpdateResult
+from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
 
 
@@ -277,7 +277,8 @@ class TestPluginCLI(PicardTestCase):
 
             mock_manager = PluginManager(Mock())
             with (
-                patch('picard.plugin3.manager.get_config', return_value=test_config),
+                patch('picard.plugin3.manager.lifecycle.get_config', return_value=test_config),
+                patch('picard.plugin3.manager.clean.get_config', return_value=test_config),
                 patch('picard.plugin3.cli.get_config', return_value=test_config),
             ):
                 exit_code, stdout, _ = run_cli(mock_manager, clean_config=test_uuid, yes=True)
