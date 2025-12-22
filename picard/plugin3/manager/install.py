@@ -117,6 +117,73 @@ class PluginInstaller:
 
             raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, source_url)
 
+    def _sync_plugin_source(self, source_url, ref, is_local=False):
+        """Sync plugin source to temporary directory and return sync info."""
+        url_hash = hash_string(str(source_url))
+
+        if is_local:
+            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+        else:
+            temp_path = self.manager._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
+            # Reuse temp dir if it's already a git repo, otherwise remove it
+            if temp_path.exists() and not (temp_path / '.git').exists():
+                shutil.rmtree(temp_path)
+
+        try:
+            source = PluginSourceGit(str(source_url), ref)
+            commit_id = source.sync(temp_path, single_branch=True)
+            return temp_path, source, commit_id
+        except Exception as e:
+            # For reinstalls with preserved ref, try fallback to default
+            if ref and not is_local:
+                log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
+                source = PluginSourceGit(str(source_url), None)
+                commit_id = source.sync(temp_path, single_branch=True)
+                return temp_path, source, commit_id
+            else:
+                self.manager._safe_remove_directory(temp_path, "temp directory after sync failure")
+                raise
+
+    def _finalize_installation(self, temp_path, final_path, plugin_name, manifest, source, commit_id, source_url):
+        """Complete plugin installation after validation."""
+        # Atomic move from temp to final location
+        if temp_path != final_path:
+            if temp_path.is_dir():
+                temp_path.rename(final_path)
+            else:
+                shutil.move(str(temp_path), str(final_path))
+
+        # Store plugin metadata
+        self.manager._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=plugin_name,
+                url=str(source_url),
+                ref=source.resolved_ref,
+                commit=commit_id,
+                uuid=manifest.uuid,
+                ref_type=source.resolved_ref_type,
+            )
+        )
+
+        return plugin_name
+
+    def _create_and_register_plugin(self, plugin_name, manifest, enable_after_install):
+        """Create plugin instance and register it with manager."""
+        plugin = Plugin(self.manager._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
+        self.manager._plugins.append(plugin)
+        self.manager.plugin_installed.emit(plugin)
+
+        if enable_after_install:
+            try:
+                self.manager.enable_plugin(plugin)
+            except Exception as e:
+                log.error('Plugin installation failed during enable due to manifest error: %s', e)
+                final_path = self.manager._primary_plugin_dir / plugin_name
+                self.manager._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
+                raise
+
+        return plugin
+
     def _check_already_installed(self, final_path, plugin_name, source_url, reinstall, discard_changes):
         """Check if plugin is already installed and handle reinstall."""
         if final_path.exists():
@@ -125,6 +192,56 @@ class PluginInstaller:
 
                 raise PluginAlreadyInstalledError(plugin_name, source_url)
             self._handle_existing_plugin_reinstall(final_path, plugin_name, discard_changes)
+
+    def _sync_plugin_source(self, source_url, ref, is_local=False):
+        """Sync plugin source to temporary directory and return sync info."""
+        url_hash = hash_string(str(source_url))
+
+        if is_local:
+            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
+        else:
+            temp_path = self.manager._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
+            # Reuse temp dir if it's already a git repo, otherwise remove it
+            if temp_path.exists() and not (temp_path / '.git').exists():
+                shutil.rmtree(temp_path)
+
+        try:
+            source = PluginSourceGit(str(source_url), ref)
+            commit_id = source.sync(temp_path, single_branch=True)
+            return temp_path, source, commit_id
+        except Exception as e:
+            # For reinstalls with preserved ref, try fallback to default
+            if ref and not is_local:
+                log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
+                source = PluginSourceGit(str(source_url), None)
+                commit_id = source.sync(temp_path, single_branch=True)
+                return temp_path, source, commit_id
+            else:
+                self.manager._safe_remove_directory(temp_path, "temp directory after sync failure")
+                raise
+
+    def _finalize_installation(self, temp_path, final_path, plugin_name, manifest, source, commit_id, source_url):
+        """Complete plugin installation after validation."""
+        # Atomic move from temp to final location
+        if temp_path != final_path:
+            if temp_path.is_dir():
+                temp_path.rename(final_path)
+            else:
+                shutil.move(str(temp_path), str(final_path))
+
+        # Store plugin metadata
+        self.manager._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=plugin_name,
+                url=str(source_url),
+                ref=source.resolved_ref,
+                commit=commit_id,
+                uuid=manifest.uuid,
+                ref_type=source.resolved_ref_type,
+            )
+        )
+
+        return plugin_name
 
     def _create_and_register_plugin(self, plugin_name, manifest, enable_after_install):
         """Create plugin instance and register it with manager."""
@@ -148,70 +265,32 @@ class PluginInstaller:
         # Preserve original ref if reinstalling and no ref specified
         ref = self.manager._preserve_original_ref_if_needed(url, ref, reinstall)
 
-        # Handle git URL - use temp dir in plugin directory for atomic rename
-        url_hash = hash_string(url)
-        temp_path = self.manager._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
-
         try:
-            # Reuse temp dir if it's already a git repo, otherwise remove it
-            if temp_path.exists():
-                if not (temp_path / '.git').exists():
-                    shutil.rmtree(temp_path)
+            # Sync plugin source to temporary location
+            temp_path, source, commit_id = self._sync_plugin_source(url, ref, is_local=False)
 
-            # Clone or update temporary location with single-branch optimization
-            source = PluginSourceGit(url, ref)
-            try:
-                commit_id = source.sync(temp_path, single_branch=True)
-            except Exception as e:
-                # If sync fails and we're using a preserved ref, try fallback to default
-                if ref and reinstall:
-                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
-                    source = PluginSourceGit(url, None)  # Use default ref
-                    commit_id = source.sync(temp_path, single_branch=True)
-                else:
-                    raise
-
-            # Read MANIFEST to get plugin ID
+            # Read and validate manifest
             manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
-
-            # Generate plugin directory name from sanitized name + UUID
             plugin_name = get_plugin_directory_name(manifest)
 
-            # Check blacklist again with UUID
+            # Perform all validation checks
             if not force_blacklisted:
                 self._check_blacklist_with_uuid(url, ref, manifest)
-
-            # Check for UUID conflicts with existing plugins from different sources
             self._check_uuid_conflict(manifest, url, reinstall)
 
             final_path = self.manager._primary_plugin_dir / plugin_name
-
-            # Check if already installed and handle reinstall
             self._check_already_installed(final_path, plugin_name, url, reinstall, discard_changes)
 
-            # Atomic rename from temp to final location
-            temp_path.rename(final_path)
-
-            # Store plugin metadata
-            self.manager._metadata.save_plugin_metadata(
-                PluginMetadata(
-                    name=plugin_name,
-                    url=url,
-                    ref=source.resolved_ref,
-                    commit=commit_id,
-                    uuid=manifest.uuid,
-                    ref_type=source.resolved_ref_type,
-                )
-            )
-
-            # Create and register plugin
+            # Complete installation
+            self._finalize_installation(temp_path, final_path, plugin_name, manifest, source, commit_id, url)
             self._create_and_register_plugin(plugin_name, manifest, enable_after_install)
 
             return plugin_name
 
         except Exception:
             # Clean up temp directory on failure
-            self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
+            if 'temp_path' in locals():
+                self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
 
     def _install_from_local_directory(
@@ -227,103 +306,71 @@ class PluginInstaller:
         # Preserve original ref if reinstalling and no ref specified
         ref = self.manager._preserve_original_ref_if_needed(local_path, ref, reinstall)
 
-        # Check if local directory is a git repository
-        is_git_repo = (local_path / '.git').exists()
-
-        if is_git_repo:
-            # Check if source repository has uncommitted changes
-            try:
-
-                def check_status(source_repo):
-                    if source_repo.get_status():
-                        log.warning('Installing from local repository with uncommitted changes: %s', local_path)
-
-                    # If no ref specified, use the current branch
-                    if not ref and not source_repo.is_head_detached():
-                        current_ref = source_repo.get_head_shorthand()
-                        log.debug('Using current branch from local repo: %s', current_ref)
-                        return current_ref
-                    return ref
-
-                ref = self.manager._with_plugin_repo(local_path, check_status)
-            except Exception:
-                pass  # Ignore errors checking status
-
-            # Use git operations to get ref and commit info
-            url_hash = hash_string(str(local_path))
-            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
-
-            try:
-                source = PluginSourceGit(str(local_path), ref)
-                commit_id = source.sync(temp_path, single_branch=True)
-                install_path = temp_path
-                ref_to_save = source.resolved_ref
-                ref_type_to_save = source.resolved_ref_type
-                commit_to_save = commit_id
-            except Exception:
-                # Clean up temp directory on failure
-                self.manager._safe_remove_directory(temp_path, "temp directory after git sync failure")
-                raise
-        else:
-            # All plugins must be git repositories
+        # All plugins must be git repositories
+        if not (local_path / '.git').exists():
             raise ValueError(
                 f"Plugin directory {local_path} is not a git repository. All plugins must be git repositories."
             )
 
-        # Read MANIFEST to get plugin ID
+        # Check source repository status and get current ref if needed
         try:
-            manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
+
+            def check_status(source_repo):
+                if source_repo.get_status():
+                    log.warning('Installing from local repository with uncommitted changes: %s', local_path)
+                # If no ref specified, use the current branch
+                if not ref and not source_repo.is_head_detached():
+                    current_ref = source_repo.get_head_shorthand()
+                    log.debug('Using current branch from local repo: %s', current_ref)
+                    return current_ref
+                return ref
+
+            ref = self.manager._with_plugin_repo(local_path, check_status)
         except Exception:
-            # Clean up temp directory if manifest validation fails
-            self.manager._safe_remove_directory(temp_path, "temp directory after manifest validation failure")
+            pass  # Ignore errors checking status
+
+        try:
+            # Sync plugin source to temporary location
+            temp_path, source, commit_id = self._sync_plugin_source(local_path, ref, is_local=True)
+
+            # Read and validate manifest
+            manifest = PluginValidation.read_and_validate_manifest(temp_path, local_path)
+            plugin_name = get_plugin_directory_name(manifest)
+
+            # Perform validation checks
+            self._check_uuid_conflict(manifest, str(local_path), reinstall)
+
+            final_path = self.manager._primary_plugin_dir / plugin_name
+
+            # Check if already installed and handle reinstall (with special local handling)
+            if final_path.exists():
+                if not reinstall:
+                    from picard.plugin3.manager import PluginAlreadyInstalledError
+
+                    raise PluginAlreadyInstalledError(plugin_name, local_path)
+
+                # Check for uncommitted changes before removing
+                if not discard_changes:
+                    changes = GitOperations.check_dirty_working_dir(final_path)
+                    if changes:
+                        from picard.plugin3.manager import PluginDirtyError
+
+                        raise PluginDirtyError(plugin_name, changes)
+
+                self.manager._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
+
+            # Complete installation
+            self._finalize_installation(temp_path, final_path, plugin_name, manifest, source, commit_id, local_path)
+            self._create_and_register_plugin(plugin_name, manifest, enable_after_install)
+
+            log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
+            return plugin_name
+
+        except Exception:
+            # Clean up temp directory on failure
+            if 'temp_path' in locals():
+                self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
-
-        # Check for UUID conflicts with existing plugins from different sources
-        self._check_uuid_conflict(manifest, str(local_path), reinstall)
-
-        # Generate plugin directory name from sanitized name + UUID
-        plugin_name = get_plugin_directory_name(manifest)
-        assert self.manager._primary_plugin_dir is not None
-        final_path = self.manager._primary_plugin_dir / plugin_name
-
-        # Check if already installed and handle reinstall
-        if final_path.exists():
-            if not reinstall:
-                from picard.plugin3.manager import PluginAlreadyInstalledError
-
-                raise PluginAlreadyInstalledError(plugin_name, local_path)
-
-            # Check for uncommitted changes before removing
-            if not discard_changes:
-                changes = GitOperations.check_dirty_working_dir(final_path)
-                if changes:
-                    from picard.plugin3.manager import PluginDirtyError
-
-                    raise PluginDirtyError(plugin_name, changes)
-
-            self.manager._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
-
-        # Copy to plugin directory
-        # Move from temp location (git repo was cloned to temp)
-        shutil.move(str(install_path), str(final_path))
-
-        # Store metadata
-        self.manager._metadata.save_plugin_metadata(
-            PluginMetadata(
-                name=plugin_name,
-                url=str(local_path),
-                ref=ref_to_save or '',
-                commit=commit_to_save or '',
-                uuid=manifest.uuid,
-                ref_type=ref_type_to_save,
-            )
-        )
-
-        # Create and register plugin
-        self._create_and_register_plugin(plugin_name, manifest, enable_after_install)
-
-        log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
-        return plugin_name
 
     def _handle_existing_plugin_reinstall(self, final_path, plugin_name, discard_changes):
         """Handle reinstalling over existing plugin."""
