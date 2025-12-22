@@ -277,15 +277,15 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata.check_redirects = Mock(return_value=('https://example.com', 'test-uuid', False))
 
         # Mock check_ref_type to return branch (not commit)
-        with patch('picard.plugin3.manager.GitOperations.check_ref_type', return_value=('branch', 'main')):
+        with patch('picard.plugin3.manager.update.GitOperations.check_ref_type', return_value=('branch', 'main')):
             # Mock the git update
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source:
+            with patch('picard.plugin3.manager.update.PluginSourceGit') as mock_source:
                 mock_source_instance = Mock()
                 mock_source_instance.update = Mock(return_value=('old123', 'new456'))
                 mock_source.return_value = mock_source_instance
 
                 # Mock git backend at import location
-                with patch('picard.plugin3.manager.git_backend') as mock_backend_func:
+                with patch('picard.plugin3.manager.update.git_backend') as mock_backend_func:
                     mock_backend = Mock()
                     mock_repo = Mock()
                     mock_commit = Mock()
@@ -303,8 +303,10 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
                     # Mock the signal emission to avoid type checking issues
                     with patch.object(manager, 'plugin_ref_switched'):
-                        # Should not raise with discard_changes=True
-                        result = manager.update_plugin(mock_plugin, discard_changes=True)
+                        # Mock _with_plugin_repo to avoid git operations
+                        with patch.object(manager, '_with_plugin_repo', return_value=('new456', 1234567890)):
+                            # Should not raise with discard_changes=True
+                            result = manager.update_plugin(mock_plugin, discard_changes=True)
 
                     self.assertEqual(result.old_commit, 'old123')
                     self.assertEqual(result.new_commit, 'new456')
@@ -622,8 +624,8 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Verify plugin was re-enabled after rollback
             mock_enable.assert_called_once()
 
-    @patch('picard.plugin3.manager.PluginSourceGit')
-    @patch('picard.plugin3.manager.git_backend')
+    @patch('picard.plugin3.manager.update.PluginSourceGit')
+    @patch('picard.plugin3.manager.update.git_backend')
     def test_update_plugin_rollback_on_manifest_error(self, mock_git_backend, mock_source_git):
         """Test update_plugin rolls back on manifest validation failure."""
         manager = PluginManager(MockTagger())
@@ -665,11 +667,12 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         # Mock GitOperations
         with (
-            patch.object(GitOperations, 'check_dirty_working_dir', return_value=None),
-            patch.object(GitOperations, 'check_ref_type', return_value=('tag', 'v1.0.0')),
+            patch('picard.plugin3.manager.update.GitOperations.check_dirty_working_dir', return_value=None),
+            patch('picard.plugin3.manager.update.GitOperations.check_ref_type', return_value=('tag', 'v1.0.0')),
             patch.object(manager, 'disable_plugin'),
             patch.object(manager, 'enable_plugin'),
             patch.object(manager, '_rollback_plugin_to_commit') as mock_rollback,
+            patch.object(manager, '_with_plugin_repo', return_value=('new_commit', 1234567890)),
         ):
             # Make read_manifest fail on first call (after update), succeed on second (after rollback)
             plugin.read_manifest = Mock(side_effect=[PluginManifestInvalidError(['Missing UUID']), None])
@@ -684,7 +687,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Verify plugin was re-enabled after rollback
             manager.enable_plugin.assert_called()
 
-    @patch('picard.plugin3.manager.GitOperations')
+    @patch('picard.plugin3.manager.update.GitOperations')
     def test_switch_ref_rollback_on_manifest_error(self, mock_git_ops):
         """Test switch_ref rolls back on manifest validation failure."""
         manager = PluginManager(MockTagger())
