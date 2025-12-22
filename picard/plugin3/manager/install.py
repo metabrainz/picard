@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
+import re
 import shutil
 import tempfile
 
@@ -46,8 +47,6 @@ def get_plugin_directory_name(manifest) -> str:
         Directory name: <sanitized_name>_<uuid>
         Example: my_plugin_f8bf81d7-c5e2-472b-ba96-62140cefc9e1
     """
-    import re
-
     # Sanitize name: lowercase, alphanumeric + underscore
     name = manifest.name()
     sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
@@ -113,6 +112,7 @@ class PluginInstaller:
         if has_conflict and not reinstall:
             existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
             existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+
             from picard.plugin3.manager import PluginUUIDConflictError
 
             raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, source_url)
@@ -326,8 +326,9 @@ class PluginInstaller:
                 return ref
 
             ref = self.manager._with_plugin_repo(local_path, check_status)
-        except Exception:
-            pass  # Ignore errors checking status
+        except Exception as e:
+            log.debug("Failed to check local repository status: %s", e)
+            # Ignore errors checking status
 
         try:
             # Sync plugin source to temporary location
@@ -366,8 +367,9 @@ class PluginInstaller:
             log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
             return plugin_name
 
-        except Exception:
+        except Exception as e:
             # Clean up temp directory on failure
+            log.debug("Local plugin installation failed: %s", e, exc_info=True)
             if 'temp_path' in locals():
                 self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
@@ -387,8 +389,9 @@ class PluginInstaller:
             try:
                 if existing_plugin.state != PluginState.DISABLED:
                     existing_plugin.disable()
-            except Exception:
+            except Exception as e:
                 # If disable fails, continue anyway
+                log.debug("Failed to disable existing plugin during reinstall: %s", e)
                 pass
 
             # Remove from enabled plugins list if present
