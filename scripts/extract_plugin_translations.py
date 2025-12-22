@@ -76,6 +76,33 @@ def extract_from_code(plugin_dir):
     return translations
 
 
+def extract_from_manifest(plugin_dir):
+    manifest_path = Path(plugin_dir) / 'MANIFEST.toml'
+    if not manifest_path.exists():
+        return {}
+
+    try:
+        import tomllib
+    except ImportError:
+        try:
+            import tomli as tomllib
+        except ImportError:
+            print("Warning: tomllib not available, not extracting manifest strings", file=sys.stderr)
+            return {}
+
+    try:
+        with open(manifest_path, 'rb') as f:
+            manifest = tomllib.load(f)
+            return {
+                'manifest.name': manifest.get('name', 'Unknown'),
+                'manifest.description': manifest.get('description', 'no description'),
+                'manifest.long_description': manifest.get('long_description', 'no description'),
+            }
+    except Exception as e:
+        print(f"Warning: Failed to read MANIFEST.toml: {e}", file=sys.stderr)
+        return {}
+
+
 def read_gitignore(plugin_dir):
     """Read .gitignore patterns."""
     gitignore_path = Path(plugin_dir) / '.gitignore'
@@ -264,7 +291,7 @@ def main():
         print(f"Error: Plugin directory not found: {plugin_dir}", file=sys.stderr)
         return 1
 
-    translations = extract_from_code(plugin_dir)
+    translations = {**extract_from_code(plugin_dir), **extract_from_manifest(plugin_dir)}
     if not translations:
         print("No translatable strings found", file=sys.stderr)
         return 1
