@@ -224,7 +224,7 @@ class TestPluginInstall(PicardTestCase):
             manager._primary_plugin_dir = Path(tmpdir)
 
             # Mock PluginSourceGit to create temp dir without MANIFEST
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
@@ -266,7 +266,7 @@ class TestPluginInstall(PicardTestCase):
             plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
@@ -318,7 +318,7 @@ class TestPluginInstall(PicardTestCase):
             plugin_dir = manager._primary_plugin_dir / f'test_plugin_{test_uuid}'
             plugin_dir.mkdir(parents=True, exist_ok=True)
 
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 

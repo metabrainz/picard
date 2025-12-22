@@ -184,7 +184,7 @@ class TestPluginRegistry(PicardTestCase):
                     mock_check_redirects.return_value = (new_url, new_uuid, True)
 
                     with patch.object(manager._metadata, 'save_plugin_metadata') as mock_save_meta:
-                        with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+                        with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                             mock_source = Mock()
                             mock_source.update.return_value = ('abc123', 'def456')
                             mock_source.ref = 'main'  # Add ref attribute
@@ -194,7 +194,11 @@ class TestPluginRegistry(PicardTestCase):
                             with patch('picard.git.ops.GitOperations.check_dirty_working_dir') as mock_check_dirty:
                                 mock_check_dirty.return_value = []  # No uncommitted changes
 
-                                with patch('picard.plugin3.manager.git_backend') as mock_backend_func:
+                                with (
+                                    patch('picard.plugin3.manager.update.git_backend') as mock_backend_func,
+                                    patch('picard.plugin3.plugin.git_backend') as mock_plugin_backend_func,
+                                    patch('picard.plugin3.manager.git_backend') as mock_manager_backend_func,
+                                ):
                                     mock_backend = Mock()
                                     mock_repo = Mock()
                                     mock_repo.get_commit_date = Mock(return_value=1234567890)
@@ -204,6 +208,8 @@ class TestPluginRegistry(PicardTestCase):
                                     mock_repo.__exit__ = Mock(return_value=False)
                                     mock_backend.create_repository = Mock(return_value=mock_repo)
                                     mock_backend_func.return_value = mock_backend
+                                    mock_plugin_backend_func.return_value = mock_backend
+                                    mock_manager_backend_func.return_value = mock_backend
 
                                     # Update plugin
                                     manager.update_plugin(mock_plugin)
@@ -260,7 +266,7 @@ class TestPluginRegistry(PicardTestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
 
-            with patch('picard.plugin3.manager.PluginSourceGit') as mock_source_class:
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
                 mock_source = Mock()
                 mock_source.ref = 'main'
 
