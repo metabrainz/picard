@@ -36,27 +36,20 @@ from picard import log
 if TYPE_CHECKING:
     from picard.tagger import Tagger
 
-from picard import (
-    api_versions_tuple,
-)
-from picard.config import get_config
 from picard.const.appdirs import cache_folder
-from picard.extension_points import (
-    set_plugin_uuid,
-    unset_plugin_uuid,
-)
 from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
-from picard.plugin3 import GitReferenceError
-from picard.plugin3.installable import UrlInstallablePlugin
+from picard.plugin3.manager.clean import PluginCleanupManager
+from picard.plugin3.manager.find import PluginFinder
 from picard.plugin3.manager.install import PluginInstaller, get_plugin_directory_name
+from picard.plugin3.manager.lifecycle import PluginLifecycleManager
 from picard.plugin3.manager.registry import PluginRegistryManager
-from picard.plugin3.manager.update import PluginUpdater, UpdateAllResult, UpdateCheck, UpdateResult
+from picard.plugin3.manager.update import PluginUpdater, UpdateAllResult
+from picard.plugin3.manager.validation import PluginValidationManager
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
-    PluginState,
     hash_string,
     short_commit_id,
 )
@@ -219,6 +212,9 @@ class PluginManager(QObject):
         self._plugins: list[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
+
+        # Initialize lifecycle manager early since _load_config depends on it
+        self._lifecycle_manager = PluginLifecycleManager(self)
         self._load_config()
 
         # Initialize registry for blacklist checking
@@ -236,6 +232,15 @@ class PluginManager(QObject):
 
         # Initialize registry manager
         self._registry_manager = PluginRegistryManager(self)
+
+        # Initialize validation manager
+        self._validation_manager = PluginValidationManager(self)
+
+        # Initialize cleanup manager
+        self._cleanup_manager = PluginCleanupManager(self)
+
+        # Initialize finder
+        self._finder = PluginFinder(self)
 
         # Register cleanup and clean up any leftover temp directories
         if tagger:
@@ -409,63 +414,8 @@ class PluginManager(QObject):
         return self._metadata.get_plugin_registry_id(plugin)
 
     def find_plugin(self, identifier):
-        """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix.
-
-        Args:
-            identifier: Plugin ID, display name, UUID, registry ID, or prefix of any
-
-        Returns:
-            Plugin object, None if not found, or 'multiple' if ambiguous
-        """
-        identifier_lower = identifier.lower()
-        exact_matches = []
-        prefix_matches = []
-
-        for plugin in self.plugins:
-            # Collect all possible identifiers for this plugin
-            identifiers = []
-
-            # Plugin ID (case-insensitive)
-            identifiers.append(plugin.plugin_id.lower())
-
-            # UUID (case-insensitive)
-            if plugin.uuid:
-                identifiers.append(str(plugin.uuid).lower())
-
-            # Display name (case-insensitive)
-            if plugin.manifest:
-                identifiers.append(plugin.manifest.name().lower())
-
-            # Registry ID (case-insensitive) - lookup dynamically from current registry
-            try:
-                registry_id = self.get_plugin_registry_id(plugin)
-                if registry_id:
-                    identifiers.append(registry_id.lower())
-            except Exception:
-                pass
-
-            # Check for exact or prefix match
-            for id_value in identifiers:
-                if id_value == identifier_lower:
-                    exact_matches.append(plugin)
-                    break  # One exact match is enough
-                elif id_value.startswith(identifier_lower):
-                    prefix_matches.append(plugin)
-                    break  # One prefix match is enough
-
-        # Exact matches take priority
-        if len(exact_matches) == 1:
-            return exact_matches[0]
-        elif len(exact_matches) > 1:
-            return 'multiple'
-
-        # Fall back to prefix matches
-        if len(prefix_matches) == 1:
-            return prefix_matches[0]
-        elif len(prefix_matches) > 1:
-            return 'multiple'
-
-        return None
+        """Find a plugin by Plugin ID, display name, UUID, registry ID, or any prefix."""
+        return self._finder.find_plugin(identifier)
 
     def _get_plugin_metadata(self, uuid):
         """Get metadata for a plugin by UUID."""
@@ -501,7 +451,7 @@ class PluginManager(QObject):
 
     def _find_plugin_by_url(self, url):
         """Find plugin metadata by URL."""
-        return self._metadata.find_plugin_by_url(url)
+        return self._finder._find_plugin_by_url(url)
 
     def _get_plugin_uuid(self, plugin):
         """Get plugin UUID."""
@@ -509,71 +459,19 @@ class PluginManager(QObject):
 
     def _read_and_validate_manifest(self, path, source_description):
         """Read and validate manifest."""
-        return PluginValidation.read_and_validate_manifest(path, source_description)
+        return self._validation_manager._read_and_validate_manifest(path, source_description)
 
     def _clean_plugin_config(self, plugin_uuid):
         """Delete plugin configuration."""
-        config = get_config()
-        config_key = f'plugin.{plugin_uuid}'
-        config.beginGroup(config_key)
-        for key in config.childKeys():
-            config.remove(key)
-        config.endGroup()
-        config.sync()
-        log.info('Deleted configuration for plugin %s', plugin_uuid)
+        return self._cleanup_manager._clean_plugin_config(plugin_uuid)
 
     def get_orphaned_plugin_configs(self):
-        """Get list of plugin configs that don't have corresponding installed plugins.
-
-        Returns:
-            list: List of plugin UUIDs that have config but no installed plugin
-        """
-        config = get_config()
-        installed_uuids = {p.uuid for p in self.plugins if p.uuid}
-
-        orphaned = []
-        for group in config.childGroups():
-            if group.startswith('plugin.'):
-                plugin_uuid = group[7:]  # Remove 'plugin.' prefix
-                if plugin_uuid not in installed_uuids:
-                    config.beginGroup(group)
-                    if config.childKeys():  # Only include if it has settings
-                        orphaned.append(plugin_uuid)
-                    config.endGroup()
-
-        return sorted(orphaned)
+        """Get list of plugin configs that don't have corresponding installed plugins."""
+        return self._cleanup_manager.get_orphaned_plugin_configs()
 
     def _check_uuid_conflict(self, manifest, source_url):
-        """Check if plugin UUID conflicts with existing plugin from different source.
-
-        Args:
-            manifest: Plugin manifest to check
-            source_url: Source URL of the plugin being installed
-
-        Returns:
-            tuple: (has_conflict: bool, existing_plugin: Plugin|None)
-        """
-        if not manifest.uuid:
-            return False, None
-
-        # Normalize source URL for comparison
-        source_url = str(source_url).rstrip('/')
-
-        for existing_plugin in self._plugins:
-            if existing_plugin.uuid and str(existing_plugin.uuid).lower() == str(manifest.uuid).lower():
-                # Get existing plugin's source URL
-                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
-                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-                existing_source = str(existing_source).rstrip('/')
-
-                # Same UUID + same source = no conflict (reinstall case)
-                if existing_source.lower() == source_url.lower():
-                    return False, None
-
-                # Same UUID + different source = conflict
-                return True, existing_plugin
-
-        return False, None
+        """Check if plugin UUID conflicts with existing plugin from different source."""
+        return self._validation_manager._check_uuid_conflict(manifest, source_url)
 
     def _ensure_plugin_url(self, plugin, operation):
         """Ensure plugin has URL metadata, creating it from registry if needed.
@@ -788,46 +686,8 @@ class PluginManager(QObject):
                 log.error('Failed to remove %s %s: %s', description, path, e)
 
     def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
-        """Validate plugin manifest after git operations, rollback on failure.
-
-        Args:
-            plugin: Plugin to validate
-            old_commit: Commit ID to rollback to on failure
-            was_enabled: Whether plugin was enabled before operation
-
-        Raises:
-            PluginManifestInvalidError, PluginManifestReadError: If manifest validation fails
-        """
-        try:
-            plugin.read_manifest()
-        except PluginManifestError as e:
-            # Rollback to previous commit on manifest validation failure
-            log.error('Plugin operation failed due to invalid manifest: %s', e)
-            try:
-                self._rollback_plugin_to_commit(plugin, old_commit)
-                log.info('Successfully rolled back plugin %s to previous version', plugin.plugin_id)
-            except Exception as rollback_error:
-                log.error('Failed to rollback plugin %s: %s', plugin.plugin_id, rollback_error)
-                # If rollback fails, remove the broken plugin to prevent it from disappearing
-                try:
-                    log.warning('Removing broken plugin %s after failed rollback', plugin.plugin_id)
-                    if plugin in self._plugins:
-                        self._plugins.remove(plugin)
-                    self._safe_remove_directory(plugin.local_path, f"broken plugin directory for {plugin.plugin_id}")
-                except Exception as cleanup_error:
-                    log.error('Failed to cleanup broken plugin %s: %s', plugin.plugin_id, cleanup_error)
-                # Raise rollback error instead of original error since rollback failed
-                raise rollback_error
-
-            # Re-enable plugin if it was enabled before rollback
-            if was_enabled:
-                try:
-                    self.enable_plugin(plugin)
-                except Exception as enable_error:
-                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
-
-            # Re-raise the original manifest error
-            raise
+        """Validate plugin manifest after git operations, rollback on failure."""
+        return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
@@ -990,165 +850,16 @@ class PluginManager(QObject):
         return self._registry_manager._find_newer_version_tag(url, current_tag, versioning_scheme)
 
     def update_plugin(self, plugin, discard_changes=False):
-        """Update a single plugin to latest version.
-
-        Args:
-            plugin: Plugin to update
-            discard_changes: If True, discard uncommitted changes
-
-        Raises:
-            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
-            ValueError: If plugin is pinned to a specific commit
-        """
+        """Update a single plugin to latest version."""
         return self._updater.update_plugin(plugin, discard_changes)
-        """Update a single plugin to latest version.
-
-        Args:
-            plugin: Plugin to update
-            discard_changes: If True, discard uncommitted changes
-
-        Raises:
-            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
-            ValueError: If plugin is pinned to a specific commit
-        """
-        self._ensure_plugin_url(plugin, 'update')
-
-        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
-
-        # Check for uncommitted changes
-        if not discard_changes:
-            assert plugin.local_path is not None
-            changes = GitOperations.check_dirty_working_dir(plugin.local_path)
-            if changes:
-                raise PluginDirtyError(plugin.plugin_id, changes)
-
-        old_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
-        old_url = metadata.url
-        old_uuid = metadata.uuid
-        old_ref = metadata.ref
-
-        # Check if pinned to a specific commit (not tag - tags can be updated to newer tags)
-        # Check the stored ref, not current HEAD (tags create detached HEAD but are still updatable)
-        if old_ref:
-            ref_type, _ = GitOperations.check_ref_type(plugin.local_path, old_ref)
-            if ref_type == 'commit':
-                raise PluginCommitPinnedError(plugin.plugin_id, old_ref)
-        else:
-            # No stored ref, check current HEAD state
-            ref_type, ref_name = GitOperations.check_ref_type(plugin.local_path)
-            if ref_type == 'commit':
-                raise PluginCommitPinnedError(plugin.plugin_id, ref_name)
-
-        # Check registry for redirects
-        current_url, current_uuid, redirected = self._metadata.check_redirects(old_url, old_uuid)
-
-        # Check if plugin has versioning_scheme and current ref is a version tag
-        new_ref = old_ref
-
-        # Use the new has_versioning method to determine if we should look for newer tags
-        if ref_type == 'tag' and plugin.has_versioning(self._registry, True):
-            versioning_scheme = plugin.get_versioning_scheme(self._registry)
-            newer_tag = self._find_newer_version_tag(current_url, old_ref, versioning_scheme)
-            if newer_tag:
-                new_ref = newer_tag
-                log.info('Found newer version: %s -> %s', old_ref, new_ref)
-
-        # Check if plugin is currently enabled - disable it to reload module after update
-        was_enabled = plugin.state == PluginState.ENABLED
-        if was_enabled:
-            self.disable_plugin(plugin)
-
-        source = PluginSourceGit(current_url, new_ref)
-        # Set resolved_ref_type if we updated to a newer tag
-        if new_ref != old_ref and ref_type == 'tag':
-            source.resolved_ref_type = 'tag'
-        assert plugin.local_path is not None
-        old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
-
-        # Get commit date and resolve annotated tags to actual commit
-        def get_commit_info(repo):
-            commit = repo.revparse_to_commit(new_commit)
-            actual_commit_id = commit.id  # Use actual commit ID, not tag object ID
-            commit_date = repo.get_commit_date(commit.id)
-            return actual_commit_id, commit_date
-
-        new_commit, commit_date = self._with_plugin_repo(plugin.local_path, get_commit_info)
-
-        # Reload manifest to get new version
-        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
-
-        new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
-        new_ref = source.ref  # May have been updated to a newer tag
-
-        # Update metadata with current URL and UUID
-        # If redirected, preserve original URL/UUID
-        # Use source.ref which may have been updated to a newer tag
-        original_url, original_uuid = self._metadata.get_original_metadata(metadata, redirected, old_url, old_uuid)
-        self._metadata.save_plugin_metadata(
-            PluginMetadata(
-                name=plugin.plugin_id,
-                url=current_url,
-                ref=new_ref or '',
-                commit=new_commit,
-                uuid=current_uuid,
-                original_url=original_url,
-                original_uuid=original_uuid,
-            )
-        )
-
-        # Re-enable plugin if it was enabled before to reload the module with new code
-        if was_enabled:
-            self.enable_plugin(plugin)
-
-        # Emit signal to notify UI that plugin has been updated
-        self.plugin_ref_switched.emit(plugin)
-
-        return UpdateResult(
-            old_version or '',
-            new_version or '',
-            old_commit,
-            new_commit,
-            self._create_ref_item_from_metadata(old_ref, old_commit, ref_type),
-            self._create_ref_item_from_source(source, new_commit),
-            commit_date,
-        )
 
     def _create_ref_item_from_metadata(self, ref_name, commit, ref_type):
         """Create RefItem from metadata information."""
-        if not ref_name and not commit:
-            return RefItem('')
-
-        if ref_type == 'tag':
-            item_ref_type = RefItem.Type.TAG
-            shortname = ref_name if ref_name else commit
-        elif ref_type == 'branch':
-            item_ref_type = RefItem.Type.BRANCH
-            shortname = ref_name if ref_name else commit
-        else:  # commit
-            item_ref_type = RefItem.Type.COMMIT
-            shortname = commit or ref_name
-
-        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
+        return self._updater._create_ref_item_from_metadata(ref_name, commit, ref_type)
 
     def _create_ref_item_from_source(self, source, commit):
         """Create RefItem from PluginSourceGit with accurate ref type information."""
-        ref_name = source.ref
-        ref_type_str = getattr(source, 'resolved_ref_type', None)
-
-        if not ref_name and not commit:
-            return RefItem('')
-
-        if ref_type_str == 'tag':
-            item_ref_type = RefItem.Type.TAG
-            shortname = ref_name if ref_name else commit
-        elif ref_type_str == 'branch':
-            item_ref_type = RefItem.Type.BRANCH
-            shortname = ref_name if ref_name else commit
-        else:  # commit or None
-            item_ref_type = RefItem.Type.COMMIT
-            shortname = commit or ref_name
-
-        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
+        return self._updater._create_ref_item_from_source(source, commit)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
@@ -1220,224 +931,12 @@ class PluginManager(QObject):
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
     def _check_single_plugin_update(self, plugin, metadata, skip_fetch):
-        """Check update status for a single plugin.
-
-        Returns:
-            UpdateCheck object if update available, None otherwise
-        """
-        try:
-
-            def analyze_update(repo):
-                current_commit = repo.get_head_target()
-
-                # Fetch without updating (suppress progress output) - unless skipped
-                if not skip_fetch:
-                    backend = git_backend()
-                    callbacks = backend.create_remote_callbacks()
-                    for remote in repo.get_remotes():
-                        # Fetch all refs including tags in a single operation
-                        repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
-
-                # Get current ref from repository instead of metadata
-                old_ref, is_detached = self._get_current_ref_for_updates(repo, metadata)
-                ref = old_ref
-
-                # Check if currently on a tag (check current commit, not ref)
-                current_is_tag = False
-                current_tag = None
-
-                # Use stored ref_type to determine if plugin was installed from a tag
-                # For existing plugins without ref_type, fall back to checking if ref matches a tag
-                is_tag_installation = False
-                resolved_ref_info = ""
-
-                if metadata.ref_type == 'tag':
-                    is_tag_installation = True
-                    resolved_ref_info = f"tag {metadata.ref}"
-                elif metadata.ref_type == 'branch':
-                    resolved_ref_info = f"branch {metadata.ref}"
-                elif metadata.ref_type is None and metadata.ref:
-                    # Fallback for existing plugins: check what the ref actually resolves to
-                    log.debug(
-                        "Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref
-                    )
-
-                    # Check if ref matches a tag name
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
-                            is_tag_installation = True
-                            resolved_ref_info = f"tag {metadata.ref}"
-                            break
-
-                    if not is_tag_installation:
-                        # Check if current commit matches any tag
-                        for r in repo.list_references():
-                            if r.ref_type == GitRefType.TAG:
-                                try:
-                                    tag_commit = repo.revparse_to_commit(r.name)
-                                    if tag_commit.id == current_commit:
-                                        is_tag_installation = True
-                                        resolved_ref_info = f"commit {metadata.ref} (resolves to tag {r.shortname})"
-                                        break
-                                except Exception:
-                                    continue
-
-                    if not is_tag_installation:
-                        resolved_ref_info = f"commit/branch {metadata.ref}"
-
-                # Check if plugin supports versioning before doing tag-based updates
-                if is_tag_installation and not plugin.has_versioning(self._registry, is_tag_installation):
-                    log.debug(
-                        "Plugin %s: originally installed from %s, but no versioning support - skipping tag-based updates",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-                    is_tag_installation = False
-
-                # Check if plugin is pinned to a commit (direct hash or relative reference)
-                is_commit_pin = self._is_commit_pin(metadata)
-                if is_commit_pin:
-                    log.debug(
-                        "Plugin %s: pinned to commit %s - skipping updates",
-                        plugin.plugin_id,
-                        metadata.ref,
-                    )
-                    return None
-
-                if is_tag_installation:
-                    log.debug(
-                        "Plugin %s: originally installed from %s, checking if current commit matches any tag",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG:
-                            try:
-                                tag_commit = repo.revparse_to_commit(r.name)
-
-                                if tag_commit.id == current_commit:
-                                    current_is_tag = True
-                                    current_tag = r.shortname
-                                    log.debug(
-                                        "Plugin %s: found matching tag %s for current commit",
-                                        plugin.plugin_id,
-                                        current_tag,
-                                    )
-                                    break
-                            except Exception as e:
-                                log.debug("Failed to check tag %s for commit match: %s", r.name, e)
-                                continue
-                else:
-                    log.debug(
-                        "Plugin %s: originally installed from %s, skipping tag-based updates",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-
-                # If on a tag, check for newer version tag
-                new_ref = None
-                if current_is_tag and current_tag:
-                    log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
-                    source = PluginSourceGit(metadata.url, ref)
-                    latest_tag = source._find_latest_tag(repo, current_tag)
-                    if latest_tag and latest_tag != current_tag:
-                        # Found newer tag - log in concise format
-                        log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
-                        ref = latest_tag
-                        new_ref = latest_tag
-                    else:
-                        # Already on latest tag, no update needed
-                        log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
-                        return None
-
-                # Resolve ref using GitRef lookup first, then fallback
-                # For update checking, prefer remote branches over local ones
-                try:
-                    from picard.git.ref_utils import find_git_ref
-
-                    # For branches, try origin/ version first to get latest from remote
-                    git_ref = find_git_ref(repo, f'origin/{ref}')
-                    if not git_ref:
-                        # Fall back to local ref (for tags or local-only branches)
-                        git_ref = find_git_ref(repo, ref)
-
-                    if git_ref:
-                        obj = repo.revparse_single(git_ref.name)
-                    elif not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # Fallback: try refs/tags/ first, then origin/ for branches
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except GitReferenceError:
-                            # Not a tag, try origin/ prefix for branches
-                            try:
-                                obj = repo.revparse_single(f'origin/{ref}')
-                            except GitReferenceError:
-                                # Fall back to original ref (might be commit hash)
-                                obj = repo.revparse_single(ref)
-                    elif ref.startswith('origin/'):
-                        # Handle origin/ refs - these are branches, not tags
-                        obj = repo.revparse_single(ref)
-                    else:
-                        obj = repo.revparse_single(ref)
-
-                    # Peel annotated tags to get the actual commit
-                    commit = repo.peel_to_commit(obj)
-
-                    latest_commit = commit.id
-                    # Get commit date using backend
-                    latest_commit_date = repo.get_commit_date(commit.id)
-                except GitReferenceError:
-                    # Ref not found, skip this plugin
-                    return None
-
-                if current_commit != latest_commit:
-                    # For display: use tag names if available, otherwise commit hashes for detached HEAD
-                    if current_is_tag and current_tag:
-                        display_old_ref = current_tag
-                    elif is_detached:
-                        display_old_ref = short_commit_id(current_commit)
-                    else:
-                        display_old_ref = old_ref
-
-                    display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
-
-                    return UpdateCheck(
-                        plugin_id=plugin.plugin_id,
-                        old_commit=current_commit,
-                        new_commit=latest_commit,
-                        commit_date=latest_commit_date,
-                        old_ref=display_old_ref,
-                        new_ref=display_new_ref,
-                    )
-
-                return None
-
-            return self._with_plugin_repo(plugin.local_path, analyze_update)
-        except KeyError:
-            # Ref not found, skip this plugin (expected for some cases)
-            return None
-        except Exception as e:
-            # Log unexpected errors but continue with other plugins
-            log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-            return None
+        """Check update status for a single plugin."""
+        return self._updater._check_single_plugin_update(plugin, metadata, skip_fetch)
 
     def check_updates(self, skip_fetch=False):
-        """Check which plugins have updates available without installing.
-
-        Args:
-            skip_fetch: If True, skip fetching remote refs (assume already done)
-        """
-        updates = {}
-        for plugin in self._plugins:
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
-            if not self._should_fetch_plugin_refs(plugin, metadata):
-                continue
-
-            update_check = self._check_single_plugin_update(plugin, metadata, skip_fetch)
-            if update_check:
-                updates[plugin.plugin_id] = update_check
-
-        return updates
+        """Check which plugins have updates available without installing."""
+        return self._updater.check_updates(skip_fetch)
 
     def get_plugin_update_status(self, plugin):
         """Check if a single plugin has an update available."""
@@ -1528,224 +1027,37 @@ class PluginManager(QObject):
         return ""
 
     def uninstall_plugin(self, plugin: Plugin, purge=False):
-        """Uninstall a plugin.
-
-        Args:
-            plugin: Plugin to uninstall
-            purge: If True, also remove plugin configuration
-        """
-        self.disable_plugin(plugin)
-        plugin_path = plugin.local_path
-
-        # Safety check: ensure plugin_path is a child of primary plugin dir, not the dir itself
-        assert self._primary_plugin_dir is not None
-        assert plugin_path is not None
-        if not plugin_path.is_relative_to(self._primary_plugin_dir) or plugin_path == self._primary_plugin_dir:
-            raise ValueError(f'Plugin path must be a subdirectory of {self._primary_plugin_dir}: {plugin_path}')
-
-        if os.path.islink(plugin_path):
-            log.debug("Removing symlink %r", plugin_path)
-            os.remove(plugin_path)
-        elif os.path.isdir(plugin_path):
-            log.debug("Removing directory %r", plugin_path)
-            self._safe_remove_directory(plugin_path, f"plugin directory for {plugin.plugin_id}")
-
-        # Remove metadata
-        config = get_config()
-        # Remove metadata by UUID if available
-        if plugin.uuid:
-            config.setting['plugins3_metadata'].pop(plugin.uuid, None)
-
-        # Unregister UUID mapping
-        if plugin.uuid:
-            unset_plugin_uuid(plugin.uuid)
-
-        # Remove plugin config if purge requested
-        if purge and plugin.uuid:
-            self._clean_plugin_config(plugin.uuid)
-
-        # Remove plugin from plugins list
-        if plugin in self.plugins:
-            self.plugins.remove(plugin)
-
-        self.plugin_uninstalled.emit(plugin)
+        """Uninstall a plugin."""
+        return self._lifecycle_manager.uninstall_plugin(plugin, purge)
 
     def plugin_has_saved_options(self, plugin: Plugin) -> bool:
-        """Check if a plugin has any saved options.
-
-        Args:
-            plugin: Plugin to check
-
-        Returns:
-            True if plugin has saved options, False otherwise
-        """
-        if not plugin.uuid:
-            return False
-        config = get_config()
-        config_key = f'plugin.{plugin.uuid}'
-        config.beginGroup(config_key)
-        has_options = len(config.childKeys()) > 0
-        config.endGroup()
-        return has_options
+        """Check if a plugin has any saved options."""
+        return self._lifecycle_manager.plugin_has_saved_options(plugin)
 
     def _check_blacklisted_plugins(self):
-        """Check installed plugins against blacklist and disable if needed.
-
-        Returns:
-            list: List of tuples (plugin_id, reason) for blacklisted plugins
-        """
-        blacklisted_plugins = []
-
-        for plugin in self._plugins:
-            # Get UUID from plugin manifest
-            if not plugin.uuid:
-                continue
-
-            metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            url = metadata.url if metadata else None
-
-            # Create InstallablePlugin for blacklist checking
-            installable_plugin = UrlInstallablePlugin(url, registry=self._registry)
-            installable_plugin.plugin_uuid = plugin.uuid
-
-            is_blacklisted, reason = installable_plugin.is_blacklisted()
-            if is_blacklisted:
-                log.warning('Plugin %s is blacklisted: %s', plugin.plugin_id, reason)
-                blacklisted_plugins.append((plugin.plugin_id, reason))
-
-                if plugin.uuid in self._enabled_plugins:
-                    log.warning('Disabling blacklisted plugin %s', plugin.plugin_id)
-                    self._enabled_plugins.discard(plugin.uuid)
-                    self._save_config()
-
-        return blacklisted_plugins
+        """Check installed plugins against blacklist and disable if needed."""
+        return self._lifecycle_manager._check_blacklisted_plugins()
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
-        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
-        assert plugin.state is not None
-        log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
-
-        got_enabled = False
-        if self._tagger:
-            plugin.load_module()
-            # Only enable if not already enabled
-            if plugin.state != PluginState.ENABLED:
-                plugin.enable(self._tagger)
-                got_enabled = True
-
-        # Ensure UUID mapping is set for extension points
-        if plugin.uuid:
-            set_plugin_uuid(plugin.uuid, plugin.plugin_id)
-
-        self._enabled_plugins.add(uuid)
-        self._save_config()
-        log.info('Plugin %s enabled (state: %s)', plugin.plugin_id, plugin.state.value)
-
-        # Only trigger signal, if plugin wasn't already enabled
-        if got_enabled:
-            self.plugin_enabled.emit(plugin)
-            self.plugin_state_changed.emit(plugin)
+        return self._lifecycle_manager.enable_plugin(plugin)
 
     def init_plugins(self):
-        """Initialize and enable plugins that are enabled in configuration.
-
-        Returns:
-            list: List of tuples (plugin_id, reason) for blacklisted plugins found
-        """
-        # Check for blacklisted plugins on startup
-        blacklisted_plugins = self._check_blacklisted_plugins()
-
-        enabled_count = 0
-        for plugin in self._plugins:
-            if plugin.uuid and plugin.uuid in self._enabled_plugins:
-                try:
-                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
-                    plugin.load_module()
-                    plugin.enable(self._tagger)
-                    enabled_count += 1
-                except Exception as ex:
-                    log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
-
-        log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
-        return blacklisted_plugins
+        """Initialize and enable plugins that are enabled in configuration."""
+        return self._lifecycle_manager.init_plugins()
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
-        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
-        assert plugin.state is not None
-        log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
-
-        # Only disable if not already disabled
-        got_disabled = False
-        if plugin.state != PluginState.DISABLED:
-            plugin.disable()
-            got_disabled = True
-
-        self._enabled_plugins.discard(uuid)
-        self._save_config()
-        log.info('Plugin %s disabled (state: %s)', plugin.plugin_id, plugin.state.value)
-
-        # Only trigger signal, if plugin wasn't already disabled
-        if got_disabled:
-            self.plugin_disabled.emit(plugin)
-            self.plugin_state_changed.emit(plugin)
+        return self._lifecycle_manager.disable_plugin(plugin)
 
     def _load_config(self):
         """Load enabled plugins list from config."""
-        config = get_config()
-        enabled = config.setting['plugins3_enabled_plugins']
-        self._enabled_plugins = set(enabled)
-        log.debug('Loaded enabled plugins from config: %r', self._enabled_plugins)
+        return self._lifecycle_manager._load_config()
 
     def _save_config(self):
         """Save enabled plugins list to config."""
-        config = get_config()
-        config.setting['plugins3_enabled_plugins'] = list(self._enabled_plugins)
-        if hasattr(config, 'sync'):
-            config.sync()
-        log.debug('Saved enabled plugins to config: %r', self._enabled_plugins)
+        return self._lifecycle_manager._save_config()
 
     def _load_plugin(self, plugin_dir: Path, plugin_name: str):
-        """Load a plugin and check API version compatibility.
-
-        Returns:
-            Plugin object if compatible, None otherwise
-        """
-        plugin = Plugin(plugin_dir, plugin_name)
-        try:
-            plugin.read_manifest()
-
-            # Register UUID mapping early so extension points can find enabled plugins
-            if plugin.uuid:
-                set_plugin_uuid(plugin.uuid, plugin.plugin_id)
-
-            assert plugin.manifest is not None
-            compatible_versions = _compatible_api_versions(plugin.manifest.api_versions)
-            if compatible_versions:
-                log.debug(
-                    'Plugin "%s" is compatible (requires API %s, Picard supports %s)',
-                    plugin.plugin_id,
-                    plugin.manifest.api_versions,
-                    api_versions_tuple,
-                )
-                return plugin
-            else:
-                log.warning(
-                    'Plugin "%s" from "%s" is not compatible with this version of Picard. '
-                    'Plugin requires API versions %s, but Picard supports %s.',
-                    plugin.plugin_id,
-                    plugin.local_path,
-                    plugin.manifest.api_versions,
-                    api_versions_tuple,
-                )
-                return None
-        except Exception as ex:
-            error_msg = str(ex)
-            log.warning('Could not read plugin manifest from %r', plugin_dir.joinpath(plugin_name), exc_info=ex)
-            self._failed_plugins.append((plugin_dir, plugin_name, error_msg))
-            return None
-
-
-def _compatible_api_versions(api_versions):
-    return set(api_versions) & set(api_versions_tuple)
+        """Load a plugin and check API version compatibility."""
+        return self._lifecycle_manager._load_plugin(plugin_dir, plugin_name)
