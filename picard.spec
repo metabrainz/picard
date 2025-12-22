@@ -45,7 +45,6 @@ def get_locale_messages():
     return data_files
 
 
-block_cipher = None
 os_name = platform.system()
 build_portable = bool(os.environ.get('PICARD_BUILD_PORTABLE'))
 binaries = []
@@ -90,14 +89,13 @@ a = Analysis(
     binaries=binaries,
     datas=data_files,
     hiddenimports=hiddenimports,
-    hookspath=[],
+    hookspath=None,
     runtime_hooks=runtime_hooks,
     excludes=[],
-    cipher=block_cipher,
 )
 
 
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure, a.zipped_data)
 
 
 if build_portable:
