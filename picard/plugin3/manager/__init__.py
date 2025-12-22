@@ -24,7 +24,7 @@ from pathlib import Path
 import re
 import shutil
 import tempfile
-from typing import TYPE_CHECKING, NamedTuple
+from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import (
     QObject,
@@ -46,12 +46,13 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
-from picard.git.backend import GitRef, GitRefType
+from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.installable import UrlInstallablePlugin
 from picard.plugin3.manager.install import PluginInstaller, get_plugin_directory_name
+from picard.plugin3.manager.update import PluginUpdater, UpdateAllResult, UpdateCheck, UpdateResult
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -71,38 +72,6 @@ try:
     from markdown import markdown as render_markdown
 except ImportError:
     render_markdown = None
-
-
-class UpdateResult(NamedTuple):
-    """Result of a plugin update operation."""
-
-    old_version: str
-    new_version: str
-    old_commit: str
-    new_commit: str
-    old_ref_item: RefItem
-    new_ref_item: RefItem
-    commit_date: int
-
-
-class UpdateCheck(NamedTuple):
-    """Result of checking for plugin updates."""
-
-    plugin_id: str
-    old_commit: str
-    new_commit: str
-    commit_date: int
-    old_ref: str
-    new_ref: str
-
-
-class UpdateAllResult(NamedTuple):
-    """Result of updating a plugin in update_all operation."""
-
-    plugin_id: str
-    success: bool
-    result: UpdateResult
-    error: str
 
 
 class PluginManagerError(Exception):
@@ -263,6 +232,9 @@ class PluginManager(QObject):
 
         # Initialize installer
         self._installer = PluginInstaller(self)
+
+        # Initialize updater
+        self._updater = PluginUpdater(self)
 
         # Register cleanup and clean up any leftover temp directories
         if tagger:
@@ -758,38 +730,7 @@ class PluginManager(QObject):
             ref: Git ref to switch to (string or GitRef object)
             discard_changes: If True, discard uncommitted changes
         """
-        self._ensure_plugin_url(plugin, 'switch ref')
-
-        # Convert GitRef to string for GitOperations (which still expects strings)
-        ref_str = ref.shortname if isinstance(ref, GitRef) else ref
-
-        # Check if plugin is currently enabled
-        was_enabled = plugin.state == PluginState.ENABLED
-
-        # Disable plugin if it's enabled to unload the module
-        if was_enabled:
-            self.disable_plugin(plugin)
-
-        old_git_ref, new_git_ref, old_commit, new_commit = GitOperations.switch_ref(plugin, ref_str, discard_changes)
-
-        # Validate manifest after ref switch
-        self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
-
-        # Update metadata with new ref
-        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
-        if metadata:
-            # Update existing metadata
-            metadata.ref = new_git_ref.shortname
-            metadata.commit = new_commit
-            metadata.ref_type = new_git_ref.ref_type.value if new_git_ref.ref_type else 'commit'
-            self._metadata.save_plugin_metadata(metadata)
-
-        # Re-enable plugin if it was enabled before to reload the module
-        if was_enabled:
-            self.enable_plugin(plugin)
-
-        self.plugin_ref_switched.emit(plugin)
-        return old_git_ref, new_git_ref, old_commit, new_commit
+        return self._updater.switch_ref(plugin, ref, discard_changes)
 
     def add_directory(self, dir_path: str, primary: bool = False) -> None:
         """Add a directory to scan for plugins.
@@ -1229,7 +1170,18 @@ class PluginManager(QObject):
 
         return None
 
-    def update_plugin(self, plugin: Plugin, discard_changes=False):
+    def update_plugin(self, plugin, discard_changes=False):
+        """Update a single plugin to latest version.
+
+        Args:
+            plugin: Plugin to update
+            discard_changes: If True, discard uncommitted changes
+
+        Raises:
+            PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
+            ValueError: If plugin is pinned to a specific commit
+        """
+        return self._updater.update_plugin(plugin, discard_changes)
         """Update a single plugin to latest version.
 
         Args:
