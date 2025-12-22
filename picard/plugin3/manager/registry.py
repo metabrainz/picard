@@ -31,6 +31,14 @@ def _strip_to_first_digit(tag):
     return tag[match.start() :] if match else tag
 
 
+def _parse_version_safely(tag):
+    """Parse version string safely, returning None on failure."""
+    try:
+        return Version.from_string(_strip_to_first_digit(tag))
+    except Exception:
+        return None
+
+
 class PluginRegistryManager:
     """Handles plugin registry operations."""
 
@@ -83,17 +91,11 @@ class PluginRegistryManager:
         Returns:
             Version string (latest tag or empty string)
         """
-        versioning_scheme = plugin.versioning_scheme
-        url = plugin.git_url
-
-        if not versioning_scheme:
-            return ''
-
-        if not url:
+        if not plugin.versioning_scheme or not plugin.git_url:
             return ''
 
         try:
-            tags = self._fetch_version_tags(url, versioning_scheme)
+            tags = self._fetch_version_tags(plugin.git_url, plugin.versioning_scheme)
             return tags[0] if tags else ''
         except Exception:
             return ''
@@ -162,7 +164,9 @@ class PluginRegistryManager:
         if versioning_scheme == 'semver':
             # Use picard.version for proper semver sorting
             try:
-                return sorted(tags, key=lambda t: Version.from_string(_strip_to_first_digit(t)), reverse=True)
+                return sorted(
+                    tags, key=lambda t: _parse_version_safely(t) or Version.from_string('0.0.0'), reverse=True
+                )
             except Exception as e:
                 log.warning('Failed to parse semver tags: %s', e)
                 return sorted(tags, key=_strip_to_first_digit, reverse=True)
@@ -172,18 +176,19 @@ class PluginRegistryManager:
         else:
             # Custom regex: try version parsing, fall back to natural sort
             def sort_key(tag):
+                version = _parse_version_safely(tag)
+                if version:
+                    return (0, version)
+
+                # Natural sort: split into text and number parts
                 stripped = _strip_to_first_digit(tag)
-                try:
-                    return (0, Version.from_string(stripped))
-                except Exception:
-                    # Natural sort: split into text and number parts
-                    parts = []
-                    for part in re.split(r'(\d+)', stripped):
-                        if part.isdigit():
-                            parts.append((0, int(part)))
-                        else:
-                            parts.append((1, part))
-                    return (1, parts)
+                parts = []
+                for part in re.split(r'(\d+)', stripped):
+                    if part.isdigit():
+                        parts.append((0, int(part)))
+                    else:
+                        parts.append((1, part))
+                return (1, parts)
 
             return sorted(tags, key=sort_key, reverse=True)
 
@@ -231,10 +236,13 @@ class PluginRegistryManager:
         # Use version parsing for semver/calver, lexicographic for custom regex
         if versioning_scheme in ('semver', 'calver'):
             try:
-                current_version = Version.from_string(_strip_to_first_digit(current_tag))
+                current_version = _parse_version_safely(current_tag)
+                if not current_version:
+                    return None
+
                 for tag in tags:
-                    tag_version = Version.from_string(_strip_to_first_digit(tag))
-                    if tag_version > current_version:
+                    tag_version = _parse_version_safely(tag)
+                    if tag_version and tag_version > current_version:
                         return tag
                 return None
             except Exception:
