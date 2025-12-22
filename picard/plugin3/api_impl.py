@@ -837,6 +837,23 @@ class PluginApi:
     # def register_file_info_page(self, page_class):
     #     pass
 
+    def get_plugin_version(self) -> str:
+        """Get the plugin's own version as displayed in CLI and GUI.
+
+        Returns:
+            str: Version string in format "ref @commit", "@commit", manifest version,
+                 or "Unknown" if version cannot be determined
+        """
+        plugin_manager = self._tagger.get_plugin_manager()
+        if not plugin_manager or not self._manifest.uuid:
+            return "Unknown"
+
+        metadata = plugin_manager._get_plugin_metadata(self._manifest.uuid)
+        if metadata:
+            return plugin_manager.get_plugin_git_info(metadata)
+
+        return self._manifest.version or "Unknown"
+
     def _set_class_name_and_title(self, cls: type[HasDisplayTitle]):
         if not hasattr(cls, 'NAME') or not cls.NAME:
             cls.NAME = f'{self.plugin_id}.{cls.__name__}'

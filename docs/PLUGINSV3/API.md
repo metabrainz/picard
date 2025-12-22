@@ -359,6 +359,31 @@ def enable(api):
 
 ---
 
+### `get_plugin_version() -> str`
+
+Get the plugin's own version as displayed in CLI and GUI.
+
+```python
+def enable(api):
+    version = api.get_plugin_version()
+    api.logger.info(f"Running version: {version}")
+
+    # Examples of returned formats:
+    # "v1.2.3 @abc1234" - version tag with commit
+    # "@abc1234" - commit only (no version tag)
+    # "1.0.0" - manifest version (no git metadata)
+    # "Unknown" - no version information available
+```
+
+**Returns**: Version string in format "ref @commit", "@commit", manifest version, or "Unknown"
+
+**Use cases**:
+- Logging current plugin version
+- Version-specific behavior
+- Debugging and support
+
+---
+
 ### `trn(key, singular=None, plural=None, n=0, **kwargs) -> str`
 
 Translate a string with plural forms.
