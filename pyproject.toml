@@ -59,7 +59,7 @@ picard-plugins = "picard.plugin3.cli:main"
 
 [project.optional-dependencies]
 plugins = [
-    "aubio>=0.4.9",
+    "aubio>=0.4.9; sys_platform != 'win32'",
     "opencc>=1.1.9",
     "zstandard>=0.25.0",
 ]
