@@ -728,9 +728,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Verify plugin was re-enabled after rollback
             manager.enable_plugin.assert_called()
 
-    @patch('picard.plugin3.manager.PluginSourceGit')
-    @patch('picard.plugin3.manager.PluginValidation')
-    @patch('picard.plugin3.manager.shutil')
+    @patch('picard.plugin3.manager.install.PluginSourceGit')
+    @patch('picard.plugin3.manager.install.PluginValidation')
+    @patch('picard.plugin3.manager.install.shutil')
     def test_install_plugin_cleanup_on_enable_failure(self, mock_shutil, mock_validation, mock_source_git):
         """Test install_plugin cleans up on manifest validation failure during enable."""
         manager = PluginManager(MockTagger())
@@ -753,9 +753,9 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         # Mock no UUID conflicts
         with (
-            patch('picard.plugin3.manager.UrlInstallablePlugin') as mock_installable,
+            patch('picard.plugin3.manager.install.UrlInstallablePlugin') as mock_installable,
             patch.object(manager, '_check_uuid_conflict', return_value=(False, None)),
-            patch('picard.plugin3.manager.get_plugin_directory_name', return_value='test_plugin'),
+            patch('picard.plugin3.manager.install.get_plugin_directory_name', return_value='test_plugin'),
             patch.object(Path, 'exists', return_value=False),
             patch.object(Path, 'rename'),
             patch.object(manager, 'enable_plugin') as mock_enable,
