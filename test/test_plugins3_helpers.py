@@ -60,7 +60,7 @@ class MockPluginManager(Mock):
             from picard.plugin3.manager import PluginManager
 
             temp_manager = PluginManager(Mock())
-            temp_manager._registry_manager._fetch_version_tags_impl = self._fetch_version_tags
+            temp_manager._registry_manager._fetch_version_tags = self._fetch_version_tags
             return temp_manager.select_ref_for_plugin(plugin)
 
         self.select_ref_for_plugin = select_ref_for_plugin_impl

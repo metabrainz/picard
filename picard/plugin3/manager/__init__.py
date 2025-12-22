@@ -506,7 +506,7 @@ class PluginManager(QObject):
 
     def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository."""
-        return self._registry_manager._fetch_version_tags_impl(url, versioning_scheme)
+        return self._registry_manager._fetch_version_tags(url, versioning_scheme)
 
     def select_ref_for_plugin(self, plugin):
         """Select appropriate ref for plugin based on versioning scheme or Picard API version."""

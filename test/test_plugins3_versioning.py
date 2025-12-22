@@ -29,7 +29,7 @@ class TestVersioningScheme(PicardTestCase):
         """Test ref selection with versioning_scheme."""
         manager = MockPluginManager()
 
-        # Mock manager's _fetch_version_tags to return tags
+        # Mock the _fetch_version_tags method that MockPluginManager uses
         manager._fetch_version_tags = Mock(return_value=['v2.1.0', 'v2.0.0', 'v1.0.0'])
 
         plugin = Mock()
@@ -44,7 +44,7 @@ class TestVersioningScheme(PicardTestCase):
         """Test ref selection falls back when no tags found."""
         manager = MockPluginManager()
 
-        # Mock manager's _fetch_version_tags to return empty list
+        # Mock the _fetch_version_tags method to return empty list
         manager._fetch_version_tags = Mock(return_value=[])
 
         plugin = Mock()

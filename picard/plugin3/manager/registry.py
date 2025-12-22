@@ -148,10 +148,6 @@ class PluginRegistryManager:
         # No compatible ref found, use first (default)
         return refs[0]['name']
 
-    def _fetch_version_tags(self, url, versioning_scheme):
-        """Fetch and filter version tags from repository."""
-        return self._fetch_version_tags_impl(url, versioning_scheme)
-
     def _sort_tags(self, tags, versioning_scheme):
         """Sort tags based on versioning scheme.
 
@@ -191,7 +187,7 @@ class PluginRegistryManager:
 
             return sorted(tags, key=sort_key, reverse=True)
 
-    def _fetch_version_tags_impl(self, url, versioning_scheme):
+    def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository.
 
         Args:
@@ -228,7 +224,7 @@ class PluginRegistryManager:
         Returns:
             str: Newer version tag, or None if no newer version found
         """
-        tags = self._fetch_version_tags_impl(url, versioning_scheme)
+        tags = self._fetch_version_tags(url, versioning_scheme)
         if not tags:
             return None
 
