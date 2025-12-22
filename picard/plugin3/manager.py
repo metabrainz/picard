@@ -1173,15 +1173,19 @@ class PluginManager(QObject):
         if is_git_repo:
             # Check if source repository has uncommitted changes
             try:
-                backend = git_backend()
-                with backend.create_repository(local_path) as source_repo:
+
+                def check_status(source_repo):
                     if source_repo.get_status():
                         log.warning('Installing from local repository with uncommitted changes: %s', local_path)
 
                     # If no ref specified, use the current branch
                     if not ref and not source_repo.is_head_detached():
-                        ref = source_repo.get_head_shorthand()
-                        log.debug('Using current branch from local repo: %s', ref)
+                        current_ref = source_repo.get_head_shorthand()
+                        log.debug('Using current branch from local repo: %s', current_ref)
+                        return current_ref
+                    return ref
+
+                ref = self._with_plugin_repo(local_path, check_status)
             except Exception:
                 pass  # Ignore errors checking status
 
