@@ -260,6 +260,12 @@ class PluginMetadataManager:
                 - registry_plugin: Registry plugin data (if in registry)
             or None if not found
         """
+        # Initialize variables
+        metadata = None
+        current_ref = None
+        current_commit = None
+        current_ref_type = None
+
         # Try to find installed plugin first
         plugin = None
         for p in plugins:
@@ -303,14 +309,15 @@ class PluginMetadataManager:
                     git_ref = metadata.get_git_ref()
                     current_ref = git_ref.shortname if git_ref.shortname else metadata.ref
 
+            # Set ref type from metadata
+            current_ref_type = metadata.ref_type if metadata else None
+
         else:
             # Not installed - try registry ID, UUID, or URL
             if '://' in identifier or '/' in identifier:
                 # Looks like a URL
                 url = identifier
                 registry_id = self._registry.get_registry_id(url=url)
-                current_ref = None
-                current_commit = None
             else:
                 # Try as registry ID or UUID
                 registry_plugin = self._registry.find_plugin(plugin_id=identifier)
@@ -323,8 +330,6 @@ class PluginMetadataManager:
 
                 url = registry_plugin.git_url
                 registry_id = registry_plugin.id or identifier
-                current_ref = None
-                current_commit = None
 
         # Get registry data if available
         registry_plugin = self._registry.find_plugin(plugin_id=registry_id) if registry_id else None
@@ -333,7 +338,7 @@ class PluginMetadataManager:
             'url': url,
             'current_ref': current_ref,
             'current_commit': current_commit,
-            'current_ref_type': metadata.ref_type if metadata else None,
+            'current_ref_type': current_ref_type,
             'registry_id': registry_id,
             'plugin': plugin,
             'registry_plugin': registry_plugin,
