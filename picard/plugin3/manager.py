@@ -1454,12 +1454,13 @@ class PluginManager(QObject):
         old_commit, new_commit = source.update(plugin.local_path, single_branch=True)
 
         # Get commit date and resolve annotated tags to actual commit
-        backend = git_backend()
-        with backend.create_repository(plugin.local_path) as repo:
+        def get_commit_info(repo):
             commit = repo.revparse_to_commit(new_commit)
-            new_commit = commit.id  # Use actual commit ID, not tag object ID
-            # Get commit date using backend
+            actual_commit_id = commit.id  # Use actual commit ID, not tag object ID
             commit_date = repo.get_commit_date(commit.id)
+            return actual_commit_id, commit_date
+
+        new_commit, commit_date = self._with_plugin_repo(plugin.local_path, get_commit_info)
 
         # Reload manifest to get new version
         self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
