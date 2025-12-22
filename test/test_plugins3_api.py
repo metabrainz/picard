@@ -157,3 +157,31 @@ class TestPluginApiMethods(PicardTestCase):
             api.register_cover_art_processor(mock_processor)
             self.assertEqual(mock_processor.api, api)
             mock.assert_called_once_with(mock_processor)
+
+    def test_get_plugin_version(self):
+        """Test get_plugin_version method."""
+        manifest = load_plugin_manifest('example')
+        mock_tagger = Mock()
+        mock_plugin_manager = Mock()
+        mock_tagger.get_plugin_manager.return_value = mock_plugin_manager
+
+        api = PluginApi(manifest, mock_tagger)
+
+        # Test with git metadata
+        mock_metadata = Mock()
+        mock_plugin_manager._get_plugin_metadata.return_value = mock_metadata
+        mock_plugin_manager.get_plugin_git_info.return_value = "v1.0.0 @abc1234"
+
+        result = api.get_plugin_version()
+        self.assertEqual(result, "v1.0.0 @abc1234")
+        mock_plugin_manager._get_plugin_metadata.assert_called_once_with(manifest.uuid)
+
+        # Test fallback to manifest version
+        mock_plugin_manager._get_plugin_metadata.return_value = None
+        result = api.get_plugin_version()
+        self.assertEqual(result, manifest.version)
+
+        # Test no plugin manager
+        mock_tagger.get_plugin_manager.return_value = None
+        result = api.get_plugin_version()
+        self.assertEqual(result, "Unknown")
