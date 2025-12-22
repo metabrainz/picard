@@ -30,7 +30,7 @@ from test.test_plugins3_helpers import (
 )
 
 from picard.git.backend import GitRef, GitRefType
-from picard.plugin3.manager import UpdateResult
+from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
 
 
@@ -671,7 +671,7 @@ class TestPluginInstall(PicardTestCase):
         from io import StringIO
 
         from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.manager import UpdateAllResult, UpdateResult
+        from picard.plugin3.manager.update import UpdateAllResult, UpdateResult
         from picard.plugin3.output import PluginOutput
 
         mock_tagger = MockTagger()
