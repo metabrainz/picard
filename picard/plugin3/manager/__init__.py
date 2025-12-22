@@ -381,13 +381,33 @@ class PluginManager(QObject):
         # Separate branches and tags using GitRef metadata
         branches = []
         tags = []
+        seen_branches = set()  # Track branch names to avoid duplicates
 
+        # Process local branches first (they take precedence over remote)
+        local_refs = [ref for ref in remote_refs if ref.ref_type == GitRefType.BRANCH and not ref.is_remote]
+        remote_branch_refs = [ref for ref in remote_refs if ref.ref_type == GitRefType.BRANCH and ref.is_remote]
+
+        # Add local branches first
+        for ref in local_refs:
+            branch_name = ref.shortname
+            seen_branches.add(branch_name)
+            branches.append({'name': branch_name, 'commit': ref.target})
+
+        # Add remote branches only if not already seen
+        for ref in remote_branch_refs:
+            # Strip remote prefix (e.g., "origin/main" -> "main")
+            branch_name = ref.shortname.split('/', 1)[-1] if '/' in ref.shortname else ref.shortname
+
+            # Skip if we've already seen this branch name (local takes precedence)
+            if branch_name in seen_branches:
+                continue
+
+            seen_branches.add(branch_name)
+            branches.append({'name': branch_name, 'commit': ref.target})
+
+        # Process tags
         for ref in remote_refs:
-            if ref.ref_type == GitRefType.BRANCH:
-                # Strip remote prefix (e.g., "origin/main" -> "main")
-                branch_name = ref.shortname.split('/', 1)[-1] if '/' in ref.shortname else ref.shortname
-                branches.append({'name': branch_name, 'commit': ref.target})
-            elif ref.ref_type == GitRefType.TAG:
+            if ref.ref_type == GitRefType.TAG:
                 # GitRef backend handles dereferencing using pygit2.peel()
                 tags.append({'name': ref.shortname, 'commit': ref.target})
 
