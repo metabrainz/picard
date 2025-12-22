@@ -1593,14 +1593,17 @@ class PluginManager(QObject):
                 continue
 
             try:
-                backend = git_backend()
-                with backend.create_repository(plugin.local_path) as repo:
+
+                def fetch_refs(repo):
                     # Fetch without updating (suppress progress output)
+                    backend = git_backend()
                     callbacks = backend.create_remote_callbacks()
                     for remote in repo.get_remotes():
                         # Fetch all refs including tags in a single operation
                         repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
                         log.debug("Fetched refs for plugin %s from remote %s", plugin.plugin_id, remote.name)
+
+                self._with_plugin_repo(plugin.local_path, fetch_refs)
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
