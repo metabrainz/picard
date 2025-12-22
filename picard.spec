@@ -45,7 +45,6 @@ def get_locale_messages():
     return data_files
 
 
-block_cipher = None
 os_name = platform.system()
 build_portable = bool(os.environ.get('PICARD_BUILD_PORTABLE'))
 binaries = []
@@ -90,15 +89,12 @@ a = Analysis(
     binaries=binaries,
     datas=data_files,
     hiddenimports=hiddenimports,
-    hookspath=[],
+    hookspath=None,
     runtime_hooks=runtime_hooks,
     excludes=[],
-    cipher=block_cipher,
 )
 
-
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
-
+pyz = PYZ(a.pure, a.zipped_data)
 
 if build_portable:
     exe = EXE(
@@ -117,6 +113,7 @@ if build_portable:
     )
 
 else:
+    # The main executable
     exe = EXE(
         pyz,
         a.scripts,
@@ -135,7 +132,48 @@ else:
         entitlements_file='./scripts/package/entitlements.plist',
     )
 
-    coll = COLLECT(exe, a.binaries, a.zipfiles, a.datas, strip=False, upx=False, name='picard')
+    # The picard-plugins CLI tool
+    a_plugins = Analysis(
+        ['picard/plugin3/cli.py'],
+        pathex=['picard'],
+        binaries=[],
+        datas=[],
+        hiddenimports=['cffi'],
+        hookspath=None,
+        runtime_hooks=[],
+        excludes=[],
+    )
+    pyz_plugins = PYZ(a_plugins.pure, a_plugins.zipped_data)
+    exe_plugins = EXE(
+        pyz_plugins,
+        a_plugins.scripts,
+        exclude_binaries=True,
+        target_arch=os.environ.get('TARGET_ARCH', None),
+        name='picard-plugins',
+        debug=False,
+        strip=False,
+        upx=False,
+        icon='picard.ico',
+        version='win-version-info.txt',
+        console=True,
+        # macOS code signing
+        codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
+        entitlements_file='./scripts/package/entitlements.plist',
+    )
+
+    coll = COLLECT(
+        exe,
+        a.binaries,
+        a.zipfiles,
+        a.datas,
+        exe_plugins,
+        a_plugins.binaries,
+        a_plugins.zipfiles,
+        a_plugins.datas,
+        strip=False,
+        upx=False,
+        name='picard',
+    )
 
     if os_name == 'Darwin':
         info_plist = {
