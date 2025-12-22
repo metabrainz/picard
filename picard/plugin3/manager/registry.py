@@ -18,9 +18,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import re
+
 from picard import api_versions_tuple, log
 from picard.util import parse_versioning_scheme
 from picard.version import Version
+
+
+def _strip_to_first_digit(tag):
+    """Strip non-digit prefix to get version number."""
+    match = re.search(r'\d', tag)
+    return tag[match.start() :] if match else tag
 
 
 class PluginRegistryManager:
@@ -155,33 +163,24 @@ class PluginRegistryManager:
             list: Sorted tags (newest first)
         """
 
-        # Strip any non-digit prefix for version comparison
-        def strip_prefix(tag):
-            import re
-
-            match = re.search(r'\d', tag)
-            return tag[match.start() :] if match else tag
-
         if versioning_scheme == 'semver':
             # Use picard.version for proper semver sorting
             try:
-                return sorted(tags, key=lambda t: Version.from_string(strip_prefix(t)), reverse=True)
+                return sorted(tags, key=lambda t: Version.from_string(_strip_to_first_digit(t)), reverse=True)
             except Exception as e:
                 log.warning('Failed to parse semver tags: %s', e)
-                return sorted(tags, key=strip_prefix, reverse=True)
+                return sorted(tags, key=_strip_to_first_digit, reverse=True)
         elif versioning_scheme == 'calver':
             # CalVer: YYYY.MM.DD format, sort by stripped version (newest first)
-            return sorted(tags, key=strip_prefix, reverse=True)
+            return sorted(tags, key=_strip_to_first_digit, reverse=True)
         else:
             # Custom regex: try version parsing, fall back to natural sort
             def sort_key(tag):
-                stripped = strip_prefix(tag)
+                stripped = _strip_to_first_digit(tag)
                 try:
                     return (0, Version.from_string(stripped))
                 except Exception:
                     # Natural sort: split into text and number parts
-                    import re
-
                     parts = []
                     for part in re.split(r'(\d+)', stripped):
                         if part.isdigit():
@@ -236,16 +235,9 @@ class PluginRegistryManager:
         # Use version parsing for semver/calver, lexicographic for custom regex
         if versioning_scheme in ('semver', 'calver'):
             try:
-                # Strip any non-digit prefix for version comparison
-                def strip_prefix(tag):
-                    import re
-
-                    match = re.search(r'\d', tag)
-                    return tag[match.start() :] if match else tag
-
-                current_version = Version.from_string(strip_prefix(current_tag))
+                current_version = Version.from_string(_strip_to_first_digit(current_tag))
                 for tag in tags:
-                    tag_version = Version.from_string(strip_prefix(tag))
+                    tag_version = Version.from_string(_strip_to_first_digit(tag))
                     if tag_version > current_version:
                         return tag
                 return None
