@@ -70,19 +70,9 @@ class PluginInstaller:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
 
-        # Check blacklist before installing
+        # Initial blacklist check
         if not force_blacklisted:
-            # Create appropriate InstallablePlugin for blacklist checking
-            if local_path:
-                plugin = LocalInstallablePlugin(str(local_path), ref, self.manager._registry)
-            else:
-                plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
-
-            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-            if is_blacklisted:
-                from picard.plugin3.manager import PluginBlacklistedError
-
-                raise PluginBlacklistedError(url, blacklist_reason)
+            self._check_blacklist_initial(url, ref, local_path)
 
         # Install from local directory or remote URL
         if local_path:
@@ -93,6 +83,65 @@ class PluginInstaller:
         return self._install_from_remote_url(
             url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
         )
+
+    def _check_blacklist_initial(self, url, ref, local_path):
+        """Perform initial blacklist check before installation."""
+        if local_path:
+            plugin = LocalInstallablePlugin(str(local_path), ref, self.manager._registry)
+        else:
+            plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
+
+        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+        if is_blacklisted:
+            from picard.plugin3.manager import PluginBlacklistedError
+
+            raise PluginBlacklistedError(url, blacklist_reason)
+
+    def _check_blacklist_with_uuid(self, url, ref, manifest):
+        """Check blacklist with actual UUID from manifest."""
+        plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
+        plugin.plugin_uuid = manifest.uuid
+        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+        if is_blacklisted:
+            from picard.plugin3.manager import PluginBlacklistedError
+
+            raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
+
+    def _check_uuid_conflict(self, manifest, source_url, reinstall):
+        """Check for UUID conflicts with existing plugins."""
+        has_conflict, existing_plugin = self.manager._check_uuid_conflict(manifest, source_url)
+        if has_conflict and not reinstall:
+            existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
+            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
+            from picard.plugin3.manager import PluginUUIDConflictError
+
+            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, source_url)
+
+    def _check_already_installed(self, final_path, plugin_name, source_url, reinstall, discard_changes):
+        """Check if plugin is already installed and handle reinstall."""
+        if final_path.exists():
+            if not reinstall:
+                from picard.plugin3.manager import PluginAlreadyInstalledError
+
+                raise PluginAlreadyInstalledError(plugin_name, source_url)
+            self._handle_existing_plugin_reinstall(final_path, plugin_name, discard_changes)
+
+    def _create_and_register_plugin(self, plugin_name, manifest, enable_after_install):
+        """Create plugin instance and register it with manager."""
+        plugin = Plugin(self.manager._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
+        self.manager._plugins.append(plugin)
+        self.manager.plugin_installed.emit(plugin)
+
+        if enable_after_install:
+            try:
+                self.manager.enable_plugin(plugin)
+            except Exception as e:
+                log.error('Plugin installation failed during enable due to manifest error: %s', e)
+                final_path = self.manager._primary_plugin_dir / plugin_name
+                self.manager._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
+                raise
+
+        return plugin
 
     def _install_from_remote_url(self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install):
         """Install a plugin from a remote git URL."""
@@ -107,7 +156,6 @@ class PluginInstaller:
             # Reuse temp dir if it's already a git repo, otherwise remove it
             if temp_path.exists():
                 if not (temp_path / '.git').exists():
-                    # Not a git repo, remove it
                     shutil.rmtree(temp_path)
 
             # Clone or update temporary location with single-branch optimization
@@ -131,33 +179,15 @@ class PluginInstaller:
 
             # Check blacklist again with UUID
             if not force_blacklisted:
-                plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
-                plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
-                is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-                if is_blacklisted:
-                    from picard.plugin3.manager import PluginBlacklistedError
-
-                    raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
+                self._check_blacklist_with_uuid(url, ref, manifest)
 
             # Check for UUID conflicts with existing plugins from different sources
-            has_conflict, existing_plugin = self.manager._check_uuid_conflict(manifest, url)
-            if has_conflict and not reinstall:
-                existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
-                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-                from picard.plugin3.manager import PluginUUIDConflictError
-
-                raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
+            self._check_uuid_conflict(manifest, url, reinstall)
 
             final_path = self.manager._primary_plugin_dir / plugin_name
 
             # Check if already installed and handle reinstall
-            if final_path.exists():
-                if not reinstall:
-                    from picard.plugin3.manager import PluginAlreadyInstalledError
-
-                    raise PluginAlreadyInstalledError(plugin_name, url)
-
-                self._handle_existing_plugin_reinstall(final_path, plugin_name, discard_changes)
+            self._check_already_installed(final_path, plugin_name, url, reinstall, discard_changes)
 
             # Atomic rename from temp to final location
             temp_path.rename(final_path)
@@ -174,21 +204,8 @@ class PluginInstaller:
                 )
             )
 
-            # Add newly installed plugin to the plugins list
-            plugin = Plugin(self.manager._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
-            self.manager._plugins.append(plugin)
-            self.manager.plugin_installed.emit(plugin)
-
-            # Enable plugin if requested
-            if enable_after_install:
-                try:
-                    self.manager.enable_plugin(plugin)
-                except Exception as e:
-                    # Remove installed plugin on manifest validation failure during enable
-                    log.error('Plugin installation failed during enable due to manifest error: %s', e)
-                    self.manager._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
-                    # Re-raise the original error
-                    raise
+            # Create and register plugin
+            self._create_and_register_plugin(plugin_name, manifest, enable_after_install)
 
             return plugin_name
 
@@ -262,13 +279,7 @@ class PluginInstaller:
             raise
 
         # Check for UUID conflicts with existing plugins from different sources
-        has_conflict, existing_plugin = self.manager._check_uuid_conflict(manifest, str(local_path))
-        if has_conflict and not reinstall:
-            existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
-            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-            from picard.plugin3.manager import PluginUUIDConflictError
-
-            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, str(local_path))
+        self._check_uuid_conflict(manifest, str(local_path), reinstall)
 
         # Generate plugin directory name from sanitized name + UUID
         plugin_name = get_plugin_directory_name(manifest)
@@ -308,20 +319,8 @@ class PluginInstaller:
             )
         )
 
-        # Add newly installed plugin to the plugins list
-        plugin = Plugin(self.manager._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
-        self.manager._plugins.append(plugin)
-
-        # Enable plugin if requested
-        if enable_after_install:
-            try:
-                self.manager.enable_plugin(plugin)
-            except Exception as e:
-                # Remove installed plugin on manifest validation failure during enable
-                log.error('Local plugin installation failed during enable due to manifest error: %s', e)
-                self.manager._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
-                # Re-raise the original error
-                raise
+        # Create and register plugin
+        self._create_and_register_plugin(plugin_name, manifest, enable_after_install)
 
         log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
         return plugin_name
