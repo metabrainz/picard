@@ -982,49 +982,24 @@ class PluginManager(QObject):
             # Re-raise the original manifest error
             raise
 
-    def install_plugin(
-        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
-    ):
-        """Install a plugin from a git URL or local directory.
+    def _install_from_remote_url(self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install):
+        """Install a plugin from a remote git URL.
 
         Args:
-            url: Git repository URL or local directory path
-            ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
+            url: Git repository URL
+            ref: Git ref to checkout
             reinstall: If True, reinstall even if already exists
-            force_blacklisted: If True, bypass blacklist check (dangerous!)
+            force_blacklisted: If True, bypass blacklist check
             discard_changes: If True, discard uncommitted changes on reinstall
-            enable_after_install: If True, enable the plugin after successful installation
+            enable_after_install: If True, enable the plugin after installation
 
-        Raises:
-            PluginDirtyError: If reinstalling and plugin has uncommitted changes
+        Returns:
+            str: Plugin name
         """
-
-        # Check if url is a local directory
-        local_path = get_local_repository_path(url)
-
-        # Check blacklist before installing
-        if not force_blacklisted:
-            # Create appropriate InstallablePlugin for blacklist checking
-            if local_path:
-                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
-            else:
-                plugin = UrlInstallablePlugin(url, ref, self._registry)
-
-            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-            if is_blacklisted:
-                raise PluginBlacklistedError(url, blacklist_reason)
-
-        # Install from local directory or remote URL
-        if local_path:
-            return self._install_from_local_directory(
-                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
-            )
-
         # Preserve original ref if reinstalling and no ref specified
         ref = self._preserve_original_ref_if_needed(url, ref, reinstall)
 
         # Handle git URL - use temp dir in plugin directory for atomic rename
-
         url_hash = hash_string(url)
         temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
 
@@ -1146,6 +1121,48 @@ class PluginManager(QObject):
             # Clean up temp directory on failure
             self._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
+
+    def install_plugin(
+        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+    ):
+        """Install a plugin from a git URL or local directory.
+
+        Args:
+            url: Git repository URL or local directory path
+            ref: Git ref (branch/tag/commit) to checkout (ignored for local paths)
+            reinstall: If True, reinstall even if already exists
+            force_blacklisted: If True, bypass blacklist check (dangerous!)
+            discard_changes: If True, discard uncommitted changes on reinstall
+            enable_after_install: If True, enable the plugin after successful installation
+
+        Raises:
+            PluginDirtyError: If reinstalling and plugin has uncommitted changes
+        """
+
+        # Check if url is a local directory
+        local_path = get_local_repository_path(url)
+
+        # Check blacklist before installing
+        if not force_blacklisted:
+            # Create appropriate InstallablePlugin for blacklist checking
+            if local_path:
+                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
+            else:
+                plugin = UrlInstallablePlugin(url, ref, self._registry)
+
+            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
+            if is_blacklisted:
+                raise PluginBlacklistedError(url, blacklist_reason)
+
+        # Install from local directory or remote URL
+        if local_path:
+            return self._install_from_local_directory(
+                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
+            )
+
+        return self._install_from_remote_url(
+            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
+        )
 
     def _install_from_local_directory(
         self,
