@@ -295,6 +295,12 @@ class PluginManager(QObject):
     def registry(self):
         return self._registry
 
+    def _with_plugin_repo(self, plugin_path, callback):
+        """Execute callback with git repository context."""
+        backend = git_backend()
+        with backend.create_repository(plugin_path) as repo:
+            return callback(repo)
+
     def _cleanup_temp_directories(self):
         """Remove leftover temporary plugin directories from failed installs."""
         if not self._primary_plugin_dir or not self._primary_plugin_dir.exists():
@@ -876,9 +882,11 @@ class PluginManager(QObject):
         """
         log.warning('Rolling back plugin %s to commit %s', plugin.plugin_id, commit_id)
         try:
-            backend = git_backend()
-            with backend.create_repository(plugin.local_path) as repo:
+
+            def rollback_operation(repo):
                 repo.reset_to_commit(commit_id, hard=True)
+
+            self._with_plugin_repo(plugin.local_path, rollback_operation)
             log.debug('Git rollback completed for plugin %s', plugin.plugin_id)
         except Exception as git_error:
             log.error('Git rollback failed for plugin %s: %s', plugin.plugin_id, git_error)
