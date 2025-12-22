@@ -855,11 +855,11 @@ class PluginManager(QObject):
 
     def _create_ref_item_from_metadata(self, ref_name, commit, ref_type):
         """Create RefItem from metadata information."""
-        return self._updater._create_ref_item_from_metadata(ref_name, commit, ref_type)
+        return self._updater._create_ref_item(ref_name, commit, ref_type)
 
     def _create_ref_item_from_source(self, source, commit):
         """Create RefItem from PluginSourceGit with accurate ref type information."""
-        return self._updater._create_ref_item_from_source(source, commit)
+        return self._updater._create_ref_item(source.ref, commit, getattr(source, 'resolved_ref_type', None))
 
     def update_all_plugins(self):
         """Update all installed plugins."""

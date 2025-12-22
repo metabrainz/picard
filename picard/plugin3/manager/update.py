@@ -188,35 +188,15 @@ class PluginUpdater:
                 new_version or '',
                 old_commit,
                 new_commit,
-                self._create_ref_item_from_metadata(old_ref, old_commit, ref_type),
-                self._create_ref_item_from_source(source, new_commit),
+                self._create_ref_item(old_ref, old_commit, ref_type),
+                self._create_ref_item(source.ref, new_commit, getattr(source, 'resolved_ref_type', None)),
                 commit_date,
             )
 
         return self._with_plugin_state_management(plugin, perform_update)
 
-    def _create_ref_item_from_metadata(self, ref_name, commit, ref_type):
-        """Create RefItem from metadata information."""
-        if not ref_name and not commit:
-            return RefItem('')
-
-        if ref_type == 'tag':
-            item_ref_type = RefItem.Type.TAG
-            shortname = ref_name if ref_name else commit
-        elif ref_type == 'branch':
-            item_ref_type = RefItem.Type.BRANCH
-            shortname = ref_name if ref_name else commit
-        else:  # commit
-            item_ref_type = RefItem.Type.COMMIT
-            shortname = commit or ref_name
-
-        return RefItem(shortname=shortname, ref_type=item_ref_type, commit=commit)
-
-    def _create_ref_item_from_source(self, source, commit):
-        """Create RefItem from PluginSourceGit with accurate ref type information."""
-        ref_name = source.ref
-        ref_type_str = getattr(source, 'resolved_ref_type', None)
-
+    def _create_ref_item(self, ref_name, commit, ref_type_str):
+        """Create RefItem from ref information."""
         if not ref_name and not commit:
             return RefItem('')
 
