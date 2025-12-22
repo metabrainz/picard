@@ -89,21 +89,25 @@ class MockPluginManager(Mock):
 
         # Add search_registry_plugins method that delegates to the real implementation
         def search_registry_plugins_impl(query=None, category=None, trust_level=None):
+            from unittest.mock import Mock
+
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = PluginManager.__new__(PluginManager)
+            temp_manager = PluginManager(Mock())
             temp_manager._registry = self._registry
-            return PluginManager.search_registry_plugins(temp_manager, query, category, trust_level)
+            return temp_manager.search_registry_plugins(query, category, trust_level)
 
         self.search_registry_plugins = search_registry_plugins_impl
 
         # Add find_similar_plugin_ids method that delegates to the real implementation
         def find_similar_plugin_ids_impl(query, max_results=10):
+            from unittest.mock import Mock
+
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = object.__new__(PluginManager)
+            temp_manager = PluginManager(Mock())
             temp_manager._registry = self._registry
-            return PluginManager.find_similar_plugin_ids(temp_manager, query, max_results)
+            return temp_manager.find_similar_plugin_ids(query, max_results)
 
         self.find_similar_plugin_ids = find_similar_plugin_ids_impl
 
