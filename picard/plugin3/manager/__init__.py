@@ -49,9 +49,9 @@ from picard.extension_points import (
 from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
-from picard.git.utils import get_local_repository_path
 from picard.plugin3 import GitReferenceError
-from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
+from picard.plugin3.installable import UrlInstallablePlugin
+from picard.plugin3.manager.install import PluginInstaller, get_plugin_directory_name
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -229,25 +229,6 @@ class PluginUUIDConflictError(PluginManagerError):
         )
 
 
-def get_plugin_directory_name(manifest) -> str:
-    """Get plugin directory name from manifest (sanitized name + full UUID).
-
-    Args:
-        manifest: PluginManifest instance
-
-    Returns:
-        Directory name: <sanitized_name>_<uuid>
-        Example: my_plugin_f8bf81d7-c5e2-472b-ba96-62140cefc9e1
-    """
-    # Sanitize name: lowercase, alphanumeric + underscore
-    name = manifest.name()
-    sanitized = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
-    sanitized = sanitized[:50] if sanitized else 'plugin'
-
-    uuid_str = manifest.uuid if manifest.uuid else 'no_uuid'
-    return f'{sanitized}_{uuid_str}'
-
-
 class PluginManager(QObject):
     """Installs, loads and updates plugins from multiple plugin directories."""
 
@@ -274,13 +255,14 @@ class PluginManager(QObject):
         self._load_config()
 
         # Initialize registry for blacklist checking
-
         cache_dir = cache_folder()
         self._registry = PluginRegistry(cache_dir=cache_dir)
 
         # Initialize metadata manager
-
         self._metadata = PluginMetadataManager(self._registry)
+
+        # Initialize installer
+        self._installer = PluginInstaller(self)
 
         # Register cleanup and clean up any leftover temp directories
         if tagger:
@@ -982,146 +964,6 @@ class PluginManager(QObject):
             # Re-raise the original manifest error
             raise
 
-    def _install_from_remote_url(self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install):
-        """Install a plugin from a remote git URL.
-
-        Args:
-            url: Git repository URL
-            ref: Git ref to checkout
-            reinstall: If True, reinstall even if already exists
-            force_blacklisted: If True, bypass blacklist check
-            discard_changes: If True, discard uncommitted changes on reinstall
-            enable_after_install: If True, enable the plugin after installation
-
-        Returns:
-            str: Plugin name
-        """
-        # Preserve original ref if reinstalling and no ref specified
-        ref = self._preserve_original_ref_if_needed(url, ref, reinstall)
-
-        # Handle git URL - use temp dir in plugin directory for atomic rename
-        url_hash = hash_string(url)
-        temp_path = self._primary_plugin_dir / f'.tmp-plugin-{url_hash}'
-
-        try:
-            # Reuse temp dir if it's already a git repo, otherwise remove it
-            if temp_path.exists():
-                if not (temp_path / '.git').exists():
-                    # Not a git repo, remove it
-                    shutil.rmtree(temp_path)
-
-            # Clone or update temporary location with single-branch optimization
-            source = PluginSourceGit(url, ref)
-            try:
-                commit_id = source.sync(temp_path, single_branch=True)
-            except Exception as e:
-                # If sync fails and we're using a preserved ref, try fallback to default
-                if ref and reinstall:
-                    log.warning('Failed to sync with preserved ref "%s": %s. Falling back to default ref.', ref, e)
-                    source = PluginSourceGit(url, None)  # Use default ref
-                    commit_id = source.sync(temp_path, single_branch=True)
-                else:
-                    raise
-
-            # Read MANIFEST to get plugin ID
-            manifest = PluginValidation.read_and_validate_manifest(temp_path, url)
-
-            # Generate plugin directory name from sanitized name + UUID
-            plugin_name = get_plugin_directory_name(manifest)
-
-            # Check blacklist again with UUID
-            if not force_blacklisted:
-                plugin = UrlInstallablePlugin(url, ref, self._registry)
-                plugin.plugin_uuid = manifest.uuid  # Update with actual UUID from manifest
-                is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-                if is_blacklisted:
-                    raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
-
-            # Check for UUID conflicts with existing plugins from different sources
-            has_conflict, existing_plugin = self._check_uuid_conflict(manifest, url)
-            if has_conflict and not reinstall:
-                existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
-                existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-                raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, url)
-
-            final_path = self._primary_plugin_dir / plugin_name
-
-            # Check if already installed and handle reinstall
-            if final_path.exists():
-                if not reinstall:
-                    raise PluginAlreadyInstalledError(plugin_name, url)
-
-                # Find and unload existing plugin before reinstall
-                existing_plugin = None
-                for plugin in self._plugins:
-                    if plugin.local_path == final_path:
-                        existing_plugin = plugin
-                        break
-
-                if existing_plugin:
-                    # Force disable the plugin to ensure all extensions are unregistered
-                    # This is needed even if plugin is not in enabled list
-                    try:
-                        if existing_plugin.state != PluginState.DISABLED:
-                            existing_plugin.disable()
-                    except Exception:
-                        # If disable fails, continue anyway
-                        pass
-
-                    # Remove from enabled plugins list if present
-                    if existing_plugin.plugin_id in self._enabled_plugins:
-                        self._enabled_plugins.discard(existing_plugin.plugin_id)
-
-                    # Remove plugin from plugins list
-                    if existing_plugin in self.plugins:
-                        self.plugins.remove(existing_plugin)
-
-                # Check for uncommitted changes before removing
-                if not discard_changes:
-                    changes = GitOperations.check_dirty_working_dir(final_path)
-                    if changes:
-                        raise PluginDirtyError(plugin_name, changes)
-
-                self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
-
-            # Atomic rename from temp to final location
-            temp_path.rename(final_path)
-
-            # Store plugin metadata
-            self._metadata.save_plugin_metadata(
-                PluginMetadata(
-                    name=plugin_name,
-                    url=url,
-                    ref=source.resolved_ref,
-                    commit=commit_id,
-                    uuid=manifest.uuid,
-                    ref_type=source.resolved_ref_type,
-                )
-            )
-
-            # Add newly installed plugin to the plugins list
-            plugin = Plugin(self._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
-            self._plugins.append(plugin)
-            self.plugin_installed.emit(plugin)
-
-            # Enable plugin if requested
-            if enable_after_install:
-                try:
-                    self.enable_plugin(plugin)
-                except PluginManifestError as e:
-                    # Remove installed plugin on manifest validation failure during enable
-                    log.error('Plugin installation failed during enable due to manifest error: %s', e)
-                    self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
-                    # Re-raise the original error
-                    raise
-
-            return plugin_name
-
-        except Exception:
-            # Clean up temp directory on failure
-            self._safe_remove_directory(temp_path, "temp directory after installation failure")
-            raise
-
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
     ):
@@ -1138,29 +980,7 @@ class PluginManager(QObject):
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
-
-        # Check if url is a local directory
-        local_path = get_local_repository_path(url)
-
-        # Check blacklist before installing
-        if not force_blacklisted:
-            # Create appropriate InstallablePlugin for blacklist checking
-            if local_path:
-                plugin = LocalInstallablePlugin(str(local_path), ref, self._registry)
-            else:
-                plugin = UrlInstallablePlugin(url, ref, self._registry)
-
-            is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-            if is_blacklisted:
-                raise PluginBlacklistedError(url, blacklist_reason)
-
-        # Install from local directory or remote URL
-        if local_path:
-            return self._install_from_local_directory(
-                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
-            )
-
-        return self._install_from_remote_url(
+        return self._installer.install_plugin(
             url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
         )
 
