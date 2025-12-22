@@ -21,9 +21,10 @@
 from typing import NamedTuple
 
 from picard import log
-from picard.git.backend import GitRefType
+from picard.git.backend import GitRef, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
+from picard.git.ref_utils import find_git_ref
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.plugin import PluginSourceGit, PluginState, short_commit_id
 from picard.plugin3.plugin_metadata import PluginMetadata
@@ -236,8 +237,6 @@ class PluginUpdater:
         self.manager._ensure_plugin_url(plugin, 'switch ref')
 
         # Convert GitRef to string for GitOperations (which still expects strings)
-        from picard.git.backend import GitRef
-
         ref_str = ref.shortname if isinstance(ref, GitRef) else ref
 
         def perform_switch():
@@ -274,6 +273,161 @@ class PluginUpdater:
 
         return updates
 
+    def _fetch_plugin_refs(self, repo, skip_fetch):
+        """Fetch remote refs for plugin repository."""
+        if not skip_fetch:
+            backend = git_backend()
+            callbacks = backend.create_remote_callbacks()
+            for remote in repo.get_remotes():
+                repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
+
+    def _detect_installation_type(self, plugin, metadata, repo, current_commit):
+        """Detect whether plugin was installed from tag, branch, or commit."""
+        is_tag_installation = False
+        resolved_ref_info = ""
+
+        if metadata.ref_type == 'tag':
+            is_tag_installation = True
+            resolved_ref_info = f"tag {metadata.ref}"
+        elif metadata.ref_type == 'branch':
+            resolved_ref_info = f"branch {metadata.ref}"
+        elif metadata.ref_type is None and metadata.ref:
+            log.debug("Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref)
+
+            for r in repo.list_references():
+                if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
+                    is_tag_installation = True
+                    resolved_ref_info = f"tag {metadata.ref}"
+                    break
+
+            if not is_tag_installation:
+                for r in repo.list_references():
+                    if r.ref_type == GitRefType.TAG:
+                        try:
+                            tag_commit = repo.revparse_to_commit(r.name)
+                            if tag_commit.id == current_commit:
+                                is_tag_installation = True
+                                resolved_ref_info = f"commit {metadata.ref} (resolves to tag {r.shortname})"
+                                break
+                        except Exception:
+                            continue
+
+            if not is_tag_installation:
+                resolved_ref_info = f"commit/branch {metadata.ref}"
+
+        if is_tag_installation and not plugin.has_versioning(self.manager._registry, is_tag_installation):
+            log.debug(
+                "Plugin %s: originally installed from %s, but no versioning support - skipping tag-based updates",
+                plugin.plugin_id,
+                resolved_ref_info,
+            )
+            is_tag_installation = False
+
+        return is_tag_installation, resolved_ref_info
+
+    def _check_tag_updates(self, plugin, metadata, repo, current_commit, is_tag_installation, resolved_ref_info, ref):
+        """Check for tag-based updates and find current tag."""
+        current_is_tag = False
+        current_tag = None
+        new_ref = None
+
+        if is_tag_installation:
+            log.debug(
+                "Plugin %s: originally installed from %s, checking if current commit matches any tag",
+                plugin.plugin_id,
+                resolved_ref_info,
+            )
+            for r in repo.list_references():
+                if r.ref_type == GitRefType.TAG:
+                    try:
+                        tag_commit = repo.revparse_to_commit(r.name)
+                        if tag_commit.id == current_commit:
+                            current_is_tag = True
+                            current_tag = r.shortname
+                            log.debug(
+                                "Plugin %s: found matching tag %s for current commit", plugin.plugin_id, current_tag
+                            )
+                            break
+                    except Exception as e:
+                        log.debug("Failed to check tag %s for commit match: %s", r.name, e)
+                        continue
+        else:
+            log.debug(
+                "Plugin %s: originally installed from %s, skipping tag-based updates",
+                plugin.plugin_id,
+                resolved_ref_info,
+            )
+
+        if current_is_tag and current_tag:
+            log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
+            source = PluginSourceGit(metadata.url, ref)
+            latest_tag = source._find_latest_tag(repo, current_tag)
+            if latest_tag and latest_tag != current_tag:
+                log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
+                new_ref = latest_tag
+            else:
+                log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
+
+        return current_is_tag, current_tag, new_ref
+
+    def _resolve_ref_to_commit(self, repo, ref):
+        """Resolve a git reference to commit ID and date."""
+        try:
+            git_ref = find_git_ref(repo, f'origin/{ref}')
+            if not git_ref:
+                git_ref = find_git_ref(repo, ref)
+
+            if git_ref:
+                obj = repo.revparse_single(git_ref.name)
+            elif not ref.startswith('origin/') and not ref.startswith('refs/'):
+                try:
+                    obj = repo.revparse_single(f'refs/tags/{ref}')
+                except GitReferenceError:
+                    try:
+                        obj = repo.revparse_single(f'origin/{ref}')
+                    except GitReferenceError:
+                        obj = repo.revparse_single(ref)
+            elif ref.startswith('origin/'):
+                obj = repo.revparse_single(ref)
+            else:
+                obj = repo.revparse_single(ref)
+
+            commit = repo.peel_to_commit(obj)
+            return commit.id, repo.get_commit_date(commit.id)
+        except GitReferenceError:
+            return None, None
+
+    def _create_update_check(
+        self,
+        plugin,
+        current_commit,
+        latest_commit,
+        latest_commit_date,
+        current_is_tag,
+        current_tag,
+        is_detached,
+        old_ref,
+        new_ref,
+    ):
+        """Create UpdateCheck result for plugin update."""
+        if current_is_tag and current_tag:
+            display_old_ref = current_tag
+        elif is_detached:
+            display_old_ref = short_commit_id(current_commit)
+        else:
+            display_old_ref = old_ref
+
+        display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
+
+        return UpdateCheck(
+            plugin_id=plugin.plugin_id,
+            old_commit=current_commit,
+            new_commit=latest_commit,
+            commit_date=latest_commit_date,
+            old_ref=display_old_ref,
+            new_ref=display_new_ref,
+        )
+
     def _check_single_plugin_update(self, plugin, metadata, skip_fetch):
         """Check update status for a single plugin."""
         try:
@@ -281,193 +435,49 @@ class PluginUpdater:
             def analyze_update(repo):
                 current_commit = repo.get_head_target()
 
-                # Fetch without updating (suppress progress output) - unless skipped
-                if not skip_fetch:
-                    backend = git_backend()
-                    callbacks = backend.create_remote_callbacks()
-                    for remote in repo.get_remotes():
-                        # Fetch all refs including tags in a single operation
-                        repo.fetch_remote_with_tags(remote, None, callbacks._callbacks)
+                self._fetch_plugin_refs(repo, skip_fetch)
 
-                # Get current ref from repository instead of metadata
                 old_ref, is_detached = self.manager._get_current_ref_for_updates(repo, metadata)
                 ref = old_ref
 
-                # Check if currently on a tag (check current commit, not ref)
-                current_is_tag = False
-                current_tag = None
+                is_tag_installation, resolved_ref_info = self._detect_installation_type(
+                    plugin, metadata, repo, current_commit
+                )
 
-                # Use stored ref_type to determine if plugin was installed from a tag
-                # For existing plugins without ref_type, fall back to checking if ref matches a tag
-                is_tag_installation = False
-                resolved_ref_info = ""
-
-                if metadata.ref_type == 'tag':
-                    is_tag_installation = True
-                    resolved_ref_info = f"tag {metadata.ref}"
-                elif metadata.ref_type == 'branch':
-                    resolved_ref_info = f"branch {metadata.ref}"
-                elif metadata.ref_type is None and metadata.ref:
-                    # Fallback for existing plugins: check what the ref actually resolves to
-                    log.debug(
-                        "Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref
-                    )
-
-                    # Check if ref matches a tag name
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
-                            is_tag_installation = True
-                            resolved_ref_info = f"tag {metadata.ref}"
-                            break
-
-                    if not is_tag_installation:
-                        # Check if current commit matches any tag
-                        for r in repo.list_references():
-                            if r.ref_type == GitRefType.TAG:
-                                try:
-                                    tag_commit = repo.revparse_to_commit(r.name)
-                                    if tag_commit.id == current_commit:
-                                        is_tag_installation = True
-                                        resolved_ref_info = f"commit {metadata.ref} (resolves to tag {r.shortname})"
-                                        break
-                                except Exception:
-                                    continue
-
-                    if not is_tag_installation:
-                        resolved_ref_info = f"commit/branch {metadata.ref}"
-
-                # Check if plugin supports versioning before doing tag-based updates
-                if is_tag_installation and not plugin.has_versioning(self.manager._registry, is_tag_installation):
-                    log.debug(
-                        "Plugin %s: originally installed from %s, but no versioning support - skipping tag-based updates",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-                    is_tag_installation = False
-
-                # Check if plugin is pinned to a commit (direct hash or relative reference)
-                is_commit_pin = self.manager._is_commit_pin(metadata)
-                if is_commit_pin:
-                    log.debug(
-                        "Plugin %s: pinned to commit %s - skipping updates",
-                        plugin.plugin_id,
-                        metadata.ref,
-                    )
+                if self.manager._is_commit_pin(metadata):
+                    log.debug("Plugin %s: pinned to commit %s - skipping updates", plugin.plugin_id, metadata.ref)
                     return None
 
-                if is_tag_installation:
-                    log.debug(
-                        "Plugin %s: originally installed from %s, checking if current commit matches any tag",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-                    for r in repo.list_references():
-                        if r.ref_type == GitRefType.TAG:
-                            try:
-                                tag_commit = repo.revparse_to_commit(r.name)
+                current_is_tag, current_tag, new_ref = self._check_tag_updates(
+                    plugin, metadata, repo, current_commit, is_tag_installation, resolved_ref_info, ref
+                )
+                if new_ref:
+                    ref = new_ref
+                elif current_is_tag and not new_ref:
+                    return None
 
-                                if tag_commit.id == current_commit:
-                                    current_is_tag = True
-                                    current_tag = r.shortname
-                                    log.debug(
-                                        "Plugin %s: found matching tag %s for current commit",
-                                        plugin.plugin_id,
-                                        current_tag,
-                                    )
-                                    break
-                            except Exception as e:
-                                log.debug("Failed to check tag %s for commit match: %s", r.name, e)
-                                continue
-                else:
-                    log.debug(
-                        "Plugin %s: originally installed from %s, skipping tag-based updates",
-                        plugin.plugin_id,
-                        resolved_ref_info,
-                    )
-
-                # If on a tag, check for newer version tag
-                new_ref = None
-                if current_is_tag and current_tag:
-                    log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
-                    source = PluginSourceGit(metadata.url, ref)
-                    latest_tag = source._find_latest_tag(repo, current_tag)
-                    if latest_tag and latest_tag != current_tag:
-                        # Found newer tag - log in concise format
-                        log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
-                        ref = latest_tag
-                        new_ref = latest_tag
-                    else:
-                        # Already on latest tag, no update needed
-                        log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
-                        return None
-
-                # Resolve ref using GitRef lookup first, then fallback
-                # For update checking, prefer remote branches over local ones
-                try:
-                    from picard.git.ref_utils import find_git_ref
-
-                    # For branches, try origin/ version first to get latest from remote
-                    git_ref = find_git_ref(repo, f'origin/{ref}')
-                    if not git_ref:
-                        # Fall back to local ref (for tags or local-only branches)
-                        git_ref = find_git_ref(repo, ref)
-
-                    if git_ref:
-                        obj = repo.revparse_single(git_ref.name)
-                    elif not ref.startswith('origin/') and not ref.startswith('refs/'):
-                        # Fallback: try refs/tags/ first, then origin/ for branches
-                        try:
-                            obj = repo.revparse_single(f'refs/tags/{ref}')
-                        except GitReferenceError:
-                            # Not a tag, try origin/ prefix for branches
-                            try:
-                                obj = repo.revparse_single(f'origin/{ref}')
-                            except GitReferenceError:
-                                # Fall back to original ref (might be commit hash)
-                                obj = repo.revparse_single(ref)
-                    elif ref.startswith('origin/'):
-                        # Handle origin/ refs - these are branches, not tags
-                        obj = repo.revparse_single(ref)
-                    else:
-                        obj = repo.revparse_single(ref)
-
-                    # Peel annotated tags to get the actual commit
-                    commit = repo.peel_to_commit(obj)
-
-                    latest_commit = commit.id
-                    # Get commit date using backend
-                    latest_commit_date = repo.get_commit_date(commit.id)
-                except GitReferenceError:
-                    # Ref not found, skip this plugin
+                latest_commit, latest_commit_date = self._resolve_ref_to_commit(repo, ref)
+                if not latest_commit:
                     return None
 
                 if current_commit != latest_commit:
-                    # For display: use tag names if available, otherwise commit hashes for detached HEAD
-                    if current_is_tag and current_tag:
-                        display_old_ref = current_tag
-                    elif is_detached:
-                        display_old_ref = short_commit_id(current_commit)
-                    else:
-                        display_old_ref = old_ref
-
-                    display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
-
-                    return UpdateCheck(
-                        plugin_id=plugin.plugin_id,
-                        old_commit=current_commit,
-                        new_commit=latest_commit,
-                        commit_date=latest_commit_date,
-                        old_ref=display_old_ref,
-                        new_ref=display_new_ref,
+                    return self._create_update_check(
+                        plugin,
+                        current_commit,
+                        latest_commit,
+                        latest_commit_date,
+                        current_is_tag,
+                        current_tag,
+                        is_detached,
+                        old_ref,
+                        new_ref,
                     )
 
                 return None
 
             return self.manager._with_plugin_repo(plugin.local_path, analyze_update)
         except KeyError:
-            # Ref not found, skip this plugin (expected for some cases)
             return None
         except Exception as e:
-            # Log unexpected errors but continue with other plugins
             log.warning("Failed to check updates for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             return None
