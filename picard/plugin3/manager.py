@@ -301,6 +301,12 @@ class PluginManager(QObject):
         with backend.create_repository(plugin_path) as repo:
             return callback(repo)
 
+    def _get_plugin_uuid_and_metadata(self, plugin):
+        """Get plugin UUID and metadata in one call."""
+        uuid = PluginValidation.get_plugin_uuid(plugin)
+        metadata = self._metadata.get_plugin_metadata(uuid)
+        return uuid, metadata
+
     def _cleanup_temp_directories(self):
         """Remove leftover temporary plugin directories from failed installs."""
         if not self._primary_plugin_dir or not self._primary_plugin_dir.exists():
@@ -788,8 +794,7 @@ class PluginManager(QObject):
         self._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
 
         # Update metadata with new ref
-        uuid = PluginValidation.get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
+        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
         if metadata:
             # Update existing metadata
             metadata.ref = new_git_ref.shortname
@@ -1400,8 +1405,7 @@ class PluginManager(QObject):
         """
         self._ensure_plugin_url(plugin, 'update')
 
-        uuid = PluginValidation.get_plugin_uuid(plugin)
-        metadata = self._metadata.get_plugin_metadata(uuid)
+        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
 
         # Check for uncommitted changes
         if not discard_changes:
@@ -1996,7 +2000,7 @@ class PluginManager(QObject):
 
     def enable_plugin(self, plugin: Plugin):
         """Enable a plugin and save to config."""
-        uuid = PluginValidation.get_plugin_uuid(plugin)
+        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
         assert plugin.state is not None
         log.debug('Enabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
@@ -2046,7 +2050,7 @@ class PluginManager(QObject):
 
     def disable_plugin(self, plugin: Plugin):
         """Disable a plugin and save to config."""
-        uuid = PluginValidation.get_plugin_uuid(plugin)
+        uuid, metadata = self._get_plugin_uuid_and_metadata(plugin)
         assert plugin.state is not None
         log.debug('Disabling plugin %s (UUID %s, current state: %s)', plugin.plugin_id, uuid, plugin.state.value)
 
