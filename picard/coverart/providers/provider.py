@@ -44,10 +44,10 @@ class ProviderOptions(OptionsPage):
     It will append the provider's options page as a child of the main
     cover art's options page.
 
-    The property _options_ui must be set to a valid Qt Ui class
+    The property _options_ui can be set to a valid Qt UI class
     containing the layout and widgets for defined provider's options.
 
-    A specific provider class (inhereting from CoverArtProvider) has
+    A specific provider class (inheriting from CoverArtProvider) has
     to set the subclassed ProviderOptions as OPTIONS property.
     Options will be registered at the same time as the provider.
 
@@ -65,8 +65,9 @@ class ProviderOptions(OptionsPage):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.ui = self._options_ui()
-        self.ui.setupUi(self)
+        if options_ui := getattr(self, '_options_ui', None):
+            self.ui = options_ui()
+            self.ui.setupUi(self)
 
 
 class CoverArtProviderMetaClass(type):
