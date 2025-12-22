@@ -390,7 +390,10 @@ class TestPluginInstall(PicardTestCase):
             # Mock only the metadata part of config
             test_config.setting = {'plugins3_metadata': {}, 'plugins3_enabled_plugins': []}
 
-            with patch('picard.plugin3.manager.get_config', return_value=test_config):
+            with (
+                patch('picard.plugin3.manager.lifecycle.get_config', return_value=test_config),
+                patch('picard.plugin3.manager.clean.get_config', return_value=test_config),
+            ):
                 # Uninstall with purge
                 manager.uninstall_plugin(mock_plugin, purge=True)
 
@@ -423,7 +426,7 @@ class TestPluginInstall(PicardTestCase):
         mock_config_empty.beginGroup = Mock()
         mock_config_empty.endGroup = Mock()
 
-        with patch('picard.plugin3.manager.get_config', return_value=mock_config_empty):
+        with patch('picard.plugin3.manager.lifecycle.get_config', return_value=mock_config_empty):
             self.assertFalse(manager.plugin_has_saved_options(mock_plugin))
 
         # Mock config with options
@@ -432,7 +435,7 @@ class TestPluginInstall(PicardTestCase):
         mock_config_with_options.beginGroup = Mock()
         mock_config_with_options.endGroup = Mock()
 
-        with patch('picard.plugin3.manager.get_config', return_value=mock_config_with_options):
+        with patch('picard.plugin3.manager.lifecycle.get_config', return_value=mock_config_with_options):
             self.assertTrue(manager.plugin_has_saved_options(mock_plugin))
 
         # Test plugin without manifest/UUID

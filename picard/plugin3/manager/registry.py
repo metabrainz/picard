@@ -142,7 +142,7 @@ class PluginRegistryManager:
 
     def _fetch_version_tags(self, url, versioning_scheme):
         """Fetch and filter version tags from repository."""
-        return self.manager._fetch_version_tags_impl(url, versioning_scheme)
+        return self._fetch_version_tags_impl(url, versioning_scheme)
 
     def _sort_tags(self, tags, versioning_scheme):
         """Sort tags based on versioning scheme.

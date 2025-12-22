@@ -55,19 +55,23 @@ class MockPluginManager(Mock):
 
         # Add select_ref_for_plugin method that delegates to the real implementation
         def select_ref_for_plugin_impl(plugin):
+            from unittest.mock import Mock
+
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = PluginManager.__new__(PluginManager)
-            temp_manager._fetch_version_tags = self._fetch_version_tags
-            return PluginManager.select_ref_for_plugin(temp_manager, plugin)
+            temp_manager = PluginManager(Mock())
+            temp_manager._registry_manager._fetch_version_tags_impl = self._fetch_version_tags
+            return temp_manager.select_ref_for_plugin(plugin)
 
         self.select_ref_for_plugin = select_ref_for_plugin_impl
 
         # Add get_registry_plugin_latest_version method that delegates to the real implementation
         def get_registry_plugin_latest_version_impl(plugin_data):
+            from unittest.mock import Mock
+
             from picard.plugin3.manager import PluginManager
 
-            temp_manager = PluginManager.__new__(PluginManager)
+            temp_manager = PluginManager(Mock())
             temp_manager._fetch_version_tags = self._fetch_version_tags
             return PluginManager.get_registry_plugin_latest_version(temp_manager, plugin_data)
 
