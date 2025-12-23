@@ -102,6 +102,7 @@ class MainAction(str, Enum):
     SUBMIT_FILE_AS_RELEASE = 'submit_file_as_release_action'
     SUPPORT_FORUM = 'support_forum_action'
     TAGS_FROM_FILENAMES = 'tags_from_filenames_action'
+    TRASH = 'trash_action'
     TRACK_SEARCH = 'track_search_action'
     VIEW_HISTORY = 'view_history_action'
     VIEW_INFO = 'view_info_action'

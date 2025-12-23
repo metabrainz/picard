@@ -241,6 +241,19 @@ class MainPanel(QtWidgets.QSplitter):
         else:
             self.update_current_view()
 
+    def trash_files(self, files):
+        self._ignore_selection_changes = True
+        self.tagger.trash_files(files)
+        self._ignore_selection_changes = False
+
+        view = self._selected_view
+        index = view.currentIndex()
+        if index.isValid():
+            # select the current index
+            view.setCurrentIndex(index)
+        else:
+            self.update_current_view()
+
     def set_sorting(self, sort=True):
         if sort != self._sort_enabled:
             self._sort_enabled = sort

@@ -111,6 +111,10 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             N_("Remove"),
             'list-remove',
         ),
+        MainAction.TRASH: ToolbarButtonDesc(
+            N_("Move to trash"),
+            QtWidgets.QStyle.StandardPixmap.SP_TrashIcon,
+        ),
         MainAction.SUBMIT_ACOUSTID: ToolbarButtonDesc(
             N_("Submit AcoustIDs"),
             'acoustid-fingerprinter',
@@ -181,7 +185,11 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             action_id = data
             button = self.TOOLBAR_BUTTONS[action_id]
             list_item.setText(_(button.label))
-            list_item.setIcon(icontheme.lookup(button.icon, icontheme.ICON_SIZE_MENU))
+            if isinstance(button.icon, QtWidgets.QStyle.StandardPixmap):
+                icon = self.style().standardIcon(button.icon)
+            else:
+                icon = icontheme.lookup(button.icon, icontheme.ICON_SIZE_MENU)
+            list_item.setIcon(icon)
             list_item.setData(QtCore.Qt.ItemDataRole.UserRole, action_id)
         else:
             list_item.setText(self.SEPARATOR)

@@ -47,7 +47,10 @@
 
 from functools import partial
 
-from PyQt6 import QtGui
+from PyQt6 import (
+    QtGui,
+    QtWidgets,
+)
 
 from picard.browser import addrelease
 from picard.config import get_config
@@ -184,6 +187,17 @@ def _create_save_action(parent):
     action.setShortcut(QtGui.QKeySequence.StandardKey.Save)
     action.setEnabled(False)
     action.triggered.connect(parent.save)
+    return action
+
+
+@add_action(MainAction.TRASH)
+def _create_trash_action(parent):
+    icon = parent.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_TrashIcon)
+    action = QtGui.QAction(icon, _("Move to &trash"), parent)
+    action.setStatusTip(_("Move files to trash"))
+    action.setShortcut(QtGui.QKeySequence(_("Shift+Del")))
+    action.setEnabled(False)
+    action.triggered.connect(parent.trash_files)
     return action
 
 
