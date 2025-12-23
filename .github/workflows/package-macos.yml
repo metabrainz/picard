@@ -11,11 +11,9 @@ jobs:
       matrix:
         setup:
         - macos-deployment-target: '11.0'
-          runner: 'macos-14'
-          target-arch: 'x86_64'
+          runner: 'macos-15-intel'
         - macos-deployment-target: '11.0'
-          runner: 'macos-14'
-          target-arch: 'arm64'
+          runner: 'macos-15'
       fail-fast: false
     env:
       DISCID_VERSION: 0.6.5
@@ -23,7 +21,6 @@ jobs:
       FPCALC_VERSION: 1.6.0
       FPCALC_SHA256SUM: 31f654cce8308fcb22869d043770eb66afffed95e8a548fd877f0e670c16d7ec
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-target }}
-      TARGET_ARCH: ${{ matrix.setup.target-arch }}
       CODESIGN: 0
     steps:
     - uses: actions/checkout@v6
@@ -33,11 +30,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
-        python-version: '>=3.13.5 <3.14'
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements-build.txt
-          scripts/package/requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
+        python-version: '3.14'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
@@ -46,12 +41,13 @@ jobs:
         RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
         BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+        echo "TARGET_ARCH=$(uname -m)" >> $GITHUB_ENV
         mkdir artifacts
         python3 -m pip install --upgrade pip setuptools wheel
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
-        python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+        uv run python setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install libgit2
       run: |
         brew install libgit2
@@ -60,9 +56,7 @@ jobs:
         echo "LDFLAGS=-L$(brew --prefix)/lib" >> $GITHUB_ENV
     - name: Install dependencies
       run: |
-        arch -${TARGET_ARCH} pip install -r requirements-build.txt
-        arch -${TARGET_ARCH} pip install --no-binary "charset-normalizer,PyYAML" -r scripts/package/requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-        arch -${TARGET_ARCH} pip install zstandard
+        uv sync --group build --group dev --extra plugins
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Prepare code signing certificate
@@ -80,7 +74,7 @@ jobs:
         CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
     - name: Build macOS app
       run: |
-        arch -${TARGET_ARCH} ./scripts/package/macos-package-app.sh
+        uv run ./scripts/package/macos-package-app.sh
         rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
@@ -91,5 +85,5 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v5
       with:
-        name: macos-app-${{ matrix.setup.macos-deployment-target }}-${{ matrix.setup.target-arch }}
+        name: macos-app-${{ matrix.setup.macos-deployment-target }}-${{ env.TARGET_ARCH }}
         path: artifacts/

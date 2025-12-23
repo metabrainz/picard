@@ -26,11 +26,9 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
-        python-version: '>=3.13.5 <3.14'
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements-build.txt
-          scripts/package/requirements-win.txt
+        python-version: '3.14'
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 `
@@ -62,31 +60,27 @@ jobs:
       shell: pwsh
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-build.txt
-        pip install -r scripts/package/requirements-win.txt
-        pip install zstandard
+        uv sync --group build --group dev --extra plugins
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
+        uv run python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
       run: |
-        pip install pytest
-        pytest --verbose
+        uv run pytest --verbose
     - name: Prepare clean build environment
       run: |
         Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
-        python setup.py clean
+        uv run python setup.py clean
     - name: Build
       run: |
-        python setup.py build --build-number=$BuildNumber --disable-locales
-        python setup.py build_locales
-        python setup.py build_ext -i
-        pyinstaller --noconfirm --clean picard.spec
+        uv run python setup.py build --build-number=$BuildNumber --disable-locales
+        uv run python setup.py build_locales
+        uv run python setup.py build_ext -i
+        uv run pyinstaller --noconfirm --clean picard.spec
         If ($env:PICARD_BUILD_PORTABLE -ne "1") {
           dist\picard\_internal\fpcalc -version
         }
