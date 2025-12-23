@@ -101,7 +101,11 @@ class PluginLifecycleManager:
                 except Exception:
                     # If enable fails, ensure plugin is in disabled state
                     if plugin.state == PluginState.LOADED:
-                        plugin.disable()
+                        try:
+                            plugin.disable()
+                        except Exception:
+                            # If disable also fails, force state to disabled
+                            plugin.state = PluginState.DISABLED
                     raise
 
         # Ensure UUID mapping is set for extension points
