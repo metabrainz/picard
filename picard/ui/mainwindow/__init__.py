@@ -43,8 +43,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
 from collections import namedtuple
 from contextlib import suppress
 from copy import deepcopy
@@ -213,6 +211,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.player.error.connect(self._on_player_error)
 
         self.script_editor_dialog = None
+
+        # Check once if moving files to trash is supported by Qt.
+        # QFile.supportsMoveToTrash is only supported in Qt 6.9 or later.
+        self._supports_move_to_trash = (
+            not hasattr(QtCore.QFile, 'supportsMoveToTrash') or QtCore.QFile.supportsMoveToTrash()
+        )
 
         self._check_and_repair_naming_scripts()
         self._check_and_repair_profiles()
@@ -833,6 +837,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             '-',
             MainAction.SAVE,
             MainAction.SUBMIT_ACOUSTID,
+            MainAction.TRASH,
             '-',
             MainAction.LOAD_SESSION,
             # Recent Sessions submenu
@@ -1219,6 +1224,27 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             proceed_with_save = True
         if proceed_with_save:
             self.tagger.save(self.selected_objects)
+
+    def trash_files(self):
+        files = self.tagger.get_files_from_objects(self.selected_objects)
+        if not files:
+            return
+
+        file_count = len(files)
+        message = ngettext(
+            'Move "{filename}" to trash?',
+            'Move {count} files to trash?',
+            file_count,
+        )
+        result = QtWidgets.QMessageBox.warning(
+            self,
+            _('Move files to trash'),
+            message.format(count=file_count, filename=os.path.basename(files[0].filename)),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+        )
+
+        if result == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.panel.trash_files(files)
 
     def _get_default_session_filename_from_metadata(self) -> str | None:
         """Gets a default session filename based on the first track's artist metadata.
@@ -1614,7 +1640,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 if can_analyze and can_autotag and can_refresh and can_remove and can_save and can_submit:
                     break
 
+        can_trash = can_remove and have_files and self._supports_move_to_trash
+
         self.enable_action(MainAction.REMOVE, can_remove)
+        self.enable_action(MainAction.TRASH, can_trash)
         self.enable_action(MainAction.SAVE, can_save)
         self.enable_action(MainAction.VIEW_INFO, can_view_info)
         self.enable_action(MainAction.ANALYZE, can_analyze)

@@ -287,6 +287,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             '-',
             MainAction.SAVE,
             MainAction.REMOVE,
+            MainAction.TRASH,
         )
 
         if isinstance(obj, Album) and not isinstance(obj, NatAlbum) and obj.loaded:
