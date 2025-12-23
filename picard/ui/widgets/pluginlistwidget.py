@@ -374,13 +374,6 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 except Exception as e:
                     # Show error dialog to user
                     log.error("Failed to toggle plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-
-                    # If enable failed, force plugin back to disabled state
-                    if target_enabled and plugin.state == PluginState.LOADED:
-                        try:
-                            self.plugin_manager.disable_plugin(plugin)
-                        except Exception as disable_error:
-                            log.error("Failed to force disable plugin %s: %s", plugin.plugin_id, disable_error)
                     action = "enable" if target_enabled else "disable"
                     QtWidgets.QMessageBox.critical(
                         self,
