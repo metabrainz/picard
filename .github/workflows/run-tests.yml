@@ -8,15 +8,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13, ubuntu-latest, windows-2022]
+        os: [macos-15-intel, ubuntu-latest, windows-2022]
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
-    env:
-      CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
+      id: setup-python
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
@@ -47,7 +46,7 @@ jobs:
       run: |
         python setup.py build_locales -i
         pip install pytest pytest-randomly pytest-cov
-        pytest --verbose --cov=picard --cov-report xml:coverage.xml test
+        pytest --verbose --cov=picard --cov-report html:htmlcov test
     - name: Test python-libdiscid (Linux)
       if: runner.os == 'Linux'
       run: |
@@ -58,11 +57,11 @@ jobs:
         pip install python-libdiscid
         python -c "from picard.disc import discid_version; print(discid_version)"
         pytest --verbose test/test_disc.py
-    - name: Submit code coverage to Codacy
-      if: env.CODACY_PROJECT_TOKEN
-      run: |
-        pip install codacy-coverage
-        python-codacy-coverage -r coverage.xml
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v5
+      with:
+        name: coverage-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
+        path: htmlcov/
 
   test-requirements:
     runs-on: ${{ matrix.os }}
@@ -101,7 +100,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13, ubuntu-latest, windows-latest]
+        os: [macos-15-intel, ubuntu-latest, windows-latest]
         python-version: ['3.8', '3.14']
 
     steps:
