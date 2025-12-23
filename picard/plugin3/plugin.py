@@ -566,14 +566,14 @@ class Plugin:
     local_path: Path | None = None
     remote_url: str | None = None
     ref: str | None = None
-    name: str | None = None
     module_name: str | None = None
     manifest: PluginManifest | None = None
     state: PluginState | None = None
     _module: types.ModuleType | None = None
 
-    def __init__(self, plugins_dir: Path, plugin_name: str, uuid: str | None = None):
-        self.plugin_id = plugin_name
+    def __init__(self, plugins_dir: Path, plugin_id: str, uuid: str | None = None):
+        assert plugin_id, "Plugin ID cannot be empty!"
+        self.plugin_id = plugin_id
         self.module_name = f'picard.plugins.{self.plugin_id}'
         self.local_path = plugins_dir.joinpath(self.plugin_id)
         self.state = PluginState.DISCOVERED
@@ -746,3 +746,15 @@ class Plugin:
                 del sys.modules[module_name]
 
         self.state = PluginState.DISABLED
+
+    def name(self):
+        """Returns translated plugin name if possible, else plugin_id"""
+        try:
+            return self.manifest.name_i18n()
+        except Exception as e:
+            log.error("Failed to get plugin %s's name: %s", self, e)
+            return str(self)
+
+    def __str__(self):
+        """Returns plugin id"""
+        return self.plugin_id

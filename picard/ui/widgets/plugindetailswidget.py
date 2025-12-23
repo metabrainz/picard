@@ -130,17 +130,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.setVisible(False)
             return
 
-        # Get plugin name from manifest, fallback to plugin.name or plugin_id
-        plugin_name = plugin.plugin_id  # Default fallback
-        if plugin.manifest:
-            try:
-                plugin_name = plugin.manifest.name_i18n() or plugin.name or plugin.plugin_id
-            except Exception:
-                plugin_name = plugin.name or plugin.plugin_id
-        elif plugin.name:
-            plugin_name = plugin.name
-
-        self.name_label.setText(plugin_name)
+        self.name_label.setText(plugin.name())
 
         # Get description from manifest
         description = _("No description available")
@@ -278,16 +268,11 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
             if plugin_id in do_not_update:
                 # Ask for confirmation
-                try:
-                    plugin_name = self.current_plugin.manifest.name_i18n()
-                except (AttributeError, Exception):
-                    plugin_name = self.current_plugin.name or self.current_plugin.plugin_id
-
                 reply = QtWidgets.QMessageBox.question(
                     self,
                     _("Update Plugin"),
                     _("Plugin '{}' is set to not update automatically.\n\nDo you want to update it anyway?").format(
-                        plugin_name
+                        self.current_plugin.name()
                     ),
                     QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
                     QtWidgets.QMessageBox.StandardButton.No,

@@ -202,7 +202,6 @@ class Plugins3OptionsPage(OptionsPage):
 
             # Refresh UI with network-fetched update status
             self._filter_plugins()
-            self._update_registry_tooltip()
 
             self._show_status(
                 _("Refreshed - {} plugins, {} updates available").format(len(self.all_plugins), len(new_updates))
@@ -238,14 +237,10 @@ class Plugins3OptionsPage(OptionsPage):
             # Show all plugins
             filtered_plugins = self.all_plugins
         else:
-            # Filter plugins by name, plugin_id, or description
+            # Filter plugins by name
             filtered_plugins = []
             for plugin in self.all_plugins:
-                if (
-                    search_text in (plugin.name or "").lower()
-                    or search_text in plugin.plugin_id.lower()
-                    or search_text in getattr(plugin, "description", "").lower()
-                ):
+                if search_text in plugin.name().lower():
                     filtered_plugins.append(plugin)
 
         self.plugin_list.populate_plugins(filtered_plugins)
@@ -298,8 +293,7 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
         log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
-        plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
-        self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
+        self._show_status(_("Plugin '{}' {}").format(plugin.name(), action))
 
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):
@@ -381,37 +375,6 @@ class Plugins3OptionsPage(OptionsPage):
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
-
-    def _update_registry_tooltip(self):
-        """Update registry button tooltip with current registry information."""
-        # This method is kept for potential future use but currently not needed
-        # since we removed the separate registry button
-        pass
-
-    def _show_update_dialog(self, plugins_with_updates):
-        """Show dialog with available updates."""
-        plugin_names = []
-        for plugin in plugins_with_updates:
-            try:
-                # Use translated name from manifest
-                plugin_name = plugin.manifest.name_i18n()
-            except (AttributeError, Exception):
-                # Fallback to raw name or plugin_id
-                plugin_name = plugin.name or plugin.plugin_id
-            plugin_names.append(plugin_name)
-
-        reply = QtWidgets.QMessageBox.question(
-            self,
-            _("Updates Available"),
-            _("The following plugins have updates available:\n\n{}\n\nWould you like to update them now?").format(
-                "\n".join(f"• {name}" for name in plugin_names)
-            ),
-            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
-            QtWidgets.QMessageBox.StandardButton.Yes,
-        )
-
-        if reply == QtWidgets.QMessageBox.StandardButton.Yes:
-            self._update_plugins(plugins_with_updates)
 
     def _update_plugins(self, plugins):
         """Update multiple plugins."""
