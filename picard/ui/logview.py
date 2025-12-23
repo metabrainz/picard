@@ -224,7 +224,7 @@ class LogView(LogViewCommon):
         self.clear_highlight_button.clicked.connect(self._clear_highlight_do)
 
         # clear log
-        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log"))
+        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log…"))
         self.hbox.addWidget(self.clear_log_button)
         self.clear_log_button.clicked.connect(self._clear_log_do)
 
