@@ -130,8 +130,14 @@ class PluginLifecycleManager:
         # Only disable if not already disabled
         got_disabled = False
         if plugin.state != PluginState.DISABLED:
-            plugin.disable()
-            got_disabled = True
+            try:
+                plugin.disable()
+                got_disabled = True
+            except Exception:
+                # If disable fails, force plugin to disabled state
+                plugin.state = PluginState.DISABLED
+                got_disabled = True
+                raise
 
         self.manager._enabled_plugins.discard(uuid)
         self.manager._save_config()
