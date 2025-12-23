@@ -31,10 +31,8 @@ jobs:
       uses: actions/setup-python@v6
       with:
         python-version: '3.14'
-        cache: 'pip'
-        cache-dependency-path: |
-          requirements-build.txt
-          scripts/package/requirements-macos-${{ matrix.setup.macos-deployment-target }}.txt
+    - name: Install uv
+      uses: astral-sh/setup-uv@v7
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh
@@ -49,7 +47,7 @@ jobs:
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
-        python3 setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+        uv run python setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install libgit2
       run: |
         brew install libgit2
@@ -58,9 +56,7 @@ jobs:
         echo "LDFLAGS=-L$(brew --prefix)/lib" >> $GITHUB_ENV
     - name: Install dependencies
       run: |
-        pip install -r requirements-build.txt
-        pip install --no-binary "charset-normalizer,PyYAML" -r scripts/package/requirements-macos-${MACOSX_DEPLOYMENT_TARGET}.txt
-        pip install zstandard
+        uv sync --group build --group dev --extra plugins
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Prepare code signing certificate
@@ -78,7 +74,7 @@ jobs:
         CODESIGN_MACOS_P12_URL: ${{ secrets.CODESIGN_MACOS_P12_URL }}
     - name: Build macOS app
       run: |
-        ./scripts/package/macos-package-app.sh
+        uv run ./scripts/package/macos-package-app.sh
         rm -f ./scripts/package/appledev.p12
         mv dist/*.dmg artifacts/
       env:
