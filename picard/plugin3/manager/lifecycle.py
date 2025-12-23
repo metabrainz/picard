@@ -95,8 +95,18 @@ class PluginLifecycleManager:
             plugin.load_module()
             # Only enable if not already enabled
             if plugin.state != PluginState.ENABLED:
-                plugin.enable(self.manager._tagger)
-                got_enabled = True
+                try:
+                    plugin.enable(self.manager._tagger)
+                    got_enabled = True
+                except Exception:
+                    # If enable fails, ensure plugin is in disabled state
+                    if plugin.state == PluginState.LOADED:
+                        try:
+                            plugin.disable()
+                        except Exception:
+                            # If disable also fails, force state to disabled
+                            plugin.state = PluginState.DISABLED
+                    raise
 
         # Ensure UUID mapping is set for extension points
         if plugin.uuid:
@@ -120,8 +130,14 @@ class PluginLifecycleManager:
         # Only disable if not already disabled
         got_disabled = False
         if plugin.state != PluginState.DISABLED:
-            plugin.disable()
-            got_disabled = True
+            try:
+                plugin.disable()
+                got_disabled = True
+            except Exception:
+                # If disable fails, force plugin to disabled state
+                plugin.state = PluginState.DISABLED
+                got_disabled = True
+                raise
 
         self.manager._enabled_plugins.discard(uuid)
         self.manager._save_config()
