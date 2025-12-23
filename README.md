@@ -1,7 +1,6 @@
 # MusicBrainz Picard
 
 ![Github Actions Status](https://github.com/metabrainz/picard/workflows/Run%20tests/badge.svg)
-[![Codacy Grade](https://img.shields.io/codacy/grade/4dcabf0a13ed4b27b3a381ce9ba96ecc/master.svg?style=flat-square&label=Codacy)](https://app.codacy.com/gh/metabrainz/picard)
 
 [MusicBrainz Picard](https://picard.musicbrainz.org) is a cross-platform (Linux, macOS, Windows) audio tagging application. It is the official [MusicBrainz](https://musicbrainz.org) tagger.
 
