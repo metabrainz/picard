@@ -83,6 +83,15 @@ except ImportError:
     # zstandard is not available, so we don't need to include it
     pass
 
+excludes = []
+try:
+    # If tomllib is available, tomli can be excluded
+    import tomllib
+
+    excludes.append('tomli')
+except ImportError:
+    pass
+
 a = Analysis(
     ['tagger.py'],
     pathex=['picard'],
@@ -91,7 +100,7 @@ a = Analysis(
     hiddenimports=hiddenimports,
     hookspath=None,
     runtime_hooks=runtime_hooks,
-    excludes=[],
+    excludes=excludes,
 )
 
 pyz = PYZ(a.pure, a.zipped_data)
@@ -141,7 +150,7 @@ else:
         hiddenimports=['cffi'],
         hookspath=None,
         runtime_hooks=[],
-        excludes=[],
+        excludes=excludes,
     )
     pyz_plugins = PYZ(a_plugins.pure, a_plugins.zipped_data)
     exe_plugins = EXE(
