@@ -238,14 +238,10 @@ class Plugins3OptionsPage(OptionsPage):
             # Show all plugins
             filtered_plugins = self.all_plugins
         else:
-            # Filter plugins by name, plugin_id, or description
+            # Filter plugins by name
             filtered_plugins = []
             for plugin in self.all_plugins:
-                if (
-                    search_text in (plugin.name or "").lower()
-                    or search_text in plugin.plugin_id.lower()
-                    or search_text in getattr(plugin, "description", "").lower()
-                ):
+                if search_text in plugin.name().lower():
                     filtered_plugins.append(plugin)
 
         self.plugin_list.populate_plugins(filtered_plugins)
@@ -298,8 +294,7 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
         log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
-        plugin_name = getattr(plugin, 'name', None) or getattr(plugin, 'plugin_id', 'Unknown')
-        self._show_status(_("Plugin '{}' {}").format(plugin_name, action))
+        self._show_status(_("Plugin '{}' {}").format(plugin.name(), action))
 
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):

@@ -132,11 +132,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             item.setTextAlignment(COLUMN_ENABLED, QtCore.Qt.AlignmentFlag.AlignCenter)
 
             # Column 1: Plugin name
-            try:
-                plugin_name = plugin.manifest.name_i18n()
-            except (AttributeError, Exception):
-                plugin_name = plugin.name or plugin.plugin_id
-            item.setText(COLUMN_PLUGIN, plugin_name)
+            item.setText(COLUMN_PLUGIN, plugin.name())
 
             # Add tooltip with description if available
             try:
@@ -374,12 +370,10 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 except Exception as e:
                     # Show error dialog to user
                     log.error("Failed to toggle plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                    action = "enable" if target_enabled else "disable"
-                    QtWidgets.QMessageBox.critical(
-                        self,
-                        _("Plugin Error"),
-                        _("Failed to {} plugin '{}':\n\n{}").format(action, plugin.name or plugin.plugin_id, str(e)),
-                    )
+                    if target_enabled:
+                        self._enable_error_dialog(plugin, str(e))
+                    else:
+                        self._disable_error_dialog(plugin, str(e))
                     # Track failed enable attempts
                     if target_enabled and "Already declared" in str(e):
                         self._failed_enables.add(plugin.plugin_id)
@@ -505,6 +499,20 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         # Show menu
         menu.exec(self.mapToGlobal(position))
 
+    def _enable_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to enable plugin '{}':\n{}").format(plugin.name(), errmsg),
+        )
+
+    def _disable_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to disable plugin '{}':\n{}").format(plugin.name(), errmsg),
+        )
+
     def _toggle_plugin_from_menu(self, plugin, enabled):
         """Toggle plugin from context menu."""
         try:
@@ -516,19 +524,23 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self.plugin_state_changed.emit(plugin, action)
         except Exception as e:
             # Show error message
-            QtWidgets.QMessageBox.critical(
-                self,
-                _("Plugin Error"),
-                _("Failed to {} plugin '{}': {}").format(
-                    _("enable") if enabled else _("disable"), plugin.name or plugin.plugin_id, str(e)
-                ),
-            )
+            if enabled:
+                self._enable_error_dialog(plugin, str(e))
+            else:
+                self._disable_error_dialog(plugin, str(e))
 
     def _update_plugin_from_menu(self, plugin):
         """Update plugin from context menu."""
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(
             plugin=plugin, progress_callback=None, callback=partial(self._on_context_update_complete, plugin)
+        )
+
+    def _update_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to update plugin '{}':\n{}").format(plugin.name(), errmsg),
         )
 
     def _on_context_update_complete(self, plugin, result):
@@ -540,7 +552,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self.plugin_state_changed.emit(plugin, "updated")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Update Failed"), error_msg)
+            self._update_error_dialog(plugin, error_msg)
+
+    def _uninstall_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to uninstall plugin '{}':\n{}").format(plugin.name(), errmsg),
+        )
 
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
@@ -554,9 +573,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 )
             except Exception as e:
                 log.error("Failed to uninstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                QtWidgets.QMessageBox.critical(
-                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
-                )
+                self._uninstall_error_dialog(plugin, str(e))
 
     def _on_uninstall_complete(self, plugin, result):
         """Handle uninstall completion."""
@@ -566,7 +583,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self.plugin_state_changed.emit(plugin, "uninstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Uninstall Failed"), error_msg)
+            self._uninstall_error_dialog(plugin, error_msg)
+
+    def _reinstall_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to reinstall plugin '{}':\n{}").format(plugin.name(), errmsg),
+        )
 
     def _reinstall_plugin_from_menu(self, plugin):
         """Reinstall plugin from context menu."""
@@ -575,15 +599,9 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             uuid = self.plugin_manager._get_plugin_uuid(plugin)
             metadata = self.plugin_manager._get_plugin_metadata(uuid)
             if not (metadata and hasattr(metadata, 'url')):
-                QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), _("Could not find plugin repository URL"))
+                self._reinstall_error_dialog(plugin, _("Could not find plugin repository URL"))
                 return
             plugin_url = metadata.url
-
-            # Get plugin name
-            try:
-                plugin_name = plugin.manifest.name_i18n()
-            except (AttributeError, Exception):
-                plugin_name = plugin.name or plugin.plugin_id
 
             # Get current ref for reinstall
             current_ref = None
@@ -595,7 +613,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 pass
 
             # Show confirmation dialog
-            confirm_dialog = InstallConfirmDialog(plugin_name, plugin_url, self, plugin.uuid, current_ref)
+            confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
 
@@ -608,9 +626,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             )
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-            QtWidgets.QMessageBox.critical(
-                self, _("Reinstall Failed"), _("Failed to reinstall plugin: {}").format(str(e))
-            )
+            self._reinstall_error_dialog(plugin, str(e))
 
     def _on_reinstall_complete(self, plugin, result):
         """Handle reinstall completion."""
@@ -620,7 +636,14 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self.plugin_state_changed.emit(plugin, "reinstalled")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Reinstall Failed"), error_msg)
+            self._reinstall_error_dialog(plugin, error_msg)
+
+    def _switch_ref_error_dialog(self, plugin, errmsg):
+        QtWidgets.QMessageBox.critical(
+            self,
+            _("Plugin Error"),
+            _("Failed to switch ref for plugin '{}':\n{}").format(plugin.name(), errmsg),
+        )
 
     def _switch_ref_from_menu(self, plugin):
         """Switch plugin ref from context menu."""
@@ -635,9 +658,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
                 )
             except Exception as e:
                 log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                QtWidgets.QMessageBox.critical(
-                    self, _("Switch Ref Failed"), _("Failed to switch ref: {}").format(str(e))
-                )
+                self._switch_ref_error_dialog(plugin, str(e))
 
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
@@ -648,7 +669,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
             self.plugin_state_changed.emit(plugin, "ref switched")
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.critical(self, _("Switch Ref Failed"), error_msg)
+            self._switch_ref_error_dialog(plugin, error_msg)
 
     def _on_plugin_ref_switched(self, plugin):
         """Handle plugin ref switched signal."""
@@ -679,14 +700,8 @@ class UninstallPluginDialog(QtWidgets.QMessageBox):
         """Setup the dialog UI."""
         self.setIcon(QtWidgets.QMessageBox.Icon.Warning)
 
-        # Plugin name
-        try:
-            name = self.plugin.manifest.name_i18n()
-        except (AttributeError, Exception):
-            name = self.plugin.name or self.plugin.plugin_id
-
         # Confirmation message
-        self.setText(_("Are you sure you want to uninstall '{}'?").format(name))
+        self.setText(_("Are you sure you want to uninstall '{}'?").format(self.plugin.name()))
 
         # Purge configuration checkbox
         self._purge_checkbox = QtWidgets.QCheckBox(_("Also remove plugin configuration"))
@@ -729,13 +744,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         """Setup the dialog UI."""
         layout = QtWidgets.QVBoxLayout(self)
 
-        # Plugin name
-        try:
-            name = self.plugin.manifest.name_i18n()
-        except (AttributeError, Exception):
-            name = self.plugin.name or self.plugin.plugin_id
-
-        title_label = QtWidgets.QLabel(_("Switch ref for '{}'").format(name))
+        title_label = QtWidgets.QLabel(_("Switch ref for '{}'").format(self.plugin.name()))
         title_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(title_label)
 
@@ -772,7 +781,11 @@ class SwitchRefDialog(QtWidgets.QDialog):
         if self.selected_ref:
             self.accept()
         else:
-            QtWidgets.QMessageBox.warning(self, _("No Ref Selected"), _("Please select or enter a ref to switch to."))
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("No Ref Selected"),
+                _("Please select or enter a ref to switch to."),
+            )
 
     def _uninstall(self):
         """Handle uninstall button click."""
