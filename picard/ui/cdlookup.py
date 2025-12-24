@@ -178,8 +178,10 @@ class CDLookupDialog(PicardDialog):
         format = escape(media_formats_from_node(release.get('media', [])))
         selected_medium = self._get_selected_medium(release)
         if selected_medium:
-            selected_format = escape(selected_medium.get('format', format))
-            format = format.replace(selected_format, f"<b>{selected_format}</b>")
+            selected_format = selected_medium.get('format', format)
+            if selected_format:
+                selected_format = escape(selected_format)
+                format = format.replace(selected_format, f"<b>{selected_format}</b>")
         return format
 
     def _get_selected_medium(self, release):
