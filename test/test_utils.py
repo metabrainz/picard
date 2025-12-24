@@ -674,6 +674,7 @@ class TracknumAndTitleFromFilenameTest(PicardTestCase):
     def test_returns_expected_tracknumber(self):
         tests = (
             ((None, 'Foo'), 'Foo.mp3'),
+            (('1', '1'), '1.opus'),
             (('1', 'Track 0001'), 'Track 0001.mp3'),
             (('42', 'Track-42'), 'Track-42.mp3'),
             (('99', 'Foo'), '99 Foo.mp3'),
