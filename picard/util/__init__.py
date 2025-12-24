@@ -74,7 +74,11 @@ from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
 
 from picard import log
-from picard.const import MUSICBRAINZ_SERVERS
+from picard.const import (
+    MUSICBRAINZ_SERVERS,
+    PICARD_DOCS_URLS,
+    PICARD_URLS,
+)
 from picard.const.sys import (
     FROZEN_TEMP_PATH,
     IS_FROZEN,
@@ -85,6 +89,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 
 winreg = None
@@ -755,6 +760,33 @@ def encoded_queryargs(queryargs):
     Keys are left unmodified
     """
     return {name: bytes(QtCore.QUrl.toPercentEncoding(str(value))).decode() for name, value in queryargs.items()}
+
+
+def get_url(url_key: str) -> str:
+    """Gets the URL from the key, with {language} and {version} substitutions.
+    Args:
+        url_key (str): URL key.
+    Returns:
+        str: Updated URL, or provided URL key if not matched.
+    """
+    if url_key.startswith('/'):
+        return (
+            PICARD_DOCS_URLS['documentation'].format(
+                language=ReadTheDocs.matched_language, version=ReadTheDocs.matched_version
+            )
+            + url_key
+        )
+
+    if url_key in PICARD_DOCS_URLS:
+        return PICARD_DOCS_URLS[url_key].format(
+            language=ReadTheDocs.matched_language, version=ReadTheDocs.matched_version
+        )
+
+    if url_key in PICARD_URLS:
+        return PICARD_URLS[url_key]
+
+    # No match in defined Picard URLs
+    return url_key
 
 
 def build_qurl(host, port=80, path=None, queryargs=None):

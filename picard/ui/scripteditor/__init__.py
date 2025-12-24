@@ -37,7 +37,6 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PICARD_URLS
 from picard.const.defaults import (
     DEFAULT_COPY_TEXT,
     DEFAULT_NAMING_PRESET_ID,
@@ -103,7 +102,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
 
-    help_url = PICARD_URLS['doc_naming_script_edit']
+    help_url = 'doc_naming_script_edit'
 
     signal_save = QtCore.pyqtSignal()
     signal_update = QtCore.pyqtSignal()

@@ -123,6 +123,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="rtd_updates_ask">
+        <property name="text">
+         <string>Show documentation update checking disabled dialog</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="quit_confirmation">
         <property name="text">
          <string>Show a quit confirmation dialog for unsaved changes</string>
@@ -222,6 +229,7 @@
   <tabstop>builtin_search</tabstop>
   <tabstop>use_adv_search_syntax</tabstop>
   <tabstop>new_user_dialog</tabstop>
+  <tabstop>rtd_updates_ask</tabstop>
   <tabstop>quit_confirmation</tabstop>
   <tabstop>file_save_warning</tabstop>
   <tabstop>filebrowser_horizontal_autoscroll</tabstop>

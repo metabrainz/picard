@@ -2,9 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2022-2023 Philipp Wolfer
-# Copyright (C) 2023, 2025 Bob Swift
-# Copyright (C) 2024 Laurent Monin
+# Copyright (C) 2025 Bob Swift
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -27,32 +25,31 @@ from PyQt6 import (
 )
 
 from picard.i18n import gettext as _
-from picard.util import get_url
 
 
-class NewUserDialog:
+class AllowRtdUpdatesDialog:
     def __init__(self, parent):
         dialog_text = _(
             "<p>"
-            "<strong>Changes made by Picard are not reversible.</strong>"
+            "The current settings do <strong>not</strong> allow Picard to check ReadTheDocs for the available "
+            "languages and versions of the documentation. This means that Picard will display the 'latest' version "
+            "of the documentation in English when opened in your browser."
             "</p><p>"
-            "Picard is a very flexible music tagging tool which can rename your files and overwrite the tags. "
-            "We <strong>strongly recommend</strong> that you:"
-            "</p><ul>"
-            "<li>read the <a href='{documentation_url}'>User Guide</a> (also available from the Help menu)</li>"
-            "<li>test with copies of your music and work in small batches</li>"
-            "</ul><p>"
-            "Picard is open source software written by volunteers. It is provided as-is and with no warranty."
+            "When this setting is enabled, Picard will display the current version of the documentation in the "
+            "best available language based on the currently selected user interface language."
+            "</p><p>"
+            "Do you want to allow Picard to check the available languages and versions for the documentation on "
+            "ReadTheDocs?"
             "</p>"
-        ).format(documentation_url=get_url('documentation_server'))
+        )
 
         self.show_again = True
-        show_again_text = _("Show this message again the next time you start Picard.")
+        show_again_text = _("Show this message again the next time you use Picard.")
 
         self.msg = QtWidgets.QMessageBox(parent)
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
-        self.msg.setWindowTitle(_("New User Warning"))
+        self.msg.setWindowTitle(_("ReadTheDocs Updates"))
         self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)
@@ -60,11 +57,12 @@ class NewUserDialog:
         self.cb.toggled.connect(self._set_state)
 
         self.msg.setCheckBox(self.cb)
-        self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+        self.msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No)
+        self.msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.No)
 
     def _set_state(self):
         self.show_again = not self.show_again
 
     def show(self):
-        self.msg.exec()
-        return self.show_again
+        accepted = self.msg.exec() == QtWidgets.QMessageBox.StandardButton.Yes
+        return (accepted, self.show_again)

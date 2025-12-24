@@ -118,9 +118,11 @@ from picard.util.cdrom import (
     discid,
     get_cdrom_drives,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui import PreserveGeometry
 from picard.ui.aboutdialog import AboutDialog
+from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.enums import MainAction
 from picard.ui.filebrowser import FileBrowser
@@ -354,6 +356,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self._auto_update_check()
+        self.show_allow_rtd_updates_dialog()
         self.metadata_box.restore_state()
 
     def showEvent(self, event):
@@ -1161,6 +1164,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
@@ -1930,6 +1934,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window."""
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
         self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
@@ -2094,6 +2099,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
+
+    def show_allow_rtd_updates_dialog(self):
+        config = get_config()
+        if not config.setting['check_rtd_updates'] and config.setting['rtd_updates_ask']:
+            msg = AllowRtdUpdatesDialog(self)
+            allow, ask = msg.show()
+            config.setting['check_rtd_updates'] = allow
+            config.setting['rtd_updates_ask'] = ask
+
+        ReadTheDocs.update_documentation_items()  # Retry updates if required
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

@@ -26,6 +26,7 @@ from picard.tags.tagvar import (
     TagVar,
     TagVars,
 )
+from picard.util import get_url
 
 
 ALL_TAGS = TagVars(
@@ -189,7 +190,7 @@ ALL_TAGS = TagVars(
             DocumentLink(N_('Barcode in MusicBrainz documentation'), PICARD_URLS['mb_doc'] + 'Barcode'),
             DocumentLink(
                 N_('Barcode mapping in Picard documentation'),
-                PICARD_URLS['documentation'] + 'appendices/tag_mapping.html#id6',
+                get_url('/appendices/tag_mapping.html#id6'),
             ),
         ),
         is_filterable=True,
