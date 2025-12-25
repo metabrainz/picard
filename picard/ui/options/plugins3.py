@@ -27,7 +27,7 @@ from PyQt6 import QtCore, QtWidgets
 from picard import log
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_, gettext as _
+from picard.i18n import N_, gettext as _, ngettext
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog
@@ -169,7 +169,14 @@ class Plugins3OptionsPage(OptionsPage):
             # Pass current updates dict to plugin list widget
             self.plugin_list.set_updates(valid_updates)
             self._filter_plugins()
-            self._show_status(_("Loaded {} plugins").format(len(self.all_plugins)))
+            plugin_count = len(self.all_plugins)
+            self._show_status(
+                ngettext(
+                    "Loaded {plugin_count:,d} plugin",
+                    "Loaded {plugin_count:,d} plugins",
+                    plugin_count,
+                ).format(plugin_count=plugin_count)
+            )
             self._show_enabled_state()
             self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
@@ -203,9 +210,15 @@ class Plugins3OptionsPage(OptionsPage):
             # Refresh UI with network-fetched update status
             self._filter_plugins()
 
-            self._show_status(
-                _("Refreshed - {} plugins, {} updates available").format(len(self.all_plugins), len(new_updates))
+            plugin_count = len(self.all_plugins)
+            update_count = len(new_updates)
+            plugins_text = ngettext("{plugin_count:,d} plugin", "{plugin_count:,d} plugins", plugin_count).format(
+                plugin_count=plugin_count
             )
+            updates_text = ngettext(
+                "{update_count:,d} update available", "{update_count:,d} updates available", update_count
+            ).format(update_count=update_count)
+            self._show_status(_("Refreshed - {plugins}, {updates}").format(plugins=plugins_text, updates=updates_text))
 
         except Exception as e:
             log.error("Failed to refresh all: %s", e, exc_info=True)
