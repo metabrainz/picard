@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 from enum import Enum
 import importlib.util
 from pathlib import Path
@@ -32,6 +31,7 @@ from picard.extension_points import unregister_module_extensions
 from picard.git.backend import GitBackendError, GitRefType
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
+from picard.i18n import sort_key
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
@@ -580,7 +580,7 @@ class Plugin:
         self.uuid = uuid
 
     def __lt__(self, other):
-        return self.name() < other.name()
+        return sort_key(self.name()) < sort_key(other.name())
 
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
