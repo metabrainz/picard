@@ -117,7 +117,7 @@ class PluginListWidget(QtWidgets.QTreeWidget):
         self.clear()
 
         installed_plugins_uuids = set()
-        for plugin in plugins:
+        for plugin in sorted(plugins):
             if plugin.uuid is not None:
                 installed_plugins_uuids.add(plugin.uuid)
 

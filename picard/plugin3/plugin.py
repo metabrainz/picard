@@ -579,6 +579,9 @@ class Plugin:
         self.state = PluginState.DISCOVERED
         self.uuid = uuid
 
+    def __lt__(self, other):
+        return self.name() < other.name()
+
     def sync(self, plugin_source: PluginSource | None = None):
         """Sync plugin source"""
         if plugin_source:
