@@ -331,7 +331,7 @@ class Tagger(QtWidgets.QApplication):
         # signal handler, so we use the socket to notify the application of
         # the signal.
         # This code is adopted from
-        # https://qt-project.org/doc/qt-4.8/unix-signals.html
+        # https://doc.qt.io/qt-6/unix-signals.html
 
         # To not make the socket module a requirement for the Windows
         # installer, import it here and not globally
