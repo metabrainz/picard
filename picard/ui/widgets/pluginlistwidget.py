@@ -55,8 +55,8 @@ class UpdatePanel(QtWidgets.QWidget):
 
     def setup_ui(self):
         layout = QtWidgets.QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
+        layout.setContentsMargins(0, 6, 0, 0)
+        layout.setSpacing(6)
 
         layout.addStretch()  # Push content to the right
 
