@@ -394,6 +394,10 @@ class Plugins3OptionsPage(OptionsPage):
         if not plugins:
             return
 
+        # Prevent multiple simultaneous updates
+        if hasattr(self, '_update_queue') and self._update_queue:
+            return
+
         # Disable UI during updates
         self.refresh_all_button.setEnabled(False)
         self.install_button.setEnabled(False)

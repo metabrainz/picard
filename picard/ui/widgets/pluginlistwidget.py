@@ -97,6 +97,7 @@ class UpdatePanel(QtWidgets.QWidget):
 
     def _on_update_clicked(self):
         """Handle update button click."""
+        self.update_button.setEnabled(False)  # Disable immediately
         self.update_selected_plugins.emit([])
 
 
