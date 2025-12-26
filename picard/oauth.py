@@ -59,6 +59,8 @@ class OAuthManager:
         # Associates state tokens with callbacks
         self.__states = {}
         self._redirect_uri = OOB_URI
+        self._refreshing = False
+        self._refresh_callbacks = []
 
     @property
     def redirect_uri(self):
@@ -280,6 +282,13 @@ class OAuthManager:
         return urllib.parse.urlencode({key: value for key, value in params.items() if key})
 
     def refresh_access_token(self, callback):
+        if self._refreshing:
+            self._refresh_callbacks.append(callback)
+            return
+
+        self._refreshing = True
+        self._refresh_callbacks = [callback]
+
         log.debug("OAuth: refreshing access_token with a refresh_token %s", self.refresh_token)
         params = {
             'grant_type': 'refresh_token',
@@ -290,14 +299,14 @@ class OAuthManager:
         self.webservice.post_url(
             url=self.url(path="/oauth2/token"),
             data=self._query_data(params),
-            handler=partial(self.on_refresh_access_token_finished, callback),
+            handler=partial(self.on_refresh_access_token_finished),
             mblogin=True,
             priority=True,
             important=True,
             request_mimetype='application/x-www-form-urlencoded',
         )
 
-    def on_refresh_access_token_finished(self, callback, data, http, error):
+    def on_refresh_access_token_finished(self, data, http, error):
         access_token = None
         try:
             if error:
@@ -312,7 +321,11 @@ class OAuthManager:
         except Exception as e:
             log.error("OAuth: Unexpected error handling access token response: %r", e)
         finally:
-            callback(access_token=access_token)
+            self._refreshing = False
+            callbacks = self._refresh_callbacks
+            self._refresh_callbacks = []
+            for callback in callbacks:
+                callback(access_token=access_token)
 
     def exchange_authorization_code(self, authorization_code, scopes, callback):
         log.debug("OAuth: exchanging authorization_code %s for an access_token", authorization_code)

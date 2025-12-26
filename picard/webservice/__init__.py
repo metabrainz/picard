@@ -611,8 +611,12 @@ class WebService(QtCore.QObject):
         try:
             self._handle_reply(reply, request)
         finally:
-            reply.close()
-            reply.deleteLater()
+            try:
+                reply.close()
+                reply.deleteLater()
+            except RuntimeError:
+                # Qt object may already be deleted
+                pass
 
     def get_url(self, **kwargs):
         kwargs['method'] = 'GET'
