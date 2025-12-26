@@ -389,6 +389,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.status_indicators.append(indicator)
 
     def show_quit_confirmation(self):
+        # If the application is already stopping, don't show a confirmation dialog.
+        if self.tagger.stopping:
+            return True
+
         unsaved_files = sum(a.get_num_unsaved_files() for a in self.tagger.albums.values())
         QMessageBox = QtWidgets.QMessageBox
 
