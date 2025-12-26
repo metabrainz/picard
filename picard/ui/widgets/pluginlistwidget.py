@@ -69,11 +69,8 @@ class UpdatePanel(QtWidgets.QWidget):
         self.update_button = QtWidgets.QPushButton(_("Update All"))
         self.update_button.clicked.connect(self._on_update_clicked)
 
-        self.status_label = QtWidgets.QLabel()
-
         layout.addWidget(self.update_progress_bar, 1)  # Stretch factor 1 to expand
         layout.addWidget(self.update_button)
-        layout.addWidget(self.status_label)
 
     def update_button_state(self, count):
         if count > 0:
