@@ -29,7 +29,6 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.const import PICARD_URLS
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
@@ -38,6 +37,7 @@ from picard.tags.docs import (
     display_plugin_tag_full_description,
     display_tag_full_description,
 )
+from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -244,7 +244,7 @@ class ScriptingDocumentationWidget(QtWidgets.QWidget):
         if include_link:
             link = (
                 '<a href="'
-                + PICARD_URLS['doc_scripting']
+                + get_url('doc_scripting')
                 + '">'
                 + _('Open Scripting Documentation in your browser')
                 + '</a>'
