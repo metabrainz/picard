@@ -250,7 +250,7 @@ class PluginListWidget(QtWidgets.QWidget):
         """Setup update column with checkbox and new version. Returns True if plugin has updates."""
         if plugin.plugin_id in self._updating_plugins:
             # Show in progress for updating plugins
-            item.setText(COLUMN_NEW_VERSION, _("In Progress..."))
+            item.setText(COLUMN_NEW_VERSION, _("In Progress…"))
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             return True
         elif self._has_update_available(plugin):

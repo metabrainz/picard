@@ -327,7 +327,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         """Fallback update method."""
         # Disable update button during update
         self.update_button.setEnabled(False)
-        self.update_button.setText(_("Updating..."))
+        self.update_button.setText(_("Updating…"))
 
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(

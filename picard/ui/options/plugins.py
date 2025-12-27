@@ -71,14 +71,14 @@ class Plugins3OptionsPage(OptionsPage):
 
         # Search box
         self.search_edit = QtWidgets.QLineEdit()
-        self.search_edit.setPlaceholderText(_("Search plugins..."))
+        self.search_edit.setPlaceholderText(_("Search plugins…"))
         self.search_edit.setClearButtonEnabled(True)
         self.search_edit.textChanged.connect(self._filter_plugins)
         toolbar_layout.addWidget(self.search_edit)
 
         toolbar_layout.addStretch()
 
-        self.install_button = QtWidgets.QPushButton(_("Install Plugin"))
+        self.install_button = QtWidgets.QPushButton(_("Install Plugin…"))
         self.install_button.setToolTip(_("Install a new plugin from the registry or a custom URL"))
         self.install_button.clicked.connect(self._install_plugin)
         toolbar_layout.addWidget(self.install_button)
@@ -149,7 +149,7 @@ class Plugins3OptionsPage(OptionsPage):
 
     def load(self):
         """Load plugins from plugin manager."""
-        self._show_status(_("Loading plugins..."))
+        self._show_status(_("Loading plugins…"))
         try:
             # Load plugins immediately when page is loaded
             self.all_plugins = self.plugin_manager.plugins
@@ -186,8 +186,8 @@ class Plugins3OptionsPage(OptionsPage):
     def _refresh_all(self):
         """Refresh registry, list, and update status."""
         self.refresh_all_button.setEnabled(False)
-        self.refresh_all_button.setText(_("Refreshing..."))
-        self._show_status(_("Refreshing plugin registry, list, and checking for updates..."))
+        self.refresh_all_button.setText(_("Refreshing…"))
+        self._show_status(_("Refreshing plugin registry, list, and checking for updates…"))
 
         try:
             # Refresh registry from server
@@ -433,7 +433,7 @@ class Plugins3OptionsPage(OptionsPage):
         # Update progress
         self.plugin_list.show_update_progress(self._completed_updates, self._total_updates)
 
-        self._show_status(_("Updating {}...").format(plugin.name()))
+        self._show_status(_("Updating {}…").format(plugin.name()))
 
         # Mark plugin as updating in UI
         self.plugin_list.mark_plugin_updating(plugin)

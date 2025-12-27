@@ -92,7 +92,7 @@ class InstallPluginDialog(PicardDialog):
         search_layout = QtWidgets.QHBoxLayout()
         self.search_edit = QtWidgets.QLineEdit()
         self.search_edit.setClearButtonEnabled(True)
-        self.search_edit.setPlaceholderText(_("Search plugins..."))
+        self.search_edit.setPlaceholderText(_("Search plugins…"))
         self.search_edit.textChanged.connect(self._filter_plugins)
         search_layout.addWidget(self.search_edit)
 
@@ -157,7 +157,7 @@ class InstallPluginDialog(PicardDialog):
         self.path_edit.setPlaceholderText(_("/path/to/plugin/directory"))
         path_layout.addWidget(self.path_edit)
 
-        browse_button = QtWidgets.QPushButton(_("Browse..."))
+        browse_button = QtWidgets.QPushButton(_("Browse…"))
         browse_button.clicked.connect(self._browse_directory)
         path_layout.addWidget(browse_button)
 
@@ -189,7 +189,7 @@ class InstallPluginDialog(PicardDialog):
 
         # Buttons
         button_box = QtWidgets.QDialogButtonBox()
-        self.install_button = QtWidgets.QPushButton(_("Install"))
+        self.install_button = QtWidgets.QPushButton(_("Install…"))
         button_box.addButton(self.install_button, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         button_box.accepted.connect(self._install_plugin)
