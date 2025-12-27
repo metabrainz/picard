@@ -234,7 +234,7 @@ class InstallPluginDialog(PicardDialog):
             for category in sorted(categories):
                 self.category_combo.addItem(category.title(), category)
 
-            self._all_plugins = plugins
+            self._all_plugins = sorted(plugins)
             self._filter_plugins()
         except Exception:
             pass
