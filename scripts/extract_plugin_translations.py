@@ -34,9 +34,8 @@ import sys
 import tomlkit
 
 
-def extract_from_code(plugin_dir):
+def extract_from_code(plugin_dir, translations):
     """Extract tr() and trn() calls from Python files."""
-    translations = {}
     gitignore_patterns = read_gitignore(plugin_dir)
 
     for py_file in Path(plugin_dir).rglob('*.py'):
@@ -250,6 +249,17 @@ def read_source_locale(plugin_dir):
         return 'en'
 
 
+def read_translations(locale_file, format):
+    if not locale_file.exists():
+        return {}
+
+    with open(locale_file, 'r') as f:
+        if format == 'json':
+            return json.load(f)
+        else:
+            return tomlkit.load(f)
+
+
 def format_toml(translations):
     """Format translations as TOML string."""
     doc = tomlkit.document()
@@ -293,7 +303,12 @@ def main():
         print(f"Error: Plugin directory not found: {plugin_dir}", file=sys.stderr)
         return 1
 
-    translations = {**extract_from_code(plugin_dir), **extract_from_manifest(plugin_dir)}
+    source_locale = read_source_locale(plugin_dir)
+    locale_dir = plugin_dir / 'locale'
+    locale_file = locale_dir / f'{source_locale}.{args.format}'
+
+    translations = read_translations(locale_file, args.format)
+    translations = {**extract_from_code(plugin_dir, translations), **extract_from_manifest(plugin_dir)}
     if not translations:
         print("No translatable strings found", file=sys.stderr)
         return 1
@@ -306,13 +321,9 @@ def main():
         )
         print(output)
     else:
-        source_locale = read_source_locale(plugin_dir)
-        locale_dir = plugin_dir / 'locale'
         locale_dir.mkdir(exist_ok=True)
-
-        output_file = locale_dir / f'{source_locale}.{args.format}'
-        (write_json if args.format == 'json' else write_toml)(translations, output_file)
-        print(f"Extracted {len(translations)} strings to {output_file}")
+        (write_json if args.format == 'json' else write_toml)(translations, locale_file)
+        print(f"Extracted {len(translations)} strings to {locale_file}")
 
     return 0
 
