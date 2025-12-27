@@ -7,6 +7,7 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -169,9 +170,9 @@ class Ui_MetadataOptionsPage(object):
         self.translate_album_titles.setText(_("Album titles"))
         self.translate_track_titles.setText(_("Track titles"))
         self.locales_prompt_label.setText(_("Preferred locales:"))
-        self.select_locales.setText(_("Select�"))
+        self.select_locales.setText(_("Select…"))
         self.translate_artist_names_script_exception.setText(_("Ignore name translation for these language scripts:"))
-        self.select_scripts.setText(_("Select�"))
+        self.select_scripts.setText(_("Select…"))
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument credits"))
         self.standardize_vocals.setText(_("Use standardized vocal credits"))

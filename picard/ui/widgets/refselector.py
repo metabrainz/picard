@@ -107,7 +107,9 @@ class RefSelectorWidget(QtWidgets.QWidget):
     def set_default_ref_info(self, default_ref_name, description):
         """Update the default tab with specific ref information."""
         if self.include_default and hasattr(self, 'default_label') and default_ref_name:
-            self.default_label.setText(_("Use default ref: {} ({})").format(default_ref_name, description))
+            self.default_label.setText(
+                _("Use default ref: {ref} ({description})").format(ref=default_ref_name, description=description)
+            )
 
     def get_selected_ref(self):
         """Get the currently selected ref."""

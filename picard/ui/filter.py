@@ -68,7 +68,7 @@ class Filter(QtWidgets.QWidget):
 
         # filter input
         self.filter_query_box = QtWidgets.QLineEdit(self)
-        self.filter_query_box.setPlaceholderText(_("Type to filter..."))
+        self.filter_query_box.setPlaceholderText(_("Type to filter…"))
         self.filter_query_box.setClearButtonEnabled(True)
         self.filter_query_box.textChanged.connect(self._query_changed)
         layout.addWidget(self.filter_query_box)

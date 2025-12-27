@@ -58,7 +58,7 @@ class SessionsOptionsPage(OptionsPage):
         # Set placeholder text showing the default path
         default_path = sessions_folder()
         self.folder_path_edit.setPlaceholderText(default_path)
-        self.folder_browse_button = QtWidgets.QPushButton(_("Browse..."))
+        self.folder_browse_button = QtWidgets.QPushButton(_("Browse…"))
         self.folder_browse_button.clicked.connect(self._browse_sessions_folder)
         folder_layout.addWidget(self.folder_label)
         folder_layout.addWidget(self.folder_path_edit)

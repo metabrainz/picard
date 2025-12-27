@@ -212,20 +212,33 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
 
-        self.ui.profile_warning_icon.setPixmap(
+        # Profile warning
+        profile_layout = self.ui.profile_warning.layout()
+        profile_warning_icon = QtWidgets.QLabel()
+        profile_warning_icon.setSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        profile_warning_icon.setPixmap(
             self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxWarning).pixmap(20, 20)
         )
-        self.ui.profile_help_button.setIcon(
-            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxQuestion)
+        profile_layout.addWidget(profile_warning_icon)
+
+        self.profile_warning_text = QtWidgets.QLabel()
+        self.profile_warning_text.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
         )
-        self.ui.profile_help_button.setToolTip(_("Display help regarding option profiles"))
-        self.ui.profile_help_button.clicked.connect(self._show_profile_help)
+        profile_layout.addWidget(self.profile_warning_text)
+
+        profile_help_button = QtWidgets.QToolButton()
+        profile_help_button.setIcon(self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxQuestion))
+        profile_help_button.setToolTip(_("Display help regarding option profiles"))
+        profile_help_button.clicked.connect(self._show_profile_help)
+        profile_layout.addWidget(profile_help_button)
 
         self.ui.reset_all_button = QtWidgets.QPushButton(_("&Restore all Defaults"))
         self.ui.reset_all_button.setToolTip(_("Reset all of Picard's settings"))
         self.ui.reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
         self.ui.reset_button.setToolTip(_("Reset all settings for current option page"))
 
+        # Buttons
         ok = QtWidgets.QPushButton(_("Make It So!"))
         self.ui.buttonbox.addButton(ok, QtWidgets.QDialogButtonBox.ButtonRole.AcceptRole)
         self.ui.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
@@ -491,7 +504,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             text = _('profile "%s"') % profile_set.pop()[1]
         else:
             text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
-        self.ui.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+        self.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
         self.ui.profile_warning.setVisible(True)
 
     def switch_page(self):

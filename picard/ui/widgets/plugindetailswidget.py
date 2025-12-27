@@ -271,8 +271,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                 reply = QtWidgets.QMessageBox.question(
                     self,
                     _("Update Plugin"),
-                    _("Plugin '{}' is set to not update automatically.\n\nDo you want to update it anyway?").format(
-                        self.current_plugin.name()
+                    _('Plugin "{name}" is set to not update automatically.\n\nDo you want to update it anyway?').format(
+                        name=self.current_plugin.name()
                     ),
                     QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
                     QtWidgets.QMessageBox.StandardButton.No,
@@ -320,14 +320,14 @@ class PluginDetailsWidget(QtWidgets.QWidget):
                 )
             except Exception as e:
                 QtWidgets.QMessageBox.critical(
-                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {}").format(str(e))
+                    self, _("Uninstall Failed"), _("Failed to uninstall plugin: {errmsg}").format(errmsg=str(e))
                 )
 
     def _perform_update(self):
         """Fallback update method."""
         # Disable update button during update
         self.update_button.setEnabled(False)
-        self.update_button.setText(_("Updating..."))
+        self.update_button.setText(_("Updating…"))
 
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.update_plugin(
