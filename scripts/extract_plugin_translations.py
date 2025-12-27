@@ -31,6 +31,8 @@ import json
 from pathlib import Path
 import sys
 
+import tomlkit
+
 
 def extract_from_code(plugin_dir):
     """Extract tr() and trn() calls from Python files."""
@@ -250,17 +252,17 @@ def read_source_locale(plugin_dir):
 
 def format_toml(translations):
     """Format translations as TOML string."""
-    lines = []
+    doc = tomlkit.document()
     for key in sorted(translations.keys()):
         value = translations[key]
         if isinstance(value, dict):
-            lines.append(f'["{key}"]')
+            table = tomlkit.table()
             for plural_key in sorted(value.keys()):
-                lines.append(f'{plural_key} = {json.dumps(value[plural_key])}')
-            lines.append('')
+                table[plural_key] = value[plural_key]
+            doc[key] = table
         else:
-            lines.append(f'"{key}" = {json.dumps(value)}')
-    return '\n'.join(lines)
+            doc[key] = value
+    return tomlkit.dumps(doc)
 
 
 def write_json(translations, output_file):
