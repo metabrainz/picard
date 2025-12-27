@@ -24,8 +24,11 @@ import os
 from PyQt6 import QtCore, QtWidgets
 
 from picard import log
-from picard.i18n import gettext as _
+from picard.i18n import (
+    gettext as _,
+)
 from picard.plugin3.asyncops.manager import AsyncPluginManager
+from picard.plugin3.categories import PluginCategorySet
 from picard.plugin3.installable import (
     LocalInstallablePlugin,
     RegistryInstallablePlugin,
@@ -227,17 +230,17 @@ class InstallPluginDialog(PicardDialog):
             plugins = registry.list_plugins()
 
             # Populate categories
-            categories = set()
+            categories = PluginCategorySet()
             for plugin in plugins:
                 categories.update(plugin.get('categories', []))
 
-            for category in sorted(categories):
-                self.category_combo.addItem(category.title(), category)
+            for category, title in categories.items():
+                self.category_combo.addItem(title, category)
 
             self._all_plugins = sorted(plugins)
             self._filter_plugins()
-        except Exception:
-            pass
+        except Exception as e:
+            log.error('Failed to load registry plugins: %s', e)
 
     def _filter_plugins(self):
         """Filter plugins based on search and category."""
@@ -314,7 +317,7 @@ class InstallPluginDialog(PicardDialog):
             self.plugin_table.setItem(row, 1, name_item)
 
             # Categories column
-            cat_item = QtWidgets.QTableWidgetItem(', '.join(registry_plugin.categories))
+            cat_item = QtWidgets.QTableWidgetItem(str(PluginCategorySet(registry_plugin.categories)))
             self.plugin_table.setItem(row, 2, cat_item)
 
     def _get_installed_plugin_uuids(self):
