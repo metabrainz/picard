@@ -258,7 +258,7 @@ class PluginApi:
 
             # Only emit signal if application is already running (not during startup)
             # This ensures UI retranslation when plugins are installed dynamically
-            if hasattr(self._tagger, 'window') and self._tagger.window:
+            if getattr(self._tagger, 'window', None):
                 self._tagger._qt_translators_updated.emit()
 
     def _remove_qt_translator(self) -> None:
@@ -700,7 +700,7 @@ class PluginApi:
     def register_cover_art_provider(self, provider_class: type[CoverArtProvider]) -> None:
         provider_class.api = self
         self._set_class_name_and_title(provider_class)
-        if hasattr(provider_class, 'OPTIONS') and provider_class.OPTIONS:
+        if getattr(provider_class, 'OPTIONS', None):
             provider_class.OPTIONS.api = self
         return register_cover_art_provider(provider_class)
 
