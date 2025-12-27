@@ -342,7 +342,7 @@ class Plugins3OptionsPage(OptionsPage):
                 self._cleanup_plugin_settings(plugin.plugin_id)
 
         # Refresh the options dialog to update plugin option pages
-        if hasattr(self, 'dialog') and self.dialog:
+        if getattr(self, 'dialog', None):
             self.dialog.refresh_plugin_pages()
         else:
             pass  # No dialog found
@@ -386,7 +386,7 @@ class Plugins3OptionsPage(OptionsPage):
 
         self._show_status(_('Plugin "{name}" installed successfully').format(name=plugin_id))
         # Refresh the options dialog to show new plugin option pages
-        if hasattr(self, 'dialog') and self.dialog:
+        if getattr(self, 'dialog', None):
             self.dialog.refresh_plugin_pages()
 
     def _update_plugins(self, plugins):
@@ -395,7 +395,7 @@ class Plugins3OptionsPage(OptionsPage):
             return
 
         # Prevent multiple simultaneous updates
-        if hasattr(self, '_update_queue') and self._update_queue:
+        if getattr(self, '_update_queue', None):
             return
 
         # Disable UI during updates

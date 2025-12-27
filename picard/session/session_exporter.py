@@ -297,8 +297,8 @@ class SessionExporter:
         # Get all album IDs that have files matched to them
         albums_with_files = set()
         for file in tagger.iter_all_files():
-            if hasattr(file, 'parent_item') and file.parent_item:
-                if hasattr(file.parent_item, 'album') and file.parent_item.album:
+            if getattr(file, 'parent_item', None):
+                if getattr(file.parent_item, 'album', None):
                     albums_with_files.add(file.parent_item.album.id)
 
         for album in tagger.albums.values():

@@ -122,7 +122,7 @@ class InfoDialog(PicardDialog):
         self._display_artwork_tab()
 
     def _display_error_tab(self):
-        if hasattr(self.obj, 'errors') and self.obj.errors:
+        if getattr(self.obj, 'errors', None):
             self._show_errors(self.obj.errors)
         else:
             self.tab_hide(self.ui.error_tab)
