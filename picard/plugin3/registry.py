@@ -33,6 +33,7 @@ from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 from picard.git.utils import (
     normalize_git_url,
 )
+from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
 
@@ -669,3 +670,6 @@ class RegistryPlugin(InstallablePlugin):
     def get(self, key, default=None):
         """Delegate to underlying data dict."""
         return self._data.get(key, default)
+
+    def __lt__(self, other):
+        return sort_key(self.name_i18n()) < sort_key(other.name_i18n())
