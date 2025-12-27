@@ -394,6 +394,10 @@ class Plugins3OptionsPage(OptionsPage):
         if not plugins:
             return
 
+        # Prevent multiple simultaneous updates
+        if hasattr(self, '_update_queue') and self._update_queue:
+            return
+
         # Disable UI during updates
         self.refresh_all_button.setEnabled(False)
         self.install_button.setEnabled(False)
@@ -403,6 +407,12 @@ class Plugins3OptionsPage(OptionsPage):
         # For simplicity, update plugins one by one
         # TODO: Could be enhanced to use update_all_plugins for batch updates
         self._update_queue = plugins.copy()
+        self._total_updates = len(self._update_queue)
+        self._completed_updates = 0
+
+        # Show progress
+        self.plugin_list.show_update_progress(0, self._total_updates)
+
         self._update_next_plugin(async_manager)
 
     def _update_next_plugin(self, async_manager):
@@ -411,13 +421,19 @@ class Plugins3OptionsPage(OptionsPage):
             # All updates complete
             self.refresh_all_button.setEnabled(True)
             self.install_button.setEnabled(True)
+            self.plugin_list.hide_update_progress()
             self._show_status(_("All plugin updates completed"))
             # Refresh display to show updated status
             self._filter_plugins()
             return
 
         plugin = self._update_queue.pop(0)
-        self._show_status(_("Updating {}...").format(plugin.name or plugin.plugin_id))
+        self._completed_updates += 1
+
+        # Update progress
+        self.plugin_list.show_update_progress(self._completed_updates, self._total_updates)
+
+        self._show_status(_("Updating {}...").format(plugin.name()))
 
         # Mark plugin as updating in UI
         self.plugin_list.mark_plugin_updating(plugin)
