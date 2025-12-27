@@ -329,10 +329,11 @@ class InstallPluginDialog(PicardDialog):
                     uuid = plugin.uuid
                     if uuid:
                         installed_uuids.add(uuid)
-                except (AttributeError, Exception):
+                except AttributeError:
+                    # Plugin doesn't have uuid attribute, skip
                     pass
-        except Exception:
-            pass
+        except Exception as e:
+            log.debug('Error accessing plugin manager plugins: %s', e)
         return installed_uuids
 
     def showEvent(self, event):
@@ -400,7 +401,8 @@ class InstallPluginDialog(PicardDialog):
             else:
                 self.warning_label.setText(_("Plugin not found in registry"))
                 self.warning_label.show()
-        except Exception:
+        except Exception as e:
+            log.debug('Error checking registry plugin %s: %s', plugin_id, e)
             self.warning_label.hide()
 
     def _show_trust_warning(self, trust_level):
@@ -435,7 +437,8 @@ class InstallPluginDialog(PicardDialog):
             registry = self.plugin_manager._registry
             trust_level = registry.get_trust_level(url)
             self._show_trust_warning(trust_level)
-        except Exception:
+        except Exception as e:
+            log.debug('Error checking trust level for URL %s: %s', url, e)
             self.warning_label.hide()
 
     def _create_registry_plugin(self):
