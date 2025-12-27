@@ -42,7 +42,7 @@ class Plugins3OptionsPage(OptionsPage):
     NAME = 'plugins'
     TITLE = N_('Plugins')
     PARENT = None
-    SORT_ORDER = 90
+    SORT_ORDER = 70
     ACTIVE = True
 
     def __init__(self, parent=None):
