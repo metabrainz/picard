@@ -54,11 +54,11 @@ class InstallConfirmDialog(PicardDialog):
         layout = QtWidgets.QVBoxLayout(self)
 
         # Plugin name and URL
-        info_label = QtWidgets.QLabel(_("Install plugin: {}").format(self.plugin_name))
+        info_label = QtWidgets.QLabel(_("Install plugin: {name}").format(name=self.plugin_name))
         info_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(info_label)
 
-        url_label = QtWidgets.QLabel(_("Repository: {}").format(self.url))
+        url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=self.url))
         url_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         url_label.setWordWrap(True)
         layout.addWidget(url_label)
@@ -96,7 +96,7 @@ class InstallConfirmDialog(PicardDialog):
             # Check blacklist first
             is_blacklisted, reason = registry.is_blacklisted(self.url)
             if is_blacklisted:
-                self.warning_label.setText(_("ERROR: This plugin is blacklisted: {}").format(reason))
+                self.warning_label.setText(_("ERROR: This plugin is blacklisted: {reason}").format(reason=reason))
                 self.warning_label.setStyleSheet("color: red; font-weight: bold;")
                 self.warning_label.show()
                 self.install_button.setEnabled(False)

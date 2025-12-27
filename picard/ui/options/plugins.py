@@ -306,7 +306,7 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
         log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
-        self._show_status(_("Plugin '{}' {}").format(plugin.name(), action))
+        self._show_status(_('Plugin "{name}" {action}').format(name=plugin.name(), action=action))
 
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):
@@ -384,7 +384,7 @@ class Plugins3OptionsPage(OptionsPage):
         # Now load and refresh the plugin list with updates available
         self.load()  # This will call set_updates() with the current updates dict
 
-        self._show_status(_("Plugin '{}' installed successfully").format(plugin_id))
+        self._show_status(_('Plugin "{name}" installed successfully').format(name=plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if hasattr(self, 'dialog') and self.dialog:
             self.dialog.refresh_plugin_pages()
@@ -433,7 +433,7 @@ class Plugins3OptionsPage(OptionsPage):
         # Update progress
         self.plugin_list.show_update_progress(self._completed_updates, self._total_updates)
 
-        self._show_status(_("Updating {}…").format(plugin.name()))
+        self._show_status(_("Updating {name}…").format(name=plugin.name()))
 
         # Mark plugin as updating in UI
         self.plugin_list.mark_plugin_updating(plugin)
@@ -457,7 +457,9 @@ class Plugins3OptionsPage(OptionsPage):
             self.plugin_list.set_updates(config.persist['plugins3_updates'])
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
-            QtWidgets.QMessageBox.warning(self, _("Update Failed"), _("Failed to update plugin: {}").format(error_msg))
+            QtWidgets.QMessageBox.warning(
+                self, _("Update Failed"), _("Failed to update plugin: {errmsg}").format(errmsg=error_msg)
+            )
 
         # Continue with next plugin
         self._update_next_plugin(async_manager)

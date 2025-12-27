@@ -74,7 +74,7 @@ class UpdatePanel(QtWidgets.QWidget):
 
     def update_button_state(self, count):
         if count > 0:
-            self.update_button.setText(_("Update All ({})").format(count))
+            self.update_button.setText(_("Update All ({count})").format(count=count))
             self.update_button.setEnabled(True)
             self.show()
         else:
@@ -578,14 +578,14 @@ class PluginListWidget(QtWidgets.QWidget):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to enable plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to enable plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _disable_error_dialog(self, plugin, errmsg):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to disable plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to disable plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _toggle_plugin_from_menu(self, plugin, enabled):
@@ -615,7 +615,7 @@ class PluginListWidget(QtWidgets.QWidget):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to update plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to update plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _on_context_update_complete(self, plugin, result):
@@ -633,7 +633,7 @@ class PluginListWidget(QtWidgets.QWidget):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to uninstall plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to uninstall plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _uninstall_plugin_from_menu(self, plugin):
@@ -664,7 +664,7 @@ class PluginListWidget(QtWidgets.QWidget):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to reinstall plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to reinstall plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _reinstall_plugin_from_menu(self, plugin):
@@ -717,7 +717,7 @@ class PluginListWidget(QtWidgets.QWidget):
         QtWidgets.QMessageBox.critical(
             self,
             _("Plugin Error"),
-            _("Failed to switch ref for plugin '{}':\n{}").format(plugin.name(), errmsg),
+            _('Failed to switch ref for plugin "{name}":\n{errmsg}').format(name=plugin.name(), errmsg=errmsg),
         )
 
     def _switch_ref_from_menu(self, plugin):
@@ -776,7 +776,7 @@ class UninstallPluginDialog(QtWidgets.QMessageBox):
         self.setIcon(QtWidgets.QMessageBox.Icon.Warning)
 
         # Confirmation message
-        self.setText(_("Are you sure you want to uninstall '{}'?").format(self.plugin.name()))
+        self.setText(_('Are you sure you want to uninstall "{name}"?').format(name=self.plugin.name()))
 
         # Purge configuration checkbox
         self._purge_checkbox = QtWidgets.QCheckBox(_("Also remove plugin configuration"))
@@ -819,7 +819,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         """Setup the dialog UI."""
         layout = QtWidgets.QVBoxLayout(self)
 
-        title_label = QtWidgets.QLabel(_("Switch ref for '{}'").format(self.plugin.name()))
+        title_label = QtWidgets.QLabel(_('Switch ref for "{name}"').format(name=self.plugin.name()))
         title_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(title_label)
 
