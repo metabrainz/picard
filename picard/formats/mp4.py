@@ -387,7 +387,7 @@ class MP4File(File):
 
     def _info(self, metadata, file):
         super()._info(metadata, file)
-        if hasattr(file.info, 'codec_description') and file.info.codec_description:
+        if getattr(file.info, 'codec_description', None):
             metadata['~format'] = "%s (%s)" % (metadata['~format'], file.info.codec_description)
         filename = file.filename
         if isinstance(filename, bytes):

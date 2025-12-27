@@ -784,13 +784,13 @@ class File(MetadataItem):
     def _info(self, metadata: Metadata, file: FileType):
         if hasattr(file.info, 'length'):
             metadata.length = int(file.info.length * 1000)
-        if hasattr(file.info, 'bitrate') and file.info.bitrate:
+        if getattr(file.info, 'bitrate', None):
             metadata['~bitrate'] = file.info.bitrate / 1000.0
-        if hasattr(file.info, 'sample_rate') and file.info.sample_rate:
+        if getattr(file.info, 'sample_rate', None):
             metadata['~sample_rate'] = file.info.sample_rate
-        if hasattr(file.info, 'channels') and file.info.channels:
+        if getattr(file.info, 'channels', None):
             metadata['~channels'] = file.info.channels
-        if hasattr(file.info, 'bits_per_sample') and file.info.bits_per_sample:
+        if getattr(file.info, 'bits_per_sample', None):
             metadata['~bits_per_sample'] = file.info.bits_per_sample
         if self.NAME:
             metadata['~format'] = self.NAME

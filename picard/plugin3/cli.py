@@ -245,7 +245,7 @@ class PluginCLI:
         """Run the CLI command and return exit code."""
         try:
             # Handle --refresh-registry first if specified
-            if hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
+            if getattr(self._args, 'refresh_registry', None):
                 result = self._cmd_refresh_registry()
                 # If refresh failed, return error
                 if result != ExitCode.SUCCESS:
@@ -281,20 +281,20 @@ class PluginCLI:
                 return self._cmd_update_all()
             elif self._args.check_updates:
                 return self._cmd_check_updates()
-            elif hasattr(self._args, 'browse') and self._args.browse:
+            elif getattr(self._args, 'browse', None):
                 return self._cmd_browse()
-            elif hasattr(self._args, 'search') and self._args.search:
+            elif getattr(self._args, 'search', None):
                 return self._cmd_search(self._args.search)
-            elif hasattr(self._args, 'check_blacklist') and self._args.check_blacklist:
+            elif getattr(self._args, 'check_blacklist', None):
                 return self._cmd_check_blacklist(self._args.check_blacklist)
-            elif hasattr(self._args, 'refresh_registry') and self._args.refresh_registry:
+            elif getattr(self._args, 'refresh_registry', None):
                 # Already handled at the start, just return success
                 return ExitCode.SUCCESS
-            elif hasattr(self._args, 'switch_ref') and self._args.switch_ref:
+            elif getattr(self._args, 'switch_ref', None):
                 return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
             elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
                 return self._cmd_clean_config(self._args.clean_config)
-            elif hasattr(self._args, 'validate') and self._args.validate:
+            elif getattr(self._args, 'validate', None):
                 return self._cmd_validate(self._args.validate, ref)
             elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
                 return self._cmd_manifest(self._args.manifest)
@@ -402,7 +402,7 @@ class PluginCLI:
 
                 self._out.print(f'  {self._out.d_name(display_name)} ({status})')
 
-                if hasattr(plugin, 'manifest') and plugin.manifest:
+                if getattr(plugin, 'manifest', None):
                     desc = plugin.manifest.description(locale_str)
                     if desc:
                         self._out.info(f'  {desc}')

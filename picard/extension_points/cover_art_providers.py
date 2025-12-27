@@ -33,7 +33,7 @@ ext_point_cover_art_providers = ExtensionPoint(label='cover_art_providers')
 
 def register_cover_art_provider(provider):
     ext_point_cover_art_providers.register(provider.__module__, provider)
-    if hasattr(provider, 'OPTIONS') and provider.OPTIONS:
+    if getattr(provider, 'OPTIONS', None):
         if not hasattr(provider.OPTIONS, 'NAME'):
             provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
         if not hasattr(provider.OPTIONS, 'TITLE'):

@@ -840,7 +840,7 @@ _Since Picard 0.12_"""
 def func_matchedtracks(parser, *args):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
-    if file and file.parent_item and hasattr(file.parent_item, 'album') and file.parent_item.album:
+    if file and file.parent_item and getattr(file.parent_item, 'album', None):
         return str(parser.file.parent_item.album.get_num_matched_tracks())
     return '0'
 

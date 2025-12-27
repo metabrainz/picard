@@ -114,7 +114,7 @@ class LocationDetector:
             return SessionItemLocation(type=SessionConstants.LOCATION_NAT, recording_id=parent.id)
 
         # Track placement
-        if hasattr(parent, 'id') and parent.id:
+        if getattr(parent, 'id', None):
             return SessionItemLocation(
                 type=SessionConstants.LOCATION_TRACK, album_id=parent.album.id, recording_id=parent.id
             )
