@@ -16,7 +16,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-04-18 19:20+0000\n"
+"PO-Revision-Date: 2025-11-22 16:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -501,6 +501,8 @@ msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
+"Een doos met vier of vijf zijden, meestal van karton of plastic, dat om een "
+"verpakking zoals een jewel case heen zit."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1607,6 +1609,8 @@ msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
 msgstr ""
+"Een organisatie die de creatieve leiding voor visuele elementen van een "
+"uitgave verzorgt (zoals illustraties, of ontwerp)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2736,7 +2740,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "Creatief bureau"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3379,6 +3383,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "eïs kleine terts"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr "EAÜ-ID"
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3408,6 +3417,16 @@ msgstr "Elektronisch instrument"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "Enhanced CD"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
+"Verbeterde versie van Blu-ray met ondersteuning voor Ultra HD-video (4K). "
+"Niet alle Blu-ray-spelers kunnen hiermee overweg."
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4032,12 +4051,9 @@ msgid "HDCD"
 msgstr "hdcd"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ASCAP-ID"
+msgstr "HDS-ZAMP-ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4501,12 +4517,9 @@ msgstr "Een ID van de Costa Ricaanse rechtenorganisatie ACAM"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "Een ID van de Cubaanse rechtenorganisatie ACDAM"
+msgstr "Een ID van de Kroatisch rechtenorganisatie HDS-ZAMP"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4543,6 +4556,12 @@ msgstr "Een ID van de Nederlandse rechtenorganisatie BUMA/STEMRA"
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "Een ID van de Ecuadoraanse rechtenorganisatie SAYCE"
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "Een ID van de Estse rechtenorganisatie EAÜ"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -7950,7 +7969,7 @@ msgstr "Slim Jewel Case"
 #: DB:release_packaging/name:122
 msgctxt "release_packaging"
 msgid "Slipcase"
-msgstr ""
+msgstr "Slipcase"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8845,6 +8864,11 @@ msgstr "USB-stick"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Ultra HD Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

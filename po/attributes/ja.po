@@ -31,8 +31,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-08-11 22:36+0000\n"
-"Last-Translator: TefWw <came.from.the.north7239@gmail.com>\n"
+"PO-Revision-Date: 2025-10-11 18:02+0000\n"
+"Last-Translator: yyb987 <yyb987@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
 "Language: ja\n"
@@ -40,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -2976,7 +2976,7 @@ msgstr "デジブック"
 #: DB:release_packaging/name:89
 msgctxt "release_packaging"
 msgid "Digifile"
-msgstr "<i>Digifile</i>"
+msgstr "デジファイル"
 
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
@@ -3281,6 +3281,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "嬰ホ短調"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3310,6 +3315,14 @@ msgstr "電子楽器"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "CD-EXTRA"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4460,6 +4473,15 @@ msgstr "オランダの権利者団体BUMA/STEMRAのID"
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "エクアドルの権利者団体SAYCEのID"
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr " オーストリアの権利者団体AKMのID"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -5632,7 +5654,7 @@ msgstr "<i>Longa</i>"
 #: DB:release_packaging/name:55
 msgctxt "release_packaging"
 msgid "Longbox"
-msgstr "<i>Longbox</i>"
+msgstr "ロングボックス"
 
 #: DB:work_attribute_type/name:49
 msgctxt "work_attribute_type"
@@ -5881,7 +5903,7 @@ msgstr "<i>Mersiye</i>"
 #: DB:release_packaging/name:54
 msgctxt "release_packaging"
 msgid "Metal Tin"
-msgstr "<i>Metal Tin</i>"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:745
 msgctxt "work_attribute_type_allowed_value"
@@ -7385,7 +7407,7 @@ msgstr "ラーガ（カルナータカ音楽）"
 #: DB:work_attribute_type/name:32
 msgctxt "work_attribute_type"
 msgid "Rāga (Hindustani)"
-msgstr "<i>Rāga (Hindustani)</i>"
+msgstr "ラーガ (ヒンドゥスターニー)"
 
 #: DB:work_attribute_type_allowed_value/value:1003
 msgctxt "work_attribute_type_allowed_value"
@@ -8733,12 +8755,12 @@ msgstr "<i>Tüvanger</i>"
 #: DB:work_attribute_type/name:5
 msgctxt "work_attribute_type"
 msgid "Tāla (Carnatic)"
-msgstr "<i>Tāla (Carnatic)</i>"
+msgstr "Tāla (カルナティック)"
 
 #: DB:work_attribute_type/name:31
 msgctxt "work_attribute_type"
 msgid "Tāla (Hindustani)"
-msgstr "<i>Tāla (Hindustani)</i>"
+msgstr "Tāla (ヒンドゥスターニー)"
 
 #: DB:work_attribute_type_allowed_value/value:846
 msgctxt "work_attribute_type_allowed_value"
@@ -8763,7 +8785,7 @@ msgstr "<i>Tōḍī</i>"
 #: DB:work_attribute_type/name:209
 msgctxt "work_attribute_type"
 msgid "UACRR ID"
-msgstr "<i>UACRR ID</i>"
+msgstr "UACRR ID"
 
 #: DB:medium_format/name:28
 msgctxt "medium_format"
@@ -8779,6 +8801,11 @@ msgstr "USBフラッシュドライブ"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "<i>Udaya ravicandrika</i>"
+
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Ultra HD Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
@@ -9177,7 +9204,7 @@ msgstr "<i>Zafer</i>"
 #: DB:work_type/name:19
 msgctxt "work_type"
 msgid "Zarzuela"
-msgstr "<i>Zarzuela</i>(サルスエラ)"
+msgstr "サルスエラ"
 
 #: DB:work_attribute_type_allowed_value/value:591
 msgctxt "work_attribute_type_allowed_value"
@@ -9314,7 +9341,7 @@ msgstr "<i>Çocuk şarkısı</i>"
 #: DB:work_type/name:20
 msgctxt "work_type"
 msgid "Étude"
-msgstr "<i>Étude</i>(エチュード)"
+msgstr "エチュード"
 
 #: DB:work_attribute_type_allowed_value/value:653
 msgctxt "work_attribute_type_allowed_value"

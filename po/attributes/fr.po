@@ -28,11 +28,11 @@
 # yvanz, 2016,2018
 # yvanz, 2018
 # Zas <Zas@users.noreply.translations.metabrainz.org>, 2023.
-# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-09-23 18:42+0000\n"
+"PO-Revision-Date: 2025-10-09 19:02+0000\n"
 "Last-Translator: yvanzo <yvanzo@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/fr/>\n"
@@ -40,9 +40,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
-"1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7.2\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : "
+"((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -158,12 +158,9 @@ msgid "8cm CD+G"
 msgstr "CD+G 8 cm (3 po)"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "CD 8 cm (3 po)"
+msgstr "CD-R 8 cm (3 po)"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -400,20 +397,14 @@ msgid "A Dorian"
 msgstr "La dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1070
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Locrian"
-msgstr "La dorien"
+msgstr "La locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1063
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Lydian"
-msgstr "La mixolydien"
+msgstr "La lydien"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
@@ -423,7 +414,7 @@ msgstr "La mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1056
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Phrygian"
-msgstr ""
+msgstr "La phrygien"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -1254,12 +1245,9 @@ msgid "ASCAP ID"
 msgstr "ID ASCAP"
 
 #: DB:work_attribute_type/name:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "KODA ID"
 msgctxt "work_attribute_type"
 msgid "AUTODIA ID"
-msgstr "ID KODA"
+msgstr "ID AUTODIA"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -1971,20 +1959,14 @@ msgid "B Dorian"
 msgstr "Si dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1071
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "Si dorien"
+msgstr "Si locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1064
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "Si mixolydien"
+msgstr "Si lydien"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
@@ -1994,7 +1976,7 @@ msgstr "Si mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1057
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Phrygian"
-msgstr ""
+msgstr "Si phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2464,20 +2446,14 @@ msgid "C Dorian"
 msgstr "Do dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1065
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "Do dorien"
+msgstr "Do locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1058
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "Do mixolydien"
+msgstr "Do lydien"
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
@@ -2487,7 +2463,7 @@ msgstr "Do mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1051
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Phrygian"
-msgstr ""
+msgstr "Do phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:2
 msgctxt "work_attribute_type_allowed_value"
@@ -2860,20 +2836,14 @@ msgid "D Dorian"
 msgstr "Ré dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1066
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Locrian"
-msgstr "Ré dorien"
+msgstr "Ré locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1059
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Lydian"
-msgstr "Ré mixolydien"
+msgstr "Ré lydien"
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
@@ -2883,7 +2853,7 @@ msgstr "Ré mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1052
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Phrygian"
-msgstr ""
+msgstr "Ré phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:8
 msgctxt "work_attribute_type_allowed_value"
@@ -3411,20 +3381,14 @@ msgid "E Dorian"
 msgstr "Mi dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1067
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Locrian"
-msgstr "Mi dorien"
+msgstr "Mi locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1060
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Lydian"
-msgstr "Mi mixolydien"
+msgstr "Mi lydien"
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
@@ -3434,7 +3398,7 @@ msgstr "Mi mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1053
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Phrygian"
-msgstr ""
+msgstr "Mi phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:13
 msgctxt "work_attribute_type_allowed_value"
@@ -3466,6 +3430,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "Mi♯ mineur"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr "ID EAÜ"
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3495,6 +3464,16 @@ msgstr "Instrument électronique"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "CD-Extra"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
+"Version améliorée du Blu-ray qui supporte des vidéos en Ultra Haute "
+"Définition et qui n'est pas compatible avec tous les lecteurs Blu-ray."
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -3602,20 +3581,14 @@ msgid "F Dorian"
 msgstr "Fa dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "Fa dorien"
+msgstr "Fa locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1061
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Lydian"
-msgstr "Fa mixolydien"
+msgstr "Fa lydien"
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
@@ -3625,7 +3598,7 @@ msgstr "Fa mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1054
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Phrygian"
-msgstr ""
+msgstr "Fa phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:17
 msgctxt "work_attribute_type_allowed_value"
@@ -3835,20 +3808,14 @@ msgid "G Dorian"
 msgstr "Sol dorien"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "Sol dorien"
+msgstr "Sol locrien"
 
 #: DB:work_attribute_type_allowed_value/value:1062
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Lydian"
-msgstr "Sol mixolydien"
+msgstr "Sol lydien"
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
@@ -3858,7 +3825,7 @@ msgstr "Sol mixolydien"
 #: DB:work_attribute_type_allowed_value/value:1055
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Phrygian"
-msgstr ""
+msgstr "Sol phrygien"
 
 #: DB:work_attribute_type_allowed_value/value:22
 msgctxt "work_attribute_type_allowed_value"
@@ -4130,12 +4097,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ID ASCAP"
+msgstr "ID HDS-ZAMP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4558,12 +4522,9 @@ msgstr "ID pour la PRS for Music, société britannique de gestion des droits"
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "ID pour la NICAUTOR, société nicaraguayenne de gestion des droits"
+msgstr "ID pour la MUSICAUTOR, société bulgare de gestion des droits"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4603,12 +4564,9 @@ msgstr "ID pour l’ACAM, société costaricaine de gestion des droits"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "ID pour l’ACDAM, société cubaine de gestion des droits"
+msgstr "ID pour l’HDS-ZAMP, société croate de gestion des droits"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4647,6 +4605,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "ID pour la SAYCE, société équatorienne de gestion des droits"
 
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "ID pour l’EAÜ, société estonienne de gestion des droits"
+
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
@@ -4667,12 +4631,9 @@ msgstr "ID pour la GEMA, société allemande de gestion des droits"
 
 #. name:AUTODIA ID
 #: DB:work_attribute_type/description:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Czech rights society OSA"
 msgctxt "work_attribute_type"
 msgid "ID for the Greek rights society AUTODIA"
-msgstr "ID pour l’OSA, société tchèque de gestion des droits"
+msgstr "ID pour l’AUTODIA, société grecque de gestion des droits"
 
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
@@ -4712,12 +4673,9 @@ msgstr "ID pour l’IPRS, société indienne de gestion des droits"
 
 #. name:WAMI ID
 #: DB:work_attribute_type/description:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Indian rights society IPRS"
 msgctxt "work_attribute_type"
 msgid "ID for the Indonesian rights society WAMI"
-msgstr "ID pour l’IPRS, société indienne de gestion des droits"
+msgstr "ID pour la WAMI, société indonésienne de gestion des droits"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4842,12 +4800,9 @@ msgstr "ID pour la SACIM, société salvadorienne de gestion des droits d'auteur
 
 #. name:SOKOJ ID
 #: DB:work_attribute_type/description:213
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Norwegian rights society TONO"
 msgctxt "work_attribute_type"
 msgid "ID for the Serbian rights society SOKOJ"
-msgstr "ID pour la TONO, société norvégienne de gestion des droits d'auteur"
+msgstr "ID pour la SOKOJ, société serbe de gestion des droits d'auteur"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -4929,12 +4884,9 @@ msgstr "ID pour la SESAC, société états-unienne de gestion des droits"
 
 #. name:UACRR ID
 #: DB:work_attribute_type/description:209
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Brazilian rights society ECAD"
 msgctxt "work_attribute_type"
 msgid "ID for the Ukrainian rights society UACRR"
-msgstr "ID pour l’ECAD, société brésilienne de gestion des droits"
+msgstr "ID pour l’UACRR, société ukrainienne de gestion des droits"
 
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
@@ -5038,21 +4990,15 @@ msgstr "Réserve/territoire indigène"
 
 #. name:Indigenous territory / reserve
 #: DB:area_type/description:9
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for semi-autonomous territories governed by indigenous peoples, such "
-#| "as Indian reserves/reservations in North America and indigenous "
-#| "territories in Central and South America."
 msgctxt "area_type"
 msgid ""
 "Indigenous territory / reserve is used for semi-autonomous territories "
 "governed by indigenous peoples, such as Indian reserves/reservations in "
 "North America and indigenous territories in Central and South America."
 msgstr ""
-"Utilisé pour les territoires semi-autonomes gouvernés par des peuples "
-"autochtones, tels que les réserves indiennes en Amérique du Nord et les "
-"territoires indigènes en Amérique latine."
+"Réserve/territoire indigène est utilisé pour les territoires semi-autonomes "
+"gouvernés par des peuples autochtones, tels que les réserves indiennes en "
+"Amérique du Nord et les territoires indigènes en Amérique latine."
 
 #: DB:place_type/name:5
 msgctxt "place_type"
@@ -5837,12 +5783,9 @@ msgid "MCT ID"
 msgstr "ID MCT"
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "NICAUTOR ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "ID NICAUTOR"
+msgstr "ID MUSICAUTOR"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6091,18 +6034,13 @@ msgstr "Base militaire"
 
 #. name:Military base
 #: DB:area_type/description:8
-#, fuzzy
-#| msgctxt "area_type"
-#| msgid ""
-#| "Used for any military bases that are large enough to be considered an "
-#| "area, not just a place."
 msgctxt "area_type"
 msgid ""
 "Military base is used only for any military bases that are large enough to "
 "be considered an area, not just a place."
 msgstr ""
-"Utilisé pour toute base militaire suffisament grande pour être considérée "
-"comme une région plutôt qu’un simple lieu."
+"Base militaire est utilisé pour toute base militaire suffisamment grande "
+"pour être considérée comme une région plutôt qu’un simple lieu."
 
 #: DB:medium_format/name:166
 msgctxt "medium_format"
@@ -7776,7 +7714,7 @@ msgstr "ID SODRAC"
 #: DB:work_attribute_type/name:213
 msgctxt "work_attribute_type"
 msgid "SOKOJ ID"
-msgstr ""
+msgstr "ID SOKOJ"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
@@ -8962,7 +8900,7 @@ msgstr "Tôdî"
 #: DB:work_attribute_type/name:209
 msgctxt "work_attribute_type"
 msgid "UACRR ID"
-msgstr ""
+msgstr "ID UACRR"
 
 #: DB:medium_format/name:28
 msgctxt "medium_format"
@@ -8978,6 +8916,11 @@ msgstr "Clef USB"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Blu-ray Ultra HD"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
@@ -9248,12 +9191,9 @@ msgid "Vīra vasantaṁ"
 msgstr "Vîra vasantam"
 
 #: DB:work_attribute_type/name:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "BMI ID"
 msgctxt "work_attribute_type"
 msgid "WAMI ID"
-msgstr "ID BMI"
+msgstr "ID WAMI"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

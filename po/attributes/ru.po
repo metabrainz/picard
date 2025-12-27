@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-08-16 21:36+0000\n"
+"PO-Revision-Date: 2025-12-22 16:11+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
@@ -40,9 +40,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || ("
-"n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -384,27 +384,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:794
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Dorian"
-msgstr "Ля Дориан"
+msgstr "Ля дорийский"
 
 #: DB:work_attribute_type_allowed_value/value:1070
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Locrian"
-msgstr "Ля Локриан"
+msgstr "Ля локрийский"
 
 #: DB:work_attribute_type_allowed_value/value:1063
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Lydian"
-msgstr "Ля Лидийское"
+msgstr "Ля лидийский"
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Mixolydian"
-msgstr "Ля Миксолидийское"
+msgstr "Ля миксолидийский"
 
 #: DB:work_attribute_type_allowed_value/value:1056
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Phrygian"
-msgstr "Ля Фригийское"
+msgstr "Ля фригийский"
 
 #. name:Ballet
 #: DB:work_type/description:2
@@ -1630,6 +1630,9 @@ msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
 msgstr ""
+"Организация, которая обеспечивает творческое руководство визуальными "
+"элементами релизов (такими как иллюстрации, дизайн и другие художественные "
+"работы)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -1701,52 +1704,52 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:311
 msgctxt "work_attribute_type_allowed_value"
 msgid "Araban"
-msgstr ""
+msgstr "Арабан"
 
 #: DB:work_attribute_type_allowed_value/value:312
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabanbuselik"
-msgstr ""
+msgstr "Арабанбуселик"
 
 #: DB:work_attribute_type_allowed_value/value:313
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arabankurdi"
-msgstr ""
+msgstr "Арабанкурди"
 
 #: DB:work_attribute_type_allowed_value/value:314
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Can"
-msgstr ""
+msgstr "Арам-и Кан"
 
 #: DB:work_attribute_type_allowed_value/value:315
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aram-ı Dil"
-msgstr ""
+msgstr "Арам-и Дил"
 
 #: DB:work_attribute_type_allowed_value/value:604
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aranağme"
-msgstr ""
+msgstr "Аранагм"
 
 #: DB:work_attribute_type_allowed_value/value:316
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar"
-msgstr ""
+msgstr "Аразбар"
 
 #: DB:work_attribute_type_allowed_value/value:317
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbar Zemzeme"
-msgstr ""
+msgstr "Аразбар Земземе"
 
 #: DB:work_attribute_type_allowed_value/value:318
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarbuselik"
-msgstr ""
+msgstr "Аразбарбуселик"
 
 #: DB:work_attribute_type_allowed_value/value:319
 msgctxt "work_attribute_type_allowed_value"
 msgid "Arazbarek"
-msgstr ""
+msgstr "Аразбарек"
 
 #: DB:editor_collection_type/name:7
 msgctxt "collection_type"
@@ -1786,17 +1789,17 @@ msgstr "Серия исполнителей"
 #: DB:work_attribute_type_allowed_value/value:693
 msgctxt "work_attribute_type_allowed_value"
 msgid "Artık Aksaksemai"
-msgstr ""
+msgstr "Артык Аксаксеймай"
 
 #: DB:work_attribute_type_allowed_value/value:856
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asā māṇḍ"
-msgstr ""
+msgstr "Аса манд"
 
 #: DB:work_attribute_type_allowed_value/value:44
 msgctxt "work_attribute_type_allowed_value"
 msgid "Asāvēri"
-msgstr ""
+msgstr "Асавери"
 
 #: DB:editor_collection_type/name:5
 msgctxt "collection_type"
@@ -1836,7 +1839,7 @@ msgstr "Церемония награждения"
 #: DB:work_attribute_type_allowed_value/value:694
 msgctxt "work_attribute_type_allowed_value"
 msgid "Aydın"
-msgstr ""
+msgstr "Айдын"
 
 #: DB:work_attribute_type_allowed_value/value:695
 msgctxt "work_attribute_type_allowed_value"
@@ -1931,27 +1934,27 @@ msgstr ""
 #: DB:work_attribute_type_allowed_value/value:795
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Dorian"
-msgstr "Си Дориан"
+msgstr "Си дорийское"
 
 #: DB:work_attribute_type_allowed_value/value:1071
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "Си Локриан"
+msgstr "Си локрийское"
 
 #: DB:work_attribute_type_allowed_value/value:1064
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "Си Лидийское"
+msgstr "Си лидийский"
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Mixolydian"
-msgstr "Си Миксолидийское"
+msgstr "Си миксолидийское"
 
 #: DB:work_attribute_type_allowed_value/value:1057
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Phrygian"
-msgstr ""
+msgstr "Си фригийское"
 
 #: DB:work_attribute_type_allowed_value/value:33
 msgctxt "work_attribute_type_allowed_value"
@@ -2666,7 +2669,7 @@ msgstr ""
 #: DB:release_packaging/name:56
 msgctxt "release_packaging"
 msgid "Clamshell Case"
-msgstr ""
+msgstr "Клэмшелл"
 
 #: DB:place_type/name:42
 msgctxt "place_type"
@@ -3401,6 +3404,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "Ми диез минор"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3430,6 +3438,16 @@ msgstr "Электронный инструмент"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "Enhanced CD"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
+"Улучшенная версия Blu-ray, поддерживающая видео в разрешении 4K Ultra HD, и "
+"несовместимая со всеми Blu-ray-проигрывателями."
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4556,6 +4574,12 @@ msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "ID для эквадорского правозащитного общества SAYCE"
 
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "ID для эстонского правозащитного общества EAÜ"
+
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
 msgctxt "work_attribute_type"
@@ -5644,7 +5668,7 @@ msgstr ""
 #: DB:medium_format/name:5
 msgctxt "medium_format"
 msgid "LaserDisc"
-msgstr "Лазерный диск"
+msgstr "LaserDisc"
 
 #: DB:work_attribute_type/name:55
 msgctxt "work_attribute_type"
@@ -5674,7 +5698,7 @@ msgstr ""
 #: DB:artist_alias_type/name:2
 msgctxt "alias_type"
 msgid "Legal name"
-msgstr "Юридическое название"
+msgstr "Законное имя"
 
 #: DB:work_attribute_type_allowed_value/value:744
 msgctxt "work_attribute_type_allowed_value"
@@ -7159,12 +7183,9 @@ msgid "Quartet"
 msgstr "Квартет"
 
 #: DB:medium_format/name:208
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Cartridge"
 msgctxt "medium_format"
 msgid "ROM cartridge"
-msgstr "Картридж"
+msgstr "ROM-картридж"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -8829,6 +8850,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr ""
 
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Ultra HD Blu-ray"
+
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
 msgctxt "cover_art_type"
@@ -8843,12 +8869,6 @@ msgstr ""
 
 #. name:Watermark
 #: DB:event_art_archive.art_type/description:10
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use in combination with any other appropriate types for images that need "
-#| "work to be used for tagging (but can possibly already be used for "
-#| "reference)."
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
@@ -8856,42 +8876,30 @@ msgid ""
 "reference)."
 msgstr ""
 "Используйте в сочетании с любыми другими подходящими типами для изображений, "
-"которые нуждаются в доработке для использования в тегах (но, возможно, уже "
-"могут использоваться для ссылок)."
+"которые имеют водяные знаки и нежелательны к показу (но могут использоваться "
+"для ссылок)."
 
 #. name:Raw/Unedited
 #: DB:cover_art_archive.art_type/description:14
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use in combination with any other appropriate types for images that need "
-#| "work to be used for tagging (but can possibly already be used for "
-#| "reference)."
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
 msgstr ""
 "Используйте в сочетании с любыми другими подходящими типами для изображений, "
-"которые нуждаются в доработке для использования в тегах (но, возможно, уже "
-"могут использоваться для ссылок)."
+"которые нуждаются в доработке для их показа (но, возможно, уже могут "
+"использоваться для ссылок)."
 
 #. name:Raw/Unedited
 #: DB:event_art_archive.art_type/description:9
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use in combination with any other appropriate types for images that need "
-#| "work to be used for tagging (but can possibly already be used for "
-#| "reference)."
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
 msgstr ""
 "Используйте в сочетании с любыми другими подходящими типами для изображений, "
-"которые нуждаются в доработке для использования в тегах (но, возможно, уже "
-"могут использоваться для ссылок)."
+"которые нуждаются в доработке для их показа (но, возможно, уже могут "
+"использоваться для ссылок)."
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1

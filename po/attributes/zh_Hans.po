@@ -15,11 +15,13 @@
 # delamons <lamons.n@gmail.com>, 2025.
 # Solarenta <2325840950@qq.com>, 2025.
 # Beteix <1158817754@qq.com>, 2025.
+# KenParker_CN <kenparkercn@gmail.com>, 2025.
+# Avava_Ava <2245176012haha@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-07-26 12:36+0000\n"
-"Last-Translator: Beteix <1158817754@qq.com>\n"
+"PO-Revision-Date: 2025-11-18 06:20+0000\n"
+"Last-Translator: Avava_Ava <2245176012haha@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -27,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.2\n"
+"X-Generator: Weblate 5.14.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -193,7 +195,7 @@ msgid ""
 "marked as both a soundtrack and a compilation.</p>"
 msgstr ""
 "<p>出于MusicBrainz数据库原因，合辑包括以下类型的专辑：</p>\n"
-"\n"
+" \n"
 "<ul>\n"
 "<li>从不同的旧来源（不一定是已发行的专辑）组合在一起的录音的合辑。例如\"Best "
 "of\"（精选合集）类型的专辑、回顾性的专辑，或者稀有的专辑。</li>\n"
@@ -208,8 +210,8 @@ msgstr ""
 "<ul>\n"
 "<li>重新发行的专辑，即使它包含额外的曲目。</li>\n"
 "<li>包含另一位艺术家的音乐翻唱的致敬专辑。</li>\n"
-"<li>古典音乐唱片：包含古典艺术家作品新录音的古典音乐唱片</li>\n"
-"<li>包含几位艺术家的新音乐的分版发行</li>\n"
+"<li>古典乐唱片：包含古典艺术家作品新录音的古典音乐唱片</li>\n"
+"<li>包含多位艺术家的新音乐的分版发行</li>\n"
 "</ul>\n"
 "\n"
 "<p>合辑应该是对其他类型的补充，而不是替代。<li>例如，使用预发行音乐的各种艺术"
@@ -2588,7 +2590,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "创意机构"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -2719,7 +2721,7 @@ msgstr "DVD 音频"
 #: DB:medium_format/name:92
 msgctxt "medium_format"
 msgid "DVD-R Video"
-msgstr "DVD-R Video"
+msgstr "DVD-R 影像"
 
 #: DB:medium_format/name:19
 msgctxt "medium_format"
@@ -2930,7 +2932,7 @@ msgstr "Digibook"
 #: DB:release_packaging/name:89
 msgctxt "release_packaging"
 msgid "Digifile"
-msgstr "Digifile"
+msgstr "纸质折叠盒"
 
 #: DB:release_packaging/name:3
 msgctxt "release_packaging"
@@ -3229,6 +3231,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "升E小调"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr "EAÜ ID"
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3258,6 +3265,16 @@ msgstr "电子乐器"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "增强CD"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
+"Ultra HD Blu-ray 是 Blu-ray 的改良版本，支持播放 4K Ultra HD 视频。所有 Blu-"
+"ray 光碟播放器均不兼容 Ultra HD Bluray。"
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -3873,12 +3890,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ASCAP ID"
+msgstr "HDS-ZAMP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4342,12 +4356,9 @@ msgstr "哥斯达黎加著作权协会ACAM ID"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "古巴著作权协会ACDAM ID"
+msgstr "克罗地亚权协 HDS-ZAMP 的 ID"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4384,6 +4395,12 @@ msgstr "荷兰著作权协会BUMA/STEMRA ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "厄瓜多尔著作权协会SAYCE ID"
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "爱沙尼亚著作权协会EAÜ ID"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -8610,6 +8627,11 @@ msgstr "USB 闪存盘"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Ultra HD Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

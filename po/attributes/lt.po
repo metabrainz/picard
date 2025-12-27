@@ -3,11 +3,11 @@
 # Vaclovas lntas (Vac.) <email address hidden>, 2023
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2024-11-30 22:42+0000\n"
+"PO-Revision-Date: 2025-09-14 21:54+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/lt/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -40,7 +40,7 @@ msgid ""
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
 "„Sonata“ – tai bendras terminas, vartojamas apibūdinti nedidelės apimties "
-"(labai dažnai solo arba solo + klavišiniai) instrumentinius kūrinius, iš "
+"(labai dažnai solo arba solo + klaviatūra) instrumentinius kūrinius, iš "
 "pradžių baroko muzikoje."
 
 #: DB:medium_format/name:205
@@ -91,32 +91,32 @@ msgstr "3,5” (8,89 cm) diskelis"
 #: DB:medium_format/name:91
 msgctxt "medium_format"
 msgid "5.25\" Floppy Disk"
-msgstr "5.25” (13,335 cm) diskelis"
+msgstr "5,25” (13,335 cm) diskelis"
 
 #: DB:medium_format/name:204
 msgctxt "medium_format"
 msgid "7\" Acetate"
-msgstr "7 colių acetatas"
+msgstr "7” (17,78 cm) acetatas"
 
 #: DB:medium_format/name:52
 msgctxt "medium_format"
 msgid "7\" Flexi-disc"
-msgstr "7 colių lankstusis diskelis"
+msgstr "7” (17,78 cm) lankstusis diskelis"
 
 #: DB:medium_format/name:56
 msgctxt "medium_format"
 msgid "7\" Shellac"
-msgstr "7 colių šelakas"
+msgstr "7” (17,78 cm) šelakas"
 
 #: DB:medium_format/name:29
 msgctxt "medium_format"
 msgid "7\" Vinyl"
-msgstr "7 colių vinilas"
+msgstr "7” (17,78 cm) vinilas"
 
 #: DB:medium_format/name:71
 msgctxt "medium_format"
 msgid "8\" LaserDisc"
-msgstr "8 colių LaserDisc"
+msgstr "8” (20,32 cm) LaserDisc"
 
 #: DB:medium_format/name:78
 msgctxt "medium_format"
@@ -134,18 +134,15 @@ msgid "8cm CD+G"
 msgstr "8 cm CD+G"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "8 cm CD"
+msgstr "8 cm CD-R"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
 msgctxt "medium_format"
 msgid "8cm DVD, often used for video singles."
-msgstr "8 cm DVD, dažnai naudojamas vaizdo klipų singlams."
+msgstr "8 cm DVD, dažnai naudojamas vaizdo įrašų singlams."
 
 #. name:Pathé disc
 #: DB:medium_format/description:58
@@ -154,8 +151,8 @@ msgid ""
 "90 rpm, vertical-cut shellac discs, produced by the Pathé label from 1906 to "
 "1932."
 msgstr ""
-"90 apsukų per minutę, vertikaliai pjaustyti šelako diskai, kuriuos leidykla "
-"Pathé gamino nuo 1906 iki 1932 m."
+"90 APM (apsisukimų per minutę), vertikaliai pjaustyti šelako diskai, kuriuos "
+"leidykla „Pathé“ gamino nuo 1906 iki 1932 m."
 
 #. name:Compilation
 #: DB:release_group_secondary_type/description:1
@@ -3309,6 +3306,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr ""
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3337,6 +3339,14 @@ msgstr ""
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
+msgstr ""
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
 msgstr ""
 
 #: DB:instrument_type/name:6
@@ -4477,6 +4487,15 @@ msgstr "Olandijos teisių organizacijos BUMA/STEMRA identifikatorius."
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "Ekvadoro teisių organizacijos SAYCE identifikatorius."
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "Austrijos teisių organizacijos AKM identifikatorius."
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -8774,6 +8793,11 @@ msgstr "USB atmintinė"
 #: DB:work_attribute_type_allowed_value/value:258
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
+msgstr ""
+
+#: DB:medium_format/name:211
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
 msgstr ""
 
 #. name:Watermark

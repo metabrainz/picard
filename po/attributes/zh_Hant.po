@@ -3234,6 +3234,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "升 E 小調"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3263,6 +3268,14 @@ msgstr "電子樂器"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "增強型CD"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4392,6 +4405,15 @@ msgstr "荷蘭著作權協會BUMA/STEMRA ID"
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "厄瓜多著作權協會SAYCE ID"
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "奧地利著作權協會AKM ID"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -8629,6 +8651,14 @@ msgstr "USB 隨身碟"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:211
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "Blu-ray"
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

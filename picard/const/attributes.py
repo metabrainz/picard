@@ -135,6 +135,7 @@ MB_ATTRIBUTES = {
     'DB:medium_format/name:208': 'ROM cartridge',
     'DB:medium_format/name:209': 'CD-i',
     'DB:medium_format/name:210': '8cm CD-R',
+    'DB:medium_format/name:211': 'Ultra HD Blu-ray',
     'DB:release_group_primary_type/name:001': 'Album',
     'DB:release_group_primary_type/name:002': 'Single',
     'DB:release_group_primary_type/name:003': 'EP',

@@ -3189,6 +3189,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "מי דיאז מינור"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3218,6 +3223,14 @@ msgstr "כלי נגינה חשמלי"
 msgctxt "medium_format"
 msgid "Enhanced CD"
 msgstr "תקליטור משופר"
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
+msgstr ""
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4366,6 +4379,15 @@ msgstr "מזהה עבור אגודת הזכויות ההולנדית BUMA/STEMRA
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
 msgstr "מזהה עבור אגודת הזכויות האקוודורית SAYCE"
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Austrian rights society AKM"
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
+msgstr "מזהה עבור אגודת הזכויות האוסטרית AKM"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -8615,6 +8637,14 @@ msgstr "כונן אחסון USB"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr ""
+
+#: DB:medium_format/name:211
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "Blu-ray"
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "בלו ריי"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

@@ -3104,6 +3104,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "E-sharp minor"
 msgstr "eiss-moll"
 
+#: DB:work_attribute_type/name:215
+msgctxt "work_attribute_type"
+msgid "EAÜ ID"
+msgstr ""
+
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
 msgid "ECAD ID"
@@ -3132,6 +3137,14 @@ msgstr "Elektronisk instrument"
 #: DB:medium_format/name:42
 msgctxt "medium_format"
 msgid "Enhanced CD"
+msgstr ""
+
+#. name:Ultra HD Blu-ray
+#: DB:medium_format/description:211
+msgctxt "medium_format"
+msgid ""
+"Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
+"compatible with all Blu-ray players."
 msgstr ""
 
 #: DB:instrument_type/name:6
@@ -4265,6 +4278,12 @@ msgstr ""
 #: DB:work_attribute_type/description:40
 msgctxt "work_attribute_type"
 msgid "ID for the Ecuadorian rights society SAYCE"
+msgstr ""
+
+#. name:EAÜ ID
+#: DB:work_attribute_type/description:215
+msgctxt "work_attribute_type"
+msgid "ID for the Estonian rights society EAÜ"
 msgstr ""
 
 #. name:TEOSTO ID
@@ -8476,6 +8495,14 @@ msgstr "USB Minnepinne"
 msgctxt "work_attribute_type_allowed_value"
 msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
+
+#: DB:medium_format/name:211
+#, fuzzy
+#| msgctxt "medium_format"
+#| msgid "Blu-ray"
+msgctxt "medium_format"
+msgid "Ultra HD Blu-ray"
+msgstr "Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
