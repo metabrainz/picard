@@ -22,6 +22,7 @@
 from PyQt6 import QtCore, QtWidgets
 
 from picard.i18n import gettext as _
+from picard.plugin3.categories import PluginCategorySet
 
 from picard.ui import PreserveGeometry
 
@@ -262,12 +263,12 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
     def _get_categories(self):
         """Get categories."""
         if self._is_installable_plugin():
-            categories = getattr(self.plugin_data, 'categories', [])
-            return ', '.join(categories) if categories else ''
+            categories = PluginCategorySet(getattr(self.plugin_data, 'categories', []))
+            return str(categories) if categories else ''
         else:
             try:
                 categories = self.plugin_data.manifest._data.get('categories', []) if self.plugin_data.manifest else []
-                return ', '.join(categories)
+                return str(PluginCategorySet(categories))
             except (AttributeError, Exception):
                 return ''
 
