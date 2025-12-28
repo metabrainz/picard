@@ -83,22 +83,13 @@ def extract_from_manifest(plugin_dir):
         return {}
 
     try:
-        import tomllib
-    except ImportError:
-        try:
-            import tomli as tomllib
-        except ImportError:
-            print("Warning: tomllib not available, not extracting manifest strings", file=sys.stderr)
-            return {}
-
-    try:
         with open(manifest_path, 'rb') as f:
-            manifest = tomllib.load(f)
-            return {
-                'manifest.name': manifest.get('name', 'Unknown'),
-                'manifest.description': manifest.get('description', 'no description'),
-                'manifest.long_description': manifest.get('long_description', 'no description'),
-            }
+            manifest = tomlkit.load(f)
+            translations = {}
+            for key in ('name', 'description', 'long_description'):
+                if value := manifest.get(key, None):
+                    translations[f'manifest.{key}'] = str(value)
+            return translations
     except Exception as e:
         print(f"Warning: Failed to read MANIFEST.toml: {e}", file=sys.stderr)
         return {}
@@ -232,17 +223,8 @@ def read_source_locale(plugin_dir):
         return 'en'
 
     try:
-        import tomllib
-    except ImportError:
-        try:
-            import tomli as tomllib
-        except ImportError:
-            print("Warning: tomllib not available, using 'en' as default", file=sys.stderr)
-            return 'en'
-
-    try:
         with open(manifest_path, 'rb') as f:
-            manifest = tomllib.load(f)
+            manifest = tomlkit.load(f)
             return manifest.get('source_locale', 'en')
     except Exception as e:
         print(f"Warning: Failed to read MANIFEST.toml: {e}", file=sys.stderr)
