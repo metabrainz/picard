@@ -47,6 +47,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
             default_layout = QtWidgets.QVBoxLayout(default_widget)
             self.default_label = QtWidgets.QLabel(_("Use the default ref (usually main/master branch)"))
             default_layout.addWidget(self.default_label)
+            default_layout.addStretch()
             self.tab_widget.addTab(default_widget, _("Default"))
             self.default_tab_index = tab_index
             tab_index += 1
@@ -69,6 +70,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
         custom_layout.addWidget(QtWidgets.QLabel(_("Enter custom ref (tag, branch, or commit):")))
         self.custom_edit = QtWidgets.QLineEdit()
         custom_layout.addWidget(self.custom_edit)
+        custom_layout.addStretch()
         self.tab_widget.addTab(custom_widget, _("Custom"))
         self.custom_tab_index = tab_index
 
