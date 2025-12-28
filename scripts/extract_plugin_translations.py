@@ -34,8 +34,9 @@ import sys
 import tomlkit
 
 
-def extract_from_code(plugin_dir, translations):
+def extract_from_code(plugin_dir, existing_translations):
     """Extract tr() and trn() calls from Python files."""
+    translations = {}
     gitignore_patterns = read_gitignore(plugin_dir)
 
     for py_file in Path(plugin_dir).rglob('*.py'):
@@ -70,7 +71,7 @@ def extract_from_code(plugin_dir, translations):
                     elif isinstance(node.func, ast.Name) and node.func.id == 't_':
                         extract_translation_call(node, translations, py_file, lines, t_variables)
                     elif isinstance(node.func, ast.Name) and node.func.id == '_translate':
-                        extract_qt_translation_call(node, translations)
+                        extract_qt_translation_call(node, translations, existing_translations)
         except Exception as e:
             print(f"Warning: Failed to parse {py_file}: {e}", file=sys.stderr)
 
@@ -197,16 +198,15 @@ def extract_translation_call(node, translations, py_file, lines, t_variables):
         translations[key] = {'one': singular or f"?{key}?", 'other': plural or f"?{key}?"}
 
 
-def extract_qt_translation_call(node, translations):
+def extract_qt_translation_call(node, translations, existing_translations):
     if len(node.args) == 2:
         context = get_string_value(node.args[0])
         value = get_string_value(node.args[1])
         key = f"qt.{context}.{value}"
 
-        # Do not overwrite existing values. For Qt the values often will be only
-        # keys, so they will get replaced in the source language file as well.
-        if key not in translations:
-            translations[key] = f"?{value}?"
+        # For Qt the values often will be only keys. Hence use existing translation,
+        # if available, and otherwise mark the value as a placeholder.
+        translations[key] = existing_translations.get(key, f"?{value}?")
 
 
 def get_string_value(node):
