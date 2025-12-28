@@ -81,6 +81,7 @@ dev = [
     "pytest-randomly>=4.0.1",
     "pytest-xdist>=3.8.0",
     "ruff>=0.12.8",
+    "tomlkit>=0.13.3",
     "urllib3>=2.6.0",
     "wlc",
 ]

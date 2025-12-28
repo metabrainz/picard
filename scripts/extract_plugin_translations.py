@@ -31,8 +31,10 @@ import json
 from pathlib import Path
 import sys
 
+import tomlkit
 
-def extract_from_code(plugin_dir):
+
+def extract_from_code(plugin_dir, existing_translations):
     """Extract tr() and trn() calls from Python files."""
     translations = {}
     gitignore_patterns = read_gitignore(plugin_dir)
@@ -69,7 +71,7 @@ def extract_from_code(plugin_dir):
                     elif isinstance(node.func, ast.Name) and node.func.id == 't_':
                         extract_translation_call(node, translations, py_file, lines, t_variables)
                     elif isinstance(node.func, ast.Name) and node.func.id == '_translate':
-                        extract_qt_translation_call(node, translations)
+                        extract_qt_translation_call(node, translations, existing_translations)
         except Exception as e:
             print(f"Warning: Failed to parse {py_file}: {e}", file=sys.stderr)
 
@@ -82,22 +84,13 @@ def extract_from_manifest(plugin_dir):
         return {}
 
     try:
-        import tomllib
-    except ImportError:
-        try:
-            import tomli as tomllib
-        except ImportError:
-            print("Warning: tomllib not available, not extracting manifest strings", file=sys.stderr)
-            return {}
-
-    try:
         with open(manifest_path, 'rb') as f:
-            manifest = tomllib.load(f)
-            return {
-                'manifest.name': manifest.get('name', 'Unknown'),
-                'manifest.description': manifest.get('description', 'no description'),
-                'manifest.long_description': manifest.get('long_description', 'no description'),
-            }
+            manifest = tomlkit.load(f)
+            translations = {}
+            for key in ('name', 'description', 'long_description'):
+                if value := manifest.get(key, None):
+                    translations[f'manifest.{key}'] = str(value)
+            return translations
     except Exception as e:
         print(f"Warning: Failed to read MANIFEST.toml: {e}", file=sys.stderr)
         return {}
@@ -205,16 +198,15 @@ def extract_translation_call(node, translations, py_file, lines, t_variables):
         translations[key] = {'one': singular or f"?{key}?", 'other': plural or f"?{key}?"}
 
 
-def extract_qt_translation_call(node, translations):
+def extract_qt_translation_call(node, translations, existing_translations):
     if len(node.args) == 2:
         context = get_string_value(node.args[0])
         value = get_string_value(node.args[1])
         key = f"qt.{context}.{value}"
 
-        # Do not overwrite existing values. For Qt the values often will be only
-        # keys, so they will get replaced in the source language file as well.
-        if key not in translations:
-            translations[key] = f"?{value}?"
+        # For Qt the values often will be only keys. Hence use existing translation,
+        # if available, and otherwise mark the value as a placeholder.
+        translations[key] = existing_translations.get(key, f"?{value}?")
 
 
 def get_string_value(node):
@@ -231,36 +223,23 @@ def read_source_locale(plugin_dir):
         return 'en'
 
     try:
-        import tomllib
-    except ImportError:
-        try:
-            import tomli as tomllib
-        except ImportError:
-            print("Warning: tomllib not available, using 'en' as default", file=sys.stderr)
-            return 'en'
-
-    try:
         with open(manifest_path, 'rb') as f:
-            manifest = tomllib.load(f)
+            manifest = tomlkit.load(f)
             return manifest.get('source_locale', 'en')
     except Exception as e:
         print(f"Warning: Failed to read MANIFEST.toml: {e}", file=sys.stderr)
         return 'en'
 
 
-def format_toml(translations):
-    """Format translations as TOML string."""
-    lines = []
-    for key in sorted(translations.keys()):
-        value = translations[key]
-        if isinstance(value, dict):
-            lines.append(f'["{key}"]')
-            for plural_key in sorted(value.keys()):
-                lines.append(f'{plural_key} = {json.dumps(value[plural_key])}')
-            lines.append('')
+def read_translations(locale_file, format):
+    if not locale_file.exists():
+        return {}
+
+    with open(locale_file, 'r') as f:
+        if format == 'json':
+            return json.load(f)
         else:
-            lines.append(f'"{key}" = {json.dumps(value)}')
-    return '\n'.join(lines)
+            return tomlkit.load(f)
 
 
 def write_json(translations, output_file):
@@ -272,11 +251,8 @@ def write_json(translations, output_file):
 
 def write_toml(translations, output_file):
     """Write translations to TOML file."""
-    content = format_toml(translations)
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(content)
-        if content:
-            f.write('\n')
+        tomlkit.dump(translations, f, sort_keys=True)
 
 
 def main():
@@ -291,7 +267,12 @@ def main():
         print(f"Error: Plugin directory not found: {plugin_dir}", file=sys.stderr)
         return 1
 
-    translations = {**extract_from_code(plugin_dir), **extract_from_manifest(plugin_dir)}
+    source_locale = read_source_locale(plugin_dir)
+    locale_dir = plugin_dir / 'locale'
+    locale_file = locale_dir / f'{source_locale}.{args.format}'
+
+    translations = read_translations(locale_file, args.format)
+    translations = {**extract_from_code(plugin_dir, translations), **extract_from_manifest(plugin_dir)}
     if not translations:
         print("No translatable strings found", file=sys.stderr)
         return 1
@@ -300,17 +281,13 @@ def main():
         output = (
             json.dumps(translations, indent=2, ensure_ascii=False, sort_keys=True)
             if args.format == 'json'
-            else format_toml(translations)
+            else tomlkit.dumps(translations)
         )
         print(output)
     else:
-        source_locale = read_source_locale(plugin_dir)
-        locale_dir = plugin_dir / 'locale'
         locale_dir.mkdir(exist_ok=True)
-
-        output_file = locale_dir / f'{source_locale}.{args.format}'
-        (write_json if args.format == 'json' else write_toml)(translations, output_file)
-        print(f"Extracted {len(translations)} strings to {output_file}")
+        (write_json if args.format == 'json' else write_toml)(translations, locale_file)
+        print(f"Extracted {len(translations)} strings to {locale_file}")
 
     return 0
 
