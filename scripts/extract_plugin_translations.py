@@ -242,21 +242,6 @@ def read_translations(locale_file, format):
             return tomlkit.load(f)
 
 
-def format_toml(translations):
-    """Format translations as TOML string."""
-    doc = tomlkit.document()
-    for key in sorted(translations.keys()):
-        value = translations[key]
-        if isinstance(value, dict):
-            table = tomlkit.table()
-            for plural_key in sorted(value.keys()):
-                table[plural_key] = value[plural_key]
-            doc[key] = table
-        else:
-            doc[key] = value
-    return tomlkit.dumps(doc)
-
-
 def write_json(translations, output_file):
     """Write translations to JSON file."""
     with open(output_file, 'w', encoding='utf-8') as f:
@@ -266,11 +251,8 @@ def write_json(translations, output_file):
 
 def write_toml(translations, output_file):
     """Write translations to TOML file."""
-    content = format_toml(translations)
     with open(output_file, 'w', encoding='utf-8') as f:
-        f.write(content)
-        if content:
-            f.write('\n')
+        tomlkit.dump(translations, f, sort_keys=True)
 
 
 def main():
@@ -299,7 +281,7 @@ def main():
         output = (
             json.dumps(translations, indent=2, ensure_ascii=False, sort_keys=True)
             if args.format == 'json'
-            else format_toml(translations)
+            else tomlkit.dumps(translations)
         )
         print(output)
     else:
