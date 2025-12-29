@@ -47,20 +47,28 @@ class Plugins3OptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.all_plugins = []  # Store all plugins for filtering
 
         # Cache plugin manager for performance
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setup_ui()
 
-    def _save_updates(self, updates):
+    def _save_updates(self, updates, update_only=False):
         """Save updates to config, cleaning up stale entries for uninstalled plugins."""
         config = get_config()
-        current_plugin_ids = {plugin.plugin_id for plugin in self.all_plugins}
-        config.persist['plugins3_updates'] = {
-            pid: update for pid, update in updates.items() if pid in current_plugin_ids
-        }
+        current_plugin_ids = {plugin.plugin_id for plugin in self.plugin_manager.plugins}
+        updates = {pid: update for pid, update in updates.items() if pid in current_plugin_ids}
+        if update_only and config.persist['plugins3_updates']:
+            # Preserve existing updates
+            new_updates = {
+                pid: update for pid, update in config.persist['plugins3_updates'].items() if pid in current_plugin_ids
+            }
+            for pid, update in updates.items():
+                new_updates[pid] = update
+        else:
+            # Replace all updates
+            new_updates = updates
+        config.persist['plugins3_updates'] = new_updates
 
     def setup_ui(self):
         """Setup the UI."""
@@ -150,14 +158,13 @@ class Plugins3OptionsPage(OptionsPage):
     def load(self):
         """Load plugins from plugin manager."""
         self._show_status(_("Loading plugins…"))
+        # Load plugins immediately when page is loaded
         try:
-            # Load plugins immediately when page is loaded
-            self.all_plugins = self.plugin_manager.plugins
             # Validate persisted updates against current plugin state
             config = get_config()
             saved_updates = dict(config.persist['plugins3_updates'])
             valid_updates = {}
-            for plugin in self.all_plugins:
+            for plugin in self.plugin_manager.plugins:
                 if plugin.plugin_id in saved_updates:
                     update_info = saved_updates[plugin.plugin_id]
                     # Check if the update is still valid (current commit == old_commit from update info)
@@ -169,7 +176,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Pass current updates dict to plugin list widget
             self.plugin_list.set_updates(valid_updates)
             self._filter_plugins()
-            plugin_count = len(self.all_plugins)
+            plugin_count = len(self.plugin_manager.plugins)
             self._show_status(
                 ngettext(
                     "Loaded {plugin_count:,d} plugin",
@@ -197,9 +204,6 @@ class Plugins3OptionsPage(OptionsPage):
                 # Fetch remote refs for all plugins (for ref selectors)
                 self.plugin_manager.refresh_all_plugin_refs()
 
-            # Reload plugin list
-            self.all_plugins = self.plugin_manager.plugins
-
             # Check for updates (silent - no dialog) - skip fetching since we just did it
             new_updates = self.plugin_manager.check_updates(skip_fetch=True)
             self._save_updates(new_updates)
@@ -210,7 +214,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Refresh UI with network-fetched update status
             self._filter_plugins()
 
-            plugin_count = len(self.all_plugins)
+            plugin_count = len(self.plugin_manager.plugins)
             update_count = len(new_updates)
             plugins_text = ngettext("{plugin_count:,d} plugin", "{plugin_count:,d} plugins", plugin_count).format(
                 plugin_count=plugin_count
@@ -248,11 +252,11 @@ class Plugins3OptionsPage(OptionsPage):
 
         if not search_text:
             # Show all plugins
-            filtered_plugins = self.all_plugins
+            filtered_plugins = self.plugin_manager.plugins
         else:
             # Filter plugins by name
             filtered_plugins = []
-            for plugin in self.all_plugins:
+            for plugin in self.plugin_manager.plugins:
                 if search_text in plugin.name().lower():
                     filtered_plugins.append(plugin)
 
@@ -303,35 +307,42 @@ class Plugins3OptionsPage(OptionsPage):
         # Update button text since details are now shown
         self._update_details_button_text()
 
+    def _check_plugin_update_after_action(self, plugin, action):
+        """Check for updates for plugin after action, returns True if there's an update"""
+        log.debug("Checking updates for plugin %s after action: %s", plugin.plugin_id, action)
+        # Check for updates after the action
+        try:
+            new_updates = self.plugin_manager.check_updates(include_plugins={plugin})
+            if plugin.plugin_id in new_updates:
+                log.debug("Plugin %s has update available after %s", plugin.plugin_id, action)
+                self._save_updates(new_updates, update_only=True)
+                return True
+            else:
+                log.debug("Plugin %s has no updates after %s", plugin.plugin_id, action)
+        except Exception as e:
+            log.error("Failed to check updates after %s: %s", action, e)
+
+        # No update, be sure to remove the entry
+        config = get_config()
+        config.persist['plugins3_updates'].pop(plugin.plugin_id, None)
+        return False
+
     def _on_plugin_state_changed(self, plugin, action):
         """Handle plugin state changes (enable/disable/uninstall)."""
         log.debug("_on_plugin_state_changed called: plugin=%s, action=%s", plugin.plugin_id, action)
         self._show_status(_('Plugin "{name}" {action}').format(name=plugin.name(), action=action))
 
+        config = get_config()
+
         # Update the updates dict based on the action
         if action in ("updated", "reinstalled", "ref switched"):
-            log.debug("Re-checking updates for plugin %s after action: %s", plugin.plugin_id, action)
-            # Re-check for updates after the action
-            try:
-                new_updates = self.plugin_manager.check_updates()
-                if plugin.plugin_id in new_updates:
-                    log.debug("Plugin %s has update available after %s", plugin.plugin_id, action)
-                else:
-                    log.debug("Plugin %s has no updates after %s", plugin.plugin_id, action)
-                self._save_updates(new_updates)
-            except Exception as e:
-                log.error("Failed to check updates after %s: %s", action, e)
-                # Fallback: remove from updates dict
-                config = get_config()
-                config.persist['plugins3_updates'].pop(plugin.plugin_id, None)
+            self._check_plugin_update_after_action(plugin, action)
             # Update the plugin list widget with new updates dict
-            config = get_config()
             self.plugin_list.set_updates(config.persist['plugins3_updates'])
             # Refresh the plugin list display to show the changes
             self._filter_plugins()
         elif action == "uninstalled":
             # Remove from updates dict since plugin no longer exists
-            config = get_config()
             config.persist['plugins3_updates'].pop(plugin.plugin_id, None)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(config.persist['plugins3_updates'])
@@ -372,14 +383,9 @@ class Plugins3OptionsPage(OptionsPage):
         log.debug("_on_plugin_installed called for plugin: %s", plugin_id)
 
         # Check for updates BEFORE loading the plugin list
-        try:
-            log.debug("Checking for updates after plugin installation")
-            new_updates = self.plugin_manager.check_updates()
-            self._save_updates(new_updates)
-            config = get_config()
-            log.debug("Updated plugin list with %d updates", len(config.persist['plugins3_updates']))
-        except Exception as e:
-            log.error("Failed to check updates after plugin installation: %s", e)
+        plugin = self.plugin_manager.plugin_id_to_plugin(plugin_id)
+        if plugin:
+            self._check_plugin_update_after_action(plugin, "install")
 
         # Now load and refresh the plugin list with updates available
         self.load()  # This will call set_updates() with the current updates dict
@@ -405,7 +411,6 @@ class Plugins3OptionsPage(OptionsPage):
         async_manager = AsyncPluginManager(self.plugin_manager)
 
         # For simplicity, update plugins one by one
-        # TODO: Could be enhanced to use update_all_plugins for batch updates
         self._update_queue = plugins.copy()
         self._total_updates = len(self._update_queue)
         self._completed_updates = 0

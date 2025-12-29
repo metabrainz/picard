@@ -259,10 +259,12 @@ class PluginUpdater:
 
         return self._with_plugin_state_management(plugin, perform_switch)
 
-    def check_updates(self, skip_fetch=False):
+    def check_updates(self, skip_fetch=False, include_plugins=None):
         """Check which plugins have updates available without installing."""
         updates = {}
         for plugin in self.manager._plugins:
+            if include_plugins is not None and plugin not in include_plugins:
+                continue
             metadata = self.manager._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
             if not self.manager._should_fetch_plugin_refs(plugin, metadata):
                 continue

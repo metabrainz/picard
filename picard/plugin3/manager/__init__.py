@@ -255,6 +255,13 @@ class PluginManager(QObject):
     def registry(self):
         return self._registry
 
+    def plugin_id_to_plugin(self, plugin_id):
+        """Returns the plugin matching plugin_id, else None"""
+        for p in self._plugins:
+            if p.plugin_id == plugin_id:
+                return p
+        return None
+
     def _with_plugin_repo(self, plugin_path, callback):
         """Execute callback with git repository context."""
         backend = git_backend()
@@ -950,20 +957,9 @@ class PluginManager(QObject):
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
-    def _check_single_plugin_update(self, plugin, metadata, skip_fetch):
-        """Check update status for a single plugin."""
-        return self._updater._check_single_plugin_update(plugin, metadata, skip_fetch)
-
-    def check_updates(self, skip_fetch=False):
+    def check_updates(self, skip_fetch=False, include_plugins=None):
         """Check which plugins have updates available without installing."""
-        return self._updater.check_updates(skip_fetch)
-
-    def get_plugin_update_status(self, plugin):
-        """Check if a single plugin has an update available."""
-        log.debug("Checking update status for plugin: %s", plugin.plugin_id)
-
-        # FIXME
-        return False
+        return self._updater.check_updates(skip_fetch, include_plugins)
 
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
