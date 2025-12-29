@@ -958,13 +958,6 @@ class PluginManager(QObject):
         """Check which plugins have updates available without installing."""
         return self._updater.check_updates(skip_fetch)
 
-    def get_plugin_update_status(self, plugin):
-        """Check if a single plugin has an update available."""
-        log.debug("Checking update status for plugin: %s", plugin.plugin_id)
-
-        # FIXME
-        return False
-
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
         if not plugin.uuid:
