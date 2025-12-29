@@ -950,10 +950,6 @@ class PluginManager(QObject):
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
-    def _check_single_plugin_update(self, plugin, metadata, skip_fetch):
-        """Check update status for a single plugin."""
-        return self._updater._check_single_plugin_update(plugin, metadata, skip_fetch)
-
     def check_updates(self, skip_fetch=False):
         """Check which plugins have updates available without installing."""
         return self._updater.check_updates(skip_fetch)
