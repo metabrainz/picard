@@ -950,9 +950,9 @@ class PluginManager(QObject):
             except Exception as e:
                 log.warning("Failed to fetch refs for plugin %s: %s", plugin.plugin_id, e)
 
-    def check_updates(self, skip_fetch=False):
+    def check_updates(self, skip_fetch=False, include_plugins=None):
         """Check which plugins have updates available without installing."""
-        return self._updater.check_updates(skip_fetch)
+        return self._updater.check_updates(skip_fetch, include_plugins)
 
     def get_plugin_remote_url(self, plugin):
         """Get plugin remote URL from metadata."""
