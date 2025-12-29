@@ -761,6 +761,13 @@ class PluginListWidget(QtWidgets.QWidget):
         dialog = PluginInfoDialog(plugin, self)
         dialog.exec()
 
+    def select_plugin(self, plugin):
+        """Select a plugin in the plugin list"""
+        for i in range(self.tree_widget.topLevelItemCount()):
+            item = self.tree_widget.topLevelItem(i)
+            if plugin == item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole):
+                self.tree_widget.setCurrentItem(item)
+
 
 class UninstallPluginDialog(QtWidgets.QMessageBox):
     """Dialog for uninstalling plugins with purge option."""
