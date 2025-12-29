@@ -390,6 +390,9 @@ class Plugins3OptionsPage(OptionsPage):
         # Now load and refresh the plugin list with updates available
         self.load()  # This will call set_updates() with the current updates dict
 
+        # Select the plugin that was just installed in the plugin list
+        self.plugin_list.select_plugin(plugin)
+
         self._show_status(_('Plugin "{name}" installed successfully').format(name=plugin_id))
         # Refresh the options dialog to show new plugin option pages
         if getattr(self, 'dialog', None):
