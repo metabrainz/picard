@@ -47,7 +47,6 @@ class Plugins3OptionsPage(OptionsPage):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.all_plugins = []  # Store all plugins for filtering
 
         # Cache plugin manager for performance
         self.plugin_manager = self.tagger.get_plugin_manager()
@@ -57,7 +56,7 @@ class Plugins3OptionsPage(OptionsPage):
     def _save_updates(self, updates):
         """Save updates to config, cleaning up stale entries for uninstalled plugins."""
         config = get_config()
-        current_plugin_ids = {plugin.plugin_id for plugin in self.all_plugins}
+        current_plugin_ids = {plugin.plugin_id for plugin in self.plugin_manager.plugins}
         config.persist['plugins3_updates'] = {
             pid: update for pid, update in updates.items() if pid in current_plugin_ids
         }
@@ -150,14 +149,13 @@ class Plugins3OptionsPage(OptionsPage):
     def load(self):
         """Load plugins from plugin manager."""
         self._show_status(_("Loading plugins…"))
+        # Load plugins immediately when page is loaded
         try:
-            # Load plugins immediately when page is loaded
-            self.all_plugins = self.plugin_manager.plugins
             # Validate persisted updates against current plugin state
             config = get_config()
             saved_updates = dict(config.persist['plugins3_updates'])
             valid_updates = {}
-            for plugin in self.all_plugins:
+            for plugin in self.plugin_manager.plugins:
                 if plugin.plugin_id in saved_updates:
                     update_info = saved_updates[plugin.plugin_id]
                     # Check if the update is still valid (current commit == old_commit from update info)
@@ -169,7 +167,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Pass current updates dict to plugin list widget
             self.plugin_list.set_updates(valid_updates)
             self._filter_plugins()
-            plugin_count = len(self.all_plugins)
+            plugin_count = len(self.plugin_manager.plugins)
             self._show_status(
                 ngettext(
                     "Loaded {plugin_count:,d} plugin",
@@ -197,9 +195,6 @@ class Plugins3OptionsPage(OptionsPage):
                 # Fetch remote refs for all plugins (for ref selectors)
                 self.plugin_manager.refresh_all_plugin_refs()
 
-            # Reload plugin list
-            self.all_plugins = self.plugin_manager.plugins
-
             # Check for updates (silent - no dialog) - skip fetching since we just did it
             new_updates = self.plugin_manager.check_updates(skip_fetch=True)
             self._save_updates(new_updates)
@@ -210,7 +205,7 @@ class Plugins3OptionsPage(OptionsPage):
             # Refresh UI with network-fetched update status
             self._filter_plugins()
 
-            plugin_count = len(self.all_plugins)
+            plugin_count = len(self.plugin_manager.plugins)
             update_count = len(new_updates)
             plugins_text = ngettext("{plugin_count:,d} plugin", "{plugin_count:,d} plugins", plugin_count).format(
                 plugin_count=plugin_count
@@ -248,11 +243,11 @@ class Plugins3OptionsPage(OptionsPage):
 
         if not search_text:
             # Show all plugins
-            filtered_plugins = self.all_plugins
+            filtered_plugins = self.plugin_manager.plugins
         else:
             # Filter plugins by name
             filtered_plugins = []
-            for plugin in self.all_plugins:
+            for plugin in self.plugin_manager.plugins:
                 if search_text in plugin.name().lower():
                     filtered_plugins.append(plugin)
 
@@ -405,7 +400,6 @@ class Plugins3OptionsPage(OptionsPage):
         async_manager = AsyncPluginManager(self.plugin_manager)
 
         # For simplicity, update plugins one by one
-        # TODO: Could be enhanced to use update_all_plugins for batch updates
         self._update_queue = plugins.copy()
         self._total_updates = len(self._update_queue)
         self._completed_updates = 0
