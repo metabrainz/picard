@@ -255,6 +255,13 @@ class PluginManager(QObject):
     def registry(self):
         return self._registry
 
+    def plugin_id_to_plugin(self, plugin_id):
+        """Returns the plugin matching plugin_id, else None"""
+        for p in self._plugins:
+            if p.plugin_id == plugin_id:
+                return p
+        return None
+
     def _with_plugin_repo(self, plugin_path, callback):
         """Execute callback with git repository context."""
         backend = git_backend()
