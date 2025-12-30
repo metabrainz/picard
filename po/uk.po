@@ -10,24 +10,25 @@
 # Антон Присяжный <aukrodotua@gmail.com>, 2018
 # Nerten <alex@nerten.info>, 2023.
 # oleh_hishak <ohishak@gmail.com>, 2025.
+# emptybrainz <okep.and.spore@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-12-27 18:53+0100\n"
-"PO-Revision-Date: 2025-09-12 03:46+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2025-12-30 09:11+0000\n"
+"Last-Translator: emptybrainz <okep.and.spore@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/3/app/uk/>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
-"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
-"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
-"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.13.1\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 "
+"? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
+"14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
+"100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:198
@@ -8083,16 +8084,12 @@ msgid "Available"
 msgstr "Доступні мови"
 
 #: picard/ui/widgets/pluginlistwidget.py:535
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable"
-msgstr "Вимкнено"
+msgstr "Вимкнути"
 
 #: picard/ui/widgets/pluginlistwidget.py:538
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Увімкнено"
+msgstr "Увімкнути"
 
 #: picard/ui/widgets/pluginlistwidget.py:553
 msgid "Reinstall"
@@ -8170,10 +8167,9 @@ msgid "Uninstall Plugin"
 msgstr "Видалити плагін"
 
 #: picard/ui/widgets/pluginlistwidget.py:779
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to quit Picard?"
+#, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
-msgstr "Ви впевнені, що хочете вийти з Picard?"
+msgstr "Ви впевнені, що хочете видалити \"{name}\"?"
 
 #: picard/ui/widgets/pluginlistwidget.py:782
 msgid "Also remove plugin configuration"
@@ -8184,10 +8180,8 @@ msgid "Remove all saved settings and configuration for this plugin"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:787
-#, fuzzy
-#| msgid "is not installed"
 msgid "Yes, Uninstall!"
-msgstr "не встановлено"
+msgstr "Так, видалити!"
 
 #: picard/ui/widgets/pluginlistwidget.py:811
 msgid "Switch Git Ref"
@@ -8237,10 +8231,8 @@ msgid "Enter custom ref (tag, branch, or commit):"
 msgstr ""
 
 #: picard/ui/widgets/refselector.py:72
-#, fuzzy
-#| msgid "Customize…"
 msgid "Custom"
-msgstr "Налаштувати…"
+msgstr "Власний"
 
 #: picard/ui/widgets/refselector.py:111
 #, python-brace-format
@@ -8273,10 +8265,8 @@ msgid "({item} of {total})"
 msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:281
-#, fuzzy
-#| msgid "File not found"
 msgid "(not found)"
-msgstr "Файл не знайдено"
+msgstr "(не знайдено)"
 
 #: picard/ui/widgets/scriptlistwidget.py:58
 msgid "Rename script"
@@ -8296,7 +8286,8 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
-"<em>Функція <code>\\$%s</code> не існує.<br><br>У вас відсутній плагін?</em>"
+"<em>Функції <code>\\$%s</code> не існує.<br><br>Можливо, відсутній "
+"необхідний плагін?</em>"
 
 #: picard/ui/widgets/scripttextedit.py:423
 msgid "&Word wrap script"
