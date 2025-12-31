@@ -63,8 +63,6 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     --------
     >>> register_script_variable("my_plugin_var", "A custom variable from my plugin")
     """
-    import inspect
-
     if not _is_valid_plugin_variable_name(name):
         msg = "Invalid script variable name; use letters, digits, underscores."
         raise ValueError(msg)
@@ -73,9 +71,8 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     if api and duplicate:
         api.logger.warning("Tag '%s' also found in %s.", name, duplicate)
 
-    frame = inspect.currentframe()
-    if frame is not None and frame.f_back is not None:
-        module_name = frame.f_back.f_globals['__name__']
+    if api and api._plugin_module:
+        module_name = api._plugin_module.__name__
     else:
         module_name = 'unknown'
 
