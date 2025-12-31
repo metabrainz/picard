@@ -103,19 +103,19 @@ class PluginManifest:
             locale = QtCore.QLocale.system().name()
         return locale
 
-    def name_i18n(self, locale: str = None) -> str:
+    def name_i18n(self, locale: str | None = None) -> str:
         """Get plugin name with automatic locale detection."""
         if locale is None:
             locale = self._get_current_locale()
         return self.name(locale)
 
-    def description_i18n(self, locale: str = None) -> str:
+    def description_i18n(self, locale: str | None = None) -> str:
         """Get description with automatic locale detection."""
         if locale is None:
             locale = self._get_current_locale()
         return self.description(locale)
 
-    def long_description_i18n(self, locale: str = None) -> str:
+    def long_description_i18n(self, locale: str | None = None) -> str:
         """Get long description with automatic locale detection."""
         if locale is None:
             locale = self._get_current_locale()
