@@ -229,6 +229,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
+        self._options_open = False
+
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
         self._suspend_while_loading_funcs.append(funcs)
@@ -1174,6 +1176,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
+        self._options_open = True
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
@@ -1184,6 +1187,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return options_dialog
 
     def _options_closed(self):
+        self._options_open = False
         if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
@@ -1192,6 +1196,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._make_profile_selector_menu()
         self._make_script_selector_menu()
         self._make_settings_selector_menu()
+
+    def is_editing_scripts(self) -> bool:
+        return self._options_open or self.script_editor_dialog is not None
 
     def show_help(self):
         webbrowser2.open('documentation')
