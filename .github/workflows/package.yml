@@ -51,7 +51,7 @@ jobs:
     permissions:
       id-token: write  # required for PyPI upload
     steps:
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         pattern: picard-?dist*
         path: dist/
@@ -77,27 +77,27 @@ jobs:
     - uses: actions/setup-python@v6
       with:
         python-version: '3.14'
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: macos-app-11.0-x86_64
         path: artifacts/
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: macos-app-11.0-arm64
         path: artifacts/
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: windows-store-app
         path: artifacts/
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: windows-installer
         path: artifacts/
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: windows-portable
         path: artifacts/
-    - uses: actions/download-artifact@v6
+    - uses: actions/download-artifact@v7
       with:
         name: picard-sdist
         path: artifacts/
