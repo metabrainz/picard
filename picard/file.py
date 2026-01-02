@@ -45,7 +45,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Add this near the top with the other imports
-from mutagen import MutagenError
 from collections import Counter
 from enum import (
     Enum,
@@ -426,16 +425,13 @@ class File(MetadataItem):
                 else:
                     save()
             except MutagenError as e:
-                # 1. Get the real error inside the MutagenError wrapper
+                # 1. Open the envelope to get the real error
                 inner_error = e.args[0] if e.args else None
-
-                # 2. Check if THAT error is "Permission Denied" (Errno 13)
-                if hasattr(inner_error, "errno") and inner_error.errno == 13:
+                # 2. Check if the error is explicitly a PermissionError
+                if isinstance(inner_error, PermissionError):
                     log.error("Cannot save file %r: Permission denied (Read-only)", old_filename)
-                    # Raise the clean error
                     raise IOError(f"Permission denied: {old_filename}") from e
-                
-                # 3. If it was something else, crash normally
+                # 3. If it's a different error, crash normally
                 raise e
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
