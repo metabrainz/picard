@@ -44,7 +44,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+# Add this near the top with the other imports
+from mutagen import MutagenError
 from collections import Counter
 from enum import (
     Enum,
@@ -403,7 +404,7 @@ class File(MetadataItem):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        if config.setting['enable_tag_saving']:
+        '''if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -411,7 +412,31 @@ class File(MetadataItem):
                 except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
-                save()
+                save()'''
+        
+        if config.setting['enable_tag_saving']:
+            save = partial(self._save, old_filename, metadata)
+            try:
+                # We wrap the entire saving logic in a try block
+                if config.setting['preserve_timestamps']:
+                    try:
+                        self._preserve_times(old_filename, save)
+                    except self.PreserveTimesUtimeError as why:
+                        log.warning(why)
+                else:
+                    save()
+            except MutagenError as e:
+                # 1. Get the real error inside the MutagenError wrapper
+                inner_error = e.args[0] if e.args else None
+
+                # 2. Check if THAT error is "Permission Denied" (Errno 13)
+                if hasattr(inner_error, "errno") and inner_error.errno == 13:
+                    log.error("Cannot save file %r: Permission denied (Read-only)", old_filename)
+                    # Raise the clean error
+                    raise IOError(f"Permission denied: {old_filename}") from e
+                
+                # 3. If it was something else, crash normally
+                raise e
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
