@@ -429,26 +429,6 @@ class File(MetadataItem):
             else:
                 save()
         
-        '''if config.setting['enable_tag_saving']:
-            save = partial(self._save, old_filename, metadata)
-            try:
-                # We wrap the entire saving logic in a try block
-                if config.setting['preserve_timestamps']:
-                    try:
-                        self._preserve_times(old_filename, save)
-                    except self.PreserveTimesUtimeError as why:
-                        log.warning(why)
-                else:
-                    save()
-            except MutagenError as e:
-                # 1. Open the envelope to get the real error
-                inner_error = e.args[0] if e.args else None
-                # 2. Check if the error is explicitly a PermissionError
-                if isinstance(inner_error, PermissionError):
-                    log.error("Cannot save file %r: Permission denied (Read-only)", old_filename)
-                    raise IOError(f"Permission denied: {old_filename}") from e
-                # 3. If it's a different error, crash normally
-                raise e'''
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
