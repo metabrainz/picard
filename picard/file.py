@@ -223,21 +223,37 @@ class File(MetadataItem):
         for name in metadata:
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
-
+    
     def _set_error(self, error):
         self.state = File.State.ERROR
+
+        # 1. Smart Unwrap: Get the real error inside the wrapper
+        inner_error = error
+        if isinstance(error, MutagenError) and error.args:
+            inner_error = error.args[0]
+
+        # 2. Check for Permission Denied (Read-Only))
+        # We check if the inner error is a PermissionError OR if it has errno 13 (Double safety
+        if isinstance(inner_error, PermissionError) or (hasattr(inner_error, 'errno') and inner_error.errno == 13):
+            self.error_type = File.ErrorType.NOACCESS
+            self.error_append("Permission denied (Read-only)")
+            return 
+
+        # 3. Handle File Not Found
         if any_exception_isinstance(error, FileNotFoundError):
             self.error_type = File.ErrorType.NOTFOUND
-        elif any_exception_isinstance(error, PermissionError):
-            self.error_type = File.ErrorType.NOACCESS
+
+        # 4. Handle Generic Mutagen Parsing Errors
         elif any_exception_isinstance(error, MutagenError):
             self.error_type = File.ErrorType.PARSER
             self.error_append(
                 _("The file failed to parse, either the file is damaged or has an unsupported file format.")
             )
+
+        # 5. Unknown Errors
         else:
             self.error_type = File.ErrorType.UNKNOWN
-        self.error_append(str(error))
+            self.error_append(str(error))
 
     def load(self, callback):
         thread.run_task(
@@ -403,7 +419,7 @@ class File(MetadataItem):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        '''if config.setting['enable_tag_saving']:
+        if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -411,9 +427,9 @@ class File(MetadataItem):
                 except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
-                save()'''
+                save()
         
-        if config.setting['enable_tag_saving']:
+        '''if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
             try:
                 # We wrap the entire saving logic in a try block
@@ -432,7 +448,7 @@ class File(MetadataItem):
                     log.error("Cannot save file %r: Permission denied (Read-only)", old_filename)
                     raise IOError(f"Permission denied: {old_filename}") from e
                 # 3. If it's a different error, crash normally
-                raise e
+                raise e'''
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
