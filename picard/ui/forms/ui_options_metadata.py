@@ -17,16 +17,15 @@ from picard.i18n import gettext as _
 class Ui_MetadataOptionsPage(object):
     def setupUi(self, MetadataOptionsPage):
         MetadataOptionsPage.setObjectName("MetadataOptionsPage")
-        MetadataOptionsPage.resize(423, 553)
+        MetadataOptionsPage.resize(423, 655)
         self.verticalLayout = QtWidgets.QVBoxLayout(MetadataOptionsPage)
         self.verticalLayout.setObjectName("verticalLayout")
         self.metadata_groupbox = QtWidgets.QGroupBox(parent=MetadataOptionsPage)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.metadata_groupbox.sizePolicy().hasHeightForWidth())
         self.metadata_groupbox.setSizePolicy(sizePolicy)
-        self.metadata_groupbox.setMinimumSize(QtCore.QSize(397, 135))
         self.metadata_groupbox.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
         self.metadata_groupbox.setObjectName("metadata_groupbox")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.metadata_groupbox)

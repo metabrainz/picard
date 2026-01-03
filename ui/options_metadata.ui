@@ -7,23 +7,17 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>553</height>
+    <height>655</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="metadata_groupbox">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>397</width>
-       <height>135</height>
-      </size>
      </property>
      <property name="title">
       <string>Metadata</string>
