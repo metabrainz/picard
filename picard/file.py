@@ -224,31 +224,22 @@ class File(MetadataItem):
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
 
+
     def _set_error(self, error):
         self.state = File.State.ERROR
-        # 1. Smart Unwrap: Get the real error inside the wrapper
-        inner_error = error
-        if isinstance(error, MutagenError) and error.args:
-            inner_error = error.args[0]
-
-        # 2. Check for Permission Denied (Read-Only)
-        # We check if the inner error is a PermissionError OR if it has errno 13 (Double safety)
-        if isinstance(inner_error, PermissionError) or (hasattr(inner_error, 'errno') and inner_error.errno == 13):
+        if any_exception_isinstance(error, PermissionError) or getattr(error, 'errno', 0) == 13:
             self.error_type = File.ErrorType.NOACCESS
-            self.error_append("Permission denied (Read-only)")
-            return
-        # 3. Handle File Not Found
-        if any_exception_isinstance(error, FileNotFoundError):
-            self.error_type = File.ErrorType.NOTFOUND
+            self.error_append(_("Permission denied (Read-only)"))
 
-        # 4. Handle Generic Mutagen Parsing Errors
+        elif any_exception_isinstance(error, FileNotFoundError) or getattr(error, 'errno', 0) == 2:
+            self.error_type = File.ErrorType.NOTFOUND
+            self.error_append(_("File not found"))
+
         elif any_exception_isinstance(error, MutagenError):
             self.error_type = File.ErrorType.PARSER
             self.error_append(
                 _("The file failed to parse, either the file is damaged or has an unsupported file format.")
             )
-
-        # 5. Unknown Errors
         else:
             self.error_type = File.ErrorType.UNKNOWN
             self.error_append(str(error))
@@ -417,7 +408,7 @@ class File(MetadataItem):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        if config.setting['enable_tag_saving']:
+        '''if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -425,7 +416,25 @@ class File(MetadataItem):
                 except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
-                save()
+                save()'''
+        if config.setting['enable_tag_saving']:
+            save = partial(self._save, old_filename, metadata)
+            try:
+                # We wrap the actual saving (and timestamp logic) in a Try block
+                if config.setting['preserve_timestamps']:
+                    try:
+                        self._preserve_times(old_filename, save)
+                    except self.PreserveTimesUtimeError as why:
+                        log.warning(why)
+                else:
+                    save()
+
+            # CATCH THE ERROR HERE
+            except (IOError, OSError, MutagenError) as error:
+                # 1. Update the UI with your nice error message (File not found, etc.)
+                self._set_error(error)
+                # 2. Stop processing! Don't try to rename a file that doesn't exist.
+                return None
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
@@ -457,8 +466,15 @@ class File(MetadataItem):
         if (self.state == File.State.REMOVED or self.tagger.stopping) and result is None:
             return
         old_filename = new_filename = self.filename
+        '''if error is not None:
+            self._set_error(error)'''
         if error is not None:
             self._set_error(error)
+
+        elif result is None:
+            # The save failed (or was skipped), and _save_and_rename handled the error.
+            # We just stop here to prevent crashing on os.path.basename(None)
+            return
         else:
             self.filename = new_filename = result
             self.base_filename = os.path.basename(new_filename)
