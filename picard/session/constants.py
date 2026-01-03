@@ -24,8 +24,6 @@ This module contains all constants used throughout the session management system
 including retry delays, file extensions, and excluded tags.
 """
 
-from picard.i18n import N_
-
 
 class SessionConstants:
     """Constants for session management operations.
@@ -124,26 +122,6 @@ class SessionConstants:
     LOCATION_ALBUM_UNMATCHED = "album_unmatched"
     LOCATION_CLUSTER = "cluster"
     LOCATION_NAT = "nat"
-
-
-class SessionMessages:
-    """Centralized session-related message strings.
-
-    Define raw, untranslated strings. Call sites should mark for translation:
-    - API/config titles: wrap with N_()
-    - UI labels: wrap with _()
-    """
-
-    # Option titles (API/config)
-    SESSION_SAFE_RESTORE_TITLE = N_("Honor local edits and placement on load (no auto-matching)")
-    SESSION_LOAD_LAST_TITLE = N_("Load last saved session on startup")
-    SESSION_AUTOSAVE_TITLE = N_("Auto-save session every N minutes (0 disables)")
-    SESSION_BACKUP_TITLE = N_("Attempt to keep a session backup on unexpected shutdown")
-    SESSION_INCLUDE_MB_DATA_TITLE = N_("Include MusicBrainz data in saved sessions (warm cache)")
-    SESSION_NO_MB_REQUESTS_ON_LOAD = N_(
-        "Do not make MusicBrainz requests on restore (faster loads, risk of stale data)"
-    )
-    SESSION_FOLDER_PATH_TITLE = N_("Sessions folder path (leave empty for default)")
 
 
 # Configuration keys that should be persisted in and restored from session files
