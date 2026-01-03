@@ -226,19 +226,17 @@ class File(MetadataItem):
     
     def _set_error(self, error):
         self.state = File.State.ERROR
-
         # 1. Smart Unwrap: Get the real error inside the wrapper
         inner_error = error
         if isinstance(error, MutagenError) and error.args:
             inner_error = error.args[0]
 
-        # 2. Check for Permission Denied (Read-Only))
-        # We check if the inner error is a PermissionError OR if it has errno 13 (Double safety
+        # 2. Check for Permission Denied (Read-Only)
+        # We check if the inner error is a PermissionError OR if it has errno 13 (Double safety)
         if isinstance(inner_error, PermissionError) or (hasattr(inner_error, 'errno') and inner_error.errno == 13):
             self.error_type = File.ErrorType.NOACCESS
             self.error_append("Permission denied (Read-only)")
-            return 
-
+            return
         # 3. Handle File Not Found
         if any_exception_isinstance(error, FileNotFoundError):
             self.error_type = File.ErrorType.NOTFOUND
@@ -428,7 +426,6 @@ class File(MetadataItem):
                     log.warning(why)
             else:
                 save()
-        
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
