@@ -223,7 +223,7 @@ class File(MetadataItem):
         for name in metadata:
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
-    
+
     def _set_error(self, error):
         self.state = File.State.ERROR
         # 1. Smart Unwrap: Get the real error inside the wrapper
