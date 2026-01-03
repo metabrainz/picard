@@ -50,6 +50,7 @@ from enum import (
     Enum,
     auto,
 )
+import errno
 import fnmatch
 from functools import partial
 import os
@@ -227,11 +228,12 @@ class File(MetadataItem):
 
     def _set_error(self, error):
         self.state = File.State.ERROR
-        if any_exception_isinstance(error, PermissionError) or getattr(error, 'errno', 0) == 13:
-            self.error_type = File.ErrorType.NOACCESS
-            self.error_append(_("Permission denied (Read-only)"))
 
-        elif any_exception_isinstance(error, FileNotFoundError) or getattr(error, 'errno', 0) == 2:
+        if any_exception_isinstance(error, PermissionError) or getattr(error, 'errno', 0) == errno.EACCES:
+            self.error_type = File.ErrorType.NOACCESS
+            self.error_append(_("Permission denied"))
+
+        elif any_exception_isinstance(error, FileNotFoundError) or getattr(error, 'errno', 0) == errno.ENOENT:
             self.error_type = File.ErrorType.NOTFOUND
             self.error_append(_("File not found"))
 
