@@ -225,7 +225,6 @@ class File(MetadataItem):
             copy[name] = self.format_specific_metadata(metadata, name, settings)
         return copy
 
-
     def _set_error(self, error):
         self.state = File.State.ERROR
 
@@ -410,33 +409,17 @@ class File(MetadataItem):
             log.debug("File not saved because %s is stopping: %r", PICARD_APP_NAME, self.filename)
             return None
         new_filename = old_filename
-        '''if config.setting['enable_tag_saving']:
+        if config.setting['enable_tag_saving']:
             save = partial(self._save, old_filename, metadata)
+            # We wrap the actual saving (and timestamp logic) in a Try block
             if config.setting['preserve_timestamps']:
                 try:
                     self._preserve_times(old_filename, save)
                 except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
-                save()'''
-        if config.setting['enable_tag_saving']:
-            save = partial(self._save, old_filename, metadata)
-            try:
-                # We wrap the actual saving (and timestamp logic) in a Try block
-                if config.setting['preserve_timestamps']:
-                    try:
-                        self._preserve_times(old_filename, save)
-                    except self.PreserveTimesUtimeError as why:
-                        log.warning(why)
-                else:
-                    save()
+                save()
 
-            # CATCH THE ERROR HERE
-            except (IOError, OSError, MutagenError) as error:
-                # 1. Update the UI with your nice error message (File not found, etc.)
-                self._set_error(error)
-                # 2. Stop processing! Don't try to rename a file that doesn't exist.
-                return None
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
