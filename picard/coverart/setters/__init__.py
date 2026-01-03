@@ -39,7 +39,7 @@ from enum import IntEnum
 
 from picard import log
 
-from picard.ui.coverartbox.coverart_handlers import _set_coverart_dispatch
+from .handlers import _set_coverart_dispatch
 
 
 class CoverArtSetterMode(IntEnum):

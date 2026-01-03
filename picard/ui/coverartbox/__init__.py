@@ -53,6 +53,10 @@ from picard.coverart.image import (
     CoverArtImage,
     CoverArtImageError,
 )
+from picard.coverart.setters import (
+    CoverArtSetter,
+    CoverArtSetterMode,
+)
 from picard.i18n import gettext as _
 from picard.util import (
     bytes2human,
@@ -61,10 +65,6 @@ from picard.util import (
 )
 from picard.util.lrucache import LRUCache
 
-from .coverartsetter import (
-    CoverArtSetter,
-    CoverArtSetterMode,
-)
 from .coverartthumbnail import CoverArtThumbnail
 from .imageurldialog import ImageURLDialog
 

@@ -77,7 +77,9 @@ def _handle_album(album: Album, setter):
         stack.enter_context(album.suspend_metadata_images_update)
         setter._set_image(album)
 
-        for track in album.tracks:
+        # If the album is still loading, tracks are in `_new_tracks`
+        tracks = getattr(album, '_new_tracks', None) or album.tracks
+        for track in tracks:
             stack.enter_context(track.suspend_metadata_images_update)
             setter._set_image(track)
 

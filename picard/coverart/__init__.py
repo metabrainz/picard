@@ -44,6 +44,7 @@ from picard.coverart.providers import (
     CoverArtProvider,
     cover_art_providers,
 )
+from picard.coverart.setters import CoverArtSetter, CoverArtSetterMode
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
@@ -75,11 +76,8 @@ class CoverArt:
         self.image_processing.run_image_processors(coverartimage, data, image_info)
         if coverartimage.can_be_saved_to_metadata:
             log.debug("Storing to metadata: %r", coverartimage)
-            self.metadata.images.append(coverartimage)
-            # Album might already be finalized if cover art arrives late
-            tracks = getattr(self.album, '_new_tracks', None) or self.album.tracks
-            for track in tracks:
-                track.metadata.images.append(coverartimage)
+            setter = CoverArtSetter(CoverArtSetterMode.REPLACE, coverartimage, self.album)
+            setter.set_coverart()
             # If the image already was a front image,
             # there might still be some other non-CAA front
             # images in the queue - ignore them.
