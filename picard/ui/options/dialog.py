@@ -45,7 +45,6 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PICARD_URLS
 from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
@@ -55,7 +54,10 @@ from picard.profile import (
     profile_groups_group_from_page,
     profile_groups_order,
 )
-from picard.util import restore_method
+from picard.util import (
+    get_url,
+    restore_method,
+)
 
 from picard.ui import (
     HashableTreeWidgetItem,
@@ -131,7 +133,7 @@ class ErrorOptionsPage(OptionsPage):
 
         report_bug_widget = QtWidgets.QLabel(
             _('Please see <a href="%s">Troubleshooting documentation</a> and eventually report a bug.')
-            % PICARD_URLS['troubleshooting']
+            % get_url('troubleshooting')
         )
         report_bug_widget.setOpenExternalLinks(True)
 
@@ -640,7 +642,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             current_page = self.get_page(current_page.PARENT)
             url = current_page.HELP_URL
         if not url:
-            url = 'doc_options'  # key in PICARD_URLS
+            url = 'doc_options'  # key in PICARD_DOCS_URLS
         return url
 
     def accept(self):

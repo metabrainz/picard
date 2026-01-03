@@ -45,6 +45,7 @@ from picard.i18n import (
     gettext_constants,
     sort_key,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.options import OptionsPage
@@ -76,6 +77,7 @@ class InterfaceOptionsPage(OptionsPage):
         ('builtin_search', ['builtin_search']),
         ('use_adv_search_syntax', ['use_adv_search_syntax']),
         ('show_new_user_dialog', ['new_user_dialog']),
+        ('rtd_updates_ask', ['rtd_updates_ask']),
         ('quit_confirmation', ['quit_confirmation']),
         ('file_save_warning', ['file_save_warning']),
         ('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
@@ -146,6 +148,7 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting['builtin_search'])
         self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
         self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
+        self.ui.rtd_updates_ask.setChecked(config.setting['rtd_updates_ask'])
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
         current_ui_language = config.setting['ui_language']
@@ -168,6 +171,7 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
         config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
         config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
+        config.setting['rtd_updates_ask'] = self.ui.rtd_updates_ask.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()
@@ -181,6 +185,7 @@ class InterfaceOptionsPage(OptionsPage):
         if new_language != config.setting['ui_language']:
             config.setting['ui_language'] = new_language
             warnings.append(_("You have changed the interface language."))
+            ReadTheDocs.update_documentation_items()
         changes_require_restart_warning(self, warnings=warnings, notes=notes)
 
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
