@@ -246,13 +246,8 @@ class PluginInstaller:
 
             final_path = self.manager._primary_plugin_dir / plugin_name
 
-            # Handle existing installation (different logic for local vs remote)
-            if is_local:
-                self._handle_local_existing_installation(
-                    final_path, plugin_name, source_url, reinstall, discard_changes
-                )
-            else:
-                self._check_already_installed(final_path, plugin_name, source_url, reinstall, discard_changes)
+            # Handle existing installation
+            self._check_already_installed(final_path, plugin_name, source_url, reinstall, discard_changes)
 
             # Complete installation
             self._finalize_installation(temp_path, final_path, plugin_name, manifest, source, commit_id, source_url)
@@ -267,24 +262,6 @@ class PluginInstaller:
             if 'temp_path' in locals():
                 self.manager._safe_remove_directory(temp_path, "temp directory after installation failure")
             raise
-
-    def _handle_local_existing_installation(self, final_path, plugin_name, source_url, reinstall, discard_changes):
-        """Handle existing installation for local directories (checks for dirty working dir)."""
-        if final_path.exists():
-            if not reinstall:
-                from picard.plugin3.manager import PluginAlreadyInstalledError
-
-                raise PluginAlreadyInstalledError(plugin_name, source_url)
-
-            # Check for uncommitted changes before removing
-            if not discard_changes:
-                changes = GitOperations.check_dirty_working_dir(final_path)
-                if changes:
-                    from picard.plugin3.manager import PluginDirtyError
-
-                    raise PluginDirtyError(plugin_name, changes)
-
-            self.manager._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
 
     def _install_from_remote_url(self, url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install):
         """Install a plugin from a remote git URL."""
