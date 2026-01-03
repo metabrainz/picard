@@ -94,6 +94,8 @@ class DataHash:
             _datafile_mutex.unlock()
 
     def __eq__(self, other):
+        if other is None:
+            return False
         return self._hash == other._hash
 
     def __lt__(self, other):

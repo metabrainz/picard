@@ -35,6 +35,7 @@ from picard.const.defaults import DEFAULT_COVER_IMAGE_FILENAME
 from picard.const.sys import IS_WIN
 from picard.coverart.image import (
     CoverArtImage,
+    DataHash,
     LocalFileCoverArtImage,
     TagCoverArtImage,
 )
@@ -325,6 +326,15 @@ class CoverArtImageTest(PicardTestCase):
             self.assertTrue(os.path.exists(expected_filename_2))
             self.assertEqual(len(image2.data), os.path.getsize(expected_filename_2))
             self.assertEqual(2, counters[counter_filename])
+
+
+class DataHashTest(PicardTestCase):
+    def test_eq(self):
+        self.assertEqual(DataHash(b'a'), DataHash(b'a'))
+        self.assertEqual(DataHash(b''), DataHash(b''))
+        self.assertNotEqual(DataHash(b'a'), DataHash(b'b'))
+        self.assertNotEqual(DataHash(b'a'), DataHash(b''))
+        self.assertNotEqual(DataHash(b'a'), None)
 
 
 class CoverArtImageMakeFilenameTest(PicardTestCase):

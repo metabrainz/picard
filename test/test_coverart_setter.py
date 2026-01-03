@@ -37,10 +37,10 @@
 
 from unittest.mock import Mock, patch
 
-import pytest
+from picard.coverart.setters import CoverArtSetter, CoverArtSetterMode
+from picard.coverart.setters.handlers import _iter_file_parents, _set_coverart_dispatch
 
-from picard.ui.coverartbox.coverart_handlers import _iter_file_parents, _set_coverart_dispatch
-from picard.ui.coverartbox.coverartsetter import CoverArtSetter, CoverArtSetterMode
+import pytest
 
 
 @pytest.fixture
@@ -137,7 +137,7 @@ class TestCoverArtSetter:
 
     def test_set_coverart_calls_single_dispatch(self, setter_append: CoverArtSetter, mock_obj: Mock) -> None:
         """Test that set_coverart calls the single dispatch implementation."""
-        with patch('picard.ui.coverartbox.coverartsetter._set_coverart_dispatch', return_value=True) as mock_impl:
+        with patch('picard.coverart.setters._set_coverart_dispatch', return_value=True) as mock_impl:
             result = setter_append.set_coverart()
 
             mock_impl.assert_called_once_with(mock_obj, setter_append)
