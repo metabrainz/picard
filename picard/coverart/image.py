@@ -462,6 +462,8 @@ class CoverArtImage:
         """Reads the data from the temporary file created for this image.
         May raise CoverArtImageIOError
         """
+        if not self.datahash:
+            return None
         try:
             return self.datahash.data
         except OSError as e:

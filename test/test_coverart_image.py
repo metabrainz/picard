@@ -296,6 +296,15 @@ class CoverArtImageTest(PicardTestCase):
         self.assertEqual(filesize, len(imgdata))
         self.assertEqual(coverartimage.data, imgdata)
 
+    def test_data(self):
+        data = create_fake_png(b'a')
+        image = CoverArtImage(data=data)
+        self.assertEqual(image.data, data)
+
+    def test_data_is_none(self):
+        image = CoverArtImage(data=None)
+        self.assertIsNone(image.data)
+
     def test_save(self):
         self.set_config_values(
             {
