@@ -1379,16 +1379,11 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
     )
 )
 def func_datetime(parser, format=None):
-    # local_tz required for Python 3.5 which does not allow setting astimezone()
-    # on a naive datetime.datetime object.  This provides timezone information to
-    # allow the use of %Z and %z in the output format.
-    local_tz = datetime.datetime.now(datetime.timezone.utc).astimezone().tzinfo
-
     # Handle case where format evaluates to ''
     if not format:
         format = '%Y-%m-%d %H:%M:%S'
     try:
-        return datetime.datetime.now(tz=local_tz).strftime(format)
+        return datetime.datetime.now().astimezone().strftime(format)
     except ValueError as e:
         stackitem = parser._function_stack.get()
         raise ScriptRuntimeError(stackitem, "Unsupported format code") from e
