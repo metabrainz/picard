@@ -85,7 +85,16 @@ class CoverArtImageProcessing:
         self.errors = Queue()
 
     @handle_processing_exceptions
-    def _run_processors_queue(self, coverartimage, initial_data, start_time, image, target):
+    def _run_processors_queue(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        start_time: int | float,
+        save_images_to_tags: bool,
+        save_images_to_files: bool,
+        image: ProcessingImage,
+        target: ImageProcessor.Target,
+    ):
         data = initial_data
         try:
             queue = self.queues[target]
@@ -96,9 +105,9 @@ class CoverArtImageProcessing:
         except CoverArtProcessingError as e:
             raise e
         finally:
-            if target in {ImageProcessor.Target.BOTH, ImageProcessor.Target.TAGS}:
-                coverartimage.set_tags_data(data)
-            else:
+            if target in ImageProcessor.Target.SAME | ImageProcessor.Target.TAGS:
+                coverartimage.set_tags_data(data if save_images_to_tags else initial_data)
+            if save_images_to_files and target in ImageProcessor.Target.SAME | ImageProcessor.Target.FILE:
                 coverartimage.set_external_file_data(data)
             log.debug(
                 "Image processing for %s cover art image %s finished in %d ms",
@@ -119,18 +128,31 @@ class CoverArtImageProcessing:
         try:
             start_time = time.time()
             image = ProcessingImage(initial_data, image_info)
-            run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
+            save_images_to_tags = config.setting['save_images_to_tags']
+            save_images_to_files = config.setting['save_images_to_files']
+
+            run_queue_common = partial(
+                self._run_processors_queue,
+                coverartimage,
+                initial_data,
+                start_time,
+                save_images_to_tags,
+                save_images_to_files,
+            )
 
             # Run processors for both tags and external files in this thread, as this is the basis
             # for the specialized processors.
-            run_queue_common(image, ImageProcessor.Target.BOTH)
+            if save_images_to_files or save_images_to_tags:
+                run_queue_common(image, ImageProcessor.Target.SAME)
+            else:
+                coverartimage.set_tags_data(initial_data)
 
             # Start separate threads to run tag and file only processors in parallel
             sub_task_counter = thread.TaskCounter()
-            if config.setting['save_images_to_files']:
+            if save_images_to_files:
                 run_queue_files = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
                 thread.run_task(run_queue_files, task_counter=sub_task_counter)
-            if config.setting['save_images_to_tags']:
+            if save_images_to_tags:
                 run_queue_tags = partial(run_queue_common, image.copy(), ImageProcessor.Target.TAGS)
                 thread.run_task(run_queue_tags, task_counter=sub_task_counter)
             sub_task_counter.wait_for_tasks()

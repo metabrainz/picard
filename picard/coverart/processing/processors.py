@@ -34,22 +34,25 @@ from picard.extension_points.cover_art_processors import (
 
 
 class ResizeImage(ImageProcessor):
-    def save_to_file(self):
-        config = get_config()
-        return config.setting['cover_file_resize']
-
-    def save_to_tags(self):
-        config = get_config()
-        return config.setting['cover_tags_resize']
-
-    def same_processing(self):
+    def target(self):
         setting = get_config().setting
-        both_resize = setting['cover_tags_resize'] and setting['cover_file_resize']
+        cover_tags_resize = setting['cover_tags_resize']
+        cover_file_resize = setting['cover_file_resize']
+        both_resize = cover_tags_resize and cover_file_resize
         same_enlarge = setting['cover_tags_enlarge'] == setting['cover_file_enlarge']
         same_width = setting['cover_tags_resize_target_width'] == setting['cover_file_resize_target_width']
         same_height = setting['cover_tags_resize_target_height'] == setting['cover_file_resize_target_height']
         same_resize_mode = setting['cover_tags_resize_mode'] == setting['cover_file_resize_mode']
-        return both_resize and same_enlarge and same_width and same_height and same_resize_mode
+        if both_resize and same_enlarge and same_width and same_height and same_resize_mode:
+            return ImageProcessor.Target.SAME
+        elif cover_tags_resize and cover_file_resize:
+            return ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE
+        elif cover_tags_resize:
+            return ImageProcessor.Target.TAGS
+        elif cover_file_resize:
+            return ImageProcessor.Target.FILE
+        else:
+            return ImageProcessor.Target.NONE
 
     def run(self, image: ProcessingImage, target):
         start_time = time.time()
@@ -113,18 +116,22 @@ class ConvertImage(ImageProcessor):
         "tiff": {"tif", "tiff"},
     }
 
-    def save_to_tags(self):
+    def target(self):
         config = get_config()
-        return config.setting['cover_tags_convert_images']
-
-    def save_to_file(self):
-        config = get_config()
-        return config.setting['cover_file_convert_images']
-
-    def same_processing(self):
-        config = get_config()
-        same_format = config.setting['cover_tags_convert_to_format'] == config.setting['cover_file_convert_to_format']
-        return self.save_to_file() and self.save_to_tags() and same_format
+        tags_convert_images = config.setting['cover_tags_convert_images']
+        file_convert_images = config.setting['cover_file_convert_images']
+        tags_format = config.setting['cover_tags_convert_to_format'].lower()
+        file_format = config.setting['cover_file_convert_to_format'].lower()
+        if tags_convert_images and file_convert_images and tags_format == file_format:
+            return ImageProcessor.Target.SAME
+        elif tags_convert_images and file_convert_images:
+            return ImageProcessor.Target.TAGS | ImageProcessor.Target.FILE
+        elif tags_convert_images:
+            return ImageProcessor.Target.TAGS
+        elif file_convert_images:
+            return ImageProcessor.Target.FILE
+        else:
+            return ImageProcessor.Target.NONE
 
     def run(self, image, target):
         config = get_config()
