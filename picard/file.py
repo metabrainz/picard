@@ -228,8 +228,12 @@ class File(MetadataItem):
         self.state = File.State.ERROR
         if any_exception_isinstance(error, FileNotFoundError):
             self.error_type = File.ErrorType.NOTFOUND
+            self.error_append(_("Cannot save file: the file no longer exists."))
+
         elif any_exception_isinstance(error, PermissionError):
             self.error_type = File.ErrorType.NOACCESS
+            self.error_append(_("Cannot save file: permission denied."))
+
         elif any_exception_isinstance(error, MutagenError):
             self.error_type = File.ErrorType.PARSER
             self.error_append(
@@ -237,7 +241,7 @@ class File(MetadataItem):
             )
         else:
             self.error_type = File.ErrorType.UNKNOWN
-        self.error_append(str(error))
+            self.error_append(str(error))
 
     def load(self, callback):
         thread.run_task(
