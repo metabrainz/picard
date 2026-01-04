@@ -19,8 +19,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import sys
-import unittest
 from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
@@ -75,7 +73,6 @@ class AuditTest(PicardTestCase):
         self.assertEqual(is_matching_a_prefix('b.c', d), False)
 
 
-@unittest.skipUnless(sys.version_info[:3] > (3, 8), "sys.addaudithook() available since Python 3.8")
 class AuditHookTest(PicardTestCase):
     def test_setup_audit_1(self):
         with patch('sys.addaudithook') as mock:
