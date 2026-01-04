@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from collections.abc import Callable
 from functools import partial
 from queue import Queue
 import time
@@ -28,6 +28,7 @@ from picard.album import Album
 from picard.config import get_config
 from picard.const.cover_processing import COVER_PROCESSING_SLEEP
 from picard.coverart.image import (
+    CoverArtImage,
     CoverArtImageError,
     CoverArtImageIOError,
 )
@@ -46,7 +47,10 @@ from picard.extension_points.cover_art_processors import (
     get_cover_art_processors,
 )
 from picard.util import thread
-from picard.util.imageinfo import IdentificationError
+from picard.util.imageinfo import (
+    IdentificationError,
+    ImageInfo,
+)
 
 
 def run_image_filters(data, image_info, album, coverartimage):
@@ -81,7 +85,7 @@ class CoverArtImageProcessing:
         self.errors = Queue()
 
     @handle_processing_exceptions
-    def _run_processors_queue(self, coverartimage, initial_data, start_time, image, target):
+    def _run_processors_queue(self, coverartimage, initial_data, start_time, callback, image, target):
         data = initial_data
         try:
             queue = self.queues[target]
@@ -102,9 +106,16 @@ class CoverArtImageProcessing:
                 coverartimage,
                 1000 * (time.time() - start_time),
             )
+            callback(coverartimage)
 
     @handle_processing_exceptions
-    def _run_image_processors(self, coverartimage, initial_data, image_info):
+    def _run_image_processors(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        image_info: ImageInfo,
+        callback: Callable[[CoverArtImage], None],
+    ):
         config = get_config()
         try:
             start_time = time.time()
@@ -112,7 +123,7 @@ class CoverArtImageProcessing:
             for processor in self.queues[ImageProcessor.Target.BOTH]:
                 processor.run(image, ImageProcessor.Target.BOTH)
                 time.sleep(COVER_PROCESSING_SLEEP)
-            run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
+            run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time, callback)
             if config.setting['save_images_to_files']:
                 run_queue = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
                 thread.run_task(run_queue, task_counter=self.task_counter)
@@ -129,13 +140,19 @@ class CoverArtImageProcessing:
                 coverartimage.set_external_file_data(initial_data)
             raise
 
-    def run_image_processors(self, coverartimage, initial_data, image_info):
+    def run_image_processors(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        image_info: ImageInfo,
+        callback: Callable[[CoverArtImage], None],
+    ):
         if coverartimage.can_be_processed:
-            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
+            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info, callback)
             thread.run_task(run_processors, task_counter=self.task_counter)
         else:
-            set_data = partial(handle_processing_exceptions, coverartimage.set_tags_data, initial_data)
-            thread.run_task(set_data, task_counter=self.task_counter)
+            coverartimage.set_tags_data(initial_data)
+            callback(coverartimage)
 
     def wait_for_processing(self):
         self.task_counter.wait_for_tasks()
