@@ -70,7 +70,6 @@ from picard.const.defaults import (
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
 )
 from picard.i18n import N_
-from picard.session.constants import SessionMessages
 
 from picard.ui.colors import InterfaceColors
 
@@ -498,43 +497,43 @@ BoolOption(
     'setting',
     'session_safe_restore',
     True,
-    title=SessionMessages.SESSION_SAFE_RESTORE_TITLE,
+    title=N_("No auto-matching on load"),
 )
 BoolOption(
     'setting',
     'session_load_last_on_startup',
     False,
-    title=SessionMessages.SESSION_LOAD_LAST_TITLE,
+    title=N_("Load last saved session on startup"),
 )
 IntOption(
     'setting',
     'session_autosave_interval_min',
     0,
-    title=SessionMessages.SESSION_AUTOSAVE_TITLE,
+    title=N_("Auto-save interval"),
 )
 BoolOption(
     'setting',
     'session_backup_on_crash',
     True,
-    title=SessionMessages.SESSION_BACKUP_TITLE,
+    title=N_("Backup session on unexpected shutdown"),
 )
 BoolOption(
     'setting',
     'session_include_mb_data',
     True,
-    title=SessionMessages.SESSION_INCLUDE_MB_DATA_TITLE,
+    title=N_("Include MusicBrainz data in saved sessions"),
 )
 BoolOption(
     'setting',
     'session_no_mb_requests_on_load',
     True,
-    title=SessionMessages.SESSION_NO_MB_REQUESTS_ON_LOAD,
+    title=N_("Do not make MusicBrainz requests on restore"),
 )
 TextOption(
     'setting',
     'session_folder_path',
     '',
-    title=SessionMessages.SESSION_FOLDER_PATH_TITLE,
+    title=N_("Sessions directory"),
 )
 
 # picard/ui/searchdialog/album.py
