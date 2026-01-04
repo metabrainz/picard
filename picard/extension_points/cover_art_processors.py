@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from copy import copy
 from enum import IntEnum
 from typing import Optional
@@ -128,7 +129,7 @@ class ImageProcessor:
 
 
 def get_cover_art_processors():
-    queues = dict.fromkeys(list(ImageProcessor.Target), [])
+    queues = defaultdict(list)
     for processor in ext_point_cover_art_processors:
         if processor.same_processing():
             queues[ImageProcessor.Target.BOTH].append(processor)
