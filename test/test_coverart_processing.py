@@ -21,6 +21,7 @@
 
 
 from copy import copy
+from unittest.mock import Mock
 
 from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage
@@ -156,8 +157,10 @@ class ImageProcessorsTest(PicardTestCase):
         image, info = create_fake_image(size[0], size[1], 'jpg')
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
-        image_processing.run_image_processors(coverartimage, image, info)
+        callback = Mock()
+        image_processing.run_image_processors(coverartimage, image, info, callback)
         image_processing.wait_for_processing()
+        callback.assert_called_once_with(coverartimage)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -310,8 +313,10 @@ class ImageProcessorsTest(PicardTestCase):
         coverartimage = CoverArtImage()
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
-        image_processing.run_image_processors(coverartimage, image, info)
+        callback = Mock()
+        image_processing.run_image_processors(coverartimage, image, info, callback)
         image_processing.wait_for_processing()
+        callback.assert_called_once_with(coverartimage)
         self.assertNotEqual(album.errors, [])
         for error in album.errors:
             self.assertIsInstance(error, CoverArtProcessingError)
