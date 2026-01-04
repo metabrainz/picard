@@ -18,8 +18,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from copy import copy
-from enum import IntEnum
+from enum import (
+    Flag,
+    auto,
+)
 from typing import Optional
 
 from PyQt6.QtCore import (
@@ -109,33 +113,50 @@ class ProcessingImage:
 
 
 class ImageProcessor:
-    class Target(IntEnum):
-        TAGS = 0
-        FILE = 1
-        BOTH = 2
+    class Target(Flag):
+        # processing should not be performed (image processor is disabled)
+        NONE = auto()
+        # processing for cover art saved to tags
+        TAGS = auto()
+        # processing for external cover art files
+        FILE = auto()
+        # processing is identical for tags and files
+        SAME = auto()
 
-    def save_to_tags(self) -> bool:
-        return False
+    def target(self) -> Target:
+        """Return the processing target for this image processor.
 
-    def save_to_file(self) -> bool:
-        return False
+        Subclasses need to override this if the processing should be applied to only
+        tags or files. The processor should return:
 
-    def same_processing(self) -> bool:
-        return False
+        Target.SAME: the processor will be called once for an image, and processing
+                     applies to both cover art in metadata and external files.
+        Target.TAGS: the processor will be called only once for cover art in metadata.
+        Target.FILE: the processor will be called only once for cover art in external files.
+        Target.TAGS | Target.FILE: the processor will be called separately for cover art
+                     in metadata and external files.
+        Target.NONE: the processor will not be called at all (e.g. when disabled in settings).
+        """
+        return ImageProcessor.Target.SAME
 
     def run(self, image: ProcessingImage, target: Target):
+        """Run the image processing.
+        This needs to be implemented by the subclass. The image data is provided
+        as a ProcessingImage, which holds the image data.
+        """
         pass
 
 
 def get_cover_art_processors():
-    queues = dict.fromkeys(list(ImageProcessor.Target), [])
+    queues = defaultdict(list)
     for processor in ext_point_cover_art_processors:
-        if processor.same_processing():
-            queues[ImageProcessor.Target.BOTH].append(processor)
+        target = processor.target()
+        if target == ImageProcessor.Target.SAME:
+            queues[target].append(processor)
         else:
-            if processor.save_to_tags():
+            if ImageProcessor.Target.TAGS in target:
                 queues[ImageProcessor.Target.TAGS].append(processor)
-            if processor.save_to_file():
+            if ImageProcessor.Target.FILE in target:
                 queues[ImageProcessor.Target.FILE].append(processor)
     return queues
 

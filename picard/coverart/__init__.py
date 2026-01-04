@@ -54,8 +54,8 @@ from picard.util import imageinfo
 class CoverArt:
     def __init__(self, album: Album, metadata: Metadata, release: dict):
         self._queue_new()
-        self.album = album
-        self.metadata = metadata
+        self.album: Album = album
+        self.metadata: Metadata = metadata
         self.release = release  # not used in this class, but used by providers
         self.front_image_found: bool = False
         self.image_processing = CoverArtImageProcessing(album)
@@ -72,8 +72,19 @@ class CoverArt:
         else:
             log.debug("Cover art disabled by user options.")
 
-    def _set_metadata(self, coverartimage, data, image_info):
-        self.image_processing.run_image_processors(coverartimage, data, image_info)
+    def _process_image_data(self, coverartimage: CoverArtImage, data, image_info):
+        self.album.add_task(
+            f'coverart_processing_{id(coverartimage)}',
+            TaskType.OPTIONAL,
+            f'Cover art processing: {coverartimage}',
+        )
+        self.image_processing.run_image_processors(coverartimage, data, image_info, self._finish_process_image_data)
+
+    def _finish_process_image_data(self, coverartimage: CoverArtImage):
+        self.album.complete_task(f'coverart_processing_{id(coverartimage)}')
+        self._set_metadata(coverartimage)
+
+    def _set_metadata(self, coverartimage: CoverArtImage):
         if coverartimage.can_be_saved_to_metadata:
             log.debug("Storing to metadata: %r", coverartimage)
             setter = CoverArtSetter(CoverArtSetterMode.REPLACE, coverartimage, self.album)
@@ -86,7 +97,7 @@ class CoverArt:
         else:
             log.debug("Not storing to metadata: %r", coverartimage)
 
-    def _coverart_downloaded(self, coverartimage, data, http, error):
+    def _coverart_downloaded(self, coverartimage: CoverArtImage, data, http, error):
         """Handle finished download, save it to metadata"""
         task_id = f'coverart_{id(coverartimage)}'
         self.album.complete_task(task_id)
@@ -111,7 +122,7 @@ class CoverArt:
                 if coverartimage.can_be_filtered:
                     filters_result = run_image_filters(data, image_info, self.album, coverartimage)
                 if filters_result:
-                    self._set_metadata(coverartimage, data, image_info)
+                    self._process_image_data(coverartimage, data, image_info)
             except imageinfo.IdentificationError as e:
                 log.warning("Couldn't identify image %r: %s", coverartimage, e)
                 return
@@ -181,7 +192,7 @@ class CoverArt:
                 extension=image.extension,
                 datalen=image.datalength,
             )
-            self._set_metadata(image, image.data, info)
+            self._process_image_data(image, image.data, info)
             return
         # local files
         elif image.url and image.url.scheme() == 'file':
@@ -190,7 +201,7 @@ class CoverArt:
                 with open(path, 'rb') as file:
                     data = file.read()
                     image_info = imageinfo.identify(data)
-                    self._set_metadata(image, data, image_info)
+                    self._process_image_data(image, data, image_info)
             except imageinfo.IdentificationError as e:
                 log.error("Couldn't identify image file %r: %s", path, e)
             except OSError as exc:

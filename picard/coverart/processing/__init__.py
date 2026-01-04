@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from collections.abc import Callable
 from functools import partial
 from queue import Queue
 import time
@@ -28,6 +28,7 @@ from picard.album import Album
 from picard.config import get_config
 from picard.const.cover_processing import COVER_PROCESSING_SLEEP
 from picard.coverart.image import (
+    CoverArtImage,
     CoverArtImageError,
     CoverArtImageIOError,
 )
@@ -46,7 +47,10 @@ from picard.extension_points.cover_art_processors import (
     get_cover_art_processors,
 )
 from picard.util import thread
-from picard.util.imageinfo import IdentificationError
+from picard.util.imageinfo import (
+    IdentificationError,
+    ImageInfo,
+)
 
 
 def run_image_filters(data, image_info, album, coverartimage):
@@ -77,11 +81,20 @@ class CoverArtImageProcessing:
     def __init__(self, album: Album):
         self.album = album
         self.queues = get_cover_art_processors()
-        self.task_counter = thread.TaskCounter()
+        self.task_counter: thread.TaskCounter = thread.TaskCounter()
         self.errors = Queue()
 
     @handle_processing_exceptions
-    def _run_processors_queue(self, coverartimage, initial_data, start_time, image, target):
+    def _run_processors_queue(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        start_time: int | float,
+        save_images_to_tags: bool,
+        save_images_to_files: bool,
+        image: ProcessingImage,
+        target: ImageProcessor.Target,
+    ):
         data = initial_data
         try:
             queue = self.queues[target]
@@ -92,9 +105,9 @@ class CoverArtImageProcessing:
         except CoverArtProcessingError as e:
             raise e
         finally:
-            if target == ImageProcessor.Target.TAGS:
-                coverartimage.set_tags_data(data)
-            else:
+            if target in ImageProcessor.Target.SAME | ImageProcessor.Target.TAGS:
+                coverartimage.set_tags_data(data if save_images_to_tags else initial_data)
+            if save_images_to_files and target in ImageProcessor.Target.SAME | ImageProcessor.Target.FILE:
                 coverartimage.set_external_file_data(data)
             log.debug(
                 "Image processing for %s cover art image %s finished in %d ms",
@@ -104,23 +117,45 @@ class CoverArtImageProcessing:
             )
 
     @handle_processing_exceptions
-    def _run_image_processors(self, coverartimage, initial_data, image_info):
+    def _run_image_processors(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        image_info: ImageInfo,
+        callback: Callable[[CoverArtImage], None],
+    ):
         config = get_config()
         try:
             start_time = time.time()
             image = ProcessingImage(initial_data, image_info)
-            for processor in self.queues[ImageProcessor.Target.BOTH]:
-                processor.run(image, ImageProcessor.Target.BOTH)
-                time.sleep(COVER_PROCESSING_SLEEP)
-            run_queue_common = partial(self._run_processors_queue, coverartimage, initial_data, start_time)
-            if config.setting['save_images_to_files']:
-                run_queue = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
-                thread.run_task(run_queue, task_counter=self.task_counter)
-            if config.setting['save_images_to_tags']:
-                run_queue = partial(run_queue_common, image.copy(), ImageProcessor.Target.TAGS)
-                thread.run_task(run_queue, task_counter=self.task_counter)
+            save_images_to_tags = config.setting['save_images_to_tags']
+            save_images_to_files = config.setting['save_images_to_files']
+
+            run_queue_common = partial(
+                self._run_processors_queue,
+                coverartimage,
+                initial_data,
+                start_time,
+                save_images_to_tags,
+                save_images_to_files,
+            )
+
+            # Run processors for both tags and external files in this thread, as this is the basis
+            # for the specialized processors.
+            if save_images_to_files or save_images_to_tags:
+                run_queue_common(image, ImageProcessor.Target.SAME)
             else:
                 coverartimage.set_tags_data(initial_data)
+
+            # Start separate threads to run tag and file only processors in parallel
+            sub_task_counter = thread.TaskCounter()
+            if save_images_to_files:
+                run_queue_files = partial(run_queue_common, image.copy(), ImageProcessor.Target.FILE)
+                thread.run_task(run_queue_files, task_counter=sub_task_counter)
+            if save_images_to_tags:
+                run_queue_tags = partial(run_queue_common, image.copy(), ImageProcessor.Target.TAGS)
+                thread.run_task(run_queue_tags, task_counter=sub_task_counter)
+            sub_task_counter.wait_for_tasks()
         except IdentificationError as e:
             raise CoverArtProcessingError(e) from e
         except CoverArtProcessingError:
@@ -128,14 +163,22 @@ class CoverArtImageProcessing:
             if config.setting['save_images_to_files']:
                 coverartimage.set_external_file_data(initial_data)
             raise
+        finally:
+            callback(coverartimage)
 
-    def run_image_processors(self, coverartimage, initial_data, image_info):
+    def run_image_processors(
+        self,
+        coverartimage: CoverArtImage,
+        initial_data: bytes,
+        image_info: ImageInfo,
+        callback: Callable[[CoverArtImage], None],
+    ):
         if coverartimage.can_be_processed:
-            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
+            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info, callback)
             thread.run_task(run_processors, task_counter=self.task_counter)
         else:
-            set_data = partial(handle_processing_exceptions, coverartimage.set_tags_data, initial_data)
-            thread.run_task(set_data, task_counter=self.task_counter)
+            coverartimage.set_tags_data(initial_data)
+            callback(coverartimage)
 
     def wait_for_processing(self):
         self.task_counter.wait_for_tasks()
