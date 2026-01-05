@@ -1,11 +1,11 @@
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.6.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt6 import (
+from PyQt6 import (     # noqa: F401
     QtCore,
     QtGui,
     QtWidgets,
@@ -37,8 +37,9 @@ class Ui_GeneralOptionsPage(object):
         self.server_port.setObjectName("server_port")
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.server_host_primary_warning = QtWidgets.QFrame(parent=self.groupBox)
-        self.server_host_primary_warning.setStyleSheet("QFrame { background-color: #ffc107; color: black }\n"
-"QCheckBox { color: black }")
+        self.server_host_primary_warning.setStyleSheet(
+            "QFrame { background-color: #ffc107; color: black }\n"
+            "QCheckBox { color: black }")
         self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.server_host_primary_warning.setObjectName("server_host_primary_warning")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.server_host_primary_warning)
@@ -125,6 +126,9 @@ class Ui_GeneralOptionsPage(object):
         self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.program_update_check_group)
         self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.check_rtd_updates = QtWidgets.QCheckBox(parent=self.program_update_check_group)
+        self.check_rtd_updates.setObjectName("check_rtd_updates")
+        self.verticalLayout_6.addWidget(self.check_rtd_updates)
         self.check_for_updates = QtWidgets.QCheckBox(parent=self.program_update_check_group)
         self.check_for_updates.setObjectName("check_for_updates")
         self.verticalLayout_6.addWidget(self.check_for_updates)
@@ -145,7 +149,7 @@ class Ui_GeneralOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.update_check_days.sizePolicy().hasHeightForWidth())
         self.update_check_days.setSizePolicy(sizePolicy)
-        self.update_check_days.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.update_check_days.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.update_check_days.setMinimum(1)
         self.update_check_days.setObjectName("update_check_days")
         self.gridLayout.addWidget(self.update_check_days, 0, 1, 1, 1)
@@ -193,7 +197,8 @@ class Ui_GeneralOptionsPage(object):
         GeneralOptionsPage.setTabOrder(self.logout, self.analyze_new_files)
         GeneralOptionsPage.setTabOrder(self.analyze_new_files, self.cluster_new_files)
         GeneralOptionsPage.setTabOrder(self.cluster_new_files, self.ignore_file_mbids)
-        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_for_updates)
+        GeneralOptionsPage.setTabOrder(self.ignore_file_mbids, self.check_rtd_updates)
+        GeneralOptionsPage.setTabOrder(self.check_rtd_updates, self.check_for_updates)
         GeneralOptionsPage.setTabOrder(self.check_for_updates, self.update_check_days)
         GeneralOptionsPage.setTabOrder(self.update_check_days, self.update_level)
 
@@ -211,6 +216,7 @@ class Ui_GeneralOptionsPage(object):
         self.cluster_new_files.setText(_("Automatically cluster all new files"))
         self.ignore_file_mbids.setText(_("Ignore MBIDs when loading new files"))
         self.update_check_groupbox.setTitle(_("Update Checking"))
+        self.check_rtd_updates.setText(_("Check for documentation updates during startup"))
         self.check_for_updates.setText(_("Check for program updates during startup"))
         self.label_2.setText(_("Days between checks:"))
         self.label_3.setText(_("Updates to check:"))

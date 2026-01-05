@@ -26,7 +26,10 @@ import unittest.mock as mock
 
 from test.picardtestcase import PicardTestCase
 
-from picard.const import PICARD_URLS
+from picard.const import (
+    DOCS_SERVER_URL,
+    PICARD_URLS,
+)
 from picard.const.tags import ALL_TAGS
 from picard.options import (
     Option,
@@ -480,8 +483,8 @@ class UtilTagsTest(PicardTestCase):
         result = (
             '<p><em>%barcode%</em></p><p>The barcode assigned to the release.</p>'
             "<p><strong>Links:</strong> <a href='https://musicbrainz.org/doc/Barcode'>Barcode in MusicBrainz documentation</a>; "
-            "<a href='https://picard-docs.musicbrainz.org/en/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
-        )
+            "<a href='{server}en/latest/appendices/tag_mapping.html#id6'>Barcode mapping in Picard documentation</a>.</p>"
+        ).format(server=DOCS_SERVER_URL)
         self.assertEqual(display_tag_full_description('barcode'), result)
 
         # Hidden tag with notes only.

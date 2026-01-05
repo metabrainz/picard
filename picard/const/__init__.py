@@ -34,7 +34,6 @@
 
 from collections import OrderedDict
 
-from picard import PICARD_VERSION
 from picard.const import appdirs
 from picard.const.attributes import MB_ATTRIBUTES
 from picard.i18n import N_
@@ -59,28 +58,21 @@ MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'IVg2qnvErgX046Ptz3FsTxW4dbyQM9Jr'
 # Cover art archive URL
 CAA_URL = 'https://coverartarchive.org'
 
-# Prepare documentation URLs
-if PICARD_VERSION.identifier == 'final':
-    DOCS_VERSION = "v{}.{}/".format(PICARD_VERSION.major, PICARD_VERSION.minor)
-else:
-    DOCS_VERSION = ""  # points to latest version
-DOCS_LANGUAGE = 'en'
-DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
-DOCS_BASE_URL = DOCS_SERVER_URL + DOCS_VERSION + DOCS_LANGUAGE
+# Documentation ReadTheDocs project information
+READTHEDOCS_PROJECT = 'picard-docs'
+READTHEDOCS_PROJECT_API = 'https://app.readthedocs.org/api/v3/projects/' + READTHEDOCS_PROJECT
+READTHEDOCS_BASE_LANGUAGE = 'en'
+READTHEDOCS_BASE_VERSION = 'latest'
+
+# FIXME: Switch to the musicbrainz.org domain once it has been redirected to ReadTheDocs
+# DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
+DOCS_SERVER_URL = "https://picard-docs.readthedocs.io/"
 
 MB_DOCS_BASE_URL = "https://musicbrainz.org/doc"
 
-# URLs
 PICARD_URLS = {
     'home': "https://picard.musicbrainz.org/",
     'license': "https://www.gnu.org/licenses/gpl-2.0.html",
-    'documentation_server': DOCS_SERVER_URL,  # Shows latest version and tries to match the user's language if available.
-    'documentation': DOCS_BASE_URL + "/",
-    'troubleshooting': DOCS_BASE_URL + "/troubleshooting/troubleshooting.html",
-    'doc_options': DOCS_BASE_URL + "/config/configuration.html",
-    'doc_scripting': DOCS_BASE_URL + "/extending/scripting.html",
-    'doc_tags_from_filenames': DOCS_BASE_URL + "/usage/tags_from_file_names.html",
-    'doc_naming_script_edit': DOCS_BASE_URL + "/config/options_filerenaming_editor.html",
     'doc_cover_art_types': MB_DOCS_BASE_URL + "/Cover_Art/Types",
     'plugins': "https://picard.musicbrainz.org/plugins/",
     'forum': "https://community.metabrainz.org/c/picard",
@@ -90,6 +82,18 @@ PICARD_URLS = {
     'acoustid_track': "https://acoustid.org/track/",
     'mb_doc': MB_DOCS_BASE_URL + "/",
     'mb_doc_search_syntax': MB_DOCS_BASE_URL + "/Indexed_Search_Syntax",
+}
+
+PICARD_DOCS_URLS = {
+    # Picard Documentation URLs
+    # May contain replaceable parameters {language} and {version}
+    'documentation_server': DOCS_SERVER_URL + "{language}/" + READTHEDOCS_BASE_VERSION + "/",
+    'documentation': DOCS_SERVER_URL + "{language}/{version}",
+    'troubleshooting': DOCS_SERVER_URL + "{language}/{version}/troubleshooting/troubleshooting.html",
+    'doc_options': DOCS_SERVER_URL + "{language}/{version}/config/configuration.html",
+    'doc_scripting': DOCS_SERVER_URL + "{language}/{version}/extending/scripting.html",
+    'doc_tags_from_filenames': DOCS_SERVER_URL + "{language}/{version}/usage/tags_from_file_names.html",
+    'doc_naming_script_edit': DOCS_SERVER_URL + "{language}/{version}/config/options_filerenaming_editor.html",
 }
 
 # Various Artists MBID

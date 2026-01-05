@@ -242,6 +242,13 @@ QCheckBox { color: black }</string>
           <number>0</number>
          </property>
          <item>
+          <widget class="QCheckBox" name="check_rtd_updates">
+           <property name="text">
+            <string>Check for documentation updates during startup</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="check_for_updates">
            <property name="text">
             <string>Check for program updates during startup</string>
@@ -371,6 +378,7 @@ QCheckBox { color: black }</string>
   <tabstop>analyze_new_files</tabstop>
   <tabstop>cluster_new_files</tabstop>
   <tabstop>ignore_file_mbids</tabstop>
+  <tabstop>check_rtd_updates</tabstop>
   <tabstop>check_for_updates</tabstop>
   <tabstop>update_check_days</tabstop>
   <tabstop>update_level</tabstop>

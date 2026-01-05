@@ -50,7 +50,10 @@ from test.picardtestcase import (
 )
 
 from picard import util
-from picard.const import MUSICBRAINZ_SERVERS
+from picard.const import (
+    MUSICBRAINZ_SERVERS,
+    PICARD_URLS,
+)
 from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
@@ -69,6 +72,7 @@ from picard.util import (
     encoded_queryargs,
     extract_year_from_date,
     find_best_match,
+    get_url,
     is_absolute_path,
     iter_exception_chain,
     iter_files_from_objects,
@@ -1142,3 +1146,23 @@ class TestTemporaryDisconnect(PicardTestCase):
         self.handler1.reset_mock()
         self.handler2.assert_called_once_with(20)
         self.handler2.reset_mock()
+
+
+class URLsTest(PicardTestCase):
+    def test_picard_urls(self):
+        # Test URL expansion of non-ReadTheDocs URL keys
+        for key in PICARD_URLS.keys():
+            test_text = f"Testing URL key '{key}'"
+            self.assertEqual(
+                get_url(key),
+                PICARD_URLS[key],
+                test_text,
+            )
+
+        # Test non existent key
+        key = 'not_a_valid_key'
+        self.assertEqual(
+            get_url(key),
+            key,
+            test_text,
+        )
