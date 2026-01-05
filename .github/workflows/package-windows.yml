@@ -119,12 +119,14 @@ jobs:
       if: matrix.setup.type == 'msix-package'
       run: |
         uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
+        Remove-Item .\dist\picard\picard-plugins.exe
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
     - name: Build Windows 10 store app package
       if: matrix.setup.type == 'store-app'
       run: |
         uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
+        Remove-Item .\dist\picard\picard-plugins.exe
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
       env:
