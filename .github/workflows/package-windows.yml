@@ -13,6 +13,8 @@ jobs:
           - type: installer
           - type: portable
             build-portable: 1
+          - type: msix-package
+            disable-autoupdate: 1
           - type: store-app
             disable-autoupdate: 1
       fail-fast: false
@@ -66,7 +68,8 @@ jobs:
       run: |
         $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
         $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        uv run python setup.py patch_version --platform=$Env:BUILD_NUMBER.$(git rev-parse --short HEAD)
+        Add-Content $Env:GITHUB_ENV "BUILD_NUMBER=$BuildNumber"
+        uv run python setup.py patch_version --platform=$BuildNumber.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
       run: |
@@ -77,7 +80,7 @@ jobs:
         uv run python setup.py clean
     - name: Build
       run: |
-        uv run python setup.py build --build-number=$BuildNumber --disable-locales
+        uv run python setup.py build --build-number=$Env:BUILD_NUMBER --disable-locales
         uv run python setup.py build_locales
         uv run python setup.py build_ext -i
         uv run pyinstaller --noconfirm --clean picard.spec
@@ -85,7 +88,6 @@ jobs:
           dist\picard\_internal\fpcalc -version
         }
       env:
-        PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Sign picard.exe
@@ -112,11 +114,20 @@ jobs:
       if: matrix.setup.type == 'portable'
       run: |
         Move-Item .\dist\*.exe .\artifacts
+    - name: Build Windows 10 MSIX app package
+      if: matrix.setup.type == 'msix-package'
+      run: |
+        uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
+        & .\scripts\package\win-package-appx.ps1 dist\picard
+        Move-Item .\dist\*.msix .\artifacts
     - name: Build Windows 10 store app package
       if: matrix.setup.type == 'store-app'
       run: |
+        uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
+      env:
+        PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Sign final executable
       uses: azure/trusted-signing-action@v0.5.11
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
@@ -128,7 +139,7 @@ jobs:
         trusted-signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
         certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
         files-folder: artifacts
-        files-folder-filter: exe
+        files-folder-filter: exe,msix
         timestamp-rfc3161: http://timestamp.acs.microsoft.com
         timestamp-digest: SHA256
     - name: Archive production artifacts
