@@ -26,7 +26,6 @@ import os
 import re
 
 from picard.config import get_config
-from picard.const.defaults import DEFAULT_LOCAL_COVER_ART_REGEX
 from picard.coverart.image import LocalFileCoverArtImage
 from picard.coverart.providers.provider import (
     CoverArtProvider,
@@ -50,10 +49,6 @@ class ProviderOptionsLocal(ProviderOptions):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.init_regex_checker(self.ui.local_cover_regex_edit, self.ui.local_cover_regex_error)
-        self.ui.local_cover_regex_default.clicked.connect(self.set_local_cover_regex_default)
-
-    def set_local_cover_regex_default(self):
-        self.ui.local_cover_regex_edit.setText(DEFAULT_LOCAL_COVER_ART_REGEX)
 
     def load(self):
         config = get_config()
