@@ -79,7 +79,7 @@ except ImportError:
 class _TestTimezone(datetime.tzinfo):
     def utcoffset(self, dt):
         # Set to GMT+2
-        return datetime.timedelta(hours=2) + self.dst(dt)
+        return datetime.timedelta(hours=2)
 
     def dst(self, dt):
         d = datetime.datetime(dt.year, 4, 1)
@@ -103,7 +103,7 @@ class _DateTime(datetime.datetime):
     def astimezone(self, tz=None):
         # Ignore tz passed to the method and force use of test timezone.
         tz = _TestTimezone()
-        utc = (self - self.utcoffset()).replace(tzinfo=tz)
+        utc = (self - tz.utcoffset(datetime.timedelta())).replace(tzinfo=tz)
         # Convert from UTC to tz's local time.
         return tz.fromutc(utc)
 
@@ -1890,12 +1890,7 @@ class ScriptParserTest(PicardTestCase):
             self.parser.eval("$slice(abc; def),0,1,:,extra")
 
     def test_cmd_datetime(self):
-        # Save original datetime object and substitute one returning
-        # a fixed now() value for testing.
-        original_datetime = datetime.datetime
-        datetime.datetime = _DateTime
-
-        try:
+        with patch('datetime.datetime', _DateTime):
             context = Metadata()
             context["foo"] = "%Y%m%d%H%M%S.%f"
             # Tests with context
@@ -1913,9 +1908,6 @@ class ScriptParserTest(PicardTestCase):
             areg = r"^\d+:\d+:\$datetime: Wrong number of arguments for \$datetime: Expected between 0 and 1, "
             with self.assertRaisesRegex(ScriptError, areg):
                 self.parser.eval("$datetime(abc,def)")
-        finally:
-            # Restore original datetime object
-            datetime.datetime = original_datetime
 
     def test_cmd_datetime_platform_dependent(self):
         # Platform dependent testing because different platforms (both os and Python version)
@@ -1935,20 +1927,13 @@ class ScriptParserTest(PicardTestCase):
                 tests_to_run.append(test_case)
         if not tests_to_run:
             self.skipTest('datetime module supports all test cases')
-        # Save original datetime object and substitute one returning
-        # a fixed now() value for testing.
-        original_datetime = datetime.datetime
-        datetime.datetime = _DateTime
 
-        try:
+        with patch('datetime.datetime', _DateTime):
             areg = r"^\d+:\d+:\$datetime: Unsupported format code"
             # Tests with invalid format code (platform dependent tests)
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):
                     self.parser.eval(r'$datetime(\{0})'.format(test_case))
-        finally:
-            # Restore original datetime object
-            datetime.datetime = original_datetime
 
     def test_scriptruntimeerror(self):
         # Platform dependent testing because different platforms (both os and Python version)

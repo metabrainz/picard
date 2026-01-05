@@ -51,11 +51,7 @@ def setup_audit(prefixes_string):
             # we can't use log here, as it generates events
             print(f'audit:{matched}:{tid}:{secs} {event} args={args}')
 
-    try:
-        sys.addaudithook(audit)
-    except AttributeError:
-        # sys.addaudithook() appeared in Python 3.8
-        pass
+    sys.addaudithook(audit)
 
 
 def list_from_prefixes_string(prefixes_string):
