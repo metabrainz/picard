@@ -118,19 +118,27 @@ class DocumentationPage(QtWidgets.QWidget):
 
 class FunctionsDocumentationPage(DocumentationPage):
     def generate_html(self):
+        self.tagger = QtCore.QCoreApplication.instance()
+        manager = self.tagger.get_plugin_manager()
+
         def process_html(html, function):
             if not html:
                 html = ''
-            template = '<dt>%s%s</dt><dd>%s</dd>'
+            template = '<dt>%s</dt><dd>%s%s</dd>'
             if function.module is not None and function.module != 'picard.script.functions':
-                module = ' [' + function.module + ']'
+                if function.plugin_id:
+                    plugin = manager.plugin_id_to_plugin(function.plugin_id)
+                    name = _("Plugin: {plugin_name}").format(plugin_name=plugin.name()) if plugin else function.module
+                    module = '[' + name + ']'
+                else:
+                    module = '[' + function.module + ']'
             else:
                 module = ''
             try:
                 firstline, remaining = html.split("\n", 1)
-                return template % (firstline, module, remaining)
+                return template % (firstline, remaining, module)
             except ValueError:
-                return template % ("<code>$%s()</code>" % function.name, module, html)
+                return template % ("<code>$%s()</code>" % function.name, html, module)
 
         return script_function_documentation_all(
             fmt='html',

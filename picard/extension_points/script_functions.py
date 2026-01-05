@@ -45,6 +45,10 @@ try:
 except ImportError:
     markdown = None
 
+from picard.extension_points import (
+    PLUGIN_MODULE_PREFIX,
+    PLUGIN_MODULE_PREFIX_LEN,
+)
 from picard.i18n import gettext as _
 from picard.plugin import ExtensionPoint
 
@@ -63,9 +67,12 @@ class FunctionRegistryItem:
         self.documentation = documentation
         self.name = name
         self.module = module
+        self.plugin_id = None
+        if module and module.startswith(PLUGIN_MODULE_PREFIX):
+            self.plugin_id = module[PLUGIN_MODULE_PREFIX_LEN:]
 
     def __repr__(self):
-        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc})'.format(
+        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc}, {me.name}, {me.module})'.format(
             classname=self.__class__.__name__,
             me=self,
             doc='"""{0}"""'.format(self.documentation) if self.documentation else None,
@@ -119,6 +126,7 @@ def register_script_function(function, name=None, eval_args=True, check_argcount
 
     if name is None:
         name = function.__name__
+
     ext_point_script_functions.register(
         function.__module__,
         (

@@ -150,7 +150,7 @@ class ScriptParserTest(PicardTestCase):
             + r'[^ ]+'
             + re.escape(r'.somefunc at ')
             + r'[^>]+'
-            + re.escape(r'>, x, y, """doc""")')
+            + re.escape(r'>, x, y, """doc""", None, None)')
             + r'$'
         )
 
