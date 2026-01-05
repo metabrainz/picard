@@ -35,7 +35,7 @@ jobs:
         uses: astral-sh/ruff-action@v3
         if: steps.changes.outputs.src == 'true'
         with:
-          args: "format --check"
+          args: "format --diff"
 
   pymarkdown:
     runs-on: ubuntu-latest
