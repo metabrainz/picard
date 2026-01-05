@@ -27,11 +27,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import (
-    QtCore,
-    QtGui,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
@@ -108,46 +104,56 @@ class TagsOptionsPage(OptionsPage):
         label.setObjectName('disable_date_sanitization_formats_label')
         label.setText(_("Do not sanitize dates for these tag formats:"))
 
-        self.disable_date_sanitization_formats = QtWidgets.QComboBox(self)
-        self.disable_date_sanitization_formats.setObjectName('disable_date_sanitization_formats')
-        self.disable_date_sanitization_formats.setSizeAdjustPolicy(
-            QtWidgets.QComboBox.SizeAdjustPolicy.AdjustToContents
-        )
+        self._disable_date_sanitization_container = QtWidgets.QWidget(self)
+        self._disable_date_sanitization_container.setObjectName('disable_date_sanitization_formats_container')
+        self._disable_date_sanitization_layout = QtWidgets.QVBoxLayout(self._disable_date_sanitization_container)
+        self._disable_date_sanitization_layout.setContentsMargins(0, 0, 0, 0)
+        self._disable_date_sanitization_layout.setSpacing(4)
+        self._disable_date_sanitization_checkboxes: dict[str, QtWidgets.QCheckBox] = {}
 
         self._rebuild_date_sanitization_model()
-
-        # Place the control at the end of the page
         self.ui.vboxlayout.addWidget(label)
-        self.ui.vboxlayout.addWidget(self.disable_date_sanitization_formats)
+        self.ui.vboxlayout.addWidget(self._disable_date_sanitization_container)
+
+    def _clear_disable_date_sanitization_checkboxes(self):
+        while self._disable_date_sanitization_layout.count():
+            item = self._disable_date_sanitization_layout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+        self._disable_date_sanitization_checkboxes.clear()
 
     def _rebuild_date_sanitization_model(self):
+        currently_checked = set(self._get_disable_date_sanitization_checked())
+
+        self._clear_disable_date_sanitization_checkboxes()
+
         date_sanitization_entries = date_sanitization_format_entries(self.tagger.format_registry)
-        model = QtGui.QStandardItemModel(self.disable_date_sanitization_formats)
-        self.disable_date_sanitization_formats.setModel(model)
+
         for key, title in date_sanitization_entries:
-            item = QtGui.QStandardItem(_(title))
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            item.setData(key, QtCore.Qt.ItemDataRole.UserRole)
-            item.setCheckable(True)
-            item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-            self.disable_date_sanitization_formats.model().appendRow(item)
+            checkbox = QtWidgets.QCheckBox(
+                _(title),
+                self._disable_date_sanitization_container,
+            )
+            checkbox.setObjectName(f"disable_date_sanitization_{key}")
+            checkbox.setChecked(key in currently_checked)
+            checkbox.setProperty("format_key", key)
+
+            self._disable_date_sanitization_layout.addWidget(checkbox)
+            self._disable_date_sanitization_checkboxes[key] = checkbox
+
+        self._disable_date_sanitization_layout.addStretch(1)
 
     def _set_disable_date_sanitization_checked(self, keys):
-        model = self.disable_date_sanitization_formats.model()
         checked = set(keys)
-        for row in range(model.rowCount()):
-            item = model.item(row)
-            key = item.data(QtCore.Qt.ItemDataRole.UserRole)
-            state = QtCore.Qt.CheckState.Checked if key in checked else QtCore.Qt.CheckState.Unchecked
-            item.setCheckState(state)
+        for key, checkbox in self._disable_date_sanitization_checkboxes.items():
+            checkbox.setChecked(key in checked)
 
     def _get_disable_date_sanitization_checked(self) -> list[str]:
-        model = self.disable_date_sanitization_formats.model()
-        keys = []
-        for row in range(model.rowCount()):
-            item = model.item(row)
-            if item.checkState() == QtCore.Qt.CheckState.Checked:
-                keys.append(item.data(QtCore.Qt.ItemDataRole.UserRole))
+        keys: list[str] = []
+        for key, checkbox in self._disable_date_sanitization_checkboxes.items():
+            if checkbox.isChecked():
+                keys.append(key)
         return keys
 
 
