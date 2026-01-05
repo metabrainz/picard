@@ -85,6 +85,7 @@ jobs:
         uv run python setup.py build_ext -i
         uv run pyinstaller --noconfirm --clean picard.spec
         If ($env:PICARD_BUILD_PORTABLE -ne "1") {
+          Copy-Item .\resources\win10\* .\dist\picard
           dist\picard\_internal\fpcalc -version
         }
       env:
