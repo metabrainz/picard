@@ -329,14 +329,10 @@ class SettingConfigSection(ConfigSection):
 
 
 class Config(QtCore.QSettings):
-    """Configuration.
-    QSettings is not thread safe, each thread must use its own instance of this class.
-    Use `get_config()` to obtain a Config instance for the current thread.
-    Changes to one Config instances are automatically available to all other instances.
+    """Main configuration class based on QSettings.
 
     Use `Config.from_app` or `Config.from_file` to obtain a new `Config` instance.
-
-    See: https://doc.qt.io/qt-5/qsettings.html#accessing-settings-from-multiple-threads-or-processes-simultaneously
+    The class provides several `ConfigSection` instances that hold the actual settings.
     """
 
     def __init__(self):
@@ -507,10 +503,7 @@ def setup_config(app=None, filename=None):
 
 
 def get_config():
-    """Returns a config object for the current thread.
-
-    Config objects for threads are created on demand and cached for later use.
-    """
+    """Returns the global config object."""
     return config
 
 
