@@ -55,7 +55,6 @@ fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [('discid.dll', '.')]
-    data_files.append((os.path.join('resources', 'win10', '*'), '.'))
 
 elif os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '.')]

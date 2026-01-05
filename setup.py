@@ -196,29 +196,7 @@ class picard_build(build):
                 {**common_args, **version_args},
             )
 
-            default_publisher = (
-                'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
-            )
-            # Combine patch version with build number. As Windows store apps require continuously
-            # growing version numbers we combine the patch version with a build number set by the
-            # build script.
-            store_version = (
-                PICARD_VERSION.major,
-                PICARD_VERSION.minor,
-                PICARD_VERSION.patch * 1000 + min(self.build_number, 999),
-                0,
-            )
-            generate_file(
-                'appxmanifest.xml.in',
-                'appxmanifest.xml',
-                {
-                    'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
-                    'display-name': PICARD_DISPLAY_NAME,
-                    'short-name': PICARD_APP_NAME,
-                    'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
-                    'version': '.'.join(str(v) for v in store_version),
-                },
-            )
+            self.run_command('build_appxmanifest')
         elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
             self.run_command('build_appdata')
             self.run_command('build_desktop_file')
@@ -414,6 +392,49 @@ class picard_build_appdata(Command):
                 'releases': '\n    '.join(releases),
             }
             generate_file(source_file, APPDATA_FILE, args)
+
+
+class picard_build_appxmanifest(Command):
+    description = 'Build AppxManifest file'
+    user_options = [
+        ('build-number=', None, 'build number (integer)'),
+    ]
+
+    def initialize_options(self):
+        self.build_number = 0
+
+    def finalize_options(self):
+        # Get build_number from build command, if not set
+        if not self.build_number:
+            cmd_obj = self.distribution.get_command_obj('build')
+            self.build_number = getattr(cmd_obj, 'build_number', 0)
+        try:
+            self.build_number = int(self.build_number)
+        except ValueError:
+            self.build_number = 0
+
+    def run(self):
+        default_publisher = 'CN=MetaBrainz Foundation Inc., O=MetaBrainz Foundation Inc., L=Covina, S=California, C=US'
+        # Combine patch version with build number. As Windows store apps require continuously
+        # growing version numbers we combine the patch version with a build number set by the
+        # build script.
+        store_version = (
+            PICARD_VERSION.major,
+            PICARD_VERSION.minor,
+            PICARD_VERSION.patch * 1000 + min(self.build_number, 999),
+            0,
+        )
+        generate_file(
+            'appxmanifest.xml.in',
+            'appxmanifest.xml',
+            {
+                'app-id': "MetaBrainzFoundationInc." + PICARD_APP_ID,
+                'display-name': PICARD_DISPLAY_NAME,
+                'short-name': PICARD_APP_NAME,
+                'publisher': os.environ.get('PICARD_APPX_PUBLISHER', default_publisher),
+                'version': '.'.join(str(v) for v in store_version),
+            },
+        )
 
 
 class picard_build_desktop_file(Command):
@@ -677,6 +698,7 @@ args = {
         'clean_ui': picard_clean_ui,
         'build_appdata': picard_build_appdata,
         'regen_appdata_pot_file': picard_regen_appdata_pot_file,
+        'build_appxmanifest': picard_build_appxmanifest,
         'build_desktop_file': picard_build_desktop_file,
         'install': picard_install,
         'update_constants': picard_update_constants,
