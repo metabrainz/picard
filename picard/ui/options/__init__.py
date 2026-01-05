@@ -120,6 +120,8 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         ie. QLabel
         """
 
+        regex_error.setVisible(False)
+
         def check():
             try:
                 re.compile(regex_edit.text())
@@ -127,13 +129,13 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
                 raise OptionsCheckError(_("Regex Error"), str(e)) from None
 
         def live_checker(text):
-            regex_error.setStyleSheet("")
-            regex_error.setText("")
+            regex_error.setVisible(False)
             try:
                 check()
             except OptionsCheckError as e:
                 regex_error.setStyleSheet(self.STYLESHEET_ERROR)
                 regex_error.setText(e.info)
+                regex_error.setVisible(True)
 
         regex_edit.textChanged.connect(live_checker)
 

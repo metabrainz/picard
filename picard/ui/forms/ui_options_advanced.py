@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_advanced.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.6.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -82,6 +82,7 @@ class Ui_AdvancedOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ignore_track_duration_difference_under.sizePolicy().hasHeightForWidth())
         self.ignore_track_duration_difference_under.setSizePolicy(sizePolicy)
+        self.ignore_track_duration_difference_under.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.ignore_track_duration_difference_under.setButtonSymbols(QtWidgets.QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.ignore_track_duration_difference_under.setAccelerated(True)
         self.ignore_track_duration_difference_under.setSuffix("")
@@ -129,6 +130,8 @@ class Ui_AdvancedOptionsPage(object):
         self.compare_ignore_tags.setObjectName("compare_ignore_tags")
         self.verticalLayout.addWidget(self.compare_ignore_tags)
         self.vboxlayout.addWidget(self.groupBox_ignore_tags)
+        self.label_query_limit.setBuddy(self.query_limit)
+        self.label_track_duration_diff.setBuddy(self.ignore_track_duration_difference_under)
 
         self.retranslateUi(AdvancedOptionsPage)
         self.query_limit.setCurrentIndex(1)

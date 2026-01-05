@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_cover.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.6.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -37,10 +37,15 @@ class Ui_CoverOptionsPage(object):
         self.never_replace_types_layout = QtWidgets.QHBoxLayout()
         self.never_replace_types_layout.setObjectName("never_replace_types_layout")
         self.cb_never_replace_types = QtWidgets.QCheckBox(parent=self.save_images_to_tags)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.cb_never_replace_types.sizePolicy().hasHeightForWidth())
+        self.cb_never_replace_types.setSizePolicy(sizePolicy)
         self.cb_never_replace_types.setObjectName("cb_never_replace_types")
         self.never_replace_types_layout.addWidget(self.cb_never_replace_types)
         self.select_types_button = QtWidgets.QPushButton(parent=self.save_images_to_tags)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.select_types_button.sizePolicy().hasHeightForWidth())
@@ -110,6 +115,7 @@ class Ui_CoverOptionsPage(object):
         self.verticalLayout.addWidget(self.ca_providers_groupbox, 0, QtCore.Qt.AlignmentFlag.AlignTop)
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout.addItem(spacerItem1)
+        self.label_use_filename.setBuddy(self.cover_image_filename)
 
         self.retranslateUi(CoverOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(CoverOptionsPage)
@@ -118,13 +124,14 @@ class Ui_CoverOptionsPage(object):
         self.save_images_to_tags.setTitle(_("Embed cover images into tags"))
         self.cb_embed_front_only.setText(_("Embed only a single front image"))
         self.cb_dont_replace_with_smaller.setText(_("Never replace cover images with smaller ones"))
-        self.cb_never_replace_types.setText(_("Never replace cover images matching selected types"))
+        self.cb_never_replace_types.setText(_("Never replace selected cover image types"))
         self.select_types_button.setText(_("Select Types…"))
         self.save_images_to_files.setTitle(_("Save cover images as separate files"))
         self.label_use_filename.setText(_("Use the following file name for images:"))
         self.save_images_overwrite.setText(_("Overwrite the file if it already exists"))
         self.save_only_one_front_image.setText(_("Save only a single front image as separate file"))
-        self.image_type_as_filename.setText(_("Always use the primary image type as the file name for non-front images"))
+        self.image_type_as_filename.setToolTip(_("Always use the primary image type as the file name for non-front images"))
+        self.image_type_as_filename.setText(_("Use the primary image type as the file name"))
         self.ca_providers_groupbox.setTitle(_("Cover Art Providers"))
         self.move_label.setText(_("Reorder Priority:"))
         self.up_button.setToolTip(_("Move selected item up"))
