@@ -145,7 +145,9 @@ class Ui_MetadataOptionsPage(object):
 
         self.retranslateUi(MetadataOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MetadataOptionsPage)
-        MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.selected_locales)
+        MetadataOptionsPage.setTabOrder(self.translate_artist_names, self.translate_album_titles)
+        MetadataOptionsPage.setTabOrder(self.translate_album_titles, self.translate_track_titles)
+        MetadataOptionsPage.setTabOrder(self.translate_track_titles, self.selected_locales)
         MetadataOptionsPage.setTabOrder(self.selected_locales, self.select_locales)
         MetadataOptionsPage.setTabOrder(self.select_locales, self.translate_artist_names_script_exception)
         MetadataOptionsPage.setTabOrder(self.translate_artist_names_script_exception, self.selected_scripts)

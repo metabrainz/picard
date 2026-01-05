@@ -277,6 +277,8 @@
  </widget>
  <tabstops>
   <tabstop>translate_artist_names</tabstop>
+  <tabstop>translate_album_titles</tabstop>
+  <tabstop>translate_track_titles</tabstop>
   <tabstop>selected_locales</tabstop>
   <tabstop>select_locales</tabstop>
   <tabstop>translate_artist_names_script_exception</tabstop>
