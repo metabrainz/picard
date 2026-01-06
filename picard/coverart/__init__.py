@@ -204,9 +204,12 @@ class CoverArt:
         )
         self.image_processing.run_image_processors(image, data, image_info, self._finish_process_image_data)
 
-    def _finish_process_image_data(self, image: CoverArtImage):
+    def _finish_process_image_data(self, image: CoverArtImage, error):
+        if error:
+            self.album.error_append("Coverart processing_error: %s" % error)
         self.album.complete_task(f'coverart_processing_{id(image)}')
         self._set_metadata(image)
+        self.next_in_queue()
 
     def _set_metadata(self, image: CoverArtImage):
         if image.can_be_saved_to_metadata:
