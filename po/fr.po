@@ -34,13 +34,13 @@
 # yvanz, 2016-2019,2021
 # yvanz, 2016
 # Laurent Monin <i18n@norz.org>, 2013
-# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-12-27 18:53+0100\n"
-"PO-Revision-Date: 2024-09-04 19:42+0000\n"
+"PO-Revision-Date: 2026-01-06 09:11+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
 "app/fr/>\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:198
@@ -170,7 +170,7 @@ msgstr "Script de nommage de fichier primaire"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Chemin complet du greffon"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
@@ -339,6 +339,7 @@ msgstr "Intégrer seulement une image de type devant"
 #: picard/options.py:190 picard/ui/forms/ui_options_cover.py:120
 msgid "Never replace cover images with smaller ones"
 msgstr ""
+"Ne jamais remplacer les images de couverture par des images plus petites"
 
 #: picard/options.py:193 picard/ui/forms/ui_options_cover.py:121
 #, fuzzy
@@ -349,11 +350,11 @@ msgstr ""
 
 #: picard/options.py:199
 msgid "Never replace cover images of these types"
-msgstr ""
+msgstr "Ne jamais remplacer les images de couverture de ces types"
 
 #: picard/options.py:205
 msgid "Always replace cover images of these types"
-msgstr ""
+msgstr "Toujours remplacer les images de couverture de ces types"
 
 #: picard/options.py:211 picard/ui/forms/ui_options_cover.py:127
 msgid "Always use the primary image type as the file name for non-front images"
@@ -393,14 +394,15 @@ msgstr "Intégrer les images de couverture dans les balises"
 #: picard/options.py:219
 msgid "Show cover art file size in info labels"
 msgstr ""
+"Montrer la taille de fichier des images de couverture dans les informations"
 
 #: picard/options.py:220
 msgid "Show cover art dimensions in info labels"
-msgstr ""
+msgstr "Montrer les dimensions des images de couverture dans les informations"
 
 #: picard/options.py:221
 msgid "Show cover art MIME type in info labels"
-msgstr ""
+msgstr "Montrer le type MIME des images de couverture dans les informations"
 
 #: picard/options.py:252
 #, fuzzy
@@ -550,7 +552,7 @@ msgstr "Couleurs à utiliser pour le thème sombre"
 
 #: picard/options.py:328
 msgid "Options to show in the Quick Menu"
-msgstr ""
+msgstr "Options à montrer dans le Menu Rapide"
 
 #: picard/options.py:343
 msgid "Layout of the tool bar"
@@ -665,7 +667,7 @@ msgstr "Port d’écoute par défaut"
 
 #: picard/options.py:393
 msgid "Network cache size in bytes"
-msgstr ""
+msgstr "Taille du cache réseau en octets"
 
 #: picard/options.py:394
 msgid "Request timeout in seconds"
@@ -873,12 +875,12 @@ msgstr "Script de nommage de fichier sélectionné"
 
 #: picard/options.py:565
 msgid "Plugins to exclude from updates"
-msgstr ""
+msgstr "Greffons à exclure des mises à jour"
 
 #: picard/options.py:580
 #, python-format
 msgid "No title for setting '%s'"
-msgstr ""
+msgstr "Aucun titre pour le paramètre « %s »"
 
 #: picard/releasegroup.py:54 picard/ui/searchdialog/album.py:161
 msgid "Tracks"
@@ -908,7 +910,7 @@ msgstr "N° cat"
 
 #: picard/releasegroup.py:63
 msgid "Packaging"
-msgstr ""
+msgstr "Emballage"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:70
 #: picard/ui/itemviews/columns.py:152 picard/ui/searchdialog/album.py:166
@@ -938,7 +940,7 @@ msgstr "Code d’autorisation :"
 #: picard/tagger.py:722 picard/ui/mainwindow/__init__.py:1348
 #: picard/ui/mainwindow/__init__.py:1374
 msgid "Failed to load session"
-msgstr ""
+msgstr "Échec de chargement de session"
 
 #: picard/tagger.py:723 picard/ui/mainwindow/__init__.py:1349
 #: picard/ui/mainwindow/__init__.py:1375
@@ -948,6 +950,9 @@ msgid ""
 "\n"
 "%(error)s"
 msgstr ""
+"Impossible de charger la session depuis %(path)s :\n"
+"\n"
+"%(error)s"
 
 #: picard/tagger.py:768
 #, python-brace-format
@@ -4375,46 +4380,38 @@ msgstr "Intégrer les images de couverture dans les balises"
 #: picard/ui/forms/ui_options_cover_processing.py:284
 #: picard/ui/forms/ui_options_cover_processing.py:290
 msgid "Maximum width:"
-msgstr ""
+msgstr "Largeur maximale :"
 
 #: picard/ui/forms/ui_options_cover_processing.py:286
 #: picard/ui/forms/ui_options_cover_processing.py:292
 msgid "Maximum height:"
-msgstr ""
+msgstr "Hauteur maximale :"
 
 #: picard/ui/forms/ui_options_cover_processing.py:288
 #: picard/ui/forms/ui_options_cover_processing.py:294
 msgid "Enlarge"
-msgstr ""
+msgstr "Agrandir"
 
 #: picard/ui/forms/ui_options_cover_processing.py:289
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Resize images saved to files"
-msgstr "Écrire les balises dans les fichiers"
+msgstr "Redimensionner les images sauvées dans les fichiers"
 
 #: picard/ui/forms/ui_options_cover_processing.py:295
 msgid "Convert images to the given format"
-msgstr ""
+msgstr "Convertir les images vers le format donné"
 
 #: picard/ui/forms/ui_options_cover_processing.py:296
-#, fuzzy
-#| msgid "Convert File Names to Tags"
 msgid "Convert images saved to tags"
-msgstr "Convertir les noms de fichiers en balises"
+msgstr "Convertir les images sauvées dans les balises"
 
 #: picard/ui/forms/ui_options_cover_processing.py:297
 #: picard/ui/forms/ui_options_cover_processing.py:299
-#, fuzzy
-#| msgid "Format:"
 msgid "New format:"
-msgstr "Format :"
+msgstr "Nouveau format :"
 
 #: picard/ui/forms/ui_options_cover_processing.py:298
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Convert images saved to files"
-msgstr "Enregistrer les images de couverture dans des fichiers séparés"
+msgstr "Convertir les images sauvées dans des fichiers"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:103
 msgid "Audio Fingerprinting"
@@ -4442,7 +4439,7 @@ msgstr "Sauver les empreintes AcoustID dans les balises du fichier"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:109
 msgid "Maximum threads to use for calculator:"
-msgstr "Fils maximum à utiliser pour la calculatrice :"
+msgstr "Nombre maximum de fils d'exécution pour le calculateur :"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:110
 msgid "Fingerprint calculator:"
