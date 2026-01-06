@@ -1,6 +1,6 @@
-# Form implementation generated from reading ui file 'ui/options_maintenance.ui'
+# Form implementation generated from reading ui file '<_io.StringIO object at 0x7f342f480790>'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.6.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -36,6 +36,8 @@ class Ui_MaintenanceOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.open_folder_button.sizePolicy().hasHeightForWidth())
         self.open_folder_button.setSizePolicy(sizePolicy)
+        self.open_folder_button.setStyleSheet("border: none;")
+        self.open_folder_button.setText("")
         self.open_folder_button.setObjectName("open_folder_button")
         self.horizontalLayout_3.addWidget(self.open_folder_button)
         self.vboxlayout.addLayout(self.horizontalLayout_3)
@@ -53,6 +55,8 @@ class Ui_MaintenanceOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.browse_autobackup_dir.sizePolicy().hasHeightForWidth())
         self.browse_autobackup_dir.setSizePolicy(sizePolicy)
+        self.browse_autobackup_dir.setStyleSheet("border: none;")
+        self.browse_autobackup_dir.setText("")
         self.browse_autobackup_dir.setObjectName("browse_autobackup_dir")
         self.horizontalLayout_6.addWidget(self.browse_autobackup_dir)
         self.vboxlayout.addLayout(self.horizontalLayout_6)
@@ -127,6 +131,8 @@ class Ui_MaintenanceOptionsPage(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.verticalHeader().setVisible(False)
         self.vboxlayout.addWidget(self.tableWidget)
+        self.label.setBuddy(self.config_file)
+        self.label_2.setBuddy(self.autobackup_dir)
 
         self.retranslateUi(MaintenanceOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MaintenanceOptionsPage)
@@ -141,9 +147,9 @@ class Ui_MaintenanceOptionsPage(object):
 
     def retranslateUi(self, MaintenanceOptionsPage):
         self.label.setText(_("Configuration file:"))
-        self.open_folder_button.setText(_("Open folder…"))
+        self.open_folder_button.setToolTip(_("Open folder in browser"))
         self.label_2.setText(_("Automatic configuration backups directory:"))
-        self.browse_autobackup_dir.setText(_("Browse…"))
+        self.browse_autobackup_dir.setToolTip(_("Open folder in browser"))
         self.load_backup_button.setText(_("Load backup…"))
         self.save_backup_button.setText(_("Save backup…"))
         self.select_all.setText(_("Select all"))

@@ -16,6 +16,9 @@
      <property name="text">
       <string>Configuration file:</string>
      </property>
+     <property name="buddy">
+      <cstring>config_file</cstring>
+     </property>
     </widget>
    </item>
    <item>
@@ -38,8 +41,14 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Open folder in browser</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
        <property name="text">
-        <string>Open folder…</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -49,6 +58,9 @@
     <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Automatic configuration backups directory:</string>
+     </property>
+     <property name="buddy">
+      <cstring>autobackup_dir</cstring>
      </property>
     </widget>
    </item>
@@ -65,8 +77,14 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="toolTip">
+        <string>Open folder in browser</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: none;</string>
+       </property>
        <property name="text">
-        <string>Browse…</string>
+        <string notr="true"/>
        </property>
       </widget>
      </item>
@@ -144,7 +162,7 @@
       <string/>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -160,7 +178,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
+      <enum>QSizePolicy::Policy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -214,10 +232,10 @@
    <item>
     <widget class="QTableWidget" name="tableWidget">
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContents</enum>
+      <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
+      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
      </property>
      <property name="columnCount">
       <number>2</number>
