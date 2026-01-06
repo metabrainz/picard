@@ -25,6 +25,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Generator
 from functools import partial
 import traceback
 
@@ -65,6 +66,7 @@ class CoverArt:
         self.release = release  # not used in this class, but used by providers
         self.front_image_found: bool = False
         self.image_processing = CoverArtImageProcessing(album)
+        self._queue_generator: Generator[None, None, None] | None = None
 
     def __repr__(self):
         return "%s for %r" % (self.__class__.__name__, self.album)
@@ -74,51 +76,75 @@ class CoverArt:
         config = get_config()
         if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
             self.providers = cover_art_providers()
+            self._queue_generator = self._start_queue()
             self.next_in_queue()
         else:
             log.debug("Cover art disabled by user options.")
 
     def next_in_queue(self):
-        """Downloads next item in queue.
-        If there are none left, loading of album will be finalized.
+        """Run the next item in the queue.
+        Async cover art providers should call this once they have finished processing.
         """
-        if self.album.id not in self.album.tagger.albums:
-            # album removed
+        if not self._queue_generator:
+            log.error(f'CoverArt.next_in_queue called for {self.album} without active queue generator')
             return
 
-        config = get_config()
-        if (
-            self.front_image_found
-            and config.setting['save_images_to_tags']
-            and not config.setting['save_images_to_files']
-            and config.setting['embed_only_one_front_image']
-        ):
-            # no need to continue
-            processing_result = self.image_processing.wait_for_processing()
-            self.album._finalize_loading(error=processing_result)
-            return
+        try:
+            next(self._queue_generator)
+        except StopIteration:
+            self._queue_generator = None
+            self.image_processing.wait_for_processing()
 
-        if self._queue_empty():
-            try:
-                self._requeue()
-            except StopIteration:
-                # Cover art processing complete - no need to finalize,
-                # album already finalized when critical requests completed
-                self.image_processing.wait_for_processing()
-            return
+    def _start_queue(self) -> Generator[None, None, None]:
+        """Creates a generator that processes all cover art providers.
+        The generator will yield if async providers are loading data, otherwise
+        it iterates over queued images and processes them.
+        """
+        while True:
+            if self.album.id not in self.album.tagger.albums:
+                # album removed
+                log.debug(f'Cover art processing aborted, {self.album} got removed')
+                return
 
-        # We still have some items to try!
-        image = self._queue_get()
-        if not image.support_types and self.front_image_found:
-            # we already have one front image, no need to try other type-less
-            # sources
-            log.debug("Skipping %r, one front image is already available", image)
-            self.next_in_queue()
-            return
+            config = get_config()
+            if (
+                self.front_image_found
+                and config.setting['save_images_to_tags']
+                and not config.setting['save_images_to_files']
+                and config.setting['embed_only_one_front_image']
+            ):
+                # no need to continue
+                return
 
-        self._handle_queued_image(image)
+            while self._queue_empty():
+                try:
+                    queue_state = self._requeue()
+                    if queue_state == CoverArtProvider.QueueState.WAIT:
+                        yield
+                except StopIteration:
+                    # Cover art processing complete - no need to finalize,
+                    # album already finalized when critical requests completed
+                    return
 
-    def _requeue(self):
+            # We still have some items to try!
+            image = self._queue_get()
+            if not image.support_types and self.front_image_found:
+                # we already have one front image, no need to try other type-less
+                # sources
+                log.debug("Skipping %r, one front image is already available", image)
+                continue
+            else:
+                try:
+                    state = self._handle_queued_image(image)
+                    if state == CoverArtProvider.QueueState.WAIT:
+                        yield
+                except CoverArtImageIOError as error:
+                    # It doesn't make sense to store/download more images if we can't
+                    # save them in the temporary folder, abort.
+                    log.error(f'Cover art image IO error, {self.album}, {image}: {error}')
+                    return
+
+    def _requeue(self) -> CoverArtProvider.QueueState:
         # requeue from next provider
         provider = next(self.providers)
         result = CoverArtProvider.QueueState._STARTED
@@ -132,11 +158,9 @@ class CoverArt:
         except BaseException:
             log.error(traceback.format_exc())
             raise
-        finally:
-            if result == CoverArtProvider.QueueState.FINISHED:
-                self.next_in_queue()
+        return result
 
-    def _handle_queued_image(self, image: CoverArtImage):
+    def _handle_queued_image(self, image: CoverArtImage) -> CoverArtProvider.QueueState:
         # image has already data loaded
         if image.datahash:
             info = imageinfo.ImageInfo(
@@ -147,6 +171,7 @@ class CoverArt:
                 datalen=image.datalength,
             )
             self._process_image_data(image, image.data, info)
+            return CoverArtProvider.QueueState.WAIT
         # local files, load image data from filesystem
         elif image.url and image.url.scheme() == 'file':
             try:
@@ -155,16 +180,14 @@ class CoverArt:
                     data = file.read()
                     image_info = imageinfo.identify(data)
                     self._process_image_data(image, data, image_info)
+                return CoverArtProvider.QueueState.WAIT
             except imageinfo.IdentificationError as e:
                 log.error("Couldn't identify image file %r: %s", path, e)
+                return CoverArtProvider.QueueState.FINISHED
             except OSError as exc:
                 (errnum, errmsg) = exc.args
                 log.error("Failed to read %r: %s (%d)", path, errmsg, errnum)
-            except CoverArtImageIOError:
-                # It doesn't make sense to store/download more images if we can't
-                # save them in the temporary folder, abort.
-                return
-            self.next_in_queue()
+                return CoverArtProvider.QueueState.FINISHED
         # download image from the web
         elif image.url:
             self._message(
@@ -192,6 +215,7 @@ class CoverArt:
                 f'Cover art download: {image.types_as_string(translate=False)}',
                 request_factory=create_request,
             )
+            return CoverArtProvider.QueueState.WAIT
         else:
             # We should never end here
             raise CoverArtImageError(f'Cannot handle image {image!r}, no image data and no URL')
@@ -249,7 +273,9 @@ class CoverArt:
                 if image.can_be_filtered:
                     filters_result = run_image_filters(data, image_info, self.album, image)
                 if filters_result:
+                    # next_in_queue will be called by _process_image_data
                     self._process_image_data(image, data, image_info)
+                    return
             except imageinfo.IdentificationError as e:
                 log.warning("Couldn't identify image %r: %s", image, e)
                 return
