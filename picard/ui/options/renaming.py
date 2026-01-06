@@ -35,6 +35,7 @@
 
 import os.path
 
+from PyQt6 import QtWidgets
 from PyQt6.QtGui import QPalette
 
 from picard.config import get_config
@@ -87,6 +88,10 @@ class RenamingOptionsPage(OptionsPage):
         self.compat_options = {}
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
+
+        # Set open directory icon on folder browse button
+        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        self.ui.move_files_to_browse.setIcon(icon)
 
         self.ui.rename_files.clicked.connect(self.update_examples_from_local)
         self.ui.move_files.clicked.connect(self.update_examples_from_local)
