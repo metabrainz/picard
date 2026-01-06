@@ -78,6 +78,9 @@ These settings determine how the session files are managed.</string>
      <property name="text">
       <string>Sessions directory:</string>
      </property>
+     <property name="buddy">
+      <cstring>folder_path_edit</cstring>
+     </property>
     </widget>
    </item>
    <item>
@@ -90,6 +93,9 @@ These settings determine how the session files are managed.</string>
      </item>
      <item>
       <widget class="QToolButton" name="folder_browse_button">
+       <property name="toolTip">
+        <string>Select folder in browser</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">border: none;</string>
        </property>
@@ -138,6 +144,9 @@ These settings determine how the session files are managed.</string>
        </property>
        <property name="text">
         <string>Auto-save every N minutes (0 to disable):</string>
+       </property>
+       <property name="buddy">
+        <cstring>autosave_spin</cstring>
        </property>
       </widget>
      </item>

@@ -101,6 +101,8 @@ class Ui_SessionsOptionsPage(object):
         self.vboxlayout.addWidget(self.safe_restore_checkbox)
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem5)
+        self.folder_label.setBuddy(self.folder_path_edit)
+        self.autosave_label.setBuddy(self.autosave_spin)
 
         self.retranslateUi(SessionsOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(SessionsOptionsPage)
@@ -111,6 +113,7 @@ class Ui_SessionsOptionsPage(object):
 "\n"
 "These settings determine how the session files are managed."))
         self.folder_label.setText(_("Sessions directory:"))
+        self.folder_browse_button.setToolTip(_("Select folder in browser"))
         self.saving_sessions_label.setText(_("Saving sessions:"))
         self.autosave_label.setText(_("Auto-save every N minutes (0 to disable):"))
         self.backup_checkbox.setText(_("Attempt session backup on unexpected shutdown"))
