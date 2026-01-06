@@ -34,13 +34,13 @@
 # yvanz, 2016-2019,2021
 # yvanz, 2016
 # Laurent Monin <i18n@norz.org>, 2013
-# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024.
+# Zas <Zas@users.noreply.translations.metabrainz.org>, 2023, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2024-09-04 07:23+0000\n"
+"PO-Revision-Date: 2026-01-06 09:11+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/2/"
 "app/fr/>\n"
@@ -50,7 +50,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4830,7 +4830,7 @@ msgstr "Sauver les empreintes AcoustID dans les balises du fichier"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
-msgstr "Fils maximum à utiliser pour la calculatrice :"
+msgstr "Nombre maximum de fils d'exécution pour le calculateur :"
 
 #: picard/ui/ui_options_fingerprinting.py:104
 msgid "Fingerprint calculator:"
