@@ -21,14 +21,13 @@
 
 
 from copy import copy
-from unittest.mock import Mock
-
-from PyQt6.QtCore import (
-    QBuffer,
-    QCoreApplication,
+from unittest.mock import (
+    Mock,
+    patch,
 )
+
+from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage
-from PyQt6.QtTest import QTest
 
 from test.picardtestcase import PicardTestCase
 
@@ -69,6 +68,10 @@ def create_fake_image(width, height, image_format):
     except imageinfo.IdentificationError:
         info = None
     return data.data(), info
+
+
+def mock_to_main(func, *args, **kwargs):
+    func(*args, **kwargs)
 
 
 class ImageFiltersTest(PicardTestCase):
@@ -136,15 +139,8 @@ class ImageFiltersTest(PicardTestCase):
 
 
 class ImageProcessorsTest(PicardTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.app = QCoreApplication([])
-        cls.event_interceptor = MainEventInterceptor()
-
     def setUp(self):
         super().setUp()
-        self.tagger.installEventFilter(self.event_interceptor)
         self.settings = {
             'enabled_plugins': [],
             'cover_tags_resize': True,
@@ -165,10 +161,6 @@ class ImageProcessorsTest(PicardTestCase):
             'cover_file_convert_to_format': 'jpeg',
         }
 
-    def tearDown(self):
-        super().tearDown()
-        self.tagger.removeEventFilter(self.event_interceptor)
-
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
         _event_interceptor = MainEventInterceptor()
         self.tagger.installEventFilter(_event_interceptor)
@@ -177,10 +169,10 @@ class ImageProcessorsTest(PicardTestCase):
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
         callback = Mock()
-        image_processing.run_image_processors(coverartimage, image, info, callback)
-        image_processing.wait_for_processing()
-        QTest.qWait(1)  # Wait to allow Qt's event processing
-        callback.assert_called_once_with(coverartimage, None)
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, image, info, callback)
+            image_processing.wait_for_processing()
+            callback.assert_called_once_with(coverartimage, None)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -334,10 +326,10 @@ class ImageProcessorsTest(PicardTestCase):
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
         callback = Mock()
-        image_processing.run_image_processors(coverartimage, image, info, callback)
-        image_processing.wait_for_processing()
-        QTest.qWait(1)  # Wait to allow Qt's event processing
-        callback.assert_called_once_with(coverartimage, None)
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, image, info, callback)
+            image_processing.wait_for_processing()
+            callback.assert_called_once_with(coverartimage, None)
         self.assertNotEqual(album.errors, [])
         for error in album.errors:
             self.assertIsInstance(error, CoverArtProcessingError)
