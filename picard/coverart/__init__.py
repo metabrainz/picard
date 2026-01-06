@@ -100,18 +100,22 @@ class CoverArt:
         The generator will yield if async providers are loading data, otherwise
         it iterates over queued images and processes them.
         """
+        config = get_config()
+        save_images_to_tags = config.setting['save_images_to_tags']
+        save_images_to_files = config.setting['save_images_to_files']
+        embed_only_one_front_image = config.setting['embed_only_one_front_image']
+
         while True:
             if self.album.id not in self.album.tagger.albums:
                 # album removed
                 log.debug(f'Cover art processing aborted, {self.album} got removed')
                 return
 
-            config = get_config()
             if (
                 self.front_image_found
-                and config.setting['save_images_to_tags']
-                and not config.setting['save_images_to_files']
-                and config.setting['embed_only_one_front_image']
+                and save_images_to_tags
+                and not save_images_to_files
+                and embed_only_one_front_image
             ):
                 # no need to continue
                 return
