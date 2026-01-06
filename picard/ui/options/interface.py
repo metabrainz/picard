@@ -106,6 +106,10 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui = Ui_InterfaceOptionsPage()
         self.ui.setupUi(self)
 
+        # Set open directory icon on folder browse button
+        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        self.ui.starting_directory_browse.setIcon(icon)
+
         self.ui.ui_theme.clear()
         for theme in AVAILABLE_UI_THEMES:
             label = self._UI_THEME_LABELS[theme]['label']

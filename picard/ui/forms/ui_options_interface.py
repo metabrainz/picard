@@ -5,7 +5,7 @@
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt6 import (     # noqa: F401
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -91,8 +91,10 @@ class Ui_InterfaceOptionsPage(object):
         self.starting_directory_path.setEnabled(False)
         self.starting_directory_path.setObjectName("starting_directory_path")
         self.horizontalLayout_4.addWidget(self.starting_directory_path)
-        self.starting_directory_browse = QtWidgets.QPushButton(parent=self.miscellaneous_box)
+        self.starting_directory_browse = QtWidgets.QToolButton(parent=self.miscellaneous_box)
         self.starting_directory_browse.setEnabled(False)
+        self.starting_directory_browse.setStyleSheet("border: none;")
+        self.starting_directory_browse.setText("")
         self.starting_directory_browse.setObjectName("starting_directory_browse")
         self.horizontalLayout_4.addWidget(self.starting_directory_browse)
         self.vboxlayout1.addLayout(self.horizontalLayout_4)
@@ -106,6 +108,8 @@ class Ui_InterfaceOptionsPage(object):
         self.vboxlayout.addWidget(self.miscellaneous_box)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem2)
+        self.label.setBuddy(self.ui_language)
+        self.label_theme.setBuddy(self.ui_theme)
 
         self.retranslateUi(InterfaceOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(InterfaceOptionsPage)
@@ -140,4 +144,5 @@ class Ui_InterfaceOptionsPage(object):
         self.file_save_warning.setText(_("Show a confirmation dialog when saving files"))
         self.filebrowser_horizontal_autoscroll.setText(_("Adjust horizontal position in file browser automatically"))
         self.starting_directory.setText(_("Begin browsing in the following directory:"))
-        self.starting_directory_browse.setText(_("Browse…"))
+        self.starting_directory_path.setToolTip(_("Directory to begin browsing"))
+        self.starting_directory_browse.setToolTip(_("Select folder in browser"))

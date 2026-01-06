@@ -36,6 +36,9 @@
         <property name="text">
          <string>User interface language:</string>
         </property>
+        <property name="buddy">
+         <cstring>ui_language</cstring>
+        </property>
        </widget>
       </item>
       <item>
@@ -46,7 +49,7 @@
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -63,6 +66,9 @@
         <property name="text">
          <string>User interface color theme:</string>
         </property>
+        <property name="buddy">
+         <cstring>ui_theme</cstring>
+        </property>
        </widget>
       </item>
       <item>
@@ -73,7 +79,7 @@
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -167,15 +173,24 @@
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Directory to begin browsing</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="starting_directory_browse">
+         <widget class="QToolButton" name="starting_directory_browse">
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Select folder in browser</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">border: none;</string>
+          </property>
           <property name="text">
-           <string>Browse…</string>
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -208,7 +223,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
