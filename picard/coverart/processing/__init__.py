@@ -106,7 +106,7 @@ class CoverArtImageProcessing:
             raise e
         finally:
             if target in ImageProcessor.Target.SAME | ImageProcessor.Target.TAGS:
-                coverartimage.set_tags_data(data if save_images_to_tags else initial_data)
+                coverartimage.set_data(data if save_images_to_tags else initial_data)
             if save_images_to_files and target in ImageProcessor.Target.SAME | ImageProcessor.Target.FILE:
                 coverartimage.set_external_file_data(data)
             log.debug(
@@ -144,7 +144,7 @@ class CoverArtImageProcessing:
             if save_images_to_files or save_images_to_tags:
                 run_queue_common(image, ImageProcessor.Target.SAME)
             else:
-                coverartimage.set_tags_data(initial_data)
+                coverartimage.set_data(initial_data)
 
             # Start separate threads to run tag and file only processors in parallel
             sub_task_counter = thread.TaskCounter()
@@ -158,7 +158,7 @@ class CoverArtImageProcessing:
         except IdentificationError as e:
             raise CoverArtProcessingError(e) from e
         except CoverArtProcessingError:
-            coverartimage.set_tags_data(initial_data)
+            coverartimage.set_data(initial_data)
             if config.setting['save_images_to_files']:
                 coverartimage.set_external_file_data(initial_data)
             raise
@@ -178,7 +178,7 @@ class CoverArtImageProcessing:
 
             thread.run_task(run_processors, next_func=next_func, task_counter=self.task_counter)
         else:
-            coverartimage.set_tags_data(initial_data)
+            coverartimage.set_data(initial_data)
             callback(coverartimage, None)
 
     def wait_for_processing(self):
