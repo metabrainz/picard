@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2007 Oliver Charles
 # Copyright (C) 2007, 2010-2011 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2014, 2018-2024 Philipp Wolfer
+# Copyright (C) 2007-2011, 2014, 2018-2025 Philipp Wolfer
 # Copyright (C) 2011 Michael Wiencek
 # Copyright (C) 2011-2012, 2015 Wieland Hoffmann
 # Copyright (C) 2013-2015, 2018-2024 Laurent Monin
@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import Counter
 from hashlib import blake2b
 import os
 import shutil
@@ -69,6 +70,7 @@ from picard.util.filenaming import (
 from picard.util.scripttofilename import script_to_filename
 
 
+_datahashes = Counter()
 _datafiles = dict()
 _datafile_mutex = QMutex()
 
@@ -79,6 +81,7 @@ class DataHash:
         _datafile_mutex.lock()
         try:
             self._hash = blake2b(data).hexdigest()
+            _datahashes[self._hash] += 1
             if self._hash not in _datafiles:
                 # store tmp file path in  _datafiles[self._hash] ASAP
                 (fd, _datafiles[self._hash]) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
@@ -101,6 +104,9 @@ class DataHash:
     def __lt__(self, other):
         return self._hash < other._hash
 
+    def __del__(self):
+        self.delete_file()
+
     def hash(self):
         return self._hash
 
@@ -110,14 +116,16 @@ class DataHash:
 
         _datafile_mutex.lock()
         try:
-            filepath = _datafiles[self._hash]
-            try:
-                os.unlink(filepath)
-                periodictouch.unregister_file(filepath)
-            except BaseException as e:
-                log.debug("Failed to delete file %r: %s", filepath, e)
+            _datahashes[self._hash] -= 1
+            if _datahashes[self._hash] <= 0:
+                filepath = _datafiles[self._hash]
+                try:
+                    os.unlink(filepath)
+                    periodictouch.unregister_file(filepath)
+                except BaseException as e:
+                    log.debug("Failed to delete file %r: %s", filepath, e)
 
-            del _datafiles[self._hash]
+                del _datafiles[self._hash]
         except KeyError:
             log.error("Hash %s not found in cache for file: %r", self._hash[:16], self._filename)
         finally:

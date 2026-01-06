@@ -345,6 +345,20 @@ class DataHashTest(PicardTestCase):
         self.assertNotEqual(DataHash(b'a'), DataHash(b''))
         self.assertNotEqual(DataHash(b'a'), None)
 
+    def test_tempfiles(self):
+        a = DataHash(b'a')
+        self.assertTrue(os.path.exists(a._filename))
+        b = DataHash(b'a')
+        self.assertTrue(os.path.exists(a._filename))
+        self.assertEqual(a._filename, b._filename)
+        filename = a._filename
+        a.delete_file()
+        self.assertIsNone(a._filename)
+        self.assertTrue(os.path.exists(filename))
+        del b
+        self.assertIsNone(a._filename)
+        self.assertFalse(os.path.exists(filename))
+
 
 class CoverArtImageMakeFilenameTest(PicardTestCase):
     def setUp(self):
