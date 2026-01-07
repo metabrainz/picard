@@ -12,20 +12,14 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QLabel" name="configuration_file_label">
+    <widget class="QLabel" name="label">
      <property name="text">
       <string>Configuration file:</string>
-     </property>
-     <property name="buddy">
-      <cstring>config_file</cstring>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
-     <property name="spacing">
-      <number>4</number>
-     </property>
      <property name="bottomMargin">
       <number>0</number>
      </property>
@@ -44,28 +38,22 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="toolTip">
-        <string>Select file</string>
+       <property name="text">
+        <string>Open folder…</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="backup_directory_label">
+    <widget class="QLabel" name="label_2">
      <property name="text">
       <string>Automatic configuration backups directory:</string>
-     </property>
-     <property name="buddy">
-      <cstring>autobackup_dir</cstring>
      </property>
     </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <property name="spacing">
-      <number>4</number>
-     </property>
      <item>
       <widget class="QLineEdit" name="autobackup_dir"/>
      </item>
@@ -77,8 +65,8 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="toolTip">
-        <string>Select directory</string>
+       <property name="text">
+        <string>Browse…</string>
        </property>
       </widget>
      </item>
@@ -92,7 +80,7 @@
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -133,7 +121,7 @@
    <item>
     <widget class="Line" name="line_2">
      <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -156,7 +144,7 @@
       <string/>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -169,10 +157,10 @@
    <item>
     <spacer name="verticalSpacer_3">
      <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
+      <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Policy::Fixed</enum>
+      <enum>QSizePolicy::Fixed</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -185,7 +173,7 @@
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Orientation::Horizontal</enum>
+      <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -204,7 +192,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
+        <enum>Qt::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -226,10 +214,10 @@
    <item>
     <widget class="QTableWidget" name="tableWidget">
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>
      <property name="editTriggers">
-      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
      <property name="columnCount">
       <number>2</number>
