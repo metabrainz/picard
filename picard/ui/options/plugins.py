@@ -44,6 +44,7 @@ class Plugins3OptionsPage(OptionsPage):
     PARENT = None
     SORT_ORDER = 70
     ACTIVE = True
+    HELP_URL = "/config/options_plugins.html"
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
