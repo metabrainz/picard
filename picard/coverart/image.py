@@ -174,7 +174,7 @@ class DataHash:
 
     @staticmethod
     def remove_all_files():
-        """This removes all files stored on disk.
+        """This removes all temporary DataHash files stored on disk.
         Warning: This will leave all existing DataHash instance without file data.
         This method is not meant to be called during normal operation, but might be
         called as part of the cleanup routine during application shutdown.
