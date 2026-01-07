@@ -346,6 +346,13 @@ class AlbumTreeView(BaseTreeView):
 
 
 class TreeItem(QtWidgets.QTreeWidgetItem):
+    """
+    A wrapper class for items displayed in the main tree view.
+
+    This class inherits from QtWidgets.QTreeWidgetItem and associates a specific
+    data object (such as an Album, Track, or File) with a visual row in the UI.
+    It also handles flags for whether the item can be sorted or filtered.
+    """
     def __init__(self, obj, sortable=False, filterable=True, parent=None):
         super().__init__(parent)
         self._obj = None
