@@ -49,6 +49,7 @@ class CoverProcessingOptionsPage(OptionsPage):
     TITLE = N_("Processing")
     PARENT = 'cover'
     SORT_ORDER = 0
+    HELP_URL = "/config/options_cover_art_processing.html"
 
     OPTIONS = (
         ('filter_cover_by_size', None),

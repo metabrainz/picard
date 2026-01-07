@@ -36,6 +36,7 @@ class SessionsOptionsPage(OptionsPage):
     PARENT = 'advanced'
     SORT_ORDER = 90
     ACTIVE = True
+    HELP_URL = "/config/options_sessions.html"
 
     OPTIONS = (
         ('session_safe_restore', ['safe_restore_checkbox']),

@@ -47,7 +47,7 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
     PARENT = 'interface'
     SORT_ORDER = 40
     ACTIVE = True
-    HELP_URL = "/config/options_interface_quick_settings_menu.html"
+    HELP_URL = "/config/options_interface_quick_menu.html"
 
     OPTIONS = (('quick_menu_items', ['quick_menu_items']),)
 
