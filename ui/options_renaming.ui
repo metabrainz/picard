@@ -36,7 +36,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="destination_directory_label">
         <property name="text">
          <string>Destination directory:</string>
         </property>
@@ -48,7 +48,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
-         <number>2</number>
+         <number>4</number>
         </property>
         <item>
          <widget class="QLineEdit" name="move_files_to"/>
@@ -56,13 +56,7 @@
         <item>
          <widget class="QToolButton" name="move_files_to_browse">
           <property name="toolTip">
-           <string>Select folder in browser</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string notr="true"/>
+           <string>Select directory</string>
           </property>
          </widget>
         </item>
@@ -96,7 +90,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="selected_script_label">
      <property name="text">
       <string>Selected file naming script:</string>
      </property>

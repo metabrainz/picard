@@ -1,6 +1,6 @@
-# Form implementation generated from reading ui file '<_io.StringIO object at 0x7f342f480790>'
+# Form implementation generated from reading ui file 'ui/options_maintenance.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -20,11 +20,12 @@ class Ui_MaintenanceOptionsPage(object):
         MaintenanceOptionsPage.resize(334, 397)
         self.vboxlayout = QtWidgets.QVBoxLayout(MaintenanceOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
-        self.label = QtWidgets.QLabel(parent=MaintenanceOptionsPage)
-        self.label.setObjectName("label")
-        self.vboxlayout.addWidget(self.label)
+        self.configuration_file_label = QtWidgets.QLabel(parent=MaintenanceOptionsPage)
+        self.configuration_file_label.setObjectName("configuration_file_label")
+        self.vboxlayout.addWidget(self.configuration_file_label)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setContentsMargins(-1, -1, -1, 0)
+        self.horizontalLayout_3.setSpacing(4)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.config_file = QtWidgets.QLineEdit(parent=MaintenanceOptionsPage)
         self.config_file.setReadOnly(True)
@@ -36,15 +37,14 @@ class Ui_MaintenanceOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.open_folder_button.sizePolicy().hasHeightForWidth())
         self.open_folder_button.setSizePolicy(sizePolicy)
-        self.open_folder_button.setStyleSheet("border: none;")
-        self.open_folder_button.setText("")
         self.open_folder_button.setObjectName("open_folder_button")
         self.horizontalLayout_3.addWidget(self.open_folder_button)
         self.vboxlayout.addLayout(self.horizontalLayout_3)
-        self.label_2 = QtWidgets.QLabel(parent=MaintenanceOptionsPage)
-        self.label_2.setObjectName("label_2")
-        self.vboxlayout.addWidget(self.label_2)
+        self.backup_directory_label = QtWidgets.QLabel(parent=MaintenanceOptionsPage)
+        self.backup_directory_label.setObjectName("backup_directory_label")
+        self.vboxlayout.addWidget(self.backup_directory_label)
         self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setSpacing(4)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.autobackup_dir = QtWidgets.QLineEdit(parent=MaintenanceOptionsPage)
         self.autobackup_dir.setObjectName("autobackup_dir")
@@ -55,8 +55,6 @@ class Ui_MaintenanceOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.browse_autobackup_dir.sizePolicy().hasHeightForWidth())
         self.browse_autobackup_dir.setSizePolicy(sizePolicy)
-        self.browse_autobackup_dir.setStyleSheet("border: none;")
-        self.browse_autobackup_dir.setText("")
         self.browse_autobackup_dir.setObjectName("browse_autobackup_dir")
         self.horizontalLayout_6.addWidget(self.browse_autobackup_dir)
         self.vboxlayout.addLayout(self.horizontalLayout_6)
@@ -131,8 +129,8 @@ class Ui_MaintenanceOptionsPage(object):
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
         self.tableWidget.verticalHeader().setVisible(False)
         self.vboxlayout.addWidget(self.tableWidget)
-        self.label.setBuddy(self.config_file)
-        self.label_2.setBuddy(self.autobackup_dir)
+        self.configuration_file_label.setBuddy(self.config_file)
+        self.backup_directory_label.setBuddy(self.autobackup_dir)
 
         self.retranslateUi(MaintenanceOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(MaintenanceOptionsPage)
@@ -146,10 +144,10 @@ class Ui_MaintenanceOptionsPage(object):
         MaintenanceOptionsPage.setTabOrder(self.enable_cleanup, self.tableWidget)
 
     def retranslateUi(self, MaintenanceOptionsPage):
-        self.label.setText(_("Configuration file:"))
-        self.open_folder_button.setToolTip(_("Open folder in browser"))
-        self.label_2.setText(_("Automatic configuration backups directory:"))
-        self.browse_autobackup_dir.setToolTip(_("Open folder in browser"))
+        self.configuration_file_label.setText(_("Configuration file:"))
+        self.open_folder_button.setToolTip(_("Select file"))
+        self.backup_directory_label.setText(_("Automatic configuration backups directory:"))
+        self.browse_autobackup_dir.setToolTip(_("Select directory"))
         self.load_backup_button.setText(_("Load backup…"))
         self.save_backup_button.setText(_("Save backup…"))
         self.select_all.setText(_("Select all"))

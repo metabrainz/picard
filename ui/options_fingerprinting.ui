@@ -63,7 +63,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="maximum_threads_label">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -91,27 +91,27 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="fingerprint_calculator_label">
         <property name="text">
          <string>Fingerprint calculator:</string>
+        </property>
+        <property name="buddy">
+         <cstring>acoustid_fpcalc</cstring>
         </property>
        </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>4</number>
+        </property>
         <item>
          <widget class="QLineEdit" name="acoustid_fpcalc"/>
         </item>
         <item>
          <widget class="QToolButton" name="acoustid_fpcalc_browse">
           <property name="toolTip">
-           <string>Select file in browser</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string notr="true"/>
+           <string>Select file</string>
           </property>
          </widget>
         </item>
@@ -132,9 +132,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="api_key_label">
         <property name="text">
          <string>API key:</string>
+        </property>
+        <property name="buddy">
+         <cstring>acoustid_apikey</cstring>
         </property>
        </widget>
       </item>

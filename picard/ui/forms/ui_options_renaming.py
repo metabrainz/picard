@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_renaming.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -33,18 +33,16 @@ class Ui_RenamingOptionsPage(object):
         self.move_files.setObjectName("move_files")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.move_files)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label = QtWidgets.QLabel(parent=self.move_files)
-        self.label.setObjectName("label")
-        self.verticalLayout_4.addWidget(self.label)
+        self.destination_directory_label = QtWidgets.QLabel(parent=self.move_files)
+        self.destination_directory_label.setObjectName("destination_directory_label")
+        self.verticalLayout_4.addWidget(self.destination_directory_label)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setSpacing(2)
+        self.horizontalLayout_4.setSpacing(4)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.move_files_to = QtWidgets.QLineEdit(parent=self.move_files)
         self.move_files_to.setObjectName("move_files_to")
         self.horizontalLayout_4.addWidget(self.move_files_to)
         self.move_files_to_browse = QtWidgets.QToolButton(parent=self.move_files)
-        self.move_files_to_browse.setStyleSheet("border: none;")
-        self.move_files_to_browse.setText("")
         self.move_files_to_browse.setObjectName("move_files_to_browse")
         self.horizontalLayout_4.addWidget(self.move_files_to_browse)
         self.verticalLayout_4.addLayout(self.horizontalLayout_4)
@@ -61,9 +59,9 @@ class Ui_RenamingOptionsPage(object):
         self.rename_files = QtWidgets.QCheckBox(parent=RenamingOptionsPage)
         self.rename_files.setObjectName("rename_files")
         self.verticalLayout_5.addWidget(self.rename_files)
-        self.label_2 = QtWidgets.QLabel(parent=RenamingOptionsPage)
-        self.label_2.setObjectName("label_2")
-        self.verticalLayout_5.addWidget(self.label_2)
+        self.selected_script_label = QtWidgets.QLabel(parent=RenamingOptionsPage)
+        self.selected_script_label.setObjectName("selected_script_label")
+        self.verticalLayout_5.addWidget(self.selected_script_label)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSpacing(2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -139,8 +137,8 @@ class Ui_RenamingOptionsPage(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout_5.addLayout(self.horizontalLayout)
-        self.label.setBuddy(self.move_files_to)
-        self.label_2.setBuddy(self.naming_script_selector)
+        self.destination_directory_label.setBuddy(self.move_files_to)
+        self.selected_script_label.setBuddy(self.naming_script_selector)
 
         self.retranslateUi(RenamingOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(RenamingOptionsPage)
@@ -158,12 +156,12 @@ class Ui_RenamingOptionsPage(object):
 
     def retranslateUi(self, RenamingOptionsPage):
         self.move_files.setTitle(_("Move files when saving"))
-        self.label.setText(_("Destination directory:"))
-        self.move_files_to_browse.setToolTip(_("Select folder in browser"))
+        self.destination_directory_label.setText(_("Destination directory:"))
+        self.move_files_to_browse.setToolTip(_("Select directory"))
         self.move_additional_files.setText(_("Move additional files (case insensitive):"))
         self.delete_empty_dirs.setText(_("Delete empty directories"))
         self.rename_files.setText(_("Rename files when saving"))
-        self.label_2.setText(_("Selected file naming script:"))
+        self.selected_script_label.setText(_("Selected file naming script:"))
         self.open_script_editor.setText(_("Edit file naming script…"))
         self.groupBox.setTitle(_("Files will be named like this:"))
         self.example_filename_before_label.setText(_("Before"))

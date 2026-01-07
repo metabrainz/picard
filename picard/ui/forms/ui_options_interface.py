@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_interface.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -30,9 +30,9 @@ class Ui_InterfaceOptionsPage(object):
         self.show_menu_icons = QtWidgets.QCheckBox(parent=self.groupBox)
         self.show_menu_icons.setObjectName("show_menu_icons")
         self.verticalLayout_3.addWidget(self.show_menu_icons)
-        self.label = QtWidgets.QLabel(parent=self.groupBox)
-        self.label.setObjectName("label")
-        self.verticalLayout_3.addWidget(self.label)
+        self.user_interface_language_label = QtWidgets.QLabel(parent=self.groupBox)
+        self.user_interface_language_label.setObjectName("user_interface_language_label")
+        self.verticalLayout_3.addWidget(self.user_interface_language_label)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.ui_language = QtWidgets.QComboBox(parent=self.groupBox)
@@ -41,9 +41,9 @@ class Ui_InterfaceOptionsPage(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout_3.addLayout(self.horizontalLayout)
-        self.label_theme = QtWidgets.QLabel(parent=self.groupBox)
-        self.label_theme.setObjectName("label_theme")
-        self.verticalLayout_3.addWidget(self.label_theme)
+        self.user_interface_color_theme_label = QtWidgets.QLabel(parent=self.groupBox)
+        self.user_interface_color_theme_label.setObjectName("user_interface_color_theme_label")
+        self.verticalLayout_3.addWidget(self.user_interface_color_theme_label)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.ui_theme = QtWidgets.QComboBox(parent=self.groupBox)
@@ -85,7 +85,7 @@ class Ui_InterfaceOptionsPage(object):
         self.starting_directory.setObjectName("starting_directory")
         self.vboxlayout1.addWidget(self.starting_directory)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_4.setSpacing(2)
+        self.horizontalLayout_4.setSpacing(4)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.starting_directory_path = QtWidgets.QLineEdit(parent=self.miscellaneous_box)
         self.starting_directory_path.setEnabled(False)
@@ -93,8 +93,6 @@ class Ui_InterfaceOptionsPage(object):
         self.horizontalLayout_4.addWidget(self.starting_directory_path)
         self.starting_directory_browse = QtWidgets.QToolButton(parent=self.miscellaneous_box)
         self.starting_directory_browse.setEnabled(False)
-        self.starting_directory_browse.setStyleSheet("border: none;")
-        self.starting_directory_browse.setText("")
         self.starting_directory_browse.setObjectName("starting_directory_browse")
         self.horizontalLayout_4.addWidget(self.starting_directory_browse)
         self.vboxlayout1.addLayout(self.horizontalLayout_4)
@@ -108,8 +106,8 @@ class Ui_InterfaceOptionsPage(object):
         self.vboxlayout.addWidget(self.miscellaneous_box)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem2)
-        self.label.setBuddy(self.ui_language)
-        self.label_theme.setBuddy(self.ui_theme)
+        self.user_interface_language_label.setBuddy(self.ui_language)
+        self.user_interface_color_theme_label.setBuddy(self.ui_theme)
 
         self.retranslateUi(InterfaceOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(InterfaceOptionsPage)
@@ -132,8 +130,8 @@ class Ui_InterfaceOptionsPage(object):
         self.groupBox.setTitle(_("Appearance"))
         self.toolbar_show_labels.setText(_("Show text labels under icons"))
         self.show_menu_icons.setText(_("Show icons in menus"))
-        self.label.setText(_("User interface language:"))
-        self.label_theme.setText(_("User interface color theme:"))
+        self.user_interface_language_label.setText(_("User interface language:"))
+        self.user_interface_color_theme_label.setText(_("User interface color theme:"))
         self.miscellaneous_box.setTitle(_("Miscellaneous"))
         self.allow_multi_dirs_selection.setText(_("Allow selection of multiple directories"))
         self.builtin_search.setText(_("Use builtin search rather than looking in browser"))
@@ -145,4 +143,4 @@ class Ui_InterfaceOptionsPage(object):
         self.filebrowser_horizontal_autoscroll.setText(_("Adjust horizontal position in file browser automatically"))
         self.starting_directory.setText(_("Begin browsing in the following directory:"))
         self.starting_directory_path.setToolTip(_("Directory to begin browsing"))
-        self.starting_directory_browse.setToolTip(_("Select folder in browser"))
+        self.starting_directory_browse.setToolTip(_("Select directory"))

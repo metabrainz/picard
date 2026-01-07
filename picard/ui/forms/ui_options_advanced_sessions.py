@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_advanced_sessions.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -41,13 +41,12 @@ class Ui_SessionsOptionsPage(object):
         self.vboxlayout.addWidget(self.folder_label)
         self.folder_layout = QtWidgets.QHBoxLayout()
         self.folder_layout.setContentsMargins(-1, 0, -1, -1)
+        self.folder_layout.setSpacing(4)
         self.folder_layout.setObjectName("folder_layout")
         self.folder_path_edit = QtWidgets.QLineEdit(parent=SessionsOptionsPage)
         self.folder_path_edit.setObjectName("folder_path_edit")
         self.folder_layout.addWidget(self.folder_path_edit)
         self.folder_browse_button = QtWidgets.QToolButton(parent=SessionsOptionsPage)
-        self.folder_browse_button.setStyleSheet("border: none;")
-        self.folder_browse_button.setText("")
         self.folder_browse_button.setObjectName("folder_browse_button")
         self.folder_layout.addWidget(self.folder_browse_button)
         self.vboxlayout.addLayout(self.folder_layout)
@@ -113,7 +112,7 @@ class Ui_SessionsOptionsPage(object):
 "\n"
 "These settings determine how the session files are managed."))
         self.folder_label.setText(_("Sessions directory:"))
-        self.folder_browse_button.setToolTip(_("Select folder in browser"))
+        self.folder_browse_button.setToolTip(_("Select directory"))
         self.saving_sessions_label.setText(_("Saving sessions:"))
         self.autosave_label.setText(_("Auto-save every N minutes (0 to disable):"))
         self.backup_checkbox.setText(_("Attempt session backup on unexpected shutdown"))

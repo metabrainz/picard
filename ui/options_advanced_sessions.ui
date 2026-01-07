@@ -85,6 +85,9 @@ These settings determine how the session files are managed.</string>
    </item>
    <item>
     <layout class="QHBoxLayout" name="folder_layout">
+     <property name="spacing">
+      <number>4</number>
+     </property>
      <property name="topMargin">
       <number>0</number>
      </property>
@@ -94,13 +97,7 @@ These settings determine how the session files are managed.</string>
      <item>
       <widget class="QToolButton" name="folder_browse_button">
        <property name="toolTip">
-        <string>Select folder in browser</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: none;</string>
-       </property>
-       <property name="text">
-        <string notr="true"/>
+        <string>Select directory</string>
        </property>
       </widget>
      </item>

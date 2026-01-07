@@ -32,7 +32,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="user_interface_language_label">
         <property name="text">
          <string>User interface language:</string>
         </property>
@@ -62,7 +62,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_theme">
+       <widget class="QLabel" name="user_interface_color_theme_label">
         <property name="text">
          <string>User interface color theme:</string>
         </property>
@@ -166,7 +166,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
-         <number>2</number>
+         <number>4</number>
         </property>
         <item>
          <widget class="QLineEdit" name="starting_directory_path">
@@ -184,13 +184,7 @@
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>Select folder in browser</string>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border: none;</string>
-          </property>
-          <property name="text">
-           <string notr="true"/>
+           <string>Select directory</string>
           </property>
          </widget>
         </item>
