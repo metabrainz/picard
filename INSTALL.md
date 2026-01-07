@@ -21,6 +21,11 @@ For development or building from source, follow the instructions below.
   * **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add to PATH
   * **Linux:** `sudo apt install gettext` (Ubuntu/Debian) or equivalent
   * **macOS:** Usually included with Xcode Command Line Tools, or `brew install gettext`
+  > **Note:** On macOS, Homebrew installs gettext as keg-only. If you see `msgfmt` errors, you must link it manually:
+  > ```bash
+  > brew link gettext --force
+  > export PATH="/opt/homebrew/opt/gettext/bin:$PATH"
+  > ```
 * A compiler (required for building C extensions):
   * **Windows:** [Visual Studio Community](https://aka.ms/vs/16/release/vs_community.exe)
   * **Linux:** `sudo apt install build-essential` (Ubuntu/Debian) or equivalent
