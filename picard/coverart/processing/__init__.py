@@ -122,7 +122,6 @@ class CoverArtImageProcessing:
         coverartimage: CoverArtImage,
         initial_data: bytes,
         image_info: ImageInfo,
-        callback: Callable[[CoverArtImage], None],
     ):
         config = get_config()
         try:
@@ -163,22 +162,24 @@ class CoverArtImageProcessing:
             if config.setting['save_images_to_files']:
                 coverartimage.set_external_file_data(initial_data)
             raise
-        finally:
-            callback(coverartimage)
 
     def run_image_processors(
         self,
         coverartimage: CoverArtImage,
         initial_data: bytes,
         image_info: ImageInfo,
-        callback: Callable[[CoverArtImage], None],
+        callback: Callable[[CoverArtImage, Exception | None], None],
     ):
         if coverartimage.can_be_processed:
-            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info, callback)
-            thread.run_task(run_processors, task_counter=self.task_counter)
+            run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
+
+            def next_func(result, error=None):
+                callback(coverartimage, error)
+
+            thread.run_task(run_processors, next_func=next_func, task_counter=self.task_counter)
         else:
             coverartimage.set_tags_data(initial_data)
-            callback(coverartimage)
+            callback(coverartimage, None)
 
     def wait_for_processing(self):
         self.task_counter.wait_for_tasks()

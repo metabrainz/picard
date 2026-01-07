@@ -21,7 +21,10 @@
 
 
 from copy import copy
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from PyQt6.QtCore import QBuffer
 from PyQt6.QtGui import QImage
@@ -51,6 +54,8 @@ from picard.extension_points.cover_art_processors import (
 from picard.util import imageinfo
 from picard.util.imagelist import ImageList
 
+from .test_util_thread import MainEventInterceptor
+
 
 def create_fake_image(width, height, image_format):
     buffer = QBuffer()
@@ -63,6 +68,10 @@ def create_fake_image(width, height, image_format):
     except imageinfo.IdentificationError:
         info = None
     return data.data(), info
+
+
+def mock_to_main(func, *args, **kwargs):
+    func(*args, **kwargs)
 
 
 class ImageFiltersTest(PicardTestCase):
@@ -153,14 +162,17 @@ class ImageProcessorsTest(PicardTestCase):
         }
 
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
+        _event_interceptor = MainEventInterceptor()
+        self.tagger.installEventFilter(_event_interceptor)
         coverartimage = CoverArtImage()
         image, info = create_fake_image(size[0], size[1], 'jpg')
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
         callback = Mock()
-        image_processing.run_image_processors(coverartimage, image, info, callback)
-        image_processing.wait_for_processing()
-        callback.assert_called_once_with(coverartimage)
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, image, info, callback)
+            image_processing.wait_for_processing()
+            callback.assert_called_once_with(coverartimage, None)
         tags_size = (coverartimage.width, coverartimage.height)
         if config.setting['save_images_to_tags']:
             self.assertEqual(tags_size, expected_tags_size)
@@ -314,9 +326,10 @@ class ImageProcessorsTest(PicardTestCase):
         album = Album(None)
         image_processing = CoverArtImageProcessing(album)
         callback = Mock()
-        image_processing.run_image_processors(coverartimage, image, info, callback)
-        image_processing.wait_for_processing()
-        callback.assert_called_once_with(coverartimage)
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, image, info, callback)
+            image_processing.wait_for_processing()
+            callback.assert_called_once_with(coverartimage, None)
         self.assertNotEqual(album.errors, [])
         for error in album.errors:
             self.assertIsInstance(error, CoverArtProcessingError)
