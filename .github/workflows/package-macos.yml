@@ -46,10 +46,6 @@ jobs:
         echo "TARGET_ARCH=$(uname -m)" >> $GITHUB_ENV
         mkdir artifacts
         python3 -m pip install --upgrade pip setuptools wheel
-    - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        uv run python setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Install libgit2
       run: |
         brew install libgit2
@@ -57,10 +53,13 @@ jobs:
         echo "CFLAGS=-I$(brew --prefix)/include" >> $GITHUB_ENV
         echo "LDFLAGS=-L$(brew --prefix)/lib" >> $GITHUB_ENV
     - name: Install dependencies
-      run: |
-        uv sync --group build --group dev --extra plugins
+      run: uv sync --group build --group dev --extra plugins
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
+    - name: Patch build version
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        uv run python setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
