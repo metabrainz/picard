@@ -33,6 +33,7 @@ from collections import (
     UserList,
 )
 from collections.abc import Iterable
+import weakref
 
 from PyQt6 import QtCore
 
@@ -46,7 +47,17 @@ from picard.util.imagelist import ImageList
 
 class Item:
     def __init__(self):
-        self.ui_item = None
+        self._ui_item = None
+
+    @property
+    def ui_item(self):
+        if self._ui_item is None:
+            return None
+        return self._ui_item()
+
+    @ui_item.setter
+    def ui_item(self, value):
+        self._ui_item = weakref.ref(value) if value is not None else None
 
     @property
     def can_save(self) -> bool:
