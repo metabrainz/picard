@@ -48,7 +48,7 @@ repos:
     hooks:
       - id: pytest
         name: Run pytest
-        entry: uv run --frozen pytest -n auto -x
+        entry: uv run --frozen pytest --numprocesses auto --exitfirst
         language: python
         types: [python]
         stages: [pre-push]
