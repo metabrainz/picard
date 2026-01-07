@@ -117,6 +117,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.coverart.image import DataHash
 from picard.debug_opts import DebugOpt
 from picard.disc import (
     Disc,
@@ -708,6 +709,7 @@ class Tagger(QtWidgets.QApplication):
 
         log.debug("Picard stopping")
         self.run_cleanup()
+        DataHash.remove_all_files()
         QtCore.QCoreApplication.processEvents()
 
     def _run_init(self):

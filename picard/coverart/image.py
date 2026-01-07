@@ -80,7 +80,7 @@ class DataHash:
     instance gets deleted.
     """
 
-    __datahashes = WeakValueDictionary()
+    __datahashes: WeakValueDictionary[str, 'DataHash'] = WeakValueDictionary()
     __datafile_mutex = QMutex()
 
     def __new__(cls, data: bytes, prefix: str = 'picard', suffix: str = ''):
@@ -123,14 +123,7 @@ class DataHash:
         return hash(self._hash)
 
     def __del__(self):
-        DataHash.__datafile_mutex.lock()
-        try:
-            os.unlink(self._filename)
-            periodictouch.unregister_file(self._filename)
-        except BaseException as e:
-            log.debug("Failed to delete file %r: %s", self._filename, e)
-        finally:
-            DataHash.__datafile_mutex.unlock()
+        self._delete_file()
 
     @property
     def hash(self) -> str:
@@ -151,7 +144,7 @@ class DataHash:
             return imagefile.read()
 
     @property
-    def filename(self) -> str:
+    def filename(self) -> str | None:
         """The filename of the temporary file."""
         return self._filename
 
@@ -165,6 +158,29 @@ class DataHash:
         with os.fdopen(fd, 'wb') as imagefile:
             imagefile.write(data)
         log.debug("Saving image data %s to %r", self.shorthash, filepath)
+
+    def _delete_file(self):
+        if not self._filename:
+            return
+
+        DataHash.__datafile_mutex.lock()
+        try:
+            os.unlink(self._filename)
+            periodictouch.unregister_file(self._filename)
+        except BaseException as e:
+            log.debug("Failed to delete file %r: %s", self._filename, e)
+        finally:
+            DataHash.__datafile_mutex.unlock()
+
+    @staticmethod
+    def remove_all_files():
+        """This removes all files stored on disk.
+        Warning: This will leave all existing DataHash instance without file data.
+        This method is not meant to be called during normal operation, but might be
+        called as part of the cleanup routine during application shutdown.
+        """
+        for hash in DataHash.__datahashes.values():
+            hash._delete_file()
 
 
 class CoverArtImageError(Exception):
