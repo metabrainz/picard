@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import gc
 from hashlib import blake2b
 import os
 import shutil
@@ -94,6 +95,9 @@ class DataHash:
             raise TypeError('data must be bytes')
 
         hash = blake2b(data).hexdigest()
+
+        # prevent garbage collection while lock is acquired
+        gc.disable()
         DataHash.__datafile_mutex.lock()
         try:
             if instance := DataHash.__datahashes.get(hash, None):
@@ -104,6 +108,7 @@ class DataHash:
             return instance
         finally:
             DataHash.__datafile_mutex.unlock()
+            gc.enable()
 
     def __eq__(self, other):
         if other is None:
