@@ -132,6 +132,7 @@ class DataHash:
         finally:
             DataHash.__datafile_mutex.unlock()
 
+    @property
     def hash(self) -> str:
         """The hash value of the data."""
         return self._hash
@@ -141,7 +142,6 @@ class DataHash:
         """A shortened version of the hash for display purposes."""
         return self._hash[:16]
 
-    @property
     def data(self) -> bytes:
         """Returns the stored data.
 
@@ -343,7 +343,7 @@ class CoverArtImage:
     def __hash__(self):
         if self.datahash is None:
             return 0
-        return hash(self.datahash.hash())
+        return hash(self.datahash.hash)
 
     def set_data(self, data: bytes):
         """Set the binary image data for this file.
@@ -497,7 +497,7 @@ class CoverArtImage:
         if not self.datahash:
             return None
         try:
-            return self.datahash.data
+            return self.datahash.data()
         except OSError as e:
             raise CoverArtImageIOError(e) from e
 

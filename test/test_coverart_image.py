@@ -344,15 +344,15 @@ class DataHashTest(PicardTestCase):
 
     def test_data(self):
         h = DataHash(b'a')
-        self.assertEqual(h.data, b'a')
+        self.assertEqual(h.data(), b'a')
 
     def test_shorthash(self):
         h = DataHash(b'a')
         self.assertEqual(
-            h.hash(),
+            h.hash,
             "333fcb4ee1aa7c115355ec66ceac917c8bfd815bf7587d325aec1864edd24e34d5abe2c6b1b5ee3face62fed78dbef802f2a85cb91d455a8f5249d330853cb3c",
         )
-        self.assertEqual(h.hash(), str(h))
+        self.assertEqual(h.hash, str(h))
         self.assertEqual(h.shorthash, "333fcb4ee1aa7c11")
 
     def test_eq(self):
