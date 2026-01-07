@@ -84,6 +84,11 @@ class MaintenanceOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_MaintenanceOptionsPage()
         self.ui.setupUi(self)
+
+        # Set open directory icon on folder browse button
+        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        self.ui.browse_autobackup_dir.setIcon(icon)
+
         self.ui.description.setText(
             _(
                 "Settings that are found in the configuration file that do not appear on any option "
