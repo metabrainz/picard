@@ -393,7 +393,7 @@ class WebService(QtCore.QObject):
 
     def _init_queues(self):
         self._active_requests = {}
-        self._task_to_reply = {}  # Maps WebserviceRequest -> QNetworkReply
+        self._task_to_reply: dict[PendingRequest, QNetworkReply] = {}
         self._queue = RequestPriorityQueue(ratecontrol)
         self.num_pending_web_requests = 0
 
@@ -521,6 +521,11 @@ class WebService(QtCore.QObject):
     def _handle_reply(self, reply, request):
         hostkey = request.get_host_key()
         ratecontrol.decrement_requests(hostkey)
+
+        for task, stored_reply in list(self._task_to_reply.items()):
+            if stored_reply == reply:
+                del self._task_to_reply[task]
+                break
 
         self._timer_run_next_task.start(0)
 
