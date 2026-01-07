@@ -44,6 +44,7 @@ from collections.abc import Iterable
 from operator import attrgetter
 import re
 from typing import TYPE_CHECKING
+import weakref
 
 from picard.config import get_config
 from picard.file import File
@@ -107,6 +108,16 @@ class Cluster(FileList):
         self.hide_if_empty = hide_if_empty
         self.related_album = related_album
         self._lookup_task = None
+
+    @property
+    def related_album(self) -> 'Album | None':
+        if self._related_album is None:
+            return None
+        return self._related_album()
+
+    @related_album.setter
+    def related_album(self, value: 'Album | None'):
+        self._related_album = weakref.ref(value) if value is not None else None
 
     def __repr__(self):
         if self.related_album:

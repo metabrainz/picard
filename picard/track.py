@@ -51,6 +51,7 @@ from operator import attrgetter
 import re
 import traceback
 from typing import TYPE_CHECKING
+import weakref
 
 from PyQt6 import QtCore
 
@@ -157,6 +158,16 @@ class Track(FileListItem):
         self._iter_children_items_metadata_ignore_attrs = {'orig_metadata'}
 
     @property
+    def album(self) -> 'Album | None':
+        if self._album is None:
+            return None
+        return self._album()
+
+    @album.setter
+    def album(self, value: 'Album | None'):
+        self._album = weakref.ref(value) if value is not None else None
+
+    @property
     def num_linked_files(self):
         return len(self.files)
 
@@ -173,7 +184,8 @@ class Track(FileListItem):
             self.files.append(file)
         self.update_file_metadata(file)
         self.add_metadata_images_from_children([file])
-        self.album.add_file(self, file, new_album=new_album)
+        if self.album:
+            self.album.add_file(self, file, new_album=new_album)
         file.metadata_images_changed.connect(self.update_metadata_images)
         run_file_post_addition_to_track_processors(self, file)
         if track_will_expand:
@@ -209,7 +221,8 @@ class Track(FileListItem):
         self.files.remove(file)
         file.metadata_images_changed.disconnect(self.update_metadata_images)
         file.copy_metadata(file.orig_metadata, preserve_deleted=False)
-        self.album.remove_file(self, file, new_album=new_album)
+        if self.album:
+            self.album.remove_file(self, file, new_album=new_album)
         self.remove_metadata_images_from_children([file])
         if not self.files and self._orig_images:
             self.orig_metadata.images = self._orig_images
@@ -431,12 +444,13 @@ class NonAlbumTrack(Track):
         return super().column(column)
 
     def load(self, priority=False, refresh=False):
-        self.metadata.copy(self.album.metadata, copy_images=False)
         self.genres.clear()
         self.status = _("[loading recording information]")
         self.clear_errors()
         self.loaded = False
-        self.album.update(update_tracks=True)
+        if self.album:
+            self.metadata.copy(self.album.metadata, copy_images=False)
+            self.album.update(update_tracks=True)
         config = get_config()
         require_authentication = False
         inc = {
@@ -484,7 +498,8 @@ class NonAlbumTrack(Track):
     def _set_error(self, error):
         self.error_append(error)
         self.status = _("[could not load recording %s]") % self.id
-        self.album.update(update_tracks=True)
+        if self.album:
+            self.album.update(update_tracks=True)
 
     def _parse_recording(self, recording):
         m = self.metadata
@@ -498,11 +513,13 @@ class NonAlbumTrack(Track):
         if self.callback:
             self.callback()
             self.callback = None
-        self.album.update(update_tracks=True)
+        if self.album:
+            self.album.update(update_tracks=True)
 
     def _customize_metadata(self):
         super()._customize_metadata()
-        self.metadata['album'] = self.album.metadata['album']
+        if self.album:
+            self.metadata['album'] = self.album.metadata['album']
         if self.metadata['~recording_firstreleasedate']:
             self.metadata['originaldate'] = self.metadata['~recording_firstreleasedate']
             self.metadata['originalyear'] = self.metadata['originaldate'][:4]
