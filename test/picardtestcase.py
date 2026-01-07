@@ -71,6 +71,9 @@ class FakeTagger(QtCore.QObject):
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
 
+    def unregister_cleanup(self, func):
+        self.exit_cleanup.remove(func)
+
     def run_cleanup(self):
         for f in self.exit_cleanup:
             f()

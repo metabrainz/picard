@@ -353,6 +353,7 @@ class DataHashTest(PicardTestCase):
         self.assertEqual(a._filename, b._filename)
         filename = a._filename
         a.delete_file()
+        a.delete_file()  # Double deletion of the same hash should have no effect
         self.assertIsNone(a._filename)
         self.assertTrue(os.path.exists(filename))
         del b

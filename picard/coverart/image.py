@@ -87,7 +87,8 @@ class DataHash:
                 (fd, _datafiles[self._hash]) = tempfile.mkstemp(prefix=prefix, suffix=suffix)
                 filepath = _datafiles[self._hash]
                 tagger = QCoreApplication.instance()
-                tagger.register_cleanup(self.delete_file)
+                if tagger:
+                    tagger.register_cleanup(self.delete_file)
                 periodictouch.register_file(filepath)
                 with os.fdopen(fd, 'wb') as imagefile:
                     imagefile.write(data)
@@ -121,6 +122,9 @@ class DataHash:
                 filepath = _datafiles[self._hash]
                 try:
                     os.unlink(filepath)
+                    tagger = QCoreApplication.instance()
+                    if tagger:
+                        tagger.unregister_cleanup(self.delete_file)
                     periodictouch.unregister_file(filepath)
                 except BaseException as e:
                     log.debug("Failed to delete file %r: %s", filepath, e)

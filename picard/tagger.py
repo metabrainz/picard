@@ -592,6 +592,12 @@ class Tagger(QtWidgets.QApplication):
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
 
+    def unregister_cleanup(self, func):
+        try:
+            self.exit_cleanup.remove(func)
+        except ValueError:
+            log.warning(f'Unregister cleanup called for not registered function f{func}')
+
     def run_cleanup(self):
         for f in reversed(self.exit_cleanup):
             f()
