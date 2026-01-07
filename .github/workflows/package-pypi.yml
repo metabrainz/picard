@@ -30,8 +30,7 @@ jobs:
         pip install --upgrade .
     - name: Run tests
       timeout-minutes: 30
-      run: |
-        pytest
+      run: pytest
     - name: Build Python source distribution
       run: |
         git clean -dfx

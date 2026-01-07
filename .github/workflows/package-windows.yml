@@ -20,6 +20,8 @@ jobs:
       fail-fast: false
     env:
       CODESIGN: ${{ !!secrets.AZURE_CERT_PROFILE_NAME }}
+      UV_FROZEN: 1
+
     steps:
     - uses: actions/checkout@v6
       with:
@@ -61,8 +63,7 @@ jobs:
         echo "LIBPATH=$vcpkgRoot\lib;$env:LIBPATH" >> $env:GITHUB_ENV
       shell: pwsh
     - name: Install dependencies
-      run: |
-        uv sync --group build --group dev --extra plugins
+      run: uv sync --group build --group dev --extra plugins
     - name: Patch build version
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
@@ -72,8 +73,7 @@ jobs:
         uv run python setup.py patch_version --platform=$BuildNumber.$(git rev-parse --short HEAD)
     - name: Run tests
       timeout-minutes: 30
-      run: |
-        uv run pytest --verbose
+      run: uv run pytest --verbose
     - name: Prepare clean build environment
       run: |
         Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore

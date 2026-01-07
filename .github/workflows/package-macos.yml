@@ -22,6 +22,8 @@ jobs:
       FPCALC_SHA256SUM: 31f654cce8308fcb22869d043770eb66afffed95e8a548fd877f0e670c16d7ec
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-target }}
       CODESIGN: 0
+      UV_FROZEN: 1
+
     steps:
     - uses: actions/checkout@v6
       with:

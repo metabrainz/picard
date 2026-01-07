@@ -22,6 +22,8 @@ jobs:
       matrix:
         os: [macos-14, ubuntu-latest, windows-2022]
         python-version: ['3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
+    env:
+      UV_FROZEN: 1
 
     steps:
     - uses: actions/checkout@v6
@@ -61,7 +63,6 @@ jobs:
     - name: Install dependencies
       run: uv sync --group build --group dev
     - name: Test with pytest
-      if: always()
       timeout-minutes: 30
       run: |
         uv run python setup.py build_locales
