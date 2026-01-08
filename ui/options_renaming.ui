@@ -36,24 +36,27 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="destination_directory_label">
         <property name="text">
          <string>Destination directory:</string>
+        </property>
+        <property name="buddy">
+         <cstring>move_files_to</cstring>
         </property>
        </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
-         <number>2</number>
+         <number>4</number>
         </property>
         <item>
          <widget class="QLineEdit" name="move_files_to"/>
         </item>
         <item>
-         <widget class="QPushButton" name="move_files_to_browse">
-          <property name="text">
-           <string>Browse…</string>
+         <widget class="QToolButton" name="move_files_to_browse">
+          <property name="toolTip">
+           <string>Select directory</string>
           </property>
          </widget>
         </item>
@@ -87,9 +90,12 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="selected_script_label">
      <property name="text">
       <string>Selected file naming script:</string>
+     </property>
+     <property name="buddy">
+      <cstring>naming_script_selector</cstring>
      </property>
     </widget>
    </item>
@@ -150,7 +156,7 @@
       <item>
        <widget class="QSplitter" name="renaming_options_examples_splitter">
         <property name="orientation">
-         <enum>Qt::Horizontal</enum>
+         <enum>Qt::Orientation::Horizontal</enum>
         </property>
         <widget class="QFrame" name="frame">
          <property name="minimumSize">
@@ -160,10 +166,10 @@
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <property name="spacing">
@@ -201,10 +207,10 @@
           </size>
          </property>
          <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Shadow::Raised</enum>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <property name="spacing">
@@ -264,7 +270,7 @@
      <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+        <enum>Qt::Orientation::Horizontal</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>

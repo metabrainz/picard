@@ -32,9 +32,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="user_interface_language_label">
         <property name="text">
          <string>User interface language:</string>
+        </property>
+        <property name="buddy">
+         <cstring>ui_language</cstring>
         </property>
        </widget>
       </item>
@@ -46,7 +49,7 @@
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -59,9 +62,12 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_theme">
+       <widget class="QLabel" name="user_interface_color_theme_label">
         <property name="text">
          <string>User interface color theme:</string>
+        </property>
+        <property name="buddy">
+         <cstring>ui_theme</cstring>
         </property>
        </widget>
       </item>
@@ -73,7 +79,7 @@
         <item>
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -160,22 +166,25 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
-         <number>2</number>
+         <number>4</number>
         </property>
         <item>
          <widget class="QLineEdit" name="starting_directory_path">
           <property name="enabled">
            <bool>false</bool>
           </property>
+          <property name="toolTip">
+           <string>Directory to begin browsing</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="starting_directory_browse">
+         <widget class="QToolButton" name="starting_directory_browse">
           <property name="enabled">
            <bool>false</bool>
           </property>
-          <property name="text">
-           <string>Browse…</string>
+          <property name="toolTip">
+           <string>Select directory</string>
           </property>
          </widget>
         </item>
@@ -208,7 +217,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>

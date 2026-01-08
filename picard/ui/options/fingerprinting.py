@@ -29,6 +29,7 @@ import os
 from PyQt6 import (
     QtCore,
     QtGui,
+    QtWidgets,
 )
 
 from picard.acoustid import find_fpcalc
@@ -78,6 +79,11 @@ class FingerprintingOptionsPage(OptionsPage):
         self._fpcalc_valid = True
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
+
+        # Set open directory icon on folder browse button
+        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        self.ui.acoustid_fpcalc_browse.setIcon(icon)
+
         self.ui.disable_fingerprinting.clicked.connect(self.update_groupboxes)
         self.ui.use_acoustid.clicked.connect(self.update_groupboxes)
         self.ui.acoustid_fpcalc.textChanged.connect(self._acoustid_fpcalc_check)
