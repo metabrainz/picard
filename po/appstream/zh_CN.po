@@ -6,6 +6,7 @@
 # Lionel <a472714747@gmail.com>, 2020
 # poi, 2023
 # KenParker_CN <peekabookenny@gmail.com>, 2024.
+# imgradeone <imgradeone@outlook.com>, 2026.
 #
 # Translators:
 #
@@ -14,16 +15,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2024-11-18 15:42+0000\n"
-"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://translations."
-"metabrainz.org/projects/picard/2/appstream/zh_Hans/>\n"
+"PO-Revision-Date: 2026-01-08 16:11+0000\n"
+"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://"
+"translations.metabrainz.org/projects/picard/2/appstream/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -50,9 +51,9 @@ msgid ""
 "supports a wide range of audio formats and can also lookup an entire CD for "
 "you."
 msgstr ""
-"Picard通过重命名音乐文件并将其完全按照所需的方式分类到文件夹结构中，从而帮助"
-"您组织音乐集。 它提供了各种插件，您甚至可以编写自己的插件。 Picard支持多种音"
-"频格式，还可以为您查找整个CD。"
+"Picard 通过重命名音乐文件并将其完全按照所需的方式分类到文件夹结构中，从而帮助"
+"您组织音乐集。 它提供了各种插件，您甚至可以编写自己的插件。 Picard 支持多种音"
+"频格式，还可以为您查找整个 CD。"
 
 #: org.musicbrainz.Picard.appdata.xml.in:22
 msgid "Tagging audio files has never been easier."
