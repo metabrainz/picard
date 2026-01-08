@@ -54,8 +54,6 @@ from picard.extension_points.cover_art_processors import (
 from picard.util import imageinfo
 from picard.util.imagelist import ImageList
 
-from .test_util_thread import MainEventInterceptor
-
 
 def create_fake_image(width, height, image_format):
     buffer = QBuffer()
@@ -162,8 +160,6 @@ class ImageProcessorsTest(PicardTestCase):
         }
 
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
-        _event_interceptor = MainEventInterceptor()
-        self.tagger.installEventFilter(_event_interceptor)
         coverartimage = CoverArtImage()
         image, info = create_fake_image(size[0], size[1], 'jpg')
         album = Album(None)
