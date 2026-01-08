@@ -461,7 +461,7 @@ class ClusterItem(TreeItem):
 
     def update(self, update_selection=True):
         self.update_colums_text()
-        album = self.obj.related_album
+        album = self.obj.album
         if self.obj.special and album and album.loaded:
             album.ui_item.update(update_tracks=False)
         if update_selection and self.isSelected():

@@ -97,7 +97,7 @@ def test_location_detector_cluster_file(location_detector: LocationDetector, moc
     mock_album.id = "album-123"
 
     mock_cluster = Mock(spec=Cluster)
-    mock_cluster.related_album = mock_album
+    mock_cluster.album = mock_album
     mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     mock_file.parent_item = mock_cluster
 
@@ -110,7 +110,7 @@ def test_location_detector_cluster_file(location_detector: LocationDetector, moc
 def test_location_detector_unclustered_files_cluster(location_detector: LocationDetector, mock_file: Mock) -> None:
     """Test location detection for UnclusteredFiles cluster."""
     mock_cluster = Mock(spec=UnclusteredFiles)
-    mock_cluster.related_album = None
+    mock_cluster.album = None
     mock_file.parent_item = mock_cluster
 
     location = location_detector.detect(mock_file)
@@ -121,7 +121,7 @@ def test_location_detector_unclustered_files_cluster(location_detector: Location
 def test_location_detector_regular_cluster(location_detector: LocationDetector, mock_file: Mock) -> None:
     """Test location detection for regular clusters."""
     mock_cluster = Mock(spec=Cluster)
-    mock_cluster.related_album = None
+    mock_cluster.album = None
     mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     mock_file.parent_item = mock_cluster
 
@@ -234,12 +234,12 @@ def test_location_detector_detect_track_location_no_id(location_detector: Locati
     assert location.album_id == "album-123"
 
 
-def test_location_detector_detect_cluster_location_with_related_album(location_detector: LocationDetector) -> None:
+def test_location_detector_detect_cluster_location_with_album(location_detector: LocationDetector) -> None:
     """Test _detect_cluster_location with related album."""
     mock_album = Mock(spec=Album)
     mock_album.id = "album-123"
     mock_cluster = Mock(spec=Cluster)
-    mock_cluster.related_album = mock_album
+    mock_cluster.album = mock_album
 
     location = location_detector._detect_cluster_location(mock_cluster)
 
@@ -250,7 +250,7 @@ def test_location_detector_detect_cluster_location_with_related_album(location_d
 def test_location_detector_detect_cluster_location_unclustered_files(location_detector: LocationDetector) -> None:
     """Test _detect_cluster_location with UnclusteredFiles."""
     mock_cluster = Mock(spec=UnclusteredFiles)
-    mock_cluster.related_album = None
+    mock_cluster.album = None
 
     location = location_detector._detect_cluster_location(mock_cluster)
 
@@ -260,7 +260,7 @@ def test_location_detector_detect_cluster_location_unclustered_files(location_de
 def test_location_detector_detect_cluster_location_regular_cluster(location_detector: LocationDetector) -> None:
     """Test _detect_cluster_location with regular cluster."""
     mock_cluster = Mock(spec=Cluster)
-    mock_cluster.related_album = None
+    mock_cluster.album = None
     mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
 
     location = location_detector._detect_cluster_location(mock_cluster)

@@ -106,41 +106,37 @@ class Cluster(FileList):
         self.metadata['totaltracks'] = 0
         self.special = special
         self.hide_if_empty = hide_if_empty
-        self.related_album = related_album
+        self.album = related_album
         self._lookup_task = None
 
     @property
-    def related_album(self) -> 'Album | None':
-        if self._related_album is None:
+    def album(self) -> 'Album | None':
+        if self._album is None:
             return None
-        return self._related_album()
+        return self._album()
 
-    @related_album.setter
-    def related_album(self, value: 'Album | None'):
-        self._related_album = weakref.ref(value) if value is not None else None
+    @album.setter
+    def album(self, value: 'Album | None'):
+        self._album = weakref.ref(value) if value is not None else None
 
     def __repr__(self):
-        if self.related_album:
+        if self.album:
             return '<Cluster %s %r>' % (
-                self.related_album.id,
-                self.related_album.metadata['album'] + '/' + self.metadata['album'],
+                self.album.id,
+                self.album.metadata['album'] + '/' + self.metadata['album'],
             )
         return '<Cluster %r>' % self.metadata['album']
 
     def __len__(self):
         return len(self.files)
 
-    @property
-    def album(self):
-        return self.related_album
-
     def _update_related_album(self, added_files=None, removed_files=None):
-        if self.related_album:
+        if self.album:
             if added_files:
-                self.related_album.add_metadata_images_from_children(added_files)
+                self.album.add_metadata_images_from_children(added_files)
             if removed_files:
-                self.related_album.remove_metadata_images_from_children(removed_files)
-            self.related_album.update()
+                self.album.remove_metadata_images_from_children(removed_files)
+            self.album.update()
 
     def add_files(self, files: Iterable[File], new_album=True):
         added_files = set(files) - set(self.files)

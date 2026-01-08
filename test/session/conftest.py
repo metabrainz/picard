@@ -186,7 +186,7 @@ def mock_nat_album() -> Mock:
 def mock_cluster() -> Mock:
     """Provide a mock cluster instance."""
     cluster_mock = Mock(spec=Cluster)
-    cluster_mock.related_album = None
+    cluster_mock.album = None
     cluster_mock.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
     return cluster_mock
 
@@ -195,7 +195,7 @@ def mock_cluster() -> Mock:
 def mock_unclustered_files() -> Mock:
     """Provide a mock UnclusteredFiles instance."""
     unclustered_mock = Mock(spec=UnclusteredFiles)
-    unclustered_mock.related_album = None
+    unclustered_mock.album = None
     return unclustered_mock
 
 
@@ -359,7 +359,7 @@ def create_mock_file_with_parent(filename: str, parent_type: str = "track", albu
         file_mock.parent_item = mock_track
     elif parent_type == "cluster":
         mock_cluster = Mock(spec=Cluster)
-        mock_cluster.related_album = None
+        mock_cluster.album = None
         mock_cluster.metadata = {'album': "Test Album", 'albumartist': "Test Artist"}
         file_mock.parent_item = mock_cluster
     elif parent_type == "nat":

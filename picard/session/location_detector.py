@@ -136,8 +136,8 @@ class LocationDetector:
             The location information for the cluster.
         """
         # Unmatched files inside an album
-        if parent.related_album:
-            return SessionItemLocation(type=SessionConstants.LOCATION_ALBUM_UNMATCHED, album_id=parent.related_album.id)
+        if parent.album:
+            return SessionItemLocation(type=SessionConstants.LOCATION_ALBUM_UNMATCHED, album_id=parent.album.id)
 
         # Left pane cluster
         if isinstance(parent, UnclusteredFiles):
