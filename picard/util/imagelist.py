@@ -107,7 +107,7 @@ class ImageList(MutableSequence['CoverArtImage']):
 
     def hash_dict(self):
         if self._dirty:
-            self._hash_dict = {img.datahash.hash(): img for img in self._images}
+            self._hash_dict = {img.datahash.hash: img for img in self._images}
             self._dirty = False
         return self._hash_dict
 
