@@ -395,7 +395,16 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
         if not self.sortable or not tree_widget:
             return False
         column = tree_widget.sortColumn()
-        return self.sortkey(column) < other.sortkey(column)
+
+        # Get the keys for the column we are currently sorting by
+        key_a = self.sortkey(column)
+        key_b = other.sortkey(column)
+
+        # THE FIX: If the keys are equal, fall back to sorting by Name (Column 0)
+        if key_a == key_b:
+            return self.sortkey(0) < other.sortkey(0)
+
+        return key_a < key_b
 
     def sortkey(self, column):
         sortkey = self._sortkeys.get(column)
