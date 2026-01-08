@@ -160,7 +160,11 @@ class InstallPluginDialog(PicardDialog):
         self.path_edit.setPlaceholderText(_("/path/to/plugin/directory"))
         path_layout.addWidget(self.path_edit)
 
-        browse_button = QtWidgets.QPushButton(_("Browse…"))
+        browse_button = QtWidgets.QPushButton()
+        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        browse_button.setIcon(icon)
+        browse_button.setAccessibleName(_("Select directory"))
+        browse_button.setToolTip(_("Select directory"))
         browse_button.clicked.connect(self._browse_directory)
         path_layout.addWidget(browse_button)
 
