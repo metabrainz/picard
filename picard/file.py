@@ -657,6 +657,9 @@ class File(MetadataItem):
             if self.tagger.files.get(decode_filename(old_file_path)):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
+            if os.path.exists(new_file_path):
+                log.warning("File %r already exists, not moving %r", new_file_path, old_file_path)
+                continue
             log.debug("Moving %r to %r", old_file_path, new_file_path)
             try:
                 shutil.move(old_file_path, new_file_path)
