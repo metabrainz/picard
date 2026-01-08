@@ -134,7 +134,6 @@ class ID3File(File):
     _IsMP3 = False
     FORMAT_KEY = 'id3'
     FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
-    DATE_SANITIZATION_TOGGLEABLE = True
 
     __upgrade = {
         'XSOP': 'TSOP',
