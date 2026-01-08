@@ -382,6 +382,10 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
     def post_init(self):
         pass
 
+    def update(self):
+        # gets implemented by sub classes
+        pass
+
     def setText(self, column, text):
         self._sortkeys[column] = None
         return super().setText(column, text)
