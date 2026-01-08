@@ -178,7 +178,5 @@ def _iter_file_parents(file: File):
     parent = file.parent_item
     if parent:
         yield parent
-        if isinstance(parent, Track) and parent.album:
+        if (isinstance(parent, Track) or isinstance(parent, Cluster)) and parent.album:
             yield parent.album
-        elif isinstance(parent, Cluster) and parent.related_album:
-            yield parent.related_album

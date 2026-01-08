@@ -37,6 +37,7 @@ from functools import partial
 import os.path
 import platform
 import sys
+import weakref
 
 from PyQt6 import (
     QtCore,
@@ -393,7 +394,7 @@ class WebService(QtCore.QObject):
 
     def _init_queues(self):
         self._active_requests = {}
-        self._task_to_reply = {}  # Maps WebserviceRequest -> QNetworkReply
+        self._task_to_reply: dict[PendingRequest, QNetworkReply] = {}
         self._queue = RequestPriorityQueue(ratecontrol)
         self.num_pending_web_requests = 0
 
@@ -464,8 +465,9 @@ class WebService(QtCore.QObject):
         if task:
             self._task_to_reply[task] = reply
 
-    def _start_request(self, request, task=None):
+    def _start_request(self, request, task_ref=None):
         # Check if task was aborted before starting
+        task = task_ref() if task_ref else None
         if task and task.aborted:
             log.debug("Skipping aborted task for %s", request.url.toString())
             return
@@ -521,6 +523,11 @@ class WebService(QtCore.QObject):
     def _handle_reply(self, reply, request):
         hostkey = request.get_host_key()
         ratecontrol.decrement_requests(hostkey)
+
+        for task, stored_reply in list(self._task_to_reply.items()):
+            if stored_reply == reply:
+                del self._task_to_reply[task]
+                break
 
         self._timer_run_next_task.start(0)
 
@@ -679,7 +686,7 @@ class WebService(QtCore.QObject):
 
     def add_request(self, request):
         task = PendingRequest.from_request(request, None)
-        task.func = partial(self._start_request, request, task)
+        task.func = partial(self._start_request, request, weakref.ref(task))
         self._queue.add_task(task, request.important)
 
         if not self._timer_run_next_task.isActive():

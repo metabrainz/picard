@@ -195,7 +195,7 @@ class TestCoverArtSetter:
         ('parent_type', 'parent_attr', 'expected_parents'),
         [
             ('track', 'album', ['track', 'album']),
-            ('cluster', 'related_album', ['cluster', 'album']),
+            ('cluster', 'album', ['cluster', 'album']),
             (None, None, []),
         ],
     )
@@ -223,7 +223,7 @@ class TestCoverArtSetter:
             from picard.cluster import Cluster
 
             parent = Mock(spec=Cluster)
-            parent.related_album = Mock() if parent_attr else None
+            parent.album = Mock() if parent_attr else None
 
         mock_file.parent_item = parent
 
