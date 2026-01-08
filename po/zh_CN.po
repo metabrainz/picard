@@ -45,13 +45,14 @@
 # 刘岩 <xuanqidongjim@gmail.com>, 2020
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
 # KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
+# imgradeone <imgradeone@outlook.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-12-27 18:53+0100\n"
-"PO-Revision-Date: 2025-02-14 17:44+0000\n"
-"Last-Translator: KenParker_CN <peekabookenny@gmail.com>\n"
+"PO-Revision-Date: 2026-01-08 15:11+0000\n"
+"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -59,7 +60,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:198
@@ -194,7 +195,7 @@ msgstr "记录Web服务回复的内容"
 
 #: picard/debug_opts.py:86
 msgid "Git Backend"
-msgstr ""
+msgstr "Git 后端"
 
 #: picard/debug_opts.py:86
 msgid "Log git backend method calls"
@@ -3870,10 +3871,8 @@ msgid "Trusted"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:247
-#, fuzzy
-#| msgid "Comment"
 msgid "Community"
-msgstr "注释"
+msgstr "社区"
 
 #: picard/ui/dialogs/plugininfo.py:248
 msgid "Unregistered"
