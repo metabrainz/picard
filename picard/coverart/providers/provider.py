@@ -27,7 +27,6 @@
 from enum import Enum
 import traceback
 from typing import TYPE_CHECKING
-import weakref
 
 from picard.util.display_title_base import HasDisplayTitle
 
@@ -105,17 +104,10 @@ class CoverArtProvider(HasDisplayTitle, metaclass=CoverArtProviderMetaClass):
         WAIT = 2
 
     def __init__(self, coverart: 'CoverArt'):
-        self._coverart = weakref.ref(coverart)
+        self.coverart = coverart
         self.release = coverart.release
         self.metadata = coverart.metadata
         self.album = coverart.album
-
-    @property
-    def coverart(self) -> 'CoverArt':
-        coverart = self._coverart()
-        if coverart is None:
-            raise TypeError("CoverArt instance is None")
-        return coverart
 
     def enabled(self):
         return not self.coverart.front_image_found

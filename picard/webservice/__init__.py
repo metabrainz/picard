@@ -707,12 +707,12 @@ class WebService(QtCore.QObject):
         task.aborted = True
 
         # If task has an active reply, abort it
-        reply = self._task_to_reply.get(task)
+        reply = self._task_to_reply.get(task, None)
         if reply:
             try:
                 reply.abort()
                 del self._task_to_reply[task]
-            except RuntimeError:
+            except (RuntimeError, KeyError):
                 # Reply may already be deleted
                 pass
 
