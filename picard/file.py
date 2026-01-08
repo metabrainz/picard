@@ -1061,15 +1061,8 @@ class File(MetadataItem):
         if not format_key:
             return True
 
-        # Local import to avoid circular dependencies
-        from picard.config import get_config  # pylint: disable=import-outside-toplevel
-
-        try:
-            disabled = get_config().setting['disable_date_sanitization_formats']
-        except KeyError:
-            return True
-        else:
-            return format_key not in disabled
+        disabled = get_config().setting['disable_date_sanitization_formats']
+        return format_key not in disabled
 
 
 file_post_load_processors = PluginFunctions(label='file_post_load_processors')

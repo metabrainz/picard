@@ -27,7 +27,6 @@ from picard.formats.apev2 import APEv2File
 from picard.formats.registry import FormatRegistry
 from picard.formats.util import date_sanitization_format_entries
 from picard.formats.vorbis import OggVorbisFile
-from picard.metadata import Metadata
 from picard.util import (
     sanitize_date,
 )
@@ -71,7 +70,6 @@ def format_registry() -> FormatRegistry:
         [],
         ['vorbis'],
         ['apev2'],
-        ['id3'],
         ['vorbis', 'apev2'],
     ],
 )
@@ -82,36 +80,6 @@ def test_instance_method_decision_matches_disabled_setting(
     settings['disable_date_sanitization_formats'] = disabled
     file_obj = file_cls.__new__(file_cls)
     assert file_obj.is_date_sanitization_enabled() is (format_key not in set(disabled))
-
-
-@pytest.mark.parametrize(
-    ('disabled', 'input_date', 'expected'),
-    [
-        ([], '2021-04', ['2021']),
-        ([], '2021-04-01', ['2021-04-01']),
-        (['id3'], '2021-04', ['2021-04']),
-        (['id3'], '2021-04-01', ['2021-04-01']),
-    ],
-)
-def test_id3_v23_date_coercion_respects_setting(
-    patched_get_config: None, disabled: list[str], input_date: str, expected: list[str]
-) -> None:
-    # Arrange: configure setting and build an ID3File with v2.3 behavior
-    settings = cast(dict[str, Any], config.setting)
-    settings['disable_date_sanitization_formats'] = disabled
-    # Avoid File.__init__ side effects by constructing without __init__
-    test_file = id3.ID3File.__new__(id3.ID3File)
-    metadata = Metadata()
-    metadata['artist'] = ['a', 'b']
-    metadata['originaldate'] = '2020-01-31'
-    metadata['date'] = input_date
-    settings['write_id3v23'] = True
-    settings['id3v23_join_with'] = ' / '
-
-    # Act + Assert: artist and originaldate keep legacy semantics, date depends on setting
-    assert test_file.format_specific_metadata(metadata, 'artist') == ['a / b']
-    assert test_file.format_specific_metadata(metadata, 'originaldate') == ['2020']
-    assert test_file.format_specific_metadata(metadata, 'date') == expected
 
 
 @pytest.mark.parametrize(
@@ -164,7 +132,7 @@ def test_vorbis_dates_from_complaint_when_disabled(patched_get_config: None, dat
         (APEv2File, 'apev2'),
     ],
 )
-@pytest.mark.parametrize('disabled', [[], ['id3'], ['vorbis'], ['apev2'], ['vorbis', 'apev2']])
+@pytest.mark.parametrize('disabled', [[], ['vorbis'], ['apev2'], ['vorbis', 'apev2']])
 def test_instance_method_respects_config(
     patched_get_config: None, file_cls: Any, format_key: str, disabled: list[str]
 ) -> None:
@@ -187,7 +155,6 @@ def test_entries_include_known_toggleable_families(format_registry: FormatRegist
     settings['enabled_plugins'] = []
     entries = dict(date_sanitization_format_entries(format_registry))
     # These are provided by our built-in formats; presence is enough here
-    assert 'id3' in entries and isinstance(entries['id3'], str)
     assert 'vorbis' in entries and isinstance(entries['vorbis'], str)
     assert 'apev2' in entries and isinstance(entries['apev2'], str)
 
