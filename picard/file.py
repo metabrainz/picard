@@ -61,6 +61,7 @@ from typing import (
     IO,
     TYPE_CHECKING,
 )
+import weakref
 
 from mutagen import (
     FileType,
@@ -192,6 +193,16 @@ class File(MetadataItem):
         self.acoustid_fingerprint = None
         self.acoustid_length = 0
         self.match_recordingid = None
+
+    @property
+    def parent_item(self) -> 'Cluster | Track | None':
+        if self._parent_item is None:
+            return None
+        return self._parent_item()
+
+    @parent_item.setter
+    def parent_item(self, value: 'Cluster | Track | None'):
+        self._parent_item = weakref.ref(value) if value is not None else None
 
     def __repr__(self):
         return '<%s %r>' % (type(self).__name__, self.base_filename)
@@ -671,7 +682,8 @@ class File(MetadataItem):
                 self.clear_pending()
                 self.parent_item.remove_file(self, new_album=new_album)
             self.parent_item = to_parent_item
-            self.parent_item.add_file(self, new_album=new_album)
+            if self.parent_item:
+                self.parent_item.add_file(self, new_album=new_album)
             self.acoustid_update()
             return True
         else:

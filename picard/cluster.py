@@ -130,6 +130,10 @@ class Cluster(FileList):
     def __len__(self):
         return len(self.files)
 
+    def __bool__(self):
+        # Ensure even a cluster without files (len() == 0) is considered truthy
+        return True
+
     def _update_related_album(self, added_files=None, removed_files=None):
         if self.album:
             if added_files:

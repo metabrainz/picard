@@ -43,6 +43,14 @@ class TokenizeTest(PicardTestCase):
 
 
 class ClusterTest(PicardTestCase):
+    def test_cluster_is_truthy(self):
+        cluster = Cluster("Test")
+        # Empty cluster should still be truthy
+        self.assertEqual(0, len(cluster))
+        self.assertTrue(cluster)
+
+
+class ClusteringTest(PicardTestCase):
     def setUp(self):
         super().setUp()
         self.set_config_values(
