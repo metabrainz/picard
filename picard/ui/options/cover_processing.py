@@ -82,8 +82,9 @@ class CoverProcessingOptionsPage(OptionsPage):
             self.ui.tags_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
             self.ui.file_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
 
-        self.ui.convert_tags_format.addItems(COVER_CONVERTING_FORMATS)
-        self.ui.convert_file_format.addItems(COVER_CONVERTING_FORMATS)
+        for format, format_name in COVER_CONVERTING_FORMATS.items():
+            self.ui.convert_tags_format.addItem(format_name, userData=format)
+            self.ui.convert_file_format.addItem(format_name, userData=format)
 
         tags_resize_mode_changed = partial(
             self._resize_mode_changed, self.ui.tags_resize_width_widget, self.ui.tags_resize_height_widget
@@ -122,7 +123,9 @@ class CoverProcessingOptionsPage(OptionsPage):
             current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
         self.ui.tags_resize_mode.setCurrentIndex(current_index)
         self.ui.convert_tags.setChecked(config.setting['cover_tags_convert_images'])
-        self.ui.convert_tags_format.setCurrentText(config.setting['cover_tags_convert_to_format'])
+        self.ui.convert_tags_format.setCurrentIndex(
+            self.ui.convert_tags_format.findData(config.setting['cover_tags_convert_to_format'])
+        )
         self.ui.file_scale_up.setChecked(config.setting['cover_file_enlarge'])
         self.ui.file_scale_down.setChecked(config.setting['cover_file_resize'])
         self.ui.file_resize_width_value.setValue(config.setting['cover_file_resize_target_width'])
@@ -132,7 +135,9 @@ class CoverProcessingOptionsPage(OptionsPage):
             current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
         self.ui.file_resize_mode.setCurrentIndex(current_index)
         self.ui.convert_file.setChecked(config.setting['cover_file_convert_images'])
-        self.ui.convert_file_format.setCurrentText(config.setting['cover_file_convert_to_format'])
+        self.ui.convert_file_format.setCurrentIndex(
+            self.ui.convert_file_format.findData(config.setting['cover_file_convert_to_format'])
+        )
 
     def save(self):
         config = get_config()
@@ -145,14 +150,14 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['cover_tags_resize_target_height'] = self.ui.tags_resize_height_value.value()
         config.setting['cover_tags_resize_mode'] = self.ui.tags_resize_mode.currentData()
         config.setting['cover_tags_convert_images'] = self.ui.convert_tags.isChecked()
-        config.setting['cover_tags_convert_to_format'] = self.ui.convert_tags_format.currentText()
+        config.setting['cover_tags_convert_to_format'] = self.ui.convert_tags_format.currentData()
         config.setting['cover_file_enlarge'] = self.ui.file_scale_up.isChecked()
         config.setting['cover_file_resize'] = self.ui.file_scale_down.isChecked()
         config.setting['cover_file_resize_target_width'] = self.ui.file_resize_width_value.value()
         config.setting['cover_file_resize_target_height'] = self.ui.file_resize_height_value.value()
         config.setting['cover_file_resize_mode'] = self.ui.file_resize_mode.currentData()
         config.setting['cover_file_convert_images'] = self.ui.convert_file.isChecked()
-        config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentText()
+        config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentData()
 
 
 register_options_page(CoverProcessingOptionsPage)

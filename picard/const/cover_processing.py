@@ -18,10 +18,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
 from collections import namedtuple
 from enum import IntEnum
+
+from PyQt6.QtGui import QImageWriter
 
 from picard.i18n import N_
 
@@ -113,6 +113,14 @@ COVER_RESIZE_MODES = (
     ),
 )
 
-COVER_CONVERTING_FORMATS = ('JPEG', 'PNG', 'WebP', 'TIFF')
+IMAGE_FORMAT_NAMES = {
+    'jpeg': 'JPEG',
+    'png': 'PNG',
+    'webp': 'WebP',
+    'tiff': 'TIFF',
+}
+
+_qt_supported_formats = {bytes(format).decode() for format in QImageWriter.supportedImageFormats()}
+COVER_CONVERTING_FORMATS = {k: v for k, v in IMAGE_FORMAT_NAMES.items() if k in _qt_supported_formats}
 
 COVER_PROCESSING_SLEEP = 0.001
