@@ -26,7 +26,6 @@ from collections import deque
 from PyQt6 import QtCore
 
 from picard import log
-from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
 from picard.util import iter_files_from_objects
 
@@ -103,15 +102,17 @@ class Player(QtCore.QObject):
         return int(self._logarithmic_volume * 100)
 
     def playback_rate(self):
-        return self._player.playbackRate()
+        if self._player:
+            return self._player.playbackRate()
 
     def create_toolbar(self):
         self._toolbar = PlayerToolbar(self, parent=self.parent())
         return self._toolbar
 
     def set_objects(self, objects):
-        self._selected_objects = objects
-        self._toolbar.play_action.setEnabled(bool(objects))
+        if self._toolbar:
+            self._selected_objects = objects
+            self._toolbar.play_action.setEnabled(bool(objects))
 
     def play(self):
         """Play selected tracks with an internal player"""
@@ -121,12 +122,13 @@ class Player(QtCore.QObject):
         self._play_next()
 
     def _play_next(self):
-        try:
-            next_track = self._media_queue.popleft()
-            self._player.setSource(next_track)
-            self._player.play()
-        except IndexError:
-            self._player.stop()
+        if self._player:
+            try:
+                next_track = self._media_queue.popleft()
+                self._player.setSource(next_track)
+                self._player.play()
+            except IndexError:
+                self._player.stop()
 
     def _on_playback_state_changed(self, state):
         self.is_stopped = state == QtMultimedia.QMediaPlayer.PlaybackState.StoppedState
@@ -137,10 +139,11 @@ class Player(QtCore.QObject):
 
     def pause(self, is_paused):
         """Toggle pause of an internal player"""
-        if is_paused:
-            self._player.pause()
-        else:
-            self._player.play()
+        if self._player:
+            if is_paused:
+                self._player.pause()
+            else:
+                self._player.play()
 
     def set_volume(self, logarithmic_volume):
         """Convert to linear scale and set the volume
@@ -153,24 +156,12 @@ class Player(QtCore.QObject):
         self._audio_output.setVolume(linear_volume)
 
     def set_position(self, position):
-        self._player.setPosition(position)
+        if self._player:
+            self._player.setPosition(position)
 
     def set_playback_rate(self, playback_rate):
-        player = self._player
-        player.setPlaybackRate(playback_rate)
-        if not IS_MACOS:
-            # Playback rate changes do not affect the current media playback on
-            # Linux and does work unreliable on Windows.
-            # Force playback restart to have the rate change applied immediately.
-            player_state = player.playbackState()
-            if player_state != QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
-                position = player.position()
-                player.stop()
-                player.setPosition(position)
-                if player_state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState:
-                    player.play()
-                elif player_state == QtMultimedia.QMediaPlayer.PlaybackState.PausedState:
-                    player.pause()
+        if self._player:
+            self._player.setPlaybackRate(playback_rate)
 
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.Error.FormatError:
@@ -180,6 +171,6 @@ class Player(QtCore.QObject):
         else:
             msg = _("Internal player: %(error)s, %(message)s") % {
                 'error': error,
-                'message': self._player.errorString(),
+                'message': self._player.errorString() if self._player else str(error),
             }
         self.error.emit(error, msg)
