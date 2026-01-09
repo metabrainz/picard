@@ -31,19 +31,19 @@ repos:
         always_run: true
       - id: pip-compile
         name: pip-compile requirements.txt
-        args: [pyproject.toml, -o, requirements.txt, --generate-hashes, --universal, --python-version=3.10]
+        args: [pyproject.toml, -o, requirements.txt, --upgrade, --generate-hashes, --universal, --python-version=3.10]
+        files: 'uv.lock'
         pass_filenames: false
-        always_run: true
       - id: pip-compile
         name: pip-compile requirements-build.txt
-        args: [pyproject.toml, -o, requirements-build.txt, --group, build, --generate-hashes, --universal, --python-version=3.10]
+        args: [pyproject.toml, -o, requirements-build.txt, --group, build, --upgrade, --generate-hashes, --universal, --python-version=3.10]
+        files: 'uv.lock'
         pass_filenames: false
-        always_run: true
       - id: pip-compile
         name: pip-compile requirements-dev.txt
-        args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --generate-hashes, --universal, --python-version=3.10]
+        args: [pyproject.toml, -o, requirements-dev.txt, --group, dev, --upgrade, --generate-hashes, --universal, --python-version=3.10]
+        files: 'uv.lock'
         pass_filenames: false
-        always_run: true
   - repo: local
     hooks:
       - id: pytest
