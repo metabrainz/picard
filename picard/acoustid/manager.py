@@ -249,7 +249,7 @@ class AcoustIDManager:
                     'message': message,
                 }
                 previous_errors.append(mparms)
-                log_msg = N_("AcoustID submission failed with error '%(error)s': %(message)s")
+                log_msg = N_('AcoustID submission failed with error "%(error)s": %(message)s')
                 log.error(log_msg, mparms)
                 self.tagger.window.set_statusbar_message(
                     log_msg,

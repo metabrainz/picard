@@ -183,7 +183,7 @@ class KeyFormatRule(ValidationRule):
         if normalized_current in normalized_existing:
             results.append(
                 ValidationResult(
-                    "key", ValidationSeverity.ERROR, N_("Key '%s' already exists") % spec.key, "KEY_DUPLICATE"
+                    "key", ValidationSeverity.ERROR, N_('Key "%s" already exists') % spec.key, "KEY_DUPLICATE"
                 )
             )
         return results
@@ -202,7 +202,7 @@ class KeyRequiredRule(ValidationRule):
         if spec.key in context.existing_keys:
             results.append(
                 ValidationResult(
-                    "key", ValidationSeverity.ERROR, N_("Key '%s' already exists") % spec.key, "KEY_DUPLICATE"
+                    "key", ValidationSeverity.ERROR, N_('Key "%s" already exists') % spec.key, "KEY_DUPLICATE"
                 )
             )
 
@@ -229,7 +229,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.ERROR,
-                    N_("Invalid field key: '%s'") % spec.expression,
+                    N_('Invalid field key: "%s"') % spec.expression,
                     "FIELD_INVALID",
                 )
             )
@@ -238,7 +238,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.WARNING,
-                    N_("Field expressions should not start with '$' - use SCRIPT type for scripting"),
+                    N_('Field expressions should not start with "$" - use SCRIPT type for scripting'),
                     "FIELD_SCRIPT_SYNTAX",
                 )
             )
@@ -275,7 +275,7 @@ class ExpressionRule(ValidationRule):
                 ValidationResult(
                     "expression",
                     ValidationSeverity.ERROR,
-                    N_("Invalid base field for transform: '%s'") % spec.expression,
+                    N_('Invalid base field for transform: "%s"') % spec.expression,
                     "TRANSFORM_BASE_INVALID",
                 )
             )

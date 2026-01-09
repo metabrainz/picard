@@ -105,7 +105,7 @@ class SearchBox(QtWidgets.QWidget):
         self.adv_syntax_help = QtWidgets.QLabel(self.adv_opt_row_widget)
         self.adv_syntax_help.setOpenExternalLinks(True)
         self.adv_syntax_help.setText(
-            _("&#160;(<a href='{url}'>Syntax Help</a>)").format(url=PICARD_URLS['mb_doc_search_syntax'])
+            _('&#160;(<a href="{url}">Syntax Help</a>)').format(url=PICARD_URLS['mb_doc_search_syntax'])
         )
         self.adv_opt_row_layout.addWidget(self.adv_syntax_help)
         self.adv_opt_row_widget.setLayout(self.adv_opt_row_layout)

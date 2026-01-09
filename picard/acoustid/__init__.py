@@ -106,7 +106,7 @@ class AcoustIDClient(QtCore.QObject):
             }
             log.error("AcoustID: Lookup network error for '%(filename)s': %(error)r, %(body)s" % mparms)
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID lookup network error for '%(filename)s'!"),
+                N_('AcoustID lookup network error for "%(filename)s"!'),
                 mparms,
                 echo=None,
             )
@@ -128,7 +128,7 @@ class AcoustIDClient(QtCore.QObject):
                     }
                     log.error("AcoustID: Lookup error for '%(filename)s': %(error)r" % mparms)
                     self.tagger.window.set_statusbar_message(
-                        N_("AcoustID lookup failed for '%(filename)s'!"),
+                        N_('AcoustID lookup failed for "%(filename)s"!'),
                         mparms,
                         echo=None,
                     )
@@ -169,7 +169,7 @@ class AcoustIDClient(QtCore.QObject):
         if not result:
             log.debug("AcoustID: lookup returned no result for file '%(filename)s'" % mparms)
             self.tagger.window.set_statusbar_message(
-                N_("AcoustID lookup returned no result for file '%(filename)s'"),
+                N_('AcoustID lookup returned no result for file "%(filename)s"'),
                 mparms,
                 echo=None,
             )
@@ -177,7 +177,7 @@ class AcoustIDClient(QtCore.QObject):
             return
         log.debug("AcoustID: looking up the fingerprint for file '%(filename)s'" % mparms)
         self.tagger.window.set_statusbar_message(
-            N_("Looking up the fingerprint for file '%(filename)s' …"),
+            N_('Looking up the fingerprint for file "%(filename)s" …'),
             mparms,
             echo=None,
         )

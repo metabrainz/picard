@@ -108,7 +108,7 @@ class UserDialogService:
         reply: QtWidgets.QMessageBox.StandardButton = QtWidgets.QMessageBox.question(
             self._parent_widget,
             _("Confirm Delete"),
-            _("Are you sure you want to delete the custom column '{title}'?").format(title=title),
+            _('Are you sure you want to delete the custom column "{title}"?').format(title=title),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             QtWidgets.QMessageBox.StandardButton.No,
         )
@@ -176,7 +176,7 @@ class UserDialogService:
         if spec_title and spec_title.strip():
             header = _("Blank expression for: %s") % spec_title
             body = (
-                _("The expression for '%s' is blank. The column will display nothing. Do you want to continue?")
+                _('The expression for "%s" is blank. The column will display nothing. Do you want to continue?')
                 % spec_title
             )
         else:

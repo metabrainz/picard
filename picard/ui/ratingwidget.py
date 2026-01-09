@@ -98,7 +98,7 @@ class RatingWidget(QtWidgets.QWidget):
     def _submitted(self, document, http, error):
         if error:
             self.tagger.window.set_statusbar_message(
-                N_("Failed to submit rating for track '%(track_title)s' due to server error %(error)d"),
+                N_('Failed to submit rating for track "%(track_title)s" due to server error %(error)d'),
                 {'track_title': self._track.metadata['title'], 'error': error},
                 echo=None,
             )

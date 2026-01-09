@@ -955,9 +955,9 @@ class File(MetadataItem):
 
             trackmatch = self._match_to_track(tracks, threshold=threshold)
             if trackmatch is None:
-                statusbar(N_("No matching tracks above the threshold for file '%(filename)s'"))
+                statusbar(N_('No matching tracks above the threshold for file "%(filename)s"'))
             else:
-                statusbar(N_("File '%(filename)s' identified!"))
+                statusbar(N_('File "%(filename)s" identified!'))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
@@ -969,7 +969,7 @@ class File(MetadataItem):
                 else:
                     self.tagger.move_file_to_nat(self, recording_id)
         else:
-            statusbar(N_("No matching tracks for file '%(filename)s'"))
+            statusbar(N_('No matching tracks for file "%(filename)s"'))
 
         self.clear_pending()
 
