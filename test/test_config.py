@@ -224,11 +224,11 @@ class TestPicardConfigTextOption(TestPicardConfigCommon):
         self.assertEqual(self.config.setting["text_option"], "")
 
     def test_text_opt_invalid_value(self):
-        TextOption("setting", "text_option", "abc")
+        ListOption("setting", "text_option", [1, 2])
 
         # store invalid value in config file directly
         self.config.setValue('setting/text_option', object)
-        self.assertEqual(self.config.setting["text_option"], 'abc')
+        self.assertEqual(self.config.setting["text_option"], [1, 2])
 
 
 class TestPicardConfigBoolOption(TestPicardConfigCommon):
