@@ -487,7 +487,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
                 # Ensure the known path remains persisted explicitly
                 config.persist['last_session_path'] = path
-                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self.set_statusbar_message(N_('Session saved to "%(path)s"'), {'path': path})
                 self._add_to_recent_sessions(path)
             except (OSError, PermissionError, FileNotFoundError, ValueError, OverflowError) as e:
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
@@ -1155,12 +1155,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.persist['current_directory'] = parent
             if dir_count > 1:
                 self.set_statusbar_message(
-                    N_("Adding multiple directories from '%(directory)s' …"),
+                    N_('Adding multiple directories from "%(directory)s" …'),
                     {'directory': parent},
                 )
             else:
                 self.set_statusbar_message(
-                    N_("Adding directory: '%(directory)s' …"),
+                    N_('Adding directory: "%(directory)s" …'),
                     {'directory': dir_list[0]},
                 )
 
@@ -1339,7 +1339,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.critical(self, _("Failed to save session"), str(e))
                 return False
             else:
-                self.set_statusbar_message(N_("Session saved to '%(path)s'"), {'path': path})
+                self.set_statusbar_message(N_('Session saved to "%(path)s"'), {'path': path})
                 self._add_to_recent_sessions(path)
                 return True
         return False
@@ -1365,7 +1365,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         )
         if path:
             # Initial progress feedback before heavy load
-            self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+            self.set_statusbar_message(N_('Loading session from "%(path)s" …'), {'path': path})
             try:
                 load_session_from_path(self.tagger, path)
             except FileNotFoundError:
@@ -1381,7 +1381,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return
             else:
                 config.persist['last_session_path'] = path
-                self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+                self.set_statusbar_message(N_('Session loaded from "%(path)s"'), {'path': path})
                 # Track in recent sessions
                 self._add_to_recent_sessions(path)
 
@@ -1390,7 +1390,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not self.show_close_session_confirmation():
             return
 
-        self.set_statusbar_message(N_("Loading session from '%(path)s' …"), {'path': path})
+        self.set_statusbar_message(N_('Loading session from "%(path)s" …'), {'path': path})
         try:
             load_session_from_path(self.tagger, path)
         except FileNotFoundError:
@@ -1408,7 +1408,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         else:
             config = get_config()
             config.persist['last_session_path'] = path
-            self.set_statusbar_message(N_("Session loaded from '%(path)s'"), {'path': path})
+            self.set_statusbar_message(N_('Session loaded from "%(path)s"'), {'path': path})
             self._add_to_recent_sessions(path)
 
     def close_session(self):

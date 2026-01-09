@@ -207,7 +207,7 @@ def show_session_not_found_dialog(parent, path: str) -> None:
     QtWidgets.QMessageBox.warning(
         parent,
         _("Load Session"),
-        _("The session file '%(path)s' was not found.") % {'path': path},
+        _('The session file "%(path)s" was not found.') % {'path': path},
     )
 
 

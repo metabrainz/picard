@@ -459,12 +459,12 @@ class MetadataBox(QtWidgets.QTableWidget):
         edit_tag_action.setEnabled(editable)
         menu.addAction(edit_tag_action)
         if selected_tag not in self.preserved_tags:
-            add_to_preserved_tags_action = QtGui.QAction(_("Add to 'Preserve Tags' List"), self)
+            add_to_preserved_tags_action = QtGui.QAction(_('Add to "Preserve Tags" List'), self)
             add_to_preserved_tags_action.triggered.connect(partial(self.preserved_tags.add, selected_tag))
             add_to_preserved_tags_action.setEnabled(editable)
             menu.addAction(add_to_preserved_tags_action)
         else:
-            remove_from_preserved_tags_action = QtGui.QAction(_("Remove from 'Preserve Tags' List"), self)
+            remove_from_preserved_tags_action = QtGui.QAction(_('Remove from "Preserve Tags" List'), self)
             remove_from_preserved_tags_action.triggered.connect(partial(self.preserved_tags.discard, selected_tag))
             remove_from_preserved_tags_action.setEnabled(editable)
             menu.addAction(remove_from_preserved_tags_action)

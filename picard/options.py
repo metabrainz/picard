@@ -578,4 +578,4 @@ def get_option_title(name):
     title = Option.registry[key].title
     if title:
         return title
-    return N_("No title for setting '%s'") % name
+    return N_('No title for setting "%s"') % name
