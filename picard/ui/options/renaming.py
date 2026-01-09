@@ -75,6 +75,7 @@ class RenamingOptionsPage(OptionsPage):
     OPTIONS = (
         ('move_files', ['move_files']),
         ('move_files_to', ['move_files_to']),
+        ('move_overwrite_existing_files', ['move_overwrite_existing_files']),
         ('move_additional_files', ['move_additional_files']),
         ('move_additional_files_pattern', ['move_additional_files_pattern']),
         ('delete_empty_dirs', ['delete_empty_dirs']),
@@ -88,6 +89,11 @@ class RenamingOptionsPage(OptionsPage):
         self.compat_options = {}
         self.ui = Ui_RenamingOptionsPage()
         self.ui.setupUi(self)
+
+        self.ui.move_overwrite_existing_files = QtWidgets.QCheckBox(self.ui.move_files)
+        self.ui.move_overwrite_existing_files.setObjectName("move_overwrite_existing_files")
+        self.ui.verticalLayout_4.insertWidget(2, self.ui.move_overwrite_existing_files)
+        self.ui.move_overwrite_existing_files.setText(_("Overwrite existing files"))
 
         # Set open directory icon on folder browse button
         icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
@@ -250,6 +256,7 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_additional_files.setChecked(config.setting['move_additional_files'])
         self.ui.move_additional_files_pattern.setText(config.setting['move_additional_files_pattern'])
         self.ui.delete_empty_dirs.setChecked(config.setting['delete_empty_dirs'])
+        self.ui.move_overwrite_existing_files.setChecked(config.setting['move_overwrite_existing_files'])
         self.naming_scripts = config.setting['file_renaming_scripts']
         self.selected_naming_script_id = config.setting['selected_file_naming_script_id']
         if self.script_editor_dialog:
@@ -285,6 +292,7 @@ class RenamingOptionsPage(OptionsPage):
         config.setting['move_additional_files'] = self.ui.move_additional_files.isChecked()
         config.setting['move_additional_files_pattern'] = self.ui.move_additional_files_pattern.text()
         config.setting['delete_empty_dirs'] = self.ui.delete_empty_dirs.isChecked()
+        config.setting['move_overwrite_existing_files'] = self.ui.move_overwrite_existing_files.isChecked()
         config.setting['selected_file_naming_script_id'] = self.selected_naming_script_id
 
     def display_error(self, error):
