@@ -92,7 +92,7 @@ class RenamingOptionsPage(OptionsPage):
 
         self.ui.move_overwrite_existing_files = QtWidgets.QCheckBox(self.ui.move_files)
         self.ui.move_overwrite_existing_files.setObjectName("move_overwrite_existing_files")
-        self.ui.verticalLayout_4.insertWidget(2, self.ui.move_overwrite_existing_files)
+        self.ui.verticalLayout_4.addWidget(self.ui.move_overwrite_existing_files)
         self.ui.move_overwrite_existing_files.setText(_("Overwrite existing files"))
 
         # Set open directory icon on folder browse button
