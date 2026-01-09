@@ -33,6 +33,7 @@ from collections import (
     UserList,
 )
 from collections.abc import Iterable
+from typing import TYPE_CHECKING
 import weakref
 
 from PyQt6 import QtCore
@@ -45,18 +46,22 @@ from picard.util import IgnoreUpdatesContext
 from picard.util.imagelist import ImageList
 
 
+if TYPE_CHECKING:
+    from picard.ui.itemviews import TreeItem
+
+
 class Item:
     def __init__(self):
         self._ui_item = None
 
     @property
-    def ui_item(self):
+    def ui_item(self) -> 'TreeItem | None':
         if self._ui_item is None:
             return None
         return self._ui_item()
 
     @ui_item.setter
-    def ui_item(self, value):
+    def ui_item(self, value: 'TreeItem | None'):
         self._ui_item = weakref.ref(value) if value is not None else None
 
     @property

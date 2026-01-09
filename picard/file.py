@@ -236,6 +236,12 @@ class File(MetadataItem):
         return copy
 
     def _set_error(self, error):
+        """Set the file state to ERROR and record an appropriate message.
+
+        This updates the internal error state and logs a human-readable message.
+        It does not interrupt execution or provide UI feedback directly; callers
+        are responsible for acting on the error state.
+        """
         self.state = File.State.ERROR
         if any_exception_isinstance(error, FileNotFoundError):
             self.error_type = File.ErrorType.NOTFOUND
@@ -952,9 +958,9 @@ class File(MetadataItem):
 
             trackmatch = self._match_to_track(tracks, threshold=threshold)
             if trackmatch is None:
-                statusbar(N_("No matching tracks above the threshold for file '%(filename)s'"))
+                statusbar(N_('No matching tracks above the threshold for file "%(filename)s"'))
             else:
-                statusbar(N_("File '%(filename)s' identified!"))
+                statusbar(N_('File "%(filename)s" identified!'))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
@@ -966,7 +972,7 @@ class File(MetadataItem):
                 else:
                     self.tagger.move_file_to_nat(self, recording_id)
         else:
-            statusbar(N_("No matching tracks for file '%(filename)s'"))
+            statusbar(N_('No matching tracks for file "%(filename)s"'))
 
         self.clear_pending()
 

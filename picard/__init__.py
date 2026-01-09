@@ -42,7 +42,7 @@ PICARD_APP_NAME = "Picard"
 PICARD_DISPLAY_NAME = "MusicBrainz Picard"
 PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
-PICARD_VERSION = Version(3, 0, 0, 'dev', 9)
+PICARD_VERSION = Version(3, 0, 0, 'dev', 10)
 
 
 # optional build version

@@ -205,7 +205,7 @@ class CAATypesSelectorDialog(PicardDialog):
         # Add instructions to the dialog box
         instructions = QtWidgets.QLabel()
         if instructions_top is None:
-            instructions_top = N_("Please select the contents of the image type 'Include' and 'Exclude' lists.")
+            instructions_top = N_('Please select the contents of the image type "Include" and "Exclude" lists.')
         instructions.setText(_(instructions_top))
         instructions.setWordWrap(True)
         instructions.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)

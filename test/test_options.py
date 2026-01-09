@@ -39,7 +39,7 @@ class OptionsUtilitiesTest(PicardTestCase):
 
         # No title assigned to the option
         self.assertEqual(
-            get_option_title('test_option_without_title'), "No title for setting 'test_option_without_title'"
+            get_option_title('test_option_without_title'), 'No title for setting "test_option_without_title"'
         )
 
         # Title assigned to the option

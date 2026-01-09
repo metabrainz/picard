@@ -118,7 +118,7 @@ class ErrorOptionsPage(OptionsPage):
 
         self.error = _("This page failed to initialize")
 
-        title_widget = QtWidgets.QLabel(_("Error while initializing option page '%s':") % _(from_cls.TITLE))
+        title_widget = QtWidgets.QLabel(_('Error while initializing option page "%s":') % _(from_cls.TITLE))
 
         error_widget = QtWidgets.QLabel()
         error_widget.setTextFormat(QtCore.Qt.TextFormat.PlainText)

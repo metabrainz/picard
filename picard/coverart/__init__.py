@@ -195,7 +195,7 @@ class CoverArt:
         # download image from the web
         elif image.url:
             self._message(
-                N_("Downloading cover art of type '%(type)s' for %(albumid)s from %(host)s …"),
+                N_('Downloading cover art of type "%(type)s" for %(albumid)s from %(host)s …'),
                 {
                     'type': image.types_as_string(),
                     'albumid': self.album.id,
@@ -263,7 +263,7 @@ class CoverArt:
             log.warning("Not enough data, skipping %s", image)
         else:
             self._message(
-                N_("Cover art of type '%(type)s' downloaded for %(albumid)s from %(host)s"),
+                N_('Cover art of type "%(type)s" downloaded for %(albumid)s from %(host)s'),
                 {
                     'type': image.types_as_string(),
                     'albumid': self.album.id,

@@ -599,6 +599,12 @@ def upgrade_to_v3_0_0dev9(config):
     config.setting.remove('enabled_plugins')
 
 
+def upgrade_to_v3_0_0dev10(config):
+    """Update cover art processing format options"""
+    config.setting['cover_tags_convert_to_format'] = config.setting['cover_tags_convert_to_format'].lower()
+    config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
+
+
 def rename_option(config, old_opt, new_opt, option_type, default, reverse=False):
     _s = config.setting
     if old_opt in _s:
