@@ -19,13 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
 from collections import deque
 
 from PyQt6 import QtCore
 
 from picard import log
+from picard.file import File
 from picard.i18n import gettext as _
 from picard.util import iter_files_from_objects
 
@@ -62,6 +61,10 @@ def get_linear_volume(slider_value):
 
 class Player(QtCore.QObject):
     error = QtCore.pyqtSignal(object, str)
+    playback_state_changed = QtCore.pyqtSignal(QtMultimedia.QMediaPlayer.PlaybackState)
+    duration_changed = QtCore.pyqtSignal(int)
+    position_changed = QtCore.pyqtSignal(int)
+    media_changed = QtCore.pyqtSignal(File)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -78,13 +81,17 @@ class Player(QtCore.QObject):
             if player.isAvailable():
                 output = QtMultimedia.QAudioOutput()
                 player.setAudioOutput(output)
-                self.state_changed = player.playbackStateChanged
                 self._logarithmic_volume = get_logarithmic_volume(output.volume())
                 log.debug("Internal player: available, QMediaPlayer set up")
                 self._player = player
                 self._audio_output = output
-                self._player.playbackStateChanged.connect(self._on_playback_state_changed)
+
+                # Connect signals
+                player.playbackStateChanged.connect(self.playback_state_changed.emit)
+                player.durationChanged.connect(self.duration_changed.emit)
+                player.positionChanged.connect(self.position_changed.emit)
                 self._player.errorOccurred.connect(self._on_error)
+                self.playback_state_changed.connect(self._on_playback_state_changed)
             else:
                 log.warning("Internal player: unavailable")
         else:
@@ -116,16 +123,16 @@ class Player(QtCore.QObject):
 
     def play(self):
         """Play selected tracks with an internal player"""
-        self._media_queue = deque(
-            QtCore.QUrl.fromLocalFile(file.filename) for file in iter_files_from_objects(self._selected_objects)
-        )
+        self._media_queue = deque(iter_files_from_objects(self._selected_objects))
         self._play_next()
 
     def _play_next(self):
         if self._player:
             try:
-                next_track = self._media_queue.popleft()
-                self._player.setSource(next_track)
+                file = self._media_queue.popleft()
+                next_uri = QtCore.QUrl.fromLocalFile(file.filename)
+                self._player.setSource(next_uri)
+                self.media_changed.emit(file)
                 self._player.play()
             except IndexError:
                 self._player.stop()

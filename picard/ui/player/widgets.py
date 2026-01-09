@@ -19,9 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 import locale
-import os
+from typing import TYPE_CHECKING
 
 from PyQt6 import (
     QtCore,
@@ -30,6 +29,7 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
+from picard.file import File
 from picard.i18n import (
     N_,
     gettext as _,
@@ -46,6 +46,10 @@ from picard.ui.widgets import (
 )
 
 
+if TYPE_CHECKING:
+    from picard.ui.player import Player
+
+
 def get_text_width(font, text):
     metrics = QtGui.QFontMetrics(font)
     size = metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text)
@@ -53,7 +57,7 @@ def get_text_width(font, text):
 
 
 class PlayerToolbar(QtWidgets.QToolBar):
-    def __init__(self, player, parent=None):
+    def __init__(self, player: 'Player', parent=None):
         super().__init__(_("Player"), parent=parent)
         self.setObjectName('player_toolbar')
         self.setAllowedAreas(
@@ -63,7 +67,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         )
 
         self.player = player
-        self.player.state_changed.connect(self.playback_state_changed)
+        self.player.playback_state_changed.connect(self.playback_state_changed)
 
         self.play_action = QtGui.QAction(icontheme.lookup('play'), _("Play"), self)
         play_tip = _("Play selected files")
@@ -145,7 +149,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
 
 class PlaybackProgressSlider(QtWidgets.QWidget):
-    def __init__(self, player, parent=None):
+    def __init__(self, player: 'Player', parent=None):
         super().__init__(parent=parent)
         self.player = player
         self._position_update = False
@@ -182,9 +186,16 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         vbox.addWidget(slider_container)
         vbox.addWidget(self.media_name_label)
 
-        self.player._player.durationChanged.connect(self.on_duration_changed)
-        self.player._player.positionChanged.connect(self.on_position_changed)
-        self.player._player.sourceChanged.connect(self.on_media_changed)
+        self.player.duration_changed.connect(self.on_duration_changed)
+        self.player.position_changed.connect(self.on_position_changed)
+        self.player.playback_state_changed.connect(self.on_playback_state_changed)
+        self.player.media_changed.connect(self.on_media_changed)
+
+    def on_playback_state_changed(self, state):
+        if self.player.is_stopped:
+            self.media_name_label.setText('')
+            self.progress_slider.setEnabled(False)
+            self.on_duration_changed(0)
 
     def on_duration_changed(self, duration):
         self.progress_slider.setMaximum(duration)
@@ -196,12 +207,15 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
         self._position_update = False
         self.position_label.setText(format_time(position, display_zero=True))
 
-    def on_media_changed(self, media):
-        if media.isEmpty():
+    def on_media_changed(self, media: File):
+        if not (media and media.filename):
+            self.media_name_label.setText('')
             self.progress_slider.setEnabled(False)
         else:
-            url = media.toString()
-            self.media_name_label.setText(os.path.basename(url))
+            metadata = media.metadata
+            artist = metadata.get('artist', _('Unknown Artist'))
+            title = media.column('title')
+            self.media_name_label.setText(f"{artist} - {title}")
             self.progress_slider.setEnabled(True)
 
     def on_value_changed(self, value):
