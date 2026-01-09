@@ -71,6 +71,7 @@ from picard.config_upgrade import (
     upgrade_to_v3_0_0dev5,
     upgrade_to_v3_0_0dev7,
     upgrade_to_v3_0_0dev8,
+    upgrade_to_v3_0_0dev10,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -226,32 +227,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(["a", "b", "c"], self.config.setting['enabled_plugins'])
         self.assertEqual(["a", "b", "c"], self.config.setting['caa_image_types'])
         self.assertEqual(["a", "b", "c"], self.config.setting['metadata_box_sizes'])
-
-    def test_upgrade_to_v3_0_0dev9(self):
-        from PyQt6 import QtCore
-
-        from picard.config import ListOption, Option
-        from picard.config_upgrade import upgrade_to_v3_0_0dev9
-
-        # Add old plugin options that should be removed
-        Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder)
-        Option('persist', 'plugins_list_sort_section', 0)
-        Option('persist', 'plugins_list_state', QtCore.QByteArray())
-        ListOption('setting', 'enabled_plugins', [])
-
-        # Set some values
-        self.config.persist['plugins_list_sort_order'] = QtCore.Qt.SortOrder.DescendingOrder
-        self.config.persist['plugins_list_sort_section'] = 1
-        self.config.persist['plugins_list_state'] = QtCore.QByteArray(b'test')
-        self.config.setting['enabled_plugins'] = ['plugin1', 'plugin2']
-
-        upgrade_to_v3_0_0dev9(self.config)
-
-        # Verify options were removed
-        self.assertNotIn('plugins_list_sort_order', self.config.persist)
-        self.assertNotIn('plugins_list_sort_section', self.config.persist)
-        self.assertNotIn('plugins_list_state', self.config.persist)
-        self.assertNotIn('enabled_plugins', self.config.setting)
 
     def test_upgrade_to_v1_3_0dev4(self):
         ListOption("setting", "release_type_scores", [])
@@ -603,3 +578,41 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         upgrade_to_v3_0_0dev8(self.config)
         self.assertNotIn('dont_write_tags', self.config.setting)
         self.assertFalse(self.config.setting['enable_tag_saving'])
+
+    def test_upgrade_to_v3_0_0dev9(self):
+        from PyQt6 import QtCore
+
+        from picard.config import ListOption, Option
+        from picard.config_upgrade import upgrade_to_v3_0_0dev9
+
+        # Add old plugin options that should be removed
+        Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder)
+        Option('persist', 'plugins_list_sort_section', 0)
+        Option('persist', 'plugins_list_state', QtCore.QByteArray())
+        ListOption('setting', 'enabled_plugins', [])
+
+        # Set some values
+        self.config.persist['plugins_list_sort_order'] = QtCore.Qt.SortOrder.DescendingOrder
+        self.config.persist['plugins_list_sort_section'] = 1
+        self.config.persist['plugins_list_state'] = QtCore.QByteArray(b'test')
+        self.config.setting['enabled_plugins'] = ['plugin1', 'plugin2']
+
+        upgrade_to_v3_0_0dev9(self.config)
+
+        # Verify options were removed
+        self.assertNotIn('plugins_list_sort_order', self.config.persist)
+        self.assertNotIn('plugins_list_sort_section', self.config.persist)
+        self.assertNotIn('plugins_list_state', self.config.persist)
+        self.assertNotIn('enabled_plugins', self.config.setting)
+
+    def test_upgrade_to_v3_0_0dev10(self):
+        TextOption('setting', 'cover_tags_convert_to_format', 'JPEG')
+        TextOption('setting', 'cover_file_convert_to_format', 'JPEG')
+
+        self.config.setting['cover_tags_convert_to_format'] = 'WebP'
+        self.config.setting['cover_file_convert_to_format'] = 'PNG'
+
+        upgrade_to_v3_0_0dev10(self.config)
+
+        self.assertEqual('webp', self.config.setting['cover_tags_convert_to_format'])
+        self.assertEqual('png', self.config.setting['cover_file_convert_to_format'])

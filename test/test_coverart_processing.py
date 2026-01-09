@@ -33,7 +33,7 @@ from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.album import Album
-from picard.const.cover_processing import ResizeModes
+from picard.const.cover_processing import COVER_CONVERTING_FORMATS, ResizeModes
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import CoverArtImageProcessing
 from picard.coverart.processing.filters import (
@@ -90,7 +90,7 @@ class ImageFiltersTest(PicardTestCase):
     def test_filter_by_size(self):
         image1, info1 = create_fake_image(400, 600, 'png')
         image2, info2 = create_fake_image(500, 500, 'jpeg')
-        image3, info3 = create_fake_image(600, 600, 'tiff')
+        image3, info3 = create_fake_image(600, 600, 'png')
         self.assertFalse(size_filter(image1, info1, None, None))
         self.assertTrue(size_filter(image2, info2, None, None))
         self.assertTrue(size_filter(image3, info3, None, None))
@@ -309,8 +309,7 @@ class ImageProcessorsTest(PicardTestCase):
     def test_format_conversion(self):
         settings = copy(self.settings)
         settings['cover_tags_convert_images'] = True
-        formats = ['jpeg', 'png', 'webp', 'tiff']
-        for format in formats:
+        for format in COVER_CONVERTING_FORMATS.keys():
             settings['cover_tags_convert_to_format'] = format
             self.set_config_values(settings)
             self._check_convert_image('jpeg', format)
