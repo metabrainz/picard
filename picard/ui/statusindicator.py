@@ -110,6 +110,7 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
     try:
         from PyQt6.QtCore import (
             QObject,
+            pyqtClassInfo,
             pyqtSlot,
         )
         from PyQt6.QtDBus import (
@@ -161,22 +162,22 @@ if not (IS_WIN or IS_MACOS or IS_HAIKU):
             def query(self):
                 return [self._app_uri, self.current_progress]
 
+        @pyqtClassInfo('D-Bus Interface', DBUS_INTERFACE)
+        @pyqtClassInfo(
+            'D-Bus Introspection',
+            '<interface name="%s">\n'
+            '  <signal name="Update">\n'
+            '    <arg direction="out" type="s" name="app_uri"/>\n'
+            '    <arg direction="out" type="a{sv}" name="properties"/>\n'
+            '  </signal>\n'
+            '  <method name="Query">\n'
+            '    <arg direction="out" type="s" name="app_uri"/>\n'
+            '    <arg direction="out" type="a{sv}" name="properties"/>\n'
+            '  </method>\n'
+            '</interface>' % DBUS_INTERFACE,
+        )
         class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
-            """This provides the DBus adaptor to the outside world
-
-            The supported interface is:
-
-                <interface name="com.canonical.Unity.LauncherEntry">
-                  <signal name="Update">
-                    <arg direction="out" type="s" name="app_uri"/>
-                    <arg direction="out" type="a{sv}" name="properties"/>
-                  </signal>
-                  <method name="Query">
-                    <arg direction="out" type="s" name="app_uri"/>
-                    <arg direction="out" type="a{sv}" name="properties"/>
-                  </method>
-                </interface>
-            """
+            """This provides the DBus adapter to the outside world"""
 
             def __init__(self, parent):
                 super().__init__(parent)
