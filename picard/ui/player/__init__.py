@@ -26,7 +26,6 @@ from collections import deque
 from PyQt6 import QtCore
 
 from picard import log
-from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
 from picard.util import iter_files_from_objects
 
@@ -156,21 +155,7 @@ class Player(QtCore.QObject):
         self._player.setPosition(position)
 
     def set_playback_rate(self, playback_rate):
-        player = self._player
-        player.setPlaybackRate(playback_rate)
-        if not IS_MACOS:
-            # Playback rate changes do not affect the current media playback on
-            # Linux and does work unreliable on Windows.
-            # Force playback restart to have the rate change applied immediately.
-            player_state = player.playbackState()
-            if player_state != QtMultimedia.QMediaPlayer.PlaybackState.StoppedState:
-                position = player.position()
-                player.stop()
-                player.setPosition(position)
-                if player_state == QtMultimedia.QMediaPlayer.PlaybackState.PlayingState:
-                    player.play()
-                elif player_state == QtMultimedia.QMediaPlayer.PlaybackState.PausedState:
-                    player.pause()
+        self._player.setPlaybackRate(playback_rate)
 
     def _on_error(self, error):
         if error == QtMultimedia.QMediaPlayer.Error.FormatError:
