@@ -602,7 +602,8 @@ class File(MetadataItem):
         new_dirname = os.path.dirname(new_filename)
         if not os.path.isdir(new_dirname):
             os.makedirs(new_dirname)
-        new_filename = get_available_filename(new_filename, old_filename)
+        if not settings['move_overwrite_existing_files']:
+            new_filename = get_available_filename(new_filename, old_filename)
         log.debug("Moving file %r => %r", old_filename, new_filename)
         move_ensure_casing(old_filename, new_filename)
         return new_filename
@@ -633,7 +634,7 @@ class File(MetadataItem):
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
                 try:
                     moves = self._get_additional_files_moves(old_path, new_path, patterns)
-                    self._apply_additional_files_moves(moves)
+                    self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
 
@@ -657,11 +658,14 @@ class File(MetadataItem):
                             yield (entry.path, new_file_path)
                             break  # we are done with this file
 
-    def _apply_additional_files_moves(self, moves):
+    def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
             if self.tagger.files.get(decode_filename(old_file_path)):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
+                continue
+            if not overwrite_existing_files and os.path.exists(new_file_path):
+                log.warning("File %r already exists, not moving %r", new_file_path, old_file_path)
                 continue
             log.debug("Moving %r to %r", old_file_path, new_file_path)
             try:
