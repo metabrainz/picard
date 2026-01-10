@@ -214,7 +214,7 @@ def name_filter(record):
     if parts[0] == path.anchor:
         parts[0] = '/'
     # Remove the plugin module file if the file name is the same as
-    # the immediately preceeding plugin zip file name, similar to the
+    # the immediately preceding plugin zip file name, similar to the
     # way that the final `__init__.py` file is removed.
     if len(parts) > 1 and parts[-1] + '.zip' == parts[-2]:
         del parts[-1]

@@ -774,7 +774,7 @@ def medium_to_metadata(node, m):
 
 
 def artist_to_metadata(node, m):
-    """Make meatadata dict from a JSON 'artist' node."""
+    """Make metadata dict from a JSON 'artist' node."""
     m.add_unique('musicbrainz_artistid', node['id'])
     for key, value in _node_skip_empty_iter(node):
         if key in _ARTIST_TO_METADATA:

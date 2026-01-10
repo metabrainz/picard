@@ -46,7 +46,7 @@ from picard.webservice.utils import hostkey_from_url
 # >>> ratecontrol.set_minimum_delay(('myservice.org', 80), 100)  # 10 requests/second
 
 
-# Minimun delay for the given hostkey (in milliseconds), can be set using
+# Minimum delay for the given hostkey (in milliseconds), can be set using
 # set_minimum_delay()
 REQUEST_DELAY_MINIMUM = defaultdict(lambda: 1000)
 
@@ -79,7 +79,7 @@ LAST_REQUEST_TIMES = defaultdict(lambda: 0)
 
 
 def set_minimum_delay(hostkey, delay_ms):
-    """Set the minimun delay between requests
+    """Set the minimum delay between requests
     hostkey is an unique key, for example (host, port)
     delay_ms is the delay in milliseconds
     """
@@ -87,7 +87,7 @@ def set_minimum_delay(hostkey, delay_ms):
 
 
 def set_minimum_delay_for_url(url, delay_ms):
-    """Set the minimun delay between requests
+    """Set the minimum delay between requests
     url will be converted to an unique key (host, port)
     delay_ms is the delay in milliseconds
     """

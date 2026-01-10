@@ -498,7 +498,7 @@ def upgrade_to_v2_8_0dev2(config):
 
 
 def upgrade_to_v2_9_0alpha2(config):
-    """Add preset file naming scripts to editable user scripts disctionary"""
+    """Add preset file naming scripts to editable user scripts dictionary"""
     from picard.script import get_file_naming_script_presets
 
     scripts = config.setting['file_renaming_scripts']
