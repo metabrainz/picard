@@ -354,9 +354,9 @@ execnet==2.1.2 \
     --hash=sha256:63d83bfdd9a23e35b9c6a3261412324f964c2ec8dcd8d3c6916ee9373e0befcd \
     --hash=sha256:67fba928dd5a544b783f6056f449e5e3931a5c378b128bc18501f7ea79e296ec
     # via pytest-xdist
-filelock==3.20.2 \
-    --hash=sha256:a2241ff4ddde2a7cebddf78e39832509cb045d18ec1a09d7248d6bfc6bfbbe64 \
-    --hash=sha256:fbba7237d6ea277175a32c54bb71ef814a8546d8601269e1bfc388de333974e8
+filelock==3.20.3 \
+    --hash=sha256:18c57ee915c7ec61cff0ecf7f0f869936c7c30191bb0cf406f1341778d0834e1 \
+    --hash=sha256:4b0dda527ee31078689fc205ec4f1c1bf7d56cf88b6dc9426c4f230e46c2dce1
     # via virtualenv
 identify==2.6.15 \
     --hash=sha256:1181ef7608e00704db228516541eb83a88a9f94433a8c80bb9b5bd54b1d81757 \
@@ -998,9 +998,9 @@ urllib3==2.6.3 \
     #   picard (pyproject.toml:dev)
     #   requests
     #   wlc
-virtualenv==20.36.0 \
-    --hash=sha256:a3601f540b515a7983508113f14e78993841adc3d83710fa70f0ac50f43b23ed \
-    --hash=sha256:e7ded577f3af534fd0886d4ca03277f5542053bedb98a70a989d3c22cfa5c9ac
+virtualenv==20.36.1 \
+    --hash=sha256:575a8d6b124ef88f6f51d56d656132389f961062a9177016a50e4f507bbcc19f \
+    --hash=sha256:8befb5c81842c641f8ee658481e42641c68b5eab3521d8e092d18320902466ba
     # via pre-commit
 wcwidth==0.2.14 \
     --hash=sha256:4d478375d31bc5395a3c55c40ccdf3354688364cd61c4f6adacaa9215d0b3605 \
