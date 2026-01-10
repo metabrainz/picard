@@ -1,6 +1,6 @@
 # Contributing to Picard
 
-Picard and associated plugins and documentation has been a colaborative effort by volunteer contributors from the very start,
+Picard and associated plugins and documentation has been a collaborative effort by volunteer contributors from the very start,
 and contributions continue to be welcome from anyone in the community, as:
 
 - Code improvements in Picard itself (as PRs to this repo)
