@@ -79,6 +79,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="move_overwrite_existing_files">
+        <property name="text">
+         <string>Overwrite existing files</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -291,6 +298,7 @@
   <tabstop>move_additional_files</tabstop>
   <tabstop>move_additional_files_pattern</tabstop>
   <tabstop>delete_empty_dirs</tabstop>
+  <tabstop>move_overwrite_existing_files</tabstop>
   <tabstop>rename_files</tabstop>
   <tabstop>naming_script_selector</tabstop>
   <tabstop>open_script_editor</tabstop>
