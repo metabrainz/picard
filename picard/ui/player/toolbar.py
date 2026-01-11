@@ -113,6 +113,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
 
     def playback_state_changed(self, state):
         self.pause_action.setEnabled(self.player.is_playing or self.player.is_paused)
+        self.pause_action.setChecked(self.player.is_paused)
 
     def _add_toolbar_action(self, action):
         self.addAction(action)
