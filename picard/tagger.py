@@ -1043,13 +1043,6 @@ class Tagger(QtWidgets.QApplication):
                 item.filename if isinstance(item, File) else '',
             )
 
-    def get_files_from_objects(self, objects, save=False):
-        """Return list of unique files from list of albums, clusters, tracks or files.
-
-        Note: Consider using picard.util.iter_files_from_objects instead, which returns an iterator.
-        """
-        return list(iter_files_from_objects(objects, save=save))
-
     def save(self, objects):
         """Save the specified objects."""
         for file in iter_files_from_objects(objects, save=True):
