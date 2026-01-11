@@ -987,7 +987,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_player_toolbar(self):
         """Create a toolbar with internal player control elements"""
-        from picard.ui.player.widgets import PlayerToolbar
+        from picard.ui.player.toolbar import PlayerToolbar
 
         toolbar = PlayerToolbar(self.player, self)
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
