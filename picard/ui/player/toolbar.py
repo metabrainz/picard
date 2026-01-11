@@ -18,7 +18,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
-
 import locale
 
 from PyQt6 import (
@@ -26,6 +25,7 @@ from PyQt6 import (
     QtGui,
     QtWidgets,
 )
+from PyQt6.QtGui import QWheelEvent
 
 from picard.file import File
 from picard.i18n import (
@@ -270,16 +270,19 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         label = locale.format_string(_(self._rate_fmt), playback_rate)
         self.setText(label)
 
-    def wheelEvent(self, event):
+    def wheelEvent(self, event: QWheelEvent):
+        # Angle delta is in eight of a degree, so 2880 are a full rotation.
+        full_rotation = 2880
         delta = event.angleDelta().y()
-        # Incrementing repeatedly in 0.1 steps would cause floating point
-        # rounding issues. Do the calculation in whole numbers to prevent this.
-        new_rate = int(self._playback_rate * 10)
-        if delta > 0:
-            new_rate += 1
-        elif delta < 0:
-            new_rate -= 1
-        new_rate = min(max(new_rate / 10.0, MIN_PLAYBACK_RATE), MAX_PLAYBACK_RATE)
+
+        # Adjust the playback rate relative to the duration, so that rotating the
+        # wheel halfway around would cover the full available range.
+        range = MAX_PLAYBACK_RATE - MIN_PLAYBACK_RATE
+        relative_delta = delta / float(full_rotation / 2) * range
+        new_rate = self._playback_rate + relative_delta
+
+        # Ensure the rate is inside the allowed range
+        new_rate = min(max(new_rate, MIN_PLAYBACK_RATE), MAX_PLAYBACK_RATE)
         if new_rate != self._playback_rate:
             self.set_playback_rate(new_rate)
             self.playback_rate_changed.emit(new_rate)
