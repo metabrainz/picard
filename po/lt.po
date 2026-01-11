@@ -8,13 +8,13 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-06-30 23:20+0000\n"
+"PO-Revision-Date: 2026-01-11 18:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -23,9 +23,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 :"
-" n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -59,12 +59,12 @@ msgstr "Identifikuota sankaupa „%(album)s“."
 #: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nėra atitinkamų leidinių sankaupui „%(album)s“"
+msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“"
 
 #: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Ieškoma metaduomenų sankaupui „%(album)s“…"
+msgstr "Ieškoma metaduomenų sankaupiui „%(album)s“…"
 
 #: picard/cluster.py:338
 msgid "Unclustered Files"
@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjų albumų "
+"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjo albumų "
 "pavadinimų schema."
 
 #: picard/config_upgrade.py:98
@@ -192,14 +192,12 @@ msgid "Debug"
 msgstr "Derinimas"
 
 #: picard/oauth.py:196
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "Netikėta tapatybės nustatymo klaida."
+msgstr "Netikėta prieigos rakto atšaukimo klaida."
 
 #: picard/oauth.py:347 picard/oauth.py:374
 msgid "Unexpected authentication error"
-msgstr "Netikėta tapatybės nustatymo klaida."
+msgstr "Netikėta tapatumo nustatymo klaida."
 
 #: picard/oauth.py:386
 #, python-format
@@ -666,43 +664,43 @@ msgstr "Išplėstinis"
 
 #: picard/profile.py:216
 msgid "Ignore file paths matching a regular expression"
-msgstr "Ignoruoti failų kelius, atitinkančius reguliariąją reiškinį"
+msgstr "Nepaisyti failų kelius, atitinkančius reguliarųjį reiškinį"
 
 #: picard/profile.py:217 picard/ui/ui_options_advanced.py:143
 msgid "Ignore hidden files"
-msgstr "Ignoruoti paslėptus failus"
+msgstr "Nepaisyti paslėptus failus"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
+msgstr "Įtraukti poaplankius, kai pridedant failus iš aplanko"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
-msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
+msgstr "Nepaisyti takelio trukmės skirtumo iki x sekundžių"
 
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Didžiausias grąžintinų subjektų skaičius pagal „MusicBrainz“ užklausą"
+msgstr "Didžiausias esybių skaičius, grąžinamas pagal „MusicBrainz“ užklausą"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
-msgstr "Išbaigtumo patikros ignoruoti: vaizdo įrašų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: vaizdo įrašų takeliai"
 
 #: picard/profile.py:230
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Išbaigtumo patikros ignoruoti: prieštarpių takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: prieštarpių takeliai"
 
 #: picard/profile.py:231
 msgid "Completeness check ignore: Data tracks"
-msgstr "Išbaigtumo patikros ignoruoti: duomenų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: duomenų takeliai"
 
 #: picard/profile.py:232
 msgid "Completeness check ignore: Silent tracks"
-msgstr "Išbaigtumo patikros ignoruoti: tyliųjų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: tyliųjų takeliai"
 
 #: picard/profile.py:233
 msgid "Tags to ignore for comparison"
-msgstr "Žymės, kurias ignoruoti palyginimui"
+msgstr "Žymės, kurias nepaisyti palyginimui"
 
 #: picard/profile.py:236
 msgid "Use a web proxy server"
@@ -6086,7 +6084,7 @@ msgstr ""
 
 #: picard/util/__init__.py:383
 msgid "No Title"
-msgstr "Nėra pavadinimo"
+msgstr "be pavadinimo"
 
 #: picard/util/bytes2human.py:37
 #, python-format
