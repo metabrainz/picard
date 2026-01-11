@@ -52,6 +52,7 @@ from enum import (
 )
 import fnmatch
 from functools import partial
+import hashlib
 import os
 import os.path
 import re
@@ -118,6 +119,8 @@ from picard.util.scripttofilename import script_to_filename_with_metadata
 
 from picard.ui.filter import Filter
 
+
+_READ_SIZE = 65536
 
 if TYPE_CHECKING:
     from picard.cluster import Cluster
@@ -224,6 +227,45 @@ class File(MetadataItem):
         """
         return metadata.getall(tag)
 
+    class FileIdentity:
+        def __init__(self, inode, size, mtime, hash_):
+            self.inode = inode
+            self.size = size
+            self.mtime = mtime
+            self.hash = hash_
+
+        def matches(self, other):
+            return (
+                other is not None
+                and self.inode == other.inode
+                and self.size == other.size
+                and self.mtime == other.mtime
+                and self.hash == other.hash
+            )
+
+    def _collect_identity(self, filename):
+        try:
+            stat = os.stat(filename)
+            return self.FileIdentity(
+                inode=stat.st_ino,
+                size=stat.st_size,
+                mtime=stat.st_mtime,
+                hash_=self._fast_hash(filename),
+            )
+        except OSError:
+            return None
+
+    def _fast_hash(self, filename):
+        """Return an black2b hash of the first READ_SIZE of the file or None ."""
+        try:
+            with open(filename, "rb") as fh:
+                data = fh.read(_READ_SIZE)
+                h = hashlib.blake2b()
+                h.update(data)
+                return h.hexdigest()
+        except Exception:
+            return None
+
     def _format_specific_copy(self, metadata, settings=None):
         """Creates a copy of metadata, but applies format_specific_metadata() to the values."""
         copy = Metadata(
@@ -314,6 +356,7 @@ class File(MetadataItem):
         else:
             self.clear_errors()
             self.state = self.State.NORMAL
+            self._loaded_identity = self._collect_identity(self.filename)
             postprocessors = []
             if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
@@ -425,6 +468,24 @@ class File(MetadataItem):
             return None
         new_filename = old_filename
         if config.setting['enable_tag_saving']:
+            # Detect source changes before saving (debug only)
+            current = self._collect_identity(old_filename)
+            if self._loaded_identity and current and not self._loaded_identity.matches(current):
+                log.warning(
+                    "File changed since load: %s (inode %s→%s, size %s→%s, mtime %s→%s, hash %s→%s)",
+                    old_filename,
+                    self._loaded_identity.inode,
+                    current.inode,
+                    self._loaded_identity.size,
+                    current.size,
+                    self._loaded_identity.mtime,
+                    current.mtime,
+                    self._loaded_identity.hash,
+                    current.hash,
+                )
+            elif current is None:
+                log.warning("File missing before save: %r", old_filename)
+
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
