@@ -8,13 +8,13 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
-# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
+# Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-10 17:12+0100\n"
-"PO-Revision-Date: 2025-07-29 23:36+0000\n"
+"PO-Revision-Date: 2026-01-11 18:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,9 +23,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.12.2\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:198
@@ -59,12 +59,12 @@ msgstr "Identifikuota sankaupa „%(album)s“."
 #: picard/cluster.py:279
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nėra atitinkamų leidinių sankaupui „%(album)s“"
+msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“"
 
 #: picard/cluster.py:298
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Ieškoma metaduomenų sankaupui „%(album)s“…"
+msgstr "Ieškoma metaduomenų sankaupiui „%(album)s“…"
 
 #: picard/cluster.py:355
 msgid "Unclustered Files"
@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "Šioje „Picard“ versijoje pašalinta atskira failų pavadinimų schema įvairių "
 "atlikėjų albumams.\n"
-"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjų albumų "
+"Jūsų failų pavadinimų schema automatiškai sujungta su vieno atlikėjo albumų "
 "pavadinimų schema."
 
 #: picard/config_upgrade.py:137
@@ -171,19 +171,19 @@ msgstr "Žurnalo interneto paslaugos atsakymų turinys"
 
 #: picard/debug_opts.py:86
 msgid "Git Backend"
-msgstr ""
+msgstr "Vidinis „Git“"
 
 #: picard/debug_opts.py:86
 msgid "Log git backend method calls"
-msgstr ""
+msgstr "Žurnalo vidinio „Git“ metodo kreipiniai"
 
 #: picard/file.py:248
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "Negalima išsaugoti failo. Failas nebeegzistuoja."
 
 #: picard/file.py:252
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "Negalima išsaugoti failo. Leidimas atmestas."
 
 #: picard/file.py:257
 msgid ""
@@ -194,20 +194,17 @@ msgstr ""
 "nepalaikomas."
 
 #: picard/file.py:962
-#, fuzzy, python-format
-#| msgid "No matching tracks above the threshold for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks above the threshold for file \"%(filename)s\""
 msgstr "Nėra atitikmenų takelių, viršijančių ribą failui „%(filename)s“"
 
 #: picard/file.py:964
-#, fuzzy, python-format
-#| msgid "File '%(filename)s' identified!"
+#, python-format
 msgid "File \"%(filename)s\" identified!"
 msgstr "Identifikuotas failas „%(filename)s“."
 
 #: picard/file.py:976
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Nėra atitinkamų takelių failui „%(filename)s“"
 
@@ -262,7 +259,7 @@ msgstr "Netikėta prieigos rakto atšaukimo klaida."
 
 #: picard/oauth.py:363 picard/oauth.py:390
 msgid "Unexpected authentication error"
-msgstr "Netikėta tapatybės nustatymo klaida."
+msgstr "Netikėta tapatumo nustatymo klaida."
 
 #: picard/oauth.py:402
 #, python-format
@@ -271,43 +268,43 @@ msgstr "Netikėta užklausos klaida (HTTP kodas %s)."
 
 #: picard/options.py:161
 msgid "Tags to ignore for comparison"
-msgstr "Žymės, kurias ignoruoti palyginimui"
+msgstr "Žymės, kurias nepaisyti palyginimui"
 
 #: picard/options.py:162
 msgid "Completeness check ignore: Data tracks"
-msgstr "Išbaigtumo patikros ignoruoti: duomenų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: duomenų takeliai"
 
 #: picard/options.py:163
 msgid "Completeness check ignore: Pregap tracks"
-msgstr "Išbaigtumo patikros ignoruoti: prieštarpių takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: prieštarpių takeliai"
 
 #: picard/options.py:164
 msgid "Completeness check ignore: Silent tracks"
-msgstr "Išbaigtumo patikros ignoruoti: tyliųjų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: tyliųjų takeliai"
 
 #: picard/options.py:165
 msgid "Completeness check ignore: Video tracks"
-msgstr "Išbaigtumo patikros ignoruoti: vaizdo įrašų takeliai"
+msgstr "Išbaigtumo patikros nepaisyti: vaizdo įrašų takeliai"
 
 #: picard/options.py:166 picard/ui/forms/ui_options_advanced.py:152
 msgid "Ignore hidden files"
-msgstr "Ignoruoti paslėptus failus"
+msgstr "Nepaisyti paslėptus failus"
 
 #: picard/options.py:167
 msgid "Ignore file paths matching a regular expression"
-msgstr "Ignoruoti failų kelius, atitinkančius reguliariąją reiškinį"
+msgstr "Nepaisyti failų kelius, atitinkančius reguliarųjį reiškinį"
 
 #: picard/options.py:169
 msgid "Ignore track duration difference under x seconds"
-msgstr "Ignoruoti takelio trukmės skirtumą iki x sekundžių"
+msgstr "Nepaisyti takelio trukmės skirtumo iki x sekundžių"
 
 #: picard/options.py:175 picard/ui/forms/ui_options_advanced.py:149
 msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Didžiausias grąžintinų subjektų skaičius pagal „MusicBrainz“ užklausą"
+msgstr "Didžiausias esybių skaičius, grąžinamas pagal „MusicBrainz“ užklausą"
 
 #: picard/options.py:177 picard/ui/forms/ui_options_advanced.py:151
 msgid "Include sub-folders when adding files from folder"
-msgstr "Įtraukti poaplankus, kai pridedant failus iš aplanko"
+msgstr "Įtraukti poaplankius, kai pridedant failus iš aplanko"
 
 #: picard/options.py:185
 msgid "Cover art providers"
@@ -7931,7 +7928,7 @@ msgstr "Užrakinti stulpelius"
 
 #: picard/ui/widgets/configurablecolumnsheader.py:208
 msgid "Manage custom columns…"
-msgstr ""
+msgstr "Tvarkyti pasirinktinius stulpelius…"
 
 #: picard/ui/widgets/lockableheaderview.py:44
 msgid ""
@@ -7944,45 +7941,35 @@ msgstr ""
 #: picard/ui/widgets/plugindetailswidget.py:100
 #: picard/ui/widgets/plugindetailswidget.py:341
 #: picard/ui/widgets/pluginlistwidget.py:544
-#, fuzzy
-#| msgid "Last Updated:"
 msgid "Update"
-msgstr "Paskutinį kartą atnaujinta:"
+msgstr "Atnaujinti"
 
 #: picard/ui/widgets/plugindetailswidget.py:104
 #: picard/ui/widgets/pluginlistwidget.py:549
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall"
-msgstr "Išdiegti įskiepį"
+msgstr "Išdiegti"
 
 #: picard/ui/widgets/plugindetailswidget.py:108
 #: picard/ui/widgets/pluginlistwidget.py:565
 msgid "Information"
-msgstr ""
+msgstr "Informacija"
 
 #: picard/ui/widgets/plugindetailswidget.py:136
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available"
-msgstr "Yra nauja versija"
+msgstr "Nėra aprašo"
 
 #: picard/ui/widgets/plugindetailswidget.py:208
 #: picard/ui/widgets/plugindetailswidget.py:323
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Failed"
-msgstr "Išdiegti įskiepį"
+msgstr "Išdiegimas nepavyko"
 
 #: picard/ui/widgets/plugindetailswidget.py:245
 msgid "N/A"
-msgstr ""
+msgstr "Netaikoma"
 
 #: picard/ui/widgets/plugindetailswidget.py:273
-#, fuzzy
-#| msgid "Update Checking"
 msgid "Update Plugin"
-msgstr "Naujinimo tikrinimas"
+msgstr "Atnaujinti įskiepį"
 
 #: picard/ui/widgets/plugindetailswidget.py:274
 #, python-brace-format
@@ -7991,93 +7978,83 @@ msgid ""
 "\n"
 "Do you want to update it anyway?"
 msgstr ""
+"Įskiepis „{name}“ nustatytas neatsinaujinti automatiškai.\n"
+"\n"
+"Ar vis tiek norite jį atnaujinti?"
 
 #: picard/ui/widgets/plugindetailswidget.py:323
 #, python-brace-format
 msgid "Failed to uninstall plugin: {errmsg}"
-msgstr ""
+msgstr "Nepavyko išdiegti įskiepį: {errmsg}."
 
 #: picard/ui/widgets/plugindetailswidget.py:330
-#, fuzzy
-#| msgid "Loading…"
 msgid "Updating…"
-msgstr "Kraunama…"
+msgstr "Atnaujinama…"
 
 #: picard/ui/widgets/pluginlistwidget.py:69
 #: picard/ui/widgets/pluginlistwidget.py:81
 msgid "Update All"
-msgstr ""
+msgstr "Atnaujinti visus"
 
 #: picard/ui/widgets/pluginlistwidget.py:77
-#, fuzzy, python-brace-format
-#| msgid "Unmatched Files"
+#, python-brace-format
 msgid "Update All ({count})"
-msgstr "Neatitinkantys failai"
+msgstr "Atnaujinti visus ({count})"
 
 #: picard/ui/widgets/pluginlistwidget.py:123
 msgid "Enabled"
 msgstr "Įjungta"
 
 #: picard/ui/widgets/pluginlistwidget.py:123
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin"
-msgstr "Įskiepiai"
+msgstr "Įskiepis"
 
 #: picard/ui/widgets/pluginlistwidget.py:123
 msgid "Version"
 msgstr "Versija"
 
 #: picard/ui/widgets/pluginlistwidget.py:123
-#, fuzzy
-#| msgid "Version"
 msgid "New Version"
-msgstr "Versija"
+msgstr "Nauja versija"
 
 #: picard/ui/widgets/pluginlistwidget.py:245
 msgid "This plugin is included in updates"
-msgstr ""
+msgstr "Šis įskiepis yra įtrauktas naujinimuose."
 
 #: picard/ui/widgets/pluginlistwidget.py:247
 msgid "This plugin is excluded from updates"
-msgstr ""
+msgstr "Šis įskiepis nėra įtrauktas į atnaujinimus."
 
 #: picard/ui/widgets/pluginlistwidget.py:253
 msgid "In Progress…"
-msgstr ""
+msgstr "Vykdoma…"
 
 #: picard/ui/widgets/pluginlistwidget.py:262
 #: picard/ui/widgets/pluginlistwidget.py:289
 #: picard/ui/widgets/pluginlistwidget.py:308
 #: picard/ui/widgets/pluginlistwidget.py:315
-#, fuzzy
-#| msgid "Available Locales"
 msgid "Available"
-msgstr "Galimos lokalės"
+msgstr "Pasiekiamas"
 
 #: picard/ui/widgets/pluginlistwidget.py:535
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable"
-msgstr "Neįjungta"
+msgstr "Neįjungti"
 
 #: picard/ui/widgets/pluginlistwidget.py:538
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Įjungta"
+msgstr "Įjungti"
 
 #: picard/ui/widgets/pluginlistwidget.py:553
 msgid "Reinstall"
-msgstr ""
+msgstr "Diegti iš naujo"
 
 #: picard/ui/widgets/pluginlistwidget.py:557
 msgid "Switch Ref"
-msgstr ""
+msgstr "Perjungimo nuor."
 
 #: picard/ui/widgets/pluginlistwidget.py:571
 msgid "View Repository"
-msgstr ""
+msgstr "Peržiūrėti saugyklą"
 
 #: picard/ui/widgets/pluginlistwidget.py:580
 #: picard/ui/widgets/pluginlistwidget.py:587
@@ -8085,10 +8062,8 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:635
 #: picard/ui/widgets/pluginlistwidget.py:666
 #: picard/ui/widgets/pluginlistwidget.py:719
-#, fuzzy
-#| msgid "File Error"
 msgid "Plugin Error"
-msgstr "Failo klaida"
+msgstr "Įskiepio klaida"
 
 #: picard/ui/widgets/pluginlistwidget.py:581
 #, python-brace-format
@@ -8096,6 +8071,8 @@ msgid ""
 "Failed to enable plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko įjungti įskiepio „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:588
 #, python-brace-format
@@ -8103,6 +8080,8 @@ msgid ""
 "Failed to disable plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko išjungti įskiepio „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:618
 #, python-brace-format
@@ -8110,6 +8089,8 @@ msgid ""
 "Failed to update plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko atnaujinti įskiepio „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:636
 #, python-brace-format
@@ -8117,6 +8098,8 @@ msgid ""
 "Failed to uninstall plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko išdiegti įskiepio „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:667
 #, python-brace-format
@@ -8124,10 +8107,12 @@ msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko iš naujo įdiegti įskiepio „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:677
 msgid "Could not find plugin repository URL"
-msgstr ""
+msgstr "Nepavyko rasti įskiepio saugyklos URL."
 
 #: picard/ui/widgets/pluginlistwidget.py:720
 #, python-brace-format
@@ -8135,55 +8120,50 @@ msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"Nepavyko perjungti nuor. įskiepiui „{name}“:\n"
+"{errmsg}."
 
 #: picard/ui/widgets/pluginlistwidget.py:778
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Plugin"
 msgstr "Išdiegti įskiepį"
 
 #: picard/ui/widgets/pluginlistwidget.py:786
-#, fuzzy, python-brace-format
-#| msgid "Are you sure you want to quit Picard?"
+#, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
-msgstr "Ar tikrai nori baigti Picard?"
+msgstr "Ar tikrai norite išdiegti „{name}“?"
 
 #: picard/ui/widgets/pluginlistwidget.py:789
 msgid "Also remove plugin configuration"
-msgstr ""
+msgstr "Taip pat šalinti įskiepio konfigūraciją"
 
 #: picard/ui/widgets/pluginlistwidget.py:790
 msgid "Remove all saved settings and configuration for this plugin"
-msgstr ""
+msgstr "Šalinti visus išsaugotus šio įskiepio nustatymus ir konfigūraciją"
 
 #: picard/ui/widgets/pluginlistwidget.py:794
-#, fuzzy
-#| msgid "is not installed"
 msgid "Yes, Uninstall!"
-msgstr "nėra įdiegta"
+msgstr "Taip, išdiegti"
 
 #: picard/ui/widgets/pluginlistwidget.py:818
 msgid "Switch Git Ref"
-msgstr ""
+msgstr "Perjungimo „Git“ nuor."
 
 #: picard/ui/widgets/pluginlistwidget.py:829
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
-msgstr ""
+msgstr "Perjungti nuor. į „{name}“"
 
 #: picard/ui/widgets/pluginlistwidget.py:839
 msgid "Yes, Switch!"
-msgstr ""
+msgstr "Taip, perjungti"
 
 #: picard/ui/widgets/pluginlistwidget.py:868
-#, fuzzy
-#| msgid "Locale Selector"
 msgid "No Ref Selected"
-msgstr "Lokalės parinkiklis"
+msgstr "Nėra pasirinktos nuor."
 
 #: picard/ui/widgets/pluginlistwidget.py:869
 msgid "Please select or enter a ref to switch to."
-msgstr ""
+msgstr "Pasirinkite arba įveskite nuor., į kurią norite perjungti."
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Rename profile"
@@ -8199,42 +8179,41 @@ msgstr "Ar tikrai norite pašalinti šį profilį?"
 
 #: picard/ui/widgets/refselector.py:48
 msgid "Use the default ref (usually main/master branch)"
-msgstr ""
+msgstr "Naudoti numatytąją nuor. (paprastai pagrindinę / vyriausiąją atšaką)"
 
 #: picard/ui/widgets/refselector.py:63
 msgid "Branches"
-msgstr ""
+msgstr "Šakos"
 
 #: picard/ui/widgets/refselector.py:70
 msgid "Enter custom ref (tag, branch, or commit):"
-msgstr ""
+msgstr "Įveskite pasirinktinį nuor. (žymę, šaką arba įsipareigojimą):"
 
 #: picard/ui/widgets/refselector.py:74
 msgid "Custom"
-msgstr ""
+msgstr "Pasirinktinė"
 
 #: picard/ui/widgets/refselector.py:113
 #, python-brace-format
 msgid "Use default ref: {ref} ({description})"
-msgstr ""
+msgstr "Naudokite numatytąją nuor.: {ref} {description}"
 
 #: picard/ui/widgets/scriptdocumentation.py:131
-#, fuzzy, python-brace-format
-#| msgid "Plugin \"%(plugin)s\""
+#, python-brace-format
 msgid "Plugin: {plugin_name}"
-msgstr "Įskiepis „%(plugin)s“"
+msgstr "Įskiepis: „{plugin_name}“"
 
 #: picard/ui/widgets/scriptdocumentation.py:206
 msgid "Find:"
-msgstr ""
+msgstr "Rasti:"
 
 #: picard/ui/widgets/scriptdocumentation.py:221
 msgid "Find previous"
-msgstr ""
+msgstr "Rasti ankstesnį"
 
 #: picard/ui/widgets/scriptdocumentation.py:228
 msgid "Find next"
-msgstr ""
+msgstr "Rasti tolesnį"
 
 #: picard/ui/widgets/scriptdocumentation.py:242
 msgid "Functions"
@@ -8247,13 +8226,11 @@ msgstr "Atverti skriptavimo dokumentaciją naršyklėje"
 #: picard/ui/widgets/scriptdocumentation.py:287
 #, python-brace-format
 msgid "({item} of {total})"
-msgstr ""
+msgstr "({item} iš {total})"
 
 #: picard/ui/widgets/scriptdocumentation.py:289
-#, fuzzy
-#| msgid "File not found"
 msgid "(not found)"
-msgstr "Nerastas failas"
+msgstr "(nerasta)"
 
 #: picard/ui/widgets/scriptlistwidget.py:58
 msgid "Rename script"
@@ -8273,7 +8250,8 @@ msgid ""
 "<em>Function <code>$%s</code> does not exist.<br><br>Are you missing a "
 "plugin?</em>"
 msgstr ""
-"<em>Funkcija <code>$%s</code> neegzistuoja.<br><br>Ar trūksta įskiepio?</em>"
+"<em>Funkcija „<code>$%s</code>“ neegzistuoja.<br><br>Ar trūksta įskiepio?</"
+"em>"
 
 #: picard/ui/widgets/scripttextedit.py:423
 msgid "&Word wrap script"
@@ -8297,7 +8275,7 @@ msgstr "Rodyti mygtuko etiketes skripto elementams"
 
 #: picard/util/__init__.py:390
 msgid "No Title"
-msgstr "Nėra pavadinimo"
+msgstr "be pavadinimo"
 
 #: picard/util/bytes2human.py:43
 #, python-format
