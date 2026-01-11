@@ -37,7 +37,7 @@ dependencies = [
     "pyobjc-core>=6.2, <12; sys_platform == 'darwin'",
     "pyobjc-framework-Cocoa>=6.2, <12; sys_platform == 'darwin'",
     "PyQt6>=6.6.1",
-    "PyQt6-Qt6>=6.6.1",
+    "PyQt6-Qt6>=6.6.1,!=6.10.*; sys_platform == 'linux'",
     "python-dateutil~=2.7",
     "pywin32; sys_platform == 'win32'",
     "PyYAML>=5.1, <7",
