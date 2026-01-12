@@ -205,10 +205,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if DesktopStatusIndicator:
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
         if not disable_player:
-            from picard.ui.player import Player
+            from picard.ui.player import get_player
 
-            player = Player(self)
-            if player.available:
+            player = get_player(self)
+            if player and player.available:
                 self.player = player
                 self.player.error.connect(self._on_player_error)
 
@@ -375,8 +375,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             event.ignore()
             return
         if self.player:
-            config.persist['mediaplayer_playback_rate'] = self.player.playback_rate()
-            config.persist['mediaplayer_volume'] = self.player.volume()
+            self.player.save_settings()
         self.saveWindowState()
         # Confirm loss of unsaved changes in script editor.
         if self.script_editor_dialog:
@@ -944,7 +943,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             style = QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon
         self.toolbar.setToolButtonStyle(style)
         if self.player:
-            self.player.toolbar.setToolButtonStyle(style)
+            self.player_toolbar.setToolButtonStyle(style)
 
     def _create_toolbar(self):
         self._create_search_toolbar()
@@ -988,12 +987,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_player_toolbar(self):
         """Create a toolbar with internal player control elements"""
-        toolbar = self.player.create_toolbar()
+        from picard.ui.player.toolbar import PlayerToolbar
+
+        toolbar = PlayerToolbar(self.player, self)
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         self.actions[MainAction.PLAYER_TOOLBAR_TOGGLE] = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
+        self.player_toolbar = toolbar
 
     def _create_search_toolbar(self):
         config = get_config()
