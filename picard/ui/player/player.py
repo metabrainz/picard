@@ -61,7 +61,7 @@ class Player(QtCore.QObject):
         self._media_queue = deque()
         self._can_play = False
         self._is_playing = False
-        self._is_stopped = False
+        self._is_stopped = True
         self._is_paused = False
         player = QMediaPlayer(parent)
         self._player = player
@@ -170,13 +170,24 @@ class Player(QtCore.QObject):
 
     def set_objects(self, objects):
         self._selected_objects = objects
-        self._can_play = bool(any(iter_files_from_objects(self._selected_objects)))
-        self.playback_available.emit(self._can_play)
+        can_play = bool(any(iter_files_from_objects(self._selected_objects)))
+        if self._can_play != can_play:
+            self._can_play = can_play
+            self.playback_available.emit(self._can_play)
 
     def play(self):
         """Play selected tracks with an internal player"""
-        self._media_queue = deque(iter_files_from_objects(self._selected_objects))
-        self._play_next()
+        # If selection changed, play the new selection
+        if self._selected_objects:
+            self._media_queue = deque(iter_files_from_objects(self._selected_objects))
+            self._selected_objects = []
+            self._play_next()
+        # If the player was stopped try to play next in queue
+        elif self.is_stopped:
+            self._play_next()
+        # Resume paused playback
+        elif self.is_paused:
+            self._player.play()
 
     def pause(self, is_paused: bool):
         """Toggle pause of an internal player"""
@@ -184,6 +195,22 @@ class Player(QtCore.QObject):
             self._player.pause()
         else:
             self._player.play()
+
+    def stop(self):
+        if self.is_stopped:
+            return
+
+        if self._current_file:
+            # re-append the current file to the queue so it plays next again
+            self._media_queue.appendleft(self._current_file)
+            self._current_file = None
+
+        # hard stop, not just end of track
+        self._is_playing = False
+        self._is_paused = False
+        self._is_stopped = True
+        self._player.stop()
+        self.playback_state_changed.emit(self._player.PlaybackState())
 
     def play_next(self):
         if self._is_playing:
@@ -200,18 +227,22 @@ class Player(QtCore.QObject):
         except IndexError:
             self._current_file = None
             self._can_play = False
+            self._is_playing = False
+            self._is_paused = False
+            self._is_stopped = True
             self._player.stop()
+            self.media_changed.emit(None)
             self.playback_available.emit(self._can_play)
 
     def _on_playback_state_changed(self, state):
-        self._is_stopped = state == QMediaPlayer.PlaybackState.StoppedState
-        self._is_playing = state == QMediaPlayer.PlaybackState.PlayingState
-        self._is_paused = state == QMediaPlayer.PlaybackState.PausedState
-
-        # if the track stopped, but we have more in the queue, continue with next track.
-        if self._is_stopped and self._media_queue:
+        # if the track stopped while playing and we have more in the queue,
+        # continue with next track.
+        if state == QMediaPlayer.PlaybackState.StoppedState and self.is_playing:
             self._play_next()
         else:
+            self._is_stopped = state == QMediaPlayer.PlaybackState.StoppedState
+            self._is_playing = state == QMediaPlayer.PlaybackState.PlayingState
+            self._is_paused = state == QMediaPlayer.PlaybackState.PausedState
             self.playback_state_changed.emit(state)
 
     def _on_volume_changed(self, volume):

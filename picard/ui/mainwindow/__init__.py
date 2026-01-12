@@ -211,6 +211,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if player and player.available:
                 self.player = player
                 self.player.error.connect(self._on_player_error)
+                self.player.playback_available.connect(self._on_player_available_changed)
 
         self.script_editor_dialog = None
 
@@ -1448,6 +1449,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _on_player_error(self, error, msg):
         self.set_statusbar_message(msg, echo=log.warning, translate=None)
 
+    def _on_player_available_changed(self, available):
+        if not available and self.selected_objects:
+            # requeue currently selected items
+            self._update_player_items()
+
+    def _update_player_items(self):
+        if self.player:
+            # Run on event loop
+            QtCore.QTimer.singleShot(0, partial(self.player.set_objects, self.selected_objects))
+
     def open_folder(self):
         folders = iter_unique(os.path.dirname(f.filename) for f in iter_files_from_objects(self.selected_objects))
         for folder in folders:
@@ -1690,7 +1701,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.set_statusbar_message("")
 
         if self.player:
-            self.player.set_objects(self.selected_objects)
+            self._update_player_items()
 
         metadata_visible = self.metadata_view.isVisible()
         coverart_visible = metadata_visible and self.cover_art_box.isVisible()
