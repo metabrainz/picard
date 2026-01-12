@@ -1,11 +1,11 @@
 # Form implementation generated from reading ui file 'ui/options_general.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
 
-from PyQt6 import (     # noqa: F401
+from PyQt6 import (
     QtCore,
     QtGui,
     QtWidgets,
@@ -37,9 +37,8 @@ class Ui_GeneralOptionsPage(object):
         self.server_port.setObjectName("server_port")
         self.gridlayout.addWidget(self.server_port, 1, 1, 1, 1)
         self.server_host_primary_warning = QtWidgets.QFrame(parent=self.groupBox)
-        self.server_host_primary_warning.setStyleSheet(
-            "QFrame { background-color: #ffc107; color: black }\n"
-            "QCheckBox { color: black }")
+        self.server_host_primary_warning.setStyleSheet("QFrame { background-color: #ffc107; color: black }\n"
+"QCheckBox { color: black }")
         self.server_host_primary_warning.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.server_host_primary_warning.setObjectName("server_host_primary_warning")
         self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.server_host_primary_warning)
@@ -149,7 +148,7 @@ class Ui_GeneralOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.update_check_days.sizePolicy().hasHeightForWidth())
         self.update_check_days.setSizePolicy(sizePolicy)
-        self.update_check_days.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.update_check_days.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.update_check_days.setMinimum(1)
         self.update_check_days.setObjectName("update_check_days")
         self.gridLayout.addWidget(self.update_check_days, 0, 1, 1, 1)

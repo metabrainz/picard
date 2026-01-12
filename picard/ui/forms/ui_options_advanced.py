@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_advanced.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -130,6 +130,7 @@ class Ui_AdvancedOptionsPage(object):
         self.compare_ignore_tags.setObjectName("compare_ignore_tags")
         self.verticalLayout.addWidget(self.compare_ignore_tags)
         self.vboxlayout.addWidget(self.groupBox_ignore_tags)
+        self.label_ignore_regex.setBuddy(self.ignore_regex)
         self.label_query_limit.setBuddy(self.query_limit)
         self.label_track_duration_diff.setBuddy(self.ignore_track_duration_difference_under)
 

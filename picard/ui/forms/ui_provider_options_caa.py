@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/provider_options_caa.ui'
 #
-# Created by: PyQt6 UI code generator 6.6.1
+# Created by: PyQt6 UI code generator 6.9.1
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
