@@ -20,6 +20,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import deque
+from enum import Enum
 
 from PyQt6 import QtCore
 from PyQt6.QtMultimedia import (
@@ -44,9 +45,14 @@ MAX_PLAYBACK_RATE = 1.5
 
 
 class Player(QtCore.QObject):
+    class PlaybackState(Enum):
+        STOPPED = 0
+        PLAYING = 1
+        PAUSED = 2
+
     playback_available = QtCore.pyqtSignal(bool)
     error = QtCore.pyqtSignal(object, str)
-    playback_state_changed = QtCore.pyqtSignal(QMediaPlayer.PlaybackState)
+    playback_state_changed = QtCore.pyqtSignal(PlaybackState)
     duration_changed = QtCore.pyqtSignal(int)
     position_changed = QtCore.pyqtSignal(int)
     playback_rate_changed = QtCore.pyqtSignal(float)
@@ -60,9 +66,7 @@ class Player(QtCore.QObject):
         self._current_file = None
         self._media_queue = deque()
         self._can_play = False
-        self._is_playing = False
-        self._is_stopped = True
-        self._is_paused = False
+        self._playback_state = Player.PlaybackState.STOPPED
         player = QMediaPlayer(parent)
         self._player = player
         if player.isAvailable():
@@ -102,19 +106,19 @@ class Player(QtCore.QObject):
 
     @property
     def is_playing(self):
-        return self._is_playing
+        return self._playback_state == Player.PlaybackState.PLAYING
 
     @property
     def is_paused(self):
-        return self._is_paused
+        return self._playback_state == Player.PlaybackState.PAUSED
 
     @property
     def is_stopped(self):
-        return self._is_stopped
+        return self._playback_state == Player.PlaybackState.STOPPED
 
     @property
-    def playback_state(self) -> QMediaPlayer.PlaybackState:
-        return self._player.playbackState()
+    def playback_state(self) -> PlaybackState:
+        return self._playback_state
 
     @property
     def duration(self) -> int:
@@ -206,14 +210,12 @@ class Player(QtCore.QObject):
             self._current_file = None
 
         # hard stop, not just end of track
-        self._is_playing = False
-        self._is_paused = False
-        self._is_stopped = True
+        self._playback_state = Player.PlaybackState.STOPPED
         self._player.stop()
-        self.playback_state_changed.emit(self._player.PlaybackState())
+        self.playback_state_changed.emit(self._playback_state)
 
     def play_next(self):
-        if self._is_playing:
+        if self.is_playing:
             # Stop will automatically play the next track if queue is not empty
             self._player.stop()
 
@@ -227,9 +229,7 @@ class Player(QtCore.QObject):
         except IndexError:
             self._current_file = None
             self._can_play = False
-            self._is_playing = False
-            self._is_paused = False
-            self._is_stopped = True
+            self._playback_state = Player.PlaybackState.STOPPED
             self._player.stop()
             self.media_changed.emit(None)
             self.playback_available.emit(self._can_play)
@@ -240,10 +240,16 @@ class Player(QtCore.QObject):
         if state == QMediaPlayer.PlaybackState.StoppedState and self.is_playing:
             self._play_next()
         else:
-            self._is_stopped = state == QMediaPlayer.PlaybackState.StoppedState
-            self._is_playing = state == QMediaPlayer.PlaybackState.PlayingState
-            self._is_paused = state == QMediaPlayer.PlaybackState.PausedState
-            self.playback_state_changed.emit(state)
+            if state == QMediaPlayer.PlaybackState.StoppedState:
+                new_state = Player.PlaybackState.STOPPED
+            elif state == QMediaPlayer.PlaybackState.PlayingState:
+                new_state = Player.PlaybackState.PLAYING
+            elif state == QMediaPlayer.PlaybackState.PausedState:
+                new_state = Player.PlaybackState.PAUSED
+
+            if new_state and new_state != self._playback_state:
+                self._playback_state = new_state
+                self.playback_state_changed.emit(new_state)
 
     def _on_volume_changed(self, volume):
         self.volume_changed.emit(get_logarithmic_volume(volume))
