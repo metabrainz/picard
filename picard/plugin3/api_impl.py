@@ -480,6 +480,27 @@ class PluginApi:
         return QLocale().name()
 
     @classmethod
+    def _get_api_for_module(cls, module_name: str) -> 'PluginApi | None':
+        """Get the PluginApi instance for a specific module name."""
+        # Check cache first
+        if module_name in cls._module_cache:
+            return cls._module_cache[module_name]
+
+        # Cache miss - do the lookup
+        api = cls._instances.get(module_name)
+        if api is None:
+            # Try to find parent module (for submodules)
+            for registered_module in cls._instances:
+                if module_name.startswith(registered_module + '.'):
+                    api = cls._instances[registered_module]
+                    break
+
+        # Cache the result if found
+        if api is not None:
+            cls._module_cache[module_name] = api
+        return api
+
+    @classmethod
     def get_api(cls) -> 'PluginApi':
         """Get the PluginApi instance for the calling plugin module.
 
@@ -504,28 +525,9 @@ class PluginApi:
         if module_name is None:
             raise RuntimeError(f"No module_name found in {frame}")
 
-        # Check cache first
-        if module_name in cls._module_cache:
-            return cls._module_cache[module_name]
-
-        # Cache miss - do the lookup
-        # Try exact match first
-        if module_name in cls._instances:
-            api = cls._instances[module_name]
-        else:
-            # Try to find parent module (for submodules)
-            api = None
-            for registered_module in cls._instances:
-                if module_name.startswith(registered_module + '.'):
-                    api = cls._instances[registered_module]
-                    break
-
-            if api is None:
-                raise RuntimeError(f"No PluginApi instance found for module {module_name}")
-
-        # Cache the result
-        assert api is not None
-        cls._module_cache[module_name] = api
+        api = cls._get_api_for_module(module_name)
+        if api is None:
+            raise RuntimeError(f"No PluginApi instance found for module {module_name}")
         return api
 
     # Translation

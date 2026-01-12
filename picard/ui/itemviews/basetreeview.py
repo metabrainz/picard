@@ -351,7 +351,14 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                         action_menu = plugin_menus[key]
                     else:
                         action_menu = plugin_menus[key] = action_menu.addMenu(key[-1])
-                action = ActionClass()
+                try:
+                    from picard.plugin3.api_impl import PluginApi
+
+                    api = PluginApi._get_api_for_module(ActionClass.__module__)
+                    action = ActionClass(api=api)
+                except Exception as e:
+                    log.debug("Failed to create action %s with API: %s", ActionClass, e)
+                    action = ActionClass()
                 action.setParent(action_menu)  # Set parent to keep action alive
                 action_menu.addAction(action)
 

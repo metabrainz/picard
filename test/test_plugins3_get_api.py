@@ -196,3 +196,34 @@ retrieved_api = PluginApi.get_api()
         self.assertIn('test_plugin_subcache.widgets', PluginApi._module_cache)
         self.assertIs(PluginApi._module_cache['test_plugin_subcache'], api)
         self.assertIs(PluginApi._module_cache['test_plugin_subcache.widgets'], api)
+
+    def test_get_api_for_module_direct(self):
+        """Test _get_api_for_module() with direct module name."""
+        api, module = self._create_api('test_plugin_direct')
+
+        retrieved_api = PluginApi._get_api_for_module('test_plugin_direct')
+        self.assertIs(retrieved_api, api)
+
+    def test_get_api_for_module_submodule(self):
+        """Test _get_api_for_module() with submodule name."""
+        api, module = self._create_api('test_plugin_parent')
+
+        retrieved_api = PluginApi._get_api_for_module('test_plugin_parent.submodule')
+        self.assertIs(retrieved_api, api)
+
+    def test_get_api_for_module_unknown(self):
+        """Test _get_api_for_module() with unknown module."""
+        retrieved_api = PluginApi._get_api_for_module('unknown_module')
+        self.assertIsNone(retrieved_api)
+
+    def test_get_api_for_module_caching(self):
+        """Test _get_api_for_module() caches results."""
+        api, module = self._create_api('test_plugin_cache_direct')
+
+        # First call should populate cache
+        self.assertEqual(len(PluginApi._module_cache), 0)
+        retrieved_api = PluginApi._get_api_for_module('test_plugin_cache_direct')
+
+        self.assertIs(retrieved_api, api)
+        self.assertEqual(len(PluginApi._module_cache), 1)
+        self.assertIn('test_plugin_cache_direct', PluginApi._module_cache)
