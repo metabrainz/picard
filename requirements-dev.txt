@@ -1011,7 +1011,7 @@ wcwidth==0.2.14 \
     --hash=sha256:4d478375d31bc5395a3c55c40ccdf3354688364cd61c4f6adacaa9215d0b3605 \
     --hash=sha256:a7bb560c8aee30f9957e5f9895805edd20602f2d7f720186dfd906e82b4982e1
     # via columnar
-wlc==1.16.1 \
-    --hash=sha256:81356de5cc73f2d93ade69d3640b73718772e26d0d551d32eb18e65480b0ee98 \
-    --hash=sha256:c04df389c26ec4ad9fb8fc79d5047f99ac53cadec0c0f78ed91dbd060e2cc7e5
+wlc==1.17.0 \
+    --hash=sha256:6c7a64df98f37dfd7657fe8eaf0e4badaf5dc5db4aa9879689c1c022514d50e8 \
+    --hash=sha256:8951e2c5d9452a9c5bb3f6b70d71df067c735316e9509070e3ca3c0c0c36c45f
     # via picard (pyproject.toml:dev)
