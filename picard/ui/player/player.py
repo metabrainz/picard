@@ -117,6 +117,11 @@ class Player(QtCore.QObject):
         return self._player.playbackState()
 
     @property
+    def duration(self) -> int:
+        """The current media full playback duration in milliseconds"""
+        return self._player.duration()
+
+    @property
     def position(self) -> int:
         """Playback position in milliseconds"""
         return self._player.position()
