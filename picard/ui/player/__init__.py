@@ -50,7 +50,7 @@ if TYPE_CHECKING:
     from .player import Player
 
 
-OS_SUPPORTS_NOW_PLAYING = not (IS_MACOS or IS_WIN or IS_HAIKU) and qt_multimedia_available
+OS_SUPPORTS_NOW_PLAYING = not (IS_WIN or IS_HAIKU) and qt_multimedia_available
 
 
 class NowPlayingService(Protocol):
@@ -88,9 +88,15 @@ def get_now_playing_service(player: 'Player') -> NowPlayingService | None:
         return None
 
     try:
-        from picard.ui.player.mpris import MPRIS2NowPlayingService
+        now_playing_service = None
+        if IS_MACOS:
+            from picard.ui.player.macos import MacNowPlayingService
 
-        now_playing_service = MPRIS2NowPlayingService(player)
+            now_playing_service = MacNowPlayingService(player)
+        else:  # Linux, FreeBSD and other XDG desktop systems
+            from picard.ui.player.mpris import MPRIS2NowPlayingService
+
+            now_playing_service = MPRIS2NowPlayingService(player)
 
         if get_config().setting['player_now_playing']:
             now_playing_service.enable()
