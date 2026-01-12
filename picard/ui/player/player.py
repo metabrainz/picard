@@ -55,6 +55,7 @@ class Player(QtCore.QObject):
     playback_state_changed = QtCore.pyqtSignal(PlaybackState)
     duration_changed = QtCore.pyqtSignal(int)
     position_changed = QtCore.pyqtSignal(int)
+    seeked = QtCore.pyqtSignal(int)
     playback_rate_changed = QtCore.pyqtSignal(float)
     volume_changed = QtCore.pyqtSignal(float)
     media_changed = QtCore.pyqtSignal(File)
@@ -134,6 +135,8 @@ class Player(QtCore.QObject):
     def position(self, position: int):
         """Set the playback position in milliseconds"""
         self._player.setPosition(position)
+        # emit seeked if position got explicitly changed
+        self.seeked.emit(position)
 
     @property
     def volume(self) -> float:
