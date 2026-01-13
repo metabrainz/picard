@@ -400,6 +400,10 @@ TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server"))
 TextOption('setting', 'proxy_username', '', title=N_("Proxy username"))
 BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server"))
 
+# picard/ui/options/plugin_execution_order.py
+# Plugin Execution Order
+Option('setting', 'plugins3_exec_order', dict(), title=N_("Plugins execution order"))
+
 # picard/ui/options/profiles.py
 # Option Profiles
 IntOption('persist', 'last_selected_profile_pos', 0)
