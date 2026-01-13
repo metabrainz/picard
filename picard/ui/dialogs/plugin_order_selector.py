@@ -205,12 +205,10 @@ class PluginOrderSelectorDialog(PicardDialog):
             defaultButton=QtWidgets.QMessageBox.StandardButton.No,
         )
 
-        if button != QtWidgets.QMessageBox.StandardButton.Yes:
-            return
-
-        self.plugin_exec_order = dict()
-        self._make_plugin_list()
-        self._update_table()
+        if button == QtWidgets.QMessageBox.StandardButton.Yes:
+            self.plugin_exec_order = dict()
+            self._make_plugin_list()
+            self._update_table()
 
     def get_updated_order(self):
         config = get_config()
