@@ -43,6 +43,7 @@ from picard.mbjson import (
     _locales_from_aliases,
     _node_skip_empty_iter,
     _parse_attributes,
+    _relations_to_metadata,
     _relations_to_metadata_target_type_url,
     _translate_artist_node,
     artist_to_metadata,
@@ -1008,3 +1009,46 @@ class RelationsToMetadataTargetTypeUrlTest(PicardTestCase):
         }
         _relations_to_metadata_target_type_url(relation, m, None)
         self.assertEqual('https://URL.LICENSE', m['license'])
+
+
+class RelationsToMetadataTargetTypeLabelTest(PicardTestCase):
+    def test_broadcast_date(self):
+        m = Metadata()
+        relation = {
+            'type': 'broadcast',
+            'target-type': 'label',
+            'begin': '1978-03-08',
+            'label': {
+                'id': '7cc5c602-0df5-43a0-a540-10a52467d0c8',
+                'name': 'BBC Radio 4',
+            },
+        }
+        _relations_to_metadata([relation], m)
+        self.assertEqual(m['~broadcast_date'], '1978-03-08')
+
+    def test_broadcast_no_date(self):
+        m = Metadata()
+        relation = {
+            'type': 'broadcast',
+            'target-type': 'label',
+            'label': {
+                'id': '7cc5c602-0df5-43a0-a540-10a52467d0c8',
+                'name': 'BBC Radio 4',
+            },
+        }
+        _relations_to_metadata([relation], m)
+        self.assertNotIn('~broadcast_date', m)
+
+    def test_other_relation(self):
+        m = Metadata()
+        relation = {
+            'type': 'manufacturing',
+            'target-type': 'label',
+            'begin': '1978-03-08',
+            'label': {
+                'id': '7cc5c602-0df5-43a0-a540-10a52467d0c8',
+                'name': 'BBC Radio 4',
+            },
+        }
+        _relations_to_metadata([relation], m)
+        self.assertNotIn('~broadcast_date', m)
