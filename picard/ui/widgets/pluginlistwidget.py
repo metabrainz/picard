@@ -579,8 +579,8 @@ class PluginListWidget(QtWidgets.QWidget):
         menu.addSeparator()
 
         # Open plugin priority editor
-        info_action = menu.addAction(_("Execution Order"))
-        info_action.triggered.connect(self._show_execution_order_editor)
+        order_action = menu.addAction(_("Execution Order"))
+        order_action.triggered.connect(self._show_execution_order_editor)
 
         # Show menu
         menu.exec(self.tree_widget.mapToGlobal(position))
