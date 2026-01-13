@@ -27,7 +27,12 @@ from PyQt6 import (
 from picard.i18n import _
 from picard.plugin import PluginInformation
 
-from markdown import markdown
+
+try:
+    from markdown import markdown
+except ImportError:
+    markdown = None
+
 
 from picard.ui import PicardDialog
 from picard.ui.widgets.orderabletableview import OrderableTableView
@@ -93,7 +98,8 @@ class PluginOrderSelectorDialog(PicardDialog):
             column1 = QtGui.QStandardItem(plugin.plugin_name)
             column1.setEditable(False)
             column1.setDropEnabled(False)
-            column1.setToolTip(markdown(plugin.plugin_description))
+            text = markdown(plugin.plugin_description) if markdown else plugin.plugin_description
+            column1.setToolTip(text)
             column1.setData(plugin.key, QtCore.Qt.ItemDataRole.UserRole)
 
             column2 = QtGui.QStandardItem(plugin.processor)
@@ -104,7 +110,8 @@ class PluginOrderSelectorDialog(PicardDialog):
             column3 = QtGui.QStandardItem(plugin.function_name)
             column3.setEditable(False)
             column3.setDropEnabled(False)
-            column3.setToolTip(markdown(plugin.function_description))
+            text = markdown(plugin.function_description) if markdown else plugin.function_description
+            column3.setToolTip(text)
 
             self.tableview._model.appendRow([column1, column2, column3])
 
