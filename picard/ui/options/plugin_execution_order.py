@@ -116,7 +116,8 @@ class PluginExecutionOrderOptionsPage(OptionsPage):
 
         new_order, return_state = display_plugin_order_selector(parent=self, plugins=plugins)
         if return_state:
-            self.plugin_exec_order = new_order
+            for key, value in new_order.items():
+                self.plugin_exec_order[key] = value
 
 
 register_options_page(PluginExecutionOrderOptionsPage)
