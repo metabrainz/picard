@@ -49,7 +49,7 @@ from picard.i18n import _
 
 PluginInformation = namedtuple(
     'PluginInformation',
-    [
+    (
         'key',
         'plugin_name',
         'plugin_description',
@@ -57,7 +57,7 @@ PluginInformation = namedtuple(
         'function_name',
         'function_description',
         'priority',
-    ],
+    ),
 )
 
 
@@ -70,6 +70,7 @@ class PluginFunctions:
     def __init__(self, label: str = None):
         self.functions = ExtensionPoint(label=label)
         self.priorities = {}
+        self.config_priorities = {}
         self.processor_type = label.split('_')[0]
         Option.add_if_missing('setting', 'plugins3_exec_order', dict())
 
@@ -78,13 +79,10 @@ class PluginFunctions:
         key = f"{function.__module__}:{self.processor_type}:{function.__name__}"
         return key
 
-    def get_priority(self, function, config_priorities: dict = None):
+    def get_priority(self, function):
         key = self.make_exec_order_key(function)
-        if config_priorities is None:
-            config = get_config()
-            config_priorities = config.setting['plugins3_exec_order']
-        if key in config_priorities:
-            return config_priorities[key]
+        if key in self.config_priorities:
+            return self.config_priorities[key]
         elif key in self.priorities:
             return self.priorities[key]
         return 0  # Default priority
@@ -98,16 +96,19 @@ class PluginFunctions:
             config_priorities = config.setting['plugins3_exec_order']
             config_priorities[key] = config_priorities[key] if key in config_priorities else priority
 
-    def get_plugin_function_information(self):
+    def get_plugin_function_information(self, order_dict: dict = None):
         """Returns registered functions for manually setting execution order"""
-        config = get_config()
-        config_priorities = config.setting['plugins3_exec_order']
-        for function in sorted(self.functions, key=lambda i: self.get_priority(i, config_priorities), reverse=True):
+        if order_dict is None:
+            config = get_config()
+            self.config_priorities = dict(config.setting['plugins3_exec_order'])
+        else:
+            self.config_priorities = dict(order_dict)
+
+        for function in sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True):
             key = self.make_exec_order_key(function)
             if not key.startswith(PLUGIN_MODULE_PREFIX):
                 continue
             if isinstance(function, partial):
-                # api: PluginApi = function.args[0]
                 api = function.args[0]
                 plugin_name = api.manifest.name()
                 plugin_description = api.manifest.description() or _("No plugin description available.")
@@ -133,8 +134,8 @@ class PluginFunctions:
     def _get_functions(self):
         """Returns registered functions by order of priority (highest first) and registration"""
         config = get_config()
-        config_priorities = config.setting['plugins3_exec_order']
-        for function in sorted(self.functions, key=lambda i: self.get_priority(i, config_priorities), reverse=True):
+        self.config_priorities = dict(config.setting['plugins3_exec_order'])
+        for function in sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True):
             yield function
 
     def run(self, *args, **kwargs):

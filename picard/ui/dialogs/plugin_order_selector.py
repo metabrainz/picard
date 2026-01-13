@@ -24,7 +24,12 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.config import get_config
 from picard.i18n import _
+from picard.metadata import (
+    album_metadata_processors,
+    track_metadata_processors,
+)
 from picard.plugin import PluginInformation
 
 
@@ -41,16 +46,17 @@ from picard.ui.widgets.orderabletableview import OrderableTableView
 class PluginOrderSelectorDialog(PicardDialog):
     help_url = '/config/options_plugin_execution_order.html'
 
-    def __init__(self, parent=None, plugins=None):
+    def __init__(self, parent=None):
         """Display dialog box to select the metadata processing plugins execution order.
 
         Args:
             parent ([type], optional): Parent of the QDialog object being created. Defaults to None.
-            plugins (list, optional): List of plugin items to order. Defaults to None.
         """
         super().__init__(parent)
-        self.plugins = plugins or []
-        self.plugin_exec_order = dict()
+        config = get_config()
+        self.plugin_exec_order = dict(config.setting['plugins3_exec_order'])
+        self.updating = False
+        self._make_plugin_list()
 
         self.setWindowTitle(_("Plugin Metadata Processing Order"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
@@ -71,6 +77,7 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.table_layout = QtWidgets.QHBoxLayout()
 
         self.tableview = OrderableTableView(self)
+        self.tableview.setAlternatingRowColors(True)
 
         self.tableview._model.setHorizontalHeaderLabels(
             [
@@ -91,31 +98,6 @@ class PluginOrderSelectorDialog(PicardDialog):
             ]
         ):
             self.tableview._model.horizontalHeaderItem(idx).setToolTip(text)
-
-        for plugin in sorted(self.plugins, key=lambda i: i.priority, reverse=True):
-            plugin: PluginInformation
-
-            column1 = QtGui.QStandardItem(plugin.plugin_name)
-            column1.setEditable(False)
-            column1.setDropEnabled(False)
-            text = markdown(plugin.plugin_description) if markdown else plugin.plugin_description
-            column1.setToolTip(text)
-            column1.setData(plugin.key, QtCore.Qt.ItemDataRole.UserRole)
-
-            column2 = QtGui.QStandardItem(plugin.processor)
-            column2.setEditable(False)
-            column2.setDropEnabled(False)
-            column2.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-
-            column3 = QtGui.QStandardItem(plugin.function_name)
-            column3.setEditable(False)
-            column3.setDropEnabled(False)
-            text = markdown(plugin.function_description) if markdown else plugin.function_description
-            column3.setToolTip(text)
-
-            self.tableview._model.appendRow([column1, column2, column3])
-
-        self.tableview.setCurrentIndex(self.tableview._model.index(0, 0))
 
         self.tableview.selectionModel().selectionChanged.connect(self._set_up_down_button_states)
 
@@ -155,24 +137,84 @@ class PluginOrderSelectorDialog(PicardDialog):
 
         self.buttonbox = QtWidgets.QDialogButtonBox(self)
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        self.button_reset = QtWidgets.QDialogButtonBox.StandardButton.Reset
+        self.buttonbox.addButton(self.button_reset)
 
         self.buttonbox.accepted.connect(self.accept)
         self.buttonbox.rejected.connect(self.reject)
         self.buttonbox.helpRequested.connect(self.show_help)
+        self.buttonbox.button(self.button_reset).clicked.connect(self._reset_priorities)
 
         self._layout.addWidget(self.buttonbox)
 
+        self._update_table()
+
+    def _make_plugin_list(self):
+        self.plugins = []
+        for processor in [album_metadata_processors, track_metadata_processors]:
+            for info in processor.get_plugin_function_information(self.plugin_exec_order):
+                self.plugins.append(info)
+
+    def _update_table(self):
+        self.updating = True
+        rows = self.tableview._model.rowCount()
+        self.tableview._model.removeRows(0, rows)
+
+        for plugin in sorted(self.plugins, key=lambda i: i.priority, reverse=True):
+            plugin: PluginInformation
+            column1 = QtGui.QStandardItem(plugin.plugin_name)
+            column1.setEditable(False)
+            column1.setDropEnabled(False)
+            text = markdown(plugin.plugin_description) if markdown else plugin.plugin_description
+            column1.setToolTip(text)
+            column1.setData(plugin.key, QtCore.Qt.ItemDataRole.UserRole)
+
+            column2 = QtGui.QStandardItem(plugin.processor)
+            column2.setEditable(False)
+            column2.setDropEnabled(False)
+            column2.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+            column3 = QtGui.QStandardItem(plugin.function_name)
+            column3.setEditable(False)
+            column3.setDropEnabled(False)
+            text = markdown(plugin.function_description) if markdown else plugin.function_description
+            column3.setToolTip(text)
+
+            self.tableview._model.appendRow([column1, column2, column3])
+
+        self.tableview.setCurrentIndex(self.tableview._model.index(0, 0))
+        self.updating = False
         self._set_up_down_button_states()
 
     def _set_up_down_button_states(self):
+        if self.updating:
+            return
         row = self.tableview.currentIndex().row()
         self.up_button.setDisabled(row < 1)
         self.dn_button.setDisabled(row >= self.tableview._model.rowCount() - 1)
 
+    def _reset_priorities(self):
+        button = QtWidgets.QMessageBox.warning(
+            self,
+            _("Confirm Reset"),
+            _("Are you sure you want to reset the execution order to the plugin defaults?"),
+            buttons=QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            defaultButton=QtWidgets.QMessageBox.StandardButton.No,
+        )
+
+        if button != QtWidgets.QMessageBox.StandardButton.Yes:
+            return
+
+        self.plugin_exec_order = dict()
+        self._make_plugin_list()
+        self._update_table()
+
     def get_updated_order(self):
-        plugin_exec_order = dict()
+        config = get_config()
+        plugin_exec_order = dict(config.setting['plugins3_exec_order'])
         for idx in range(self.tableview._model.rowCount()):
             item = self.tableview._model.item(idx, 0)
             key = item.data(QtCore.Qt.ItemDataRole.UserRole)

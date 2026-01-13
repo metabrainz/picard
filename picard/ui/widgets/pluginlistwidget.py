@@ -26,12 +26,17 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from picard import log
 from picard.config import get_config
 from picard.i18n import gettext as _
+from picard.metadata import (
+    album_metadata_processors,
+    track_metadata_processors,
+)
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
 from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
+from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.widgets.refselector import RefSelectorWidget
 
@@ -571,6 +576,12 @@ class PluginListWidget(QtWidgets.QWidget):
             view_repo_action = menu.addAction(_("View Repository"))
             view_repo_action.triggered.connect(lambda: self._view_repository(plugin))
 
+        menu.addSeparator()
+
+        # Open plugin priority editor
+        info_action = menu.addAction(_("Execution Order"))
+        info_action.triggered.connect(self._show_execution_order_editor)
+
         # Show menu
         menu.exec(self.tree_widget.mapToGlobal(position))
 
@@ -767,6 +778,32 @@ class PluginListWidget(QtWidgets.QWidget):
             item = self.tree_widget.topLevelItem(i)
             if plugin == item.data(COLUMN_ENABLED, QtCore.Qt.ItemDataRole.UserRole):
                 self.tree_widget.setCurrentItem(item)
+
+    def _show_execution_order_editor(self):
+        "Open a dialog to allow the user to manually set the execution order of metadata processor plugins"
+
+        # Get list of all registered metadata processor plugins
+        plugins = []
+        for processor in [album_metadata_processors, track_metadata_processors]:
+            for info in processor.get_plugin_function_information():
+                plugins.append(info)
+
+        if not plugins:
+            msg = QtWidgets.QMessageBox(self)
+            msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+            msg.setText(_("There were no installed metadata processing plugins found."))
+            msg.setWindowTitle(_("No Data"))
+            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+            msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
+            msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
+            msg.show()
+            return
+
+        new_order, return_state = display_plugin_order_selector(parent=self)
+
+        if return_state:
+            config = get_config()
+            config.setting['plugins3_exec_order'] = new_order
 
 
 class UninstallPluginDialog(QtWidgets.QMessageBox):
