@@ -55,6 +55,7 @@ from functools import partial
 import hashlib
 import os
 import os.path
+from pathlib import Path
 import re
 import shutil
 import time
@@ -120,8 +121,6 @@ from picard.util.scripttofilename import script_to_filename_with_metadata
 from picard.ui.filter import Filter
 
 
-_READ_SIZE = 65536
-
 if TYPE_CHECKING:
     from picard.cluster import Cluster
     from picard.track import Track
@@ -139,6 +138,50 @@ FILE_COMPARISON_WEIGHTS = {
     'title': 13,
     'totaltracks': 4,
 }
+
+
+class FileIdentityError(Exception):
+    pass
+
+
+class FileIdentity:
+    _READ_SIZE = 8192
+
+    def __init__(self, filename):
+        self._filepath = Path(filename)
+        try:
+            stat = os.stat(self._filepath)
+            self._inode = stat.st_ino
+            self._size = stat.st_size
+            self._mtime = stat.st_mtime
+            self._hash = None
+            self._exists = True
+        except OSError:
+            self._inode = self._size = self._mtime = self._hash = None
+            self._exists = False
+
+    def __eq__(self, other):
+        return (
+            other is not None
+            and self._exists == other._exists
+            and self._inode == other._inode
+            and self._size == other._size
+            and self._mtime == other._mtime
+            and self._hash == other._hash
+        )
+
+    def __bool__(self):
+        return self._exists
+
+    def _fast_hash(self):
+        try:
+            with open(self._filepath, "rb") as fh:
+                data = fh.read(self._READ_SIZE)
+                h = hashlib.blake2b()
+                h.update(data)
+                return h.hexdigest()
+        except Exception as e:
+            raise FileIdentityError(f"Failed to hash file {self._filepath}") from e
 
 
 class File(MetadataItem):
@@ -226,45 +269,6 @@ class File(MetadataItem):
             An array of values for the tag
         """
         return metadata.getall(tag)
-
-    class FileIdentity:
-        def __init__(self, inode, size, mtime, hash_):
-            self.inode = inode
-            self.size = size
-            self.mtime = mtime
-            self.hash = hash_
-
-        def matches(self, other):
-            return (
-                other is not None
-                and self.inode == other.inode
-                and self.size == other.size
-                and self.mtime == other.mtime
-                and self.hash == other.hash
-            )
-
-    def _collect_identity(self, filename):
-        try:
-            stat = os.stat(filename)
-            return self.FileIdentity(
-                inode=stat.st_ino,
-                size=stat.st_size,
-                mtime=stat.st_mtime,
-                hash_=self._fast_hash(filename),
-            )
-        except OSError:
-            return None
-
-    def _fast_hash(self, filename):
-        """Return an black2b hash of the first READ_SIZE of the file or None ."""
-        try:
-            with open(filename, "rb") as fh:
-                data = fh.read(_READ_SIZE)
-                h = hashlib.blake2b()
-                h.update(data)
-                return h.hexdigest()
-        except Exception:
-            return None
 
     def _format_specific_copy(self, metadata, settings=None):
         """Creates a copy of metadata, but applies format_specific_metadata() to the values."""
@@ -356,7 +360,7 @@ class File(MetadataItem):
         else:
             self.clear_errors()
             self.state = self.State.NORMAL
-            self._loaded_identity = self._collect_identity(self.filename)
+            self._loaded_identity = FileIdentity(self.filename)
             postprocessors = []
             if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
@@ -469,23 +473,11 @@ class File(MetadataItem):
         new_filename = old_filename
         if config.setting['enable_tag_saving']:
             # Detect source changes before saving (debug only)
-            current = self._collect_identity(old_filename)
-            if self._loaded_identity and current and not self._loaded_identity.matches(current):
-                log.warning(
-                    "File changed since load: %s (inode %s→%s, size %s→%s, mtime %s→%s, hash %s→%s)",
-                    old_filename,
-                    self._loaded_identity.inode,
-                    current.inode,
-                    self._loaded_identity.size,
-                    current.size,
-                    self._loaded_identity.mtime,
-                    current.mtime,
-                    self._loaded_identity.hash,
-                    current.hash,
-                )
-            elif current is None:
-                log.warning("File missing before save: %r", old_filename)
-
+            current = FileIdentity(old_filename)
+            if current and current != self._loaded_identity:
+                log.warning("File externally modified.")
+            elif not current:
+                log.warning("File missing!")
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
