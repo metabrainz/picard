@@ -504,6 +504,7 @@ class Album(MetadataItem):
     def _request_recording_relationships(self, offset=0, limit=RECORDING_QUERY_LIMIT):
         inc = (
             'artist-rels',
+            'label-rels',
             'recording-rels',
             'release-rels',
             'url-rels',
@@ -822,6 +823,7 @@ class Album(MetadataItem):
             inc |= {
                 'artist-rels',
                 'recording-rels',
+                'label-rels',
                 'release-group-level-rels',
                 'release-rels',
                 'series-rels',

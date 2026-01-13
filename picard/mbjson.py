@@ -229,6 +229,11 @@ def _relations_to_metadata_target_type_series(relation, m, context):
         m.add(number, relation['attribute-values'].get('number', ''))
 
 
+def _relations_to_metadata_target_type_label(relation, m, context):
+    if relation['type'] == 'broadcast' and 'begin' in relation:
+        m['~broadcast_date'] = relation['begin']
+
+
 class RelFunc(SimpleNamespace):
     clear_metadata_first = False
     func = None
@@ -236,6 +241,7 @@ class RelFunc(SimpleNamespace):
 
 _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
     'artist': RelFunc(func=_relations_to_metadata_target_type_artist),
+    'label': RelFunc(func=_relations_to_metadata_target_type_label),
     'series': RelFunc(
         func=_relations_to_metadata_target_type_series,
         clear_metadata_first=True,
