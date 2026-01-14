@@ -76,34 +76,16 @@ class AbstractProgressStatusIndicator:
         raise NotImplementedError
 
 
-# FIXME: QtWinExtras got removed in Qt6
-# See: https://www.qt.io/blog/qt-extras-modules-in-qt-6
-#      https://bugreports.qt.io/browse/QTBUG-89564
-#      https://bugreports.qt.io/browse/QTBUG-94008
-# if IS_WIN:
-#     from PyQt6.QtWinExtras import QWinTaskbarButton
+if IS_WIN:
+    try:
+        from .windows import WindowsTaskbarStatusIndicator
 
-#     class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
-#         def __init__(self, window):
-#             super().__init__()
-#             taskbar_button = QWinTaskbarButton(window)
-#             taskbar_button.setWindow(window)
-#             self._progress = taskbar_button.progress()
+        DesktopStatusIndicator = WindowsTaskbarStatusIndicator
 
-#         @property
-#         def is_available(self):
-#             return bool(self._progress)
+    except Exception as err:
+        log.warning('Failed importing Windows status indicator: %r', err)
 
-#         def hide_progress(self):
-#             self._progress.hide()
-
-#         def set_progress(self, progress):
-#             self._progress.setValue(int(progress * 100))
-#             self._progress.show()
-
-#     DesktopStatusIndicator = WindowsTaskbarStatusIndicator
-
-if not (IS_WIN or IS_MACOS or IS_HAIKU):
+elif not (IS_WIN or IS_MACOS or IS_HAIKU):
     try:
         from .unity import UnityLauncherEntryStatusIndicator
 

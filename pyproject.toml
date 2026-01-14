@@ -30,6 +30,7 @@ classifiers = [
 ]
 dynamic = ["version", "readme", "gui-scripts"]
 dependencies = [
+    "comtypes>=1.4.14; sys_platform == 'win32'",
     "discid~=1.0",
     "Markdown~=3.2",
     "mutagen~=1.45",

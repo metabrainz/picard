@@ -1,0 +1,133 @@
+[
+   uuid(683BF642-E9CA-4124-BE43-67065B2FA653),
+   version(1.0),
+]
+library TaskbarLib
+{
+[
+	uuid(56FDF342-FD6D-11d0-958A-006097C9A090),
+	object,
+]
+interface ITaskbarList : IUnknown
+{
+	HRESULT _stdcall HrInit();
+
+	HRESULT _stdcall AddTab([in] long hwnd);
+
+	HRESULT _stdcall DeleteTab([in] long hwnd);
+
+	HRESULT _stdcall ActivateTab([in] long hwnd);
+
+	HRESULT _stdcall SetActivateAlt([in] long hwnd);
+};
+
+[
+	uuid(602D4995-B13A-429b-A66E-1935E44F4317),
+	object,
+]
+interface ITaskbarList2 : ITaskbarList
+{
+	HRESULT MarkFullscreenWindow(
+		[in] long hwnd,
+		[in] BOOL fFullscreen);
+}
+
+cpp_quote("#ifdef MIDL_PASS")
+typedef IUnknown* HIMAGELIST;
+typedef IUNknown* HICON;
+cpp_quote("#endif")
+
+cpp_quote("#include &lt;pshpack8.h&gt;")
+typedef struct tagTHUMBBUTTON
+{
+	DWORD   dwMask;
+	UINT	iId;
+	UINT	iBitmap;
+	HICON   hIcon;
+	WCHAR   szTip[260];
+	DWORD   dwFlags;
+} THUMBBUTTON, *LPTHUMBBUTTON;
+cpp_quote("#include &lt;poppack.h&gt;")
+
+[
+	uuid(ea1afb91-9e28-4b86-90e9-9e9f8a5eefaf),
+	object,
+]
+interface ITaskbarList3 : ITaskbarList2
+{
+	// Flags for Setting Taskbar Progress state
+	typedef [v1_enum] enum TBPFLAG
+	{
+		TBPF_NOPROGRESS	 = 0x00000000,
+		TBPF_INDETERMINATE  = 0x00000001,
+		TBPF_NORMAL		 = 0x00000002,
+		TBPF_ERROR		  = 0x00000004,
+		TBPF_PAUSED		 = 0x00000008,
+	} TBPFLAG;
+
+	cpp_quote("DEFINE_ENUM_FLAG_OPERATORS(TBPFLAG)")
+
+	// Flags for SetTabActive
+	typedef [v1_enum] enum TBATFLAG
+	{
+		TBATF_USEMDITHUMBNAIL   = 0x00000001,
+		TBATF_USEMDILIVEPREVIEW = 0x00000002,
+	} TBATFLAG;
+
+	cpp_quote("DEFINE_ENUM_FLAG_OPERATORS(TBATFLAG)")
+
+	HRESULT SetProgressValue(
+		[in] long hwnd,
+		[in] ULONGLONG ullCompleted,
+		[in] ULONGLONG ullTotal);
+
+	HRESULT SetProgressState(
+		[in] long hwnd,
+		[in] TBPFLAG tbpFlags);
+
+	HRESULT RegisterTab(
+		[in] long hwndTab,
+		[in] HWND hwndMDI);
+
+	HRESULT UnregisterTab(
+		[in] long hwndTab);
+
+	HRESULT SetTabOrder(
+		[in] long hwndTab,
+		[in] long hwndInsertBefore);
+
+	HRESULT SetTabActive(
+		[in] long hwndTab,
+		[in] long hwndMDI,
+		[in] TBATFLAG tbatFlags);
+
+	HRESULT ThumbBarAddButtons(
+		[in] long hwnd,
+		[in] UINT cButtons,
+		[in, size_is(cButtons)] LPTHUMBBUTTON pButton);
+
+	HRESULT ThumbBarUpdateButtons(
+		[in] long hwnd,
+		[in] UINT cButtons,
+		[in, size_is(cButtons)] LPTHUMBBUTTON pButton);
+
+	HRESULT ThumbBarSetImageList(
+		[in] long hwnd,
+		[in] HIMAGELIST himl);
+
+	HRESULT SetOverlayIcon(
+		[in] long hwnd,
+		[in] HICON hIcon,
+		[in, string] LPCWSTR pszDescription);
+
+	HRESULT SetThumbnailTooltip(
+		[in] long hwnd,
+		[in, string] LPCWSTR pszTip);
+
+	HRESULT SetThumbnailClip(
+		[in] long hwnd,
+		[in] RECT *prcClip);
+}
+
+[ uuid(56FDF344-FD6D-11d0-958A-006097C9A090) ] coclass TaskbarList { interface ITaskbarList3; }
+};

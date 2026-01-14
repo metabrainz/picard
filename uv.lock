@@ -286,6 +286,15 @@ wheels = [
 ]
 
 [[package]]
+name = "comtypes"
+version = "1.4.14"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/15/12/63d8d4583289bec500df776af2f62611d732342ef0212e05b1a8d16ed945/comtypes-1.4.14.tar.gz", hash = "sha256:86016d30262a3155bc45b0451cdc5a8bb5cc5728831baa266752e4a8f1932565", size = 224342, upload-time = "2025-12-15T23:00:48.556Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/05/0e/9827d17a2c22f825c660195410a7cbbe3c7f87426ee1597bef42bd2d2594/comtypes-1.4.14-py3-none-any.whl", hash = "sha256:89f86810216d8daad7f7e521dac776a0ca0e2116bcf2e5b5e10beb0963eab6bc", size = 254775, upload-time = "2025-12-15T23:00:46.32Z" },
+]
+
+[[package]]
 name = "coverage"
 version = "7.13.1"
 source = { registry = "https://pypi.org/simple" }
@@ -567,6 +576,7 @@ name = "picard"
 source = { editable = "." }
 dependencies = [
     { name = "charset-normalizer" },
+    { name = "comtypes", marker = "sys_platform == 'win32'" },
     { name = "discid" },
     { name = "markdown" },
     { name = "mutagen" },
@@ -615,6 +625,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "charset-normalizer", specifier = "~=3.3" },
+    { name = "comtypes", marker = "sys_platform == 'win32'", specifier = ">=1.4.14" },
     { name = "discid", specifier = "~=1.0" },
     { name = "markdown", specifier = "~=3.2" },
     { name = "mutagen", specifier = "~=1.45" },
