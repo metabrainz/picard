@@ -94,9 +94,9 @@ DEFAULT_DRIVES = get_default_cdrom_drives()
 
 DEFAULT_CA_NEVER_REPLACE_TYPES = ('front',)
 DEFAULT_CA_PROVIDERS = [
+    ('CaaReleaseGroup', True),
     ('Cover Art Archive', True),
     ('UrlRelationships', True),
-    ('CaaReleaseGroup', True),
     ('Local', False),
 ]
 DEFAULT_COVER_IMAGE_FILENAME = 'cover'
