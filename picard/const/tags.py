@@ -1249,7 +1249,7 @@ ALL_TAGS = TagVars(
     TagVar(
         'broadcast_date',
         shortdesc=N_('Broadcast Date'),
-        longdesc=N_('The date the recording was broadcast.'),
+        longdesc=N_('The date the recording was broadcasted.'),
         is_hidden=True,
     ),
 )
