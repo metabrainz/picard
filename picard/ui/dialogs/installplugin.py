@@ -111,6 +111,7 @@ class InstallPluginDialog(PicardDialog):
         self.plugin_table.setColumnCount(3)
         self.plugin_table.setHorizontalHeaderLabels([_("Trust"), _("Name"), _("Categories")])
         self.plugin_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
+        self.plugin_table.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.SingleSelection)
         self.plugin_table.setAlternatingRowColors(True)
         self.plugin_table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
         self.plugin_table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
