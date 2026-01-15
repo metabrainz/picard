@@ -541,7 +541,7 @@ def _create_play_file_action(parent):
 
 @add_action(MainAction.PLAY_FILE_EXTERNAL)
 def _create_play_file_action(parent):
-    action = QtGui.QAction(icontheme.lookup('play-music'), _("Open in &Player"), parent)
+    action = QtGui.QAction(icontheme.lookup('play-music'), _("Open in System &Media Player"), parent)
     action.setStatusTip(_("Play the file in your default media player"))
     action.setEnabled(False)
     action.triggered.connect(parent.play_file_external)
