@@ -45,7 +45,10 @@ from PyQt6 import (  # type: ignore[unresolved-import]
 from picard.i18n import gettext as _
 
 from picard.ui import PicardDialog
-from picard.ui.itemviews.custom_columns.column_controller import ColumnController, analyze_first_invalid
+from picard.ui.itemviews.custom_columns.column_controller import (
+    ColumnController,
+    analyze_first_invalid,
+)
 from picard.ui.itemviews.custom_columns.column_form_handler import ColumnFormHandler
 from picard.ui.itemviews.custom_columns.column_spec_service import ColumnSpecService
 from picard.ui.itemviews.custom_columns.shared import (
@@ -262,10 +265,6 @@ class CustomColumnsManagerDialog(PicardDialog):
                     return
             # If reply is Discard, just continue without committing
 
-        # Only commit if there are no uncommitted changes (normal case)
-        if not self._has_uncommitted_changes:
-            self._commit_form_to_model()
-
         # Apply changes and check if successful
         if not self._on_apply():
             return  # Don't close dialog if apply failed
@@ -386,7 +385,6 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _on_form_changed(self, *args) -> None:  # type: ignore[no-untyped-def]
         """Handle form changes by automatically updating the selected row."""
-        del args
         if self._populating:
             return
         self._has_uncommitted_changes = True
@@ -561,7 +559,9 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _on_apply(self) -> bool:
         """Validate, persist, and register custom column specifications."""
-        self._commit_form_to_model()
+        # Only commit if there are no uncommitted changes (normal case)
+        if not self._has_uncommitted_changes:
+            self._commit_form_to_model()
 
         # Validate specs before persisting
         all_specs = self._model.specs()
