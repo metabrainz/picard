@@ -68,6 +68,32 @@ class MPRIS2LoopStatus(Enum):
     Playlist = 'Playlist'
 
 
+class MPRIS2NowPlayingService:
+    def __init__(self, player: Player):
+        self._player = player
+        self._mpris2_service = None
+
+    def enable(self):
+        if self._mpris2_service:
+            # already enabled
+            return
+
+        dbus = QDBusConnection.sessionBus()
+        self._mpris2_service = MPRIS2Service(dbus, self._player)
+        dbus.registerService(MPRIS2_DBUS_BUS_NAME)
+        dbus.registerObject(MPRIS2_DBUS_OBJECT_PATH, self._mpris2_service)
+
+    def disable(self):
+        if not self._mpris2_service:
+            # not enabled, can't disable
+            return
+
+        dbus = QDBusConnection.sessionBus()
+        dbus.unregisterObject(MPRIS2_DBUS_OBJECT_PATH, QDBusConnection.UnregisterMode.UnregisterTree)
+        dbus.unregisterService(MPRIS2_DBUS_BUS_NAME)
+        self._mpris2_service = None
+
+
 class MPRIS2Service(QObject):
     """Implementation of the MPRIS 2 D-Bus Interface.
 
@@ -94,10 +120,6 @@ class MPRIS2Service(QObject):
         # Set initial values
         self.update_metadata(player.current_file)
         self.update_playback_state(player.playback_state)
-
-        # Register DBus service and interfaces
-        bus.registerService(MPRIS2_DBUS_BUS_NAME)
-        bus.registerObject(MPRIS2_DBUS_OBJECT_PATH, self)
 
     def update_playback_available(self, can_play: bool):
         # This effects the availability of several properties
@@ -403,8 +425,3 @@ def _build_dbus_string_array(list):
         string_array.add(str(s))
     string_array.endArray()
     return string_array
-
-
-def register_mpris(player: Player):
-    dbus = QDBusConnection.sessionBus()
-    return MPRIS2Service(dbus, player)
