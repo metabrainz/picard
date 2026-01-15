@@ -529,12 +529,21 @@ def _create_view_history_action(parent):
     return action
 
 
-@add_action(MainAction.PLAY_FILE)
+@add_action(MainAction.PLAY)
+def _create_play_file_action(parent):
+    action = QtGui.QAction(icontheme.lookup('play'), _("&Play"), parent)
+    action.setStatusTip(_("Play select files"))
+    action.setEnabled(False)
+    action.triggered.connect(parent.play)
+    return action
+
+
+@add_action(MainAction.PLAY_FILE_EXTERNAL)
 def _create_play_file_action(parent):
     action = QtGui.QAction(icontheme.lookup('play-music'), _("Open in &Player"), parent)
     action.setStatusTip(_("Play the file in your default media player"))
     action.setEnabled(False)
-    action.triggered.connect(parent.play_file)
+    action.triggered.connect(parent.play_file_external)
     return action
 
 
