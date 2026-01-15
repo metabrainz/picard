@@ -20,19 +20,23 @@
 from PyQt6.QtMultimedia import QAudio
 
 
-def get_logarithmic_volume(player_value: float):
-    """Return logarithmic scale volume to set slider position"""
+def get_logarithmic_volume(linear_volume: float):
+    """Return logarithmic scale volume for given linear volume"""
+    if linear_volume == 1.0:  # 100% should be 100%, without rounding errors
+        return 1.0
     return QAudio.convertVolume(
-        player_value,
+        linear_volume,
         QAudio.VolumeScale.LinearVolumeScale,
         QAudio.VolumeScale.LogarithmicVolumeScale,
     )
 
 
-def get_linear_volume(slider_value: float):
-    """Return linear scale volume from slider position"""
+def get_linear_volume(logarithmic_volume: float):
+    """Return linear scale volume for given logarithmic volume"""
+    if logarithmic_volume == 1.0:  # 100% should be 100%, without rounding errors
+        return 1.0
     return QAudio.convertVolume(
-        slider_value,
+        logarithmic_volume,
         QAudio.VolumeScale.LogarithmicVolumeScale,
         QAudio.VolumeScale.LinearVolumeScale,
     )
