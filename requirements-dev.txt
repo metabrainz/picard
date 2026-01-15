@@ -241,6 +241,10 @@ columnar==1.4.1 \
     --hash=sha256:8efb692a7e6ca07dcc8f4ea889960421331a5dffa8e5af81f0a67ad8ea1fc798 \
     --hash=sha256:c3cb57273333b2ff9cfaafc86f09307419330c97faa88dcfe23df05e6fbb9c72
     # via pymarkdownlnt
+comtypes==1.4.14 ; sys_platform == 'win32' \
+    --hash=sha256:86016d30262a3155bc45b0451cdc5a8bb5cc5728831baa266752e4a8f1932565 \
+    --hash=sha256:89f86810216d8daad7f7e521dac776a0ca0e2116bcf2e5b5e10beb0963eab6bc
+    # via picard (pyproject.toml)
 coverage==7.13.1 \
     --hash=sha256:0403f647055de2609be776965108447deb8e384fe4a553c119e3ff6bfbab4784 \
     --hash=sha256:0642eae483cc8c2902e4af7298bf886d605e80f26382124cddc3967c2a3df09e \

@@ -55,6 +55,8 @@ fpcalc_name = 'fpcalc'
 if os_name == 'Windows':
     fpcalc_name = 'fpcalc.exe'
     binaries += [('discid.dll', '.')]
+    if os.path.exists('TaskbarLib.tlb'):
+        binaries += [('TaskbarLib.tlb', '.')]
 
 elif os_name == 'Darwin':
     binaries += [('libdiscid.0.dylib', '.')]

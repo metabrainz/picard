@@ -78,6 +78,11 @@ jobs:
       run: |
         Remove-Item -Path build,dist/picard,locale -Recurse -ErrorAction Ignore
         uv run python setup.py clean
+    - name: Build TaskbarLib.tlb
+      run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          midl TaskbarLib.idl /tlb TaskbarLib.tlb
+      shell: cmd
     - name: Build
       run: |
         uv run python setup.py build --build-number=$Env:BUILD_NUMBER --disable-locales
