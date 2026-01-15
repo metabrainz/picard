@@ -18,10 +18,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
-
 from PyQt6.QtCore import QObject
 
 from picard import log
+from picard.config import get_config
+from picard.const.sys import (
+    IS_HAIKU,
+    IS_MACOS,
+    IS_WIN,
+)
 
 
 try:
@@ -42,6 +47,9 @@ if TYPE_CHECKING:
     from .player import Player
 
 
+OS_SUPPORTS_NOW_PLAYING = not (IS_MACOS or IS_WIN or IS_HAIKU) and qt_multimedia_available
+
+
 def get_player(parent: QObject | None = None) -> 'Player | None':
     if qt_multimedia_available:
         log.debug("Internal player: QtMultimedia available, initializing QMediaPlayer")
@@ -50,4 +58,20 @@ def get_player(parent: QObject | None = None) -> 'Player | None':
         return Player(parent)
     else:
         log.warning("Internal player: unavailable, %s", qt_multimedia_errmsg)
+        return None
+
+
+def get_now_playing_service(player: 'Player') -> object | None:
+    """Return an implementation for integrating with the system's "now playing" functionality.
+    Returns None, if not available.
+    """
+    if not OS_SUPPORTS_NOW_PLAYING or not get_config().setting['player_now_playing']:
+        return None
+
+    try:
+        from picard.ui.player.mpris import register_mpris
+
+        return register_mpris(player)
+    except Exception as err:
+        log.warning('Failed to initialize now playing integration: %r', err)
         return None

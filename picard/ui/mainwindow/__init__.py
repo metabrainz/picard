@@ -77,7 +77,6 @@ from picard.config import (
 from picard.const import PROGRAM_UPDATE_LEVELS
 from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
-    IS_HAIKU,
     IS_MACOS,
     IS_WIN,
 )
@@ -305,7 +304,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
 
     def _setup_player(self):
-        from picard.ui.player import get_player
+        from picard.ui.player import get_now_playing_service, get_player
 
         player = get_player(self)
         if not (player and player.available):
@@ -314,11 +313,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.player = player
         self.player.error.connect(self._on_player_error)
         self.player.playback_available.connect(self._on_player_available_changed)
-
-        if not (IS_WIN or IS_MACOS or IS_HAIKU):
-            from picard.ui.player.mpris import register_mpris
-
-            self._player_mpris = register_mpris(player)
+        self._player_now_playing = get_now_playing_service(player)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':

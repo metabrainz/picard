@@ -302,6 +302,7 @@ BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmat
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"))
 BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts"))
 BoolOption('setting', 'rtd_updates_ask', True, N_("Show check for documentation updates during startup"))
+BoolOption('setting', 'player_now_playing', True, title=N_('Enable audio player "now playing" notifications'))
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"))
 TextOption('setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"))
 BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons"))
