@@ -227,6 +227,9 @@ class Player(QtCore.QObject):
             file = self._current_file = self._media_queue.popleft()
             next_uri = QtCore.QUrl.fromLocalFile(file.filename)
             self._player.setSource(next_uri)
+            # Intermediately set the state to stopped to force state
+            # change to be emitted again on track change.
+            self._playback_state = Player.PlaybackState.STOPPED
             self.media_changed.emit(file)
             self._player.play()
         except IndexError:
