@@ -534,6 +534,7 @@ def _create_play_file_action(parent):
     action = QtGui.QAction(icontheme.lookup('play'), _("&Play"), parent)
     action.setStatusTip(_("Play select files"))
     action.setEnabled(False)
+    action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+P")))
     action.triggered.connect(parent.play)
     return action
 

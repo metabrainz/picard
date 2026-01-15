@@ -85,6 +85,7 @@ class PlayerToolbar(QtWidgets.QToolBar):
         self.pause_action.setCheckable(True)
         self.pause_action.setChecked(False)
         self.pause_action.setEnabled(False)
+        self.pause_action.setShortcut(QtGui.QKeySequence(_("Ctrl+P")))
         self.pause_action.toggled.connect(self.pause)
 
         self._add_toolbar_action(self.play_action)
@@ -306,6 +307,27 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self.setToolTip(tooltip)
         self.setStatusTip(tooltip)
 
+        # Register global volume up / down keyboard shortcuts
+        self.volume_up_action = QtGui.QAction(_('Volume up'), self)
+        volume_up_tip = _("Increase audio volume")
+        self.volume_up_action.setToolTip(volume_up_tip)
+        self.volume_up_action.setStatusTip(volume_up_tip)
+        self.volume_up_action.setEnabled(True)
+        self.volume_up_action.setShortcutContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
+        self.volume_up_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift++")))
+        self.volume_up_action.triggered.connect(self.volume_up)
+        self.addAction(self.volume_up_action)
+
+        self.volume_down_action = QtGui.QAction(_('Volume down'), self)
+        volume_down_tip = _("Decrease audio volume")
+        self.volume_down_action.setToolTip(volume_down_tip)
+        self.volume_down_action.setStatusTip(volume_down_tip)
+        self.volume_up_action.setEnabled(True)
+        self.volume_down_action.setShortcutContext(QtCore.Qt.ShortcutContext.ApplicationShortcut)
+        self.volume_down_action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+-")))
+        self.volume_down_action.triggered.connect(self.volume_down)
+        self.addAction(self.volume_down_action)
+
     def show_popover(self):
         popover = SliderPopover(self, self.popover_position, _("Audio volume"), self._volume)
         popover.slider.setMinimum(0)
@@ -316,16 +338,27 @@ class VolumeControlButton(QtWidgets.QToolButton):
 
     def on_slider_value_changed(self, value):
         self._set_volume(value)
-        self.volume_changed.emit(self._volume / 100.0)
+
+    def volume_up(self):
+        new_volume = min(self._volume + self._step, 100)
+        if new_volume != self._volume:
+            self._set_volume(new_volume)
+
+    def volume_down(self):
+        new_volume = max(self._volume - self._step, 0)
+        if new_volume != self._volume:
+            self._set_volume(new_volume)
 
     def set_volume(self, volume: float):
-        self._set_volume(int(volume * 100))
+        self._set_volume(int(volume * 100), signal=False)
 
-    def _set_volume(self, volume: int):
+    def _set_volume(self, volume: int, signal=True):
         self._volume = volume
         label = _(self._volume_fmt) % self._volume
         self.setText(label)
         self.update_icon()
+        if signal:
+            self.volume_changed.emit(self._volume / 100.0)
 
     def update_icon(self):
         if self._volume == 0:
@@ -349,4 +382,3 @@ class VolumeControlButton(QtWidgets.QToolButton):
         volume = min(max(volume, 0), 100)
         if volume != self._volume:
             self._set_volume(volume)
-            self.volume_changed.emit(self._volume / 100.0)
