@@ -834,7 +834,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.ADD_FILES,
             MainAction.CLOSE_WINDOW if self.show_close_window else None,
             '-',
-            MainAction.PLAY_FILE,
+            MainAction.PLAY_FILE_EXTERNAL,
             MainAction.OPEN_FOLDER,
             '-',
             MainAction.SAVE,
@@ -1441,7 +1441,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self._ensure_fingerprinting_configured(callback)
 
-    def play_file(self):
+    def play(self):
+        if self.player:
+            self.player.set_objects(self.selected_objects)
+            self.player.play()
+
+    def play_file_external(self):
         for file in iter_files_from_objects(self.selected_objects):
             open_local_path(file.filename)
 
@@ -1657,7 +1662,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.REFRESH, can_refresh)
         self.enable_action(MainAction.AUTOTAG, can_autotag)
         self.enable_action(MainAction.BROWSER_LOOKUP, can_browser_lookup)
-        self.enable_action(MainAction.PLAY_FILE, have_files)
+        self.enable_action(MainAction.PLAY, have_files)
+        self.enable_action(MainAction.PLAY_FILE_EXTERNAL, have_files)
         self.enable_action(MainAction.OPEN_FOLDER, have_files)
         self.enable_action(MainAction.CUT, have_objects)
         self.enable_action(MainAction.SUBMIT_CLUSTER, can_submit)
