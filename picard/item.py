@@ -64,6 +64,10 @@ class Item:
     def ui_item(self, value: 'TreeItem | None'):
         self._ui_item = weakref.ref(value) if value is not None else None
 
+    def column(self, column: str) -> str:
+        """Subclasses should return a display value for the specified column."""
+        return ''
+
     @property
     def can_save(self) -> bool:
         """Return if this object can be saved."""

@@ -76,7 +76,8 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         event.accept()
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
-        self.checkbox.toggle()
+        if self.checkbox.isDown():
+            self.checkbox.toggle()
         self.checkbox.setDown(False)
         event.accept()
 

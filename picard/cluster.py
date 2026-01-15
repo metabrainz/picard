@@ -389,7 +389,11 @@ class UnclusteredFiles(Cluster):
 class ClusterList(list, Item):
     """A list of clusters."""
 
-    def __init__(self):
+    def __init__(self, name=None):
+        if not name:
+            self._name = _('Clusters')
+        else:
+            self._name = name
         super().__init__()
 
     def __hash__(self):
@@ -399,6 +403,12 @@ class ClusterList(list, Item):
         # An existing Item object should not be considered False, even if it
         # is based on a list.
         return True
+
+    def column(self, column: str) -> str:
+        if column == 'title':
+            return '%s (%d)' % (self._name, len(self))
+        else:
+            return ''
 
     def iterfiles(self, save=False):
         for cluster in self:

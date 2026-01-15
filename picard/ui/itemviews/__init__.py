@@ -44,7 +44,6 @@
 
 
 from collections import defaultdict
-from contextlib import suppress
 from functools import partial
 
 from PyQt6 import (
@@ -291,23 +290,20 @@ class FileTreeView(BaseTreeView):
         self.unmatched_files = ClusterItem(self.tagger.unclustered_files, filterable=False, parent=self)
         self.unmatched_files.update()
         self.unmatched_files.setExpanded(True)
-        self.clusters = ClusterItem(self.tagger.clusters, filterable=False, parent=self)
-        self.set_clusters_text()
+        self.clusters = ClusterListItem(self.tagger.clusters, filterable=False, parent=self)
+        self.clusters.update()
         self.clusters.setExpanded(True)
         self.tagger.cluster_added.connect(self.add_file_cluster)
         self.tagger.cluster_removed.connect(self.remove_file_cluster)
 
     def add_file_cluster(self, cluster, parent_item=None):
         self.add_cluster(cluster, parent_item)
-        self.set_clusters_text()
+        self.clusters.update()
 
     def remove_file_cluster(self, cluster):
         cluster.ui_item.setSelected(False)
         self.clusters.removeChild(cluster.ui_item)
-        self.set_clusters_text()
-
-    def set_clusters_text(self):
-        self.clusters.setText(self.columns.pos('title'), "%s (%d)" % (_("Clusters"), len(self.tagger.clusters)))
+        self.clusters.update()
 
     @property
     def default_drop_target(self):
@@ -459,11 +455,15 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                         log.debug("Custom column '%s' evaluate failed: %r", column.key, exc)
                     continue
 
-                with suppress(AttributeError):
-                    # Some objects like ClusterList don't have a column method
-                    # Note: Do not log; it is very noisy.
-                    # See: https://github.com/metabrainz/picard/pull/2714#issuecomment-3260286574
-                    self.setText(i, self.obj.column(column.key))
+                self.setText(i, self.obj.column(column.key))
+
+
+class ClusterListItem(TreeItem):
+    def post_init(self):
+        self.setIcon(self.columns.status_icon_column, ClusterItem.icon_dir)
+
+    def update(self, update_selection=True):
+        self.update_colums_text()
 
 
 class ClusterItem(TreeItem):

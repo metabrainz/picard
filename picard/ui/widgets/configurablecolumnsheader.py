@@ -206,7 +206,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             dlg.exec()
 
         manage_action = QtGui.QAction(_("Manage custom columns…"), menu)
-        manage_action.setEnabled(not self.is_locked and CustomColumnsManagerDialog is not None)
+        manage_action.setEnabled(not self.is_locked)
         manage_action.triggered.connect(_open_manager)
         menu.addAction(manage_action)
         return manage_action
@@ -234,7 +234,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             for checkbox in column_checkboxes:
                 checkbox.setEnabled(not is_locked)
             restore_action.setEnabled(not is_locked)
-            manage_action.setEnabled(not is_locked and CustomColumnsManagerDialog is not None)
+            manage_action.setEnabled(not is_locked)
 
         return _on_lock_toggled
 
