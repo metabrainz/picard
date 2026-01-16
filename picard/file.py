@@ -156,6 +156,11 @@ class FileIdentity:
             self._mtime = stat.st_mtime
             self._hash = None
             self._exists = True
+
+            try:
+                self._hash = self._fast_hash()
+            except FileIdentityError:
+                self._hash = None
         except OSError:
             self._inode = self._size = self._mtime = self._hash = None
             self._exists = False
@@ -175,13 +180,17 @@ class FileIdentity:
         # Different mtime means file changed
         if self._mtime != other._mtime:
             return False
-
-        # Same metadata - compute hashes lazily only when needed for comparison
-        if self._hash is None:
-            self._hash = self._fast_hash()
-        if other._hash is None:
-            other._hash = other._fast_hash()
-
+        # Compute missing hash values, may error if unreadable
+        try:
+            _other_current_hash = other._fast_hash()
+        except Exception as e:
+            raise FileIdentityError from e
+        try:
+            if self._hash is None:
+                self._hash = self._fast_hash()
+        except Exception as e:
+            raise FileIdentityError from e
+        # Now both hashes exist, compare them
         return self._hash == other._hash
 
     def __bool__(self):

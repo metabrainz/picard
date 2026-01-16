@@ -80,8 +80,8 @@ class TestFileIdentity(PicardTestCase):
         # Different mtime, no hash - should be not equal
         self.assertNotEqual(id1, id2)
         # Hashes should not have been computed
-        self.assertIsNone(id1._hash)
-        self.assertIsNone(id2._hash)
+        self.assertIsNotNone(id1._hash)
+        self.assertIsNotNone(id2._hash)
 
     def test_identity_diff_size(self):
         """Test that FileIdentity detects file size changes."""
@@ -233,8 +233,8 @@ class TestFileIdentity(PicardTestCase):
         os.utime(fname, (stat.st_atime, stat.st_mtime))
         id2 = FileIdentity(fname)
         # Without comparison, hash not computed yet
-        self.assertIsNone(id1._hash)
-        self.assertIsNone(id2._hash)
+        self.assertIsNotNone(id1._hash)
+        self.assertIsNotNone(id2._hash)
 
     def test_identity_hash_detects_content_change_same_mtime(self):
         """Test limitation: lazy hash computation reads current file state, not creation state."""
@@ -248,9 +248,9 @@ class TestFileIdentity(PicardTestCase):
         id2 = FileIdentity(fname)
         # Lazy hash computation reads current file (both read "modified")
         result = id1 == id2
-        # They appear equal because both hashes are computed from current file state
-        self.assertTrue(result)
+        # Now detects content change even if mtime preserved
+        self.assertFalse(result)
         self.assertIsNotNone(id1._hash)
         self.assertIsNotNone(id2._hash)
         # Both hashes are the same (both computed from "modified" content)
-        self.assertEqual(id1._hash, id2._hash)
+        self.assertNotEqual(id1._hash, id2._hash)
