@@ -154,7 +154,6 @@ class FileIdentity:
             self._inode = stat.st_ino
             self._size = stat.st_size
             self._mtime = stat.st_mtime
-            self._hash = None
             self._exists = True
 
             try:
