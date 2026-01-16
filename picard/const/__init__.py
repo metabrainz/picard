@@ -66,12 +66,12 @@ CAA_URL = 'https://coverartarchive.org'
 
 # Prepare documentation URLs
 if PICARD_VERSION.identifier == 'final':
-    DOCS_VERSION = "v{}.{}/".format(PICARD_VERSION.major, PICARD_VERSION.minor)
+    DOCS_VERSION = "v{}.{}".format(PICARD_VERSION.major, PICARD_VERSION.minor)
 else:
-    DOCS_VERSION = ""  # points to latest version
+    DOCS_VERSION = "latest"  # points to latest version
 DOCS_LANGUAGE = 'en'
 DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
-DOCS_BASE_URL = DOCS_SERVER_URL + DOCS_VERSION + DOCS_LANGUAGE
+DOCS_BASE_URL = DOCS_SERVER_URL + DOCS_LANGUAGE + '/' + DOCS_VERSION
 
 # URLs
 PICARD_URLS = {
