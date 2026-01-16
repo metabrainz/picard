@@ -28,7 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import os.path
 
 from PyQt6 import (
@@ -49,6 +48,7 @@ from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
 from picard.ui.options import OptionsPage
+from picard.ui.player import OS_SUPPORTS_NOW_PLAYING
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
@@ -81,6 +81,7 @@ class InterfaceOptionsPage(OptionsPage):
         ('quit_confirmation', ['quit_confirmation']),
         ('file_save_warning', ['file_save_warning']),
         ('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
+        ('player_now_playing', ['player_now_playing']),
         ('starting_directory', ['starting_directory']),
         ('starting_directory_path', ['starting_directory_path']),
     )
@@ -138,6 +139,9 @@ class InterfaceOptionsPage(OptionsPage):
         if not OS_SUPPORTS_THEMES:
             self.ui.ui_theme_container.hide()
 
+        if not OS_SUPPORTS_NOW_PLAYING:
+            self.ui.player_now_playing.hide()
+
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
     def load(self):
@@ -158,6 +162,7 @@ class InterfaceOptionsPage(OptionsPage):
         current_ui_language = config.setting['ui_language']
         self.ui.ui_language.setCurrentIndex(self.ui.ui_language.findData(current_ui_language))
         self.ui.filebrowser_horizontal_autoscroll.setChecked(config.setting['filebrowser_horizontal_autoscroll'])
+        self.ui.player_now_playing.setChecked(config.setting['player_now_playing'])
         self.ui.starting_directory.setChecked(config.setting['starting_directory'])
         self.ui.starting_directory_path.setText(config.setting['starting_directory_path'])
         current_theme = UiTheme(config.setting['ui_theme'])
@@ -195,6 +200,19 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['filebrowser_horizontal_autoscroll'] = self.ui.filebrowser_horizontal_autoscroll.isChecked()
         config.setting['starting_directory'] = self.ui.starting_directory.isChecked()
         config.setting['starting_directory_path'] = os.path.normpath(self.ui.starting_directory_path.text())
+
+        self._update_now_playing_settings(config)
+
+    def _update_now_playing_settings(self, config):
+        old_player_now_playing = config.setting['player_now_playing']
+        new_payer_now_playing = self.ui.player_now_playing.isChecked()
+        if old_player_now_playing != new_payer_now_playing:
+            config.setting['player_now_playing'] = new_payer_now_playing
+            if now_playing_service := getattr(self.tagger.window, '_player_now_playing', None):
+                if new_payer_now_playing:
+                    now_playing_service.enable()
+                else:
+                    now_playing_service.disable()
 
     def starting_directory_browse(self):
         item = self.ui.starting_directory_path

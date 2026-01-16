@@ -17,7 +17,7 @@ from picard.i18n import gettext as _
 class Ui_InterfaceOptionsPage(object):
     def setupUi(self, InterfaceOptionsPage):
         InterfaceOptionsPage.setObjectName("InterfaceOptionsPage")
-        InterfaceOptionsPage.resize(466, 543)
+        InterfaceOptionsPage.resize(466, 583)
         self.vboxlayout = QtWidgets.QVBoxLayout(InterfaceOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.groupBox = QtWidgets.QGroupBox(parent=InterfaceOptionsPage)
@@ -81,6 +81,9 @@ class Ui_InterfaceOptionsPage(object):
         self.filebrowser_horizontal_autoscroll = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
         self.filebrowser_horizontal_autoscroll.setObjectName("filebrowser_horizontal_autoscroll")
         self.vboxlayout1.addWidget(self.filebrowser_horizontal_autoscroll)
+        self.player_now_playing = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
+        self.player_now_playing.setObjectName("player_now_playing")
+        self.vboxlayout1.addWidget(self.player_now_playing)
         self.starting_directory = QtWidgets.QCheckBox(parent=self.miscellaneous_box)
         self.starting_directory.setObjectName("starting_directory")
         self.vboxlayout1.addWidget(self.starting_directory)
@@ -122,7 +125,8 @@ class Ui_InterfaceOptionsPage(object):
         InterfaceOptionsPage.setTabOrder(self.rtd_updates_ask, self.quit_confirmation)
         InterfaceOptionsPage.setTabOrder(self.quit_confirmation, self.file_save_warning)
         InterfaceOptionsPage.setTabOrder(self.file_save_warning, self.filebrowser_horizontal_autoscroll)
-        InterfaceOptionsPage.setTabOrder(self.filebrowser_horizontal_autoscroll, self.starting_directory)
+        InterfaceOptionsPage.setTabOrder(self.filebrowser_horizontal_autoscroll, self.player_now_playing)
+        InterfaceOptionsPage.setTabOrder(self.player_now_playing, self.starting_directory)
         InterfaceOptionsPage.setTabOrder(self.starting_directory, self.starting_directory_path)
         InterfaceOptionsPage.setTabOrder(self.starting_directory_path, self.starting_directory_browse)
 
@@ -141,6 +145,7 @@ class Ui_InterfaceOptionsPage(object):
         self.quit_confirmation.setText(_("Show a quit confirmation dialog for unsaved changes"))
         self.file_save_warning.setText(_("Show a confirmation dialog when saving files"))
         self.filebrowser_horizontal_autoscroll.setText(_("Adjust horizontal position in file browser automatically"))
+        self.player_now_playing.setText(_("Enable audio player \"now playing\" notifications"))
         self.starting_directory.setText(_("Begin browsing in the following directory:"))
         self.starting_directory_path.setToolTip(_("Directory to begin browsing"))
         self.starting_directory_browse.setToolTip(_("Select directory"))

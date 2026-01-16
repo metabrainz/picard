@@ -205,13 +205,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if DesktopStatusIndicator:
             self.ready_for_display.connect(self._setup_desktop_status_indicator)
         if not disable_player:
-            from picard.ui.player import get_player
-
-            player = get_player(self)
-            if player and player.available:
-                self.player = player
-                self.player.error.connect(self._on_player_error)
-                self.player.playback_available.connect(self._on_player_available_changed)
+            self._setup_player()
 
         self.script_editor_dialog = None
 
@@ -308,6 +302,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if plugin_manager:
             signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
             plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
+
+    def _setup_player(self):
+        from picard.ui.player import get_now_playing_service, get_player
+
+        player = get_player(self)
+        if not (player and player.available):
+            return
+
+        self.player = player
+        self.player.error.connect(self._on_player_error)
+        self.player.playback_available.connect(self._on_player_available_changed)
+        self._player_now_playing = get_now_playing_service(player)
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
