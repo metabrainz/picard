@@ -161,14 +161,28 @@ class FileIdentity:
             self._exists = False
 
     def __eq__(self, other):
-        return (
-            other is not None
-            and self._exists == other._exists
-            and self._inode == other._inode
-            and self._size == other._size
-            and self._mtime == other._mtime
-            and self._hash == other._hash
-        )
+        if other is None or not self._exists == other._exists:
+            return False
+
+        # If both don't exist, they're equal
+        if not self._exists:
+            return True
+
+        # Different inode or size means different file
+        if self._inode != other._inode or self._size != other._size:
+            return False
+
+        # Different mtime means file changed
+        if self._mtime != other._mtime:
+            return False
+
+        # Same metadata - compute hashes lazily only when needed for comparison
+        if self._hash is None:
+            self._hash = self._fast_hash()
+        if other._hash is None:
+            other._hash = other._fast_hash()
+
+        return self._hash == other._hash
 
     def __bool__(self):
         return self._exists

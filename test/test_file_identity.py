@@ -22,9 +22,11 @@
 import os
 import tempfile
 import time
+import unittest
 
 from test.picardtestcase import PicardTestCase
 
+from picard.const.sys import IS_WIN
 from picard.file import (
     FileIdentity,
     FileIdentityError,
@@ -69,13 +71,17 @@ class TestFileIdentity(PicardTestCase):
         self.assertTrue(id2)
 
     def test_identity_diff_mtime(self):
-        """Test that FileIdentity detects mtime changes."""
+        """Test that FileIdentity detects mtime changes when hash not computed."""
         fname = self._write_temp(b"abcdef")
         id1 = FileIdentity(fname)
         stat = os.stat(fname)
         os.utime(fname, (stat.st_atime, stat.st_mtime + 2))
         id2 = FileIdentity(fname)
+        # Different mtime, no hash - should be not equal
         self.assertNotEqual(id1, id2)
+        # Hashes should not have been computed
+        self.assertIsNone(id1._hash)
+        self.assertIsNone(id2._hash)
 
     def test_identity_diff_size(self):
         """Test that FileIdentity detects file size changes."""
@@ -150,6 +156,33 @@ class TestFileIdentity(PicardTestCase):
         with self.assertRaises(FileIdentityError):
             identity._fast_hash()
 
+    @unittest.skipIf(IS_WIN, "chmod doesn't work the same on Windows")
+    def test_identity_comparison_unreadable_file(self):
+        """Test that comparing identities raises FileIdentityError if file becomes unreadable."""
+        fname = self._write_temp(b"content")
+        id1 = FileIdentity(fname)
+        id2 = FileIdentity(fname)
+        # Make file unreadable
+        os.chmod(fname, 0o000)
+        try:
+            with self.assertRaises(FileIdentityError):
+                id1 == id2  # noqa: B015
+        finally:
+            # Restore permissions for cleanup
+            os.chmod(fname, 0o644)
+
+    @unittest.skipUnless(IS_WIN, "Windows-specific test")
+    def test_identity_comparison_deleted_file_windows(self):
+        """Test that comparing identities raises FileIdentityError if file is deleted on Windows."""
+        fname = self._write_temp(b"content")
+        id1 = FileIdentity(fname)
+        id2 = FileIdentity(fname)
+        # Delete the file
+        os.remove(fname)
+        # Comparison should fail when trying to compute hash
+        with self.assertRaises(FileIdentityError):
+            id1 == id2  # noqa: B015
+
     def test_identity_with_hash_equal(self):
         """Test that FileIdentity equality considers hash values when set."""
         fname = self._write_temp(b"content")
@@ -167,3 +200,57 @@ class TestFileIdentity(PicardTestCase):
         id1._hash = "abc123"
         id2._hash = "def456"
         self.assertNotEqual(id1, id2)
+
+    def test_identity_mtime_change_same_content(self):
+        """Test that files with different mtime are not equal even if content is same."""
+        fname = self._write_temp(b"same content")
+        id1 = FileIdentity(fname)
+        stat = os.stat(fname)
+        os.utime(fname, (stat.st_atime, stat.st_mtime + 2))
+        id2 = FileIdentity(fname)
+        # Different mtime means not equal, regardless of content
+        self.assertNotEqual(id1, id2)
+
+    def test_identity_mtime_change_different_content(self):
+        """Test that files with different content and different mtime are not equal."""
+        fname = self._write_temp(b"original")
+        id1 = FileIdentity(fname)
+        stat = os.stat(fname)
+        with open(fname, "wb") as f:
+            f.write(b"modified")
+        os.utime(fname, (stat.st_atime, stat.st_mtime + 2))
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+
+    def test_identity_no_hash_mtime_preserved(self):
+        """Test limitation: content changes with preserved mtime are not detected without hash."""
+        fname = self._write_temp(b"original")
+        id1 = FileIdentity(fname)
+        stat = os.stat(fname)
+        with open(fname, "wb") as f:
+            f.write(b"modified")
+        # Preserve original mtime
+        os.utime(fname, (stat.st_atime, stat.st_mtime))
+        id2 = FileIdentity(fname)
+        # Without comparison, hash not computed yet
+        self.assertIsNone(id1._hash)
+        self.assertIsNone(id2._hash)
+
+    def test_identity_hash_detects_content_change_same_mtime(self):
+        """Test limitation: lazy hash computation reads current file state, not creation state."""
+        fname = self._write_temp(b"original")
+        id1 = FileIdentity(fname)
+        stat = os.stat(fname)
+        with open(fname, "wb") as f:
+            f.write(b"modified")
+        # Preserve original mtime
+        os.utime(fname, (stat.st_atime, stat.st_mtime))
+        id2 = FileIdentity(fname)
+        # Lazy hash computation reads current file (both read "modified")
+        result = id1 == id2
+        # They appear equal because both hashes are computed from current file state
+        self.assertTrue(result)
+        self.assertIsNotNone(id1._hash)
+        self.assertIsNotNone(id2._hash)
+        # Both hashes are the same (both computed from "modified" content)
+        self.assertEqual(id1._hash, id2._hash)
