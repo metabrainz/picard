@@ -785,7 +785,11 @@ class AttachedProfilesDialog(PicardDialog):
             attached = []
             for profile in self.profiles:
                 if setting.name in self.settings[profile['id']]:
-                    attached.append(profile['title'] + _(" [Enabled]") if profile['enabled'] else "")
+                    if profile['enabled']:
+                        display_title = _('{profile} [Enabled]').format(profile=profile['title'])
+                    else:
+                        display_title = profile['title']
+                    attached.append(display_title)
             attached_profiles = "\n".join(attached) or _("None")
             profile_item = QtGui.QStandardItem(attached_profiles)
             profile_item.setEditable(False)
