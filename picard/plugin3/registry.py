@@ -18,21 +18,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from datetime import datetime, timezone
+from datetime import (
+    datetime,
+    timezone,
+)
 import json
 import os
 from pathlib import Path
 import re
 import time
 import urllib.error
-from urllib.request import Request, urlopen
+from urllib.request import (
+    Request,
+    urlopen,
+)
 
 from picard import log
 from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
-from picard.git.utils import (
-    normalize_git_url,
-)
+from picard.git.utils import normalize_git_url
 from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string

@@ -200,7 +200,10 @@ from picard.ui.mainwindow import MainWindow
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.artist import ArtistSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
-from picard.ui.util import FileDialog, show_session_not_found_dialog
+from picard.ui.util import (
+    FileDialog,
+    show_session_not_found_dialog,
+)
 
 
 # A "fix" for https://bugs.python.org/issue1438480

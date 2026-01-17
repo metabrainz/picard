@@ -21,12 +21,19 @@
 from typing import NamedTuple
 
 from picard import log
-from picard.git.backend import GitRef, GitRefType
+from picard.git.backend import (
+    GitRef,
+    GitRefType,
+)
 from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.ref_utils import find_git_ref
 from picard.plugin3 import GitReferenceError
-from picard.plugin3.plugin import PluginSourceGit, PluginState, short_commit_id
+from picard.plugin3.plugin import (
+    PluginSourceGit,
+    PluginState,
+    short_commit_id,
+)
 from picard.plugin3.plugin_metadata import PluginMetadata
 from picard.plugin3.ref_item import RefItem
 

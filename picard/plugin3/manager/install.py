@@ -26,7 +26,10 @@ import tempfile
 from picard import log
 from picard.git.ops import GitOperations
 from picard.git.utils import get_local_repository_path
-from picard.plugin3.installable import LocalInstallablePlugin, UrlInstallablePlugin
+from picard.plugin3.installable import (
+    LocalInstallablePlugin,
+    UrlInstallablePlugin,
+)
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,

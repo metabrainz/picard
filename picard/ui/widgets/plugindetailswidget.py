@@ -21,7 +21,10 @@
 
 from functools import partial
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager

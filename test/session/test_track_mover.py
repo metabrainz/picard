@@ -21,7 +21,10 @@
 """Tests for track mover."""
 
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from picard.album import Album
 from picard.file import File

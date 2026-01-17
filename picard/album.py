@@ -46,7 +46,10 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Callable, Iterable
+from collections.abc import (
+    Callable,
+    Iterable,
+)
 from enum import IntEnum
 import traceback
 

@@ -29,7 +29,10 @@ from test.test_plugins3_helpers import (
     run_cli,
 )
 
-from picard.git.backend import GitRef, GitRefType
+from picard.git.backend import (
+    GitRef,
+    GitRefType,
+)
 from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
 
@@ -404,7 +407,10 @@ class TestPluginInstall(PicardTestCase):
 
     def test_plugin_has_saved_options(self):
         """Test checking if plugin has saved options."""
-        from unittest.mock import Mock, patch
+        from unittest.mock import (
+            Mock,
+            patch,
+        )
 
         from picard.plugin3.manager import PluginManager
         from picard.plugin3.plugin import Plugin

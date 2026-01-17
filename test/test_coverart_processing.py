@@ -33,7 +33,10 @@ from test.picardtestcase import PicardTestCase
 
 from picard import config
 from picard.album import Album
-from picard.const.cover_processing import COVER_CONVERTING_FORMATS, ResizeModes
+from picard.const.cover_processing import (
+    COVER_CONVERTING_FORMATS,
+    ResizeModes,
+)
 from picard.coverart.image import CoverArtImage
 from picard.coverart.processing import CoverArtImageProcessing
 from picard.coverart.processing.filters import (

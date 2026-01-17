@@ -182,7 +182,7 @@ PLUGIN_API_VERSIONS = ["2.0"]
 PLUGIN_LICENSE = "GPL-2.0-or-later"
 PLUGIN_LICENSE_URL = "https://www.gnu.org/licenses/gpl-2.0.html"
 
-from picard.ui.itemviews import BaseAction, register_album_action
+from picard.ui.itemviews import (BaseAction, register_album_action,)
 
 class MyAlbumAction(BaseAction):
     NAME = 'My Action'

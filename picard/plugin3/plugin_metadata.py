@@ -20,12 +20,18 @@
 
 """Plugin metadata storage and retrieval."""
 
-from dataclasses import asdict, dataclass
+from dataclasses import (
+    asdict,
+    dataclass,
+)
 from typing import TYPE_CHECKING
 
 from picard import log
 from picard.config import get_config
-from picard.git.backend import GitRef, GitRefType
+from picard.git.backend import (
+    GitRef,
+    GitRefType,
+)
 from picard.git.factory import git_backend
 
 

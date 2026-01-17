@@ -23,8 +23,14 @@
 from pathlib import Path
 from unittest.mock import Mock
 
-from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, UnclusteredFiles
+from picard.album import (
+    Album,
+    NatAlbum,
+)
+from picard.cluster import (
+    Cluster,
+    UnclusteredFiles,
+)
 from picard.file import File
 from picard.session.constants import SessionConstants
 from picard.session.location_detector import LocationDetector

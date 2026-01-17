@@ -20,7 +20,10 @@
 
 from enum import Enum
 
-from picard.git.backend import GitRef, GitRefType
+from picard.git.backend import (
+    GitRef,
+    GitRefType,
+)
 
 
 class RefItem:

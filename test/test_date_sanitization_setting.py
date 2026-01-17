@@ -19,10 +19,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from types import SimpleNamespace
-from typing import Any, cast
+from typing import (
+    Any,
+    cast,
+)
 
 from picard import config
-from picard.formats import DEFAULT_FORMATS, id3
+from picard.formats import (
+    DEFAULT_FORMATS,
+    id3,
+)
 from picard.formats.apev2 import APEv2File
 from picard.formats.registry import FormatRegistry
 from picard.formats.util import date_sanitization_format_entries

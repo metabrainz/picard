@@ -24,8 +24,14 @@ from pathlib import Path
 from unittest.mock import Mock
 
 from picard.album import Album
-from picard.session.session_data import AlbumItems, GroupedItems
-from picard.session.session_loader import AlbumManager, UIStateManager
+from picard.session.session_data import (
+    AlbumItems,
+    GroupedItems,
+)
+from picard.session.session_loader import (
+    AlbumManager,
+    UIStateManager,
+)
 
 
 def test_album_manager_load_unmatched_albums() -> None:

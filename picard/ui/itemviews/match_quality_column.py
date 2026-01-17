@@ -21,13 +21,20 @@
 
 from collections import namedtuple
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
 
 from picard.i18n import gettext as _
 from picard.item import Item
 
 from picard.ui.itemviews.custom_columns import DelegateColumn
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, DelegateProvider
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    DelegateProvider,
+)
 
 
 # Structured container for delegate item data

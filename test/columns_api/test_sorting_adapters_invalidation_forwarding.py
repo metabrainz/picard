@@ -26,7 +26,10 @@ from typing import Protocol
 
 import pytest
 
-from picard.ui.columns import ColumnAlign, ColumnSortType
+from picard.ui.columns import (
+    ColumnAlign,
+    ColumnSortType,
+)
 from picard.ui.itemviews.custom_columns import (
     CachedSortAdapter,
     CasefoldSortAdapter,

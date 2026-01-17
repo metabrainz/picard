@@ -19,9 +19,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
 
 from picard.album import Album
 from picard.track import Track
@@ -31,7 +38,10 @@ import pytest
 from picard.ui.itemviews import TreeItem
 from picard.ui.itemviews.columns import create_match_quality_column
 from picard.ui.itemviews.custom_columns import DelegateColumn
-from picard.ui.itemviews.match_quality_column import MatchQualityColumnDelegate, MatchQualityProvider
+from picard.ui.itemviews.match_quality_column import (
+    MatchQualityColumnDelegate,
+    MatchQualityProvider,
+)
 
 
 class TestMatchQualityProvider:

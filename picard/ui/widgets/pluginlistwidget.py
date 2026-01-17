@@ -21,7 +21,11 @@
 
 from functools import partial
 
-from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtGui,
+    QtWidgets,
+)
 
 from picard import log
 from picard.config import get_config

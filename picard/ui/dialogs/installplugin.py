@@ -21,7 +21,10 @@
 
 import os
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard import log
 from picard.i18n import (

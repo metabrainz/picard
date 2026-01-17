@@ -28,7 +28,10 @@ Uses pytest fixtures and parametrize to reduce code duplication while adhering
 to DRY, SOC, SRP, IOC, KISS principles.
 """
 
-from typing import Any, Optional
+from typing import (
+    Any,
+    Optional,
+)
 from unittest.mock import patch
 
 import pytest

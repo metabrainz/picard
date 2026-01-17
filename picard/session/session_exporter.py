@@ -32,8 +32,14 @@ from typing import Any
 
 from picard.album import NatAlbum
 from picard.config import get_config
-from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS, INTERNAL_TAG_PREFIX
-from picard.session.constants import RESTORABLE_CONFIG_KEYS, SessionConstants
+from picard.const.defaults import (
+    EXCLUDED_OVERRIDE_TAGS,
+    INTERNAL_TAG_PREFIX,
+)
+from picard.session.constants import (
+    RESTORABLE_CONFIG_KEYS,
+    SessionConstants,
+)
 from picard.session.location_detector import LocationDetector
 from picard.session.metadata_handler import MetadataHandler
 from picard.session.session_data import SessionItemLocation

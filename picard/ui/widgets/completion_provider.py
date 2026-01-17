@@ -20,7 +20,11 @@
 
 """Completion choices provider for script completion."""
 
-from collections.abc import Callable, Iterable, Iterator
+from collections.abc import (
+    Callable,
+    Iterable,
+    Iterator,
+)
 import contextlib
 
 from picard.script import script_function_names

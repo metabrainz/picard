@@ -22,7 +22,10 @@
 
 from __future__ import annotations
 
-from PyQt6 import QtCore, QtGui
+from PyQt6 import (
+    QtCore,
+    QtGui,
+)
 
 from picard.ui.columns import (
     Column,

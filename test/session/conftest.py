@@ -25,13 +25,22 @@ from types import SimpleNamespace
 from typing import Any
 from unittest.mock import Mock
 
-from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, UnclusteredFiles
+from picard.album import (
+    Album,
+    NatAlbum,
+)
+from picard.cluster import (
+    Cluster,
+    UnclusteredFiles,
+)
 import picard.config as picard_config
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.location_detector import LocationDetector
-from picard.session.session_data import AlbumItems, SessionItemLocation
+from picard.session.session_data import (
+    AlbumItems,
+    SessionItemLocation,
+)
 from picard.session.session_exporter import SessionExporter
 from picard.session.session_loader import SessionLoader
 from picard.session.track_mover import TrackMover

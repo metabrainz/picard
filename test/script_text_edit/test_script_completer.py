@@ -25,9 +25,16 @@ of edge cases, error handling, and integration scenarios. Uses pytest fixtures
 and parametrize to reduce code duplication while adhering to DRY, SOC, SRP, IOC, KISS.
 """
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
-from picard.script.parser import ScriptError, ScriptFunction, ScriptText
+from picard.script.parser import (
+    ScriptError,
+    ScriptFunction,
+    ScriptText,
+)
 from picard.tags import script_variable_tag_names
 
 import pytest

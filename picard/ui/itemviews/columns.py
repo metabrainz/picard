@@ -54,7 +54,11 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns import make_delegate_column, make_field_column, make_numeric_field_column
+from picard.ui.itemviews.custom_columns import (
+    make_delegate_column,
+    make_field_column,
+    make_numeric_field_column,
+)
 from picard.ui.itemviews.custom_columns.factory import make_icon_header_column
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter

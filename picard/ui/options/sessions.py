@@ -23,7 +23,10 @@ from PyQt6 import QtWidgets
 from picard.config import get_config
 from picard.const.appdirs import sessions_folder
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_, gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
 
 from picard.ui.forms.ui_options_advanced_sessions import Ui_SessionsOptionsPage
 from picard.ui.options import OptionsPage

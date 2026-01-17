@@ -24,7 +24,10 @@ Tests the VariableExtractor class that handles extraction of user-defined
 variables from script content using multiple strategies.
 """
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from picard.script.parser import ScriptParser
 

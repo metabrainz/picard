@@ -22,7 +22,10 @@
 
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
+from abc import (
+    ABC,
+    abstractmethod,
+)
 from dataclasses import dataclass
 from enum import Enum
 from uuid import UUID
@@ -32,10 +35,19 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
-from picard.script import ScriptError, ScriptParser
+from picard.script import (
+    ScriptError,
+    ScriptParser,
+)
 
-from picard.ui.itemviews.custom_columns.shared import RECOGNIZED_VIEWS, parse_add_to
-from picard.ui.itemviews.custom_columns.storage import CustomColumnKind, CustomColumnSpec
+from picard.ui.itemviews.custom_columns.shared import (
+    RECOGNIZED_VIEWS,
+    parse_add_to,
+)
+from picard.ui.itemviews.custom_columns.storage import (
+    CustomColumnKind,
+    CustomColumnSpec,
+)
 
 
 MAX_EXPRESSION_LENGTH = 500
