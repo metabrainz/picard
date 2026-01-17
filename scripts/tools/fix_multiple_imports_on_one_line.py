@@ -27,7 +27,7 @@ import sys
 ROOT_DIR = 'picard'
 IGNORE_DIR = '__pycache__'
 
-RE_IMPORT_LINE = re.compile(r'^(from\s+\S+\s+import\s+)([^(].*)$')
+RE_IMPORT_LINE = re.compile(r'^(from\s+\S+\s+import\s+)([^(].*[^\\])$')
 
 
 def get_python_files():
