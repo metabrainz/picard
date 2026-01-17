@@ -52,7 +52,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
             revision = int(revision)
         except (TypeError, ValueError) as e:
             raise VersionError("major, minor, patch and revision must be integer values") from e
-        return super(Version, cls).__new__(cls, major, minor, patch, identifier, revision)
+        return super().__new__(cls, major, minor, patch, identifier, revision)
 
     @classmethod
     def from_string(cls, version_str):
