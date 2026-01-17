@@ -75,7 +75,7 @@ class FunctionRegistryItem:
         return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc}, {me.name}, {me.module})'.format(
             classname=self.__class__.__name__,
             me=self,
-            doc='"""{0}"""'.format(self.documentation) if self.documentation else None,
+            doc='"""{}"""'.format(self.documentation) if self.documentation else None,
         )
 
     def _postprocess(self, data, postprocessor):

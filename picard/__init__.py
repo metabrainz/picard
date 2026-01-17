@@ -143,7 +143,7 @@ def _show_crash_dialog(trace):
     if logfile:
         logfile_url = QUrl.fromLocalFile(logfile)
         msgbox.setInformativeText(
-            'A logfile has been written to <a href="{0}">{1}</a>.'.format(logfile_url.url(), logfile)
+            'A logfile has been written to <a href="{}">{}</a>.'.format(logfile_url.url(), logfile)
         )
     msgbox.setDetailedText(trace)
     msgbox.setStandardButtons(QMessageBox.StandardButton.Close)

@@ -216,10 +216,7 @@ class MaintenanceOptionsPage(OptionsPage):
     def _get_dialog_filetypes(self, _ext='.ini'):
         return ";;".join(
             (
-                _("Configuration files")
-                + " (*{0})".format(
-                    _ext,
-                ),
+                _("Configuration files") + " (*{})".format(_ext),
                 _("All files") + " (*)",
             )
         )
@@ -228,7 +225,7 @@ class MaintenanceOptionsPage(OptionsPage):
         config = get_config()
         _filename = os.path.split(config.fileName())[1]
         _root, _ext = os.path.splitext(_filename)
-        return "{0}_{1}_Backup_{2}{3}".format(
+        return "{}_{}_Backup_{}{}".format(
             _root,
             'Auto' if auto else 'User',
             datetime.datetime.now().strftime("%Y%m%d_%H%M"),

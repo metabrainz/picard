@@ -1933,7 +1933,7 @@ class ScriptParserTest(PicardTestCase):
             # Tests with invalid format code (platform dependent tests)
             for test_case in tests_to_run:
                 with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                    self.parser.eval(r'$datetime(\{0})'.format(test_case))
+                    self.parser.eval(r'$datetime(\{})'.format(test_case))
 
     def test_scriptruntimeerror(self):
         # Platform dependent testing because different platforms (both os and Python version)
@@ -1963,15 +1963,15 @@ class ScriptParserTest(PicardTestCase):
             # Test that the correct position number is passed
             areg = r"^\d+:7:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r'$noop()$datetime(\{0})'.format(test_to_run))
+                self.parser.eval(r'$noop()$datetime(\{})'.format(test_to_run))
             # Test that the function stack is returning the correct name (nested functions)
             areg = r"^\d+:\d+:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval(r'$set(foo,$datetime($if(,,\{0})))'.format(test_to_run))
+                self.parser.eval(r'$set(foo,$datetime($if(,,\{})))'.format(test_to_run))
             # Test that the correct line number is passed
             areg = r"^2:\d+:\$datetime: Unsupported format code"
             with self.assertRaisesRegex(ScriptRuntimeError, areg):
-                self.parser.eval('$noop(\n)$datetime($if(,,\\{0})))'.format(test_to_run))
+                self.parser.eval('$noop(\n)$datetime($if(,,\\{})))'.format(test_to_run))
         finally:
             # Restore original datetime object
             datetime.datetime = original_datetime
