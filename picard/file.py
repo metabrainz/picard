@@ -567,7 +567,7 @@ class File(MetadataItem):
             self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
-
+            self._loaded_identity = FileIdentity(self.filename)
             # run post save hook
             run_file_post_save_processors(self)
 
