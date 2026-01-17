@@ -72,7 +72,7 @@ def _atomic_write(path: Path, data: bytes) -> None:
             temp_path.write_bytes(data)
 
         temp_path.replace(p)
-    except (OSError, IOError, PermissionError):
+    except (OSError, PermissionError):
         if temp_path and temp_path.exists():
             with contextlib.suppress(OSError, PermissionError):
                 temp_path.unlink()
