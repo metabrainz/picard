@@ -145,13 +145,12 @@ indent-width = 4
 target-version = "py310"
 
 [tool.ruff.lint]
-# Enable Pyflakes (`F`) and a subset of the pycodestyle (`E`)  codes by default.
+# Enable Pyflakes (`F`), a subset of the pycodestyle (`E`) and
+# most of pyupgrade checks by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
-select = [
-  "E4", "E7", "E9", "E", "F", "W", "B", "I",
-  "UP006", "UP007", "UP008", "UP010", "UP022", "UP024", "UP028", "UP030", "UP034", "UP035", "UP045"]
-ignore = ["B023", "E501", "Q"]
+select = ["E4", "E7", "E9", "E", "F", "W", "B", "I", "UP"]
+ignore = ["B023", "E501", "Q", "UP009", "UP015", "UP031", "UP032", "UP037", "UP038"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]

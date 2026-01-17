@@ -70,7 +70,7 @@ from picard import (  # noqa: E402
 )
 
 
-if sys.version_info < (3, 10):
+if sys.version_info < (3, 10):  # noqa: UP036
     sys.exit("ERROR: You need Python 3.10 or higher to use Picard.")
 
 PACKAGE_NAME = "picard"
