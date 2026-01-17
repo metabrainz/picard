@@ -22,10 +22,7 @@ from collections.abc import (
     Callable,
     Iterable,
 )
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 import pytest
 
@@ -74,7 +71,7 @@ class _FakeModel:
     def index(self, row: int, col: int) -> _FakeIndex:  # noqa: N802
         return _FakeIndex(row, col, self)
 
-    def data(self, index: _FakeIndex, role: Any = None) -> Optional[str]:  # noqa: ANN001
+    def data(self, index: _FakeIndex, role: Any = None) -> str | None:  # noqa: ANN001
         if 0 <= index._row < len(self._items):
             return self._items[index._row]
         return None
@@ -106,7 +103,7 @@ class _FakeModel:
 
 class _FakePopup:
     def __init__(self) -> None:
-        self._current: Optional[_FakeIndex] = None
+        self._current: _FakeIndex | None = None
 
     def currentIndex(self) -> _FakeIndex:  # noqa: N802
         return self._current or _FakeIndex(-1, 0, _FakeModel([]))

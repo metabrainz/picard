@@ -22,7 +22,6 @@
 from dataclasses import dataclass
 from enum import IntEnum
 import time
-from typing import Optional
 
 from picard.webservice import PendingRequest
 
@@ -43,9 +42,9 @@ class TaskInfo:
     type: TaskType
     description: str
     started_at: float
-    timeout: Optional[float] = None
-    plugin_id: Optional[str] = None
-    request: Optional[PendingRequest] = None  # PendingRequest object if available
+    timeout: float | None = None
+    plugin_id: str | None = None
+    request: PendingRequest | None = None  # PendingRequest object if available
 
     def __post_init__(self):
         if self.started_at is None:

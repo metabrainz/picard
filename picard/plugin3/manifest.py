@@ -23,10 +23,7 @@ try:
 except ImportError:
     import tomli as tomllib  # type: ignore[import-not-found,no-redef]
 
-from typing import (
-    BinaryIO,
-    Optional,
-)
+from typing import BinaryIO
 
 from picard.plugin3.validator import validate_manifest_dict
 from picard.version import (
@@ -122,7 +119,7 @@ class PluginManifest:
         return self.long_description(locale)
 
     @property
-    def version(self) -> Optional[Version]:
+    def version(self) -> Version | None:
         version_str = self._data.get('version')
         if not version_str:
             return None

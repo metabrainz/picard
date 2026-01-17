@@ -31,10 +31,7 @@ from collections.abc import Iterable
 import concurrent.futures
 import os
 from tempfile import NamedTemporaryFile
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 from picard import (
     PICARD_APP_ID,
@@ -126,9 +123,9 @@ class AbstractPipe(metaclass=ABCMeta):
         self,
         app_name: str,
         app_version: str,
-        args: Optional[Iterable[str]] = None,
-        forced_path: Optional[str] = None,
-        identifier: Optional[str] = None,
+        args: Iterable[str] | None = None,
+        forced_path: str | None = None,
+        identifier: str | None = None,
     ):
         """
         :param app_name: (str) Name of the app, included in the pipe name
@@ -257,7 +254,7 @@ class AbstractPipe(metaclass=ABCMeta):
 
         return [self.NO_RESPONSE_MESSAGE]
 
-    def send_to_pipe(self, message: str, timeout_secs: Optional[float] = None) -> bool:
+    def send_to_pipe(self, message: str, timeout_secs: float | None = None) -> bool:
         """
         Common interface for the custom _sender implementations
 
@@ -304,9 +301,9 @@ class UnixPipe(AbstractPipe):
         self,
         app_name: str,
         app_version: str,
-        args: Optional[Iterable[str]] = None,
-        forced_path: Optional[str] = None,
-        identifier: Optional[str] = None,
+        args: Iterable[str] | None = None,
+        forced_path: str | None = None,
+        identifier: str | None = None,
     ):
         super().__init__(app_name, app_version, args, forced_path, identifier)
 
@@ -402,9 +399,9 @@ class WinPipe(AbstractPipe):
         self,
         app_name: str,
         app_version: str,
-        args: Optional[Iterable[str]] = None,
-        forced_path: Optional[str] = None,
-        identifier: Optional[str] = None,
+        args: Iterable[str] | None = None,
+        forced_path: str | None = None,
+        identifier: str | None = None,
     ):
         # type checking is already enforced in the AbstractPipe
         try:
