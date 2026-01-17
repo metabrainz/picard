@@ -135,8 +135,7 @@ class PluginFunctions:
         """Returns registered functions by order of priority (highest first) and registration"""
         config = get_config()
         self.config_priorities = dict(config.setting['plugins3_exec_order'])
-        for function in sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True):
-            yield function
+        yield from sorted(self.functions, key=lambda i: self.get_priority(i), reverse=True)
 
     def run(self, *args, **kwargs):
         """Execute registered functions with passed parameters honouring priority"""

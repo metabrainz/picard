@@ -277,13 +277,12 @@ class ScriptCompleter(QCompleter):
         context: CompletionContext = self._context or {'mode': CompletionMode.DEFAULT}
         mode: CompletionMode = context.get('mode', CompletionMode.DEFAULT)
 
-        for item in self._choices_provider.build_choices(
+        yield from self._choices_provider.build_choices(
             mode,
             self._user_defined_variables,
             script_variable_tag_names(),
             self._var_usage_counts,
-        ):
-            yield item
+        )
 
     def set_highlighted(self, text):
         self.last_selected = text
