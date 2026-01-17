@@ -26,10 +26,6 @@ from collections import (
     namedtuple,
 )
 from functools import partial
-from typing import (
-    Dict,
-    List,
-)
 
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -69,7 +65,7 @@ class RecordingResolver:
     results return only the MBID without metadata, loaded via the MB web service.
     """
 
-    _recording_map: Dict[str, Dict[str, Recording]]
+    _recording_map: dict[str, dict[str, Recording]]
 
     def __init__(self, ws: WebService, doc: dict, callback: callable) -> None:
         self._mbapi = MBAPIHelper(ws)
@@ -169,7 +165,7 @@ def get_score(node):
         return 1.0
 
 
-def parse_recording_map(recording_map: Dict[str, Dict[str, Recording]]):
+def parse_recording_map(recording_map: dict[str, dict[str, Recording]]):
     for acoustid, recordings in recording_map.items():
         recording_list = recordings.values()
         max_sources = max_source_count(recording_list)
@@ -185,7 +181,7 @@ def parse_recording_map(recording_map: Dict[str, Dict[str, Recording]]):
             yield parsed_recording
 
 
-def max_source_count(recordings: List[Recording]):
+def max_source_count(recordings: list[Recording]):
     """Given a list of recordings return the highest number of sources.
     This ignores recordings without metadata.
     """
@@ -194,7 +190,7 @@ def max_source_count(recordings: List[Recording]):
     return max(sources)
 
 
-def max_source_count_raw_recording(recordings: List[dict]):
+def max_source_count_raw_recording(recordings: list[dict]):
     """Given a list of recordings return the highest number of sources.
     This ignores recordings without metadata.
     """
