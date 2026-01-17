@@ -662,7 +662,7 @@ dev = [
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-randomly", specifier = ">=4.0.1" },
     { name = "pytest-xdist", specifier = ">=3.8.0" },
-    { name = "ruff", specifier = ">=0.12.8" },
+    { name = "ruff", specifier = ">=0.13.0" },
     { name = "tomlkit", specifier = ">=0.13.3" },
     { name = "urllib3", specifier = ">=2.6.0" },
     { name = "wlc" },
