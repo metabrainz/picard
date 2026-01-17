@@ -106,6 +106,8 @@ WIN_MAX_DIRPATH_LEN = WIN_MAX_FILEPATH_LEN - 12
 WIN_MAX_NODE_LEN = 255
 # Prefix for long paths in Windows API
 WIN_LONGPATH_PREFIX = '\\\\?\\'
+# Prefix for long UNC share paths in Windows API
+WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
 class ReadWriteLockContext:
@@ -259,6 +261,15 @@ def normpath(path, realpath=True):
     return path
 
 
+def is_unc_path(path: str) -> bool:
+    """Returns the path refers to a Windows UNC share."""
+    # UNC paths start with two slashes followed by the hostname ("\\hostname\share\path)").
+    # If path is a raw path a UNC share would use "\\?\UNC\hostname\share\path".
+    return path.startswith(r'\\') and (
+        not path.startswith(WIN_LONGPATH_PREFIX) or path[:8].upper() == WIN_LONGPATH_PREFIX_UNC
+    )
+
+
 def win_prefix_longpath(path):
     """
     For paths longer then WIN_MAX_FILEPATH_LEN enable long path support by prefixing with WIN_LONGPATH_PREFIX.
@@ -266,8 +277,8 @@ def win_prefix_longpath(path):
     See https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
     """
     if len(path) > WIN_MAX_FILEPATH_LEN and not path.startswith(WIN_LONGPATH_PREFIX):
-        if path.startswith(r'\\'):  # UNC path
-            path = WIN_LONGPATH_PREFIX + 'UNC' + path[1:]
+        if is_unc_path(path):
+            path = WIN_LONGPATH_PREFIX_UNC + path[2:]
         else:
             path = WIN_LONGPATH_PREFIX + path
     return path
@@ -278,8 +289,8 @@ def is_absolute_path(path):
     See https://bugs.python.org/issue22302
     """
     if IS_WIN:
-        # Two backslashes indicate a UNC path.
-        if path.startswith("\\\\"):
+        # UNC paths are considered absolute.
+        if is_unc_path(path):
             return True
         # Consider a single slash at the start not relative. This is the default
         # for `os.path.isabs` since Python 3.13.

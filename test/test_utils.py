@@ -74,6 +74,7 @@ from picard.util import (
     find_best_match,
     get_url,
     is_absolute_path,
+    is_unc_path,
     iter_exception_chain,
     iter_files_from_objects,
     iter_unique,
@@ -813,6 +814,18 @@ class NormpathTest(PicardTestCase):
         self.assertEqual(path, normpath(path))
         path += 'a'
         self.assertEqual(rf'\\?\{path}', normpath(path))
+
+
+class IsUNCPathTest(PicardTestCase):
+    def test_is_unc_path(self):
+        test_cases = (
+            (r'\\hostname\share', True),
+            (r'\\?\UNC\hostname\share', True),
+            (r'\some\path', False),
+            (r'\\?\some\path', False),
+        )
+        for path, is_unc in test_cases:
+            self.assertEqual(is_unc, is_unc_path(path), f'is_unc_path failed for {path}, expected {is_unc}')
 
 
 class WinPrefixLongpathTest(PicardTestCase):
