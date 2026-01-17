@@ -123,6 +123,7 @@ from picard.disc import (
     Disc,
     dbpoweramplog,
     eaclog,
+    scsitoc,
     whipperlog,
 )
 from picard.file import File
@@ -1231,9 +1232,10 @@ class Tagger(QtWidgets.QApplication):
         file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
         file_chooser.setNameFilters(
             [
-                _("All supported log files") + " (*.log *.txt)",
+                _("All supported log files") + " (*.log *.txt *.toc)",
                 _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
                 _("dBpoweramp log files") + " (*.txt)",
+                _("SCSI TOC file") + " (*.toc)",
                 _("All files") + " (*)",
             ]
         )
@@ -1255,6 +1257,7 @@ class Tagger(QtWidgets.QApplication):
             eaclog.toc_from_file,
             whipperlog.toc_from_file,
             dbpoweramplog.toc_from_file,
+            scsitoc.toc_from_file,
         )
         for reader in log_readers:
             module_name = reader.__module__
