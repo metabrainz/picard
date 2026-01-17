@@ -33,7 +33,10 @@ from picard.script.parser import ScriptParser
 import pytest
 
 from picard.ui.widgets.completion_provider import CompletionChoicesProvider
-from picard.ui.widgets.context_detector import CompletionMode, ContextDetector
+from picard.ui.widgets.context_detector import (
+    CompletionMode,
+    ContextDetector,
+)
 from picard.ui.widgets.scripttextedit import ScriptCompleter
 from picard.ui.widgets.variable_extractor import VariableExtractor
 

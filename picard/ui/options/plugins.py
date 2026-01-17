@@ -22,12 +22,19 @@
 from datetime import datetime
 from functools import partial
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard import log
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_, gettext as _, ngettext
+from picard.i18n import (
+    N_,
+    gettext as _,
+    ngettext,
+)
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.installplugin import InstallPluginDialog

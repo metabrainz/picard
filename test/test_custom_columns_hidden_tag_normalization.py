@@ -28,7 +28,10 @@ from picard.metadata import Metadata
 
 import pytest  # type: ignore[import-not-found]
 
-from picard.ui.itemviews.custom_columns import make_field_column, make_script_column
+from picard.ui.itemviews.custom_columns import (
+    make_field_column,
+    make_script_column,
+)
 
 
 @pytest.fixture(autouse=True)

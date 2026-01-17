@@ -26,9 +26,15 @@ script structures. Uses pytest fixtures and parametrize to reduce code duplicati
 """
 
 from typing import Any
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
-from picard.script.parser import ScriptFunction, ScriptText
+from picard.script.parser import (
+    ScriptFunction,
+    ScriptText,
+)
 
 import pytest
 

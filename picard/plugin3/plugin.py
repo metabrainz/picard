@@ -28,7 +28,10 @@ import types
 
 from picard import log
 from picard.extension_points import unregister_module_extensions
-from picard.git.backend import GitBackendError, GitRefType
+from picard.git.backend import (
+    GitBackendError,
+    GitRefType,
+)
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
 from picard.i18n import sort_key

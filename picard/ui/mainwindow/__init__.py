@@ -96,7 +96,10 @@ from picard.options import (
 )
 from picard.script import get_file_naming_script_presets
 from picard.session.constants import SessionConstants
-from picard.session.session_manager import load_session_from_path, save_session_to_path
+from picard.session.session_manager import (
+    load_session_from_path,
+    save_session_to_path,
+)
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,

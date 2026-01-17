@@ -33,7 +33,11 @@ from picard.ui.columns import (
     ColumnAlign,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns.column import CustomColumn, DelegateColumn, IconColumn
+from picard.ui.itemviews.custom_columns.column import (
+    CustomColumn,
+    DelegateColumn,
+    IconColumn,
+)
 from picard.ui.itemviews.custom_columns.protocols import (
     ColumnValueProvider,
     DelegateProvider,

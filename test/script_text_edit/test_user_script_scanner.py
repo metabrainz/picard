@@ -24,7 +24,10 @@ Tests the UserScriptScanner class that scans all user tagging scripts
 for variable definitions to enhance autocompletion.
 """
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from picard.script import TaggingScriptSetting
 

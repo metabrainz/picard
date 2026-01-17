@@ -35,10 +35,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
-from picard.coverart.setters import CoverArtSetter, CoverArtSetterMode
-from picard.coverart.setters.handlers import _iter_file_parents, _set_coverart_dispatch
+from picard.coverart.setters import (
+    CoverArtSetter,
+    CoverArtSetterMode,
+)
+from picard.coverart.setters.handlers import (
+    _iter_file_parents,
+    _set_coverart_dispatch,
+)
 
 import pytest
 

@@ -42,10 +42,16 @@ from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.plugin3.manager.clean import PluginCleanupManager
 from picard.plugin3.manager.find import PluginFinder
-from picard.plugin3.manager.install import PluginInstaller, get_plugin_directory_name
+from picard.plugin3.manager.install import (
+    PluginInstaller,
+    get_plugin_directory_name,
+)
 from picard.plugin3.manager.lifecycle import PluginLifecycleManager
 from picard.plugin3.manager.registry import PluginRegistryManager
-from picard.plugin3.manager.update import PluginUpdater, UpdateAllResult
+from picard.plugin3.manager.update import (
+    PluginUpdater,
+    UpdateAllResult,
+)
 from picard.plugin3.manager.validation import PluginValidationManager
 from picard.plugin3.plugin import (
     Plugin,
@@ -53,7 +59,10 @@ from picard.plugin3.plugin import (
     hash_string,
     short_commit_id,
 )
-from picard.plugin3.plugin_metadata import PluginMetadata, PluginMetadataManager
+from picard.plugin3.plugin_metadata import (
+    PluginMetadata,
+    PluginMetadataManager,
+)
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
 from picard.plugin3.validation import PluginValidation

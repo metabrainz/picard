@@ -30,7 +30,12 @@ import pytest
 
 from picard.ui.columns import ColumnAlign
 from picard.ui.itemviews.custom_columns import CustomColumn
-from picard.ui.itemviews.custom_columns.shared import DEFAULT_ADD_TO, VIEW_ALBUM, VIEW_FILE, parse_add_to
+from picard.ui.itemviews.custom_columns.shared import (
+    DEFAULT_ADD_TO,
+    VIEW_ALBUM,
+    VIEW_FILE,
+    parse_add_to,
+)
 from picard.ui.itemviews.custom_columns.storage import (
     CustomColumnConfigManager,
     CustomColumnKind,

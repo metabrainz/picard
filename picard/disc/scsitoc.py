@@ -20,7 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from picard.disc.utils import NotSupportedTOCError, TocEntry, calculate_mb_toc_numbers
+from picard.disc.utils import (
+    NotSupportedTOCError,
+    TocEntry,
+    calculate_mb_toc_numbers,
+)
 
 
 def parse_toc_entries(f):

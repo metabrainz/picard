@@ -56,7 +56,10 @@ from picard.script import (
     script_function_names,
 )
 from picard.script.parser import ScriptParser
-from picard.script.variable_pattern import GET_VARIABLE_RE, PERCENT_VARIABLE_RE
+from picard.script.variable_pattern import (
+    GET_VARIABLE_RE,
+    PERCENT_VARIABLE_RE,
+)
 from picard.tags import script_variable_tag_names
 from picard.tags.docs import display_tag_tooltip
 

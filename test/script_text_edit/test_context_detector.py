@@ -27,7 +27,10 @@ that were discovered during the refactor.
 
 import pytest
 
-from picard.ui.widgets.context_detector import CompletionMode, ContextDetector
+from picard.ui.widgets.context_detector import (
+    CompletionMode,
+    ContextDetector,
+)
 
 
 @pytest.fixture

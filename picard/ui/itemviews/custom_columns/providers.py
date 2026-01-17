@@ -32,7 +32,10 @@ from picard import log
 from picard.item import Item
 from picard.script.parser import normalize_tagname
 
-from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider, HeaderIconProvider
+from picard.ui.itemviews.custom_columns.protocols import (
+    ColumnValueProvider,
+    HeaderIconProvider,
+)
 
 
 @dataclass(frozen=True)

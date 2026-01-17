@@ -20,7 +20,10 @@
 
 """Tests for ConfigurationManager."""
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 import picard.config as picard_config
 from picard.session.session_loader import ConfigurationManager

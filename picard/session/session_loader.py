@@ -30,7 +30,10 @@ from contextlib import suppress
 from dataclasses import dataclass
 import gzip
 from pathlib import Path
-from typing import Any, Protocol
+from typing import (
+    Any,
+    Protocol,
+)
 
 import yaml
 
@@ -42,9 +45,15 @@ from picard.config import get_config
 from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS
 from picard.i18n import gettext as _
 from picard.metadata import Metadata
-from picard.session.constants import RESTORABLE_CONFIG_KEYS, SessionConstants
+from picard.session.constants import (
+    RESTORABLE_CONFIG_KEYS,
+    SessionConstants,
+)
 from picard.session.metadata_handler import MetadataHandler
-from picard.session.session_data import AlbumItems, GroupedItems
+from picard.session.session_data import (
+    AlbumItems,
+    GroupedItems,
+)
 from picard.session.track_mover import TrackMover
 
 

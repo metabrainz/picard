@@ -22,7 +22,10 @@
 
 from pathlib import Path
 from typing import Any
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from picard.file import File
 from picard.metadata import Metadata

@@ -23,7 +23,11 @@
 from unittest.mock import Mock
 
 from picard.album import Album
-from picard.session.session_loader import AlbumManager, OverrideApplicator, UIStateManager
+from picard.session.session_loader import (
+    AlbumManager,
+    OverrideApplicator,
+    UIStateManager,
+)
 
 
 def _immediate_run(callback):

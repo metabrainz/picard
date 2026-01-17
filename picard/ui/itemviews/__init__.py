@@ -54,7 +54,10 @@ from PyQt6 import (
 
 from picard import log
 from picard.album import NatAlbum
-from picard.cluster import Cluster, ClusterList
+from picard.cluster import (
+    Cluster,
+    ClusterList,
+)
 from picard.file import File
 from picard.i18n import (
     N_,

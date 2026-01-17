@@ -30,7 +30,10 @@ from pathlib import Path
 from typing import Any
 
 from picard import log
-from picard.const.defaults import EXCLUDED_OVERRIDE_TAGS, INTERNAL_TAG_PREFIX
+from picard.const.defaults import (
+    EXCLUDED_OVERRIDE_TAGS,
+    INTERNAL_TAG_PREFIX,
+)
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants

@@ -23,12 +23,20 @@ from types import SimpleNamespace
 from typing import Any
 
 import picard.config as picard_config
-from picard.const.appdirs import config_folder, sessions_folder
+from picard.const.appdirs import (
+    config_folder,
+    sessions_folder,
+)
 from picard.metadata import Metadata
 from picard.session.session_manager import export_session
 
 # Import stub classes from conftest.py
-from .conftest import _StubAlbum, _StubFile, _StubTagger, _StubTrack
+from .conftest import (
+    _StubAlbum,
+    _StubFile,
+    _StubTagger,
+    _StubTrack,
+)
 import pytest
 
 

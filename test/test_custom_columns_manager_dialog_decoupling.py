@@ -34,9 +34,16 @@ Classes Under Test:
 from collections.abc import Iterable
 from dataclasses import replace
 import os
-from unittest.mock import Mock, call, patch
+from unittest.mock import (
+    Mock,
+    call,
+    patch,
+)
 
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 import pytest
 

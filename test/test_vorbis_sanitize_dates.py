@@ -21,7 +21,10 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
-from typing import Any, cast
+from typing import (
+    Any,
+    cast,
+)
 
 from picard import config
 from picard.formats.vorbis import OggVorbisFile

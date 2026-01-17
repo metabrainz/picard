@@ -20,7 +20,10 @@
 
 """Tests for retry helper."""
 
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from picard.session.retry_helper import RetryHelper
 

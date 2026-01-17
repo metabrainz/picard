@@ -26,8 +26,14 @@ separating the complex location detection logic from other concerns.
 
 from __future__ import annotations
 
-from picard.album import Album, NatAlbum
-from picard.cluster import Cluster, UnclusteredFiles
+from picard.album import (
+    Album,
+    NatAlbum,
+)
+from picard.cluster import (
+    Cluster,
+    UnclusteredFiles,
+)
 from picard.file import File
 from picard.session.constants import SessionConstants
 from picard.session.session_data import SessionItemLocation

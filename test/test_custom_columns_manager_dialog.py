@@ -35,7 +35,11 @@ and parametrize to reduce code duplication while ensuring comprehensive coverage
 
 from dataclasses import asdict
 import os
-from unittest.mock import Mock, call, patch
+from unittest.mock import (
+    Mock,
+    call,
+    patch,
+)
 
 from PyQt6 import QtWidgets
 

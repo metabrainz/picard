@@ -27,7 +27,10 @@ handles partial tag-arg for unknown functions, and recognizes $$ as function con
 
 import pytest
 
-from picard.ui.widgets.context_detector import CompletionMode, ContextDetector
+from picard.ui.widgets.context_detector import (
+    CompletionMode,
+    ContextDetector,
+)
 
 
 @pytest.fixture

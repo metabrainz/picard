@@ -41,7 +41,10 @@ from picard.ui.itemviews.custom_columns import (
     registry,
 )
 from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
-from picard.ui.itemviews.custom_columns.shared import VIEW_ALBUM, VIEW_FILE
+from picard.ui.itemviews.custom_columns.shared import (
+    VIEW_ALBUM,
+    VIEW_FILE,
+)
 
 
 @dataclasses.dataclass

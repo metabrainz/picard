@@ -22,7 +22,11 @@
 
 from __future__ import annotations
 
-from picard.ui.itemviews.custom_columns.column import CustomColumn, DelegateColumn, IconColumn
+from picard.ui.itemviews.custom_columns.column import (
+    CustomColumn,
+    DelegateColumn,
+    IconColumn,
+)
 from picard.ui.itemviews.custom_columns.factory import (
     _create_custom_column,
     make_callable_column,

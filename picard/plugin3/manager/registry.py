@@ -20,7 +20,10 @@
 
 import re
 
-from picard import api_versions_tuple, log
+from picard import (
+    api_versions_tuple,
+    log,
+)
 from picard.util import parse_versioning_scheme
 from picard.version import Version
 

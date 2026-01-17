@@ -147,7 +147,10 @@ class TestPluginRegistry(PicardTestCase):
         """Test that update_plugin follows redirects and updates metadata."""
         from pathlib import Path
         import tempfile
-        from unittest.mock import Mock, patch
+        from unittest.mock import (
+            Mock,
+            patch,
+        )
 
         from picard.plugin3.manager import PluginManager
 

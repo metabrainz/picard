@@ -22,12 +22,19 @@
 
 import gzip
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 import yaml
 
 from picard.session.constants import SessionConstants
-from picard.session.session_manager import export_session, load_session_from_path, save_session_to_path
+from picard.session.session_manager import (
+    export_session,
+    load_session_from_path,
+    save_session_to_path,
+)
 
 import pytest
 

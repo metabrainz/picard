@@ -21,9 +21,15 @@
 """Tests for session exporter."""
 
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
-from picard.album import Album, NatAlbum
+from picard.album import (
+    Album,
+    NatAlbum,
+)
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
 from picard.session.session_data import SessionItemLocation

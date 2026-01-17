@@ -29,7 +29,10 @@ from abc import (
 from typing import Any
 
 from picard.file import File
-from picard.item import Item, MetadataItem
+from picard.item import (
+    Item,
+    MetadataItem,
+)
 from picard.track import Track
 
 
