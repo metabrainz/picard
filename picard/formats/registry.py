@@ -18,8 +18,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 from PyQt6.QtCore import (
     QObject,
