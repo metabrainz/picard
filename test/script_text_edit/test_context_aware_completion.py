@@ -28,10 +28,7 @@ Uses pytest fixtures and parametrize to reduce code duplication while adhering
 to DRY, SOC, SRP, IOC, KISS principles.
 """
 
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -192,7 +189,7 @@ class TestContextDetectionLogic:
 class TestTagNameArgContextDetection:
     """Test tag name argument context detection logic."""
 
-    def detect_tag_name_arg_context_logic(self, left_text: str) -> Optional[dict[str, Any]]:
+    def detect_tag_name_arg_context_logic(self, left_text: str) -> dict[str, Any] | None:
         """Test implementation of tag name argument context detection."""
         # Find all $ positions and their corresponding ( positions
         dollar_positions = []

@@ -115,7 +115,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 def failing_dump(obj, fp, *args, **kwargs):
                     # Check if we're writing to cache (not reading from registry file)
                     if hasattr(fp, 'name') and 'plugin_registry_' in fp.name:
-                        raise IOError('Write failed')
+                        raise OSError('Write failed')
                     return original_dump(obj, fp, *args, **kwargs)
 
                 with patch('picard.plugin3.registry.json.dump', side_effect=failing_dump):

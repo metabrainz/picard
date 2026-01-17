@@ -107,9 +107,9 @@ class TestPicardProfilesCommon(PicardTestCase):
             profiles.append(
                 {
                     "position": i,
-                    "title": "Test Profile {0}".format(i),
+                    "title": "Test Profile {}".format(i),
                     "enabled": enabled,
-                    "id": "test_key_{0}".format(i),
+                    "id": "test_key_{}".format(i),
                 }
             )
         return profiles

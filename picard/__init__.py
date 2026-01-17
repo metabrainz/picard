@@ -86,10 +86,7 @@ def crash_handler(exc: Exception = None):
 
     # Get traceback
     if exc:
-        if sys.version_info < (3, 10):
-            trace_list = traceback.format_exception(None, exc, exc.__traceback__)
-        else:
-            trace_list = traceback.format_exception(exc)  # pylint: disable=no-value-for-parameter
+        trace_list = traceback.format_exception(exc)
         trace = "".join(trace_list)
     else:
         trace = traceback.format_exc()
@@ -146,7 +143,7 @@ def _show_crash_dialog(trace):
     if logfile:
         logfile_url = QUrl.fromLocalFile(logfile)
         msgbox.setInformativeText(
-            'A logfile has been written to <a href="{0}">{1}</a>.'.format(logfile_url.url(), logfile)
+            'A logfile has been written to <a href="{}">{}</a>.'.format(logfile_url.url(), logfile)
         )
     msgbox.setDetailedText(trace)
     msgbox.setStandardButtons(QMessageBox.StandardButton.Close)

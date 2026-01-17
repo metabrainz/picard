@@ -473,8 +473,7 @@ def run_executable(executable, *args, timeout=None):
     ret = subprocess.run(  # nosec: B603
         arguments,
         stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        capture_output=True,
         startupinfo=startupinfo,
         timeout=timeout,
     )

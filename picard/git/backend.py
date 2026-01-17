@@ -26,10 +26,7 @@ from abc import (
 )
 from enum import Enum
 from pathlib import Path
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 from picard import log
 from picard.debug_opts import DebugOpt
@@ -333,7 +330,7 @@ class GitBackend(ABC):
         """Clone repository from URL"""
 
     @abstractmethod
-    def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
+    def fetch_remote_refs(self, url: str, **options) -> list[GitRef] | None:
         """Fetch remote refs without cloning
 
         Args:

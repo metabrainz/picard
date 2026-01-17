@@ -177,7 +177,7 @@ class VCommentFile(File):
                         continue
                     name = '~rating'
                     try:
-                        value = str(round((float(value) * (config.setting['rating_steps'] - 1))))
+                        value = str(round(float(value) * (config.setting['rating_steps'] - 1)))
                     except ValueError:
                         log.warning('Invalid rating value in %r: %s', filename, value)
                 elif name == 'fingerprint' and value.startswith('MusicMagic Fingerprint'):

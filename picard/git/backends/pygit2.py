@@ -22,10 +22,7 @@
 
 from pathlib import Path
 import tempfile
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 
 try:
@@ -459,7 +456,7 @@ class Pygit2Backend(GitBackend):
         repo = pygit2.clone_repository(url, str(path.absolute()), **options)
         return Pygit2Repository(repo)
 
-    def fetch_remote_refs(self, url: str, **options) -> Optional[list[GitRef]]:
+    def fetch_remote_refs(self, url: str, **options) -> list[GitRef] | None:
         _log_git_call("fetch_remote_refs", url, **options)
 
         # Check if we can use an existing repository

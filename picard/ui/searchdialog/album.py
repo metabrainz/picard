@@ -194,7 +194,7 @@ class AlbumSearchDialog(SearchDialog):
             force_advanced_search=True,
             existing_album=existing_album,
         )
-        dialog.search("rgid:{0}".format(releasegroup_id))
+        dialog.search("rgid:{}".format(releasegroup_id))
         dialog.exec()
         return dialog
 

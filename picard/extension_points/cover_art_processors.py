@@ -24,7 +24,6 @@ from enum import (
     Flag,
     auto,
 )
-from typing import Optional
 
 from PyQt6.QtCore import (
     QBuffer,
@@ -72,7 +71,7 @@ class ProcessingImage:
     def get_qimage(self):
         return self._qimage
 
-    def get_result(self, image_format: Optional[str] = None, quality: int = 90) -> bytes:
+    def get_result(self, image_format: str | None = None, quality: int = 90) -> bytes:
         """
         Encode the internal QImage to the specified format and quality and
         return the raw bytes.

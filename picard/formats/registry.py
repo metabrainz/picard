@@ -18,8 +18,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 from PyQt6.QtCore import (
     QObject,
@@ -169,7 +169,7 @@ class FormatRegistry(QObject):
                         return best_format(str(path))
                     else:
                         log.debug("No format scored positively for %r", str(path))
-        except (OSError, IOError) as e:
+        except OSError as e:
             log.error("Error reading file %r for format detection: %s", str(path), e)
 
         return None

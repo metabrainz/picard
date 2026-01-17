@@ -23,10 +23,7 @@
 
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 
 @dataclass
@@ -35,7 +32,7 @@ class OperationResult:
 
     success: bool
     result: Any = None
-    error: Optional[Exception] = None
+    error: Exception | None = None
     error_message: str = ''
 
 
@@ -44,7 +41,7 @@ class ProgressUpdate:
     """Progress update for long-running operations."""
 
     operation: str  # 'install', 'update', 'fetch', etc.
-    plugin_id: Optional[str] = None
+    plugin_id: str | None = None
     percent: int = 0  # 0-100
     message: str = ''
     current: int = 0
