@@ -54,14 +54,6 @@ jobs:
       env:
         GETTEXT_VERSION: 0.22.4
         GETTEXT_SHA256SUM: 220068ac0b9e7aedda03534a3088e584640ac1e639800b3a0baa9410aa6d012a
-    - name: Install libgit2
-      run: |
-        vcpkg install libgit2:x64-windows
-        $vcpkgRoot = "C:\vcpkg\installed\x64-windows"
-        echo "INCLUDE=$vcpkgRoot\include;$env:INCLUDE" >> $env:GITHUB_ENV
-        echo "LIB=$vcpkgRoot\lib;$env:LIB" >> $env:GITHUB_ENV
-        echo "LIBPATH=$vcpkgRoot\lib;$env:LIBPATH" >> $env:GITHUB_ENV
-      shell: pwsh
     - name: Install dependencies
       run: uv sync --group build --group dev --extra plugins
     - name: Patch build version
