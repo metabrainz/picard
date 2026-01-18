@@ -24,21 +24,22 @@ import re
 import sys
 
 
-ROOT_DIR = 'picard'
+ROOT_DIRS = ['picard', 'scripts', 'test']
 IGNORE_DIR = '__pycache__'
 
-RE_IMPORT_LINE = re.compile(r'^(from\s+\S+\s+import\s+)([^(].*[^\\])$')
+RE_IMPORT_LINE = re.compile(r'^(from\s+\S+\s+import\s+)([^(].*,.*[^\\])$')
 
 
 def get_python_files():
-    """Generator to yield all Python files in the ROOT_DIR, skipping IGNORE_DIR."""
-    for dirpath, _dirnames, filenames in os.walk(ROOT_DIR):
-        if IGNORE_DIR in dirpath:
-            continue
+    """Generator to yield all Python files recursively from the top dir, skipping IGNORE_DIR."""
+    for top_dir in ROOT_DIRS:
+        for dirpath, _dirnames, filenames in os.walk(top_dir):
+            if IGNORE_DIR in dirpath:
+                continue
 
-        for filename in filenames:
-            if filename.endswith('.py'):
-                yield os.path.join(dirpath, filename)
+            for filename in filenames:
+                if filename.endswith('.py'):
+                    yield os.path.join(dirpath, filename)
 
 
 def process_file(filepath):
@@ -53,7 +54,7 @@ def process_file(filepath):
         line = line.rstrip()
         matches = RE_IMPORT_LINE.match(line)
 
-        if matches and ',' in matches.group(2):
+        if matches:
             line = matches.group(1) + "(\n"
             import_items = [item.strip() for item in matches.group(2).split(',')]
             for item in sorted(import_items):
