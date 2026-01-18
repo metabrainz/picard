@@ -49,13 +49,6 @@ repos:
         pass_filenames: false
   - repo: local
     hooks:
-      - id: fix-multiple-imports-on-one-line
-        name: check for multiple imports on one line
-        entry: python scripts/tools/fix_multiple_imports_on_one_line.py
-        args: [--changes-only]
-        language: system
-        pass_filenames: false
-        always_run: true
       - id: pytest
         name: Run pytest
         entry: uv run --frozen pytest --numprocesses auto --exitfirst
