@@ -56,13 +56,14 @@ def get_python_files(level=OUTPUT_LEVEL.NORMAL):
 
             for filename in filenames:
                 if filename.endswith('.py'):
-                    yield os.path.join(dirpath, filename)
+                    filepath = os.path.join(dirpath, filename)
+                    short_path = filepath[BASE_DIR_LENGTH:]
+                    yield filepath, short_path
 
 
-def process_file(filepath, level=OUTPUT_LEVEL.NORMAL):
+def process_file(filepath, short_path, level=OUTPUT_LEVEL.NORMAL):
     """Process a single file to replace multiple imports on one line."""
     modified = False
-    short_path = filepath[BASE_DIR_LENGTH:]
 
     try:
         with open(filepath, 'r', encoding='utf8') as f:
@@ -106,7 +107,6 @@ def main():
     args = sys.argv
     file_count = 0
     updated_count = 0
-    level = OUTPUT_LEVEL.NORMAL
 
     if '--silent' in args:
         level = OUTPUT_LEVEL.SILENT
@@ -114,24 +114,25 @@ def main():
         level = OUTPUT_LEVEL.CHANGES_ONLY
     elif '--verbose' in args:
         level = OUTPUT_LEVEL.VERBOSE
+    else:
+        level = OUTPUT_LEVEL.NORMAL
 
     if level > OUTPUT_LEVEL.CHANGES_ONLY:
-        print("Checking python imports.")
+        print("Checking python imports")
 
-    for filepath in get_python_files(level=level):
+    for filepath, short_path in get_python_files(level=level):
         file_count += 1
-        short_path = filepath[BASE_DIR_LENGTH:]
 
         if level > OUTPUT_LEVEL.NORMAL:
             print(f"Processing file: {short_path}")
 
-        if process_file(filepath, level=level):
+        if process_file(filepath, short_path, level=level):
             if level > OUTPUT_LEVEL.SILENT:
                 print(f"Updated imports in: {short_path}")
             updated_count += 1
 
     if level > OUTPUT_LEVEL.CHANGES_ONLY or updated_count:
-        print(f"Checked {file_count:,} file{'' if file_count == 1 else 's'} ({updated_count:,} updated).")
+        print(f"Checked {file_count:,} file{'' if file_count == 1 else 's'} ({updated_count:,} updated)")
 
     sys.exit(min(updated_count, 1))
 
