@@ -18,6 +18,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 import locale
 
 from PyQt6 import (
@@ -119,8 +120,9 @@ class PlayerToolbar(QtWidgets.QToolBar):
     def _add_toolbar_action(self, action):
         self.addAction(action)
         widget = self.widgetForAction(action)
-        widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
-        widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
+        if widget:
+            widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
+            widget.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
     def pause(self, checked):
         if self.player.is_playing or self.player.is_paused:
