@@ -24,15 +24,32 @@ import re
 import sys
 
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+BASE_DIR_LENGTH = len(BASE_DIR) + 1
+
 ROOT_DIRS = ['picard', 'scripts', 'test']
 IGNORE_DIR = '__pycache__'
 
 RE_IMPORT_LINE = re.compile(r'^(from\s+\S+\s+import\s+)([^(].*,.*[^\\])$')
 
 
-def get_python_files():
+class OUTPUT_LEVEL:
+    SILENT = 0
+    CHANGES_ONLY = 1
+    NORMAL = 2
+    VERBOSE = 3
+
+
+def get_python_files(level=OUTPUT_LEVEL.NORMAL):
     """Generator to yield all Python files recursively from the top dir, skipping IGNORE_DIR."""
-    for top_dir in ROOT_DIRS:
+    for root_dir in ROOT_DIRS:
+        top_dir = os.path.join(BASE_DIR, root_dir)
+
+        if not os.path.isdir(top_dir):
+            if level > OUTPUT_LEVEL.SILENT:
+                print(f"Warning: Root directory '{root_dir}' does not exist, skipping.")
+            continue
+
         for dirpath, _dirnames, filenames in os.walk(top_dir):
             if IGNORE_DIR in dirpath:
                 continue
@@ -42,12 +59,19 @@ def get_python_files():
                     yield os.path.join(dirpath, filename)
 
 
-def process_file(filepath):
+def process_file(filepath, level=OUTPUT_LEVEL.NORMAL):
     """Process a single file to replace multiple imports on one line."""
     modified = False
+    short_path = filepath[BASE_DIR_LENGTH:]
 
-    with open(filepath, 'r', encoding='utf8') as f:
-        file_lines = f.readlines()
+    try:
+        with open(filepath, 'r', encoding='utf8') as f:
+            file_lines = f.readlines()
+
+    except OSError as e:
+        if level > OUTPUT_LEVEL.SILENT:
+            print(f"Error reading file '{short_path}': {e}")
+        return False
 
     new_file_text = ''
     for line in file_lines:
@@ -65,17 +89,16 @@ def process_file(filepath):
         new_file_text += line + '\n'
 
     if modified:
-        with open(filepath, 'w', encoding='utf8') as f:
-            f.write(new_file_text)
+        try:
+            with open(filepath, 'w', encoding='utf8') as f:
+                f.write(new_file_text)
+
+        except OSError as e:
+            if level > OUTPUT_LEVEL.SILENT:
+                print(f"Error writing file '{short_path}': {e}")
+            return False
 
     return modified
-
-
-class OUTPUT_LEVEL:
-    SILENT = 0
-    CHANGES_ONLY = 1
-    NORMAL = 2
-    VERBOSE = 3
 
 
 def main():
@@ -95,15 +118,16 @@ def main():
     if level > OUTPUT_LEVEL.CHANGES_ONLY:
         print("Checking python imports.")
 
-    for filepath in get_python_files():
+    for filepath in get_python_files(level=level):
         file_count += 1
+        short_path = filepath[BASE_DIR_LENGTH:]
 
         if level > OUTPUT_LEVEL.NORMAL:
-            print(f"Processing file: {filepath}")
+            print(f"Processing file: {short_path}")
 
-        if process_file(filepath):
+        if process_file(filepath, level=level):
             if level > OUTPUT_LEVEL.SILENT:
-                print(f"Updated imports in: {filepath}")
+                print(f"Updated imports in: {short_path}")
             updated_count += 1
 
     if level > OUTPUT_LEVEL.CHANGES_ONLY or updated_count:
