@@ -52,6 +52,7 @@ from picard.util.filenaming import (
     samefile_different_casing,
     shorten_filename,
     shorten_path,
+    split_unc_path,
 )
 
 
@@ -241,11 +242,39 @@ class MoveEnsureCasingTest(PicardTestCase):
         move_ensure_casing(path, path)
 
 
+class SplitUNCPathTest(PicardTestCase):
+    def test_split_unc_path(self):
+        self.assertEqual((None, ''), split_unc_path(r''))
+        self.assertEqual((None, '/foo/bar'), split_unc_path('/foo/bar'))
+        self.assertEqual((None, r'C:\foo\bar'), split_unc_path(r'C:\foo\bar'))
+        self.assertEqual((None, r'\foo\bar'), split_unc_path(r'\foo\bar'))
+        self.assertEqual((r'\\foo\bar', ''), split_unc_path(r'\\foo\bar'))
+        self.assertEqual((r'\\host\share', r'\foo\bar'), split_unc_path(r'\\host\share\foo\bar'))
+        self.assertEqual((r'\\?\UNC\host\share', r'\foo\bar'), split_unc_path(r'\\?\UNC\host\share\foo\bar'))
+        self.assertEqual((None, r'\\?\foo\bar\baz'), split_unc_path(r'\\?\foo\bar\baz'))
+
+
 class MakeSavePathTest(PicardTestCase):
     def test_replace_trailing_dots(self):
         path = 'foo./bar.'
         self.assertEqual(path, make_save_path(path))
         self.assertEqual('foo_/bar_', make_save_path(path, win_compat=True))
+
+    @unittest.skipUnless(IS_WIN, "Windows test")
+    def test_ignores_windows_share(self):
+        self.assertEqual(
+            r'\\hostname.\sharename.\path', make_save_path(r'\\hostname.\sharename.\path', win_compat=True)
+        )
+        self.assertEqual(
+            r'\\?\UNC\hostname.\sharename.\path', make_save_path(r'\\?\UNC\hostname.\sharename.\path', win_compat=True)
+        )
+        self.assertEqual(r'\foo_\bar_\path', make_save_path(r'\foo.\bar.\path', win_compat=True))
+        self.assertEqual(r'\\?\foo_\bar_\path', make_save_path(r'\\?\foo.\bar.\path', win_compat=True))
+
+    @unittest.skipUnless(not IS_WIN, "non-Windows test")
+    def test_ignores_windows_share_not_windows(self):
+        self.assertEqual(r'\\foo_\bar_\path', make_save_path(r'\\foo.\bar.\path', win_compat=True))
+        self.assertEqual(r'\\?\UNC\foo_\bar_\path', make_save_path(r'\\?\UNC\foo.\bar.\path', win_compat=True))
 
     def test_replace_leading_dots(self):
         path = '.foo/.bar'

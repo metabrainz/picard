@@ -50,6 +50,7 @@ from picard.util import (
     _io_encoding,
     decode_filename,
     encode_filename,
+    is_unc_path,
     samefile,
 )
 
@@ -494,6 +495,22 @@ def move_ensure_casing(source_path, target_path):
         pass
 
 
+UNC_HOST_SHARE_REGEX = re.compile(r'(?P<unc>\\\\(\?\\UNC\\)?[^?\\][^\\]*\\[^\\]+)(?P<path>.*)')
+
+
+def split_unc_path(path: str) -> tuple[str | None, str]:
+    r"""Splits a Windows UNC path into the part containing hostname and share and the actual path.
+
+    For example `\\hostname\share\path` gets split into the tuple `('\\hostname\share', '\path')`.
+    If the given path is not a UNC path the first element will be None.
+    """
+    if not is_unc_path(path):
+        return None, path
+    if match := UNC_HOST_SHARE_REGEX.match(path):
+        return match.group('unc'), match.group('path')
+    return None, path
+
+
 def make_save_path(path, win_compat=False, mac_compat=False):
     """Performs a couple of cleanups on a path to avoid side effects and incompatibilities.
 
@@ -513,7 +530,14 @@ def make_save_path(path, win_compat=False, mac_compat=False):
 
     Returns: sanitized path
     """
+    if IS_WIN:
+        # Windows UNC paths always start with \\hostname\share. As neither hostname
+        # nor share can be modified and are given, ignore them in the cleanup rules.
+        # This only applies when running actually on Windows and not in win_compat mode,
+        # as only on Windows this path syntax has a special meaning.
+        unc, path = split_unc_path(path)
     if win_compat:
+        # Windows file and directory names must not end with a dot
         path = path.replace('./', '_/').replace('.\\', '_\\')
         if path.endswith('.'):
             path = path[:-1] + '_'
@@ -527,6 +551,8 @@ def make_save_path(path, win_compat=False, mac_compat=False):
         path = unicodedata.normalize("NFD", path)
     # Remove unicode zero-width space (\u200B) from path
     path = path.replace("\u200b", "")
+    if IS_WIN and unc:
+        path = unc + path
     return path
 
 
