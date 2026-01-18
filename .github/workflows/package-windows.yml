@@ -40,7 +40,6 @@ jobs:
           -FpcalcVersion $Env:FPCALC_VERSION -FpcalcSha256Sum $Env:FPCALC_SHA256SUM
         Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
         New-Item -Name .\artifacts -ItemType Directory
-        pip install setuptools
       env:
         DISCID_VERSION: 0.6.5
         DISCID_SHA256SUM: a1198731d417a04b3d8499bcc10b6a8ddcab06476c855ebff0fb4134888b1be5
