@@ -46,12 +46,6 @@ jobs:
         echo "TARGET_ARCH=$(uname -m)" >> $GITHUB_ENV
         mkdir artifacts
         python3 -m pip install --upgrade pip setuptools wheel
-    - name: Install libgit2
-      run: |
-        brew install libgit2
-        echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:$PKG_CONFIG_PATH" >> $GITHUB_ENV
-        echo "CFLAGS=-I$(brew --prefix)/include" >> $GITHUB_ENV
-        echo "LDFLAGS=-L$(brew --prefix)/lib" >> $GITHUB_ENV
     - name: Install dependencies
       run: uv sync --group build --group dev --extra plugins
       env:

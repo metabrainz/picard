@@ -39,9 +39,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install gettext libegl1
-    - name: Install libgit2 (macOS)
-      if: runner.os == 'macOS'
-      run: brew install libgit2
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
@@ -120,9 +117,6 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install gettext libegl1 libgit2-dev
-    - name: Install libgit2 (macOS)
-      if: runner.os == 'macOS'
-      run: brew install libgit2
     - name: Install gettext (Windows)
       if: runner.os == 'Windows'
       run: |
