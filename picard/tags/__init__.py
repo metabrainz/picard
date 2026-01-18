@@ -39,7 +39,7 @@ from picard.const.tags import ALL_TAGS
 RE_COMMENT_LANG = re.compile('^([a-zA-Z]{3}):')
 
 
-def parse_comment_tag(name):  # noqa: E302
+def parse_comment_tag(name):
     """
     Parses a tag name like "comment:XXX:desc", where XXX is the language.
     If language is not set ("comment:desc") "eng" is assumed as default.

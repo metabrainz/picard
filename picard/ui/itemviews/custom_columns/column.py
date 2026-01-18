@@ -77,7 +77,7 @@ class CustomColumn(Column):
             If True, hide the column visibility toggle.
         """
         sortkey_fn = (
-            provider.sort_key  # type: ignore[attr-defined]
+            provider.sort_key
             if (sort_type == ColumnSortType.SORTKEY and isinstance(provider, SortKeyProvider))
             else None
         )
@@ -102,8 +102,7 @@ class CustomColumn(Column):
             Optional item to invalidate for; if omitted, clears entire cache.
         """
         if isinstance(self.provider, CacheInvalidatable):
-            # type: ignore[attr-defined]
-            self.provider.invalidate(obj)  # noqa: PGH003
+            self.provider.invalidate(obj)
 
 
 class DelegateColumn(Column):

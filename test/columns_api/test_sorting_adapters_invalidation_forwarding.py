@@ -73,11 +73,9 @@ def test_adapter_invalidate_forwards_to_base(adapter_factory) -> None:
     a = _ValueItem("A")
 
     # Forward single-item invalidation
-    # type: ignore[attr-defined]
-    adapter.invalidate(a)  # noqa: PGH003
+    adapter.invalidate(a)
     # Forward full invalidation
-    # type: ignore[attr-defined]
-    adapter.invalidate(None)  # noqa: PGH003
+    adapter.invalidate(None)
 
     assert spy.calls == [a, None]
 
@@ -96,8 +94,7 @@ def test_cached_sort_adapter_invalidate_forwards_and_recomputes() -> None:
     assert adapter.sort_key(it) == "b"
 
     # Invalidate and ensure base received invalidation, and key recomputed
-    # type: ignore[attr-defined]
-    adapter.invalidate(it)  # noqa: PGH003
+    adapter.invalidate(it)
     assert spy.calls == [it]
     assert adapter.sort_key(it) == "z"
 

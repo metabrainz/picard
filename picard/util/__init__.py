@@ -351,7 +351,7 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-def replace_win32_incompat(string, repl="_", replacements=None):  # noqa: E302
+def replace_win32_incompat(string, repl="_", replacements=None):
     """Replace win32 filename incompatible characters from ``string`` by
     ``repl``."""
     # Don't replace : for windows drive
@@ -371,7 +371,7 @@ def replace_win32_incompat(string, repl="_", replacements=None):  # noqa: E302
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 
 
-def strip_non_alnum(string):  # noqa: E302
+def strip_non_alnum(string):
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string).strip()
 
@@ -494,7 +494,7 @@ _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 
 
-def mbid_validate(string):  # noqa: E302
+def mbid_validate(string):
     """Test if passed string is a valid mbid"""
     return _re_mbid_val.match(string) is not None
 

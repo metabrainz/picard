@@ -50,7 +50,7 @@ class _FakeIndex:
     def isValid(self) -> bool:  # noqa: N802 (Qt-style API)
         return 0 <= self._row < self._model.rowCount()
 
-    def row(self) -> int:  # noqa: N802 (Qt-style API)
+    def row(self) -> int:
         return self._row
 
 
@@ -68,7 +68,7 @@ class _FakeModel:
     def rowCount(self) -> int:  # noqa: N802 (Qt-style API)
         return len(self._items)
 
-    def index(self, row: int, col: int) -> _FakeIndex:  # noqa: N802
+    def index(self, row: int, col: int) -> _FakeIndex:
         return _FakeIndex(row, col, self)
 
     def data(self, index: _FakeIndex, role: Any = None) -> str | None:  # noqa: ANN001
@@ -124,7 +124,7 @@ class _FakeCompleter:
     def completionModel(self) -> _FakeModel:  # noqa: N802
         return self._model
 
-    def popup(self) -> _FakePopup:  # noqa: N802
+    def popup(self) -> _FakePopup:
         return self._popup
 
     def setCurrentRow(self, row: int) -> None:  # noqa: N802

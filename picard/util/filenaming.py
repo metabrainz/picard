@@ -118,7 +118,7 @@ def _shorten_to_utf16_nfd_length(text, length):
 _re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
 
 
-def _shorten_to_bytes_length(text, length):  # noqa: E302
+def _shorten_to_bytes_length(text, length):
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
     """
@@ -157,7 +157,7 @@ class ShortenMode(IntEnum):
     UTF16_NFD = 2
 
 
-def shorten_filename(filename, length, mode):  # noqa: E302
+def shorten_filename(filename, length, mode):
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
     """
