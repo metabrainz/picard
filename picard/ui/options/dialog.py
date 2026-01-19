@@ -418,10 +418,13 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         except AttributeError:
                             continue
                         style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
-                        self._check_and_highlight_option(obj, opt.name, working_profiles, working_settings, style)
+                        style_reset = "#%s { }" % (objname)
+                        self._check_and_highlight_option(
+                            obj, opt.name, working_profiles, working_settings, style, style_reset
+                        )
 
-    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style):
-        obj.setStyleSheet(None)
+    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style, style_reset):
+        obj.setStyleSheet(style_reset)
         obj.setToolTip(None)
         for item in working_profiles:
             if item['enabled']:
