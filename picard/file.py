@@ -52,8 +52,10 @@ from enum import (
 )
 import fnmatch
 from functools import partial
+import hashlib
 import os
 import os.path
+from pathlib import Path
 import re
 import shutil
 import time
@@ -136,6 +138,72 @@ FILE_COMPARISON_WEIGHTS = {
     'title': 13,
     'totaltracks': 4,
 }
+
+
+class FileIdentityError(Exception):
+    pass
+
+
+class FileIdentity:
+    _READ_SIZE = 8192
+
+    def __init__(self, filename):
+        self._filepath = Path(filename)
+        try:
+            stat = os.stat(self._filepath)
+            self._inode = stat.st_ino
+            self._size = stat.st_size
+            self._mtime = stat.st_mtime
+            self._exists = True
+
+            try:
+                self._hash = self._fast_hash()
+            except FileIdentityError:
+                self._hash = None
+        except OSError:
+            self._inode = self._size = self._mtime = self._hash = None
+            self._exists = False
+
+    def __eq__(self, other):
+        if other is None or not self._exists == other._exists:
+            return False
+
+        # If both don't exist, they're equal
+        if not self._exists:
+            return True
+
+        # Different inode or size means different file
+        if self._inode != other._inode or self._size != other._size:
+            return False
+
+        # Different mtime means file changed
+        if self._mtime != other._mtime:
+            return False
+        # Compute missing hash values, may error if unreadable
+        try:
+            _other_current_hash = other._fast_hash()
+        except Exception as e:
+            raise FileIdentityError from e
+        try:
+            if self._hash is None:
+                self._hash = self._fast_hash()
+        except Exception as e:
+            raise FileIdentityError from e
+        # Now both hashes exist, compare them
+        return self._hash == other._hash
+
+    def __bool__(self):
+        return self._exists
+
+    def _fast_hash(self):
+        try:
+            with open(self._filepath, "rb") as fh:
+                data = fh.read(self._READ_SIZE)
+                h = hashlib.blake2b()
+                h.update(data)
+                return h.hexdigest()
+        except Exception as e:
+            raise FileIdentityError(f"Failed to hash file {self._filepath}") from e
 
 
 class File(MetadataItem):
@@ -314,6 +382,7 @@ class File(MetadataItem):
         else:
             self.clear_errors()
             self.state = self.State.NORMAL
+            self._loaded_identity = FileIdentity(self.filename)
             postprocessors = []
             if config.setting['guess_tracknumber_and_title']:
                 postprocessors.append(self._guess_tracknumber_and_title)
@@ -425,6 +494,12 @@ class File(MetadataItem):
             return None
         new_filename = old_filename
         if config.setting['enable_tag_saving']:
+            # Detect source changes before saving (debug only)
+            current = FileIdentity(old_filename)
+            if current and current != self._loaded_identity:
+                log.warning("File externally modified.")
+            elif not current:
+                log.warning("File missing!")
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -492,7 +567,7 @@ class File(MetadataItem):
             self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
-
+            self._loaded_identity = FileIdentity(self.filename)
             # run post save hook
             run_file_post_save_processors(self)
 
