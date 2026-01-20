@@ -212,8 +212,11 @@ class ProfilesOptionsPage(OptionsPage):
         self.building_tree = True
         for group in profile_groups_values():
             title = _(group['title'])
+            parent = group.get('parent', '')
+            name = group['name']
             group_settings = group['settings']
             widget_item = QtWidgets.QTreeWidgetItem([title])
+            widget_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
             widget_item.setFlags(
                 QtCore.Qt.ItemFlag.ItemIsEnabled
                 | QtCore.Qt.ItemFlag.ItemIsUserCheckable
@@ -230,7 +233,15 @@ class ProfilesOptionsPage(OptionsPage):
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
                 widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
-            self.ui.settings_tree.addTopLevelItem(widget_item)
+            if parent:
+                # Find parent item
+                for i in range(self.ui.settings_tree.topLevelItemCount()):
+                    tl_item = self.ui.settings_tree.topLevelItem(i)
+                    if tl_item.data(0, QtCore.Qt.ItemDataRole.UserRole) == parent:
+                        tl_item.addChild(widget_item)
+                        break
+            else:
+                self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
         self.building_tree = False

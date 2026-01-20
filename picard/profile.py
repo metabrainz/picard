@@ -44,9 +44,11 @@ def profile_groups_order(group):
         _groups_count += 1
 
 
-def profile_groups_add_setting(group, option_name, highlights, title=None):
+def profile_groups_add_setting(group, option_name, highlights, title=None, parent=None):
     if group not in _settings_groups:
         _settings_groups[group] = {'title': title or group}
+        _settings_groups[group]['parent'] = parent or ''
+        _settings_groups[group]['name'] = group
     if 'settings' not in _settings_groups[group]:
         _settings_groups[group]['settings'] = []
     _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights))
@@ -81,7 +83,9 @@ def profile_groups_group_from_page(page):
 
 def profile_groups_values():
     """Returns values sorted by (groups_order, group name)"""
-    for k in sorted(_settings_groups, key=lambda k: (_groups_order[k], k)):
+    # Yield top level groups first to ensure that they are created in the
+    # QTreeWidget before adding their children.
+    for k in sorted(_settings_groups, key=lambda k: (_settings_groups[k]['parent'], _groups_order[k], k)):
         yield _settings_groups[k]
 
 
