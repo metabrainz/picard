@@ -55,6 +55,7 @@ Documentation = "https://picard-docs.musicbrainz.org/"
 Repository = "https://github.com/metabrainz/picard.git"
 Issues = "https://tickets.metabrainz.org/projects/PICARD/issues/"
 Changelog = "https://picard.musicbrainz.org/changelog/"
+Funding = "https://metabrainz.org/donate"
 
 [project.scripts]
 picard-plugins = "picard.plugin3.cli:main"
