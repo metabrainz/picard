@@ -667,7 +667,7 @@ dev = [
     { name = "ruff", specifier = ">=0.13.0" },
     { name = "tomlkit", specifier = ">=0.13.3" },
     { name = "urllib3", specifier = ">=2.6.0" },
-    { name = "wlc" },
+    { name = "wlc", specifier = ">=1.17.2" },
 ]
 
 [[package]]
@@ -1597,7 +1597,7 @@ wheels = [
 
 [[package]]
 name = "wlc"
-version = "1.17.1"
+version = "1.17.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
@@ -1606,9 +1606,9 @@ dependencies = [
     { name = "requests" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/72/cb/54cc41a3b1db914203e6538e3c2f5f4460e193fa0f0f4ef91bf1d9910a74/wlc-1.17.1.tar.gz", hash = "sha256:16dc49d5c95fbc90a0820e21f4bcf0ab84b82b27a3271a698eb0778bb262cbf6", size = 80401, upload-time = "2026-01-13T19:04:39.589Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/71/79/749133403cb3438e523b3b8a85316bb67739f9ac083a51dd4802a4fbfeec/wlc-1.17.2.tar.gz", hash = "sha256:f41336c4d6e2372f1e7e99198c4850d8e4a5d112623864aeb75ea8f32300d780", size = 80848, upload-time = "2026-01-16T09:41:34.355Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cd/5e/8e0fe99d1af95500cc2e47a69d2fe58658cf1d6d31e5397f26f1b56b776f/wlc-1.17.1-py3-none-any.whl", hash = "sha256:d0235698d0deb84e3fd1b165176d65a9974779851132c33bf1de3cbf34ac6ee0", size = 91568, upload-time = "2026-01-13T19:04:41.146Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/fb/eef2719d12bd1e3b13be32b23f588f7d50db347262da000f8c962a68fa37/wlc-1.17.2-py3-none-any.whl", hash = "sha256:ff45263af4baa6355882bcefcd1969d76ea8b9abfa2ee486f85d5eb35f5757c8", size = 92471, upload-time = "2026-01-16T09:41:35.524Z" },
 ]
 
 [[package]]

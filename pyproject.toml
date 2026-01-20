@@ -86,7 +86,7 @@ dev = [
     "ruff>=0.13.0",
     "tomlkit>=0.13.3",
     "urllib3>=2.6.0",
-    "wlc",
+    "wlc>=1.17.2",
 ]
 
 [tool.setuptools]

@@ -201,9 +201,9 @@ charset-normalizer==3.4.4 \
     --hash=sha256:faa3a41b2b66b6e50f84ae4a68c64fcd0c44355741c6374813a800cd6695db9e \
     --hash=sha256:fd44c878ea55ba351104cb93cc85e74916eb8fa440ca7903e57575e97394f608
     # via picard (pyproject.toml)
-comtypes==1.4.14 ; sys_platform == 'win32' \
-    --hash=sha256:86016d30262a3155bc45b0451cdc5a8bb5cc5728831baa266752e4a8f1932565 \
-    --hash=sha256:89f86810216d8daad7f7e521dac776a0ca0e2116bcf2e5b5e10beb0963eab6bc
+comtypes==1.4.15 ; sys_platform == 'win32' \
+    --hash=sha256:c72b9968a4e920087183a364c5a13b174e02b11c302cdd92690d14c95ac1b312 \
+    --hash=sha256:cda90486de8762ec57d7ce04e68721920911f3f03415cb29afdf7609c427c7e3
     # via picard (pyproject.toml)
 discid==1.3.0 \
     --hash=sha256:7160a1211ac3d6a6d8213fb88dd3d73e32abe5e01336a5a4c985b082a97d4335
