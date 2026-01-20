@@ -597,7 +597,9 @@ def enable(api):
     api.register_script_function(
         my_script_func,
         name="my_func",  # Optional: defaults to function name
-        documentation="Combines two arguments with a dash"
+        documentation="""`$my_func(arg1, arg2)`
+
+Combines two arguments with a dash"""
     )
 ```
 
