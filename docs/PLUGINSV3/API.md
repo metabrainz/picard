@@ -969,6 +969,10 @@ def enable(api):
     api.register_track_metadata_processor(cleanup_processor, priority=-100)
 ```
 
+The priority determines in which order the registered functions of the same type
+run. Note that the user can override the registered priority and change the execution
+order of plugins.
+
 **Use cases**:
 - High priority: Data fetching, critical preprocessing
 - Normal priority: Most processors
