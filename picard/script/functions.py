@@ -72,11 +72,8 @@ def _compute_logic(operation, *args):
 
 @script_function(
     eval_args=False,
-    documentation=N_(
-        """`$if(if,then,else)`
-
-If `if` is not empty, it returns `then`, otherwise it returns `else`."""
-    ),
+    signature=N_("$if(if,then[,else])"),
+    documentation=N_("If `if` is not empty, it returns `then`, otherwise it returns `else`."),
 )
 def func_if(parser, _if, _then, _else=None):
     if _if.eval(parser):
@@ -88,11 +85,8 @@ def func_if(parser, _if, _then, _else=None):
 
 @script_function(
     eval_args=False,
-    documentation=N_(
-        """`$if2(a1,a2,a3,…)`
-
-Returns first non empty argument."""
-    ),
+    signature=N_("$if2(a1,a2,a3,…)"),
+    documentation=N_("Returns first non empty argument."),
 )
 def func_if2(parser, *args):
     for arg in args:
@@ -104,22 +98,15 @@ def func_if2(parser, *args):
 
 @script_function(
     eval_args=False,
-    documentation=N_(
-        """`$noop(…)`
-
-Does nothing (useful for comments or disabling a block of code)."""
-    ),
+    documentation=N_("Does nothing (useful for comments or disabling a block of code)."),
 )
 def func_noop(parser, *args):
     return ''
 
 
 @script_function(
-    documentation=N_(
-        """`$left(text,number)`
-
-Returns the first `number` characters from `text`."""
-    )
+    signature=N_("$left(text,number)"),
+    documentation=N_("Returns the first `number` characters from `text`."),
 )
 def func_left(parser, text, length):
     try:
@@ -129,11 +116,8 @@ def func_left(parser, text, length):
 
 
 @script_function(
-    documentation=N_(
-        """`$right(text,number)`
-
-Returns the last `number` characters from `text`."""
-    )
+    signature=N_("$right(text,number)"),
+    documentation=N_("Returns the last `number` characters from `text`."),
 )
 def func_right(parser, text, length):
     try:
@@ -143,34 +127,27 @@ def func_right(parser, text, length):
 
 
 @script_function(
-    documentation=N_(
-        """`$lower(text)`
-
-Returns `text` in lower case."""
-    )
+    signature=N_("$lower(text)"),
+    documentation=N_("Returns `text` in lower case."),
 )
 def func_lower(parser, text):
     return text.lower()
 
 
 @script_function(
-    documentation=N_(
-        """`$upper(text)`
-
-Returns `text` in upper case."""
-    )
+    signature=N_("$upper(text)"),
+    documentation=N_("Returns `text` in upper case."),
 )
 def func_upper(parser, text):
     return text.upper()
 
 
 @script_function(
+    signature=N_("$pad(text,length,char)"),
     documentation=N_(
-        """`$pad(text,length,char)`
-
-Pads the `text` to the `length` provided by adding as many copies of `char` as
-    needed to the **beginning** of the string."""
-    )
+        "Pads the `text` to the `length` provided by adding as many copies of `char` as"
+        " needed to the **beginning** of the string."
+    ),
 )
 def func_pad(parser, text, length, char):
     try:
@@ -180,23 +157,21 @@ def func_pad(parser, text, length, char):
 
 
 @script_function(
+    signature=N_("$strip(text)"),
     documentation=N_(
-        """`$strip(text)`
-
-Replaces all whitespace in `text` with a single space, and removes leading and trailing spaces.
+        """Replaces all whitespace in `text` with a single space, and removes leading and trailing spaces.
 Whitespace characters include multiple consecutive spaces, and various other unicode characters."""
-    )
+    ),
 )
 def func_strip(parser, text):
     return re.sub(r"\s+", " ", text).strip()
 
 
 @script_function(
+    signature=N_("$replace(text,search,replace)"),
     documentation=N_(
-        """`$replace(text,search,replace)`
-
-Replaces occurrences of `search` in `text` with value of `replace` and returns the resulting string."""
-    )
+        "Replaces occurrences of `search` in `text` with value of `replace` and returns the resulting string."
+    ),
 )
 def func_replace(parser, text, old, new):
     return text.replace(old, new)
@@ -204,10 +179,9 @@ def func_replace(parser, text, old, new):
 
 @script_function(
     eval_args=False,
+    signature=N_("$replacemulti(name,search,replace[,separator=; ])"),
     documentation=N_(
-        """`$replacemulti(name,search,replace,separator="; ")`
-
-Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
+        """Replaces occurrences of `search` with `replace` in the multi-value variable `name`.
 Empty elements are automatically removed.
 
 Example:
@@ -231,11 +205,8 @@ def func_replacemulti(parser, multi, search, replace, separator=MULTI_VALUED_JOI
 
 
 @script_function(
-    documentation=N_(
-        """`$in(x,y)`
-
-Returns true, if `x` contains `y`."""
-    )
+    signature=N_("$in(x,y)"),
+    documentation=N_("Returns true, if `x` contains `y`."),
 )
 def func_in(parser, text, needle):
     if needle in text:
@@ -246,10 +217,9 @@ def func_in(parser, text, needle):
 
 @script_function(
     eval_args=False,
+    signature=N_("$inmulti(%x%,y)"),
     documentation=N_(
-        """`$inmulti(%x%,y)`
-
-Returns true if multi-value variable `x` contains exactly `y` as one of its values.
+        """Returns true if multi-value variable `x` contains exactly `y` as one of its values.
 
 _Since Picard 1.0_"""
     ),
@@ -265,11 +235,10 @@ def func_inmulti(parser, haystack, needle, separator=MULTI_VALUED_JOINER):
 
 
 @script_function(
+    signature=N_("$rreplace(text,pattern,replace)"),
     documentation=N_(
-        """`$rreplace(text,pattern,replace)`
-
-[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) replace."""
-    )
+        "[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) replace."
+    ),
 )
 def func_rreplace(parser, text, old, new):
     try:
@@ -279,10 +248,9 @@ def func_rreplace(parser, text, old, new):
 
 
 @script_function(
+    signature=N_("$rsearch(text,pattern[,group])"),
     documentation=N_(
-        """`$rsearch(text,pattern[,group])`
-
-[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.
+        """[Regular expression](https://docs.python.org/3/library/re.html#regular-expression-syntax) search.
 
 If the optional `group` parameter is not provided or is empty, return the first
 capture group which matched something (including the empty string) or the
@@ -301,7 +269,7 @@ Examples:
     $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => ""
 
 _group parameter since Picard 3.0_"""
-    )
+    ),
 )
 def func_rsearch(parser, text, pattern, group=None):
     try:
@@ -328,11 +296,8 @@ def func_rsearch(parser, text, pattern, group=None):
 
 
 @script_function(
-    documentation=N_(
-        """`$num(number,length)`
-
-Returns `number` formatted to `length` digits (maximum 20)."""
-    )
+    signature=N_("$num(number,length)"),
+    documentation=N_("Returns `number` formatted to `length` digits (maximum 20)."),
 )
 def func_num(parser, text, length):
     try:
@@ -347,13 +312,12 @@ def func_num(parser, text, length):
 
 
 @script_function(
+    signature=N_("$unset(name)"),
     documentation=N_(
-        """`$unset(name)`
-
-Unsets the variable `name`.
+        """Unsets the variable `name`.
 Allows for wildcards to unset certain tags (works with "performer:\\*", "comment:\\*", and "lyrics:\\*").
 For example `$unset(performer:*)` would unset all performer tags."""
-    )
+    ),
 )
 def func_unset(parser, name):
     name = normalize_tagname(name)
@@ -369,16 +333,15 @@ def func_unset(parser, name):
 
 
 @script_function(
+    signature=N_("$delete(name)"),
     documentation=N_(
-        """`$delete(name)`
-
-Unsets the variable `name` and marks the tag for deletion.
+        """Unsets the variable `name` and marks the tag for deletion.
 This is similar to `$unset(name)` but also marks the tag for deletion. E.g.
     running `$delete(genre)` will actually remove the genre tag from a file when
     saving.
 
 _Since Picard 2.1_"""
-    )
+    ),
 )
 def func_delete(parser, name):
     parser.context.delete(normalize_tagname(name))
@@ -386,16 +349,15 @@ def func_delete(parser, name):
 
 
 @script_function(
+    signature=N_("$set(name,value)"),
     documentation=N_(
-        """`$set(name,value)`
-
-Sets the variable `name` to `value`.
+        """Sets the variable `name` to `value`.
 
 Note: To create a variable which can be used for the file naming string, but
     which will not be written as a tag in the file, prefix the variable name
     with an underscore. `%something%` will create a "something" tag;
     `%_something%` will not."""
-    )
+    ),
 )
 def func_set(parser, name, value):
     if value:
@@ -406,10 +368,9 @@ def func_set(parser, name, value):
 
 
 @script_function(
+    signature=N_("$setmulti(name,value[,separator=; ])"),
     documentation=N_(
-        """`$setmulti(name,value,separator="; ")`
-
-Sets the variable `name` to `value`, using the separator (or "; " if not passed)
+        """Sets the variable `name` to `value`, using the separator (or "; " if not passed)
     to coerce the value back into a proper multi-valued tag. This can be used to
     operate on multi-valued tags as a string, and then set them back as proper
     multi-valued tags.
@@ -419,18 +380,15 @@ Example:
     $setmulti(genre,$lower(%genre%))
 
 _Since Picard 1.0_"""
-    )
+    ),
 )
 def func_setmulti(parser, name, value, separator=MULTI_VALUED_JOINER):
     return func_set(parser, name, value.split(separator) if value and separator else value)
 
 
 @script_function(
-    documentation=N_(
-        """`$get(name)`
-
-Returns the variable `name` (equivalent to `%name%`)."""
-    )
+    signature=N_("$get(name)"),
+    documentation=N_("Returns the variable `name` (equivalent to `%name%`)."),
 )
 def func_get(parser, name):
     """Returns the variable ``name`` (equivalent to ``%name%``)."""
@@ -438,15 +396,14 @@ def func_get(parser, name):
 
 
 @script_function(
+    signature=N_("$copy(new,old)"),
     documentation=N_(
-        """`$copy(new,old)`
-
-Copies metadata from variable `old` to `new`.
+        """Copies metadata from variable `old` to `new`.
 The difference between `$set(new,%old%)` is that `$copy(new,old)` copies
     multi-value variables without flattening them.
 
 _Since Picard 0.9_"""
-    )
+    ),
 )
 def func_copy(parser, new, old):
     new = normalize_tagname(new)
@@ -456,17 +413,16 @@ def func_copy(parser, new, old):
 
 
 @script_function(
+    signature=N_("$copymerge(new,old[,keep_duplicates])"),
     documentation=N_(
-        """`$copymerge(new,old[,keep_duplicates])`
-
-Merges metadata from variable `old` into `new`, removing duplicates and
+        """Merges metadata from variable `old` into `new`, removing duplicates and
     appending to the end, so retaining the original ordering. Like `$copy`, this
     will also copy multi-valued variables without flattening them.
 
 If `keep_duplicates` is set, then the duplicates will not be removed from the result.
 
 _Since Picard 1.0_"""
-    )
+    ),
 )
 def func_copymerge(parser, new, old, keep_duplicates=False):
     new = normalize_tagname(new)
@@ -478,12 +434,11 @@ def func_copymerge(parser, new, old, keep_duplicates=False):
 
 
 @script_function(
+    signature=N_("$trim(text[,char])"),
     documentation=N_(
-        """`$trim(text[,char])`
-
-Trims all leading and trailing whitespaces from `text`.
+        """Trims all leading and trailing whitespaces from `text`.
     The optional second parameter `char` specifies the character to trim."""
-    )
+    ),
 )
 def func_trim(parser, text, char=None):
     if char:
@@ -494,9 +449,7 @@ def func_trim(parser, text, char=None):
 
 @script_function(
     documentation=N_(
-        """`$add(x,y,…)`
-
-Add `y` to `x`.
+        """Add `y` to `x`.
 Can be used with an arbitrary number of arguments.
 
 Example:
@@ -514,9 +467,7 @@ def func_add(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$sub(x,y,…)`
-
-Subtracts `y` from `x`.
+        """Subtracts `y` from `x`.
 Can be used with an arbitrary number of arguments.
 
 Example:
@@ -534,9 +485,7 @@ def func_sub(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$div(x,y,…)`
-
-Divides `x` by `y`.
+        """Divides `x` by `y`.
 Can be used with an arbitrary number of arguments.
 
 Example:
@@ -556,9 +505,7 @@ def func_div(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$mod(x,y,…)`
-
-Returns the remainder of `x` divided by `y`.
+        """Returns the remainder of `x` divided by `y`.
 Can be used with an arbitrary number of arguments.
 
 Example:
@@ -576,16 +523,14 @@ def func_mod(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$mul(x,y,…)`
-
-Multiplies `x` by `y`.
+        """Multiplies `x` by `y`.
 Can be used with an arbitrary number of arguments.
 
 Example:
 
     $mul(x,y,z) = ((x * y) * z)
 """
-    )
+    ),
 )
 def func_mul(parser, x, y, *args):
     try:
@@ -596,12 +541,10 @@ def func_mul(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$or(x,y,…)`
-
-Returns true if either `x` or `y` not empty.
+        """Returns true if either `x` or `y` not empty.
     Can be used with an arbitrary number of arguments.
     The result is true if ANY of the arguments is not empty."""
-    )
+    ),
 )
 def func_or(parser, x, y, *args):
     if _compute_logic(any, x, y, *args):
@@ -612,9 +555,7 @@ def func_or(parser, x, y, *args):
 
 @script_function(
     documentation=N_(
-        """`$and(x,y,…)`
-
-Returns true if both `x` and `y` are not empty.
+        """Returns true if both `x` and `y` are not empty.
     Can be used with an arbitrary number of arguments.
     The result is true if ALL of the arguments are not empty."""
     )
@@ -627,11 +568,7 @@ def func_and(parser, x, y, *args):
 
 
 @script_function(
-    documentation=N_(
-        """`$not(x)`
-
-Returns true if `x` is empty."""
-    )
+    documentation=N_("Returns true if `x` is empty."),
 )
 def func_not(parser, x):
     if not x:
@@ -641,11 +578,7 @@ def func_not(parser, x):
 
 
 @script_function(
-    documentation=N_(
-        """`$eq(x,y)`
-
-Returns true if `x` equals `y`."""
-    )
+    documentation=N_("Returns true if `x` equals `y`."),
 )
 def func_eq(parser, x, y):
     if x == y:
@@ -655,11 +588,7 @@ def func_eq(parser, x, y):
 
 
 @script_function(
-    documentation=N_(
-        """`$ne(x,y)`
-
-Returns true if `x` does not equal `y`."""
-    )
+    documentation=N_("Returns true if `x` does not equal `y`."),
 )
 def func_ne(parser, x, y):
     if x != y:
@@ -702,79 +631,72 @@ def _cmp(op, x, y, _type):
 
 
 @script_function(
+    signature=N_("$lt(x,y[,type])"),
     documentation=N_(
-        """`$lt(x,y[,type])`
-
-Returns true if `x` is less than `y` using the comparison specified in `type`.
+        """Returns true if `x` is less than `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
 determine the type of arguments provided), with "auto" used as the default
 comparison method if `type` is not specified.  The "auto" type will use the
 first type that applies to both arguments in the following order of preference:
 "int", "float" and "text"."""
-    )
+    ),
 )
 def func_lt(parser, x, y, _type=None):
     return _cmp(operator.lt, x, y, _type)
 
 
 @script_function(
+    signature=N_("$lte(x,y[,type])"),
     documentation=N_(
-        """`$lte(x,y[,type])`
-
-Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
+        """Returns true if `x` is less than or equal to `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
 determine the type of arguments provided), with "auto" used as the default
 comparison method if `type` is not specified.  The "auto" type will use the
 first type that applies to both arguments in the following order of preference:
 "int", "float" and "text"."""
-    )
+    ),
 )
 def func_lte(parser, x, y, _type=None):
     return _cmp(operator.le, x, y, _type)
 
 
 @script_function(
+    signature=N_("$gt(x,y[,type])"),
     documentation=N_(
-        """`$gt(x,y[,type])`
-
-Returns true if `x` is greater than `y` using the comparison specified in `type`.
+        """Returns true if `x` is greater than `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
 determine the type of arguments provided), with "auto" used as the default
 comparison method if `type` is not specified.  The "auto" type will use the
 first type that applies to both arguments in the following order of preference:
 "int", "float" and "text"."""
-    )
+    ),
 )
 def func_gt(parser, x, y, _type=None):
     return _cmp(operator.gt, x, y, _type)
 
 
 @script_function(
+    signature=N_("$gte(x,y[,type])"),
     documentation=N_(
-        """`$gte(x,y[,type])`
-
-Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
+        """Returns true if `x` is greater than or equal to `y` using the comparison specified in `type`.
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
 determine the type of arguments provided), with "auto" used as the default
 comparison method if `type` is not specified.  The "auto" type will use the
 first type that applies to both arguments in the following order of preference:
 "int", "float" and "text"."""
-    )
+    ),
 )
 def func_gte(parser, x, y, _type=None):
     return _cmp(operator.ge, x, y, _type)
 
 
 @script_function(
-    documentation=N_(
-        """`$len(text)`
-
-Returns the number of characters in `text`."""
-    )
+    signature=N_("$len(text)"),
+    documentation=N_("Returns the number of characters in `text`."),
 )
 def func_len(parser, text=""):
     return str(len(text))
@@ -782,10 +704,9 @@ def func_len(parser, text=""):
 
 @script_function(
     eval_args=False,
+    signature=N_("$lenmulti(name[,separator=; ])"),
     documentation=N_(
-        """`$lenmulti(name,separator="; ")`
-
-Returns the number of elements in the multi-value tag `name`. A literal value
+        """Returns the number of elements in the multi-value tag `name`. A literal value
     representing a multi-value can be substituted for `name`, using the
     `separator` (or "; " if not passed) to coerce the value into a proper
     multi-valued tag.
@@ -801,16 +722,15 @@ def func_lenmulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 
 @script_function(
+    signature=N_("$performer([pattern[,join=, ]])"),
     documentation=N_(
-        """`$performer(pattern="",join=", ")`
-
-Returns the performers where the performance type (e.g. "vocal") matches `pattern`, joined by `join`.
+        """Returns the performers where the performance type (e.g. "vocal") matches `pattern`, joined by `join`.
 You can specify a regular expression in the format `/pattern/flags`. `flags` are optional. Currently
 the only supported flag is "i" (ignore case). For example `$performer(/^guitars?$/i)` matches the
 performance type "guitar" or "Guitars", but not e.g. "bass guitar".
 
 _Since Picard 0.10_"""
-    )
+    ),
 )
 def func_performer(parser, pattern="", join=", "):
     values = []
@@ -829,9 +749,7 @@ def func_performer(parser, pattern="", join=", "):
 @script_function(
     eval_args=False,
     documentation=N_(
-        """`$matchedtracks()`
-
-Returns the number of matched tracks within a release.
+        """Returns the number of matched tracks within a release.
     **Only works in File Naming scripts.**
 
 _Since Picard 0.12_"""
@@ -847,11 +765,9 @@ def func_matchedtracks(parser, *args):
 
 @script_function(
     documentation=N_(
-        """`$is_complete()`
-
-Returns true if every track in the album is matched to a single file.
+        """Returns true if every track in the album is matched to a single file.
 **Only works in File Naming scripts.**"""
-    )
+    ),
 )
 def func_is_complete(parser):
     # only works in file naming scripts, always returns zero in tagging scripts
@@ -868,15 +784,14 @@ def func_is_complete(parser):
 
 
 @script_function(
+    signature=N_("$firstalphachar(text[,nonalpha=#])"),
     documentation=N_(
-        """`$firstalphachar(text,nonalpha="#")`
-
-Returns the first character of `text`.
+        """Returns the first character of `text`.
 If `text` does not begin with an alphabetic character, then `nonalpha` is returned instead. If `nonalpha` is not
 specified, the default value "#" will be used.
 
 _Since Picard 0.12_"""
-    )
+    ),
 )
 def func_firstalphachar(parser, text="", nonalpha="#"):
     if len(text) == 0:
@@ -889,26 +804,24 @@ def func_firstalphachar(parser, text="", nonalpha="#"):
 
 
 @script_function(
+    signature=N_("$initials(text)"),
     documentation=N_(
-        """`$initials(text)`
-
-Returns the first character of each word in `text`, if it is an alphabetic character.
+        """Returns the first character of each word in `text`, if it is an alphabetic character.
 
 _Since Picard 0.12_"""
-    )
+    ),
 )
 def func_initials(parser, text=""):
     return ''.join(a[:1] for a in text.split(" ") if a[:1].isalpha())
 
 
 @script_function(
+    signature=N_("$firstwords(text,length)"),
     documentation=N_(
-        """`$firstwords(text,length)`
-
-Like `$truncate()` except that it will only return the complete words from `text` which fit within `length` characters.
+        """Like `$truncate()` except that it will only return the complete words from `text` which fit within `length` characters.
 
 _Since Picard 0.12_"""
-    )
+    ),
 )
 def func_firstwords(parser, text, length):
     try:
@@ -927,13 +840,12 @@ def func_firstwords(parser, text, length):
 
 
 @script_function(
+    signature=N_("$startswith(text,prefix)"),
     documentation=N_(
-        """`$startswith(text,prefix)`
-
-Returns true if `text` starts with `prefix`.
+        """Returns true if `text` starts with `prefix`.
 
 _Since Picard 1.4_"""
-    )
+    ),
 )
 def func_startswith(parser, text, prefix):
     if text.startswith(prefix):
@@ -942,13 +854,12 @@ def func_startswith(parser, text, prefix):
 
 
 @script_function(
+    signature=N_("$endswith(text,suffix)"),
     documentation=N_(
-        """`$endswith(text,suffix)`
-
-Returns true if `text` ends with `suffix`.
+        """Returns true if `text` ends with `suffix`.
 
 _Since Picard 1.4_"""
-    )
+    ),
 )
 def func_endswith(parser, text, suffix):
     if text.endswith(suffix):
@@ -957,13 +868,12 @@ def func_endswith(parser, text, suffix):
 
 
 @script_function(
+    signature=N_("$truncate(text,length)"),
     documentation=N_(
-        """`$truncate(text,length)`
-
-Truncate `text` to `length`.
+        """Truncate `text` to `length`.
 
 _Since Picard 0.12_"""
-    )
+    ),
 )
 def func_truncate(parser, text, length):
     try:
@@ -975,10 +885,9 @@ def func_truncate(parser, text, length):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$swapprefix(text,prefix1,prefix2,…)"),
     documentation=N_(
-        """`$swapprefix(text,prefix1,prefix2,…)`
-
-Moves the specified prefixes from the beginning to the end of `text`. Multiple
+        """Moves the specified prefixes from the beginning to the end of `text`. Multiple
 prefixes can be specified as separate parameters. If no prefix is specified 'A'
 and 'The' are used by default.
 
@@ -1000,10 +909,9 @@ def func_swapprefix(parser, text, *prefixes):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$delprefix(text,prefix1,prefix2,…)"),
     documentation=N_(
-        """`$delprefix(text,prefix1,prefix2,…)`
-
-Deletes the specified prefixes from the beginning of `text`. Multiple
+        """Deletes the specified prefixes from the beginning of `text`. Multiple
 prefixes can be specified as separate parameters.  If no prefix is specified 'A'
 and 'The' are used by default.
 
@@ -1041,10 +949,9 @@ def _delete_prefix(parser, text, *prefixes):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$eq_any(x,a1,a2,…)"),
     documentation=N_(
-        """`$eq_any(x,a1,a2,…)`
-
-Returns true if `x` equals `a1` or `a2` or …
+        """Returns true if `x` equals `a1` or `a2` or …
 Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.
 Functionally equivalent to the eq2 plugin."""
     ),
@@ -1056,10 +963,9 @@ def func_eq_any(parser, x, *args):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$ne_all(x,a1,a2,…)"),
     documentation=N_(
-        """`$ne_all(x,a1,a2,…)`
-
-Returns true if `x` does not equal `a1` and `a2` and …
+        """Returns true if `x` does not equal `a1` and `a2` and …
 Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.
 Functionally equivalent to the ne2 plugin."""
     ),
@@ -1071,10 +977,9 @@ def func_ne_all(parser, x, *args):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$eq_all(x,a1,a2,…)"),
     documentation=N_(
-        """`$eq_all(x,a1,a2,…)`
-
-Returns true if `x` equals `a1` and `a2` and …
+        """Returns true if `x` equals `a1` and `a2` and …
 Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.
 
 Example:
@@ -1092,10 +997,9 @@ def func_eq_all(parser, x, *args):
 
 @script_function(
     check_argcount=False,
+    signature=N_("$ne_any(x,a1,a2,…)"),
     documentation=N_(
-        """`$ne_any(x,a1,a2,…)`
-
-Returns true if `x` does not equal `a1` or `a2` or …
+        """Returns true if `x` does not equal `a1` or `a2` or …
 Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.
 
 Example:
@@ -1109,16 +1013,15 @@ def func_ne_any(parser, x, *args):
 
 
 @script_function(
+    signature=N_("$title(text)"),
     documentation=N_(
-        """`$title(text)`
-
-Returns `text` in title case (first character in every word capitalized).
+        """Returns `text` in title case (first character in every word capitalized).
 
 Example:
 
     $set(album,$title(%album%))
 _Since Picard 2.1_"""
-    )
+    ),
 )
 def func_title(parser, text):
     return titlecase(text)
@@ -1126,9 +1029,7 @@ def func_title(parser, text):
 
 @script_function(
     documentation=N_(
-        """`$is_audio()`
-
-Returns true, if the file processed is an audio file.
+        """Returns true, if the file processed is an audio file.
 
 _Since Picard 2.2_"""
     )
@@ -1142,9 +1043,7 @@ def func_is_audio(parser):
 
 @script_function(
     documentation=N_(
-        """`$is_video()`
-
-Returns true, if the file processed is a video file.
+        """Returns true, if the file processed is a video file.
 
 _Since Picard 2.2_"""
     )
@@ -1157,16 +1056,15 @@ def func_is_video(parser):
 
 
 @script_function(
+    signature=N_("$find(haystack,needle)"),
     documentation=N_(
-        """`$find(haystack,needle)`
-
-Finds the location of one string within another.
+        """Finds the location of one string within another.
     Returns the index of the first occurrence of `needle` in `haystack`, or "" if `needle` was not found.
 
 _Since Picard 2.3_
 
 Note that prior to Picard 2.3.2 `$find` returned "-1" if `needle` was not found."""
-    )
+    ),
 )
 def func_find(parser, haystack, needle):
     index = haystack.find(needle)
@@ -1176,26 +1074,22 @@ def func_find(parser, haystack, needle):
 
 
 @script_function(
-    documentation=N_(
-        """`$reverse(text)`
-
-Returns `text` in reverse order."""
-    )
+    signature=N_("$reverse(text)"),
+    documentation=N_("Returns `text` in reverse order."),
 )
 def func_reverse(parser, text):
     return text[::-1]
 
 
 @script_function(
+    signature=N_("$substr(text,start[,end])"),
     documentation=N_(
-        """`$substr(text,start[,end])`
-
-Returns the substring beginning with the character at the `start` index, up to
+        """Returns the substring beginning with the character at the `start` index, up to
     (but not including) the character at the `end` index. Indexes are
     zero-based. Negative numbers will be counted back from the end of the
     string. If the `start` or `end` indexes are left blank, they will default to
     the start and end of the string respectively."""
-    )
+    ),
 )
 def func_substr(parser, text, start_index, end_index=None):
     try:
@@ -1211,10 +1105,9 @@ def func_substr(parser, text, start_index, end_index=None):
 
 @script_function(
     eval_args=False,
+    signature=N_("$getmulti(name,index[,separator=; ])"),
     documentation=N_(
-        """`$getmulti(name,index,separator="; ")`
-
-Gets the element at `index` from the multi-value tag `name`. A literal value
+        """Gets the element at `index` from the multi-value tag `name`. A literal value
     representing a multi-value can be substituted for `name`, using the
     separator (or "; " if not passed) to coerce the value into a proper
     multi-valued tag."""
@@ -1233,10 +1126,9 @@ def func_getmulti(parser, multi, item_index, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$foreach(name,code[,separator=; ])"),
     documentation=N_(
-        """`$foreach(name,code,separator="; ")`
-
-Iterates over each element found in the multi-value tag `name`, executing
+        """Iterates over each element found in the multi-value tag `name`, executing
     `code`. For each loop, the element value is first stored in the tag
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
     the element or count value to be accessed within the `code` script. A
@@ -1258,10 +1150,9 @@ def func_foreach(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$while(condition,code)"),
     documentation=N_(
-        """`$while(condition,code)`
-
-Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
+        """Standard 'while' loop. Executes `code` repeatedly until `condition` no longer
     evaluates to `True`. For each loop, the count is stored in the tag
     `_loop_count`. This allows the count value to be accessed within the `code`
     script. The function limits the maximum number of iterations to 1000 as a
@@ -1282,10 +1173,9 @@ def func_while(parser, condition, loop_code):
 
 @script_function(
     eval_args=False,
+    signature=N_("$map(name,code[,separator=; ])"),
     documentation=N_(
-        """`$map(name,code,separator="; ")`
-
-Iterates over each element found in the multi-value tag `name` and updates the
+        """Iterates over each element found in the multi-value tag `name` and updates the
     value of the element to the value returned by `code`, returning the updated
     multi-value tag. For each loop, the element value is first stored in the tag
     `_loop_value` and the count is stored in the tag `_loop_count`. This allows
@@ -1315,10 +1205,9 @@ def func_map(parser, multi, loop_code, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$join(name,text[,separator=; ])"),
     documentation=N_(
-        """`$join(name,text,separator="; ")`
-
-Joins all elements in `name`, placing `text` between each element, and returns the result as a string."""
+        "Joins all elements in `name`, placing `text` between each element, and returns the result as a string."
     ),
 )
 def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
@@ -1329,10 +1218,9 @@ def func_join(parser, multi, join_phrase, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$slice(name,start,end[,separator=; ])"),
     documentation=N_(
-        """`$slice(name,start,end,separator="; ")`
-
-Returns a multi-value variable containing the elements between the `start` and
+        """Returns a multi-value variable containing the elements between the `start` and
     `end` indexes from the multi-value tag `name`. A literal value representing
     a multi-value can be substituted for `name`, using the separator (or "; " if
     not passed) to coerce the value into a proper multi-valued tag. Indexes are
@@ -1364,10 +1252,9 @@ def func_slice(parser, multi, start_index, end_index=None, separator=MULTI_VALUE
 
 
 @script_function(
+    signature=N_("$datetime([format=%Y-%m-%d %H:%M:%S])"),
     documentation=N_(
-        """`$datetime(format="%Y-%m-%d %H:%M:%S")`
-
-Returns the current date and time in the specified `format`, which is based on
+        """Returns the current date and time in the specified `format`, which is based on
     the standard Python `strftime` [format codes](https://strftime.org/). If no
     `format` is specified the date/time will be returned in the form
     `2020-02-05 14:26:32`.
@@ -1376,7 +1263,7 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
     remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and their
     equivalent `%#d` and `%#m` on Windows); element length specifiers (e.g.
     `%3Y`); and hanging '%' at the end of the format string."""
-    )
+    ),
 )
 def func_datetime(parser, format=None):
     # Handle case where format evaluates to ''
@@ -1391,10 +1278,9 @@ def func_datetime(parser, format=None):
 
 @script_function(
     eval_args=False,
+    signature=N_("$sortmulti(name[,separator=; ])"),
     documentation=N_(
-        """`$sortmulti(name,separator="; ")`
-
-Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.
+        """Returns a copy of the multi-value tag `name` with the elements sorted in ascending order.
 
 Example:
 
@@ -1411,10 +1297,9 @@ def func_sortmulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$reversemulti(name[,separator=; ])"),
     documentation=N_(
-        """`$reversemulti(name,separator="; ")`
-
-Returns a copy of the multi-value tag `name` with the elements in reverse order.
+        """Returns a copy of the multi-value tag `name` with the elements in reverse order.
     This can be used in conjunction with the `$sortmulti` function to sort in
     descending order.
 
@@ -1433,10 +1318,9 @@ def func_reversemulti(parser, multi, separator=MULTI_VALUED_JOINER):
 
 @script_function(
     eval_args=False,
+    signature=N_("$unique(name[,case_sensitive[,separator=; ]])"),
     documentation=N_(
-        """`$unique(name,case_sensitive="",separator="; ")`
-
-Returns a copy of the multi-value tag `name` with no duplicate elements.
+        """Returns a copy of the multi-value tag `name` with no duplicate elements.
     By default, a case-insensitive comparison of the elements is performed.
 
 Example 1:
@@ -1463,13 +1347,12 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
 
 
 @script_function(
+    signature=N_("$countryname(country_code[,translate])"),
     documentation=N_(
-        """`$countryname(country_code,translate="")`
-
-Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.
+        """Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.
 If translate is not blank, the output will be translated into the current locale language.
 """
-    )
+    ),
 )
 def func_countryname(parser, country_code, translate=""):
     name = RELEASE_COUNTRIES.get(country_code.strip().upper(), "")
@@ -1504,52 +1387,48 @@ def _split_date(date_to_parse, date_order="ymd"):
 
 
 @script_function(
+    signature=N_("$year(date[,date_order=ymd])"),
     documentation=N_(
-        """`$year(date,date_order="ymd")`
-
-Returns the year portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+        """Returns the year portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
-    )
+    ),
 )
 def func_year(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).year
 
 
 @script_function(
+    signature=N_("$month(date[,date_order=ymd])"),
     documentation=N_(
-        """`$month(date,date_order="ymd")`
-
-Returns the month portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+        """Returns the month portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
-    )
+    ),
 )
 def func_month(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).month
 
 
 @script_function(
+    signature=N_("$day(date[,date_order=ymd])"),
     documentation=N_(
-        """`$day(date,date_order="ymd")`
-
-Returns the day portion of the specified date.  The default order is "ymd".  This can be changed by specifying
+        """Returns the day portion of the specified date.  The default order is "ymd".  This can be changed by specifying
 either "dmy" or "mdy".  If the date is invalid an empty string will be returned.
 
 _Since Picard 2.7_"""
-    )
+    ),
 )
 def func_day(parser, date_to_parse, date_order='ymd'):
     return _split_date(date_to_parse, date_order).day
 
 
 @script_function(
+    signature=N_("$dateformat(date[,format=%Y-%m-%d[,date_order=ymd]])"),
     documentation=N_(
-        """`$dateformat(date,format="%Y-%m-%d",date_order="ymd")`
-
-Returns the input date in the specified `format`, which is based on the standard
+        """Returns the input date in the specified `format`, which is based on the standard
     Python `strftime` [format codes](https://strftime.org/). If no `format` is
     specified the date will be returned in the form `2020-02-05`.  If the date or
     format are invalid an empty string will be returned.
@@ -1563,7 +1442,7 @@ Note: Platform-specific formatting codes should be avoided to help ensure the
     `%3Y`); and hanging '%' at the end of the format string.
 
 _Since Picard 2.7_"""
-    )
+    ),
 )
 def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
     # Handle case where format evaluates to ''
@@ -1582,10 +1461,9 @@ def func_dateformat(parser, date_to_parse, date_format=None, date_order='ymd'):
 
 @script_function(
     eval_args=False,
+    signature=N_("$is_multi(name)"),
     documentation=N_(
-        """`$is_multi(name)`
-
-Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
+        """Returns '1' if the argument is a multi-value tag and there are more than one elements, otherwise an empty string.
 
 Example:
 
@@ -1603,10 +1481,9 @@ def func_is_multi(parser, multi):
 
 @script_function(
     eval_args=True,
+    signature=N_("$cleanmulti(name)"),
     documentation=N_(
-        """`$cleanmulti(name)`
-
-Removes all empty string elements from the multi-value variable.
+        """Removes all empty string elements from the multi-value variable.
 
 Example:
 
@@ -1675,10 +1552,9 @@ def _extract(_func, _type, *args):
 
 
 @script_function(
+    signature=N_("$min(type,x,…)"),
     documentation=N_(
-        """`$min(type,x,…)`
-
-Returns the minimum value using the comparison specified in `type`.
+        """Returns the minimum value using the comparison specified in `type`.
 
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
@@ -1691,17 +1567,16 @@ Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
 
 _Since Picard 2.9_"""
-    )
+    ),
 )
 def func_min(parser, _type, x, *args):
     return _extract(min, _type, x, *args)
 
 
 @script_function(
+    signature=N_("$max(type,x,…)"),
     documentation=N_(
-        """`$max(type,x,…)`
-
-Returns the maximum value using the comparison specified in `type`.
+        """Returns the maximum value using the comparison specified in `type`.
 
 Possible values of `type` are "int" (integer), "float" (floating point), "text"
 (case-sensitive text), "nocase" (case-insensitive text) and "auto" (automatically
@@ -1714,7 +1589,7 @@ Can be used with an arbitrary number of arguments.  Multi-value arguments
 will be expanded automatically.
 
 _Since Picard 2.9_"""
-    )
+    ),
 )
 def func_max(parser, _type, x, *args):
     return _extract(max, _type, x, *args)
