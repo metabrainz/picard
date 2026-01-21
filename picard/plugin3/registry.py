@@ -33,6 +33,8 @@ from urllib.request import (
     urlopen,
 )
 
+from PyQt6 import QtCore
+
 from picard import log
 from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
@@ -570,12 +572,7 @@ class RegistryPlugin(InstallablePlugin):
             return 'en'  # Default fallback
         locale = config.setting['ui_language']
         if not locale:
-            try:
-                from PyQt6 import QtCore
-
-                locale = QtCore.QLocale.system().name()
-            except ImportError:
-                locale = 'en'  # Fallback if PyQt6 not available
+            locale = QtCore.QLocale.system().name()
         return locale
 
     def name_i18n(self, locale=None):
