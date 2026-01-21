@@ -45,7 +45,7 @@ from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
 
 try:
-    from markdown import markdown as render_markdown
+    from markdown import markdown as render_markdown  # type: ignore[unresolved-import]
 except ImportError:
     render_markdown = None
 

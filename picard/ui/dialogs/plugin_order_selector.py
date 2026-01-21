@@ -34,7 +34,7 @@ from picard.plugin import PluginInformation
 
 
 try:
-    from markdown import markdown
+    from markdown import markdown  # type: ignore[unresolved-import]
 except ImportError:
     markdown = None
 

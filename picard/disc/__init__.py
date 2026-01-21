@@ -41,11 +41,11 @@ from picard.ui.cdlookup import CDLookupDialog
 
 try:
     # use python-libdiscid (http://pythonhosted.org/python-libdiscid/)
-    from libdiscid.compat import discid
+    from libdiscid.compat import discid  # type: ignore[unresolved-import]
 except ImportError:
     try:
         # use python-discid (http://python-discid.readthedocs.org/en/latest/)
-        import discid
+        import discid  # type: ignore[unresolved-import]
     except (ImportError, OSError):
         discid = None
 

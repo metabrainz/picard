@@ -38,8 +38,8 @@ from picard.util.webbrowser2 import open
 
 
 try:
-    import jwt
-    import jwt.exceptions
+    import jwt  # type: ignore[unresolved-import]
+    import jwt.exceptions  # type: ignore[unresolved-import]
 except ImportError:
     log.debug("PyJWT not available, addrelease functionality disabled")
     jwt = None

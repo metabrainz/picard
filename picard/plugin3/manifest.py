@@ -19,9 +19,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 try:
-    import tomllib
+    import tomllib  # type: ignore[unresolved-import]
 except ImportError:
-    import tomli as tomllib  # type: ignore[import-not-found,no-redef]
+    import tomli as tomllib  # type: ignore[no-redef]
 
 from typing import BinaryIO
 

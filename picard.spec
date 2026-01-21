@@ -87,7 +87,7 @@ except ImportError:
 excludes = []
 try:
     # If tomllib is available, tomli can be excluded
-    import tomllib
+    import tomllib  # type: ignore[unresolved-import] # noqa F401
 
     excludes.append('tomli')
 except ImportError:
