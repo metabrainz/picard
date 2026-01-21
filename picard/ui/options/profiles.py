@@ -233,14 +233,18 @@ class ProfilesOptionsPage(OptionsPage):
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
                 widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
+            added = False
             if parent:
                 # Find parent item
                 for i in range(self.ui.settings_tree.topLevelItemCount()):
                     tl_item = self.ui.settings_tree.topLevelItem(i)
                     if tl_item.data(0, QtCore.Qt.ItemDataRole.UserRole) == parent:
                         tl_item.addChild(widget_item)
+                        added = True
                         break
-            else:
+                if not added:
+                    log.warning("Parent '%s' not found for profile settings group '%s'", parent, name)
+            if not added:
                 self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
