@@ -15,7 +15,6 @@ For development or building from source, follow the instructions below.
 * [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
 * [python-dateutil 2.7 or newer](https://dateutil.readthedocs.io/en/stable/) - For parsing date strings in metadata
-* [charset-normalizer 3.3 or newer](https://pypi.org/project/charset-normalizer/) - For character encoding detection in CD ripping log files
 * [pygit2](https://www.pygit2.org/) - For plugin system
 * gettext (`msgfmt`):
   * **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add to PATH
@@ -40,6 +39,7 @@ For development or building from source, follow the instructions below.
 * [discid 1.0 or newer](https://python-discid.readthedocs.org/) or [python-libdiscid](https://pypi.org/project/python-libdiscid/) - For CD lookups
 * [Markdown 3.2 or newer](https://python-markdown.github.io/install/) - For enhanced internal documentation (scripting, plugins, etc.)
 * [PyJWT 2.0 or newer](https://pyjwt.readthedocs.io/) - For "add cluster as release" functionality
+* [charset-normalizer 3.3 or newer](https://pypi.org/project/charset-normalizer/) - For character encoding detection in CD ripping log files
 * [chromaprint](https://acoustid.org/chromaprint) - For audio fingerprinting (AcoustID), allows identifying files by their actual audio content
 * PyQt6 multimedia support - For embedded audio player (Linux: `python3-pyqt6.qtmultimedia libqt6multimedia6`)
 
