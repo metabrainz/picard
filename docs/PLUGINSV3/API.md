@@ -598,7 +598,7 @@ def enable(api):
         my_script_func,
         name="my_func",  # Optional: defaults to function name
         documentation="Combines two arguments with a dash",
-        signature="$my_func(arg1, arg2)"
+        signature="$my_func(arg1,arg2)"
     )
 ```
 

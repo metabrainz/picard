@@ -37,8 +37,10 @@
 
 
 from collections import namedtuple
-from collections.abc import Callable
-from inspect import getfullargspec
+from inspect import (
+    FullArgSpec,
+    getfullargspec,
+)
 
 
 try:
@@ -112,17 +114,17 @@ def register_script_function(
     function will not be verified.
     If ``documentation`` is ``None``, ``function.__doc__`` will be used."""
 
-    args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
+    argspec = getfullargspec(function)
 
-    required_kwonlyargs = len(kwonlyargs)
-    if kwonlydefaults is not None:
-        required_kwonlyargs -= len(kwonlydefaults.keys())
+    required_kwonlyargs = len(argspec.kwonlyargs)
+    if argspec.kwonlydefaults is not None:
+        required_kwonlyargs -= len(argspec.kwonlydefaults.keys())
     if required_kwonlyargs:
         raise TypeError("Functions with required keyword-only parameters are not supported")
 
-    args = len(args) - 1  # -1 for the parser
-    varargs = varargs is not None
-    defaults = len(defaults) if defaults else 0
+    args = len(argspec.args) - 1  # -1 for the parser
+    varargs = argspec.varargs is not None
+    defaults = len(argspec.defaults) if argspec.defaults else 0
 
     argcount = Bound(args - defaults, args if not varargs else None)
 
@@ -133,7 +135,7 @@ def register_script_function(
         name = function.__name__
 
     if not signature:
-        signature = generate_function_signature(name, function)
+        signature = generate_function_signature(name, argspec)
 
     ext_point_script_functions.register(
         function.__module__,
@@ -215,20 +217,19 @@ class ParamSpec:
         return spec
 
 
-def generate_function_signature(name: str, function: Callable) -> str:
+def generate_function_signature(name: str, argspec: FullArgSpec) -> str:
     """Takes a callable and generates a description of the script function signature"""
     params = ParamSpec()
-    if function:
-        args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
-        if args:
-            args = args[1:]  # ignore the first argument, it's the ScriptParser
-            default_count = len(defaults) if defaults else 0
-            for arg in args[:-default_count] if default_count else args:
-                params.append(arg)
-            if defaults:
-                for arg, default in zip(args[-default_count:], defaults, strict=True):
-                    params.append(arg, default or ParamSpec.EmptyDefault())
-        if varargs:
-            params.append('…')
+    if argspec.args:
+        args = argspec.args[1:]  # ignore the first argument, it's the ScriptParser
+        defaults = argspec.defaults
+        default_count = len(defaults) if defaults else 0
+        for arg in args[:-default_count] if default_count else args:
+            params.append(arg)
+        if defaults:
+            for arg, default in zip(args[-default_count:], defaults, strict=True):
+                params.append(arg, default or ParamSpec.EmptyDefault())
+    if argspec.varargs:
+        params.append('…')
 
     return f"${name}({str(params)})"

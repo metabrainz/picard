@@ -31,6 +31,7 @@
 
 
 import datetime
+from inspect import getfullargspec
 import re
 import unittest
 from unittest import mock
@@ -252,24 +253,27 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
+    def _assert_function_signature(self, expected_signature, name, function):
+        argspec = getfullargspec(function)
+        self.assertEqual(expected_signature, generate_function_signature('my_func', argspec))
+
     def test_generate_function_signature(self):
-        self.assertEqual('$my_func()', generate_function_signature('my_func', lambda: None))
-        self.assertEqual('$my_func()', generate_function_signature('my_func', lambda p: None))
-        self.assertEqual('$my_func(foo)', generate_function_signature('my_func', lambda p, foo: None))
-        self.assertEqual('$my_func([foo])', generate_function_signature('my_func', lambda p, foo=None: None))
-        self.assertEqual('$my_func([foo=a])', generate_function_signature('my_func', lambda p, foo="a": None))
-        self.assertEqual('$my_func(foo,bar)', generate_function_signature('my_func', lambda p, foo, bar: None))
-        self.assertEqual('$my_func(foo[,bar])', generate_function_signature('my_func', lambda p, foo, bar=None: None))
-        self.assertEqual('$my_func(foo[,bar=a])', generate_function_signature('my_func', lambda p, foo, bar="a": None))
-        self.assertEqual(
+        self._assert_function_signature('$my_func()', 'my_func', lambda: None)
+        self._assert_function_signature('$my_func()', 'my_func', lambda p: None)
+        self._assert_function_signature('$my_func(foo)', 'my_func', lambda p, foo: None)
+        self._assert_function_signature('$my_func([foo])', 'my_func', lambda p, foo=None: None)
+        self._assert_function_signature('$my_func([foo=a])', 'my_func', lambda p, foo="a": None)
+        self._assert_function_signature('$my_func(foo,bar)', 'my_func', lambda p, foo, bar: None)
+        self._assert_function_signature('$my_func(foo[,bar])', 'my_func', lambda p, foo, bar=None: None)
+        self._assert_function_signature('$my_func(foo[,bar=a])', 'my_func', lambda p, foo, bar="a": None)
+        self._assert_function_signature(
             '$my_func(foo[,bar=a[,baz]])',
-            generate_function_signature('my_func', lambda p, foo, bar="a", baz=None: None),
+            'my_func',
+            lambda p, foo, bar="a", baz=None: None,
         )
-        self.assertEqual('$my_func(…)', generate_function_signature('my_func', lambda p, *args: None))
-        self.assertEqual('$my_func(foo,…)', generate_function_signature('my_func', lambda p, foo, *args: None))
-        self.assertEqual(
-            '$my_func(foo[,bar,…])', generate_function_signature('my_func', lambda p, foo, bar=None, *args: None)
-        )
+        self._assert_function_signature('$my_func(…)', 'my_func', lambda p, *args: None)
+        self._assert_function_signature('$my_func(foo,…)', 'my_func', lambda p, foo, *args: None)
+        self._assert_function_signature('$my_func(foo[,bar,…])', 'my_func', lambda p, foo, bar=None, *args: None)
 
     @staticmethod
     def assertStartswith(text, expect):
