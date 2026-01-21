@@ -114,15 +114,21 @@ Access to the main Tagger instance.
 
 ```python
 def enable(api):
-    # Get files from objects
-    files = api.tagger.get_files_from_objects(objs)
+    # Load a release by MBID into Picard
+    api.tagger.load_album('b84ee12a-09ef-421b-82de-0441a926375b')
 
     # Access window
     window = api.tagger.window
 ```
 
 **Common uses**:
-- `api.tagger.get_files_from_objects(objs)` - Convert UI objects to files
+- `api.tagger.load_album(mbid)` - Load a release by MBID into Picard
+- `api.tagger.load_nat(mbid)` - Load a recording by MBID into Picard
+- `api.tagger.move_file_to_album(file, albumid)` - Move a file to a release
+- `api.tagger.move_file_to_track(file, albumid, recordingid)` - Move a file to a specific recording on a release
+- `api.tagger.move_file_to_nat(file, recordingid)` - Move a file to a specific recording
+- `api.tagger.add_files(filenames)` - Load the specified files into Picard
+- `api.tagger.cluster(objs)` - Run the clustering over all files from `objs`
 - `api.tagger.window` - Access main window for dialogs
 
 ---
@@ -591,7 +597,9 @@ def enable(api):
     api.register_script_function(
         my_script_func,
         name="my_func",  # Optional: defaults to function name
-        documentation="Combines two arguments with a dash"
+        documentation="""`$my_func(arg1, arg2)`
+
+Combines two arguments with a dash"""
     )
 ```
 
@@ -960,6 +968,10 @@ def enable(api):
     # Run last
     api.register_track_metadata_processor(cleanup_processor, priority=-100)
 ```
+
+The priority determines in which order the registered functions of the same type
+run. Note that the user can override the registered priority and change the execution
+order of plugins.
 
 **Use cases**:
 - High priority: Data fetching, critical preprocessing
