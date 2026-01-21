@@ -37,6 +37,7 @@
 
 
 from collections import namedtuple
+from collections.abc import Callable
 from inspect import getfullargspec
 
 
@@ -60,19 +61,20 @@ Bound = namedtuple('Bound', ['lower', 'upper'])
 
 
 class FunctionRegistryItem:
-    def __init__(self, function, eval_args, argcount, documentation=None, name=None, module=None):
+    def __init__(self, function, eval_args, argcount, documentation=None, name=None, module=None, signature=None):
         self.function = function
         self.eval_args = eval_args
         self.argcount = argcount
         self.documentation = documentation
         self.name = name
         self.module = module
+        self.signature = signature
         self.plugin_id = None
         if module and module.startswith(PLUGIN_MODULE_PREFIX):
             self.plugin_id = module[PLUGIN_MODULE_PREFIX_LEN:]
 
     def __repr__(self):
-        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {doc}, {me.name}, {me.module})'.format(
+        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {me.signature}, {doc}, {me.name}, {me.module})'.format(
             classname=self.__class__.__name__,
             me=self,
             doc='"""{}"""'.format(self.documentation) if self.documentation else None,
@@ -84,11 +86,12 @@ class FunctionRegistryItem:
         return data
 
     def markdowndoc(self, postprocessor=None):
-        if self.documentation is not None:
-            ret = _(self.documentation)
-        else:
-            ret = ''
-        return self._postprocess(ret, postprocessor)
+        ret = ''
+        if self.signature:
+            ret = f'`{_(self.signature)}`\n\n'
+        if self.documentation:
+            ret += _(self.documentation)
+        return self._postprocess(ret.strip(), postprocessor)
 
     def htmldoc(self, postprocessor=None):
         if markdown is not None:
@@ -98,7 +101,9 @@ class FunctionRegistryItem:
         return self._postprocess(ret, postprocessor)
 
 
-def register_script_function(function, name=None, eval_args=True, check_argcount=True, documentation=None):
+def register_script_function(
+    function, name=None, eval_args=True, check_argcount=True, documentation=None, signature=None
+):
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being
@@ -127,6 +132,9 @@ def register_script_function(function, name=None, eval_args=True, check_argcount
     if name is None:
         name = function.__name__
 
+    if not signature:
+        signature = generate_function_signature(name, function)
+
     ext_point_script_functions.register(
         function.__module__,
         (
@@ -138,12 +146,13 @@ def register_script_function(function, name=None, eval_args=True, check_argcount
                 documentation=documentation,
                 name=name,
                 module=function.__module__,
+                signature=signature,
             ),
         ),
     )
 
 
-def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_', documentation=None):
+def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_', documentation=None, signature=None):
     """Decorator helper to register script functions
 
     It calls ``register_script_function()`` and share same arguments
@@ -169,7 +178,57 @@ def script_function(name=None, eval_args=True, check_argcount=True, prefix='func
             eval_args=eval_args,
             check_argcount=check_argcount,
             documentation=documentation,
+            signature=signature,
         )
         return func
 
     return script_function_decorator
+
+
+class ParamSpec:
+    class EmptyDefault:
+        """Represents an empty script function parameter"""
+
+        pass
+
+    def __init__(self):
+        self._params = []
+
+    def append(self, name, default=None):
+        self._params.append((name, default))
+
+    def __str__(self):
+        spec = ''
+
+        default_depth = 0
+        for i, (arg, default) in enumerate(self._params):
+            if default:
+                default_depth += 1
+                spec += '['
+            if i > 0:
+                spec += ','
+            spec += arg
+            if default and not isinstance(default, ParamSpec.EmptyDefault):
+                spec += f'={str(default)}'
+
+        spec += ']' * default_depth
+        return spec
+
+
+def generate_function_signature(name: str, function: Callable) -> str:
+    """Takes a callable and generates a description of the script function signature"""
+    params = ParamSpec()
+    if function:
+        args, varargs, varkw, defaults, kwonlyargs, kwonlydefaults, annotations = getfullargspec(function)
+        if args:
+            args = args[1:]  # ignore the first argument, it's the ScriptParser
+            default_count = len(defaults) if defaults else 0
+            for arg in args[:-default_count] if default_count else args:
+                params.append(arg)
+            if defaults:
+                for arg, default in zip(args[-default_count:], defaults, strict=True):
+                    params.append(arg, default or ParamSpec.EmptyDefault())
+        if varargs:
+            params.append('…')
+
+    return f"${name}({str(params)})"
