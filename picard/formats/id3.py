@@ -73,7 +73,7 @@ from picard.util import (
 
 
 try:
-    from itertools import batched
+    from itertools import batched  # type: ignore[unresolved-import]
 except ImportError:
     # itertools.batched is only available in Python >= 3.12
     from itertools import islice

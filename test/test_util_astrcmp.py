@@ -31,7 +31,7 @@ from picard.util.astrcmp import astrcmp_py
 
 
 try:
-    from picard.util.astrcmp import astrcmp_c
+    from picard.util.astrcmp import astrcmp_c  # type: ignore[unresolved-import]
 except ImportError:
     astrcmp_c = None
 

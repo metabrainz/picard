@@ -18,7 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 from enum import Enum
+import hashlib
 import importlib.util
 from pathlib import Path
 import re
@@ -39,14 +41,6 @@ from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
 
-
-try:
-    import hashlib
-
-    HAS_HASHLIB = True
-except ImportError:
-    HAS_HASHLIB = False
-    hashlib = None  # type: ignore[assignment]
 
 # Retry configuration for git operations
 GIT_OPERATION_MAX_RETRIES = 3

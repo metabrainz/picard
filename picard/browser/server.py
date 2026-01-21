@@ -28,7 +28,7 @@
 
 from http.server import (
     BaseHTTPRequestHandler,
-    HTTPServer,
+    ThreadingHTTPServer,
 )
 from itertools import chain
 import re
@@ -52,15 +52,6 @@ from picard.const import BROWSER_INTEGRATION_LOCALIP
 from picard.oauth import OAuthInvalidStateError
 from picard.util import mbid_validate
 from picard.util.thread import to_main
-
-
-try:
-    from http.server import ThreadingHTTPServer as OurHTTPServer
-except ImportError:
-    from socketserver import ThreadingMixIn
-
-    class OurHTTPServer(ThreadingMixIn, HTTPServer):
-        daemon_threads = True
 
 
 SERVER_VERSION = '%s-%s/%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_STR)
@@ -123,7 +114,7 @@ class BrowserIntegration(QtCore.QObject):
         try:
             for port in range(MIN_PORT, MAX_PORT):
                 try:
-                    self.server = OurHTTPServer((host_address, port), RequestHandler)
+                    self.server = ThreadingHTTPServer((host_address, port), RequestHandler)
                 except OSError:
                     continue
                 log.info("%s: Starting, listening on address %s and port %d", LOG_PREFIX, host_address, port)

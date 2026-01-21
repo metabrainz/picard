@@ -22,6 +22,8 @@
 
 from __future__ import annotations
 
+from PyQt6 import QtWidgets
+
 from picard.ui.itemviews.custom_columns.column import CustomColumn
 from picard.ui.itemviews.custom_columns.shared import (
     get_recognized_view_columns,
@@ -122,9 +124,6 @@ class CustomColumnsRegistry:
                 The position of the column in the collection.
         """
         try:
-            # Try to import Qt and get application instance
-            from PyQt6 import QtWidgets
-
             app = QtWidgets.QApplication.instance()
             if not app or not isinstance(app, QtWidgets.QApplication):
                 return
@@ -132,10 +131,6 @@ class CustomColumnsRegistry:
             # Apply width to all matching widgets
             for widget in app.allWidgets():
                 self._apply_width_to_widget(widget, target_columns, column, position)
-
-        except ImportError:
-            # Qt not available - running in non-GUI environment
-            pass
         except Exception:
             # Other errors shouldn't break registration
             pass
@@ -172,10 +167,11 @@ class CustomColumnsRegistry:
                 header.resizeSection(position, int(width))
 
             # Set resize mode
-            from PyQt6.QtWidgets import QHeaderView
-
             is_resizable = getattr(column, 'resizeable', True)
-            mode = QHeaderView.ResizeMode.Interactive if is_resizable else QHeaderView.ResizeMode.Fixed
+            if is_resizable:
+                mode = QtWidgets.QHeaderView.ResizeMode.Interactive
+            else:
+                mode = QtWidgets.QHeaderView.ResizeMode.Fixed
             header.setSectionResizeMode(position, mode)
 
         except Exception:

@@ -134,7 +134,7 @@ def load_plugin_manifest(plugin_name: str) -> PluginManifest:
 def load_test_registry():
     """Load test registry data from test/data/testplugins3/registry.toml."""
     try:
-        import tomllib
+        import tomllib  # type: ignore[unresolved-import]
     except ModuleNotFoundError:
         import tomli as tomllib
 

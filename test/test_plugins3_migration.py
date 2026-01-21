@@ -7,7 +7,7 @@ import unittest
 
 
 try:
-    import tomllib
+    import tomllib  # type: ignore[unresolved-import]
 except ImportError:
     import tomli as tomllib
 
