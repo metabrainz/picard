@@ -732,8 +732,9 @@ class PluginApi:
         eval_args: bool = True,
         check_argcount: bool = True,
         documentation: str | None = None,
+        signature: str | None = None,
     ) -> None:
-        return register_script_function(function, name, eval_args, check_argcount, documentation)
+        return register_script_function(function, name, eval_args, check_argcount, documentation, signature)
 
     def register_script_variable(self, name: str, documentation: str | None = None) -> None:
         return register_script_variable(name, documentation, self)

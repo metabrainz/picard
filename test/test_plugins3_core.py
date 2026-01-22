@@ -733,8 +733,10 @@ class TestPluginApi(PicardTestCase):
             pass
 
         with patch('picard.plugin3.api_impl.register_script_function') as mock:
-            api.register_script_function(dummy_func, name='test', eval_args=False)
-            mock.assert_called_once_with(dummy_func, 'test', False, True, None)
+            api.register_script_function(
+                dummy_func, name='test', eval_args=False, documentation="doc", signature="$test"
+            )
+            mock.assert_called_once_with(dummy_func, 'test', False, True, "doc", "$test")
 
     def test_register_actions(self):
         """Test action registration methods."""

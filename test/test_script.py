@@ -31,6 +31,7 @@
 
 
 import datetime
+from inspect import getfullargspec
 import re
 import unittest
 from unittest import mock
@@ -45,6 +46,7 @@ from picard.cluster import Cluster
 from picard.const.defaults import DEFAULT_FILE_NAMING_FORMAT
 from picard.extension_points.script_functions import (
     FunctionRegistryItem,
+    generate_function_signature,
     register_script_function,
     script_function,
 )
@@ -138,10 +140,11 @@ class ScriptParserTest(PicardTestCase):
         def somefunc():
             return 'x'
 
-        item = FunctionRegistryItem(somefunc, 'x', 'y', 'doc')
+        item = FunctionRegistryItem(somefunc, 'x', 'y', 'doc', signature='$somefunc()')
         self.assertEqual(item.function, somefunc)
         self.assertEqual(item.eval_args, 'x')
         self.assertEqual(item.argcount, 'y')
+        self.assertEqual(item.signature, '$somefunc()')
         self.assertEqual(item.documentation, 'doc')
 
         regex = (
@@ -150,7 +153,7 @@ class ScriptParserTest(PicardTestCase):
             + r'[^ ]+'
             + re.escape(r'.somefunc at ')
             + r'[^>]+'
-            + re.escape(r'>, x, y, """doc""", None, None)')
+            + re.escape(r'>, x, y, $somefunc(), """doc""", None, None)')
             + r'$'
         )
 
@@ -250,6 +253,28 @@ class ScriptParserTest(PicardTestCase):
 
         self.assertScriptResultEquals("$somefunc($title(x))", "X")
 
+    def _assert_function_signature(self, expected_signature, name, function):
+        argspec = getfullargspec(function)
+        self.assertEqual(expected_signature, generate_function_signature('my_func', argspec))
+
+    def test_generate_function_signature(self):
+        self._assert_function_signature('$my_func()', 'my_func', lambda: None)
+        self._assert_function_signature('$my_func()', 'my_func', lambda p: None)
+        self._assert_function_signature('$my_func(foo)', 'my_func', lambda p, foo: None)
+        self._assert_function_signature('$my_func([foo])', 'my_func', lambda p, foo=None: None)
+        self._assert_function_signature('$my_func([foo=a])', 'my_func', lambda p, foo="a": None)
+        self._assert_function_signature('$my_func(foo,bar)', 'my_func', lambda p, foo, bar: None)
+        self._assert_function_signature('$my_func(foo[,bar])', 'my_func', lambda p, foo, bar=None: None)
+        self._assert_function_signature('$my_func(foo[,bar=a])', 'my_func', lambda p, foo, bar="a": None)
+        self._assert_function_signature(
+            '$my_func(foo[,bar=a[,baz]])',
+            'my_func',
+            lambda p, foo, bar="a", baz=None: None,
+        )
+        self._assert_function_signature('$my_func(…)', 'my_func', lambda p, *args: None)
+        self._assert_function_signature('$my_func(foo,…)', 'my_func', lambda p, foo, *args: None)
+        self._assert_function_signature('$my_func(foo[,bar,…])', 'my_func', lambda p, foo, bar=None, *args: None)
+
     @staticmethod
     def assertStartswith(text, expect):
         if not text.startswith(expect):
@@ -269,22 +294,32 @@ class ScriptParserTest(PicardTestCase):
             return ""
 
         doc = script_function_documentation('nodocfunc', 'markdown')
-        self.assertEqual(doc, '')
+        self.assertEqual(doc, '`$nodocfunc()`')
+
+    @unittest.skipUnless(markdown, "markdown module missing")
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
+    def test_script_function_documentation_nodoc_html(self):
+        """test script_function_documentation() with a function without documentation"""
+
+        @script_function()
+        def func_nodocfunc(parser):
+            return ""
+
         doc = script_function_documentation('nodocfunc', 'html')
-        self.assertEqual(doc, '')
+        self.assertEqual(doc, '<p><code>$nodocfunc()</code></p>')
 
     @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation(self):
         """test script_function_documentation() with a function with documentation"""
         # the documentation used to test includes backquotes
-        testdoc = '`$somefunc()`'
+        expected_doc = '`$somefunc()`\n\nsome doc'
 
-        @script_function(documentation=testdoc)
+        @script_function(documentation='some doc')
         def func_somefunc(parser):
             return "x"
 
         doc = script_function_documentation('somefunc', 'markdown')
-        self.assertEqual(doc, testdoc)
+        self.assertEqual(doc, expected_doc)
         areg = r"^no such documentation format: unknownformat"
         with self.assertRaisesRegex(ScriptFunctionDocError, areg):
             script_function_documentation('somefunc', 'unknownformat')
@@ -297,14 +332,14 @@ class ScriptParserTest(PicardTestCase):
         pre, post = markdown('`XXX`').split('XXX')
 
         # the documentation used to test includes backquotes
-        testdoc = '`$somefunc()`'
+        expected_doc = '<p><code>$somefunc()</code></p>\n<p>some doc</p>'
 
-        @script_function(documentation=testdoc)
+        @script_function(documentation='some doc')
         def func_somefunc(parser):
             return "x"
 
         doc = script_function_documentation('somefunc', 'html')
-        self.assertEqual(doc, pre + '$somefunc()' + post)
+        self.assertEqual(doc, expected_doc)
 
     @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
     def test_script_function_documentation_unknown_function(self):
@@ -326,7 +361,7 @@ class ScriptParserTest(PicardTestCase):
             return "x"
 
         docall = script_function_documentation_all()
-        self.assertEqual(docall, 'somedoc1\nsomedoc2')
+        self.assertEqual(docall, '`$somefunc1()`\n\nsomedoc1\n`$somefunc2()`\n\nsomedoc2')
 
     @unittest.skipUnless(markdown, "markdown module missing")
     @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
