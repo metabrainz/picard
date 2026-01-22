@@ -295,6 +295,16 @@ class ScriptParserTest(PicardTestCase):
 
         doc = script_function_documentation('nodocfunc', 'markdown')
         self.assertEqual(doc, '`$nodocfunc()`')
+
+    @unittest.skipUnless(markdown, "markdown module missing")
+    @patch('picard.extension_points.script_functions.ext_point_script_functions', ExtensionPoint(label='test_script'))
+    def test_script_function_documentation_nodoc_html(self):
+        """test script_function_documentation() with a function without documentation"""
+
+        @script_function()
+        def func_nodocfunc(parser):
+            return ""
+
         doc = script_function_documentation('nodocfunc', 'html')
         self.assertEqual(doc, '<p><code>$nodocfunc()</code></p>')
 
