@@ -942,6 +942,7 @@ class File(MetadataItem):
             return ext.lower() in cls.EXTENSIONS
 
     def _update_filesystem_metadata(self, metadata):
+        metadata['~filepath'] = self.filename
         metadata['~dirname'] = os.path.dirname(self.filename)
         filename_no_ext, extension = os.path.splitext(os.path.basename(self.filename))
         metadata['~filename'] = filename_no_ext
