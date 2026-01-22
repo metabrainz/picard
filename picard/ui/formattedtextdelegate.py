@@ -37,7 +37,10 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
         super().__init__(parent)
         self.markup_format = markup_format
 
-    def paint(self, painter, option, index):
+    def paint(self, painter: QtGui.QPainter | None, option: QtWidgets.QStyleOptionViewItem, index: QtCore.QModelIndex):
+        if not painter:
+            return
+
         # Initialize the style option
         self.initStyleOption(option, index)
 
@@ -46,9 +49,8 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
             fill_brush = option.palette.highlight()
             text_color_role = QtGui.QPalette.ColorRole.HighlightedText
         else:
-            fill_brush = option.palette.base()
+            fill_brush = option.backgroundBrush
             text_color_role = QtGui.QPalette.ColorRole.Text
-        painter.fillRect(option.rect, fill_brush)
 
         # Get the formatted text from the model
         text = index.data(QtCore.Qt.ItemDataRole.DisplayRole)
@@ -64,6 +66,7 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
 
         # Draw the text
         painter.save()
+        painter.fillRect(option.rect, fill_brush)
         painter.translate(option.rect.topLeft())
         doc.drawContents(painter)
         painter.restore()
