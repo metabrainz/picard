@@ -441,6 +441,16 @@ ALL_TAGS = TagVars(
         is_from_mb=False,
     ),
     TagVar(
+        'folksonomy_tags',
+        shortdesc=N_('MusicBrainz folksonomy tags'),
+        longdesc=N_('Unfiltered list of all non-genre folksonomy tags loaded from MusicBrainz.'),
+        related_options=('use_genres',),
+        is_hidden=True,
+        is_tag=False,
+        is_multi_value=True,
+        is_from_mb=True,
+    ),
+    TagVar(
         'format',
         shortdesc=N_('File Format'),
         longdesc=N_('Media format of the file (e.g.: MPEG-1 Audio).'),
@@ -463,6 +473,16 @@ ALL_TAGS = TagVars(
         related_options=('use_genres',),
         is_multi_value=True,
         is_filterable=True,
+    ),
+    TagVar(
+        'genres',
+        shortdesc=N_('Unfiltered MusicBrainz genres'),
+        longdesc=N_('Unfiltered list of all genres loaded from MusicBrainz.'),
+        related_options=('use_genres',),
+        is_hidden=True,
+        is_tag=False,
+        is_multi_value=True,
+        is_from_mb=True,
     ),
     TagVar(
         # TODO: Check if this actually exists or if it was provided by the last.fm plugin.
