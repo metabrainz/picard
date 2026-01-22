@@ -96,6 +96,11 @@ from picard.ui.colors import InterfaceColors
 #      asks for it on the corresponding option page.
 #
 # Please, try to keep options ordered by section and name in their own group.
+#
+# Note: If the option is a 'setting' which is not edited in one of the option
+#       pages, it must be added to the `OPTIONS_NOT_IN_PAGES` set in the file
+#       `picard/ui/options/maintenance.py` so that it will not be included in
+#       the list of option settings that can be removed by the user.
 
 
 # picard/coverart/providers/caa.py
