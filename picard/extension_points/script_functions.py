@@ -76,10 +76,10 @@ class FunctionRegistryItem:
             self.plugin_id = module[PLUGIN_MODULE_PREFIX_LEN:]
 
     def __repr__(self):
-        return '{classname}({me.function}, {me.eval_args}, {me.argcount}, {me.signature}, {doc}, {me.name}, {me.module})'.format(
-            classname=self.__class__.__name__,
-            me=self,
-            doc='"""{}"""'.format(self.documentation) if self.documentation else None,
+        doc = f'"""{self.documentation}"""' if self.documentation else None
+        return (
+            f'{self.__class__.__name__}({self.function}, {self.eval_args}, {self.argcount}, '
+            f'{self.signature}, {doc}, {self.name}, {self.module})'
         )
 
     def _postprocess(self, data, postprocessor):
