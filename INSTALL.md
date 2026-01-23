@@ -14,7 +14,6 @@ For development or building from source, follow the instructions below.
 * [PyQt 6.6.1 or newer](https://riverbankcomputing.com/software/pyqt/download)
 * [Mutagen 1.45 or newer](https://mutagen.readthedocs.io/)
 * [PyYAML 5.1 or newer](https://pyyaml.org/)
-* [python-dateutil 2.7 or newer](https://dateutil.readthedocs.io/en/stable/) - For parsing date strings in metadata
 * [pygit2](https://www.pygit2.org/) - For plugin system
 * gettext (`msgfmt`):
   * **Windows:** Download from [gettext-iconv-windows](https://github.com/mlocati/gettext-iconv-windows/releases) and add to PATH
