@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-20 16:49+0100\n"
-"PO-Revision-Date: 2026-01-20 15:50+0000\n"
+"PO-Revision-Date: 2026-01-23 10:38+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -4351,7 +4351,7 @@ msgid ""
 msgstr ""
 "Picard pot desar i restaurar l'estat de l'espai de treball actual com a "
 "fitxer de sessió des del menú principal «Fitxer». Les sessions conserven la "
-"ubicació dels fitxers (sense agrupar, agrupaments, àlbums, pistes "
+"ubicació dels fitxers (sense agrupar, agrupacions, àlbums, pistes "
 "específiques i enregistraments independents), les edicions manuals de "
 "metadades i les opcions de configuració seleccionades perquè pugueu "
 "reprendre la feina més tard.\n"
@@ -4668,6 +4668,8 @@ msgstr "Mostra el diàleg d'usuari nou en iniciar Picard"
 #: picard/ui/forms/ui_options_interface.py:144
 msgid "Show documentation update checking disabled dialog"
 msgstr ""
+"Mostra el diàleg de comprovació d'actualitzacions de documentació "
+"inhabilitada"
 
 #: picard/ui/forms/ui_options_interface.py:149
 msgid "Begin browsing in the following directory:"
@@ -5782,7 +5784,7 @@ msgstr "dreta"
 
 #: picard/ui/itemviews/custom_columns/shared.py:307
 msgid "Default alphabetical text sorting."
-msgstr ""
+msgstr "Ordenació alfabètica per defecte."
 
 #: picard/ui/itemviews/custom_columns/shared.py:310
 msgid "Case insensitive"
@@ -5790,7 +5792,7 @@ msgstr "Sense distinció entre majúscules i minúscules"
 
 #: picard/ui/itemviews/custom_columns/shared.py:311
 msgid "Case insensitive alphabetical text sorting."
-msgstr ""
+msgstr "Ordenació alfabètica sense distinció entre majúscules i minúscules."
 
 #: picard/ui/itemviews/custom_columns/shared.py:314
 msgid "Numeric"
@@ -5801,6 +5803,8 @@ msgid ""
 "Numeric sorting if the column content is numeric. Falls back to natural "
 "number sorting."
 msgstr ""
+"Ordenació numèrica si el contingut de la columna és numèric. Si no, "
+"ordenació per nombres naturals."
 
 #: picard/ui/itemviews/custom_columns/shared.py:318
 msgid "Natural number sorting"
@@ -5811,6 +5815,8 @@ msgid ""
 "Alphabetical text sorting, but consider numbers (e.g. \"Track 2\" before "
 "\"Track 10\")."
 msgstr ""
+"Ordenació alfabètica tenint en compte els nombres (p. ex., «Pista 2» abans "
+"de «Pista»)."
 
 #: picard/ui/itemviews/custom_columns/shared.py:322
 msgid "By value length"
@@ -5826,7 +5832,7 @@ msgstr "Sense distinció d'articles"
 
 #: picard/ui/itemviews/custom_columns/shared.py:327
 msgid "Sort ignoring leading articles (e.g. a, an, the)."
-msgstr ""
+msgstr "Ordenació ignorant els articles inicials (p. ex., «a», «an», «the»)."
 
 #: picard/ui/itemviews/custom_columns/shared.py:330
 msgid "Empty values first"
@@ -5834,7 +5840,7 @@ msgstr "Valor buits al principi"
 
 #: picard/ui/itemviews/custom_columns/shared.py:331
 msgid "Empty/whitespace values sort first."
-msgstr ""
+msgstr "Ordenació amb els valors buits o amb espais en blanc al principi."
 
 #: picard/ui/itemviews/custom_columns/shared.py:334
 msgid "Empty values last"
@@ -5842,7 +5848,7 @@ msgstr "Valors buits al final"
 
 #: picard/ui/itemviews/custom_columns/shared.py:335
 msgid "Empty/whitespace values sort last."
-msgstr ""
+msgstr "Ordenació amb els valors buits o amb espais en blanc al final."
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:52
 #: picard/ui/mainwindow/__init__.py:419
@@ -5962,6 +5968,8 @@ msgstr "La clau del camp no és vàlida: «%s»"
 msgid ""
 "Field expressions should not start with \"$\" - use SCRIPT type for scripting"
 msgstr ""
+"Les expressions de camps no poden començar per «$»; feu servir el tipus "
+"SCRIPT per als scripts"
 
 #: picard/ui/itemviews/custom_columns/validation.py:267
 #, python-format
@@ -5970,37 +5978,39 @@ msgstr "La sintaxi de l'script no és vàlida: %s"
 
 #: picard/ui/itemviews/custom_columns/validation.py:275
 msgid "Very long scripts may impact performance"
-msgstr ""
+msgstr "Els scripts molt llargs poden afectar el rendiment"
 
 #: picard/ui/itemviews/custom_columns/validation.py:290
 #, python-format
 msgid "Invalid base field for transform: \"%s\""
-msgstr ""
+msgstr "El camp base de la transformació no és vàlid: «%s»"
 
 #: picard/ui/itemviews/custom_columns/validation.py:299
 msgid "Transform type is required when kind is TRANSFORM"
-msgstr ""
+msgstr "El tipus de transformació és obligatori quan el tipus és TRANSFORM"
 
 #: picard/ui/itemviews/custom_columns/validation.py:314
 msgid "Transform specified but kind is not TRANSFORM"
-msgstr ""
+msgstr "S'ha especificat una transformació però el tipus no és TRANSFORM"
 
 #: picard/ui/itemviews/custom_columns/validation.py:321
 msgid "Width must be positive"
-msgstr ""
+msgstr "L'amplada ha de ser positiva"
 
 #: picard/ui/itemviews/custom_columns/validation.py:328
 msgid "Very wide columns may impact UI layout"
 msgstr ""
+"Les columnes molt amples poden afectar la disposició de la interfície "
+"d'usuari"
 
 #: picard/ui/itemviews/custom_columns/validation.py:339
 msgid "Column will not be visible in any view"
-msgstr ""
+msgstr "La columna no serà visible en cap visualització"
 
 #: picard/ui/itemviews/custom_columns/validation.py:351
 #, python-format
 msgid "Unknown views in add_to: %s"
-msgstr ""
+msgstr "S'han indicat visualitzacions desconegudes a «add_to»: %s"
 
 #: picard/ui/mainwindow/__init__.py:420
 msgid "Are you sure you want to quit Picard?"
@@ -6028,16 +6038,18 @@ msgstr "Tancament de la sessió"
 
 #: picard/ui/mainwindow/__init__.py:466
 msgid "Do you want to save the current session before continuing?"
-msgstr ""
+msgstr "Voleu desar la sessió actual abans de continuar?"
 
 #: picard/ui/mainwindow/__init__.py:467
 msgid ""
 "Closing the session will clear all files, clusters and albums from the view."
 msgstr ""
+"Si tanqueu la sessió, s'esborraran tots els fitxers, agrupacions i àlbums de "
+"la visualització."
 
 #: picard/ui/mainwindow/__init__.py:469 picard/ui/mainwindow/actions.py:581
 msgid "&Save Session"
-msgstr ""
+msgstr "De&sa la sessió"
 
 #: picard/ui/mainwindow/__init__.py:470
 msgid "Do&n't Save"
@@ -6046,7 +6058,7 @@ msgstr "&No la desis"
 #: picard/ui/mainwindow/__init__.py:499 picard/ui/mainwindow/__init__.py:1354
 #, python-format
 msgid "Session saved to \"%(path)s\""
-msgstr ""
+msgstr "S'ha desat la sesssió a «%(path)s»"
 
 #: picard/ui/mainwindow/__init__.py:502 picard/ui/mainwindow/__init__.py:1351
 msgid "Failed to save session"
@@ -6093,19 +6105,19 @@ msgstr "&Cerca el CD…"
 
 #: picard/ui/mainwindow/__init__.py:664
 msgid "Recent Sessions"
-msgstr ""
+msgstr "Sessions recents"
 
 #: picard/ui/mainwindow/__init__.py:702
 msgid "Recent sessions cleared"
-msgstr ""
+msgstr "S'han esborrat les sessions recents"
 
 #: picard/ui/mainwindow/__init__.py:721
 msgid "Empty"
-msgstr ""
+msgstr "Buit"
 
 #: picard/ui/mainwindow/__init__.py:737 picard/ui/mainwindow/actions.py:605
 msgid "Clear Recent Sessions"
-msgstr ""
+msgstr "Esborra les sessions recents"
 
 #: picard/ui/mainwindow/__init__.py:773
 msgid "From CD ripper &log file…"
@@ -6196,7 +6208,7 @@ msgstr "Mou els fitxers a la paperera"
 #: picard/ui/mainwindow/__init__.py:1343 picard/ui/mainwindow/__init__.py:1375
 #, python-format
 msgid "MusicBrainz Picard Session (%s);;All files (*)"
-msgstr ""
+msgstr "Sessió de MusicBrainz Picard (%s);;Tots els fitxers (*)"
 
 #: picard/ui/mainwindow/__init__.py:1380 picard/ui/mainwindow/__init__.py:1405
 #, python-format
@@ -6346,7 +6358,7 @@ msgstr "Desa els fitxers seleccionats"
 
 #: picard/ui/mainwindow/actions.py:196
 msgid "Move to &trash"
-msgstr ""
+msgstr "Mou a la &paperera"
 
 #: picard/ui/mainwindow/actions.py:198
 msgid "Shift+Del"
@@ -6697,7 +6709,7 @@ msgstr "Carrega un fitxer de sessió"
 
 #: picard/ui/mainwindow/actions.py:597
 msgid "&New Session"
-msgstr ""
+msgstr "Sessió &nova"
 
 #: picard/ui/mainwindow/actions.py:598
 msgid "Close the current session"
@@ -6705,7 +6717,7 @@ msgstr "Tanca la sessió actual"
 
 #: picard/ui/mainwindow/actions.py:606
 msgid "Clear all recent session entries"
-msgstr ""
+msgstr "Esborra totes les entrades de sessions recents"
 
 #: picard/ui/metadatabox/__init__.py:175
 msgid "metadata view"
@@ -6938,10 +6950,9 @@ msgid "Profiles Attached to Options in %s Section"
 msgstr "Perfils associats a les opcions de la secció %s"
 
 #: picard/ui/options/dialog.py:792
-#, fuzzy, python-brace-format
-#| msgid " [Enabled]"
+#, python-brace-format
 msgid "{profile} [Enabled]"
-msgstr " [Habilitat]"
+msgstr "{profile} [habilitat]"
 
 #: picard/ui/options/dialog.py:796 picard/ui/options/profiles.py:283
 msgid "None"
@@ -7195,7 +7206,7 @@ msgstr "Desa"
 
 #: picard/ui/options/interface_toolbar.py:115
 msgid "Move to trash"
-msgstr ""
+msgstr "Mou a la paperera"
 
 #: picard/ui/options/interface_toolbar.py:119
 msgid "Submit AcoustIDs"
@@ -7432,7 +7443,7 @@ msgstr "Instal·la un connector…"
 
 #: picard/ui/options/plugins.py:98
 msgid "Install a new plugin from the registry or a custom URL"
-msgstr ""
+msgstr "Instal·la un connector nou des del registre o un URL personalitzat"
 
 #: picard/ui/options/plugins.py:102 picard/ui/options/plugins.py:240
 msgid "Refresh All"
@@ -7441,6 +7452,8 @@ msgstr "Actualitza-ho tot"
 #: picard/ui/options/plugins.py:103
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
+"Actualitza el registra i la llista de connectors i comprova si hi ha "
+"actualitzacions"
 
 #: picard/ui/options/plugins.py:109 picard/ui/options/plugins.py:300
 msgid "Hide Details"
@@ -7448,7 +7461,7 @@ msgstr "Amaga els detalls"
 
 #: picard/ui/options/plugins.py:112
 msgid "Show/hide plugin details panel"
-msgstr ""
+msgstr "Mostra/oculta el tauler de detalls del connector"
 
 #: picard/ui/options/plugins.py:168
 msgid "Loading plugins…"
@@ -7493,16 +7506,16 @@ msgstr[1] "{update_count:,d} actualitzacions disponibles"
 #: picard/ui/options/plugins.py:233
 #, python-brace-format
 msgid "Refreshed - {plugins}, {updates}"
-msgstr ""
+msgstr "S'ha actualitzat - {plugins}, {updates}"
 
 #: picard/ui/options/plugins.py:237
 #, python-brace-format
 msgid "Error refreshing: {}"
-msgstr ""
+msgstr "S'ha produït un error en actualitzar: {}"
 
 #: picard/ui/options/plugins.py:249
 msgid "Plugin system not available - Git backend required"
-msgstr ""
+msgstr "El sistema de connectors no està disponible, falta el rerefons del Git"
 
 #: picard/ui/options/plugins.py:303
 msgid "Show Details"
@@ -7511,31 +7524,31 @@ msgstr "Mostra els detalls"
 #: picard/ui/options/plugins.py:341
 #, python-brace-format
 msgid "Plugin \"{name}\" {action}"
-msgstr ""
+msgstr "S'ha {action} el connector «{name}»"
 
 #: picard/ui/options/plugins.py:404
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
-msgstr ""
+msgstr "El connector «{name}» s'ha instal·lat correctament"
 
 #: picard/ui/options/plugins.py:441
 msgid "All plugin updates completed"
-msgstr ""
+msgstr "S'han completat totes les actualitzacions dels connectors"
 
 #: picard/ui/options/plugins.py:452
 #, python-brace-format
 msgid "Updating {name}…"
-msgstr ""
+msgstr "S'està actualitzant {name}…"
 
 #: picard/ui/options/plugins.py:477
 #: picard/ui/widgets/plugindetailswidget.py:356
 msgid "Update Failed"
-msgstr ""
+msgstr "Error d'actualització"
 
 #: picard/ui/options/plugins.py:477
 #, python-brace-format
 msgid "Failed to update plugin: {errmsg}"
-msgstr ""
+msgstr "No s'ha pogut actualitzar el connector: {errmsg}"
 
 #: picard/ui/options/profiles.py:61
 msgid "Option Profiles"
@@ -7773,7 +7786,7 @@ msgstr "Canvia el volum de l'àudio"
 
 #: picard/ui/player/toolbar.py:313
 msgid "Volume up"
-msgstr ""
+msgstr "Incrementa el volum"
 
 #: picard/ui/player/toolbar.py:314
 msgid "Increase audio volume"
@@ -7785,7 +7798,7 @@ msgstr "Ctrl+Maj++"
 
 #: picard/ui/player/toolbar.py:323
 msgid "Volume down"
-msgstr ""
+msgstr "Redueix el volum"
 
 #: picard/ui/player/toolbar.py:324
 msgid "Decrease audio volume"
@@ -8135,7 +8148,7 @@ msgstr "Bloca les columnes"
 
 #: picard/ui/widgets/configurablecolumnsheader.py:208
 msgid "Manage custom columns…"
-msgstr ""
+msgstr "Gestiona les columnes personalitzades…"
 
 #: picard/ui/widgets/lockableheaderview.py:44
 msgid ""
@@ -8160,7 +8173,7 @@ msgstr "Desinstal·la"
 #: picard/ui/widgets/plugindetailswidget.py:111
 #: picard/ui/widgets/pluginlistwidget.py:574
 msgid "Information"
-msgstr ""
+msgstr "Informació"
 
 #: picard/ui/widgets/plugindetailswidget.py:139
 msgid "No description available"
@@ -8173,7 +8186,7 @@ msgstr "S'ha produït un error de desinstal·lació"
 
 #: picard/ui/widgets/plugindetailswidget.py:248
 msgid "N/A"
-msgstr ""
+msgstr "N/D"
 
 #: picard/ui/widgets/plugindetailswidget.py:276
 msgid "Update Plugin"
@@ -8186,11 +8199,14 @@ msgid ""
 "\n"
 "Do you want to update it anyway?"
 msgstr ""
+"S'ha definit que el connector «{name}» no s'actualitzi automàticament.\n"
+"\n"
+"Voleu actualitzar-lo igualment?"
 
 #: picard/ui/widgets/plugindetailswidget.py:326
 #, python-brace-format
 msgid "Failed to uninstall plugin: {errmsg}"
-msgstr ""
+msgstr "No s'ha pogut desinstal·lar el connector: {errmsg}"
 
 #: picard/ui/widgets/plugindetailswidget.py:333
 msgid "Updating…"
@@ -8199,7 +8215,7 @@ msgstr "S'està actualitzant…"
 #: picard/ui/widgets/pluginlistwidget.py:78
 #: picard/ui/widgets/pluginlistwidget.py:90
 msgid "Update All"
-msgstr ""
+msgstr "Actualitza-ho tot"
 
 #: picard/ui/widgets/pluginlistwidget.py:86
 #, python-brace-format
@@ -8224,15 +8240,15 @@ msgstr "Versió nova"
 
 #: picard/ui/widgets/pluginlistwidget.py:254
 msgid "This plugin is included in updates"
-msgstr ""
+msgstr "Aquest connector s'inclou en les actualitzacions"
 
 #: picard/ui/widgets/pluginlistwidget.py:256
 msgid "This plugin is excluded from updates"
-msgstr ""
+msgstr "Aquest connector s'exclou de les actualitzacions"
 
 #: picard/ui/widgets/pluginlistwidget.py:262
 msgid "In Progress…"
-msgstr ""
+msgstr "En curs…"
 
 #: picard/ui/widgets/pluginlistwidget.py:271
 #: picard/ui/widgets/pluginlistwidget.py:298
@@ -8251,19 +8267,19 @@ msgstr "Habilita"
 
 #: picard/ui/widgets/pluginlistwidget.py:562
 msgid "Reinstall"
-msgstr ""
+msgstr "Torna a instal·lar"
 
 #: picard/ui/widgets/pluginlistwidget.py:566
 msgid "Switch Ref"
-msgstr ""
+msgstr "Canvia la referència"
 
 #: picard/ui/widgets/pluginlistwidget.py:580
 msgid "View Repository"
-msgstr ""
+msgstr "Visualitza el repositori"
 
 #: picard/ui/widgets/pluginlistwidget.py:586
 msgid "Execution Order"
-msgstr ""
+msgstr "Ordre d'execució"
 
 #: picard/ui/widgets/pluginlistwidget.py:595
 #: picard/ui/widgets/pluginlistwidget.py:602
@@ -8280,6 +8296,8 @@ msgid ""
 "Failed to enable plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut habilitar el connector «{name}»:\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:603
 #, python-brace-format
@@ -8287,6 +8305,8 @@ msgid ""
 "Failed to disable plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut inhabilitar el connector «{name}»\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:633
 #, python-brace-format
@@ -8294,6 +8314,8 @@ msgid ""
 "Failed to update plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut actualitzar el connector «{name}»:\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:651
 #, python-brace-format
@@ -8301,6 +8323,8 @@ msgid ""
 "Failed to uninstall plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut desinstal·lar el connector «{name}»:\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:682
 #, python-brace-format
@@ -8308,10 +8332,12 @@ msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut tornar a instal·lar el connector «{name}»:\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:692
 msgid "Could not find plugin repository URL"
-msgstr ""
+msgstr "No s'ha trobat l'URL del repositori del connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:735
 #, python-brace-format
@@ -8319,14 +8345,16 @@ msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
 "{errmsg}"
 msgstr ""
+"No s'ha pogut canviar la referència del connector «{name}»:\n"
+"{errmsg}"
 
 #: picard/ui/widgets/pluginlistwidget.py:798
 msgid "There were no installed metadata processing plugins found."
-msgstr ""
+msgstr "No s'ha trobat cap connector de processament de metadades instal·lat."
 
 #: picard/ui/widgets/pluginlistwidget.py:799
 msgid "No Data"
-msgstr ""
+msgstr "No hi ha dades"
 
 #: picard/ui/widgets/pluginlistwidget.py:819
 msgid "Uninstall Plugin"
@@ -8339,11 +8367,12 @@ msgstr "Segur que voleu desinstal·lar «{name}»?"
 
 #: picard/ui/widgets/pluginlistwidget.py:830
 msgid "Also remove plugin configuration"
-msgstr ""
+msgstr "Suprimeix també la configuració del connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:831
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr ""
+"Suprimeix tots els paràmetres desats i la configuració d'aquest connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:835
 msgid "Yes, Uninstall!"
@@ -8351,16 +8380,16 @@ msgstr "Sí, desinstal·la-ho"
 
 #: picard/ui/widgets/pluginlistwidget.py:859
 msgid "Switch Git Ref"
-msgstr ""
+msgstr "Canvia la referència del Git"
 
 #: picard/ui/widgets/pluginlistwidget.py:870
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
-msgstr ""
+msgstr "Canvia la referència de «{name}»"
 
 #: picard/ui/widgets/pluginlistwidget.py:880
 msgid "Yes, Switch!"
-msgstr ""
+msgstr "Sí, canvia-ho"
 
 #: picard/ui/widgets/pluginlistwidget.py:909
 msgid "No Ref Selected"
@@ -8368,7 +8397,7 @@ msgstr "No s'ha seleccionat cap referència"
 
 #: picard/ui/widgets/pluginlistwidget.py:910
 msgid "Please select or enter a ref to switch to."
-msgstr ""
+msgstr "Seleccioneu o indiqueu la referència a què voleu canviar."
 
 #: picard/ui/widgets/profilelistwidget.py:48
 msgid "Rename profile"
@@ -8385,14 +8414,15 @@ msgstr "Segur que voleu suprimir aquest perfil?"
 #: picard/ui/widgets/refselector.py:48
 msgid "Use the default ref (usually main/master branch)"
 msgstr ""
+"Fes servir la referència per defecte (normalment, la branca main/master)"
 
 #: picard/ui/widgets/refselector.py:63
 msgid "Branches"
-msgstr ""
+msgstr "Branques"
 
 #: picard/ui/widgets/refselector.py:70
 msgid "Enter custom ref (tag, branch, or commit):"
-msgstr ""
+msgstr "Indiqueu una referència personalitzada (etiqueta, branca o comissió):"
 
 #: picard/ui/widgets/refselector.py:74
 msgid "Custom"
@@ -8401,7 +8431,7 @@ msgstr "Personalitzada"
 #: picard/ui/widgets/refselector.py:113
 #, python-brace-format
 msgid "Use default ref: {ref} ({description})"
-msgstr ""
+msgstr "Fes servir la referència per defecte: {ref} ({description})"
 
 #: picard/ui/widgets/scriptdocumentation.py:131
 #, python-brace-format
@@ -8410,15 +8440,15 @@ msgstr "Connector: {plugin_name}"
 
 #: picard/ui/widgets/scriptdocumentation.py:206
 msgid "Find:"
-msgstr ""
+msgstr "Cerca:"
 
 #: picard/ui/widgets/scriptdocumentation.py:221
 msgid "Find previous"
-msgstr ""
+msgstr "Cerca l'anterior"
 
 #: picard/ui/widgets/scriptdocumentation.py:228
 msgid "Find next"
-msgstr ""
+msgstr "Cerca el següent"
 
 #: picard/ui/widgets/scriptdocumentation.py:242
 msgid "Functions"
@@ -8431,7 +8461,7 @@ msgstr "Obre la documentació dels scripts al navegador"
 #: picard/ui/widgets/scriptdocumentation.py:287
 #, python-brace-format
 msgid "({item} of {total})"
-msgstr ""
+msgstr "({item}/{total})"
 
 #: picard/ui/widgets/scriptdocumentation.py:289
 msgid "(not found)"
