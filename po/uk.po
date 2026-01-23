@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-20 16:49+0100\n"
+"POT-Creation-Date: 2026-01-23 11:38+0100\n"
 "PO-Revision-Date: 2025-12-30 09:11+0000\n"
 "Last-Translator: emptybrainz <okep.and.spore@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -199,25 +199,25 @@ msgid ""
 msgstr ""
 "Файл не вдалося розібрати: він пошкоджений або має непідтримуваний формат."
 
-#: picard/file.py:1037
+#: picard/file.py:1038
 #, fuzzy, python-format
 #| msgid "No matching tracks above the threshold for file '%(filename)s'"
 msgid "No matching tracks above the threshold for file \"%(filename)s\""
 msgstr "Немає відповідних треків зверху для файлу '%(filename)s'"
 
-#: picard/file.py:1039
+#: picard/file.py:1040
 #, fuzzy, python-format
 #| msgid "File '%(filename)s' identified!"
 msgid "File \"%(filename)s\" identified!"
 msgstr "Файл '%(filename)s' виявлено!"
 
-#: picard/file.py:1051
+#: picard/file.py:1052
 #, fuzzy, python-format
 #| msgid "No matching tracks for file '%(filename)s'"
 msgid "No matching tracks for file \"%(filename)s\""
 msgstr "Немає відповідних треків для файлу '%(filename)s'"
 
-#: picard/file.py:1080
+#: picard/file.py:1081
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
 msgstr "Пошук метаданих для файлу %(filename)s …"
@@ -273,630 +273,630 @@ msgstr "Неочікувана помилка автентифікації"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Неочікувана помилка запиту (HTTP-код %s)"
 
-#: picard/options.py:161
+#: picard/options.py:166
 msgid "Tags to ignore for comparison"
 msgstr "Теги, які потрібно ігнорувати для порівняння"
 
-#: picard/options.py:162
+#: picard/options.py:167
 msgid "Completeness check ignore: Data tracks"
 msgstr "Перевірка повноти ігнорується: Дані треків"
 
-#: picard/options.py:163
+#: picard/options.py:168
 msgid "Completeness check ignore: Pregap tracks"
 msgstr "Перевірка повноти ігнорується: Треки перед паузою (Pregap)"
 
-#: picard/options.py:164
+#: picard/options.py:169
 msgid "Completeness check ignore: Silent tracks"
 msgstr "Перевірка повноти ігнорується: Тихі треки"
 
-#: picard/options.py:165
+#: picard/options.py:170
 msgid "Completeness check ignore: Video tracks"
 msgstr "Перевірка повноти ігнорується: Відео треки"
 
-#: picard/options.py:166 picard/ui/forms/ui_options_advanced.py:153
+#: picard/options.py:171 picard/ui/forms/ui_options_advanced.py:153
 msgid "Ignore hidden files"
 msgstr "Ігнорувати приховані файли"
 
-#: picard/options.py:167
+#: picard/options.py:172
 msgid "Ignore file paths matching a regular expression"
 msgstr "Ігнорувати шляхи до файлів, що відповідають регулярному виразу"
 
-#: picard/options.py:169
+#: picard/options.py:174
 msgid "Ignore track duration difference under x seconds"
 msgstr "Ігнорувати різницю тривалості треку менше x секунд"
 
-#: picard/options.py:175 picard/ui/forms/ui_options_advanced.py:150
+#: picard/options.py:180 picard/ui/forms/ui_options_advanced.py:150
 msgid "Maximum number of entities to return per MusicBrainz query"
 msgstr "Максимальна кількість об'єктів, які повертаються на запит MusicBrainz"
 
-#: picard/options.py:177 picard/ui/forms/ui_options_advanced.py:152
+#: picard/options.py:182 picard/ui/forms/ui_options_advanced.py:152
 msgid "Include sub-folders when adding files from folder"
 msgstr "Включати підпапки під час додавання файлів з папки"
 
-#: picard/options.py:185
+#: picard/options.py:190
 msgid "Cover art providers"
 msgstr "Постачальники обкладинок"
 
-#: picard/options.py:186
+#: picard/options.py:191
 msgid "File name for images"
 msgstr "Ім'я файлу для зображень"
 
-#: picard/options.py:187 picard/ui/forms/ui_options_cover.py:125
+#: picard/options.py:192 picard/ui/forms/ui_options_cover.py:125
 msgid "Embed only a single front image"
 msgstr "Вбудувати лише одне зображення спереду"
 
-#: picard/options.py:189 picard/ui/forms/ui_options_cover.py:126
+#: picard/options.py:194 picard/ui/forms/ui_options_cover.py:126
 msgid "Never replace cover images with smaller ones"
 msgstr "Ніколи не замінюйте зображення обкладинки меншими розмірами"
 
-#: picard/options.py:192
+#: picard/options.py:197
 msgid "Never replace cover images matching selected types"
 msgstr "Не замінювати зображення обкладинки, що відповідають вибраним типам"
 
-#: picard/options.py:198
+#: picard/options.py:203
 msgid "Never replace cover images of these types"
 msgstr "Ніколи не замінюйте зображення обкладинок цих типів"
 
-#: picard/options.py:204
+#: picard/options.py:209
 msgid "Always replace cover images of these types"
 msgstr "Завжди замінюйте зображення обкладинок цих типів"
 
-#: picard/options.py:210 picard/ui/forms/ui_options_cover.py:133
+#: picard/options.py:215 picard/ui/forms/ui_options_cover.py:133
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 "Завжди використовуйте основний тип зображення як назву файлу для зображень, "
 "що не є обкладинкою."
 
-#: picard/options.py:212
+#: picard/options.py:217
 msgid "Overwrite existing image files"
 msgstr "Перезаписати існуючі файли зображень"
 
-#: picard/options.py:213 picard/ui/forms/ui_options_cover.py:129
+#: picard/options.py:218 picard/ui/forms/ui_options_cover.py:129
 msgid "Save cover images as separate files"
 msgstr "Зберігати обкладинки як окремі файли"
 
-#: picard/options.py:214 picard/ui/forms/ui_options_cover.py:124
+#: picard/options.py:219 picard/ui/forms/ui_options_cover.py:124
 msgid "Embed cover images into tags"
 msgstr "Вбудувати обкладинки у теги"
 
-#: picard/options.py:215 picard/ui/forms/ui_options_cover.py:132
+#: picard/options.py:220 picard/ui/forms/ui_options_cover.py:132
 msgid "Save only a single front image as separate file"
 msgstr "Зберегти лише одне зображення передньої частини як окремий файл"
 
-#: picard/options.py:216
+#: picard/options.py:221
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:51
 msgid "Show cover art details in cover art view"
 msgstr "Показати деталі обкладинки у режимі перегляду обкладинки"
 
-#: picard/options.py:217
+#: picard/options.py:222
 msgid "Show cover art type in info labels"
 msgstr "Показувати тип обкладинки в інформаційних мітках"
 
-#: picard/options.py:218
+#: picard/options.py:223
 msgid "Show cover art file size in info labels"
 msgstr "Показувати розмір файлу обкладинки в інформаційних мітках"
 
-#: picard/options.py:219
+#: picard/options.py:224
 msgid "Show cover art dimensions in info labels"
 msgstr "Показувати розміри обкладинки в інформаційних підписах"
 
-#: picard/options.py:220
+#: picard/options.py:225
 msgid "Show cover art MIME type in info labels"
 msgstr "Показувати MIME-тип обкладинки в інформаційних мітках"
 
-#: picard/options.py:251
+#: picard/options.py:256
 msgid "Use AcoustID audio fingerprinting"
 msgstr "Використовувати відбиток AcoustID"
 
-#: picard/options.py:254
+#: picard/options.py:259
 msgid "Save AcoustID fingerprints"
 msgstr "Зберегти аудіо відбиток AcoustID"
 
-#: picard/options.py:264 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:269 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr "Автоматично сканувати всі нові файли"
 
-#: picard/options.py:265 picard/ui/forms/ui_options_general.py:218
+#: picard/options.py:270 picard/ui/forms/ui_options_general.py:218
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
 msgid "Check for documentation updates during startup"
 msgstr "Перевірка оновлень плагінів під час запуску"
 
-#: picard/options.py:266
+#: picard/options.py:271
 msgid "Check for plugin updates during startup"
 msgstr "Перевірка оновлень плагінів під час запуску"
 
-#: picard/options.py:267 picard/ui/forms/ui_options_general.py:219
+#: picard/options.py:272 picard/ui/forms/ui_options_general.py:219
 msgid "Check for program updates during startup"
 msgstr "Перевірка оновлень програми під час запуску"
 
-#: picard/options.py:268 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:273 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
 msgstr "Автоматично згупувати всі нові файли"
 
-#: picard/options.py:269 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:274 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr "Ігнорувати MBID при завантаженні нових файлів"
 
-#: picard/options.py:270
+#: picard/options.py:275
 msgid "Server address"
 msgstr "Адреса сервера"
 
-#: picard/options.py:271
+#: picard/options.py:276
 msgid "Port"
 msgstr "Порт"
 
-#: picard/options.py:272
+#: picard/options.py:277
 msgid "Days between update checks"
 msgstr "Дні між перевірками оновлень"
 
-#: picard/options.py:273
+#: picard/options.py:278
 msgid "Updates to check"
 msgstr "Оновлення для перевірки"
 
-#: picard/options.py:278
+#: picard/options.py:283
 msgid "Use album artist genres"
 msgstr "Використовувати жанри альбому виконавця"
 
-#: picard/options.py:279 picard/ui/forms/ui_options_genres.py:133
+#: picard/options.py:284 picard/ui/forms/ui_options_genres.py:133
 msgid "Use folksonomy tags as genre"
 msgstr "Використовувати теги користувачів як жанр"
 
-#: picard/options.py:281
+#: picard/options.py:286
 msgid "Genres to include or exclude"
 msgstr "Включити або виключити жанри"
 
-#: picard/options.py:283
+#: picard/options.py:288
 msgid "Join multiple genres with"
 msgstr "Об’єднати з кількома жанрами"
 
-#: picard/options.py:284
+#: picard/options.py:289
 msgid "Maximum number of genres"
 msgstr "Максимальна кількість жанрів"
 
-#: picard/options.py:285
+#: picard/options.py:290
 msgid "Minimal genre usage"
 msgstr "Мінімальне використання жанру"
 
-#: picard/options.py:286 picard/ui/forms/ui_options_genres.py:131
+#: picard/options.py:291 picard/ui/forms/ui_options_genres.py:131
 msgid "Use only my genres"
 msgstr "Використовувати лише мої жанри"
 
-#: picard/options.py:287 picard/ui/forms/ui_options_genres.py:130
+#: picard/options.py:292 picard/ui/forms/ui_options_genres.py:130
 msgid "Use genres from MusicBrainz"
 msgstr "Використовуйте жанри з MusicBrainz"
 
-#: picard/options.py:291 picard/ui/forms/ui_options_interface.py:140
+#: picard/options.py:296 picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
 msgstr "Дозволити вибір кількох каталогів"
 
-#: picard/options.py:292 picard/ui/forms/ui_options_interface.py:141
+#: picard/options.py:297 picard/ui/forms/ui_options_interface.py:141
 msgid "Use builtin search rather than looking in browser"
 msgstr "Використовувати вбудований пошук замість пошуку в браузері"
 
-#: picard/options.py:297 picard/ui/forms/ui_options_interface.py:147
+#: picard/options.py:302 picard/ui/forms/ui_options_interface.py:147
 msgid "Adjust horizontal position in file browser automatically"
 msgstr ""
 "Автоматичне налаштування горизонтального положення у файловому браузері"
 
-#: picard/options.py:299 picard/ui/forms/ui_options_interface.py:146
+#: picard/options.py:304 picard/ui/forms/ui_options_interface.py:146
 msgid "Show a confirmation dialog when saving files"
 msgstr "Показувати діалогове вікно підтвердження під час збереження файлів"
 
-#: picard/options.py:301 picard/ui/forms/ui_options_interface.py:145
+#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:145
 msgid "Show a quit confirmation dialog for unsaved changes"
 msgstr "Показати діалог підтвердження припинення для незбережених змін"
 
-#: picard/options.py:302 picard/ui/forms/ui_options_interface.py:136
+#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:136
 msgid "Show icons in menus"
 msgstr "Показувати значки в меню"
 
-#: picard/options.py:303
+#: picard/options.py:308
 msgid "Show a usage warning dialog when Picard starts"
 msgstr ""
 "Показувати діалогове вікно попередження про використання під час запуску "
 "Picard"
 
-#: picard/options.py:304
+#: picard/options.py:309
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
 msgid "Show check for documentation updates during startup"
 msgstr "Перевірка оновлень плагінів під час запуску"
 
-#: picard/options.py:305 picard/ui/forms/ui_options_interface.py:148
+#: picard/options.py:310 picard/ui/forms/ui_options_interface.py:148
 msgid "Enable audio player \"now playing\" notifications"
 msgstr ""
 
-#: picard/options.py:306
+#: picard/options.py:311
 msgid "Begin browsing in a specific directory"
 msgstr "Почати перегляд у певному каталозі"
 
-#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:150
+#: picard/options.py:312 picard/ui/forms/ui_options_interface.py:150
 msgid "Directory to begin browsing"
 msgstr "Каталог для початку перегляду"
 
-#: picard/options.py:308 picard/ui/forms/ui_options_interface.py:135
+#: picard/options.py:313 picard/ui/forms/ui_options_interface.py:135
 msgid "Show text labels under icons"
 msgstr "Показувати написи під значками"
 
-#: picard/options.py:309
+#: picard/options.py:314
 msgid "User interface language"
 msgstr "Мова інтерфейсу"
 
-#: picard/options.py:310
+#: picard/options.py:315
 msgid "User interface color theme"
 msgstr "Колірна тема інтерфейсу користувача"
 
-#: picard/options.py:311
+#: picard/options.py:316
 msgid "Use advanced search syntax"
 msgstr "Використовувати розширений синтаксис запитів"
 
-#: picard/options.py:319
+#: picard/options.py:324
 msgid "Colors to use for light theme"
 msgstr "Кольори для використання у світлій темі"
 
-#: picard/options.py:325
+#: picard/options.py:330
 msgid "Colors to use for dark theme"
 msgstr "Кольори для використання в темній темі"
 
-#: picard/options.py:330
+#: picard/options.py:335
 msgid "Options to show in the Quick Menu"
 msgstr "Показати опції в Швидкому меню"
 
-#: picard/options.py:345
+#: picard/options.py:350
 msgid "Layout of the tool bar"
 msgstr "Макет панелі інструментів"
 
-#: picard/options.py:349
+#: picard/options.py:354
 msgid "Tags to show at the top"
 msgstr "Теги для відображення вгорі"
 
-#: picard/options.py:354
+#: picard/options.py:359
 msgid "Automatic backup destination directory"
 msgstr "Каталог автоматичного резервного копіювання"
 
-#: picard/options.py:359
+#: picard/options.py:364
 msgid "Minimal similarity for cluster lookups"
 msgstr "Мінімальна схожість для пошуків кластерів"
 
-#: picard/options.py:360
+#: picard/options.py:365
 msgid "Minimal similarity for file lookups"
 msgstr "Мінімальна схожість для пошуків файлів"
 
-#: picard/options.py:361
+#: picard/options.py:366
 msgid "Minimal similarity for matching files to tracks"
 msgstr "Мінімальна схожість відповідних файлів до треків"
 
-#: picard/options.py:365
+#: picard/options.py:370
 msgid "Translation locales"
 msgstr "Мови перекладу"
 
-#: picard/options.py:366 picard/ui/forms/ui_options_metadata.py:180
+#: picard/options.py:371 picard/ui/forms/ui_options_metadata.py:180
 msgid "Convert Unicode punctuation characters to ASCII"
 msgstr "Перетворення символів пунктуації Unicode в ASCII"
 
-#: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:183
+#: picard/options.py:373 picard/ui/forms/ui_options_metadata.py:183
 msgid "Guess track number and title from filename if empty"
 msgstr "Визначити номер та назву треку з назви файлу, якщо він порожній"
 
-#: picard/options.py:370
+#: picard/options.py:375
 msgid "Standalone recordings name"
 msgstr "Назва окремих записів"
 
-#: picard/options.py:371 picard/ui/forms/ui_options_metadata.py:181
+#: picard/options.py:376 picard/ui/forms/ui_options_metadata.py:181
 msgid "Use release relationships"
 msgstr "Використовувати спорідненість релізів"
 
-#: picard/options.py:372
+#: picard/options.py:377
 msgid "Translation script exceptions"
 msgstr "Винятки у перекладацьких скриптах"
 
-#: picard/options.py:373 picard/ui/forms/ui_options_metadata.py:177
+#: picard/options.py:378 picard/ui/forms/ui_options_metadata.py:177
 msgid "Use standardized artist names"
 msgstr "Використовуйте стандартні імена виконавців"
 
-#: picard/options.py:374 picard/ui/forms/ui_options_metadata.py:178
+#: picard/options.py:379 picard/ui/forms/ui_options_metadata.py:178
 msgid "Use standardized instrument credits"
 msgstr "Стандартизовані відомості про інструменти виконавців"
 
-#: picard/options.py:375 picard/ui/forms/ui_options_metadata.py:179
+#: picard/options.py:380 picard/ui/forms/ui_options_metadata.py:179
 msgid "Use standardized vocal credits"
 msgstr "Стандартизовані відомості про вокалістів"
 
-#: picard/options.py:376
+#: picard/options.py:381
 msgid "Use track and release relationships"
 msgstr "Використовувати зв’язки треків і релізів"
 
-#: picard/options.py:378
+#: picard/options.py:383
 msgid "Translate artist names"
 msgstr "Переклад імен виконавців"
 
-#: picard/options.py:379
+#: picard/options.py:384
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate album titles"
 msgstr "Переклад імен виконавців"
 
-#: picard/options.py:380
+#: picard/options.py:385
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate track titles"
 msgstr "Переклад імен виконавців"
 
-#: picard/options.py:381
+#: picard/options.py:386
 msgid "Translate artist names exception"
 msgstr "Виняток щодо перекладу імен виконавців"
 
-#: picard/options.py:382
+#: picard/options.py:387
 msgid "Various Artists name"
 msgstr "Різні ім'я виконавців"
 
-#: picard/options.py:387
+#: picard/options.py:392
 msgid "Tag formats to not sanitize dates"
 msgstr "Не змінювати дати тегів у таких форматах"
 
-#: picard/options.py:392
+#: picard/options.py:397
 msgid "Browser integration"
 msgstr "Інтеграція браузера"
 
-#: picard/options.py:393 picard/ui/forms/ui_options_network.py:174
+#: picard/options.py:398 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr "Слухати лише на localhost"
 
-#: picard/options.py:394
+#: picard/options.py:399
 msgid "Default listening port"
 msgstr "Стандартний порт для прослуховування"
 
-#: picard/options.py:395
+#: picard/options.py:400
 msgid "Network cache size in bytes"
 msgstr "Розмір мережевого кешу в байтах"
 
-#: picard/options.py:396
+#: picard/options.py:401
 msgid "Request timeout in seconds"
 msgstr "Час очікування запиту в секундах"
 
-#: picard/options.py:397
+#: picard/options.py:402
 msgid "Proxy password"
 msgstr "Пароль проксі-сервера"
 
-#: picard/options.py:398
+#: picard/options.py:403
 msgid "Proxy server address"
 msgstr "Адреса проксі-сервера"
 
-#: picard/options.py:399
+#: picard/options.py:404
 msgid "Proxy server port"
 msgstr "Порт проксі-сервера"
 
-#: picard/options.py:400
+#: picard/options.py:405
 msgid "Type of proxy server"
 msgstr "Тип проксі-сервера"
 
-#: picard/options.py:401
+#: picard/options.py:406
 msgid "Proxy username"
 msgstr "Ім'я користувача проксі-сервера"
 
-#: picard/options.py:402
+#: picard/options.py:407
 msgid "Use a web proxy server"
 msgstr "Використовувати проксі-сервер"
 
-#: picard/options.py:406
+#: picard/options.py:411
 msgid "Plugins execution order"
 msgstr ""
 
-#: picard/options.py:415 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:420 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr "Увімкнути оцінку композицій"
 
-#: picard/options.py:417
+#: picard/options.py:422
 msgid "Email to use when saving ratings"
 msgstr "Електронна адреса для використання під час збереження оцінок"
 
-#: picard/options.py:418 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:423 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr "Надіслати оцінки до MusicBrainz"
 
-#: picard/options.py:422 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:427 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr "Бажані країни випуску альбому"
 
-#: picard/options.py:423 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:428 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr "Бажані середні формати"
 
-#: picard/options.py:424 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:429 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr "Бажані типи альбому"
 
-#: picard/options.py:428 picard/ui/forms/ui_options_renaming.py:166
+#: picard/options.py:433 picard/ui/forms/ui_options_renaming.py:166
 msgid "Delete empty directories"
 msgstr "Вилучити порожні каталоги"
 
-#: picard/options.py:429
+#: picard/options.py:434
 msgid "Move additional files"
 msgstr "Переміщення додаткових файлів"
 
-#: picard/options.py:430
+#: picard/options.py:435
 msgid "Additional file patterns"
 msgstr "Додаткові шаблони файлів"
 
-#: picard/options.py:431
+#: picard/options.py:436
 msgid "Move files"
 msgstr "Перемістити файли"
 
-#: picard/options.py:432
+#: picard/options.py:437
 msgid "Destination directory"
 msgstr "Тека призначення"
 
-#: picard/options.py:433 picard/ui/forms/ui_options_renaming.py:167
+#: picard/options.py:438 picard/ui/forms/ui_options_renaming.py:167
 #, fuzzy
 #| msgid "Overwrite existing image files"
 msgid "Overwrite existing files"
 msgstr "Перезаписати існуючі файли зображень"
 
-#: picard/options.py:434
+#: picard/options.py:439
 msgid "Rename files"
 msgstr "Перейменувати файли"
 
-#: picard/options.py:438 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:443 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "Замінювати не-ASCII символи"
 
-#: picard/options.py:443
+#: picard/options.py:448
 msgid "Replacement character to use for directory separators"
 msgstr "Символ заміни для роздільників каталогів"
 
-#: picard/options.py:445 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:450 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr "Замініть пробіли символами підкреслення"
 
-#: picard/options.py:450
+#: picard/options.py:455
 msgid "Replacement characters used for Windows compatibility"
 msgstr "Замінні символи, що використовуються для сумісності з Windows"
 
-#: picard/options.py:452 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:457 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Сумісність з Windows"
 
-#: picard/options.py:453 picard/ui/options/renaming_compat.py:136
+#: picard/options.py:458 picard/ui/options/renaming_compat.py:136
 msgid "Windows long path support"
 msgstr "Підтримка довгих шляхів у Windows"
 
-#: picard/options.py:458
+#: picard/options.py:463
 msgid "Enable tagger scripts"
 msgstr "Увімкнути скрипти теґерів"
 
-#: picard/options.py:459
+#: picard/options.py:464
 msgid "Tagger scripts"
 msgstr "Сценарії теґерів"
 
-#: picard/options.py:463 picard/ui/forms/ui_options_tags.py:80
+#: picard/options.py:468 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
 msgstr "Очистити наявні теги"
 
-#: picard/options.py:464
+#: picard/options.py:469
 #, fuzzy
 #| msgid "Write tags to files"
 msgid "Enable saving tags to files"
 msgstr "Записати теги у файли"
 
-#: picard/options.py:465 picard/ui/forms/ui_options_tags.py:84
+#: picard/options.py:470 picard/ui/forms/ui_options_tags.py:84
 msgid "Fix missing seekpoints for FLAC files"
 msgstr "Виправлено відсутні точки пошуку для файлів FLAC"
 
-#: picard/options.py:466
+#: picard/options.py:471
 msgid "Preserved tags list"
 msgstr "Список збережених тегів"
 
-#: picard/options.py:467 picard/ui/forms/ui_options_tags.py:81
+#: picard/options.py:472 picard/ui/forms/ui_options_tags.py:81
 msgid "Keep embedded images when clearing tags"
 msgstr "Зберігати вбудовані зображення під час очищення тегів"
 
-#: picard/options.py:468 picard/ui/forms/ui_options_tags.py:78
+#: picard/options.py:473 picard/ui/forms/ui_options_tags.py:78
 msgid "Preserve timestamps of tagged files"
 msgstr "Зберігати часові мітки файлів із тегами"
 
-#: picard/options.py:469 picard/ui/forms/ui_options_tags.py:83
+#: picard/options.py:474 picard/ui/forms/ui_options_tags.py:83
 msgid "Remove APEv2 tags from MP3 files"
 msgstr "Вилучити теги APEv2 з файлів MP3"
 
-#: picard/options.py:470 picard/ui/forms/ui_options_tags.py:82
+#: picard/options.py:475 picard/ui/forms/ui_options_tags.py:82
 msgid "Remove ID3 tags from FLAC files"
 msgstr "Вилучити теги ID3 з файлів FLAC"
 
-#: picard/options.py:474
+#: picard/options.py:479
 msgid "Save APEv2 tags to AAC"
 msgstr "Зберегти теги APEv2 у форматі AAC"
 
-#: picard/options.py:475
+#: picard/options.py:480
 #: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
 msgid "Remove APEv2 tags from AAC files"
 msgstr "Вилучити теги APEv2 з файлів AAC"
 
-#: picard/options.py:479
+#: picard/options.py:484
 msgid "Save APEv2 tags to AC3"
 msgstr "Зберегти теги APEv2 в AC3"
 
-#: picard/options.py:480
+#: picard/options.py:485
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
 msgid "Remove APEv2 tags from AC3 files"
 msgstr "Вилучити теги APEv2 з файлів AC3"
 
-#: picard/options.py:484
+#: picard/options.py:489
 msgid "ID3v2.3 join character"
 msgstr "Символ з'єднання ID3v2.3"
 
-#: picard/options.py:485
+#: picard/options.py:490
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "Кодування тексту ID3v2"
 
-#: picard/options.py:486
+#: picard/options.py:491
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
 msgid "Save iTunes compatible grouping and work"
 msgstr "Зберегти сумісні з iTunes групування та твір"
 
-#: picard/options.py:487
+#: picard/options.py:492
 msgid "Write ID3v1 tags"
 msgstr "Запис тегів ID3v1"
 
-#: picard/options.py:488
+#: picard/options.py:493
 msgid "ID3v2 version to write"
 msgstr "Версія ID3v2 для запису"
 
-#: picard/options.py:492
+#: picard/options.py:497
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
 msgid "Remove existing RIFF INFO tags from WAVE files"
 msgstr "Видалити існуючі RIFF INFO-теги з WAVE-файлів"
 
-#: picard/options.py:493
+#: picard/options.py:498
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "Кодування тексту RIFF INFO"
 
-#: picard/options.py:494
+#: picard/options.py:499
 msgid "Write RIFF INFO tags to WAVE files"
 msgstr "Запис тегів RIFF INFO у файли WAVE"
 
-#: picard/options.py:500
+#: picard/options.py:505
 msgid "Selected file naming script"
 msgstr "Обраний скрипт іменування файлів"
 
-#: picard/options.py:508 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:513 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr ""
 
-#: picard/options.py:514 picard/ui/forms/ui_options_advanced_sessions.py:122
+#: picard/options.py:519 picard/ui/forms/ui_options_advanced_sessions.py:122
 msgid "Load last saved session on startup"
 msgstr ""
 
-#: picard/options.py:520
+#: picard/options.py:525
 msgid "Auto-save interval"
 msgstr ""
 
-#: picard/options.py:526
+#: picard/options.py:531
 msgid "Backup session on unexpected shutdown"
 msgstr ""
 
-#: picard/options.py:532 picard/ui/forms/ui_options_advanced_sessions.py:119
+#: picard/options.py:537 picard/ui/forms/ui_options_advanced_sessions.py:119
 msgid "Include MusicBrainz data in saved sessions"
 msgstr ""
 
-#: picard/options.py:538 picard/ui/forms/ui_options_advanced_sessions.py:120
+#: picard/options.py:543 picard/ui/forms/ui_options_advanced_sessions.py:120
 msgid "Do not make MusicBrainz requests on restore"
 msgstr ""
 
-#: picard/options.py:544
+#: picard/options.py:549
 #, fuzzy
 #| msgid "Destination directory"
 msgid "Sessions directory"
 msgstr "Тека призначення"
 
-#: picard/options.py:572
+#: picard/options.py:577
 msgid "Plugins to exclude from updates"
 msgstr ""
 
-#: picard/options.py:587
+#: picard/options.py:596
 #, fuzzy, python-format
 #| msgid "No title for setting '%s'"
 msgid "No title for setting \"%s\""
@@ -1301,83 +1301,129 @@ msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
 "[виконавець альбому]/[альбом]/[# диска та треку] [виконавець] - [назва]"
 
+#: picard/script/functions.py:75
+msgid "$if(if,then[,else])"
+msgstr ""
+
 #: picard/script/functions.py:76
-msgid ""
-"`$if(if,then,else)`\n"
-"\n"
-"If `if` is not empty, it returns `then`, otherwise it returns `else`."
+#, fuzzy
+#| msgid ""
+#| "`$if(if,then,else)`\n"
+#| "\n"
+#| "If `if` is not empty, it returns `then`, otherwise it returns `else`."
+msgid "If `if` is not empty, it returns `then`, otherwise it returns `else`."
 msgstr ""
 "`$if(if,then,else)`\n"
 "\n"
 "Якщо `if` не порожнє, повертається `then`, інакше повертається `else`."
 
-#: picard/script/functions.py:92
-msgid ""
-"`$if2(a1,a2,a3,…)`\n"
-"\n"
-"Returns first non empty argument."
+#: picard/script/functions.py:88
+msgid "$if2(a1,a2,a3,…)"
+msgstr ""
+
+#: picard/script/functions.py:89
+#, fuzzy
+#| msgid ""
+#| "`$if2(a1,a2,a3,…)`\n"
+#| "\n"
+#| "Returns first non empty argument."
+msgid "Returns first non empty argument."
 msgstr ""
 "`$if2(a1,a2,a3,…)`\n"
 "\n"
 "Повертає перший непорожній аргумент."
 
-#: picard/script/functions.py:108
-msgid ""
-"`$noop(…)`\n"
-"\n"
-"Does nothing (useful for comments or disabling a block of code)."
+#: picard/script/functions.py:101
+#, fuzzy
+#| msgid ""
+#| "`$noop(…)`\n"
+#| "\n"
+#| "Does nothing (useful for comments or disabling a block of code)."
+msgid "Does nothing (useful for comments or disabling a block of code)."
 msgstr ""
 "`$noop(…)`\n"
 "\n"
 "Нічого не робить (корисно для коментарів або вимкнення блоку коду)."
 
-#: picard/script/functions.py:119
-msgid ""
-"`$left(text,number)`\n"
-"\n"
-"Returns the first `number` characters from `text`."
+#: picard/script/functions.py:108
+msgid "$left(text,number)"
+msgstr ""
+
+#: picard/script/functions.py:109
+#, fuzzy
+#| msgid ""
+#| "`$left(text,number)`\n"
+#| "\n"
+#| "Returns the first `number` characters from `text`."
+msgid "Returns the first `number` characters from `text`."
 msgstr ""
 "`$left(text,number)`\n"
 "\n"
 "Повертає перші `number` символів із рядка `text`."
 
-#: picard/script/functions.py:133
-msgid ""
-"`$right(text,number)`\n"
-"\n"
-"Returns the last `number` characters from `text`."
+#: picard/script/functions.py:119
+msgid "$right(text,number)"
+msgstr ""
+
+#: picard/script/functions.py:120
+#, fuzzy
+#| msgid ""
+#| "`$right(text,number)`\n"
+#| "\n"
+#| "Returns the last `number` characters from `text`."
+msgid "Returns the last `number` characters from `text`."
 msgstr ""
 "`$right(text,number)`\n"
 "\n"
 "Повертає останні `number` символів із рядка `text`."
 
-#: picard/script/functions.py:147
-msgid ""
-"`$lower(text)`\n"
-"\n"
-"Returns `text` in lower case."
+#: picard/script/functions.py:130
+msgid "$lower(text)"
+msgstr ""
+
+#: picard/script/functions.py:131
+#, fuzzy
+#| msgid ""
+#| "`$lower(text)`\n"
+#| "\n"
+#| "Returns `text` in lower case."
+msgid "Returns `text` in lower case."
 msgstr ""
 "`$lower(text)`\n"
 "\n"
 "Повертає `text` у нижньому регістрі."
 
-#: picard/script/functions.py:158
-msgid ""
-"`$upper(text)`\n"
-"\n"
-"Returns `text` in upper case."
+#: picard/script/functions.py:138
+msgid "$upper(text)"
+msgstr ""
+
+#: picard/script/functions.py:139
+#, fuzzy
+#| msgid ""
+#| "`$upper(text)`\n"
+#| "\n"
+#| "Returns `text` in upper case."
+msgid "Returns `text` in upper case."
 msgstr ""
 "`$upper(text)`\n"
 "\n"
 "Повертає `text` у верхньому регістрі."
 
-#: picard/script/functions.py:169
+#: picard/script/functions.py:146
+msgid "$pad(text,length,char)"
+msgstr ""
+
+#: picard/script/functions.py:148
+#, fuzzy
+#| msgid ""
+#| "`$pad(text,length,char)`\n"
+#| "\n"
+#| "Pads the `text` to the `length` provided by adding as many copies of "
+#| "`char` as\n"
+#| "    needed to the **beginning** of the string."
 msgid ""
-"`$pad(text,length,char)`\n"
-"\n"
 "Pads the `text` to the `length` provided by adding as many copies of `char` "
-"as\n"
-"    needed to the **beginning** of the string."
+"as needed to the **beginning** of the string."
 msgstr ""
 "`$pad(text,length,char)`\n"
 "\n"
@@ -1385,10 +1431,20 @@ msgstr ""
 "потрібно\n"
 "на **початок** рядка."
 
-#: picard/script/functions.py:184
+#: picard/script/functions.py:160
+msgid "$strip(text)"
+msgstr ""
+
+#: picard/script/functions.py:162
+#, fuzzy
+#| msgid ""
+#| "`$strip(text)`\n"
+#| "\n"
+#| "Replaces all whitespace in `text` with a single space, and removes "
+#| "leading and trailing spaces.\n"
+#| "Whitespace characters include multiple consecutive spaces, and various "
+#| "other unicode characters."
 msgid ""
-"`$strip(text)`\n"
-"\n"
 "Replaces all whitespace in `text` with a single space, and removes leading "
 "and trailing spaces.\n"
 "Whitespace characters include multiple consecutive spaces, and various other "
@@ -1400,10 +1456,18 @@ msgstr ""
 "пробіли.\n"
 "Пробіли включають кілька послідовних пробілів та різні інші символи Юнікоду."
 
-#: picard/script/functions.py:196
+#: picard/script/functions.py:171
+msgid "$replace(text,search,replace)"
+msgstr ""
+
+#: picard/script/functions.py:173
+#, fuzzy
+#| msgid ""
+#| "`$replace(text,search,replace)`\n"
+#| "\n"
+#| "Replaces occurrences of `search` in `text` with value of `replace` and "
+#| "returns the resulting string."
 msgid ""
-"`$replace(text,search,replace)`\n"
-"\n"
 "Replaces occurrences of `search` in `text` with value of `replace` and "
 "returns the resulting string."
 msgstr ""
@@ -1412,11 +1476,23 @@ msgstr ""
 "Замінює входження `search` у `text` значенням `replace` та повертає "
 "отриманий рядок."
 
-#: picard/script/functions.py:208
-#, python-format
+#: picard/script/functions.py:182
+msgid "$replacemulti(name,search,replace[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:184
+#, fuzzy, python-format
+#| msgid ""
+#| "`$replacemulti(name,search,replace,separator=\"; \")`\n"
+#| "\n"
+#| "Replaces occurrences of `search` with `replace` in the multi-value "
+#| "variable `name`.\n"
+#| "Empty elements are automatically removed.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $replacemulti(%genre%,Idm,IDM)\n"
 msgid ""
-"`$replacemulti(name,search,replace,separator=\"; \")`\n"
-"\n"
 "Replaces occurrences of `search` with `replace` in the multi-value variable "
 "`name`.\n"
 "Empty elements are automatically removed.\n"
@@ -1434,21 +1510,37 @@ msgstr ""
 "\n"
 "\t$replacemulti(%genre%,Idm,IDM)\n"
 
-#: picard/script/functions.py:235
-msgid ""
-"`$in(x,y)`\n"
-"\n"
-"Returns true, if `x` contains `y`."
+#: picard/script/functions.py:208
+msgid "$in(x,y)"
+msgstr ""
+
+#: picard/script/functions.py:209
+#, fuzzy
+#| msgid ""
+#| "`$in(x,y)`\n"
+#| "\n"
+#| "Returns true, if `x` contains `y`."
+msgid "Returns true, if `x` contains `y`."
 msgstr ""
 "`$in(x,y)`\n"
 "\n"
 "Повертає значення true, якщо `x` містить `y`."
 
-#: picard/script/functions.py:250
+#: picard/script/functions.py:220
 #, python-format
+msgid "$inmulti(%x%,y)"
+msgstr ""
+
+#: picard/script/functions.py:222
+#, fuzzy
+#| msgid ""
+#| "`$inmulti(%x%,y)`\n"
+#| "\n"
+#| "Returns true if multi-value variable `x` contains exactly `y` as one of "
+#| "its values.\n"
+#| "\n"
+#| "_Since Picard 1.0_"
 msgid ""
-"`$inmulti(%x%,y)`\n"
-"\n"
 "Returns true if multi-value variable `x` contains exactly `y` as one of its "
 "values.\n"
 "\n"
@@ -1461,10 +1553,18 @@ msgstr ""
 "\n"
 "_Починаючи з версії Picard 1.0_"
 
-#: picard/script/functions.py:269
+#: picard/script/functions.py:238
+msgid "$rreplace(text,pattern,replace)"
+msgstr ""
+
+#: picard/script/functions.py:240
+#, fuzzy
+#| msgid ""
+#| "`$rreplace(text,pattern,replace)`\n"
+#| "\n"
+#| "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+#| "expression-syntax) replace."
 msgid ""
-"`$rreplace(text,pattern,replace)`\n"
-"\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax) replace."
 msgstr ""
@@ -1473,10 +1573,40 @@ msgstr ""
 "[Регулярний вираз](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax) замінити."
 
-#: picard/script/functions.py:283
+#: picard/script/functions.py:251
+msgid "$rsearch(text,pattern[,group])"
+msgstr ""
+
+#: picard/script/functions.py:253
+#, fuzzy
+#| msgid ""
+#| "`$rsearch(text,pattern[,group])`\n"
+#| "\n"
+#| "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
+#| "expression-syntax) search.\n"
+#| "\n"
+#| "If the optional `group` parameter is not provided or is empty, return the "
+#| "first\n"
+#| "capture group which matched something (including the empty string) or "
+#| "the\n"
+#| "entire match.\n"
+#| "\n"
+#| "If `group` is an integer, return the capture group in the position "
+#| "matching this integer.\n"
+#| "Otherwise, return the capture group named `group`, sans surrounding "
+#| "whitespace.\n"
+#| "\n"
+#| "Examples:\n"
+#| "\n"
+#| "    $rsearch(disc: 1,disc: \\(\\\\d+\\)) => \"1\"\n"
+#| "    $rsearch(disc: 2,\\(\\\\w+\\): \\(\\\\d+\\),1) => \"disc\"\n"
+#| "    $rsearch(disc: 3,\\(\\\\w+\\): \\(\\\\d+\\),2) => \"3\"\n"
+#| "    $rsearch(disc: 4,disc: \\(?P<disc>\\\\d+\\),disc) => \"4\"\n"
+#| "    $rsearch(disc: none,disc\\(: \\\\d+\\)?) => \"disc\"\n"
+#| "    $rsearch(disc: /5,disc: \\(\\\\d+\\)?/\\\\d+,1) => \"\"\n"
+#| "\n"
+#| "_group parameter since Picard 3.0_"
 msgid ""
-"`$rsearch(text,pattern[,group])`\n"
-"\n"
 "[Regular expression](https://docs.python.org/3/library/re.html#regular-"
 "expression-syntax) search.\n"
 "\n"
@@ -1527,20 +1657,36 @@ msgstr ""
 "\n"
 "_group parameter since Picard 3.0_"
 
-#: picard/script/functions.py:332
-msgid ""
-"`$num(number,length)`\n"
-"\n"
-"Returns `number` formatted to `length` digits (maximum 20)."
+#: picard/script/functions.py:299
+msgid "$num(number,length)"
+msgstr ""
+
+#: picard/script/functions.py:300
+#, fuzzy
+#| msgid ""
+#| "`$num(number,length)`\n"
+#| "\n"
+#| "Returns `number` formatted to `length` digits (maximum 20)."
+msgid "Returns `number` formatted to `length` digits (maximum 20)."
 msgstr ""
 "`$num(number,length)`\n"
 "\n"
 "Повертає `number` у форматі `length` цифр (максимум 20)."
 
-#: picard/script/functions.py:351
+#: picard/script/functions.py:315
+msgid "$unset(name)"
+msgstr ""
+
+#: picard/script/functions.py:317
+#, fuzzy
+#| msgid ""
+#| "`$unset(name)`\n"
+#| "\n"
+#| "Unsets the variable `name`.\n"
+#| "Allows for wildcards to unset certain tags (works with \"performer:\\*\", "
+#| "\"comment:\\*\", and \"lyrics:\\*\").\n"
+#| "For example `$unset(performer:*)` would unset all performer tags."
 msgid ""
-"`$unset(name)`\n"
-"\n"
 "Unsets the variable `name`.\n"
 "Allows for wildcards to unset certain tags (works with \"performer:\\*\", "
 "\"comment:\\*\", and \"lyrics:\\*\").\n"
@@ -1553,10 +1699,24 @@ msgstr ""
 "з \"performer:\\*\", \"comment:\\*\" та \"lyrics:\\*\").\n"
 "Наприклад, `$unset(performer:*)` скине значення всіх тегів виконавців."
 
-#: picard/script/functions.py:373
+#: picard/script/functions.py:336
+msgid "$delete(name)"
+msgstr ""
+
+#: picard/script/functions.py:338
+#, fuzzy
+#| msgid ""
+#| "`$delete(name)`\n"
+#| "\n"
+#| "Unsets the variable `name` and marks the tag for deletion.\n"
+#| "This is similar to `$unset(name)` but also marks the tag for deletion. "
+#| "E.g.\n"
+#| "    running `$delete(genre)` will actually remove the genre tag from a "
+#| "file when\n"
+#| "    saving.\n"
+#| "\n"
+#| "_Since Picard 2.1_"
 msgid ""
-"`$delete(name)`\n"
-"\n"
 "Unsets the variable `name` and marks the tag for deletion.\n"
 "This is similar to `$unset(name)` but also marks the tag for deletion. E.g.\n"
 "    running `$delete(genre)` will actually remove the genre tag from a file "
@@ -1574,11 +1734,13 @@ msgstr ""
 "\n"
 "_Since Picard 2.1_"
 
-#: picard/script/functions.py:390
+#: picard/script/functions.py:352
+msgid "$set(name,value)"
+msgstr ""
+
+#: picard/script/functions.py:354
 #, fuzzy, python-format
 msgid ""
-"`$set(name,value)`\n"
-"\n"
 "Sets the variable `name` to `value`.\n"
 "\n"
 "Note: To create a variable which can be used for the file naming string, "
@@ -1598,11 +1760,13 @@ msgstr ""
 "\"something\";\n"
 "\t`%_something%` – ні."
 
-#: picard/script/functions.py:410
+#: picard/script/functions.py:371
+msgid "$setmulti(name,value[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:373
 #, fuzzy, python-format
 msgid ""
-"`$setmulti(name,value,separator=\"; \")`\n"
-"\n"
 "Sets the variable `name` to `value`, using the separator (or \"; \" if not "
 "passed)\n"
 "    to coerce the value back into a proper multi-valued tag. This can be "
@@ -1629,21 +1793,38 @@ msgstr ""
 "\n"
 "_Since Picard 1.0_"
 
-#: picard/script/functions.py:430
-msgid ""
-"`$get(name)`\n"
-"\n"
-"Returns the variable `name` (equivalent to `%name%`)."
+#: picard/script/functions.py:390
+#, fuzzy
+msgid "$get(name)"
+msgstr "%(filename)s"
+
+#: picard/script/functions.py:391
+#, fuzzy
+#| msgid ""
+#| "`$get(name)`\n"
+#| "\n"
+#| "Returns the variable `name` (equivalent to `%name%`)."
+msgid "Returns the variable `name` (equivalent to `%name%`)."
 msgstr ""
 "`$get(name)`\n"
 "\n"
 "Повертає змінну `name` (еквівалент `%name%`)."
 
-#: picard/script/functions.py:442
-#, python-format
+#: picard/script/functions.py:399
+msgid "$copy(new,old)"
+msgstr ""
+
+#: picard/script/functions.py:401
+#, fuzzy, python-format
+#| msgid ""
+#| "`$copy(new,old)`\n"
+#| "\n"
+#| "Copies metadata from variable `old` to `new`.\n"
+#| "The difference between `$set(new,%old%)` is that `$copy(new,old)` copies\n"
+#| "    multi-value variables without flattening them.\n"
+#| "\n"
+#| "_Since Picard 0.9_"
 msgid ""
-"`$copy(new,old)`\n"
-"\n"
 "Copies metadata from variable `old` to `new`.\n"
 "The difference between `$set(new,%old%)` is that `$copy(new,old)` copies\n"
 "    multi-value variables without flattening them.\n"
@@ -1658,10 +1839,25 @@ msgstr ""
 "\n"
 "_Since Picard 0.9_"
 
-#: picard/script/functions.py:460
+#: picard/script/functions.py:416
+msgid "$copymerge(new,old[,keep_duplicates])"
+msgstr ""
+
+#: picard/script/functions.py:418
+#, fuzzy
+#| msgid ""
+#| "`$copymerge(new,old[,keep_duplicates])`\n"
+#| "\n"
+#| "Merges metadata from variable `old` into `new`, removing duplicates and\n"
+#| "    appending to the end, so retaining the original ordering. Like "
+#| "`$copy`, this\n"
+#| "    will also copy multi-valued variables without flattening them.\n"
+#| "\n"
+#| "If `keep_duplicates` is set, then the duplicates will not be removed from "
+#| "the result.\n"
+#| "\n"
+#| "_Since Picard 1.0_"
 msgid ""
-"`$copymerge(new,old[,keep_duplicates])`\n"
-"\n"
 "Merges metadata from variable `old` into `new`, removing duplicates and\n"
 "    appending to the end, so retaining the original ordering. Like `$copy`, "
 "this\n"
@@ -1683,10 +1879,18 @@ msgstr ""
 "\n"
 "_Since Picard 1.0_"
 
-#: picard/script/functions.py:482
+#: picard/script/functions.py:437
+msgid "$trim(text[,char])"
+msgstr ""
+
+#: picard/script/functions.py:439
+#, fuzzy
+#| msgid ""
+#| "`$trim(text[,char])`\n"
+#| "\n"
+#| "Trims all leading and trailing whitespaces from `text`.\n"
+#| "    The optional second parameter `char` specifies the character to trim."
 msgid ""
-"`$trim(text[,char])`\n"
-"\n"
 "Trims all leading and trailing whitespaces from `text`.\n"
 "    The optional second parameter `char` specifies the character to trim."
 msgstr ""
@@ -1695,10 +1899,18 @@ msgstr ""
 "Видаляє всі початкові та кінцеві пробіли з `text`.\n"
 "\tДодатковий другий параметр `char` визначає символ, який потрібно обрізати."
 
-#: picard/script/functions.py:497
+#: picard/script/functions.py:452
+#, fuzzy
+#| msgid ""
+#| "`$add(x,y,…)`\n"
+#| "\n"
+#| "Add `y` to `x`.\n"
+#| "Can be used with an arbitrary number of arguments.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $add(x,y,z) = ((x + y) + z)\n"
 msgid ""
-"`$add(x,y,…)`\n"
-"\n"
 "Add `y` to `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
@@ -1715,10 +1927,18 @@ msgstr ""
 "\n"
 "\t$add(x,y,z) = ((x + y) + z)\n"
 
-#: picard/script/functions.py:517
+#: picard/script/functions.py:470
+#, fuzzy
+#| msgid ""
+#| "`$sub(x,y,…)`\n"
+#| "\n"
+#| "Subtracts `y` from `x`.\n"
+#| "Can be used with an arbitrary number of arguments.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $sub(x,y,z) = ((x - y) - z)\n"
 msgid ""
-"`$sub(x,y,…)`\n"
-"\n"
 "Subtracts `y` from `x`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
@@ -1735,10 +1955,18 @@ msgstr ""
 "\n"
 "\t$sub(x,y,z) = ((x - y) - z)\n"
 
-#: picard/script/functions.py:537
+#: picard/script/functions.py:488
+#, fuzzy
+#| msgid ""
+#| "`$div(x,y,…)`\n"
+#| "\n"
+#| "Divides `x` by `y`.\n"
+#| "Can be used with an arbitrary number of arguments.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $div(x,y,z) = ((x / y) / z)\n"
 msgid ""
-"`$div(x,y,…)`\n"
-"\n"
 "Divides `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
@@ -1755,10 +1983,18 @@ msgstr ""
 "\n"
 "\t$div(x,y,z) = ((x / y) / z)\n"
 
-#: picard/script/functions.py:559
+#: picard/script/functions.py:508
+#, fuzzy
+#| msgid ""
+#| "`$mod(x,y,…)`\n"
+#| "\n"
+#| "Returns the remainder of `x` divided by `y`.\n"
+#| "Can be used with an arbitrary number of arguments.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $mod(x,y,z) = ((x % y) % z)\n"
 msgid ""
-"`$mod(x,y,…)`\n"
-"\n"
 "Returns the remainder of `x` divided by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
@@ -1775,10 +2011,18 @@ msgstr ""
 "\n"
 "\t$mod(x,y,z) = ((x % y) % z)\n"
 
-#: picard/script/functions.py:579
+#: picard/script/functions.py:526
+#, fuzzy
+#| msgid ""
+#| "`$mul(x,y,…)`\n"
+#| "\n"
+#| "Multiplies `x` by `y`.\n"
+#| "Can be used with an arbitrary number of arguments.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $mul(x,y,z) = ((x * y) * z)\n"
 msgid ""
-"`$mul(x,y,…)`\n"
-"\n"
 "Multiplies `x` by `y`.\n"
 "Can be used with an arbitrary number of arguments.\n"
 "\n"
@@ -1795,10 +2039,15 @@ msgstr ""
 "\n"
 "\t$mul(x,y,z) = ((x * y) * z)\n"
 
-#: picard/script/functions.py:599
+#: picard/script/functions.py:544
+#, fuzzy
+#| msgid ""
+#| "`$or(x,y,…)`\n"
+#| "\n"
+#| "Returns true if either `x` or `y` not empty.\n"
+#| "    Can be used with an arbitrary number of arguments.\n"
+#| "    The result is true if ANY of the arguments is not empty."
 msgid ""
-"`$or(x,y,…)`\n"
-"\n"
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ANY of the arguments is not empty."
@@ -1809,10 +2058,15 @@ msgstr ""
 "\tМожна використовувати з довільною кількістю аргументів.\n"
 "\tРезультат буде true, якщо БУДЬ-ЯКИЙ з аргументів не порожній."
 
-#: picard/script/functions.py:615
+#: picard/script/functions.py:558
+#, fuzzy
+#| msgid ""
+#| "`$and(x,y,…)`\n"
+#| "\n"
+#| "Returns true if both `x` and `y` are not empty.\n"
+#| "    Can be used with an arbitrary number of arguments.\n"
+#| "    The result is true if ALL of the arguments are not empty."
 msgid ""
-"`$and(x,y,…)`\n"
-"\n"
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if ALL of the arguments are not empty."
@@ -1823,41 +2077,49 @@ msgstr ""
 "\tМожна використовувати з довільною кількістю аргументів.\n"
 "\tРезультат буде true, якщо ВСІ аргументи не є порожніми."
 
-#: picard/script/functions.py:631
-msgid ""
-"`$not(x)`\n"
-"\n"
-"Returns true if `x` is empty."
+#: picard/script/functions.py:571
+#, fuzzy
+#| msgid ""
+#| "`$not(x)`\n"
+#| "\n"
+#| "Returns true if `x` is empty."
+msgid "Returns true if `x` is empty."
 msgstr ""
 "`$not(x)`\n"
 "\n"
 "Повертає значення true, якщо `x` порожнє."
 
-#: picard/script/functions.py:645
-msgid ""
-"`$eq(x,y)`\n"
-"\n"
-"Returns true if `x` equals `y`."
+#: picard/script/functions.py:581
+#, fuzzy
+#| msgid ""
+#| "`$eq(x,y)`\n"
+#| "\n"
+#| "Returns true if `x` equals `y`."
+msgid "Returns true if `x` equals `y`."
 msgstr ""
 "`$eq(x,y)`\n"
 "\n"
 "Повертає значення true, якщо `x` дорівнює `y`."
 
-#: picard/script/functions.py:659
-msgid ""
-"`$ne(x,y)`\n"
-"\n"
-"Returns true if `x` does not equal `y`."
+#: picard/script/functions.py:591
+#, fuzzy
+#| msgid ""
+#| "`$ne(x,y)`\n"
+#| "\n"
+#| "Returns true if `x` does not equal `y`."
+msgid "Returns true if `x` does not equal `y`."
 msgstr ""
 "`$ne(x,y)`\n"
 "\n"
 "Повертає значення true, якщо `x` не дорівнює `y`."
 
-#: picard/script/functions.py:706
+#: picard/script/functions.py:634
+msgid "$lt(x,y[,type])"
+msgstr ""
+
+#: picard/script/functions.py:636
 #, fuzzy
 msgid ""
-"`$lt(x,y[,type])`\n"
-"\n"
 "Returns true if `x` is less than `y` using the comparison specified in "
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -1887,11 +2149,13 @@ msgstr ""
 "пріоритетності:\n"
 "\"int\", \"float\" та \"text\"."
 
-#: picard/script/functions.py:723
+#: picard/script/functions.py:650
+msgid "$lte(x,y[,type])"
+msgstr ""
+
+#: picard/script/functions.py:652
 #, fuzzy
 msgid ""
-"`$lte(x,y[,type])`\n"
-"\n"
 "Returns true if `x` is less than or equal to `y` using the comparison "
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -1921,11 +2185,13 @@ msgstr ""
 "пріоритетності:\n"
 "\"int\", \"float\" та \"text\"."
 
-#: picard/script/functions.py:740
+#: picard/script/functions.py:666
+msgid "$gt(x,y[,type])"
+msgstr ""
+
+#: picard/script/functions.py:668
 #, fuzzy
 msgid ""
-"`$gt(x,y[,type])`\n"
-"\n"
 "Returns true if `x` is greater than `y` using the comparison specified in "
 "`type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -1955,11 +2221,13 @@ msgstr ""
 "пріоритетності:\n"
 "\"int\", \"float\" та \"text\"."
 
-#: picard/script/functions.py:757
+#: picard/script/functions.py:682
+msgid "$gte(x,y[,type])"
+msgstr ""
+
+#: picard/script/functions.py:684
 #, fuzzy
 msgid ""
-"`$gte(x,y[,type])`\n"
-"\n"
 "Returns true if `x` is greater than or equal to `y` using the comparison "
 "specified in `type`.\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -1989,20 +2257,42 @@ msgstr ""
 "пріоритетності:\n"
 "\"int\", \"float\" та \"text\"."
 
-#: picard/script/functions.py:774
-msgid ""
-"`$len(text)`\n"
-"\n"
-"Returns the number of characters in `text`."
+#: picard/script/functions.py:698
+msgid "$len(text)"
+msgstr ""
+
+#: picard/script/functions.py:699
+#, fuzzy
+#| msgid ""
+#| "`$len(text)`\n"
+#| "\n"
+#| "Returns the number of characters in `text`."
+msgid "Returns the number of characters in `text`."
 msgstr ""
 "`$len(text)`\n"
 "\n"
 "Повертає кількість символів у `text`."
 
-#: picard/script/functions.py:786
+#: picard/script/functions.py:707
+msgid "$lenmulti(name[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:709
+#, fuzzy
+#| msgid ""
+#| "`$lenmulti(name,separator=\"; \")`\n"
+#| "\n"
+#| "Returns the number of elements in the multi-value tag `name`. A literal "
+#| "value\n"
+#| "    representing a multi-value can be substituted for `name`, using the\n"
+#| "    `separator` (or \"; \" if not passed) to coerce the value into a "
+#| "proper\n"
+#| "    multi-valued tag.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $lenmulti(One; Two; Three) = 3\n"
 msgid ""
-"`$lenmulti(name,separator=\"; \")`\n"
-"\n"
 "Returns the number of elements in the multi-value tag `name`. A literal "
 "value\n"
 "    representing a multi-value can be substituted for `name`, using the\n"
@@ -2025,10 +2315,26 @@ msgstr ""
 "\n"
 "$lenmulti(One; Two; Three) = 3\n"
 
-#: picard/script/functions.py:805
+#: picard/script/functions.py:725
+msgid "$performer([pattern[,join=, ]])"
+msgstr ""
+
+#: picard/script/functions.py:727
+#, fuzzy
+#| msgid ""
+#| "`$performer(pattern=\"\",join=\", \")`\n"
+#| "\n"
+#| "Returns the performers where the performance type (e.g. \"vocal\") "
+#| "matches `pattern`, joined by `join`.\n"
+#| "You can specify a regular expression in the format `/pattern/flags`. "
+#| "`flags` are optional. Currently\n"
+#| "the only supported flag is \"i\" (ignore case). For example `$performer(/"
+#| "^guitars?$/i)` matches the\n"
+#| "performance type \"guitar\" or \"Guitars\", but not e.g. \"bass "
+#| "guitar\".\n"
+#| "\n"
+#| "_Since Picard 0.10_"
 msgid ""
-"`$performer(pattern=\"\",join=\", \")`\n"
-"\n"
 "Returns the performers where the performance type (e.g. \"vocal\") matches "
 "`pattern`, joined by `join`.\n"
 "You can specify a regular expression in the format `/pattern/flags`. `flags` "
@@ -2051,10 +2357,16 @@ msgstr ""
 "\n"
 "_Since Picard 0.10_"
 
-#: picard/script/functions.py:832
+#: picard/script/functions.py:752
+#, fuzzy
+#| msgid ""
+#| "`$matchedtracks()`\n"
+#| "\n"
+#| "Returns the number of matched tracks within a release.\n"
+#| "    **Only works in File Naming scripts.**\n"
+#| "\n"
+#| "_Since Picard 0.12_"
 msgid ""
-"`$matchedtracks()`\n"
-"\n"
 "Returns the number of matched tracks within a release.\n"
 "    **Only works in File Naming scripts.**\n"
 "\n"
@@ -2067,10 +2379,14 @@ msgstr ""
 "\n"
 "_Since Picard 0.12_"
 
-#: picard/script/functions.py:850
+#: picard/script/functions.py:768
+#, fuzzy
+#| msgid ""
+#| "`$is_complete()`\n"
+#| "\n"
+#| "Returns true if every track in the album is matched to a single file.\n"
+#| "**Only works in File Naming scripts.**"
 msgid ""
-"`$is_complete()`\n"
-"\n"
 "Returns true if every track in the album is matched to a single file.\n"
 "**Only works in File Naming scripts.**"
 msgstr ""
@@ -2079,10 +2395,22 @@ msgstr ""
 "Повертає значення true, якщо кожен трек в альбомі відповідає одному файлу.\n"
 "**Працює лише у скриптах іменування файлів.**"
 
-#: picard/script/functions.py:872
+#: picard/script/functions.py:787
+msgid "$firstalphachar(text[,nonalpha=#])"
+msgstr ""
+
+#: picard/script/functions.py:789
+#, fuzzy
+#| msgid ""
+#| "`$firstalphachar(text,nonalpha=\"#\")`\n"
+#| "\n"
+#| "Returns the first character of `text`.\n"
+#| "If `text` does not begin with an alphabetic character, then `nonalpha` is "
+#| "returned instead. If `nonalpha` is not\n"
+#| "specified, the default value \"#\" will be used.\n"
+#| "\n"
+#| "_Since Picard 0.12_"
 msgid ""
-"`$firstalphachar(text,nonalpha=\"#\")`\n"
-"\n"
 "Returns the first character of `text`.\n"
 "If `text` does not begin with an alphabetic character, then `nonalpha` is "
 "returned instead. If `nonalpha` is not\n"
@@ -2099,10 +2427,20 @@ msgstr ""
 "\n"
 "_Since Picard 0.12_"
 
-#: picard/script/functions.py:893
+#: picard/script/functions.py:807
+msgid "$initials(text)"
+msgstr ""
+
+#: picard/script/functions.py:809
+#, fuzzy
+#| msgid ""
+#| "`$initials(text)`\n"
+#| "\n"
+#| "Returns the first character of each word in `text`, if it is an "
+#| "alphabetic character.\n"
+#| "\n"
+#| "_Since Picard 0.12_"
 msgid ""
-"`$initials(text)`\n"
-"\n"
 "Returns the first character of each word in `text`, if it is an alphabetic "
 "character.\n"
 "\n"
@@ -2114,10 +2452,20 @@ msgstr ""
 "\n"
 "_Since Picard 0.12_"
 
-#: picard/script/functions.py:906
+#: picard/script/functions.py:819
+msgid "$firstwords(text,length)"
+msgstr ""
+
+#: picard/script/functions.py:821
+#, fuzzy
+#| msgid ""
+#| "`$firstwords(text,length)`\n"
+#| "\n"
+#| "Like `$truncate()` except that it will only return the complete words "
+#| "from `text` which fit within `length` characters.\n"
+#| "\n"
+#| "_Since Picard 0.12_"
 msgid ""
-"`$firstwords(text,length)`\n"
-"\n"
 "Like `$truncate()` except that it will only return the complete words from "
 "`text` which fit within `length` characters.\n"
 "\n"
@@ -2130,10 +2478,19 @@ msgstr ""
 "\n"
 "_Since Picard 0.12_"
 
-#: picard/script/functions.py:931
+#: picard/script/functions.py:843
+msgid "$startswith(text,prefix)"
+msgstr ""
+
+#: picard/script/functions.py:845
+#, fuzzy
+#| msgid ""
+#| "`$startswith(text,prefix)`\n"
+#| "\n"
+#| "Returns true if `text` starts with `prefix`.\n"
+#| "\n"
+#| "_Since Picard 1.4_"
 msgid ""
-"`$startswith(text,prefix)`\n"
-"\n"
 "Returns true if `text` starts with `prefix`.\n"
 "\n"
 "_Since Picard 1.4_"
@@ -2144,10 +2501,19 @@ msgstr ""
 "\n"
 "_Since Picard 1.4_"
 
-#: picard/script/functions.py:946
+#: picard/script/functions.py:857
+msgid "$endswith(text,suffix)"
+msgstr ""
+
+#: picard/script/functions.py:859
+#, fuzzy
+#| msgid ""
+#| "`$endswith(text,suffix)`\n"
+#| "\n"
+#| "Returns true if `text` ends with `suffix`.\n"
+#| "\n"
+#| "_Since Picard 1.4_"
 msgid ""
-"`$endswith(text,suffix)`\n"
-"\n"
 "Returns true if `text` ends with `suffix`.\n"
 "\n"
 "_Since Picard 1.4_"
@@ -2158,10 +2524,19 @@ msgstr ""
 "\n"
 "_Since Picard 1.4_"
 
-#: picard/script/functions.py:961
+#: picard/script/functions.py:871
+msgid "$truncate(text,length)"
+msgstr ""
+
+#: picard/script/functions.py:873
+#, fuzzy
+#| msgid ""
+#| "`$truncate(text,length)`\n"
+#| "\n"
+#| "Truncate `text` to `length`.\n"
+#| "\n"
+#| "_Since Picard 0.12_"
 msgid ""
-"`$truncate(text,length)`\n"
-"\n"
 "Truncate `text` to `length`.\n"
 "\n"
 "_Since Picard 0.12_"
@@ -2172,10 +2547,27 @@ msgstr ""
 "\n"
 "_Since Picard 0.12_"
 
-#: picard/script/functions.py:979
+#: picard/script/functions.py:888
+msgid "$swapprefix(text,prefix1,prefix2,…)"
+msgstr ""
+
+#: picard/script/functions.py:890
+#, fuzzy
+#| msgid ""
+#| "`$swapprefix(text,prefix1,prefix2,…)`\n"
+#| "\n"
+#| "Moves the specified prefixes from the beginning to the end of `text`. "
+#| "Multiple\n"
+#| "prefixes can be specified as separate parameters. If no prefix is "
+#| "specified 'A'\n"
+#| "and 'The' are used by default.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $swapprefix(%albumartist%,A,An,The,La,Le,Les,Un,Une)\n"
+#| "\n"
+#| "_Since Picard 1.3, previously as a plugin since Picard 0.13_"
 msgid ""
-"`$swapprefix(text,prefix1,prefix2,…)`\n"
-"\n"
 "Moves the specified prefixes from the beginning to the end of `text`. "
 "Multiple\n"
 "prefixes can be specified as separate parameters. If no prefix is specified "
@@ -2200,11 +2592,13 @@ msgstr ""
 "\n"
 "_Від Picard 1.3, раніше як плагін з Picard 0.13_"
 
-#: picard/script/functions.py:1004
+#: picard/script/functions.py:912
+msgid "$delprefix(text,prefix1,prefix2,…)"
+msgstr ""
+
+#: picard/script/functions.py:914
 #, fuzzy
 msgid ""
-"`$delprefix(text,prefix1,prefix2,…)`\n"
-"\n"
 "Deletes the specified prefixes from the beginning of `text`. Multiple\n"
 "prefixes can be specified as separate parameters.  If no prefix is specified "
 "'A'\n"
@@ -2228,10 +2622,19 @@ msgstr ""
 "\n"
 "_Since Picard 1.3_"
 
-#: picard/script/functions.py:1045
+#: picard/script/functions.py:952
+msgid "$eq_any(x,a1,a2,…)"
+msgstr ""
+
+#: picard/script/functions.py:954
+#, fuzzy
+#| msgid ""
+#| "`$eq_any(x,a1,a2,…)`\n"
+#| "\n"
+#| "Returns true if `x` equals `a1` or `a2` or …\n"
+#| "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
+#| "Functionally equivalent to the eq2 plugin."
 msgid ""
-"`$eq_any(x,a1,a2,…)`\n"
-"\n"
 "Returns true if `x` equals `a1` or `a2` or …\n"
 "Functionally equivalent to `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Functionally equivalent to the eq2 plugin."
@@ -2242,10 +2645,19 @@ msgstr ""
 "Функціонально еквівалентно `$or($eq(x,a1),$eq(x,a2),…)`.\n"
 "Функціонально еквівалентно плагіну eq2."
 
-#: picard/script/functions.py:1060
+#: picard/script/functions.py:966
+msgid "$ne_all(x,a1,a2,…)"
+msgstr ""
+
+#: picard/script/functions.py:968
+#, fuzzy
+#| msgid ""
+#| "`$ne_all(x,a1,a2,…)`\n"
+#| "\n"
+#| "Returns true if `x` does not equal `a1` and `a2` and …\n"
+#| "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
+#| "Functionally equivalent to the ne2 plugin."
 msgid ""
-"`$ne_all(x,a1,a2,…)`\n"
-"\n"
 "Returns true if `x` does not equal `a1` and `a2` and …\n"
 "Functionally equivalent to `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Functionally equivalent to the ne2 plugin."
@@ -2256,10 +2668,23 @@ msgstr ""
 "Функціонально еквівалентно `$and($ne(x,a1),$ne(x,a2),…)`.\n"
 "Функціонально еквівалентно плагіну ne2."
 
-#: picard/script/functions.py:1075
+#: picard/script/functions.py:980
+msgid "$eq_all(x,a1,a2,…)"
+msgstr ""
+
+#: picard/script/functions.py:982
+#, fuzzy
+#| msgid ""
+#| "`$eq_all(x,a1,a2,…)`\n"
+#| "\n"
+#| "Returns true if `x` equals `a1` and `a2` and …\n"
+#| "Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
+#| "Loaf))\n"
 msgid ""
-"`$eq_all(x,a1,a2,…)`\n"
-"\n"
 "Returns true if `x` equals `a1` and `a2` and …\n"
 "Functionally equivalent to `$and($eq(x,a1),$eq(x,a2),…)`.\n"
 "\n"
@@ -2278,11 +2703,23 @@ msgstr ""
 "    $if($eq_all(%albumartist%,%artist%,Justin Bieber),$set(engineer,Meat "
 "Loaf))\n"
 
-#: picard/script/functions.py:1096
-#, python-format
+#: picard/script/functions.py:1000
+msgid "$ne_any(x,a1,a2,…)"
+msgstr ""
+
+#: picard/script/functions.py:1002
+#, fuzzy, python-format
+#| msgid ""
+#| "`$ne_any(x,a1,a2,…)`\n"
+#| "\n"
+#| "Returns true if `x` does not equal `a1` or `a2` or …\n"
+#| "Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
+#| "%composer%))\n"
 msgid ""
-"`$ne_any(x,a1,a2,…)`\n"
-"\n"
 "Returns true if `x` does not equal `a1` or `a2` or …\n"
 "Functionally equivalent to `$or($ne(x,a1),$ne(x,a2),…)`.\n"
 "\n"
@@ -2301,10 +2738,23 @@ msgstr ""
 "\t$if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
 "%composer%))\n"
 
-#: picard/script/functions.py:1113
+#: picard/script/functions.py:1016
+msgid "$title(text)"
+msgstr ""
+
+#: picard/script/functions.py:1018
+#, fuzzy
+#| msgid ""
+#| "`$title(text)`\n"
+#| "\n"
+#| "Returns `text` in title case (first character in every word "
+#| "capitalized).\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $set(album,$title(%album%))\n"
+#| "_Since Picard 2.1_"
 msgid ""
-"`$title(text)`\n"
-"\n"
 "Returns `text` in title case (first character in every word capitalized).\n"
 "\n"
 "Example:\n"
@@ -2321,10 +2771,15 @@ msgstr ""
 "\n"
 "_Since Picard 2.1_"
 
-#: picard/script/functions.py:1129
+#: picard/script/functions.py:1032
+#, fuzzy
+#| msgid ""
+#| "`$is_audio()`\n"
+#| "\n"
+#| "Returns true, if the file processed is an audio file.\n"
+#| "\n"
+#| "_Since Picard 2.2_"
 msgid ""
-"`$is_audio()`\n"
-"\n"
 "Returns true, if the file processed is an audio file.\n"
 "\n"
 "_Since Picard 2.2_"
@@ -2335,10 +2790,15 @@ msgstr ""
 "\n"
 "_Since Picard 2.2_"
 
-#: picard/script/functions.py:1145
+#: picard/script/functions.py:1046
+#, fuzzy
+#| msgid ""
+#| "`$is_video()`\n"
+#| "\n"
+#| "Returns true, if the file processed is a video file.\n"
+#| "\n"
+#| "_Since Picard 2.2_"
 msgid ""
-"`$is_video()`\n"
-"\n"
 "Returns true, if the file processed is a video file.\n"
 "\n"
 "_Since Picard 2.2_"
@@ -2349,11 +2809,13 @@ msgstr ""
 "\n"
 "_Since Picard 2.2_"
 
-#: picard/script/functions.py:1161
+#: picard/script/functions.py:1059
+msgid "$find(haystack,needle)"
+msgstr ""
+
+#: picard/script/functions.py:1061
 #, fuzzy
 msgid ""
-"`$find(haystack,needle)`\n"
-"\n"
 "Finds the location of one string within another.\n"
 "    Returns the index of the first occurrence of `needle` in `haystack`, or "
 "\"\" if `needle` was not found.\n"
@@ -2374,20 +2836,40 @@ msgstr ""
 "Зверніть увагу, що до версії Picard 2.3.2 $find повертав \"-1\", якщо needle "
 "не було знайдено."
 
-#: picard/script/functions.py:1180
-msgid ""
-"`$reverse(text)`\n"
-"\n"
-"Returns `text` in reverse order."
+#: picard/script/functions.py:1077
+msgid "$reverse(text)"
+msgstr ""
+
+#: picard/script/functions.py:1078
+#, fuzzy
+#| msgid ""
+#| "`$reverse(text)`\n"
+#| "\n"
+#| "Returns `text` in reverse order."
+msgid "Returns `text` in reverse order."
 msgstr ""
 "$reverse(text)\n"
 "\n"
 "Повертає `text` у зворотному порядку."
 
-#: picard/script/functions.py:1191
+#: picard/script/functions.py:1085
+msgid "$substr(text,start[,end])"
+msgstr ""
+
+#: picard/script/functions.py:1087
+#, fuzzy
+#| msgid ""
+#| "`$substr(text,start[,end])`\n"
+#| "\n"
+#| "Returns the substring beginning with the character at the `start` index, "
+#| "up to\n"
+#| "    (but not including) the character at the `end` index. Indexes are\n"
+#| "    zero-based. Negative numbers will be counted back from the end of "
+#| "the\n"
+#| "    string. If the `start` or `end` indexes are left blank, they will "
+#| "default to\n"
+#| "    the start and end of the string respectively."
 msgid ""
-"`$substr(text,start[,end])`\n"
-"\n"
 "Returns the substring beginning with the character at the `start` index, up "
 "to\n"
 "    (but not including) the character at the `end` index. Indexes are\n"
@@ -2403,11 +2885,13 @@ msgstr ""
 "рахуються від кінця рядка. Якщо `start` або `end` залишені порожніми, за "
 "замовчуванням вони відповідають початку та кінцю рядка відповідно."
 
-#: picard/script/functions.py:1215
+#: picard/script/functions.py:1108
+msgid "$getmulti(name,index[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1110
 #, fuzzy
 msgid ""
-"`$getmulti(name,index,separator=\"; \")`\n"
-"\n"
 "Gets the element at `index` from the multi-value tag `name`. A literal "
 "value\n"
 "    representing a multi-value can be substituted for `name`, using the\n"
@@ -2421,10 +2905,28 @@ msgstr ""
 "багатозначний тег, використовуючи роздільник (або \"; \", якщо не вказано), "
 "щоб перетворити значення на коректний багатозначний тег."
 
-#: picard/script/functions.py:1237
+#: picard/script/functions.py:1129
+msgid "$foreach(name,code[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1131
+#, fuzzy
+#| msgid ""
+#| "`$foreach(name,code,separator=\"; \")`\n"
+#| "\n"
+#| "Iterates over each element found in the multi-value tag `name`, "
+#| "executing\n"
+#| "    `code`. For each loop, the element value is first stored in the tag\n"
+#| "    `_loop_value` and the count is stored in the tag `_loop_count`. This "
+#| "allows\n"
+#| "    the element or count value to be accessed within the `code` script. "
+#| "A\n"
+#| "    literal value representing a multi-value can be substituted for "
+#| "`name`,\n"
+#| "    using the separator (or \"; \" if not passed) to coerce the value "
+#| "into a\n"
+#| "    proper multi-valued tag."
 msgid ""
-"`$foreach(name,code,separator=\"; \")`\n"
-"\n"
 "Iterates over each element found in the multi-value tag `name`, executing\n"
 "    `code`. For each loop, the element value is first stored in the tag\n"
 "    `_loop_value` and the count is stored in the tag `_loop_count`. This "
@@ -2448,11 +2950,13 @@ msgstr ""
 "\t(або \"; \", якщо не передано), щоб примусово перетворити значення\n"
 "\tна правильний мультизначний тег."
 
-#: picard/script/functions.py:1262
+#: picard/script/functions.py:1153
+msgid "$while(condition,code)"
+msgstr ""
+
+#: picard/script/functions.py:1155
 #, fuzzy
 msgid ""
-"`$while(condition,code)`\n"
-"\n"
 "Standard 'while' loop. Executes `code` repeatedly until `condition` no "
 "longer\n"
 "    evaluates to `True`. For each loop, the count is stored in the tag\n"
@@ -2471,10 +2975,33 @@ msgstr ""
 "\tФункція обмежує максимальну кількість ітерацій до 1000 як захід безпеки\n"
 "\tпроти випадкового створення нескінченного циклу."
 
-#: picard/script/functions.py:1286
+#: picard/script/functions.py:1176
+msgid "$map(name,code[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1178
+#, fuzzy
+#| msgid ""
+#| "`$map(name,code,separator=\"; \")`\n"
+#| "\n"
+#| "Iterates over each element found in the multi-value tag `name` and "
+#| "updates the\n"
+#| "    value of the element to the value returned by `code`, returning the "
+#| "updated\n"
+#| "    multi-value tag. For each loop, the element value is first stored in "
+#| "the tag\n"
+#| "    `_loop_value` and the count is stored in the tag `_loop_count`. This "
+#| "allows\n"
+#| "    the element or count value to be accessed within the `code` script.\n"
+#| "\n"
+#| "Empty elements are automatically removed.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $map(First:A; Second:B,$upper(%_loop_count%=%_loop_value%))\n"
+#| "\n"
+#| "Result: 1=FIRST:A; 2=SECOND:B\n"
 msgid ""
-"`$map(name,code,separator=\"; \")`\n"
-"\n"
 "Iterates over each element found in the multi-value tag `name` and updates "
 "the\n"
 "    value of the element to the value returned by `code`, returning the "
@@ -2511,10 +3038,18 @@ msgstr ""
 "\n"
 "Результат: 1=FIRST:A; 2=SECOND:B\n"
 
-#: picard/script/functions.py:1319
+#: picard/script/functions.py:1208
+msgid "$join(name,text[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1210
+#, fuzzy
+#| msgid ""
+#| "`$join(name,text,separator=\"; \")`\n"
+#| "\n"
+#| "Joins all elements in `name`, placing `text` between each element, and "
+#| "returns the result as a string."
 msgid ""
-"`$join(name,text,separator=\"; \")`\n"
-"\n"
 "Joins all elements in `name`, placing `text` between each element, and "
 "returns the result as a string."
 msgstr ""
@@ -2523,10 +3058,39 @@ msgstr ""
 "Об’єднує всі елементи в `name`, вставляючи `text` між кожним елементом, і "
 "повертає результат як рядок."
 
-#: picard/script/functions.py:1333
+#: picard/script/functions.py:1221
+msgid "$slice(name,start,end[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1223
+#, fuzzy
+#| msgid ""
+#| "`$slice(name,start,end,separator=\"; \")`\n"
+#| "\n"
+#| "Returns a multi-value variable containing the elements between the "
+#| "`start` and\n"
+#| "    `end` indexes from the multi-value tag `name`. A literal value "
+#| "representing\n"
+#| "    a multi-value can be substituted for `name`, using the separator (or "
+#| "\"; \" if\n"
+#| "    not passed) to coerce the value into a proper multi-valued tag. "
+#| "Indexes are\n"
+#| "    zero based. Negative numbers will be counted back from the end of the "
+#| "list.\n"
+#| "    If the `start` or `end` indexes are left blank, they will default to "
+#| "the\n"
+#| "    start and end of the list respectively.\n"
+#| "\n"
+#| "The following example will create a multi-value variable with all "
+#| "artists\n"
+#| "    in `%artists%` except the first, which can be used to create a \"feat."
+#| "\" list.\n"
+#| "\n"
+#| "Examples:\n"
+#| "\n"
+#| "    $setmulti(supporting_artists,$slice(%artists%,1))\n"
+#| "    $setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 msgid ""
-"`$slice(name,start,end,separator=\"; \")`\n"
-"\n"
 "Returns a multi-value variable containing the elements between the `start` "
 "and\n"
 "    `end` indexes from the multi-value tag `name`. A literal value "
@@ -2573,11 +3137,32 @@ msgstr ""
 "\t$setmulti(supporting_artists,$slice(%artists%,1))\n"
 "\t$setmulti(supporting_artists,$slice(%artists%,1,-1))\n"
 
-#: picard/script/functions.py:1368
+#: picard/script/functions.py:1255
 #, python-format
+msgid "$datetime([format=%Y-%m-%d %H:%M:%S])"
+msgstr ""
+
+#: picard/script/functions.py:1257
+#, fuzzy, python-format
+#| msgid ""
+#| "`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
+#| "\n"
+#| "Returns the current date and time in the specified `format`, which is "
+#| "based on\n"
+#| "    the standard Python `strftime` [format codes](https://strftime.org/). "
+#| "If no\n"
+#| "    `format` is specified the date/time will be returned in the form\n"
+#| "    `2020-02-05 14:26:32`.\n"
+#| "Note: Platform-specific formatting codes should be avoided to help ensure "
+#| "the\n"
+#| "    portability of scripts across the different platforms.  These codes "
+#| "include:\n"
+#| "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and "
+#| "their\n"
+#| "    equivalent `%#d` and `%#m` on Windows); element length specifiers "
+#| "(e.g.\n"
+#| "    `%3Y`); and hanging '%' at the end of the format string."
 msgid ""
-"`$datetime(format=\"%Y-%m-%d %H:%M:%S\")`\n"
-"\n"
 "Returns the current date and time in the specified `format`, which is based "
 "on\n"
 "    the standard Python `strftime` [format codes](https://strftime.org/). If "
@@ -2608,10 +3193,24 @@ msgstr ""
 "\t- специфікатори довжини елемента (наприклад, `%3Y`);\n"
 "\t- відокремлений символ '%' в кінці рядка формату."
 
-#: picard/script/functions.py:1395
+#: picard/script/functions.py:1281
+msgid "$sortmulti(name[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1283
+#, fuzzy
+#| msgid ""
+#| "`$sortmulti(name,separator=\"; \")`\n"
+#| "\n"
+#| "Returns a copy of the multi-value tag `name` with the elements sorted in "
+#| "ascending order.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $sortmulti(B; A; C)\n"
+#| "\n"
+#| "Result: A; B; C\n"
 msgid ""
-"`$sortmulti(name,separator=\"; \")`\n"
-"\n"
 "Returns a copy of the multi-value tag `name` with the elements sorted in "
 "ascending order.\n"
 "\n"
@@ -2632,10 +3231,27 @@ msgstr ""
 "\n"
 "Результат: A; B; C\n"
 
-#: picard/script/functions.py:1415
+#: picard/script/functions.py:1300
+msgid "$reversemulti(name[,separator=; ])"
+msgstr ""
+
+#: picard/script/functions.py:1302
+#, fuzzy
+#| msgid ""
+#| "`$reversemulti(name,separator=\"; \")`\n"
+#| "\n"
+#| "Returns a copy of the multi-value tag `name` with the elements in reverse "
+#| "order.\n"
+#| "    This can be used in conjunction with the `$sortmulti` function to "
+#| "sort in\n"
+#| "    descending order.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $reversemulti($sortmulti(B; A; C))\n"
+#| "\n"
+#| "Result: C; B; A\n"
 msgid ""
-"`$reversemulti(name,separator=\"; \")`\n"
-"\n"
 "Returns a copy of the multi-value tag `name` with the elements in reverse "
 "order.\n"
 "    This can be used in conjunction with the `$sortmulti` function to sort "
@@ -2661,11 +3277,13 @@ msgstr ""
 "\n"
 "Результат: C; B; A\n"
 
-#: picard/script/functions.py:1437
+#: picard/script/functions.py:1321
+msgid "$unique(name[,case_sensitive[,separator=; ]])"
+msgstr ""
+
+#: picard/script/functions.py:1323
 #, fuzzy, python-format
 msgid ""
-"`$unique(name,case_sensitive=\"\",separator=\"; \")`\n"
-"\n"
 "Returns a copy of the multi-value tag `name` with no duplicate elements.\n"
 "    By default, a case-insensitive comparison of the elements is performed.\n"
 "\n"
@@ -2703,10 +3321,20 @@ msgstr ""
 "\n"
 "Результат: A; B; a; b; cd\n"
 
-#: picard/script/functions.py:1467
+#: picard/script/functions.py:1350
+msgid "$countryname(country_code[,translate])"
+msgstr ""
+
+#: picard/script/functions.py:1352
+#, fuzzy
+#| msgid ""
+#| "`$countryname(country_code,translate=\"\")`\n"
+#| "\n"
+#| "Returns the name of the country for the specified country code.  If the "
+#| "country code is invalid an empty string will be returned.\n"
+#| "If translate is not blank, the output will be translated into the current "
+#| "locale language.\n"
 msgid ""
-"`$countryname(country_code,translate=\"\")`\n"
-"\n"
 "Returns the name of the country for the specified country code.  If the "
 "country code is invalid an empty string will be returned.\n"
 "If translate is not blank, the output will be translated into the current "
@@ -2719,11 +3347,13 @@ msgstr ""
 "Якщо параметр translate не порожній, результат буде перекладений на поточну "
 "мову локалі.\n"
 
-#: picard/script/functions.py:1508
+#: picard/script/functions.py:1390
+msgid "$year(date[,date_order=ymd])"
+msgstr ""
+
+#: picard/script/functions.py:1392
 #, fuzzy
 msgid ""
-"`$year(date,date_order=\"ymd\")`\n"
-"\n"
 "Returns the year portion of the specified date.  The default order is "
 "\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
@@ -2740,10 +3370,22 @@ msgstr ""
 "\n"
 "_Since з Picard 2.7_"
 
-#: picard/script/functions.py:1522
+#: picard/script/functions.py:1403
+msgid "$month(date[,date_order=ymd])"
+msgstr ""
+
+#: picard/script/functions.py:1405
+#, fuzzy
+#| msgid ""
+#| "`$month(date,date_order=\"ymd\")`\n"
+#| "\n"
+#| "Returns the month portion of the specified date.  The default order is "
+#| "\"ymd\".  This can be changed by specifying\n"
+#| "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will "
+#| "be returned.\n"
+#| "\n"
+#| "_Since Picard 2.7_"
 msgid ""
-"`$month(date,date_order=\"ymd\")`\n"
-"\n"
 "Returns the month portion of the specified date.  The default order is "
 "\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
@@ -2760,10 +3402,22 @@ msgstr ""
 "\n"
 "_Since Picard 2.7_"
 
-#: picard/script/functions.py:1536
+#: picard/script/functions.py:1416
+msgid "$day(date[,date_order=ymd])"
+msgstr ""
+
+#: picard/script/functions.py:1418
+#, fuzzy
+#| msgid ""
+#| "`$day(date,date_order=\"ymd\")`\n"
+#| "\n"
+#| "Returns the day portion of the specified date.  The default order is "
+#| "\"ymd\".  This can be changed by specifying\n"
+#| "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will "
+#| "be returned.\n"
+#| "\n"
+#| "_Since Picard 2.7_"
 msgid ""
-"`$day(date,date_order=\"ymd\")`\n"
-"\n"
 "Returns the day portion of the specified date.  The default order is "
 "\"ymd\".  This can be changed by specifying\n"
 "either \"dmy\" or \"mdy\".  If the date is invalid an empty string will be "
@@ -2780,11 +3434,39 @@ msgstr ""
 "\n"
 "_Since Picard 2.7_"
 
-#: picard/script/functions.py:1550
+#: picard/script/functions.py:1429
 #, python-format
+msgid "$dateformat(date[,format=%Y-%m-%d[,date_order=ymd]])"
+msgstr ""
+
+#: picard/script/functions.py:1431
+#, fuzzy, python-format
+#| msgid ""
+#| "`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
+#| "\n"
+#| "Returns the input date in the specified `format`, which is based on the "
+#| "standard\n"
+#| "    Python `strftime` [format codes](https://strftime.org/). If no "
+#| "`format` is\n"
+#| "    specified the date will be returned in the form `2020-02-05`.  If the "
+#| "date or\n"
+#| "    format are invalid an empty string will be returned.\n"
+#| "\n"
+#| "    The default order for the input date is \"ymd\".  This can be changed "
+#| "by specifying\n"
+#| "    either \"dmy\" or \"mdy\".\n"
+#| "Note: Platform-specific formatting codes should be avoided to help ensure "
+#| "the\n"
+#| "    portability of scripts across the different platforms.  These codes "
+#| "include:\n"
+#| "    remove zero-padding (e.g. `%-d` and `%-m` on Linux or macOS, and "
+#| "their\n"
+#| "    equivalent `%#d` and `%#m` on Windows); element length specifiers "
+#| "(e.g.\n"
+#| "    `%3Y`); and hanging '%' at the end of the format string.\n"
+#| "\n"
+#| "_Since Picard 2.7_"
 msgid ""
-"`$dateformat(date,format=\"%Y-%m-%d\",date_order=\"ymd\")`\n"
-"\n"
 "Returns the input date in the specified `format`, which is based on the "
 "standard\n"
 "    Python `strftime` [format codes](https://strftime.org/). If no `format` "
@@ -2826,10 +3508,26 @@ msgstr ""
 "\n"
 "__Since Picard 2.7_"
 
-#: picard/script/functions.py:1586
+#: picard/script/functions.py:1464
+msgid "$is_multi(name)"
+msgstr ""
+
+#: picard/script/functions.py:1466
+#, fuzzy
+#| msgid ""
+#| "`$is_multi(name)`\n"
+#| "\n"
+#| "Returns '1' if the argument is a multi-value tag and there are more than "
+#| "one elements, otherwise an empty string.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $is_multi(%artists%)\n"
+#| "\n"
+#| "Result: 1 if there is more than one artist, otherwise \"\".\n"
+#| "\n"
+#| "_Since Picard 2.7_"
 msgid ""
-"`$is_multi(name)`\n"
-"\n"
 "Returns '1' if the argument is a multi-value tag and there are more than one "
 "elements, otherwise an empty string.\n"
 "\n"
@@ -2854,10 +3552,26 @@ msgstr ""
 "\n"
 "_Since Picard 2.7_"
 
-#: picard/script/functions.py:1607
+#: picard/script/functions.py:1484
+msgid "$cleanmulti(name)"
+msgstr ""
+
+#: picard/script/functions.py:1486
+#, fuzzy
+#| msgid ""
+#| "`$cleanmulti(name)`\n"
+#| "\n"
+#| "Removes all empty string elements from the multi-value variable.\n"
+#| "\n"
+#| "Example:\n"
+#| "\n"
+#| "    $setmulti(test,one; ; two; three)\n"
+#| "    $cleanmulti(test)\n"
+#| "\n"
+#| "Result: Sets the value of 'test' to [\"one\", \"two\", \"three\"].\n"
+#| "\n"
+#| "_Since Picard 2.8_"
 msgid ""
-"`$cleanmulti(name)`\n"
-"\n"
 "Removes all empty string elements from the multi-value variable.\n"
 "\n"
 "Example:\n"
@@ -2882,11 +3596,13 @@ msgstr ""
 "\n"
 "_Починаючи з Picard 2.8_"
 
-#: picard/script/functions.py:1679
+#: picard/script/functions.py:1555
+msgid "$min(type,x,…)"
+msgstr ""
+
+#: picard/script/functions.py:1557
 #, fuzzy
 msgid ""
-"`$min(type,x,…)`\n"
-"\n"
 "Returns the minimum value using the comparison specified in `type`.\n"
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -2926,11 +3642,13 @@ msgstr ""
 "\n"
 "__Since  Picard 2.9_"
 
-#: picard/script/functions.py:1702
+#: picard/script/functions.py:1577
+msgid "$max(type,x,…)"
+msgstr ""
+
+#: picard/script/functions.py:1579
 #, fuzzy
 msgid ""
-"`$max(type,x,…)`\n"
-"\n"
 "Returns the maximum value using the comparison specified in `type`.\n"
 "\n"
 "Possible values of `type` are \"int\" (integer), \"float\" (floating point), "
@@ -7108,7 +7826,7 @@ msgstr "Профілі, прикріплені до опцій у розділі
 msgid "{profile} [Enabled]"
 msgstr " [Увімкнено]"
 
-#: picard/ui/options/dialog.py:796 picard/ui/options/profiles.py:283
+#: picard/ui/options/dialog.py:796 picard/ui/options/profiles.py:287
 msgid "None"
 msgstr "Жоден"
 
@@ -7741,40 +8459,40 @@ msgstr "Налаштування, які потрібно включити до 
 msgid "title"
 msgstr "назва"
 
-#: picard/ui/options/profiles.py:266
+#: picard/ui/options/profiles.py:270
 msgid "Unknown script"
 msgstr "Невідомий скрипт"
 
-#: picard/ui/options/profiles.py:271
+#: picard/ui/options/profiles.py:275
 msgid "No enabled scripts"
 msgstr "Немає ввімкнених скриптів"
 
-#: picard/ui/options/profiles.py:272
+#: picard/ui/options/profiles.py:276
 msgid "Enabled scripts:"
 msgstr "Увімкнені скрипти:"
 
-#: picard/ui/options/profiles.py:277
+#: picard/ui/options/profiles.py:281
 msgid "No enabled providers"
 msgstr "Немає увімкнених постачальників"
 
-#: picard/ui/options/profiles.py:278
+#: picard/ui/options/profiles.py:282
 msgid "Enabled providers:"
 msgstr "Увімкнені постачальники:"
 
-#: picard/ui/options/profiles.py:295
+#: picard/ui/options/profiles.py:299
 #, python-format
 msgid "List of %i items"
 msgstr "Список %i елементів"
 
-#: picard/ui/options/profiles.py:296
+#: picard/ui/options/profiles.py:300
 msgid "Unknown value format"
 msgstr "Невідомий формат значення"
 
-#: picard/ui/options/profiles.py:371
+#: picard/ui/options/profiles.py:375
 msgid "Invalid Title"
 msgstr "Недійсний заголовок"
 
-#: picard/ui/options/profiles.py:372
+#: picard/ui/options/profiles.py:376
 msgid "The profile title cannot be blank."
 msgstr "Назва профілю не може бути порожньою."
 
@@ -8314,15 +9032,15 @@ msgstr "Результат пошуку треків"
 msgid "Standalone Recording"
 msgstr "Самостійний запис"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:161
+#: picard/ui/widgets/configurablecolumnsheader.py:160
 msgid "Restore default columns"
 msgstr "Відновити стовпці за замовчуванням"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:182
+#: picard/ui/widgets/configurablecolumnsheader.py:181
 msgid "Lock columns"
 msgstr "Заблокувати стовпці"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:208
+#: picard/ui/widgets/configurablecolumnsheader.py:207
 msgid "Manage custom columns…"
 msgstr ""
 
@@ -10381,10 +11099,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Uzbek (Arabic)"
 #~ msgstr "Арабська"
-
-#, fuzzy
-#~ msgid "Vietnamese"
-#~ msgstr "%(filename)s"
 
 #, fuzzy
 #~ msgid "Warlpiri (Australia)"
