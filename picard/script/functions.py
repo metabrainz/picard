@@ -755,7 +755,7 @@ def func_performer(parser, pattern="", join=", "):
 _Since Picard 0.12_"""
     ),
 )
-def func_matchedtracks(parser, *args):
+def func_matchedtracks(parser):
     # only works in file naming scripts, always returns zero in tagging scripts
     file = parser.file
     if file and file.parent_item and getattr(file.parent_item, 'album', None):
