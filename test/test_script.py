@@ -1415,8 +1415,9 @@ class ScriptParserTest(PicardTestCase):
         file.parent_item.album.get_num_matched_tracks.return_value = 42
         self.assertScriptResultEquals("$matchedtracks()", "42", file=file)
         self.assertScriptResultEquals("$matchedtracks()", "0")
-        # The following only is possible for backward compatibility, arg is unused
-        self.assertScriptResultEquals("$matchedtracks(arg)", "0")
+        # The function no longer accepts an argument (opposed to Picard 2)
+        with self.assertRaises(ScriptSyntaxError):
+            self.assertScriptResultEquals("$matchedtracks(arg)", "0")
 
     def test_cmd_matchedtracks_with_cluster(self):
         file = MagicMock()
