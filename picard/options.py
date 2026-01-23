@@ -478,7 +478,7 @@ BoolOption('setting', 'remove_ape_from_ac3', False, title=N_("Remove APEv2 tags 
 # ID3
 TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character"))
 TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding"))
-BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping"))
+BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("iTunes compatible grouping / work"))
 BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags"))
 BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write"))
 
@@ -518,7 +518,7 @@ BoolOption(
     'setting',
     'session_backup_on_crash',
     True,
-    title=N_("Backup on unexpected shutdown"),
+    title=N_("Backup session on unexpected exit"),
 )
 BoolOption(
     'setting',
