@@ -2062,11 +2062,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def _add_menu_item(title, checked, profile_id):
             menu = self.profile_quick_selector_menu
             action = QtWidgets.QWidgetAction(menu)
-            container = CheckboxMenuItem(menu, action, title)
-            checkbox = container.checkbox
-            checkbox.setChecked(checked)
+            action.setChecked(checked)
+            checkbox = CheckboxMenuItem(menu, action, title)
             checkbox.toggled.connect(partial(self._set_profile_enabled, profile_id))
-            action.setDefaultWidget(container)
+            action.setDefaultWidget(checkbox)
             self.profile_quick_selector_menu.addAction(action)
 
         for profile in option_profiles:

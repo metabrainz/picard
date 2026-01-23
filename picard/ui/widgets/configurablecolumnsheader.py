@@ -109,12 +109,11 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             A tuple containing the configured action and its checkbox widget.
         """
         action = QtWidgets.QWidgetAction(menu)
-        container = CheckboxMenuItem(menu, action, text)
-        checkbox = container.checkbox
-        checkbox.setChecked(checked)
+        action.setChecked(checked)
+        checkbox = CheckboxMenuItem(menu, action, text)
         checkbox.setEnabled(enabled)
         checkbox.toggled.connect(callback)
-        action.setDefaultWidget(container)
+        action.setDefaultWidget(checkbox)
         return action, checkbox
 
     def _add_column_actions(self, menu):
