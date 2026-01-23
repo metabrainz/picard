@@ -56,6 +56,7 @@ from collections import (
 )
 from collections.abc import Mapping
 from contextlib import contextmanager
+from datetime import date
 from itertools import chain
 import json
 import ntpath
@@ -1019,11 +1020,13 @@ def countries_shortlist(countries):
     return limited_join(countries, 6, '+', '…')
 
 
-def extract_year_from_date(dt):
+def extract_year_from_date(dt: str | date | Mapping) -> int | None:
     """Extracts year from  passed in date either dict or string"""
 
     try:
-        if isinstance(dt, Mapping):
+        if isinstance(dt, date):
+            return dt.year
+        elif isinstance(dt, Mapping):
             return int(dt.get('year'))
         else:
             return parse(dt).year

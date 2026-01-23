@@ -34,6 +34,10 @@
 
 from collections import namedtuple
 from collections.abc import Iterator
+from datetime import (
+    date,
+    datetime,
+)
 import os
 import re
 import subprocess  # nosec: B404
@@ -184,6 +188,10 @@ class ExtractYearTest(PicardTestCase):
         self.assertEqual(extract_year_from_date({'year': '2020'}), 2020)
         self.assertEqual(extract_year_from_date({'year': 2020}), 2020)
         self.assertEqual(extract_year_from_date({'year': '2020-02-28'}), None)
+
+    def test_date(self):
+        self.assertEqual(extract_year_from_date(date(2026, 1, 1)), 2026)
+        self.assertEqual(extract_year_from_date(datetime(2026, 1, 1)), 2026)
 
 
 class SanitizeDateTest(PicardTestCase):
