@@ -24,6 +24,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.config import (
     get_config,
     get_quick_menu_items,
@@ -79,7 +80,13 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
         self.ui.quick_menu_items.clear()
         for group in get_quick_menu_items():
             expand = False
-            widget_item = QtWidgets.QTreeWidgetItem([_(group['group_title'])])
+
+            title = _(group['title'])
+            parent = group.get('parent', '')
+            name = group['name']
+
+            widget_item = QtWidgets.QTreeWidgetItem([title])
+            widget_item.setData(0, QtCore.Qt.ItemDataRole.UserRole, name)
             widget_item.setFlags(
                 QtCore.Qt.ItemFlag.ItemIsEnabled
                 | QtCore.Qt.ItemFlag.ItemIsUserCheckable
@@ -90,7 +97,19 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
                 checked = self.menu_items and setting.name in self.menu_items
                 expand |= checked
                 widget_item.addChild(self._make_child_item(setting.name, setting.title, checked))
-            self.ui.quick_menu_items.addTopLevelItem(widget_item)
+            added = False
+            if parent:
+                # Find parent item
+                for i in range(self.ui.quick_menu_items.topLevelItemCount()):
+                    tl_item = self.ui.quick_menu_items.topLevelItem(i)
+                    if tl_item.data(0, QtCore.Qt.ItemDataRole.UserRole) == parent:
+                        tl_item.addChild(widget_item)
+                        added = True
+                        break
+                if not added:
+                    log.warning("Parent '%s' not found for quick settings group '%s'", parent, name)
+            if not added:
+                self.ui.quick_menu_items.addTopLevelItem(widget_item)
             widget_item.setExpanded(expand)
 
     def save(self):

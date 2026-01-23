@@ -522,14 +522,20 @@ QuickMenuItem = namedtuple('QuickMenuItem', ['name', 'title'])
 _quick_menu_items = {}
 
 
-def register_quick_menu_item(group_order: int, group_name: str, option: Option):
+def register_quick_menu_item(group_order: int, group_name: str, group_parent: str, group_title, option: Option):
     if option.qtype is not bool or not option.title:
         return
     if group_name not in _quick_menu_items:
-        _quick_menu_items[group_name] = {'order': group_order, 'options': []}
+        group_parent = group_parent or ''
+        _quick_menu_items[group_name] = {
+            'order': group_order,
+            'title': group_title,
+            'parent': group_parent,
+            'options': [],
+        }
     _quick_menu_items[group_name]['options'].append(QuickMenuItem(option.name, option.title))
 
 
 def get_quick_menu_items():
-    for group, value in sorted(_quick_menu_items.items(), key=lambda x: (x[1]['order'], x[0])):
-        yield {'group_title': group, 'options': value['options']}
+    for group, value in sorted(_quick_menu_items.items(), key=lambda x: (x[1]['parent'], x[1]['order'], x[0])):
+        yield {'name': group, 'parent': value['parent'], 'title': value['title'], 'options': value['options']}

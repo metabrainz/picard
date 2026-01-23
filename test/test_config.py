@@ -592,14 +592,14 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
 
         # Test that options without titles are not registered
         option = Option.get('setting', 'option_bool_no_title')
-        register_quick_menu_item(0, "test group", option)
+        register_quick_menu_item(0, 'test_group', None, "test group", option)
         menu_items = self._get_menu_items()
         self.assertEqual(len(menu_items), 0)
 
         # Test that only boolean options are registered
         for opt_type in ['bool', 'text', 'int', 'float', 'list', 'set', 'dict']:
             option = Option.get('setting', f"option_{opt_type}")
-            register_quick_menu_item(0, "test group", option)
+            register_quick_menu_item(0, 'test_group', None, "test group", option)
             menu_items = self._get_menu_items()
             self.assertEqual(len(menu_items), 1, f"Error processing '{opt_type}' option.")
 
@@ -619,11 +619,11 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         BoolOption('setting', 'option4', True, title="Option 4")
 
         # Register options
-        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option4'))
-        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option1'))
-        register_quick_menu_item(2, "Group 2", Option.get('setting', 'option2'))
-        register_quick_menu_item(1, "Group 1", Option.get('setting', 'option3'))
-        register_quick_menu_item(3, "Group 1", Option.get('setting', 'option4'))
+        register_quick_menu_item(2, 'group_2', None, "Group 2", Option.get('setting', 'option4'))
+        register_quick_menu_item(2, 'group_2', None, "Group 2", Option.get('setting', 'option1'))
+        register_quick_menu_item(2, 'group_2', None, "Group 2", Option.get('setting', 'option2'))
+        register_quick_menu_item(1, 'group_1', None, "Group 1", Option.get('setting', 'option3'))
+        register_quick_menu_item(3, 'group_1', None, "Group 1", Option.get('setting', 'option4'))
 
         # Get menu items
         items = self._get_menu_items()
@@ -635,14 +635,14 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
 
         group = items[0]
         options = group['options']
-        self.assertEqual(group['group_title'], "Group 1")
+        self.assertEqual(group['title'], "Group 1")
         self.assertEqual(len(options), 2)
         self.assertEqual(options[0].name, 'option3')
         self.assertEqual(options[1].name, 'option4')
 
         group = items[1]
         options = group['options']
-        self.assertEqual(group['group_title'], "Group 2")
+        self.assertEqual(group['title'], "Group 2")
         self.assertEqual(len(options), 3)
         self.assertEqual(options[0].name, 'option4')
         self.assertEqual(options[1].name, 'option1')
