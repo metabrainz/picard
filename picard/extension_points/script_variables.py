@@ -76,8 +76,12 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     else:
         module_name = 'unknown'
 
-    plugin_name = api.manifest.name_i18n() if api else _("Unknown plugin")
-    plugin_documentation = documentation + "\n\n" + (_("Plugin: %s") % plugin_name)
+    plugin_name = api.manifest.name_i18n() if api else _("Unknown Plugin")
+    plugin_documentation = documentation or ""
+    if plugin_documentation and plugin_name:
+        plugin_documentation += "\n\n"
+    if plugin_name:
+        plugin_documentation += _("Plugin: %s") % plugin_name
 
     ext_point_script_variables.register(module_name, (name, plugin_documentation, plugin_name))
 

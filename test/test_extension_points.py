@@ -19,7 +19,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import (
+    MagicMock,
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -27,6 +31,11 @@ from picard.extension_points import (
     ExtensionPoint,
     set_plugin_uuid,
     unset_plugin_uuid,
+)
+from picard.extension_points.script_variables import (
+    get_plugin_variable_documentation,
+    get_plugin_variable_names,
+    register_script_variable,
 )
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.plugin import Plugin
@@ -203,3 +212,42 @@ class TestExtensionPoints(PicardTestCase):
         # Neither should yield items
         self.assertEqual(list(ep1), [])
         self.assertEqual(list(ep2), [])
+
+
+class TestExtensionPointsScriptVariable(PicardTestCase):
+    @patch(
+        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
+    )
+    def test_register_script_variable(self):
+        register_script_variable('my_var1', 'some docs')
+        register_script_variable('my_var2', 'other docs')
+        self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
+        self.assertEqual('some docs\n\nPlugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
+
+    @patch(
+        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
+    )
+    def test_register_script_variable_no_docs(self):
+        register_script_variable('my_var1')
+        self.assertEqual({'my_var1'}, get_plugin_variable_names())
+        self.assertEqual('Plugin: Unknown Plugin', get_plugin_variable_documentation('my_var1'))
+
+    @patch(
+        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
+    )
+    def test_register_script_variable_with_api(self):
+        api = MagicMock()
+        api._plugin_module.__name__ = 'test_plugin'
+        api.manifest.name_i18n.return_value = 'Test Plugin'
+        register_script_variable('my_var1', 'Some docs', api)
+        register_script_variable('my_var2', api=api)
+        self.assertEqual({'my_var1', 'my_var2'}, get_plugin_variable_names())
+        self.assertEqual('Some docs\n\nPlugin: Test Plugin', get_plugin_variable_documentation('my_var1'))
+        self.assertEqual('Plugin: Test Plugin', get_plugin_variable_documentation('my_var2'))
+
+    @patch(
+        'picard.extension_points.script_variables.ext_point_script_variables', ExtensionPoint(label='test_variables')
+    )
+    def test_register_script_variable_invalid_name(self):
+        with self.assertRaises(ValueError):
+            register_script_variable('my-var1')
