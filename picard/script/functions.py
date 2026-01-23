@@ -1349,8 +1349,8 @@ def func_unique(parser, multi, case_sensitive="", separator=MULTI_VALUED_JOINER)
 @script_function(
     signature=N_("$countryname(country_code[,translate])"),
     documentation=N_(
-        """Returns the name of the country for the specified country code.  If the country code is invalid an empty string will be returned.
-If translate is not blank, the output will be translated into the current locale language.
+        """Returns the name of the country for the specified country code. If the country code is invalid an empty string will be returned.
+If `translate` is not blank, the output will be translated into the current locale language.
 """
     ),
 )

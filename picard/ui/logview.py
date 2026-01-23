@@ -295,7 +295,7 @@ class LogView(LogViewCommon):
                 QtWidgets.QMessageBox.critical(
                     self,
                     _("Failed to save Log View to file"),
-                    _('Something prevented data to be written to "%s"') % writer.fileName(),
+                    _('Something prevented data to be written to "%s".') % writer.fileName(),
                 )
 
     def show(self):

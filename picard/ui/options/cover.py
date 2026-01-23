@@ -146,11 +146,11 @@ class CoverOptionsPage(OptionsPage):
 
     def select_never_replace_image_types(self):
         instructions_bottom = N_(
-            "Embedded cover art images with a type found in the 'Include' list will never be replaced "
-            "by a newly downloaded image UNLESS they also have an image type in the 'Exclude' list. "
-            "Images with types found in the 'Exclude' list will always be replaced by downloaded images "
-            "of the same type. Images types not appearing in the 'Include' or 'Exclude' list will "
-            "not be considered when determining whether or not to replace an embedded cover art image.\n"
+            'Embedded cover art images with a type found in the "Include" list will never be replaced '
+            'by a newly downloaded image UNLESS they also have an image type in the "Exclude" list. '
+            'Images with types found in the "Exclude" list will always be replaced by downloaded images '
+            'of the same type. Images types not appearing in the "Include" or "Exclude" list will '
+            'not be considered when determining whether or not to replace an embedded cover art image.\n'
         )
         (included_types, excluded_types, ok) = CAATypesSelectorDialog.display(
             types_include=self.dont_replace_included_types,
