@@ -147,6 +147,6 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings.append(option)
-        register_quick_menu_item(cls.SORT_ORDER, cls.display_title(), option)
+        register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
         if highlights is not None:
             profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.display_title(), parent=cls.PARENT)
