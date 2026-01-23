@@ -17,7 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 import math
 
 from PyQt6 import (
@@ -59,16 +58,26 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
 
         # Create a QTextDocument to render the formatted text
         doc = self._create_doc(text, option)
+        layout = doc.documentLayout()
+
+        # A layout context for rendering the text
+        context = QtGui.QAbstractTextDocumentLayout.PaintContext()
+        context.clip = QtCore.QRectF(0, 0, float(option.rect.width()), float(option.rect.height()))
 
         # Set the text color based on the current palette
         text_color = option.palette.color(text_color_role)
-        doc.setDefaultStyleSheet(f"body {{ color: {text_color.name()}; }}")
+        context.palette.setBrush(QtGui.QPalette.ColorRole.Text, text_color)
+
+        # Calculate top margin to center the text vertically
+        text_size = layout.documentSize()
+        top_margin = option.rect.top() + (option.rect.height() - text_size.height()) / 2
 
         # Draw the text
         painter.save()
+        painter.setClipRect(option.rect)
         painter.fillRect(option.rect, fill_brush)
-        painter.translate(option.rect.topLeft())
-        doc.drawContents(painter)
+        painter.translate(option.rect.left(), top_margin)
+        layout.draw(painter, context)
         painter.restore()
 
     def sizeHint(self, option, index):
@@ -82,12 +91,12 @@ class FormattedTextDelegate(QtWidgets.QStyledItemDelegate):
 
         return QtCore.QSize(math.ceil(doc.idealWidth()), math.ceil(doc.size().height()))
 
-    def _create_doc(self, text, option):
+    def _create_doc(self, text, option) -> QtGui.QTextDocument:
         doc = QtGui.QTextDocument()
         if self.markup_format == 'html':
             doc.setHtml(text)
         elif self.markup_format == 'markdown':
-            doc.setMarkdown(text)
+            doc.setMarkdown(text, QtGui.QTextDocument.MarkdownFeature.MarkdownNoHTML)
         else:
             doc.setPlainText(text)
 
