@@ -543,7 +543,7 @@ def func_mul(parser, x, y, *args):
     documentation=N_(
         """Returns true if either `x` or `y` not empty.
     Can be used with an arbitrary number of arguments.
-    The result is true if ANY of the arguments is not empty."""
+    The result is true if **any** of the arguments is not empty."""
     ),
 )
 def func_or(parser, x, y, *args):
@@ -557,7 +557,7 @@ def func_or(parser, x, y, *args):
     documentation=N_(
         """Returns true if both `x` and `y` are not empty.
     Can be used with an arbitrary number of arguments.
-    The result is true if ALL of the arguments are not empty."""
+    The result is true if **all** of the arguments are not empty."""
     )
 )
 def func_and(parser, x, y, *args):
