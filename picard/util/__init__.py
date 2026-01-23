@@ -56,6 +56,10 @@ from collections import (
 )
 from collections.abc import Mapping
 from contextlib import contextmanager
+from datetime import (
+    date,
+    datetime,
+)
 from itertools import chain
 import json
 import ntpath
@@ -67,8 +71,6 @@ import subprocess  # nosec: B404
 import sys
 from time import monotonic
 import unicodedata
-
-from dateutil.parser import parse
 
 from PyQt6 import QtCore
 from PyQt6.QtGui import QDesktopServices
@@ -1019,16 +1021,57 @@ def countries_shortlist(countries):
     return limited_join(countries, 6, '+', '…')
 
 
-def extract_year_from_date(dt):
+def extract_year_from_date(dt: str | date | Mapping) -> int | None:
     """Extracts year from  passed in date either dict or string"""
 
     try:
-        if isinstance(dt, Mapping):
+        if isinstance(dt, date):
+            return dt.year
+        elif isinstance(dt, Mapping):
             return int(dt.get('year'))
         else:
-            return parse(dt).year
+            if isinstance(dt, str):
+                dt = dt.strip()
+            if parsed_date := parse_date(dt):
+                return parsed_date.year
+            else:
+                return None
     except (OverflowError, TypeError, ValueError):
         return None
+
+
+_DATE_FORMATS = (
+    "%Y",
+    "%Y-%m",
+    "%Y-%m-%d",
+    "%Y.%m",
+    "%Y.%m",
+    "%Y/%m/%d",
+    "%Y/%m/%d",
+    "%d.%m.%Y",
+    "%m/%d/%Y",
+    "%m.%d.%Y",
+    "%d/%m/%Y",
+)
+
+
+def parse_date(dt: str) -> datetime | None:
+    """Tries to parse a string into a datetime object.
+    Returns None if the value could not be parsed.
+    """
+    # Try ISO formats first
+    try:
+        return datetime.fromisoformat(dt)
+    except ValueError:
+        pass
+
+    # Fallback formats
+    for format in _DATE_FORMATS:
+        try:
+            return datetime.strptime(dt, format)
+        except ValueError:
+            continue
+    return None
 
 
 def pattern_as_regex(pattern, allow_wildcards=False, flags=0):

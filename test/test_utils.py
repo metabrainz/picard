@@ -34,6 +34,10 @@
 
 from collections import namedtuple
 from collections.abc import Iterator
+from datetime import (
+    date,
+    datetime,
+)
 import os
 import re
 import subprocess  # nosec: B404
@@ -81,6 +85,7 @@ from picard.util import (
     limited_join,
     make_filename_from_title,
     normpath,
+    parse_date,
     pattern_as_regex,
     sort_by_similarity,
     system_supports_long_paths,
@@ -171,12 +176,20 @@ class ExtractYearTest(PicardTestCase):
         self.assertEqual(extract_year_from_date(""), None)
         self.assertEqual(extract_year_from_date(2020), None)
         self.assertEqual(extract_year_from_date("2020"), 2020)
+        self.assertEqual(extract_year_from_date('2020-02'), 2020)
         self.assertEqual(extract_year_from_date('2020-02-28'), 2020)
         self.assertEqual(extract_year_from_date('2015.02'), 2015)
+        self.assertEqual(extract_year_from_date('2020/02/28'), 2020)
         self.assertEqual(extract_year_from_date('2015; 2015'), None)
         self.assertEqual(extract_year_from_date('20190303201903032019030320190303'), None)
         # test for the format as supported by ID3 (https://id3.org/id3v2.4.0-structure): yyyy-MM-ddTHH:mm:ss
         self.assertEqual(extract_year_from_date('2020-07-21T13:00:00'), 2020)
+        self.assertEqual(extract_year_from_date('2020-07-21T13:00:00.283+01:00'), 2020)
+        # year last. It should not matter whether day or month comes first for this use case
+        self.assertEqual(extract_year_from_date('24.12.2026'), 2026)
+        self.assertEqual(extract_year_from_date('24/12/2026'), 2026)
+        self.assertEqual(extract_year_from_date('12.24.2026'), 2026)
+        self.assertEqual(extract_year_from_date('12/24/2026'), 2026)
 
     def test_mapping(self):
         self.assertEqual(extract_year_from_date({}), None)
@@ -184,6 +197,22 @@ class ExtractYearTest(PicardTestCase):
         self.assertEqual(extract_year_from_date({'year': '2020'}), 2020)
         self.assertEqual(extract_year_from_date({'year': 2020}), 2020)
         self.assertEqual(extract_year_from_date({'year': '2020-02-28'}), None)
+
+    def test_date(self):
+        self.assertEqual(extract_year_from_date(date(2026, 1, 1)), 2026)
+        self.assertEqual(extract_year_from_date(datetime(2026, 1, 1)), 2026)
+
+
+class ParseDateTest(PicardTestCase):
+    def test_parse_date(self):
+        self.assertEqual(parse_date("2026"), datetime(2026, 1, 1))
+        self.assertEqual(parse_date("2026-03"), datetime(2026, 3, 1))
+        self.assertEqual(parse_date("2026-03-02"), datetime(2026, 3, 2))
+        self.assertEqual(parse_date("02.03.2026"), datetime(2026, 3, 2))
+        self.assertEqual(parse_date("03/02/2026"), datetime(2026, 3, 2))
+        self.assertEqual(parse_date("12.30.2026"), datetime(2026, 12, 30))
+        self.assertEqual(parse_date("30/12/2026"), datetime(2026, 12, 30))
+        self.assertEqual(parse_date("2020-07-21T13:08:01"), datetime(2020, 7, 21, 13, 8, 1))
 
 
 class SanitizeDateTest(PicardTestCase):
