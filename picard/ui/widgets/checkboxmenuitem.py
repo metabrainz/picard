@@ -61,9 +61,12 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         self.set_active(active)
 
     def set_active(self, active: bool):
+        changed = self._active != active
         self._active = active
         if self._active:
             self.setFocus()
+        if changed:
+            self.repaint()
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
         if event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Space}:
@@ -83,8 +86,8 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         event.accept()
 
     def enterEvent(self, e):
-        self._menu.setActiveAction(self._action)
         self.set_active(True)
+        self._menu.setActiveAction(self._action)
 
     def leaveEvent(self, e):
         self.set_active(False)
