@@ -93,6 +93,10 @@ ALL_TAGS = TagVars(
             'If a country code is not provided by the webservice the code "XX" will be used to indicate an '
             'unknown country.'
         ),
+        additionaldesc=N_(
+            'For example, if the first credited artist is from Great Britain and there are two other credited '
+            'artists from Canada, the value would be "GB; CA; CA".'
+        ),
         is_hidden=True,
         is_tag=False,
         is_multi_value=True,
@@ -158,6 +162,10 @@ ALL_TAGS = TagVars(
             'Duplicate country codes will be shown if there are more than one artist from the same country. '
             'If a country code is not provided by the webservice the code "XX" will be used to indicate an '
             'unknown country.'
+        ),
+        additionaldesc=N_(
+            'For example, if the first credited artist is from Great Britain and there are two other credited '
+            'artists from Canada, the value would be "GB; CA; CA".'
         ),
         is_hidden=True,
         is_tag=False,
