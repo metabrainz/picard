@@ -31,6 +31,7 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         action.setCheckable(True)
         self._action = action
         self._active = False
+        self._pressed = False
         self._setup_layout(text)
         self._menu.hovered.connect(self._on_hover)
         self._action.changed.connect(self._action_changed)
@@ -73,12 +74,14 @@ class CheckboxMenuItem(QtWidgets.QWidget):
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         self.checkbox.setDown(True)
+        self._pressed = True
         event.accept()
 
     def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
-        if self.checkbox.isDown():
+        if self._pressed:
             self.checkbox.toggle()
         self.checkbox.setDown(False)
+        self._pressed = False
         event.accept()
 
     def enterEvent(self, e):
