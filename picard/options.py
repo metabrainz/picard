@@ -164,22 +164,22 @@ BoolOption('persist', 'show_changes_first', False)
 # picard/ui/options/advanced.py
 # Advanced
 ListOption('setting', 'compare_ignore_tags', [], title=N_("Tags to ignore for comparison"))
-BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness check ignore: Data tracks"))
-BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness check ignore: Pregap tracks"))
-BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness check ignore: Silent tracks"))
-BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness check ignore: Video tracks"))
+BoolOption('setting', 'completeness_ignore_data', False, title=N_("Completeness ignore: Data tracks"))
+BoolOption('setting', 'completeness_ignore_pregap', False, title=N_("Completeness ignore: Pregap tracks"))
+BoolOption('setting', 'completeness_ignore_silence', False, title=N_("Completeness ignore: Silent tracks"))
+BoolOption('setting', 'completeness_ignore_videos', False, title=N_("Completeness ignore: Video tracks"))
 BoolOption('setting', 'ignore_hidden_files', False, title=N_("Ignore hidden files"))
-TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths matching a regular expression"))
+TextOption('setting', 'ignore_regex', '', title=N_("Ignore file paths regular expression"))
 IntOption(
-    'setting', 'ignore_track_duration_difference_under', 2, title=N_("Ignore track duration difference under x seconds")
+    'setting', 'ignore_track_duration_difference_under', 2, title=N_("Allowed track duration difference (seconds)")
 )
 IntOption(
     'setting',
     'query_limit',
     DEFAULT_QUERY_LIMIT,
-    title=N_("Maximum number of entities to return per MusicBrainz query"),
+    title=N_("Maximum number to return per MusicBrainz query"),
 )
-BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files from folder"))
+BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folders when adding files"))
 
 # picard/ui/options/cdlookup.py
 # CD Lookup
@@ -191,38 +191,38 @@ ListOption('setting', 'ca_providers', DEFAULT_CA_PROVIDERS, title=N_("Cover art 
 TextOption('setting', 'cover_image_filename', DEFAULT_COVER_IMAGE_FILENAME, title=N_("File name for images"))
 BoolOption('setting', 'embed_only_one_front_image', True, title=N_("Embed only a single front image"))
 BoolOption(
-    'setting', 'dont_replace_with_smaller_cover', False, title=N_("Never replace cover images with smaller ones")
+    'setting', 'dont_replace_with_smaller_cover', False, title=N_("Never replace images with smaller ones")
 )
 BoolOption(
-    'setting', 'dont_replace_cover_of_types', False, title=N_("Never replace cover images matching selected types")
+    'setting', 'dont_replace_cover_of_types', False, title=N_("Never replace images of selected types")
 )
 ListOption(
     'setting',
     'dont_replace_included_types',
     DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
-    title=N_("Never replace cover images of these types"),
+    title=N_("Never replace images of these types"),
 )
 ListOption(
     'setting',
     'dont_replace_excluded_types',
     DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
-    title=N_("Always replace cover images of these types"),
+    title=N_("Always replace images of these types"),
 )
 BoolOption(
     'setting',
     'image_type_as_filename',
     False,
-    title=N_("Always use the primary image type as the file name for non-front images"),
+    title=N_("Use the primary image type as the file name"),
 )
 BoolOption('setting', 'save_images_overwrite', False, title=N_("Overwrite existing image files"))
-BoolOption('setting', 'save_images_to_files', False, title=N_("Save cover images as separate files"))
-BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed cover images into tags"))
-BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only a single front image as separate file"))
-BoolOption('setting', 'show_cover_art_details', False, title=N_("Show cover art details in cover art view"))
-BoolOption('setting', 'show_cover_art_details_type', False, title=N_("Show cover art type in info labels"))
-BoolOption('setting', 'show_cover_art_details_filesize', True, title=N_("Show cover art file size in info labels"))
-BoolOption('setting', 'show_cover_art_details_dimensions', True, title=N_("Show cover art dimensions in info labels"))
-BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show cover art MIME type in info labels"))
+BoolOption('setting', 'save_images_to_files', False, title=N_("Save images as separate files"))
+BoolOption('setting', 'save_images_to_tags', True, title=N_("Embed images into tags"))
+BoolOption('setting', 'save_only_one_front_image', False, title=N_("Save only one front image"))
+BoolOption('setting', 'show_cover_art_details', False, title=N_("Show cover art details in view"))
+BoolOption('setting', 'show_cover_art_details_type', False, title=N_("Show cover art type"))
+BoolOption('setting', 'show_cover_art_details_filesize', True, title=N_("Show cover art file size"))
+BoolOption('setting', 'show_cover_art_details_dimensions', True, title=N_("Show cover art dimensions"))
+BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show cover art MIME type"))
 
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
@@ -253,7 +253,7 @@ ListOption('persist', 'options_pages_tree_state', [])
 # Fingerprinting
 TextOption('setting', 'acoustid_apikey', '')
 TextOption('setting', 'acoustid_fpcalc', '')
-TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID audio fingerprinting'))
+TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID fingerprinting'))
 IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS)
 BoolOption('setting', 'ignore_existing_acoustid_fingerprints', False)
 BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save AcoustID fingerprints'))
@@ -267,15 +267,15 @@ TextOption('persist', 'oauth_refresh_token', '')
 TextOption('persist', 'oauth_refresh_token_scopes', '')
 TextOption('persist', 'oauth_username', '')
 BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files"))
-BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates during startup"))
-BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates during startup"))
-BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates during startup"))
+BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"))
+BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"))
+BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates"))
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"))
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"))
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"))
 IntOption('setting', 'server_port', 443, title=N_("Port"))
 IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"))
-IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Updates to check"))
+IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"))
 BoolOption('setting', 'use_server_for_submission', False)
 
 # picard/ui/options/genres.py
@@ -293,21 +293,21 @@ BoolOption('setting', 'use_genres', False, title=N_("Use genres from MusicBrainz
 
 # picard/ui/options/interface.py
 # User Interface
-BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selection of multiple directories"))
-BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search rather than looking in browser"))
+BoolOption('setting', 'allow_multi_dirs_selection', False, title=N_("Allow selecting multiple directories"))
+BoolOption('setting', 'builtin_search', True, title=N_("Use builtin search (not browser)"))
 BoolOption(
     'setting',
     'filebrowser_horizontal_autoscroll',
     True,
-    title=N_("Adjust horizontal position in file browser automatically"),
+    title=N_("Adjust horizontal position in file browser"),
 )
-BoolOption('setting', 'file_save_warning', True, title=N_("Show a confirmation dialog when saving files"))
+BoolOption('setting', 'file_save_warning', True, title=N_("Confirm when saveing"))
 TextOption('setting', 'load_image_behavior', 'append')
-BoolOption('setting', 'quit_confirmation', True, title=N_("Show a quit confirmation dialog for unsaved changes"))
+BoolOption('setting', 'quit_confirmation', True, title=N_("Confirm quit if unsaved changes"))
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"))
-BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show a usage warning dialog when Picard starts"))
-BoolOption('setting', 'rtd_updates_ask', True, N_("Show check for documentation updates during startup"))
-BoolOption('setting', 'player_now_playing', True, title=N_('Enable audio player "now playing" notifications'))
+BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"))
+BoolOption('setting', 'rtd_updates_ask', True, N_("Show documentation update check request"))
+BoolOption('setting', 'player_now_playing', True, title=N_('Enable "now playing" notifications'))
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"))
 TextOption('setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"))
 BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons"))
@@ -332,7 +332,7 @@ Option(
 
 # picard/ui/options/interface_quick_menu.py
 # Quick Menu
-ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS, title=N_("Options to show in the Quick Menu"))
+ListOption('setting', 'quick_menu_items', DEFAULT_QUICK_MENU_ITEMS, title=N_("Quick Menu options"))
 
 # picard/ui/options/interface_toolbar.py
 # Action Toolbar
@@ -356,21 +356,21 @@ ListOption('setting', 'metadatabox_top_tags', DEFAULT_TOP_TAGS, title=N_("Tags t
 # picard/ui/options/maintenance.py
 # Maintenance
 TextOption(
-    'setting', 'autobackup_directory', DEFAULT_AUTOBACKUP_DIRECTORY, title=N_("Automatic backup destination directory")
+    'setting', 'autobackup_directory', DEFAULT_AUTOBACKUP_DIRECTORY, title=N_("Automatic backup directory")
 )
 
 # picard/ui/options/matching.py
 # Matching
-FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Minimal similarity for cluster lookups"))
-FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Minimal similarity for file lookups"))
-FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Minimal similarity for matching files to tracks"))
+FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Similarity for cluster lookups"))
+FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Similarity for file lookups"))
+FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Similarity for matching files to tracks"))
 
 # picard/ui/options/metadata.py
 # Metadata
 ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales"))
-BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation characters to ASCII"))
+BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation to ASCII"))
 BoolOption(
-    'setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename if empty")
+    'setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title from filename")
 )
 TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name"))
 BoolOption('setting', 'release_ars', True, title=N_("Use release relationships"))
@@ -397,8 +397,8 @@ ListOption(
 BoolOption('setting', 'browser_integration', True, title=N_("Browser integration"))
 BoolOption('setting', 'browser_integration_localhost_only', True, title=N_("Listen only on localhost"))
 IntOption('setting', 'browser_integration_port', 8000, title=N_("Default listening port"))
-IntOption('setting', 'network_cache_size_bytes', DEFAULT_CACHE_SIZE_IN_BYTES, title=N_("Network cache size in bytes"))
-IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout in seconds"))
+IntOption('setting', 'network_cache_size_bytes', DEFAULT_CACHE_SIZE_IN_BYTES, title=N_("Network cache size (bytes)"))
+IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout (seconds)"))
 TextOption('setting', 'proxy_password', '', title=N_("Proxy password"))
 TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"))
 IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port"))
@@ -419,7 +419,7 @@ ListOption('persist', 'profile_settings_tree_expanded_list', [])
 # Ratings
 BoolOption('setting', 'enable_ratings', False, title=N_("Enable track ratings"))
 IntOption('setting', 'rating_steps', 6)
-TextOption('setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email to use when saving ratings"))
+TextOption('setting', 'rating_user_email', 'users@musicbrainz.org', title=N_("Email for saving ratings"))
 BoolOption('setting', 'submit_ratings', True, title=N_("Submit ratings to MusicBrainz"))
 
 # picard/ui/options/releases.py
@@ -445,14 +445,14 @@ TextOption(
     'setting',
     'replace_dir_separator',
     DEFAULT_REPLACEMENT,
-    title=N_("Replacement character to use for directory separators"),
+    title=N_("Character to use for directory separators"),
 )
 BoolOption('setting', 'replace_spaces_with_underscores', False, title=N_("Replace spaces with underscores"))
 Option(
     'setting',
     'win_compat_replacements',
     DEFAULT_WIN_COMPAT_REPLACEMENTS,
-    title=N_("Replacement characters used for Windows compatibility"),
+    title=N_("Characters used for Windows compatibility"),
 )
 BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility"))
 BoolOption('setting', 'windows_long_paths', DEFAULT_LONG_PATHS, title=N_("Windows long path support"))
@@ -467,7 +467,7 @@ ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts"))
 # Tags
 BoolOption('setting', 'clear_existing_tags', False, title=N_("Clear existing tags"))
 BoolOption('setting', 'enable_tag_saving', True, title=N_("Enable saving tags to files"))
-BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix missing seekpoints for FLAC files"))
+BoolOption('setting', 'fix_missing_seekpoints_flac', False, title=N_("Fix seekpoints in FLAC files"))
 ListOption('setting', 'preserved_tags', [], title=N_("Preserved tags list"))
 BoolOption('setting', 'preserve_images', False, title=N_("Keep embedded images when clearing tags"))
 BoolOption('setting', 'preserve_timestamps', False, title=N_("Preserve timestamps of tagged files"))
@@ -488,13 +488,13 @@ BoolOption('setting', 'remove_ape_from_ac3', False, title=N_("Remove APEv2 tags 
 # ID3
 TextOption('setting', 'id3v23_join_with', '/', title=N_("ID3v2.3 join character"))
 TextOption('setting', 'id3v2_encoding', 'utf-8', title=N_("ID3v2 text encoding"))
-BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping and work"))
+BoolOption('setting', 'itunes_compatible_grouping', False, title=N_("Save iTunes compatible grouping"))
 BoolOption('setting', 'write_id3v1', True, title=N_("Write ID3v1 tags"))
 BoolOption('setting', 'write_id3v23', False, title=N_("ID3v2 version to write"))
 
 # picard/ui/options/tags_compatibility_wave.py
 # WAVE
-BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove existing RIFF INFO tags from WAVE files"))
+BoolOption('setting', 'remove_wave_riff_info', False, title=N_("Remove RIFF INFO tags from WAVE files"))
 TextOption('setting', 'wave_riff_info_encoding', 'windows-1252', title=N_("RIFF INFO text encoding"))
 BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO tags to WAVE files"))
 
@@ -516,7 +516,7 @@ BoolOption(
     'setting',
     'session_load_last_on_startup',
     False,
-    title=N_("Load last saved session on startup"),
+    title=N_("Start with last saved session"),
 )
 IntOption(
     'setting',
@@ -534,13 +534,13 @@ BoolOption(
     'setting',
     'session_include_mb_data',
     True,
-    title=N_("Include MusicBrainz data in saved sessions"),
+    title=N_("Include MusicBrainz data"),
 )
 BoolOption(
     'setting',
     'session_no_mb_requests_on_load',
     True,
-    title=N_("Do not make MusicBrainz requests on restore"),
+    title=N_("No MusicBrainz requests on restore"),
 )
 TextOption(
     'setting',
