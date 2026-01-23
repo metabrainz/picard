@@ -732,7 +732,7 @@ class Tagger(QtWidgets.QApplication):
                     QtWidgets.QMessageBox.critical(
                         self.window,
                         _("Failed to load session"),
-                        _("Could not load session from %(path)s:\n\n%(error)s")
+                        _('Could not load session from "%(path)s":\n\n%(error)s')
                         % {"path": str(last_path), "error": str(e)},
                     )
 

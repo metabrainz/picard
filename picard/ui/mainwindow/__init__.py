@@ -1388,7 +1388,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 QtWidgets.QMessageBox.critical(
                     self,
                     _("Failed to load session"),
-                    _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+                    _('Could not load session from "%(path)s":\n\n%(error)s') % {"path": str(path), "error": str(e)},
                 )
                 return
             else:
@@ -1414,7 +1414,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             QtWidgets.QMessageBox.critical(
                 self,
                 _("Failed to load session"),
-                _("Could not load session from %(path)s:\n\n%(error)s") % {"path": str(path), "error": str(e)},
+                _('Could not load session from "%(path)s":\n\n%(error)s') % {"path": str(path), "error": str(e)},
             )
             return
         else:
