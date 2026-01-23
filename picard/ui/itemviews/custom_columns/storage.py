@@ -428,27 +428,25 @@ class CustomColumnConfigManager:
         self._rebuild_cache()
 
     def _config_list(self) -> list[dict[str, Any]]:
-        cfg = get_config()
-        settings = cfg.setting
-        # Read the raw value directly; Option may not be registered for this key
-        lst = settings.raw_value(self._config_key)
-        if isinstance(lst, list):
-            return lst
-        # If not set or wrong type, treat as empty without mutating config here
-        if lst is not None:
+        config = get_config()
+        data_list = config.setting[self._config_key]
+        if isinstance(data_list, list):
+            return data_list
+        else:
+            # If not set or wrong type, treat as empty without mutating config here
             log.debug(
                 "Custom columns config '%s' has unexpected type %s; treating as empty",
                 self._config_key,
-                type(lst).__name__,
+                type(data_list).__name__,
             )
-        return []
+            return []
 
     def load_specs(self) -> list[CustomColumnSpec]:
         self._ensure_cache()
         return list(self.__class__._cache_specs or [])
 
     def save_specs(self, specs: Iterable[CustomColumnSpec]) -> None:
-        cfg = get_config()
+        config = get_config()
         # Use QSettings API to write a JSON-like list under 'setting/<key>'
         # De-duplicate by key keeping the last occurrence to match UI expectations
         original_list = list(specs)
@@ -461,8 +459,8 @@ class CustomColumnConfigManager:
             dedup_reversed.append(spec)
         specs_list = list(reversed(dedup_reversed))
         data_list = [CustomColumnSpecSerializer.to_dict(spec) for spec in specs_list]
-        cfg.setting[self._config_key] = data_list
-        cfg.sync()
+        config.setting[self._config_key] = data_list
+        config.sync()
         # Update shared caches
         cls = self.__class__
         cls._cache_specs = specs_list

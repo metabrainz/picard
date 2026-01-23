@@ -577,6 +577,10 @@ ListOption('setting', 'plugins3_enabled_plugins', [])
 ListOption('persist', 'plugins3_do_not_update', [], title=N_("Plugins to exclude from updates"))
 Option('persist', 'plugins3_updates', {})
 
+# picard/ui/itemviews/custom_columns
+#
+Option('setting', 'custom_columns', [])
+
 
 def init_options():
     pass
