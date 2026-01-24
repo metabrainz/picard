@@ -28,7 +28,7 @@
 # nikki, 2013
 # nikki2 <b4931048@nwldx.com>, 2012
 # nikki, 2013
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2025.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2014,2017-2023, 2025, 2026.
 # S.Brandt <s.brandt@mixxx.org>, 2014-2015,2017-2018
 # Shepard, 2012
 # Simon Legner <simon.legner@gmail.com>, 2018
@@ -47,7 +47,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-08-29 12:04+0000\n"
+"PO-Revision-Date: 2026-01-24 21:11+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/2/"
 "app/de/>\n"
@@ -56,7 +56,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -6202,14 +6202,14 @@ msgstr "Kompatibilität"
 
 #: picard/ui/options/renaming_compat.py:135
 msgid "Invalid directory separator replacement"
-msgstr "Ungültige Ersetzung für Verzeichnistrennzeichen"
+msgstr "Ungültiges Verzeichnistrennzeichen"
 
 #: picard/ui/options/renaming_compat.py:136
 msgid ""
 "The replacement for directory separators must not be itself a directory "
 "separator."
 msgstr ""
-"Der Ersatz für Verzeichnistrennzeichen darf selbst kein "
+"Das Ersatzzeichen für Verzeichnistrennzeichen darf selbst kein "
 "Verzeichnistrennzeichen sein."
 
 #: picard/ui/options/renaming_compat.py:144
