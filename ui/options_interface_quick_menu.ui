@@ -35,7 +35,7 @@
       <item>
        <widget class="QLabel" name="quick_menu_instructions">
         <property name="text">
-         <string>TextLabel</string>
+         <string>Please select the settings that you want to appear in the Quick Settings menu.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -46,7 +46,7 @@
        <widget class="QTreeWidget" name="quick_menu_items">
         <column>
          <property name="text">
-          <string notr="true">1</string>
+          <string>Available Option Settings</string>
          </property>
         </column>
        </widget>

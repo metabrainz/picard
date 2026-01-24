@@ -57,12 +57,6 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
         self.ui = Ui_InterfaceQuickMenuOptionsPage()
         self.ui.setupUi(self)
 
-        self.ui.quick_menu_instructions.setText(
-            _("Please select the settings that you want to appear in the Quick Settings menu.")
-        )
-        self.ui.quick_menu_items.headerItem().setText(0, _("Available Option Settings"))
-        self.ui.quick_menu_items.header().setVisible(True)
-
     def load(self):
         config = get_config()
         self.menu_items = config.setting['quick_menu_items']

@@ -32,7 +32,6 @@ class Ui_InterfaceQuickMenuOptionsPage(object):
         self.verticalLayout.addWidget(self.quick_menu_instructions)
         self.quick_menu_items = QtWidgets.QTreeWidget(parent=self.quick_menu_groupBox)
         self.quick_menu_items.setObjectName("quick_menu_items")
-        self.quick_menu_items.headerItem().setText(0, "1")
         self.verticalLayout.addWidget(self.quick_menu_items)
         self.vboxlayout.addWidget(self.quick_menu_groupBox)
 
@@ -41,4 +40,5 @@ class Ui_InterfaceQuickMenuOptionsPage(object):
 
     def retranslateUi(self, InterfaceQuickMenuOptionsPage):
         self.quick_menu_groupBox.setTitle(_("Quick Settings Menu"))
-        self.quick_menu_instructions.setText(_("TextLabel"))
+        self.quick_menu_instructions.setText(_("Please select the settings that you want to appear in the Quick Settings menu."))
+        self.quick_menu_items.headerItem().setText(0, _("Available Option Settings"))
