@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-23 21:40+0100\n"
+"POT-Creation-Date: 2026-01-24 00:01+0100\n"
 "PO-Revision-Date: 2026-01-23 10:38+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -268,19 +268,27 @@ msgid "Tags to ignore for comparison"
 msgstr "Etiquetes que s'ignoraran a les comparacions"
 
 #: picard/options.py:167
-msgid "Completeness check ignore: Data tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Data tracks"
+msgid "Completeness ignore: Data tracks"
 msgstr "Ignora la comprovació de compleció: pistes de dades"
 
 #: picard/options.py:168
-msgid "Completeness check ignore: Pregap tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Pregap tracks"
+msgid "Completeness ignore: Pregap tracks"
 msgstr "Ignora la comprovació de compleció: pistes al pregap"
 
 #: picard/options.py:169
-msgid "Completeness check ignore: Silent tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Silent tracks"
+msgid "Completeness ignore: Silent tracks"
 msgstr "Ignora la comprovació de compleció: pistes amb silenci"
 
 #: picard/options.py:170
-msgid "Completeness check ignore: Video tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Video tracks"
+msgid "Completeness ignore: Video tracks"
 msgstr "Ignora la comprovació de compleció: pistes de vídeo"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_advanced.py:153
@@ -288,595 +296,708 @@ msgid "Ignore hidden files"
 msgstr "Ignora els fitxers ocults"
 
 #: picard/options.py:172
-msgid "Ignore file paths matching a regular expression"
+#, fuzzy
+#| msgid "Ignore file paths matching a regular expression"
+msgid "Ignore file paths (regular expression)"
 msgstr ""
 "Ignora els camins de fitxers que coincideixin amb una expressió regular"
 
-#: picard/options.py:174
-msgid "Ignore track duration difference under x seconds"
+#: picard/options.py:173
+#, fuzzy
+#| msgid "Ignore track duration difference under x seconds"
+msgid "Allowed track difference (seconds)"
 msgstr "Ignora les diferències de durada de les pistes inferiors a X segons"
 
-#: picard/options.py:180 picard/ui/forms/ui_options_advanced.py:150
-msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Nombre màxim d'entitats que es retornaran per consulta a MusicBrainz"
+#: picard/options.py:178
+#, fuzzy
+#| msgid "MusicBrainz Server"
+msgid "Maximum MusicBrainz query items"
+msgstr "Servidor de MusicBrainz"
 
-#: picard/options.py:182 picard/ui/forms/ui_options_advanced.py:152
-msgid "Include sub-folders when adding files from folder"
+#: picard/options.py:180
+#, fuzzy
+#| msgid "Include sub-folders when adding files from folder"
+msgid "Include sub-folders when adding files"
 msgstr "Inclou les subcarpetes en afegir els fitxers d'una carpeta"
 
-#: picard/options.py:190
+#: picard/options.py:188
 msgid "Cover art providers"
 msgstr "Proveïdors de caràtules"
 
-#: picard/options.py:191
+#: picard/options.py:189
 msgid "File name for images"
 msgstr "Nom de fitxer de les imatges"
 
-#: picard/options.py:192 picard/ui/forms/ui_options_cover.py:125
+#: picard/options.py:190 picard/ui/forms/ui_options_cover.py:125
 msgid "Embed only a single front image"
 msgstr "Incrusta només una imatge de la caràtula"
 
-#: picard/options.py:194 picard/ui/forms/ui_options_cover.py:126
-msgid "Never replace cover images with smaller ones"
+#: picard/options.py:191
+#, fuzzy
+#| msgid "Never replace cover images with smaller ones"
+msgid "Never replace images with smaller ones"
 msgstr ""
 "No substitueixis mai les imatges de la caràtula per imatges més petites"
 
-#: picard/options.py:197
-msgid "Never replace cover images matching selected types"
+#: picard/options.py:192
+#, fuzzy
+#| msgid "Never replace cover images matching selected types"
+msgid "Never replace images of selected types"
 msgstr ""
 "No substitueixis mai les imatges de la caràtula que coincideixin amb els "
 "tipus seleccionats"
 
-#: picard/options.py:203
-msgid "Never replace cover images of these types"
+#: picard/options.py:197
+#, fuzzy
+#| msgid "Never replace cover images of these types"
+msgid "Never replace images of these types"
 msgstr "No substitueixis mai les imatges de la caràtula d'aquests tipus"
 
-#: picard/options.py:209
-msgid "Always replace cover images of these types"
+#: picard/options.py:203
+#, fuzzy
+#| msgid "Always replace cover images of these types"
+msgid "Always replace images of these types"
 msgstr "Substitueix sempre les imatges de la caràtula amb aquests tipus"
 
-#: picard/options.py:215 picard/ui/forms/ui_options_cover.py:133
-msgid "Always use the primary image type as the file name for non-front images"
-msgstr ""
-"Fes servir sempre el tipus d'imatge principal com a nom del fitxer per a les "
-"imatges que no són de la caràtula"
+#: picard/options.py:209
+#, fuzzy
+#| msgid "Use the primary image type as the file name"
+msgid "Primary image type as the file name"
+msgstr "Fes servir el tipus d'imatge principal com a nom del fitxer"
 
-#: picard/options.py:217
+#: picard/options.py:211
 msgid "Overwrite existing image files"
 msgstr "Sobreescriu els fitxers d'imatge existents"
 
-#: picard/options.py:218 picard/ui/forms/ui_options_cover.py:129
-msgid "Save cover images as separate files"
+#: picard/options.py:212
+#, fuzzy
+#| msgid "Save cover images as separate files"
+msgid "Save images as separate files"
 msgstr "Desa les imatges de la caràtula com a fitxers independents"
 
-#: picard/options.py:219 picard/ui/forms/ui_options_cover.py:124
-msgid "Embed cover images into tags"
+#: picard/options.py:213
+#, fuzzy
+#| msgid "Embed cover images into tags"
+msgid "Embed images into tags"
 msgstr "Incrusta les imatges de la caràtula a les etiquetes"
 
-#: picard/options.py:220 picard/ui/forms/ui_options_cover.py:132
-msgid "Save only a single front image as separate file"
-msgstr "Desa només una imatge de la caràtula com a fitxer independent"
+#: picard/options.py:214
+#, fuzzy
+#| msgid "Embed only a single front image"
+msgid "Save only one front image"
+msgstr "Incrusta només una imatge de la caràtula"
 
-#: picard/options.py:221
-#: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-msgid "Show cover art details in cover art view"
+#: picard/options.py:215
+#, fuzzy
+#| msgid "Show cover art details in cover art view"
+msgid "Show cover art details in view"
 msgstr "Mostra els detalls de la caràtula a la visualització de caràtules"
 
-#: picard/options.py:222
-msgid "Show cover art type in info labels"
-msgstr "Mostra el tipus de caràtula a les etiquetes d'informació"
+#: picard/options.py:216
+#, fuzzy
+#| msgid "Cover art types"
+msgid "Show cover art type"
+msgstr "Tipus de caràtules"
 
-#: picard/options.py:223
-msgid "Show cover art file size in info labels"
+#: picard/options.py:217
+#, fuzzy
+#| msgid "Show cover art file size in info labels"
+msgid "Show cover art file size"
 msgstr "Mostra la mida del fitxer de la caràtula a les etiquetes d'informació"
 
-#: picard/options.py:224
-msgid "Show cover art dimensions in info labels"
+#: picard/options.py:218
+#, fuzzy
+#| msgid "Show cover art dimensions in info labels"
+msgid "Show cover art dimensions"
 msgstr "Mostra les dimensions de la caràtula a les etiquetes d'informació"
 
-#: picard/options.py:225
-msgid "Show cover art MIME type in info labels"
+#: picard/options.py:219
+#, fuzzy
+#| msgid "Show cover art MIME type in info labels"
+msgid "Show cover art MIME type"
 msgstr "Mostra el tipus MIME de la caràtula a les etiquetes d'informació"
 
-#: picard/options.py:256
-msgid "Use AcoustID audio fingerprinting"
+#: picard/options.py:250
+#, fuzzy
+#| msgid "Use AcoustID audio fingerprinting"
+msgid "Use AcoustID fingerprinting"
 msgstr "Fes servir les empremtes d'àudio AcoustID"
 
-#: picard/options.py:259
+#: picard/options.py:253
 msgid "Save AcoustID fingerprints"
 msgstr "Desa les empremtes AcoustID"
 
-#: picard/options.py:269 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:263 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr "Analitza automàticament tots els fitxers nous"
 
-#: picard/options.py:270 picard/ui/forms/ui_options_general.py:218
-msgid "Check for documentation updates during startup"
+#: picard/options.py:264
+#, fuzzy
+#| msgid "Check for documentation updates during startup"
+msgid "Check for documentation updates"
 msgstr "Comprova si hi ha actualitzacions de la documentació en iniciar"
 
-#: picard/options.py:271
-msgid "Check for plugin updates during startup"
+#: picard/options.py:265
+#, fuzzy
+#| msgid "Check for plugin updates during startup"
+msgid "Check for plugin updates"
 msgstr "Comprova si hi ha actualitzacions dels connectors en iniciar"
 
-#: picard/options.py:272 picard/ui/forms/ui_options_general.py:219
-msgid "Check for program updates during startup"
+#: picard/options.py:266
+#, fuzzy
+#| msgid "Check for program updates during startup"
+msgid "Check for program updates"
 msgstr "Comprova si hi ha actualitzacions del programa en iniciar"
 
-#: picard/options.py:273 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:267 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
 msgstr "Agrupa automàticament tots els fitxers nous"
 
-#: picard/options.py:274 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:268 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr "Ignora els MBID en carregar fitxers nous"
 
-#: picard/options.py:275
+#: picard/options.py:269
 msgid "Server address"
 msgstr "Adreça del servidor"
 
-#: picard/options.py:276
+#: picard/options.py:270
 msgid "Port"
 msgstr "Port"
 
-#: picard/options.py:277
+#: picard/options.py:271
 msgid "Days between update checks"
 msgstr "Dies entre les comprovacions d'actualitzacions"
 
-#: picard/options.py:278
-msgid "Updates to check"
+#: picard/options.py:272
+#, fuzzy
+#| msgid "Updates to check"
+msgid "Update types to check"
 msgstr "Actualitzacions a comprovar"
 
-#: picard/options.py:283
+#: picard/options.py:273
+#, fuzzy
+#| msgid "Submit data to the configured server"
+msgid "Submit to configured server"
+msgstr "Envia les dades al servidor configurat"
+
+#: picard/options.py:277
 msgid "Use album artist genres"
 msgstr "Fes servir els gèneres dels artistes de l'àlbum"
 
-#: picard/options.py:284 picard/ui/forms/ui_options_genres.py:133
+#: picard/options.py:278 picard/ui/forms/ui_options_genres.py:133
 msgid "Use folksonomy tags as genre"
 msgstr "Fes servir les etiquetes de folcsonomia com a gènere"
 
-#: picard/options.py:286
+#: picard/options.py:280
 msgid "Genres to include or exclude"
 msgstr "Gèneres que s'han d'incloure o excloure"
 
-#: picard/options.py:288
+#: picard/options.py:282
 msgid "Join multiple genres with"
 msgstr "Concatena els gèneres amb"
 
-#: picard/options.py:289
+#: picard/options.py:283
 msgid "Maximum number of genres"
 msgstr "Nombre màxim de gèneres"
 
-#: picard/options.py:290
+#: picard/options.py:284
 msgid "Minimal genre usage"
 msgstr "Ús mínim del gènere"
 
-#: picard/options.py:291 picard/ui/forms/ui_options_genres.py:131
+#: picard/options.py:285 picard/ui/forms/ui_options_genres.py:131
 msgid "Use only my genres"
 msgstr "Fes servir només els meus gèneres"
 
-#: picard/options.py:292 picard/ui/forms/ui_options_genres.py:130
+#: picard/options.py:286 picard/ui/forms/ui_options_genres.py:130
 msgid "Use genres from MusicBrainz"
 msgstr "Fes servir els gèneres de MusicBrainz"
 
-#: picard/options.py:296 picard/ui/forms/ui_options_interface.py:140
-msgid "Allow selection of multiple directories"
+#: picard/options.py:290
+#, fuzzy
+#| msgid "Allow selection of multiple directories"
+msgid "Allow selecting multiple directories"
 msgstr "Permet la selecció de diversos directoris"
 
-#: picard/options.py:297 picard/ui/forms/ui_options_interface.py:141
-msgid "Use builtin search rather than looking in browser"
+#: picard/options.py:291
+#, fuzzy
+#| msgid "Use builtin search rather than looking in browser"
+msgid "Use builtin search (not browser)"
 msgstr "Fes servir la cerca incorporada en comptes de la cerca al navegador"
 
-#: picard/options.py:302 picard/ui/forms/ui_options_interface.py:147
-msgid "Adjust horizontal position in file browser automatically"
+#: picard/options.py:296
+#, fuzzy
+#| msgid "Adjust horizontal position in file browser automatically"
+msgid "Adjust horizontal position in file browser"
 msgstr "Ajusta la posició horitzontal a l'explorador de fitxers automàticament"
 
-#: picard/options.py:304 picard/ui/forms/ui_options_interface.py:146
-msgid "Show a confirmation dialog when saving files"
-msgstr "Mostra un diàleg de confirmació en desar els fitxers"
+#: picard/options.py:298
+#, fuzzy
+#| msgid "Move files when saving"
+msgid "Confirm when saving"
+msgstr "Mou els fitxers en desar-los"
 
-#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:145
-msgid "Show a quit confirmation dialog for unsaved changes"
+#: picard/options.py:300
+#, fuzzy
+#| msgid "Show a quit confirmation dialog for unsaved changes"
+msgid "Confirm quit if unsaved changes"
 msgstr "Mostra una confirmació en sortir si hi ha canvis sense desar"
 
-#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:136
+#: picard/options.py:301 picard/ui/forms/ui_options_interface.py:136
 msgid "Show icons in menus"
 msgstr "Mostra icones als menús"
 
-#: picard/options.py:308
-msgid "Show a usage warning dialog when Picard starts"
+#: picard/options.py:302
+#, fuzzy
+#| msgid "Show a usage warning dialog when Picard starts"
+msgid "Show warning when Picard starts"
 msgstr "Mostra un diàleg d'avís d'ús en iniciar Picard"
 
-#: picard/options.py:309
-msgid "Show check for documentation updates during startup"
-msgstr "Mostra la comprovació d'actualitzacions de la documentació en iniciar"
+#: picard/options.py:303
+#, fuzzy
+#| msgid "&Show documentation"
+msgid "Show documentation update request"
+msgstr "Mo&stra la documentació"
 
-#: picard/options.py:310 picard/ui/forms/ui_options_interface.py:148
-msgid "Enable audio player \"now playing\" notifications"
+#: picard/options.py:304
+#, fuzzy
+#| msgid "Enable audio player \"now playing\" notifications"
+msgid "Enable \"now playing\" notifications"
 msgstr "Habilita les notificacions «En reproducció» del reproductor d'àudio"
 
-#: picard/options.py:311
+#: picard/options.py:305
 msgid "Begin browsing in a specific directory"
 msgstr "Inicia l'exploració en un directori específic"
 
-#: picard/options.py:312 picard/ui/forms/ui_options_interface.py:150
+#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:150
 msgid "Directory to begin browsing"
 msgstr "Directori on iniciar l'exploració"
 
-#: picard/options.py:313 picard/ui/forms/ui_options_interface.py:135
+#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:135
 msgid "Show text labels under icons"
 msgstr "Mostra etiquetes de text sota les icones"
 
-#: picard/options.py:314
+#: picard/options.py:308
 msgid "User interface language"
 msgstr "Llengua de la interfície d'usuari"
 
-#: picard/options.py:315
+#: picard/options.py:309
 msgid "User interface color theme"
 msgstr "Tema de color de la interfície d'usuari"
 
-#: picard/options.py:316
+#: picard/options.py:310
 msgid "Use advanced search syntax"
 msgstr "Fes servir la sintaxi de cerca avançada"
 
-#: picard/options.py:324
+#: picard/options.py:318
 msgid "Colors to use for light theme"
 msgstr "Colors del tema clar"
 
-#: picard/options.py:330
+#: picard/options.py:324
 msgid "Colors to use for dark theme"
 msgstr "Colors del tema fosc"
 
-#: picard/options.py:335
-msgid "Options to show in the Quick Menu"
-msgstr "Opcions que es mostraran al menú ràpid"
+#: picard/options.py:329
+#, fuzzy
+#| msgid "&Quick settings"
+msgid "Quick Menu options"
+msgstr "&Configuració ràpida"
 
-#: picard/options.py:350
+#: picard/options.py:344
 msgid "Layout of the tool bar"
 msgstr "Disposició de la barra d'eines"
 
-#: picard/options.py:354
+#: picard/options.py:348
 msgid "Tags to show at the top"
 msgstr "Etiquetes que es mostraran a la part superior"
 
-#: picard/options.py:359
-msgid "Automatic backup destination directory"
-msgstr "Directori de destinació de les còpies de seguretat automàtiques"
+#: picard/options.py:352
+#, fuzzy
+#| msgid "Automatic configuration backups directory:"
+msgid "Configuration backup directory"
+msgstr "Directori de les còpies de seguretat de la configuració automàtiques:"
 
-#: picard/options.py:364
-msgid "Minimal similarity for cluster lookups"
+#: picard/options.py:356
+#, fuzzy
+#| msgid "Minimal similarity for cluster lookups"
+msgid "Similarity for cluster lookups"
 msgstr "Similitud mínima per a les cerques d'agrupacions"
 
-#: picard/options.py:365
-msgid "Minimal similarity for file lookups"
+#: picard/options.py:357
+#, fuzzy
+#| msgid "Minimal similarity for file lookups"
+msgid "Similarity for file lookups"
 msgstr "Similitud mínima per a les cerques de fitxers"
 
-#: picard/options.py:366
-msgid "Minimal similarity for matching files to tracks"
+#: picard/options.py:358
+#, fuzzy
+#| msgid "Minimal similarity for matching files to tracks"
+msgid "Similarity for matching files to tracks"
 msgstr "Similitud mínima per a fer coincidir els fitxers amb pistes"
 
-#: picard/options.py:370
+#: picard/options.py:362
 msgid "Translation locales"
 msgstr "Configuracions regionals de traducció"
 
-#: picard/options.py:371 picard/ui/forms/ui_options_metadata.py:180
-msgid "Convert Unicode punctuation characters to ASCII"
+#: picard/options.py:363
+#, fuzzy
+#| msgid "Convert Unicode punctuation characters to ASCII"
+msgid "Convert Unicode punctuation to ASCII"
 msgstr "Converteix a ASCII els caràcters de puntuació Unicode"
 
-#: picard/options.py:373 picard/ui/forms/ui_options_metadata.py:183
-msgid "Guess track number and title from filename if empty"
+#: picard/options.py:364
+#, fuzzy
+#| msgid "Guess track number and title from filename if empty"
+msgid "Guess track number and title"
 msgstr ""
 "Calcula el número de pista i el títol a partir del nom del fitxer si estan "
 "buits"
 
-#: picard/options.py:375
+#: picard/options.py:365
 msgid "Standalone recordings name"
 msgstr "Nom dels enregistraments independents"
 
-#: picard/options.py:376 picard/ui/forms/ui_options_metadata.py:181
+#: picard/options.py:366 picard/ui/forms/ui_options_metadata.py:181
 msgid "Use release relationships"
 msgstr "Fes servir les relacions de publicació"
 
-#: picard/options.py:377
+#: picard/options.py:367
 msgid "Translation script exceptions"
 msgstr "Excepcions de l'script de traducció"
 
-#: picard/options.py:378 picard/ui/forms/ui_options_metadata.py:177
+#: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:177
 msgid "Use standardized artist names"
 msgstr "Fes servir els noms d'artista estandarditzats"
 
-#: picard/options.py:379 picard/ui/forms/ui_options_metadata.py:178
+#: picard/options.py:369 picard/ui/forms/ui_options_metadata.py:178
 msgid "Use standardized instrument credits"
 msgstr "Fes servir els crèdits d'instruments estandarditzats"
 
-#: picard/options.py:380 picard/ui/forms/ui_options_metadata.py:179
+#: picard/options.py:370 picard/ui/forms/ui_options_metadata.py:179
 msgid "Use standardized vocal credits"
 msgstr "Fes servir els crèdits de veu estandarditzats"
 
-#: picard/options.py:381
+#: picard/options.py:371
 msgid "Use track and release relationships"
 msgstr "Fes servir les relacions de pista i publicació"
 
-#: picard/options.py:383
+#: picard/options.py:373
 msgid "Translate artist names"
 msgstr "Tradueix els noms dels artistes"
 
-#: picard/options.py:384
+#: picard/options.py:374
 msgid "Translate album titles"
 msgstr "Tradueix els títols dels àlbums"
 
-#: picard/options.py:385
+#: picard/options.py:375
 msgid "Translate track titles"
 msgstr "Tradueix els títols de les pistes"
 
-#: picard/options.py:386
+#: picard/options.py:376
 msgid "Translate artist names exception"
 msgstr "Excepció de la traducció dels noms dels artistes"
 
-#: picard/options.py:387
+#: picard/options.py:377
 msgid "Various Artists name"
 msgstr "Nom quan hi ha diversos artistes"
 
-#: picard/options.py:392
-msgid "Tag formats to not sanitize dates"
-msgstr "Formats d'etiquetes per als quals no es processaran les dates"
+#: picard/options.py:382
+#, fuzzy
+#| msgid "Do not sanitize dates for these tag formats:"
+msgid "Don't sanitize dates for these formats"
+msgstr "No processis les dates per a aquests formats d'etiquetes:"
 
-#: picard/options.py:397
+#: picard/options.py:387
 msgid "Browser integration"
 msgstr "Integració amb el navegador"
 
-#: picard/options.py:398 picard/ui/forms/ui_options_network.py:174
+#: picard/options.py:388 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr "Escolta només localhost"
 
-#: picard/options.py:399
+#: picard/options.py:389
 msgid "Default listening port"
 msgstr "Port d'escolta per defecte"
 
-#: picard/options.py:400
-msgid "Network cache size in bytes"
+#: picard/options.py:390
+#, fuzzy
+#| msgid "Network cache size in bytes"
+msgid "Network cache size (bytes)"
 msgstr "Mida de la memòria cau de xarxa en bytes"
 
-#: picard/options.py:401
-msgid "Request timeout in seconds"
+#: picard/options.py:391
+#, fuzzy
+#| msgid "Request timeout in seconds"
+msgid "Request timeout (seconds)"
 msgstr "Temps d'espera de les sol·licituds en segons"
 
-#: picard/options.py:402
+#: picard/options.py:392
 msgid "Proxy password"
 msgstr "Contrasenya del servidor intermediari"
 
-#: picard/options.py:403
+#: picard/options.py:393
 msgid "Proxy server address"
 msgstr "Adreça del servidor intermediari"
 
-#: picard/options.py:404
+#: picard/options.py:394
 msgid "Proxy server port"
 msgstr "Port del servidor intermediari"
 
-#: picard/options.py:405
+#: picard/options.py:395
 msgid "Type of proxy server"
 msgstr "Tipus de servidor intermediari"
 
-#: picard/options.py:406
+#: picard/options.py:396
 msgid "Proxy username"
 msgstr "Nom d'usuari del servidor intermediari"
 
-#: picard/options.py:407
+#: picard/options.py:397
 msgid "Use a web proxy server"
 msgstr "Fes servir un servidor intermediari"
 
-#: picard/options.py:411
+#: picard/options.py:401
 msgid "Plugins execution order"
 msgstr "Ordre d'execució dels connectors"
 
-#: picard/options.py:420 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:410 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr "Habilita les puntuacions de les pistes"
 
-#: picard/options.py:422
-msgid "Email to use when saving ratings"
+#: picard/options.py:412
+#, fuzzy
+#| msgid "Email to use when saving ratings"
+msgid "Email for saving ratings"
 msgstr "Adreça electrònica que es farà servir en desar les puntuacions"
 
-#: picard/options.py:423 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:413 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr "Envia les puntuacions a MusicBrainz"
 
-#: picard/options.py:427 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:417 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr "Països de publicació preferits"
 
-#: picard/options.py:428 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:418 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr "Formats de suport preferits"
 
-#: picard/options.py:429 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:419 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr "Tipus de publicacions preferits"
 
-#: picard/options.py:433 picard/ui/forms/ui_options_renaming.py:166
+#: picard/options.py:423 picard/ui/forms/ui_options_renaming.py:166
 msgid "Delete empty directories"
 msgstr "Suprimeix els directoris buits"
 
-#: picard/options.py:434
+#: picard/options.py:424
 msgid "Move additional files"
 msgstr "Mou els fitxers addicionals"
 
-#: picard/options.py:435
+#: picard/options.py:425
 msgid "Additional file patterns"
 msgstr "Patrons de fitxers addicionals"
 
-#: picard/options.py:436
+#: picard/options.py:426
 msgid "Move files"
 msgstr "Mou els fitxers"
 
-#: picard/options.py:437
+#: picard/options.py:427
 msgid "Destination directory"
 msgstr "Directori de destinació"
 
-#: picard/options.py:438 picard/ui/forms/ui_options_renaming.py:167
+#: picard/options.py:428 picard/ui/forms/ui_options_renaming.py:167
 msgid "Overwrite existing files"
 msgstr "Sobreescriu els fitxers existents"
 
-#: picard/options.py:439
+#: picard/options.py:429
 msgid "Rename files"
 msgstr "Canvia el nom dels fitxers"
 
-#: picard/options.py:443 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:433 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "Substitueix els caràcters no ASCII"
 
-#: picard/options.py:448
-msgid "Replacement character to use for directory separators"
-msgstr "Caràcter de substitució per als separadors de directori"
+#: picard/options.py:438
+#, fuzzy
+#| msgid "Invalid directory separator replacement"
+msgid "Directory separators character"
+msgstr "La substitució del separador de directoris no és vàlida"
 
-#: picard/options.py:450 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:440 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr "Substitueix els espais per ratlles baixes"
 
-#: picard/options.py:455
-msgid "Replacement characters used for Windows compatibility"
-msgstr "Caràcters de substitució per a la compatibilitat amb el Windows"
+#: picard/options.py:445
+#, fuzzy
+#| msgid "Windows compatibility"
+msgid "Windows compatibility characters"
+msgstr "Compatibilitat amb el Windows"
 
-#: picard/options.py:457 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:447 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Compatibilitat amb el Windows"
 
-#: picard/options.py:458 picard/ui/options/renaming_compat.py:136
+#: picard/options.py:448 picard/ui/options/renaming_compat.py:136
 msgid "Windows long path support"
 msgstr "Compatibilitat amb camins llargs del Windows"
 
-#: picard/options.py:463
+#: picard/options.py:453
 msgid "Enable tagger scripts"
 msgstr "Habilita els scripts d'etiquetatge"
 
-#: picard/options.py:464
+#: picard/options.py:454
 msgid "Tagger scripts"
 msgstr "Scripts d'etiquetatge"
 
-#: picard/options.py:468 picard/ui/forms/ui_options_tags.py:80
+#: picard/options.py:458 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
 msgstr "Esborra les etiquetes existents"
 
-#: picard/options.py:469
+#: picard/options.py:459
 msgid "Enable saving tags to files"
 msgstr "Habilita el desament de les etiquetes als fitxers"
 
-#: picard/options.py:470 picard/ui/forms/ui_options_tags.py:84
-msgid "Fix missing seekpoints for FLAC files"
+#: picard/options.py:460
+#, fuzzy
+#| msgid "Fix missing seekpoints for FLAC files"
+msgid "Fix missing seekpoints in FLAC"
 msgstr "Corregeix els punts de cerca absents en els fitxers FLAC"
 
-#: picard/options.py:471
+#: picard/options.py:461
 msgid "Preserved tags list"
 msgstr "Llista d'etiquetes preservades"
 
-#: picard/options.py:472 picard/ui/forms/ui_options_tags.py:81
-msgid "Keep embedded images when clearing tags"
+#: picard/options.py:462
+#, fuzzy
+#| msgid "Keep embedded images when clearing tags"
+msgid "Keep embedded images"
 msgstr "Conserva les imatges incrustades en esborrar les etiquetes"
 
-#: picard/options.py:473 picard/ui/forms/ui_options_tags.py:78
-msgid "Preserve timestamps of tagged files"
+#: picard/options.py:463
+#, fuzzy
+#| msgid "Preserve timestamps of tagged files"
+msgid "Preserve timestamps"
 msgstr "Conserva les marques temporals dels fitxers etiquetats"
 
-#: picard/options.py:474 picard/ui/forms/ui_options_tags.py:83
-msgid "Remove APEv2 tags from MP3 files"
+#: picard/options.py:464
+#, fuzzy
+#| msgid "Remove APEv2 tags from MP3 files"
+msgid "Remove APEv2 tags from MP3"
 msgstr "Suprimeix les etiquetes APEv2 dels fitxers MP3"
 
-#: picard/options.py:475 picard/ui/forms/ui_options_tags.py:82
-msgid "Remove ID3 tags from FLAC files"
+#: picard/options.py:465
+#, fuzzy
+#| msgid "Remove ID3 tags from FLAC files"
+msgid "Remove ID3 tags from FLAC"
 msgstr "Suprimeix les etiquetes ID3 dels fitxers FLAC"
 
-#: picard/options.py:479
+#: picard/options.py:469
 msgid "Save APEv2 tags to AAC"
 msgstr "Desa les etiquetes APEv2 als fitxers AAC"
 
-#: picard/options.py:480
-#: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
-msgid "Remove APEv2 tags from AAC files"
+#: picard/options.py:470
+#, fuzzy
+#| msgid "Remove APEv2 tags from AAC files"
+msgid "Remove APEv2 tags from AAC"
 msgstr "Suprimeix les etiquetes APEv2 dels fitxers AAC"
 
-#: picard/options.py:484
+#: picard/options.py:474
 msgid "Save APEv2 tags to AC3"
 msgstr "Desa les etiquetes APEv2 als fitxers AC3"
 
-#: picard/options.py:485
-#: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
-msgid "Remove APEv2 tags from AC3 files"
+#: picard/options.py:475
+#, fuzzy
+#| msgid "Remove APEv2 tags from AC3 files"
+msgid "Remove APEv2 tags from AC3"
 msgstr "Suprimeix les etiquetes APEv2 dels fitxers AC3"
 
-#: picard/options.py:489
+#: picard/options.py:479
 msgid "ID3v2.3 join character"
 msgstr "Caràcter de concatenació per a ID3v2.3"
 
-#: picard/options.py:490
+#: picard/options.py:480
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "Codificació del text per a ID3v2"
 
-#: picard/options.py:491
-#: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
-msgid "Save iTunes compatible grouping and work"
+#: picard/options.py:481
+#, fuzzy
+#| msgid "Save iTunes compatible grouping and work"
+msgid "iTunes compatible grouping / work"
 msgstr "Desa les etiquetes d'agrupació i obra compatibles amb iTunes"
 
-#: picard/options.py:492
+#: picard/options.py:482
 msgid "Write ID3v1 tags"
 msgstr "Escriu les etiquetes ID3v1"
 
-#: picard/options.py:493
+#: picard/options.py:483
 msgid "ID3v2 version to write"
 msgstr "Versió d'ID3v2 que s'escriurà"
 
-#: picard/options.py:497
-#: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
-msgid "Remove existing RIFF INFO tags from WAVE files"
+#: picard/options.py:487
+#, fuzzy
+#| msgid "Remove existing RIFF INFO tags from WAVE files"
+msgid "Remove RIFF INFO tags from WAVE"
 msgstr "Suprimeix les etiquetes RIFF INFO dels fitxers WAVE"
 
-#: picard/options.py:498
+#: picard/options.py:488
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "Codificació de text de RIFF INFO"
 
-#: picard/options.py:499
-msgid "Write RIFF INFO tags to WAVE files"
+#: picard/options.py:489
+#, fuzzy
+#| msgid "Write RIFF INFO tags to WAVE files"
+msgid "Write RIFF INFO tags to WAVE"
 msgstr "Escriu les etiquetes RIFF INFO als fitxers WAVE"
 
-#: picard/options.py:505
+#: picard/options.py:495
 msgid "Selected file naming script"
 msgstr "Script de nom dels fitxers seleccionat"
 
-#: picard/options.py:513 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:503 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr "No facis una coincidència automàtica en carregar"
 
-#: picard/options.py:519 picard/ui/forms/ui_options_advanced_sessions.py:122
-msgid "Load last saved session on startup"
-msgstr "Carrega la darrera sessió desada en iniciar"
+#: picard/options.py:509
+#, fuzzy
+#| msgid "Failed to save session"
+msgid "Start with last saved session"
+msgstr "No s'ha pogut desar la sessió"
 
-#: picard/options.py:525
+#: picard/options.py:515
 msgid "Auto-save interval"
 msgstr "Interval de desament automàtic"
 
-#: picard/options.py:531
-msgid "Backup session on unexpected shutdown"
+#: picard/options.py:521
+#, fuzzy
+#| msgid "Backup session on unexpected shutdown"
+msgid "Backup session on unexpected exit"
 msgstr ""
 "Fes una còpia de seguretat de la sessió si hi ha un tancament inesperat"
 
-#: picard/options.py:537 picard/ui/forms/ui_options_advanced_sessions.py:119
-msgid "Include MusicBrainz data in saved sessions"
+#: picard/options.py:527
+#, fuzzy
+#| msgid "Include MusicBrainz data in saved sessions"
+msgid "Include MusicBrainz data"
 msgstr "Inclou les dades de MusicBrainz a les sessions desades"
 
-#: picard/options.py:543 picard/ui/forms/ui_options_advanced_sessions.py:120
-msgid "Do not make MusicBrainz requests on restore"
+#: picard/options.py:533
+#, fuzzy
+#| msgid "Do not make MusicBrainz requests on restore"
+msgid "No MusicBrainz requests on restore"
 msgstr "No facis sol·licituds a MusicBrainz en restaurar"
 
-#: picard/options.py:549
+#: picard/options.py:539
 msgid "Sessions directory"
 msgstr "Directori de les sessions"
 
-#: picard/options.py:577
+#: picard/options.py:567
 msgid "Plugins to exclude from updates"
 msgstr "Connectors exclosos de les actualitzacions"
 
-#: picard/options.py:596
+#: picard/options.py:586
 #, python-format
 msgid "No title for setting \"%s\""
 msgstr "El paràmetre «%s» no té títol"
@@ -3494,9 +3615,9 @@ msgstr ""
 #| "If translate is not blank, the output will be translated into the current "
 #| "locale language.\n"
 msgid ""
-"Returns the name of the country for the specified country code.  If the "
+"Returns the name of the country for the specified country code. If the "
 "country code is invalid an empty string will be returned.\n"
-"If translate is not blank, the output will be translated into the current "
+"If `translate` is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
 "`$countryname(codi_país,tradueix=\"\")`\n"
@@ -4470,8 +4591,9 @@ msgid "Failed to save Log View to file"
 msgstr "No s'ha pogut desar la visualització de registre al fitxer"
 
 #: picard/ui/logview.py:298
-#, python-format
-msgid "Something prevented data to be written to \"%s\""
+#, fuzzy, python-format
+#| msgid "Something prevented data to be written to \"%s\""
+msgid "Something prevented data to be written to \"%s\"."
 msgstr "Alguna cosa ha impedit escriure les dades a «%s»"
 
 #: picard/ui/logview.py:313
@@ -5240,11 +5362,19 @@ msgstr ""
 "Ignora els camins de fitxers que coincideixin amb l'expressió regular "
 "següent:"
 
+#: picard/ui/forms/ui_options_advanced.py:150
+msgid "Maximum number of entities to return per MusicBrainz query"
+msgstr "Nombre màxim d'entitats que es retornaran per consulta a MusicBrainz"
+
 #: picard/ui/forms/ui_options_advanced.py:151
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
 "Ignora les diferències de durada de les pistes inferiors a aquest nombre de "
 "segons"
+
+#: picard/ui/forms/ui_options_advanced.py:152
+msgid "Include sub-folders when adding files from folder"
+msgstr "Inclou les subcarpetes en afegir els fitxers d'una carpeta"
 
 #: picard/ui/forms/ui_options_advanced.py:154
 msgid ""
@@ -5314,9 +5444,21 @@ msgstr ""
 "Intenta fer una còpia de seguretat de la sessió si hi ha un tancament "
 "inesperat"
 
+#: picard/ui/forms/ui_options_advanced_sessions.py:119
+msgid "Include MusicBrainz data in saved sessions"
+msgstr "Inclou les dades de MusicBrainz a les sessions desades"
+
+#: picard/ui/forms/ui_options_advanced_sessions.py:120
+msgid "Do not make MusicBrainz requests on restore"
+msgstr "No facis sol·licituds a MusicBrainz en restaurar"
+
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
 msgid "Loading sessions:"
 msgstr "Càrrega de les sessions:"
+
+#: picard/ui/forms/ui_options_advanced_sessions.py:122
+msgid "Load last saved session on startup"
+msgstr "Carrega la darrera sessió desada en iniciar"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:40
 #: picard/ui/options/dialog.py:360
@@ -5331,6 +5473,15 @@ msgstr "Unitat de CD-ROM per les cerques:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Unitat de CD-ROM per defecte per a les cerques:"
 
+#: picard/ui/forms/ui_options_cover.py:124
+msgid "Embed cover images into tags"
+msgstr "Incrusta les imatges de la caràtula a les etiquetes"
+
+#: picard/ui/forms/ui_options_cover.py:126
+msgid "Never replace cover images with smaller ones"
+msgstr ""
+"No substitueixis mai les imatges de la caràtula per imatges més petites"
+
 #: picard/ui/forms/ui_options_cover.py:127
 msgid "Never replace selected cover image types"
 msgstr "No substitueixis mai els tipus d'imatges de la caràtula seleccionats"
@@ -5339,6 +5490,10 @@ msgstr "No substitueixis mai els tipus d'imatges de la caràtula seleccionats"
 msgid "Select Types…"
 msgstr "Selecciona els tipus…"
 
+#: picard/ui/forms/ui_options_cover.py:129
+msgid "Save cover images as separate files"
+msgstr "Desa les imatges de la caràtula com a fitxers independents"
+
 #: picard/ui/forms/ui_options_cover.py:130
 msgid "Use the following file name for images:"
 msgstr "Fes servir el nom de fitxer següent per a les imatges:"
@@ -5346,6 +5501,16 @@ msgstr "Fes servir el nom de fitxer següent per a les imatges:"
 #: picard/ui/forms/ui_options_cover.py:131
 msgid "Overwrite the file if it already exists"
 msgstr "Sobreescriu el fitxer si ja existeix"
+
+#: picard/ui/forms/ui_options_cover.py:132
+msgid "Save only a single front image as separate file"
+msgstr "Desa només una imatge de la caràtula com a fitxer independent"
+
+#: picard/ui/forms/ui_options_cover.py:133
+msgid "Always use the primary image type as the file name for non-front images"
+msgstr ""
+"Fes servir sempre el tipus d'imatge principal com a nom del fitxer per a les "
+"imatges que no són de la caràtula"
 
 #: picard/ui/forms/ui_options_cover.py:134
 msgid "Use the primary image type as the file name"
@@ -5526,6 +5691,14 @@ msgstr "General"
 msgid "Update Checking"
 msgstr "Comprovació d'actualitzacions"
 
+#: picard/ui/forms/ui_options_general.py:218
+msgid "Check for documentation updates during startup"
+msgstr "Comprova si hi ha actualitzacions de la documentació en iniciar"
+
+#: picard/ui/forms/ui_options_general.py:219
+msgid "Check for program updates during startup"
+msgstr "Comprova si hi ha actualitzacions del programa en iniciar"
+
 #: picard/ui/forms/ui_options_general.py:220
 msgid "Days between checks:"
 msgstr "Dies entre les comprovacions:"
@@ -5594,6 +5767,14 @@ msgstr "Tema de color de la interfície d'usuari:"
 msgid "Miscellaneous"
 msgstr "Miscel·lània"
 
+#: picard/ui/forms/ui_options_interface.py:140
+msgid "Allow selection of multiple directories"
+msgstr "Permet la selecció de diversos directoris"
+
+#: picard/ui/forms/ui_options_interface.py:141
+msgid "Use builtin search rather than looking in browser"
+msgstr "Fes servir la cerca incorporada en comptes de la cerca al navegador"
+
 #: picard/ui/forms/ui_options_interface.py:142
 #: picard/ui/searchdialog/__init__.py:101
 msgid "Use advanced query syntax"
@@ -5609,6 +5790,22 @@ msgstr ""
 "Mostra el diàleg de comprovació d'actualitzacions de documentació "
 "inhabilitada"
 
+#: picard/ui/forms/ui_options_interface.py:145
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr "Mostra una confirmació en sortir si hi ha canvis sense desar"
+
+#: picard/ui/forms/ui_options_interface.py:146
+msgid "Show a confirmation dialog when saving files"
+msgstr "Mostra un diàleg de confirmació en desar els fitxers"
+
+#: picard/ui/forms/ui_options_interface.py:147
+msgid "Adjust horizontal position in file browser automatically"
+msgstr "Ajusta la posició horitzontal a l'explorador de fitxers automàticament"
+
+#: picard/ui/forms/ui_options_interface.py:148
+msgid "Enable audio player \"now playing\" notifications"
+msgstr "Habilita les notificacions «En reproducció» del reproductor d'àudio"
+
 #: picard/ui/forms/ui_options_interface.py:149
 msgid "Begin browsing in the following directory:"
 msgstr "Inicia l'exploració al directori següent:"
@@ -5617,6 +5814,10 @@ msgstr "Inicia l'exploració al directori següent:"
 #: picard/ui/options/interface_colors.py:98
 msgid "Colors"
 msgstr "Colors"
+
+#: picard/ui/forms/ui_options_interface_cover_art_box.py:51
+msgid "Show cover art details in cover art view"
+msgstr "Mostra els detalls de la caràtula a la visualització de caràtules"
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
@@ -5745,9 +5946,19 @@ msgstr "Selecciona…"
 msgid "Ignore name translation for these language scripts:"
 msgstr "Ignora la traducció dels noms per a aquests sistemes d'escriptura:"
 
+#: picard/ui/forms/ui_options_metadata.py:180
+msgid "Convert Unicode punctuation characters to ASCII"
+msgstr "Converteix a ASCII els caràcters de puntuació Unicode"
+
 #: picard/ui/forms/ui_options_metadata.py:182
 msgid "Use track relationships"
 msgstr "Fes servir les relacions de pistes"
+
+#: picard/ui/forms/ui_options_metadata.py:183
+msgid "Guess track number and title from filename if empty"
+msgstr ""
+"Calcula el número de pista i el títol a partir del nom del fitxer si estan "
+"buits"
 
 #: picard/ui/forms/ui_options_metadata.py:184
 msgid "Custom Fields"
@@ -5969,9 +6180,29 @@ msgstr "Documentació"
 msgid "Write tags to files"
 msgstr "Escriu les etiquetes als fitxers"
 
+#: picard/ui/forms/ui_options_tags.py:78
+msgid "Preserve timestamps of tagged files"
+msgstr "Conserva les marques temporals dels fitxers etiquetats"
+
 #: picard/ui/forms/ui_options_tags.py:79
 msgid "Before Tagging"
 msgstr "Abans de l'etiquetatge"
+
+#: picard/ui/forms/ui_options_tags.py:81
+msgid "Keep embedded images when clearing tags"
+msgstr "Conserva les imatges incrustades en esborrar les etiquetes"
+
+#: picard/ui/forms/ui_options_tags.py:82
+msgid "Remove ID3 tags from FLAC files"
+msgstr "Suprimeix les etiquetes ID3 dels fitxers FLAC"
+
+#: picard/ui/forms/ui_options_tags.py:83
+msgid "Remove APEv2 tags from MP3 files"
+msgstr "Suprimeix les etiquetes APEv2 dels fitxers MP3"
+
+#: picard/ui/forms/ui_options_tags.py:84
+msgid "Fix missing seekpoints for FLAC files"
+msgstr "Corregeix els punts de cerca absents en els fitxers FLAC"
 
 #: picard/ui/forms/ui_options_tags.py:85
 msgid ""
@@ -6009,6 +6240,10 @@ msgstr "Desa etiquetes APEv2"
 msgid "Do not save tags"
 msgstr "No desis etiquetes"
 
+#: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
+msgid "Remove APEv2 tags from AAC files"
+msgstr "Suprimeix les etiquetes APEv2 dels fitxers AAC"
+
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:51
 msgid "AC3 files"
 msgstr "Fitxers AC3"
@@ -6027,6 +6262,10 @@ msgstr ""
 "etiquetes APEv2 poden tenir problemes per a carregar i reproduir aquests "
 "fitxers. Per tant, podeu seleccionar si voleu desar etiquetes en aquests "
 "fitxers."
+
+#: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
+msgid "Remove APEv2 tags from AC3 files"
+msgstr "Suprimeix les etiquetes APEv2 dels fitxers AC3"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:121
 #: picard/ui/options/tags_compatibility_id3.py:38
@@ -6073,6 +6312,10 @@ msgstr ""
 "són «;_» o «_/_», o podeu indicar el vostre propi separador. </p></body></"
 "html>"
 
+#: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
+msgid "Save iTunes compatible grouping and work"
+msgstr "Desa les etiquetes d'agrupació i obra compatibles amb iTunes"
+
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
 msgstr "Inclou també etiquetes ID3v1 als fitxers"
@@ -6097,6 +6340,10 @@ msgstr ""
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:64
 msgid "Also include RIFF INFO tags in the files"
 msgstr "Inclou també etiquetes RIFF INFO als fitxers"
+
+#: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
+msgid "Remove existing RIFF INFO tags from WAVE files"
+msgstr "Suprimeix les etiquetes RIFF INFO dels fitxers WAVE"
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:67
 msgid "Windows-1252"
@@ -7762,13 +8009,23 @@ msgid "Advanced"
 msgstr "Avançat"
 
 #: picard/ui/options/cover.py:149
+#, fuzzy
+#| msgid ""
+#| "Embedded cover art images with a type found in the 'Include' list will "
+#| "never be replaced by a newly downloaded image UNLESS they also have an "
+#| "image type in the 'Exclude' list. Images with types found in the "
+#| "'Exclude' list will always be replaced by downloaded images of the same "
+#| "type. Images types not appearing in the 'Include' or 'Exclude' list will "
+#| "not be considered when determining whether or not to replace an embedded "
+#| "cover art image.\n"
 msgid ""
-"Embedded cover art images with a type found in the 'Include' list will never "
-"be replaced by a newly downloaded image UNLESS they also have an image type "
-"in the 'Exclude' list. Images with types found in the 'Exclude' list will "
-"always be replaced by downloaded images of the same type. Images types not "
-"appearing in the 'Include' or 'Exclude' list will not be considered when "
-"determining whether or not to replace an embedded cover art image.\n"
+"Embedded cover art images with a type found in the \"Include\" list will "
+"never be replaced by a newly downloaded image UNLESS they also have an image "
+"type in the \"Exclude\" list. Images with types found in the \"Exclude\" "
+"list will always be replaced by downloaded images of the same type. Images "
+"types not appearing in the \"Include\" or \"Exclude\" list will not be "
+"considered when determining whether or not to replace an embedded cover art "
+"image.\n"
 msgstr ""
 "Les imatges de caràtules incrustades amb un tipus d'imatge de la llista de "
 "tipus inclosos no se substituiran mai per una imatge baixada nova EXCEPTE si "
@@ -9591,6 +9848,28 @@ msgstr ""
 "S'ha produït un error en iniciar el navegador web:\n"
 "\n"
 "%s"
+
+#~ msgid "Show cover art type in info labels"
+#~ msgstr "Mostra el tipus de caràtula a les etiquetes d'informació"
+
+#~ msgid "Show check for documentation updates during startup"
+#~ msgstr ""
+#~ "Mostra la comprovació d'actualitzacions de la documentació en iniciar"
+
+#~ msgid "Options to show in the Quick Menu"
+#~ msgstr "Opcions que es mostraran al menú ràpid"
+
+#~ msgid "Automatic backup destination directory"
+#~ msgstr "Directori de destinació de les còpies de seguretat automàtiques"
+
+#~ msgid "Tag formats to not sanitize dates"
+#~ msgstr "Formats d'etiquetes per als quals no es processaran les dates"
+
+#~ msgid "Replacement character to use for directory separators"
+#~ msgstr "Caràcter de substitució per als separadors de directori"
+
+#~ msgid "Replacement characters used for Windows compatibility"
+#~ msgstr "Caràcters de substitució per a la compatibilitat amb el Windows"
 
 #~ msgid "Unknown plugin"
 #~ msgstr "Connector desconegut"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-23 21:40+0100\n"
+"POT-Creation-Date: 2026-01-24 00:01+0100\n"
 "PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
@@ -254,19 +254,27 @@ msgid "Tags to ignore for comparison"
 msgstr "Etiketa për t’u shpërfillur për krahasim"
 
 #: picard/options.py:167
-msgid "Completeness check ignore: Data tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Data tracks"
+msgid "Completeness ignore: Data tracks"
 msgstr "Shpërfillje kontrolli plotësie: Pjesë të dhënash"
 
 #: picard/options.py:168
-msgid "Completeness check ignore: Pregap tracks"
-msgstr ""
+#, fuzzy
+#| msgid "Completeness check ignore: Data tracks"
+msgid "Completeness ignore: Pregap tracks"
+msgstr "Shpërfillje kontrolli plotësie: Pjesë të dhënash"
 
 #: picard/options.py:169
-msgid "Completeness check ignore: Silent tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Silent tracks"
+msgid "Completeness ignore: Silent tracks"
 msgstr "Shpërfillje kontrolli plotësie: Pjesë të heshtura"
 
 #: picard/options.py:170
-msgid "Completeness check ignore: Video tracks"
+#, fuzzy
+#| msgid "Completeness check ignore: Video tracks"
+msgid "Completeness ignore: Video tracks"
 msgstr "Shpërfillje kontrolli plotësie: Pjesë video"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_advanced.py:153
@@ -274,613 +282,711 @@ msgid "Ignore hidden files"
 msgstr "Shpërfill kartela të fshehura"
 
 #: picard/options.py:172
-msgid "Ignore file paths matching a regular expression"
+#, fuzzy
+#| msgid "Ignore file paths matching a regular expression"
+msgid "Ignore file paths (regular expression)"
 msgstr "Shpërfill shtigje kartelash që përkojnë me një shprehje të rregullt"
 
-#: picard/options.py:174
-msgid "Ignore track duration difference under x seconds"
+#: picard/options.py:173
+#, fuzzy
+#| msgid "Ignore track duration difference under x seconds"
+msgid "Allowed track difference (seconds)"
 msgstr "Shpërfill diferencë kohëzgjatjesh pjesësh nën x sekonde"
 
-#: picard/options.py:180 picard/ui/forms/ui_options_advanced.py:150
-msgid "Maximum number of entities to return per MusicBrainz query"
-msgstr "Numër makimum zërash për t’u kthyer për kërkesë te MusicBrainz"
+#: picard/options.py:178
+#, fuzzy
+#| msgid "MusicBrainz Server"
+msgid "Maximum MusicBrainz query items"
+msgstr "Shërbyes MusicBrainz"
 
-#: picard/options.py:182 picard/ui/forms/ui_options_advanced.py:152
-msgid "Include sub-folders when adding files from folder"
+#: picard/options.py:180
+#, fuzzy
+#| msgid "Include sub-folders when adding files from folder"
+msgid "Include sub-folders when adding files"
 msgstr "Përfshi nëndosje, kur shtohen kartela nga dosje"
 
-#: picard/options.py:190
+#: picard/options.py:188
 msgid "Cover art providers"
 msgstr "Funrizues kopertinash"
 
-#: picard/options.py:191
+#: picard/options.py:189
 msgid "File name for images"
 msgstr "Emër kartelash për figura"
 
-#: picard/options.py:192 picard/ui/forms/ui_options_cover.py:125
+#: picard/options.py:190 picard/ui/forms/ui_options_cover.py:125
 msgid "Embed only a single front image"
 msgstr "Trupëzo vetëm një figurë kapaku"
 
-#: picard/options.py:194 picard/ui/forms/ui_options_cover.py:126
-msgid "Never replace cover images with smaller ones"
+#: picard/options.py:191
+#, fuzzy
+#| msgid "Never replace cover images with smaller ones"
+msgid "Never replace images with smaller ones"
 msgstr "Mos zëvendëso kurrë figura kopertinash me më të vogla"
 
-#: picard/options.py:197
-msgid "Never replace cover images matching selected types"
-msgstr ""
-
-#: picard/options.py:203
-msgid "Never replace cover images of these types"
+#: picard/options.py:192
+#, fuzzy
+#| msgid "Never replace cover images of these types"
+msgid "Never replace images of selected types"
 msgstr "Mos zëvendëso kurrë figura kopertinash llojeve të dhëna"
 
-#: picard/options.py:209
-msgid "Always replace cover images of these types"
+#: picard/options.py:197
+#, fuzzy
+#| msgid "Never replace cover images of these types"
+msgid "Never replace images of these types"
+msgstr "Mos zëvendëso kurrë figura kopertinash llojeve të dhëna"
+
+#: picard/options.py:203
+#, fuzzy
+#| msgid "Always replace cover images of these types"
+msgid "Always replace images of these types"
 msgstr "Zëvendëso përherë figura kopertinash llojeve të dhëna"
 
-#: picard/options.py:215 picard/ui/forms/ui_options_cover.py:133
-msgid "Always use the primary image type as the file name for non-front images"
+#: picard/options.py:209
+#, fuzzy
+#| msgid ""
+#| "Always use the primary image type as the file name for non-front images"
+msgid "Primary image type as the file name"
 msgstr ""
 "Për figura jo-kopertinë, si emër kartele përdor përherë llojin e figurës "
 "parësore"
 
-#: picard/options.py:217
+#: picard/options.py:211
 msgid "Overwrite existing image files"
 msgstr "Mbishkruaj kartela ekzistuese figurash"
 
-#: picard/options.py:218 picard/ui/forms/ui_options_cover.py:129
-msgid "Save cover images as separate files"
+#: picard/options.py:212
+#, fuzzy
+#| msgid "Save cover images as separate files"
+msgid "Save images as separate files"
 msgstr "Ruaji figurat e kopertinave si kartela më vete"
 
-#: picard/options.py:219 picard/ui/forms/ui_options_cover.py:124
-msgid "Embed cover images into tags"
+#: picard/options.py:213
+#, fuzzy
+#| msgid "Embed cover images into tags"
+msgid "Embed images into tags"
 msgstr "Trupëzo në etiketa figura kapakësh"
 
-#: picard/options.py:220 picard/ui/forms/ui_options_cover.py:132
-msgid "Save only a single front image as separate file"
-msgstr "Si kartelë më vete ruaj vetëm një figurë jo-kopertinë"
+#: picard/options.py:214
+#, fuzzy
+#| msgid "Embed only a single front image"
+msgid "Save only one front image"
+msgstr "Trupëzo vetëm një figurë kapaku"
 
-#: picard/options.py:221
-#: picard/ui/forms/ui_options_interface_cover_art_box.py:51
-msgid "Show cover art details in cover art view"
-msgstr ""
-
-#: picard/options.py:222
+#: picard/options.py:215
 #, fuzzy
 #| msgid "New cover art embedded into tags"
-msgid "Show cover art type in info labels"
+msgid "Show cover art details in view"
 msgstr "Kopertinë e re e trupëzuar në etiketa"
 
-#: picard/options.py:223
-msgid "Show cover art file size in info labels"
-msgstr ""
+#: picard/options.py:216
+#, fuzzy
+#| msgid "Cover art types"
+msgid "Show cover art type"
+msgstr "Lloje kopertinash"
 
-#: picard/options.py:224
-msgid "Show cover art dimensions in info labels"
-msgstr ""
+#: picard/options.py:217
+#, fuzzy
+#| msgid "Show in browser"
+msgid "Show cover art file size"
+msgstr "Shfaqe në shfletues"
 
-#: picard/options.py:225
-msgid "Show cover art MIME type in info labels"
-msgstr ""
+#: picard/options.py:218
+#, fuzzy
+#| msgid "Cover Dimensions"
+msgid "Show cover art dimensions"
+msgstr "Përmasa Kopertine"
 
-#: picard/options.py:256
+#: picard/options.py:219
+#, fuzzy
+#| msgid "Cover art types"
+msgid "Show cover art MIME type"
+msgstr "Lloje kopertinash"
+
+#: picard/options.py:250
 #, fuzzy
 #| msgid "Do not use audio fingerprinting"
-msgid "Use AcoustID audio fingerprinting"
+msgid "Use AcoustID fingerprinting"
 msgstr "Mos përdor shenja gishtash audio"
 
-#: picard/options.py:259
+#: picard/options.py:253
 #, fuzzy
 #| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
 msgstr "Shenja gishtash AcoustID"
 
-#: picard/options.py:269 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:263 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr "Skano vetvetiu krejt kartelat e reja"
 
-#: picard/options.py:270 picard/ui/forms/ui_options_general.py:218
+#: picard/options.py:264
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
-msgid "Check for documentation updates during startup"
+msgid "Check for documentation updates"
 msgstr "Kontrollo për përditësime shtojcash gjatë nisjes"
 
-#: picard/options.py:271
-msgid "Check for plugin updates during startup"
+#: picard/options.py:265
+#, fuzzy
+#| msgid "Check for plugin updates during startup"
+msgid "Check for plugin updates"
 msgstr "Kontrollo për përditësime shtojcash gjatë nisjes"
 
-#: picard/options.py:272 picard/ui/forms/ui_options_general.py:219
-msgid "Check for program updates during startup"
+#: picard/options.py:266
+#, fuzzy
+#| msgid "Check for program updates during startup"
+msgid "Check for program updates"
 msgstr "Kontrollo për përditësime programi gjatë nisjes"
 
-#: picard/options.py:273 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:267 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
 msgstr "Grumbullo automatikisht krejt kartelat e reja"
 
-#: picard/options.py:274 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:268 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr "Shpërfill MBID-ra, kur ngarkohen kartela të reja"
 
-#: picard/options.py:275
+#: picard/options.py:269
 msgid "Server address"
 msgstr "Adresë shërbyesi"
 
-#: picard/options.py:276
+#: picard/options.py:270
 msgid "Port"
 msgstr "Portë"
 
-#: picard/options.py:277
+#: picard/options.py:271
 msgid "Days between update checks"
 msgstr "Ditë mes kontrollesh për përditësime"
 
-#: picard/options.py:278
-msgid "Updates to check"
-msgstr ""
+#: picard/options.py:272
+#, fuzzy
+#| msgid "Updates to check:"
+msgid "Update types to check"
+msgstr "Përditësime për t’u kontrolluar"
 
-#: picard/options.py:283
+#: picard/options.py:273
+#, fuzzy
+#| msgid "Submit data to the configured server"
+msgid "Submit to configured server"
+msgstr "Parashtroji të dhënat te shërbyesi i formësuar"
+
+#: picard/options.py:277
 msgid "Use album artist genres"
 msgstr ""
 
-#: picard/options.py:284 picard/ui/forms/ui_options_genres.py:133
+#: picard/options.py:278 picard/ui/forms/ui_options_genres.py:133
 msgid "Use folksonomy tags as genre"
 msgstr ""
 
-#: picard/options.py:286
+#: picard/options.py:280
 msgid "Genres to include or exclude"
 msgstr "Zhanre për t’i përfshirë ose përjashtuar"
 
-#: picard/options.py:288
+#: picard/options.py:282
 msgid "Join multiple genres with"
 msgstr ""
 
-#: picard/options.py:289
+#: picard/options.py:283
 msgid "Maximum number of genres"
 msgstr "Numër maksimum zhanresh"
 
-#: picard/options.py:290
+#: picard/options.py:284
 msgid "Minimal genre usage"
 msgstr "Përdorim minimal zhanresh"
 
-#: picard/options.py:291 picard/ui/forms/ui_options_genres.py:131
+#: picard/options.py:285 picard/ui/forms/ui_options_genres.py:131
 msgid "Use only my genres"
 msgstr "Përdor vetëm zhanret e mia"
 
-#: picard/options.py:292 picard/ui/forms/ui_options_genres.py:130
+#: picard/options.py:286 picard/ui/forms/ui_options_genres.py:130
 msgid "Use genres from MusicBrainz"
 msgstr "Përdor zhanre nga MusicBrainz"
 
-#: picard/options.py:296 picard/ui/forms/ui_options_interface.py:140
-msgid "Allow selection of multiple directories"
+#: picard/options.py:290
+#, fuzzy
+#| msgid "Allow selection of multiple directories"
+msgid "Allow selecting multiple directories"
 msgstr "Lejo përzgjedhje të shumë drejtorish njëherësh"
 
-#: picard/options.py:297 picard/ui/forms/ui_options_interface.py:141
-msgid "Use builtin search rather than looking in browser"
+#: picard/options.py:291
+#, fuzzy
+#| msgid "Use builtin search rather than looking in browser"
+msgid "Use builtin search (not browser)"
 msgstr "Përdor kërkim të brendshëm, në vend se të kërkohet në shfletues"
 
-#: picard/options.py:302 picard/ui/forms/ui_options_interface.py:147
-msgid "Adjust horizontal position in file browser automatically"
+#: picard/options.py:296
+msgid "Adjust horizontal position in file browser"
 msgstr ""
 
-#: picard/options.py:304 picard/ui/forms/ui_options_interface.py:146
-msgid "Show a confirmation dialog when saving files"
-msgstr "Shfaq një dialog ripohimi, kur ruhen kartela"
+#: picard/options.py:298
+#, fuzzy
+#| msgid "Confirm Remove"
+msgid "Confirm when saving"
+msgstr "Ripohoni Heqjen"
 
-#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:145
-msgid "Show a quit confirmation dialog for unsaved changes"
+#: picard/options.py:300
+#, fuzzy
+#| msgid "Show a quit confirmation dialog for unsaved changes"
+msgid "Confirm quit if unsaved changes"
 msgstr "Shfaq një dialog ripohimi daljeje, për ndryshime të paruajtura"
 
-#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:136
+#: picard/options.py:301 picard/ui/forms/ui_options_interface.py:136
 msgid "Show icons in menus"
 msgstr "Shfaq ikona në menu"
 
-#: picard/options.py:308
-msgid "Show a usage warning dialog when Picard starts"
+#: picard/options.py:302
+#, fuzzy
+#| msgid "Show a usage warning dialog when Picard starts"
+msgid "Show warning when Picard starts"
 msgstr "Shfaq një dialog sinjalizimi përdorimi, kur niset Picard-i"
 
-#: picard/options.py:309
+#: picard/options.py:303
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
-msgid "Show check for documentation updates during startup"
+msgid "Show documentation update request"
 msgstr "Kontrollo për përditësime shtojcash gjatë nisjes"
 
-#: picard/options.py:310 picard/ui/forms/ui_options_interface.py:148
-msgid "Enable audio player \"now playing\" notifications"
+#: picard/options.py:304
+msgid "Enable \"now playing\" notifications"
 msgstr ""
 
-#: picard/options.py:311
+#: picard/options.py:305
 msgid "Begin browsing in a specific directory"
 msgstr "Fillo të shfletosh në një drejtori të caktuar"
 
-#: picard/options.py:312 picard/ui/forms/ui_options_interface.py:150
+#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:150
 msgid "Directory to begin browsing"
 msgstr "Drejtori ku të fillohet shfletimi"
 
-#: picard/options.py:313 picard/ui/forms/ui_options_interface.py:135
+#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:135
 msgid "Show text labels under icons"
 msgstr "Shfaq etiketa tekst nën ikona"
 
-#: picard/options.py:314
+#: picard/options.py:308
 msgid "User interface language"
 msgstr "Gjuhë ndërfaqeje përdoruesi"
 
-#: picard/options.py:315
+#: picard/options.py:309
 msgid "User interface color theme"
 msgstr "Temë ngjyrash ndërfaqeje përdoruesi"
 
-#: picard/options.py:316
+#: picard/options.py:310
 msgid "Use advanced search syntax"
 msgstr "Përdor sintaksë kërkimesh të thelluar"
 
-#: picard/options.py:324
+#: picard/options.py:318
 msgid "Colors to use for light theme"
 msgstr "Ngjyra për t’u përdorur për temë të çelët"
 
-#: picard/options.py:330
+#: picard/options.py:324
 msgid "Colors to use for dark theme"
 msgstr "Ngjyra për t’u përdorur për temë të errët"
 
-#: picard/options.py:335
-msgid "Options to show in the Quick Menu"
-msgstr ""
+#: picard/options.py:329
+#, fuzzy
+#| msgid "Encoder Settings"
+msgid "Quick Menu options"
+msgstr "Rregullime Koduesi"
 
-#: picard/options.py:350
+#: picard/options.py:344
 msgid "Layout of the tool bar"
 msgstr "Skemë e panelit"
 
-#: picard/options.py:354
+#: picard/options.py:348
 msgid "Tags to show at the top"
 msgstr "Etiketë për t’u shfaqur në krye"
 
-#: picard/options.py:359
-msgid "Automatic backup destination directory"
-msgstr "Drejtori e automatizuar vendmbërritje kopjeruajtjeje"
+#: picard/options.py:352
+#, fuzzy
+#| msgid "Automatic configuration backups directory:"
+msgid "Configuration backup directory"
+msgstr "Drejtori kopjeruajtjesh formësimesh të vetvetishëm"
 
-#: picard/options.py:364
-msgid "Minimal similarity for cluster lookups"
+#: picard/options.py:356
+#, fuzzy
+#| msgid "Minimal similarity for cluster lookups"
+msgid "Similarity for cluster lookups"
 msgstr "Ngjashmëri minimum për kërkime grumbujsh"
 
-#: picard/options.py:365
-msgid "Minimal similarity for file lookups"
+#: picard/options.py:357
+#, fuzzy
+#| msgid "Minimal similarity for file lookups"
+msgid "Similarity for file lookups"
 msgstr "Ngjashmëri minimum për kërkime kartelash"
 
-#: picard/options.py:366
-msgid "Minimal similarity for matching files to tracks"
+#: picard/options.py:358
+#, fuzzy
+#| msgid "Minimal similarity for matching files to tracks"
+msgid "Similarity for matching files to tracks"
 msgstr "Ngjashmëri minimum për përkim kartelash me pjesë"
 
-#: picard/options.py:370
+#: picard/options.py:362
 msgid "Translation locales"
 msgstr "Vendore përkthimesh"
 
-#: picard/options.py:371 picard/ui/forms/ui_options_metadata.py:180
-msgid "Convert Unicode punctuation characters to ASCII"
+#: picard/options.py:363
+#, fuzzy
+#| msgid "Convert Unicode punctuation characters to ASCII"
+msgid "Convert Unicode punctuation to ASCII"
 msgstr "Shndërro në ASCII shenja pikësimi Unikod"
 
-#: picard/options.py:373 picard/ui/forms/ui_options_metadata.py:183
-msgid "Guess track number and title from filename if empty"
+#: picard/options.py:364
+#, fuzzy
+#| msgid "Guess track number and title from filename if empty"
+msgid "Guess track number and title"
 msgstr ""
 "Në qofshin të zbrazëta, hamendëso numër dhe titull pjese nga emrin i kartelës"
 
-#: picard/options.py:375
+#: picard/options.py:365
 msgid "Standalone recordings name"
 msgstr ""
 
-#: picard/options.py:376 picard/ui/forms/ui_options_metadata.py:181
+#: picard/options.py:366 picard/ui/forms/ui_options_metadata.py:181
 msgid "Use release relationships"
 msgstr ""
 
-#: picard/options.py:377
+#: picard/options.py:367
 msgid "Translation script exceptions"
 msgstr ""
 
-#: picard/options.py:378 picard/ui/forms/ui_options_metadata.py:177
+#: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:177
 msgid "Use standardized artist names"
 msgstr "Përdorim emra të standardizuar artistësh"
 
-#: picard/options.py:379 picard/ui/forms/ui_options_metadata.py:178
+#: picard/options.py:369 picard/ui/forms/ui_options_metadata.py:178
 #, fuzzy
 #| msgid "Use standardized artist names"
 msgid "Use standardized instrument credits"
 msgstr "Përdorim emra të standardizuar artistësh"
 
-#: picard/options.py:380 picard/ui/forms/ui_options_metadata.py:179
+#: picard/options.py:370 picard/ui/forms/ui_options_metadata.py:179
 #, fuzzy
 #| msgid "Use standardized artist names"
 msgid "Use standardized vocal credits"
 msgstr "Përdorim emra të standardizuar artistësh"
 
-#: picard/options.py:381
+#: picard/options.py:371
 msgid "Use track and release relationships"
 msgstr ""
 
-#: picard/options.py:383
+#: picard/options.py:373
 msgid "Translate artist names"
 msgstr "Përkthe emra artistësh"
 
-#: picard/options.py:384
+#: picard/options.py:374
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate album titles"
 msgstr "Përkthe emra artistësh"
 
-#: picard/options.py:385
+#: picard/options.py:375
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate track titles"
 msgstr "Përkthe emra artistësh"
 
-#: picard/options.py:386
+#: picard/options.py:376
 msgid "Translate artist names exception"
 msgstr "Përkthe përjashtim emrash artistësh"
 
-#: picard/options.py:387
+#: picard/options.py:377
 msgid "Various Artists name"
 msgstr "Emër për “Artistë të Ndryshëm”"
 
-#: picard/options.py:392
-msgid "Tag formats to not sanitize dates"
-msgstr ""
+#: picard/options.py:382
+#, fuzzy
+#| msgid "Convert images to the given format"
+msgid "Don't sanitize dates for these formats"
+msgstr "Shndërroji figurat në formatin e dhënë"
 
-#: picard/options.py:397
+#: picard/options.py:387
 msgid "Browser integration"
 msgstr "Integrim shfletuesi"
 
-#: picard/options.py:398 picard/ui/forms/ui_options_network.py:174
+#: picard/options.py:388 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr "Përgjo vetëm në localhost"
 
-#: picard/options.py:399
+#: picard/options.py:389
 msgid "Default listening port"
 msgstr "Portë parazgjedhje dëgjimi"
 
-#: picard/options.py:400
-msgid "Network cache size in bytes"
+#: picard/options.py:390
+#, fuzzy
+#| msgid "Network cache size in bytes"
+msgid "Network cache size (bytes)"
 msgstr "Madhësi fshehtine rrjeti, në bajte"
 
-#: picard/options.py:401
-msgid "Request timeout in seconds"
+#: picard/options.py:391
+#, fuzzy
+#| msgid "Request timeout in seconds"
+msgid "Request timeout (seconds)"
 msgstr "Mbarim kohe për kërkesën, në sekonda"
 
-#: picard/options.py:402
+#: picard/options.py:392
 msgid "Proxy password"
 msgstr "Fjalëkalim ndërmjetësi"
 
-#: picard/options.py:403
+#: picard/options.py:393
 msgid "Proxy server address"
 msgstr "Adresë shërbyesi ndërmjetës"
 
-#: picard/options.py:404
+#: picard/options.py:394
 msgid "Proxy server port"
 msgstr "Portë shërbyesi ndërmjetës"
 
-#: picard/options.py:405
+#: picard/options.py:395
 msgid "Type of proxy server"
 msgstr "Lloj shërbyesi ndërmjetës"
 
-#: picard/options.py:406
+#: picard/options.py:396
 msgid "Proxy username"
 msgstr "Emër përdoruesi ndërmjetësi"
 
-#: picard/options.py:407
+#: picard/options.py:397
 msgid "Use a web proxy server"
 msgstr "Përdor një shërbyes ndërmjetës"
 
-#: picard/options.py:411
+#: picard/options.py:401
 msgid "Plugins execution order"
 msgstr ""
 
-#: picard/options.py:420 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:410 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr "Aktivizo vlerësime pjesësh"
 
-#: picard/options.py:422
-msgid "Email to use when saving ratings"
+#: picard/options.py:412
+#, fuzzy
+#| msgid "Email to use when saving ratings"
+msgid "Email for saving ratings"
 msgstr "Email për t’u përdorur kur ruhen vlerësime"
 
-#: picard/options.py:423 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:413 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr "Parashtroji vlerësimet te MusicBrainz"
 
-#: picard/options.py:427 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:417 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr "Vende të parapëlqyera hedhjesh në qarkullim"
 
-#: picard/options.py:428 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:418 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr "Formate të parapëlqyer mediash"
 
-#: picard/options.py:429 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:419 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr "Lloje të parapëlqyer hedhjesh në qarkullim"
 
-#: picard/options.py:433 picard/ui/forms/ui_options_renaming.py:166
+#: picard/options.py:423 picard/ui/forms/ui_options_renaming.py:166
 msgid "Delete empty directories"
 msgstr "Fshiji drejtoritë e zbrazëta"
 
-#: picard/options.py:434
+#: picard/options.py:424
 msgid "Move additional files"
 msgstr "Lëvizni kartela shtesë"
 
-#: picard/options.py:435
+#: picard/options.py:425
 msgid "Additional file patterns"
 msgstr "Rregullsi shtesë kartelash"
 
-#: picard/options.py:436
+#: picard/options.py:426
 msgid "Move files"
 msgstr "Lëvizni kartela"
 
-#: picard/options.py:437
+#: picard/options.py:427
 msgid "Destination directory"
 msgstr "Drejtori vendmbërritje"
 
-#: picard/options.py:438 picard/ui/forms/ui_options_renaming.py:167
+#: picard/options.py:428 picard/ui/forms/ui_options_renaming.py:167
 #, fuzzy
 #| msgid "Overwrite existing image files"
 msgid "Overwrite existing files"
 msgstr "Mbishkruaj kartela ekzistuese figurash"
 
-#: picard/options.py:439
+#: picard/options.py:429
 msgid "Rename files"
 msgstr "Riemërtoni kartela"
 
-#: picard/options.py:443 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:433 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "Zëvendëso shenja jo-ACII?"
 
-#: picard/options.py:448
-msgid "Replacement character to use for directory separators"
-msgstr "Shenjë zëvendësimi për t’u përdorur për ndarës drejtorish"
+#: picard/options.py:438
+#, fuzzy
+#| msgid "Invalid directory separator replacement"
+msgid "Directory separators character"
+msgstr "Zëvendësim i pavlefshëm ndarësi drejtorish"
 
-#: picard/options.py:450 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:440 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr "Zëvendëso hapësira me nënvija"
 
-#: picard/options.py:455
-msgid "Replacement characters used for Windows compatibility"
-msgstr "Shenja zëvendësimi të përdorura për përputhshmëri me Windows"
+#: picard/options.py:445
+#, fuzzy
+#| msgid "Windows compatibility"
+msgid "Windows compatibility characters"
+msgstr "Përputhshmëri me Windows"
 
-#: picard/options.py:457 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:447 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Përputhshmëri me Windows"
 
-#: picard/options.py:458 picard/ui/options/renaming_compat.py:136
+#: picard/options.py:448 picard/ui/options/renaming_compat.py:136
 msgid "Windows long path support"
 msgstr "Mbulim shtigjesh të gjatë në Windows"
 
-#: picard/options.py:463
+#: picard/options.py:453
 msgid "Enable tagger scripts"
 msgstr "Aktivizo programthe etiketuesi"
 
-#: picard/options.py:464
+#: picard/options.py:454
 msgid "Tagger scripts"
 msgstr "Programthe etiketuesi"
 
-#: picard/options.py:468 picard/ui/forms/ui_options_tags.py:80
+#: picard/options.py:458 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
 msgstr "Spastroji etiketat ekzistuese"
 
-#: picard/options.py:469
+#: picard/options.py:459
 #, fuzzy
 #| msgid "Write tags to files"
 msgid "Enable saving tags to files"
 msgstr "Shkruaj etiketa te kartela"
 
-#: picard/options.py:470 picard/ui/forms/ui_options_tags.py:84
-msgid "Fix missing seekpoints for FLAC files"
+#: picard/options.py:460
+msgid "Fix missing seekpoints in FLAC"
 msgstr ""
 
-#: picard/options.py:471
+#: picard/options.py:461
 msgid "Preserved tags list"
 msgstr "Listë etiketash të ruajtura"
 
-#: picard/options.py:472 picard/ui/forms/ui_options_tags.py:81
-msgid "Keep embedded images when clearing tags"
+#: picard/options.py:462
+#, fuzzy
+#| msgid "Keep embedded images when clearing tags"
+msgid "Keep embedded images"
 msgstr "Mbaji figurat e trupëzuara, kur spastrohen etiketa"
 
-#: picard/options.py:473 picard/ui/forms/ui_options_tags.py:78
-msgid "Preserve timestamps of tagged files"
+#: picard/options.py:463
+#, fuzzy
+#| msgid "Preserve timestamps of tagged files"
+msgid "Preserve timestamps"
 msgstr "Ruaji vulat kohore të kartelave me etiketa"
 
-#: picard/options.py:474 picard/ui/forms/ui_options_tags.py:83
-msgid "Remove APEv2 tags from MP3 files"
+#: picard/options.py:464
+#, fuzzy
+#| msgid "Remove APEv2 tags from MP3 files"
+msgid "Remove APEv2 tags from MP3"
 msgstr "Hiq etiketa APEv2 nga kartela MP3"
 
-#: picard/options.py:475 picard/ui/forms/ui_options_tags.py:82
-msgid "Remove ID3 tags from FLAC files"
+#: picard/options.py:465
+#, fuzzy
+#| msgid "Remove ID3 tags from FLAC files"
+msgid "Remove ID3 tags from FLAC"
 msgstr "Hiq etiketa ID3 nga kartela FLAC"
 
-#: picard/options.py:479
+#: picard/options.py:469
 msgid "Save APEv2 tags to AAC"
 msgstr "Ruaj etiketa APEv2 në AAC"
 
-#: picard/options.py:480
-#: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
-msgid "Remove APEv2 tags from AAC files"
+#: picard/options.py:470
+#, fuzzy
+#| msgid "Remove APEv2 tags from AAC files"
+msgid "Remove APEv2 tags from AAC"
 msgstr "Hiq etiketa APEv2 nga kartela AAC"
 
-#: picard/options.py:484
+#: picard/options.py:474
 msgid "Save APEv2 tags to AC3"
 msgstr "Ruaj etiketa APEv2 në AC3"
 
-#: picard/options.py:485
-#: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
-msgid "Remove APEv2 tags from AC3 files"
+#: picard/options.py:475
+#, fuzzy
+#| msgid "Remove APEv2 tags from AC3 files"
+msgid "Remove APEv2 tags from AC3"
 msgstr "Hiq etiketa APEv2 nga kartela AC3"
 
-#: picard/options.py:489
+#: picard/options.py:479
 msgid "ID3v2.3 join character"
 msgstr "Shenjë lidhëse për ID3v2.3"
 
-#: picard/options.py:490
+#: picard/options.py:480
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "Kodim teksti për ID3v2"
 
-#: picard/options.py:491
-#: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
-msgid "Save iTunes compatible grouping and work"
+#: picard/options.py:481
+msgid "iTunes compatible grouping / work"
 msgstr ""
 
-#: picard/options.py:492
+#: picard/options.py:482
 msgid "Write ID3v1 tags"
 msgstr "Shkruaj etiketa ID3v1"
 
-#: picard/options.py:493
+#: picard/options.py:483
 msgid "ID3v2 version to write"
 msgstr "Version ID3v2 për shkrim"
 
-#: picard/options.py:497
-#: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
-msgid "Remove existing RIFF INFO tags from WAVE files"
+#: picard/options.py:487
+#, fuzzy
+#| msgid "Remove existing RIFF INFO tags from WAVE files"
+msgid "Remove RIFF INFO tags from WAVE"
 msgstr "Hiq etiketa RIFF INFO ekzistuese nga kartela WAVE"
 
-#: picard/options.py:498
+#: picard/options.py:488
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "Kodim teksti RIFF INFO"
 
-#: picard/options.py:499
-msgid "Write RIFF INFO tags to WAVE files"
+#: picard/options.py:489
+#, fuzzy
+#| msgid "Write RIFF INFO tags to WAVE files"
+msgid "Write RIFF INFO tags to WAVE"
 msgstr "Shkruaj etiketa RIFF INFO në kartela WAVE"
 
-#: picard/options.py:505
+#: picard/options.py:495
 msgid "Selected file naming script"
 msgstr "Programth i përzgjedhur emërtimi kartelash"
 
-#: picard/options.py:513 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:503 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr ""
 
-#: picard/options.py:519 picard/ui/forms/ui_options_advanced_sessions.py:122
-msgid "Load last saved session on startup"
-msgstr ""
+#: picard/options.py:509
+#, fuzzy
+#| msgid "Failed to save Log View to file"
+msgid "Start with last saved session"
+msgstr "S’u arrit të ruhej Parje Regjistri te kartelë"
 
-#: picard/options.py:525
+#: picard/options.py:515
 msgid "Auto-save interval"
 msgstr ""
 
-#: picard/options.py:531
-msgid "Backup session on unexpected shutdown"
+#: picard/options.py:521
+msgid "Backup session on unexpected exit"
 msgstr ""
 
-#: picard/options.py:537 picard/ui/forms/ui_options_advanced_sessions.py:119
-msgid "Include MusicBrainz data in saved sessions"
-msgstr ""
+#: picard/options.py:527
+#, fuzzy
+#| msgid "Use genres from MusicBrainz"
+msgid "Include MusicBrainz data"
+msgstr "Përdor zhanre nga MusicBrainz"
 
-#: picard/options.py:543 picard/ui/forms/ui_options_advanced_sessions.py:120
-msgid "Do not make MusicBrainz requests on restore"
-msgstr ""
+#: picard/options.py:533
+#, fuzzy
+#| msgid "MusicBrainz Server"
+msgid "No MusicBrainz requests on restore"
+msgstr "Shërbyes MusicBrainz"
 
-#: picard/options.py:549
+#: picard/options.py:539
 #, fuzzy
 #| msgid "Destination directory"
 msgid "Sessions directory"
 msgstr "Drejtori vendmbërritje"
 
-#: picard/options.py:577
+#: picard/options.py:567
 msgid "Plugins to exclude from updates"
 msgstr ""
 
-#: picard/options.py:596
+#: picard/options.py:586
 #, python-format
 msgid "No title for setting \"%s\""
 msgstr ""
@@ -2460,9 +2566,9 @@ msgstr ""
 
 #: picard/script/functions.py:1352
 msgid ""
-"Returns the name of the country for the specified country code.  If the "
+"Returns the name of the country for the specified country code. If the "
 "country code is invalid an empty string will be returned.\n"
-"If translate is not blank, the output will be translated into the current "
+"If `translate` is not blank, the output will be translated into the current "
 "locale language.\n"
 msgstr ""
 
@@ -3198,7 +3304,7 @@ msgstr "S’u arrit të ruhej Parje Regjistri te kartelë"
 #: picard/ui/logview.py:298
 #, fuzzy, python-format
 #| msgid "Something prevented data to be written to '%s'"
-msgid "Something prevented data to be written to \"%s\""
+msgid "Something prevented data to be written to \"%s\"."
 msgstr "Diçka pengoi që të shkruheshin të dhëna te '%s'"
 
 #: picard/ui/logview.py:313
@@ -4007,9 +4113,17 @@ msgstr "Mundësi të mëtejshme"
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
 
+#: picard/ui/forms/ui_options_advanced.py:150
+msgid "Maximum number of entities to return per MusicBrainz query"
+msgstr "Numër makimum zërash për t’u kthyer për kërkesë te MusicBrainz"
+
 #: picard/ui/forms/ui_options_advanced.py:151
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
+
+#: picard/ui/forms/ui_options_advanced.py:152
+msgid "Include sub-folders when adding files from folder"
+msgstr "Përfshi nëndosje, kur shtohen kartela nga dosje"
 
 #: picard/ui/forms/ui_options_advanced.py:154
 msgid ""
@@ -4071,11 +4185,23 @@ msgstr ""
 msgid "Attempt session backup on unexpected shutdown"
 msgstr ""
 
+#: picard/ui/forms/ui_options_advanced_sessions.py:119
+msgid "Include MusicBrainz data in saved sessions"
+msgstr ""
+
+#: picard/ui/forms/ui_options_advanced_sessions.py:120
+msgid "Do not make MusicBrainz requests on restore"
+msgstr ""
+
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
 #, fuzzy
 #| msgid "Loading…"
 msgid "Loading sessions:"
 msgstr "Po ngarkohet…"
+
+#: picard/ui/forms/ui_options_advanced_sessions.py:122
+msgid "Load last saved session on startup"
+msgstr ""
 
 #: picard/ui/forms/ui_options_attached_profiles.py:40
 #: picard/ui/options/dialog.py:360
@@ -4090,6 +4216,14 @@ msgstr "Pajisje CD-ROM për t’u përdorur për kërkime:"
 msgid "Default CD-ROM drive to use for lookups:"
 msgstr "Pajisje CD-ROM parazgjedhje për t’u përdorur për kërkime:"
 
+#: picard/ui/forms/ui_options_cover.py:124
+msgid "Embed cover images into tags"
+msgstr "Trupëzo në etiketa figura kapakësh"
+
+#: picard/ui/forms/ui_options_cover.py:126
+msgid "Never replace cover images with smaller ones"
+msgstr "Mos zëvendëso kurrë figura kopertinash me më të vogla"
+
 #: picard/ui/forms/ui_options_cover.py:127
 #, fuzzy
 #| msgid "Never replace cover images of these types"
@@ -4102,6 +4236,10 @@ msgstr "Mos zëvendëso kurrë figura kopertinash llojeve të dhëna"
 msgid "Select Types…"
 msgstr "Përzgjidhni lloje…"
 
+#: picard/ui/forms/ui_options_cover.py:129
+msgid "Save cover images as separate files"
+msgstr "Ruaji figurat e kopertinave si kartela më vete"
+
 #: picard/ui/forms/ui_options_cover.py:130
 msgid "Use the following file name for images:"
 msgstr "Për figura përdor emrin vijues kartele:"
@@ -4109,6 +4247,16 @@ msgstr "Për figura përdor emrin vijues kartele:"
 #: picard/ui/forms/ui_options_cover.py:131
 msgid "Overwrite the file if it already exists"
 msgstr "Mbishkruaje kartelën, nëse ekziston tashmë"
+
+#: picard/ui/forms/ui_options_cover.py:132
+msgid "Save only a single front image as separate file"
+msgstr "Si kartelë më vete ruaj vetëm një figurë jo-kopertinë"
+
+#: picard/ui/forms/ui_options_cover.py:133
+msgid "Always use the primary image type as the file name for non-front images"
+msgstr ""
+"Për figura jo-kopertinë, si emër kartele përdor përherë llojin e figurës "
+"parësore"
 
 #: picard/ui/forms/ui_options_cover.py:134
 #, fuzzy
@@ -4293,6 +4441,16 @@ msgstr "Të përgjithshme"
 msgid "Update Checking"
 msgstr "Po Kontrollohet Për Përditësim"
 
+#: picard/ui/forms/ui_options_general.py:218
+#, fuzzy
+#| msgid "Check for plugin updates during startup"
+msgid "Check for documentation updates during startup"
+msgstr "Kontrollo për përditësime shtojcash gjatë nisjes"
+
+#: picard/ui/forms/ui_options_general.py:219
+msgid "Check for program updates during startup"
+msgstr "Kontrollo për përditësime programi gjatë nisjes"
+
 #: picard/ui/forms/ui_options_general.py:220
 msgid "Days between checks:"
 msgstr "Ditë mes kontrollesh:"
@@ -4357,6 +4515,14 @@ msgstr "Ngjyrë teme ndërfaqeje përdoruesi:"
 msgid "Miscellaneous"
 msgstr "Të ndryshme"
 
+#: picard/ui/forms/ui_options_interface.py:140
+msgid "Allow selection of multiple directories"
+msgstr "Lejo përzgjedhje të shumë drejtorish njëherësh"
+
+#: picard/ui/forms/ui_options_interface.py:141
+msgid "Use builtin search rather than looking in browser"
+msgstr "Përdor kërkim të brendshëm, në vend se të kërkohet në shfletues"
+
 #: picard/ui/forms/ui_options_interface.py:142
 #: picard/ui/searchdialog/__init__.py:101
 msgid "Use advanced query syntax"
@@ -4370,6 +4536,22 @@ msgstr ""
 msgid "Show documentation update checking disabled dialog"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface.py:145
+msgid "Show a quit confirmation dialog for unsaved changes"
+msgstr "Shfaq një dialog ripohimi daljeje, për ndryshime të paruajtura"
+
+#: picard/ui/forms/ui_options_interface.py:146
+msgid "Show a confirmation dialog when saving files"
+msgstr "Shfaq një dialog ripohimi, kur ruhen kartela"
+
+#: picard/ui/forms/ui_options_interface.py:147
+msgid "Adjust horizontal position in file browser automatically"
+msgstr ""
+
+#: picard/ui/forms/ui_options_interface.py:148
+msgid "Enable audio player \"now playing\" notifications"
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface.py:149
 msgid "Begin browsing in the following directory:"
 msgstr "Filloje shfletimin te drejtoria vijuese:"
@@ -4378,6 +4560,10 @@ msgstr "Filloje shfletimin te drejtoria vijuese:"
 #: picard/ui/options/interface_colors.py:98
 msgid "Colors"
 msgstr "Ngjyra"
+
+#: picard/ui/forms/ui_options_interface_cover_art_box.py:51
+msgid "Show cover art details in cover art view"
+msgstr ""
 
 #: picard/ui/forms/ui_options_interface_cover_art_box.py:52
 msgid "Show type (front, back, etc.)"
@@ -4521,9 +4707,18 @@ msgstr "Përzgjidhni…"
 msgid "Ignore name translation for these language scripts:"
 msgstr ""
 
+#: picard/ui/forms/ui_options_metadata.py:180
+msgid "Convert Unicode punctuation characters to ASCII"
+msgstr "Shndërro në ASCII shenja pikësimi Unikod"
+
 #: picard/ui/forms/ui_options_metadata.py:182
 msgid "Use track relationships"
 msgstr ""
+
+#: picard/ui/forms/ui_options_metadata.py:183
+msgid "Guess track number and title from filename if empty"
+msgstr ""
+"Në qofshin të zbrazëta, hamendëso numër dhe titull pjese nga emrin i kartelës"
 
 #: picard/ui/forms/ui_options_metadata.py:184
 msgid "Custom Fields"
@@ -4739,9 +4934,29 @@ msgstr "Dokumentim"
 msgid "Write tags to files"
 msgstr "Shkruaj etiketa te kartela"
 
+#: picard/ui/forms/ui_options_tags.py:78
+msgid "Preserve timestamps of tagged files"
+msgstr "Ruaji vulat kohore të kartelave me etiketa"
+
 #: picard/ui/forms/ui_options_tags.py:79
 msgid "Before Tagging"
 msgstr "Para Etiketimi"
+
+#: picard/ui/forms/ui_options_tags.py:81
+msgid "Keep embedded images when clearing tags"
+msgstr "Mbaji figurat e trupëzuara, kur spastrohen etiketa"
+
+#: picard/ui/forms/ui_options_tags.py:82
+msgid "Remove ID3 tags from FLAC files"
+msgstr "Hiq etiketa ID3 nga kartela FLAC"
+
+#: picard/ui/forms/ui_options_tags.py:83
+msgid "Remove APEv2 tags from MP3 files"
+msgstr "Hiq etiketa APEv2 nga kartela MP3"
+
+#: picard/ui/forms/ui_options_tags.py:84
+msgid "Fix missing seekpoints for FLAC files"
+msgstr ""
 
 #: picard/ui/forms/ui_options_tags.py:85
 msgid ""
@@ -4771,6 +4986,10 @@ msgstr "Ruaj etiketa APEv2"
 msgid "Do not save tags"
 msgstr "Mos ruaj etiketa"
 
+#: picard/ui/forms/ui_options_tags_compatibility_aac.py:55
+msgid "Remove APEv2 tags from AAC files"
+msgstr "Hiq etiketa APEv2 nga kartela AAC"
+
 #: picard/ui/forms/ui_options_tags_compatibility_ac3.py:51
 msgid "AC3 files"
 msgstr "Kartela AC3"
@@ -4783,6 +5002,10 @@ msgid ""
 "playing those files. To deal with this you can choose whether to save tags "
 "to those files."
 msgstr ""
+
+#: picard/ui/forms/ui_options_tags_compatibility_ac3.py:55
+msgid "Remove APEv2 tags from AC3 files"
+msgstr "Hiq etiketa APEv2 nga kartela AC3"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:121
 #: picard/ui/options/tags_compatibility_id3.py:38
@@ -4825,6 +5048,10 @@ msgid ""
 "</p></body></html>"
 msgstr ""
 
+#: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
+msgid "Save iTunes compatible grouping and work"
+msgstr ""
+
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
 msgstr "Përfshi te kartelat edhe etiketa ID3v1"
@@ -4844,6 +5071,10 @@ msgstr ""
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:64
 msgid "Also include RIFF INFO tags in the files"
 msgstr ""
+
+#: picard/ui/forms/ui_options_tags_compatibility_wave.py:65
+msgid "Remove existing RIFF INFO tags from WAVE files"
+msgstr "Hiq etiketa RIFF INFO ekzistuese nga kartela WAVE"
 
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:67
 msgid "Windows-1252"
@@ -6535,12 +6766,13 @@ msgstr "Të mëtejshme"
 
 #: picard/ui/options/cover.py:149
 msgid ""
-"Embedded cover art images with a type found in the 'Include' list will never "
-"be replaced by a newly downloaded image UNLESS they also have an image type "
-"in the 'Exclude' list. Images with types found in the 'Exclude' list will "
-"always be replaced by downloaded images of the same type. Images types not "
-"appearing in the 'Include' or 'Exclude' list will not be considered when "
-"determining whether or not to replace an embedded cover art image.\n"
+"Embedded cover art images with a type found in the \"Include\" list will "
+"never be replaced by a newly downloaded image UNLESS they also have an image "
+"type in the \"Exclude\" list. Images with types found in the \"Exclude\" "
+"list will always be replaced by downloaded images of the same type. Images "
+"types not appearing in the \"Include\" or \"Exclude\" list will not be "
+"considered when determining whether or not to replace an embedded cover art "
+"image.\n"
 msgstr ""
 
 #: picard/ui/options/cover_processing.py:49
@@ -8261,6 +8493,15 @@ msgstr ""
 "Gabim gjatë nisjes së një shfletuesi:\n"
 "\n"
 "%s"
+
+#~ msgid "Automatic backup destination directory"
+#~ msgstr "Drejtori e automatizuar vendmbërritje kopjeruajtjeje"
+
+#~ msgid "Replacement character to use for directory separators"
+#~ msgstr "Shenjë zëvendësimi për t’u përdorur për ndarës drejtorish"
+
+#~ msgid "Replacement characters used for Windows compatibility"
+#~ msgstr "Shenja zëvendësimi të përdorura për përputhshmëri me Windows"
 
 #, fuzzy
 #~| msgid "Unknown"
