@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 3.0.0.dev10\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5974,8 +5974,8 @@ msgstr ""
 msgid "&Play"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:535
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:537
@@ -6915,10 +6915,6 @@ msgstr ""
 
 #: picard/ui/player/toolbar.py:63
 msgid "Player"
-msgstr ""
-
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:82

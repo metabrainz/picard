@@ -532,7 +532,7 @@ def _create_view_history_action(parent):
 @add_action(MainAction.PLAY)
 def _create_play_file_action(parent):
     action = QtGui.QAction(icontheme.lookup('play'), _("&Play"), parent)
-    action.setStatusTip(_("Play select files"))
+    action.setStatusTip(_("Play selected files"))
     action.setEnabled(False)
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+P")))
     action.triggered.connect(parent.play)
