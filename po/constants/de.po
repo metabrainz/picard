@@ -2,14 +2,14 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-01-23 20:40+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "constants/de/>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4452,7 +4452,7 @@ msgstr ""
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitrate"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
@@ -4752,10 +4752,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:485
-#, fuzzy
-#| msgid "Kenyang"
 msgid "Key"
-msgstr "Kenyang"
+msgstr "Tonart"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
@@ -5167,10 +5165,8 @@ msgid ""
 msgstr ""
 
 #: picard/const/tags.py:802
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "Lateinisch"
+msgstr "Bewertung"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
