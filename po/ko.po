@@ -6,13 +6,13 @@
 # 6 0, 2022
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
 # Nikki, 2006
-# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-23 21:40+0100\n"
-"PO-Revision-Date: 2024-04-07 12:29+0000\n"
+"PO-Revision-Date: 2026-01-23 22:47+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
 "app/ko/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -2562,9 +2562,9 @@ msgstr ""
 "  Park Shinjo https://launchpad.net/~peremen"
 
 #: picard/ui/aboutdialog.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "<br/>Translated to LANG by %s"
-msgstr "<br/>Translated to LANG by %s"
+msgstr ""
 
 #: picard/ui/aboutdialog.py:87
 msgid ""
