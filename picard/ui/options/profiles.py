@@ -350,7 +350,7 @@ class ProfilesOptionsPage(OptionsPage):
         """
         if not self.current_profile_id:
             return
-        checked_items = set(self.get_checked_items_from_tree())
+        checked_items = self.get_checked_items_from_tree()
         settings = set(self.profile_settings[self.current_profile_id].keys())
 
         # Add new items to settings
@@ -399,18 +399,38 @@ class ProfilesOptionsPage(OptionsPage):
         self.loading = False
         self.profile_selected()
 
-    def get_checked_items_from_tree(self):
+    def _get_settings_from_children(self, parent_item, settings=None):
+        """Recursively get settings from child items.
+
+        Args:
+            parent_item (QtWidgets.QTreeWidgetItem): Parent item
+            settings (set): Set to add settings keys to
+        """
+        if settings is None:
+            settings = set()
+        for i in range(parent_item.childCount()):
+            item = parent_item.child(i)
+            if item.childCount():
+                self._get_settings_from_children(item, settings)
+            elif item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.CheckState.Checked:
+                settings.add(item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole))
+
+    def get_checked_items_from_tree(self) -> set:
         """Get the keys for the settings that are checked in the profile settings tree.
 
         Yields:
             str: Settings key
         """
+        checked_items = set()
         for i in range(self.ui.settings_tree.topLevelItemCount()):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             for j in range(tl_item.childCount()):
                 item = tl_item.child(j)
-                if item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.CheckState.Checked:
-                    yield item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
+                if item.childCount():
+                    self._get_settings_from_children(item, checked_items)
+                elif item.checkState(self.TREEWIDGETITEM_COLUMN) == QtCore.Qt.CheckState.Checked:
+                    checked_items.add(item.data(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.ItemDataRole.UserRole))
+        return checked_items
 
     def set_profile_settings_changed(self):
         """Set flag to trigger option page updates later (when focus is lost from the settings
