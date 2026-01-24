@@ -1602,6 +1602,14 @@ msgstr ""
 "het meestal niet theatraal opgevoerd, dus zonder kostuums, decor en veel "
 "interactie tussen de personages."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2334,6 +2342,14 @@ msgstr "Merknaam"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
+msgstr "Uitzending"
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "release_group_primary_type"
+#| msgid "Broadcast"
+msgctxt "label_type"
+msgid "Broadcaster"
 msgstr "Uitzending"
 
 #: DB:work_attribute_type_allowed_value/value:885

@@ -40,8 +40,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : "
-"((n != 0 && n % 1000000 == 0) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
+"1000000 == 0) ? 1 : 2);\n"
 "X-Generator: Weblate 5.13.3\n"
 
 #. name:Motet
@@ -1649,6 +1649,14 @@ msgstr ""
 "forme théâtrale (il lui manque des costumes, des décors et une interaction "
 "forte entre les personnages)."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2377,6 +2385,14 @@ msgstr "Nom de marque"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
+msgstr "Émission"
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "release_group_primary_type"
+#| msgid "Broadcast"
+msgctxt "label_type"
+msgid "Broadcaster"
 msgstr "Émission"
 
 #: DB:work_attribute_type_allowed_value/value:885

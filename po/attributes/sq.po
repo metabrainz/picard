@@ -1,10 +1,10 @@
 #
 # Translators:
-# Besnik <besnik@programeshqip.org>, 2025.
+# Besnik <besnik@programeshqip.org>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-03-17 11:45+0000\n"
+"PO-Revision-Date: 2026-01-19 12:11+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/sq/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -74,12 +74,9 @@ msgid "12\" Vinyl"
 msgstr "Vinil 12\""
 
 #: DB:medium_format/name:207
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "7\" Vinyl"
 msgctxt "medium_format"
 msgid "3\" Vinyl"
-msgstr "Vinil 7\""
+msgstr "Vinil 3\""
 
 #: DB:medium_format/name:49
 msgctxt "medium_format"
@@ -132,12 +129,9 @@ msgid "8cm CD+G"
 msgstr "CD+G 8cm"
 
 #: DB:medium_format/name:210
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "8cm CD"
 msgctxt "medium_format"
 msgid "8cm CD-R"
-msgstr "CD 8cm"
+msgstr "8cm CD-R"
 
 #. name:MiniDVD
 #: DB:medium_format/description:166
@@ -287,20 +281,14 @@ msgid "A Dorian"
 msgstr "La Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1070
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Locrian"
-msgstr "La Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1063
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "A Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "A Lydian"
-msgstr "La Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:806
 msgctxt "work_attribute_type_allowed_value"
@@ -1016,12 +1004,9 @@ msgid "ACDAM ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "SACM ID"
 msgctxt "work_attribute_type"
 msgid "ACUM ID"
-msgstr "ID SACM"
+msgstr "ID ACUM"
 
 #: DB:work_attribute_type/name:58
 msgctxt "work_attribute_type"
@@ -1074,12 +1059,9 @@ msgid "ASCAP ID"
 msgstr "ID ASCAP"
 
 #: DB:work_attribute_type/name:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "APRA ID"
 msgctxt "work_attribute_type"
 msgid "AUTODIA ID"
-msgstr "ID APRA"
+msgstr "ID AUTODIA"
 
 #: DB:work_attribute_type_allowed_value/value:299
 msgctxt "work_attribute_type_allowed_value"
@@ -1425,6 +1407,14 @@ msgstr ""
 "subjekt, zakonisht nuk ekzekutohet në mënyrë teatrale (mungojnë kostumet, "
 "dekoret dhe ndërveprim i fuqishëm mes personazhesh)."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -1735,20 +1725,14 @@ msgid "B Dorian"
 msgstr "Si Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1071
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Locrian"
-msgstr "Si Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1064
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "B Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "B Lydian"
-msgstr "Si Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:807
 msgctxt "work_attribute_type_allowed_value"
@@ -2161,6 +2145,11 @@ msgctxt "release_group_primary_type"
 msgid "Broadcast"
 msgstr "Transmetim"
 
+#: DB:label_type/name:12
+msgctxt "label_type"
+msgid "Broadcaster"
+msgstr "Transmetues"
+
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
 msgid "Br̥ndāvanī sāraṅg"
@@ -2228,20 +2217,14 @@ msgid "C Dorian"
 msgstr "Do Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1065
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Locrian"
-msgstr "Do Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1058
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "C Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "C Lydian"
-msgstr "Do Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:801
 msgctxt "work_attribute_type_allowed_value"
@@ -2488,12 +2471,9 @@ msgid "Club"
 msgstr ""
 
 #: DB:event_type/name:40
-#, fuzzy
-#| msgctxt "release_group_secondary_type"
-#| msgid "Compilation"
 msgctxt "event_type"
 msgid "Competition"
-msgstr "Përmbledhje"
+msgstr "Konkurs"
 
 #: DB:release_group_secondary_type/name:1
 msgctxt "release_group_secondary_type"
@@ -2626,20 +2606,14 @@ msgid "D Dorian"
 msgstr "Re Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1066
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Locrian"
-msgstr "Re Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1059
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "D Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "D Lydian"
-msgstr "Re Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:802
 msgctxt "work_attribute_type_allowed_value"
@@ -3175,20 +3149,14 @@ msgid "E Dorian"
 msgstr "Mi Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1067
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Locrian"
-msgstr "Mi Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1060
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "E Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "E Lydian"
-msgstr "Mi Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:803
 msgctxt "work_attribute_type_allowed_value"
@@ -3379,20 +3347,14 @@ msgid "F Dorian"
 msgstr "Fa Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1068
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Locrian"
-msgstr "Fa Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1061
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "F Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "F Lydian"
-msgstr "Fa Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:804
 msgctxt "work_attribute_type_allowed_value"
@@ -3541,18 +3503,13 @@ msgstr ""
 
 #. name:Phonograph record
 #: DB:medium_format/description:73
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid ""
-#| "Flat discs with grooves used in phonographs/gramophones. For shellac and "
-#| "vinyl records, use that specifically"
 msgctxt "medium_format"
 msgid ""
 "Flat discs with grooves used in phonographs/gramophones. For shellac and "
 "vinyl records, use that specifically."
 msgstr ""
 "Disqe të sheshtë me hulli, të përdorur në fonografë/gramafona. Për incizime "
-"në shellak dhe vinil, përdorni në mënyrë specifike këtë"
+"në shellak dhe vinil, përdorni në mënyrë specifike këtë."
 
 #: DB:medium_format/name:51
 msgctxt "medium_format"
@@ -3616,20 +3573,14 @@ msgid "G Dorian"
 msgstr "Sol Dorike"
 
 #: DB:work_attribute_type_allowed_value/value:1069
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Dorian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Locrian"
-msgstr "Sol Dorike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:1062
-#, fuzzy
-#| msgctxt "work_attribute_type_allowed_value"
-#| msgid "G Mixolydian"
 msgctxt "work_attribute_type_allowed_value"
 msgid "G Lydian"
-msgstr "Sol Miksolidike"
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:805
 msgctxt "work_attribute_type_allowed_value"
@@ -3909,12 +3860,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ID ASCAP"
+msgstr "ID HDS-ZAMP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4336,12 +4284,9 @@ msgstr ""
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Belgian rights society SABAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "ID për shoqërinë belge të të drejtave, SABAM"
+msgstr "ID për shoqërinë bullgare të të drejtave, MUSICAUTOR"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4381,12 +4326,9 @@ msgstr ""
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë kroate të të drejtave, HDS-ZAMP"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4426,12 +4368,9 @@ msgstr ""
 
 #. name:EAÜ ID
 #: DB:work_attribute_type/description:215
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Estonian rights society EAÜ"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë estoniane të të drejtave, EAÜ"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -4453,12 +4392,9 @@ msgstr ""
 
 #. name:AUTODIA ID
 #: DB:work_attribute_type/description:211
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Greek rights society AUTODIA"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë greke të të drejtave, AUTODIA"
 
 #. name:AEI ID
 #: DB:work_attribute_type/description:58
@@ -4498,12 +4434,9 @@ msgstr ""
 
 #. name:WAMI ID
 #: DB:work_attribute_type/description:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Indonesian rights society WAMI"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë indoneziane të të drejtave, WAMI"
 
 #. name:ICE ID
 #: DB:work_attribute_type/description:29
@@ -4519,12 +4452,9 @@ msgstr ""
 
 #. name:ACUM ID
 #: DB:work_attribute_type/description:206
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Israeli rights society ACUM"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë izraelite të të drejtave, ACUM"
 
 #. name:SIAE ID
 #: DB:work_attribute_type/description:36
@@ -4564,12 +4494,9 @@ msgstr ""
 
 #. name:LATGA ID
 #: DB:work_attribute_type/description:207
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Belgian rights society SABAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Lithuanian rights society LATGA"
-msgstr "ID për shoqërinë belge të të drejtave, SABAM"
+msgstr "ID për shoqërinë lituaneze të të drejtave, LATGA"
 
 #. name:MACP ID
 #: DB:work_attribute_type/description:49
@@ -4717,12 +4644,9 @@ msgstr ""
 
 #. name:UACRR ID
 #: DB:work_attribute_type/description:209
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Mexican rights society SACM"
 msgctxt "work_attribute_type"
 msgid "ID for the Ukrainian rights society UACRR"
-msgstr "ID për shoqërinë meksikane të të drejtave, SACM"
+msgstr "ID për shoqërinë ukrainase të të drejtave, UACRR"
 
 #. name:AGADU ID
 #: DB:work_attribute_type/description:43
@@ -5472,12 +5396,9 @@ msgid "Kōmal riṣabh asāvēri"
 msgstr ""
 
 #: DB:work_attribute_type/name:207
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "APRA ID"
 msgctxt "work_attribute_type"
 msgid "LATGA ID"
-msgstr "ID APRA"
+msgstr "ID LATGA"
 
 #: DB:editor_collection_type/name:10
 msgctxt "collection_type"
@@ -5610,12 +5531,9 @@ msgid "MCT ID"
 msgstr ""
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "APRA ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "ID APRA"
+msgstr "ID MUSICAUTOR"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6920,9 +6838,6 @@ msgid "Poster"
 msgstr "Afishe"
 
 #: DB:event_art_archive.art_type/name:1
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Poster"
 msgctxt "event_art_type"
 msgid "Poster"
 msgstr "Afishe"
@@ -7042,12 +6957,9 @@ msgid "Quartet"
 msgstr "Kuartet"
 
 #: DB:medium_format/name:208
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Cartridge"
 msgctxt "medium_format"
 msgid "ROM cartridge"
-msgstr "Bobinë"
+msgstr "Shirit ROM"
 
 #: DB:work_attribute_type_allowed_value/value:500
 msgctxt "work_attribute_type_allowed_value"
@@ -7160,9 +7072,6 @@ msgid "Raw/Unedited"
 msgstr "Bruto/E papërpunuar"
 
 #: DB:event_art_archive.art_type/name:9
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Raw/Unedited"
 msgctxt "event_art_type"
 msgid "Raw/Unedited"
 msgstr "Bruto/E papërpunuar"
@@ -8558,12 +8467,9 @@ msgid ""
 msgstr ""
 
 #: DB:event_art_archive.art_type/name:2
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Sticker"
 msgctxt "event_art_type"
 msgid "Ticket"
-msgstr "Ngjitës"
+msgstr "Biletë"
 
 #: DB:work_attribute_type_allowed_value/value:1041
 msgctxt "work_attribute_type_allowed_value"
@@ -8711,74 +8617,43 @@ msgid "Udaya ravicandrika"
 msgstr ""
 
 #: DB:medium_format/name:211
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Blu-ray"
 msgctxt "medium_format"
 msgid "Ultra HD Blu-ray"
-msgstr "Blu-ray"
+msgstr "Blu-ray Ultra HD"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
 "watermarked and are not desirable for display (but can be used for "
 "reference)."
 msgstr ""
-"Përdoreni për figura që duan punë për t’u përdorur për etiketim (por që "
-"mundet tashmë të përdoren për referencë)"
 
 #. name:Watermark
 #: DB:event_art_archive.art_type/description:10
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that are "
 "watermarked and are not desirable for display (but can be used for "
 "reference)."
 msgstr ""
-"Përdoreni për figura që duan punë për t’u përdorur për etiketim (por që "
-"mundet tashmë të përdoren për referencë)"
 
 #. name:Raw/Unedited
 #: DB:cover_art_archive.art_type/description:14
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "cover_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
 msgstr ""
-"Përdoreni për figura që duan punë për t’u përdorur për etiketim (por që "
-"mundet tashmë të përdoren për referencë)"
 
 #. name:Raw/Unedited
 #: DB:event_art_archive.art_type/description:9
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid ""
-#| "Use for images that need work to be used for tagging (but can possibly "
-#| "already be used for reference)"
 msgctxt "event_art_type"
 msgid ""
 "Use in combination with any other appropriate types for images that need "
 "work to be used for display (but can possibly already be used for reference)."
 msgstr ""
-"Përdoreni për figura që duan punë për t’u përdorur për etiketim (por që "
-"mundet tashmë të përdoren për referencë)"
 
 #. name:Poster
 #: DB:event_art_archive.art_type/description:1
@@ -8998,12 +8873,9 @@ msgid "Vīra vasantaṁ"
 msgstr ""
 
 #: DB:work_attribute_type/name:210
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "BMI ID"
 msgctxt "work_attribute_type"
 msgid "WAMI ID"
-msgstr "ID BMI"
+msgstr "ID WAMI"
 
 #: DB:cover_art_archive.art_type/name:13
 msgctxt "cover_art_type"

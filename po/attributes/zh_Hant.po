@@ -1474,6 +1474,14 @@ msgstr ""
 "神劇是一種大型(通常為神聖的)音樂作品，包括管弦樂團、合唱團和獨奏家。雖然具有"
 "角色和情節，但通常不以戲劇形式演出(因為缺乏服裝、道具和強烈的角色互動)。"
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2192,6 +2200,14 @@ msgstr "商標名稱"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
+msgstr "廣播"
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "release_group_primary_type"
+#| msgid "Broadcast"
+msgctxt "label_type"
+msgid "Broadcaster"
 msgstr "廣播"
 
 #: DB:work_attribute_type_allowed_value/value:885

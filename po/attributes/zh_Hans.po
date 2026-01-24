@@ -17,11 +17,12 @@
 # Beteix <1158817754@qq.com>, 2025.
 # KenParker_CN <kenparkercn@gmail.com>, 2025.
 # Avava_Ava <2245176012haha@gmail.com>, 2025.
+# dumbbird <dumbbirdvip@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-11-18 06:20+0000\n"
-"Last-Translator: Avava_Ava <2245176012haha@gmail.com>\n"
+"PO-Revision-Date: 2026-01-15 07:11+0000\n"
+"Last-Translator: dumbbird <dumbbirdvip@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hans/>\n"
 "Language: zh\n"
@@ -29,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1471,6 +1472,14 @@ msgstr ""
 "清唱剧是一种由管弦乐队，合唱团和独奏家表演的大型（通常为神圣的）的音乐作品。"
 "虽然它有角色和情节，但它通常不是戏剧表演（缺少戏服，道具和强烈的角色互动）。"
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr "主要从事音频或视频内容播出的机构，无论是通过电视、广播还是互联网。"
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2190,6 +2199,11 @@ msgstr "商标名称"
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
 msgstr "广播"
+
+#: DB:label_type/name:12
+msgctxt "label_type"
+msgid "Broadcaster"
+msgstr "广播单位"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"

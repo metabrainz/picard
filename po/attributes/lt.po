@@ -1518,6 +1518,14 @@ msgid ""
 "character interaction)."
 msgstr ""
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2243,6 +2251,14 @@ msgstr ""
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
 msgstr ""
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Podcast"
+msgctxt "label_type"
+msgid "Broadcaster"
+msgstr "tinklalaidė"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"

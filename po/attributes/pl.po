@@ -31,8 +31,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
-"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || "
-"(n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: Weblate 5.13.3\n"
 
 #. name:Motet
@@ -1630,6 +1630,14 @@ msgstr ""
 "wystawiane teatralnie (brakuje kostiumów, rekwizytów i silnej interakcji "
 "postaci)."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2368,6 +2376,14 @@ msgstr ""
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
+msgstr "Audycja"
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "release_group_primary_type"
+#| msgid "Broadcast"
+msgctxt "label_type"
+msgid "Broadcaster"
 msgstr "Audycja"
 
 #: DB:work_attribute_type_allowed_value/value:885

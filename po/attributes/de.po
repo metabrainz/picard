@@ -1522,6 +1522,14 @@ msgstr ""
 "also nur in den Texten und in der Musik - ohne Kostüme oder Requisiten - "
 "statt."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2255,6 +2263,14 @@ msgstr "Markenname"
 #: DB:release_group_primary_type/name:12
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
+msgstr "Rundfunkübertragung"
+
+#: DB:label_type/name:12
+#, fuzzy
+#| msgctxt "release_group_primary_type"
+#| msgid "Broadcast"
+msgctxt "label_type"
+msgid "Broadcaster"
 msgstr "Rundfunkübertragung"
 
 #: DB:work_attribute_type_allowed_value/value:885

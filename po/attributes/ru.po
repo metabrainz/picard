@@ -23,14 +23,14 @@
 # Светлана Ширикалова <email address hidden>, 2018
 # Хамит Фатхлисламов <email address hidden>, 2019
 # wileyfoxyx <wileyfoxyx@inbox.ru>, 2023.
-# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2025.
+# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2025, 2026.
 # 4irefall <firekonstantin@mail.ru>, 2024.
 # liilliil <liilliil@liilliil.net>, 2024.
 # EmO686 <eiswuste@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-12-22 16:11+0000\n"
+"PO-Revision-Date: 2026-01-19 12:11+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
@@ -42,7 +42,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1623,6 +1623,16 @@ msgstr ""
 "выполняется театрально (в нем нет костюмов, реквизита и сильного "
 "взаимодействия с персонажем)."
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+"Организация, в основном занимающаяся трансляцией аудио- или видеоконтента, "
+"будь то по телевидению, радио или в интернете."
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2356,6 +2366,11 @@ msgstr "Имя бренда"
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
 msgstr "Трансляция"
+
+#: DB:label_type/name:12
+msgctxt "label_type"
+msgid "Broadcaster"
+msgstr "Вещатель"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
@@ -5848,7 +5863,7 @@ msgstr "Вручную"
 #: DB:label_type/name:10
 msgctxt "label_type"
 msgid "Manufacturer"
-msgstr ""
+msgstr "Производитель"
 
 #: DB:work_attribute_type_allowed_value/value:172
 msgctxt "work_attribute_type_allowed_value"

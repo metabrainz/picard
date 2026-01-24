@@ -26,12 +26,12 @@
 # 和田篤 <email address hidden>, 2018
 # Jaken264 <korosuke0836@gmail.com>, 2023.
 # Lunae_XD <raru0916@gmail.com>, 2024.
-# yyb987 <yyb987@users.noreply.translations.metabrainz.org>, 2025.
+# yyb987 <yyb987@users.noreply.translations.metabrainz.org>, 2025, 2026.
 # TefWw <came.from.the.north7239@gmail.com>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-10-11 18:02+0000\n"
+"PO-Revision-Date: 2026-01-13 20:11+0000\n"
 "Last-Translator: yyb987 <yyb987@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
@@ -40,7 +40,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -521,7 +521,7 @@ msgstr "別々のバイオリン風楽器のように、関連しているが異
 #: DB:label_type/description:5
 msgctxt "label_type"
 msgid "A label that primarily puts out unsanctioned (bootleg) releases."
-msgstr ""
+msgstr "主に許可されていないリリース(ブートレグ)を制作するレーベル。"
 
 #. name:Longbox
 #: DB:release_packaging/description:55
@@ -1480,6 +1480,14 @@ msgstr ""
 "曲のことである。 キャラクターとプロットを持っていますが、通常劇場で上演されな"
 "い（それは衣装、小道具、そして強いキャラクターの相互作用を欠いている）。"
 
+#. name:Broadcaster
+#: DB:label_type/description:12
+msgctxt "label_type"
+msgid ""
+"An organization that mostly concentrates on broadcasting audio or video "
+"content, be it on television, radio or the internet."
+msgstr ""
+
 #. name:Creative Agency
 #: DB:label_type/description:11
 msgctxt "label_type"
@@ -2184,12 +2192,12 @@ msgstr "ブックレット"
 #: DB:release_status/name:3
 msgctxt "release_status"
 msgid "Bootleg"
-msgstr "海賊版"
+msgstr "ブートレグ"
 
 #: DB:label_type/name:5
 msgctxt "label_type"
 msgid "Bootleg Production"
-msgstr "海賊版作品"
+msgstr "ブートレグ製品"
 
 #: DB:cover_art_archive.art_type/name:49
 msgctxt "cover_art_type"
@@ -2215,6 +2223,11 @@ msgstr "ブランド名"
 msgctxt "release_group_primary_type"
 msgid "Broadcast"
 msgstr "放送"
+
+#: DB:label_type/name:12
+msgctxt "label_type"
+msgid "Broadcaster"
+msgstr "放送局"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
