@@ -54,7 +54,10 @@ from PyQt6 import (
 from picard import log
 from picard.i18n import gettext as _
 
-from picard.ui.columns import ImageColumn
+from picard.ui.columns import (
+    ColumnGroups,
+    ImageColumn,
+)
 from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
 from picard.ui.widgets.checkboxmenuitem import CheckboxMenuItem
 from picard.ui.widgets.lockableheaderview import LockableHeaderView
@@ -129,19 +132,32 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         list[QtWidgets.QCheckBox]
             List of column checkboxes for dynamic state updates.
         """
+        group_map = {}
+        for group in ColumnGroups.all_groups():
+            group_map[group.title] = QtWidgets.QMenu(_(group.title), menu)
+            menu.addMenu(group_map[group.title])
+
         column_checkboxes = []
         for i, column in enumerate(self._columns):
             if i in self._always_visible_columns:
                 continue
+
+            group = getattr(column, 'column_group', None)
+            target_menu = group_map[group.title] if group and group.title in group_map else menu
             action, checkbox = self._create_checkbox_action(
-                menu,
+                target_menu,
                 _(column.title),
                 i in self._visible_columns,
                 not self.is_locked,
                 partial(self.show_column, i),
             )
             column_checkboxes.append(checkbox)
-            menu.addAction(action)
+            target_menu.addAction(action)
+
+        for group_menu in group_map.values():
+            if group_menu.isEmpty():
+                group_menu.setEnabled(False)
+
         return column_checkboxes
 
     def _add_restore_action(self, menu):

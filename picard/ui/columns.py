@@ -44,10 +44,38 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
 from collections.abc import MutableSequence
 from enum import IntEnum
 
 from PyQt6 import QtCore
+
+from picard.i18n import N_
+
+
+ColumnGroupItem = namedtuple('ColumnGroupItem', ['index', 'title'])
+
+
+class ColumnGroups:
+    _groups = {
+        'album': ColumnGroupItem(index=0, title=N_("Album Items")),
+        'track': ColumnGroupItem(index=1, title=N_("Track Items")),
+        'file': ColumnGroupItem(index=2, title=N_("File Items")),
+        'image': ColumnGroupItem(index=3, title=N_("image Items")),
+        'misc': ColumnGroupItem(index=4, title=N_("Miscellaneous")),
+        'custom': ColumnGroupItem(index=99, title=N_("Custom Columns")),
+    }
+    ALBUM = _groups['album']
+    TRACK = _groups['track']
+    FILE = _groups['file']
+    IMAGE = _groups['image']
+    MISC = _groups['misc']
+    CUSTOM = _groups['custom']
+
+    @classmethod
+    def all_groups(cls):
+        """Returns all defined column groups as a list of ColumnGroupItem."""
+        return [cls._groups[key] for key in sorted(cls._groups.keys(), key=lambda k: cls._groups[k].index)]
 
 
 class ColumnAlign(IntEnum):
@@ -84,6 +112,7 @@ class Column:
         sortkey=None,
         always_visible=False,
         status_icon=False,
+        column_group: ColumnGroupItem | None = None,
     ):
         self.title = title
         self.key = key
@@ -98,10 +127,11 @@ class Column:
             self.sortkey = sortkey
         else:
             self.sortkey = None
+        self.column_group = column_group or ColumnGroups.CUSTOM
 
     def __repr__(self):
         def parms():
-            opt_attrs = ('width', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon')
+            opt_attrs = ('width', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon', 'column_group')
             yield from (repr(getattr(self, a)) for a in ('title', 'key'))
             yield from (a + '=' + repr(getattr(self, a)) for a in opt_attrs)
 

@@ -51,6 +51,7 @@ from picard.util import icontheme
 from picard.ui.columns import (
     Column,
     ColumnAlign,
+    ColumnGroups,
     Columns,
     ColumnSortType,
 )
@@ -88,6 +89,7 @@ def create_match_quality_column():
         sort_type=ColumnSortType.SORTKEY,
         size=QtCore.QSize(16, 16),
         sort_provider=sorter,
+        column_group=ColumnGroups.MISC,
     )
     column.is_default = True
     return column
@@ -109,6 +111,7 @@ def create_fingerprint_status_column():
         icon_width=16,
         icon_height=16,
         border=1,
+        column_group=ColumnGroups.FILE,
     )
     return column
 
@@ -130,6 +133,7 @@ def create_common_columns() -> tuple[Column, ...]:
         always_visible=True,
         status_icon=True,
         is_default=True,
+        column_group=ColumnGroups.MISC,
     )
 
     # Length with numeric sort key from metadata.length
@@ -140,21 +144,38 @@ def create_common_columns() -> tuple[Column, ...]:
         width=50,
         align=ColumnAlign.RIGHT,
         is_default=True,
+        column_group=ColumnGroups.TRACK,
     )
 
     # Artist
-    artist_col = make_field_column(N_("Artist"), 'artist', width=200, is_default=True)
+    artist_col = make_field_column(N_("Artist"), 'artist', width=200, is_default=True, column_group=ColumnGroups.TRACK)
 
     # Others (mostly field columns)
-    album_artist = make_field_column(N_("Album Artist"), 'albumartist')
-    composer = make_field_column(N_("Composer"), 'composer')
-    album = make_field_column(N_("Album"), 'album', sort_type=ColumnSortType.NAT)
-    discsubtitle = make_field_column(N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT)
-    trackno = make_field_column(N_("Track No."), 'tracknumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT)
-    discno = make_field_column(N_("Disc No."), 'discnumber', align=ColumnAlign.RIGHT, sort_type=ColumnSortType.NAT)
-    catalognumber = make_field_column(N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT)
-    barcode = make_field_column(N_("Barcode"), 'barcode')
-    media = make_field_column(N_("Media"), 'media')
+    album_artist = make_field_column(N_("Album Artist"), 'albumartist', column_group=ColumnGroups.ALBUM)
+    composer = make_field_column(N_("Composer"), 'composer', column_group=ColumnGroups.TRACK)
+    album = make_field_column(N_("Album"), 'album', sort_type=ColumnSortType.NAT, column_group=ColumnGroups.ALBUM)
+    discsubtitle = make_field_column(
+        N_("Disc Subtitle"), 'discsubtitle', sort_type=ColumnSortType.NAT, column_group=ColumnGroups.ALBUM
+    )
+    trackno = make_field_column(
+        N_("Track No."),
+        'tracknumber',
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.NAT,
+        column_group=ColumnGroups.TRACK,
+    )
+    discno = make_field_column(
+        N_("Disc No."),
+        'discnumber',
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.NAT,
+        column_group=ColumnGroups.ALBUM,
+    )
+    catalognumber = make_field_column(
+        N_("Catalog No."), 'catalognumber', sort_type=ColumnSortType.NAT, column_group=ColumnGroups.ALBUM
+    )
+    barcode = make_field_column(N_("Barcode"), 'barcode', column_group=ColumnGroups.ALBUM)
+    media = make_field_column(N_("Media"), 'media', column_group=ColumnGroups.ALBUM)
 
     # Size with numeric sort key
     size_col = make_numeric_field_column(
@@ -162,10 +183,11 @@ def create_common_columns() -> tuple[Column, ...]:
         '~filesize',
         parse_file_size,
         align=ColumnAlign.RIGHT,
+        column_group=ColumnGroups.FILE,
     )
 
     # File Type
-    filetype = make_field_column(N_("File Type"), '~format', width=120)
+    filetype = make_field_column(N_("File Type"), '~format', width=120, column_group=ColumnGroups.FILE)
 
     # Bitrate
     bitrate = make_numeric_field_column(
@@ -174,17 +196,18 @@ def create_common_columns() -> tuple[Column, ...]:
         parse_bitrate,
         width=80,
         align=ColumnAlign.RIGHT,
+        column_group=ColumnGroups.FILE,
     )
 
-    genre = make_field_column(N_("Genre"), 'genre')
+    genre = make_field_column(N_("Genre"), 'genre', column_group=ColumnGroups.TRACK)
 
     fingerprint = create_fingerprint_status_column()
 
-    date = make_field_column(N_("Date"), 'date')
-    originaldate = make_field_column(N_("Original Release Date"), 'originaldate')
-    releasedate = make_field_column(N_("Release Date"), 'releasedate')
-    cover = make_field_column(N_("Cover"), 'covercount')
-    coverdims = make_field_column(N_("Cover Dimensions"), 'coverdimensions')
+    date = make_field_column(N_("Date"), 'date', column_group=ColumnGroups.ALBUM)
+    originaldate = make_field_column(N_("Original Release Date"), 'originaldate', column_group=ColumnGroups.ALBUM)
+    releasedate = make_field_column(N_("Release Date"), 'releasedate', column_group=ColumnGroups.ALBUM)
+    cover = make_field_column(N_("Cover"), 'covercount', column_group=ColumnGroups.IMAGE)
+    coverdims = make_field_column(N_("Cover Dimensions"), 'coverdimensions', column_group=ColumnGroups.IMAGE)
 
     return (
         title_col,
