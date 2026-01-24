@@ -92,6 +92,18 @@ class TestFileIdentity(PicardTestCase):
         id2 = FileIdentity(fname)
         self.assertNotEqual(id1, id2)
 
+    def test_identity_replaced_file_same_size_different_content(self):
+        """Test that replacing a file with different content but same size is detected."""
+        fname = self._write_temp(b"AAAA")
+        id1 = FileIdentity(fname)
+        fd, newname = tempfile.mkstemp()
+        self.temp_files.add(newname)
+        with os.fdopen(fd, "wb") as f:
+            f.write(b"BBBB")
+        os.replace(newname, fname)
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+
     def test_identity_hash_diff(self):
         """Test that FileIdentity distinguishes between different files."""
         f1 = self._write_temp(b"A" * (FileIdentity._READ_SIZE + 10))
