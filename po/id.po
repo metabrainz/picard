@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-23 11:38+0100\n"
+"POT-Creation-Date: 2026-01-23 21:40+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Indonesian <https://translations.metabrainz.org/projects/"
@@ -871,7 +871,7 @@ msgstr ""
 msgid "No plugin description available."
 msgstr ""
 
-#: picard/plugin.py:116
+#: picard/extension_points/script_variables.py:79 picard/plugin.py:116
 #, fuzzy
 #| msgid "Unknown"
 msgid "Unknown Plugin"
@@ -960,7 +960,7 @@ msgstr ""
 #: picard/ui/mainwindow/__init__.py:1417
 #, python-format
 msgid ""
-"Could not load session from %(path)s:\n"
+"Could not load session from \"%(path)s\":\n"
 "\n"
 "%(error)s"
 msgstr ""
@@ -1170,13 +1170,7 @@ msgstr ""
 msgid "Allowed Cover Art URLs"
 msgstr ""
 
-#: picard/extension_points/script_variables.py:79
-#, fuzzy
-#| msgid "Unknown"
-msgid "Unknown plugin"
-msgstr "Tidak Diketahui"
-
-#: picard/extension_points/script_variables.py:80
+#: picard/extension_points/script_variables.py:84
 #, python-format
 msgid "Plugin: %s"
 msgstr ""
@@ -1589,14 +1583,14 @@ msgstr ""
 msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ANY of the arguments is not empty."
+"    The result is true if **any** of the arguments is not empty."
 msgstr ""
 
 #: picard/script/functions.py:558
 msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ALL of the arguments are not empty."
+"    The result is true if **all** of the arguments are not empty."
 msgstr ""
 
 #: picard/script/functions.py:571
@@ -4057,7 +4051,7 @@ msgid "Show MIME type"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
-#: picard/ui/options/interface_quick_menu.py:46
+#: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
@@ -6410,23 +6404,24 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "Seni Sampul"
 
-#: picard/ui/options/interface_quick_menu.py:60
+#: picard/ui/options/interface_quick_menu.py:61
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
 msgstr ""
 
-#: picard/ui/options/interface_quick_menu.py:62
+#: picard/ui/options/interface_quick_menu.py:63
 #, fuzzy
 #| msgid "Options"
 msgid "Available Option Settings"
 msgstr "Pilihan"
 
-#: picard/ui/options/interface_quick_menu.py:82
+#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/profiles.py:214
 #, fuzzy
-#| msgid "Subtitle"
-msgid "group_title"
-msgstr "Subjudul"
+#| msgid "Title"
+msgid "title"
+msgstr "Judul"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -6780,12 +6775,6 @@ msgstr ""
 #: picard/ui/options/profiles.py:209
 msgid "Settings to include in profile"
 msgstr ""
-
-#: picard/ui/options/profiles.py:214
-#, fuzzy
-#| msgid "Title"
-msgid "title"
-msgstr "Judul"
 
 #: picard/ui/options/profiles.py:270
 msgid "Unknown script"
@@ -7675,7 +7664,7 @@ msgstr ""
 msgid "Show tooltips for script elements"
 msgstr ""
 
-#: picard/util/__init__.py:401
+#: picard/util/__init__.py:403
 msgid "No Title"
 msgstr ""
 
@@ -7809,6 +7798,16 @@ msgstr ""
 "Kesalahan ketika menjalankan sebuah browser web:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Unknown"
+#~ msgid "Unknown plugin"
+#~ msgstr "Tidak Diketahui"
+
+#, fuzzy
+#~| msgid "Subtitle"
+#~ msgid "group_title"
+#~ msgstr "Subjudul"
 
 #~ msgid "Browse…"
 #~ msgstr "Jelajah…"

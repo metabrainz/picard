@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-23 11:38+0100\n"
+"POT-Creation-Date: 2026-01-23 21:40+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -926,7 +926,7 @@ msgstr ""
 msgid "No plugin description available."
 msgstr "新しいバージョンが利用可能です"
 
-#: picard/plugin.py:116
+#: picard/extension_points/script_variables.py:79 picard/plugin.py:116
 #, fuzzy
 #| msgid "Unknown language"
 msgid "Unknown Plugin"
@@ -1014,12 +1014,13 @@ msgstr ""
 
 #: picard/tagger.py:735 picard/ui/mainwindow/__init__.py:1391
 #: picard/ui/mainwindow/__init__.py:1417
-#, python-format
+#, fuzzy, python-format
+#| msgid "Loading album %(id)s …"
 msgid ""
-"Could not load session from %(path)s:\n"
+"Could not load session from \"%(path)s\":\n"
 "\n"
 "%(error)s"
-msgstr ""
+msgstr "アルバム%(id)sを読み込み中です…"
 
 #: picard/tagger.py:780
 #, python-brace-format
@@ -1240,13 +1241,7 @@ msgstr "ローカルファイル"
 msgid "Allowed Cover Art URLs"
 msgstr "許可されたカバーアートのURL"
 
-#: picard/extension_points/script_variables.py:79
-#, fuzzy
-#| msgid "Unknown language"
-msgid "Unknown plugin"
-msgstr "不明な言語"
-
-#: picard/extension_points/script_variables.py:80
+#: picard/extension_points/script_variables.py:84
 #, fuzzy, python-format
 #| msgid "Plugin %r"
 msgid "Plugin: %s"
@@ -2025,7 +2020,7 @@ msgstr ""
 msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ANY of the arguments is not empty."
+"    The result is true if **any** of the arguments is not empty."
 msgstr ""
 "`$or(x,y,…)`\n"
 "\n"
@@ -2044,7 +2039,7 @@ msgstr ""
 msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ALL of the arguments are not empty."
+"    The result is true if **all** of the arguments are not empty."
 msgstr ""
 "`$and(x,y,…)`\n"
 "\n"
@@ -5298,7 +5293,7 @@ msgid "Show MIME type"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
-#: picard/ui/options/interface_quick_menu.py:46
+#: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
@@ -7806,23 +7801,24 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "カバーアート"
 
-#: picard/ui/options/interface_quick_menu.py:60
+#: picard/ui/options/interface_quick_menu.py:61
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
 msgstr ""
 
-#: picard/ui/options/interface_quick_menu.py:62
+#: picard/ui/options/interface_quick_menu.py:63
 #, fuzzy
 #| msgid "Encoder Settings"
 msgid "Available Option Settings"
 msgstr "エンコーダ設定"
 
-#: picard/ui/options/interface_quick_menu.py:82
+#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/profiles.py:214
 #, fuzzy
-#| msgid "Subtitle"
-msgid "group_title"
-msgstr "サブタイトル"
+#| msgid "Title"
+msgid "title"
+msgstr "タイトル"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -8187,12 +8183,6 @@ msgstr "プロファイルの削除"
 #: picard/ui/options/profiles.py:209
 msgid "Settings to include in profile"
 msgstr "プロファイルに含まれる設定"
-
-#: picard/ui/options/profiles.py:214
-#, fuzzy
-#| msgid "Title"
-msgid "title"
-msgstr "タイトル"
 
 #: picard/ui/options/profiles.py:270
 msgid "Unknown script"
@@ -9136,7 +9126,7 @@ msgstr "ヘルプとツールチップを表示"
 msgid "Show tooltips for script elements"
 msgstr "スクリプト要素のツールチップを表示"
 
-#: picard/util/__init__.py:401
+#: picard/util/__init__.py:403
 msgid "No Title"
 msgstr ""
 
@@ -9281,6 +9271,16 @@ msgstr ""
 "ウェブブラウザを起動する際にエラーが発生しました：\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Unknown language"
+#~ msgid "Unknown plugin"
+#~ msgstr "不明な言語"
+
+#, fuzzy
+#~| msgid "Subtitle"
+#~ msgid "group_title"
+#~ msgstr "サブタイトル"
 
 #~ msgid "Browse…"
 #~ msgstr "参照…"

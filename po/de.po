@@ -32,9 +32,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-23 11:38+0100\n"
+"POT-Creation-Date: 2026-01-23 21:40+0100\n"
 "PO-Revision-Date: 2026-01-23 20:40+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -901,7 +901,7 @@ msgstr "Kein Titel für Einstellung „%s“"
 msgid "No plugin description available."
 msgstr "Keine Plugin-Beschreibung verfügbar."
 
-#: picard/plugin.py:116
+#: picard/extension_points/script_variables.py:79 picard/plugin.py:116
 msgid "Unknown Plugin"
 msgstr "Unbekanntes Plugin"
 
@@ -985,9 +985,13 @@ msgstr "Fehler beim Laden der Sitzung"
 
 #: picard/tagger.py:735 picard/ui/mainwindow/__init__.py:1391
 #: picard/ui/mainwindow/__init__.py:1417
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "Could not load session from %(path)s:\n"
+#| "\n"
+#| "%(error)s"
 msgid ""
-"Could not load session from %(path)s:\n"
+"Could not load session from \"%(path)s\":\n"
 "\n"
 "%(error)s"
 msgstr ""
@@ -1164,8 +1168,8 @@ msgstr "Datei als Aufnahme hinzufügen …"
 msgid ""
 "Downloading cover art of type \"%(type)s\" for %(albumid)s from %(host)s …"
 msgstr ""
-"Cover-Art des Typs „%(type)s“ wird heruntergeladen für %(albumid)s von %"
-"(host)s …"
+"Cover-Art des Typs „%(type)s“ wird heruntergeladen für %(albumid)s von "
+"%(host)s …"
 
 #: picard/coverart/__init__.py:266
 #, python-format
@@ -1209,11 +1213,7 @@ msgstr "Lokale Dateien"
 msgid "Allowed Cover Art URLs"
 msgstr "Erlaubte Cover-Art-URLs"
 
-#: picard/extension_points/script_variables.py:79
-msgid "Unknown plugin"
-msgstr "Unbekanntes Plugin"
-
-#: picard/extension_points/script_variables.py:80
+#: picard/extension_points/script_variables.py:84
 #, python-format
 msgid "Plugin: %s"
 msgstr "Plugin: %s"
@@ -1543,7 +1543,7 @@ msgid "$set(name,value)"
 msgstr "$set(Name,Wert)"
 
 #: picard/script/functions.py:354
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Sets the variable `name` to `value`.\n"
 "\n"
@@ -1744,20 +1744,30 @@ msgstr ""
 "    $mul(x,y,z) = ((x * y) * z)\n"
 
 #: picard/script/functions.py:544
+#, fuzzy
+#| msgid ""
+#| "Returns true if either `x` or `y` not empty.\n"
+#| "    Can be used with an arbitrary number of arguments.\n"
+#| "    The result is true if ANY of the arguments is not empty."
 msgid ""
 "Returns true if either `x` or `y` not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ANY of the arguments is not empty."
+"    The result is true if **any** of the arguments is not empty."
 msgstr ""
 "Gibt wahr zurück, wenn entweder `x` oder `y` nicht leer sind.\n"
 "Kann mit beliebig vielen Argumenten verwendet werden.\n"
 "Das Ergebnis ist wahr, wenn **ein beliebiges** Argument nicht leer ist."
 
 #: picard/script/functions.py:558
+#, fuzzy
+#| msgid ""
+#| "Returns true if both `x` and `y` are not empty.\n"
+#| "    Can be used with an arbitrary number of arguments.\n"
+#| "    The result is true if ALL of the arguments are not empty."
 msgid ""
 "Returns true if both `x` and `y` are not empty.\n"
 "    Can be used with an arbitrary number of arguments.\n"
-"    The result is true if ALL of the arguments are not empty."
+"    The result is true if **all** of the arguments are not empty."
 msgstr ""
 "Gibt wahr zurück, wenn weder `x` noch `y` leer sind.\n"
 "    Kann mit beliebig vielen Argumenten verwendet werden.\n"
@@ -1802,8 +1812,8 @@ msgstr ""
 "ignorierender Text) und „auto“ (den Typ automatisch anhand der Argumente "
 "festlegen), wobei „auto“ als Standardwertvergleichsmethode verwendet wird, "
 "wenn `Typ` nicht angegeben ist. Der Typ „auto“ verwendet den ersten Typ, der "
-"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und „"
-"text“."
+"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und "
+"„text“."
 
 #: picard/script/functions.py:650
 msgid "$lte(x,y[,type])"
@@ -1832,8 +1842,8 @@ msgstr ""
 "ignorierender Text) und „auto“ (den Typ automatisch anhand der Argumente "
 "festlegen), wobei „auto“ als Standardwertvergleichsmethode verwendet wird, "
 "wenn `Typ` nicht angegeben ist. Der Typ „auto“ verwendet den ersten Typ, der "
-"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und „"
-"text“."
+"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und "
+"„text“."
 
 #: picard/script/functions.py:666
 msgid "$gt(x,y[,type])"
@@ -1862,8 +1872,8 @@ msgstr ""
 "ignorierender Text) und „auto“ (den Typ automatisch anhand der Argumente "
 "festlegen), wobei „auto“ als Standardwertvergleichsmethode verwendet wird, "
 "wenn `Typ` nicht angegeben ist. Der Typ „auto“ verwendet den ersten Typ, der "
-"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und „"
-"text“."
+"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und "
+"„text“."
 
 #: picard/script/functions.py:682
 msgid "$gte(x,y[,type])"
@@ -1892,8 +1902,8 @@ msgstr ""
 "ignorierender Text) und „auto“ (den Typ automatisch anhand der Argumente "
 "festlegen), wobei „auto“ als Standardwertvergleichsmethode verwendet wird, "
 "wenn `Typ` nicht angegeben ist. Der Typ „auto“ verwendet den ersten Typ, der "
-"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und „"
-"text“."
+"für beide Argumente in der folgenden Reihenfolge gilt: „int“, „float“ und "
+"„text“."
 
 #: picard/script/functions.py:698
 msgid "$len(text)"
@@ -1944,14 +1954,14 @@ msgid ""
 "\n"
 "_Since Picard 0.10_"
 msgstr ""
-"Liefert alle Interpreten zurück, bei denen die Art der Darbietung (z. B. „"
-"vocal“) mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner` "
+"Liefert alle Interpreten zurück, bei denen die Art der Darbietung (z. B. "
+"„vocal“) mit `Muster` übereinstimmt. Die Interpreten werden durch `Trenner` "
 "getrennt.\n"
 "Es können reguläre Ausdrücke im Format `/Muster/Flags` angegeben werden. "
 "`Flags` sind optional. Aktuell ist das einzige unterstützte Flag „i“ (Groß-/"
 "Kleinschreibung ignorieren). Zum Beispiel stimmt `$performer(/^guitars?$/i)` "
-"mit der Darbietung „guitar“ oder „Guitars“ überein, nicht aber mit z. B. „"
-"bass guitar“.\n"
+"mit der Darbietung „guitar“ oder „Guitars“ überein, nicht aber mit z. B. "
+"„bass guitar“.\n"
 "\n"
 "_Ab Picard 0.10_"
 
@@ -2198,8 +2208,8 @@ msgstr ""
 "\n"
 "Beispiel:\n"
 "\n"
-"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set"
-"(lyricist,%composer%))\n"
+"    $if($ne_any(%albumartist%,%trackartist%,%composer%),$set(lyricist,"
+"%composer%))\n"
 
 #: picard/script/functions.py:1016
 msgid "$title(text)"
@@ -4983,7 +4993,7 @@ msgid "Show MIME type"
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:43
-#: picard/ui/options/interface_quick_menu.py:46
+#: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
@@ -7536,23 +7546,22 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "Cover-Art"
 
-#: picard/ui/options/interface_quick_menu.py:60
+#: picard/ui/options/interface_quick_menu.py:61
 msgid ""
 "Please select the settings that you want to appear in the Quick Settings "
 "menu."
 msgstr ""
 
-#: picard/ui/options/interface_quick_menu.py:62
+#: picard/ui/options/interface_quick_menu.py:63
 #, fuzzy
 #| msgid "Option Setting Warning"
 msgid "Available Option Settings"
 msgstr "Einstellungs-Warnung"
 
-#: picard/ui/options/interface_quick_menu.py:82
-#, fuzzy
-#| msgid "Subtitle"
-msgid "group_title"
-msgstr "Untertitel"
+#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/profiles.py:214
+msgid "title"
+msgstr "Titel"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Action Toolbar"
@@ -7982,10 +7991,6 @@ msgstr "Profil löschen"
 #: picard/ui/options/profiles.py:209
 msgid "Settings to include in profile"
 msgstr "Einstellungen, die im Profile enthalten sind"
-
-#: picard/ui/options/profiles.py:214
-msgid "title"
-msgstr "Titel"
 
 #: picard/ui/options/profiles.py:270
 msgid "Unknown script"
@@ -8946,7 +8951,7 @@ msgstr "Hilfe-&Tooltips anzeigen"
 msgid "Show tooltips for script elements"
 msgstr "Zeigt Tooltips für Skriptelemente an"
 
-#: picard/util/__init__.py:401
+#: picard/util/__init__.py:403
 msgid "No Title"
 msgstr "Kein Titel"
 
@@ -9093,6 +9098,14 @@ msgstr ""
 "Fehler beim Öffnen des Webbrowsers:\n"
 "\n"
 "%s"
+
+#~ msgid "Unknown plugin"
+#~ msgstr "Unbekanntes Plugin"
+
+#, fuzzy
+#~| msgid "Subtitle"
+#~ msgid "group_title"
+#~ msgstr "Untertitel"
 
 #~ msgid "Browse…"
 #~ msgstr "Durchsuchen …"
