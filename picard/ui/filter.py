@@ -164,6 +164,7 @@ class Filter(QtWidgets.QWidget):
 
 
 class FilterDialog(PicardDialog):
+    help_url = "/getting_started/screen_main.html#filtering-the-main-screen"
     defaultsize = QtCore.QSize(400, 500)
 
     def __init__(self, selected_filters, parent=None):
@@ -215,8 +216,10 @@ class FilterDialog(PicardDialog):
         button_box = QtWidgets.QDialogButtonBox()
         button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
         button_box.accepted.connect(self.accept)
         button_box.rejected.connect(self.reject)
+        button_box.helpRequested.connect(self.show_help)
         layout.addWidget(button_box)
         self.setMinimumWidth(300)
 
