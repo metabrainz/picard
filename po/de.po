@@ -33,7 +33,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 16:44+0100\n"
-"PO-Revision-Date: 2026-01-24 15:45+0000\n"
+"PO-Revision-Date: 2026-01-25 16:11+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -4649,10 +4649,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Option Setting Warning"
 msgid "Available Option Settings"
-msgstr "Einstellungs-Warnung"
+msgstr "Verfügbare Einstellungen"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -6641,10 +6639,8 @@ msgid "Ctrl+Shift+P"
 msgstr "Ctrl+Shift+P"
 
 #: picard/ui/mainwindow/actions.py:544
-#, fuzzy
-#| msgid "Open in &Player"
 msgid "Open in System &Media Player"
-msgstr "Im &Player öffnen"
+msgstr "Im System-&Medienplayer öffnen"
 
 #: picard/ui/mainwindow/actions.py:545
 msgid "Play the file in your default media player"
@@ -6663,10 +6659,8 @@ msgid "&Check for Update…"
 msgstr "Auf &Update prüfen …"
 
 #: picard/ui/mainwindow/actions.py:573
-#, fuzzy
-#| msgid "Save As…"
 msgid "Save Session &As…"
-msgstr "Speichern unter …"
+msgstr "Sitzung speichern unter …"
 
 #: picard/ui/mainwindow/actions.py:574
 msgid "Save the current session to a new file"
@@ -6677,26 +6671,20 @@ msgid "Save the current session to the last used file"
 msgstr "Die aktuelle Sitzung in der zuletzt benutzten Datei speichern"
 
 #: picard/ui/mainwindow/actions.py:589
-#, fuzzy
-#| msgid "Loading…"
 msgid "&Load Session…"
-msgstr "Laden …"
+msgstr "Sitzung &laden …"
 
 #: picard/ui/mainwindow/actions.py:590
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "Load a session file"
-msgstr "Ausgewählte Dateien &laden"
+msgstr "Sitzungsdatei laden"
 
 #: picard/ui/mainwindow/actions.py:597
 msgid "&New Session"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:598
-#, fuzzy
-#| msgid "&Copy the current script"
 msgid "Close the current session"
-msgstr "Aktuelles Skript &kopieren"
+msgstr "Aktuelle Sitzung schließen"
 
 #: picard/ui/mainwindow/actions.py:606
 msgid "Clear all recent session entries"
@@ -6755,14 +6743,10 @@ msgid "Edit…"
 msgstr "Bearbeiten …"
 
 #: picard/ui/metadatabox/__init__.py:462
-#, fuzzy
-#| msgid "Add to 'Preserve Tags' List"
 msgid "Add to \"Preserve Tags\" List"
 msgstr "Zur Liste der zu bewahrenden Tags hinzufügen"
 
 #: picard/ui/metadatabox/__init__.py:467
-#, fuzzy
-#| msgid "Remove from 'Preserve Tags' List"
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "Von der Liste zu bewahrender Tags entfernen"
 
@@ -6845,8 +6829,7 @@ msgid "This page failed to initialize"
 msgstr "Fehler beim initialisieren dieser Seite"
 
 #: picard/ui/options/dialog.py:121
-#, fuzzy, python-format
-#| msgid "Error while initializing option page '%s':"
+#, python-format
 msgid "Error while initializing option page \"%s\":"
 msgstr "Fehler beim Initialisieren der Einstellungsseite „%s“:"
 
@@ -7149,10 +7132,8 @@ msgid "You have changed the interface colors."
 msgstr ""
 
 #: picard/ui/options/interface_cover_art_box.py:34
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Cover-Art"
+msgstr "Cover-Art-Box"
 
 #: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
@@ -7267,10 +7248,8 @@ msgid "Value"
 msgstr "Wert"
 
 #: picard/ui/options/maintenance.py:142
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration File Backup Directory Error"
-msgstr "Konfiguration erforderlich"
+msgstr "Konfigurationsdatei-Backupverzeichnis-Fehler"
 
 #: picard/ui/options/maintenance.py:143
 #, python-format
@@ -7294,10 +7273,8 @@ msgid "Configuration files"
 msgstr "Konfigurationsdateien"
 
 #: picard/ui/options/maintenance.py:238
-#, fuzzy
-#| msgid "Backup Configuration File"
 msgid "Backup Configuration File Save Error"
-msgstr "Konfigurationsdatei sichern"
+msgstr "Fehler beim Speichern des Konfigurationsdatei-Backups"
 
 #: picard/ui/options/maintenance.py:239
 #, python-format
@@ -7423,8 +7400,6 @@ msgid "Plugins"
 msgstr "Plugins"
 
 #: picard/ui/options/plugins.py:97
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin…"
 msgstr "Plugin installieren …"
 
@@ -7433,30 +7408,24 @@ msgid "Install a new plugin from the registry or a custom URL"
 msgstr ""
 
 #: picard/ui/options/plugins.py:102 picard/ui/options/plugins.py:240
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refresh All"
-msgstr "&Aktualisieren"
+msgstr "Alles &aktualisieren"
 
 #: picard/ui/options/plugins.py:103
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
 
 #: picard/ui/options/plugins.py:109 picard/ui/options/plugins.py:300
-#, fuzzy
-#| msgid "Details"
 msgid "Hide Details"
-msgstr "Details"
+msgstr "Details verbergen"
 
 #: picard/ui/options/plugins.py:112
 msgid "Show/hide plugin details panel"
 msgstr ""
 
 #: picard/ui/options/plugins.py:168
-#, fuzzy
-#| msgid "Loading album %(id)s …"
 msgid "Loading plugins…"
-msgstr "Album %(id)s wird geladen …"
+msgstr "Plugins werden geladen …"
 
 #: picard/ui/options/plugins.py:190
 #, python-brace-format
@@ -7507,10 +7476,8 @@ msgid "Plugin system not available - Git backend required"
 msgstr ""
 
 #: picard/ui/options/plugins.py:303
-#, fuzzy
-#| msgid "Show more details"
 msgid "Show Details"
-msgstr "Mehr Details anzeigen"
+msgstr "Details anzeigen"
 
 #: picard/ui/options/plugins.py:341
 #, python-brace-format
@@ -7682,16 +7649,12 @@ msgid "Script Error"
 msgstr "Skriptfehler"
 
 #: picard/ui/options/sessions.py:38
-#, fuzzy
-#| msgid "Version"
 msgid "Sessions"
-msgstr "Version"
+msgstr "Sitzungen"
 
 #: picard/ui/options/sessions.py:103
-#, fuzzy
-#| msgid "Select a file"
 msgid "Select Sessions Folder"
-msgstr "Datei auswählen"
+msgstr "Sitzungsverzeichnis auswählen"
 
 #: picard/ui/options/tags.py:105
 msgid "Do not sanitize dates for these tag formats:"
@@ -7745,10 +7708,8 @@ msgid "Ctrl+P"
 msgstr "Ctrl+P"
 
 #: picard/ui/player/toolbar.py:224
-#, fuzzy
-#| msgid "Unknown script"
 msgid "Unknown Artist"
-msgstr "Unbekannte Schrift"
+msgstr "Unbekannter Interpret"
 
 #: picard/ui/player/toolbar.py:244
 #, python-format
@@ -7777,10 +7738,8 @@ msgid "Volume up"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:314
-#, fuzzy
-#| msgid "Change audio volume"
 msgid "Increase audio volume"
-msgstr "Lautstärke ändern"
+msgstr "Lautstärke erhöhen"
 
 #: picard/ui/player/toolbar.py:319
 msgid "Ctrl+Shift++"
@@ -7791,10 +7750,8 @@ msgid "Volume down"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:324
-#, fuzzy
-#| msgid "Change audio volume"
 msgid "Decrease audio volume"
-msgstr "Lautstärke ändern"
+msgstr "Lautstärke verringern"
 
 #: picard/ui/player/toolbar.py:329
 msgid "Ctrl+Shift+-"
@@ -8160,10 +8117,8 @@ msgstr "Aktualisierung"
 
 #: picard/ui/widgets/plugindetailswidget.py:107
 #: picard/ui/widgets/pluginlistwidget.py:558
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall"
-msgstr "Plugin deinstallieren"
+msgstr "Deinstallieren"
 
 #: picard/ui/widgets/plugindetailswidget.py:111
 #: picard/ui/widgets/pluginlistwidget.py:574
@@ -8171,27 +8126,21 @@ msgid "Information"
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:139
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available"
-msgstr "Neue Version verfügbar"
+msgstr "Keine Beschreibung verfügbar"
 
 #: picard/ui/widgets/plugindetailswidget.py:211
 #: picard/ui/widgets/plugindetailswidget.py:326
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Failed"
-msgstr "Plugin deinstallieren"
+msgstr "Deinstallation fehlgeschlagen"
 
 #: picard/ui/widgets/plugindetailswidget.py:248
 msgid "N/A"
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:276
-#, fuzzy
-#| msgid "Update Checking"
 msgid "Update Plugin"
-msgstr "Auf Updates prüfen"
+msgstr "Plugin aktualisieren"
 
 #: picard/ui/widgets/plugindetailswidget.py:277
 #, python-brace-format
@@ -8207,10 +8156,8 @@ msgid "Failed to uninstall plugin: {errmsg}"
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:333
-#, fuzzy
-#| msgid "Loading…"
 msgid "Updating…"
-msgstr "Laden …"
+msgstr "Aktualisiere …"
 
 #: picard/ui/widgets/pluginlistwidget.py:78
 #: picard/ui/widgets/pluginlistwidget.py:90
@@ -8227,20 +8174,16 @@ msgid "Enabled"
 msgstr "Aktiviert"
 
 #: picard/ui/widgets/pluginlistwidget.py:132
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin"
-msgstr "Plugins"
+msgstr "Plugin"
 
 #: picard/ui/widgets/pluginlistwidget.py:132
 msgid "Version"
 msgstr "Version"
 
 #: picard/ui/widgets/pluginlistwidget.py:132
-#, fuzzy
-#| msgid "Version"
 msgid "New Version"
-msgstr "Version"
+msgstr "Neue Version"
 
 #: picard/ui/widgets/pluginlistwidget.py:254
 msgid "This plugin is included in updates"
@@ -8258,22 +8201,16 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:298
 #: picard/ui/widgets/pluginlistwidget.py:317
 #: picard/ui/widgets/pluginlistwidget.py:324
-#, fuzzy
-#| msgid "Available Locales"
 msgid "Available"
-msgstr "Verfügbare Sprachen"
+msgstr "Verfügbar"
 
 #: picard/ui/widgets/pluginlistwidget.py:544
-#, fuzzy
-#| msgid "Disabled"
 msgid "Disable"
-msgstr "Deaktiviert"
+msgstr "Deaktivieren"
 
 #: picard/ui/widgets/pluginlistwidget.py:547
-#, fuzzy
-#| msgid "Enabled"
 msgid "Enable"
-msgstr "Aktiviert"
+msgstr "Aktivieren"
 
 #: picard/ui/widgets/pluginlistwidget.py:562
 msgid "Reinstall"
@@ -8297,10 +8234,8 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:650
 #: picard/ui/widgets/pluginlistwidget.py:681
 #: picard/ui/widgets/pluginlistwidget.py:734
-#, fuzzy
-#| msgid "File Error"
 msgid "Plugin Error"
-msgstr "Datei-Fehler"
+msgstr "Plugin-Fehler"
 
 #: picard/ui/widgets/pluginlistwidget.py:596
 #, python-brace-format
@@ -8357,8 +8292,6 @@ msgid "No Data"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:819
-#, fuzzy
-#| msgid "Uninstall plugin"
 msgid "Uninstall Plugin"
 msgstr "Plugin deinstallieren"
 
@@ -8393,10 +8326,8 @@ msgid "Yes, Switch!"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:909
-#, fuzzy
-#| msgid "Locale Selector"
 msgid "No Ref Selected"
-msgstr "Sprachauswahl"
+msgstr "Keine Git-Ref ausgewählt"
 
 #: picard/ui/widgets/pluginlistwidget.py:910
 msgid "Please select or enter a ref to switch to."
@@ -8453,10 +8384,8 @@ msgid "Find next"
 msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:242
-#, fuzzy
-#| msgid "Actions"
 msgid "Functions"
-msgstr "Aktionen"
+msgstr "Funktionen"
 
 #: picard/ui/widgets/scriptdocumentation.py:257
 msgid "Open Scripting Documentation in your browser"
@@ -8468,10 +8397,8 @@ msgid "({item} of {total})"
 msgstr ""
 
 #: picard/ui/widgets/scriptdocumentation.py:289
-#, fuzzy
-#| msgid "File not found"
 msgid "(not found)"
-msgstr "Datei nicht gefunden"
+msgstr "(nicht gefunden)"
 
 #: picard/ui/widgets/scriptlistwidget.py:58
 msgid "Rename script"
