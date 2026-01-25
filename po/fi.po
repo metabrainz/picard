@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2025-12-11 21:11+0000\n"
 "Last-Translator: Jaakko Perttilä <jormangeud@gmail.com>\n"
 "Language-Team: Finnish <https://translations.metabrainz.org/projects/picard/"
@@ -8056,10 +8056,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Toista"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Toista valitut tiedostot"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -9205,10 +9203,6 @@ msgstr "Sisäinen soitin: %(error)s, %(message)s"
 msgid "Player"
 msgstr "Soitin"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Toista valitut tiedostot"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Pysäytä"
@@ -10143,6 +10137,11 @@ msgstr ""
 "Virhe käynnistettäessä verkkoselainta:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Toista valitut tiedostot"
 
 #, fuzzy
 #~| msgid "Label"

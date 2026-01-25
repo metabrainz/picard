@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2026-01-23 22:47+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
@@ -7509,11 +7509,9 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Grotuvas"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Select all"
-msgid "Play select files"
-msgstr "Pasirinkti viską"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
+msgstr ""
 
 #: picard/ui/mainwindow/actions.py:537
 #, fuzzy
@@ -8590,10 +8588,6 @@ msgstr ""
 msgid "Player"
 msgstr "Grotuvas"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr ""
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr ""
@@ -9504,6 +9498,11 @@ msgstr ""
 "Klaida paleidžiant interneto naršyklę:\n"
 "\n"
 "%s."
+
+#, fuzzy
+#~| msgid "Select all"
+#~ msgid "Play select files"
+#~ msgstr "Pasirinkti viską"
 
 #, fuzzy
 #~| msgid "Label"

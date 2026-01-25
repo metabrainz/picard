@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -8023,10 +8023,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Odtwórz"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Odtwórz wybrane pliki"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -9147,10 +9145,6 @@ msgstr "Odtwarzacz wewnętrzny: %(error)s, %(message)s"
 msgid "Player"
 msgstr "Odtwarzacz"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Odtwórz wybrane pliki"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Pauza"
@@ -10093,6 +10087,11 @@ msgstr ""
 "Błąd podczas uruchamiania przeglądarki:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Odtwórz wybrane pliki"
 
 #, fuzzy
 #~| msgid "Label"

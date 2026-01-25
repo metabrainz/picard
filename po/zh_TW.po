@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2023-12-22 09:28+0000\n"
 "Last-Translator: Iceman1415 <iceman1415@protonmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
@@ -6635,10 +6635,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "播放"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "播放選擇的檔案"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -7737,10 +7735,6 @@ msgstr "內部播放器：%(error)s，%(message)s"
 msgid "Player"
 msgstr "播放器"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "播放選擇的檔案"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "暫停"
@@ -8658,6 +8652,11 @@ msgstr ""
 "啟動網頁瀏覽時發生錯誤:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "播放選擇的檔案"
 
 #, fuzzy
 #~| msgid "Label"

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2025-03-18 02:44+0000\n"
 "Last-Translator: joaodtx <joao.buckb@gmail.com>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
@@ -6356,11 +6356,9 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Save selected files"
-msgid "Play select files"
-msgstr "Guardar os ficheiros selecionados"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
+msgstr ""
 
 #: picard/ui/mainwindow/actions.py:537
 #, fuzzy
@@ -7354,10 +7352,6 @@ msgstr ""
 msgid "Player"
 msgstr ""
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr ""
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr ""
@@ -8249,6 +8243,11 @@ msgstr ""
 "Erro ao iniciar o navegador de Internet:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Save selected files"
+#~ msgid "Play select files"
+#~ msgstr "Guardar os ficheiros selecionados"
 
 #, fuzzy
 #~| msgid "Label"

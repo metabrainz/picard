@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2024-12-10 18:42+0000\n"
 "Last-Translator: \"ApeKattQuest, MonkeyPython\" "
 "<ApeKattQuest_MonkeyPython@users.noreply.translations.metabrainz.org>\n"
@@ -6386,10 +6386,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Spill"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Spill markerte filer"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -7381,10 +7379,6 @@ msgstr ""
 msgid "Player"
 msgstr "Spiller"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Spill markerte filer"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Pause"
@@ -8274,6 +8268,11 @@ msgstr ""
 "Feil ved kjøring av nettleser:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Spill markerte filer"
 
 #, fuzzy
 #~| msgid "Label"

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2025-12-30 09:11+0000\n"
 "Last-Translator: emptybrainz <okep.and.spore@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -7744,10 +7744,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Грати"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Відтворити вибрані файли"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -8862,10 +8860,6 @@ msgstr "Внутрішній програвач: %(error)s, %(message)s"
 msgid "Player"
 msgstr "Плеєр"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Відтворити вибрані файли"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Пауза"
@@ -9796,6 +9790,11 @@ msgstr ""
 "Помилка під час запуску веб-браузера:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Відтворити вибрані файли"
 
 #~ msgid "TextLabel"
 #~ msgstr "Ярлик"

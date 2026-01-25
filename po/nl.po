@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2025-12-07 12:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
@@ -7971,10 +7971,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Afspelen"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Geselecteerde bestanden afspelen"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -9082,10 +9080,6 @@ msgstr "Interne speler: %(error)s, %(message)s"
 msgid "Player"
 msgstr "Speler"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Geselecteerde bestanden afspelen"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Pauzeren"
@@ -10027,6 +10021,11 @@ msgstr ""
 "Fout tijdens het starten van een webbrowser:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Geselecteerde bestanden afspelen"
 
 #, fuzzy
 #~| msgid "Label"

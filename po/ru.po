@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
@@ -6502,10 +6502,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Воспроизвоести"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Воспроизвести выбранные файлы"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -7514,10 +7512,6 @@ msgstr "Встроенный плеер: %(error)s, %(message)s"
 msgid "Player"
 msgstr "Плеер"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Воспроизвести выбранные файлы"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr "Пауза"
@@ -8416,6 +8410,11 @@ msgstr ""
 "Ошибка во время запуска браузера:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Воспроизвести выбранные файлы"
 
 #, fuzzy
 #~| msgid "Label"

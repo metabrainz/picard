@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:32+0100\n"
+"POT-Creation-Date: 2026-01-24 16:44+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -6422,10 +6422,8 @@ msgstr "Ctrl+H"
 msgid "&Play"
 msgstr "Spela"
 
-#: picard/ui/mainwindow/actions.py:535
-#, fuzzy
-#| msgid "Play selected files"
-msgid "Play select files"
+#: picard/ui/mainwindow/actions.py:535 picard/ui/player/toolbar.py:75
+msgid "Play selected files"
 msgstr "Spela markerade filer"
 
 #: picard/ui/mainwindow/actions.py:537
@@ -7417,10 +7415,6 @@ msgstr ""
 msgid "Player"
 msgstr "Spelare"
 
-#: picard/ui/player/toolbar.py:75
-msgid "Play selected files"
-msgstr "Spela markerade filer"
-
 #: picard/ui/player/toolbar.py:82
 msgid "Pause"
 msgstr ""
@@ -8313,6 +8307,11 @@ msgstr ""
 "Fel när webbläsare startades:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Play selected files"
+#~ msgid "Play select files"
+#~ msgstr "Spela markerade filer"
 
 #, fuzzy
 #~| msgid "Label"
