@@ -5,6 +5,7 @@
 # Copyright (C) 2025 João Sousa
 # Copyright (C) 2025 Francisco Lisboa
 # Copyright (C) 2025 Bob Swift
+# Copyright (C) 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,6 +38,8 @@ from picard.tags import (
 )
 from picard.tags.docs import display_tag_tooltip
 
+from picard.ui import PicardDialog
+
 
 class Filter(QtWidgets.QWidget):
     filterChanged = QtCore.pyqtSignal(str, set)
@@ -64,8 +67,6 @@ class Filter(QtWidgets.QWidget):
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
-        self.filter_dialog = self._build_filter_dialog()
-
         # filter input
         self.filter_query_box = QtWidgets.QLineEdit(self)
         self.filter_query_box.setPlaceholderText(_("Type to filter…"))
@@ -85,91 +86,12 @@ class Filter(QtWidgets.QWidget):
     def __del__(self):
         Filter.instances.discard(self)
 
-    def _build_filter_dialog(self):
-        dialog = QtWidgets.QDialog(self)
-        dialog.setWindowTitle(_("Select Filters"))
-        dialog.setMinimumWidth(300)
-
-        layout = QtWidgets.QVBoxLayout(dialog)
-
-        header_layout = QtWidgets.QHBoxLayout()
-
-        # Offset to line up checkbox with checkboxes in scroll area below
-        spacer = QtWidgets.QSpacerItem(9, 0, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
-        header_layout.addItem(spacer)
-
-        self.check_all_box = QtWidgets.QCheckBox(_('Select / clear all filters'))
-        self.check_all_box.setChecked(Filter.filterable_tags == self.selected_filters)
-        self.check_all_box.clicked.connect(self._check_all_box_clicked)
-        header_layout.addWidget(self.check_all_box)
-        layout.addLayout(header_layout)
-
-        # Scroll area for tags
-        scroll = QtWidgets.QScrollArea(dialog)
-        scroll.setWidgetResizable(True)
-        scroll_content = QtWidgets.QWidget(scroll)
-        scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
-
-        self.checkboxes = {}
-
-        # Add checkboxes for all tags
-        for tag in sorted(Filter.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
-            checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
-            checkbox.setChecked(str(tag) in self.selected_filters)
-            checkbox.setToolTip(display_tag_tooltip(tag))
-            scroll_layout.addWidget(checkbox)
-            self.checkboxes[str(tag)] = checkbox
-
-        scroll_content.setLayout(scroll_layout)
-        scroll.setWidget(scroll_content)
-        layout.addWidget(scroll)
-
-        # Buttons
-
-        button_layout = QtWidgets.QHBoxLayout()
-
-        # spacer
-        spacer = QtWidgets.QSpacerItem(
-            20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
-        )
-        button_layout.addItem(spacer)
-
-        # OK
-        self.ok_button = QtWidgets.QPushButton(_('OK'))
-        ok_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogOkButton)
-        self.ok_button.setIcon(ok_icon)
-        self.ok_button.clicked.connect(dialog.accept)
-        button_layout.addWidget(self.ok_button)
-        self.ok_button.setDefault(True)  # default selected button
-
-        # Cancel
-        self.cancel_button = QtWidgets.QPushButton(_('Cancel'))
-        cancel_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogCancelButton)
-        self.cancel_button.setIcon(cancel_icon)
-        self.cancel_button.clicked.connect(dialog.reject)
-        button_layout.addWidget(self.cancel_button)
-
-        layout.addLayout(button_layout)
-
-        return dialog
-
-    def _check_all_box_clicked(self):
-        state = self.check_all_box.checkState() == QtCore.Qt.CheckState.Checked
-        for checkbox in self.checkboxes.values():
-            checkbox.setChecked(state)
-
-    def _uncheck_all_filters(self):
-        for checkbox in self.checkboxes.values():
-            checkbox.setChecked(False)
-
     def _show_filter_dialog(self):
         """Show dialog to select multiple filters"""
         # Show dialog and process result
-        if self.filter_dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            self.selected_filters = set()
-            for tag, checkbox in self.checkboxes.items():
-                if checkbox.isChecked():
-                    self.selected_filters.add(tag)
+        dialog = FilterDialog(self.selected_filters, parent=self)
+        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+            self.selected_filters = dialog.get_selected_tags()
 
             # Update persistent list of selected filters
             config = get_config()
@@ -179,13 +101,6 @@ class Filter(QtWidgets.QWidget):
             self.set_filter_button_label(self.make_button_text(self.selected_filters))
 
             self._query_changed(self.filter_query_box.text())
-
-        else:
-            # Reset any changes to selected filters on dialog cancel
-            for tag, checkbox in self.checkboxes.items():
-                checkbox.setChecked(tag in self.selected_filters)
-
-        self.check_all_box.setChecked(Filter.filterable_tags == self.selected_filters)
 
     @classmethod
     def apply_filters(cls):
@@ -211,7 +126,6 @@ class Filter(QtWidgets.QWidget):
     def filterable_tags_updated(self):
         if self.initializing:
             return
-        self.filter_dialog = self._build_filter_dialog()
 
         # Check if selected filters were removed and re-apply the filter
         old_filters = self.selected_filters.copy()
@@ -247,3 +161,69 @@ class Filter(QtWidgets.QWidget):
 
     def set_focus(self):
         self.filter_query_box.setFocus()
+
+
+class FilterDialog(PicardDialog):
+    help_url = "/getting_started/screen_main.html#filtering-the-main-screen"
+    defaultsize = QtCore.QSize(400, 500)
+
+    def __init__(self, selected_filters, parent=None):
+        super().__init__(parent)
+        self._selected_filters = selected_filters
+        self.setWindowTitle(_("Select Filters"))
+        self.setMinimumWidth(300)
+        self._setup_ui()
+
+    def get_selected_tags(self):
+        return set(tag for tag, checkbox in self.checkboxes.items() if checkbox.isChecked())
+
+    def _setup_ui(self):
+        layout = QtWidgets.QVBoxLayout(self)
+
+        header_layout = QtWidgets.QHBoxLayout()
+
+        # Offset to line up checkbox with checkboxes in scroll area below
+        spacer = QtWidgets.QSpacerItem(9, 0, QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Minimum)
+        header_layout.addItem(spacer)
+
+        self.check_all_box = QtWidgets.QCheckBox(_('Select / clear all filters'))
+        self.check_all_box.setChecked(Filter.filterable_tags == self._selected_filters)
+        self.check_all_box.clicked.connect(self._check_all_box_clicked)
+        header_layout.addWidget(self.check_all_box)
+        layout.addLayout(header_layout)
+
+        # Scroll area for tags
+        scroll = QtWidgets.QScrollArea(self)
+        scroll.setWidgetResizable(True)
+        scroll_content = QtWidgets.QWidget(scroll)
+        scroll_layout = QtWidgets.QVBoxLayout(scroll_content)
+
+        self.checkboxes = {}
+
+        # Add checkboxes for all tags
+        for tag in sorted(Filter.filterable_tags, key=lambda t: ALL_TAGS.display_name(t).lower()):
+            checkbox = QtWidgets.QCheckBox(ALL_TAGS.display_name(str(tag)), scroll_content)
+            checkbox.setChecked(str(tag) in self._selected_filters)
+            checkbox.setToolTip(display_tag_tooltip(tag))
+            scroll_layout.addWidget(checkbox)
+            self.checkboxes[str(tag)] = checkbox
+
+        scroll_content.setLayout(scroll_layout)
+        scroll.setWidget(scroll_content)
+        layout.addWidget(scroll)
+
+        # Buttons
+        button_box = QtWidgets.QDialogButtonBox()
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Help)
+        button_box.accepted.connect(self.accept)
+        button_box.rejected.connect(self.reject)
+        button_box.helpRequested.connect(self.show_help)
+        layout.addWidget(button_box)
+        self.setMinimumWidth(300)
+
+    def _check_all_box_clicked(self):
+        state = self.check_all_box.checkState() == QtCore.Qt.CheckState.Checked
+        for checkbox in self.checkboxes.values():
+            checkbox.setChecked(state)
