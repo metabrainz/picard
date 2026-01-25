@@ -125,31 +125,12 @@ class Filter(QtWidgets.QWidget):
         layout.addWidget(scroll)
 
         # Buttons
-
-        button_layout = QtWidgets.QHBoxLayout()
-
-        # spacer
-        spacer = QtWidgets.QSpacerItem(
-            20, 0, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum
-        )
-        button_layout.addItem(spacer)
-
-        # OK
-        self.ok_button = QtWidgets.QPushButton(_('OK'))
-        ok_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogOkButton)
-        self.ok_button.setIcon(ok_icon)
-        self.ok_button.clicked.connect(dialog.accept)
-        button_layout.addWidget(self.ok_button)
-        self.ok_button.setDefault(True)  # default selected button
-
-        # Cancel
-        self.cancel_button = QtWidgets.QPushButton(_('Cancel'))
-        cancel_icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DialogCancelButton)
-        self.cancel_button.setIcon(cancel_icon)
-        self.cancel_button.clicked.connect(dialog.reject)
-        button_layout.addWidget(self.cancel_button)
-
-        layout.addLayout(button_layout)
+        button_box = QtWidgets.QDialogButtonBox()
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        button_box.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
+        button_box.accepted.connect(dialog.accept)
+        button_box.rejected.connect(dialog.reject)
+        layout.addWidget(button_box)
 
         return dialog
 
