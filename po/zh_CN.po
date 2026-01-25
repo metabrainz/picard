@@ -50,7 +50,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2026-01-08 15:11+0000\n"
 "Last-Translator: imgradeone <imgradeone@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -5743,16 +5743,22 @@ msgstr "封面尺寸"
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
-#| msgid "Label"
-msgid "TextLabel"
-msgstr "唱片公司"
+#| msgid "Option Setting Warning"
+msgid "Available Option Settings"
+msgstr "选项设置警告"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -8296,19 +8302,7 @@ msgstr "您已更改界面颜色。"
 msgid "Cover Art Box"
 msgstr "专辑封面"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-#, fuzzy
-#| msgid "Option Setting Warning"
-msgid "Available Option Settings"
-msgstr "选项设置警告"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr "标题"
@@ -9803,6 +9797,11 @@ msgstr ""
 "启动 web 浏览器时出错:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Label"
+#~ msgid "TextLabel"
+#~ msgstr "唱片公司"
 
 #, fuzzy
 #~| msgid "New cover art embedded into tags"

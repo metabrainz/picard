@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
@@ -4585,16 +4585,22 @@ msgstr "Përmasa Kopertine"
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
-#| msgid "Label"
-msgid "TextLabel"
-msgstr "Etiketë"
+#| msgid "Encoder Settings"
+msgid "Available Option Settings"
+msgstr "Rregullime Koduesi"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -7040,19 +7046,7 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "Kopertinë"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-#, fuzzy
-#| msgid "Encoder Settings"
-msgid "Available Option Settings"
-msgstr "Rregullime Koduesi"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr "titull"
@@ -8493,6 +8487,11 @@ msgstr ""
 "Gabim gjatë nisjes së një shfletuesi:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Label"
+#~ msgid "TextLabel"
+#~ msgstr "Etiketë"
 
 #~ msgid "Automatic backup destination directory"
 #~ msgstr "Drejtori e automatizuar vendmbërritje kopjeruajtjeje"

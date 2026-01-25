@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -5935,16 +5935,21 @@ msgstr "Pokaż wymiary"
 msgid "Show MIME type"
 msgstr "Pokaż typ MIME"
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr "Menu szybkich ustawień"
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+"Wybierz ustawienia, które mają być wyświetlane w menu Szybkie ustawienia."
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-#| msgid "Label"
-msgid "TextLabel"
-msgstr "Wytwórnia"
+msgid "Available Option Settings"
+msgstr "Dostępne ustawienia opcji"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -8556,18 +8561,7 @@ msgstr "Zmieniłeś kolory interfejsu."
 msgid "Cover Art Box"
 msgstr "Pudełko z grafiką okładki"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-"Wybierz ustawienia, które mają być wyświetlane w menu Szybkie ustawienia."
-
-#: picard/ui/options/interface_quick_menu.py:63
-msgid "Available Option Settings"
-msgstr "Dostępne ustawienia opcji"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr "tytuł"
@@ -10099,6 +10093,11 @@ msgstr ""
 "Błąd podczas uruchamiania przeglądarki:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Label"
+#~ msgid "TextLabel"
+#~ msgstr "Wytwórnia"
 
 #, fuzzy
 #~| msgid "New cover art embedded into tags"

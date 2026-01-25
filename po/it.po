@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2025-11-17 16:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
@@ -5868,14 +5868,20 @@ msgstr "Mostra dimensioni"
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-msgid "TextLabel"
-msgstr "Etichetta testuale"
+msgid "Available Option Settings"
+msgstr "Impostazioni di opzione disponibili"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -8463,17 +8469,7 @@ msgstr "Hai cambiato i colori dell'interfaccia."
 msgid "Cover Art Box"
 msgstr "Scatola di copertina"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-msgid "Available Option Settings"
-msgstr "Impostazioni di opzione disponibili"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr "titolo"
@@ -10005,6 +10001,9 @@ msgstr ""
 "Errore nell'avvio del browser:\n"
 "\n"
 "%s"
+
+#~ msgid "TextLabel"
+#~ msgstr "Etichetta testuale"
 
 #~ msgid "Show cover art type in info labels"
 #~ msgstr "Mostra tipo di copertina nelle etichette di informazione"

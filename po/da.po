@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2023-10-31 20:27+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Danish <https://translations.metabrainz.org/projects/picard/"
@@ -4255,16 +4255,22 @@ msgstr "Vis skjulte filer"
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
-#| msgid "Label"
-msgid "TextLabel"
-msgstr "Selskab"
+#| msgid "Options"
+msgid "Available Option Settings"
+msgstr "Indstillinger"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -6715,19 +6721,7 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "Omslag"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-#, fuzzy
-#| msgid "Options"
-msgid "Available Option Settings"
-msgstr "Indstillinger"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 #, fuzzy
 #| msgid "Title"
@@ -8145,6 +8139,11 @@ msgstr ""
 "Fejl under opstart af internetbrowser:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Label"
+#~ msgid "TextLabel"
+#~ msgstr "Selskab"
 
 #, fuzzy
 #~| msgid "&Set as starting directory"

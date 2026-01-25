@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2023-12-31 20:28+0000\n"
 "Last-Translator: glawie <glawie@gmail.com>\n"
 "Language-Team: English (United Kingdom) <https://translations.metabrainz.org/"
@@ -4162,15 +4162,20 @@ msgstr ""
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
-#, fuzzy
-msgid "TextLabel"
-msgstr "Label"
+msgid "Available Option Settings"
+msgstr ""
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -6559,17 +6564,7 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr ""
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-msgid "Available Option Settings"
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr ""
@@ -7940,6 +7935,10 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+
+#, fuzzy
+#~ msgid "TextLabel"
+#~ msgstr "Label"
 
 #, python-format
 #~ msgid "Unable to load plugin '%s'"

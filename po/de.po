@@ -32,7 +32,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 00:01+0100\n"
+"POT-Creation-Date: 2026-01-24 16:32+0100\n"
 "PO-Revision-Date: 2026-01-24 15:33+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
@@ -2615,8 +2615,8 @@ msgid ""
 "\n"
 "_Since Picard 2.7_"
 msgstr ""
-"Gibt das Jahr des angegebenen Datums zurück. Die Standardreihenfolge ist „ymd"
-"“ (Jahr-Monat-Tag). Dies kann geändert werden, in dem als Reihenfolge "
+"Gibt das Jahr des angegebenen Datums zurück. Die Standardreihenfolge ist "
+"„ymd“ (Jahr-Monat-Tag). Dies kann geändert werden, in dem als Reihenfolge "
 "entweder „dmy“ oder „mdy“ angegeben wird. Falls das Datum ungültig ist, wird "
 "eine leere Zeichenkette zurückgegeben.\n"
 "\n"
@@ -2792,8 +2792,8 @@ msgstr ""
 "Gibt den unter der Verwendung des in `Typ` angegebenen Vergleichs kleinsten "
 "Wert zurück.\n"
 "\n"
-"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), „text"
-"“\n"
+"Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), "
+"„text“\n"
 "(Groß-/Kleinschreibung beachtender Text), „nocase“ (Groß-/Kleinschreibung "
 "ignorierender Text) und\n"
 "„auto“ (den Typ automatisch anhand der Argumente festlegen), wobei „auto“ "
@@ -2838,8 +2838,8 @@ msgstr ""
 "\n"
 "Mögliche Werte von `Typ` sind „int“ (Ganzzahl), „float“ (Gleitkomma), „text“ "
 "(Groß-/Kleinschreibung\n"
-"beachtender Text), „nocase“ (Groß-/Kleinschreibung ignorierender Text) und „"
-"auto“ (den Typ automatisch\n"
+"beachtender Text), „nocase“ (Groß-/Kleinschreibung ignorierender Text) und "
+"„auto“ (den Typ automatisch\n"
 "anhand der Argumente festlegen), wobei „auto“ als "
 "Standardwertvergleichsmethode verwendet wird, wenn\n"
 "`Typ` nicht angegeben ist. Der Typ „auto“ verwendet den ersten Typ, der für "
@@ -4637,16 +4637,22 @@ msgstr "Größe anzeigen"
 msgid "Show MIME type"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+#: picard/ui/forms/ui_options_interface_quick_menu.py:42
 #: picard/ui/options/interface_quick_menu.py:47
 msgid "Quick Settings Menu"
 msgstr ""
 
+#: picard/ui/forms/ui_options_interface_quick_menu.py:43
+msgid ""
+"Please select the settings that you want to appear in the Quick Settings "
+"menu."
+msgstr ""
+
 #: picard/ui/forms/ui_options_interface_quick_menu.py:44
 #, fuzzy
-#| msgid "Label"
-msgid "TextLabel"
-msgstr "Label"
+#| msgid "Option Setting Warning"
+msgid "Available Option Settings"
+msgstr "Einstellungs-Warnung"
 
 #: picard/ui/forms/ui_options_interface_toolbar.py:78
 msgid "Customize Action Toolbar"
@@ -7216,19 +7222,7 @@ msgstr ""
 msgid "Cover Art Box"
 msgstr "Cover-Art"
 
-#: picard/ui/options/interface_quick_menu.py:61
-msgid ""
-"Please select the settings that you want to appear in the Quick Settings "
-"menu."
-msgstr ""
-
-#: picard/ui/options/interface_quick_menu.py:63
-#, fuzzy
-#| msgid "Option Setting Warning"
-msgid "Available Option Settings"
-msgstr "Einstellungs-Warnung"
-
-#: picard/ui/options/interface_quick_menu.py:84
+#: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:214
 msgid "title"
 msgstr "Titel"
@@ -8739,6 +8733,11 @@ msgstr ""
 "Fehler beim Öffnen des Webbrowsers:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "Label"
+#~ msgid "TextLabel"
+#~ msgstr "Label"
 
 #, fuzzy
 #~| msgid "Embed cover images into tags"
