@@ -46,7 +46,7 @@ class ColumnTest(PicardTestCase):
         expected_repr = (
             "Column('title', 'key', width=None, align=ColumnAlign.LEFT, "
             "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False, "
-            "column_group=ColumnGroupItem(index=99, title='Custom Columns'))"
+            "column_group=ColumnGroup.CUSTOM)"
         )
         self.assertEqual(repr(column), expected_repr)
         self.assertEqual(str(column), expected_repr)
@@ -90,7 +90,7 @@ class ColumnTest(PicardTestCase):
             repr(column),
             "IconColumn('title', 'key', width=14, align=ColumnAlign.LEFT, "
             "sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=False, "
-            "column_group=ColumnGroupItem(index=4, title='Miscellaneous'))",
+            "column_group=ColumnGroup.MISC)",
         )
 
 
@@ -124,8 +124,8 @@ class ColumnsTest(PicardTestCase):
         self.assertEqual(columns.pos('k3'), 1)
 
         expected_repr = """Columns([
-    Column('t2', 'k2', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=True, status_icon=False, column_group=ColumnGroupItem(index=99, title='Custom Columns')),
-    Column('t3', 'k3', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=True, column_group=ColumnGroupItem(index=99, title='Custom Columns')),
+    Column('t2', 'k2', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=True, status_icon=False, column_group=ColumnGroup.CUSTOM),
+    Column('t3', 'k3', width=100, align=ColumnAlign.LEFT, sort_type=ColumnSortType.TEXT, sortkey=None, always_visible=False, status_icon=True, column_group=ColumnGroup.CUSTOM),
 ])"""
         self.assertEqual(repr(columns), expected_repr)
         self.assertEqual(str(columns), expected_repr)

@@ -55,7 +55,7 @@ from picard import log
 from picard.i18n import gettext as _
 
 from picard.ui.columns import (
-    ColumnGroups,
+    ColumnGroup,
     ImageColumn,
 )
 from picard.ui.itemviews.custom_columns.manager_dialog import CustomColumnsManagerDialog
@@ -133,9 +133,9 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             List of column checkboxes for dynamic state updates.
         """
         group_map = {}
-        for group in ColumnGroups.all_groups():
-            group_map[group.title] = QtWidgets.QMenu(_(group.title), menu)
-            menu.addMenu(group_map[group.title])
+        for group in ColumnGroup:
+            group_map[group] = QtWidgets.QMenu(_(group.title), menu)
+            menu.addMenu(group_map[group])
 
         column_checkboxes = []
         for i, column in enumerate(self._columns):
@@ -143,7 +143,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
                 continue
 
             group = getattr(column, 'column_group', None)
-            target_menu = group_map[group.title] if group and group.title in group_map else menu
+            target_menu = group_map.get(group, menu)
             action, checkbox = self._create_checkbox_action(
                 target_menu,
                 _(column.title),

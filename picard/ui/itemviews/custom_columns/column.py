@@ -30,8 +30,7 @@ from PyQt6 import (
 from picard.ui.columns import (
     Column,
     ColumnAlign,
-    ColumnGroupItem,
-    ColumnGroups,
+    ColumnGroup,
     ColumnSortType,
     ImageColumn,
 )
@@ -58,7 +57,7 @@ class CustomColumn(Column):
         always_visible: bool = False,
         *,
         status_icon: bool = False,
-        column_group: ColumnGroupItem | None = None,
+        column_group: ColumnGroup | None = None,
     ):
         """Create custom column.
 
@@ -125,7 +124,7 @@ class DelegateColumn(Column):
         *,
         status_icon: bool = False,
         sort_provider: SortKeyProvider | None = None,
-        column_group: ColumnGroupItem | None = None,
+        column_group: ColumnGroup | None = None,
     ):
         """Create delegate column.
 
@@ -193,7 +192,7 @@ class IconColumn(ImageColumn):
         provider: HeaderIconProvider,
         *,
         width: int | None = None,
-        column_group: ColumnGroupItem | None = None,
+        column_group: ColumnGroup | None = None,
     ) -> None:
         super().__init__(
             title,
@@ -204,7 +203,7 @@ class IconColumn(ImageColumn):
             sortkey=None,
             always_visible=False,
             status_icon=False,
-            column_group=ColumnGroups.MISC,
+            column_group=ColumnGroup.MISC,
         )
         self._provider = provider
         self.header_icon_size = QtCore.QSize(0, 0)

@@ -44,7 +44,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 from collections.abc import MutableSequence
 from enum import IntEnum
 
@@ -53,29 +52,24 @@ from PyQt6 import QtCore
 from picard.i18n import N_
 
 
-ColumnGroupItem = namedtuple('ColumnGroupItem', ['index', 'title'])
+class ColumnGroup(IntEnum):
+    ALBUM = 0, N_("Album Items")
+    TRACK = 1, N_("Track Items")
+    FILE = 2, N_("File Items")
+    IMAGE = 3, N_("Image Items")
+    MISC = 4, N_("Miscellaneous")
+    CUSTOM = 99, N_("Custom Columns")
 
+    def __new__(cls, value, title):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj.title = title
+        return obj
 
-class ColumnGroups:
-    _groups = {
-        'album': ColumnGroupItem(index=0, title=N_("Album Items")),
-        'track': ColumnGroupItem(index=1, title=N_("Track Items")),
-        'file': ColumnGroupItem(index=2, title=N_("File Items")),
-        'image': ColumnGroupItem(index=3, title=N_("image Items")),
-        'misc': ColumnGroupItem(index=4, title=N_("Miscellaneous")),
-        'custom': ColumnGroupItem(index=99, title=N_("Custom Columns")),
-    }
-    ALBUM = _groups['album']
-    TRACK = _groups['track']
-    FILE = _groups['file']
-    IMAGE = _groups['image']
-    MISC = _groups['misc']
-    CUSTOM = _groups['custom']
-
-    @classmethod
-    def all_groups(cls):
-        """Returns all defined column groups as a list of ColumnGroupItem."""
-        return [cls._groups[key] for key in sorted(cls._groups.keys(), key=lambda k: cls._groups[k].index)]
+    def __repr__(self):
+        # Custom repr to match ColumnAlign/ColumnSortType format: ClassName.MEMBER_NAME
+        cls_name = self.__class__.__name__
+        return f'{cls_name}.{self.name}'
 
 
 class ColumnAlign(IntEnum):
@@ -112,7 +106,7 @@ class Column:
         sortkey=None,
         always_visible=False,
         status_icon=False,
-        column_group: ColumnGroupItem | None = None,
+        column_group: ColumnGroup | None = None,
     ):
         self.title = title
         self.key = key
@@ -127,7 +121,7 @@ class Column:
             self.sortkey = sortkey
         else:
             self.sortkey = None
-        self.column_group = column_group or ColumnGroups.CUSTOM
+        self.column_group = column_group if column_group is not None else ColumnGroup.CUSTOM
 
     def __repr__(self):
         def parms():
