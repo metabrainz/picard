@@ -33,7 +33,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 16:32+0100\n"
-"PO-Revision-Date: 2026-01-24 15:33+0000\n"
+"PO-Revision-Date: 2026-01-24 15:45+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -4732,22 +4732,16 @@ msgid "Translate names when available:"
 msgstr "Namen übersetzen, wenn möglich:"
 
 #: picard/ui/forms/ui_options_metadata.py:170
-#, fuzzy
-#| msgid "Artists"
 msgid "Artist names"
-msgstr "Interpreten"
+msgstr "Interpretennamen"
 
 #: picard/ui/forms/ui_options_metadata.py:171
-#, fuzzy
-#| msgid "Album Artist"
 msgid "Album titles"
-msgstr "Albuminterpret"
+msgstr "Albentitel"
 
 #: picard/ui/forms/ui_options_metadata.py:172
-#, fuzzy
-#| msgid "Tracks"
 msgid "Track titles"
-msgstr "Titel"
+msgstr "Track-Titel"
 
 #: picard/ui/forms/ui_options_metadata.py:173
 msgid "Preferred locales:"
@@ -4759,10 +4753,8 @@ msgid "Select…"
 msgstr "Auswählen …"
 
 #: picard/ui/forms/ui_options_metadata.py:175
-#, fuzzy
-#| msgid "Ignore artist name translation for these language scripts:"
 msgid "Ignore name translation for these language scripts:"
-msgstr "Übersetzung des Künsternamens für folgende Schriften ignorieren:"
+msgstr "Übersetzung von Namen für folgende Schriften ignorieren:"
 
 #: picard/ui/forms/ui_options_metadata.py:180
 msgid "Convert Unicode punctuation characters to ASCII"
@@ -4895,8 +4887,6 @@ msgid "Destination directory:"
 msgstr "Zielverzeichnis:"
 
 #: picard/ui/forms/ui_options_renaming.py:165
-#, fuzzy
-#| msgid "Move additional files (case insensitive):"
 msgid "Move additional files (case insensitive):"
 msgstr "Zusätzliche Dateien verschieben (Groß-/Kleinschreibung wird beachtet):"
 
@@ -5170,20 +5160,16 @@ msgid "Authentication Required"
 msgstr "Authentifizierung erforderlich"
 
 #: picard/ui/forms/ui_provider_options_caa.py:79
-#, fuzzy
-#| msgid "Download only approved images"
 msgid "Download only selected image types"
-msgstr "Nur bestätigte Bilder herunterladen"
+msgstr "Nur ausgewählte Bildtypen herunterladen"
 
 #: picard/ui/forms/ui_provider_options_caa.py:80
 msgid "Select types…"
 msgstr "Typen auswählen …"
 
 #: picard/ui/forms/ui_provider_options_caa.py:81
-#, fuzzy
-#| msgid "Only use images of the following size:"
 msgid "Only use images of at most the following size:"
-msgstr "Nur Bilder mit folgender Größe verwenden:"
+msgstr "Nur Bilder mit höchstens folgender Größe verwenden:"
 
 #: picard/ui/forms/ui_provider_options_caa.py:82
 msgid "Download only approved images"
@@ -5410,25 +5396,19 @@ msgstr "Typ"
 
 #: picard/ui/infodialog/widgets.py:125 picard/ui/infodialog/widgets.py:167
 msgid "New Embedded"
-msgstr ""
+msgstr "Neu eingebettet"
 
 #: picard/ui/infodialog/widgets.py:126 picard/ui/infodialog/widgets.py:168
-#, fuzzy
-#| msgid "Export"
 msgid "New Exported"
-msgstr "Exportieren"
+msgstr "Neu exportiert"
 
 #: picard/ui/infodialog/widgets.py:129 picard/ui/infodialog/widgets.py:172
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "New cover art embedded into tags"
-msgstr "Cover-Bilder in Tags einbetten"
+msgstr "Neue in Tags eingebettete Cover-Bilder"
 
 #: picard/ui/infodialog/widgets.py:130 picard/ui/infodialog/widgets.py:173
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "New cover art saved as a separate file"
-msgstr "Cover-Bilder als separate Dateien speichern"
+msgstr "Neue als separate Dateien gespeicherte Cover-Bilder"
 
 #: picard/ui/infodialog/widgets.py:143 picard/ui/infodialog/widgets.py:165
 msgid "Existing Cover"
@@ -5600,10 +5580,8 @@ msgid "No tags found for selected filters."
 msgstr "Keine Tags für ausgewählte Filter gefunden."
 
 #: picard/ui/itemviews/columns.py:84
-#, fuzzy
-#| msgid "Matching"
 msgid "Match"
-msgstr "Abgleich"
+msgstr "Ähnlichkeit"
 
 #: picard/ui/itemviews/columns.py:106
 msgid "Fingerprint status"
@@ -5650,10 +5628,8 @@ msgid "Size"
 msgstr "Größe"
 
 #: picard/ui/itemviews/columns.py:168
-#, fuzzy
-#| msgid "Release Type"
 msgid "File Type"
-msgstr "Veröffentlichungstyp"
+msgstr "Dateityp"
 
 #: picard/ui/itemviews/columns.py:172
 msgid "Bitrate"
@@ -5705,10 +5681,8 @@ msgid "Unmatched files: %(count)d"
 msgstr "Nicht zugeordnete Dateien: %(count)d"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:104
-#, fuzzy
-#| msgid "Change audio volume"
 msgid "Manage Custom Columns"
-msgstr "Lautstärke ändern"
+msgstr "Benutzerdefinierte Spalte verwalten"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:118
 #: picard/ui/options/profiles.py:107
@@ -5729,16 +5703,12 @@ msgid " px"
 msgstr " px"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:179
-#, fuzzy
-#| msgid "Scripting"
 msgid "Sorting"
-msgstr "Scripting"
+msgstr "Sortierung"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:180
-#, fuzzy
-#| msgid "Add Files"
 msgid "Add to views"
-msgstr "Dateien hinzufügen"
+msgstr "Zu Ansichten hinzufügen"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:256
 msgid "You have unsaved changes. Do you want to save them?"
@@ -5751,10 +5721,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:49
-#, fuzzy
-#| msgid "No Title"
 msgid "Column Title"
-msgstr "Kein Titel"
+msgstr "Spaltentitel"
 
 #: picard/ui/itemviews/custom_columns/shared.py:51
 msgid "Expression"
@@ -5769,22 +5737,16 @@ msgid "Width"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:73
-#, fuzzy
-#| msgid "title"
 msgid "Untitled"
-msgstr "Titel"
+msgstr "Unbenannt"
 
 #: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
 msgid "File view"
 msgstr "Dateiansicht"
 
 #: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
 msgid "Album view"
-msgstr "Albumansicht"
+msgstr "Albenansicht"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -5801,10 +5763,8 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:215
 #: picard/ui/itemviews/custom_columns/shared.py:255
-#, fuzzy
-#| msgid "Light"
 msgid "right"
-msgstr "Hell"
+msgstr "rechts"
 
 #: picard/ui/itemviews/custom_columns/shared.py:307
 msgid "Default alphabetical text sorting."
@@ -5847,10 +5807,8 @@ msgid "Sort by string length."
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:326
-#, fuzzy
-#| msgid "Artist Website"
 msgid "Article insensitive"
-msgstr "Interpreten-Website"
+msgstr "Artikel ignorieren"
 
 #: picard/ui/itemviews/custom_columns/shared.py:327
 msgid "Sort ignoring leading articles (e.g. a, an, the)."
@@ -5878,10 +5836,8 @@ msgid "Unsaved Changes"
 msgstr "Nicht gespeicherte Änderungen"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:70
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Confirm Discard"
-msgstr "Zurücksetzen bestätigen"
+msgstr "Verwerfen bestätigen"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:71
 msgid ""
@@ -5893,10 +5849,8 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:110
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:132
-#, fuzzy
-#| msgid "Confirm Reset"
 msgid "Confirm Delete"
-msgstr "Zurücksetzen bestätigen"
+msgstr "Löschen bestätigen"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:111
 #, python-brace-format
@@ -5914,10 +5868,8 @@ msgid "Invalid column: %s"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:150
-#, fuzzy
-#| msgid "Invalid Title"
 msgid "Invalid column"
-msgstr "Ungültiger Titel"
+msgstr "Ungültige Spalte"
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:175
 msgid "Blank expression"
@@ -6056,10 +6008,8 @@ msgid "&Quit Picard"
 msgstr "Picard &beenden"
 
 #: picard/ui/mainwindow/__init__.py:465
-#, fuzzy
-#| msgid "Close Window"
 msgid "Close Session"
-msgstr "Fenster schließen"
+msgstr "Sitzung schließen"
 
 #: picard/ui/mainwindow/__init__.py:466
 msgid "Do you want to save the current session before continuing?"
@@ -6075,10 +6025,8 @@ msgid "&Save Session"
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:470
-#, fuzzy
-#| msgid "&Save"
 msgid "Do&n't Save"
-msgstr "&Speichern"
+msgstr "&Nicht speichern"
 
 #: picard/ui/mainwindow/__init__.py:499 picard/ui/mainwindow/__init__.py:1354
 #, python-format
@@ -6086,10 +6034,8 @@ msgid "Session saved to \"%(path)s\""
 msgstr ""
 
 #: picard/ui/mainwindow/__init__.py:502 picard/ui/mainwindow/__init__.py:1351
-#, fuzzy
-#| msgid "Failed to save Log View to file"
 msgid "Failed to save session"
-msgstr "Fehler beim Speichern des Protokolls als Datei"
+msgstr "Fehler beim Speichern der Sitzung"
 
 #: picard/ui/mainwindow/__init__.py:539
 msgid "Ready"
@@ -6171,10 +6117,8 @@ msgid "&Enable/disable profiles"
 msgstr "Profile &aktivieren/deaktivieren"
 
 #: picard/ui/mainwindow/__init__.py:892
-#, fuzzy
-#| msgid "Option Setting Warning"
 msgid "&Quick settings"
-msgstr "Einstellungs-Warnung"
+msgstr "&Schnelleinstellungen"
 
 #: picard/ui/mainwindow/__init__.py:896
 msgid "&Options"
@@ -6185,10 +6129,8 @@ msgid "&Tools"
 msgstr "E&xtras"
 
 #: picard/ui/mainwindow/__init__.py:927
-#, fuzzy
-#| msgid "Plugins"
 msgid "&Plugin Tools"
-msgstr "Plugins"
+msgstr "&Plugin-Werkzeuge"
 
 #: picard/ui/mainwindow/__init__.py:934 picard/ui/scripteditor/__init__.py:322
 msgid "&Help"
@@ -6216,14 +6158,12 @@ msgid "All supported formats"
 msgstr "Alle unterstützten Formate"
 
 #: picard/ui/mainwindow/__init__.py:1170
-#, fuzzy, python-format
-#| msgid "Adding multiple directories from '%(directory)s' …"
+#, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
-msgstr "Mehrere Verzeichnisse hinzufügen: „%(directory)s“ …"
+msgstr "Füge mehrere Verzeichnisse von „%(directory)s“ hinzu …"
 
 #: picard/ui/mainwindow/__init__.py:1175
-#, fuzzy, python-format
-#| msgid "Adding directory: '%(directory)s' …"
+#, python-format
 msgid "Adding directory: \"%(directory)s\" …"
 msgstr "Verzeichnis hinzufügen: „%(directory)s“ …"
 
@@ -6235,10 +6175,8 @@ msgstr[0] "„{filename}“ in Papierkorb verschieben?"
 msgstr[1] "{count} Dateien in Papierkorb verschieben?"
 
 #: picard/ui/mainwindow/__init__.py:1257 picard/ui/mainwindow/actions.py:197
-#, fuzzy
-#| msgid "Move files"
 msgid "Move files to trash"
-msgstr "Dateien verschieben"
+msgstr "Dateien in Papierkorb verschieben"
 
 #: picard/ui/mainwindow/__init__.py:1343 picard/ui/mainwindow/__init__.py:1375
 #, python-format
@@ -6533,10 +6471,8 @@ msgid "&Actions"
 msgstr "&Aktionen"
 
 #: picard/ui/mainwindow/actions.py:368
-#, fuzzy
-#| msgid "Similar items"
 msgid "Filter Items"
-msgstr "Ähnliche Einträge"
+msgstr "Einträge filtern"
 
 #: picard/ui/mainwindow/actions.py:369
 msgid "Toggle filtering of items based on specific tag values."
@@ -6693,10 +6629,8 @@ msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
 #: picard/ui/mainwindow/actions.py:534
-#, fuzzy
-#| msgid "Play"
 msgid "&Play"
-msgstr "Wiedergabe"
+msgstr "&Abspielen"
 
 #: picard/ui/mainwindow/actions.py:535
 #, fuzzy
