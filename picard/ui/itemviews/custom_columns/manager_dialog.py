@@ -92,6 +92,8 @@ def broadcast_headers_updated() -> None:
 class CustomColumnsManagerDialog(PicardDialog):
     """Single-window UI to manage custom columns."""
 
+    help_url = "/usage/custom_columns.html"
+
     def __init__(self, parent: QtWidgets.QWidget | None = None) -> None:
         """Initialize the custom columns manager dialog.
 
@@ -209,7 +211,7 @@ class CustomColumnsManagerDialog(PicardDialog):
 
         self._buttonbox.accepted.connect(self.accept)
         self._buttonbox.rejected.connect(self.reject)
-        self._buttonbox.helpRequested.connect(self.help_requested)
+        self._buttonbox.helpRequested.connect(self.show_help)
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.addWidget(self._splitter)
@@ -276,10 +278,6 @@ class CustomColumnsManagerDialog(PicardDialog):
         """Close the dialog discarding unsaved changes."""
         self._dirty = False
         super().reject()
-
-    def help_requested(self) -> None:
-        """Show help for custom columns."""
-        self.show_help('/usage/custom_columns.html')
 
     # List / form coordination
     def _selected_row(self) -> int:
