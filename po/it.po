@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2025-11-17 16:20+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
@@ -6717,7 +6717,10 @@ msgid "Excellent match"
 msgstr "Corrispondenza eccellente"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "visualizzazione file"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -6725,7 +6728,10 @@ msgid "Contains unmatched files and clusters"
 msgstr "Contiene i file e i raggruppamenti non riconosciuti"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "visualizzazione album"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -7034,18 +7040,6 @@ msgstr ""
 #| msgid "title"
 msgid "Untitled"
 msgstr "titolo"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "visualizzazione file"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "visualizzazione album"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -10025,6 +10019,12 @@ msgstr ""
 "Errore nell'avvio del browser:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "visualizzazione file"
+
+#~ msgid "album view"
+#~ msgstr "visualizzazione album"
 
 #, fuzzy
 #~| msgid "Play selected files"

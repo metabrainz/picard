@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2026-01-24 00:17+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -5647,16 +5647,18 @@ msgid "Excellent match"
 msgstr "Coincidència excel·lent"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
-msgstr "visualització de fitxers"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+msgid "File view"
+msgstr "Visualització de fitxers"
 
 #: picard/ui/itemviews/__init__.py:286
 msgid "Contains unmatched files and clusters"
 msgstr "Conté fitxers i agrupacions sense coincidències"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
-msgstr "visualització d'àlbums"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+msgid "Album view"
+msgstr "Visualització d'àlbums"
 
 #: picard/ui/itemviews/__init__.py:318
 msgid "Contains albums and matched files"
@@ -5950,14 +5952,6 @@ msgstr "Amplada"
 #: picard/ui/itemviews/custom_columns/shared.py:73
 msgid "Untitled"
 msgstr "Sense títol"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-msgid "File view"
-msgstr "Visualització de fitxers"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-msgid "Album view"
-msgstr "Visualització d'àlbums"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8833,6 +8827,12 @@ msgstr ""
 "S'ha produït un error en iniciar el navegador web:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "visualització de fitxers"
+
+#~ msgid "album view"
+#~ msgstr "visualització d'àlbums"
 
 #~ msgid "Play select files"
 #~ msgstr "Reprodueix els fitxers seleccionats"

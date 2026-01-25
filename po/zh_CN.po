@@ -50,7 +50,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2026-01-08 15:11+0000\n"
 "Last-Translator: imgradeone <imgradeone@outlook.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
@@ -6572,7 +6572,10 @@ msgid "Excellent match"
 msgstr "匹配度极好"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "文件视图"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -6580,7 +6583,10 @@ msgid "Contains unmatched files and clusters"
 msgstr "包含未匹配的文件与簇"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "专辑视图"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -6889,18 +6895,6 @@ msgstr ""
 #| msgid "title"
 msgid "Untitled"
 msgstr "标题"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "文件视图"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "专辑视图"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -9821,6 +9815,12 @@ msgstr ""
 "启动 web 浏览器时出错:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "文件视图"
+
+#~ msgid "album view"
+#~ msgstr "专辑视图"
 
 #, fuzzy
 #~| msgid "Play selected files"

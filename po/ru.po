@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
@@ -5277,7 +5277,10 @@ msgid "Excellent match"
 msgstr "Прекрасное совпадение"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "вид на файлы"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -5285,7 +5288,10 @@ msgid "Contains unmatched files and clusters"
 msgstr "Содержит несовпадающие файлы и кластеры"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "вид на альбом"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5595,18 +5601,6 @@ msgstr ""
 #| msgid "Title"
 msgid "Untitled"
 msgstr "Название"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "вид на файлы"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "вид на альбом"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8438,6 +8432,12 @@ msgstr ""
 "Ошибка во время запуска браузера:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "вид на файлы"
+
+#~ msgid "album view"
+#~ msgstr "вид на альбом"
 
 #, fuzzy
 #~| msgid "Play selected files"

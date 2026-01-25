@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Swedish <https://translations.metabrainz.org/projects/picard/"
@@ -5217,7 +5217,10 @@ msgid "Excellent match"
 msgstr "Utmärkt träff"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "filvy"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -5225,7 +5228,10 @@ msgid "Contains unmatched files and clusters"
 msgstr "Innehåller omatchade filer och kluster"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "albumvy"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5531,18 +5537,6 @@ msgstr ""
 #| msgid "Title"
 msgid "Untitled"
 msgstr "Titel"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "filvy"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "albumvy"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8335,6 +8329,12 @@ msgstr ""
 "Fel när webbläsare startades:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "filvy"
+
+#~ msgid "album view"
+#~ msgstr "albumvy"
 
 #, fuzzy
 #~| msgid "Play selected files"

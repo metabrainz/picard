@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2026-01-23 22:47+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
@@ -5153,7 +5153,10 @@ msgid "Excellent match"
 msgstr "완전하게 일치"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "파일 뷰"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -5161,7 +5164,10 @@ msgid "Contains unmatched files and clusters"
 msgstr "일치하지 않는 파일 및 클러스터 포함"
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "앨범 뷰"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5470,18 +5476,6 @@ msgstr ""
 #| msgid "Title"
 msgid "Untitled"
 msgstr "제목"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "파일 뷰"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "앨범 뷰"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8272,6 +8266,12 @@ msgstr ""
 "웹 브라우저 실행 오류:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "파일 뷰"
+
+#~ msgid "album view"
+#~ msgstr "앨범 뷰"
 
 #, fuzzy
 #~| msgid "Play selected files"

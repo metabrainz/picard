@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2023-08-23 08:24+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Esperanto <https://translations.metabrainz.org/projects/"
@@ -4867,7 +4867,8 @@ msgid "Excellent match"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+msgid "File view"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:286
@@ -4875,8 +4876,10 @@ msgid "Contains unmatched files and clusters"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
-msgstr ""
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+msgid "Album view"
+msgstr "Albumo"
 
 #: picard/ui/itemviews/__init__.py:318
 msgid "Contains albums and matched files"
@@ -5168,15 +5171,6 @@ msgstr ""
 #| msgid "Title"
 msgid "Untitled"
 msgstr "Titolo"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-msgid "File view"
-msgstr ""
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-msgid "Album view"
-msgstr "Albumo"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."

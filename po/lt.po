@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2026-01-23 22:47+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
@@ -6286,7 +6286,10 @@ msgid "Excellent match"
 msgstr "Nuostabus atitikimas"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "failo peržiūra"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -6294,8 +6297,11 @@ msgid "Contains unmatched files and clusters"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
-msgstr ""
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "Album"
+msgid "Album view"
+msgstr "Albumas"
 
 #: picard/ui/itemviews/__init__.py:318
 msgid "Contains albums and matched files"
@@ -6605,18 +6611,6 @@ msgstr ""
 #| msgid "title"
 msgid "Untitled"
 msgstr "pavadinimas"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "failo peržiūra"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "Album"
-msgid "Album view"
-msgstr "Albumas"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -9526,6 +9520,9 @@ msgstr ""
 "Klaida paleidžiant interneto naršyklę:\n"
 "\n"
 "%s."
+
+#~ msgid "file view"
+#~ msgstr "failo peržiūra"
 
 #, fuzzy
 #~| msgid "Select all"

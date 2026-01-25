@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2025-04-14 12:20+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
@@ -5393,7 +5393,10 @@ msgid "Excellent match"
 msgstr "Përkim i shkëlqyer"
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "parje kartele"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -5401,7 +5404,10 @@ msgid "Contains unmatched files and clusters"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "parje albumi"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5706,18 +5712,6 @@ msgstr ""
 #| msgid "title"
 msgid "Untitled"
 msgstr "titull"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "parje kartele"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "parje albumi"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8509,6 +8503,12 @@ msgstr ""
 "Gabim gjatë nisjes së një shfletuesi:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "parje kartele"
+
+#~ msgid "album view"
+#~ msgstr "parje albumi"
 
 #, fuzzy
 #~| msgid "Play selected files"

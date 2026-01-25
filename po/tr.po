@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: 2025-01-03 23:42+0000\n"
 "Last-Translator: dirt3009 <iam@emirgecir.com.tr>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
@@ -5054,7 +5054,10 @@ msgid "Excellent match"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+#, fuzzy
+#| msgid "file view"
+msgid "File view"
 msgstr "dosya görünümü"
 
 #: picard/ui/itemviews/__init__.py:286
@@ -5062,7 +5065,10 @@ msgid "Contains unmatched files and clusters"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+#, fuzzy
+#| msgid "album view"
+msgid "Album view"
 msgstr "albüm görünümü"
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5365,18 +5371,6 @@ msgstr ""
 #| msgid "title"
 msgid "Untitled"
 msgstr "başlık"
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-#, fuzzy
-#| msgid "file view"
-msgid "File view"
-msgstr "dosya görünümü"
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-#, fuzzy
-#| msgid "album view"
-msgid "Album view"
-msgstr "albüm görünümü"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
@@ -8111,6 +8105,12 @@ msgstr ""
 "Web tarayıcısı yüklenirken hata oluştu:\n"
 "\n"
 "%s"
+
+#~ msgid "file view"
+#~ msgstr "dosya görünümü"
+
+#~ msgid "album view"
+#~ msgstr "albüm görünümü"
 
 #, fuzzy
 #~| msgid "Save selected files"
