@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:44+0100\n"
+"POT-Creation-Date: 2026-01-25 17:53+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Indonesian <https://translations.metabrainz.org/projects/"
@@ -898,7 +898,7 @@ msgid "Unknown Plugin"
 msgstr "Tidak Diketahui"
 
 #: picard/plugin.py:119 picard/ui/cdlookup.py:64
-#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1023
+#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1023
 msgid "Album"
 msgstr "Album"
 
@@ -946,7 +946,7 @@ msgid "Packaging"
 msgstr ""
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:70
-#: picard/ui/itemviews/columns.py:156 picard/ui/searchdialog/album.py:166
+#: picard/ui/itemviews/columns.py:177 picard/ui/searchdialog/album.py:166
 msgid "Barcode"
 msgstr "Barcode"
 
@@ -2645,13 +2645,13 @@ msgstr ""
 msgid "Restore &Defaults"
 msgstr ""
 
-#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:146
+#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:151
 #: picard/ui/mainwindow/__init__.py:1024 picard/ui/searchdialog/album.py:159
 #: picard/ui/searchdialog/track.py:74
 msgid "Artist"
 msgstr "Artis"
 
-#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:183
+#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:206
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/track.py:76
 msgid "Date"
 msgstr "Tanggal"
@@ -2787,6 +2787,36 @@ msgstr ""
 
 #: picard/ui/colors.py:67
 msgid "Variable syntax highlight"
+msgstr ""
+
+#: picard/ui/columns.py:56
+#, fuzzy
+#| msgid "Album Artist"
+msgid "Album Items"
+msgstr "Artis Album"
+
+#: picard/ui/columns.py:57
+#, fuzzy
+#| msgid "Tracks"
+msgid "Track Items"
+msgstr "Trek"
+
+#: picard/ui/columns.py:58
+#, fuzzy
+#| msgid "Files"
+msgid "File Items"
+msgstr "Berkas"
+
+#: picard/ui/columns.py:59
+msgid "Image Items"
+msgstr ""
+
+#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:139
+msgid "Miscellaneous"
+msgstr "Lain-lain"
+
+#: picard/ui/columns.py:61
+msgid "Custom Columns"
 msgstr ""
 
 #: picard/ui/filebrowser.py:56
@@ -4074,10 +4104,6 @@ msgstr "Bahasa antarmuka pengguna:"
 msgid "User interface color theme:"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface.py:139
-msgid "Miscellaneous"
-msgstr "Lain-lain"
-
 #: picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
 msgstr "Perbolehkan seleksi dari banyak direktori"
@@ -5057,87 +5083,87 @@ msgstr ""
 msgid "No tags found for selected filters."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:84
+#: picard/ui/itemviews/columns.py:85
 #, fuzzy
 #| msgid "Matching"
 msgid "Match"
 msgstr "Mencocokkan"
 
-#: picard/ui/itemviews/columns.py:106
+#: picard/ui/itemviews/columns.py:108
 msgid "Fingerprint status"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:126
+#: picard/ui/itemviews/columns.py:129
 msgid "Title"
 msgstr "Judul"
 
-#: picard/ui/itemviews/columns.py:137 picard/ui/searchdialog/track.py:67
+#: picard/ui/itemviews/columns.py:141 picard/ui/searchdialog/track.py:67
 msgid "Length"
 msgstr "Panjangnya"
 
-#: picard/ui/itemviews/columns.py:149
+#: picard/ui/itemviews/columns.py:154
 msgid "Album Artist"
 msgstr "Artis Album"
 
-#: picard/ui/itemviews/columns.py:150
+#: picard/ui/itemviews/columns.py:155
 msgid "Composer"
 msgstr "Pengarang"
 
-#: picard/ui/itemviews/columns.py:152
+#: picard/ui/itemviews/columns.py:158
 msgid "Disc Subtitle"
 msgstr "Subjudul Cakram"
 
-#: picard/ui/itemviews/columns.py:153
+#: picard/ui/itemviews/columns.py:161
 msgid "Track No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:154
+#: picard/ui/itemviews/columns.py:168
 msgid "Disc No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:155
+#: picard/ui/itemviews/columns.py:175
 msgid "Catalog No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:157
+#: picard/ui/itemviews/columns.py:178
 msgid "Media"
 msgstr "Media"
 
-#: picard/ui/itemviews/columns.py:161
+#: picard/ui/itemviews/columns.py:182
 #, fuzzy
 #| msgid "Size:"
 msgid "Size"
 msgstr "Ukuran:"
 
-#: picard/ui/itemviews/columns.py:168
+#: picard/ui/itemviews/columns.py:190
 #, fuzzy
 #| msgid "Release Type"
 msgid "File Type"
 msgstr "Jenis Rilis"
 
-#: picard/ui/itemviews/columns.py:172
+#: picard/ui/itemviews/columns.py:194
 #, fuzzy
 #| msgid "Bitrate:"
 msgid "Bitrate"
 msgstr "Bitrate:"
 
-#: picard/ui/itemviews/columns.py:179
+#: picard/ui/itemviews/columns.py:202
 msgid "Genre"
 msgstr "Aliran"
 
-#: picard/ui/itemviews/columns.py:184
+#: picard/ui/itemviews/columns.py:207
 msgid "Original Release Date"
 msgstr "Tanggal Rilis Asli"
 
-#: picard/ui/itemviews/columns.py:185
+#: picard/ui/itemviews/columns.py:208
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:186 picard/ui/searchdialog/album.py:170
+#: picard/ui/itemviews/columns.py:209 picard/ui/searchdialog/album.py:170
 msgid "Cover"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:187
+#: picard/ui/itemviews/columns.py:210
 msgid "Cover Dimensions"
 msgstr ""
 
@@ -7442,15 +7468,15 @@ msgstr ""
 msgid "Standalone Recording"
 msgstr ""
 
-#: picard/ui/widgets/configurablecolumnsheader.py:160
+#: picard/ui/widgets/configurablecolumnsheader.py:176
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/widgets/configurablecolumnsheader.py:181
+#: picard/ui/widgets/configurablecolumnsheader.py:197
 msgid "Lock columns"
 msgstr ""
 
-#: picard/ui/widgets/configurablecolumnsheader.py:207
+#: picard/ui/widgets/configurablecolumnsheader.py:223
 msgid "Manage custom columns…"
 msgstr ""
 

@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:44+0100\n"
+"POT-Creation-Date: 2026-01-25 17:53+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
@@ -1025,7 +1025,7 @@ msgid "Unknown Plugin"
 msgstr "不明な言語"
 
 #: picard/plugin.py:119 picard/ui/cdlookup.py:64
-#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1023
+#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1023
 msgid "Album"
 msgstr "アルバム"
 
@@ -1075,7 +1075,7 @@ msgid "Packaging"
 msgstr ""
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:70
-#: picard/ui/itemviews/columns.py:156 picard/ui/searchdialog/album.py:166
+#: picard/ui/itemviews/columns.py:177 picard/ui/searchdialog/album.py:166
 msgid "Barcode"
 msgstr "バーコード"
 
@@ -3866,13 +3866,13 @@ msgstr "すべてクリア(&L)"
 msgid "Restore &Defaults"
 msgstr "元の状態に戻す(&D)"
 
-#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:146
+#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:151
 #: picard/ui/mainwindow/__init__.py:1024 picard/ui/searchdialog/album.py:159
 #: picard/ui/searchdialog/track.py:74
 msgid "Artist"
 msgstr "アーティスト"
 
-#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:183
+#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:206
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/track.py:76
 msgid "Date"
 msgstr "日付"
@@ -4027,6 +4027,38 @@ msgstr "ハイライトする文字列"
 #| msgid "String to highlight"
 msgid "Variable syntax highlight"
 msgstr "ハイライトする文字列"
+
+#: picard/ui/columns.py:56
+#, fuzzy
+#| msgid "Album Artist"
+msgid "Album Items"
+msgstr "アルバムアーティスト"
+
+#: picard/ui/columns.py:57
+#, fuzzy
+#| msgid "Tracks"
+msgid "Track Items"
+msgstr "トラック"
+
+#: picard/ui/columns.py:58
+#, fuzzy
+#| msgid "Files"
+msgid "File Items"
+msgstr "ファイル"
+
+#: picard/ui/columns.py:59
+msgid "Image Items"
+msgstr ""
+
+#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:139
+msgid "Miscellaneous"
+msgstr "その他"
+
+#: picard/ui/columns.py:61
+#, fuzzy
+#| msgid "Change audio volume"
+msgid "Custom Columns"
+msgstr "再生音量を変更します"
 
 #: picard/ui/filebrowser.py:56
 msgid "&Load selected files"
@@ -5389,10 +5421,6 @@ msgstr "ユーザインタフェースの言語:"
 msgid "User interface color theme:"
 msgstr "ユーザーインターフェースのテーマカラー:"
 
-#: picard/ui/forms/ui_options_interface.py:139
-msgid "Miscellaneous"
-msgstr "その他"
-
 #: picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
 msgstr "複数のディレクトリの選択を可能にする"
@@ -6436,87 +6464,87 @@ msgstr ""
 msgid "No tags found for selected filters."
 msgstr "選択したファイルを読込"
 
-#: picard/ui/itemviews/columns.py:84
+#: picard/ui/itemviews/columns.py:85
 #, fuzzy
 #| msgid "Matching"
 msgid "Match"
 msgstr "マッチング"
 
-#: picard/ui/itemviews/columns.py:106
+#: picard/ui/itemviews/columns.py:108
 msgid "Fingerprint status"
 msgstr "フィンガープリントの状態"
 
-#: picard/ui/itemviews/columns.py:126
+#: picard/ui/itemviews/columns.py:129
 msgid "Title"
 msgstr "タイトル"
 
-#: picard/ui/itemviews/columns.py:137 picard/ui/searchdialog/track.py:67
+#: picard/ui/itemviews/columns.py:141 picard/ui/searchdialog/track.py:67
 msgid "Length"
 msgstr "演奏時間"
 
-#: picard/ui/itemviews/columns.py:149
+#: picard/ui/itemviews/columns.py:154
 msgid "Album Artist"
 msgstr "アルバムアーティスト"
 
-#: picard/ui/itemviews/columns.py:150
+#: picard/ui/itemviews/columns.py:155
 msgid "Composer"
 msgstr "作曲者"
 
-#: picard/ui/itemviews/columns.py:152
+#: picard/ui/itemviews/columns.py:158
 msgid "Disc Subtitle"
 msgstr "ディスク・サブタイトル"
 
-#: picard/ui/itemviews/columns.py:153
+#: picard/ui/itemviews/columns.py:161
 msgid "Track No."
 msgstr "トラック番号"
 
-#: picard/ui/itemviews/columns.py:154
+#: picard/ui/itemviews/columns.py:168
 msgid "Disc No."
 msgstr "ディスク番号"
 
-#: picard/ui/itemviews/columns.py:155
+#: picard/ui/itemviews/columns.py:175
 msgid "Catalog No."
 msgstr "カタログ番号"
 
-#: picard/ui/itemviews/columns.py:157
+#: picard/ui/itemviews/columns.py:178
 msgid "Media"
 msgstr "メディア"
 
-#: picard/ui/itemviews/columns.py:161
+#: picard/ui/itemviews/columns.py:182
 #, fuzzy
 #| msgid "Size:"
 msgid "Size"
 msgstr "サイズ:"
 
-#: picard/ui/itemviews/columns.py:168
+#: picard/ui/itemviews/columns.py:190
 #, fuzzy
 #| msgid "Release Type"
 msgid "File Type"
 msgstr "リリースタイプ"
 
-#: picard/ui/itemviews/columns.py:172
+#: picard/ui/itemviews/columns.py:194
 #, fuzzy
 #| msgid "Bitrate:"
 msgid "Bitrate"
 msgstr "ビットレート:"
 
-#: picard/ui/itemviews/columns.py:179
+#: picard/ui/itemviews/columns.py:202
 msgid "Genre"
 msgstr "ジャンル"
 
-#: picard/ui/itemviews/columns.py:184
+#: picard/ui/itemviews/columns.py:207
 msgid "Original Release Date"
 msgstr "オリジナリル盤リリース日"
 
-#: picard/ui/itemviews/columns.py:185
+#: picard/ui/itemviews/columns.py:208
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:186 picard/ui/searchdialog/album.py:170
+#: picard/ui/itemviews/columns.py:209 picard/ui/searchdialog/album.py:170
 msgid "Cover"
 msgstr "カバー"
 
-#: picard/ui/itemviews/columns.py:187
+#: picard/ui/itemviews/columns.py:210
 msgid "Cover Dimensions"
 msgstr ""
 
@@ -8949,15 +8977,15 @@ msgstr "トラック検索結果"
 msgid "Standalone Recording"
 msgstr "単独レコーディング"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:160
+#: picard/ui/widgets/configurablecolumnsheader.py:176
 msgid "Restore default columns"
 msgstr "元のカラムに戻す"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:181
+#: picard/ui/widgets/configurablecolumnsheader.py:197
 msgid "Lock columns"
 msgstr "カラムを固定"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:207
+#: picard/ui/widgets/configurablecolumnsheader.py:223
 msgid "Manage custom columns…"
 msgstr ""
 

@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:44+0100\n"
+"POT-Creation-Date: 2026-01-25 17:53+0100\n"
 "PO-Revision-Date: 2024-08-31 14:42+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
@@ -1028,7 +1028,7 @@ msgid "Unknown Plugin"
 msgstr "Неизвестный язык"
 
 #: picard/plugin.py:119 picard/ui/cdlookup.py:64
-#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1023
+#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1023
 msgid "Album"
 msgstr "Альбом"
 
@@ -1078,7 +1078,7 @@ msgid "Packaging"
 msgstr ""
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:70
-#: picard/ui/itemviews/columns.py:156 picard/ui/searchdialog/album.py:166
+#: picard/ui/itemviews/columns.py:177 picard/ui/searchdialog/album.py:166
 msgid "Barcode"
 msgstr "Штрих-код"
 
@@ -2833,13 +2833,13 @@ msgstr "О&чистить все"
 msgid "Restore &Defaults"
 msgstr "Восстановить значения по умолчанию"
 
-#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:146
+#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:151
 #: picard/ui/mainwindow/__init__.py:1024 picard/ui/searchdialog/album.py:159
 #: picard/ui/searchdialog/track.py:74
 msgid "Artist"
 msgstr "Исполнитель"
 
-#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:183
+#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:206
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/track.py:76
 msgid "Date"
 msgstr "Дата"
@@ -2996,6 +2996,38 @@ msgstr "Строка для выделения"
 #| msgid "String to highlight"
 msgid "Variable syntax highlight"
 msgstr "Строка для выделения"
+
+#: picard/ui/columns.py:56
+#, fuzzy
+#| msgid "Album Artist"
+msgid "Album Items"
+msgstr "Исполнитель альбома"
+
+#: picard/ui/columns.py:57
+#, fuzzy
+#| msgid "Tracks"
+msgid "Track Items"
+msgstr "Треки"
+
+#: picard/ui/columns.py:58
+#, fuzzy
+#| msgid "Files"
+msgid "File Items"
+msgstr "Файлы"
+
+#: picard/ui/columns.py:59
+msgid "Image Items"
+msgstr ""
+
+#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:139
+msgid "Miscellaneous"
+msgstr "Разное"
+
+#: picard/ui/columns.py:61
+#, fuzzy
+#| msgid "Change audio volume"
+msgid "Custom Columns"
+msgstr "Изменить громкость аудио"
 
 #: picard/ui/filebrowser.py:56
 #, fuzzy
@@ -4346,10 +4378,6 @@ msgstr "Язык интерфейса:"
 msgid "User interface color theme:"
 msgstr ""
 
-#: picard/ui/forms/ui_options_interface.py:139
-msgid "Miscellaneous"
-msgstr "Разное"
-
 #: picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
 msgstr "Разрешить выбор нескольких каталогов"
@@ -5387,87 +5415,87 @@ msgstr ""
 msgid "No tags found for selected filters."
 msgstr "Воспроизвести выбранные файлы"
 
-#: picard/ui/itemviews/columns.py:84
+#: picard/ui/itemviews/columns.py:85
 #, fuzzy
 #| msgid "Matching"
 msgid "Match"
 msgstr "Соотнесение"
 
-#: picard/ui/itemviews/columns.py:106
+#: picard/ui/itemviews/columns.py:108
 msgid "Fingerprint status"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:126
+#: picard/ui/itemviews/columns.py:129
 msgid "Title"
 msgstr "Название"
 
-#: picard/ui/itemviews/columns.py:137 picard/ui/searchdialog/track.py:67
+#: picard/ui/itemviews/columns.py:141 picard/ui/searchdialog/track.py:67
 msgid "Length"
 msgstr "Длина"
 
-#: picard/ui/itemviews/columns.py:149
+#: picard/ui/itemviews/columns.py:154
 msgid "Album Artist"
 msgstr "Исполнитель альбома"
 
-#: picard/ui/itemviews/columns.py:150
+#: picard/ui/itemviews/columns.py:155
 msgid "Composer"
 msgstr "Композитор"
 
-#: picard/ui/itemviews/columns.py:152
+#: picard/ui/itemviews/columns.py:158
 msgid "Disc Subtitle"
 msgstr "Подзаголовок диска"
 
-#: picard/ui/itemviews/columns.py:153
+#: picard/ui/itemviews/columns.py:161
 msgid "Track No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:154
+#: picard/ui/itemviews/columns.py:168
 msgid "Disc No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:155
+#: picard/ui/itemviews/columns.py:175
 msgid "Catalog No."
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:157
+#: picard/ui/itemviews/columns.py:178
 msgid "Media"
 msgstr "Медиа"
 
-#: picard/ui/itemviews/columns.py:161
+#: picard/ui/itemviews/columns.py:182
 #, fuzzy
 #| msgid "Size:"
 msgid "Size"
 msgstr "Размер:"
 
-#: picard/ui/itemviews/columns.py:168
+#: picard/ui/itemviews/columns.py:190
 #, fuzzy
 #| msgid "Release Type"
 msgid "File Type"
 msgstr "Тип альбома"
 
-#: picard/ui/itemviews/columns.py:172
+#: picard/ui/itemviews/columns.py:194
 #, fuzzy
 #| msgid "Bitrate:"
 msgid "Bitrate"
 msgstr "Битрейт:"
 
-#: picard/ui/itemviews/columns.py:179
+#: picard/ui/itemviews/columns.py:202
 msgid "Genre"
 msgstr "Жанр"
 
-#: picard/ui/itemviews/columns.py:184
+#: picard/ui/itemviews/columns.py:207
 msgid "Original Release Date"
 msgstr "Первоначальная дата выпуска"
 
-#: picard/ui/itemviews/columns.py:185
+#: picard/ui/itemviews/columns.py:208
 msgid "Release Date"
 msgstr ""
 
-#: picard/ui/itemviews/columns.py:186 picard/ui/searchdialog/album.py:170
+#: picard/ui/itemviews/columns.py:209 picard/ui/searchdialog/album.py:170
 msgid "Cover"
 msgstr "Обложка"
 
-#: picard/ui/itemviews/columns.py:187
+#: picard/ui/itemviews/columns.py:210
 msgid "Cover Dimensions"
 msgstr ""
 
@@ -7895,15 +7923,15 @@ msgstr "Результаты поиска треков"
 msgid "Standalone Recording"
 msgstr "Самостоятельная запись"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:160
+#: picard/ui/widgets/configurablecolumnsheader.py:176
 msgid "Restore default columns"
 msgstr ""
 
-#: picard/ui/widgets/configurablecolumnsheader.py:181
+#: picard/ui/widgets/configurablecolumnsheader.py:197
 msgid "Lock columns"
 msgstr ""
 
-#: picard/ui/widgets/configurablecolumnsheader.py:207
+#: picard/ui/widgets/configurablecolumnsheader.py:223
 msgid "Manage custom columns…"
 msgstr ""
 

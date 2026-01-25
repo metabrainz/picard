@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 16:44+0100\n"
+"POT-Creation-Date: 2026-01-25 17:53+0100\n"
 "PO-Revision-Date: 2026-01-24 00:17+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
@@ -1011,7 +1011,7 @@ msgid "Unknown Plugin"
 msgstr "Connector desconegut"
 
 #: picard/plugin.py:119 picard/ui/cdlookup.py:64
-#: picard/ui/itemviews/columns.py:151 picard/ui/mainwindow/__init__.py:1023
+#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1023
 msgid "Album"
 msgstr "Àlbum"
 
@@ -1059,7 +1059,7 @@ msgid "Packaging"
 msgstr "Empaquetatge"
 
 #: picard/releasegroup.py:64 picard/ui/cdlookup.py:70
-#: picard/ui/itemviews/columns.py:156 picard/ui/searchdialog/album.py:166
+#: picard/ui/itemviews/columns.py:177 picard/ui/searchdialog/album.py:166
 msgid "Barcode"
 msgstr "Codi de barres"
 
@@ -3311,13 +3311,13 @@ msgstr "Esb&orra-ho tot"
 msgid "Restore &Defaults"
 msgstr "Reini&cialitza"
 
-#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:146
+#: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:151
 #: picard/ui/mainwindow/__init__.py:1024 picard/ui/searchdialog/album.py:159
 #: picard/ui/searchdialog/track.py:74
 msgid "Artist"
 msgstr "Artista"
 
-#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:183
+#: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:206
 #: picard/ui/searchdialog/album.py:162 picard/ui/searchdialog/track.py:76
 msgid "Date"
 msgstr "Data"
@@ -3453,6 +3453,40 @@ msgstr "Sintaxi Unicode ressaltada"
 #: picard/ui/colors.py:67
 msgid "Variable syntax highlight"
 msgstr "Sintaxi de variable ressaltada"
+
+#: picard/ui/columns.py:56
+#, fuzzy
+#| msgid "Album titles"
+msgid "Album Items"
+msgstr "Títols dels àlbums"
+
+#: picard/ui/columns.py:57
+#, fuzzy
+#| msgid "Track titles"
+msgid "Track Items"
+msgstr "Títols de les pistes"
+
+#: picard/ui/columns.py:58
+#, fuzzy
+#| msgid "Filter Items"
+msgid "File Items"
+msgstr "Filtra els elements"
+
+#: picard/ui/columns.py:59
+#, fuzzy
+#| msgid "Filter Items"
+msgid "Image Items"
+msgstr "Filtra els elements"
+
+#: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:139
+msgid "Miscellaneous"
+msgstr "Miscel·lània"
+
+#: picard/ui/columns.py:61
+#, fuzzy
+#| msgid "Manage Custom Columns"
+msgid "Custom Columns"
+msgstr "Gestió de les columnes personalitzades"
 
 #: picard/ui/filebrowser.py:56
 msgid "&Load selected files"
@@ -4735,10 +4769,6 @@ msgstr "Llengua de la interfície d'usuari:"
 msgid "User interface color theme:"
 msgstr "Tema de color de la interfície d'usuari:"
 
-#: picard/ui/forms/ui_options_interface.py:139
-msgid "Miscellaneous"
-msgstr "Miscel·lània"
-
 #: picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
 msgstr "Permet la selecció de diversos directoris"
@@ -5759,79 +5789,79 @@ msgstr "Coincidències: %s"
 msgid "No tags found for selected filters."
 msgstr "No s'ha trobat cap etiqueta per als filtres seleccionats."
 
-#: picard/ui/itemviews/columns.py:84
+#: picard/ui/itemviews/columns.py:85
 msgid "Match"
 msgstr "Coincidència"
 
-#: picard/ui/itemviews/columns.py:106
+#: picard/ui/itemviews/columns.py:108
 msgid "Fingerprint status"
 msgstr "Estat de l'empremta"
 
-#: picard/ui/itemviews/columns.py:126
+#: picard/ui/itemviews/columns.py:129
 msgid "Title"
 msgstr "Títol"
 
-#: picard/ui/itemviews/columns.py:137 picard/ui/searchdialog/track.py:67
+#: picard/ui/itemviews/columns.py:141 picard/ui/searchdialog/track.py:67
 msgid "Length"
 msgstr "Durada"
 
-#: picard/ui/itemviews/columns.py:149
+#: picard/ui/itemviews/columns.py:154
 msgid "Album Artist"
 msgstr "Artista de l'àlbum"
 
-#: picard/ui/itemviews/columns.py:150
+#: picard/ui/itemviews/columns.py:155
 msgid "Composer"
 msgstr "Compositor"
 
-#: picard/ui/itemviews/columns.py:152
+#: picard/ui/itemviews/columns.py:158
 msgid "Disc Subtitle"
 msgstr "Subtítol del disc"
 
-#: picard/ui/itemviews/columns.py:153
+#: picard/ui/itemviews/columns.py:161
 msgid "Track No."
 msgstr "Núm. pista"
 
-#: picard/ui/itemviews/columns.py:154
+#: picard/ui/itemviews/columns.py:168
 msgid "Disc No."
 msgstr "Núm. disc"
 
-#: picard/ui/itemviews/columns.py:155
+#: picard/ui/itemviews/columns.py:175
 msgid "Catalog No."
 msgstr "Núm. catàleg"
 
-#: picard/ui/itemviews/columns.py:157
+#: picard/ui/itemviews/columns.py:178
 msgid "Media"
 msgstr "Suport"
 
-#: picard/ui/itemviews/columns.py:161
+#: picard/ui/itemviews/columns.py:182
 msgid "Size"
 msgstr "Mida"
 
-#: picard/ui/itemviews/columns.py:168
+#: picard/ui/itemviews/columns.py:190
 msgid "File Type"
 msgstr "Tipus de fitxer"
 
-#: picard/ui/itemviews/columns.py:172
+#: picard/ui/itemviews/columns.py:194
 msgid "Bitrate"
 msgstr "Taxa de bits"
 
-#: picard/ui/itemviews/columns.py:179
+#: picard/ui/itemviews/columns.py:202
 msgid "Genre"
 msgstr "Gènere"
 
-#: picard/ui/itemviews/columns.py:184
+#: picard/ui/itemviews/columns.py:207
 msgid "Original Release Date"
 msgstr "Data de publicació original"
 
-#: picard/ui/itemviews/columns.py:185
+#: picard/ui/itemviews/columns.py:208
 msgid "Release Date"
 msgstr "Data de publicació"
 
-#: picard/ui/itemviews/columns.py:186 picard/ui/searchdialog/album.py:170
+#: picard/ui/itemviews/columns.py:209 picard/ui/searchdialog/album.py:170
 msgid "Cover"
 msgstr "Caràtula"
 
-#: picard/ui/itemviews/columns.py:187
+#: picard/ui/itemviews/columns.py:210
 msgid "Cover Dimensions"
 msgstr "Dimensions de la caràtula"
 
@@ -8285,15 +8315,15 @@ msgstr "Resultats de la cerca de pistes"
 msgid "Standalone Recording"
 msgstr "Enregistrament independent"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:160
+#: picard/ui/widgets/configurablecolumnsheader.py:176
 msgid "Restore default columns"
 msgstr "Reinicialitza les columnes"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:181
+#: picard/ui/widgets/configurablecolumnsheader.py:197
 msgid "Lock columns"
 msgstr "Bloca les columnes"
 
-#: picard/ui/widgets/configurablecolumnsheader.py:207
+#: picard/ui/widgets/configurablecolumnsheader.py:223
 msgid "Manage custom columns…"
 msgstr "Gestiona les columnes personalitzades…"
 
