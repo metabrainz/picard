@@ -110,13 +110,33 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
         config = get_config()
         config.setting['quick_menu_items'] = list(self._get_selected_options())
 
+    def _get_settings_from_children(self, parent_item, settings=None):
+        """Recursively get settings from child items.
+
+        Args:
+            parent_item (QtWidgets.QTreeWidgetItem): Parent item
+            settings (set): Set to add settings keys to
+        """
+        if settings is None:
+            settings = set()
+        for i in range(parent_item.childCount()):
+            item = parent_item.child(i)
+            if item.childCount():
+                self._get_settings_from_children(item, settings)
+            elif item.checkState(0) == QtCore.Qt.CheckState.Checked:
+                settings.add(item.data(0, QtCore.Qt.ItemDataRole.UserRole))
+
     def _get_selected_options(self):
+        checked_items = set()
         for i in range(self.ui.quick_menu_items.topLevelItemCount()):
             tl_item = self.ui.quick_menu_items.topLevelItem(i)
             for j in range(tl_item.childCount()):
                 item = tl_item.child(j)
-                if item.checkState(0) == QtCore.Qt.CheckState.Checked:
-                    yield item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+                if item.childCount():
+                    self._get_settings_from_children(item, checked_items)
+                elif item.checkState(0) == QtCore.Qt.CheckState.Checked:
+                    checked_items.add(item.data(0, QtCore.Qt.ItemDataRole.UserRole))
+        return checked_items
 
     def restore_defaults(self):
         self.menu_items = DEFAULT_QUICK_MENU_ITEMS
