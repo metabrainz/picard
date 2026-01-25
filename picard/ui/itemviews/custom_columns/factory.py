@@ -31,6 +31,7 @@ from picard.script import ScriptParser
 
 from picard.ui.columns import (
     ColumnAlign,
+    ColumnGroup,
     ColumnSortType,
 )
 from picard.ui.itemviews.custom_columns.column import (
@@ -86,6 +87,7 @@ def _create_custom_column(
     sort_type: ColumnSortType | None = None,
     status_icon: bool = False,
     is_default: bool = False,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create `CustomColumn`.
 
@@ -113,6 +115,7 @@ def _create_custom_column(
         sort_type=inferred_sort_type,
         always_visible=always_visible,
         status_icon=status_icon,
+        column_group=column_group,
     )
     column.is_default = is_default
     return column
@@ -128,6 +131,7 @@ def make_field_column(
     sort_type: ColumnSortType = ColumnSortType.TEXT,
     status_icon: bool = False,
     is_default: bool = False,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create a column that displays a field via ``obj.column(key)``.
 
@@ -166,6 +170,7 @@ def make_field_column(
         sort_type=sort_type,
         status_icon=status_icon,
         is_default=is_default,
+        column_group=column_group,
     )
 
 
@@ -179,6 +184,7 @@ def make_numeric_field_column(
     always_visible: bool = False,
     status_icon: bool = False,
     is_default: bool = False,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create a field column with numeric sorting support.
 
@@ -219,6 +225,7 @@ def make_numeric_field_column(
         sort_type=ColumnSortType.SORTKEY,
         status_icon=status_icon,
         is_default=is_default,
+        column_group=column_group,
     )
 
 
@@ -234,6 +241,7 @@ def make_script_column(
     cache_size: int | None = None,
     parser: ScriptParser | None = None,
     parser_factory: Callable[[], ScriptParser] | None = None,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create column whose value is computed by a script.
 
@@ -262,6 +270,7 @@ def make_script_column(
         align=align,
         always_visible=always_visible,
         sort_type=ColumnSortType.TEXT,
+        column_group=column_group,
     )
 
 
@@ -275,6 +284,7 @@ def make_callable_column(
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
     status_icon: bool = False,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create column backed by a Python callable.
 
@@ -298,6 +308,7 @@ def make_callable_column(
         always_visible=always_visible,
         sort_type=sort_type,
         status_icon=status_icon,
+        column_group=column_group,
     )
 
 
@@ -310,6 +321,7 @@ def make_transformed_column(
     width: int | None = None,
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create column from a base provider transformed by a function.
 
@@ -333,6 +345,7 @@ def make_transformed_column(
         align=align,
         always_visible=always_visible,
         sort_type=ColumnSortType.TEXT,
+        column_group=column_group,
     )
 
 
@@ -345,6 +358,7 @@ def make_provider_column(
     align: ColumnAlign = ColumnAlign.LEFT,
     always_visible: bool = False,
     sort_type: ColumnSortType | None = None,
+    column_group: ColumnGroup | None = None,
 ) -> CustomColumn:
     """Create column backed directly by a provider with sort inference.
 
@@ -368,6 +382,7 @@ def make_provider_column(
         align=align,
         always_visible=always_visible,
         sort_type=sort_type,
+        column_group=column_group,
     )
 
 
@@ -382,6 +397,7 @@ def make_delegate_column(
     sort_type: ColumnSortType | None = None,
     size: QtCore.QSize | None = None,
     sort_provider: SortKeyProvider | None = None,
+    column_group: ColumnGroup | None = None,
 ) -> DelegateColumn:
     """Create column that uses a delegate for custom rendering.
 
@@ -406,6 +422,7 @@ def make_delegate_column(
         always_visible=always_visible,
         size=size,
         sort_provider=sort_provider,
+        column_group=column_group,
     )
 
 
@@ -417,6 +434,7 @@ def make_icon_header_column(
     icon_width: int,
     icon_height: int,
     border: int = 0,
+    column_group: ColumnGroup | None = None,
 ) -> IconColumn:
     """Create an icon header column from a header icon provider.
 
@@ -429,6 +447,6 @@ def make_icon_header_column(
     icon_width, icon_height, border
         Header icon sizing and border.
     """
-    column = IconColumn(title, key, provider, width=None)
+    column = IconColumn(title, key, provider, width=None, column_group=column_group)
     column.set_header_icon_size(icon_width, icon_height, border)
     return column

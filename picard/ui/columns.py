@@ -49,6 +49,28 @@ from enum import IntEnum
 
 from PyQt6 import QtCore
 
+from picard.i18n import N_
+
+
+class ColumnGroup(IntEnum):
+    ALBUM = 0, N_("Album Items")
+    TRACK = 1, N_("Track Items")
+    FILE = 2, N_("File Items")
+    IMAGE = 3, N_("Image Items")
+    MISC = 4, N_("Miscellaneous")
+    CUSTOM = 99, N_("Custom Columns")
+
+    def __new__(cls, value, title):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj.title = title
+        return obj
+
+    def __repr__(self):
+        # Custom repr to match ColumnAlign/ColumnSortType format: ClassName.MEMBER_NAME
+        cls_name = self.__class__.__name__
+        return f'{cls_name}.{self.name}'
+
 
 class ColumnAlign(IntEnum):
     LEFT = 0
@@ -84,6 +106,7 @@ class Column:
         sortkey=None,
         always_visible=False,
         status_icon=False,
+        column_group: ColumnGroup | None = None,
     ):
         self.title = title
         self.key = key
@@ -98,10 +121,11 @@ class Column:
             self.sortkey = sortkey
         else:
             self.sortkey = None
+        self.column_group = column_group if column_group is not None else ColumnGroup.CUSTOM
 
     def __repr__(self):
         def parms():
-            opt_attrs = ('width', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon')
+            opt_attrs = ('width', 'align', 'sort_type', 'sortkey', 'always_visible', 'status_icon', 'column_group')
             yield from (repr(getattr(self, a)) for a in ('title', 'key'))
             yield from (a + '=' + repr(getattr(self, a)) for a in opt_attrs)
 
