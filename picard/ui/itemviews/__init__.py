@@ -282,7 +282,7 @@ class MainPanel(QtWidgets.QSplitter):
 
 
 class FileTreeView(BaseTreeView):
-    NAME = N_("file view")
+    NAME = N_("File view")
     DESCRIPTION = N_("Contains unmatched files and clusters")
 
     header_state = 'file_view_header_state'
@@ -314,7 +314,7 @@ class FileTreeView(BaseTreeView):
 
 
 class AlbumTreeView(BaseTreeView):
-    NAME = N_("album view")
+    NAME = N_("Album view")
     DESCRIPTION = N_("Contains albums and matched files")
 
     header_state = 'album_view_header_state'

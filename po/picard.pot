@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: picard 3.0.0.dev10\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 17:53+0100\n"
+"POT-Creation-Date: 2026-01-25 18:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4834,7 +4834,8 @@ msgid "Excellent match"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:285
-msgid "file view"
+#: picard/ui/itemviews/custom_columns/shared.py:150
+msgid "File view"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:286
@@ -4842,7 +4843,8 @@ msgid "Contains unmatched files and clusters"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:317
-msgid "album view"
+#: picard/ui/itemviews/custom_columns/shared.py:151
+msgid "Album view"
 msgstr ""
 
 #: picard/ui/itemviews/__init__.py:318
@@ -5127,14 +5129,6 @@ msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:73
 msgid "Untitled"
-msgstr ""
-
-#: picard/ui/itemviews/custom_columns/shared.py:150
-msgid "File view"
-msgstr ""
-
-#: picard/ui/itemviews/custom_columns/shared.py:151
-msgid "Album view"
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
