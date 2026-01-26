@@ -33,7 +33,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-25 21:14+0100\n"
-"PO-Revision-Date: 2026-01-25 20:14+0000\n"
+"PO-Revision-Date: 2026-01-26 06:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -3781,7 +3781,7 @@ msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:164
 msgid "/path/to/plugin/directory"
-msgstr ""
+msgstr "/pfad/zum/plugin/verzeichnis"
 
 #: picard/ui/dialogs/installplugin.py:170
 #: picard/ui/dialogs/installplugin.py:171
@@ -3806,23 +3806,23 @@ msgstr "Installieren …"
 
 #: picard/ui/dialogs/installplugin.py:274
 msgid "Official plugin - reviewed by Picard team"
-msgstr ""
+msgstr "Offizielles Plugin – vom Picard-Team geprüft"
 
 #: picard/ui/dialogs/installplugin.py:275
 msgid "Trusted plugin - from known developers"
-msgstr ""
+msgstr "Vertrauenswürdiges Plugin – von bekannten Entwicklern"
 
 #: picard/ui/dialogs/installplugin.py:276
 msgid "Community plugin - not reviewed"
-msgstr ""
+msgstr "Community-Plugin – nicht geprüft"
 
 #: picard/ui/dialogs/installplugin.py:277
 msgid "Unregistered plugin - not in official registry"
-msgstr ""
+msgstr "Unregistriertes Plugin – nicht im offiziellen Katalog enthalten"
 
 #: picard/ui/dialogs/installplugin.py:322
 msgid "Double-click to view detailed plugin information"
-msgstr ""
+msgstr "Doppelklicken, um detaillierte Plugin-Informationen anzuzeigen"
 
 #: picard/ui/dialogs/installplugin.py:390
 msgid "Select Plugin Directory"
@@ -3830,7 +3830,7 @@ msgstr "Plugin-Verzeichnis auswählen"
 
 #: picard/ui/dialogs/installplugin.py:410
 msgid "Plugin not found in registry"
-msgstr ""
+msgstr "Plugin im Katalog nicht gefunden"
 
 #: picard/ui/dialogs/installplugin.py:477
 msgid "No Directory Selected"
@@ -3850,17 +3850,20 @@ msgstr "Der ausgewählte Pfad ist kein Verzeichnis."
 
 #: picard/ui/dialogs/installplugin.py:491
 msgid "Invalid Plugin Directory"
-msgstr ""
+msgstr "Ungültiges Plugin-Verzeichnis"
 
 #: picard/ui/dialogs/installplugin.py:493
 msgid ""
 "The selected directory does not contain a MANIFEST.toml file. A valid plugin "
 "requires both a git repository and a MANIFEST.toml file."
 msgstr ""
+"Das ausgewählte Verzeichnis enthält keine Datei MANIFEST.toml. Ein valides "
+"Plugin-Verzeichnis erfordert sowohl ein Git-Repository als auch die Datei "
+"MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:530
 msgid "Plugin has no repository URL"
-msgstr ""
+msgstr "Plugin hat keine Repository-URL"
 
 #: picard/ui/dialogs/installplugin.py:577
 msgid "Plugin installed successfully"
