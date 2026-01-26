@@ -167,6 +167,16 @@ class TestFileIdentity(PicardTestCase):
         os.remove(fname)
         with self.assertRaises(FileIdentityError):
             identity._fast_hash()
+    
+    def test_identity_file_deleted_after_capture(self):
+        """Test that deleting a file after identity capture is detected."""
+        fname = self._write_temp(b"content")
+        id1 = FileIdentity(fname)
+        os.remove(fname) 
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+        self.assertTrue(id1)
+        self.assertFalse(id2)
 
     @unittest.skipIf(IS_WIN, "chmod doesn't work the same on Windows")
     def test_identity_comparison_unreadable_file(self):
