@@ -58,7 +58,7 @@ class PluginOrderSelectorDialog(PicardDialog):
         self.updating = False
         self._make_plugin_list()
 
-        self.setWindowTitle(_("Plugin Metadata Processing Order"))
+        self.setWindowTitle(_("Plugin Execution Order"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setMinimumWidth(650)
         self._layout = QtWidgets.QVBoxLayout(self)
@@ -67,7 +67,7 @@ class PluginOrderSelectorDialog(PicardDialog):
             _(
                 "This displays the order in which the plugin metadata processing functions are executed "
                 "by Picard. You can change the order by moving the functions up or down by selecting "
-                "the funcion to move and then use the up or down button, or by using your mouse to "
+                "the function to move and then use the up or down button, or by using your mouse to "
                 "drag the function to the desired location in the list."
             )
         )
