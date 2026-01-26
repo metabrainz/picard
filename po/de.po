@@ -33,7 +33,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-25 18:03+0100\n"
-"PO-Revision-Date: 2026-01-25 16:11+0000\n"
+"PO-Revision-Date: 2026-01-25 20:14+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
@@ -3308,38 +3308,28 @@ msgid "Variable syntax highlight"
 msgstr "Syntax-Hervorhebung: Variable"
 
 #: picard/ui/columns.py:56
-#, fuzzy
-#| msgid "Album titles"
 msgid "Album Items"
-msgstr "Albentitel"
+msgstr "Albumfelder"
 
 #: picard/ui/columns.py:57
-#, fuzzy
-#| msgid "Track titles"
 msgid "Track Items"
-msgstr "Track-Titel"
+msgstr "Titelfelder"
 
 #: picard/ui/columns.py:58
-#, fuzzy
-#| msgid "Filter Items"
 msgid "File Items"
-msgstr "Einträge filtern"
+msgstr "Dateifelder"
 
 #: picard/ui/columns.py:59
-#, fuzzy
-#| msgid "Filter Items"
 msgid "Image Items"
-msgstr "Einträge filtern"
+msgstr "Bildfelder"
 
 #: picard/ui/columns.py:60 picard/ui/forms/ui_options_interface.py:139
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
 #: picard/ui/columns.py:61
-#, fuzzy
-#| msgid "Manage Custom Columns"
 msgid "Custom Columns"
-msgstr "Benutzerdefinierte Spalte verwalten"
+msgstr "Benutzerdefinierte Spalten"
 
 #: picard/ui/filebrowser.py:56
 msgid "&Load selected files"
@@ -5756,15 +5746,15 @@ msgstr "Spaltentitel"
 
 #: picard/ui/itemviews/custom_columns/shared.py:51
 msgid "Expression"
-msgstr ""
+msgstr "Ausdruck"
 
 #: picard/ui/itemviews/custom_columns/shared.py:52
 msgid "Align"
-msgstr ""
+msgstr "Ausrichtung"
 
 #: picard/ui/itemviews/custom_columns/shared.py:53
 msgid "Width"
-msgstr ""
+msgstr "Breite"
 
 #: picard/ui/itemviews/custom_columns/shared.py:73
 msgid "Untitled"
@@ -5772,16 +5762,16 @@ msgstr "Unbenannt"
 
 #: picard/ui/itemviews/custom_columns/shared.py:155
 msgid "Show this column in the Files view."
-msgstr ""
+msgstr "Diese Spalte in der Dateiansicht anzeigen."
 
 #: picard/ui/itemviews/custom_columns/shared.py:156
 msgid "Show this column in the Albums view."
-msgstr ""
+msgstr "Diese Spalte in der Albenansicht anzeigen."
 
 #: picard/ui/itemviews/custom_columns/shared.py:215
 #: picard/ui/itemviews/custom_columns/shared.py:255
 msgid "left"
-msgstr ""
+msgstr "links"
 
 #: picard/ui/itemviews/custom_columns/shared.py:215
 #: picard/ui/itemviews/custom_columns/shared.py:255
@@ -5790,25 +5780,28 @@ msgstr "rechts"
 
 #: picard/ui/itemviews/custom_columns/shared.py:307
 msgid "Default alphabetical text sorting."
-msgstr ""
+msgstr "Standard alphabetische Textsortierung."
 
 #: picard/ui/itemviews/custom_columns/shared.py:310
 msgid "Case insensitive"
-msgstr ""
+msgstr "Groß-/Kleinschreibung nicht beachten"
 
 #: picard/ui/itemviews/custom_columns/shared.py:311
 msgid "Case insensitive alphabetical text sorting."
-msgstr ""
+msgstr "Alphabetische Sortierung ohne Beachtung der Groß-/Kleinschreibung."
 
 #: picard/ui/itemviews/custom_columns/shared.py:314
 msgid "Numeric"
-msgstr ""
+msgstr "Numerisch"
 
 #: picard/ui/itemviews/custom_columns/shared.py:315
+#, fuzzy
 msgid ""
 "Numeric sorting if the column content is numeric. Falls back to natural "
 "number sorting."
 msgstr ""
+"Numerische Sortierung, wenn der Spalteninhalt numerisch ist. Fällt auf "
+"natürliche Nummersortierung zurück."
 
 #: picard/ui/itemviews/custom_columns/shared.py:318
 msgid "Natural number sorting"
@@ -8326,11 +8319,11 @@ msgstr "Soll „{name}“ wirklich deinstalliert werden?"
 
 #: picard/ui/widgets/pluginlistwidget.py:830
 msgid "Also remove plugin configuration"
-msgstr ""
+msgstr "Auch Plugin-Konfiguration entfernen"
 
 #: picard/ui/widgets/pluginlistwidget.py:831
 msgid "Remove all saved settings and configuration for this plugin"
-msgstr ""
+msgstr "Alle gespeicherten Einstellungen für dieses Plugin entfernen"
 
 #: picard/ui/widgets/pluginlistwidget.py:835
 msgid "Yes, Uninstall!"
@@ -8338,16 +8331,16 @@ msgstr "Ja, deinstallieren!"
 
 #: picard/ui/widgets/pluginlistwidget.py:859
 msgid "Switch Git Ref"
-msgstr ""
+msgstr "Git-Ref wechseln"
 
 #: picard/ui/widgets/pluginlistwidget.py:870
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
-msgstr ""
+msgstr "Git-Ref für „{name}“ wechseln"
 
 #: picard/ui/widgets/pluginlistwidget.py:880
 msgid "Yes, Switch!"
-msgstr ""
+msgstr "Ja, wechseln!"
 
 #: picard/ui/widgets/pluginlistwidget.py:909
 msgid "No Ref Selected"
@@ -8397,15 +8390,15 @@ msgstr "Plugin: {plugin_name}"
 
 #: picard/ui/widgets/scriptdocumentation.py:206
 msgid "Find:"
-msgstr ""
+msgstr "Suchen:"
 
 #: picard/ui/widgets/scriptdocumentation.py:221
 msgid "Find previous"
-msgstr ""
+msgstr "Vorheriger Treffer"
 
 #: picard/ui/widgets/scriptdocumentation.py:228
 msgid "Find next"
-msgstr ""
+msgstr "Nächster Treffer"
 
 #: picard/ui/widgets/scriptdocumentation.py:242
 msgid "Functions"
@@ -8418,7 +8411,7 @@ msgstr "Skript-Dokumentation im Browser öffnen"
 #: picard/ui/widgets/scriptdocumentation.py:287
 #, python-brace-format
 msgid "({item} of {total})"
-msgstr ""
+msgstr "({item} von {total})"
 
 #: picard/ui/widgets/scriptdocumentation.py:289
 msgid "(not found)"
