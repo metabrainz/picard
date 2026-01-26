@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 18:03+0100\n"
+"POT-Creation-Date: 2026-01-25 21:14+0100\n"
 "PO-Revision-Date: 2023-08-23 19:10+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Romanian <https://translations.metabrainz.org/projects/picard/"
@@ -2877,42 +2877,32 @@ msgstr "Afișează fișierele ascunse"
 msgid "&Set as starting directory"
 msgstr ""
 
-#: picard/ui/filter.py:55
+#: picard/ui/filter.py:58
 #, fuzzy
 #| msgid "Clusters"
 msgid "Filters"
 msgstr "Grupaje"
 
-#: picard/ui/filter.py:71
+#: picard/ui/filter.py:72
 msgid "Type to filter…"
 msgstr ""
 
-#: picard/ui/filter.py:90
+#: picard/ui/filter.py:147
+#, fuzzy, python-brace-format
+msgid "{num} filters"
+msgstr "&Redenumește fișierele"
+
+#: picard/ui/filter.py:173
 #, fuzzy
 #| msgid "Save selected files"
 msgid "Select Filters"
 msgstr "Înregistrează fișierele selectate"
 
-#: picard/ui/filter.py:101
+#: picard/ui/filter.py:189
 #, fuzzy
 #| msgid "Save selected files"
 msgid "Select / clear all filters"
 msgstr "Înregistrează fișierele selectate"
-
-#: picard/ui/filter.py:138
-msgid "OK"
-msgstr ""
-
-#: picard/ui/filter.py:146
-#, fuzzy
-#| msgid "&Cancel"
-msgid "Cancel"
-msgstr "Renunță"
-
-#: picard/ui/filter.py:233
-#, fuzzy, python-brace-format
-msgid "{num} filters"
-msgstr "&Redenumește fișierele"
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -5282,45 +5272,45 @@ msgstr ""
 msgid "Unmatched files: %(count)d"
 msgstr "Fișiere neașezate"
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:104
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:106
 msgid "Manage Custom Columns"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:118
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:120
 #: picard/ui/options/profiles.py:107
 msgid "New"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:120
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:122
 msgid "Duplicate"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:121
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:123
 #: picard/ui/options/profiles.py:121
 msgid "Delete"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:152
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:154
 #, fuzzy
 #| msgid "250 px"
 msgid " px"
 msgstr "250 pixeli"
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:179
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:181
 msgid "Sorting"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:180
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:182
 #, fuzzy
 #| msgid "Add Files"
 msgid "Add to views"
 msgstr "Adaugă fișiere"
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:256
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:258
 msgid "You have unsaved changes. Do you want to save them?"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:493
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:491
 msgid ""
 "You have unsaved changes. Do you want to save them before deleting this "
 "column?"
@@ -8084,6 +8074,11 @@ msgstr ""
 "Eroare la lansarea navigatorului web:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~| msgid "&Cancel"
+#~ msgid "Cancel"
+#~ msgstr "Renunță"
 
 #, fuzzy
 #~| msgid "Save selected files"

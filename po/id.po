@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 18:03+0100\n"
+"POT-Creation-Date: 2026-01-25 21:14+0100\n"
 "PO-Revision-Date: 2024-04-07 12:29+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Indonesian <https://translations.metabrainz.org/projects/"
@@ -2835,41 +2835,32 @@ msgstr ""
 msgid "&Set as starting directory"
 msgstr ""
 
-#: picard/ui/filter.py:55
+#: picard/ui/filter.py:58
 #, fuzzy
 #| msgid "Clusters"
 msgid "Filters"
 msgstr "Clusters"
 
-#: picard/ui/filter.py:71
+#: picard/ui/filter.py:72
 msgid "Type to filter…"
 msgstr ""
 
-#: picard/ui/filter.py:90
+#: picard/ui/filter.py:147
+#, python-brace-format
+msgid "{num} filters"
+msgstr ""
+
+#: picard/ui/filter.py:173
 #, fuzzy
 #| msgid "Save selected files"
 msgid "Select Filters"
 msgstr "Simpan berkas terpilih"
 
-#: picard/ui/filter.py:101
+#: picard/ui/filter.py:189
 #, fuzzy
 #| msgid "Save selected files"
 msgid "Select / clear all filters"
 msgstr "Simpan berkas terpilih"
-
-#: picard/ui/filter.py:138
-msgid "OK"
-msgstr ""
-
-#: picard/ui/filter.py:146
-#, fuzzy
-msgid "Cancel"
-msgstr "Batal"
-
-#: picard/ui/filter.py:233
-#, python-brace-format
-msgid "{num} filters"
-msgstr ""
 
 #: picard/ui/infostatus.py:70
 msgid "Estimated Time"
@@ -5199,43 +5190,43 @@ msgstr ""
 msgid "Unmatched files: %(count)d"
 msgstr "Berkas Tidak Cocok"
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:104
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:106
 msgid "Manage Custom Columns"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:118
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:120
 #: picard/ui/options/profiles.py:107
 msgid "New"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:120
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:122
 msgid "Duplicate"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:121
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:123
 #: picard/ui/options/profiles.py:121
 msgid "Delete"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:152
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:154
 msgid " px"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:179
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:181
 #, fuzzy
 #| msgid "Rating"
 msgid "Sorting"
 msgstr "Peringkat"
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:180
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:182
 msgid "Add to views"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:256
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:258
 msgid "You have unsaved changes. Do you want to save them?"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:493
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:491
 msgid ""
 "You have unsaved changes. Do you want to save them before deleting this "
 "column?"
@@ -7949,6 +7940,10 @@ msgstr ""
 "Kesalahan ketika menjalankan sebuah browser web:\n"
 "\n"
 "%s"
+
+#, fuzzy
+#~ msgid "Cancel"
+#~ msgstr "Batal"
 
 #, fuzzy
 #~| msgid "Save selected files"
