@@ -168,6 +168,16 @@ class TestFileIdentity(PicardTestCase):
         with self.assertRaises(FileIdentityError):
             identity._fast_hash()
 
+    def test_identity_file_deleted_after_capture(self):
+        """Test that deleting a file after identity capture is detected."""
+        fname = self._write_temp(b"content")
+        id1 = FileIdentity(fname)
+        os.remove(fname)
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+        self.assertTrue(id1)
+        self.assertFalse(id2)
+
     @unittest.skipIf(IS_WIN, "chmod doesn't work the same on Windows")
     def test_identity_comparison_unreadable_file(self):
         """Test that comparing identities raises FileIdentityError if file becomes unreadable."""
@@ -264,5 +274,29 @@ class TestFileIdentity(PicardTestCase):
         self.assertFalse(result)
         self.assertIsNotNone(id1._hash)
         self.assertIsNotNone(id2._hash)
-        # Both hashes are the same (both computed from "modified" content)
+        # Both hashes are equal because both were computed from the same current file content
         self.assertNotEqual(id1._hash, id2._hash)
+
+    def test_identity_replaced_file_same_content(self):
+        """Test that replacing a file with identical content but new inode is detected."""
+        fname = self._write_temp(b"AAAA")
+        id1 = FileIdentity(fname)
+        fd, newname = tempfile.mkstemp()
+        self.temp_files.add(newname)
+        with os.fdopen(fd, "wb") as f:
+            f.write(b"AAAA")
+        os.replace(newname, fname)
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+
+    def test_identity_truncated_file_same_mtime(self):
+        """Test that truncating a file while preserving mtime is detected."""
+        fname = self._write_temp(b"1234567890")
+        id1 = FileIdentity(fname)
+        stat = os.stat(fname)
+        with open(fname, "wb") as f:
+            f.write(b"123")
+        # Preserve original mtime
+        os.utime(fname, (stat.st_atime, stat.st_mtime))
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
