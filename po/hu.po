@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-25 21:14+0100\n"
+"POT-Creation-Date: 2026-01-26 07:04+0100\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Hungarian <https://translations.metabrainz.org/projects/"
@@ -3450,16 +3450,16 @@ msgid "Installation Failed"
 msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:61
-msgid "Plugin Metadata Processing Order"
+msgid "Plugin Execution Order"
 msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:68
 msgid ""
 "This displays the order in which the plugin metadata processing functions "
 "are executed by Picard. You can change the order by moving the functions up "
-"or down by selecting the funcion to move and then use the up or down button, "
-"or by using your mouse to drag the function to the desired location in the "
-"list."
+"or down by selecting the function to move and then use the up or down "
+"button, or by using your mouse to drag the function to the desired location "
+"in the list."
 msgstr ""
 
 #: picard/ui/dialogs/plugin_order_selector.py:84
