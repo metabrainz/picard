@@ -50,6 +50,9 @@ from picard.profile import profile_groups_all_settings
 from picard.version import Version
 
 
+OptionTypeTest = namedtuple('OptionTypeTest', ['type', 'class_name'])
+
+
 class Option(QtCore.QObject):
     """Generic option."""
 
@@ -63,6 +66,24 @@ class Option(QtCore.QObject):
         self.default = default
         self.title = title
         self.registry[(section, name)] = self
+
+        self._check_if_valid()
+
+    def _check_if_valid(self):
+        """Check if the option should be sub-classed, and log a warning."""
+        tests = [
+            OptionTypeTest(str, 'TextOption'),
+            OptionTypeTest(bool, 'BoolOption'),
+            OptionTypeTest(int, 'IntOption'),
+            OptionTypeTest(float, 'FloatOption'),
+            OptionTypeTest(list, 'ListOption'),
+        ]
+        for test in tests:
+            if type(self.default) is test.type and self.__class__.__name__ != test.class_name:
+                log.warning(
+                    "Invalid Option definition for %s/%s: should be %s", self.section, self.name, test.class_name
+                )
+                break
 
     @classmethod
     def get(cls, section, name):
