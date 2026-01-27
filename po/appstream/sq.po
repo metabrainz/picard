@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Besnik Bleta <besnik@programeshqip.org>, 2022
+# Besnik Bleta <besnik@programeshqip.org>, 2022, 2026.
 # Transifex Bot <>, 2023
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2026.
@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2026-01-27 07:37+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-01-27 15:49+0000\n"
+"Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
 "3/appstream/sq/>\n"
 "Language: sq\n"
@@ -33,7 +33,7 @@ msgid ""
 "Picard is a cross-platform music tagger powered by the MusicBrainz database"
 msgstr ""
 "Picard-i është një etiketues ndërplatformësh muzike që bazohet në bazën e të "
-"dhënave MusicBrainz."
+"dhënave MusicBrainz"
 
 #: org.musicbrainz.Picard.appdata.xml.in:12
 msgid ""
@@ -118,11 +118,12 @@ msgstr ""
 "si do të duken etiketat."
 
 #: org.musicbrainz.Picard.appdata.xml.in:54
-#, fuzzy
 msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
-msgstr "Picard-i mund të gjejë dhe shkarkojë kapakun e saktë për albumet tuaja."
+msgstr ""
+"Kapak: Picard-i mund të gjejë dhe shkarkojë kapakun e saktë për albumet "
+"tuaja."
 
 #: org.musicbrainz.Picard.appdata.xml.in:58
 msgid ""
@@ -140,11 +141,11 @@ msgstr "MetaBrainz Foundation"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "Etiketoni muzikën tuaj me brezin e ardhshëm të etiketuesit MusicBrainz"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Dritare e Re"
 
 #~ msgid "MusicBrainz's music tagger"
 #~ msgstr "Etiketues muzike nga MusicBrainz"
