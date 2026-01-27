@@ -1,5 +1,146 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0a1 - 2026-01-27
+
+### Bugfixes
+- [PICARD-428](https://tickets.metabrainz.org/browse/PICARD-428) - Plugins body gets executed when picard starts, even if plugin is disabled
+- [PICARD-1498](https://tickets.metabrainz.org/browse/PICARD-1498) - Allow uninstalling plugins that cannot be loaded
+- [PICARD-1616](https://tickets.metabrainz.org/browse/PICARD-1616) - Windows: File currently played in internal player cannot be saved
+- [PICARD-2003](https://tickets.metabrainz.org/browse/PICARD-2003) - Picard installed via pip cannot find locales
+- [PICARD-2657](https://tickets.metabrainz.org/browse/PICARD-2657) - "Open in Player" unclear in meaning
+- [PICARD-2675](https://tickets.metabrainz.org/browse/PICARD-2675) - On GNOME Wayland the file chooser dialog is not transient to the main window
+- [PICARD-2678](https://tickets.metabrainz.org/browse/PICARD-2678) - Wrong configuration and plugins path opened/shown in MSIX install
+- [PICARD-2782](https://tickets.metabrainz.org/browse/PICARD-2782) - Extremely small font in dialogs and toolbar on Windows with display scaling
+- [PICARD-2826](https://tickets.metabrainz.org/browse/PICARD-2826) - After saving the file info does not update
+- [PICARD-2829](https://tickets.metabrainz.org/browse/PICARD-2829) - macOS: multi directory selection dialog does not allow access to external drives
+- [PICARD-2847](https://tickets.metabrainz.org/browse/PICARD-2847) - Switching option profiles does not update menu items
+- [PICARD-2857](https://tickets.metabrainz.org/browse/PICARD-2857) - Picard returns non-zero when loading files on the command line
+- [PICARD-2863](https://tickets.metabrainz.org/browse/PICARD-2863) - Barcode sometimes not shown in "other versions" context menu
+- [PICARD-2878](https://tickets.metabrainz.org/browse/PICARD-2878) - Crash in cover art when scan triggers recursion beyond python limits (e.g. 1000)
+- [PICARD-2879](https://tickets.metabrainz.org/browse/PICARD-2879) - macOS: Chosen starting directory might not be used in file browser
+- [PICARD-2954](https://tickets.metabrainz.org/browse/PICARD-2954) - Cannot scroll up while dragging items on Wayland
+- [PICARD-2990](https://tickets.metabrainz.org/browse/PICARD-2990) - Disabled format plugins will still be used
+- [PICARD-3016](https://tickets.metabrainz.org/browse/PICARD-3016) - Logging relative path broken on Windows with Python 3.13
+- [PICARD-3019](https://tickets.metabrainz.org/browse/PICARD-3019) - Switching option profiles in application menu is not persisted and does not update menu quick options
+- [PICARD-3029](https://tickets.metabrainz.org/browse/PICARD-3029) - Deleted Record Label field from m4a file persists in file
+- [PICARD-3038](https://tickets.metabrainz.org/browse/PICARD-3038) - edittagdialog.py:271: IndexError: list assignment index out of range (dumped core)
+- [PICARD-3043](https://tickets.metabrainz.org/browse/PICARD-3043) - Impossible to delete `performer` tag in ID3
+- [PICARD-3045](https://tickets.metabrainz.org/browse/PICARD-3045) - Copying the value of "length" tag crashes if multiple files are selected
+- [PICARD-3056](https://tickets.metabrainz.org/browse/PICARD-3056) - Picard crashes and closes if cover art is not provided in the file picker
+- [PICARD-3065](https://tickets.metabrainz.org/browse/PICARD-3065) - `$rsearch` fails if matching pattern contains a group that didn't match
+- [PICARD-3067](https://tickets.metabrainz.org/browse/PICARD-3067) - Dot remaining in title after track number parsing
+- [PICARD-3073](https://tickets.metabrainz.org/browse/PICARD-3073) - Album covers download is inconsistent in search results dialog
+- [PICARD-3074](https://tickets.metabrainz.org/browse/PICARD-3074) - Problem editing search text in search results dialog
+- [PICARD-3081](https://tickets.metabrainz.org/browse/PICARD-3081) - On Windows, artist named "NUL." causes "Move Files" to fail
+- [PICARD-3093](https://tickets.metabrainz.org/browse/PICARD-3093) - Sanitize HTTP origin header values in browser integration
+- [PICARD-3109](https://tickets.metabrainz.org/browse/PICARD-3109) - Error saving option settings with new profile
+- [PICARD-3128](https://tickets.metabrainz.org/browse/PICARD-3128) - Collections menu not usable with keyboard
+- [PICARD-3139](https://tickets.metabrainz.org/browse/PICARD-3139) - Incorrect settings key used
+- [PICARD-3149](https://tickets.metabrainz.org/browse/PICARD-3149) - `tracknum_and_title_from_filename()` raises an exception with a file like '1.opus'
+- [PICARD-3164](https://tickets.metabrainz.org/browse/PICARD-3164) - Network drive for remote hostname ending with dot is broken
+
+### New Features
+- [PICARD-150](https://tickets.metabrainz.org/browse/PICARD-150) - Support for internal search/filter of the main two panes
+- [PICARD-860](https://tickets.metabrainz.org/browse/PICARD-860) - Add cover art processing to the plugins API
+- [PICARD-1861](https://tickets.metabrainz.org/browse/PICARD-1861) - New plugin API and plugin management
+- [PICARD-2121](https://tickets.metabrainz.org/browse/PICARD-2121) - Add cover art image processing options
+- [PICARD-2287](https://tickets.metabrainz.org/browse/PICARD-2287) - Support copy and paste of one or multiple tags
+- [PICARD-2607](https://tickets.metabrainz.org/browse/PICARD-2607) - Add `_genres` and `_folksonomy_tags` variables
+- [PICARD-2783](https://tickets.metabrainz.org/browse/PICARD-2783) - Provide separate options for embedded and external cover art
+- [PICARD-2817](https://tickets.metabrainz.org/browse/PICARD-2817) - Add support for macOS "Now Playing"
+- [PICARD-2842](https://tickets.metabrainz.org/browse/PICARD-2842) - Add a CLI command to install a plugin
+- [PICARD-2921](https://tickets.metabrainz.org/browse/PICARD-2921) - Allow manual setting of cover art from web url
+- [PICARD-2926](https://tickets.metabrainz.org/browse/PICARD-2926) - Add option to filter out images below a given size
+- [PICARD-2936](https://tickets.metabrainz.org/browse/PICARD-2936) - Add option to change cover art images' formats
+- [PICARD-2945](https://tickets.metabrainz.org/browse/PICARD-2945) - Provide `_broadcast_date` variable
+- [PICARD-2966](https://tickets.metabrainz.org/browse/PICARD-2966) - Show file type in list views
+- [PICARD-3054](https://tickets.metabrainz.org/browse/PICARD-3054) - Add artist country variable
+- [PICARD-3104](https://tickets.metabrainz.org/browse/PICARD-3104) - Allow user to set plugin execution order
+- [PICARD-3107](https://tickets.metabrainz.org/browse/PICARD-3107) - Add profile save warning on option settings page
+- [PICARD-3108](https://tickets.metabrainz.org/browse/PICARD-3108) - Allow user to select checkbox option settings to include in a Quick Menu
+- [PICARD-3157](https://tickets.metabrainz.org/browse/PICARD-3157) - Add support for MPRIS2
+- [PICARD-3165](https://tickets.metabrainz.org/browse/PICARD-3165) - Support parsing raw SCSI TOC data file as created by redumper
+
+### Tasks
+
+- [PICARD-2393](https://tickets.metabrainz.org/browse/PICARD-2393) - Code cleanup and refactorings
+- [PICARD-2784](https://tickets.metabrainz.org/browse/PICARD-2784) - Drop support for Python 3.9 and below
+- [PICARD-2871](https://tickets.metabrainz.org/browse/PICARD-2871) - Get rid of QtCore.QObject.tagger
+- [PICARD-3007](https://tickets.metabrainz.org/browse/PICARD-3007) - Document `_genres` and `_folksonomy_tags` variables
+- [PICARD-3017](https://tickets.metabrainz.org/browse/PICARD-3017) - Update documentation for `_filepath` variable
+- [PICARD-3050](https://tickets.metabrainz.org/browse/PICARD-3050) - Update documentation for lookup disc
+- [PICARD-3079](https://tickets.metabrainz.org/browse/PICARD-3079) - Support Python 3.14
+- [PICARD-3106](https://tickets.metabrainz.org/browse/PICARD-3106) - Use uv for dependency management
+- [PICARD-3119](https://tickets.metabrainz.org/browse/PICARD-3119) - Refactor: all standard, icon, delegate columns to use new column API
+- [PICARD-3159](https://tickets.metabrainz.org/browse/PICARD-3159) - Document broadcast date variable
+- [PICARD-3162](https://tickets.metabrainz.org/browse/PICARD-3162) - Document keyboard shortcuts for internal player
+- [PICARD-3167](https://tickets.metabrainz.org/browse/PICARD-3167) - Document new `redumper` SCSI TOC file import option
+
+### Improvements
+- [PICARD-237](https://tickets.metabrainz.org/browse/PICARD-237) - Allow embedding cover art with lower resolution
+- [PICARD-271](https://tickets.metabrainz.org/browse/PICARD-271) - Avoid overwriting additional files when moving into folders that already have same file
+- [PICARD-442](https://tickets.metabrainz.org/browse/PICARD-442) - Allow sorting by whether release is complete
+- [PICARD-489](https://tickets.metabrainz.org/browse/PICARD-489) - Add extra field for ALL folksonomy tags in Picard
+- [PICARD-1092](https://tickets.metabrainz.org/browse/PICARD-1092) - Add support for preserving the SYLT tag, for synchronised lyrics
+- [PICARD-1241](https://tickets.metabrainz.org/browse/PICARD-1241) - Resize cover art to the new size configured in a new option
+- [PICARD-1248](https://tickets.metabrainz.org/browse/PICARD-1248) - Show more technical details (Bitrate, Size) for tracks
+- [PICARD-1274](https://tickets.metabrainz.org/browse/PICARD-1274) - Allow moving music files to system trash
+- [PICARD-1403](https://tickets.metabrainz.org/browse/PICARD-1403) - Add explicit API for album requests
+- [PICARD-1404](https://tickets.metabrainz.org/browse/PICARD-1404) - Management of third-party plugins
+- [PICARD-1477](https://tickets.metabrainz.org/browse/PICARD-1477) - Option to never replace an image with a smaller one
+- [PICARD-1507](https://tickets.metabrainz.org/browse/PICARD-1507) - Cancel outstanding album requests if album gets removed
+- [PICARD-1583](https://tickets.metabrainz.org/browse/PICARD-1583) - Player: Adjust pitch when changing playback speed
+- [PICARD-1685](https://tickets.metabrainz.org/browse/PICARD-1685) - Add `_filesize` variable
+- [PICARD-2025](https://tickets.metabrainz.org/browse/PICARD-2025) - Display old/new path/filename in Metadata list
+- [PICARD-2101](https://tickets.metabrainz.org/browse/PICARD-2101) - Dynamic variable list for script editor auto completion
+- [PICARD-2103](https://tickets.metabrainz.org/browse/PICARD-2103) - Support custom columns in panel views
+- [PICARD-2122](https://tickets.metabrainz.org/browse/PICARD-2122) - Add a "cover dimensions" column to show primary cover art size
+- [PICARD-2192](https://tickets.metabrainz.org/browse/PICARD-2192) - macOS: Support ARM (Apple Silicon)
+- [PICARD-2300](https://tickets.metabrainz.org/browse/PICARD-2300) - Linux: Support org.freedesktop.appearance.color-scheme to detect dark / light appearance user preference
+- [PICARD-2331](https://tickets.metabrainz.org/browse/PICARD-2331) - Update to PyQt 6
+- [PICARD-2529](https://tickets.metabrainz.org/browse/PICARD-2529) - Move plugin directory to QStandardPaths.StandardLocation.AppDataLocation
+- [PICARD-2561](https://tickets.metabrainz.org/browse/PICARD-2561) - Add context menu entry to play file(s) on internal player
+- [PICARD-2580](https://tickets.metabrainz.org/browse/PICARD-2580) - Add keyboard shortcut for Artwork/Show more details
+- [PICARD-2729](https://tickets.metabrainz.org/browse/PICARD-2729) - Allow disabling date sanitization for APE and Vorbis tags
+- [PICARD-2759](https://tickets.metabrainz.org/browse/PICARD-2759) - "Clear Log" button is missing an ellipsis at the end
+- [PICARD-2765](https://tickets.metabrainz.org/browse/PICARD-2765) - Use consistent quotation marks in translatable strings
+- [PICARD-2807](https://tickets.metabrainz.org/browse/PICARD-2807) - Search-as-you-type text box in Options | Plugins
+- [PICARD-2828](https://tickets.metabrainz.org/browse/PICARD-2828) - Separate options for standardized instrument and vocal credits
+- [PICARD-2832](https://tickets.metabrainz.org/browse/PICARD-2832) - Add warning when select multiple directories option is enabled
+- [PICARD-2855](https://tickets.metabrainz.org/browse/PICARD-2855) - Add an option to control network cache size
+- [PICARD-2856](https://tickets.metabrainz.org/browse/PICARD-2856) - Improve logging regarding plugin paths
+- [PICARD-2858](https://tickets.metabrainz.org/browse/PICARD-2858) - Make profile highlights colors configurable
+- [PICARD-2864](https://tickets.metabrainz.org/browse/PICARD-2864) - Enable HTTP/2 for requests
+- [PICARD-2869](https://tickets.metabrainz.org/browse/PICARD-2869) - Register a global exception handler to show the crash dialog
+- [PICARD-2875](https://tickets.metabrainz.org/browse/PICARD-2875) - Options > Advanced > Maintenance: let the user choose the backup directory
+- [PICARD-2876](https://tickets.metabrainz.org/browse/PICARD-2876) - Allow viewing unused options list without having to enable removal
+- [PICARD-2884](https://tickets.metabrainz.org/browse/PICARD-2884) - Show icon tooltips for errors and unmatched tracks
+- [PICARD-2897](https://tickets.metabrainz.org/browse/PICARD-2897) - Load supported file formats with unknown / uncommon extension
+- [PICARD-2899](https://tickets.metabrainz.org/browse/PICARD-2899) - Number displayed in Other Versions submenu title isn't the actual number of versions available
+- [PICARD-2904](https://tickets.metabrainz.org/browse/PICARD-2904) - Let the user restore default for one color only in Options > Interface Colors
+- [PICARD-2905](https://tickets.metabrainz.org/browse/PICARD-2905) - Seed date when adding cluster as release
+- [PICARD-2912](https://tickets.metabrainz.org/browse/PICARD-2912) - Highlight missing functions in script editor
+- [PICARD-2913](https://tickets.metabrainz.org/browse/PICARD-2913) - Let the user configure script syntax highlighting colors
+- [PICARD-3003](https://tickets.metabrainz.org/browse/PICARD-3003) - Allow setting disable-autoupdate on build with PEP 517 build system
+- [PICARD-3020](https://tickets.metabrainz.org/browse/PICARD-3020) - Submit disc subtitles in add cluster release
+- [PICARD-3042](https://tickets.metabrainz.org/browse/PICARD-3042) - Show medium format in disc ID lookup result
+- [PICARD-3060](https://tickets.metabrainz.org/browse/PICARD-3060) - Script variable/function completer popup should limit number of choices
+- [PICARD-3062](https://tickets.metabrainz.org/browse/PICARD-3062) - Add tag documentation to script editor help
+- [PICARD-3066](https://tickets.metabrainz.org/browse/PICARD-3066) - Links displayed in dark mode are not using an appropriate color, hard to read
+- [PICARD-3069](https://tickets.metabrainz.org/browse/PICARD-3069) - Add Disambiguation Field to Album Search Results Dialog
+- [PICARD-3072](https://tickets.metabrainz.org/browse/PICARD-3072) - Add an optional `group` parameter to `$rsearch`
+- [PICARD-3084](https://tickets.metabrainz.org/browse/PICARD-3084) - Allow up to 3 characters for Windows file name compatibility replacements
+- [PICARD-3085](https://tickets.metabrainz.org/browse/PICARD-3085) - Cover Art View - Display file size and dimensions on default view
+- [PICARD-3123](https://tickets.metabrainz.org/browse/PICARD-3123) - Rename 'dont_write_tags' to 'enable_tag_saving' (value reversed)
+- [PICARD-3133](https://tickets.metabrainz.org/browse/PICARD-3133) - Pre-Save File Hook for Plugins
+- [PICARD-3146](https://tickets.metabrainz.org/browse/PICARD-3146) - Allow plugins to register global tools menu actions
+- [PICARD-3147](https://tickets.metabrainz.org/browse/PICARD-3147) - Remove `ui_init` extension point
+- [PICARD-3148](https://tickets.metabrainz.org/browse/PICARD-3148) - Use Python docstring for registered scripting functions
+- [PICARD-3161](https://tickets.metabrainz.org/browse/PICARD-3161) - Add keyboard shortcuts to control internal player
+- [PICARD-3169](https://tickets.metabrainz.org/browse/PICARD-3169) - Show hierarchical options tree for option profiles
+- [PICARD-3170](https://tickets.metabrainz.org/browse/PICARD-3170) - Drop parameters from `$matchedtracks()`
+
+
 ## Version 2.13.3 - 2025-02-17
 
 ### Bugfixes
@@ -1532,7 +1673,7 @@
 - [PICARD-1204](https://tickets.metabrainz.org/browse/PICARD-1204) - Picard freezes on unchecking show diff tags first
 - [PICARD-1206](https://tickets.metabrainz.org/browse/PICARD-1206) - Text is not displaying properly in some fields.
 - [PICARD-1210](https://tickets.metabrainz.org/browse/PICARD-1210) - Long lines in the option dialogue don’t wrap
-- [PICARD-1213](https://tickets.metabrainz.org/browse/PICARD-1213) - Wrong Movement of coverart providers
+- [PICARD-1213](https://tickets.metabrainz.org/browse/PICARD-1213) - Wrong Movement of cover art providers
 - [PICARD-1215](https://tickets.metabrainz.org/browse/PICARD-1215) - Does not use config / ini file specified on command line
 - [PICARD-1221](https://tickets.metabrainz.org/browse/PICARD-1221) - Picard 2.0 won't start on Windows 10
 - [PICARD-1226](https://tickets.metabrainz.org/browse/PICARD-1226) - Different fonts in the plugins dialog
