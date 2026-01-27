@@ -1,27 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-# Translators:
-# Besnik Bleta <besnik@programeshqip.org>, 2022
+# Besnik Bleta <besnik@programeshqip.org>, 2022, 2026.
 # Transifex Bot <>, 2023
 #
-#, fuzzy
+# Translators:
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-05 22:58+0200\n"
-"PO-Revision-Date: 2018-11-25 07:37+0000\n"
-"Last-Translator: Transifex Bot <>, 2023\n"
-"Language-Team: Albanian (https://app.transifex.com/musicbrainz/teams/13846/"
-"sq/)\n"
+"PO-Revision-Date: 2026-01-27 15:49+0000\n"
+"Last-Translator: Besnik <besnik@programeshqip.org>\n"
+"Language-Team: Albanian <https://translations.metabrainz.org/projects/picard/"
+"2/appstream/sq/>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -118,6 +117,8 @@ msgid ""
 "Cover Art: Picard can find and download the correct cover art for your "
 "albums."
 msgstr ""
+"Kapak: Picard-i mund të gjejë dhe shkarkojë kapakun e saktë për albumet "
+"tuaja."
 
 #: org.musicbrainz.Picard.appdata.xml.in:56
 msgid ""
@@ -135,8 +136,8 @@ msgstr "MetaBrainz Foundation"
 
 #: org.musicbrainz.Picard.desktop.in:4
 msgid "Tag your music with the next generation MusicBrainz tagger"
-msgstr ""
+msgstr "Etiketoni muzikën tuaj me brezin e ardhshëm të etiketuesit MusicBrainz"
 
 #: org.musicbrainz.Picard.desktop.in:16
 msgid "New Window"
-msgstr ""
+msgstr "Dritare e Re"
