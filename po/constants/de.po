@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-01-23 22:47+0000\n"
+"PO-Revision-Date: 2026-01-27 07:37+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "constants/de/>\n"
@@ -34,7 +34,7 @@ msgstr "Stabile, Beta- und Entwicklungs-Versionen"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Seitenverhältnis beibehalten"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -44,10 +44,18 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Skaliert das Quellbild so, dass es innerhalb der Zielabmessungen liegt.</"
+"p>\n"
+"<p>Eine der endgültigen Bildabmessungen kann kleiner als die Zielabmessung "
+"sein, wenn Quellbild und Zielabmessungen unterschiedliche Seitenverhältnisse "
+"haben.</p>\n"
+"<p>Beispielsweise würde ein Bild mit 2000×1000 Pixeln, das auf "
+"Zielabmessungen von 1000×1000 Pixeln skaliert wird, eine endgültige "
+"Bildgröße von 1000×500 Pixeln ergeben.</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "Auf Breite skalieren"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -55,10 +63,15 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Skaliert die Breite des Quellbildes auf die Zielbreite, wobei das "
+"Seitenverhältnis beibehalten wird.</p>\n"
+"<p>Beispielsweise würde ein Bild mit 2000×1000 Pixeln, das auf eine "
+"Zielbreite von 1000 Pixeln skaliert wird, eine endgültige Bildgröße von 1000×"
+"500 Pixeln ergeben.</p>"
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"
-msgstr ""
+msgstr "Auf Höhe skalieren"
 
 #: picard/const/cover_processing.py:75
 msgid ""
@@ -66,10 +79,15 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
+"<p>Skaliert die Höhe des Quellbildes auf die Zielhöhe, wobei das "
+"Seitenverhältnis beibehalten wird.</p>\n"
+"<p>Beispielsweise würde ein Bild mit 1000×2000 Pixeln, das auf eine "
+"Zielbhöhe von 1000 Pixeln skaliert wird, eine endgültige Bildgröße von 500×"
+"1000 Pixeln ergeben.</p>"
 
 #: picard/const/cover_processing.py:85
 msgid "Crop to fit"
-msgstr ""
+msgstr "Auf Größe zuschneiden"
 
 #: picard/const/cover_processing.py:87
 msgid ""
@@ -81,10 +99,19 @@ msgid ""
 "excess height would be center cropped resulting in the final image size of "
 "1000x1000.</p>"
 msgstr ""
+"<p>Skaliert das Quellbild so, dass es die Zielabmessungen in beide "
+"Richtungen vollständig ausfüllt.</p>\n"
+"<p>Wenn Quellbild und Zielabmessungen unterschiedliche Seitenverhältnisse "
+"haben, entsteht in einer Richtung ein Überstand, der (zentriert) "
+"abgeschnitten wird.</p>\n"
+"<p>Beispielsweise würde ein Bild mit 500×1000 Pixeln, das auf "
+"Zielabmessungen von 1000×1000 Pixeln skaliert wird, zunächst auf 1000×2000 "
+"Pixel vergrößert. Anschließend wird die überschüssige Höhe zentriert "
+"abgeschnitten, sodass die endgültige Bildgröße 1000×1000 Pixel beträgt.</p>"
 
 #: picard/const/cover_processing.py:102
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Auf Größe strecken"
 
 #: picard/const/cover_processing.py:104
 msgid ""
@@ -93,6 +120,11 @@ msgid ""
 "1000x1000 would be stretched horizontally resulting in the final image size "
 "of 1000x1000.</p>"
 msgstr ""
+"<p>Streckt das Bild so, dass es exakt den angegebenen Abmessungen "
+"entspricht, wobei es bei Bedarf verzerrt wird.</p>\n"
+"<p>Beispielsweise würde ein Bild mit 500×1000 Pixeln bei Zielabmessungen von "
+"1000×1000 Pixeln horizontal gestreckt, sodass die endgültige Bildgröße 1000×"
+"1000 Pixel beträgt.</p>"
 
 #: picard/const/defaults.py:157
 msgid "My script"
@@ -4252,7 +4284,7 @@ msgstr "Katakana"
 
 #: picard/const/tags.py:34
 msgid "Absolute Track No."
-msgstr ""
+msgstr "Absolute Titelnr."
 
 #: picard/const/tags.py:36
 msgid ""

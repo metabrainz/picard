@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
 # Metafono <rainer@nilsen.com>, 2025.
+# Philipp Wolfer <ph.wolfer@gmail.com>, 2026.
 #
 # Translators:
 # CatQuest, The Endeavouring Cat, 2020
@@ -13,8 +14,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
-"PO-Revision-Date: 2025-10-06 04:02+0000\n"
-"Last-Translator: Metafono <rainer@nilsen.com>\n"
+"PO-Revision-Date: 2026-01-27 07:37+0000\n"
+"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Norwegian Bokmål <https://translations.metabrainz.org/"
 "projects/picard/3/appstream/nb_NO/>\n"
 "Language: nb\n"
@@ -22,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: org.musicbrainz.Picard.appdata.xml.in:6 org.musicbrainz.Picard.desktop.in:3
 msgid "MusicBrainz Picard"
@@ -66,13 +67,12 @@ msgid ""
 msgstr ""
 
 #: org.musicbrainz.Picard.appdata.xml.in:33
-#, fuzzy
 msgid ""
 "AcoustID: Picard uses AcoustID audio fingerprints, allowing files to be "
 "identified by the actual music, even if they have no metadata."
 msgstr ""
-"Picard bruker {url|AcoustID} lydavtrykk for å identifisere filer basert på "
-"selve musikken, også uten eksisterende metadata."
+"AcoustID: Picard bruker AcoustID lydavtrykk for å identifisere filer basert "
+"på selve musikken, også uten eksisterende metadata."
 
 #: org.musicbrainz.Picard.appdata.xml.in:37
 msgid ""
