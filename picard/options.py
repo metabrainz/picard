@@ -569,7 +569,7 @@ Option('persist', 'plugins3_updates', {})
 
 # picard/ui/itemviews/custom_columns
 #
-Option('setting', 'custom_columns', [])
+ListOption('setting', 'custom_columns', [])
 
 
 def init_options():
