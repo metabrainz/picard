@@ -60,7 +60,7 @@ jobs:
       run: |
         ls -l dist/
         # Remove zip source distribution (only a single sdist is allowed)
-        rm dist/picard-*.zip*
+        rm dist/picard-*.zip* || true
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
 
