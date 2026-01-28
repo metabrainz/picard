@@ -12,14 +12,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2021,2023, 2024.
 # mfmeulenbelt <mfmeulenbelt@gmail.com>, 2023.
 # RandomMushroom128 <RandomMushroom128@users.noreply.translations.metabrainz.org>, 2023.
-# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024, 2025.
+# mfmeulenbelt <mfmeulenbelt@users.noreply.translations.metabrainz.org>, 2024, 2025, 2026.
 # toineenzo <toinerademacher@hotmail.com>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-26 07:04+0100\n"
-"PO-Revision-Date: 2025-12-07 12:11+0000\n"
+"PO-Revision-Date: 2026-01-28 23:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -320,10 +320,8 @@ msgid "Maximum MusicBrainz query items"
 msgstr "MusicBrainz-server"
 
 #: picard/options.py:180
-#, fuzzy
-#| msgid "Include sub-folders when adding files from folder"
 msgid "Include sub-folders when adding files"
-msgstr "Ook submappen toevoegen als je bestanden uit een map toevoegt"
+msgstr "Ook submappen toevoegen als je bestanden toevoegt"
 
 #: picard/options.py:188
 msgid "Cover art providers"
@@ -626,16 +624,12 @@ msgid "Configuration backup directory"
 msgstr "Map voor automatische configuratieback-ups:"
 
 #: picard/options.py:356
-#, fuzzy
-#| msgid "Minimal similarity for cluster lookups"
 msgid "Similarity for cluster lookups"
-msgstr "Minimale overeenkomst voor het opzoeken van clusters"
+msgstr "Overeenkomst voor het opzoeken van clusters"
 
 #: picard/options.py:357
-#, fuzzy
-#| msgid "Minimal similarity for file lookups"
 msgid "Similarity for file lookups"
-msgstr "Minimale overeenkomst voor het opzoeken van bestanden"
+msgstr "Overeenkomst voor het opzoeken van bestanden"
 
 #: picard/options.py:358
 #, fuzzy
@@ -654,12 +648,8 @@ msgid "Convert Unicode punctuation to ASCII"
 msgstr "Unicode-tekens naar ASCII omzetten"
 
 #: picard/options.py:364
-#, fuzzy
-#| msgid "Guess track number and title from filename if empty"
 msgid "Guess track number and title"
-msgstr ""
-"Nummerpositie en titel (als die onbekend zijn) aan de hand van de "
-"bestandsnaam gokken"
+msgstr "Nummerpositie en titel gokken"
 
 #: picard/options.py:365
 msgid "Standalone recordings name"
@@ -6531,7 +6521,7 @@ msgstr "Lage streepjes door spaties vervangen"
 
 #: picard/ui/forms/ui_tagsfromfilenames.py:61
 msgid "&Preview"
-msgstr "&Voorbeeldweergave"
+msgstr "&Voorbeeld"
 
 #: picard/ui/forms/ui_widget_taglisteditor.py:75
 msgid "Add new tag"
