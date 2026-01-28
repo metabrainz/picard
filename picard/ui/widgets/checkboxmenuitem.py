@@ -69,7 +69,7 @@ class CheckboxMenuItem(QtWidgets.QWidget):
             self.repaint()
 
     def keyPressEvent(self, event: QtGui.QKeyEvent):
-        if event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Space}:
+        if event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Space}:
             self._action.toggle()
             event.accept()
         else:

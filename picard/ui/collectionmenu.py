@@ -25,6 +25,7 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
@@ -94,6 +95,23 @@ class CollectionMenuItem(CheckboxMenuItem):
 
     def _create_checkbox_widget(self, text: str):
         return CollectionCheckBox(self._menu, self._collection, parent=self)
+
+    def set_active(self, active: bool):
+        super().set_active(active)
+        palette = self.palette()
+        if active:
+            textcolor = palette.highlightedText().color()
+        else:
+            textcolor = palette.text().color()
+        palette.setColor(QtGui.QPalette.ColorRole.WindowText, textcolor)
+        self._checkbox.setPalette(palette)
+
+    def keyPressEvent(self, event: QtGui.QKeyEvent):
+        if event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Space}:
+            self._checkbox.nextCheckState()
+            event.accept()
+        else:
+            super().keyPressEvent(event)
 
 
 class CollectionCheckBox(QtWidgets.QCheckBox):
