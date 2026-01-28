@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-26 07:04+0100\n"
-"PO-Revision-Date: 2026-01-27 07:37+0000\n"
+"PO-Revision-Date: 2026-01-28 23:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -457,7 +457,7 @@ msgstr "Fes servir els gèneres de MusicBrainz"
 
 #: picard/options.py:290
 msgid "Allow selecting multiple directories"
-msgstr "Permet la selecció de diversos directoris"
+msgstr "Permet seleccionar diversos directoris"
 
 #: picard/options.py:291
 msgid "Use builtin search (not browser)"
@@ -4618,7 +4618,7 @@ msgstr "Tema de color de la interfície d'usuari:"
 
 #: picard/ui/forms/ui_options_interface.py:140
 msgid "Allow selection of multiple directories"
-msgstr "Permet la selecció de diversos directoris"
+msgstr "Permet seleccionar diversos directoris"
 
 #: picard/ui/forms/ui_options_interface.py:141
 msgid "Use builtin search rather than looking in browser"
@@ -6058,11 +6058,11 @@ msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
 "There are %d unsaved files. Closing Picard will lose all unsaved changes."
 msgstr[0] ""
-"Hi ha %d fitxer sense desar. Si tanqueu Picard es perdran els canvis no "
-"desats."
+"Hi ha %d fitxer sense desar. Si tanqueu Picard es perdran els canvis sense "
+"desar."
 msgstr[1] ""
-"Hi han %d fitxers sense desar. Si tanqueu Picard es perdran els canvis no "
-"desats."
+"Hi ha %d fitxers sense desar. Si tanqueu Picard es perdran els canvis sense "
+"desar."
 
 #: picard/ui/mainwindow/__init__.py:432
 msgid "&Quit Picard"
