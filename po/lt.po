@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-26 07:04+0100\n"
-"PO-Revision-Date: 2026-01-23 22:47+0000\n"
+"PO-Revision-Date: 2026-01-28 23:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -35,7 +35,7 @@ msgstr "Neatitinkantys failai"
 #: picard/album.py:730
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "Įkeltas albumas %(id)s: %(artist)s – „%(album)s“"
+msgstr "Įkeltas albumas %(id)s: %(artist)s – „%(album)s“."
 
 #: picard/album.py:791
 #, python-format
@@ -59,7 +59,7 @@ msgstr "Identifikuota sankaupa „%(album)s“."
 #: picard/cluster.py:279
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“"
+msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“."
 
 #: picard/cluster.py:298
 #, python-format
@@ -72,7 +72,7 @@ msgstr "Nesusankaupti failai"
 
 #: picard/cluster.py:394
 msgid "Clusters"
-msgstr ""
+msgstr "Sankaupos"
 
 #: picard/collection.py:88
 #, python-format
@@ -83,19 +83,19 @@ msgstr "Klaida modifikuojant kolekcijas: %(error)s."
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "Įtrauktas %(count)i leidinys į kolekciją „%(name)s“"
-msgstr[1] "Įtraukti %(count)i leidiniai į kolekciją „%(name)s“"
-msgstr[2] "Įtraukta %(count)i leidinio į kolekciją „%(name)s“"
-msgstr[3] "Įtraukta %(count)i leidinių į kolekciją „%(name)s“"
+msgstr[0] "Įtrauktas %(count)i leidinys į kolekciją „%(name)s“."
+msgstr[1] "Įtraukti %(count)i leidiniai į kolekciją „%(name)s“."
+msgstr[2] "Įtraukta %(count)i leidinio į kolekciją „%(name)s“."
+msgstr[3] "Įtraukta %(count)i leidinių į kolekciją „%(name)s“."
 
 #: picard/collection.py:110
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] "Pašalintas %(count)i leidinys iš kolekcijos „%(name)s“"
-msgstr[1] "Pašalinti %(count)i leidiniai iš kolekcijos „%(name)s“"
-msgstr[2] "Pašalinta %(count)i leidinio iš kolekcijos „%(name)s“"
-msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“"
+msgstr[0] "Pašalintas %(count)i leidinys iš kolekcijos „%(name)s“."
+msgstr[1] "Pašalinti %(count)i leidiniai iš kolekcijos „%(name)s“."
+msgstr[2] "Pašalinta %(count)i leidinio iš kolekcijos „%(name)s“."
+msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“."
 
 #: picard/collection.py:146
 #, python-format
@@ -200,7 +200,7 @@ msgstr ""
 #: picard/file.py:1038
 #, python-format
 msgid "No matching tracks above the threshold for file \"%(filename)s\""
-msgstr "Nėra atitikmenų takelių, viršijančių ribą failui „%(filename)s“"
+msgstr "Nėra atitinkamų takelių virš ribos failui „%(filename)s“."
 
 #: picard/file.py:1040
 #, python-format
@@ -210,7 +210,7 @@ msgstr "Identifikuotas failas „%(filename)s“."
 #: picard/file.py:1052
 #, python-format
 msgid "No matching tracks for file \"%(filename)s\""
-msgstr "Nėra atitinkamų takelių failui „%(filename)s“"
+msgstr "Nėra atitinkamų takelių failui „%(filename)s“."
 
 #: picard/file.py:1081
 #, python-format
@@ -275,44 +275,32 @@ msgid "Tags to ignore for comparison"
 msgstr "Žymės, kurias nepaisyti palyginimui"
 
 #: picard/options.py:167
-#, fuzzy
-#| msgid "Completeness check ignore: Data tracks"
 msgid "Completeness ignore: Data tracks"
-msgstr "Išbaigtumo patikros nepaisyti: duomenų takeliai"
+msgstr "Išbaigtumo nepaisymas: duomenų takeliai"
 
 #: picard/options.py:168
-#, fuzzy
-#| msgid "Completeness check ignore: Pregap tracks"
 msgid "Completeness ignore: Pregap tracks"
-msgstr "Išbaigtumo patikros nepaisyti: prieštarpių takeliai"
+msgstr "Išbaigtumo nepaisymas: prieštarpių takeliai"
 
 #: picard/options.py:169
-#, fuzzy
-#| msgid "Completeness check ignore: Silent tracks"
 msgid "Completeness ignore: Silent tracks"
-msgstr "Išbaigtumo patikros nepaisyti: tyliųjų takeliai"
+msgstr "Išbaigtumo nepaisymas: tyliųjų takeliai"
 
 #: picard/options.py:170
-#, fuzzy
-#| msgid "Completeness check ignore: Video tracks"
 msgid "Completeness ignore: Video tracks"
-msgstr "Išbaigtumo patikros nepaisyti: vaizdo įrašų takeliai"
+msgstr "Išbaigtumo nepaisymas: vaizdo įrašų takeliai"
 
 #: picard/options.py:171 picard/ui/forms/ui_options_advanced.py:153
 msgid "Ignore hidden files"
 msgstr "Nepaisyti paslėptus failus"
 
 #: picard/options.py:172
-#, fuzzy
-#| msgid "Ignore file paths matching a regular expression"
 msgid "Ignore file paths (regular expression)"
-msgstr "Nepaisyti failų kelius, atitinkančius reguliarųjį reiškinį"
+msgstr "Nepaisyti failų kelius (reguliarusis reiškinys)"
 
 #: picard/options.py:173
-#, fuzzy
-#| msgid "Ignore track duration difference under x seconds"
 msgid "Allowed track difference (seconds)"
-msgstr "Nepaisyti takelio trukmės skirtumo iki x sekundžių"
+msgstr "Leidžiamas takelio skirtumas (sekundės)"
 
 #: picard/options.py:178
 #, fuzzy
