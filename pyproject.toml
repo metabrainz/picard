@@ -43,7 +43,7 @@ dependencies = [
     "pywin32; sys_platform == 'win32'",
     "PyYAML>=5.1, <7",
     "charset-normalizer~=3.3",
-    "pygit2~=1.18; python_version < '3.11'",
+    "pygit2>=1.18.2, <1.19; python_version < '3.11'",
     "pygit2~=1.19; python_version >= '3.11'",
     "tomli>=2.3.0; python_version < '3.11'",
 ]
