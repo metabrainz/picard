@@ -76,6 +76,21 @@ class CollectionMenuItem(CheckboxMenuItem):
     def __init__(self, menu, action, collection, parent=None):
         self._collection = collection
         super().__init__(menu, action, "", parent=parent)
+        self._setup_layout(menu, collection)
+        # The CollectionCheckBox handles everything. Don't set the action to checkable
+        # to avoid double rendering of the checkbox element.
+        action.setCheckable(False)
+
+    def _setup_layout(self, menu, collection):
+        # Use a checkbox widget for rendering the menu item content. This is needed
+        # for supporting the tristate checkbox behavior when selecting multiple releases.
+        layout = QtWidgets.QVBoxLayout(self)
+        style = self.style()
+        lmargin = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutLeftMargin)
+        rmargin = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_LayoutRightMargin)
+        layout.setContentsMargins(lmargin, 0, rmargin, 0)
+        self._checkbox = CollectionCheckBox(menu, collection)
+        layout.addWidget(self._checkbox)
 
     def _create_checkbox_widget(self, text: str):
         return CollectionCheckBox(self._menu, self._collection, parent=self)
