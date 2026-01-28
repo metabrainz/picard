@@ -97,7 +97,10 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         option = QtWidgets.QStyleOptionMenuItem()
         option.initFrom(self)
         option.text = self._text
-        option.checkType = QtWidgets.QStyleOptionMenuItem.CheckType.NonExclusive
+        if self._action.isCheckable():
+            option.checkType = QtWidgets.QStyleOptionMenuItem.CheckType.NonExclusive
+        else:
+            option.checkType = QtWidgets.QStyleOptionMenuItem.CheckType.NotCheckable
         option.checked = self._action.isChecked()
         option.state = QtWidgets.QStyle.StateFlag.State_None
         if self.isEnabled():
