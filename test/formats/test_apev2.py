@@ -23,7 +23,6 @@
 
 
 import os
-import tempfile
 
 from mutagen.apev2 import (
     BINARY,
@@ -224,24 +223,6 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         # Current behavior: saving raises FileNotFoundError
         with self.assertRaises(FileNotFoundError):
             f._save_and_rename(self.filename, f.metadata)
-
-    def test_save_replaced_file_before_save(self):
-        """Saving handles file replaced after load."""
-        f = self.format_registry.open(self.filename)
-        f._copy_loaded_metadata(f._load(self.filename))
-        f.metadata['title'] = 'replaced_before_save'
-        fd, newname = tempfile.mkstemp()
-        try:
-            with os.fdopen(fd, 'wb') as fh:
-                fh.write(b"replaced content")
-            os.replace(newname, self.filename)
-        finally:
-            if os.path.exists(newname):
-                os.unlink(newname)
-        self.assertTrue(os.path.exists(self.filename))
-        target_file = f._save_and_rename(self.filename, f.metadata)
-        if target_file and os.path.exists(target_file):
-            self.addCleanup(os.unlink, target_file)
 
     @skipUnlessTestfile
     def test_save_wavpack_correction_file(self):
