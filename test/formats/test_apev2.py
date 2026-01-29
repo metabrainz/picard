@@ -212,6 +212,18 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         self.addCleanup(os.unlink, target_file_wvc)
         return (target_file_wv, target_file_wvc)
 
+    def test_save_deleted_file_before_save(self):
+        """Saving raises FileNotFoundError if file is deleted after load."""
+        f = self.format_registry.open(self.filename)
+        f._copy_loaded_metadata(f._load(self.filename))
+        f.metadata['title'] = 'deleted_before_save'
+        # Delete file externally
+        os.unlink(self.filename)
+        self.assertFalse(os.path.exists(self.filename))
+        # Current behavior: saving raises FileNotFoundError
+        with self.assertRaises(FileNotFoundError):
+            f._save_and_rename(self.filename, f.metadata)
+
     @skipUnlessTestfile
     def test_save_wavpack_correction_file(self):
         source_file_wvc = self.filename + 'c'
