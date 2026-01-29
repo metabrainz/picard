@@ -69,6 +69,9 @@ class Option(QtCore.QObject):
 
         self._check_if_valid()
 
+    def _do_logging(self, expected):
+        log.warning("Invalid Option definition for %s/%s: should be %s", self.section, self.name, expected.__name__)
+
     def _check_if_valid(self):
         """Check if the option should be sub-classed, and log a warning."""
         tests = {
@@ -86,17 +89,14 @@ class Option(QtCore.QObject):
             QtCore.QByteArray: Option,
         }
 
-        def _do_logging(expected):
-            log.warning("Invalid Option definition for %s/%s: should be %s", self.section, self.name, expected.__name__)
-
         t = type(self.default)
         if t in tests:
             if self.__class__ != tests[t]:
-                _do_logging(tests[t])
+                self._do_logging(tests[t])
         else:
             for base, expected in subclass_tests.items():
                 if issubclass(t, base) and self.__class__ != expected:
-                    _do_logging(expected)
+                    self._do_logging(expected)
                     break
 
     @classmethod
