@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-11 18:11+0000\n"
+"PO-Revision-Date: 2026-01-29 09:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
 ": n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -35,7 +35,7 @@ msgstr "Neatitinkantys failai"
 #: picard/album.py:516
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "Įkeltas albumas %(id)s: %(artist)s – „%(album)s“"
+msgstr "Įkeltas albumas %(id)s: %(artist)s – „%(album)s“."
 
 #: picard/album.py:573
 #, python-format
@@ -59,7 +59,7 @@ msgstr "Identifikuota sankaupa „%(album)s“."
 #: picard/cluster.py:263
 #, python-format
 msgid "No matching releases for cluster %(album)s"
-msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“"
+msgstr "Nėra atitinkamų leidinių sankaupiui „%(album)s“."
 
 #: picard/cluster.py:282
 #, python-format
@@ -74,19 +74,19 @@ msgstr "Nesusankaupti failai"
 #, python-format
 msgid "Added %(count)i release to collection \"%(name)s\""
 msgid_plural "Added %(count)i releases to collection \"%(name)s\""
-msgstr[0] "Pridėtas %(count)i leidinys į kolekciją „%(name)s“"
-msgstr[1] "Pridėti %(count)i leidiniai į kolekciją „%(name)s“"
-msgstr[2] "Pridėta %(count)i leidinio į kolekciją „%(name)s“"
-msgstr[3] "Pridėta %(count)i leidinių į kolekciją „%(name)s“"
+msgstr[0] "Įtrauktas %(count)i leidinys į kolekciją „%(name)s“."
+msgstr[1] "Įtraukti %(count)i leidiniai į kolekciją „%(name)s“."
+msgstr[2] "Įtraukta %(count)i leidinio į kolekciją „%(name)s“."
+msgstr[3] "Įtraukta %(count)i leidinių į kolekciją „%(name)s“."
 
 #: picard/collection.py:86
 #, python-format
 msgid "Removed %(count)i release from collection \"%(name)s\""
 msgid_plural "Removed %(count)i releases from collection \"%(name)s\""
-msgstr[0] "Pašalintas %(count)i leidinys iš kolekcijos „%(name)s“"
-msgstr[1] "Pašalinti %(count)i leidiniai iš kolekcijos „%(name)s“"
-msgstr[2] "Pašalinta %(count)i leidinio iš kolekcijos „%(name)s“"
-msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“"
+msgstr[0] "Pašalintas %(count)i leidinys iš kolekcijos „%(name)s“."
+msgstr[1] "Pašalinti %(count)i leidiniai iš kolekcijos „%(name)s“."
+msgstr[2] "Pašalinta %(count)i leidinio iš kolekcijos „%(name)s“."
+msgstr[3] "Pašalinta %(count)i leidinių iš kolekcijos „%(name)s“."
 
 #: picard/collection.py:97
 #, python-format
@@ -3049,7 +3049,7 @@ msgstr ""
 
 #: picard/ui/itemviews.py:871
 msgid "Clusters"
-msgstr ""
+msgstr "Sankaupos"
 
 #: picard/ui/itemviews.py:881
 msgid "album view"
@@ -5952,9 +5952,9 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>Gaunant rezultatus įvyko toliau nurodyta klaida:<br><br></"
-"strong>Tinklo užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas "
-"%(qtcode)d, HTTP kodas %(statuscode)r)<br>."
+"<strong>Gaunant rezultatus įvyko nurodyta klaida:<br><br></strong>Tinklo "
+"užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas %(qtcode)d, HTTP kodas %"
+"(statuscode)r)<br>."
 
 #: picard/ui/searchdialog/__init__.py:264
 msgid "<strong>No results found. Please try a different search query.</strong>"
