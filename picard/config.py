@@ -33,7 +33,10 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from enum import Enum
+from enum import (
+    Enum,
+    IntEnum,
+)
 import os
 import shutil
 from typing import Any
@@ -63,6 +66,38 @@ class Option(QtCore.QObject):
         self.default = default
         self.title = title
         self.registry[(section, name)] = self
+
+        self._check_if_valid()
+
+    def _check_if_valid(self):
+        """Check if the option should be sub-classed, and log a warning."""
+        tests = {
+            str: TextOption,
+            bool: BoolOption,
+            int: IntOption,
+            float: FloatOption,
+            list: ListOption,
+            tuple: ListOption,
+            dict: Option,
+        }
+
+        subclass_tests = {
+            IntEnum: IntOption,
+            QtCore.QByteArray: Option,
+        }
+
+        def _do_logging(expected):
+            log.warning("Invalid Option definition for %s/%s: should be %s", self.section, self.name, expected.__name__)
+
+        t = type(self.default)
+        if t in tests:
+            if self.__class__ != tests[t]:
+                _do_logging(tests[t])
+        else:
+            for base, expected in subclass_tests.items():
+                if issubclass(t, base) and self.__class__ != expected:
+                    _do_logging(expected)
+                    break
 
     @classmethod
     def get(cls, section, name):
