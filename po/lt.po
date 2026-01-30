@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-26 07:04+0100\n"
-"PO-Revision-Date: 2026-01-28 23:11+0000\n"
+"PO-Revision-Date: 2026-01-30 00:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -303,16 +303,12 @@ msgid "Allowed track difference (seconds)"
 msgstr "Leidžiamas takelio skirtumas (sekundės)"
 
 #: picard/options.py:178
-#, fuzzy
-#| msgid "MusicBrainz Server"
 msgid "Maximum MusicBrainz query items"
-msgstr "MusicBrainz serveris"
+msgstr "Didžiausi „MusicBrainz“ užklausų elementai"
 
 #: picard/options.py:180
-#, fuzzy
-#| msgid "Include sub-folders when adding files from folder"
 msgid "Include sub-folders when adding files"
-msgstr "Įtraukti poaplankius, kai pridedant failus iš aplanko"
+msgstr "Įtraukti poaplankius, kai pridedant failus"
 
 #: picard/options.py:188
 msgid "Cover art providers"
@@ -327,95 +323,64 @@ msgid "Embed only a single front image"
 msgstr "Įterpti tik vieną priekinį vaizdą"
 
 #: picard/options.py:191
-#, fuzzy
-#| msgid "Never replace cover images with smaller ones"
 msgid "Never replace images with smaller ones"
-msgstr "Niekada nepakeisti viršelio vaizdų su mažesnėmis"
+msgstr "Niekada nepakeisti vaizdų su mažesnėmis"
 
 #: picard/options.py:192
-#, fuzzy
-#| msgid "Never replace cover images matching selected types"
 msgid "Never replace images of selected types"
-msgstr "Niekada nepakeisti atitinkančių pasirinktų tipų viršelio vaizdų"
+msgstr "Niekada nepakeisti pasirinktų tipų vaizdų"
 
 #: picard/options.py:197
-#, fuzzy
-#| msgid "Never replace cover images of these types"
 msgid "Never replace images of these types"
-msgstr "Niekada nepakeisti šių tipų viršelio vaizdų"
+msgstr "Niekada nepakeisti šių tipų vaizdų"
 
 #: picard/options.py:203
-#, fuzzy
-#| msgid "Always replace cover images of these types"
 msgid "Always replace images of these types"
-msgstr "Visada pakeisti šių tipų viršelio vaizdų"
+msgstr "Visada pakeisti šių tipų vaizdų"
 
 #: picard/options.py:209
-#, fuzzy
-#| msgid ""
-#| "Always use the primary image type as the file name for non-front images"
 msgid "Primary image type as the file name"
-msgstr ""
-"Visada naudoti pirminį vaizdo tipą kaip failo pavadinimą ne priekyje "
-"esantiems vaizdams"
+msgstr "Pagrindinis vaizdo tipas kaip failo pavadinimas"
 
 #: picard/options.py:211
 msgid "Overwrite existing image files"
 msgstr "Perrašyti esamus vaizdų failus"
 
 #: picard/options.py:212
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save images as separate files"
-msgstr "Išsaugoti viršelio vaizdus kaip atskirus failus"
+msgstr "Išsaugoti vaizdus kaip atskirus failus"
 
 #: picard/options.py:213
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed images into tags"
-msgstr "Įterpti viršelio vaizdus į žymes"
+msgstr "Įterpti vaizdus į žymes"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "Embed only a single front image"
 msgid "Save only one front image"
-msgstr "Įterpti tik vieną priekinį vaizdą"
+msgstr "Išsaugoti tik vieną priekinį vaizdą"
 
 #: picard/options.py:215
-#, fuzzy
-#| msgid "New cover art saved as a separate file"
 msgid "Show cover art details in view"
-msgstr "Naujas viršelio vaizdas, išsaugotas kaip atskiras failas"
+msgstr "Rodyti viršelio vaizdo informaciją peržiūroje"
 
 #: picard/options.py:216
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art type"
-msgstr "Viršelio vaizdų tipai"
+msgstr "Rodyti viršelio vaizdo tipą"
 
 #: picard/options.py:217
-#, fuzzy
-#| msgid "Show in browser"
 msgid "Show cover art file size"
-msgstr "Rodyti naršyklėje"
+msgstr "Rodyti viršelio vaizdo failo dydį"
 
 #: picard/options.py:218
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Show cover art dimensions"
-msgstr "&Rodyti dokumentaciją"
+msgstr "Rodyti viršelio vaizdo matmenis"
 
 #: picard/options.py:219
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art MIME type"
-msgstr "Viršelio vaizdų tipai"
+msgstr "Rodyti viršelio vaizdą MIME tipu"
 
 #: picard/options.py:250
-#, fuzzy
-#| msgid "Use AcoustID audio fingerprinting"
 msgid "Use AcoustID fingerprinting"
-msgstr "Naudoti „AcoustID“ garso atspaudavimą"
+msgstr "Naudoti „AcoustID“ atspaudavimą"
 
 #: picard/options.py:253
 msgid "Save AcoustID fingerprints"
@@ -426,22 +391,16 @@ msgid "Automatically scan all new files"
 msgstr "Automatiškai skenuoti visus naujus failus"
 
 #: picard/options.py:264
-#, fuzzy
-#| msgid "Check for plugin updates during startup"
 msgid "Check for documentation updates"
-msgstr "Tikrinti, ar yra įskiepių naujinimų paleidimo metu"
+msgstr "Tikrinti dėl dokumentacijos naujinimų"
 
 #: picard/options.py:265
-#, fuzzy
-#| msgid "Check for plugin updates during startup"
 msgid "Check for plugin updates"
-msgstr "Tikrinti, ar yra įskiepių naujinimų paleidimo metu"
+msgstr "Tikrinti dėl įskiepių naujinimų"
 
 #: picard/options.py:266
-#, fuzzy
-#| msgid "Check for program updates during startup"
 msgid "Check for program updates"
-msgstr "Tikrinti, ar yra programos naujinimų paleidimo metu"
+msgstr "Tikrinti dėl programos naujinimų"
 
 #: picard/options.py:267 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
@@ -464,16 +423,12 @@ msgid "Days between update checks"
 msgstr "Dienos tarp naujinimo patikrinimų"
 
 #: picard/options.py:272
-#, fuzzy
-#| msgid "Updates to check"
 msgid "Update types to check"
-msgstr "Naujinimus tikrinti"
+msgstr "Naujinimo tipus tikrinti"
 
 #: picard/options.py:273
-#, fuzzy
-#| msgid "Submit data to the configured server"
 msgid "Submit to configured server"
-msgstr "Pateikti duomenis į sukonfigūruotą serverį"
+msgstr "Pateikti į sukonfigūruotą serverį"
 
 #: picard/options.py:277
 msgid "Use album artist genres"
@@ -508,50 +463,36 @@ msgid "Use genres from MusicBrainz"
 msgstr "Naudoti žanrus iš „MusicBrainz“"
 
 #: picard/options.py:290
-#, fuzzy
-#| msgid "Allow selection of multiple directories"
 msgid "Allow selecting multiple directories"
 msgstr "Leisti pasirinkti kelis katalogus"
 
 #: picard/options.py:291
-#, fuzzy
-#| msgid "Use builtin search rather than looking in browser"
 msgid "Use builtin search (not browser)"
-msgstr "Naudoti integruotą paiešką, o ne ieškoti naršyklėje"
+msgstr "Naudoti integruotą paiešką (ne naršyklę)"
 
 #: picard/options.py:296
-#, fuzzy
-#| msgid "Adjust horizontal position in file browser automatically"
 msgid "Adjust horizontal position in file browser"
-msgstr "Automatiškai priderinti horizontalią poziciją failų naršyklėje"
+msgstr "Priderinti horizontalią poziciją failų naršyklėje"
 
 #: picard/options.py:298
-#, fuzzy
-#| msgid "Confirm Remove"
 msgid "Confirm when saving"
-msgstr "Patvirtinti pašalinimą"
+msgstr "Patvirtinti išsaugojant"
 
 #: picard/options.py:300
-#, fuzzy
-#| msgid "Show a quit confirmation dialog for unsaved changes"
 msgid "Confirm quit if unsaved changes"
-msgstr "Rodyti neišsaugotų pakeitimų užbaigimo patvirtinimo dialogą"
+msgstr "Patvirtinti užbaigimą, jei pakeitimai neišsaugoti"
 
 #: picard/options.py:301 picard/ui/forms/ui_options_interface.py:136
 msgid "Show icons in menus"
 msgstr "Rodyti piktogramas meniu"
 
 #: picard/options.py:302
-#, fuzzy
-#| msgid "Show a usage warning dialog when Picard starts"
 msgid "Show warning when Picard starts"
-msgstr "Rodyti įspėjimą apie naudojimą dialogą, kai paleidžiamas „Picard“"
+msgstr "Rodyti įspėjimą, kai paleidžiamas „Picard“"
 
 #: picard/options.py:303
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Show documentation update request"
-msgstr "&Rodyti dokumentaciją"
+msgstr "Rodyti dokumentacijos naujinimo prašymą"
 
 #: picard/options.py:304
 msgid "Enable \"now playing\" notifications"
@@ -3614,12 +3555,12 @@ msgstr ""
 #: picard/tags/docs.py:55
 #, python-brace-format
 msgid "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 
 #: picard/tags/docs.py:56
 #, python-brace-format
 msgid "<p><em>%{name}%</em></p>{content}"
-msgstr ""
+msgstr "<p><em>%{name}%</em></p>{content}"
 
 #: picard/tags/tagvar.py:62
 msgid "Notes"
@@ -3680,7 +3621,7 @@ msgstr ""
 #: picard/tags/tagvar.py:300
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
-msgstr ""
+msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/aboutdialog.py:78
 msgid "translator-credits"
@@ -7215,10 +7156,8 @@ msgid "Move to &trash"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:198
-#, fuzzy
-#| msgid "Alt+Shift+A"
 msgid "Shift+Del"
-msgstr "Alt+Shift+A"
+msgstr "Shift+Del"
 
 #: picard/ui/mainwindow/actions.py:206
 msgid "S&ubmit AcoustIDs"
@@ -7356,10 +7295,8 @@ msgid "Toggle filtering of items based on specific tag values."
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:371
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+F"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+F"
 
 #: picard/ui/mainwindow/actions.py:389
 msgid "Lookup the details of the CD in your drive"
@@ -7514,10 +7451,8 @@ msgid "Play selected files"
 msgstr ""
 
 #: picard/ui/mainwindow/actions.py:537
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+P"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+P"
 
 #: picard/ui/mainwindow/actions.py:544
 #, fuzzy
@@ -8597,10 +8532,8 @@ msgid "Pause or resume current playback"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:89
-#, fuzzy
-#| msgid "Ctrl+A"
 msgid "Ctrl+P"
-msgstr "Ctrl+A"
+msgstr "Ctrl+P"
 
 #: picard/ui/player/toolbar.py:224
 #, fuzzy
@@ -8639,10 +8572,8 @@ msgid "Increase audio volume"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:319
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift++"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift++"
 
 #: picard/ui/player/toolbar.py:323
 msgid "Volume down"
@@ -8653,10 +8584,8 @@ msgid "Decrease audio volume"
 msgstr ""
 
 #: picard/ui/player/toolbar.py:329
-#, fuzzy
-#| msgid "Ctrl+Shift+I"
 msgid "Ctrl+Shift+-"
-msgstr "Ctrl+Shift+I"
+msgstr "Ctrl+Shift+-"
 
 #: picard/ui/player/toolbar.py:334
 msgid "Audio volume"
@@ -8882,10 +8811,9 @@ msgstr ""
 "elementų"
 
 #: picard/ui/searchdialog/__init__.py:108
-#, fuzzy, python-brace-format
-#| msgid "&#160;(<a href='{url}'>Syntax Help</a>)"
+#, python-brace-format
 msgid "&#160;(<a href=\"{url}\">Syntax Help</a>)"
-msgstr "&#160;(<a href='{url}'>Sintaksės pagalba</a>)"
+msgstr "&#160;(<a href=\"{url}\">Sintaksės pagalba</a>)"
 
 #: picard/ui/searchdialog/__init__.py:192
 msgid "Search in browser"
@@ -8906,9 +8834,9 @@ msgid ""
 "strong>Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, "
 "HTTP code %(statuscode)r)<br>"
 msgstr ""
-"<strong>Gaunant rezultatus įvyko toliau nurodyta klaida:<br><br></"
-"strong>Tinklo užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas "
-"%(qtcode)d, HTTP kodas %(statuscode)r)<br>."
+"<strong>Gaunant rezultatus įvyko nurodyta klaida:<br><br></strong>Tinklo "
+"užklausos klaida dėl %(url)s:<br>%(error)s (QT kodas %(qtcode)d, HTTP kodas %"
+"(statuscode)r)<br>."
 
 #: picard/ui/searchdialog/__init__.py:267
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -9125,7 +9053,7 @@ msgstr "Peržiūrėti saugyklą"
 
 #: picard/ui/widgets/pluginlistwidget.py:586
 msgid "Execution Order"
-msgstr ""
+msgstr "Vykdymo įsakymas"
 
 #: picard/ui/widgets/pluginlistwidget.py:595
 #: picard/ui/widgets/pluginlistwidget.py:602
@@ -9196,11 +9124,11 @@ msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:798
 msgid "There were no installed metadata processing plugins found."
-msgstr ""
+msgstr "Nerasta įdiegtų metaduomenų apdorojimo įskiepių."
 
 #: picard/ui/widgets/pluginlistwidget.py:799
 msgid "No Data"
-msgstr ""
+msgstr "Nėra duomenų"
 
 #: picard/ui/widgets/pluginlistwidget.py:819
 msgid "Uninstall Plugin"
