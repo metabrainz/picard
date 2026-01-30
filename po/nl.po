@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-29 09:11+0000\n"
+"PO-Revision-Date: 2026-01-30 18:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -39,21 +39,21 @@ msgstr "Niet-overeenkomende bestanden"
 #: picard/album.py:516
 #, python-format
 msgid "Album %(id)s loaded: %(artist)s - %(album)s"
-msgstr "Album %(id)s geladen: %(artist)s - %(album)s"
+msgstr "Uitgave %(id)s geladen: %(artist)s - %(album)s"
 
 #: picard/album.py:573
 #, python-format
 msgid "Loading album %(id)s …"
-msgstr "Album %(id)s wordt geladen …"
+msgstr "De uitgave %(id)s wordt geladen"
 
 #: picard/album.py:790
 msgid "[loading album information]"
-msgstr "[albuminformatie laden]"
+msgstr "[uitgave-informatie laden]"
 
 #: picard/album.py:792
 #, python-format
 msgid "[could not load album %s]"
-msgstr "[kan album %s niet laden]"
+msgstr "[kan de uitgave %s niet laden]"
 
 #: picard/cluster.py:260
 #, python-format
@@ -68,7 +68,7 @@ msgstr "Geen overeenkomende uitgaven voor cluster %(album)s"
 #: picard/cluster.py:282
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
-msgstr "Metadata voor cluster %(album)s wordt opgezocht …"
+msgstr "De metadata voor cluster %(album)s worden opgezocht"
 
 #: picard/cluster.py:338
 msgid "Unclustered Files"
@@ -804,7 +804,7 @@ msgstr "Machtigingscode:"
 #: picard/tagger.py:1156
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
-msgstr "Verwijdert album %(id)s: %(artist)s - %(album)s"
+msgstr "Verwijdert de uitgave %(id)s: %(artist)s - %(album)s"
 
 #: picard/tagger.py:1174
 msgid "CD Lookup Error"
@@ -2815,7 +2815,7 @@ msgstr "&Instellingen herstellen"
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:165
 #: picard/ui/mainwindow.py:1153 picard/util/tags.py:40
 msgid "Album"
-msgstr "Album"
+msgstr "Uitgave"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:162
 #: picard/ui/mainwindow.py:1154 picard/ui/searchdialog/album.py:153
@@ -3099,7 +3099,7 @@ msgstr "Bestanden"
 
 #: picard/ui/infostatus.py:72
 msgid "Albums"
-msgstr "Albums"
+msgstr "Uitgaven"
 
 #: picard/ui/infostatus.py:73
 msgid "Pending files"
