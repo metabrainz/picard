@@ -49,6 +49,7 @@ from picard.const.defaults import (
     DEFAULT_COVER_IMAGE_FILENAME,
     DEFAULT_COVER_MAX_SIZE,
     DEFAULT_COVER_MIN_SIZE,
+    DEFAULT_COVER_QUALITY,
     DEFAULT_COVER_RESIZE_MODE,
     DEFAULT_CURRENT_BROWSER_PATH,
     DEFAULT_DRIVES,
@@ -237,6 +238,7 @@ IntOption('setting', 'cover_file_resize_target_height', DEFAULT_COVER_MAX_SIZE)
 IntOption('setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE)
 BoolOption('setting', 'cover_file_convert_images', False)
 TextOption('setting', 'cover_file_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT)
+IntOption('setting', 'cover_quality', DEFAULT_COVER_QUALITY)
 
 # picard/ui/options/dialog.py
 # Attached Profiles

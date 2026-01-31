@@ -31,6 +31,7 @@ from PyQt6.QtCore import (
 )
 from PyQt6.QtGui import QImage
 
+from picard.config import get_config
 from picard.plugin import ExtensionPoint
 from picard.util.imageinfo import (
     ImageInfo,
@@ -71,7 +72,7 @@ class ProcessingImage:
     def get_qimage(self):
         return self._qimage
 
-    def get_result(self, image_format: str | None = None, quality: int = 90) -> bytes:
+    def get_result(self, image_format: str | None = None, quality: int | None = None) -> bytes:
         """
         Encode the internal QImage to the specified format and quality and
         return the raw bytes.
@@ -82,6 +83,10 @@ class ProcessingImage:
             CoverArtEncodingError: If required attributes are missing, the
                 buffer could not be opened, or saving the image failed.
         """
+        if quality is None:
+            config = get_config()
+            quality = config.setting['cover_quality']
+
         if image_format is None:
             image_format = getattr(self.info, "format", None)
             if not image_format:

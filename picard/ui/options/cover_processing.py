@@ -69,6 +69,7 @@ class CoverProcessingOptionsPage(OptionsPage):
         ('cover_file_resize_mode', None),
         ('cover_file_convert_images', None),
         ('cover_file_convert_to_format', None),
+        ('cover_quality', None),
     )
 
     def __init__(self, parent=None):
@@ -138,6 +139,7 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.convert_file_format.setCurrentIndex(
             self.ui.convert_file_format.findData(config.setting['cover_file_convert_to_format'])
         )
+        self.ui.cover_quality_value.setValue(config.setting['cover_quality'])
 
     def save(self):
         config = get_config()
@@ -158,6 +160,7 @@ class CoverProcessingOptionsPage(OptionsPage):
         config.setting['cover_file_resize_mode'] = self.ui.file_resize_mode.currentData()
         config.setting['cover_file_convert_images'] = self.ui.convert_file.isChecked()
         config.setting['cover_file_convert_to_format'] = self.ui.convert_file_format.currentData()
+        config.setting['cover_quality'] = self.ui.cover_quality_value.value()
 
 
 register_options_page(CoverProcessingOptionsPage)
