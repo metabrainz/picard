@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-26 07:04+0100\n"
-"PO-Revision-Date: 2026-01-30 00:11+0000\n"
+"PO-Revision-Date: 2026-02-01 12:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -763,7 +763,7 @@ msgstr ""
 
 #: picard/options.py:410 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
-msgstr "Nummerwaardering toestaan"
+msgstr "Nummerwaarderingen inschakelen"
 
 #: picard/options.py:412
 #, fuzzy
@@ -6042,7 +6042,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_ratings.py:55
 msgid "E-mail:"
-msgstr "E-mail:"
+msgstr "E-mailadres:"
 
 #: picard/ui/forms/ui_options_releases.py:118
 #: picard/ui/forms/ui_options_releases.py:119
