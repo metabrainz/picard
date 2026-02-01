@@ -525,7 +525,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="image_quality_label">
+      <widget class="QLabel" name="cover_image_quality_label">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -541,18 +541,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="cover_quality_value">
+      <widget class="QSpinBox" name="cover_image_quality_value">
        <property name="alignment">
         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
        </property>
        <property name="minimum">
-        <number>50</number>
+        <number>-1</number>
        </property>
        <property name="maximum">
         <number>100</number>
        </property>
        <property name="value">
-        <number>90</number>
+        <number>-1</number>
        </property>
       </widget>
      </item>

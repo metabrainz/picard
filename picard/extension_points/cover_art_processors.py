@@ -85,7 +85,7 @@ class ProcessingImage:
         """
         if quality is None:
             config = get_config()
-            quality = config.setting['cover_quality']
+            quality = config.setting['cover_image_quality']
 
         if image_format is None:
             image_format = getattr(self.info, "format", None)
