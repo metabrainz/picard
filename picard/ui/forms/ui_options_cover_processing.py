@@ -322,4 +322,4 @@ class Ui_CoverProcessingOptionsPage(object):
         self.convert_tags_label.setText(_("New format:"))
         self.convert_file.setTitle(_("Convert images saved to files"))
         self.convert_file_label.setText(_("New format:"))
-        self.cover_image_quality_label.setText(_("Processed image quality:"))
+        self.cover_image_quality_label.setText(_("JPEG / WebP image quality:"))

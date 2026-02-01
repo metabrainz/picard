@@ -533,7 +533,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Processed image quality:</string>
+        <string>JPEG / WebP image quality:</string>
        </property>
        <property name="wordWrap">
         <bool>false</bool>
