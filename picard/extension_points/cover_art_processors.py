@@ -88,6 +88,13 @@ class ProcessingImage:
             if not image_format:
                 raise CoverArtEncodingError("No image format specified and info.format is missing.")
 
+        if self._qimage is None:
+            raise CoverArtEncodingError("No QImage available to encode.")
+
+        buffer = QBuffer()
+        if not buffer.open(QIODevice.OpenModeFlag.WriteOnly):
+            raise CoverArtEncodingError("Failed to open QBuffer for writing.")
+
         if quality is None:
             image_mime = getattr(self.info, 'mime', '')
             if image_mime in ('image/jpeg', 'image/webp'):
@@ -95,13 +102,6 @@ class ProcessingImage:
                 quality = config.setting['cover_image_quality']
             else:
                 quality = -1
-
-        if self._qimage is None:
-            raise CoverArtEncodingError("No QImage available to encode.")
-
-        buffer = QBuffer()
-        if not buffer.open(QIODevice.OpenModeFlag.WriteOnly):
-            raise CoverArtEncodingError("Failed to open QBuffer for writing.")
 
         try:
             if not self._qimage.save(buffer, image_format, quality=quality):
