@@ -83,14 +83,18 @@ class ProcessingImage:
             CoverArtEncodingError: If required attributes are missing, the
                 buffer could not be opened, or saving the image failed.
         """
-        if quality is None:
-            config = get_config()
-            quality = config.setting['cover_image_quality']
-
         if image_format is None:
             image_format = getattr(self.info, "format", None)
             if not image_format:
                 raise CoverArtEncodingError("No image format specified and info.format is missing.")
+
+        if quality is None:
+            image_mime = getattr(self.info, 'mime', '')
+            if image_mime in ('image/jpeg', 'image/webp'):
+                config = get_config()
+                quality = config.setting['cover_image_quality']
+            else:
+                quality = -1
 
         if self._qimage is None:
             raise CoverArtEncodingError("No QImage available to encode.")
