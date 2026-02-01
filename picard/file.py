@@ -43,8 +43,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
 from collections import Counter
 from enum import (
     Enum,
@@ -92,6 +90,7 @@ from picard.metadata import (
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
 from picard.tags import (
+    ALL_TAGS,
     calculated_tag_names,
     file_info_tag_names,
     preserved_tag_names,
@@ -990,6 +989,9 @@ class File(MetadataItem):
         value = m[column]
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]
+        elif tag_info := ALL_TAGS.item_from_name(column):
+            if tag_info[3] and tag_info[3].is_file_info:
+                value = self.orig_metadata[column]
         if column == '~filesize':
             try:
                 value = bytes2human.binary(value)
