@@ -134,7 +134,6 @@ from picard.i18n import (
     gettext as _,
     setup_gettext,
 )
-from picard.item import MetadataItem
 from picard.options import init_options
 
 
@@ -1030,12 +1029,15 @@ class Tagger(QtWidgets.QApplication):
         """Lookup the object's metadata on the MusicBrainz website."""
         lookup = self.get_file_lookup()
         metadata = item.metadata
-        # Only lookup via MB IDs if matched to a MetadataItem; otherwise ignore and use metadata details
-        if isinstance(item, MetadataItem):
+        # Only lookup via MB IDs if matched to a Track or Album;
+        # otherwise ignore and search by metadata details
+        is_track = isinstance(item, Track)
+        is_album = isinstance(item, Album)
+        if is_track or is_album:
             itemid = item.id
-            if isinstance(item, Track):
+            if is_track:
                 lookup.recording_lookup(itemid)
-            elif isinstance(item, Album):
+            elif is_album:
                 lookup.album_lookup(itemid)
         else:
             lookup.tag_lookup(
