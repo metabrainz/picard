@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-30 18:11+0000\n"
+"PO-Revision-Date: 2026-02-01 12:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -388,7 +388,7 @@ msgstr "Bepaalde genres wel of niet gebruiken"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
-msgstr "Nummerwaardering toestaan"
+msgstr "Nummerwaarderingen inschakelen"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
@@ -5066,7 +5066,7 @@ msgstr ""
 
 #: picard/ui/ui_options_ratings.py:49
 msgid "E-mail:"
-msgstr "E-mail:"
+msgstr "E-mailadres:"
 
 #: picard/ui/ui_options_releases.py:112 picard/ui/ui_options_releases.py:113
 msgid "Add to preferred release countries"
