@@ -96,8 +96,7 @@ class ProcessingImage:
             raise CoverArtEncodingError("Failed to open QBuffer for writing.")
 
         if quality is None:
-            image_mime = getattr(self.info, 'mime', '')
-            if image_mime in ('image/jpeg', 'image/webp'):
+            if image_format in ('jpeg', 'jpg', 'webp'):
                 config = get_config()
                 quality = config.setting['cover_image_quality']
             else:
