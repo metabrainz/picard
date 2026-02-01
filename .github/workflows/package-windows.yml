@@ -88,7 +88,7 @@ jobs:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Sign picard.exe
-      uses: azure/trusted-signing-action@v0.5.11
+      uses: azure/trusted-signing-action@v1.0.0
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -128,7 +128,7 @@ jobs:
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Sign final executable
-      uses: azure/trusted-signing-action@v0.5.11
+      uses: azure/trusted-signing-action@v1.0.0
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
