@@ -25,7 +25,10 @@ from PyQt6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config
-from picard.const.cover_processing import ResizeModes
+from picard.const.cover_processing import (
+    ResizeModes,
+    get_image_format_from_format,
+)
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
     ProcessingImage,
@@ -109,13 +112,6 @@ class ResizeImage(ImageProcessor):
 
 
 class ConvertImage(ImageProcessor):
-    _format_aliases = {
-        "jpeg": {"jpg", "jpeg"},
-        "png": {"png"},
-        "webp": {"webp"},
-        "tiff": {"tif", "tiff"},
-    }
-
     def target(self):
         config = get_config()
         tags_convert_images = config.setting['cover_tags_convert_images']
@@ -139,12 +135,12 @@ class ConvertImage(ImageProcessor):
             new_format = config.setting['cover_tags_convert_to_format'].lower()
         else:
             new_format = config.setting['cover_file_convert_to_format'].lower()
-        previous_format = image.info.format
-        if previous_format in self._format_aliases[new_format]:
+        new_format = get_image_format_from_format(new_format)
+        previous_format = image.info.format_info
+        if previous_format == new_format:
             return
-        image.info.extension = f".{new_format}"
-        image.info.mime = f"image/{new_format}"
-        log.debug("Changed cover art format from %s to %s", previous_format, new_format)
+        image.info.format_info = new_format
+        log.debug("Changed cover art format from %s to %s", previous_format.format, new_format.format)
 
 
 register_cover_art_processor(ResizeImage)

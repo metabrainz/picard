@@ -34,7 +34,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.album import Album
 from picard.const.cover_processing import (
-    COVER_CONVERTING_FORMATS,
+    ImageFormat,
     ResizeModes,
 )
 from picard.coverart.image import CoverArtImage
@@ -307,12 +307,12 @@ class ImageProcessorsTest(PicardTestCase):
         processor.run(image, ImageProcessor.Target.TAGS)
         new_image = image.get_result()
         new_info = imageinfo.identify(new_image)
-        self.assertIn(new_info.format, ConvertImage._format_aliases[expected_format])
+        self.assertIn(expected_format, new_info.format_info.format_aliases)
 
     def test_format_conversion(self):
         settings = copy(self.settings)
         settings['cover_tags_convert_images'] = True
-        for format in COVER_CONVERTING_FORMATS.keys():
+        for format in [x.format for x in list(ImageFormat) if x.selectable]:
             settings['cover_tags_convert_to_format'] = format
             self.set_config_values(settings)
             self._check_convert_image('jpeg', format)
@@ -338,7 +338,7 @@ class ImageProcessorsTest(PicardTestCase):
 
     def test_encoding_error(self):
         image, info = create_fake_image(500, 500, "jpg")
-        info.extension = ".test"
+        info.format_info = ImageFormat.PDF
         self._check_processing_error(image, info)
 
 

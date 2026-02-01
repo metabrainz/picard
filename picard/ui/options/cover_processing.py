@@ -28,8 +28,8 @@ from PyQt6.QtWidgets import QSpinBox
 
 from picard.config import get_config
 from picard.const.cover_processing import (
-    COVER_CONVERTING_FORMATS,
     COVER_RESIZE_MODES,
+    ImageFormat,
     ResizeModes,
 )
 from picard.extension_points.options_pages import register_options_page
@@ -83,9 +83,9 @@ class CoverProcessingOptionsPage(OptionsPage):
             self.ui.tags_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
             self.ui.file_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
 
-        for format, format_name in COVER_CONVERTING_FORMATS.items():
-            self.ui.convert_tags_format.addItem(format_name, userData=format)
-            self.ui.convert_file_format.addItem(format_name, userData=format)
+        for item in list(ImageFormat):
+            self.ui.convert_tags_format.addItem(item.title, userData=item.format)
+            self.ui.convert_file_format.addItem(item.title, userData=item.format)
 
         self.tags_resize_mode_changed = partial(
             self._resize_mode_changed, self.ui.tags_resize_width_widget, self.ui.tags_resize_height_widget

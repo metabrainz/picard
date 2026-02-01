@@ -18,10 +18,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 from collections import namedtuple
 from enum import IntEnum
-
-from PyQt6.QtGui import QImageWriter
 
 from picard.i18n import N_
 
@@ -113,14 +112,86 @@ COVER_RESIZE_MODES = (
     ),
 )
 
-IMAGE_FORMAT_NAMES = {
-    'jpeg': 'JPEG',
-    'png': 'PNG',
-    'webp': 'WebP',
-    'tiff': 'TIFF',
-}
 
-_qt_supported_formats = {bytes(format).decode() for format in QImageWriter.supportedImageFormats()}
-COVER_CONVERTING_FORMATS = {k: v for k, v in IMAGE_FORMAT_NAMES.items() if k in _qt_supported_formats}
+class ImageFormat(IntEnum):
+    # Item Arguments:
+    #   {int}   ID number
+    #   {str}   Display title in selection dialog
+    #   {list}  Aliases for the format (first is the default). Items must
+    #           be included in QtGui.QImageWriter.supportedImageFormats())
+    #   {str}   MIME string
+    #   {list}  Filename extensions (first is the default)
+    #   {bool}  Include in user-selected conversions list
+    #   {bool}  Use user-specified quality setting
+
+    JPEG = 1, 'JPEG', ['jpeg', 'jpg'], 'image/jpeg', ['.jpg', '.jpeg'], True, True
+    PNG = 2, 'PNG', ['png'], 'image/png', ['.png'], True, False
+    WEBP = 3, 'WebP', ['webp'], 'image/webp', ['.webp'], True, True
+    TIFF = 4, 'TIFF', ['tiff', 'tif'], 'image/tiff', ['.tiff', '.tif'], True, False
+    GIF = 5, 'GIF', [], 'image/gif', ['.gif'], False, False
+    PDF = 6, 'PDF', [], 'application/pdf', ['.pdf'], False, False
+
+    def __new__(cls, value, title, format_aliases, mime, extensions, selectable, use_quality):
+        obj = int.__new__(cls, value)
+        obj._value_ = value
+        obj._title = title
+        obj._format_aliases = format_aliases
+        obj._mime = mime
+        obj._extensions = extensions
+        obj._selectable = selectable
+        obj._use_quality = use_quality
+        return obj
+
+    @property
+    def title(self):
+        """Display title of the image format"""
+        return self._title
+
+    @property
+    def format(self):
+        """Format type for conversion in QtGui.QImageWriter.supportedImageFormats()"""
+        return self._format_aliases[0] if self._format_aliases else None
+
+    @property
+    def format_aliases(self):
+        """Aliases for the format type"""
+        return self._format_aliases
+
+    @property
+    def mime(self):
+        """MIME string"""
+        return self._mime
+
+    @property
+    def extension(self):
+        """Default file extension"""
+        return self._extensions[0]
+
+    @property
+    def all_extensions(self):
+        """List of all applicable file extensions"""
+        return self._extensions
+
+    @property
+    def selectable(self):
+        """User selectable target type for conversion"""
+        return self._selectable
+
+    @property
+    def use_quality(self):
+        """Uses user-defined quality setting during conversion"""
+        return self._use_quality
+
+    def __repr__(self):
+        cls_name = self.__class__.__name__
+        return f'{cls_name}.{self.name}'
+
+
+def get_image_format_from_format(format_string: str) -> ImageFormat:
+    for fmt in list(ImageFormat):
+        if format_string in fmt.format_aliases:
+            return fmt
+    return None
+
 
 COVER_PROCESSING_SLEEP = 0.001

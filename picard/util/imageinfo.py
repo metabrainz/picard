@@ -26,6 +26,7 @@ from dataclasses import dataclass
 from io import BytesIO
 import struct
 
+from picard.const.cover_processing import ImageFormat
 from picard.util.bitreader import LSBBitReader
 
 
@@ -33,13 +34,8 @@ from picard.util.bitreader import LSBBitReader
 class ImageInfo:
     width: int
     height: int
-    mime: str
-    extension: str
     datalen: int
-
-    @property
-    def format(self):
-        return self.extension[1:]
+    format_info: ImageFormat
 
 
 class IdentificationError(Exception):
@@ -59,10 +55,9 @@ class UnexpectedError(IdentificationError):
 
 
 class IdentifyImageType:
-    mime = ''
-    extension = ''
     w = -1
     h = -1
+    format_info: ImageFormat = None
 
     def __init__(self, data):
         self.data = data
@@ -78,9 +73,8 @@ class IdentifyImageType:
         return ImageInfo(
             width=int(self.w),
             height=int(self.h),
-            mime=self.mime,
-            extension=self.extension,
             datalen=self.datalen,
+            format_info=self.format_info,
         )
 
     def match(self):
@@ -89,22 +83,13 @@ class IdentifyImageType:
     def _read(self):
         raise NotImplementedError
 
-    @classmethod
-    def all_extensions(cls):
-        return [cls.extension]
-
 
 class IdentifyJPEG(IdentifyImageType):
-    mime = 'image/jpeg'
-    extension = '.jpg'
+    format_info = ImageFormat.JPEG
 
     def match(self):
         # http://en.wikipedia.org/wiki/JPEG
         return self.data[:2] == b'\xff\xd8'  # Start Of Image (SOI) marker
-
-    @classmethod
-    def all_extensions(cls):
-        return [cls.extension, '.jpeg']
 
     def _read(self):
         jpeg = BytesIO(self.data)
@@ -139,8 +124,7 @@ class IdentifyJPEG(IdentifyImageType):
 
 
 class IdentifyGIF(IdentifyImageType):
-    mime = 'image/gif'
-    extension = '.gif'
+    format_info = ImageFormat.GIF
 
     def match(self):
         # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
@@ -151,8 +135,7 @@ class IdentifyGIF(IdentifyImageType):
 
 
 class IdentifyPDF(IdentifyImageType):
-    mime = 'application/pdf'
-    extension = '.pdf'
+    format_info = ImageFormat.PDF
 
     def match(self):
         # PDF
@@ -163,8 +146,7 @@ class IdentifyPDF(IdentifyImageType):
 
 
 class IdentifyPNG(IdentifyImageType):
-    mime = 'image/png'
-    extension = '.png'
+    format_info = ImageFormat.PNG
 
     def match(self):
         # http://en.wikipedia.org/wiki/Portable_Network_Graphics
@@ -176,8 +158,7 @@ class IdentifyPNG(IdentifyImageType):
 
 
 class IdentifyWebP(IdentifyImageType):
-    mime = 'image/webp'
-    extension = '.webp'
+    format_info = ImageFormat.WEBP
 
     def match(self):
         return self.data[:4] == b'RIFF' and self.data[8:12] == b'WEBP'
@@ -226,15 +207,10 @@ TIFF_TYPE_LONG = 4
 
 
 class IdentifyTiff(IdentifyImageType):
-    mime = 'image/tiff'
-    extension = '.tiff'
+    format_info = ImageFormat.TIFF
 
     def match(self):
         return self.data[:4] == b'II*\x00' or self.data[:4] == b'MM\x00*'
-
-    @classmethod
-    def all_extensions(cls):
-        return [cls.extension, '.tif']
 
     def _read(self):
         # See https://www.adobe.io/content/dam/udp/en/open/standards/tiff/TIFF6.pdf
@@ -294,9 +270,8 @@ def identify(data):
     If successfully recognized, it returns a tuple with:
         - width
         - height
-        - mimetype
-        - extension
         - data length
+        - format information
     Exceptions:
         - `NotEnoughData` if data has less than 16 bytes.
         - `UnrecognizedFormat` if data isn't recognized as a known format.
@@ -312,9 +287,9 @@ def identify(data):
 
 
 def supports_mime_type(mime):
-    return any(cls.mime == mime for cls in knownimagetypes)
+    return any(cls.format_info.mime == mime for cls in knownimagetypes)
 
 
 def get_supported_extensions():
     for cls in knownimagetypes:
-        yield from cls.all_extensions()
+        yield from cls.format_info.all_extensions
