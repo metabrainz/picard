@@ -87,14 +87,24 @@ class CoverProcessingOptionsPage(OptionsPage):
             self.ui.convert_tags_format.addItem(format_name, userData=format)
             self.ui.convert_file_format.addItem(format_name, userData=format)
 
-        tags_resize_mode_changed = partial(
+        self.tags_resize_mode_changed = partial(
             self._resize_mode_changed, self.ui.tags_resize_width_widget, self.ui.tags_resize_height_widget
         )
-        file_resize_mode_changed = partial(
+        self.file_resize_mode_changed = partial(
             self._resize_mode_changed, self.ui.file_resize_width_widget, self.ui.file_resize_height_widget
         )
-        self.ui.tags_resize_mode.currentIndexChanged.connect(tags_resize_mode_changed)
-        self.ui.file_resize_mode.currentIndexChanged.connect(file_resize_mode_changed)
+        self.ui.tags_resize_mode.currentIndexChanged.connect(self.tags_resize_mode_changed)
+        self.ui.file_resize_mode.currentIndexChanged.connect(self.file_resize_mode_changed)
+        self.ui.tags_scale_down.toggled.connect(self._tags_resize_toggled)
+        self.ui.file_scale_down.toggled.connect(self._file_resize_toggled)
+
+    def _tags_resize_toggled(self, checked):
+        if checked:
+            self.tags_resize_mode_changed(self.ui.tags_resize_mode.currentIndex())
+
+    def _file_resize_toggled(self, checked):
+        if checked:
+            self.file_resize_mode_changed(self.ui.file_resize_mode.currentIndex())
 
     def _resize_mode_changed(self, width_widget, height_widget, index):
         width_visible = True
@@ -116,25 +126,25 @@ class CoverProcessingOptionsPage(OptionsPage):
         self.ui.filtering_width_value.setValue(config.setting['cover_minimum_width'])
         self.ui.filtering_height_value.setValue(config.setting['cover_minimum_height'])
         self.ui.tags_scale_up.setChecked(config.setting['cover_tags_enlarge'])
-        self.ui.tags_scale_down.setChecked(config.setting['cover_tags_resize'])
         self.ui.tags_resize_width_value.setValue(config.setting['cover_tags_resize_target_width'])
         self.ui.tags_resize_height_value.setValue(config.setting['cover_tags_resize_target_height'])
-        current_index = self.ui.tags_resize_mode.findData(config.setting['cover_tags_resize_mode'])
-        if current_index == -1:
-            current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
-        self.ui.tags_resize_mode.setCurrentIndex(current_index)
+        tags_mode_index = self.ui.tags_resize_mode.findData(config.setting['cover_tags_resize_mode'])
+        self.ui.tags_resize_mode.setCurrentIndex(
+            tags_mode_index if tags_mode_index != -1 else ResizeModes.MAINTAIN_ASPECT_RATIO
+        )
+        self.ui.tags_scale_down.setChecked(config.setting['cover_tags_resize'])
         self.ui.convert_tags.setChecked(config.setting['cover_tags_convert_images'])
         self.ui.convert_tags_format.setCurrentIndex(
             self.ui.convert_tags_format.findData(config.setting['cover_tags_convert_to_format'])
         )
         self.ui.file_scale_up.setChecked(config.setting['cover_file_enlarge'])
-        self.ui.file_scale_down.setChecked(config.setting['cover_file_resize'])
         self.ui.file_resize_width_value.setValue(config.setting['cover_file_resize_target_width'])
         self.ui.file_resize_height_value.setValue(config.setting['cover_file_resize_target_height'])
-        current_index = self.ui.file_resize_mode.findData(config.setting['cover_file_resize_mode'])
-        if current_index == -1:
-            current_index = ResizeModes.MAINTAIN_ASPECT_RATIO
-        self.ui.file_resize_mode.setCurrentIndex(current_index)
+        file_mode_index = self.ui.file_resize_mode.findData(config.setting['cover_file_resize_mode'])
+        self.ui.file_resize_mode.setCurrentIndex(
+            file_mode_index if file_mode_index != -1 else ResizeModes.MAINTAIN_ASPECT_RATIO
+        )
+        self.ui.file_scale_down.setChecked(config.setting['cover_file_resize'])
         self.ui.convert_file.setChecked(config.setting['cover_file_convert_images'])
         self.ui.convert_file_format.setCurrentIndex(
             self.ui.convert_file_format.findData(config.setting['cover_file_convert_to_format'])
