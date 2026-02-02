@@ -98,10 +98,11 @@ class CoverArtImageProcessing:
         data = initial_data
         try:
             queue = self.queues[target]
-            for processor in queue:
-                processor.run(image, target)
-                time.sleep(COVER_PROCESSING_SLEEP)
-            data = image.get_result()
+            if queue:
+                for processor in queue:
+                    processor.run(image, target)
+                    time.sleep(COVER_PROCESSING_SLEEP)
+                data = image.get_result()
         except CoverArtProcessingError as e:
             raise e
         finally:
