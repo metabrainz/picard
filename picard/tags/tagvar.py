@@ -247,6 +247,9 @@ class TagVars(MutableSequence):
 
         return name, tagdesc, search_name, item
 
+    def tagvar_from_name(self, name) -> TagVar | None:
+        return self.item_from_name(name)[3]
+
     def script_name_from_name(self, name):
         tagname, tagdesc, search_name, item = self.item_from_name(name)
         if item:

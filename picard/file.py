@@ -989,8 +989,8 @@ class File(MetadataItem):
         value = m[column]
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]
-        elif tag_info := ALL_TAGS.item_from_name(column):
-            if tag_info[3] and tag_info[3].is_file_info:
+        elif tagvar := ALL_TAGS.tagvar_from_name(column):
+            if tagvar and tagvar.is_file_info:
                 value = self.orig_metadata[column]
         if column == '~filesize':
             try:
