@@ -180,6 +180,44 @@ class TagVarsTest(PicardTestCase):
     def tearDown(self):
         Option.registry = self.old_registry
 
+    def test_item_from_name(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('only_sd')
+        self.assertEqual(name, 'only_sd')
+        self.assertEqual(search_name, name)
+        self.assertIsNone(tagdesc)
+        self.assertEqual(item, self.tagvar_only_sd)
+
+    def test_item_from_name_with_tagdesc(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('only_sd:something')
+        self.assertEqual(name, 'only_sd')
+        self.assertEqual(search_name, name)
+        self.assertEqual(tagdesc, 'something')
+        self.assertEqual(item, self.tagvar_only_sd)
+
+    def test_item_from_name_hidden(self):
+        tagvars = TagVars(
+            self.tagvar_hidden,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('_hidden')
+        self.assertEqual(name, '_hidden')
+        self.assertEqual(search_name, '~hidden')
+        self.assertIsNone(tagdesc)
+        self.assertEqual(item, self.tagvar_hidden)
+
+    def test_item_from_name_unknown(self):
+        tagvars = TagVars()
+        name, tagdesc, search_name, item = tagvars.item_from_name('notatag')
+        self.assertEqual(name, 'notatag')
+        self.assertEqual(search_name, name)
+        self.assertIsNone(tagdesc)
+        self.assertIsNone(item)
+
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
             TagVars('not_a_tag_var')
