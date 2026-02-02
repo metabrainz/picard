@@ -22,9 +22,6 @@
      <property name="checkable">
       <bool>true</bool>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QWidget" name="filtering_width_widget" native="true">
@@ -145,9 +142,6 @@
      <property name="checkable">
       <bool>false</bool>
      </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
      <layout class="QHBoxLayout" name="horizontalLayout_7">
       <item>
        <widget class="QGroupBox" name="tags_scale_down">
@@ -156,9 +150,6 @@
         </property>
         <property name="checkable">
          <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
@@ -301,9 +292,6 @@
         </property>
         <property name="checkable">
          <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
@@ -466,9 +454,6 @@
       <string>Convert images to the given format</string>
      </property>
      <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <property name="checked">
       <bool>false</bool>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_12">
