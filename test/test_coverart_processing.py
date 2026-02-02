@@ -362,3 +362,30 @@ class ProcessingImageTest(PicardTestCase):
         self.assertEqual(image.info.height, info.height)
         self.assertEqual(image.info.width, info.width)
         self.assertEqual(image._qimage, qimage)
+
+    def test_no_reencoding_without_processors(self):
+        """Test that images are not re-encoded when no processors run."""
+        settings = {
+            'enabled_plugins': [],
+            'cover_tags_resize': False,
+            'cover_tags_convert_images': False,
+            'cover_file_resize': False,
+            'cover_file_convert_images': False,
+            'save_images_to_tags': True,
+            'save_images_to_files': False,
+        }
+        self.set_config_values(settings)
+
+        coverartimage = CoverArtImage()
+        original_data, info = create_fake_image(500, 500, 'jpg')
+        album = Album(None)
+        image_processing = CoverArtImageProcessing(album)
+        callback = Mock()
+
+        with patch('picard.util.thread.to_main', mock_to_main):
+            image_processing.run_image_processors(coverartimage, original_data, info, callback)
+            image_processing.wait_for_processing()
+            callback.assert_called_once_with(coverartimage, None)
+
+        # Image data should be identical to original (no re-encoding)
+        self.assertEqual(coverartimage.data, original_data)
