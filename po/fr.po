@@ -39,7 +39,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-26 07:04+0100\n"
+"POT-Creation-Date: 2026-02-02 16:43+0100\n"
 "PO-Revision-Date: 2026-01-06 09:11+0000\n"
 "Last-Translator: Zas <Zas@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: French <https://translations.metabrainz.org/projects/picard/3/"
@@ -298,102 +298,102 @@ msgstr "Erreur d’authentification inattendue"
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Erreur de requête inattendue (code HTTP %s)à"
 
-#: picard/options.py:166
+#: picard/options.py:167
 msgid "Tags to ignore for comparison"
 msgstr "Balises à ignorer lors des comparaisons"
 
-#: picard/options.py:167
+#: picard/options.py:168
 #, fuzzy
 #| msgid "Completeness check ignore: Data tracks"
 msgid "Completeness ignore: Data tracks"
 msgstr "Vérification de complétude ignore : pistes de données"
 
-#: picard/options.py:168
+#: picard/options.py:169
 #, fuzzy
 #| msgid "Completeness check ignore: Pregap tracks"
 msgid "Completeness ignore: Pregap tracks"
 msgstr "Vérification de complétude ignore : pistes prégap"
 
-#: picard/options.py:169
+#: picard/options.py:170
 #, fuzzy
 #| msgid "Completeness check ignore: Silent tracks"
 msgid "Completeness ignore: Silent tracks"
 msgstr "Vérification de complétude ignore : pistes de silence"
 
-#: picard/options.py:170
+#: picard/options.py:171
 #, fuzzy
 #| msgid "Completeness check ignore: Video tracks"
 msgid "Completeness ignore: Video tracks"
 msgstr "Vérification de complétude ignore : pistes vidéo"
 
-#: picard/options.py:171 picard/ui/forms/ui_options_advanced.py:153
+#: picard/options.py:172 picard/ui/forms/ui_options_advanced.py:153
 msgid "Ignore hidden files"
 msgstr "Ignorer les fichiers cachés"
 
-#: picard/options.py:172
+#: picard/options.py:173
 #, fuzzy
 #| msgid "Ignore file paths matching a regular expression"
 msgid "Ignore file paths (regular expression)"
 msgstr ""
 "Ignorer les chemins de fichier correspondants à une expression régulière"
 
-#: picard/options.py:173
+#: picard/options.py:174
 #, fuzzy
 #| msgid "Ignore track duration difference under x seconds"
 msgid "Allowed track difference (seconds)"
 msgstr "Ignorer les différences de durée de piste inférieures à x secondes"
 
-#: picard/options.py:178
+#: picard/options.py:179
 #, fuzzy
 #| msgid "MusicBrainz Server"
 msgid "Maximum MusicBrainz query items"
 msgstr "Serveur MusicBrainz"
 
-#: picard/options.py:180
+#: picard/options.py:181
 #, fuzzy
 #| msgid "Include sub-folders when adding files from folder"
 msgid "Include sub-folders when adding files"
 msgstr "Inclure les sous-dossiers lors de l’ajout d’un dossier"
 
-#: picard/options.py:188
+#: picard/options.py:189
 msgid "Cover art providers"
 msgstr "Fournisseurs d’illustrations"
 
-#: picard/options.py:189
+#: picard/options.py:190
 msgid "File name for images"
 msgstr "Nom de fichier pour les images"
 
-#: picard/options.py:190 picard/ui/forms/ui_options_cover.py:125
+#: picard/options.py:191 picard/ui/forms/ui_options_cover.py:125
 msgid "Embed only a single front image"
 msgstr "Intégrer seulement une image de type devant"
 
-#: picard/options.py:191
+#: picard/options.py:192
 #, fuzzy
 #| msgid "Never replace cover images with smaller ones"
 msgid "Never replace images with smaller ones"
 msgstr ""
 "Ne jamais remplacer les images de couverture par des images plus petites"
 
-#: picard/options.py:192
+#: picard/options.py:193
 #, fuzzy
 #| msgid "Download only cover art images matching selected types"
 msgid "Never replace images of selected types"
 msgstr ""
 "Télécharger seulement les illustrations correspondant aux types sélectionnés"
 
-#: picard/options.py:197
+#: picard/options.py:198
 #, fuzzy
 #| msgid "Never replace cover images of these types"
 msgid "Never replace images of these types"
 msgstr "Ne jamais remplacer les images de couverture de ces types"
 
-#: picard/options.py:203
+#: picard/options.py:204
 #, fuzzy
 #| msgid "Always replace cover images of these types"
 msgid "Always replace images of these types"
 msgstr "Toujours remplacer les images de couverture de ces types"
 
-#: picard/options.py:209
+#: picard/options.py:210
 #, fuzzy
 #| msgid ""
 #| "Always use the primary image type as the file name for non-front images"
@@ -402,170 +402,170 @@ msgstr ""
 "Toujours utiliser le type primaire de l'image comme nom de fichier pour les "
 "images qui n'ont pas le type devant"
 
-#: picard/options.py:211
+#: picard/options.py:212
 msgid "Overwrite existing image files"
 msgstr "Écraser les fichiers images existants"
 
-#: picard/options.py:212
+#: picard/options.py:213
 #, fuzzy
 #| msgid "Save cover images as separate files"
 msgid "Save images as separate files"
 msgstr "Enregistrer les images de couverture dans des fichiers séparés"
 
-#: picard/options.py:213
+#: picard/options.py:214
 #, fuzzy
 #| msgid "Embed cover images into tags"
 msgid "Embed images into tags"
 msgstr "Intégrer les images de couverture dans les balises"
 
-#: picard/options.py:214
+#: picard/options.py:215
 #, fuzzy
 #| msgid "Embed only a single front image"
 msgid "Save only one front image"
 msgstr "Intégrer seulement une image de type devant"
 
-#: picard/options.py:215
+#: picard/options.py:216
 #, fuzzy
 #| msgid "Save cover images as separate files"
 msgid "Show cover art details in view"
 msgstr "Enregistrer les images de couverture dans des fichiers séparés"
 
-#: picard/options.py:216
+#: picard/options.py:217
 #, fuzzy
 #| msgid "Cover art types"
 msgid "Show cover art type"
 msgstr "Types d’illustrations"
 
-#: picard/options.py:217
+#: picard/options.py:218
 #, fuzzy
 #| msgid "Show cover art file size in info labels"
 msgid "Show cover art file size"
 msgstr ""
 "Montrer la taille de fichier des images de couverture dans les informations"
 
-#: picard/options.py:218
+#: picard/options.py:219
 #, fuzzy
 #| msgid "Show cover art dimensions in info labels"
 msgid "Show cover art dimensions"
 msgstr "Montrer les dimensions des images de couverture dans les informations"
 
-#: picard/options.py:219
+#: picard/options.py:220
 #, fuzzy
 #| msgid "Show cover art MIME type in info labels"
 msgid "Show cover art MIME type"
 msgstr "Montrer le type MIME des images de couverture dans les informations"
 
-#: picard/options.py:250
+#: picard/options.py:252
 #, fuzzy
 #| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID fingerprinting"
 msgstr "Ne pas utiliser la prise d’empreinte audio-acoustique"
 
-#: picard/options.py:253
+#: picard/options.py:255
 #, fuzzy
 #| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
 msgstr "Empreinte AcoustID"
 
-#: picard/options.py:263 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:265 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr "Analyser automatiquement tous les nouveaux fichiers"
 
-#: picard/options.py:264
+#: picard/options.py:266
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
 msgid "Check for documentation updates"
 msgstr "Vérifier les mises à jour des greffons au démarrage"
 
-#: picard/options.py:265
+#: picard/options.py:267
 #, fuzzy
 #| msgid "Check for plugin updates during startup"
 msgid "Check for plugin updates"
 msgstr "Vérifier les mises à jour des greffons au démarrage"
 
-#: picard/options.py:266
+#: picard/options.py:268
 #, fuzzy
 #| msgid "Check for program updates during startup"
 msgid "Check for program updates"
 msgstr "Vérifier les mises à jour du programme lors du démarrage"
 
-#: picard/options.py:267 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:269 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
 msgstr "Regrouper automatiquement les nouveaux fichiers"
 
-#: picard/options.py:268 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:270 picard/ui/forms/ui_options_general.py:216
 msgid "Ignore MBIDs when loading new files"
 msgstr "Ignorer les MBID au chargement de nouveaux fichiers"
 
-#: picard/options.py:269
+#: picard/options.py:271
 msgid "Server address"
 msgstr "Adresse du serveur"
 
-#: picard/options.py:270
+#: picard/options.py:272
 msgid "Port"
 msgstr "Port"
 
-#: picard/options.py:271
+#: picard/options.py:273
 msgid "Days between update checks"
 msgstr "Jours entre les vérifications de mise à jour"
 
-#: picard/options.py:272
+#: picard/options.py:274
 #, fuzzy
 #| msgid "Updates to check"
 msgid "Update types to check"
 msgstr "Mises à jour à vérifier"
 
-#: picard/options.py:273
+#: picard/options.py:275
 #, fuzzy
 #| msgid "Submit data to the configured server"
 msgid "Submit to configured server"
 msgstr "Soumettre les données au serveur configuré"
 
-#: picard/options.py:277
+#: picard/options.py:279
 msgid "Use album artist genres"
 msgstr "Utiliser les genres de l'artiste de l'album"
 
-#: picard/options.py:278 picard/ui/forms/ui_options_genres.py:133
+#: picard/options.py:280 picard/ui/forms/ui_options_genres.py:133
 msgid "Use folksonomy tags as genre"
 msgstr "Utiliser les balises de folksonomie comme genre"
 
-#: picard/options.py:280
+#: picard/options.py:282
 msgid "Genres to include or exclude"
 msgstr "Genres à inclure ou exclure"
 
-#: picard/options.py:282
+#: picard/options.py:284
 msgid "Join multiple genres with"
 msgstr "Joindre plusieurs genres avec"
 
-#: picard/options.py:283
+#: picard/options.py:285
 msgid "Maximum number of genres"
 msgstr "Nombre maximal de genres"
 
-#: picard/options.py:284
+#: picard/options.py:286
 msgid "Minimal genre usage"
 msgstr "Usage minimal des genres"
 
-#: picard/options.py:285 picard/ui/forms/ui_options_genres.py:131
+#: picard/options.py:287 picard/ui/forms/ui_options_genres.py:131
 msgid "Use only my genres"
 msgstr "Seulement utiliser mes genres"
 
-#: picard/options.py:286 picard/ui/forms/ui_options_genres.py:130
+#: picard/options.py:288 picard/ui/forms/ui_options_genres.py:130
 msgid "Use genres from MusicBrainz"
 msgstr "Utiliser les genres venant de MusicBrainz"
 
-#: picard/options.py:290
+#: picard/options.py:292
 #, fuzzy
 #| msgid "Allow selection of multiple directories"
 msgid "Allow selecting multiple directories"
 msgstr "Autoriser la sélection de plusieurs répertoires"
 
-#: picard/options.py:291
+#: picard/options.py:293
 #, fuzzy
 #| msgid "Use builtin search rather than looking in browser"
 msgid "Use builtin search (not browser)"
 msgstr "Utiliser la recherche intégrée au lieu du navigateur"
 
-#: picard/options.py:296
+#: picard/options.py:298
 #, fuzzy
 #| msgid "Adjust horizontal position in file browser automatically"
 msgid "Adjust horizontal position in file browser"
@@ -573,13 +573,13 @@ msgstr ""
 "Ajuster la position horizontale dans le navigateur de fichiers "
 "automatiquement"
 
-#: picard/options.py:298
+#: picard/options.py:300
 #, fuzzy
 #| msgid "Move files when saving"
 msgid "Confirm when saving"
 msgstr "Déplacer les fichiers à l’enregistrement"
 
-#: picard/options.py:300
+#: picard/options.py:302
 #, fuzzy
 #| msgid "Show a quit confirmation dialog for unsaved changes"
 msgid "Confirm quit if unsaved changes"
@@ -587,471 +587,471 @@ msgstr ""
 "Afficher une fenêtre de confirmation de sortie pour les changements non "
 "enregistrés"
 
-#: picard/options.py:301 picard/ui/forms/ui_options_interface.py:136
+#: picard/options.py:303 picard/ui/forms/ui_options_interface.py:136
 msgid "Show icons in menus"
 msgstr "Montrer les icônes dans les menus"
 
-#: picard/options.py:302
+#: picard/options.py:304
 #, fuzzy
 #| msgid "Show a usage warning dialog when Picard starts"
 msgid "Show warning when Picard starts"
 msgstr "Montrer un dialogue de prévention concernant l'usage au démarrage"
 
-#: picard/options.py:303
+#: picard/options.py:305
 #, fuzzy
 #| msgid "&Show documentation"
 msgid "Show documentation update request"
 msgstr "&Montrer la documentation"
 
-#: picard/options.py:304
+#: picard/options.py:306
 msgid "Enable \"now playing\" notifications"
 msgstr ""
 
-#: picard/options.py:305
+#: picard/options.py:307
 msgid "Begin browsing in a specific directory"
 msgstr "Commencer la navigation dans un dossier spécifique"
 
-#: picard/options.py:306 picard/ui/forms/ui_options_interface.py:150
+#: picard/options.py:308 picard/ui/forms/ui_options_interface.py:150
 msgid "Directory to begin browsing"
 msgstr "Dossier où commencer la navigation"
 
-#: picard/options.py:307 picard/ui/forms/ui_options_interface.py:135
+#: picard/options.py:309 picard/ui/forms/ui_options_interface.py:135
 msgid "Show text labels under icons"
 msgstr "Afficher les étiquettes de texte en dessous des icônes"
 
-#: picard/options.py:308
+#: picard/options.py:310
 msgid "User interface language"
 msgstr "Langue de l’interface utilisateur"
 
-#: picard/options.py:309
+#: picard/options.py:311
 msgid "User interface color theme"
 msgstr "Thème de couleurs de l’interface utilisateur"
 
-#: picard/options.py:310
+#: picard/options.py:312
 msgid "Use advanced search syntax"
 msgstr "Utiliser la syntaxe de recherche avancée"
 
-#: picard/options.py:318
+#: picard/options.py:320
 msgid "Colors to use for light theme"
 msgstr "Couleurs à utiliser pour le thème clair"
 
-#: picard/options.py:324
+#: picard/options.py:326
 msgid "Colors to use for dark theme"
 msgstr "Couleurs à utiliser pour le thème sombre"
 
-#: picard/options.py:329
+#: picard/options.py:331
 #, fuzzy
 #| msgid "File Save Warning"
 msgid "Quick Menu options"
 msgstr "Alerte Enregistrement de fichier"
 
-#: picard/options.py:344
+#: picard/options.py:346
 msgid "Layout of the tool bar"
 msgstr "Disposition de la barre d'outils"
 
-#: picard/options.py:348
+#: picard/options.py:350
 msgid "Tags to show at the top"
 msgstr "Balises à montrer au sommet"
 
-#: picard/options.py:352
+#: picard/options.py:354
 #, fuzzy
 #| msgid "Configuration Required"
 msgid "Configuration backup directory"
 msgstr "Configuration requise"
 
-#: picard/options.py:356
+#: picard/options.py:358
 #, fuzzy
 #| msgid "Minimal similarity for cluster lookups"
 msgid "Similarity for cluster lookups"
 msgstr "Similarité minimale pour la recherche de grappes"
 
-#: picard/options.py:357
+#: picard/options.py:359
 #, fuzzy
 #| msgid "Minimal similarity for file lookups"
 msgid "Similarity for file lookups"
 msgstr "Similarité minimale pour la recherche de fichiers"
 
-#: picard/options.py:358
+#: picard/options.py:360
 #, fuzzy
 #| msgid "Minimal similarity for matching files to tracks"
 msgid "Similarity for matching files to tracks"
 msgstr "Similarité minimale pour faire concorder les fichiers aux pistes"
 
-#: picard/options.py:362
+#: picard/options.py:364
 msgid "Translation locales"
 msgstr "Locales de traduction"
 
-#: picard/options.py:363
+#: picard/options.py:365
 #, fuzzy
 #| msgid "Convert Unicode punctuation characters to ASCII"
 msgid "Convert Unicode punctuation to ASCII"
 msgstr "Convertir les caractères de ponctuation Unicode en ASCII"
 
-#: picard/options.py:364
+#: picard/options.py:366
 #, fuzzy
 #| msgid "Guess track number and title from filename if empty"
 msgid "Guess track number and title"
 msgstr ""
 "Deviner le numéro de piste et le titre depuis le nom de fichier si vide"
 
-#: picard/options.py:365
+#: picard/options.py:367
 msgid "Standalone recordings name"
 msgstr "Nom des enregistrements isolés"
 
-#: picard/options.py:366 picard/ui/forms/ui_options_metadata.py:181
+#: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:181
 msgid "Use release relationships"
 msgstr "Utiliser les relations de parution"
 
-#: picard/options.py:367
+#: picard/options.py:369
 msgid "Translation script exceptions"
 msgstr "Exceptions de traduction des systèmes d'écriture"
 
-#: picard/options.py:368 picard/ui/forms/ui_options_metadata.py:177
+#: picard/options.py:370 picard/ui/forms/ui_options_metadata.py:177
 msgid "Use standardized artist names"
 msgstr "Utiliser des noms d’artistes normalisés"
 
-#: picard/options.py:369 picard/ui/forms/ui_options_metadata.py:178
+#: picard/options.py:371 picard/ui/forms/ui_options_metadata.py:178
 #, fuzzy
 #| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized instrument credits"
 msgstr "Utiliser les crédits d’instruments et de voix normalisés"
 
-#: picard/options.py:370 picard/ui/forms/ui_options_metadata.py:179
+#: picard/options.py:372 picard/ui/forms/ui_options_metadata.py:179
 #, fuzzy
 #| msgid "Use standardized instrument and vocal credits"
 msgid "Use standardized vocal credits"
 msgstr "Utiliser les crédits d’instruments et de voix normalisés"
 
-#: picard/options.py:371
+#: picard/options.py:373
 msgid "Use track and release relationships"
 msgstr "Utiliser les relations de parution et de piste"
 
-#: picard/options.py:373
+#: picard/options.py:375
 msgid "Translate artist names"
 msgstr "Traduire les noms d'artistes"
 
-#: picard/options.py:374
+#: picard/options.py:376
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate album titles"
 msgstr "Traduire les noms d'artistes"
 
-#: picard/options.py:375
+#: picard/options.py:377
 #, fuzzy
 #| msgid "Translate artist names"
 msgid "Translate track titles"
 msgstr "Traduire les noms d'artistes"
 
-#: picard/options.py:376
+#: picard/options.py:378
 msgid "Translate artist names exception"
 msgstr "Exception de traduction des noms d'artistes"
 
-#: picard/options.py:377
+#: picard/options.py:379
 msgid "Various Artists name"
 msgstr "Nom pour Artistes divers"
 
-#: picard/options.py:382
+#: picard/options.py:384
 #, fuzzy
 #| msgid "Convert images to the given format"
 msgid "Don't sanitize dates for these formats"
 msgstr "Convertir les images vers le format donné"
 
-#: picard/options.py:387
+#: picard/options.py:389
 msgid "Browser integration"
 msgstr "Intégration au navigateur"
 
-#: picard/options.py:388 picard/ui/forms/ui_options_network.py:174
+#: picard/options.py:390 picard/ui/forms/ui_options_network.py:174
 msgid "Listen only on localhost"
 msgstr "Écouter seulement sur localhost"
 
-#: picard/options.py:389
+#: picard/options.py:391
 msgid "Default listening port"
 msgstr "Port d’écoute par défaut"
 
-#: picard/options.py:390
+#: picard/options.py:392
 #, fuzzy
 #| msgid "Network cache size in bytes"
 msgid "Network cache size (bytes)"
 msgstr "Taille du cache réseau en octets"
 
-#: picard/options.py:391
+#: picard/options.py:393
 #, fuzzy
 #| msgid "Request timeout in seconds"
 msgid "Request timeout (seconds)"
 msgstr "Expiration des requêtes en secondes"
 
-#: picard/options.py:392
+#: picard/options.py:394
 msgid "Proxy password"
 msgstr "Mot de passe proxy"
 
-#: picard/options.py:393
+#: picard/options.py:395
 msgid "Proxy server address"
 msgstr "Adresse du serveur proxy"
 
-#: picard/options.py:394
+#: picard/options.py:396
 msgid "Proxy server port"
 msgstr "Port du serveur proxy"
 
-#: picard/options.py:395
+#: picard/options.py:397
 #, fuzzy
 #| msgid "type of proxy server"
 msgid "Type of proxy server"
 msgstr "type de serveur proxy"
 
-#: picard/options.py:396
+#: picard/options.py:398
 msgid "Proxy username"
 msgstr "Nom d'utilisateur proxy"
 
-#: picard/options.py:397
+#: picard/options.py:399
 msgid "Use a web proxy server"
 msgstr "Utiliser un serveur web proxy"
 
-#: picard/options.py:401
+#: picard/options.py:403
 msgid "Plugins execution order"
 msgstr ""
 
-#: picard/options.py:410 picard/ui/forms/ui_options_ratings.py:53
+#: picard/options.py:412 picard/ui/forms/ui_options_ratings.py:53
 msgid "Enable track ratings"
 msgstr "Activer l’évaluation des pistes"
 
-#: picard/options.py:412
+#: picard/options.py:414
 #, fuzzy
 #| msgid "Email to use when saving ratings"
 msgid "Email for saving ratings"
 msgstr "Courriel à utiliser lors de la sauvegarde des notes"
 
-#: picard/options.py:413 picard/ui/forms/ui_options_ratings.py:56
+#: picard/options.py:415 picard/ui/forms/ui_options_ratings.py:56
 msgid "Submit ratings to MusicBrainz"
 msgstr "Envoyer des évaluations à MusicBrainz"
 
-#: picard/options.py:417 picard/ui/forms/ui_options_releases.py:117
+#: picard/options.py:419 picard/ui/forms/ui_options_releases.py:117
 msgid "Preferred release countries"
 msgstr "Pays préféré des parutions"
 
-#: picard/options.py:418 picard/ui/forms/ui_options_releases.py:122
+#: picard/options.py:420 picard/ui/forms/ui_options_releases.py:122
 msgid "Preferred medium formats"
 msgstr "Formats de support préférés"
 
-#: picard/options.py:419 picard/ui/forms/ui_options_releases.py:116
+#: picard/options.py:421 picard/ui/forms/ui_options_releases.py:116
 msgid "Preferred release types"
 msgstr "Type de parution préféré"
 
-#: picard/options.py:423 picard/ui/forms/ui_options_renaming.py:166
+#: picard/options.py:425 picard/ui/forms/ui_options_renaming.py:166
 msgid "Delete empty directories"
 msgstr "Supprimer les répertoires vides"
 
-#: picard/options.py:424
+#: picard/options.py:426
 msgid "Move additional files"
 msgstr "Déplacer les fichiers supplémentaires"
 
-#: picard/options.py:425
+#: picard/options.py:427
 msgid "Additional file patterns"
 msgstr "Schémas des fichiers additionnels"
 
-#: picard/options.py:426
+#: picard/options.py:428
 msgid "Move files"
 msgstr "Déplacer les fichiers"
 
-#: picard/options.py:427
+#: picard/options.py:429
 msgid "Destination directory"
 msgstr "Dossier de destination"
 
-#: picard/options.py:428 picard/ui/forms/ui_options_renaming.py:167
+#: picard/options.py:430 picard/ui/forms/ui_options_renaming.py:167
 #, fuzzy
 #| msgid "Overwrite existing image files"
 msgid "Overwrite existing files"
 msgstr "Écraser les fichiers images existants"
 
-#: picard/options.py:429
+#: picard/options.py:431
 msgid "Rename files"
 msgstr "Renommer les fichiers"
 
-#: picard/options.py:433 picard/ui/forms/ui_options_renaming_compat.py:95
+#: picard/options.py:435 picard/ui/forms/ui_options_renaming_compat.py:95
 msgid "Replace non-ASCII characters"
 msgstr "Remplacer les caractères non-ASCII"
 
-#: picard/options.py:438
+#: picard/options.py:440
 #, fuzzy
 #| msgid "Replace directory separators with:"
 msgid "Directory separators character"
 msgstr "Remplacer les séparateurs de répertoires avec :"
 
-#: picard/options.py:440 picard/ui/forms/ui_options_renaming_compat.py:99
+#: picard/options.py:442 picard/ui/forms/ui_options_renaming_compat.py:99
 msgid "Replace spaces with underscores"
 msgstr "Remplacer les espaces par des caractères de soulignement"
 
-#: picard/options.py:445
+#: picard/options.py:447
 #, fuzzy
 #| msgid "Windows compatibility"
 msgid "Windows compatibility characters"
 msgstr "Compatibilité Windows"
 
-#: picard/options.py:447 picard/ui/forms/ui_options_renaming_compat.py:96
+#: picard/options.py:449 picard/ui/forms/ui_options_renaming_compat.py:96
 #: picard/ui/forms/ui_win_compat_dialog.py:198
 msgid "Windows compatibility"
 msgstr "Compatibilité Windows"
 
-#: picard/options.py:448 picard/ui/options/renaming_compat.py:136
+#: picard/options.py:450 picard/ui/options/renaming_compat.py:136
 msgid "Windows long path support"
 msgstr "Support pour les chemins longs de Windows"
 
-#: picard/options.py:453
+#: picard/options.py:455
 msgid "Enable tagger scripts"
 msgstr "Activer les scripts de balisage"
 
-#: picard/options.py:454
+#: picard/options.py:456
 msgid "Tagger scripts"
 msgstr "Scripts de balisage"
 
-#: picard/options.py:458 picard/ui/forms/ui_options_tags.py:80
+#: picard/options.py:460 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
 msgstr "Effacer les balises existantes"
 
-#: picard/options.py:459
+#: picard/options.py:461
 #, fuzzy
 #| msgid "Write tags to files"
 msgid "Enable saving tags to files"
 msgstr "Écrire les balises dans les fichiers"
 
-#: picard/options.py:460
+#: picard/options.py:462
 #, fuzzy
 #| msgid "Fix missing seekpoints for FLAC files"
 msgid "Fix missing seekpoints in FLAC"
 msgstr "Corriger les points de recherche manquants dans les fichiers FLAC"
 
-#: picard/options.py:461
+#: picard/options.py:463
 msgid "Preserved tags list"
 msgstr "Liste des balises préservées"
 
-#: picard/options.py:462
+#: picard/options.py:464
 #, fuzzy
 #| msgid "Keep embedded images when clearing tags"
 msgid "Keep embedded images"
 msgstr "Conserver les images embarquées lors de la suppression des balises"
 
-#: picard/options.py:463
+#: picard/options.py:465
 #, fuzzy
 #| msgid "Preserve timestamps of tagged files"
 msgid "Preserve timestamps"
 msgstr "Ne pas modifier l’horodatage des fichiers balisés"
 
-#: picard/options.py:464
+#: picard/options.py:466
 #, fuzzy
 #| msgid "Remove APEv2 tags from MP3 files"
 msgid "Remove APEv2 tags from MP3"
 msgstr "Supprimer les balises APEv2 des fichiers MP3"
 
-#: picard/options.py:465
+#: picard/options.py:467
 #, fuzzy
 #| msgid "Remove ID3 tags from FLAC files"
 msgid "Remove ID3 tags from FLAC"
 msgstr "Supprimer les balises ID3 des fichiers FLAC"
 
-#: picard/options.py:469
+#: picard/options.py:471
 msgid "Save APEv2 tags to AAC"
 msgstr "Enregistrer les balises APEv2 dans AAC"
 
-#: picard/options.py:470
+#: picard/options.py:472
 #, fuzzy
 #| msgid "Remove APEv2 tags from AAC files"
 msgid "Remove APEv2 tags from AAC"
 msgstr "Supprimer les balises APEv2 des fichiers AAC"
 
-#: picard/options.py:474
+#: picard/options.py:476
 msgid "Save APEv2 tags to AC3"
 msgstr "Enregistrer les balises APEv2 dans AC3"
 
-#: picard/options.py:475
+#: picard/options.py:477
 #, fuzzy
 #| msgid "Remove APEv2 tags from AC3 files"
 msgid "Remove APEv2 tags from AC3"
 msgstr "Supprimer les balises APEv2 des fichiers AC3"
 
-#: picard/options.py:479
+#: picard/options.py:481
 msgid "ID3v2.3 join character"
 msgstr "Caractère de jointure pour ID3v2.3"
 
-#: picard/options.py:480
+#: picard/options.py:482
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:125
 msgid "ID3v2 text encoding"
 msgstr "Jeu de caractères ID3v2"
 
-#: picard/options.py:481
+#: picard/options.py:483
 #, fuzzy
 #| msgid "Save iTunes compatible grouping and work"
 msgid "iTunes compatible grouping / work"
 msgstr "Sauver groupes et œuvres de façon compatible avec iTunes"
 
-#: picard/options.py:482
+#: picard/options.py:484
 msgid "Write ID3v1 tags"
 msgstr "Écrire les balises ID3v1"
 
-#: picard/options.py:483
+#: picard/options.py:485
 msgid "ID3v2 version to write"
 msgstr "Version ID3v2 à écrire"
 
-#: picard/options.py:487
+#: picard/options.py:489
 #, fuzzy
 #| msgid "Remove existing RIFF INFO tags from WAVE files"
 msgid "Remove RIFF INFO tags from WAVE"
 msgstr "Supprimer les balises RIFF INFO existantes des fichiers WAVE"
 
-#: picard/options.py:488
+#: picard/options.py:490
 #: picard/ui/forms/ui_options_tags_compatibility_wave.py:66
 msgid "RIFF INFO text encoding"
 msgstr "Encodage du texte RIFF INFO"
 
-#: picard/options.py:489
+#: picard/options.py:491
 #, fuzzy
 #| msgid "Write RIFF INFO tags to WAVE files"
 msgid "Write RIFF INFO tags to WAVE"
 msgstr "Écrire les balises RIFF INFO dans les fichiers WAVE"
 
-#: picard/options.py:495
+#: picard/options.py:497
 msgid "Selected file naming script"
 msgstr "Script de nommage de fichier sélectionné"
 
-#: picard/options.py:503 picard/ui/forms/ui_options_advanced_sessions.py:123
+#: picard/options.py:505 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
 msgstr ""
 
-#: picard/options.py:509
+#: picard/options.py:511
 #, fuzzy
 #| msgid "Failed to save Log View to file"
 msgid "Start with last saved session"
 msgstr "Échec de l’enregistrement de la vue du journal dans le fichier"
 
-#: picard/options.py:515
+#: picard/options.py:517
 msgid "Auto-save interval"
 msgstr ""
 
-#: picard/options.py:521
+#: picard/options.py:523
 msgid "Backup session on unexpected exit"
 msgstr ""
 
-#: picard/options.py:527
+#: picard/options.py:529
 #, fuzzy
 #| msgid "Use genres from MusicBrainz"
 msgid "Include MusicBrainz data"
 msgstr "Utiliser les genres venant de MusicBrainz"
 
-#: picard/options.py:533
+#: picard/options.py:535
 #, fuzzy
 #| msgid "MusicBrainz Server"
 msgid "No MusicBrainz requests on restore"
 msgstr "Serveur MusicBrainz"
 
-#: picard/options.py:539
+#: picard/options.py:541
 #, fuzzy
 #| msgid "Destination directory"
 msgid "Sessions directory"
 msgstr "Dossier de destination"
 
-#: picard/options.py:567
+#: picard/options.py:569
 msgid "Plugins to exclude from updates"
 msgstr "Greffons à exclure des mises à jour"
 
-#: picard/options.py:586
+#: picard/options.py:588
 #, fuzzy, python-format
 #| msgid "No title for setting '%s'"
 msgid "No title for setting \"%s\""
@@ -1135,20 +1135,20 @@ msgstr "[pas de code-barres]"
 msgid "[no release info]"
 msgstr "[aucune information de parution]"
 
-#: picard/tagger.py:613 picard/ui/forms/ui_options_general.py:210
+#: picard/tagger.py:612 picard/ui/forms/ui_options_general.py:210
 msgid "MusicBrainz Account"
 msgstr "Compte MusicBrainz"
 
-#: picard/tagger.py:614
+#: picard/tagger.py:613
 msgid "Authorization code:"
 msgstr "Code d’autorisation :"
 
-#: picard/tagger.py:734 picard/ui/mainwindow/__init__.py:1390
+#: picard/tagger.py:733 picard/ui/mainwindow/__init__.py:1390
 #: picard/ui/mainwindow/__init__.py:1416
 msgid "Failed to load session"
 msgstr "Échec de chargement de session"
 
-#: picard/tagger.py:735 picard/ui/mainwindow/__init__.py:1391
+#: picard/tagger.py:734 picard/ui/mainwindow/__init__.py:1391
 #: picard/ui/mainwindow/__init__.py:1417
 #, fuzzy, python-format
 #| msgid ""
@@ -1164,7 +1164,7 @@ msgstr ""
 "\n"
 "%(error)s"
 
-#: picard/tagger.py:780
+#: picard/tagger.py:779
 #, python-brace-format
 msgid ""
 "The following plugins have been blacklisted and disabled:\n"
@@ -1175,31 +1175,31 @@ msgid ""
 "have been automatically disabled for your protection."
 msgstr ""
 
-#: picard/tagger.py:785
+#: picard/tagger.py:784
 msgid "Blacklisted Plugins Detected"
 msgstr ""
 
-#: picard/tagger.py:1164
+#: picard/tagger.py:1166
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Suppression de l’album %(id)s : %(artist)s - %(album)s"
 
-#: picard/tagger.py:1193
+#: picard/tagger.py:1195
 #, fuzzy, python-format
 #| msgid "Error importing \"%(filename)s\": %(error)s"
 msgid "Failed moving \"%(filename)s\" to trash"
 msgstr "Erreur lors de l'importation de « %(filename)s » : %(error)s"
 
-#: picard/tagger.py:1198
+#: picard/tagger.py:1200
 #, python-format
 msgid "Moved %(count)i files to trash"
 msgstr ""
 
-#: picard/tagger.py:1204
+#: picard/tagger.py:1206
 msgid "CD Lookup Error"
 msgstr "Erreur lors de la recherche du CD"
 
-#: picard/tagger.py:1204
+#: picard/tagger.py:1206
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1210,29 +1210,29 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1238
+#: picard/tagger.py:1240
 msgid "All supported log files"
 msgstr "Tous les fichiers log supportés"
 
-#: picard/tagger.py:1239
+#: picard/tagger.py:1241
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "Fichiers log EAC / XLD / Whipper / fre:ac"
 
-#: picard/tagger.py:1240
+#: picard/tagger.py:1242
 msgid "dBpoweramp log files"
 msgstr "Fichiers log dBpoweramp"
 
-#: picard/tagger.py:1241
+#: picard/tagger.py:1243
 msgid "SCSI TOC file"
 msgstr ""
 
-#: picard/script/serializer.py:381 picard/tagger.py:1242
+#: picard/script/serializer.py:381 picard/tagger.py:1244
 #: picard/ui/coverartbox/__init__.py:382 picard/ui/mainwindow/__init__.py:1134
 #: picard/ui/options/maintenance.py:220 picard/ui/options/scripting.py:138
 msgid "All files"
 msgstr "Tous les fichiers"
 
-#: picard/tagger.py:1274
+#: picard/tagger.py:1276
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Échec d'interprétation du log « %s »"
@@ -4367,11 +4367,11 @@ msgstr "Labels"
 msgid "Catalog #s"
 msgstr "Nos de catalogue"
 
-#: picard/ui/collectionmenu.py:63
+#: picard/ui/collectionmenu.py:64
 msgid "Refresh List"
 msgstr "Rafraîchir la liste"
 
-#: picard/ui/collectionmenu.py:115
+#: picard/ui/collectionmenu.py:148
 #, python-format
 msgid "%(name)s (%(count)i release)"
 msgid_plural "%(name)s (%(count)i releases)"
@@ -5473,7 +5473,7 @@ msgid "A&rtwork"
 msgstr "&Illustration"
 
 #: picard/ui/forms/ui_infostatus.py:112
-#: picard/ui/forms/ui_options_cover_processing.py:276
+#: picard/ui/forms/ui_options_cover_processing.py:301
 #: picard/ui/forms/ui_provider_options_caa.py:78
 #: picard/ui/forms/ui_provider_options_local.py:50
 #: picard/ui/forms/ui_widget_taglisteditor.py:74
@@ -5696,74 +5696,78 @@ msgstr "Monter l’élément sélectionné"
 msgid "Move selected item down"
 msgstr "Descendre l’élément sélectionné"
 
-#: picard/ui/forms/ui_options_cover_processing.py:277
+#: picard/ui/forms/ui_options_cover_processing.py:302
 msgid "Discard images if below the given size"
 msgstr ""
 
-#: picard/ui/forms/ui_options_cover_processing.py:278
+#: picard/ui/forms/ui_options_cover_processing.py:303
 msgid "Minimum width:"
 msgstr ""
 
-#: picard/ui/forms/ui_options_cover_processing.py:279
-#: picard/ui/forms/ui_options_cover_processing.py:281
-#: picard/ui/forms/ui_options_cover_processing.py:285
-#: picard/ui/forms/ui_options_cover_processing.py:287
-#: picard/ui/forms/ui_options_cover_processing.py:291
-#: picard/ui/forms/ui_options_cover_processing.py:293
+#: picard/ui/forms/ui_options_cover_processing.py:304
+#: picard/ui/forms/ui_options_cover_processing.py:306
+#: picard/ui/forms/ui_options_cover_processing.py:310
+#: picard/ui/forms/ui_options_cover_processing.py:312
+#: picard/ui/forms/ui_options_cover_processing.py:316
+#: picard/ui/forms/ui_options_cover_processing.py:318
 msgid "px"
 msgstr ""
 
-#: picard/ui/forms/ui_options_cover_processing.py:280
+#: picard/ui/forms/ui_options_cover_processing.py:305
 msgid "Minimum height:"
 msgstr ""
 
-#: picard/ui/forms/ui_options_cover_processing.py:282
+#: picard/ui/forms/ui_options_cover_processing.py:307
 #, fuzzy
 #| msgid "Only use images of the following size:"
 msgid "Resize images to the given size"
 msgstr "Utiliser seulement les images de la taille suivante :"
 
-#: picard/ui/forms/ui_options_cover_processing.py:283
+#: picard/ui/forms/ui_options_cover_processing.py:308
 #, fuzzy
 #| msgid "Embed cover images into tags"
 msgid "Resize images saved to tags"
 msgstr "Intégrer les images de couverture dans les balises"
 
-#: picard/ui/forms/ui_options_cover_processing.py:284
-#: picard/ui/forms/ui_options_cover_processing.py:290
+#: picard/ui/forms/ui_options_cover_processing.py:309
+#: picard/ui/forms/ui_options_cover_processing.py:315
 msgid "Maximum width:"
 msgstr "Largeur maximale :"
 
-#: picard/ui/forms/ui_options_cover_processing.py:286
-#: picard/ui/forms/ui_options_cover_processing.py:292
+#: picard/ui/forms/ui_options_cover_processing.py:311
+#: picard/ui/forms/ui_options_cover_processing.py:317
 msgid "Maximum height:"
 msgstr "Hauteur maximale :"
 
-#: picard/ui/forms/ui_options_cover_processing.py:288
-#: picard/ui/forms/ui_options_cover_processing.py:294
+#: picard/ui/forms/ui_options_cover_processing.py:313
+#: picard/ui/forms/ui_options_cover_processing.py:319
 msgid "Enlarge"
 msgstr "Agrandir"
 
-#: picard/ui/forms/ui_options_cover_processing.py:289
+#: picard/ui/forms/ui_options_cover_processing.py:314
 msgid "Resize images saved to files"
 msgstr "Redimensionner les images sauvées dans les fichiers"
 
-#: picard/ui/forms/ui_options_cover_processing.py:295
+#: picard/ui/forms/ui_options_cover_processing.py:320
 msgid "Convert images to the given format"
 msgstr "Convertir les images vers le format donné"
 
-#: picard/ui/forms/ui_options_cover_processing.py:296
+#: picard/ui/forms/ui_options_cover_processing.py:321
 msgid "Convert images saved to tags"
 msgstr "Convertir les images sauvées dans les balises"
 
-#: picard/ui/forms/ui_options_cover_processing.py:297
-#: picard/ui/forms/ui_options_cover_processing.py:299
+#: picard/ui/forms/ui_options_cover_processing.py:322
+#: picard/ui/forms/ui_options_cover_processing.py:324
 msgid "New format:"
 msgstr "Nouveau format :"
 
-#: picard/ui/forms/ui_options_cover_processing.py:298
+#: picard/ui/forms/ui_options_cover_processing.py:323
 msgid "Convert images saved to files"
 msgstr "Convertir les images sauvées dans des fichiers"
+
+#: picard/ui/forms/ui_options_cover_processing.py:325
+msgid "JPEG / WebP image quality:"
+msgstr ""
 
 #: picard/ui/forms/ui_options_fingerprinting.py:105
 msgid "Audio Fingerprinting"
