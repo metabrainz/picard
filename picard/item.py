@@ -137,23 +137,6 @@ class Item:
         pass
 
     @property
-    def tracknumber(self):
-        """The track number as an int."""
-        return self._track_or_disc_number('tracknumber')
-
-    @property
-    def discnumber(self):
-        """The disc number as an int."""
-        return self._track_or_disc_number('discnumber')
-
-    def _track_or_disc_number(self, field):
-        """Extract tracknumber or discnumber as int, defaults to 0."""
-        try:
-            return int(self.metadata.get(field, '0').split('/')[0])
-        except ValueError:
-            return 0
-
-    @property
     def errors(self) -> list[str]:
         if not hasattr(self, '_errors'):
             self._errors = []
@@ -165,46 +148,6 @@ class Item:
 
     def clear_errors(self):
         self._errors = []
-
-    @property
-    def _images(self):
-        return self.metadata.images
-
-    def cover_art_description(self):
-        """Return the number of cover art images for display in the UI
-
-        Returns:
-            A string with the cover art image count, or empty string if not applicable
-        """
-        if not self.can_show_coverart:
-            return ''
-
-        return str(len(self._images))
-
-    def cover_art_description_detailed(self):
-        """Return  a detailed text about the images and whether they are the same across
-           all tracks for images in `images` for display in the UI
-
-        Returns:
-            A string explaining the cover art image count.
-        """
-        if not self.can_show_coverart:
-            return ''
-
-        number_of_images = len(self._images)
-        if getattr(self, 'has_common_images', True):
-            return ngettext("%i image", "%i images", number_of_images) % number_of_images
-        else:
-            return (
-                ngettext("%i image not in all tracks", "%i different images among tracks", number_of_images)
-                % number_of_images
-            )
-
-    def cover_art_dimensions(self) -> str:
-        front_image = self.metadata.images.get_front_image()
-        if front_image:
-            return front_image.dimensions_as_string()
-        return ''
 
 
 class ImageListState:
@@ -252,6 +195,23 @@ class MetadataItem(QtCore.QObject, Item):
         f = stack[1]
         log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)
 
+    @property
+    def tracknumber(self):
+        """The track number as an int."""
+        return self._track_or_disc_number('tracknumber')
+
+    @property
+    def discnumber(self):
+        """The disc number as an int."""
+        return self._track_or_disc_number('discnumber')
+
+    def _track_or_disc_number(self, field):
+        """Extract tracknumber or discnumber as int, defaults to 0."""
+        try:
+            return int(self.metadata.get(field, '0').split('/')[0])
+        except ValueError:
+            return 0
+
     def update_metadata_images(self):
         if not self.suspend_metadata_images_update and self.can_show_coverart:
             if self.update_metadata_images_from_children():
@@ -259,9 +219,9 @@ class MetadataItem(QtCore.QObject, Item):
 
     def keep_original_images(self):
         with self.suspend_metadata_images_update:
-            for file in list(self.files):
-                if file.can_show_coverart:
-                    file.keep_original_images()
+            for child in list(self.children_metadata_items()):
+                if child.can_show_coverart:
+                    child.keep_original_images()
         self.update_metadata_images()
 
     def children_metadata_items(self) -> Iterable['MetadataItem']:
@@ -339,6 +299,46 @@ class MetadataItem(QtCore.QObject, Item):
             metadata.has_common_images = state.has_common_images
 
         return changed
+
+    @property
+    def _images(self):
+        return self.metadata.images
+
+    def cover_art_description(self):
+        """Return the number of cover art images for display in the UI
+
+        Returns:
+            A string with the cover art image count, or empty string if not applicable
+        """
+        if not self.can_show_coverart:
+            return ''
+
+        return str(len(self._images))
+
+    def cover_art_description_detailed(self):
+        """Return  a detailed text about the images and whether they are the same across
+           all tracks for images in `images` for display in the UI
+
+        Returns:
+            A string explaining the cover art image count.
+        """
+        if not self.can_show_coverart:
+            return ''
+
+        number_of_images = len(self._images)
+        if getattr(self, 'has_common_images', True):
+            return ngettext("%i image", "%i images", number_of_images) % number_of_images
+        else:
+            return (
+                ngettext("%i image not in all tracks", "%i different images among tracks", number_of_images)
+                % number_of_images
+            )
+
+    def cover_art_dimensions(self) -> str:
+        front_image = self.metadata.images.get_front_image()
+        if front_image:
+            return front_image.dimensions_as_string()
+        return ''
 
     @property
     def genres(self) -> Counter[str]:
