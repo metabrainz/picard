@@ -85,7 +85,7 @@ class Option(QtCore.QObject):
         }
 
         subclass_tests = {
-            IntEnum: IntOption,
+            IntEnum: Option,
             QtCore.QByteArray: Option,
         }
 
