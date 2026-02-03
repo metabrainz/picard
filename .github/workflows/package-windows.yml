@@ -16,6 +16,8 @@ jobs:
           - type: store-app
             disable-autoupdate: 1
       fail-fast: false
+    permissions:
+      id-token: write
     env:
       CODESIGN: ${{ !!secrets.AZURE_CERT_PROFILE_NAME }}
     steps:
@@ -83,13 +85,18 @@ jobs:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
+    - name: Azure login
+      uses: azure/login@v2
+      if: env.CODESIGN == 'true'
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        enable-AzPSSession: true
     - name: Sign picard.exe
       uses: azure/artifact-signing-action@v1
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
-        azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
         signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
         certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
@@ -116,9 +123,6 @@ jobs:
       uses: azure/artifact-signing-action@v1
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
-        azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
         signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
         certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
