@@ -171,7 +171,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             ("list_option", [1, 2], ListOption, ["a"]),
             ("list_option_from_tuple", (1, 2), ListOption, ["a"]),
             ("enum_option", TestEnum.A, Option, TestEnum.B),
-            ("int_enum_option", TestIntEnum.A, Option, TestIntEnum.B),
+            ("int_enum_option", TestIntEnum.A, IntOption, TestIntEnum.B),
             ("other_option", b"foo", Option, b"bar"),
         ]
         for name, default, expected_type, test_value in test_cases:
@@ -293,6 +293,17 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
     def test_int_opt_convert(self):
         opt = IntOption("setting", "int_option", 666)
         self.assertEqual(opt.convert("123"), 123)
+
+    def test_int_opt_convert_intenum(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        opt = IntOption("setting", "int_option", TestIntEnum.A)
+        self.assertEqual(opt.convert(2), TestIntEnum.B)
+        self.assertIsInstance(opt.convert("2"), TestIntEnum)
+        with self.assertRaises(ValueError):
+            opt.convert(3)
 
     def test_int_opt_no_config(self):
         IntOption("setting", "int_option", 666)

@@ -85,7 +85,7 @@ class Option(QtCore.QObject):
         }
 
         subclass_tests = {
-            IntEnum: Option,
+            IntEnum: IntOption,
             QtCore.QByteArray: Option,
         }
 
@@ -144,7 +144,12 @@ class BoolOption(Option):
 
 
 class IntOption(Option):
-    convert = int
+    def convert(self, value):
+        value = int(value)
+        # If the default is an IntEnum, return an IntEnum
+        if isinstance(self.default, IntEnum):
+            return type(self.default)(value)
+        return value
 
 
 class FloatOption(Option):
@@ -259,9 +264,7 @@ class ConfigSection(QtCore.QObject):
         if default is None:
             raise TypeError('Option default value must not be None')
 
-        if isinstance(default, Enum):
-            option_type = Option
-        elif isinstance(default, str):
+        if isinstance(default, str):
             option_type = TextOption
         elif isinstance(default, bool):
             option_type = BoolOption
@@ -271,6 +274,8 @@ class ConfigSection(QtCore.QObject):
             option_type = FloatOption
         elif isinstance(default, list) or isinstance(default, tuple):
             option_type = ListOption
+        elif isinstance(default, Enum):
+            option_type = Option
         else:
             option_type = Option
 
