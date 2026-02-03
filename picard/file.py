@@ -52,7 +52,6 @@ from enum import (
 )
 import fnmatch
 from functools import partial
-from enum import Enum, auto
 import hashlib
 import os
 import os.path
@@ -144,6 +143,8 @@ FILE_COMPARISON_WEIGHTS = {
 class ExternalChange(Enum):
     MISSING = auto()
     MODIFIED = auto()
+
+
 class FileIdentityError(Exception):
     pass
 
@@ -498,7 +499,6 @@ class File(MetadataItem):
         if current != self._loaded_identity:
             return ExternalChange.MODIFIED
         return None
-
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
