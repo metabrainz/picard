@@ -33,6 +33,8 @@ jobs:
   package-windows:
     uses: ./.github/workflows/package-windows.yml
     secrets: inherit
+    permissions:
+      id-token: write
 
   package-pypi:
     uses: ./.github/workflows/package-pypi.yml
