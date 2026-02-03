@@ -234,7 +234,7 @@ class MetadataItem(QtCore.QObject, Item):
         self.orig_metadata: Metadata = Metadata()
         self.update_children_metadata_attrs = {}
         self._iter_children_items_metadata_ignore_attrs = {}
-        self.suspend_metadata_images_update = IgnoreUpdatesContext()
+        self.suspend_metadata_images_update = IgnoreUpdatesContext(on_exit=self.update_metadata_images)
         self._genres = Counter()
         self._folksonomy_tags = Counter()
 
