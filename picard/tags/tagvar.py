@@ -187,6 +187,9 @@ class TagVar:
             return self.name
 
 
+TagInfo = namedtuple('TagInfo', ('name', 'tagdesc', 'search_name', 'item'))
+
+
 class TagVars(MutableSequence):
     """Mutable sequence for TagVar items
     It maintains an internal dict object for display names.
@@ -195,7 +198,7 @@ class TagVars(MutableSequence):
 
     def __init__(self, *tagvars):
         self._items = []
-        self._name2item = dict()
+        self._name2item: dict[str, TagVar] = dict()
         self.extend(tagvars)
 
     def __len__(self):
@@ -229,7 +232,7 @@ class TagVars(MutableSequence):
     def __repr__(self):
         return f"TagVars({self._items!r})"
 
-    def item_from_name(self, name):
+    def item_from_name(self, name) -> TagInfo:
         if ':' in name:
             name, tagdesc = name.split(':', 1)
         else:
@@ -243,9 +246,12 @@ class TagVars(MutableSequence):
         else:
             search_name = name
 
-        item: TagVar = self._name2item.get(search_name, None)
+        item = self._name2item.get(search_name, None)
 
-        return name, tagdesc, search_name, item
+        return TagInfo(name, tagdesc, search_name, item)
+
+    def tagvar_from_name(self, name) -> TagVar | None:
+        return self.item_from_name(name).item
 
     def script_name_from_name(self, name):
         tagname, tagdesc, search_name, item = self.item_from_name(name)

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021-2022 Laurent Monin
-# Copyright (C) 2021-2022, 2024-2025 Philipp Wolfer
+# Copyright (C) 2021-2022, 2024-2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +19,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from collections import Counter
 
 from test.picardtestcase import PicardTestCase
@@ -29,6 +28,7 @@ from picard.album import (
     AlbumArtist,
 )
 from picard.const import VARIOUS_ARTISTS_ID
+from picard.file import File
 from picard.releasegroup import ReleaseGroup
 from picard.track import (
     Track,
@@ -102,6 +102,32 @@ class TrackTest(PicardTestCase):
         track._folksonomy_tags = Counter(live=2, pop=6, rock=7, blues=2, favorite=1)
         track._add_folksonomy_tags_variable()
         self.assertEqual(track.metadata.getall('~folksonomy_tags'), ['favorite', 'live'])
+
+    def test_column(self):
+        track = Track('123')
+        track.metadata['test'] = 'foo'
+        self.assertEqual(track.column('test'), 'foo')
+        self.assertEqual(track.column('unknown'), '')
+
+    def test_column_title(self):
+        track = Track('123')
+        self.assertEqual(track.column('title'), '00  ')  # TODO: Consider to improve this case
+        track.metadata['tracknumber'] = '9'
+        self.assertEqual(track.column('title'), '09  ')
+        track.metadata['title'] = 'foo'
+        self.assertEqual(track.column('title'), '09  foo')
+        track.metadata['discnumber'] = '2'
+        self.assertEqual(track.column('title'), '2-09  foo')
+
+    def test_column_with_file(self):
+        track = Track('123')
+        self.assertEqual(track.column('test'), '')
+        track_file = File('somefile.opus')
+        track.files.append(track_file)
+        track_file.metadata['test'] = 'foo'
+        self.assertEqual(track.column('test'), 'foo')
+        track.metadata['test'] = 'bar'
+        self.assertEqual(track.column('test'), 'bar')
 
 
 class TrackGenresToMetadataTest(PicardTestCase):

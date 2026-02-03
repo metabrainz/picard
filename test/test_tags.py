@@ -180,6 +180,53 @@ class TagVarsTest(PicardTestCase):
     def tearDown(self):
         Option.registry = self.old_registry
 
+    def test_item_from_name(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('only_sd')
+        self.assertEqual(name, 'only_sd')
+        self.assertEqual(search_name, name)
+        self.assertIsNone(tagdesc)
+        self.assertEqual(item, self.tagvar_only_sd)
+
+    def test_item_from_name_with_tagdesc(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('only_sd:something')
+        self.assertEqual(name, 'only_sd')
+        self.assertEqual(search_name, name)
+        self.assertEqual(tagdesc, 'something')
+        self.assertEqual(item, self.tagvar_only_sd)
+
+    def test_item_from_name_hidden(self):
+        tagvars = TagVars(
+            self.tagvar_hidden,
+        )
+        name, tagdesc, search_name, item = tagvars.item_from_name('_hidden')
+        self.assertEqual(name, '_hidden')
+        self.assertEqual(search_name, '~hidden')
+        self.assertIsNone(tagdesc)
+        self.assertEqual(item, self.tagvar_hidden)
+
+    def test_item_from_name_unknown(self):
+        tagvars = TagVars()
+        name, tagdesc, search_name, item = tagvars.item_from_name('notatag')
+        self.assertEqual(name, 'notatag')
+        self.assertEqual(search_name, name)
+        self.assertIsNone(tagdesc)
+        self.assertIsNone(item)
+
+    def test_tagvar_from_name(self):
+        tagvars = TagVars(
+            self.tagvar_only_sd,
+            self.tagvar_hidden,
+        )
+        self.assertEqual(tagvars.tagvar_from_name('only_sd'), self.tagvar_only_sd)
+        self.assertEqual(tagvars.tagvar_from_name('_hidden'), self.tagvar_hidden)
+        self.assertIsNone(tagvars.tagvar_from_name('unknown'))
+
     def test_invalid_tagvar(self):
         with self.assertRaises(TypeError):
             TagVars('not_a_tag_var')
@@ -569,30 +616,30 @@ class TagsGeneratorTest(PicardTestCase):
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_tag)
+            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_tag)
 
     def test_all_visible_tags(self):
         tags = list(visible_tag_names())
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertFalse(ALL_TAGS.item_from_name(tag)[3].is_hidden)
+            self.assertFalse(ALL_TAGS.tagvar_from_name(tag).is_hidden)
 
     def test_all_hidden_tags(self):
         tags = list(hidden_tag_names())
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_hidden)
+            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_hidden)
 
     def test_all_preserved_tags(self):
         tags = list(preserved_tag_names())
         self.assertTrue(len(tags) > 0)
 
         for tag in tags:
-            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_preserved)
+            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_preserved)
 
     def test_all_filterable_tags(self):
         tags = list(filterable_tag_names())
         for tag in tags:
-            self.assertTrue(ALL_TAGS.item_from_name(tag)[3].is_filterable)
+            self.assertTrue(ALL_TAGS.tagvar_from_name(tag).is_filterable)
