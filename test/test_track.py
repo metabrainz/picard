@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import Counter
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -128,6 +129,14 @@ class TrackTest(PicardTestCase):
         self.assertEqual(track.column('test'), 'foo')
         track.metadata['test'] = 'bar'
         self.assertEqual(track.column('test'), 'bar')
+
+    def test_column_coverart(self):
+        track = Track('123')
+        image = Mock()
+        image.dimensions_as_string.return_value = '100x100'
+        track.metadata.images.append(image)
+        self.assertEqual(track.column('covercount'), '1')
+        self.assertEqual(track.column('coverdimensions'), '100x100')
 
 
 class TrackGenresToMetadataTest(PicardTestCase):

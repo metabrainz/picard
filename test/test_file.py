@@ -44,7 +44,6 @@ from picard.tags import (
     calculated_tag_names,
     file_info_tag_names,
 )
-from picard.util.imagelist import ImageList
 
 
 class FileTest(PicardTestCase):
@@ -168,10 +167,9 @@ class FileTest(PicardTestCase):
         self.assertEqual(self.file.column('~bitrate'), 'notanumber')
 
     def test_column_coverart(self):
-        image = create_image(b'a', types=['front'])
-        image.dimensions_as_string = Mock()
+        image = Mock()
         image.dimensions_as_string.return_value = '100x100'
-        self.file.metadata.images = ImageList([image])
+        self.file.metadata.images.append(image)
         self.assertEqual(self.file.column('covercount'), '1')
         self.assertEqual(self.file.column('coverdimensions'), '100x100')
 

@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 Will
-# Copyright (C) 2010-2011, 2014, 2018-2024 Philipp Wolfer
+# Copyright (C) 2010-2011, 2014, 2018-2026 Philipp Wolfer
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2012 Wieland Hoffmann
@@ -246,11 +246,8 @@ class Cluster(FileList):
             return self.metadata['totaltracks']
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
-        elif column == 'covercount':
-            return self.cover_art_description()
-        elif column == 'coverdimensions':
-            return self.cover_art_dimensions()
-        return self.metadata[column]
+        else:
+            return super().column(column)
 
     def _lookup_finished(self, document, http, error):
         self._lookup_task = None

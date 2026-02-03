@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2021 Laurent Monin
-# Copyright (C) 2021 Philipp Wolfer
+# Copyright (C) 2021, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
 
@@ -43,11 +44,77 @@ class TokenizeTest(PicardTestCase):
 
 
 class ClusterTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.cluster = Cluster("Test")
+
     def test_cluster_is_truthy(self):
-        cluster = Cluster("Test")
         # Empty cluster should still be truthy
-        self.assertEqual(0, len(cluster))
-        self.assertTrue(cluster)
+        self.assertEqual(0, len(self.cluster))
+        self.assertTrue(self.cluster)
+
+    def test_column(self):
+        self.cluster.metadata['test'] = 'foo'
+        self.assertEqual(self.cluster.column('test'), 'foo')
+        self.assertEqual(self.cluster.column('unknown'), '')
+
+    def test_column_special(self):
+        self.cluster.metadata['album'] = 'Foo'
+        self.cluster.metadata.images.append(Mock())
+        file1 = File('somefile.opus')
+        file1.metadata.length = 6000
+        self.cluster.files.append(file1)
+        self.assertEqual(self.cluster.column('album'), 'Foo')
+        self.assertEqual(self.cluster.column('covercount'), '1')
+        self.assertEqual(self.cluster.column('~length'), '0:06')
+
+        self.cluster.special = True
+        self.assertEqual(self.cluster.column('album'), '')
+        self.assertEqual(self.cluster.column('covercount'), '')
+        self.assertEqual(self.cluster.column('~length'), '')
+
+    def test_column_length(self):
+        self.assertEqual(self.cluster.column('~length'), '?:??')
+        file1 = File('somefile.opus')
+        file1.metadata.length = 6000
+        self.cluster.files.append(file1)
+        self.assertEqual(self.cluster.files.length, 6000)
+        self.assertEqual(self.cluster.column('~length'), '0:06')
+        file2 = File('somefile.opus')
+        file2.metadata.length = 7000
+        self.cluster.files.append(file2)
+        self.assertEqual(self.cluster.files.length, 13000)
+        self.assertEqual(self.cluster.column('~length'), '0:13')
+
+    def test_column_title(self):
+        self.assertEqual(self.cluster.column('title'), 'Test (0)')
+        self.cluster.files.append(File('somefile.opus'))
+        self.assertEqual(self.cluster.column('title'), 'Test (1)')
+
+    def test_column_artist(self):
+        self.cluster.metadata['artist'] = 'The Artist'
+        self.cluster.metadata['albumartist'] = 'The Album Artist'
+        self.assertEqual(self.cluster.column('artist'), 'The Album Artist')
+        self.assertEqual(self.cluster.column('artist'), self.cluster.column('albumartist'))
+
+    def test_column_tracknumber(self):
+        self.cluster.metadata['tracknumber'] = '3'
+        self.cluster.metadata['totaltracks'] = '42'
+        self.assertEqual(self.cluster.column('tracknumber'), '42')
+        self.assertEqual(self.cluster.column('tracknumber'), self.cluster.column('totaltracks'))
+
+    def test_column_discnumber(self):
+        self.cluster.metadata['discnumber'] = '3'
+        self.cluster.metadata['totaldiscs'] = '42'
+        self.assertEqual(self.cluster.column('discnumber'), '42')
+        self.assertEqual(self.cluster.column('discnumber'), self.cluster.column('totaldiscs'))
+
+    def test_column_coverart(self):
+        image = Mock()
+        image.dimensions_as_string.return_value = '100x100'
+        self.cluster.metadata.images.append(image)
+        self.assertEqual(self.cluster.column('covercount'), '1')
+        self.assertEqual(self.cluster.column('coverdimensions'), '100x100')
 
 
 class ClusteringTest(PicardTestCase):

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018, 2020-2022, 2024-2025 Philipp Wolfer
+# Copyright (C) 2010, 2018, 2020-2022, 2024-2026 Philipp Wolfer
 # Copyright (C) 2011-2012 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
 # Copyright (C) 2013, 2020-2021, 2023-2024 Laurent Monin
@@ -195,6 +195,17 @@ class MetadataItem(QtCore.QObject, Item):
         f = stack[1]
         log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)
 
+    def column(self, column: str) -> str:
+        """By default handle column info from metadata and special cover art columns.
+
+        Subclasses should override this for more specific column handling.
+        """
+        if column == 'covercount':
+            return self.cover_art_description()
+        elif column == 'coverdimensions':
+            return self.cover_art_dimensions()
+        return self.metadata[column]
+
     @property
     def tracknumber(self):
         """The track number as an int."""
@@ -335,6 +346,9 @@ class MetadataItem(QtCore.QObject, Item):
             )
 
     def cover_art_dimensions(self) -> str:
+        if not self.can_show_coverart:
+            return ''
+
         front_image = self.metadata.images.get_front_image()
         if front_image:
             return front_image.dimensions_as_string()

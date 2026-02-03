@@ -7,7 +7,7 @@
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008 Hendrik van Antwerpen
 # Copyright (C) 2008 ojnkpjg
-# Copyright (C) 2008-2011, 2014, 2018-2024 Philipp Wolfer
+# Copyright (C) 2008-2011, 2014, 2018-2026 Philipp Wolfer
 # Copyright (C) 2009 Nikolai Prokoschenko
 # Copyright (C) 2011-2012 Chad Wilson
 # Copyright (C) 2011-2013, 2019 Michael Wiencek
@@ -1042,12 +1042,8 @@ class Album(MetadataItem):
             return self.metadata['~totalalbumtracks']
         elif column == 'discnumber':
             return self.metadata['totaldiscs']
-        elif column == 'covercount':
-            return self.cover_art_description()
-        elif column == 'coverdimensions':
-            return self.cover_art_dimensions()
         else:
-            return self.metadata[column]
+            return super().column(column)
 
     def switch_release_version(self, mbid):
         if mbid == self.id:

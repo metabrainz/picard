@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018, 2021, 2024-2025 Philipp Wolfer
+# Copyright (C) 2018, 2021, 2024-2026 Philipp Wolfer
 # Copyright (C) 2020-2021 Laurent Monin
 #
 # This program is free software; you can redistribute it and/or
@@ -19,14 +19,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from collections import Counter
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    PropertyMock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
+from test.test_coverart_image import create_image
 
 from picard import config
 from picard.item import MetadataItem
+from picard.util.imagelist import ImageList
 
 
 class MetadataItemTest(PicardTestCase):
@@ -98,3 +103,20 @@ class MetadataItemTest(PicardTestCase):
         require_auth = self.obj.set_genre_inc_params(inc, custom_config)
         self.assertIn('user-tags', inc)
         self.assertTrue(require_auth)
+
+    def test_column(self):
+        self.obj.metadata['test'] = 'foo'
+        self.assertEqual(self.obj.column('test'), 'foo')
+        self.assertEqual(self.obj.column('unknown'), '')
+
+    def test_column_coverart(self):
+        image = create_image(b'a', types=['front'])
+        image.dimensions_as_string = Mock()
+        image.dimensions_as_string.return_value = '100x100'
+        self.obj.metadata.images = ImageList([image])
+        self.assertEqual(self.obj.column('covercount'), '')
+        self.assertEqual(self.obj.column('coverdimensions'), '')
+        with patch('picard.item.MetadataItem.can_show_coverart', new_callable=PropertyMock) as mock_can_show_coverart:
+            mock_can_show_coverart.return_value = True
+            self.assertEqual(self.obj.column('covercount'), '1')
+            self.assertEqual(self.obj.column('coverdimensions'), '100x100')
