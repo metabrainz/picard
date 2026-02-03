@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-02 16:43+0100\n"
-"PO-Revision-Date: 2026-01-31 11:11+0000\n"
+"PO-Revision-Date: 2026-02-03 19:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,8 +23,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.6.0\n"
 
@@ -3761,7 +3761,7 @@ msgstr "Į&traukti visus"
 
 #: picard/ui/caa_types_selector.py:273
 msgid "E&xclude all"
-msgstr "Neį&traukti visus"
+msgstr "&Neįtraukti visus"
 
 #: picard/ui/caa_types_selector.py:274
 msgid "C&lear all"
@@ -3770,7 +3770,7 @@ msgstr "Iš&valyti visus"
 #: picard/ui/caa_types_selector.py:275 picard/ui/options/dialog.py:240
 #: picard/ui/options/renaming_compat.py:203
 msgid "Restore &Defaults"
-msgstr "Atkurti &num. tys. nustys."
+msgstr "Atkurti &numatytuosius"
 
 #: picard/ui/cdlookup.py:65 picard/ui/itemviews/columns.py:151
 #: picard/ui/mainwindow/__init__.py:1024 picard/ui/searchdialog/album.py:159
@@ -8305,10 +8305,8 @@ msgid "Plugin system not available - Git backend required"
 msgstr ""
 
 #: picard/ui/options/plugins.py:303
-#, fuzzy
-#| msgid "Show more details"
 msgid "Show Details"
-msgstr "Rodyti daugiau informacijos"
+msgstr "Rodyti daugiau išsamios informacijos"
 
 #: picard/ui/options/plugins.py:341
 #, python-brace-format
@@ -8637,7 +8635,7 @@ msgstr ""
 
 #: picard/ui/scripteditor/__init__.py:269
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "Užverti skripto rengyklę neišsaugojus pakeitimų"
 
 #: picard/ui/scripteditor/__init__.py:274
 msgid "&Script"
@@ -8677,7 +8675,7 @@ msgstr "Ištrinti skriptą"
 
 #: picard/ui/scripteditor/__init__.py:304
 msgid "&Reload random example files"
-msgstr "&Perkrauti atsitiktinius pavyzdžių failus"
+msgstr "Įk&elti iš naujo atsitiktinius pavyzdžių failus"
 
 #: picard/ui/scripteditor/__init__.py:313
 msgid "&Show documentation"
@@ -8685,7 +8683,7 @@ msgstr "&Rodyti dokumentaciją"
 
 #: picard/ui/scripteditor/__init__.py:314
 msgid "View the scripting documentation in a sidebar"
-msgstr "Peržiūrėti skriptų dokumentaciją šoninėje juostoje"
+msgstr "Peržiūrėti skriptavimo dokumentaciją šoninėje juostoje"
 
 #: picard/ui/scripteditor/__init__.py:330
 msgid "&Scripting documentation…"
@@ -8693,7 +8691,7 @@ msgstr "&Skriptavimo dokumentacija…"
 
 #: picard/ui/scripteditor/__init__.py:331
 msgid "Open the scripting documentation in your browser"
-msgstr "Atidaryti skriptavimo dokumentaciją naršyklėje"
+msgstr "Atverti skriptavimo dokumentaciją naršyklėje"
 
 #: picard/ui/scripteditor/__init__.py:348
 msgid "Empty / blank script"
@@ -8717,16 +8715,16 @@ msgid ""
 "\n"
 "Are you sure that you want to continue?"
 msgstr ""
-"Prie parinkčių profilio buvo prisegtas bent vienas neišsaugotas skriptas.\n"
+"Prie parinkčių profilio prisegtas bent vienas neišsaugotas skriptas.\n"
 "\n"
-"   Profilis: {profile_title}\n"
-"   Skriptas: {old_script_title}\n"
+"   Profilis: „{profile_title}“\n"
+"   Skriptas: „{old_script_title}“\n"
 "\n"
-"Tęsiant be išsaugojimo, pasirinktas profilio skriptas bus atstatytas į:\n"
+"Tęsiant be išsaugojimo, pasirinktas profilio skriptas bus atkurtas į:\n"
 "\n"
-"   {new_script_title}\n"
+"   „{new_script_title}“\n"
 "\n"
-"Ar tikrai nori tęsti?"
+"Ar tikrai norite tęsti?"
 
 #: picard/ui/scripteditor/__init__.py:555
 msgid "There is already a script with that title."
@@ -8740,7 +8738,7 @@ msgstr "Skripto pavadinimas neturi būti tuščias."
 
 #: picard/ui/scripteditor/__init__.py:799
 msgid "Error Deleting Script"
-msgstr ""
+msgstr "Klaida ištrinant skriptą"
 
 #: picard/ui/scripteditor/__init__.py:800
 #, python-format
@@ -8750,11 +8748,14 @@ msgid ""
 "\n"
 "Profile: %s"
 msgstr ""
+"Skripto nepavyko ištrinti, nes jis naudojamas viename iš naudotojo "
+"profilių.\n"
+"\n"
+"Profilis: „%s“"
 
 #: picard/ui/scripteditor/__init__.py:807
-#, fuzzy
 msgid "Are you sure that you want to delete the script?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
+msgstr "Ar tikrai norite ištrinti skriptą?"
 
 #: picard/ui/scripteditor/__init__.py:907 picard/ui/scripteditor/utils.py:43
 msgid "Confirm"
@@ -8769,7 +8770,7 @@ msgid ""
 msgstr ""
 "Skriptas pavadinimu „{script_name}“ jau egzistuoja.\n"
 "\n"
-"Ar nori jį perrašyti, pridėti kaip kopiją, ar atšaukti?"
+"Ar norite jį perrašyti, pridėti kaip kopiją, ar atšaukti?"
 
 #: picard/ui/scripteditor/__init__.py:923
 msgid "Overwrite"
@@ -8777,7 +8778,7 @@ msgstr "Perrašyti"
 
 #: picard/ui/scripteditor/__init__.py:1008
 msgid "Script Details"
-msgstr ""
+msgstr "Skripto išsami informacija"
 
 #: picard/ui/scripteditor/__init__.py:1063
 msgid ""
@@ -8787,7 +8788,7 @@ msgid ""
 msgstr ""
 "Yra neišsaugotų dabartinių metaduomenų pakeitimų.\n"
 "\n"
-"Ar nori tęsti ir prarasti šiuos pakeitimus?"
+"Ar norite tęsti ir prarasti šiuos pakeitimus?"
 
 #: picard/ui/scripteditor/examples.py:95
 msgid "Renaming options are disabled"
@@ -8801,9 +8802,9 @@ msgid ""
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
-"Jei prieš atidarant parinkčių ekraną pasirenki failus iš klasterio arba "
+"Jei prieš atveriant parinkčių ekraną pasirenkate failus iš sankaupos arba "
 "albumo skydelio, iš pasirinkimo atsitiktine tvarka bus parinkta iki %u failų "
-"kaip failų pavadinimų pavyzdžiai.  Jei nepasirinkai jokių failų, bus "
+"kaip failų pavadinimų pavyzdžiai.  Jei nepasirinkote jokių failų, bus "
 "pateikti kai kurie numatytieji pavyzdžiai."
 
 #: picard/ui/scripteditor/examples.py:184
@@ -8811,8 +8812,8 @@ msgstr ""
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
 msgstr ""
-"Atsitiktine tvarka iš pagrindiniame lange pasirinktų failų perkrauti iki %u "
-"elementų"
+"Atsitiktine tvarka iš pagrindiniame lange pasirinktų failų įkelti iš naujo "
+"iki %u elementų"
 
 #: picard/ui/searchdialog/__init__.py:108
 #, python-brace-format
