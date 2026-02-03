@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2018-2025 Philipp Wolfer
+# Copyright (C) 2018-2026 Philipp Wolfer
 # Copyright (C) 2019-2022, 2024 Laurent Monin
 # Copyright (C) 2021 Bob Swift
 # Copyright (C) 2021 Sophist-UK
@@ -20,7 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
 
 import os
 import re
@@ -45,6 +44,7 @@ from picard.tags import (
     calculated_tag_names,
     file_info_tag_names,
 )
+from picard.util.imagelist import ImageList
 
 
 class FileTest(PicardTestCase):
@@ -131,6 +131,49 @@ class FileTest(PicardTestCase):
         self.assertEqual(fingerprint, self.file.acoustid_fingerprint)
         self.assertEqual(length, self.file.acoustid_length)
         self.assertEqual('', self.file.metadata['acoustid_fingerprint'])
+
+    def test_column(self):
+        self.file.metadata['test'] = 'foo'
+        self.assertEqual(self.file.column('test'), 'foo')
+        self.assertEqual(self.file.column('unknown'), '')
+
+    def test_column_orig_metadata_fallback(self):
+        self.set_config_values({'clear_existing_tags': False})
+        self.file.orig_metadata['test'] = 'foo'
+        self.assertEqual(self.file.column('test'), 'foo')
+        self.set_config_values({'clear_existing_tags': True})
+        self.assertEqual(self.file.column('test'), '')
+        self.file.metadata['test'] = 'bar'
+        self.assertEqual(self.file.column('test'), 'bar')
+
+    def test_column_title(self):
+        self.assertEqual(self.file.column('title'), self.file.base_filename)
+        self.file.metadata['title'] = 'foo'
+        self.assertEqual(self.file.column('title'), 'foo')
+
+    def test_column_filesize(self):
+        self.assertEqual(self.file.column('~filesize'), '')
+        self.file.orig_metadata['~filesize'] = 'notanumber'
+        self.assertEqual(self.file.column('~filesize'), 'notanumber')
+        self.file.orig_metadata['~filesize'] = '2048'
+        self.assertEqual(self.file.column('~filesize'), '2 KiB')
+        self.file.metadata['~filesize'] = '4096'
+        self.assertEqual(self.file.column('~filesize'), '2 KiB')
+
+    def test_column_bitrate(self):
+        self.assertEqual(self.file.column('~bitrate'), '')
+        self.file.orig_metadata['~bitrate'] = '320'
+        self.assertEqual(self.file.column('~bitrate'), '320 kbps')
+        self.file.orig_metadata['~bitrate'] = 'notanumber'
+        self.assertEqual(self.file.column('~bitrate'), 'notanumber')
+
+    def test_column_coverart(self):
+        image = create_image(b'a', types=['front'])
+        image.dimensions_as_string = Mock()
+        image.dimensions_as_string.return_value = '100x100'
+        self.file.metadata.images = ImageList([image])
+        self.assertEqual(self.file.column('covercount'), '1')
+        self.assertEqual(self.file.column('coverdimensions'), '100x100')
 
 
 class TestPreserveTimes(PicardTestCase):
