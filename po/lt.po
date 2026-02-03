@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-30 18:11+0000\n"
+"PO-Revision-Date: 2026-02-03 19:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
@@ -2579,7 +2579,7 @@ msgstr "Į&traukti visus"
 
 #: picard/ui/caa_types_selector.py:259
 msgid "E&xclude all"
-msgstr "Neį&traukti visus"
+msgstr "&Neįtraukti visus"
 
 #: picard/ui/caa_types_selector.py:260
 msgid "C&lear all"
@@ -2588,7 +2588,7 @@ msgstr "Iš&valyti visus"
 #: picard/ui/caa_types_selector.py:261 picard/ui/options/dialog.py:131
 #: picard/ui/options/renaming_compat.py:208
 msgid "Restore &Defaults"
-msgstr "Atkurti &num. tys. nustys."
+msgstr "Atkurti &numatytuosius"
 
 #: picard/ui/cdlookup.py:72 picard/ui/itemviews.py:165
 #: picard/ui/mainwindow.py:1153 picard/util/tags.py:40
@@ -4041,9 +4041,9 @@ msgid ""
 "as file naming examples.  If you have not selected any files, then some "
 "default examples will be provided."
 msgstr ""
-"Jei prieš atidarant parinkčių ekraną pasirenki failus iš klasterio arba "
+"Jei prieš atveriant parinkčių ekraną pasirenkate failus iš sankaupos arba "
 "albumo skydelio, iš pasirinkimo atsitiktine tvarka bus parinkta iki %u failų "
-"kaip failų pavadinimų pavyzdžiai.  Jei nepasirinkai jokių failų, bus "
+"kaip failų pavadinimų pavyzdžiai.  Jei nepasirinkote jokių failų, bus "
 "pateikti kai kurie numatytieji pavyzdžiai."
 
 #: picard/ui/scripteditor.py:231
@@ -4051,8 +4051,8 @@ msgstr ""
 msgid ""
 "Reload up to %u items chosen at random from files selected in the main window"
 msgstr ""
-"Atsitiktine tvarka iš pagrindiniame lange pasirinktų failų perkrauti iki %u "
-"elementų"
+"Atsitiktine tvarka iš pagrindiniame lange pasirinktų failų įkelti iš naujo "
+"iki %u elementų"
 
 #: picard/ui/scripteditor.py:351 picard/ui/scripteditor.py:1259
 msgid "Confirm"
@@ -4108,7 +4108,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:593
 msgid "Close the script editor without saving changes"
-msgstr ""
+msgstr "Užverti skripto rengyklę neišsaugojus pakeitimų"
 
 #: picard/ui/scripteditor.py:598
 msgid "&Script"
@@ -4148,7 +4148,7 @@ msgstr "Ištrinti skriptą"
 
 #: picard/ui/scripteditor.py:628
 msgid "&Reload random example files"
-msgstr "&Perkrauti atsitiktinius pavyzdžių failus"
+msgstr "Įk&elti iš naujo atsitiktinius pavyzdžių failus"
 
 #: picard/ui/scripteditor.py:637
 msgid "&Show documentation"
@@ -4156,7 +4156,7 @@ msgstr "&Rodyti dokumentaciją"
 
 #: picard/ui/scripteditor.py:638
 msgid "View the scripting documentation in a sidebar"
-msgstr "Peržiūrėti skriptų dokumentaciją šoninėje juostoje"
+msgstr "Peržiūrėti skriptavimo dokumentaciją šoninėje juostoje"
 
 #: picard/ui/scripteditor.py:654
 msgid "&Scripting documentation…"
@@ -4164,7 +4164,7 @@ msgstr "&Skriptavimo dokumentacija…"
 
 #: picard/ui/scripteditor.py:655
 msgid "Open the scripting documentation in your browser"
-msgstr "Atidaryti skriptavimo dokumentaciją naršyklėje"
+msgstr "Atverti skriptavimo dokumentaciją naršyklėje"
 
 #: picard/ui/scripteditor.py:673
 msgid "Empty / blank script"
@@ -4187,16 +4187,16 @@ msgid ""
 "\n"
 "Are you sure that you want to continue?"
 msgstr ""
-"Prie parinkčių profilio buvo prisegtas bent vienas neišsaugotas skriptas.\n"
+"Prie parinkčių profilio prisegtas bent vienas neišsaugotas skriptas.\n"
 "\n"
-"   Profilis: {profile_title}\n"
-"   Skriptas: {old_script_title}\n"
+"   Profilis: „{profile_title}“\n"
+"   Skriptas: „{old_script_title}“\n"
 "\n"
-"Tęsiant be išsaugojimo, pasirinktas profilio skriptas bus atstatytas į:\n"
+"Tęsiant be išsaugojimo, pasirinktas profilio skriptas bus atkurtas į:\n"
 "\n"
-"   {new_script_title}\n"
+"   „{new_script_title}“\n"
 "\n"
-"Ar tikrai nori tęsti?"
+"Ar tikrai norite tęsti?"
 
 #: picard/ui/scripteditor.py:889
 msgid "There is already a script with that title."
@@ -4209,7 +4209,7 @@ msgstr "Skripto pavadinimas neturi būti tuščias."
 
 #: picard/ui/scripteditor.py:1143
 msgid "Error Deleting Script"
-msgstr ""
+msgstr "Klaida ištrinant skriptą"
 
 #: picard/ui/scripteditor.py:1144
 #, python-format
@@ -4219,11 +4219,14 @@ msgid ""
 "\n"
 "Profile: %s"
 msgstr ""
+"Skripto nepavyko ištrinti, nes jis naudojamas viename iš naudotojo "
+"profilių.\n"
+"\n"
+"Profilis: „%s“"
 
 #: picard/ui/scripteditor.py:1154
-#, fuzzy
 msgid "Are you sure that you want to delete the script?"
-msgstr "Ar tu esi įsitikinęs kad nori išjungti Picard?"
+msgstr "Ar tikrai norite ištrinti skriptą?"
 
 #: picard/ui/options/scripting.py:164 picard/ui/scripteditor.py:1240
 msgid "File Error"
@@ -4237,7 +4240,7 @@ msgid ""
 msgstr ""
 "Skriptas pavadinimu „{script_name}“ jau egzistuoja.\n"
 "\n"
-"Ar nori jį perrašyti, pridėti kaip kopiją, ar atšaukti?"
+"Ar norite jį perrašyti, pridėti kaip kopiją, ar atšaukti?"
 
 #: picard/ui/scripteditor.py:1268
 msgid "Overwrite"
@@ -4253,7 +4256,7 @@ msgstr ""
 
 #: picard/ui/scripteditor.py:1353
 msgid "Script Details"
-msgstr ""
+msgstr "Skripto išsami informacija"
 
 #: picard/ui/scripteditor.py:1406
 msgid ""
@@ -4263,7 +4266,7 @@ msgid ""
 msgstr ""
 "Yra neišsaugotų dabartinių metaduomenų pakeitimų.\n"
 "\n"
-"Ar nori tęsti ir prarasti šiuos pakeitimus?"
+"Ar norite tęsti ir prarasti šiuos pakeitimus?"
 
 #: picard/ui/scriptsmenu.py:62
 #, python-format
