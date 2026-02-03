@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2004 Robert Kaye
 # Copyright (C) 2006-2009, 2011-2013, 2017 Lukáš Lalinský
-# Copyright (C) 2007-2011, 2015, 2018-2024 Philipp Wolfer
+# Copyright (C) 2007-2011, 2015, 2018-2026 Philipp Wolfer
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2008-2009 Nikolai Prokoschenko
 # Copyright (C) 2009 Carlin Mangar
@@ -979,14 +979,9 @@ class File(MetadataItem):
         self._state = state
 
     def column(self, column: str) -> str:
-        m = self.metadata
-        if column == 'title' and not m['title']:
+        value = super().column(column)
+        if column == 'title' and not value:
             return self.base_filename
-        elif column == 'covercount':
-            return self.cover_art_description()
-        elif column == 'coverdimensions':
-            return self.cover_art_dimensions()
-        value = m[column]
         if not value and not get_config().setting['clear_existing_tags']:
             value = self.orig_metadata[column]
         elif tagvar := ALL_TAGS.tagvar_from_name(column):

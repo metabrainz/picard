@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2008 Gary van der Merwe
 # Copyright (C) 2009 Carlin Mangar
-# Copyright (C) 2010, 2014-2015, 2018-2025 Philipp Wolfer
+# Copyright (C) 2010, 2014-2015, 2018-2026 Philipp Wolfer
 # Copyright (C) 2011 Chad Wilson
 # Copyright (C) 2011 Wieland Hoffmann
 # Copyright (C) 2011-2013 Michael Wiencek
@@ -275,20 +275,16 @@ class Track(FileListItem):
         return True
 
     def column(self, column: str) -> str:
-        m = self.metadata
         if column == 'title':
+            m = self.metadata
             prefix = "%s-" % m['discnumber'] if m['discnumber'] and m['totaldiscs'] != "1" else ""
             return "%s%s  %s" % (prefix, m['tracknumber'].zfill(2), m['title'])
-        elif column == 'covercount':
-            return self.cover_art_description()
-        elif column == 'coverdimensions':
-            return self.cover_art_dimensions()
-        elif column in m:
-            return m[column]
-        elif self.num_linked_files == 1:
+
+        value = super().column(column)
+        if not value and self.num_linked_files == 1:
             return self.files[0].column(column)
         else:
-            return ''
+            return value
 
     def is_video(self):
         return self.metadata['~video'] == '1'
