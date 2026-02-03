@@ -88,14 +88,14 @@ jobs:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Sign picard.exe
-      uses: azure/trusted-signing-action@v0.5.11
+      uses: azure/artifact-signing-action@v1
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
         azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
-        trusted-signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
+        signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
         certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
         files-folder: dist\picard
         files-folder-filter: exe
@@ -128,14 +128,14 @@ jobs:
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Sign final executable
-      uses: azure/trusted-signing-action@v0.5.11
+      uses: azure/artifact-signing-action@v1
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
         azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
-        trusted-signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
+        signing-account-name: ${{ secrets.AZURE_CODE_SIGNING_NAME }}
         certificate-profile-name: ${{ secrets.AZURE_CERT_PROFILE_NAME }}
         files-folder: artifacts
         files-folder-filter: exe,msix
