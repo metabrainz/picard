@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007, 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2008, 2014, 2019-2024 Philipp Wolfer
+# Copyright (C) 2008, 2014, 2019-2026 Philipp Wolfer
 # Copyright (C) 2012, 2017 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2024 Laurent Monin
@@ -28,7 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from collections import (
     defaultdict,
     namedtuple,
@@ -39,7 +38,10 @@ from enum import (
 )
 import os
 import shutil
-from typing import Any
+from typing import (
+    Any,
+    TypeAlias,
+)
 
 from PyQt6 import QtCore
 
@@ -53,13 +55,16 @@ from picard.profile import profile_groups_all_settings
 from picard.version import Version
 
 
+ConfigValueType: TypeAlias = str | int | float | bool | list | tuple | dict | Enum | QtCore.QByteArray
+
+
 class Option(QtCore.QObject):
     """Generic option."""
 
-    registry = {}
+    registry: dict[tuple[str, str], 'Option'] = {}
     qtype = None
 
-    def __init__(self, section, name, default, title=None):
+    def __init__(self, section: str, name: str, default: ConfigValueType, title: str | None = None):
         super().__init__()
         self.section = section
         self.name = name
@@ -100,33 +105,33 @@ class Option(QtCore.QObject):
                     break
 
     @classmethod
-    def get(cls, section, name):
+    def get(cls, section: str, name: str) -> 'Option | None':
         return cls.registry.get((section, name))
 
     @classmethod
-    def get_default(cls, section, name):
+    def get_default(cls, section: str, name: str) -> ConfigValueType:
         opt = cls.get(section, name)
         if opt is None:
             raise OptionError("No such option", section, name)
         return opt.default
 
     @classmethod
-    def get_title(cls, section, name):
+    def get_title(cls, section: str, name: str) -> str | None:
         opt = cls.get(section, name)
         if opt is None:
             raise OptionError("No such option", section, name)
         return opt.title
 
     @classmethod
-    def add_if_missing(cls, section, name, default, *args, **kwargs):
+    def add_if_missing(cls, section: str, name: str, default: ConfigValueType, *args, **kwargs):
         if not cls.exists(section, name):
             cls(section, name, default, *args, **kwargs)
 
     @classmethod
-    def exists(cls, section, name):
+    def exists(cls, section: str, name: str) -> bool:
         return (section, name) in cls.registry
 
-    def convert(self, value):
+    def convert(self, value: Any):
         if isinstance(self.default, Enum):
             # Convert underlying value type first
             value = type(self.default.value)(value)
@@ -181,7 +186,7 @@ class ConfigSection(QtCore.QObject):
     # Signal emitted when the value of a setting has changed.
     setting_changed = QtCore.pyqtSignal(str, object, object)
 
-    def __init__(self, config, name):
+    def __init__(self, config: 'Config', name: str):
         super().__init__()
         self.__qt_config = config
         self.__name = name
@@ -191,13 +196,13 @@ class ConfigSection(QtCore.QObject):
     def key(self, name):
         return self.__prefix + name
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str):
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
         return self.value(name, opt, opt.default)
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: Any):
         old_value = self.__getitem__(name)
         key = self.key(name)
         if isinstance(value, Enum):
@@ -213,7 +218,7 @@ class ConfigSection(QtCore.QObject):
     def as_dict(self):
         return {key: self[key] for section, key in list(Option.registry) if section == self.__name}
 
-    def remove(self, name):
+    def remove(self, name: str):
         key = self.key(name)
         config = self.__qt_config
         if config.contains(key):
@@ -223,7 +228,7 @@ class ConfigSection(QtCore.QObject):
         except KeyError:
             pass
 
-    def raw_value(self, name, qtype=None):
+    def raw_value(self, name: str, qtype: Any = None):
         """Return an option value without any type conversion."""
         key = self.key(name)
         if qtype is not None:
@@ -232,7 +237,7 @@ class ConfigSection(QtCore.QObject):
             value = self.__qt_config.value(key)
         return value
 
-    def value(self, name, option_type, default=None):
+    def value(self, name: str, option: Option, default: ConfigValueType | None = None):
         """Return an option value converted to the given Option type."""
         if name in self:
             key = self.key(name)
@@ -240,8 +245,8 @@ class ConfigSection(QtCore.QObject):
 
             if memovar.dirty:
                 try:
-                    value = self.raw_value(name, qtype=option_type.qtype)
-                    value = option_type.convert(value)
+                    value = self.raw_value(name, qtype=option.qtype)
+                    value = option.convert(value)
                     memovar.dirty = False
                     memovar.value = value
                 except Exception as why:
@@ -252,7 +257,7 @@ class ConfigSection(QtCore.QObject):
                 return memovar.value
         return default
 
-    def register_option(self, name: str, default: Any) -> Option:
+    def register_option(self, name: str, default: ConfigValueType) -> Option:
         """Register an option.
 
         The option type is determined by the type of the default value.
@@ -293,7 +298,7 @@ class SettingConfigSection(ConfigSection):
         ListOption.add_if_missing('profiles', cls.PROFILES_KEY, [])
         Option.add_if_missing('profiles', cls.SETTINGS_KEY, {})
 
-    def __init__(self, config, name):
+    def __init__(self, config: 'Config', name: str):
         super().__init__(config, name)
         self.__qt_config = config
         self.__name = name
@@ -334,7 +339,7 @@ class SettingConfigSection(ConfigSection):
             return {}
         return profile_settings
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str):
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
             for _profile_id, settings in self._get_active_profile_settings():
@@ -342,7 +347,7 @@ class SettingConfigSection(ConfigSection):
                     return settings[name]
         return super().__getitem__(name)
 
-    def __setitem__(self, name, value):
+    def __setitem__(self, name: str, value: Any):
         # Don't process settings that are not profile-specific
         if name in profile_groups_all_settings():
             for profile_id, settings in self._get_active_profile_settings():
@@ -386,10 +391,10 @@ class Config(QtCore.QSettings):
         :meth:`from_file`."""
 
         self.setAtomicSyncRequired(False)  # See comment in event()
-        self.application = ConfigSection(self, 'application')
-        self.profiles = ConfigSection(self, 'profiles')
-        self.setting = SettingConfigSection(self, 'setting')
-        self.persist = ConfigSection(self, 'persist')
+        self.application: ConfigSection = ConfigSection(self, 'application')
+        self.profiles: ConfigSection = ConfigSection(self, 'profiles')
+        self.setting: SettingConfigSection = SettingConfigSection(self, 'setting')
+        self.persist: ConfigSection = ConfigSection(self, 'persist')
 
         if 'version' not in self.application or not self.application['version']:
             TextOption('application', 'version', '0.0.0dev0')
