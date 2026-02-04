@@ -137,6 +137,9 @@ class Option(QtCore.QObject):
             value = type(self.default.value)(value)
         return type(self.default)(value)
 
+    def unregister(self):
+        del self.registry[(self.section, self.name)]
+
 
 class TextOption(Option):
     convert = str
@@ -200,7 +203,7 @@ class ConfigSection(QtCore.QObject):
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
-        return self.value(name, opt, opt.default)
+        return self.value(opt, opt.default)
 
     def __setitem__(self, name: str, value: Any):
         old_value = self.__getitem__(name)
@@ -237,8 +240,9 @@ class ConfigSection(QtCore.QObject):
             value = self.__qt_config.value(key)
         return value
 
-    def value(self, name: str, option: Option, default: ConfigValueType | None = None):
+    def value(self, option: Option, default: ConfigValueType | None = None):
         """Return an option value converted to the given Option type."""
+        name = option.name
         if name in self:
             key = self.key(name)
             memovar = self._memoization[key]

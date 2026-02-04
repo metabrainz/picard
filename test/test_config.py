@@ -137,6 +137,12 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
             Option.get_title("setting", "unknown_option")
 
+    def test_register_option(self):
+        opt = Option("setting", "theoption", "abc")
+        self.assertEqual(Option.registry[("setting", "theoption")], opt)
+        opt.unregister()
+        self.assertNotIn(("setting", "theoption"), Option.registry)
+
 
 class TestPicardConfigSection(TestPicardConfigCommon):
     def test_as_dict(self):
@@ -180,8 +186,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             self.assertIsInstance(opt, expected_type)
             self.assertEqual(opt.default, default)
             self.assertEqual(self.config.setting[name], default)
+            self.assertEqual(self.config.setting.value(opt), None)
+            self.assertEqual(self.config.setting.value(opt, "other"), "other")
             self.config.setting[name] = test_value
             self.assertEqual(self.config.setting[name], test_value)
+            self.assertEqual(self.config.setting.value(opt), test_value)
 
     def test_register_option_default_none(self):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):

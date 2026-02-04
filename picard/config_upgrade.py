@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2014 Michael Wiencek
 # Copyright (C) 2013-2016, 2018-2024 Laurent Monin
 # Copyright (C) 2014, 2017 Lukáš Lalinský
-# Copyright (C) 2014, 2018-2024 Philipp Wolfer
+# Copyright (C) 2014, 2018-2026 Philipp Wolfer
 # Copyright (C) 2015 Ohm Patel
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -26,7 +26,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from contextlib import contextmanager
 from inspect import (
     getmembers,
     isfunction,
@@ -43,7 +43,10 @@ from picard import (
 )
 from picard.config import (
     BoolOption,
+    Config,
+    ConfigValueType,
     IntOption,
+    Option,
     TextOption,
 )
 from picard.const.defaults import (
@@ -96,19 +99,25 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
 
     def remove_va_file_naming_format(merge=True):
         if merge:
-            _s['file_naming_format'] = (
-                "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
-                "albums)\n%s,\n$noop(Single Artist Albums)\n%s)"
-                % (
-                    _s.value('va_file_naming_format', TextOption),
-                    _s['file_naming_format'],
+            with temp_option(TextOption, 'setting', 'va_file_naming_format', '') as old_opt:
+                _s['file_naming_format'] = (
+                    "$if($eq(%%compilation%%,1),\n$noop(Various Artist "
+                    "albums)\n%s,\n$noop(Single Artist Albums)\n%s)"
+                    % (
+                        _s.value(old_opt),
+                        _s['file_naming_format'],
+                    )
                 )
-            )
         _s.remove('va_file_naming_format')
         _s.remove('use_va_format')
 
     if 'va_file_naming_format' in _s and 'use_va_format' in _s:
-        if _s.value('use_va_format', BoolOption):
+        with temp_option(BoolOption, 'setting', 'use_va_format', False) as old_opt:
+            old_value_use_va_format = _s.value(old_opt)
+        with temp_option(TextOption, 'setting', 'va_file_naming_format', '') as old_opt:
+            old_value_va_file_naming_format = _s.value(old_opt)
+
+        if old_value_use_va_format:
             remove_va_file_naming_format()
             if interactive:
                 msgbox = QtWidgets.QMessageBox()
@@ -125,7 +134,7 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
                 )
 
         elif (
-            _s.value('va_file_naming_format', TextOption) != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
+            old_value_va_file_naming_format != r"$if2(%albumartist%,%artist%)/%album%/$if($gt(%totaldis"
             "cs%,1),%discnumber%-,)$num(%tracknumber%,2) %artist% - "
             "%title%"
         ):
@@ -233,7 +242,8 @@ def upgrade_to_v1_4_0dev3(config):
     newopts = []
     for old, new in map_ca_provider:
         if old in _s:
-            newopts.append((new, _s.value(old, BoolOption, True)))
+            with temp_option(BoolOption, 'setting', old, True) as old_opt:
+                newopts.append((new, _s.value(old_opt, True)))
     _s['ca_providers'] = newopts
 
 
@@ -266,9 +276,11 @@ def upgrade_to_v1_4_0dev6(config):
     old_script_text_option = 'tagger_script'
     list_of_scripts = []
     if old_enabled_option in _s:
-        _s['enable_tagger_scripts'] = _s.value(old_enabled_option, BoolOption, False)
+        with temp_option(BoolOption, 'setting', old_enabled_option, False) as old_opt:
+            _s['enable_tagger_scripts'] = _s.value(old_opt, False)
     if old_script_text_option in _s:
-        old_script_text = _s.value(old_script_text_option, TextOption, "")
+        with temp_option(TextOption, 'setting', old_script_text_option, "") as old_opt:
+            old_script_text = _s.value(old_opt, "")
         if old_script_text:
             old_script = (
                 0,
@@ -386,8 +398,9 @@ def upgrade_to_v2_6_0beta2(config):
 def upgrade_to_v2_6_0beta3(config):
     """Replace use_system_theme with ui_theme options"""
     _s = config.setting
-    if _s.value('use_system_theme', BoolOption):
-        _s['ui_theme'] = 'system'
+    with temp_option(BoolOption, 'setting', 'use_system_theme', False) as old_opt:
+        if _s.value(old_opt):
+            _s['ui_theme'] = 'system'
     _s.remove('use_system_theme')
 
 
@@ -450,12 +463,13 @@ def upgrade_to_v2_7_0dev3(config):
             log.error("Error converting file naming script")
     script_list = set(scripts.keys()) | set(map(lambda item: item['id'], get_file_naming_script_presets()))
     if config.setting['selected_file_naming_script_id'] not in script_list:
-        script_item = FileNamingScriptInfo(
-            script=config.setting.value('file_naming_format', TextOption),
-            title=_("Primary file naming script"),
-            readonly=False,
-            deletable=True,
-        )
+        with temp_option(TextOption, 'setting', 'file_naming_format', '') as old_opt:
+            script_item = FileNamingScriptInfo(
+                script=config.setting.value(old_opt),
+                title=_("Primary file naming script"),
+                readonly=False,
+                deletable=True,
+            )
         scripts[script_item['id']] = script_item.to_dict()
         config.setting['selected_file_naming_script_id'] = script_item['id']
     config.setting['file_renaming_scripts'] = scripts
@@ -466,18 +480,21 @@ def upgrade_to_v2_7_0dev3(config):
 def upgrade_to_v2_7_0dev4(config):
     """Replace artist_script_exception with artist_script_exceptions"""
     _s = config.setting
-    if script := _s.value('artist_script_exception', TextOption):
-        _s['artist_script_exceptions'] = [script]
+    with temp_option(TextOption, 'setting', 'artist_script_exception', '') as old_opt:
+        if script := _s.value(old_opt):
+            _s['artist_script_exceptions'] = [script]
     _s.remove('artist_script_exception')
-    if locale := _s.value('artist_locale', TextOption):
-        _s['artist_locales'] = [locale]
+    with temp_option(TextOption, 'setting', 'artist_locale', '') as old_opt:
+        if locale := _s.value(old_opt):
+            _s['artist_locales'] = [locale]
     _s.remove('artist_locale')
 
 
 def upgrade_to_v2_7_0dev5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
-    weighting = _s.value('artist_script_exception_weighting', IntOption) or 0
+    with temp_option(IntOption, 'setting', 'artist_script_exception_weighting', 0) as old_opt:
+        weighting = _s.value(old_opt, 0)
     if 'artist_script_exceptions' in _s:
         artist_script_exceptions = _s.raw_value('artist_script_exceptions') or []
     else:
@@ -605,10 +622,25 @@ def upgrade_to_v3_0_0dev10(config):
     config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
 
 
-def rename_option(config, old_opt, new_opt, option_type, default, reverse=False):
+@contextmanager
+def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
+    opt = option_type(section, name, default)
+    yield opt
+    opt.unregister()
+
+
+def rename_option(
+    config: Config,
+    old_opt: str,
+    new_opt: str,
+    option_type: type[Option],
+    default: ConfigValueType,
+    reverse: bool = False,
+):
     _s = config.setting
     if old_opt in _s:
-        _s[new_opt] = _s.value(old_opt, option_type, default)
+        with temp_option(option_type, 'setting', old_opt, default) as opt:
+            _s[new_opt] = _s.value(opt, default)
         if reverse:
             _s[new_opt] = not _s[new_opt]
         _s.remove(old_opt)
