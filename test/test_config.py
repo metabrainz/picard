@@ -186,7 +186,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             self.assertIsInstance(opt, expected_type)
             self.assertEqual(opt.default, default)
             self.assertEqual(self.config.setting[name], default)
-            self.assertEqual(self.config.setting.value(opt), None)
+            self.assertEqual(self.config.setting.value(opt), default)
             self.assertEqual(self.config.setting.value(opt, "other"), "other")
             self.config.setting[name] = test_value
             self.assertEqual(self.config.setting[name], test_value)

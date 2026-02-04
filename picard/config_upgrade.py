@@ -243,7 +243,7 @@ def upgrade_to_v1_4_0dev3(config):
     for old, new in map_ca_provider:
         if old in _s:
             with temp_option(BoolOption, 'setting', old, True) as old_opt:
-                newopts.append((new, _s.value(old_opt, True)))
+                newopts.append((new, _s.value(old_opt)))
     _s['ca_providers'] = newopts
 
 
@@ -277,10 +277,10 @@ def upgrade_to_v1_4_0dev6(config):
     list_of_scripts = []
     if old_enabled_option in _s:
         with temp_option(BoolOption, 'setting', old_enabled_option, False) as old_opt:
-            _s['enable_tagger_scripts'] = _s.value(old_opt, False)
+            _s['enable_tagger_scripts'] = _s.value(old_opt)
     if old_script_text_option in _s:
         with temp_option(TextOption, 'setting', old_script_text_option, "") as old_opt:
-            old_script_text = _s.value(old_opt, "")
+            old_script_text = _s.value(old_opt)
         if old_script_text:
             old_script = (
                 0,
@@ -494,7 +494,7 @@ def upgrade_to_v2_7_0dev5(config):
     """Replace artist_script_exceptions with script_exceptions and remove artist_script_exception_weighting"""
     _s = config.setting
     with temp_option(IntOption, 'setting', 'artist_script_exception_weighting', 0) as old_opt:
-        weighting = _s.value(old_opt, 0)
+        weighting = _s.value(old_opt)
     if 'artist_script_exceptions' in _s:
         artist_script_exceptions = _s.raw_value('artist_script_exceptions') or []
     else:

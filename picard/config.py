@@ -176,7 +176,7 @@ class ListOption(Option):
 class Memovar:
     def __init__(self):
         self.dirty = True
-        self.value = None
+        self.value: ConfigValueType = None
 
 
 class ConfigUpgradeError(Exception):
@@ -240,9 +240,11 @@ class ConfigSection(QtCore.QObject):
             value = self.__qt_config.value(key)
         return value
 
-    def value(self, option: Option, default: ConfigValueType | None = None):
+    def value(self, option: Option, default: ConfigValueType | None = None) -> ConfigValueType:
         """Return an option value converted to the given Option type."""
         name = option.name
+        if default is None:
+            default = option.default
         if name in self:
             key = self.key(name)
             memovar = self._memoization[key]
