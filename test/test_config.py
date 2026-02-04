@@ -137,6 +137,12 @@ class TestPicardConfigOption(TestPicardConfigCommon):
         with self.assertRaisesRegex(OptionError, "^Option setting/unknown_option: No such option"):
             Option.get_title("setting", "unknown_option")
 
+    def test_register_option(self):
+        opt = Option("setting", "theoption", "abc")
+        self.assertEqual(Option.registry[("setting", "theoption")], opt)
+        opt.unregister()
+        self.assertNotIn(("setting", "theoption"), Option.registry)
+
 
 class TestPicardConfigSection(TestPicardConfigCommon):
     def test_as_dict(self):
@@ -171,7 +177,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             ("list_option", [1, 2], ListOption, ["a"]),
             ("list_option_from_tuple", (1, 2), ListOption, ["a"]),
             ("enum_option", TestEnum.A, Option, TestEnum.B),
-            ("int_enum_option", TestIntEnum.A, Option, TestIntEnum.B),
+            ("int_enum_option", TestIntEnum.A, IntOption, TestIntEnum.B),
             ("other_option", b"foo", Option, b"bar"),
         ]
         for name, default, expected_type, test_value in test_cases:
@@ -180,8 +186,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             self.assertIsInstance(opt, expected_type)
             self.assertEqual(opt.default, default)
             self.assertEqual(self.config.setting[name], default)
+            self.assertEqual(self.config.setting.value(opt), default)
+            self.assertEqual(self.config.setting.value(opt, "other"), "other")
             self.config.setting[name] = test_value
             self.assertEqual(self.config.setting[name], test_value)
+            self.assertEqual(self.config.setting.value(opt), test_value)
 
     def test_register_option_default_none(self):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):
@@ -293,6 +302,17 @@ class TestPicardConfigIntOption(TestPicardConfigCommon):
     def test_int_opt_convert(self):
         opt = IntOption("setting", "int_option", 666)
         self.assertEqual(opt.convert("123"), 123)
+
+    def test_int_opt_convert_intenum(self):
+        class TestIntEnum(IntEnum):
+            A = 1
+            B = 2
+
+        opt = IntOption("setting", "int_option", TestIntEnum.A)
+        self.assertEqual(opt.convert(2), TestIntEnum.B)
+        self.assertIsInstance(opt.convert("2"), TestIntEnum)
+        with self.assertRaises(ValueError):
+            opt.convert(3)
 
     def test_int_opt_no_config(self):
         IntOption("setting", "int_option", 666)
