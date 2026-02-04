@@ -547,8 +547,10 @@ def setup_config(app=None, filename=None):
     profiles = config.profiles
 
 
-def get_config():
+def get_config() -> Config:
     """Returns the global config object."""
+    if not config:
+        raise RuntimeError('config not yet set up')
     return config
 
 
