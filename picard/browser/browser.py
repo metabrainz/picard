@@ -5,7 +5,7 @@
 # Copyright (C) 2006-2007, 2011 Lukáš Lalinský
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2012 Chad Wilson
-# Copyright (C) 2012-2013, 2018, 2021-2022, 2024-2025 Philipp Wolfer
+# Copyright (C) 2012-2013, 2018, 2021-2022, 2024-2026 Philipp Wolfer
 # Copyright (C) 2013, 2018, 2020-2021, 2024 Laurent Monin
 # Copyright (C) 2016 Suhas
 # Copyright (C) 2016-2017 Sambhav Kothari
@@ -152,13 +152,22 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Methods', 'GET')
             self.send_header('Access-Control-Allow-Credentials', 'false')
             self.send_header('Access-Control-Allow-Private-Network', 'true')
-            self.send_header('Access-Control-Max-Age', 3600)
+            self.send_header('Access-Control-Max-Age', '3600')
             self.send_header('Vary', 'Origin')
         else:
+            log.warning('%s: Invalid CORS origin', self.path)
             self.send_response(401)
         self.end_headers()
 
     def do_GET(self):
+        # if origin is set, but invalid, this is a CORS request that must not be served
+        origin = self.headers['origin']
+        if origin and not _is_valid_origin(origin):
+            log.warning('%s: Invalid CORS origin', self.path)
+            self.send_response(401)
+            self.end_headers()
+            return
+
         try:
             self._handle_get()
         except Exception:
