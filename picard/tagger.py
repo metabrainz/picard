@@ -280,7 +280,7 @@ class Tagger(QtWidgets.QApplication):
         self._debug_opts = cmdline_args.debug_opts
         self._debug = cmdline_args.debug or 'PICARD_DEBUG' in os.environ
         self._no_player = cmdline_args.no_player
-        self._no_plugins = cmdline_args.no_plugins
+        self._no_plugins = not HAS_PLUGIN3 or cmdline_args.no_plugins
         self._no_restore = cmdline_args.no_restore
         self._to_load = cmdline_args.processable
 
@@ -400,11 +400,10 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        if HAS_PLUGIN3:
+        if not self._no_plugins:
             self._pluginmanager3 = PluginManager(self)
             self._pluginmanager3.plugin_state_changed.connect(self._on_plugin_status_changed)
-            if not self._no_plugins:
-                self._pluginmanager3.add_directory(plugin_folder(), primary=True)
+            self._pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self._pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
