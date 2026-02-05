@@ -400,11 +400,10 @@ class Tagger(QtWidgets.QApplication):
 
     def _init_plugins(self):
         """Initialize and load plugins"""
-        if HAS_PLUGIN3:
+        if HAS_PLUGIN3 and not self._no_plugins:
             self._pluginmanager3 = PluginManager(self)
             self._pluginmanager3.plugin_state_changed.connect(self._on_plugin_status_changed)
-            if not self._no_plugins:
-                self._pluginmanager3.add_directory(plugin_folder(), primary=True)
+            self._pluginmanager3.add_directory(plugin_folder(), primary=True)
         else:
             self._pluginmanager3 = None
             log.warning('Plugin3 system not available (git backend not available)')
@@ -416,6 +415,19 @@ class Tagger(QtWidgets.QApplication):
             PluginManager or None: The plugin manager instance if available, None otherwise.
         """
         return getattr(self, '_pluginmanager3', None)
+
+    def get_plugins_available(self) -> tuple[bool, str]:
+        """Returns whether the plugin system is available.
+
+        Returns a tuple, where the first element is a boolean indicating the
+        availability and the second element is a string with a reason if the
+        plugin system is unavailable.
+        """
+        if not HAS_PLUGIN3:
+            return False, _('Git backend not available')
+        elif self._no_plugins:
+            return False, _('Disabled by command line parameter')
+        return True, ""
 
     def _on_plugin_status_changed(self):
         self.format_registry.rebuild_extension_map()
