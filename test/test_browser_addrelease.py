@@ -89,7 +89,7 @@ class ServeFormTest(PicardTestCase):
         )
 
     def test_invalid_jwt(self):
-        invalid_token = jwt.encode({'cluster': ''}, 'invalidkey', algorithm='HS256')
+        invalid_token = jwt.encode({'cluster': ''}, 'invalidkey' * 4, algorithm='HS256')
         with self.assertRaises(InvalidTokenError):
             serve_form(invalid_token)
 
