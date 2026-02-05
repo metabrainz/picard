@@ -82,6 +82,21 @@ class Plugins3OptionsPage(OptionsPage):
         """Setup the UI."""
         layout = QtWidgets.QVBoxLayout(self)
 
+        # Check whether plugins are available
+        available, unavailable_reason = self.tagger.get_plugins_available()
+        if not available:
+            no_plugins_box = QtWidgets.QFrame(self)
+            no_plugins_box.setStyleSheet("QFrame { background-color: #ffc107; color: black }")
+            no_plugins_box.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+            no_plugins_box_layout = QtWidgets.QVBoxLayout(no_plugins_box)
+            no_plugins_label = QtWidgets.QLabel(
+                _("Plugins unavailable: {reason}.").format(reason=unavailable_reason), parent=no_plugins_box
+            )
+            no_plugins_box_layout.addWidget(no_plugins_label)
+            layout.addWidget(no_plugins_box)
+            layout.addStretch()
+            return
+
         # Toolbar
         toolbar_layout = QtWidgets.QHBoxLayout()
 
@@ -164,7 +179,10 @@ class Plugins3OptionsPage(OptionsPage):
         QtWidgets.QApplication.processEvents()
 
     def load(self):
-        """Load plugins from plugin manager."""
+        if not self.plugin_manager:
+            return
+
+        # Load plugins from plugin manager.
         self._show_status(_("Loading plugins…"))
         # Load plugins immediately when page is loaded
         try:
