@@ -622,6 +622,25 @@ def upgrade_to_v3_0_0dev10(config):
     config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
 
 
+def upgrade_to_v3_0_0a2(config):
+    """Update $matchedtracks() usage in scripts"""
+
+    matched_tracks_regex = re.compile(r'\$matchedtracks\([^)]+\)')
+
+    def fix_matchedtracks(script):
+        return matched_tracks_regex.sub('$matchedtracks()', script)
+
+    renaming_scripts = config.setting.raw_value('file_renaming_scripts') or {}
+    for script_item in renaming_scripts.values():
+        script_item['script'] = fix_matchedtracks(script_item['script'])
+    config.setting['file_renaming_scripts'] = renaming_scripts
+
+    tagger_scripts = config.setting.raw_value('list_of_scripts') or []
+    for i, (pos, name, enabled, script) in enumerate(tagger_scripts):
+        tagger_scripts[i] = (pos, name, enabled, fix_matchedtracks(script))
+    config.setting['list_of_scripts'] = tagger_scripts
+
+
 @contextmanager
 def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
     opt = option_type(section, name, default)

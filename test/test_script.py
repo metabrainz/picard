@@ -1417,7 +1417,7 @@ class ScriptParserTest(PicardTestCase):
         self.assertScriptResultEquals("$matchedtracks()", "0")
         # The function no longer accepts an argument (opposed to Picard 2)
         with self.assertRaises(ScriptSyntaxError):
-            self.assertScriptResultEquals("$matchedtracks(arg)", "0")
+            self.parser.eval("$matchedtracks(arg)")
 
     def test_cmd_matchedtracks_with_cluster(self):
         file = MagicMock()
