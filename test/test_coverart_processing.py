@@ -150,7 +150,7 @@ class ImageProcessorsTest(PicardTestCase):
             'cover_tags_resize_target_height': 500,
             'cover_tags_resize_mode': ResizeModes.MAINTAIN_ASPECT_RATIO,
             'cover_tags_convert_images': False,
-            'cover_tags_convert_to_format': 'jpeg',
+            'cover_tags_convert_to_format': ImageFormat.JPEG,
             'cover_file_resize': True,
             'cover_file_enlarge': True,
             'cover_file_resize_target_width': 750,
@@ -159,7 +159,7 @@ class ImageProcessorsTest(PicardTestCase):
             'save_images_to_tags': True,
             'save_images_to_files': True,
             'cover_file_convert_images': False,
-            'cover_file_convert_to_format': 'jpeg',
+            'cover_file_convert_to_format': ImageFormat.JPEG,
         }
 
     def _check_image_processors(self, size, expected_tags_size, expected_file_size=None):
@@ -301,21 +301,21 @@ class ImageProcessorsTest(PicardTestCase):
         self._check_resize_image((250, 1000), (500, 500))
         self.set_config_values(self.settings)
 
-    def _check_convert_image(self, format, expected_format):
-        image = ProcessingImage(*create_fake_image(100, 100, format))
+    def _check_convert_image(self, format: ImageFormat, expected_format: ImageFormat):
+        image = ProcessingImage(*create_fake_image(100, 100, format.value))
         processor = ConvertImage()
         processor.run(image, ImageProcessor.Target.TAGS)
         new_image = image.get_result()
         new_info = imageinfo.identify(new_image)
-        self.assertIn(expected_format, new_info.format_info.format_aliases)
+        self.assertIn(expected_format.value, new_info.format_info.aliases)
 
     def test_format_conversion(self):
         settings = copy(self.settings)
         settings['cover_tags_convert_images'] = True
-        for format in [x.format for x in list(ImageFormat) if x.selectable]:
+        for format in [x for x in list(ImageFormat) if x.can_convert]:
             settings['cover_tags_convert_to_format'] = format
             self.set_config_values(settings)
-            self._check_convert_image('jpeg', format)
+            self._check_convert_image(ImageFormat.JPEG, format)
         self.set_config_values(self.settings)
 
     def _check_processing_error(self, image, info):

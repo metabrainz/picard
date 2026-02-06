@@ -20,7 +20,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
-from enum import IntEnum
+from dataclasses import dataclass
+from enum import (
+    Enum,
+    IntEnum,
+)
 
 from picard.i18n import N_
 
@@ -113,83 +117,107 @@ COVER_RESIZE_MODES = (
 )
 
 
-class ImageFormat(IntEnum):
-    # Item Arguments:
-    #   {int}   ID number
-    #   {str}   Display title in selection dialog
-    #   {list}  Aliases for the format (first is the default). Items must
-    #           be included in QtGui.QImageWriter.supportedImageFormats())
-    #   {str}   MIME string
-    #   {list}  Filename extensions (first is the default)
-    #   {bool}  Include in user-selected conversions list
-    #   {bool}  Use user-specified quality setting
+@dataclass
+class ImageFormatInfo:
+    name: str
+    mime: str
+    extensions: tuple[str, ...]
+    aliases: tuple[str, ...] | None = None
+    can_convert: bool = True
+    use_quality: bool = False
 
-    JPEG = 1, 'JPEG', ['jpeg', 'jpg'], 'image/jpeg', ['.jpg', '.jpeg'], True, True
-    PNG = 2, 'PNG', ['png'], 'image/png', ['.png'], True, False
-    WEBP = 3, 'WebP', ['webp'], 'image/webp', ['.webp'], True, True
-    TIFF = 4, 'TIFF', ['tiff', 'tif'], 'image/tiff', ['.tiff', '.tif'], True, False
-    GIF = 5, 'GIF', [], 'image/gif', ['.gif'], False, False
-    PDF = 6, 'PDF', [], 'application/pdf', ['.pdf'], False, False
 
-    def __new__(cls, value, title, format_aliases, mime, extensions, selectable, use_quality):
-        obj = int.__new__(cls, value)
-        obj._value_ = value
-        obj._title = title
-        obj._format_aliases = format_aliases
-        obj._mime = mime
-        obj._extensions = extensions
-        obj._selectable = selectable
-        obj._use_quality = use_quality
-        return obj
+class ImageFormat(Enum):
+    JPEG = 'jpeg'
+    PNG = 'png'
+    WEBP = 'webp'
+    TIFF = 'tiff'
+    GIF = 'gif'
+    PDF = 'pdf'
 
     @property
     def title(self):
-        """Display title of the image format"""
-        return self._title
+        return _INFO_MAPPING[self].name
 
     @property
-    def format(self):
-        """Format type for conversion in QtGui.QImageWriter.supportedImageFormats()"""
-        return self._format_aliases[0] if self._format_aliases else None
+    def aliases(self) -> tuple[str, ...]:
+        aliases = _INFO_MAPPING[self].aliases or tuple()
+        if self.value not in aliases:
+            aliases = (self.value,) + aliases
+        return aliases
 
     @property
-    def format_aliases(self):
-        """Aliases for the format type"""
-        return self._format_aliases
+    def extensions(self) -> tuple[str, ...]:
+        return _INFO_MAPPING[self].extensions
 
     @property
     def mime(self):
-        """MIME string"""
-        return self._mime
+        return _INFO_MAPPING[self].mime
 
     @property
     def extension(self):
-        """Default file extension"""
-        return self._extensions[0]
+        return _INFO_MAPPING[self].extensions[0]
 
     @property
     def all_extensions(self):
-        """List of all applicable file extensions"""
-        return self._extensions
+        return _INFO_MAPPING[self].extensions
 
     @property
-    def selectable(self):
-        """User selectable target type for conversion"""
-        return self._selectable
+    def can_convert(self):
+        return _INFO_MAPPING[self].can_convert
 
     @property
     def use_quality(self):
-        """Uses user-defined quality setting during conversion"""
-        return self._use_quality
+        return _INFO_MAPPING[self].use_quality
 
     def __repr__(self):
         cls_name = self.__class__.__name__
         return f'{cls_name}.{self.name}'
 
 
+_INFO_MAPPING = {
+    ImageFormat.JPEG: ImageFormatInfo(
+        name='JPEG',
+        mime='image/jpeg',
+        aliases=('jpg',),
+        extensions=('.jpg', '.jpeg'),
+        use_quality=True,
+    ),
+    ImageFormat.PNG: ImageFormatInfo(
+        name='PNG',
+        mime='image/png',
+        extensions=('.png',),
+    ),
+    ImageFormat.WEBP: ImageFormatInfo(
+        name='WebP',
+        mime='image/webp',
+        extensions=('.webp',),
+        use_quality=True,
+    ),
+    ImageFormat.TIFF: ImageFormatInfo(
+        name='TIFF',
+        mime='image/tiff',
+        aliases=('tif',),
+        extensions=('.tiff', '.tif'),
+    ),
+    ImageFormat.GIF: ImageFormatInfo(
+        name='GIF',
+        mime='image/gif',
+        extensions=('.gif',),
+        can_convert=False,
+    ),
+    ImageFormat.PDF: ImageFormatInfo(
+        name='PDF',
+        mime='application/pdf',
+        extensions=('.pdf',),
+        can_convert=False,
+    ),
+}
+
+
 def get_image_format_from_format(format_string: str) -> ImageFormat:
     for fmt in list(ImageFormat):
-        if format_string in fmt.format_aliases:
+        if format_string in fmt.aliases:
             return fmt
     return None
 

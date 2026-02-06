@@ -84,8 +84,9 @@ class CoverProcessingOptionsPage(OptionsPage):
             self.ui.file_resize_mode.setItemData(resize_mode.mode, _(resize_mode.tooltip), Qt.ItemDataRole.ToolTipRole)
 
         for item in list(ImageFormat):
-            self.ui.convert_tags_format.addItem(item.title, userData=item.format)
-            self.ui.convert_file_format.addItem(item.title, userData=item.format)
+            if item.can_convert:
+                self.ui.convert_tags_format.addItem(item.title, userData=item)
+                self.ui.convert_file_format.addItem(item.title, userData=item)
 
         self.tags_resize_mode_changed = partial(
             self._resize_mode_changed, self.ui.tags_resize_width_widget, self.ui.tags_resize_height_widget

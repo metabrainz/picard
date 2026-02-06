@@ -104,8 +104,8 @@ class ProcessingImage:
                 quality = -1
 
         try:
-            if not self._qimage.save(buffer, image_format.format, quality=quality):
-                raise CoverArtEncodingError(f"Failed to encode image into format '{image_format.format}'")
+            if not self._qimage.save(buffer, image_format.value, quality=quality):
+                raise CoverArtEncodingError(f"Failed to encode image into format '{image_format.value}'")
             return buffer.data().data()
         finally:
             buffer.close()

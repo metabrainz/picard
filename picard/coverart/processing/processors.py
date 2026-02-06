@@ -25,10 +25,7 @@ from PyQt6.QtCore import Qt
 
 from picard import log
 from picard.config import get_config
-from picard.const.cover_processing import (
-    ResizeModes,
-    get_image_format_from_format,
-)
+from picard.const.cover_processing import ResizeModes
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
     ProcessingImage,
@@ -116,8 +113,8 @@ class ConvertImage(ImageProcessor):
         config = get_config()
         tags_convert_images = config.setting['cover_tags_convert_images']
         file_convert_images = config.setting['cover_file_convert_images']
-        tags_format = config.setting['cover_tags_convert_to_format'].lower()
-        file_format = config.setting['cover_file_convert_to_format'].lower()
+        tags_format = config.setting['cover_tags_convert_to_format']
+        file_format = config.setting['cover_file_convert_to_format']
         if tags_convert_images and file_convert_images and tags_format == file_format:
             return ImageProcessor.Target.SAME
         elif tags_convert_images and file_convert_images:
@@ -132,15 +129,16 @@ class ConvertImage(ImageProcessor):
     def run(self, image, target):
         config = get_config()
         if target == ImageProcessor.Target.TAGS:
-            new_format = config.setting['cover_tags_convert_to_format'].lower()
+            new_format = config.setting['cover_tags_convert_to_format']
         else:
-            new_format = config.setting['cover_file_convert_to_format'].lower()
-        new_format = get_image_format_from_format(new_format)
+            new_format = config.setting['cover_file_convert_to_format']
+
         previous_format = image.info.format_info
         if previous_format == new_format:
             return
         image.info.format_info = new_format
-        log.debug("Changed cover art format from %s to %s", previous_format.format, new_format.format)
+
+        log.debug("Changed cover art format from %s to %s", previous_format.title, new_format.title)
 
 
 register_cover_art_processor(ResizeImage)
