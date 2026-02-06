@@ -26,6 +26,8 @@ from enum import (
     IntEnum,
 )
 
+from PyQt6 import QtGui
+
 from picard.i18n import N_
 
 
@@ -223,3 +225,6 @@ def get_image_format_from_format(format_string: str) -> ImageFormat:
 
 
 COVER_PROCESSING_SLEEP = 0.001
+
+
+ALLOWED_QT_FORMATS = set([str(x, 'utf-8') for x in QtGui.QImageWriter.supportedImageFormats()])

@@ -32,7 +32,10 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QImage
 
 from picard.config import get_config
-from picard.const.cover_processing import ImageFormat
+from picard.const.cover_processing import (
+    ALLOWED_QT_FORMATS,
+    ImageFormat,
+)
 from picard.plugin import ExtensionPoint
 from picard.util.imageinfo import (
     ImageInfo,
@@ -102,6 +105,9 @@ class ProcessingImage:
                 quality = config.setting['cover_image_quality']
             else:
                 quality = -1
+
+        if image_format.value not in ALLOWED_QT_FORMATS:
+            raise CoverArtEncodingError(f"Target format '{image_format.value}' not supported in this version of Qt.")
 
         try:
             if not self._qimage.save(buffer, image_format.value, quality=quality):
