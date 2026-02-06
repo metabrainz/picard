@@ -18,10 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-from collections import namedtuple
-from enum import IntEnum
 
-from PyQt6.QtGui import QImageWriter
+from collections import namedtuple
+from dataclasses import dataclass
+from enum import (
+    Enum,
+    IntEnum,
+)
+
+from PyQt6 import QtGui
 
 from picard.i18n import N_
 
@@ -113,14 +118,113 @@ COVER_RESIZE_MODES = (
     ),
 )
 
-IMAGE_FORMAT_NAMES = {
-    'jpeg': 'JPEG',
-    'png': 'PNG',
-    'webp': 'WebP',
-    'tiff': 'TIFF',
+
+@dataclass
+class ImageFormatInfo:
+    name: str
+    mime: str
+    extensions: tuple[str, ...]
+    aliases: tuple[str, ...] | None = None
+    can_convert: bool = True
+    use_quality: bool = False
+
+
+class ImageFormat(Enum):
+    JPEG = 'jpeg'
+    PNG = 'png'
+    WEBP = 'webp'
+    TIFF = 'tiff'
+    GIF = 'gif'
+    PDF = 'pdf'
+
+    @property
+    def title(self):
+        return _INFO_MAPPING[self].name
+
+    @property
+    def aliases(self) -> tuple[str, ...]:
+        aliases = _INFO_MAPPING[self].aliases or tuple()
+        if self.value not in aliases:
+            aliases = (self.value,) + aliases
+        return aliases
+
+    @property
+    def extensions(self) -> tuple[str, ...]:
+        return _INFO_MAPPING[self].extensions
+
+    @property
+    def mime(self):
+        return _INFO_MAPPING[self].mime
+
+    @property
+    def extension(self):
+        return _INFO_MAPPING[self].extensions[0]
+
+    @property
+    def all_extensions(self):
+        return _INFO_MAPPING[self].extensions
+
+    @property
+    def can_convert(self):
+        return _INFO_MAPPING[self].can_convert
+
+    @property
+    def use_quality(self):
+        return _INFO_MAPPING[self].use_quality
+
+    def __repr__(self):
+        cls_name = self.__class__.__name__
+        return f'{cls_name}.{self.name}'
+
+
+_INFO_MAPPING = {
+    ImageFormat.JPEG: ImageFormatInfo(
+        name='JPEG',
+        mime='image/jpeg',
+        aliases=('jpg',),
+        extensions=('.jpg', '.jpeg'),
+        use_quality=True,
+    ),
+    ImageFormat.PNG: ImageFormatInfo(
+        name='PNG',
+        mime='image/png',
+        extensions=('.png',),
+    ),
+    ImageFormat.WEBP: ImageFormatInfo(
+        name='WebP',
+        mime='image/webp',
+        extensions=('.webp',),
+        use_quality=True,
+    ),
+    ImageFormat.TIFF: ImageFormatInfo(
+        name='TIFF',
+        mime='image/tiff',
+        aliases=('tif',),
+        extensions=('.tiff', '.tif'),
+    ),
+    ImageFormat.GIF: ImageFormatInfo(
+        name='GIF',
+        mime='image/gif',
+        extensions=('.gif',),
+        can_convert=False,
+    ),
+    ImageFormat.PDF: ImageFormatInfo(
+        name='PDF',
+        mime='application/pdf',
+        extensions=('.pdf',),
+        can_convert=False,
+    ),
 }
 
-_qt_supported_formats = {bytes(format).decode() for format in QImageWriter.supportedImageFormats()}
-COVER_CONVERTING_FORMATS = {k: v for k, v in IMAGE_FORMAT_NAMES.items() if k in _qt_supported_formats}
+
+def get_image_format_from_format(format_string: str) -> ImageFormat:
+    for fmt in list(ImageFormat):
+        if format_string in fmt.aliases:
+            return fmt
+    return None
+
 
 COVER_PROCESSING_SLEEP = 0.001
+
+
+ALLOWED_QT_FORMATS = set([str(x, 'utf-8') for x in QtGui.QImageWriter.supportedImageFormats()])

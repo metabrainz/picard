@@ -32,6 +32,10 @@ from PyQt6.QtCore import (
 from PyQt6.QtGui import QImage
 
 from picard.config import get_config
+from picard.const.cover_processing import (
+    ALLOWED_QT_FORMATS,
+    ImageFormat,
+)
 from picard.plugin import ExtensionPoint
 from picard.util.imageinfo import (
     ImageInfo,
@@ -72,21 +76,21 @@ class ProcessingImage:
     def get_qimage(self):
         return self._qimage
 
-    def get_result(self, image_format: str | None = None, quality: int | None = None) -> bytes:
+    def get_result(self, image_format: ImageFormat | None = None, quality: int | None = None) -> bytes:
         """
         Encode the internal QImage to the specified format and quality and
         return the raw bytes.
 
-        If image_format is None, the format from self.info.format is used.
+        If image_format is None, the format from self.info.format_info is used.
 
         Raises:
             CoverArtEncodingError: If required attributes are missing, the
                 buffer could not be opened, or saving the image failed.
         """
         if image_format is None:
-            image_format = getattr(self.info, "format", None)
+            image_format = self.info.format_info
             if not image_format:
-                raise CoverArtEncodingError("No image format specified and info.format is missing.")
+                raise CoverArtEncodingError("No image format specified and info.format_info is missing.")
 
         if self._qimage is None:
             raise CoverArtEncodingError("No QImage available to encode.")
@@ -96,15 +100,18 @@ class ProcessingImage:
             raise CoverArtEncodingError("Failed to open QBuffer for writing.")
 
         if quality is None:
-            if image_format in ('jpeg', 'jpg', 'webp'):
+            if image_format.use_quality:
                 config = get_config()
                 quality = config.setting['cover_image_quality']
             else:
                 quality = -1
 
+        if image_format.value not in ALLOWED_QT_FORMATS:
+            raise CoverArtEncodingError(f"Target format '{image_format.value}' not supported in this version of Qt.")
+
         try:
-            if not self._qimage.save(buffer, image_format, quality=quality):
-                raise CoverArtEncodingError(f"Failed to encode image into format '{image_format}'")
+            if not self._qimage.save(buffer, image_format.value, quality=quality):
+                raise CoverArtEncodingError(f"Failed to encode image into format '{image_format.value}'")
             return buffer.data().data()
         finally:
             buffer.close()
@@ -113,9 +120,8 @@ class ProcessingImage:
         self.info = ImageInfo(
             width=image.width(),
             height=image.height(),
-            mime="",
-            extension="",
             datalen=0,
+            format_info=None,
         )
 
 

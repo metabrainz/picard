@@ -379,8 +379,8 @@ class CoverArtImage:
         try:
             info = imageinfo.identify(data)
             self.width, self.height = info.width, info.height
-            self.mimetype = info.mime
-            self.extension = info.extension
+            self.mimetype = info.format_info.mime
+            self.extension = info.format_info.extension
             self.datalength = info.datalen
         except imageinfo.IdentificationError as e:
             raise CoverArtImageIdentificationError(e) from e

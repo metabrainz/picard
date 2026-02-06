@@ -109,19 +109,12 @@ class ResizeImage(ImageProcessor):
 
 
 class ConvertImage(ImageProcessor):
-    _format_aliases = {
-        "jpeg": {"jpg", "jpeg"},
-        "png": {"png"},
-        "webp": {"webp"},
-        "tiff": {"tif", "tiff"},
-    }
-
     def target(self):
         config = get_config()
         tags_convert_images = config.setting['cover_tags_convert_images']
         file_convert_images = config.setting['cover_file_convert_images']
-        tags_format = config.setting['cover_tags_convert_to_format'].lower()
-        file_format = config.setting['cover_file_convert_to_format'].lower()
+        tags_format = config.setting['cover_tags_convert_to_format']
+        file_format = config.setting['cover_file_convert_to_format']
         if tags_convert_images and file_convert_images and tags_format == file_format:
             return ImageProcessor.Target.SAME
         elif tags_convert_images and file_convert_images:
@@ -136,15 +129,16 @@ class ConvertImage(ImageProcessor):
     def run(self, image, target):
         config = get_config()
         if target == ImageProcessor.Target.TAGS:
-            new_format = config.setting['cover_tags_convert_to_format'].lower()
+            new_format = config.setting['cover_tags_convert_to_format']
         else:
-            new_format = config.setting['cover_file_convert_to_format'].lower()
-        previous_format = image.info.format
-        if previous_format in self._format_aliases[new_format]:
+            new_format = config.setting['cover_file_convert_to_format']
+
+        previous_format = image.info.format_info
+        if previous_format == new_format:
             return
-        image.info.extension = f".{new_format}"
-        image.info.mime = f"image/{new_format}"
-        log.debug("Changed cover art format from %s to %s", previous_format, new_format)
+        image.info.format_info = new_format
+
+        log.debug("Changed cover art format from %s to %s", previous_format.title, new_format.title)
 
 
 register_cover_art_processor(ResizeImage)

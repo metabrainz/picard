@@ -26,6 +26,7 @@ from test.picardtestcase import (
     get_test_data_path,
 )
 
+from picard.const.cover_processing import ImageFormat
 from picard.util import imageinfo
 
 
@@ -39,9 +40,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/gif',
-                    extension='.gif',
                     datalen=5806,
+                    format_info=ImageFormat.GIF,
                 ),
             )
 
@@ -54,9 +54,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/png',
-                    extension='.png',
                     datalen=11137,
+                    format_info=ImageFormat.PNG,
                 ),
             )
 
@@ -69,9 +68,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/jpeg',
-                    extension='.jpg',
                     datalen=8550,
+                    format_info=ImageFormat.JPEG,
                 ),
             )
 
@@ -84,9 +82,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/webp',
-                    extension='.webp',
                     datalen=6178,
+                    format_info=ImageFormat.WEBP,
                 ),
             )
 
@@ -99,9 +96,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/webp',
-                    extension='.webp',
                     datalen=9432,
+                    format_info=ImageFormat.WEBP,
                 ),
             )
 
@@ -114,9 +110,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/webp',
-                    extension='.webp',
                     datalen=6858,
+                    format_info=ImageFormat.WEBP,
                 ),
             )
 
@@ -133,9 +128,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=140,
                     height=96,
-                    mime='image/tiff',
-                    extension='.tiff',
                     datalen=12509,
+                    format_info=ImageFormat.TIFF,
                 ),
             )
 
@@ -148,9 +142,8 @@ class IdentifyTest(PicardTestCase):
                 imageinfo.ImageInfo(
                     width=0,
                     height=0,
-                    mime='application/pdf',
-                    extension='.pdf',
                     datalen=10362,
+                    format_info=ImageFormat.PDF,
                 ),
             )
 
