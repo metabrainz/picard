@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-02 16:43+0100\n"
-"PO-Revision-Date: 2026-01-28 23:11+0000\n"
+"PO-Revision-Date: 2026-02-07 17:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -4455,7 +4455,7 @@ msgstr "Converteix les imatges desades als fitxers"
 
 #: picard/ui/forms/ui_options_cover_processing.py:325
 msgid "JPEG / WebP image quality:"
-msgstr ""
+msgstr "Qualitat de les imatges JPEG/WebP:"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:105
 msgid "Audio Fingerprinting"
