@@ -35,6 +35,10 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
+from picard.const.cover_processing import (
+    COVER_RESIZE_MODES,
+    ImageFormat,
+)
 from picard.const.defaults import DEFAULT_COPY_TEXT
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -281,6 +285,20 @@ class ProfilesOptionsPage(OptionsPage):
             return _("No enabled providers")
         return _("Enabled providers:") + '<ul>' + "".join(enabled_providers) + '</ul>'
 
+    def _get_ca_resize_mode(self, value):
+        if value is None:
+            return _("No mode selected")
+        if value not in range(len(COVER_RESIZE_MODES)):
+            return _("Invalid mode selected")
+        return _(COVER_RESIZE_MODES[value].title)
+
+    def _get_ca_convert_format(self, value):
+        if value is None:
+            return _("No format selected")
+        if value not in ImageFormat:
+            return _("Invalid format selected")
+        return value.title
+
     def make_setting_value_text(self, key, value):
         config = get_config()
         if value is None:
@@ -291,6 +309,10 @@ class ProfilesOptionsPage(OptionsPage):
             return self._get_scripts_list(config.setting[key])
         if key == 'ca_providers':
             return self._get_ca_providers_list(config.setting[key])
+        if key in ('cover_tags_resize_mode', 'cover_file_resize_mode'):
+            return self._get_ca_resize_mode(config.setting[key])
+        if key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
+            return self._get_ca_convert_format(config.setting[key])
         if isinstance(value, str):
             return '"%s"' % value
         if type(value) in {bool, int, float}:

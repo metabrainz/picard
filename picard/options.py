@@ -5,7 +5,7 @@
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Laurent Monin
 # Copyright (C) 2025 Philipp Wolfer
-# Copyright (C) 2025 Bob Swift
+# Copyright (C) 2025-2026 Bob Swift
 # Copyright (C) 2025 David Kellner
 #
 # This program is free software; you can redistribute it and/or
@@ -221,24 +221,24 @@ BoolOption('setting', 'show_cover_art_details_mimetype', True, title=N_("Show co
 
 # picard/ui/options/cover_processing.py
 # Cover Art Image Processing
-BoolOption('setting', 'filter_cover_by_size', False)
-IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE)
-IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE)
-BoolOption('setting', 'cover_tags_enlarge', False)
-BoolOption('setting', 'cover_tags_resize', False)
-IntOption('setting', 'cover_tags_resize_target_width', DEFAULT_COVER_MAX_SIZE)
-IntOption('setting', 'cover_tags_resize_target_height', DEFAULT_COVER_MAX_SIZE)
-IntOption('setting', 'cover_tags_resize_mode', DEFAULT_COVER_RESIZE_MODE)
-BoolOption('setting', 'cover_tags_convert_images', False)
-Option('setting', 'cover_tags_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT)
-BoolOption('setting', 'cover_file_enlarge', False)
-BoolOption('setting', 'cover_file_resize', False)
-IntOption('setting', 'cover_file_resize_target_width', DEFAULT_COVER_MAX_SIZE)
-IntOption('setting', 'cover_file_resize_target_height', DEFAULT_COVER_MAX_SIZE)
-IntOption('setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE)
-BoolOption('setting', 'cover_file_convert_images', False)
-Option('setting', 'cover_file_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT)
-IntOption('setting', 'cover_image_quality', DEFAULT_COVER_IMAGE_QUALITY)
+BoolOption('setting', 'filter_cover_by_size', False, title=N_("Discard small images"))
+IntOption('setting', 'cover_minimum_width', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image width"))
+IntOption('setting', 'cover_minimum_height', DEFAULT_COVER_MIN_SIZE, title=N_("Minimum image height"))
+BoolOption('setting', 'cover_tags_enlarge', False, title=N_("Allow enlarging tag images"))
+BoolOption('setting', 'cover_tags_resize', False, title=N_("Allow resizing tag images"))
+IntOption('setting', 'cover_tags_resize_target_width', DEFAULT_COVER_MAX_SIZE, title=N_("Resized tag image width"))
+IntOption('setting', 'cover_tags_resize_target_height', DEFAULT_COVER_MAX_SIZE, title=N_("Resized tag image height"))
+IntOption('setting', 'cover_tags_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("Tag image resize mode"))
+BoolOption('setting', 'cover_tags_convert_images', False, title=N_("Convert tag image format"))
+Option('setting', 'cover_tags_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT, title=N_("New tag image format"))
+BoolOption('setting', 'cover_file_enlarge', False, title=N_("Allow enlarging file images"))
+BoolOption('setting', 'cover_file_resize', False, title=N_("Allow resizing file images"))
+IntOption('setting', 'cover_file_resize_target_width', DEFAULT_COVER_MAX_SIZE, title=N_("Resized file image width"))
+IntOption('setting', 'cover_file_resize_target_height', DEFAULT_COVER_MAX_SIZE, title=N_("Resized file image height"))
+IntOption('setting', 'cover_file_resize_mode', DEFAULT_COVER_RESIZE_MODE, title=N_("File image resize mode"))
+BoolOption('setting', 'cover_file_convert_images', False, title=N_("Convert file image format"))
+Option('setting', 'cover_file_convert_to_format', DEFAULT_COVER_CONVERTING_FORMAT, title=N_("New file image format"))
+IntOption('setting', 'cover_image_quality', DEFAULT_COVER_IMAGE_QUALITY, title=N_("Format conversion quality"))
 
 # picard/ui/options/dialog.py
 # Attached Profiles
