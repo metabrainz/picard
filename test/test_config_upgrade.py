@@ -20,8 +20,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-
 import os
 
 from PyQt6.QtCore import QByteArray
@@ -66,6 +64,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_7_0dev4,
     upgrade_to_v2_7_0dev5,
     upgrade_to_v2_8_0dev2,
+    upgrade_to_v3_0_0a2,
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
     upgrade_to_v3_0_0dev5,
@@ -616,3 +615,36 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
         self.assertEqual('webp', self.config.setting['cover_tags_convert_to_format'])
         self.assertEqual('png', self.config.setting['cover_file_convert_to_format'])
+
+    def test_upgrade_to_v3_0_0a2(self):
+        Option('setting', 'file_renaming_scripts', {})
+        ListOption('setting', 'list_of_scripts', [])
+
+        test_script = (
+            r'$set(foo,$matchedtracks(baz)-$matchedtracks()-$matchedtracks(%album%)-$matchedtracks(foo$get(bar)))'
+        )
+        expected_script = '$set(foo,$matchedtracks()-$matchedtracks()-$matchedtracks()-$matchedtracks(foo$get(bar)))'
+
+        self.config.setting['file_renaming_scripts'] = {
+            '766bb2ce-5170-45f1-900c-02e7f9bd41cb': {
+                "id": "766bb2ce-5170-45f1-900c-02e7f9bd41cb",
+                "title": "Script 1",
+                "script": test_script,
+            },
+        }
+        self.config.setting['list_of_scripts'] = [
+            (0, 'Script 1', True, test_script),
+        ]
+
+        upgrade_to_v3_0_0a2(self.config)
+
+        result_naming_script = self.config.setting['file_renaming_scripts']['766bb2ce-5170-45f1-900c-02e7f9bd41cb']
+        self.assertEqual(
+            expected_script,
+            result_naming_script['script'],
+        )
+        result_tagger_script = self.config.setting['list_of_scripts'][0]
+        self.assertEqual(
+            expected_script,
+            result_tagger_script[3],
+        )
