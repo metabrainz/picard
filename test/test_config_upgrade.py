@@ -620,8 +620,10 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         Option('setting', 'file_renaming_scripts', {})
         ListOption('setting', 'list_of_scripts', [])
 
-        test_script = '$set(foo,$matchedtracks(baz)-$matchedtracks()-$matchedtracks(%album%))'
-        expected_script = '$set(foo,$matchedtracks()-$matchedtracks()-$matchedtracks())'
+        test_script = (
+            r'$set(foo,$matchedtracks(baz)-$matchedtracks()-$matchedtracks(%album%)-$matchedtracks(foo$get(bar)))'
+        )
+        expected_script = '$set(foo,$matchedtracks()-$matchedtracks()-$matchedtracks()-$matchedtracks(foo$get(bar)))'
 
         self.config.setting['file_renaming_scripts'] = {
             '766bb2ce-5170-45f1-900c-02e7f9bd41cb': {

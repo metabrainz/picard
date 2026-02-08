@@ -625,7 +625,7 @@ def upgrade_to_v3_0_0dev10(config):
 def upgrade_to_v3_0_0a2(config):
     """Update $matchedtracks() usage in scripts"""
 
-    matched_tracks_regex = re.compile(r'\$matchedtracks\([^)]+\)')
+    matched_tracks_regex = re.compile(r'\$matchedtracks\([^)$]+\)')
 
     def fix_matchedtracks(script):
         return matched_tracks_regex.sub('$matchedtracks()', script)
