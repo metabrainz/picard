@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2026.
+# bababasti <babasti@pm.me>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-01-27 07:37+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-02-08 20:11+0000\n"
+"Last-Translator: bababasti <babasti@pm.me>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "constants/de/>\n"
 "Language: de\n"
@@ -4292,6 +4293,9 @@ msgid ""
 "this value would be 11 for the second track on disc 2 where disc 1 has 9 "
 "tracks."
 msgstr ""
+"Die absolute Zahl dieses Titels ohne Berücksichtigung der Disk-Zahl. Zum "
+"Beispiel wäre dieser Wert 11 für den zweiten Titel auf Disk 2, wobei Disk 1 "
+"neun Titel hat."
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
@@ -4303,6 +4307,9 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
+"Der Acoustic Fingerabdruck für den Titel. Der Fingerabdruck basiert auf den "
+"in der Datei gefundenen Audioinformationen und wird mithilfe der Chromaprint "
+"Software berechnet."
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
@@ -4315,6 +4322,10 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
+"Die AcoustID welche mit dem Titel asoziiert wird. Die AcoustID ist die einer "
+"Audiodatei zugewiesene Kennzeichnung, basierend auf ihrem akustischen "
+"Fingerabdruck. Wenn sich die Fingerabdrücke ähnlich genug sind, können einer "
+"AcoustID mehrere Fingerabdrücke zugewiesen sein."
 
 #: picard/const/tags.py:67
 msgid "Album Artist"

@@ -28,13 +28,14 @@
 # Tobias Sarner <Tobias.Sarner@googlemail.com>, 2020
 # Wieland Hoffmann <themineo+transifex@googlemail.com>, 2012-2013,2015,2017
 # chaban <chaban@users.noreply.translations.metabrainz.org>, 2024.
+# bababasti <babasti@pm.me>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-02 16:43+0100\n"
-"PO-Revision-Date: 2026-01-28 23:11+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-02-08 20:11+0000\n"
+"Last-Translator: bababasti <babasti@pm.me>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -164,7 +165,7 @@ msgstr "Primäres Dateibenennungsskript"
 
 #: picard/debug_opts.py:83
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "Vollständiger Plugin-Pfad"
 
 #: picard/debug_opts.py:83
 msgid "Log plugin full paths"
@@ -172,11 +173,11 @@ msgstr "Vollständige Plugin-Pfade loggen"
 
 #: picard/debug_opts.py:84
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "Web Service Post-Daten"
 
 #: picard/debug_opts.py:84
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "Log-Daten der Web Service Post-Anfrage"
 
 #: picard/debug_opts.py:85
 msgid "Web Service Replies"
@@ -184,7 +185,7 @@ msgstr "Webservice-Antworten"
 
 #: picard/debug_opts.py:85
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "Log-Inhalt der Web Service Antworten"
 
 #: picard/debug_opts.py:86
 msgid "Git Backend"
@@ -506,7 +507,7 @@ msgstr "Update-Anfrage für Dokumentation anzeigen"
 
 #: picard/options.py:306
 msgid "Enable \"now playing\" notifications"
-msgstr ""
+msgstr "Benachrichtigungen zu „Aktuelle Wiedergabe“ aktivieren"
 
 #: picard/options.py:307
 msgid "Begin browsing in a specific directory"
@@ -630,7 +631,7 @@ msgstr "Bezeichung für diverse Interpreten"
 
 #: picard/options.py:384
 msgid "Don't sanitize dates for these formats"
-msgstr ""
+msgstr "Daten für diese Formate nicht bereinigen"
 
 #: picard/options.py:389
 msgid "Browser integration"
@@ -853,7 +854,7 @@ msgstr "Ausgewähltes Dateibenennungsskript"
 
 #: picard/options.py:505 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
-msgstr ""
+msgstr "Keine automatische Anpassung beim Laden"
 
 #: picard/options.py:511
 msgid "Start with last saved session"
@@ -865,7 +866,7 @@ msgstr "Intervall der automatischen Speicherung"
 
 #: picard/options.py:523
 msgid "Backup session on unexpected exit"
-msgstr ""
+msgstr "Sitzungssicherung bei unerwartetem Beenden"
 
 #: picard/options.py:529
 msgid "Include MusicBrainz data"
@@ -996,10 +997,17 @@ msgid ""
 "These plugins may contain security vulnerabilities or malicious code. They "
 "have been automatically disabled for your protection."
 msgstr ""
+"Die folgenden Plugins wurden auf die schwarze Liste gesetzt und "
+"deaktiviert:\n"
+"\n"
+"{plugin_list}\n"
+"\n"
+"Diese Plugins können Sicherheitslücken oder bösartigen Code enthalten. Sie "
+"wurden zu Ihrem Schutz automatisch deaktiviert."
 
 #: picard/tagger.py:784
 msgid "Blacklisted Plugins Detected"
-msgstr ""
+msgstr "Plugins auf der schwarzen Liste erkannt"
 
 #: picard/tagger.py:1166
 #, python-format
@@ -2924,7 +2932,7 @@ msgstr "Picard Skriptpaket"
 #: picard/session/session_loader.py:99
 #, python-brace-format
 msgid "Preloading albums from cache ({albums})…"
-msgstr ""
+msgstr "Alben aus dem Cache vorladen ({albums})…"
 
 #: picard/session/session_loader.py:102
 #, python-brace-format
@@ -2934,7 +2942,7 @@ msgstr "Lade Dateien und Alben ({files} Dateien) …"
 #: picard/session/session_loader.py:107
 #, python-brace-format
 msgid "Waiting on network ({requests} requests)…"
-msgstr ""
+msgstr "Warten auf Netzwerk ({requests} Anfragen)…"
 
 #: picard/session/session_loader.py:108
 msgid "Finalizing…"
@@ -2946,7 +2954,7 @@ msgstr "Lese Sitzung ein …"
 
 #: picard/session/session_loader.py:112
 msgid "Applying overrides…"
-msgstr ""
+msgstr "Überschreibungen anwenden…"
 
 #: picard/tags/docs.py:55
 #, python-brace-format
