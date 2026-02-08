@@ -34,6 +34,7 @@ from test.picardtestcase import PicardTestCase
 from picard import config
 from picard.album import Album
 from picard.const.cover_processing import (
+    ALLOWED_QT_FORMATS,
     ImageFormat,
     ResizeModes,
 )
@@ -312,7 +313,7 @@ class ImageProcessorsTest(PicardTestCase):
     def test_format_conversion(self):
         settings = copy(self.settings)
         settings['cover_tags_convert_images'] = True
-        for format in [x for x in list(ImageFormat) if x.can_convert]:
+        for format in [x for x in list(ImageFormat) if x.can_convert and x.value in ALLOWED_QT_FORMATS]:
             settings['cover_tags_convert_to_format'] = format
             self.set_config_values(settings)
             self._check_convert_image(ImageFormat.JPEG, format)
