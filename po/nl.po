@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-02 16:43+0100\n"
-"PO-Revision-Date: 2026-02-01 12:11+0000\n"
+"PO-Revision-Date: 2026-02-08 20:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -8693,10 +8693,8 @@ msgid "Plugins"
 msgstr "Plug-ins"
 
 #: picard/ui/options/plugins.py:97
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin…"
-msgstr "Plug-ins installeren …"
+msgstr "Plug-in installeren …"
 
 #: picard/ui/options/plugins.py:98
 msgid "Install a new plugin from the registry or a custom URL"
