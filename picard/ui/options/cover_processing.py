@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2024 Bob Swift
+# Copyright (C) 2024, 2026 Bob Swift
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2025 Philipp Wolfer
 #
@@ -53,24 +53,24 @@ class CoverProcessingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cover_art_processing.html"
 
     OPTIONS = (
-        ('filter_cover_by_size', None),
-        ('cover_minimum_width', None),
-        ('cover_minimum_height', None),
-        ('cover_tags_enlarge', None),
-        ('cover_tags_resize', None),
-        ('cover_tags_resize_target_width', None),
-        ('cover_tags_resize_target_height', None),
-        ('cover_tags_resize_mode', None),
-        ('cover_tags_convert_images', None),
-        ('cover_tags_convert_to_format', None),
-        ('cover_file_enlarge', None),
-        ('cover_file_resize', None),
-        ('cover_file_resize_target_width', None),
-        ('cover_file_resize_target_height', None),
-        ('cover_file_resize_mode', None),
-        ('cover_file_convert_images', None),
-        ('cover_file_convert_to_format', None),
-        ('cover_image_quality', None),
+        ('filter_cover_by_size', ['filtering']),
+        ('cover_minimum_width', ['filtering_width_label', 'filtering_width_value', 'px_label1']),
+        ('cover_minimum_height', ['filtering_height_label', 'filtering_height_value', 'px_label2']),
+        ('cover_tags_enlarge', ['tags_scale_up']),
+        ('cover_tags_resize', ['tags_scale_down']),
+        ('cover_tags_resize_target_width', ['tags_resize_width_label', 'tags_resize_width_value', 'px_label5']),
+        ('cover_tags_resize_target_height', ['tags_resize_height_label', 'tags_resize_height_value', 'px_label6']),
+        ('cover_tags_resize_mode', ['tags_resize_mode']),
+        ('cover_tags_convert_images', ['convert_tags']),
+        ('cover_tags_convert_to_format', ['convert_tags_label', 'convert_tags_format']),
+        ('cover_file_enlarge', ['file_scale_up']),
+        ('cover_file_resize', ['file_scale_down']),
+        ('cover_file_resize_target_width', ['file_resize_width_label', 'file_resize_width_value', 'px_label3']),
+        ('cover_file_resize_target_height', ['file_resize_height_label', 'file_resize_height_value', 'px_label4']),
+        ('cover_file_resize_mode', ['file_resize_mode']),
+        ('cover_file_convert_images', ['convert_file']),
+        ('cover_file_convert_to_format', ['convert_file_label', 'convert_file_format']),
+        ('cover_image_quality', ['cover_image_quality_label', 'cover_image_quality_value', 'percent_label']),
     )
 
     def __init__(self, parent=None):
