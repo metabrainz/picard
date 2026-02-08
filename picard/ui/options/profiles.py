@@ -288,9 +288,10 @@ class ProfilesOptionsPage(OptionsPage):
     def _get_ca_resize_mode(self, value):
         if value is None:
             return _("No mode selected")
-        if value not in range(len(COVER_RESIZE_MODES)):
-            return _("Invalid mode selected")
-        return _(COVER_RESIZE_MODES[value].title)
+        for mode in COVER_RESIZE_MODES:
+            if mode.mode == value:
+                return _(mode.title)
+        return _("Invalid mode selected")
 
     def _get_ca_convert_format(self, value):
         if value is None:
