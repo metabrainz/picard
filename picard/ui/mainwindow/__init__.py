@@ -367,11 +367,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show(self):
         self.restoreWindowState()
         super().show()
-        self.show_new_user_dialog()
         if self.tagger.autoupdate_enabled:
             self._auto_update_check()
-        self.show_allow_rtd_updates_dialog()
         self.metadata_box.restore_state()
+        QtCore.QTimer.singleShot(100, self.show_startup_dialogs)
 
     def showEvent(self, event):
         if not self.__shown:
@@ -2154,14 +2153,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         config.setting[setting_id] = not config.setting[setting_id]
 
-    def show_new_user_dialog(self):
+    def show_startup_dialogs(self):
         config = get_config()
+        self.show_new_user_dialog(config)
+        self.show_allow_rtd_updates_dialog(config)
+
+    def show_new_user_dialog(self, config):
         if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
 
-    def show_allow_rtd_updates_dialog(self):
-        config = get_config()
+    def show_allow_rtd_updates_dialog(self, config):
         if not config.setting['check_rtd_updates'] and config.setting['rtd_updates_ask']:
             msg = AllowRtdUpdatesDialog(self)
             allow, ask = msg.show()
