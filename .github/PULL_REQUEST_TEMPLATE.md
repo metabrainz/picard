@@ -50,6 +50,28 @@
 -->
 
 
+
+## AI Usage
+
+<!--
+    Update the checkbox with an [x] for the level of AI contribution to the changes you are making.
+-->
+
+In accordance with the AI use policy portion of the [MetaBrainz Contribution Guidelines](https://github.com/metabrainz/guidelines/blob/master/README.md), the level of AI/LLM use in the development of this Pull Request is:
+
+  * [ ] No AI/LLM use
+  * [x] Minimal use (e.g. autocompletion)
+  * [ ] Moderate use (e.g. suggestions regarding code fragments)
+  * [ ] Significant use (e.g. code structure, tests development, etc.)
+  * [ ] Primarily AI developed
+  * [ ] Other (please specify below)
+
+<!--
+    What portions of the code were developed using AI and/or how was AI used in preparing this PR?
+-->
+
+
+
 ## Action
 
 Additional actions required:
