@@ -44,7 +44,7 @@ class AllowRtdUpdatesDialog:
         )
 
         self.show_again = True
-        show_again_text = _("Show this message again the next time you use Picard.")
+        show_again_text = _("Show this message again the next time you start Picard.")
 
         self.msg = QtWidgets.QMessageBox(parent)
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
