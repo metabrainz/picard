@@ -356,13 +356,20 @@ class MetadataBox(QtWidgets.QTableWidget):
             # Just copy the current item as a string
             item = self.currentItem()
             if item:
-                tag, value = self._get_row_info(item.row())
-                value = value[item.column()]
-                if tag == '~length':
-                    value = self.tag_diff.handle_length(value, prettify_times=True)
-                if value is not None:
-                    log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
-                    self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
+                column = item.column()
+                if column == self.COLUMN_TAG:
+                    # Copy tag name from first column
+                    tag = self.tag_diff.tag_names[item.row()]
+                    log.debug("Copying tag name '%s' to clipboard", tag)
+                    self.tagger.clipboard().setText(tag)
+                else:
+                    tag, value = self._get_row_info(item.row())
+                    value = value[column]
+                    if tag == '~length':
+                        value = self.tag_diff.handle_length(value, prettify_times=True)
+                    if value is not None:
+                        log.debug("Copying '%s' to clipboard (from tag '%s')", value, tag)
+                        self.tagger.clipboard().setText(MULTI_VALUED_JOINER.join(value))
 
     def _paste_from_json(self, mimedata):
         def _decode_json(mimedata):
