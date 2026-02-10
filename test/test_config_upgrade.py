@@ -72,6 +72,7 @@ from picard.config_upgrade import (
     upgrade_to_v3_0_0dev8,
     upgrade_to_v3_0_0dev10,
 )
+from picard.const.cover_processing import ImageFormat
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
     DEFAULT_REPLACEMENT,
@@ -605,16 +606,16 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('enabled_plugins', self.config.setting)
 
     def test_upgrade_to_v3_0_0dev10(self):
-        TextOption('setting', 'cover_tags_convert_to_format', 'JPEG')
-        TextOption('setting', 'cover_file_convert_to_format', 'JPEG')
+        Option('setting', 'cover_tags_convert_to_format', ImageFormat.JPEG)
+        Option('setting', 'cover_file_convert_to_format', ImageFormat.JPEG)
 
         self.config.setting['cover_tags_convert_to_format'] = 'WebP'
         self.config.setting['cover_file_convert_to_format'] = 'PNG'
 
         upgrade_to_v3_0_0dev10(self.config)
 
-        self.assertEqual('webp', self.config.setting['cover_tags_convert_to_format'])
-        self.assertEqual('png', self.config.setting['cover_file_convert_to_format'])
+        self.assertEqual(ImageFormat.WEBP, self.config.setting['cover_tags_convert_to_format'])
+        self.assertEqual(ImageFormat.PNG, self.config.setting['cover_file_convert_to_format'])
 
     def test_upgrade_to_v3_0_0a2(self):
         Option('setting', 'file_renaming_scripts', {})
