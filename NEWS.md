@@ -1,5 +1,27 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0a2 - 2026-02-10
+
+### Bugfixes
+- [PICARD-2833](https://tickets.metabrainz.org/browse/PICARD-2833) - macOS: "New user" dialog breaks application menu
+- [PICARD-3116](https://tickets.metabrainz.org/browse/PICARD-3116) - Sorting columns does not work on Apple M2
+- [PICARD-3173](https://tickets.metabrainz.org/browse/PICARD-3173) - Exception if custom columns list is empty
+- [PICARD-3174](https://tickets.metabrainz.org/browse/PICARD-3174) - Collection menu does not show labels and checked state
+- [PICARD-3176](https://tickets.metabrainz.org/browse/PICARD-3176) - Image processing is changing JPEG quality even without any processors running
+- [PICARD-3178](https://tickets.metabrainz.org/browse/PICARD-3178) - Cover processing setting enabled when it should be disabled
+- [PICARD-3181](https://tickets.metabrainz.org/browse/PICARD-3181) - File sizes not shown if "clear existing tags" is active
+- [PICARD-3182](https://tickets.metabrainz.org/browse/PICARD-3182) - Lookup in Browser not working for album cluster
+- [PICARD-3184](https://tickets.metabrainz.org/browse/PICARD-3184) - Using "keep original cover art" on an album does reset the cover for children, but not the album itself
+- [PICARD-3185](https://tickets.metabrainz.org/browse/PICARD-3185) - Built-in server must not serve CORS request with invalid origin
+- [PICARD-3186](https://tickets.metabrainz.org/browse/PICARD-3186) - Without pygit2 the plugin page shows an error message
+- [PICARD-3190](https://tickets.metabrainz.org/browse/PICARD-3190) - Crash on network errors when searching from the search bar
+
+### Improvements
+- [PICARD-3177](https://tickets.metabrainz.org/browse/PICARD-3177) - Make JPEG quality configurable in image processing settings
+- [PICARD-3179](https://tickets.metabrainz.org/browse/PICARD-3179) - Add the cover processing settings to the profile manager
+- [PICARD-3187](https://tickets.metabrainz.org/browse/PICARD-3187) - Add config upgrade hook to update usage of `$matchedtracks()`
+
+
 ## Version 3.0.0a1 - 2026-01-27
 
 ### Bugfixes
