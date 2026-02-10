@@ -618,11 +618,11 @@ def upgrade_to_v3_0_0dev9(config):
 
 def upgrade_to_v3_0_0dev10(config):
     """Update cover art processing format options"""
-    # Check if a TextOption to avoid crash if settings created as Option using ImageFormat instances.
-    if isinstance(config.setting['cover_tags_convert_to_format'], str):
-        config.setting['cover_tags_convert_to_format'] = config.setting['cover_tags_convert_to_format'].lower()
-    if isinstance(config.setting['cover_file_convert_to_format'], str):
-        config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
+    # Use raw values to ensure that we get a string to process
+    for setting_key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
+        value = config.setting.raw_value(setting_key, qtype='QString')
+        if value and isinstance(value, str):
+            config.setting[setting_key] = value.lower()
 
 
 def upgrade_to_v3_0_0a2(config):
