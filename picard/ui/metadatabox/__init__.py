@@ -350,7 +350,12 @@ class MetadataBox(QtWidgets.QTableWidget):
                     log.error("Failed to convert %r to '%s': %s", selected_data, mimetype, e)
             # Ensure we actually have something to copy to the clipboard
             if mimedata.formats():
-                log.debug("Copying %r to clipboard as %r", selected_data.tag_names, mimedata.formats())
+                if log.is_debug():
+                    log.debug("Copying to clipboard as %r", mimedata.formats())
+                    tsv_data = selected_data.to_tsv()
+                    lines = tsv_data.rstrip('\n').split('\n')
+                    for line in lines:
+                        log.debug("  %s", line.replace('\t', '|'))
                 self.tagger.clipboard().setMimeData(mimedata)
         else:
             # Just copy the current item as a string
