@@ -248,18 +248,14 @@ class SearchDialog(TableBasedDialog):
         self.add_widget_to_center_layout(error_widget)
 
     def network_error(self, reply, error):
-        params = {
-            'url': reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
-            'error': reply.errorString(),
-            'qtcode': error,
-            'statuscode': reply.attribute(QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute),
-        }
-        error_msg = (
-            _(
-                "<strong>Following error occurred while fetching results:<br><br></strong>"
-                "Network request error for %(url)s:<br>%(error)s (QT code %(qtcode)d, HTTP code %(statuscode)r)<br>"
-            )
-            % params
+        error_msg = _(
+            "<strong>Following error occurred while fetching results:<br><br></strong>"
+            "Network request error for {url}:<br>{error} (QT code {qtcode}, HTTP code {statuscode})<br>"
+        ).format(
+            url=reply.request().url().toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo),
+            error=reply.errorString(),
+            qtcode=error,
+            statuscode=reply.attribute(QtNetwork.QNetworkRequest.Attribute.HttpStatusCodeAttribute),
         )
         self.show_error(error_msg, show_retry_button=True)
 
