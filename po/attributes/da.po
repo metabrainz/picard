@@ -2,19 +2,20 @@
 # Translators:
 # Frederik “Freso” S. Olesen <email address hidden>, 2012
 # Frederik “Freso” S. Olesen <email address hidden>, 2014-2015
+# Lise Andersen <andersenlise@outlook.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2012-05-24 18:52+0000\n"
-"Last-Translator: Frederik “Freso” S. Olesen <transifex.net@freso.dk>, "
-"2014-2015\n"
-"Language-Team: Danish (http://app.transifex.com/musicbrainz/musicbrainz/"
-"language/da/)\n"
+"PO-Revision-Date: 2026-02-05 22:11+0000\n"
+"Last-Translator: Lise Andersen <andersenlise@outlook.com>\n"
+"Language-Team: Danish <https://translations.metabrainz.org/projects/"
+"musicbrainz/attributes/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -24,6 +25,9 @@ msgid ""
 "unaccompanied) choral works. What exactly is a motet depends quite a bit on "
 "the period."
 msgstr ""
+"\"Motet\" er et udtryk, der anvendes om forskellige typer korværker (normalt "
+"uledsaget af instrumenter). Hvad en motet præcist er, afhænger en del af "
+"tidsperioden."
 
 #. name:Sonata
 #: DB:work_type/description:5
@@ -32,6 +36,9 @@ msgid ""
 "\"Sonata\" is a general term used to describe small scale (very often solo "
 "or solo + keyboard) instrumental works, initially in baroque music."
 msgstr ""
+"\"Sonate\" er en generel betegnelse, der bruges til at beskrive "
+"instrumentale værker i lille skala (meget ofte solo eller en solo + klaver), "
+"oprindeligt i barokmusik."
 
 #: DB:medium_format/name:205
 msgctxt "medium_format"
