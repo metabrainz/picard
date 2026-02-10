@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-02 16:43+0100\n"
-"PO-Revision-Date: 2026-02-08 20:11+0000\n"
+"PO-Revision-Date: 2026-02-10 09:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -928,10 +928,8 @@ msgid "ID3v2 text encoding"
 msgstr "ID3v2-tekstcodering"
 
 #: picard/options.py:483
-#, fuzzy
-#| msgid "Save iTunes compatible grouping and work"
 msgid "iTunes compatible grouping / work"
-msgstr "ITunes-groeperingen en -composities opslaan"
+msgstr "iTunes-groeperingen en -composities"
 
 #: picard/options.py:484
 msgid "Write ID3v1 tags"
@@ -6310,7 +6308,7 @@ msgstr ""
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:131
 msgid "Save iTunes compatible grouping and work"
-msgstr "ITunes-groeperingen en -composities opslaan"
+msgstr "iTunes-groeperingen en -composities opslaan"
 
 #: picard/ui/forms/ui_options_tags_compatibility_id3.py:132
 msgid "Also include ID3v1 tags in the files"
