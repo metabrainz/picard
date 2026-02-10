@@ -618,8 +618,11 @@ def upgrade_to_v3_0_0dev9(config):
 
 def upgrade_to_v3_0_0dev10(config):
     """Update cover art processing format options"""
-    config.setting['cover_tags_convert_to_format'] = config.setting['cover_tags_convert_to_format'].lower()
-    config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
+    # Check if a TextOption to avoid crash if settings created as Option using ImageFormat instances.
+    if isinstance(config.setting['cover_tags_convert_to_format'], str):
+        config.setting['cover_tags_convert_to_format'] = config.setting['cover_tags_convert_to_format'].lower()
+    if isinstance(config.setting['cover_file_convert_to_format'], str):
+        config.setting['cover_file_convert_to_format'] = config.setting['cover_file_convert_to_format'].lower()
 
 
 def upgrade_to_v3_0_0a2(config):
