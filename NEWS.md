@@ -38,6 +38,7 @@
 - [PICARD-2847](https://tickets.metabrainz.org/browse/PICARD-2847) - Switching option profiles does not update menu items
 - [PICARD-2857](https://tickets.metabrainz.org/browse/PICARD-2857) - Picard returns non-zero when loading files on the command line
 - [PICARD-2863](https://tickets.metabrainz.org/browse/PICARD-2863) - Barcode sometimes not shown in "other versions" context menu
+- [PICARD-2873](https://tickets.metabrainz.org/browse/PICARD-2873) - Cover art cells aren't updated when displayed after Search dialog resize
 - [PICARD-2878](https://tickets.metabrainz.org/browse/PICARD-2878) - Crash in cover art when scan triggers recursion beyond python limits (e.g. 1000)
 - [PICARD-2879](https://tickets.metabrainz.org/browse/PICARD-2879) - macOS: Chosen starting directory might not be used in file browser
 - [PICARD-2954](https://tickets.metabrainz.org/browse/PICARD-2954) - Cannot scroll up while dragging items on Wayland
@@ -80,6 +81,7 @@
 - [PICARD-3104](https://tickets.metabrainz.org/browse/PICARD-3104) - Allow user to set plugin execution order
 - [PICARD-3107](https://tickets.metabrainz.org/browse/PICARD-3107) - Add profile save warning on option settings page
 - [PICARD-3108](https://tickets.metabrainz.org/browse/PICARD-3108) - Allow user to select checkbox option settings to include in a Quick Menu
+- [PICARD-3165](https://tickets.metabrainz.org/browse/PICARD-3113) - Translate album names and track names to these locales where possible
 - [PICARD-3118](https://tickets.metabrainz.org/browse/PICARD-3118) - Allow user to save/load current Picard session
 - [PICARD-3157](https://tickets.metabrainz.org/browse/PICARD-3157) - Add support for MPRIS2
 - [PICARD-3165](https://tickets.metabrainz.org/browse/PICARD-3165) - Support parsing raw SCSI TOC data file as created by redumper
@@ -92,8 +94,11 @@
 - [PICARD-3007](https://tickets.metabrainz.org/browse/PICARD-3007) - Document `_genres` and `_folksonomy_tags` variables
 - [PICARD-3017](https://tickets.metabrainz.org/browse/PICARD-3017) - Update documentation for `_filepath` variable
 - [PICARD-3050](https://tickets.metabrainz.org/browse/PICARD-3050) - Update documentation for lookup disc
+- [PICARD-3077](https://tickets.metabrainz.org/browse/PICARD-3077) - Update documentation for main page filters
 - [PICARD-3079](https://tickets.metabrainz.org/browse/PICARD-3079) - Support Python 3.14
+- [PICARD-3082](https://tickets.metabrainz.org/browse/PICARD-3082) - Update documentation for new standardized instrument and vocal credits option
 - [PICARD-3106](https://tickets.metabrainz.org/browse/PICARD-3106) - Use uv for dependency management
+- [PICARD-3112](https://tickets.metabrainz.org/browse/PICARD-3112) - Update documentation for Quick Settings menu
 - [PICARD-3119](https://tickets.metabrainz.org/browse/PICARD-3119) - Refactor: all standard, icon, delegate columns to use new column API
 - [PICARD-3159](https://tickets.metabrainz.org/browse/PICARD-3159) - Document broadcast date variable
 - [PICARD-3162](https://tickets.metabrainz.org/browse/PICARD-3162) - Document keyboard shortcuts for internal player
@@ -154,7 +159,11 @@
 - [PICARD-3072](https://tickets.metabrainz.org/browse/PICARD-3072) - Add an optional `group` parameter to `$rsearch`
 - [PICARD-3084](https://tickets.metabrainz.org/browse/PICARD-3084) - Allow up to 3 characters for Windows file name compatibility replacements
 - [PICARD-3085](https://tickets.metabrainz.org/browse/PICARD-3085) - Cover Art View - Display file size and dimensions on default view
+- [PICARD-3114](https://tickets.metabrainz.org/browse/PICARD-3114) - Do not auto-close the menu when enabling/disabling Profiles
 - [PICARD-3123](https://tickets.metabrainz.org/browse/PICARD-3123) - Rename 'dont_write_tags' to 'enable_tag_saving' (value reversed)
+- [PICARD-3127](https://tickets.metabrainz.org/browse/PICARD-3127) - Do not auto-close the menu when picking columns
+- [PICARD-3130](https://tickets.metabrainz.org/browse/PICARD-3130) - Allow searching scripting help documentation
+- [PICARD-3132](https://tickets.metabrainz.org/browse/PICARD-3132) - Add ReadTheDocs support
 - [PICARD-3133](https://tickets.metabrainz.org/browse/PICARD-3133) - Pre-Save File Hook for Plugins
 - [PICARD-3146](https://tickets.metabrainz.org/browse/PICARD-3146) - Allow plugins to register global tools menu actions
 - [PICARD-3147](https://tickets.metabrainz.org/browse/PICARD-3147) - Remove `ui_init` extension point
@@ -355,6 +364,7 @@
 
 ### Improvements
 - [PICARD-2691](https://tickets.metabrainz.org/browse/PICARD-2691) - Provide code signed source archives
+- [PICARD-2715](https://tickets.metabrainz.org/browse/PICARD-2715) - More information and options for plugin updates available notification
 
 
 ## Version 2.9 - 2023-07-26
