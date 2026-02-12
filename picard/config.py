@@ -142,12 +142,12 @@ class Option(QtCore.QObject):
 
 
 class TextOption(Option):
-    convert = str
+    convert = str  # type: ignore
     qtype = 'QString'
 
 
 class BoolOption(Option):
-    convert = bool
+    convert = bool  # type: ignore
     qtype = bool
 
 
@@ -161,7 +161,7 @@ class IntOption(Option):
 
 
 class FloatOption(Option):
-    convert = float
+    convert = float  # type: ignore
 
 
 class ListOption(Option):
@@ -176,7 +176,7 @@ class ListOption(Option):
 class Memovar:
     def __init__(self):
         self.dirty = True
-        self.value: ConfigValueType = None
+        self.value: ConfigValueType | None = None
 
 
 class ConfigUpgradeError(Exception):
@@ -199,7 +199,7 @@ class ConfigSection(QtCore.QObject):
     def key(self, name):
         return self.__prefix + name
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> Any:
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
@@ -240,7 +240,7 @@ class ConfigSection(QtCore.QObject):
             value = self.__qt_config.value(key)
         return value
 
-    def value(self, option: Option, default: ConfigValueType | None = None) -> ConfigValueType:
+    def value(self, option: Option, default: ConfigValueType | None = None) -> Any:
         """Return an option value converted to the given Option type."""
         name = option.name
         if default is None:
@@ -560,7 +560,7 @@ def get_config() -> Config:
     return config
 
 
-def load_new_config(filename=None):
+def load_new_config(filename: str):
     config_file = get_config().fileName()
     try:
         shutil.copy(filename, config_file)
