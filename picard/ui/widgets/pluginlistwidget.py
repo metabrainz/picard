@@ -83,7 +83,7 @@ class UpdatePanel(QtWidgets.QWidget):
 
     def update_button_state(self, count):
         if count > 0:
-            self.update_button.setText(_("Update All ({count})").format(count=count))
+            self.update_button.setText(_("Update Selected ({count})").format(count=count))
             self.update_button.setEnabled(True)
             self.show()
         else:
