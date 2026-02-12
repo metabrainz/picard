@@ -80,6 +80,7 @@
 - [PICARD-3104](https://tickets.metabrainz.org/browse/PICARD-3104) - Allow user to set plugin execution order
 - [PICARD-3107](https://tickets.metabrainz.org/browse/PICARD-3107) - Add profile save warning on option settings page
 - [PICARD-3108](https://tickets.metabrainz.org/browse/PICARD-3108) - Allow user to select checkbox option settings to include in a Quick Menu
+- [PICARD-3118](https://tickets.metabrainz.org/browse/PICARD-3118) - Allow user to save/load current Picard session
 - [PICARD-3157](https://tickets.metabrainz.org/browse/PICARD-3157) - Add support for MPRIS2
 - [PICARD-3165](https://tickets.metabrainz.org/browse/PICARD-3165) - Support parsing raw SCSI TOC data file as created by redumper
 
