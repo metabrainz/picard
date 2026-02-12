@@ -189,6 +189,14 @@ def create_common_columns() -> tuple[Column, ...]:
     # File Type
     filetype = make_field_column(N_("File Type"), '~format', width=120, column_group=ColumnGroup.FILE)
 
+    # File paths
+    file_directory = make_field_column(N_("File Directory"), '~dirname', column_group=ColumnGroup.FILE)
+    file_name = make_field_column(N_("File Name"), '~filename', column_group=ColumnGroup.FILE)
+    file_extension = make_field_column(N_("File Extension"), '~extension', column_group=ColumnGroup.FILE)
+
+    # File timestamp
+    file_created = make_field_column(N_("File Creation Time"), '~file_created_timestamp', column_group=ColumnGroup.FILE)
+
     # Bitrate
     bitrate = make_numeric_field_column(
         N_("Bitrate"),
@@ -232,6 +240,10 @@ def create_common_columns() -> tuple[Column, ...]:
         releasedate,
         cover,
         coverdims,
+        file_directory,
+        file_name,
+        file_extension,
+        file_created,
     )
 
 
