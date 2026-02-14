@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2026-01-26 10:55+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
@@ -143,7 +143,7 @@ msgstr "Об'єднання"
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "Видалити"
@@ -7308,7 +7308,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "&Вирізати"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr "&Вставити"
 
@@ -7400,7 +7400,7 @@ msgstr "Ви&лучити"
 msgid "Remove selected files/albums"
 msgstr "Вилучити вибрані файли/альбоми"
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr "Шукати в &Браузері"
 
@@ -7769,23 +7769,23 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr "Не вдалося скопіювати поточний вибір."
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr "У буфері обміну немає дійсних даних для вставки"
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr "Редагувати…"
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 msgid "Add to \"Preserve Tags\" List"
 msgstr "Додати до списку «Зберегти теги»"
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "Видалити зі списку «Зберегти теги»."
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Використати початкове значення"
@@ -7793,11 +7793,11 @@ msgstr[1] "Використати початкових значення"
 msgstr[2] "Використати початкових значень"
 msgstr[3] "Використати початкових значень"
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 msgid "Merge Original Values"
 msgstr "Об'єднати вихідні значення"
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 msgid "&Copy"
 msgstr "&Копіювати"
 
@@ -9245,8 +9245,9 @@ msgid "Update All"
 msgstr "Оновити все"
 
 #: picard/ui/widgets/pluginlistwidget.py:86
-#, python-brace-format
-msgid "Update All ({count})"
+#, fuzzy, python-brace-format
+#| msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "Оновити все ({count})"
 
 #: picard/ui/widgets/pluginlistwidget.py:132

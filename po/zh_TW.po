@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2023-12-22 09:28+0000\n"
 "Last-Translator: Iceman1415 <iceman1415@protonmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://translations.metabrainz.org/"
@@ -130,7 +130,7 @@ msgstr "合併"
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "移除"
@@ -6379,7 +6379,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "剪下(&C)"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr "貼上(&P)"
 
@@ -6473,7 +6473,7 @@ msgstr "移除(&R)"
 msgid "Remove selected files/albums"
 msgstr "移除已選擇的檔案或專輯"
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr "以瀏覽器查找(&B)"
 
@@ -6857,39 +6857,39 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr "編輯…"
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 #, fuzzy
 #| msgid "Add to 'Preserve Tags' List"
 msgid "Add to \"Preserve Tags\" List"
 msgstr "新增到「保留標籤」清單"
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 #, fuzzy
 #| msgid "Remove from 'Preserve Tags' List"
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "從「保留標籤」清單移除"
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "使用原值"
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 #, fuzzy
 #| msgid "Use Original Value"
 #| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
 msgstr "使用原值"
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 msgid "&Copy"
 msgstr "複製(&C)"
 
@@ -8348,7 +8348,7 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:86
 #, fuzzy, python-brace-format
 #| msgid "Unmatched Files"
-msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "未配對的檔案"
 
 #: picard/ui/widgets/pluginlistwidget.py:132

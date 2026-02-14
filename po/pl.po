@@ -25,7 +25,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
 "Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
@@ -151,7 +151,7 @@ msgstr "Scal"
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "Usuń"
@@ -7772,7 +7772,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "&Wytnij"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr "Wkl&ej"
 
@@ -7867,7 +7867,7 @@ msgstr "&Usuń"
 msgid "Remove selected files/albums"
 msgstr "Usuń wybrane pliki/albumy"
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr "Wyszukaj w &przeglądarce"
 
@@ -8255,25 +8255,25 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr "Nie można skopiować bieżącego zaznaczenia."
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr "Brak prawidłowych danych w schowku do wklejenia"
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr "Edytuj…"
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 #, fuzzy
 msgid "Add to \"Preserve Tags\" List"
 msgstr "Dodaj do listy „Zachowaj tagi”"
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 #, fuzzy
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "Usuń z listy „Zachowaj tagi”"
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Użyj oryginalnej wartości"
@@ -8281,14 +8281,14 @@ msgstr[1] "Użyj oryginalnych wartości"
 msgstr[2] "Użyj oryginalnych wartości"
 msgstr[3] "Użyj oryginalnych wartości"
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 #, fuzzy
 #| msgid "Use Original Value"
 #| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
 msgstr "Połącz oryginalne wartości"
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 msgid "&Copy"
 msgstr "&Kopiuj"
 
@@ -9785,7 +9785,7 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:86
 #, fuzzy, python-brace-format
 #| msgid "Duplicate files: %(count)d"
-msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "Duplikaty plików: %(count)d"
 
 #: picard/ui/widgets/pluginlistwidget.py:132

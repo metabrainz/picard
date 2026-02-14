@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2026-02-03 19:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
@@ -140,7 +140,7 @@ msgstr "Sujungti"
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "Šalinti"
@@ -7185,7 +7185,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr ""
 
@@ -7277,7 +7277,7 @@ msgstr "Š&alinti"
 msgid "Remove selected files/albums"
 msgstr ""
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -7654,27 +7654,27 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr "Redaguoti…"
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 #, fuzzy
 #| msgid "Add to 'Preserve Tags' List"
 msgid "Add to \"Preserve Tags\" List"
 msgstr "Pridėti į Išlaikyti žymas sąrašą"
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 #, fuzzy
 #| msgid "Remove from 'Preserve Tags' List"
 msgid "Remove from \"Preserve Tags\" List"
 msgstr "Pašalinti iš Išlaikyti žymes sąrašo"
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Naudoti originalią reikšmę"
@@ -7682,14 +7682,14 @@ msgstr[1] "Naudoti originalias reikšmes"
 msgstr[2] "Naudoti originalios reikšmės"
 msgstr[3] "Naudoti originalių reikšmių"
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 #, fuzzy
 #| msgid "Use Original Value"
 #| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
 msgstr "Naudoti originalią reikšmę"
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 msgid "&Copy"
 msgstr ""
 
@@ -9118,8 +9118,9 @@ msgid "Update All"
 msgstr "Atnaujinti visus"
 
 #: picard/ui/widgets/pluginlistwidget.py:86
-#, python-brace-format
-msgid "Update All ({count})"
+#, fuzzy, python-brace-format
+#| msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "Atnaujinti visus ({count})"
 
 #: picard/ui/widgets/pluginlistwidget.py:132

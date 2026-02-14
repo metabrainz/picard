@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2023-08-23 19:09+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language-Team: Occitan <https://translations.metabrainz.org/projects/picard/"
@@ -120,7 +120,7 @@ msgstr ""
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "Levar"
@@ -5919,7 +5919,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "Co&par"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr "&Empegar"
 
@@ -6013,7 +6013,7 @@ msgstr "&Levar"
 msgid "Remove selected files/albums"
 msgstr "Suprimir los fichièrs/albums seleccionats"
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr ""
 
@@ -6382,33 +6382,33 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 msgid "Add to \"Preserve Tags\" List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 msgid "Remove from \"Preserve Tags\" List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] ""
 msgstr[1] ""
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 msgid "Merge Original Values"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 msgid "&Copy"
 msgstr ""
 
@@ -7714,7 +7714,7 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:86
 #, fuzzy, python-brace-format
 #| msgid "Unmatched Files"
-msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "Fichièrs sens gropament"
 
 #: picard/ui/widgets/pluginlistwidget.py:132

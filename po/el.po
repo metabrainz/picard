@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-10 10:17+0100\n"
+"POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2023-08-27 13:05+0000\n"
 "Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
 "Language-Team: Greek <https://translations.metabrainz.org/projects/picard/"
@@ -136,7 +136,7 @@ msgstr "Συγχώνευση"
 
 #: picard/config_upgrade.py:156
 #: picard/ui/forms/ui_options_interface_toolbar.py:86
-#: picard/ui/metadatabox/__init__.py:518
+#: picard/ui/metadatabox/__init__.py:530
 #: picard/ui/options/interface_toolbar.py:111
 msgid "Remove"
 msgstr "Αφαίρεση"
@@ -6046,7 +6046,7 @@ msgstr "Ctrl+Shift+S"
 msgid "&Cut"
 msgstr "&Αποκοπή"
 
-#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:543
+#: picard/ui/mainwindow/actions.py:107 picard/ui/metadatabox/__init__.py:555
 msgid "&Paste"
 msgstr "&Επικόλληση"
 
@@ -6140,7 +6140,7 @@ msgstr "&Αφαίρεση"
 msgid "Remove selected files/albums"
 msgstr "Αφαίρεση επιλεγμένων αρχείων/αλμπουμ"
 
-#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:577
+#: picard/ui/mainwindow/actions.py:234 picard/ui/metadatabox/__init__.py:589
 msgid "Lookup in &Browser"
 msgstr "Αναζήτηση στον &περιηγητή"
 
@@ -6515,36 +6515,36 @@ msgstr "Alt+Shift+R"
 msgid "Unable to copy current selection."
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:411
+#: picard/ui/metadatabox/__init__.py:423
 msgid "No valid data in clipboard to paste"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:456
+#: picard/ui/metadatabox/__init__.py:468
 msgid "Edit…"
 msgstr "Επεξεργασία…"
 
-#: picard/ui/metadatabox/__init__.py:462
+#: picard/ui/metadatabox/__init__.py:474
 msgid "Add to \"Preserve Tags\" List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:467
+#: picard/ui/metadatabox/__init__.py:479
 msgid "Remove from \"Preserve Tags\" List"
 msgstr ""
 
-#: picard/ui/metadatabox/__init__.py:524
+#: picard/ui/metadatabox/__init__.py:536
 msgid "Use Original Value"
 msgid_plural "Use Original Values"
 msgstr[0] "Χρήση αρχική τιμής"
 msgstr[1] "Χρήση αρχικών τιμών"
 
-#: picard/ui/metadatabox/__init__.py:528
+#: picard/ui/metadatabox/__init__.py:540
 #, fuzzy
 #| msgid "Use Original Value"
 #| msgid_plural "Use Original Values"
 msgid "Merge Original Values"
 msgstr "Χρήση αρχική τιμής"
 
-#: picard/ui/metadatabox/__init__.py:538
+#: picard/ui/metadatabox/__init__.py:550
 #, fuzzy
 msgid "&Copy"
 msgstr "Αντιγραφή"
@@ -7875,7 +7875,7 @@ msgstr ""
 #: picard/ui/widgets/pluginlistwidget.py:86
 #, fuzzy, python-brace-format
 #| msgid "Unmatched Files"
-msgid "Update All ({count})"
+msgid "Update Selected ({count})"
 msgstr "Τα αρχεία δεν ταιριάζουν"
 
 #: picard/ui/widgets/pluginlistwidget.py:132
