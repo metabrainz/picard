@@ -271,6 +271,36 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         menu.exec(event.globalPos())
         event.accept()
 
+    def get_columns_state(self) -> dict[str, dict]:
+        state = {}
+        sorted_column = self.sortIndicatorSection()
+        sort_order = self.sortIndicatorOrder()
+        for i, column in enumerate(self._columns):
+            column_state = {
+                'visible': not self.isSectionHidden(i),
+                'position': self.visualIndex(i),
+                'width': self.sectionSize(i),
+            }
+            if i == sorted_column:
+                column_state['sorted'] = sort_order.value
+            state[column.key] = column_state
+        return state
+
+    def restore_columns_state(self, state: dict[str, dict]):
+        for i, column in enumerate(self._columns):
+            column_state = state.get(column.key, None)
+            if not column_state:
+                continue
+            self.show_column(i, column_state.get('visible', column.always_visible))
+            self.resizeSection(i, column_state.get('width', column.width or 100))
+            current_pos = self.visualIndex(i)
+            new_pos = column_state.get('position', -1)
+            if current_pos > 0 and new_pos > 0 and current_pos != new_pos:
+                self.moveSection(current_pos, new_pos)
+            sorted = column_state.get('sorted', None)
+            if sorted is not None:
+                self.setSortIndicator(i, QtCore.Qt.SortOrder(sorted))
+
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
