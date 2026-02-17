@@ -165,7 +165,7 @@ else:
         upx=False,
         icon='picard.ico',
         version='win-version-info.txt',
-        console=True,
+        console=False if os_name == 'Darwin' else True,
         # macOS code signing
         codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
         entitlements_file='./scripts/package/entitlements.plist',
