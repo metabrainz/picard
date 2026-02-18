@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import defaultdict
 import re
 
 from PyQt6 import (
@@ -58,7 +59,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
     OPTIONS = ()
 
-    _registered_settings = []
+    _registered_settings = defaultdict(list)
     initialized = False
     loaded = False
 
@@ -93,7 +94,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     def restore_defaults(self):
         config = get_config()
         old_options = {}
-        for option in self._registered_settings:
+        for option in self._registered_settings[self.NAME]:
             default_value = option.default
             name = option.name
             current_value = config.setting[name]
@@ -146,7 +147,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         option = Option.get('setting', name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
-        OptionsPage._registered_settings.append(option)
+        OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
         if highlights is not None:
             profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.display_title(), parent=cls.PARENT)
