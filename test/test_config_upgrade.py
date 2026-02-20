@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 import os
 
+import PyQt6.QtCore
 from PyQt6.QtCore import QByteArray
 
 from test.picardtestcase import PicardTestCase
@@ -65,6 +66,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_7_0dev5,
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0a2,
+    upgrade_to_v3_0_0a3,
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
     upgrade_to_v3_0_0dev5,
@@ -649,3 +651,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             expected_script,
             result_tagger_script[3],
         )
+
+    def test_upgrade_to_v3_0_0a3(self):
+        Option('persist', 'album_view_header_state', PyQt6.QtCore.QByteArray())
+        Option('persist', 'file_view_header_state', PyQt6.QtCore.QByteArray())
+        self.config.persist['album_view_header_state'] = b'a'
+        self.config.persist['file_view_header_state'] = b'a'
+
+        upgrade_to_v3_0_0a3(self.config)
+
+        self.assertNotIn('album_view_header_state', self.config.persist)
+        self.assertNotIn('file_view_header_state', self.config.persist)

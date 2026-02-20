@@ -644,6 +644,12 @@ def upgrade_to_v3_0_0a2(config):
     config.setting['list_of_scripts'] = tagger_scripts
 
 
+def upgrade_to_v3_0_0a3(config):
+    """Remove persisted column configuration"""
+    config.persist.remove('album_view_header_state')
+    config.persist.remove('file_view_header_state')
+
+
 @contextmanager
 def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
     opt = option_type(section, name, default)
