@@ -65,6 +65,7 @@ from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 class ConfigurableColumnsHeader(LockableHeaderView):
     def __init__(self, columns, parent=None):
+        self._prelock_columns_state = None
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._columns = columns
         self._always_visible_columns = set(self._columns.always_visible_columns())
@@ -272,6 +273,9 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         event.accept()
 
     def get_columns_state(self) -> dict[str, dict]:
+        if self.is_locked and self._prelock_columns_state:
+            return self._prelock_columns_state
+
         state = {}
         sorted_column = self.sortIndicatorSection()
         sort_order = self.sortIndicatorOrder()
@@ -280,6 +284,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
                 'visible': not self.isSectionHidden(i),
                 'position': self.visualIndex(i),
                 'width': self.sectionSize(i),
+                'resize_mode': self.sectionResizeMode(i).value,
             }
             if i == sorted_column:
                 column_state['sorted'] = sort_order.value
@@ -292,6 +297,8 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             if not column_state:
                 continue
             self.show_column(i, column_state.get('visible', column.always_visible))
+            resize_mode = column_state.get('resize_mode', QtWidgets.QHeaderView.ResizeMode.Interactive.value)
+            self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode(resize_mode))
             self.resizeSection(i, column_state.get('width', column.width or 100))
             current_pos = self.visualIndex(i)
             new_pos = column_state.get('position', -1)
@@ -353,7 +360,23 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             self.unsorted()
 
     def lock(self, is_locked):
-        super().lock(is_locked)
+        """Override parent's lock() to not use Qt's state restore.
+
+        This ensures the sort indicator and other column state is preserved
+        across lock/unlock cycles using the same format as save/restore.
+        """
+        self.is_locked = is_locked
+        if is_locked:
+            self._prelock_columns_state = self.get_columns_state()
+            self.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
+        else:
+            if self._prelock_columns_state:
+                self.restore_columns_state(self._prelock_columns_state)
+            self._prelock_columns_state = None
+
+        self.setSectionsClickable(not is_locked)
+        self.setSectionsMovable(not is_locked)
+        self.setSortIndicatorClearable(True)
 
     def __str__(self):
         name = getattr(self.parent(), 'NAME', str(self.parent().__class__.__name__))
