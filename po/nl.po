@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-14 12:58+0100\n"
-"PO-Revision-Date: 2026-02-13 12:11+0000\n"
+"PO-Revision-Date: 2026-02-20 14:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -7639,7 +7639,7 @@ msgstr "&Doneren …"
 
 #: picard/ui/mainwindow/actions.py:139
 msgid "&Report a Bug…"
-msgstr "Een bug &rapporteren …"
+msgstr "Een bug &melden …"
 
 #: picard/ui/mainwindow/actions.py:146
 msgid "&Support Forum…"
