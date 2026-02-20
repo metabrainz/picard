@@ -205,6 +205,16 @@ class TestFileIdentity(PicardTestCase):
         with self.assertRaises(FileIdentityError):
             id1 == id2  # noqa: B015
 
+    def test_identity_equality_symmetry(self):
+        """Test that equality comparison is symmetric."""
+        fname = self._write_temp(b"symmetric content")
+        id1 = FileIdentity(fname)
+        id2 = FileIdentity(fname)
+        result1 = id1 == id2
+        result2 = id2 == id1
+        self.assertEqual(result1, result2)
+        self.assertTrue(result1)
+
     def test_identity_with_hash_equal(self):
         """Test that FileIdentity equality considers hash values when set."""
         fname = self._write_temp(b"content")
@@ -276,6 +286,22 @@ class TestFileIdentity(PicardTestCase):
         self.assertIsNotNone(id2._hash)
         # Both hashes are equal because both were computed from the same current file content
         self.assertNotEqual(id1._hash, id2._hash)
+
+    def test_identity_precomputed_hash_then_file_changes(self):
+        """Test that a precomputed hash snapshot detects later file modification."""
+        fname = self._write_temp(b"original content")
+        id1 = FileIdentity(fname)
+        id1_hash_before = id1._fast_hash()
+        id1._hash = id1_hash_before
+        # Modify file contents
+        with open(fname, "wb") as f:
+            f.write(b"modified content")
+        id2 = FileIdentity(fname)
+        self.assertNotEqual(id1, id2)
+        # Ensure id1 still holds original hash
+        self.assertEqual(id1._hash, id1_hash_before)
+        # Ensure id2 hash reflects new content
+        self.assertNotEqual(id1._hash, id2._fast_hash())
 
     def test_identity_replaced_file_same_content(self):
         """Test that replacing a file with identical content but new inode is detected."""
