@@ -29,6 +29,7 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -642,6 +643,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     self.show_options('fingerprinting')
             else:
                 self.tagger.acoustidmanager.submit()
+
+    def lookup_discid_from_tags(self):
+        """Perform a CD lookup based on disc ID tags from the selected cluster's files."""
+        files = list(iter_files_from_objects(self.selected_objects))
+        if files:
+            self.tagger.lookup_disc_id_from_tags(files)
 
     def _create_actions(self):
         self.actions = dict(create_actions(self))

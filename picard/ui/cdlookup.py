@@ -10,6 +10,7 @@
 # Copyright (C) 2014 Sophist-UK
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -147,6 +148,14 @@ class CDLookupDialog(PicardDialog):
             release_id = release_list.itemFromIndex(index).data(_DATA_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
             self.tagger.load_album(release_id, discid=self.disc.id)
         super().accept()
+
+    def get_selected_release_id(self):
+        """Get the currently selected release ID from the dialog."""
+        release_list = self.ui.release_list
+        for index in release_list.selectionModel().selectedRows():
+            release_id = release_list.itemFromIndex(index).data(_DATA_COLUMN, QtCore.Qt.ItemDataRole.UserRole)
+            return release_id
+        return None
 
     def lookup(self):
         submission_url = self.disc.submission_url
