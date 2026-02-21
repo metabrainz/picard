@@ -139,6 +139,11 @@ FILE_COMPARISON_WEIGHTS = {
 }
 
 
+class ExternalChange(Enum):
+    MISSING = auto()
+    MODIFIED = auto()
+
+
 class FileIdentityError(Exception):
     pass
 
@@ -480,6 +485,20 @@ class File(MetadataItem):
             raise self.PreserveTimesUtimeError(errmsg) from None
         return (st.st_atime_ns, st.st_mtime_ns)
 
+    def _external_file_change(self, filename):
+        if not self._loaded_identity:
+            return None
+        try:
+            current = FileIdentity(filename)
+        except FileNotFoundError:
+            return ExternalChange.MISSING
+        except OSError as e:
+            log.warning("Cannot stat file %r: %s", filename, e)
+            return None
+        if current != self._loaded_identity:
+            return ExternalChange.MODIFIED
+        return None
+
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
         config = get_config()
@@ -494,11 +513,13 @@ class File(MetadataItem):
         new_filename = old_filename
         if config.setting['enable_tag_saving']:
             # Detect source changes before saving (debug only)
-            current = FileIdentity(old_filename)
-            if current and current != self._loaded_identity:
-                log.warning("File externally modified.")
-            elif not current:
+            change = self._external_file_change(old_filename)
+            if change == ExternalChange.MISSING:
                 log.warning("File missing!")
+                return
+            elif change:
+                log.warning("File externally modified.")
+                return
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
