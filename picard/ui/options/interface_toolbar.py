@@ -122,7 +122,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         ),
         MainAction.DISCID_FROM_TAGS: ToolbarButtonDesc(
             N_("Lookup TOC Tag…"),
-            'disc-id-from-tags',
+            'media-optical-disc-id',
         ),
         MainAction.GENERATE_FINGERPRINTS: ToolbarButtonDesc(
             N_("Generate Fingerprints"),

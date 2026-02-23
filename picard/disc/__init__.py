@@ -13,6 +13,7 @@
 # Copyright (C) 2013, 2018-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2016-2017 Sambhav Kothari
 # Copyright (C) 2018 Vishal Choudhary
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,6 +30,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from functools import partial
 import traceback
 
 from PyQt6 import QtCore
@@ -57,6 +59,8 @@ class Disc:
         self.mcn = None
         self.tracks = 0
         self.toc_string = None
+        self._skip_dialog = False
+        self._files_to_match = None
 
     def read(self, device=None):
         if device is None:
@@ -110,6 +114,18 @@ class Disc:
     def lookup(self):
         self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
 
+    def lookup_by_toc(self, toc_string, skip_dialog=False, files_to_match=None):
+        """Lookup releases by table of contents string.
+
+        Args:
+            toc_string: The TOC string (e.g., "1+2+150+22337+44910")
+            skip_dialog: If True and exactly one match found, auto-load without showing dialog
+            files_to_match: List of files to match to the album after load
+        """
+        self._skip_dialog = skip_dialog
+        self._files_to_match = files_to_match
+        self.tagger.mb_api.lookup_toc(toc_string, self._toc_lookup_finished)
+
     def _lookup_finished(self, document, http, error):
         self.tagger.restore_cursor()
         releases = []
@@ -123,6 +139,43 @@ class Disc:
 
         dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
         dialog.exec()
+
+    def _toc_lookup_finished(self, document, http, error):
+        """Handle the result of a TOC lookup."""
+        self.tagger.restore_cursor()
+        releases = []
+        if error:
+            log.error("TOC lookup error: %r", http.errorString())
+        else:
+            try:
+                releases = document.get('releases', [])
+            except (AttributeError, KeyError) as e:
+                log.error("Error parsing TOC lookup response: %r", e)
+
+        # If we have exactly one match and skip_dialog is True, auto-load it
+        if self._skip_dialog and len(releases) == 1:
+            release = releases[0]
+            release_id = release.get('id')
+            if release_id:
+                album = self.tagger.load_album(release_id)
+                # Match the files if provided
+                if self._files_to_match:
+                    self.tagger.move_files_to_album(self._files_to_match, album=album)
+            return
+
+        # Otherwise show the dialog for user to select
+        dialog = CDLookupDialog(releases, self, parent=self.tagger.window)
+        # If files were provided, match them after user selection
+        if self._files_to_match:
+            dialog.accepted.connect(partial(self._on_dialog_accepted, dialog))
+        dialog.exec()
+
+    def _on_dialog_accepted(self, dialog):
+        """Handle when user accepts a release selection in the TOC lookup dialog."""
+        release_id = dialog.get_selected_release_id()
+        if release_id and self._files_to_match:
+            album = self.tagger.load_album(release_id)
+            self.tagger.move_files_to_album(self._files_to_match, album=album)
 
 
 if discid is not None:

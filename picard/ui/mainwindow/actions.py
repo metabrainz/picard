@@ -215,7 +215,7 @@ def _create_submit_acoustid_action(parent):
 def _lookup_discid_from_tags_action(parent):
     action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Loo&kup TOC Tag…"), parent)
     action.setStatusTip(_("Lookup release via third-party disc identifiers from track tags"))
-    action.setEnabled(True)  # CHANGE LATER
+    action.setEnabled(False)
     action.triggered.connect(parent.lookup_discid_from_tags)
     return action
 

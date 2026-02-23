@@ -1691,6 +1691,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.PLAY, have_files)
         self.enable_action(MainAction.PLAY_FILE_EXTERNAL, have_files)
         self.enable_action(MainAction.OPEN_FOLDER, have_files)
+        self.enable_action(MainAction.DISCID_FROM_TAGS, have_files)
         self.enable_action(MainAction.CUT, have_objects)
         self.enable_action(MainAction.SUBMIT_CLUSTER, can_submit)
         self.enable_action(MainAction.SUBMIT_FILE_AS_RECORDING, have_files)

@@ -1192,9 +1192,6 @@ class Tagger(QtWidgets.QApplication):
 
     def lookup_disc_id_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes_CDDB_1)."""
-        # Store files for later matching after release selection
-        self._toc_lookup_files = list(files)
-
         # Try to find TOC data in tags from all files
         toc_data = None
         toc_source = None
@@ -1213,20 +1210,22 @@ class Tagger(QtWidgets.QApplication):
             QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
             return
 
-        # Gather tags from all files and ensure they're consistent
+        # Gather tags from all files that have it
         tags = []
         for file in files:
             if toc_source == 'iTunes_CDDB_1':
                 tag = file.metadata.get('comment:iTunes_CDDB_1') or file.metadata.get('iTunes_CDDB_1')
+            if tag:
+                tags.append(tag)
 
-            if not tag:
-                msg = _('Disc information missing in one or more selected files')
-                self.window.set_statusbar_message(msg)
-                QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
-                return
-            tags.append(tag)
+        # Abort if no files have the tag
+        if not tags:
+            msg = _('Disc information could not be found in tags')
+            self.window.set_statusbar_message(msg)
+            QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
+            return
 
-        # Ensure all tags are identical
+        # Ensure all tags found are identical
         unique_tags = set(tags)
         if len(unique_tags) != 1:
             msg = _('Selected files contain tags with conflicting disc information')
@@ -1240,7 +1239,7 @@ class Tagger(QtWidgets.QApplication):
                 num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(toc_data)
 
             # Validate track count matches number of files
-            if len(self._toc_lookup_files) != num_tracks:
+            if len(files) != num_tracks:
                 raise ValueError(
                     f"Number of tracks ({num_tracks}) does not match number of selected files ({len(files)})"
                 )
@@ -1258,69 +1257,11 @@ class Tagger(QtWidgets.QApplication):
         self.window.set_statusbar_message(N_('Looking up disc from tags…'))
         self.set_wait_cursor()
 
-        # Use MusicBrainz API for TOC lookup
-        self.mb_api.lookup_toc(toc_string, partial(self._on_toc_lookup_finished))
+        # Skip dialog if exactly one match, and match files to album
+        from picard.disc import Disc
 
-    def _on_toc_lookup_finished(self, document, http, error):
-        """Handle the result of a TOC lookup."""
-        self.restore_cursor()
-
-        if error:
-            self.window.set_statusbar_message(_('Disc lookup failed: %s') % str(error))
-            log.error("TOC lookup error: %r", error)
-            return
-
-        releases = []
-        try:
-            releases = document.get('releases', [])
-        except (AttributeError, KeyError) as e:
-            log.error("Error parsing TOC lookup response: %r", e)
-            self.window.set_statusbar_message(_('No matching releases found'))
-            return
-
-        if not releases:
-            self.window.set_statusbar_message(_('No matching releases found for this disc'))
-            return
-
-        # If we have exactly one match, load it automatically
-        if len(releases) == 1:
-            release = releases[0]
-            release_id = release.get('id')
-            if release_id:
-                self.window.set_statusbar_message(
-                    N_('Disc matched: %(release)s by %(artist)s'),
-                    {
-                        'release': release.get('title', ''),
-                        'artist': release.get('artist-credit', [{}])[0].get('name', ''),
-                    },
-                )
-                album = self.load_album(release_id)
-                # Automatically match files to this album
-                if hasattr(self, '_toc_lookup_files'):
-                    self.move_files_to_album(self._toc_lookup_files, album=album)
-                return
-
-        # If we have multiple matches, show dialog
-        # Create a simple mock disc object for the dialog (we don't have a physical disc)
-        from types import SimpleNamespace
-
-        from picard.ui.cdlookup import CDLookupDialog
-
-        mock_disc = SimpleNamespace(mcn=None, id=None, submission_url=None)
-
-        dialog = CDLookupDialog(releases, mock_disc, parent=self.window)
-        # Connect to the release selection to automatically match files
-        dialog.accepted.connect(partial(self._on_toc_lookup_dialog_accepted, dialog))
-        dialog.exec()
-
-    def _on_toc_lookup_dialog_accepted(self, dialog):
-        """Handle when user accepts a release selection in the TOC lookup dialog."""
-        release_id = dialog.get_selected_release_id()
-        if release_id and hasattr(self, '_toc_lookup_files'):
-            # Load the album (dialog already does this, but we need the album object)
-            album = self.load_album(release_id)
-            # Match the files to the album
-            self.move_files_to_album(self._toc_lookup_files, album=album)
+        disc = Disc()
+        disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=list(files))
 
     def trash_files(self, files):
         with self.window.ignore_selection_changes:
