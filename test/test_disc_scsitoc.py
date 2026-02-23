@@ -36,3 +36,19 @@ class TestTocFromFile(PicardTestCase):
             (1, 13, 186400, 150, 1577, 6626, 21547, 29728, 43379, 60379, 81350, 92793, 105047, 127885, 155090, 156793),
             toc,
         )
+
+    def test_toc_from_file_last_track_data(self):
+        test_log = get_test_data_path('scsi-last-track-data.toc')
+        toc = toc_from_file(test_log)
+        self.assertEqual(
+            (1, 9, 226647, 150, 22032, 34732, 50505, 69417, 111672, 129785, 157517, 203830),
+            toc,
+        )
+
+    def test_toc_from_file_first_track_data(self):
+        test_log = get_test_data_path('scsi-first-track-data.toc')
+        toc = toc_from_file(test_log)
+        self.assertEqual(
+            (1, 11, 259800, 150, 22637, 36551, 66982, 96659, 129905, 135284, 162530, 191684, 219377, 248578),
+            toc,
+        )
