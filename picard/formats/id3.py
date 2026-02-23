@@ -216,6 +216,7 @@ class ID3File(File):
         'WORK': 'work',
         'Writer': 'writer',
         'SHOWMOVEMENT': 'showmovement',
+        'iTunes_CDDB_1': 'itunes_cddb_1',
     }
     __rtranslate_freetext = {v: k for k, v in __translate_freetext.items()}
     __translate_freetext['writer'] = 'writer'  # For backward compatibility of case

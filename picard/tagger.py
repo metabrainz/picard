@@ -1191,17 +1191,17 @@ class Tagger(QtWidgets.QApplication):
                 self.remove_files(files)
 
     def lookup_disc_id_from_tags(self, files):
-        """Perform a CD lookup using table of contents from tags (iTunes_CDDB_1)."""
+        """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
         # Try to find TOC data in tags from all files
         toc_data = None
         toc_source = None
 
         for file in files:
-            # Check for iTunes_CDDB_1 format
-            itunes_tag = file.metadata.get('comment:iTunes_CDDB_1') or file.metadata.get('iTunes_CDDB_1')
+            # Check for itunes_cddb_1 format
+            itunes_tag = file.metadata.get('itunes_cddb_1')
             if itunes_tag:
                 toc_data = itunes_tag
-                toc_source = 'iTunes_CDDB_1'
+                toc_source = 'itunes_cddb_1'
                 break
 
         if not toc_data:
@@ -1210,17 +1210,17 @@ class Tagger(QtWidgets.QApplication):
             QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
             return
 
-        # Gather tags from all files that have it
+        # Gather tag from all files that have it
         tags = []
         for file in files:
-            if toc_source == 'iTunes_CDDB_1':
-                tag = file.metadata.get('comment:iTunes_CDDB_1') or file.metadata.get('iTunes_CDDB_1')
+            if toc_source == 'itunes_cddb_1':
+                tag = file.metadata.get('itunes_cddb_1')
             if tag:
                 tags.append(tag)
 
         # Abort if no files have the tag
         if not tags:
-            msg = _('Disc information could not be found in tags')
+            msg = _('Disc information could not be found')
             self.window.set_statusbar_message(msg)
             QtWidgets.QMessageBox.warning(self.window, _('Lookup Error'), msg)
             return
@@ -1235,7 +1235,7 @@ class Tagger(QtWidgets.QApplication):
 
         # Parse the TOC data using the appropriate parser
         try:
-            if toc_source == 'iTunes_CDDB_1':
+            if toc_source == 'itunes_cddb_1':
                 num_tracks, leadout_lba, track_lbas = parse_toc_itunes_cddb(toc_data)
 
             # Validate track count matches number of files

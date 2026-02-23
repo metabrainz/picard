@@ -512,6 +512,15 @@ ALL_TAGS = TagVars(
         is_filterable=True,
     ),
     TagVar(
+        'itunes_cddb_1',
+        shortdesc=N_('iTunes CDDB 1'),
+        longdesc=N_(
+            'An iTunes-specific tag containing a code that uniquely identifies a CD based on the number '
+            'of tracks and their lengths.'
+        ),
+        is_from_mb=False,
+    ),
+    TagVar(
         'key',
         shortdesc=N_('Key'),
         longdesc=N_('The key of the music.'),

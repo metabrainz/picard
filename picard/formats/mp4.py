@@ -154,7 +154,7 @@ class MP4File(File):
         '----:com.apple.iTunes:ARTISTS': 'artists',
         '----:com.apple.iTunes:WORK': 'work',
         '----:com.apple.iTunes:initialkey': 'key',
-        '----:com.apple.iTunes:iTunes_CDDB_1': 'iTunes_CDDB_1',
+        '----:com.apple.iTunes:iTunes_CDDB_1': 'itunes_cddb_1',
     }
     __r_freeform_tags = {v: k for k, v in __freeform_tags.items()}
 
