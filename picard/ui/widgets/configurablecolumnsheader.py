@@ -299,7 +299,8 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             self.show_column(i, column_state.get('visible', column.always_visible))
             resize_mode = column_state.get('resize_mode', QtWidgets.QHeaderView.ResizeMode.Interactive.value)
             self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode(resize_mode))
-            self.resizeSection(i, column_state.get('width', column.width or 100))
+            if resize_mode in {QtWidgets.QHeaderView.ResizeMode.Fixed, QtWidgets.QHeaderView.ResizeMode.Interactive}:
+                self.resizeSection(i, column_state.get('width', column.width or 100))
             current_pos = self.visualIndex(i)
             new_pos = column_state.get('position', -1)
             if current_pos > 0 and new_pos > 0 and current_pos != new_pos:
