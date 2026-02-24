@@ -126,7 +126,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         ),
         MainAction.DISCID_FROM_LOGFILE: ToolbarButtonDesc(
             N_("Lookup CD log file…"),
-            'media-optical-disc-id',
+            'file-disc',
         ),
         MainAction.GENERATE_FINGERPRINTS: ToolbarButtonDesc(
             N_("Generate Fingerprints"),
