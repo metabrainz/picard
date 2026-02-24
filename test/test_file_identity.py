@@ -274,7 +274,7 @@ class TestFileIdentity(PicardTestCase):
         self.assertFalse(result)
         self.assertIsNotNone(id1._hash)
         self.assertIsNotNone(id2._hash)
-        # Both hashes are equal because both were computed from the same current file content
+        # Hashes differ because file contents changed between instances
         self.assertNotEqual(id1._hash, id2._hash)
 
     def test_identity_replaced_file_same_content(self):
