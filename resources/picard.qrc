@@ -46,6 +46,8 @@
     <file>images/16x16/list-remove@2x.png</file>
     <file>images/16x16/lookup-musicbrainz.png</file>
     <file>images/16x16/lookup-musicbrainz@2x.png</file>
+    <file>images/16x16/media-optical-disc-id.png</file>
+    <file>images/16x16/media-optical-disc-id@2x.png</file>
     <file>images/16x16/media-optical-error.png</file>
     <file>images/16x16/media-optical-error@2x.png</file>
     <file>images/16x16/media-optical-modified.png</file>
@@ -137,6 +139,8 @@
     <file>images/22x22/list-remove@2x.png</file>
     <file>images/22x22/lookup-musicbrainz.png</file>
     <file>images/22x22/lookup-musicbrainz@2x.png</file>
+    <file>images/22x22/media-optical-disc-id.png</file>
+    <file>images/22x22/media-optical-disc-id@2x.png</file>
     <file>images/22x22/media-optical-error.png</file>
     <file>images/22x22/media-optical-error@2x.png</file>
     <file>images/22x22/media-optical-modified.png</file>

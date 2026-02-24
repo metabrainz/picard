@@ -29,6 +29,7 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -207,6 +208,15 @@ def _create_submit_acoustid_action(parent):
     action.setStatusTip(_("Submit acoustic fingerprints"))
     action.setEnabled(False)
     action.triggered.connect(parent._on_submit_acoustid)
+    return action
+
+
+@add_action(MainAction.DISCID_FROM_TAGS)
+def _lookup_discid_from_tags_action(parent):
+    action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Loo&kup TOC Tag…"), parent)
+    action.setStatusTip(_("Lookup release via third-party disc identifiers from track tags"))
+    action.setEnabled(False)
+    action.triggered.connect(parent.lookup_discid_from_tags)
     return action
 
 

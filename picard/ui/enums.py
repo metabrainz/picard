@@ -29,6 +29,7 @@
 # Copyright (C) 2019 Timur Enikeev
 # Copyright (C) 2020-2021 Gabriel Ferreira
 # Copyright (C) 2021 Petit Minion
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -70,6 +71,7 @@ class MainAction(str, Enum):
     CLOSE_WINDOW = 'close_window_action'
     CLUSTER = 'cluster_action'
     CUT = 'cut_action'
+    DISCID_FROM_TAGS = 'discid_from_tags_action'
     DONATE = 'donate_action'
     ENABLE_MOVING = 'enable_moving_action'
     ENABLE_RENAMING = 'enable_renaming_action'

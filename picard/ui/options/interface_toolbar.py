@@ -13,6 +13,7 @@
 # Copyright (C) 2017 Antonio Larrosa
 # Copyright (C) 2018 Bob Swift
 # Copyright (C) 2021 Gabriel Ferreira
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -118,6 +119,10 @@ class InterfaceToolbarOptionsPage(OptionsPage):
         MainAction.SUBMIT_ACOUSTID: ToolbarButtonDesc(
             N_("Submit AcoustIDs"),
             'acoustid-fingerprinter',
+        ),
+        MainAction.DISCID_FROM_TAGS: ToolbarButtonDesc(
+            N_("Lookup TOC Tag…"),
+            'media-optical-disc-id',
         ),
         MainAction.GENERATE_FINGERPRINTS: ToolbarButtonDesc(
             N_("Generate Fingerprints"),

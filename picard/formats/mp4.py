@@ -15,6 +15,7 @@
 # Copyright (C) 2019 Reinaldo Antonio Camargo Rauch
 # Copyright (C) 2023 certuna
 # Copyright (C) 2024 Giorgio Fontanive
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -153,6 +154,7 @@ class MP4File(File):
         '----:com.apple.iTunes:ARTISTS': 'artists',
         '----:com.apple.iTunes:WORK': 'work',
         '----:com.apple.iTunes:initialkey': 'key',
+        '----:com.apple.iTunes:iTunes_CDDB_1': 'itunes_cddb_1',
     }
     __r_freeform_tags = {v: k for k, v in __freeform_tags.items()}
 

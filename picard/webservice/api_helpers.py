@@ -5,6 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018, 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2018-2023 Philipp Wolfer
+# Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -149,6 +150,23 @@ class MBAPIHelper(APIHelper):
             handler,
             inc,
             queryargs={'cdstubs': 'no'},
+            priority=priority,
+            important=important,
+            refresh=refresh,
+        )
+
+    def lookup_toc(self, toc, handler, priority=True, important=True, refresh=False):
+        """Lookup a discid by table of contents (TOC) string."""
+        inc = ('artist-credits', 'labels')
+        queryargs = {
+            'toc': toc,
+            'cdstubs': 'no',
+            'inc': self._make_inc_arg(inc),
+        }
+        return self.get(
+            '/discid/',
+            handler,
+            unencoded_queryargs=queryargs,
             priority=priority,
             important=important,
             refresh=refresh,
