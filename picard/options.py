@@ -127,12 +127,12 @@ BoolOption('persist', 'show_hidden_files', False)
 
 # Store Album View Header State
 #
-Option('persist', 'album_view_header_state', QtCore.QByteArray())
+Option('persist', 'album_view_header_columns', {})
 BoolOption('persist', 'album_view_header_locked', False)
 
 # Store File View Header State
 #
-Option('persist', 'file_view_header_state', QtCore.QByteArray())
+Option('persist', 'file_view_header_columns', {})
 BoolOption('persist', 'file_view_header_locked', False)
 
 # picard/ui/logview.py

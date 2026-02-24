@@ -285,7 +285,7 @@ class FileTreeView(BaseTreeView):
     NAME = N_("File view")
     DESCRIPTION = N_("Contains unmatched files and clusters")
 
-    header_state = 'file_view_header_state'
+    header_state = 'file_view_header_columns'
     header_locked = 'file_view_header_locked'
 
     def __init__(self, columns, window, parent=None):
@@ -317,7 +317,7 @@ class AlbumTreeView(BaseTreeView):
     NAME = N_("Album view")
     DESCRIPTION = N_("Contains albums and matched files")
 
-    header_state = 'album_view_header_state'
+    header_state = 'album_view_header_columns'
     header_locked = 'album_view_header_locked'
 
     def __init__(self, columns, window, parent=None):

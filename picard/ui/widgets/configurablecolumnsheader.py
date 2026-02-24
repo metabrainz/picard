@@ -65,6 +65,7 @@ from picard.ui.widgets.lockableheaderview import LockableHeaderView
 
 class ConfigurableColumnsHeader(LockableHeaderView):
     def __init__(self, columns, parent=None):
+        self._prelock_columns_state = None
         super().__init__(QtCore.Qt.Orientation.Horizontal, parent)
         self._columns = columns
         self._always_visible_columns = set(self._columns.always_visible_columns())
@@ -271,6 +272,91 @@ class ConfigurableColumnsHeader(LockableHeaderView):
         menu.exec(event.globalPos())
         event.accept()
 
+    def get_columns_state(self) -> dict[str, dict]:
+        if self.is_locked and self._prelock_columns_state:
+            return self._prelock_columns_state
+
+        state = {}
+        sorted_column = self.sortIndicatorSection()
+        sort_order = self.sortIndicatorOrder()
+        for i, column in enumerate(self._columns):
+            column_state = {
+                'visible': not self.isSectionHidden(i),
+                'position': self.visualIndex(i),
+                'width': self.sectionSize(i),
+                'resize_mode': self.sectionResizeMode(i).value,
+            }
+            if i == sorted_column:
+                column_state['sorted'] = sort_order.value
+            state[column.key] = column_state
+        return state
+
+    def _restore_column_positions(self, state: dict[str, dict]):
+        """Restore column visual positions from saved state.
+
+        Qt's moveSection() operates on visual indices. Each move changes other columns'
+        visual positions, so we must process target positions left-to-right (0, 1, 2...)
+        to ensure each column reaches its final position without being displaced.
+
+        Parameters
+        ----------
+        state : dict[str, dict]
+            Saved column state mapping column keys to their properties.
+        """
+        # Build mapping: target_visual_position -> logical_column_index
+        target_positions = {}
+        for i, column in enumerate(self._columns):
+            column_state = state.get(column.key)
+            if column_state and 'position' in column_state:
+                target_positions[column_state['position']] = i
+
+        # Apply moves in ascending order of target position
+        for target_visual_pos in sorted(target_positions.keys()):
+            logical_index = target_positions[target_visual_pos]
+            current_visual_pos = self.visualIndex(logical_index)
+            if current_visual_pos != target_visual_pos:
+                self.moveSection(current_visual_pos, target_visual_pos)
+
+    def restore_columns_state(self, state: dict[str, dict]):
+        """Restore complete column state including visibility, sizes, positions, and sorting.
+
+        Parameters
+        ----------
+        state : dict[str, dict]
+            Saved column state mapping column keys to their properties.
+            Each column state dict may contain:
+            - 'visible': bool
+            - 'position': int (visual index)
+            - 'width': int
+            - 'resize_mode': int (QHeaderView.ResizeMode enum value)
+            - 'sorted': int (Qt.SortOrder enum value, only for sorted column)
+        """
+        # Phase 1: Restore visibility, resize modes, widths, and sort indicator
+        # Must be done before positioning since visibility/resize modes affect moveSection()
+        for i, column in enumerate(self._columns):
+            column_state = state.get(column.key)
+            if not column_state:
+                continue
+
+            self.show_column(i, column_state.get('visible', column.always_visible))
+
+            resize_mode = column_state.get('resize_mode', QtWidgets.QHeaderView.ResizeMode.Interactive.value)
+            self.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeMode(resize_mode))
+
+            # Only set width for Fixed and Interactive modes
+            if resize_mode in {
+                QtWidgets.QHeaderView.ResizeMode.Fixed.value,
+                QtWidgets.QHeaderView.ResizeMode.Interactive.value,
+            }:
+                self.resizeSection(i, column_state.get('width', column.width or 100))
+
+            # Sort indicator uses logical index, independent of visual positioning
+            if 'sorted' in column_state:
+                self.setSortIndicator(i, QtCore.Qt.SortOrder(column_state['sorted']))
+
+        # Phase 2: Restore column positions
+        self._restore_column_positions(state)
+
     def restore_defaults(self):
         self.parent().restore_default_columns()
 
@@ -323,7 +409,23 @@ class ConfigurableColumnsHeader(LockableHeaderView):
             self.unsorted()
 
     def lock(self, is_locked):
-        super().lock(is_locked)
+        """Override parent's lock() to not use Qt's state restore.
+
+        This ensures the sort indicator and other column state is preserved
+        across lock/unlock cycles using the same format as save/restore.
+        """
+        self.is_locked = is_locked
+        if is_locked:
+            self._prelock_columns_state = self.get_columns_state()
+            self.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Fixed)
+        else:
+            if self._prelock_columns_state:
+                self.restore_columns_state(self._prelock_columns_state)
+            self._prelock_columns_state = None
+
+        self.setSectionsClickable(not is_locked)
+        self.setSectionsMovable(not is_locked)
+        self.setSortIndicatorClearable(True)
 
     def __str__(self):
         name = getattr(self.parent(), 'NAME', str(self.parent().__class__.__name__))
