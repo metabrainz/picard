@@ -19,15 +19,13 @@
 # Echelon666, 2024.
 # Peter69, 2025.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
-# PS <weblate@wp.pl>, 2025.
-# Echelon <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-14 12:58+0100\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
-"Last-Translator: Echelon <weblate@wp.pl>\n"
+"Last-Translator: Echelon\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "app/pl/>\n"
 "Language: pl\n"

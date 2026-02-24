@@ -3,14 +3,13 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
-# Echelon <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
 "PO-Revision-Date: 2025-11-15 09:20+0000\n"
-"Last-Translator: Echelon <weblate@wp.pl>\n"
+"Last-Translator: Echelon\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "constants/pl/>\n"
 "Language: pl\n"

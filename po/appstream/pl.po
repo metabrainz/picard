@@ -6,7 +6,6 @@
 # Echelon666, 2024.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2024.
 # Weblate <noreply-mt-weblate@weblate.org>, 2025.
-# PS <weblate@wp.pl>, 2025.
 #
 # Translators:
 #
@@ -16,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-04-12 10:31+0200\n"
 "PO-Revision-Date: 2025-04-17 20:20+0000\n"
-"Last-Translator: PS <weblate@wp.pl>\n"
+"Last-Translator: PS\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/picard/3/"
 "appstream/pl/>\n"
 "Language: pl\n"
