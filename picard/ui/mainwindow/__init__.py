@@ -116,7 +116,6 @@ from picard.util import (
     webbrowser2,
 )
 from picard.util.cdrom import (
-    DISCID_NOT_LOADED_MESSAGE,
     discid,
     get_cdrom_drives,
 )
@@ -258,6 +257,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._create_actions()
         self._create_statusbar()
         self._create_toolbar()
+        self._create_cd_lookup_menu()
         self._create_menus()
 
         if IS_MACOS:
@@ -647,8 +647,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_actions(self):
         self.actions = dict(create_actions(self))
 
-        self._create_cd_lookup_menu()
-
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
@@ -740,7 +738,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if discid is None:
             log.warning("CDROM: discid library not found - Lookup CD functionality disabled")
             self.enable_action(MainAction.CD_LOOKUP, False)
-            self.cd_lookup_menu.setEnabled(False)
+            self.enable_action(MainAction.DISCID_FROM_LOGFILE, False)
+            self.update_cd_lookup_menu(None)
         else:
             thread.run_task(get_cdrom_drives, self._update_cd_lookup_actions)
 
@@ -748,14 +747,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if error:
             log.error("CDROM: Error on CD-ROM drive detection: %r", error)
         else:
-            self.update_cd_lookup_drives(result)
+            self.update_cd_lookup_menu(result)
 
-    def update_cd_lookup_drives(self, drives):
+    def update_cd_lookup_menu(self, drives):
         self.cd_lookup_menu.clear()
-        self.enable_action(MainAction.CD_LOOKUP, discid is not None)
-        if not drives:
-            log.warning(DISCID_NOT_LOADED_MESSAGE)
-        else:
+        if drives:
             config = get_config()
             shortcut_drive = config.setting['cd_lookup_device'].split(",")[0] if len(drives) > 1 else ""
             for drive in drives:
@@ -768,7 +764,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._update_cd_lookup_button()
 
     def _set_cd_lookup_from_file_actions(self, drives):
-        if self.cd_lookup_menu.actions():
+        if drives:
             self.cd_lookup_menu.addSeparator()
         logfile_action = self.actions[MainAction.DISCID_FROM_LOGFILE]
         self.cd_lookup_menu.addAction(logfile_action)
@@ -785,7 +781,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _update_cd_lookup_button(self):
         button = self.toolbar.widgetForAction(self.actions[MainAction.CD_LOOKUP])
-        enabled = bool(self.cd_lookup_menu.actions() and discid)
+        enabled = bool(self.cd_lookup_menu.actions())
         self.cd_lookup_menu.setEnabled(enabled)
         if button:
             if enabled:
@@ -1002,8 +998,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 try:
                     action_id = MainAction(action_name)
                     add_toolbar_action(action_id)
-                    if action_id == MainAction.CD_LOOKUP:
-                        self._update_cd_lookup_button()
                 except (ValueError, KeyError) as e:
                     log.warning("Warning: Unknown action name '%s' found in config. Ignored. %s", action_name, e)
         self.show_toolbar()

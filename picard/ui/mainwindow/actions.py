@@ -395,7 +395,7 @@ def _create_cd_lookup_action(parent):
 
 
 @add_action(MainAction.DISCID_FROM_LOGFILE)
-def _lookup_discid_from_tags_action(parent):
+def _lookup_discid_from_logfile_action(parent):
     action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Lookup CD &log file…"), parent)
     action.setStatusTip(_("Lookup release from a CD ripping log file"))
     action.setEnabled(True)

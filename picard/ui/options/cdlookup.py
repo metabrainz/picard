@@ -81,7 +81,7 @@ class CDLookupOptionsPage(OptionsPage):
             device = self.ui.cd_lookup_device.text()
             device_list = [device]
         config.setting['cd_lookup_device'] = device
-        self.tagger.window.update_cd_lookup_drives(device_list)
+        self.tagger.window.update_cd_lookup_menu(device_list)
 
 
 register_options_page(CDLookupOptionsPage)
