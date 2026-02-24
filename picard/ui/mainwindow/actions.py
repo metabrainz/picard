@@ -211,15 +211,6 @@ def _create_submit_acoustid_action(parent):
     return action
 
 
-@add_action(MainAction.DISCID_FROM_TAGS)
-def _lookup_discid_from_tags_action(parent):
-    action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Loo&kup TOC Tag…"), parent)
-    action.setStatusTip(_("Lookup release via third-party disc identifiers from track tags"))
-    action.setEnabled(False)
-    action.triggered.connect(parent.lookup_discid_from_tags)
-    return action
-
-
 @add_action(MainAction.EXIT)
 def _create_exit_action(parent):
     action = QtGui.QAction(_("E&xit"), parent)
@@ -399,7 +390,25 @@ def _create_cd_lookup_action(parent):
     action.setStatusTip(_("Lookup the details of the CD in your drive"))
     # TR: Keyboard shortcut for "Lookup CD"
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+K")))
-    action.triggered.connect(parent.tagger.lookup_cd)
+    action.triggered.connect(parent.lookup_cd)
+    return action
+
+
+@add_action(MainAction.DISCID_FROM_LOGFILE)
+def _lookup_discid_from_tags_action(parent):
+    action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Lookup CD &log file…"), parent)
+    action.setStatusTip(_("Lookup release from a CD ripping log file"))
+    action.setEnabled(True)
+    action.triggered.connect(parent.tagger.lookup_discid_from_logfile)
+    return action
+
+
+@add_action(MainAction.DISCID_FROM_TAGS)
+def _lookup_discid_from_tags_action(parent):
+    action = QtGui.QAction(icontheme.lookup('media-optical-disc-id'), _("Lookup TOC &tag…"), parent)
+    action.setStatusTip(_("Lookup release via disc identifiers from track tags"))
+    action.setEnabled(False)
+    action.triggered.connect(parent.lookup_discid_from_tags)
     return action
 
 

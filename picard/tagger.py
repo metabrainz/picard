@@ -1190,7 +1190,106 @@ class Tagger(QtWidgets.QApplication):
             if files:
                 self.remove_files(files)
 
-    def lookup_disc_id_from_tags(self, files):
+    def trash_files(self, files):
+        with self.window.ignore_selection_changes:
+            files_removed = []
+            for file in files:
+                success, new_location = QtCore.QFile.moveToTrash(file.filename)
+                # If the old file still exists, consider this an error. Moving to
+                # trash without write permission on the file can fail on Linux with
+                # success still being set to True.
+                if success and not os.path.exists(file.filename):
+                    # While the file has not been fully removed, update the location
+                    # to the trash location. Removing the files completely will be done
+                    # afterwards.
+                    del self.files[file.filename]
+                    file.filename = new_location
+                    self.files[new_location] = file
+                    files_removed.append(file)
+                else:
+                    self.window.set_statusbar_message(
+                        _('Failed moving "%(filename)s" to trash'), {'filename': file.filename}
+                    )
+
+            if files_removed:
+                self.remove_files(files)
+            self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
+
+    def _lookup_disc(self, disc, result=None, error=None):
+        self.restore_cursor()
+        if error is not None:
+            QtWidgets.QMessageBox.critical(
+                self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
+            )
+        else:
+            disc.lookup()
+
+    def lookup_cd(self, device=None):
+        """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
+        if not device:
+            config = get_config()
+            if config.setting['cd_lookup_device'] != '':
+                device = config.setting['cd_lookup_device'].split(',', 1)[0]
+            else:
+                # rely on python-discid auto detection
+                device = None
+
+        self.run_lookup_cd(device)
+
+    def run_lookup_cd(self, device):
+        disc = Disc()
+        self.set_wait_cursor()
+        thread.run_task(
+            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
+        )
+
+    def lookup_discid_from_logfile(self):
+        file_chooser = FileDialog(parent=self.window)
+        file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
+        file_chooser.setNameFilters(
+            [
+                _("All supported log files") + " (*.log *.txt *.toc)",
+                _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
+                _("dBpoweramp log files") + " (*.txt)",
+                _("SCSI TOC file") + " (*.toc)",
+                _("All files") + " (*)",
+            ]
+        )
+        if file_chooser.exec():
+            filepath = file_chooser.selectedFiles()[0]
+            self.run_lookup_discid_from_logfile(filepath)
+
+    def run_lookup_discid_from_logfile(self, filepath):
+        disc = Disc()
+        self.set_wait_cursor()
+        thread.run_task(
+            partial(self._parse_disc_ripping_log, disc, filepath),
+            partial(self._lookup_disc, disc),
+            traceback=log.is_debug(),
+        )
+
+    def _parse_disc_ripping_log(self, disc, path):
+        log_readers = (
+            eaclog.toc_from_file,
+            whipperlog.toc_from_file,
+            dbpoweramplog.toc_from_file,
+            scsitoc.toc_from_file,
+        )
+        for reader in log_readers:
+            module_name = reader.__module__
+            try:
+                log.debug('Trying to parse "%s" with %s…', path, module_name)
+                toc = reader(path)
+                break
+            except Exception:
+                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
+        else:
+            msg = N_('Failed parsing ripping log "%s"')
+            log.warning(msg, path)
+            raise Exception(_(msg) % path)
+        disc.put(toc)
+
+    def lookup_discid_from_tags(self, files):
         """Perform a CD lookup using table of contents from tags (iTunes CDDB 1)."""
         # Try to find TOC data in tags from all files
         toc_data = None
@@ -1262,110 +1361,6 @@ class Tagger(QtWidgets.QApplication):
 
         disc = Disc()
         disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=list(files))
-
-    def trash_files(self, files):
-        with self.window.ignore_selection_changes:
-            files_removed = []
-            for file in files:
-                success, new_location = QtCore.QFile.moveToTrash(file.filename)
-                # If the old file still exists, consider this an error. Moving to
-                # trash without write permission on the file can fail on Linux with
-                # success still being set to True.
-                if success and not os.path.exists(file.filename):
-                    # While the file has not been fully removed, update the location
-                    # to the trash location. Removing the files completely will be done
-                    # afterwards.
-                    del self.files[file.filename]
-                    file.filename = new_location
-                    self.files[new_location] = file
-                    files_removed.append(file)
-                else:
-                    self.window.set_statusbar_message(
-                        _('Failed moving "%(filename)s" to trash'), {'filename': file.filename}
-                    )
-
-            if files_removed:
-                self.remove_files(files)
-            self.window.set_statusbar_message(_('Moved %(count)i files to trash'), {'count': len(files_removed)})
-
-    def _lookup_disc(self, disc, result=None, error=None):
-        self.restore_cursor()
-        if error is not None:
-            QtWidgets.QMessageBox.critical(
-                self.window, _("CD Lookup Error"), _("Error while reading CD:\n\n%s") % error
-            )
-        else:
-            disc.lookup()
-
-    def lookup_cd(self, action):
-        """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
-        config = get_config()
-        if isinstance(action, QtGui.QAction):
-            data = action.data()
-            if data == 'logfile:eac':
-                return self.lookup_discid_from_logfile()
-            else:
-                device = data
-        elif config.setting['cd_lookup_device'] != '':
-            device = config.setting['cd_lookup_device'].split(',', 1)[0]
-        else:
-            # rely on python-discid auto detection
-            device = None
-
-        self.run_lookup_cd(device)
-
-    def run_lookup_cd(self, device):
-        disc = Disc()
-        self.set_wait_cursor()
-        thread.run_task(
-            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
-        )
-
-    def lookup_discid_from_logfile(self):
-        file_chooser = FileDialog(parent=self.window)
-        file_chooser.setFileMode(QtWidgets.QFileDialog.FileMode.ExistingFile)
-        file_chooser.setNameFilters(
-            [
-                _("All supported log files") + " (*.log *.txt *.toc)",
-                _("EAC / XLD / Whipper / fre:ac log files") + " (*.log)",
-                _("dBpoweramp log files") + " (*.txt)",
-                _("SCSI TOC file") + " (*.toc)",
-                _("All files") + " (*)",
-            ]
-        )
-        if file_chooser.exec():
-            filepath = file_chooser.selectedFiles()[0]
-            self.run_lookup_discid_from_logfile(filepath)
-
-    def run_lookup_discid_from_logfile(self, filepath):
-        disc = Disc()
-        self.set_wait_cursor()
-        thread.run_task(
-            partial(self._parse_disc_ripping_log, disc, filepath),
-            partial(self._lookup_disc, disc),
-            traceback=log.is_debug(),
-        )
-
-    def _parse_disc_ripping_log(self, disc, path):
-        log_readers = (
-            eaclog.toc_from_file,
-            whipperlog.toc_from_file,
-            dbpoweramplog.toc_from_file,
-            scsitoc.toc_from_file,
-        )
-        for reader in log_readers:
-            module_name = reader.__module__
-            try:
-                log.debug('Trying to parse "%s" with %s…', path, module_name)
-                toc = reader(path)
-                break
-            except Exception:
-                log.debug('Failed parsing ripping log "%s" with %s', path, module_name, exc_info=True)
-        else:
-            msg = N_('Failed parsing ripping log "%s"')
-            log.warning(msg, path)
-            raise Exception(_(msg) % path)
-        disc.put(toc)
 
     @property
     def use_acoustid(self):

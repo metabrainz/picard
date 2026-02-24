@@ -121,7 +121,11 @@ class InterfaceToolbarOptionsPage(OptionsPage):
             'acoustid-fingerprinter',
         ),
         MainAction.DISCID_FROM_TAGS: ToolbarButtonDesc(
-            N_("Lookup TOC Tag…"),
+            N_("Lookup TOC tag…"),
+            'media-optical-disc-id',
+        ),
+        MainAction.DISCID_FROM_LOGFILE: ToolbarButtonDesc(
+            N_("Lookup CD log file…"),
             'media-optical-disc-id',
         ),
         MainAction.GENERATE_FINGERPRINTS: ToolbarButtonDesc(

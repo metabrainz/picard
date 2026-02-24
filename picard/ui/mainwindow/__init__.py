@@ -644,12 +644,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 self.tagger.acoustidmanager.submit()
 
-    def lookup_discid_from_tags(self):
-        """Perform a CD lookup based on disc ID tags from the selected cluster's files."""
-        files = list(iter_files_from_objects(self.selected_objects))
-        if files:
-            self.tagger.lookup_disc_id_from_tags(files)
-
     def _create_actions(self):
         self.actions = dict(create_actions(self))
 
@@ -658,7 +652,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
         menu.setIcon(icontheme.lookup('media-optical'))
-        menu.triggered.connect(self.tagger.lookup_cd)
         self.cd_lookup_menu = menu
         self._init_cd_lookup_menu()
 
@@ -767,6 +760,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             shortcut_drive = config.setting['cd_lookup_device'].split(",")[0] if len(drives) > 1 else ""
             for drive in drives:
                 action = self.cd_lookup_menu.addAction(drive)
+                action.triggered.connect(self.lookup_cd)
                 action.setData(drive)
                 if drive == shortcut_drive:
                     self._update_cd_lookup_default_action(action)
@@ -776,16 +770,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self, drives):
         if self.cd_lookup_menu.actions():
             self.cd_lookup_menu.addSeparator()
-        action = self.cd_lookup_menu.addAction(_("From CD ripper &log file…"))
+        logfile_action = self.actions[MainAction.DISCID_FROM_LOGFILE]
+        self.cd_lookup_menu.addAction(logfile_action)
         if not drives:
-            self._update_cd_lookup_default_action(action)
-        action.setData('logfile:eac')
+            self._update_cd_lookup_default_action(logfile_action)
+        self.cd_lookup_menu.addAction(self.actions[MainAction.DISCID_FROM_TAGS])
 
     def _update_cd_lookup_default_action(self, action):
         if action:
             target = action.trigger
         else:
-            target = self.tagger.lookup_cd
+            target = self.lookup_cd
         reconnect(self.actions[MainAction.CD_LOOKUP].triggered, target)
 
     def _update_cd_lookup_button(self):
@@ -798,6 +793,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 button.setMenu(self.cd_lookup_menu)
             else:
                 button.setMenu(None)
+
+    def lookup_cd(self, action):
+        device = None
+        if isinstance(action, QtGui.QAction):
+            device = action.data()
+        self.tagger.lookup_cd(device)
+
+    def lookup_discid_from_tags(self):
+        """Perform a CD lookup based on disc ID tags from the selected cluster's files."""
+        files = list(iter_files_from_objects(self.selected_objects))
+        if files:
+            self.tagger.lookup_discid_from_tags(files)
 
     def toggle_rename_files(self, checked):
         config = get_config()
