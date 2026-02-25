@@ -181,7 +181,7 @@ class AcoustIDClient(QtCore.QObject):
             mparms,
             echo=None,
         )
-        params = dict(meta='recordings releasegroups releases tracks compress sources')
+        params = {'meta': 'recordings releasegroups releases tracks compress sources'}
         if result[0] == 'fingerprint':
             fp_type, fingerprint, length = result
             params['fingerprint'] = fingerprint
