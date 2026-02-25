@@ -1228,8 +1228,8 @@ class Tagger(QtWidgets.QApplication):
         """Reads CD from the selected drive and tries to lookup the DiscID on MusicBrainz."""
         if not device:
             config = get_config()
-            if config.setting['cd_lookup_device'] != '':
-                device = config.setting['cd_lookup_device'].split(',', 1)[0]
+            if device := config.setting['cd_lookup_device']:
+                device = device.split(',', 1)[0]
             else:
                 # rely on python-discid auto detection
                 device = None
