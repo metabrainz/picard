@@ -72,7 +72,7 @@ class RecordingResolver:
         self._doc = doc
         self._callback = callback
         self._recording_map = defaultdict(dict)
-        self._recording_cache = dict()
+        self._recording_cache = {}
         self._missing_metadata = deque()
 
     def resolve(self) -> None:
