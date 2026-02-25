@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-01-19 12:11+0000\n"
+"PO-Revision-Date: 2026-02-16 21:11+0000\n"
 "Last-Translator: Besnik <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/sq/>\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1172,6 +1172,11 @@ msgstr ""
 msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Album"
+
+#: DB:work_attribute_type/name:216
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr ""
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -4623,6 +4628,15 @@ msgstr ""
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
 msgstr ""
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the Greek rights society AUTODIA"
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
+msgstr "ID për shoqërinë greke të të drejtave, AUTODIA"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7

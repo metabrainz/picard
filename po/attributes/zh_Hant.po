@@ -1216,6 +1216,14 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "專輯"
 
+#: DB:work_attribute_type/name:216
+#, fuzzy
+#| msgctxt "cover_art_type"
+#| msgid "Track"
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "音軌"
+
 #. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -4684,6 +4692,15 @@ msgstr "千里達及托巴哥著作權協會COTT ID"
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
+msgstr "美國著作權協會ASCAP ID"
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the US rights society ASCAP"
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
 msgstr "美國著作權協會ASCAP ID"
 
 #. name:BMI ID

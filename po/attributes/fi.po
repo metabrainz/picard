@@ -1241,6 +1241,14 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Albumi"
 
+#: DB:work_attribute_type/name:216
+#, fuzzy
+#| msgctxt "cover_art_type"
+#| msgid "Track"
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "Kappale"
+
 #. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -4703,6 +4711,12 @@ msgstr ""
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
+msgstr ""
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
 msgstr ""
 
 #. name:BMI ID

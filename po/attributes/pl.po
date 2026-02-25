@@ -14,12 +14,16 @@
 # rawrower <email address hidden>, 2019
 # szczepaxn pax <email address hidden>, 2016
 # Tobias Toedter <email address hidden>, 2007
+# Echelon666 <echelon01@wp.pl>, 2024.
+# Peter69 <echelon01@wp.pl>, 2024.
 # Michal77 <michal_wilk@poczta.fm>, 2025.
+# PS <weblate@wp.pl>, 2025.
+# Echelon <weblate@wp.pl>, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "PO-Revision-Date: 2025-10-13 10:02+0000\n"
-"Last-Translator: Echelon\n"
+"Last-Translator: Echelon <weblate@wp.pl>\n"
 "Language-Team: Polish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/pl/>\n"
 "Language: pl\n"
@@ -1350,6 +1354,14 @@ msgstr ""
 msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Album"
+
+#: DB:work_attribute_type/name:216
+#, fuzzy
+#| msgctxt "cover_art_type"
+#| msgid "Track"
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "Utwór"
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -4938,6 +4950,16 @@ msgstr ""
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
+msgstr ""
+"Identyfikator amerykańskiego stowarzyszenia praw autorskich twórców ASCAP"
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the US rights society ASCAP"
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
 msgstr ""
 "Identyfikator amerykańskiego stowarzyszenia praw autorskich twórców ASCAP"
 

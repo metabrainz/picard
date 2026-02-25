@@ -1249,6 +1249,14 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "アルバム"
 
+#: DB:work_attribute_type/name:216
+#, fuzzy
+#| msgctxt "cover_art_type"
+#| msgid "Track"
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "トラック"
+
 #. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -4761,6 +4769,15 @@ msgstr "トリニダードの権利者団体COTTのID"
 #: DB:work_attribute_type/description:6
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
+msgstr "アメリカの権利者団体ASCAPのID"
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+#, fuzzy
+#| msgctxt "work_attribute_type"
+#| msgid "ID for the US rights society ASCAP"
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
 msgstr "アメリカの権利者団体ASCAPのID"
 
 #. name:BMI ID

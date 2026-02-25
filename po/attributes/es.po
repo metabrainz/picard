@@ -49,11 +49,12 @@
 # macaumetal <macaumetal@gmail.com>, 2025.
 # onemanue <onemanue@gmail.com>, 2025.
 # Joax <joan_acosta_1994@hotmail.com>, 2025.
+# syntariavoxmortem <voxmortemsyntaria@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-05-12 00:20+0000\n"
-"Last-Translator: Joax <joan_acosta_1994@hotmail.com>\n"
+"PO-Revision-Date: 2026-02-16 04:11+0000\n"
+"Last-Translator: syntariavoxmortem <voxmortemsyntaria@gmail.com>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/es/>\n"
 "Language: es\n"
@@ -62,7 +63,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -549,6 +550,9 @@ msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
+"Un estuche de cuatro o cinco lados, generalmente de cartón o plástico, que "
+"envuelve un embalaje interior secundario, como una caja de CD estándar "
+"(jewel case)."
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -1382,6 +1386,11 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Álbum"
 
+#: DB:work_attribute_type/name:216
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "ID de AllTrack"
+
 #. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -1666,6 +1675,8 @@ msgid ""
 "An organization that mostly concentrates on broadcasting audio or video "
 "content, be it on television, radio or the internet."
 msgstr ""
+"Una organización que se dedica principalmente a la emisión de contenido de "
+"audio o vídeo, ya sea por televisión, radio o internet."
 
 #. name:Creative Agency
 #: DB:label_type/description:11
@@ -1674,6 +1685,9 @@ msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
 msgstr ""
+"Una organización que proporciona la dirección creativa para los elementos "
+"visuales de los lanzamientos (como ilustraciones, diseño y otro material "
+"gráfico)."
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2400,12 +2414,9 @@ msgid "Broadcast"
 msgstr "Difusión"
 
 #: DB:label_type/name:12
-#, fuzzy
-#| msgctxt "release_group_primary_type"
-#| msgid "Broadcast"
 msgctxt "label_type"
 msgid "Broadcaster"
-msgstr "Difusión"
+msgstr "Emisora"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
@@ -2812,7 +2823,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "Agencia creativa"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3458,7 +3469,7 @@ msgstr "mi sostenido menor"
 #: DB:work_attribute_type/name:215
 msgctxt "work_attribute_type"
 msgid "EAÜ ID"
-msgstr ""
+msgstr "ID de EAÜ"
 
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
@@ -3497,6 +3508,8 @@ msgid ""
 "Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
 "compatible with all Blu-ray players."
 msgstr ""
+"Versión mejorada de Blu-ray que admite vídeo en 4K Ultra HD, la cual no es "
+"compatible con todos los reproductores de Blu-ray."
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -4119,12 +4132,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ID de ASCAP"
+msgstr "ID ASCAP"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4588,12 +4598,9 @@ msgstr "ID de la sociedad de gestión de derechos de Costa Rica ACAM"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "ID de la sociedad de gestión de derechos de Cuba ACDAM"
+msgstr "ID de la sociedad croata de gestión de derechos HDS-ZAMP"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4635,12 +4642,9 @@ msgstr "ID de la sociedad de gestión de derechos de Ecuador SAYCE"
 
 #. name:EAÜ ID
 #: DB:work_attribute_type/description:215
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Austrian rights society AKM"
 msgctxt "work_attribute_type"
 msgid "ID for the Estonian rights society EAÜ"
-msgstr "ID de la sociedad de gestión de derechos de Austria AKM"
+msgstr "ID de la sociedad estonia de gestión de derechos EAÜ"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -4893,6 +4897,12 @@ msgstr "ID de la sociedad de gestión de derechos de Trinidad y Tobago COTT"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
 msgstr "ID de la sociedad de gestión de derechos de Estados Unidos ASCAP"
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
+msgstr "ID de la sociedad estadounidense de gestión de derechos AllTrack"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7
@@ -8053,7 +8063,7 @@ msgstr "Caja de CD delgada"
 #: DB:release_packaging/name:122
 msgctxt "release_packaging"
 msgid "Slipcase"
-msgstr ""
+msgstr "Estuche"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8952,12 +8962,9 @@ msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
 
 #: DB:medium_format/name:211
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Blu-ray"
 msgctxt "medium_format"
 msgid "Ultra HD Blu-ray"
-msgstr "Blu-ray"
+msgstr "Ultra HD Blu-ray"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

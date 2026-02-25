@@ -11,12 +11,12 @@
 # salo.rock, 2012
 # salo.rock, 2022-2023
 # "salo.rock" <salo.rock+musicbrainz@gmail.com>, 2023.
-# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025.
+# "salo.rock" <salo.rock@users.noreply.translations.metabrainz.org>, 2023, 2024, 2025, 2026.
 # yvanzo <yvanzo@users.noreply.translations.metabrainz.org>, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-10-18 17:08+0000\n"
+"PO-Revision-Date: 2026-02-14 01:11+0000\n"
 "Last-Translator: \"salo.rock\" "
 "<salo.rock@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Italian <https://translations.metabrainz.org/projects/"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n != 0 && n % 1000000 == "
 "0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -1354,6 +1354,11 @@ msgctxt "release_group_primary_type"
 msgid "Album"
 msgstr "Album"
 
+#: DB:work_attribute_type/name:216
+msgctxt "work_attribute_type"
+msgid "AllTrack ID"
+msgstr "ID AllTrack"
+
 #. name:Manual
 #: DB:series_ordering_type/description:2
 msgctxt "series_ordering_type"
@@ -1642,6 +1647,8 @@ msgid ""
 "An organization that mostly concentrates on broadcasting audio or video "
 "content, be it on television, radio or the internet."
 msgstr ""
+"Un'organizzazione dedita principalmente alla trasmissione di contenuti audio "
+"o video, che sia attraverso la televisione, la radio o internet."
 
 #. name:Creative Agency
 #: DB:label_type/description:11
@@ -2379,12 +2386,9 @@ msgid "Broadcast"
 msgstr "Trasmissione"
 
 #: DB:label_type/name:12
-#, fuzzy
-#| msgctxt "release_group_primary_type"
-#| msgid "Broadcast"
 msgctxt "label_type"
 msgid "Broadcaster"
-msgstr "Trasmissione"
+msgstr "Emittente"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
@@ -4864,6 +4868,12 @@ msgstr "ID per la società di diritti trinidadiana COTT"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society ASCAP"
 msgstr "ID per la società di diritti statunitense ASCAP"
+
+#. name:AllTrack ID
+#: DB:work_attribute_type/description:216
+msgctxt "work_attribute_type"
+msgid "ID for the US rights society AllTrack"
+msgstr "ID per la società di diritti statunitense AllTrack"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7
