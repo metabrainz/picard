@@ -76,12 +76,11 @@ class CDLookupOptionsPage(OptionsPage):
         config = get_config()
         if AUTO_DETECT_DRIVES:
             device = self.ui.cd_lookup_device.currentText()
-            device_list = self._device_list
         else:
             device = self.ui.cd_lookup_device.text()
-            device_list = [device]
         config.setting['cd_lookup_device'] = device
-        self.tagger.window.update_cd_lookup_drives(device_list)
+        device_list = get_cdrom_drives()
+        self.tagger.window.update_cd_lookup_menu(device_list)
 
 
 register_options_page(CDLookupOptionsPage)

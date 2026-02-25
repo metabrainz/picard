@@ -71,6 +71,7 @@ class MainAction(str, Enum):
     CLOSE_WINDOW = 'close_window_action'
     CLUSTER = 'cluster_action'
     CUT = 'cut_action'
+    DISCID_FROM_LOGFILE = 'discid_from_logfile_action'
     DISCID_FROM_TAGS = 'discid_from_tags_action'
     DONATE = 'donate_action'
     ENABLE_MOVING = 'enable_moving_action'
