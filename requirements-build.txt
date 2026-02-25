@@ -234,9 +234,9 @@ macholib==1.16.4 ; sys_platform == 'darwin' \
     --hash=sha256:da1a3fa8266e30f0ce7e97c6a54eefaae8edd1e5f86f3eb8b95457cae90265ea \
     --hash=sha256:f408c93ab2e995cd2c46e34fe328b130404be143469e41bc366c807448979362
     # via pyinstaller
-markdown==3.10.1 \
-    --hash=sha256:1c19c10bd5c14ac948c53d0d762a04e2fa35a6d58a6b7b1e6bfcbe6fefc0001a \
-    --hash=sha256:867d788939fe33e4b736426f5b9f651ad0c0ae0ecf89df0ca5d1176c70812fe3
+markdown==3.10.2 \
+    --hash=sha256:994d51325d25ad8aa7ce4ebaec003febcce822c3f8c911e3b17c52f7f589f950 \
+    --hash=sha256:e91464b71ae3ee7afd3017d9f358ef0baf158fd9a298db92f1d4761133824c36
     # via picard (pyproject.toml)
 mutagen==1.47.0 \
     --hash=sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99 \
@@ -362,23 +362,23 @@ pygments==2.19.2 \
     --hash=sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887 \
     --hash=sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b
     # via pytest
-pyinstaller==6.18.0 \
-    --hash=sha256:07785459b3bf8a48889eac0b4d0667ade84aef8930ce030bc7cbb32f41283b33 \
-    --hash=sha256:31b5d109f8405be0b7cddcede43e7b074792bc9a5bbd54ec000a3e779183c2af \
-    --hash=sha256:3638fc81eb948e5e5eab1d4ad8f216e3fec6d4a350648304f0adb227b746ee5e \
-    --hash=sha256:4328c9837f1aef4fe1a127d4ff1b09a12ce53c827ce87c94117628b0e1fd098b \
-    --hash=sha256:496205e4fa92ec944f9696eb597962a83aef4d4c3479abfab83d730e1edf016b \
-    --hash=sha256:779817a0cf69604cddcdb5be1fd4959dc2ce048d6355c73e5da97884df2f3387 \
-    --hash=sha256:8fbe59da34269e637f97fd3c43024f764586fc319141d245ff1a2e9af1036aa3 \
-    --hash=sha256:976fabd90ecfbda47571c87055ad73413ec615ff7dea35e12a4304174de78de9 \
-    --hash=sha256:cb7aa5a71bfa7c0af17a4a4e21855663c89e4bd7c40f1d337c8370636d8847c3 \
-    --hash=sha256:cdc507542783511cad4856fce582fdc37e9f29665ca596889c663c83ec8c6ec9 \
-    --hash=sha256:dba4b70e3c9ba09aab51152c72a08e58a751851548f77ad35944d32a300c8381 \
-    --hash=sha256:f998675b7ccb2dabbb1dc2d6f18af61d55428ad6d38e6c4d700417411b697d37
+pyinstaller==6.19.0 \
+    --hash=sha256:1ec54ef967996ca61dacba676227e2b23219878ccce5ee9d6f3aada7b8ed8abf \
+    --hash=sha256:3c5c251054fe4cfaa04c34a363dcfbf811545438cb7198304cd444756bc2edd2 \
+    --hash=sha256:4190e76b74f0c4b5c5f11ac360928cd2e36ec8e3194d437bf6b8648c7bc0c134 \
+    --hash=sha256:481a909c8e60c8692fc60fcb1344d984b44b943f8bc9682f2fcdae305ad297e6 \
+    --hash=sha256:4ab2bb52e58448e14ddf9450601bdedd66800465043501c1d8f1cab87b60b122 \
+    --hash=sha256:8bd68abd812d8a6ba33b9f1810e91fee0f325969733721b78151f0065319ca11 \
+    --hash=sha256:a0fc5f6b3c55aa54353f0c74ffa59b1115433c1850c6f655d62b461a2ed6cbbe \
+    --hash=sha256:b5bb6536c6560330d364d91522250f254b107cf69129d9cbcd0e6727c570be33 \
+    --hash=sha256:c2d5a539b0bfe6159d5522c8c70e1c0e487f22c2badae0f97d45246223b798ea \
+    --hash=sha256:da6d5c6391ccefe73554b9fa29b86001c8e378e0f20c2a4004f836ba537eff63 \
+    --hash=sha256:e649ba6bd1b0b89b210ad92adb5fbdc8a42dd2c5ca4f72ef3a0bfec83a424b83 \
+    --hash=sha256:ec73aeb8bd9b7f2f1240d328a4542e90b3c6e6fbc106014778431c616592a865
     # via picard (pyproject.toml:build)
-pyinstaller-hooks-contrib==2026.0 \
-    --hash=sha256:0120893de491a000845470ca9c0b39284731ac6bace26f6849dea9627aaed48e \
-    --hash=sha256:0590db8edeba3e6c30c8474937021f5cd39c0602b4d10f74a064c73911efaca5
+pyinstaller-hooks-contrib==2026.1 \
+    --hash=sha256:66ad4888ba67de6f3cfd7ef554f9dd1a4389e2eb19f84d7129a5a6818e3f2180 \
+    --hash=sha256:a5f0891a1e81e92406ab917d9e76adfd7a2b68415ee2e35c950a7b3910bc361b
     # via pyinstaller
 pyjwt==2.11.0 \
     --hash=sha256:35f95c1f0fbe5d5ba6e43f00271c275f7a1a4db1dab27bf708073b75318ea623 \
@@ -460,24 +460,22 @@ pyobjc-framework-quartz==12.1 ; sys_platform == 'darwin' \
     --hash=sha256:7730cdce46c7e985535b5a42c31381af4aa6556e5642dc55b5e6597595e57a16 \
     --hash=sha256:c6f312ae79ef8b3019dcf4b3374c52035c7c7bc4a09a1748b61b041bb685a0ed
     # via pyobjc-framework-avfoundation
-pyqt6==6.9.1 \
-    --hash=sha256:055870b703c1a49ca621f8a89e2ec4d848e6c739d39367eb9687af3b056d9aa3 \
-    --hash=sha256:08792c72d130a02e3248a120f0b9bbb4bf4319095f92865bc5b365b00518f53d \
-    --hash=sha256:15b95bd273bb6288b070ed7a9503d5ff377aa4882dd6d175f07cad28cdb21da0 \
-    --hash=sha256:33c23d28f6608747ecc8bfd04c8795f61631af9db4fb1e6c2a7523ec4cc916d9 \
-    --hash=sha256:37884df27f774e2e1c0c96fa41e817a222329b80ffc6241725b0dc8c110acb35 \
-    --hash=sha256:50642be03fb40f1c2111a09a1f5a0f79813e039c15e78267e6faaf8a96c1c3a6
+pyqt6==6.10.2 \
+    --hash=sha256:37ae7c1183fe4dd0c6aefd2006a35731245de1cb6f817bb9e414a3e4848dfd6d \
+    --hash=sha256:6c0db5d8cbb9a3e7e2b5b51d0ff3f283121fa27b864db6d2f35b663c9be5cc83 \
+    --hash=sha256:78e1b3d5763e4cbc84485aef600e0aba5e1932fd263b716f92cd1a40dfa5e924 \
+    --hash=sha256:7901ba1df024b7ee9fdacfb2b7661aeb3749ae8b0bef65428077de3e0450eabb \
+    --hash=sha256:bbc3af541bbecd27301bfe69fe445aa1611a9b490bd3de77306b12df632f7ec6 \
+    --hash=sha256:bd328cb70bc382c48861cd5f0a11b2b8ae6f5692d5a2d6679ba52785dced327b
     # via picard (pyproject.toml)
-pyqt6-qt6==6.9.2 \
-    --hash=sha256:183b62be49216da80c7df1931d74885610a88f74812489d29610d13b7c215a1c \
-    --hash=sha256:7897fb74ee21bdc87b5ccf84e94f4a551377e792fd180a9211c17eb41c3338a3 \
-    --hash=sha256:8f82944ef68c8f8c78aa8eca4832c7bc05116c6de00a3bad8af5a0d63d1caafb \
-    --hash=sha256:940aac6462532578e8ddefe0494cd17e33a85e0f3cfb21c612f56ab9ad7bc871 \
-    --hash=sha256:9abfc0ee4a8293a6442128ae3f87f68e82e2a949d7b9caabd98c86ba5679ab48 \
-    --hash=sha256:f9289768039bef4a63e5949b7f8cfbbddc3b6d24bd58c21ba0f2921bed8d1c08
-    # via
-    #   picard (pyproject.toml)
-    #   pyqt6
+pyqt6-qt6==6.10.2 \
+    --hash=sha256:19c10b5f0806e9f9bac2c9759bd5d7d19a78967f330fd60a2db409177fa76e49 \
+    --hash=sha256:2e60d616861ca4565cd295418d605975aa2dc407ba4b94c1586a70c92e9cb052 \
+    --hash=sha256:5761cfccc721da2311c3f1213577f0ff1df07bbbbe3fa3a209a256b82cf057e3 \
+    --hash=sha256:6dda853a8db1b8d1a2ddbbe76cc6c3aa86614cad14056bd3c0435d8feea73b2d \
+    --hash=sha256:7164a6f0c1335358a3026df9865c8f75395b01f60f0dcd2f66c029ec16fc83d2 \
+    --hash=sha256:c4b7f7d66cc58bddf1bc1ca28dfcf7a45f58cfcb11d81d13a0510409dd4957ac
+    # via pyqt6
 pyqt6-sip==13.11.0 \
     --hash=sha256:077958105c2ea2f62be2f1a7611ff8bd44cb52fb5ea8fc8c59ea949144acb7b5 \
     --hash=sha256:132ee69d935c14bb4ced2a811ef333200c7aa50324bd7caadefd7d5874495225 \
@@ -610,9 +608,9 @@ pyyaml==6.0.3 \
     --hash=sha256:fa160448684b4e94d80416c0fa4aac48967a969efe22931448d853ada8baf926 \
     --hash=sha256:fc09d0aa354569bc501d4e787133afc08552722d3ab34836a80547331bb5d4a0
     # via picard (pyproject.toml)
-setuptools==80.10.2 \
-    --hash=sha256:8b0e9d10c784bf7d262c4e5ec5d4ec94127ce206e8738f29a437945fbc219b70 \
-    --hash=sha256:95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173
+setuptools==82.0.0 \
+    --hash=sha256:22e0a2d69474c6ae4feb01951cb69d515ed23728cf96d05513d36e42b62b37cb \
+    --hash=sha256:70b18734b607bd1da571d097d236cfcfacaf01de45717d59e6e04b96877532e0
     # via
     #   picard (pyproject.toml:build)
     #   pyinstaller
