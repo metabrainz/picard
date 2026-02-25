@@ -38,7 +38,7 @@ LANGUAGES = {
     'Catalan': 'ca',
     'Cibemba': 'bem',
     'Corsican': 'co',
-    'Croation': 'hr',
+    'Croatian': 'hr',
     'Czech': 'cs',
     'Danish': 'da',
     'Dutch': 'nl',
