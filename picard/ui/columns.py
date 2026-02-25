@@ -150,8 +150,8 @@ class ImageColumn(Column):
 
 class Columns(MutableSequence):
     def __init__(self, iterable=None, default_width=None):
-        self._list = list()
-        self._index = dict()
+        self._list = []
+        self._index = {}
         self._index_dirty = True
         self.status_icon_column = None
         self.default_width = default_width

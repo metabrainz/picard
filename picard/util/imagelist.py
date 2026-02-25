@@ -112,7 +112,7 @@ class ImageList(MutableSequence['CoverArtImage']):
         return self._hash_dict
 
     def get_types_dict(self):
-        types_dict = dict()
+        types_dict = {}
         for image in self._images:
             image_types = image.normalized_types()
             if image_types in types_dict:

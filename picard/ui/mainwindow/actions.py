@@ -62,7 +62,7 @@ from picard.util import icontheme
 from picard.ui.enums import MainAction
 
 
-_actions_functions = dict()
+_actions_functions = {}
 
 
 def add_action(action_name):
