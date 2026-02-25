@@ -257,7 +257,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._create_actions()
         self._create_statusbar()
         self._create_toolbar()
-        self._create_cd_lookup_menu()
         self._create_menus()
 
         if IS_MACOS:
@@ -1000,6 +999,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                     add_toolbar_action(action_id)
                 except (ValueError, KeyError) as e:
                     log.warning("Warning: Unknown action name '%s' found in config. Ignored. %s", action_name, e)
+        self._create_cd_lookup_menu()
         self.show_toolbar()
 
     def _create_player_toolbar(self):
