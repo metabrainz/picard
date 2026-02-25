@@ -96,7 +96,7 @@ if TYPE_CHECKING:
 
 class TagGenreFilter:
     def __init__(self, filters):
-        self.errors = dict()
+        self.errors = {}
         self.match_regexes = defaultdict(list)
         for lineno, line in enumerate(filters.splitlines()):
             line = line.strip()
