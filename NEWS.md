@@ -1,5 +1,24 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0a3 - 2026-02-25
+
+### Bugfixes
+- [PICARD-3191](https://tickets.metabrainz.org/browse/PICARD-3191) - Crash when copying from the first column of the metadata view
+- [PICARD-3192](https://tickets.metabrainz.org/browse/PICARD-3192) - Crash when converting configuration file
+- [PICARD-3195](https://tickets.metabrainz.org/browse/PICARD-3195) - macOS: No Dock icon or menus
+- [PICARD-3196](https://tickets.metabrainz.org/browse/PICARD-3196) - Persisted main view columns settings easily break if default column change
+- [PICARD-3197](https://tickets.metabrainz.org/browse/PICARD-3197) - Fails to launch when there's a global libssl installed
+- [PICARD-3198](https://tickets.metabrainz.org/browse/PICARD-3198) - Restore defaults on one page restores the defaults on all pages
+- [PICARD-3202](https://tickets.metabrainz.org/browse/PICARD-3202) - Wrong disc ID calculation for SCSI TOCs that contain a trailing data track
+
+### New Features
+- [PICARD-2892](https://tickets.metabrainz.org/browse/PICARD-2892) - Support disc ID lookup from `itunes_cddb_1` tag
+
+### Improvements
+- [PICARD-2670](https://tickets.metabrainz.org/browse/PICARD-2670) - Add filename and directory as pre-defined columns
+- [PICARD-3203](https://tickets.metabrainz.org/browse/PICARD-3203) - Allow adding "Lookup CD log file" action to toolbar
+
+
 ## Version 3.0.0a2 - 2026-02-10
 
 ### Bugfixes
