@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-14 12:58+0100\n"
-"PO-Revision-Date: 2026-02-07 17:11+0000\n"
+"PO-Revision-Date: 2026-02-25 11:24+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -373,93 +373,75 @@ msgstr "Mostra el tipus MIME de la caràtula"
 
 #: picard/options.py:224
 msgid "Discard small images"
-msgstr ""
+msgstr "Descarta les imatges petites"
 
 #: picard/options.py:225
-#, fuzzy
-#| msgid "Minimum width:"
 msgid "Minimum image width"
-msgstr "Amplada mínima:"
+msgstr "Amplada mínima de la imatge"
 
 #: picard/options.py:226
-#, fuzzy
-#| msgid "Minimum height:"
 msgid "Minimum image height"
-msgstr "Alçada mínima:"
+msgstr "Alçada mínima de la imatge"
 
 #: picard/options.py:227
 msgid "Allow enlarging tag images"
-msgstr ""
+msgstr "Permet ampliar les imatges a les etiquetes"
 
 #: picard/options.py:228
 msgid "Allow resizing tag images"
-msgstr ""
+msgstr "Permet redimensionar les imatges a les etiquetes"
 
 #: picard/options.py:229
-#, fuzzy
-#| msgid "Resize images saved to tags"
 msgid "Resized tag image width"
-msgstr "Redimensiona les imatges desades a les etiquetes"
+msgstr "Amplada de les imatges a les etiquetes redimensionades"
 
 #: picard/options.py:230
 msgid "Resized tag image height"
-msgstr ""
+msgstr "Alçada de les imatges a les etiquetes redimensionades"
 
 #: picard/options.py:231
 msgid "Tag image resize mode"
-msgstr ""
+msgstr "Mode de redimensionament de les imatges a les etiquetes"
 
 #: picard/options.py:232
-#, fuzzy
-#| msgid "Convert images to the given format"
 msgid "Convert tag image format"
-msgstr "Converteix les imatges al format definit"
+msgstr "Converteix el format de les imatges a les etiquetes"
 
 #: picard/options.py:233
-#, fuzzy
-#| msgid "New format:"
 msgid "New tag image format"
-msgstr "Format nou:"
+msgstr "Format nou de les imatges a les etiquetes"
 
 #: picard/options.py:234
-#, fuzzy
-#| msgid "Allow selecting multiple directories"
 msgid "Allow enlarging file images"
-msgstr "Permet seleccionar diversos directoris"
+msgstr "Permet ampliar les imatges en fitxers"
 
 #: picard/options.py:235
 msgid "Allow resizing file images"
-msgstr ""
+msgstr "Permet redimensionar les imatges en fitxers"
 
 #: picard/options.py:236
 msgid "Resized file image width"
-msgstr ""
+msgstr "Amplada de les imatges en fitxers redimensionades"
 
 #: picard/options.py:237
 msgid "Resized file image height"
-msgstr ""
+msgstr "Alçada de les imatges en fitxers redimensionades"
 
 #: picard/options.py:238
 msgid "File image resize mode"
-msgstr ""
+msgstr "Mode de redimensionament de les imatges en fitxers"
 
 #: picard/options.py:239
-#, fuzzy
-#| msgid "Convert images to the given format"
 msgid "Convert file image format"
-msgstr "Converteix les imatges al format definit"
+msgstr "Converteix el format de les imatges en fitxers"
 
 #: picard/options.py:240
-#, fuzzy
-#| msgid "All supported image formats"
 msgid "New file image format"
-msgstr "Tots els formats d'imatge admesos"
+msgstr "Format nou de les imatges en fitxers"
 
 #: picard/options.py:241
-#, fuzzy
-#| msgid "First cover art"
 msgid "Format conversion quality"
-msgstr "Primera caràtula"
+msgstr "Qualitat de la conversió de format"
 
 #: picard/options.py:252
 msgid "Use AcoustID fingerprinting"
@@ -1036,14 +1018,12 @@ msgid "[no release info]"
 msgstr "[no hi ha informació de la publicació]"
 
 #: picard/tagger.py:427
-#, fuzzy
-#| msgid "Log git backend method calls"
 msgid "Git backend not available"
-msgstr "Registra les crides als mètodes del rerefons del Git"
+msgstr "El rerefons del Git no està disponible"
 
 #: picard/tagger.py:429
 msgid "Disabled by command line parameter"
-msgstr ""
+msgstr "Inhabilitat per un paràmetre de la línia d'ordres"
 
 #: picard/tagger.py:624 picard/ui/forms/ui_options_general.py:210
 msgid "MusicBrainz Account"
@@ -7566,7 +7546,7 @@ msgstr "Connectors"
 #: picard/ui/options/plugins.py:93
 #, python-brace-format
 msgid "Plugins unavailable: {reason}."
-msgstr ""
+msgstr "Hi ha connectors no disponibles: {reason}."
 
 #: picard/ui/options/plugins.py:112
 msgid "Install Plugin…"
@@ -7726,28 +7706,20 @@ msgid "Enabled providers:"
 msgstr "Proveïdors habilitats:"
 
 #: picard/ui/options/profiles.py:290
-#, fuzzy
-#| msgid "No Ref Selected"
 msgid "No mode selected"
-msgstr "No s'ha seleccionat cap referència"
+msgstr "No s'ha seleccionat cap mode"
 
 #: picard/ui/options/profiles.py:294
-#, fuzzy
-#| msgid "Invalid fpcalc executable"
 msgid "Invalid mode selected"
-msgstr "L'executable fpcalc no és vàlid"
+msgstr "S'ha seleccionat un mode no vàlid"
 
 #: picard/ui/options/profiles.py:298
-#, fuzzy
-#| msgid "No Ref Selected"
 msgid "No format selected"
-msgstr "No s'ha seleccionat cap referència"
+msgstr "No s'ha seleccionat cap format"
 
 #: picard/ui/options/profiles.py:300
-#, fuzzy
-#| msgid "Invalid fpcalc executable"
 msgid "Invalid format selected"
-msgstr "L'executable fpcalc no és vàlid"
+msgstr "S'ha seleccionat un format no vàlid"
 
 #: picard/ui/options/profiles.py:322
 #, python-format
@@ -8199,19 +8171,15 @@ msgid "Retry"
 msgstr "Torna-ho a provar"
 
 #: picard/ui/searchdialog/__init__.py:252
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "<strong>Following error occurred while fetching results:<br><br></"
-#| "strong>Network request error for %(url)s:<br>%(error)s (QT code %"
-#| "(qtcode)d, HTTP code %(statuscode)r)<br>"
+#, python-brace-format
 msgid ""
 "<strong>Following error occurred while fetching results:<br><br></"
 "strong>Network request error for {url}:<br>{error} (QT code {qtcode}, HTTP "
 "code {statuscode})<br>"
 msgstr ""
 "<strong>S'ha produït l'error següent en recuperar els resultats:<br><br></"
-"strong>S'ha produït un error a la sol·licitud de xarxa per a %(url)s:<br>%"
-"(error)s (codi QT %(qtcode)d, codi HTTP %(statuscode)r)<br>"
+"strong>S'ha produït un error a la sol·licitud de xarxa per a {url}:<br>"
+"{error} (codi QT {qtcode}, codi HTTP {statuscode})<br>"
 
 #: picard/ui/searchdialog/__init__.py:263
 msgid "<strong>No results found. Please try a different search query.</strong>"
@@ -8369,10 +8337,9 @@ msgid "Update All"
 msgstr "Actualitza-ho tot"
 
 #: picard/ui/widgets/pluginlistwidget.py:86
-#, fuzzy, python-brace-format
-#| msgid "Update All ({count})"
+#, python-brace-format
 msgid "Update Selected ({count})"
-msgstr "Actualitza-ho tot ({count})"
+msgstr "Actualitza la selecció ({count})"
 
 #: picard/ui/widgets/pluginlistwidget.py:132
 msgid "Enabled"
