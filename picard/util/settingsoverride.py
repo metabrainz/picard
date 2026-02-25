@@ -35,7 +35,7 @@ class SettingsOverride(MutableMapping):
 
     def __init__(self, orig_settings, *args, **kwargs):
         self.orig_settings = orig_settings
-        self._dict = dict()
+        self._dict = {}
         for k, v in dict(*args, **kwargs).items():
             self[k] = v
 
