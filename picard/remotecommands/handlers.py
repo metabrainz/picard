@@ -63,7 +63,7 @@ from picard.util.cdrom import (
 )
 
 
-REMOTE_COMMANDS = dict()
+REMOTE_COMMANDS = {}
 
 
 class ParseItemsToLoad:
