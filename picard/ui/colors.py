@@ -153,7 +153,7 @@ class InterfaceColors:
             return 'interface_colors'
 
     def set_default_colors(self):
-        self._colors = dict()
+        self._colors = {}
         for color_key in self.default_colors:
             self.set_default_color(color_key)
 
