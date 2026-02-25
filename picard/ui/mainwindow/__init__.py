@@ -228,6 +228,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
+        # Initially set the plugin updates available status in the status bar.
+        self._update_statusbar_plugin_updates_available()
+
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
         self._suspend_while_loading_funcs.append(funcs)
@@ -302,10 +305,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
-        plugin_manager = self.tagger.get_plugin_manager()
-        if plugin_manager:
+        self.plugin_manager = self.tagger.get_plugin_manager()
+        if self.plugin_manager:
             signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
-            plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
+            self.plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
+            self.plugin_manager.refresh_updates_available.connect(self._update_statusbar_plugin_updates_available)
 
     def _setup_player(self):
         from picard.ui.player import get_now_playing_service, get_player
@@ -550,8 +554,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "\"Tagger\" button on the web page loads the release into Picard."
             )
         )
+        self.plugin_updates_label = QtWidgets.QLabel()
+        if theme.is_dark_theme:
+            icon_plugin = QtGui.QIcon(":/images/plugin-dark.png")
+        else:
+            icon_plugin = QtGui.QIcon(":/images/plugin.png")
+
+        self.plugin_updates_label.setPixmap(icon_plugin.pixmap(16, 16))
+        self.plugin_updates_label.setVisible(False)
+        self.plugin_updates_label.setToolTip(_("There are updates available for installed plugins."))
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
+        self.statusBar().addPermanentWidget(self.plugin_updates_label)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self._register_status_indicator(infostatus)
@@ -576,6 +590,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
         else:
             self.listening_label.setVisible(False)
+
+    def _update_statusbar_plugin_updates_available(self):
+        if not self.plugin_manager:
+            self.plugin_updates_label.setVisible(False)
+            return
+
+        updates = self.plugin_manager.check_updates(skip_fetch=True)
+        self.plugin_updates_label.setVisible(bool(updates))
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message.

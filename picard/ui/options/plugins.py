@@ -392,6 +392,8 @@ class Plugins3OptionsPage(OptionsPage):
         else:
             pass  # No dialog found
 
+        self.plugin_manager.refresh_updates_available.emit()
+
     def _cleanup_plugin_settings(self, plugin_id):
         """Clean up plugin settings when plugin is uninstalled."""
         config = get_config()
@@ -502,6 +504,8 @@ class Plugins3OptionsPage(OptionsPage):
             QtWidgets.QMessageBox.warning(
                 self, _("Update Failed"), _("Failed to update plugin: {errmsg}").format(errmsg=error_msg)
             )
+
+        self.plugin_manager.refresh_updates_available.emit()
 
         # Continue with next plugin
         self._update_next_plugin(async_manager)
