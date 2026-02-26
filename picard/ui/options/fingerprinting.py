@@ -23,7 +23,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import os
 
 from PyQt6 import (
@@ -32,6 +31,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import log
 from picard.acoustid import find_fpcalc
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
@@ -157,26 +157,28 @@ class FingerprintingOptionsPage(OptionsPage):
         process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)
         process.start(fpcalc, ["-v"])
 
-    def _on_acoustid_fpcalc_check_finished(self, exit_code, exit_status):
+    def _on_acoustid_fpcalc_check_finished(self, exit_code: int, exit_status: QtCore.QProcess.ExitStatus):
         process = self.sender()
         if exit_code == 0 and exit_status == QtCore.QProcess.ExitStatus.NormalExit:
             output = bytes(process.readAllStandardOutput()).decode()
             if output.startswith("fpcalc version"):
                 self._acoustid_fpcalc_set_success(output.strip())
             else:
-                self._acoustid_fpcalc_set_error()
+                first_line = output.split('\n')[0]
+                self._acoustid_fpcalc_set_error(f'unexpected output "{first_line}"')
         else:
-            self._acoustid_fpcalc_set_error()
+            self._acoustid_fpcalc_set_error(f'exit status {exit_status.name}, exit code {exit_code}')
 
-    def _on_acoustid_fpcalc_check_error(self, error):
-        self._acoustid_fpcalc_set_error()
+    def _on_acoustid_fpcalc_check_error(self, error: QtCore.QProcess.ProcessError):
+        self._acoustid_fpcalc_set_error(f'process failed ({error.name})')
 
     def _acoustid_fpcalc_set_success(self, version):
         self._fpcalc_valid = True
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_SUCCESS)
         self.ui.acoustid_fpcalc_info.setText(version)
 
-    def _acoustid_fpcalc_set_error(self):
+    def _acoustid_fpcalc_set_error(self, msg):
+        log.warning('fpcalc error: %s', msg)
         self._fpcalc_valid = False
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.acoustid_fpcalc_info.setText(_("Please select a valid fpcalc executable."))
