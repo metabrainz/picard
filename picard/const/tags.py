@@ -709,6 +709,12 @@ ALL_TAGS = TagVars(
         is_multi_value=True,  # TODO: Need to confirm multi-value.
     ),
     TagVar(
+        'musicbrainz_composerid',
+        shortdesc=N_('Composer MBID'),
+        longdesc=N_('The MusicBrainz Identifier (MBID) for the composer(s).'),
+        is_multi_value=True,
+    ),
+    TagVar(
         'musicip_fingerprint',
         shortdesc=N_('MusicIP Fingerprint'),
         longdesc=N_('The MusicIP Fingerprint for the track.'),

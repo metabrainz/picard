@@ -166,6 +166,7 @@ class ASFFile(File):
         'musicbrainz_trmid': 'MusicBrainz/TRM Id',
         'musicbrainz_discid': 'MusicBrainz/Disc Id',
         'musicbrainz_workid': 'MusicBrainz/Work Id',
+        'musicbrainz_composerid': 'MusicBrainz/Composer Id',
         'musicbrainz_releasegroupid': 'MusicBrainz/Release Group Id',
         'musicbrainz_originalalbumid': 'MusicBrainz/Original Album Id',
         'musicbrainz_originalartistid': 'MusicBrainz/Original Artist Id',
