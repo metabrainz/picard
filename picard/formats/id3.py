@@ -367,11 +367,15 @@ class ID3File(File):
         elif frameid == 'COMM':
             for text in frame.text:
                 if text:
-                    if frame.lang == 'eng':
+                    # iTunes CDDB comment should be mapped to itunes_cddb_1 tag
+                    if frame.desc == 'iTunes_CDDB_1':
+                        metadata.add('itunes_cddb_1', text)
+                    elif frame.lang == 'eng':
                         name = '%s:%s' % (name, frame.desc)
+                        metadata.add(name, text)
                     else:
                         name = '%s:%s:%s' % (name, frame.lang, frame.desc)
-                    metadata.add(name, text)
+                        metadata.add(name, text)
         else:
             metadata.add(name, frame)
 
