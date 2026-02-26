@@ -125,6 +125,7 @@ class MP4File(File):
         '----:com.apple.iTunes:MusicBrainz Disc Id': 'musicbrainz_discid',
         '----:com.apple.iTunes:MusicBrainz TRM Id': 'musicbrainz_trmid',
         '----:com.apple.iTunes:MusicBrainz Work Id': 'musicbrainz_workid',
+        '----:com.apple.iTunes:MusicBrainz Composer Id': 'musicbrainz_composerid',
         '----:com.apple.iTunes:MusicBrainz Release Group Id': 'musicbrainz_releasegroupid',
         '----:com.apple.iTunes:MusicBrainz Release Track Id': 'musicbrainz_trackid',
         '----:com.apple.iTunes:MusicBrainz Original Album Id': 'musicbrainz_originalalbumid',

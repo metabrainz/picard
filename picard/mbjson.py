@@ -178,8 +178,11 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
     if context.instrumental and name == 'lyricist':
         return
     m.add_unique(name, translated_name)
+    artist_id = artist.get('id')
     if name == 'composer':
         m.add_unique('composersort', sort_name)
+        if artist_id:
+            m.add_unique('musicbrainz_composerid', artist_id)
     elif name == 'lyricist':
         m.add_unique('~lyricistsort', sort_name)
     elif name == 'writer':

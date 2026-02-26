@@ -1052,3 +1052,22 @@ class RelationsToMetadataTargetTypeLabelTest(PicardTestCase):
         }
         _relations_to_metadata([relation], m)
         self.assertNotIn('~broadcast_date', m)
+
+
+class RelationsToMetadataTargetTypeArtistTest(PicardTestCase):
+    def test_composer_adds_musicbrainz_composerid(self):
+        m = Metadata()
+        relation = {
+            'type': 'composer',
+            'target-type': 'artist',
+            'artist': {
+                'id': '12345678-1234-1234-1234-123456789abc',
+                'name': 'Ludwig van Beethoven',
+                'sort-name': 'Beethoven, Ludwig van',
+            },
+        }
+
+        _relations_to_metadata([relation], m)
+
+        self.assertEqual(m.getall('composer'), ['Ludwig van Beethoven'])
+        self.assertEqual(m.getall('musicbrainz_composerid'), ['12345678-1234-1234-1234-123456789abc'])
