@@ -369,13 +369,12 @@ class ID3File(File):
                 if text:
                     # iTunes CDDB comment should be mapped to itunes_cddb_1 tag
                     if frame.desc == 'iTunes_CDDB_1':
-                        metadata.add('itunes_cddb_1', text)
+                        name = 'itunes_cddb_1'
                     elif frame.lang == 'eng':
                         name = '%s:%s' % (name, frame.desc)
-                        metadata.add(name, text)
                     else:
                         name = '%s:%s:%s' % (name, frame.lang, frame.desc)
-                        metadata.add(name, text)
+                    metadata.add(name, text)
         else:
             metadata.add(name, frame)
 
@@ -569,6 +568,8 @@ class ID3File(File):
                 self._save_grouping_tag(tags, name, values, config_params)
             elif name == 'work' and itunes_compatible:
                 self._save_work_tag(tags, name, values, config_params)
+            elif name == 'itunes_cddb_1':
+                self._save_itunes_cddb_1_tag(tags, name, values, config_params)
             elif name in self.__rtranslate:
                 self._save_standard_tag(tags, name, values, config_params)
             elif name.lower() in self.__rtranslate_freetext_ci:
@@ -897,6 +898,12 @@ class ID3File(File):
             description = self.__rtranslate_freetext_ci[name_lower]
         delall_ci(tags, 'TXXX:' + description)
         tags.add(self.build_TXXX(encoding, description, values))
+
+    def _save_itunes_cddb_1_tag(self, tags, name, values, config_params):
+        """Save iTunes_CDDB_1 tag to COMM frame instead of TXXX."""
+        tags.delall('TXXX:iTunes_CDDB_1')
+        tags.delall('COMM:iTunes_CDDB_1')
+        tags.add(id3.COMM(encoding=Id3Encoding.LATIN1, desc='iTunes_CDDB_1', lang='eng', text=values))
 
     def _save_freetext_tag(self, tags, name, values, config_params):
         """Save standard free text tag."""
