@@ -28,13 +28,13 @@
 # Дмитрий <sema19689@gmail.com>, 2014-2015
 # Дмитрий Суворов, 2023
 # Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>, 2024.
-# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
+# wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-25 12:24+0100\n"
-"PO-Revision-Date: 2024-08-31 14:42+0000\n"
+"PO-Revision-Date: 2026-02-26 20:11+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
@@ -46,7 +46,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.7.1\n"
+"X-Generator: Weblate 5.16.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -204,11 +204,11 @@ msgstr ""
 
 #: picard/file.py:315
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "Не удалось сохранить файл: файл больше не существует."
 
 #: picard/file.py:319
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "Не удалось сохранить файл: разрешения отклонены."
 
 #: picard/file.py:324
 msgid ""
@@ -219,22 +219,19 @@ msgstr ""
 "не поддерживается."
 
 #: picard/file.py:1035
-#, fuzzy, python-format
-#| msgid "No matching tracks above the threshold for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks above the threshold for file \"%(filename)s\""
 msgstr "Нет совпадения треков для файла '%(filename)s'"
 
 #: picard/file.py:1037
-#, fuzzy, python-format
-#| msgid "File '%(filename)s' identified!"
+#, python-format
 msgid "File \"%(filename)s\" identified!"
-msgstr "Файл '%(filename)s' идентифицирован!"
+msgstr "Файл \"%(filename)s\" идентифицирован!"
 
 #: picard/file.py:1049
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks for file \"%(filename)s\""
-msgstr "Нет соответствующих треков для файла '%(filename)s'"
+msgstr "Нет соответствующих треков для файла \"%(filename)s\""
 
 #: picard/file.py:1078
 #, python-format
@@ -319,16 +316,12 @@ msgid "Ignore hidden files"
 msgstr "Игнорировать скрытые файлы"
 
 #: picard/options.py:173
-#, fuzzy
-#| msgid "Ignore file paths matching a regular expression"
 msgid "Ignore file paths (regular expression)"
-msgstr "Игнорировать расположения, совпадающие с регулярным выражением"
+msgstr "Игнорировать расположения (регулярное выражение)"
 
 #: picard/options.py:174
-#, fuzzy
-#| msgid "Ignore track duration difference under x seconds"
 msgid "Allowed track difference (seconds)"
-msgstr "Игнорировать разницу в продолжительности трека до x секунд"
+msgstr "Допустимая разница в продолжительности трека (секунды)"
 
 #: picard/options.py:179
 #, fuzzy
@@ -337,10 +330,8 @@ msgid "Maximum MusicBrainz query items"
 msgstr "Сервер MusicBrainz"
 
 #: picard/options.py:181
-#, fuzzy
-#| msgid "Include sub-folders when adding files from folder"
 msgid "Include sub-folders when adding files"
-msgstr "Включать подпапки при добавлении файлов из папки"
+msgstr "Включать подпапки при добавлении файлов"
 
 #: picard/options.py:189
 msgid "Cover art providers"
@@ -355,28 +346,20 @@ msgid "Embed only a single front image"
 msgstr "Вставить только одно изображение на лицевой стороне"
 
 #: picard/options.py:192
-#, fuzzy
-#| msgid "Never replace cover images with smaller ones"
 msgid "Never replace images with smaller ones"
-msgstr "Никогда не заменять обложку на изображения меньшего размера"
+msgstr "Никогда не заменять изображения меньшего размера"
 
 #: picard/options.py:193
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace images of selected types"
-msgstr "Загружать только обложки совпадающие выбранным типам"
+msgstr "Никогда не заменять обложки выбранных типов"
 
 #: picard/options.py:198
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace images of these types"
-msgstr "Загружать только обложки совпадающие выбранным типам"
+msgstr "Никогда не заменять обложки этих типов"
 
 #: picard/options.py:204
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Always replace images of these types"
-msgstr "Загружать только обложки совпадающие выбранным типам"
+msgstr "Всегда заменять обложки этих типов"
 
 #: picard/options.py:210
 msgid "Primary image type as the file name"
@@ -387,22 +370,16 @@ msgid "Overwrite existing image files"
 msgstr "Перезаписывать существующие файлы изображений"
 
 #: picard/options.py:213
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save images as separate files"
-msgstr "Сохранять обложки как отдельные файлы"
+msgstr "Сохранять изображения как отдельные файлы"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed images into tags"
 msgstr "Добавлять обложки в теги"
 
 #: picard/options.py:215
-#, fuzzy
-#| msgid "Embed only a single front image"
 msgid "Save only one front image"
-msgstr "Вставить только одно изображение на лицевой стороне"
+msgstr "Сохранять только одно лицевое изображение"
 
 #: picard/options.py:216
 #, fuzzy
@@ -411,40 +388,32 @@ msgid "Show cover art details in view"
 msgstr "Сохранять обложки как отдельные файлы"
 
 #: picard/options.py:217
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art type"
-msgstr "Тип Обложки"
+msgstr "Показывать тип обложки"
 
 #: picard/options.py:218
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show cover art file size"
-msgstr "Показать &скрытые файлы"
+msgstr "Показать размер файла обложки"
 
 #: picard/options.py:219
-#, fuzzy
-#| msgid "Show icons in menus"
 msgid "Show cover art dimensions"
-msgstr "Показывать иконки в меню"
+msgstr "Показывать разрешения обложек"
 
 #: picard/options.py:220
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art MIME type"
-msgstr "Тип Обложки"
+msgstr "Показывать MIME-тип обложки"
 
 #: picard/options.py:224
 msgid "Discard small images"
-msgstr ""
+msgstr "Отклонять маленькие изображения"
 
 #: picard/options.py:225
 msgid "Minimum image width"
-msgstr ""
+msgstr "Минимальная ширина изображения"
 
 #: picard/options.py:226
 msgid "Minimum image height"
-msgstr ""
+msgstr "Минимальная высота изображения"
 
 #: picard/options.py:227
 msgid "Allow enlarging tag images"
@@ -516,41 +485,31 @@ msgstr "Формат:"
 
 #: picard/options.py:241
 msgid "Format conversion quality"
-msgstr ""
+msgstr "Качество конверсии формата"
 
 #: picard/options.py:252
-#, fuzzy
-#| msgid "Do not use audio fingerprinting"
 msgid "Use AcoustID fingerprinting"
-msgstr "Не использовать аудио слепки"
+msgstr "Использовать аудиослепки AcoustID"
 
 #: picard/options.py:255
-#, fuzzy
-#| msgid "AcoustID Fingerprint"
 msgid "Save AcoustID fingerprints"
-msgstr "AcoustID отпечатки"
+msgstr "Сохранять аудиослепки AcoustID"
 
 #: picard/options.py:265 picard/ui/forms/ui_options_general.py:214
 msgid "Automatically scan all new files"
 msgstr "Автоматически сканировать новые файлы"
 
 #: picard/options.py:266
-#, fuzzy
-#| msgid "Check for plugin updates during startup"
 msgid "Check for documentation updates"
-msgstr "Проверять обновления плагинов при запуске"
+msgstr "Проверять обновления документации"
 
 #: picard/options.py:267
-#, fuzzy
-#| msgid "Check for plugin updates during startup"
 msgid "Check for plugin updates"
-msgstr "Проверять обновления плагинов при запуске"
+msgstr "Проверять обновления плагинов"
 
 #: picard/options.py:268
-#, fuzzy
-#| msgid "Check for program updates during startup"
 msgid "Check for program updates"
-msgstr "Проверять обновления программы при запуске"
+msgstr "Проверять обновления программы"
 
 #: picard/options.py:269 picard/ui/forms/ui_options_general.py:215
 msgid "Automatically cluster all new files"
@@ -573,10 +532,8 @@ msgid "Days between update checks"
 msgstr "Дни между проверками обновлений"
 
 #: picard/options.py:274
-#, fuzzy
-#| msgid "Updates to check"
 msgid "Update types to check"
-msgstr "Проверять обновления в каналах"
+msgstr "Типы обновлений для проверки"
 
 #: picard/options.py:275
 msgid "Submit to configured server"
@@ -615,14 +572,10 @@ msgid "Use genres from MusicBrainz"
 msgstr "Использовать жанры из MusicBrainz"
 
 #: picard/options.py:292
-#, fuzzy
-#| msgid "Allow selection of multiple directories"
 msgid "Allow selecting multiple directories"
 msgstr "Разрешить выбор нескольких каталогов"
 
 #: picard/options.py:293
-#, fuzzy
-#| msgid "Use builtin search rather than looking in browser"
 msgid "Use builtin search (not browser)"
 msgstr "Использовать встроенный поиск вместо поиска в браузере"
 
