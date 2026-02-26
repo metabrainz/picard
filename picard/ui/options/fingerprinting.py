@@ -164,22 +164,21 @@ class FingerprintingOptionsPage(OptionsPage):
             if output.startswith("fpcalc version"):
                 self._acoustid_fpcalc_set_success(output.strip())
             else:
-                log.debug('fpcalc unexpected output: %s', output.split('\n')[0])
-                self._acoustid_fpcalc_set_error()
+                first_line = output.split('\n')[0]
+                self._acoustid_fpcalc_set_error(f'unexpected output "{first_line}"')
         else:
-            log.debug('fpcalc exited with error: %s, exit code %s', exit_status.name, exit_code)
-            self._acoustid_fpcalc_set_error()
+            self._acoustid_fpcalc_set_error(f'exit status {exit_status.name}, exit code {exit_code}')
 
     def _on_acoustid_fpcalc_check_error(self, error: QtCore.QProcess.ProcessError):
-        log.debug('fpcalc failed to execute: %s', error.name)
-        self._acoustid_fpcalc_set_error()
+        self._acoustid_fpcalc_set_error(f'process failed ({error.name})')
 
     def _acoustid_fpcalc_set_success(self, version):
         self._fpcalc_valid = True
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_SUCCESS)
         self.ui.acoustid_fpcalc_info.setText(version)
 
-    def _acoustid_fpcalc_set_error(self):
+    def _acoustid_fpcalc_set_error(self, msg):
+        log.warning('fpcalc error: %s', msg)
         self._fpcalc_valid = False
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.acoustid_fpcalc_info.setText(_("Please select a valid fpcalc executable."))
