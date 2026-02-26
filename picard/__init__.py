@@ -68,7 +68,7 @@ api_versions = [
 api_versions_tuple = [Version.from_string(v) for v in api_versions]
 
 
-def crash_handler(exc: Exception = None):
+def crash_handler(exc: Exception):
     """Implements minimal handling of an exception crashing the application.
     This function tries to log the exception to a log file and display
     a minimal crash dialog to the user.
@@ -184,8 +184,6 @@ def _show_crash_dialog(trace):
 
 def register_excepthook():
     def _global_exception_handler(exctype, value, traceback):
-        from picard import crash_handler
-
         crash_handler(exc=value)
         sys.__excepthook__(exctype, value, traceback)
 
