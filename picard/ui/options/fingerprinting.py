@@ -173,7 +173,7 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def _acoustid_fpcalc_set_success(self, version):
         self._fpcalc_valid = True
-        self.ui.acoustid_fpcalc_info.setStyleSheet("")
+        self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_SUCCESS)
         self.ui.acoustid_fpcalc_info.setText(version)
 
     def _acoustid_fpcalc_set_error(self):
