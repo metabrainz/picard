@@ -298,6 +298,35 @@ class CommonId3Tests:
             self.assertNotIn('comment:iTunNORM', new_metadata)
             self.assertNotIn('comment:iTunPGAP', new_metadata)
 
+        @skipUnlessTestfile
+        def test_itunes_cddb_1_comm_frame(self):
+            """Test that iTunes_CDDB_1 tag is correctly loaded from and saved to COMM frames."""
+            config.setting['clear_existing_tags'] = True
+            cddb_value = '62038207+67542+7+150+30720+46665+64227+64527+64827+65140'
+
+            # Create a COMM frame with iTunes_CDDB_1 descriptor
+            tags = mutagen.id3.ID3Tags()
+            tags.add(
+                mutagen.id3.COMM(encoding=id3.Id3Encoding.LATIN1, lang='eng', desc='iTunes_CDDB_1', text=[cddb_value])
+            )
+            save_raw(self.filename, tags)
+
+            # Load and verify the metadata
+            loaded_metadata = load_metadata(self.format_registry, self.filename)
+            self.assertEqual(loaded_metadata['itunes_cddb_1'], cddb_value)
+
+            # Ensure it's not loaded as a comment tag
+            self.assertNotIn('comment:iTunes_CDDB_1', loaded_metadata)
+
+            # Now verify that saving the tag keeps it in COMM frame
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, loaded_metadata)
+            self.assertEqual(new_metadata['itunes_cddb_1'], cddb_value)
+
+            # Verify it's stored as COMM, not TXXX
+            raw_metadata = load_raw(self.filename)
+            self.assertIn('COMM:iTunes_CDDB_1:eng', raw_metadata)
+            self.assertNotIn('TXXX:iTunes_CDDB_1', raw_metadata)
+
         def test_rename_txxx_tags(self):
             file_path = os.path.join('test', 'data', 'test-id3-rename-tags.mp3')
             filename = self.copy_file_tmp(file_path, '.mp3')
