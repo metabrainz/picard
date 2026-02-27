@@ -64,7 +64,7 @@ def is_local_path(url):
 
     Git supports several URL formats:
     - scheme://... (http, https, git, ssh, ftp, ftps, file, etc.)
-    - user@host:path (scp-like syntax)
+    - [user@]host:path (scp-like syntax)
     - /absolute/path or ~/path or relative/path (local paths)
     """
     if not url:
@@ -74,13 +74,29 @@ def is_local_path(url):
     if '://' in url:
         return url.startswith('file://')
 
-    # Check for scp-like syntax: user@host:path
-    # This has a colon but not :// and has @ before the colon
-    if ':' in url and '@' in url:
-        at_pos = url.find('@')
+    # Check for scp-like syntax: [user@]host:path
+    # This format has a colon and no path separators before the colon.
+    # Examples:
+    #   git@github.com:user/repo.git
+    #   github.com:user/repo.git
+    #   host:path/to/repo
+    # Exclusions for local paths:
+    #   C:/repo, D:\repo, C:repo (Windows drive paths)
+    #   ./dir:with-colon (explicit relative path)
+    if ':' in url:
         colon_pos = url.find(':')
-        # If @ comes before : and there's no /, it's scp-like syntax
-        if at_pos < colon_pos and '/' not in url[:colon_pos]:
+        prefix = url[:colon_pos]
+        suffix = url[colon_pos + 1 :]
+
+        # Windows drive letter paths, e.g. C:/repo, D:\repo, C:repo
+        if len(prefix) == 1 and prefix.isalpha():
+            return True
+
+        # Explicit local relative / home paths containing colons
+        if url.startswith(('./', '../', '~/')):
+            return True
+
+        if prefix and '/' not in prefix and '\\' not in prefix and suffix:
             return False
 
     # Everything else is a local path

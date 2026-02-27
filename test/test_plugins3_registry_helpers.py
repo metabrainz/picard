@@ -70,12 +70,19 @@ class TestRegistryHelpers(PicardTestCase):
         """Test is_local_path with scp-like syntax."""
         self.assertFalse(is_local_path('git@github.com:user/repo.git'))
         self.assertFalse(is_local_path('user@host:path/to/repo'))
+        self.assertFalse(is_local_path('github.com:user/repo.git'))
+        self.assertFalse(is_local_path('host:path/to/repo'))
 
     def test_is_local_path_local_paths(self):
         """Test is_local_path with local paths."""
         self.assertTrue(is_local_path('/tmp/repo'))
         self.assertTrue(is_local_path('~/repo'))
         self.assertTrue(is_local_path('relative/path'))
+        self.assertTrue(is_local_path('./dir:with-colon'))
+        self.assertTrue(is_local_path('../dir:with-colon'))
+        self.assertTrue(is_local_path('C:/repo'))
+        self.assertTrue(is_local_path('D:\\repo'))
+        self.assertTrue(is_local_path('C:repo'))
 
     def test_normalize_git_url_caching(self):
         """Test that normalize_git_url caches results."""
