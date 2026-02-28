@@ -619,7 +619,7 @@ build = [
     { name = "babel", specifier = ">=2.10.0" },
     { name = "pyinstaller", specifier = "~=6.17" },
     { name = "pytest", specifier = ">=8.1" },
-    { name = "setuptools", specifier = ">=74.1.0" },
+    { name = "setuptools", specifier = ">=77.0.1" },
 ]
 dev = [
     { name = "babel", specifier = ">=2.6.0" },

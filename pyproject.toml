@@ -69,7 +69,7 @@ build = [
     "Babel>=2.10.0",
     "PyInstaller~=6.17",
     "pytest>=8.1",
-    "setuptools>=74.1.0",
+    "setuptools>=77.0.1",
 ]
 dev = [
     "Babel>=2.6.0",
