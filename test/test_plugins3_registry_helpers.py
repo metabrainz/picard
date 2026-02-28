@@ -88,8 +88,13 @@ class TestRegistryHelpers(PicardTestCase):
             self.assertFalse(is_local_path('C:repo'))
 
     def test_is_local_path_scp_short_host(self):
-        """Test single-letter host style remains scp-like remote."""
-        self.assertFalse(is_local_path('a:repo'))
+        """Test single-letter `host:path` handling is platform specific."""
+        if os.name == 'nt':
+            # On Windows this is interpreted as drive-relative path.
+            self.assertTrue(is_local_path('a:repo'))
+        else:
+            # On POSIX this is treated like an scp-style remote.
+            self.assertFalse(is_local_path('a:repo'))
 
     def test_normalize_git_url_caching(self):
         """Test that normalize_git_url caches results."""
