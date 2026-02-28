@@ -80,7 +80,6 @@ dev = [
     "pytest-xdist>=3.8.0",
     "ruff>=0.13.0",
     "tomlkit>=0.13.3",
-    "urllib3>=2.6.0",
     "wlc>=1.17.2",
 ]
 

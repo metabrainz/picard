@@ -589,7 +589,6 @@ dev = [
     { name = "pytest-xdist" },
     { name = "ruff" },
     { name = "tomlkit" },
-    { name = "urllib3" },
     { name = "wlc" },
 ]
 
@@ -631,7 +630,6 @@ dev = [
     { name = "pytest-xdist", specifier = ">=3.8.0" },
     { name = "ruff", specifier = ">=0.13.0" },
     { name = "tomlkit", specifier = ">=0.13.3" },
-    { name = "urllib3", specifier = ">=2.6.0" },
     { name = "wlc", specifier = ">=1.17.2" },
 ]
 
