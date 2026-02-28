@@ -161,6 +161,7 @@ from picard.ui.statusindicator import (
     ProgressStatus,
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
+from picard.ui.theme import theme
 from picard.ui.util import (
     FileDialog,
     find_starting_directory,
@@ -970,6 +971,36 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.create_action_toolbar()
         self.update_toolbar_style()
 
+    def _apply_toolbar_extension_button_dark_theme_styling(self, toolbar):
+        """Apply custom styling to toolbar extension button for dark theme.
+
+        This is a workaround for Qt's toolbar extension button (overflow arrow)
+        which uses a dark icon that is invisible on dark backgrounds. In dark theme,
+        we apply custom styling and replace the icon with a light-colored version.
+
+        This method must be called after the toolbar has been populated with actions,
+        as Qt only creates the extension button when it determines that not all
+        actions fit in the available space.
+
+        Args:
+            toolbar: The QToolBar to apply styling to
+        """
+        toolbar.setStyleSheet("""
+            QToolBar QToolButton#qt_toolbar_ext_button {
+                background-color: transparent;
+                border: 1px solid transparent;
+                border-radius: 2px;
+            }
+            QToolBar QToolButton#qt_toolbar_ext_button:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+        """)
+
+        ext_button = toolbar.findChild(QtWidgets.QToolButton, 'qt_toolbar_ext_button')
+        if ext_button:
+            ext_button.setIcon(QtGui.QIcon(':/images/toolbar-ext-arrow-dark-theme.png'))
+
     def create_action_toolbar(self):
         if self.toolbar:
             self.toolbar.clear()
@@ -977,6 +1008,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.toolbar = toolbar = QtWidgets.QToolBar(_("Actions"))
         self.insertToolBar(self.search_toolbar, self.toolbar)
         toolbar.setObjectName('main_toolbar')
+
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
         if IS_MACOS:
@@ -1000,6 +1032,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 except (ValueError, KeyError) as e:
                     log.warning("Warning: Unknown action name '%s' found in config. Ignored. %s", action_name, e)
         self._create_cd_lookup_menu()
+
+        if theme.is_dark_theme:
+            self._apply_toolbar_extension_button_dark_theme_styling(toolbar)
+
         self.show_toolbar()
 
     def _create_player_toolbar(self):
