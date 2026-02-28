@@ -72,11 +72,8 @@ build = [
     "setuptools>=74.1.0",
 ]
 dev = [
-    "autopep8",
     "Babel>=2.6.0",
     "pre-commit>=4.2.0",
-    "pycodestyle",
-    "pylint>=2.6.0",
     "pymarkdownlnt>=0.9.33",
     "pytest-cov>=7.0.0",
     "pytest-randomly>=4.0.1",
