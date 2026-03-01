@@ -23,9 +23,11 @@
 
 """Git URL and path utility functions."""
 
-from functools import lru_cache
 import os
+from functools import lru_cache
 from pathlib import Path
+
+from picard.const.sys import IS_WIN
 
 
 @lru_cache(maxsize=256)
@@ -64,7 +66,7 @@ def is_local_path(url):
 
     Git supports several URL formats:
     - scheme://... (http, https, git, ssh, ftp, ftps, file, etc.)
-    - user@host:path (scp-like syntax)
+    - [user@]host:path (scp-like syntax)
     - /absolute/path or ~/path or relative/path (local paths)
     """
     if not url:
@@ -74,13 +76,32 @@ def is_local_path(url):
     if '://' in url:
         return url.startswith('file://')
 
-    # Check for scp-like syntax: user@host:path
-    # This has a colon but not :// and has @ before the colon
-    if ':' in url and '@' in url:
-        at_pos = url.find('@')
-        colon_pos = url.find(':')
-        # If @ comes before : and there's no /, it's scp-like syntax
-        if at_pos < colon_pos and '/' not in url[:colon_pos]:
+    # Check for scp-like syntax: [user@]host:path
+    # This format has a colon and no path separators before the colon.
+    # Examples:
+    #   git@github.com:user/repo.git
+    #   github.com:user/repo.git
+    #   host:path/to/repo
+    # Exclusions for local paths:
+    #   C:/repo, D:\repo, C:repo (Windows drive paths)
+    #   ./dir:with-colon (explicit relative path)
+    if ':' in url:
+        prefix, suffix = url.split(':', 1)
+
+        # Windows drive letter paths:
+        # - C:/repo or D:\repo are always local paths
+        # - C:repo is local only on Windows (drive-relative path)
+        if len(prefix) == 1 and prefix.isalpha():
+            if suffix.startswith(('/', '\\')):
+                return True
+            if IS_WIN:
+                return True
+
+        # Explicit local relative / home paths containing colons
+        if url.startswith(('./', '../', '~/')):
+            return True
+
+        if prefix and '/' not in prefix and '\\' not in prefix and suffix:
             return False
 
     # Everything else is a local path

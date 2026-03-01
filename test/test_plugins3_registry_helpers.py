@@ -20,12 +20,12 @@
 
 import os
 
-from test.picardtestcase import PicardTestCase
-
+from picard.const.sys import IS_WIN
 from picard.git.utils import (
     is_local_path,
     normalize_git_url,
 )
+from test.picardtestcase import PicardTestCase
 
 
 class TestRegistryHelpers(PicardTestCase):
@@ -70,12 +70,31 @@ class TestRegistryHelpers(PicardTestCase):
         """Test is_local_path with scp-like syntax."""
         self.assertFalse(is_local_path('git@github.com:user/repo.git'))
         self.assertFalse(is_local_path('user@host:path/to/repo'))
+        self.assertFalse(is_local_path('github.com:user/repo.git'))
+        self.assertFalse(is_local_path('host:path/to/repo'))
 
     def test_is_local_path_local_paths(self):
         """Test is_local_path with local paths."""
         self.assertTrue(is_local_path('/tmp/repo'))
         self.assertTrue(is_local_path('~/repo'))
         self.assertTrue(is_local_path('relative/path'))
+        self.assertTrue(is_local_path('./dir:with-colon'))
+        self.assertTrue(is_local_path('../dir:with-colon'))
+        self.assertTrue(is_local_path('C:/repo'))
+        self.assertTrue(is_local_path('D:\\repo'))
+        if IS_WIN:
+            self.assertTrue(is_local_path('C:repo'))
+        else:
+            self.assertFalse(is_local_path('C:repo'))
+
+    def test_is_local_path_scp_short_host(self):
+        """Test single-letter `host:path` handling is platform specific."""
+        if IS_WIN:
+            # On Windows this is interpreted as drive-relative path.
+            self.assertTrue(is_local_path('a:repo'))
+        else:
+            # On POSIX this is treated like an scp-style remote.
+            self.assertFalse(is_local_path('a:repo'))
 
     def test_normalize_git_url_caching(self):
         """Test that normalize_git_url caches results."""
