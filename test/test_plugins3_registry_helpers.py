@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+from picard.const.sys import IS_WIN
 
 from test.picardtestcase import PicardTestCase
 
@@ -82,14 +83,14 @@ class TestRegistryHelpers(PicardTestCase):
         self.assertTrue(is_local_path('../dir:with-colon'))
         self.assertTrue(is_local_path('C:/repo'))
         self.assertTrue(is_local_path('D:\\repo'))
-        if os.name == 'nt':
+        if IS_WIN:
             self.assertTrue(is_local_path('C:repo'))
         else:
             self.assertFalse(is_local_path('C:repo'))
 
     def test_is_local_path_scp_short_host(self):
         """Test single-letter `host:path` handling is platform specific."""
-        if os.name == 'nt':
+        if IS_WIN:
             # On Windows this is interpreted as drive-relative path.
             self.assertTrue(is_local_path('a:repo'))
         else:
