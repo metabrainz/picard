@@ -57,7 +57,7 @@ jobs:
         uv run python setup.py build_locales
         uv run pytest --verbose --cov=picard --cov-report html:htmlcov test
     - name: Upload coverage report
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: coverage-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}
         path: htmlcov/

@@ -147,7 +147,8 @@ jobs:
         timestamp-rfc3161: http://timestamp.acs.microsoft.com
         timestamp-digest: SHA256
     - name: Archive production artifacts
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
-        name: windows-${{ matrix.setup.type }}
+        id: windows-${{ matrix.setup.type }}
         path: artifacts/
+        archive: false
