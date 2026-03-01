@@ -26,6 +26,7 @@
 from functools import lru_cache
 import os
 from pathlib import Path
+from picard.const.sys import IS_WIN
 
 
 @lru_cache(maxsize=256)
@@ -84,9 +85,7 @@ def is_local_path(url):
     #   C:/repo, D:\repo, C:repo (Windows drive paths)
     #   ./dir:with-colon (explicit relative path)
     if ':' in url:
-        colon_pos = url.find(':')
-        prefix = url[:colon_pos]
-        suffix = url[colon_pos + 1 :]
+        prefix, suffix = url.split(':', 1)
 
         # Windows drive letter paths:
         # - C:/repo or D:\repo are always local paths
@@ -94,7 +93,7 @@ def is_local_path(url):
         if len(prefix) == 1 and prefix.isalpha():
             if suffix.startswith(('/', '\\')):
                 return True
-            if os.name == 'nt':
+            if IS_WIN:
                 return True
 
         # Explicit local relative / home paths containing colons
