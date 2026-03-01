@@ -19,14 +19,13 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+
 from picard.const.sys import IS_WIN
-
-from test.picardtestcase import PicardTestCase
-
 from picard.git.utils import (
     is_local_path,
     normalize_git_url,
 )
+from test.picardtestcase import PicardTestCase
 
 
 class TestRegistryHelpers(PicardTestCase):
