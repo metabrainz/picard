@@ -15,6 +15,13 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QCheckBox" name="local_cover_use_script">
+     <property name="text">
+      <string>Use scripting syntax instead of regular expression</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="local_cover_regex_label">
      <property name="text">
       <string>Local cover art files match the following regular expression:</string>
@@ -36,7 +43,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QLabel" name="note">
+    <widget class="QLabel" name="regex_note">
      <property name="font">
       <font>
        <italic>true</italic>
@@ -44,6 +51,58 @@
      </property>
      <property name="text">
       <string>First group in the regular expression, if any, will be used as type, ie. cover-back-spine.jpg will be set as types Back + Spine. If no type is found, it will default to Front type.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="local_cover_script_label">
+     <property name="text">
+      <string>Local cover art files match the following script:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="ScriptTextEdit" name="local_cover_script_edit">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>100</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="script_preview_label">
+     <property name="text">
+      <string>Example:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="script_preview_value">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::TextSelectableByMouse</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="script_note">
+     <property name="font">
+      <font>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>The script will be evaluated for each file's metadata. Use variables like %albumartist%, %album%, etc.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -65,6 +124,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ScriptTextEdit</class>
+   <extends>QTextEdit</extends>
+   <header>picard.ui.widgets.scripttextedit</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
