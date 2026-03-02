@@ -85,21 +85,20 @@ def is_local_path(url):
     # Exclusions for local paths:
     #   C:/repo, D:\repo, C:repo (Windows drive paths)
     #   ./dir:with-colon (explicit relative path)
+
+    # Explicit local relative / home paths containing colons
+    if url.startswith(('./', '../', '~/')):
+        return True
+
     if ':' in url:
         prefix, suffix = url.split(':', 1)
 
         # Windows drive letter paths:
         # - C:/repo or D:\repo are always local paths
         # - C:repo is local only on Windows (drive-relative path)
-        if len(prefix) == 1 and prefix.isalpha():
-            if suffix.startswith(('/', '\\')):
+        if len(prefix) == 1 and 'A' <= prefix.upper() <= 'Z':
+            if IS_WIN or suffix.startswith(('/', '\\')):
                 return True
-            if IS_WIN:
-                return True
-
-        # Explicit local relative / home paths containing colons
-        if url.startswith(('./', '../', '~/')):
-            return True
 
         if prefix and '/' not in prefix and '\\' not in prefix and suffix:
             return False
