@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
@@ -26,6 +29,23 @@ from test.test_plugins3_helpers import (
     MockTagger,
     create_test_registry,
 )
+
+
+def mock_webservice_fetch(response_data, error=None):
+    """Helper to mock WebService.get_url for registry fetching.
+
+    Args:
+        response_data: TOML data as bytes to return
+        error: Optional error to pass to handler
+    """
+
+    def get_url_mock(url, handler, **kwargs):
+        if error:
+            handler(b'', Mock(), error)
+        else:
+            handler(response_data, Mock(), None)
+
+    return get_url_mock
 
 
 class TestPluginRegistry(PicardTestCase):
@@ -387,32 +407,33 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_fetch_from_url(self):
         """Test fetching registry from URL."""
-        from unittest.mock import (
-            patch,
-        )
-
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
 
         mock_response_data = b'blacklist = []'
 
-        with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
-            mock_response = Mock()
-            mock_response.read = Mock(return_value=mock_response_data)
-            mock_response.__enter__ = Mock(return_value=mock_response)
-            mock_response.__exit__ = Mock(return_value=False)
-            mock_urlopen.return_value = mock_response
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
 
-            registry.fetch_registry(use_cache=False)
+        result = {}
 
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertTrue(result['success'])
+            self.assertIsNone(result['error'])
             self.assertTrue(registry.is_registry_loaded())
             self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
         import tempfile
-        from unittest.mock import patch
 
         from picard.plugin3.registry import PluginRegistry
 
@@ -422,16 +443,20 @@ class TestPluginRegistry(PicardTestCase):
 
             mock_response_data = b'[[blacklist]]\nurl = "test"'
 
-            with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
-                mock_response = Mock()
-                mock_response.read = Mock(return_value=mock_response_data)
-                mock_response.__enter__ = Mock(return_value=mock_response)
-                mock_response.__exit__ = Mock(return_value=False)
-                mock_urlopen.return_value = mock_response
+            mock_tagger = Mock()
+            mock_tagger.webservice = Mock()
+            mock_tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
 
+            result = {}
+
+            def callback(success, error):
+                result['success'] = success
+
+            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
                 # Fetch and save to cache
-                registry.fetch_registry(use_cache=False)
+                registry.fetch_registry(use_cache=False, callback=callback)
 
+                self.assertTrue(result['success'])
                 # Verify cache file was created (with URL-specific hash)
                 self.assertTrue(registry.cache_path.exists())
 
@@ -444,8 +469,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_fetch_error_fallback(self):
         """Test registry fetch error handling."""
-        from unittest.mock import patch
-
         from picard.plugin3.registry import (
             PluginRegistry,
             RegistryFetchError,
@@ -453,19 +476,25 @@ class TestPluginRegistry(PicardTestCase):
 
         registry = PluginRegistry()
 
-        with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            with patch('time.sleep'):  # Skip retry delays
-                # Should raise RegistryFetchError
-                with self.assertRaises(RegistryFetchError) as cm:
-                    registry.fetch_registry(use_cache=False)
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
 
-                self.assertIn('Network error', str(cm.exception))
-                self.assertIn('https://picard.musicbrainz.org', str(cm.exception))
+        result = {}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertFalse(result['success'])
+            self.assertIsInstance(result['error'], RegistryFetchError)
+            self.assertIn('Network error', str(result['error']))
 
     def test_registry_parse_error(self):
         """Test registry parse error handling."""
-        from unittest.mock import patch
-
         from picard.plugin3.registry import (
             PluginRegistry,
             RegistryParseError,
@@ -473,34 +502,39 @@ class TestPluginRegistry(PicardTestCase):
 
         registry = PluginRegistry()
 
-        with patch('picard.plugin3.registry.urlopen') as mock_urlopen:
-            mock_response = Mock()
-            mock_response.read = Mock(return_value=b'invalid toml [')
-            mock_response.__enter__ = Mock(return_value=mock_response)
-            mock_response.__exit__ = Mock(return_value=False)
-            mock_urlopen.return_value = mock_response
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(b'invalid toml [')
 
-            # Should raise RegistryParseError
-            with self.assertRaises(RegistryParseError) as cm:
-                registry.fetch_registry(use_cache=False)
+        result = {}
 
-            self.assertIn('Failed to parse registry', str(cm.exception))
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertFalse(result['success'])
+            self.assertIsInstance(result['error'], RegistryParseError)
+            self.assertIn('Failed to parse registry', str(result['error']))
 
     def test_registry_graceful_fallback_on_blacklist_check(self):
         """Test that blacklist check doesn't fail if registry fetch fails."""
-        from unittest.mock import patch
-
         from picard.plugin3.registry import PluginRegistry
 
         registry = PluginRegistry()
 
-        with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
-            with patch('time.sleep'):  # Skip retry delays
-                # Should not raise, just return False (not blacklisted)
-                is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
 
-                self.assertFalse(is_blacklisted)
-                self.assertIsNone(reason)
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            # Should not raise, just return False (not blacklisted)
+            is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
+
+            self.assertFalse(is_blacklisted)
+            self.assertIsNone(reason)
 
     def test_registry_get_registry_info(self):
         """Test getting registry metadata."""
@@ -653,56 +687,3 @@ class TestPluginRegistry(PicardTestCase):
         with patch.object(registry, 'fetch_registry', side_effect=RegistryFetchError('test', Exception('error'))):
             result = registry._ensure_registry_loaded('test operation')
             self.assertFalse(result)
-
-    def test_registry_fetch_retry_on_network_error(self):
-        """Test that registry fetch retries on network errors."""
-        from unittest.mock import MagicMock, patch
-        from urllib.error import URLError
-
-        from picard.plugin3.registry import PluginRegistry
-
-        registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
-
-        # Mock urlopen to fail twice then succeed
-        mock_response = MagicMock()
-        mock_response.read.return_value = b'plugins = []'
-        mock_response.__enter__.return_value = mock_response
-        mock_response.__exit__.return_value = False
-
-        call_count = 0
-
-        def urlopen_side_effect(*args, **kwargs):
-            nonlocal call_count
-            call_count += 1
-            if call_count < 3:
-                raise URLError('Network error')
-            return mock_response
-
-        with patch('picard.plugin3.registry.urlopen', side_effect=urlopen_side_effect):
-            with patch('picard.plugin3.registry.time.sleep'):  # Skip actual sleep
-                registry.fetch_registry()
-
-        self.assertEqual(call_count, 3)
-        self.assertEqual(registry.get_raw_registry_data(), {'plugins': []})
-
-    def test_registry_fetch_no_retry_on_client_error(self):
-        """Test that registry fetch does not retry on 4xx errors."""
-        from unittest.mock import patch
-        from urllib.error import HTTPError
-
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryFetchError,
-        )
-
-        registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
-
-        # Mock urlopen to return 404
-        http_error = HTTPError('https://test.example.com/registry.toml', 404, 'Not Found', {}, None)
-
-        with patch('picard.plugin3.registry.urlopen', side_effect=http_error):
-            with patch('time.sleep'):  # Skip retry delays
-                with self.assertRaises(RegistryFetchError):
-                    registry.fetch_registry()
-
-        # Should only try once (no retries for 4xx)
