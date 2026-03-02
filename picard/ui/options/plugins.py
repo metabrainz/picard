@@ -222,40 +222,48 @@ class Plugins3OptionsPage(OptionsPage):
         self.refresh_all_button.setText(_("Refreshing…"))
         self._show_status(_("Refreshing plugin registry, list, and checking for updates…"))
 
-        try:
-            # Refresh registry from server
-            if self.plugin_manager:
-                self.plugin_manager.refresh_registry_and_caches()
+        def on_registry_refreshed(success, error):
+            try:
+                if not success:
+                    log.error('Failed to refresh registry: %s', error)
+                    self._show_status(_("Error refreshing: {}").format(str(error)))
+                    return
 
                 # Fetch remote refs for all plugins (for ref selectors)
                 self.plugin_manager.refresh_all_plugin_refs()
 
-            # Check for updates (silent - no dialog) - skip fetching since we just did it
-            new_updates = self.plugin_manager.check_updates(skip_fetch=True)
-            self._save_updates(new_updates)
+                # Check for updates (silent - no dialog) - skip fetching since we just did it
+                new_updates = self.plugin_manager.check_updates(skip_fetch=True)
+                self._save_updates(new_updates)
 
-            # Pass updates to widget
-            self.plugin_list.set_updates(new_updates)
+                # Pass updates to widget
+                self.plugin_list.set_updates(new_updates)
 
-            # Refresh UI with network-fetched update status
-            self._filter_plugins()
+                # Refresh UI with network-fetched update status
+                self._filter_plugins()
 
-            plugin_count = len(self.plugin_manager.plugins)
-            update_count = len(new_updates)
-            plugins_text = ngettext("{plugin_count:,d} plugin", "{plugin_count:,d} plugins", plugin_count).format(
-                plugin_count=plugin_count
-            )
-            updates_text = ngettext(
-                "{update_count:,d} update available", "{update_count:,d} updates available", update_count
-            ).format(update_count=update_count)
-            self._show_status(_("Refreshed - {plugins}, {updates}").format(plugins=plugins_text, updates=updates_text))
+                plugin_count = len(self.plugin_manager.plugins)
+                update_count = len(new_updates)
+                plugins_text = ngettext("{plugin_count:,d} plugin", "{plugin_count:,d} plugins", plugin_count).format(
+                    plugin_count=plugin_count
+                )
+                updates_text = ngettext(
+                    "{update_count:,d} update available", "{update_count:,d} updates available", update_count
+                ).format(update_count=update_count)
+                self._show_status(
+                    _("Refreshed - {plugins}, {updates}").format(plugins=plugins_text, updates=updates_text)
+                )
 
-        except Exception as e:
-            log.error("Failed to refresh all: %s", e, exc_info=True)
-            self._show_status(_("Error refreshing: {}").format(str(e)))
-        finally:
-            self.refresh_all_button.setEnabled(True)
-            self.refresh_all_button.setText(_("Refresh All"))
+            except Exception as e:
+                log.error("Failed to refresh all: %s", e, exc_info=True)
+                self._show_status(_("Error refreshing: {}").format(str(e)))
+            finally:
+                self.refresh_all_button.setEnabled(True)
+                self.refresh_all_button.setText(_("Refresh All"))
+
+        # Refresh registry from server
+        if self.plugin_manager:
+            self.plugin_manager.refresh_registry_and_caches(callback=on_registry_refreshed)
 
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
