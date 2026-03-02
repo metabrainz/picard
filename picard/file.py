@@ -50,7 +50,6 @@ from enum import (
 )
 import fnmatch
 from functools import partial
-from enum import Enum, auto
 import hashlib
 import os
 import os.path
@@ -68,6 +67,8 @@ from mutagen import (
     FileType,
     MutagenError,
 )
+
+from PyQt6.QtWidgets import QMessageBox
 
 from picard import (
     PICARD_APP_NAME,
@@ -143,6 +144,14 @@ FILE_COMPARISON_WEIGHTS = {
 class ExternalChange(Enum):
     MISSING = auto()
     MODIFIED = auto()
+
+
+class ExternalFileModifiedError(Exception):
+    """Raised when file changed externally before save."""
+
+    pass
+
+
 class FileIdentityError(Exception):
     pass
 
@@ -453,6 +462,27 @@ class File(MetadataItem):
     def has_error(self):
         return self.state == File.State.ERROR
 
+    def _handle_external_modification(self):
+        msg = QMessageBox(self.tagger.window)
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setWindowTitle(_("File Modified Externally"))
+        msg.setText(_("The file \"%(filename)s\" was modified by another program.") % {"filename": self.base_filename})
+
+        overwrite_btn = msg.addButton(_("Overwrite"), QMessageBox.ButtonRole.AcceptRole)
+        reload_btn = msg.addButton(_("Reload from Disk"), QMessageBox.ButtonRole.DestructiveRole)
+        cancel_btn = msg.addButton(_("Cancel"), QMessageBox.ButtonRole.RejectRole)
+
+        msg.setDefaultButton(cancel_btn)
+        msg.exec()
+
+        clicked = msg.clickedButton()
+
+        if clicked == overwrite_btn:
+            self._retry_overwrite_after_external_change()
+
+        elif clicked == reload_btn:
+            self.load(lambda *_: None)
+
     def save(self):
         self.set_pending()
         run_file_pre_save_processors(self)
@@ -462,6 +492,7 @@ class File(MetadataItem):
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
             thread_pool=self.tagger.save_thread_pool,
+            traceback=False,
         )
 
     def _preserve_times(self, filename, func):
@@ -498,6 +529,13 @@ class File(MetadataItem):
             return ExternalChange.MODIFIED
         return None
 
+    def _retry_overwrite_after_external_change(self):
+        try:
+            self._loaded_identity = FileIdentity(self.filename)
+            self.save()
+        except Exception as e:
+            log.error("Failed to retry overwrite: %s", e)
+            self._set_error(e)
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
@@ -515,11 +553,9 @@ class File(MetadataItem):
             # Detect source changes before saving (debug only)
             change = self._external_file_change(old_filename)
             if change == ExternalChange.MISSING:
-                log.warning("File missing!")
-                return
+                raise FileNotFoundError(f"{old_filename} no longer exists")
             elif change:
-                log.warning("File externally modified.")
-                return
+                raise ExternalFileModifiedError(f"{old_filename} was modified externally")
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -560,6 +596,11 @@ class File(MetadataItem):
             return
         old_filename = new_filename = self.filename
         if error is not None:
+            if isinstance(error, ExternalFileModifiedError):
+                self.clear_pending(signal=False)
+                self._handle_external_modification()
+                self.update()
+                return
             self._set_error(error)
         else:
             self.filename = new_filename = result
