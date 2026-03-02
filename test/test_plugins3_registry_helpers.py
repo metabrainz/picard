@@ -74,6 +74,10 @@ class TestRegistryHelpers(PicardTestCase):
         self.assertFalse(is_local_path('github.com:user/repo.git'))
         self.assertFalse(is_local_path('host:path/to/repo'))
 
+    def test_is_local_path_non_ascii_drive_prefix(self):
+        """Test is_local_path with non-ASCII drive prefix."""
+        self.assertFalse(is_local_path("é:repo"))
+
     def test_is_local_path_local_paths(self):
         """Test is_local_path with local paths."""
         self.assertTrue(is_local_path('/tmp/repo'))
