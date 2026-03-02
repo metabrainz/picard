@@ -23,8 +23,8 @@
 
 """Git URL and path utility functions."""
 
-import os
 from functools import lru_cache
+import os
 from pathlib import Path
 
 from picard.const.sys import IS_WIN

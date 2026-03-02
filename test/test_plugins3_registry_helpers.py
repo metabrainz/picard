@@ -20,12 +20,13 @@
 
 import os
 
+from test.picardtestcase import PicardTestCase
+
 from picard.const.sys import IS_WIN
 from picard.git.utils import (
     is_local_path,
     normalize_git_url,
 )
-from test.picardtestcase import PicardTestCase
 
 
 class TestRegistryHelpers(PicardTestCase):
