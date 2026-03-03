@@ -138,6 +138,7 @@ picard-plugins search keyword
 **Documentation:**
 - Plugin v3 docs: `docs/PLUGINSV3/` (API, CLI, manifest, translations, etc.)
 - Migration guide: `docs/Plugin2to3MigrationGuide.md`
+- Plugin registry: <https://github.com/metabrainz/picard-plugins-registry>
 
 ---
 
