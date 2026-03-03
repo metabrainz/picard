@@ -385,6 +385,7 @@ class Tagger(QtWidgets.QApplication):
         """Initialize web service/API"""
         self.webservice = WebService()
         self.register_cleanup(self.webservice.stop)
+        self.webservice.pending_requests_changed.connect(self.tagger_stats_changed)
         self.mb_api = MBAPIHelper(self.webservice)
         load_user_collections()
 
