@@ -312,15 +312,17 @@ def func_myfunction(parser, arg1, arg2='default'):
 3. Implement `load()` and `save()` methods
 4. Register with `register_options_page()`
 
-### Add Metadata Processor
+### Add Metadata Processor (Core)
 ```python
-from picard.plugin3.api import register_track_metadata_processor
+from picard.extension_points.metadata import register_track_metadata_processor
 
 def my_processor(album, metadata, track, release):
     metadata['custom'] = 'value'
 
 register_track_metadata_processor(my_processor)
 ```
+
+**For plugins:** Use `api.register_track_metadata_processor()` instead (see Plugin System section).
 
 ---
 
