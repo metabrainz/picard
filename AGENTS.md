@@ -13,7 +13,7 @@
 
 ## Quick Facts
 
-- **Language:** Python 3.8+, PyQt6, Mutagen
+- **Language:** Python 3.10+, PyQt6, Mutagen
 - **Size:** ~174k LOC, event-driven MVC with plugin system
 - **Entry Point:** `picard/tagger.py:main()` → `Tagger` singleton
 - **Tests:** `test/` directory (pytest)
