@@ -1909,14 +1909,6 @@ def minimal_init(config_file=None):
     setup_config(app=app, filename=config_file)
 
     # Initialize WebService for network operations (needed for registry fetching)
-    # WebService expects tagger_stats_changed signal - create a dummy one for CLI
-    class DummySignal:
-        """Dummy signal that does nothing when emitted."""
-
-        def emit(self):
-            pass
-
-    app.tagger_stats_changed = DummySignal()
     app.webservice = WebService()
 
     return app

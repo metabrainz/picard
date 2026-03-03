@@ -342,6 +342,8 @@ class RequestPriorityQueue:
 class WebService(QtCore.QObject):
     PARSERS: dict[str, Parser] = dict()
 
+    pending_requests_changed = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
@@ -663,7 +665,7 @@ class WebService(QtCore.QObject):
         count = len(self._active_requests) + self._queue.count()
         if count != self.num_pending_web_requests:
             self.num_pending_web_requests = count
-            self.tagger.tagger_stats_changed.emit()
+            self.pending_requests_changed.emit()
         if count:
             self._timer_count_pending_requests.start(COUNT_REQUESTS_DELAY_MS)
 
