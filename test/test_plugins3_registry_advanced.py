@@ -33,6 +33,18 @@ from picard.git.utils import get_local_path
 from picard.plugin3.registry import PluginRegistry
 
 
+def mock_webservice_fetch(response_data, error=None):
+    """Helper to mock WebService.get_url for registry fetching."""
+
+    def get_url_mock(url, handler, **kwargs):
+        if error:
+            handler(b'', Mock(), error)
+        else:
+            handler(response_data, Mock(), None)
+
+    return get_url_mock
+
+
 class TestRegistryAdvanced(PicardTestCase):
     def test_get_local_path_remote_url(self):
         """Test get_local_path returns None for remote URLs."""
@@ -67,16 +79,21 @@ class TestRegistryAdvanced(PicardTestCase):
             cache_file = cache_dir / f'plugin_registry_{url_hash}.json'
             cache_file.write_text('invalid json{')
 
-            # Mock urlopen to return valid TOML data
-            mock_response = Mock()
-            mock_response.read = Mock(return_value=b'plugins = []\nblacklist = []')
-            mock_response.__enter__ = Mock(return_value=mock_response)
-            mock_response.__exit__ = Mock(return_value=False)
+            # Mock WebService to return valid TOML data
+            mock_tagger = Mock()
+            mock_tagger.webservice = Mock()
+            mock_tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
 
-            with patch('picard.plugin3.registry.urlopen', return_value=mock_response):
+            result = {}
+
+            def callback(success, error):
+                result['success'] = success
+
+            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
                 registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
-                registry.fetch_registry()
+                registry.fetch_registry(callback=callback)
                 # Should have fetched and created data
+                self.assertTrue(result['success'])
                 self.assertTrue(registry.is_registry_loaded())
 
     def test_registry_fetch_local_file(self):
@@ -171,12 +188,23 @@ class TestRegistryAdvanced(PicardTestCase):
         """Test registry raises exception on fetch error."""
         from picard.plugin3.registry import RegistryFetchError
 
-        with patch('picard.plugin3.registry.urlopen', side_effect=Exception('Network error')):
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
+
+        result = {}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
             registry = PluginRegistry(registry_url='https://invalid.example.com/registry.toml')
 
-            # Should raise RegistryFetchError
-            with self.assertRaises(RegistryFetchError):
-                registry.fetch_registry()
+            registry.fetch_registry(callback=callback)
+
+            self.assertFalse(result['success'])
+            self.assertIsInstance(result['error'], RegistryFetchError)
 
     def test_list_plugins_empty_registry(self):
         """Test list_plugins with empty registry."""

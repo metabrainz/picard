@@ -18,22 +18,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from datetime import (
-    datetime,
-    timezone,
-)
 import json
 import os
 from pathlib import Path
 import re
-import time
-import urllib.error
-from urllib.request import (
-    Request,
-    urlopen,
-)
 
 from PyQt6 import QtCore
+from PyQt6.QtCore import QUrl
+from PyQt6.QtNetwork import QNetworkRequest
 
 from picard import log
 from picard.config import get_config
@@ -50,13 +42,7 @@ except ModuleNotFoundError:
     import tomli as tomllib  # type: ignore[no-redef]
 
 
-# Retry configuration for registry fetch operations
-REGISTRY_FETCH_MAX_RETRIES = 3
-REGISTRY_FETCH_INITIAL_TIMEOUT = 10  # seconds
-REGISTRY_FETCH_TIMEOUT_MULTIPLIER = 2  # exponential backoff for timeout
-
 REGISTRY_CACHE_VERSION = 1  # Increment when cache format changes
-REGISTRY_FETCH_RETRY_DELAY_BASE = 2  # exponential backoff for retry delay
 
 
 class RegistryError(Exception):
@@ -132,6 +118,9 @@ class PluginRegistry:
     def _ensure_registry_loaded(self, operation_name='operation'):
         """Ensure registry data is loaded, with error handling.
 
+        Note: This loads from cache or local files (synchronous only).
+        For remote fetching, use fetch_registry() with a callback.
+
         Args:
             operation_name: Name of the operation for logging
 
@@ -143,11 +132,13 @@ class PluginRegistry:
             return False
 
         if not self._registry_data:
-            try:
-                self.fetch_registry()
-            except (RegistryFetchError, RegistryParseError) as e:
-                log.warning('Failed to fetch registry for %s: %s', operation_name, e)
-                self._fetch_failed = True  # Mark as permanently failed
+            # Try loading from cache first
+            if self._load_from_cache():
+                return True
+
+            # Try loading from local file if URL is local
+            if not self._load_from_local_file(self.registry_urls[0]):
+                log.debug('Registry not loaded for %s (no cache or local file available)', operation_name)
                 return False
 
         # Process plugins if not already done
@@ -156,147 +147,167 @@ class PluginRegistry:
 
         return True
 
-    def fetch_registry(self, use_cache=True):
-        """Fetch registry from URL or cache.
+    def _load_from_local_file(self, url):
+        """Load registry from local file if URL is a file path.
 
-        Tries multiple registry URLs in order until one succeeds.
+        Args:
+            url: URL to check and load from
+
+        Returns:
+            bool: True if loaded from local file, False otherwise
+        """
+        file_path = url[7:] if url.startswith('file://') else url
+        registry_path = Path(file_path)
+
+        if not registry_path.exists() or not registry_path.is_file():
+            return False
+
+        try:
+            with open(registry_path, 'rb') as f:
+                self._registry_data = tomllib.load(f)
+            self.registry_url = url
+            self._process_plugins()
+            log.debug('Loaded registry from local file: %s', file_path)
+            return True
+        except Exception as e:
+            log.debug('Failed to load registry from local file %s: %s', file_path, e)
+            return False
+
+    def _load_from_cache(self):
+        """Load registry from cache if available.
+
+        Returns:
+            bool: True if loaded from cache, False otherwise
+        """
+        if not self.cache_path or not Path(self.cache_path).exists():
+            return False
+
+        try:
+            with open(self.cache_path, 'r') as f:
+                data = json.load(f)
+                # Check cache version (missing version = old cache before versioning)
+                if data.get('version') == REGISTRY_CACHE_VERSION:
+                    self._registry_data = data.get('data', {})
+                    self._process_plugins()
+                    log.debug('Loaded registry from cache: %s', self.cache_path)
+                    return True
+        except Exception as e:
+            # Corrupted or old format cache - fetch from URL
+            log.debug('Failed to load registry cache: %s', e)
+
+        return False
+
+    def fetch_registry(self, use_cache=True, callback=None):
+        """Fetch registry from URL or cache.
 
         Args:
             use_cache: If True, try to load from cache first
+            callback: Optional callback(success, error) called when complete.
+                     If None, raises exceptions on error (sync mode, local files only)
 
         Raises:
-            RegistryFetchError: If registry cannot be fetched from any URL
-            RegistryParseError: If registry JSON cannot be parsed
-            RegistryCacheError: If cache cannot be read (only if use_cache=True and no fallback)
+            RegistryFetchError: If registry cannot be fetched (sync mode only)
+            RegistryParseError: If registry cannot be parsed (sync mode only)
         """
         # Try cache first if requested
-        if use_cache and self.cache_path and Path(self.cache_path).exists():
-            try:
-                with open(self.cache_path, 'r') as f:
-                    data = json.load(f)
-                    # Check cache version (missing version = old cache before versioning)
-                    if data.get('version') != REGISTRY_CACHE_VERSION:
-                        log.debug('Registry cache version mismatch or missing, fetching from URL')
-                    else:
-                        self._registry_data = data.get('data', {})
-                        log.debug('Loaded registry from cache: %s', self.cache_path)
-                        return
-            except Exception as e:
-                # Corrupted or old format cache - fetch from URL
-                log.debug('Failed to load registry cache (corrupted or old format): %s', e)
+        if use_cache and self._load_from_cache():
+            if callback:
+                callback(True, None)
+            return
 
         # Try each registry URL in order
-        last_error = None
-        for url_index, url in enumerate(self.registry_urls):
-            try:
-                log.debug('Fetching registry from %s (URL %d/%d)', url, url_index + 1, len(self.registry_urls))
+        self._try_next_url(0, callback)
 
-                # Check if url is a local file path or file:// URL
-                file_path = url
-                if url.startswith('file://'):
-                    file_path = url[7:]  # Remove file:// prefix
+    def _try_next_url(self, url_index, callback, last_error=None):
+        """Try fetching from the next URL in the list.
 
-                registry_path = Path(file_path)
-                if registry_path.exists() and registry_path.is_file():
-                    log.debug('Loading registry from local file: %s', file_path)
-                    try:
-                        with open(registry_path, 'rb') as f:
-                            self._registry_data = tomllib.load(f)
-                        self.registry_url = url  # Update to successful URL
-                        break  # Success!
-                    except tomllib.TOMLDecodeError as e:
-                        raise RegistryParseError(url, e) from e
-                    except Exception as e:
-                        raise RegistryFetchError(url, e) from e
-                else:
-                    # Fetch from remote URL with retry logic
-                    for attempt in range(REGISTRY_FETCH_MAX_RETRIES):
-                        try:
-                            timeout = REGISTRY_FETCH_INITIAL_TIMEOUT * (REGISTRY_FETCH_TIMEOUT_MULTIPLIER**attempt)
-
-                            # Create request with conditional headers if cache exists
-                            request = Request(url)
-                            if use_cache and self.cache_path and Path(self.cache_path).exists():
-                                try:
-                                    cache_mtime = Path(self.cache_path).stat().st_mtime
-                                    date = datetime.fromtimestamp(cache_mtime, tz=timezone.utc)
-                                    http_date = date.strftime("%a, %d %b %Y %H:%M:%S GMT")
-                                    request.add_header('If-Modified-Since', http_date)
-                                    log.debug('Added If-Modified-Since header: %s', http_date)
-                                except Exception:
-                                    pass  # Ignore errors, proceed without conditional header
-
-                            with urlopen(request, timeout=timeout) as response:
-                                data = response.read()
-                                self._registry_data = tomllib.loads(data.decode('utf-8'))
-                                self.registry_url = url  # Update to successful URL
-                                break  # Success!
-                        except tomllib.TOMLDecodeError as e:
-                            raise RegistryParseError(url, e) from e
-                        except urllib.error.HTTPError as e:
-                            # Handle 304 Not Modified - use cache
-                            if e.code == 304 and use_cache and self.cache_path and Path(self.cache_path).exists():
-                                log.debug('Registry not modified (304), using cache: %s', self.cache_path)
-                                try:
-                                    with open(self.cache_path, 'r') as f:
-                                        data = json.load(f)
-                                        self._registry_data = data.get('data', {})
-                                        return
-                                except Exception:
-                                    pass  # Fall through to error handling
-
-                            # Don't retry 4xx client errors (except 404 which might mean intentional removal)
-                            if 400 <= e.code < 500 and e.code != 404:
-                                raise RegistryFetchError(url, e) from e
-                            # For 404 or 5xx, retry or try next URL
-                            if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
-                                wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
-                                log.warning(
-                                    'Registry fetch failed (attempt %d/%d): %s',
-                                    attempt + 1,
-                                    REGISTRY_FETCH_MAX_RETRIES,
-                                    e,
-                                )
-                                log.info('Retrying in %d seconds...', wait)
-                                time.sleep(wait)
-                            else:
-                                raise RegistryFetchError(url, e) from e
-                        except Exception as e:
-                            # Retry network errors
-                            if attempt < REGISTRY_FETCH_MAX_RETRIES - 1:
-                                wait = REGISTRY_FETCH_RETRY_DELAY_BASE**attempt
-                                log.warning(
-                                    'Registry fetch failed (attempt %d/%d): %s',
-                                    attempt + 1,
-                                    REGISTRY_FETCH_MAX_RETRIES,
-                                    e,
-                                )
-                                log.info('Retrying in %d seconds...', wait)
-                                time.sleep(wait)
-                            else:
-                                raise RegistryFetchError(url, e) from e
-
-                    # If we got here without breaking, the retries succeeded
-                    if self._registry_data:
-                        break  # Success!
-
-            except (RegistryFetchError, RegistryParseError) as e:
-                last_error = e
-                log.warning('Failed to fetch registry from %s: %s', url, e)
-                # Try next URL
-                continue
-
-        # If we exhausted all URLs without success, raise the last error
-        if not self._registry_data:
+        Args:
+            url_index: Index of URL to try
+            callback: Callback to call when done
+            last_error: Last error encountered (for final error message)
+        """
+        if url_index >= len(self.registry_urls):
+            # All URLs failed - use last error if available
             if last_error:
-                raise last_error
+                error = last_error
             else:
-                raise RegistryFetchError(
-                    self.registry_urls[0], Exception('All registry URLs failed without specific error')
-                )
+                error = RegistryFetchError(self.registry_urls[0], Exception('All registry URLs failed'))
+            if callback:
+                callback(False, error)
+            return
 
-        # Save to cache
-        if self.cache_path:
+        url = self.registry_urls[url_index]
+        log.debug('Trying registry URL %d/%d: %s', url_index + 1, len(self.registry_urls), url)
+
+        # Try local file first
+        if self._load_from_local_file(url):
+            if callback:
+                callback(True, None)
+            return
+
+        # Remote URL - use WebService (async)
+        def on_fetch_complete(success, error):
+            if success:
+                if callback:
+                    callback(True, None)
+            else:
+                # Parse errors are fatal - don't try next URL
+                if isinstance(error, RegistryParseError):
+                    if callback:
+                        callback(False, error)
+                else:
+                    log.warning('Failed to fetch registry from %s: %s', url, error)
+                    # Try next URL for network errors, passing along the error
+                    self._try_next_url(url_index + 1, callback, last_error=error)
+
+        self._fetch_remote_registry(url, on_fetch_complete)
+
+    def _fetch_remote_registry(self, url, callback):
+        """Fetch registry from remote URL using WebService.
+
+        Args:
+            url: URL to fetch from
+            callback: callback(success, error) called when complete
+        """
+        tagger = QtCore.QCoreApplication.instance()
+        if not tagger or not hasattr(tagger, 'webservice'):
+            error = RegistryFetchError(url, Exception('WebService not available'))
+            if callback:
+                callback(False, error)
+            return
+
+        def handler(response, reply, error):
+            if error:
+                fetch_error = RegistryFetchError(url, error)
+                if callback:
+                    callback(False, fetch_error)
+            else:
+                try:
+                    self._registry_data = tomllib.loads(response.decode('utf-8'))
+                    self.registry_url = url
+                    self._process_plugins()
+                    self._save_cache()
+                    if callback:
+                        callback(True, None)
+                except tomllib.TOMLDecodeError as e:
+                    parse_error = RegistryParseError(url, e)
+                    if callback:
+                        callback(False, parse_error)
+                except Exception as e:
+                    fetch_error = RegistryFetchError(url, e)
+                    if callback:
+                        callback(False, fetch_error)
+
+        tagger.webservice.get_url(
+            url=QUrl(url),
+            handler=handler,
+            cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferCache,
+            parse_response_type=None,  # Don't parse, we'll handle TOML ourselves
+        )
+
+    def _save_cache(self):
+        """Save registry data to cache file."""
+        if self.cache_path and self._registry_data:
             try:
                 Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
                 # Wrap registry data with version
@@ -320,6 +331,10 @@ class PluginRegistry:
         """
         if not self._ensure_registry_loaded('blacklist check'):
             # Fail safe: if we can't fetch registry, don't block installation
+            return False, None
+
+        # Additional safety check
+        if not self._registry_data:
             return False, None
 
         # Normalize URL for comparison

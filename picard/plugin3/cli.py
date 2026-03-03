@@ -31,6 +31,7 @@ import tempfile
 import traceback
 
 from PyQt6 import QtCore
+from PyQt6.QtCore import QCoreApplication
 
 from picard import (
     PICARD_APP_NAME,
@@ -68,6 +69,7 @@ from picard.util import (
     cli,
     versions,
 )
+from picard.webservice import WebService
 
 
 def get_display_locale(args):
@@ -1687,7 +1689,26 @@ class PluginCLI:
         try:
             self._out.print('Refreshing plugin registry...')
 
-            self._manager.refresh_registry_and_caches()
+            # Track completion
+            result = {'success': False, 'error': None, 'done': False}
+
+            def callback(success, error):
+                result['success'] = success
+                result['error'] = error
+                result['done'] = True
+
+            self._manager.refresh_registry_and_caches(callback=callback)
+
+            # Process events until callback is called
+            app = QCoreApplication.instance()
+            while not result['done']:
+                app.processEvents()
+
+            if not result['success']:
+                if result['error']:
+                    raise result['error']
+                else:
+                    raise Exception('Registry not loaded')
 
             info = self._manager._registry.get_registry_info()
             self._out.success('Registry refreshed successfully')
@@ -1886,6 +1907,17 @@ def minimal_init(config_file=None):
 
     init_options()
     setup_config(app=app, filename=config_file)
+
+    # Initialize WebService for network operations (needed for registry fetching)
+    # WebService expects tagger_stats_changed signal - create a dummy one for CLI
+    class DummySignal:
+        """Dummy signal that does nothing when emitted."""
+
+        def emit(self):
+            pass
+
+    app.tagger_stats_changed = DummySignal()
+    app.webservice = WebService()
 
     return app
 

@@ -293,9 +293,13 @@ class PluginManager(QObject):
                 shutil.rmtree(entry, ignore_errors=True)
                 log.debug('Cleaned up temporary plugin directory: %s', entry)
 
-    def refresh_registry_and_caches(self):
-        """Refresh plugin registry and clear related caches."""
-        self._registry.fetch_registry(use_cache=False)
+    def refresh_registry_and_caches(self, callback=None):
+        """Refresh plugin registry and clear related caches.
+
+        Args:
+            callback: Optional callback(success, error) called when complete
+        """
+        self._registry.fetch_registry(use_cache=False, callback=callback)
 
     def get_default_ref_info(self, plugin_uuid):
         """Get default ref name and description for a plugin.

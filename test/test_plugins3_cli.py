@@ -492,7 +492,13 @@ class TestPluginCLI(PicardTestCase):
         from picard.plugin3.cli import ExitCode
 
         mock_manager = MockPluginManager()
-        mock_manager.refresh_registry_and_caches = Mock()
+
+        # Mock refresh_registry_and_caches to call callback immediately
+        def mock_refresh(callback=None):
+            if callback:
+                callback(True, None)
+
+        mock_manager.refresh_registry_and_caches = Mock(side_effect=mock_refresh)
         mock_manager._registry.get_registry_info.return_value = {
             'plugin_count': 42,
             'api_version': '3.0',

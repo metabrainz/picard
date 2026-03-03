@@ -73,12 +73,12 @@ class InstallPluginDialog(PicardDialog):
 
         # Fetch registry on dialog open, fallback to cache if network fails
         log.debug('InstallPluginDialog: Fetching registry on dialog open')
-        try:
-            self.plugin_manager._registry.fetch_registry(use_cache=True)
-            log.debug('InstallPluginDialog: Registry fetch completed successfully')
-        except Exception as e:
-            # Network failed, use cache
-            log.debug('InstallPluginDialog: Registry fetch failed: %s', e)
+
+        def on_registry_fetched(success, error):
+            if not success:
+                log.debug('InstallPluginDialog: Registry fetch failed: %s', error)
+
+        self.plugin_manager._registry.fetch_registry(use_cache=True, callback=on_registry_fetched)
 
         self.setup_ui()
 
