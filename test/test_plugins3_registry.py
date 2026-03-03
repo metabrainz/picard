@@ -519,6 +519,117 @@ class TestPluginRegistry(PicardTestCase):
             self.assertIsInstance(result['error'], RegistryParseError)
             self.assertIn('Failed to parse registry', str(result['error']))
 
+    def test_registry_multiple_url_fallback(self):
+        """Test registry tries second URL when first fails."""
+        from picard.plugin3.registry import PluginRegistry
+
+        url1 = 'https://first.example.com/registry.toml'
+        url2 = 'https://second.example.com/registry.toml'
+        registry = PluginRegistry(registry_url=[url1, url2])
+
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+
+        calls = []
+
+        def get_url_mock(url, handler, **kwargs):
+            url_str = url.toString()
+            calls.append(url_str)
+            if url_str == url1:
+                handler(b'', Mock(), Exception('First URL failed'))
+            else:
+                handler(b'plugins = []\nblacklist = []', Mock(), None)
+
+        mock_tagger.webservice.get_url = get_url_mock
+
+        result = {}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertTrue(result['success'])
+            self.assertEqual(len(calls), 2)
+            self.assertEqual(calls[0], url1)
+            self.assertEqual(calls[1], url2)
+            self.assertTrue(registry.is_registry_loaded())
+
+    def test_registry_all_urls_fail(self):
+        """Test registry returns error when all URLs fail."""
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryFetchError,
+        )
+
+        url1 = 'https://first.example.com/registry.toml'
+        url2 = 'https://second.example.com/registry.toml'
+        registry = PluginRegistry(registry_url=[url1, url2])
+
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+
+        calls = []
+
+        def get_url_mock(url, handler, **kwargs):
+            calls.append(url.toString())
+            handler(b'', Mock(), Exception('Network error'))
+
+        mock_tagger.webservice.get_url = get_url_mock
+
+        result = {}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertFalse(result['success'])
+            self.assertIsInstance(result['error'], RegistryFetchError)
+            self.assertEqual(len(calls), 2)  # Both URLs should be tried
+            self.assertFalse(registry.is_registry_loaded())
+
+    def test_registry_parse_error_stops_fallback(self):
+        """Test that parse errors don't trigger fallback to next URL."""
+        from picard.plugin3.registry import (
+            PluginRegistry,
+            RegistryParseError,
+        )
+
+        url1 = 'https://first.example.com/registry.toml'
+        url2 = 'https://second.example.com/registry.toml'
+        registry = PluginRegistry(registry_url=[url1, url2])
+
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+
+        calls = []
+
+        def get_url_mock(url, handler, **kwargs):
+            calls.append(url.toString())
+            # First URL returns invalid TOML
+            handler(b'invalid toml [', Mock(), None)
+
+        mock_tagger.webservice.get_url = get_url_mock
+
+        result = {}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+            self.assertFalse(result['success'])
+            self.assertIsInstance(result['error'], RegistryParseError)
+            self.assertEqual(len(calls), 1)  # Only first URL should be tried
+            self.assertFalse(registry.is_registry_loaded())
+
     def test_registry_graceful_fallback_on_blacklist_check(self):
         """Test that blacklist check doesn't fail if registry fetch fails."""
         from picard.plugin3.registry import PluginRegistry
