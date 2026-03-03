@@ -302,7 +302,7 @@ from picard.script import script_function
 
 @script_function
 def func_myfunction(parser, arg1, arg2='default'):
-    """%myfunction(arg1,arg2)% - Description"""
+    """$myfunction(arg1,arg2) - Description"""
     return result
 ```
 
