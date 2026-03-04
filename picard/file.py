@@ -606,8 +606,7 @@ class File(MetadataItem):
             # Report summary of skipped files (once batch finishes)
             if self.tagger._external_change_count > 0 and not self.is_pending():
                 log.warning(
-                    "%d files were skipped because they were modified externally.",
-                    self.tagger._external_change_count
+                    "%d files were skipped because they were modified externally.", self.tagger._external_change_count
                 )
                 self.tagger._external_change_count = 0
             self._update_filesystem_metadata(self.orig_metadata)
