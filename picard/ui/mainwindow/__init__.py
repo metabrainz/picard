@@ -75,7 +75,10 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const import (
+    PLUGINS_BACKGROUND_CHECK_DELAY,
+    PROGRAM_UPDATE_LEVELS,
+)
 from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
@@ -377,7 +380,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self._auto_update_check()
         self.metadata_box.restore_state()
         QtCore.QTimer.singleShot(100, self.show_startup_dialogs)
-        QtCore.QTimer.singleShot(10000, self._check_for_plugin_updates)
+        QtCore.QTimer.singleShot(PLUGINS_BACKGROUND_CHECK_DELAY * 1000, self._check_for_plugin_updates)
 
     def showEvent(self, event):
         if not self.__shown:
