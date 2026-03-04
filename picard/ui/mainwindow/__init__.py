@@ -232,9 +232,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webservice_manager.authenticationRequired.connect(self._show_password_dialog)
         webservice_manager.proxyAuthenticationRequired.connect(self._show_proxy_dialog)
 
-        # Initially set the plugin updates available status in the status bar.
-        self._update_statusbar_plugin_updates_available()
-
     def register_suspend_while_loading(self, on_enter=None, on_exit=None):
         funcs = SuspendWhileLoadingFuncs(on_enter=on_enter, on_exit=on_exit)
         self._suspend_while_loading_funcs.append(funcs)
@@ -314,6 +311,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
             self.plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
             self.plugin_manager.refresh_updates_available.connect(self._update_statusbar_plugin_updates_available)
+
+            # Initially set the plugin updates available status in the status bar.
+            self._update_statusbar_plugin_updates_available()
 
     def _setup_player(self):
         from picard.ui.player import get_now_playing_service, get_player
