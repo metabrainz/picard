@@ -529,7 +529,7 @@ class File(MetadataItem):
             change = self._external_file_change(old_filename)
             if change == ExternalChange.MISSING:
                 raise FileNotFoundError(f"{old_filename} no longer exists")
-            elif change:
+            elif change == ExternalChange.MODIFIED:
                 raise ExternalFileModifiedError(f"{old_filename} was modified externally")
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
@@ -603,12 +603,6 @@ class File(MetadataItem):
             self.orig_metadata.update(temp_info)
             self.clear_errors()
             self.clear_pending(signal=False)
-            # Report summary of skipped files (once batch finishes)
-            if self.tagger._external_change_count > 0 and not self.is_pending():
-                log.warning(
-                    "%d files were skipped because they were modified externally.", self.tagger._external_change_count
-                )
-                self.tagger._external_change_count = 0
             self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
