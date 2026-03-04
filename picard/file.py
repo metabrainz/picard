@@ -461,6 +461,12 @@ class File(MetadataItem):
         return self.state == File.State.ERROR
 
     def save(self):
+        # Allow retry if previous save failed due to external modification
+        if self.state == File.State.ERROR:
+            change = self._external_file_change(self.filename)
+            if change == ExternalChange.MODIFIED:
+                self._loaded_identity = FileIdentity(self.filename)
+                self.clear_errors()
         self.set_pending()
         run_file_pre_save_processors(self)
         metadata = Metadata()
@@ -568,7 +574,9 @@ class File(MetadataItem):
             if isinstance(error, ExternalFileModifiedError):
                 self.clear_pending(signal=False)
                 self.state = File.State.ERROR
-                self.error_append(_("Cannot save file: it was modified externally after being loaded."))
+                self.error_append(_("Cannot save file: it was modified externally after loading."))
+                # Track batch external changes
+                self.tagger._external_change_count += 1
                 self.update()
                 return
             self._set_error(error)
@@ -595,6 +603,13 @@ class File(MetadataItem):
             self.orig_metadata.update(temp_info)
             self.clear_errors()
             self.clear_pending(signal=False)
+            # Report summary of skipped files (once batch finishes)
+            if self.tagger._external_change_count > 0 and not self.is_pending():
+                log.warning(
+                    _("%d files were skipped because they were modified externally.")
+                    % self.tagger._external_change_count
+                )
+                self.tagger._external_change_count = 0
             self._update_filesystem_metadata(self.orig_metadata)
             if images_changed:
                 self.metadata_images_changed.emit()
