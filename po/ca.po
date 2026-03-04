@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-25 12:24+0100\n"
-"PO-Revision-Date: 2026-02-25 11:24+0000\n"
+"PO-Revision-Date: 2026-03-04 21:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.16.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -1134,10 +1134,8 @@ msgid "Disc information could not be found"
 msgstr ""
 
 #: picard/tagger.py:1309 picard/tagger.py:1324 picard/tagger.py:1332
-#, fuzzy
-#| msgid "CD Lookup Error"
 msgid "Lookup Error"
-msgstr "S'ha produït un error en cercar el CD"
+msgstr "Error de cerca"
 
 #: picard/tagger.py:1330
 msgid "Selected files contain tags with conflicting disc information"
@@ -5795,16 +5793,12 @@ msgid "File Type"
 msgstr "Tipus de fitxer"
 
 #: picard/ui/itemviews/columns.py:193
-#, fuzzy
-#| msgid "Directory:"
 msgid "File Directory"
-msgstr "Directori:"
+msgstr "Directori del fitxer"
 
 #: picard/ui/itemviews/columns.py:195
-#, fuzzy
-#| msgid "The file's extension."
 msgid "File Extension"
-msgstr "Extensió del fitxer."
+msgstr "Extensió del fitxer"
 
 #: picard/ui/itemviews/columns.py:198
 msgid "File Creation Time"

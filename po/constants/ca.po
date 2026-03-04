@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
-# Marc Riera <marc@marcriera.cat>, 2025.
+# Marc Riera <marc@marcriera.cat>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-08-18 19:36+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-03-04 21:11+0000\n"
+"Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ca/>\n"
 "Language: ca\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.16.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4671,7 +4671,7 @@ msgstr ""
 
 #: picard/const/tags.py:387
 msgid "File Extension"
-msgstr ""
+msgstr "Extensió del fitxer"
 
 #: picard/const/tags.py:388
 msgid "The file's extension."
