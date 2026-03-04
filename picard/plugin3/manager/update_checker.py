@@ -26,6 +26,7 @@ from picard.util.thread import run_task
 class PluginUpdateChecker:
     def __init__(self, plugin_manager):
         self.plugin_manager = plugin_manager
+        self.updates = {}
 
     def check_for_updates(self):
         log.debug("Checking for %s plugin updates.", len(self.plugin_manager.plugins))
@@ -43,11 +44,12 @@ class PluginUpdateChecker:
 
     def _update_checker(self):
         try:
+            self.updates = {}
             # Fetch remote refs for all plugins (for ref selectors)
             self.plugin_manager.refresh_all_plugin_refs()
 
             # Check for updates (silent - no dialog) - skip fetching since we just did it
-            self.plugin_manager.check_updates(skip_fetch=True)
+            self.updates = self.plugin_manager.check_updates(skip_fetch=True)
 
         except Exception as e:
             log.error("Failed to refresh all plugins: %s", e, exc_info=True)
@@ -55,3 +57,4 @@ class PluginUpdateChecker:
     def _on_plugin_update_checks_finished(self, *args, **kwargs):
         log.debug("Finished checking for plugin updates.")
         self.plugin_manager.refresh_updates_available.emit()
+        self.plugin_manager.plugin_update_checks_complete.emit(self.updates)
