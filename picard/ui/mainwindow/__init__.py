@@ -556,18 +556,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "\"Tagger\" button on the web page loads the release into Picard."
             )
         )
-        self.plugin_updates_label = QtWidgets.QLabel()
+
         if theme.is_dark_theme:
             icon_plugin = QtGui.QIcon(":/images/plugin-dark.png")
         else:
             icon_plugin = QtGui.QIcon(":/images/plugin.png")
 
-        self.plugin_updates_label.setPixmap(icon_plugin.pixmap(16, 16))
-        self.plugin_updates_label.setVisible(False)
-        self.plugin_updates_label.setToolTip(_("There are updates available for installed plugins."))
+        self.plugin_updates_button = QtWidgets.QToolButton()
+        self.plugin_updates_button.setFixedSize(16, 16)
+        self.plugin_updates_button.setIcon(icon_plugin)
+        self.plugin_updates_button.setIconSize(QtCore.QSize(16, 16))
+        self.plugin_updates_button.setStyleSheet("QToolButton { border: none; }")
+        self.plugin_updates_button.setVisible(False)
+        self.plugin_updates_button.setToolTip(
+            _("There are updates available for installed plugins. Click to open the plugin manager.")
+        )
+        self.plugin_updates_button.clicked.connect(partial(self.show_options, page='plugins'))
+
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
-        self.statusBar().addPermanentWidget(self.plugin_updates_label)
+        self.statusBar().addPermanentWidget(self.plugin_updates_button)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self._register_status_indicator(infostatus)
@@ -595,11 +603,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _update_statusbar_plugin_updates_available(self):
         if not self.plugin_manager:
-            self.plugin_updates_label.setVisible(False)
+            self.plugin_updates_button.setVisible(False)
             return
 
         updates = self.plugin_manager.check_updates(skip_fetch=True)
-        self.plugin_updates_label.setVisible(bool(updates))
+        self.plugin_updates_button.setVisible(bool(updates))
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message.
