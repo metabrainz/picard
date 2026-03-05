@@ -558,9 +558,8 @@ class PluginApi:
                     # Try source locale as fallback
                     if self._source_locale in self._translations and key in self._translations[self._source_locale]:
                         result = self._translations[self._source_locale][key]
-                    else:
-                        if DebugOpt.PLUGIN_TRANSLATIONS.enabled:
-                            self._logger.debug("tr() no translation found for key '%s' in any locale", key)
+                    elif DebugOpt.PLUGIN_TRANSLATIONS.enabled:
+                        self._logger.debug("tr() no translation found for key '%s' in any locale", key)
 
         # Fall back to text parameter or key
         if result is None:
