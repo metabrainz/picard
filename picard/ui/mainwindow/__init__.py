@@ -312,8 +312,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
             self.plugin_manager.refresh_updates_available.connect(self._update_statusbar_plugin_updates_available)
 
-            # Initially set the plugin updates available status in the status bar.
-            self._update_statusbar_plugin_updates_available()
+        # Initially set the plugin updates available status in the status bar.
+        self._update_statusbar_plugin_updates_available()
 
     def _setup_player(self):
         from picard.ui.player import get_now_playing_service, get_player
