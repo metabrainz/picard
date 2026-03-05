@@ -1595,8 +1595,10 @@ If a new instance will not be spawned files/directories will be passed to the ex
         '--debug-opts',
         action='store',
         default=None,
+        nargs='?',
+        const='',
         metavar='OPTIONS',
-        help="comma-separated list of debug options. Use --debug-opts= to list available options",
+        help="comma-separated list of debug options. Use --debug-opts without value to list available options",
     )
     parser.add_argument(
         '-s', '--stand-alone-instance', action='store_true', help="force Picard to create a new, stand-alone instance"

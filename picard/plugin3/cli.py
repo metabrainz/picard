@@ -1815,8 +1815,10 @@ def process_cmdline_args():
         '--debug-opts',
         action='store',
         default=None,
+        nargs='?',
+        const='',
         metavar='OPTIONS',
-        help="comma-separated list of debug options. Use --debug-opts= to list available options",
+        help="comma-separated list of debug options. Use --debug-opts without value to list available options",
     )
     parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
     parser.add_argument('--no-color', action='store_true', help="disable colored output")
