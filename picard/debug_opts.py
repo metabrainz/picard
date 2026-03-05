@@ -84,3 +84,5 @@ class DebugOpt(DebugOptEnum):
     WS_POST = 2, N_('Web Service Post Data'), N_('Log data of web service post requests')
     WS_REPLIES = 3, N_('Web Service Replies'), N_('Log content of web service replies')
     GIT_BACKEND = 4, N_('Git Backend'), N_('Log git backend method calls')
+    PLUGIN_TRANSLATIONS = 5, N_('Plugin Translations'), N_('Log plugin translation lookups and fallbacks')
+    PLUGIN_UPDATES = 6, N_('Plugin Updates'), N_('Log detailed plugin version checking and update detection')

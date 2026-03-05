@@ -174,6 +174,14 @@ pytest test/
 pytest test/test_metadata.py
 ```
 
+**Important:** Always run `ruff format` after making code changes to ensure consistent formatting.
+
+### AI Assistant Guidelines
+When making code changes:
+1. **Always place imports at the top of files** - avoid inline imports unless absolutely necessary for circular dependency resolution
+2. **Run `ruff format` after all changes** - ensures code follows project style guidelines
+3. **Run `ruff check` to catch issues** - fix any linting errors before committing
+
 ### Contributing
 1. **Create ticket first:** <https://tickets.metabrainz.org/projects/PICARD>
 2. Create feature branch
