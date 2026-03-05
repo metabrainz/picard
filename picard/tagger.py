@@ -1595,7 +1595,8 @@ If a new instance will not be spawned files/directories will be passed to the ex
         '--debug-opts',
         action='store',
         default=None,
-        help="comma-separated list of debug options to enable: %s" % DebugOpt.opt_names(),
+        metavar='OPTIONS',
+        help="comma-separated list of debug options. Use --debug-opts= to list available options",
     )
     parser.add_argument(
         '-s', '--stand-alone-instance', action='store_true', help="force Picard to create a new, stand-alone instance"
@@ -1606,6 +1607,12 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
     args = parser.parse_args()
     args.remote_commands_help = False
+
+    # Handle debug-opts help request
+    if args.debug_opts is not None and not args.debug_opts.strip():
+        print(DebugOpt.help_text())
+        print(f"\nUsage: --debug-opts={DebugOpt.opt_names()}")
+        sys.exit(0)
 
     args.processable = []
     for path in args.FILE_OR_URL:

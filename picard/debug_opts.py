@@ -56,6 +56,14 @@ class DebugOptEnum(int, Enum):
         return ','.join(sorted(o.optname for o in cls))
 
     @classmethod
+    def help_text(cls):
+        """Returns formatted help text for all debug options"""
+        lines = ["Available debug options:"]
+        for opt in sorted(cls, key=lambda o: o.optname):
+            lines.append(f"  {opt.optname:20} - {opt.description}")
+        return '\n'.join(lines)
+
+    @classmethod
     def from_string(cls, string: str):
         """Parse command line argument, a string with comma-separated values,
         and enable corresponding debug options"""
