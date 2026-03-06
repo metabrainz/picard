@@ -21,6 +21,7 @@
 from typing import NamedTuple
 
 from picard import log
+from picard.debug_opts import DebugOpt
 from picard.git.backend import (
     GitRef,
     GitRefType,
@@ -301,7 +302,12 @@ class PluginUpdater:
         elif metadata.ref_type == 'branch':
             resolved_ref_info = f"branch {metadata.ref}"
         elif metadata.ref_type is None and metadata.ref:
-            log.debug("Plugin %s: resolving ref %s to determine installation type", plugin.plugin_id, metadata.ref)
+            log.debug_if(
+                DebugOpt.PLUGIN_UPDATES,
+                "Plugin %s: resolving ref %s to determine installation type",
+                plugin.plugin_id,
+                metadata.ref,
+            )
 
             for r in repo.list_references():
                 if r.ref_type == GitRefType.TAG and (r.shortname == metadata.ref or r.name == metadata.ref):
@@ -341,7 +347,8 @@ class PluginUpdater:
         new_ref = None
 
         if is_tag_installation:
-            log.debug(
+            log.debug_if(
+                DebugOpt.PLUGIN_UPDATES,
                 "Plugin %s: originally installed from %s, checking if current commit matches any tag",
                 plugin.plugin_id,
                 resolved_ref_info,
@@ -353,29 +360,38 @@ class PluginUpdater:
                         if tag_commit.id == current_commit:
                             current_is_tag = True
                             current_tag = r.shortname
-                            log.debug(
-                                "Plugin %s: found matching tag %s for current commit", plugin.plugin_id, current_tag
+                            log.debug_if(
+                                DebugOpt.PLUGIN_UPDATES,
+                                "Plugin %s: found matching tag %s for current commit",
+                                plugin.plugin_id,
+                                current_tag,
                             )
                             break
                     except Exception as e:
                         log.debug("Failed to check tag %s for commit match: %s", r.name, e)
                         continue
         else:
-            log.debug(
+            log.debug_if(
+                DebugOpt.PLUGIN_UPDATES,
                 "Plugin %s: originally installed from %s, skipping tag-based updates",
                 plugin.plugin_id,
                 resolved_ref_info,
             )
 
         if current_is_tag and current_tag:
-            log.debug("Plugin %s is on tag %s, checking for newer tags", plugin.plugin_id, current_tag)
+            log.debug_if(
+                DebugOpt.PLUGIN_UPDATES,
+                "Plugin %s is on tag %s, checking for newer tags",
+                plugin.plugin_id,
+                current_tag,
+            )
             source = PluginSourceGit(metadata.url, ref)
             latest_tag = source._find_latest_tag(repo, current_tag)
             if latest_tag and latest_tag != current_tag:
                 log.debug("Plugin %s: update available %s → %s", plugin.plugin_id, current_tag, latest_tag)
                 new_ref = latest_tag
             else:
-                log.debug("Plugin %s: no newer tag found, skipping", plugin.plugin_id)
+                log.debug_if(DebugOpt.PLUGIN_UPDATES, "Plugin %s: no newer tag found, skipping", plugin.plugin_id)
 
         return current_is_tag, current_tag, new_ref
 

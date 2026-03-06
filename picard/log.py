@@ -233,6 +233,23 @@ error = main_logger.error
 exception = main_logger.exception
 log = main_logger.log
 
+
+def debug_if(debug_opt, msg, *args, **kwargs):
+    """Log a debug message only if the specified debug option is enabled.
+
+    Args:
+        debug_opt: A DebugOpt enum value to check
+        msg: The message format string
+        *args: Arguments for the message format string
+        **kwargs: Additional keyword arguments passed to logger.debug()
+
+    Example:
+        log.debug_if(DebugOpt.PLUGIN_UPDATES, "Plugin %s: checking version", plugin_name)
+    """
+    if debug_opt.enabled:
+        main_logger.debug(msg, *args, **kwargs)
+
+
 # HISTORY LOGGING
 history_logger = logging.getLogger('history')
 

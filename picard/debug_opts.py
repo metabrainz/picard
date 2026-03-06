@@ -20,6 +20,7 @@
 
 
 from enum import Enum
+import sys
 
 from picard.i18n import N_
 
@@ -56,12 +57,33 @@ class DebugOptEnum(int, Enum):
         return ','.join(sorted(o.optname for o in cls))
 
     @classmethod
+    def help_text(cls):
+        """Returns formatted help text for all debug options"""
+        lines = ["Available debug options:"]
+        lines.append("  all                  - Enable all debug options")
+        for opt in sorted(cls, key=lambda o: o.optname):
+            lines.append(f"  {opt.optname:20} - {opt.description}")
+        return '\n'.join(lines)
+
+    @classmethod
+    def print_help_and_exit(cls):
+        """Print help text and exit"""
+        print(cls.help_text())
+        print(f"\nUsage: --debug-opts=all  or  --debug-opts={cls.opt_names()}")
+        sys.exit(0)
+
+    @classmethod
     def from_string(cls, string: str):
         """Parse command line argument, a string with comma-separated values,
-        and enable corresponding debug options"""
+        and enable corresponding debug options. Use 'all' to enable all options."""
         opts = {str(o).strip().lower() for o in string.split(',')}
-        for o in cls:
-            o.enabled = o.optname in opts
+        if 'all' in opts:
+            # Enable all debug options
+            for o in cls:
+                o.enabled = True
+        else:
+            for o in cls:
+                o.enabled = o.optname in opts
 
     @classmethod
     def to_string(cls):
@@ -84,3 +106,5 @@ class DebugOpt(DebugOptEnum):
     WS_POST = 2, N_('Web Service Post Data'), N_('Log data of web service post requests')
     WS_REPLIES = 3, N_('Web Service Replies'), N_('Log content of web service replies')
     GIT_BACKEND = 4, N_('Git Backend'), N_('Log git backend method calls')
+    PLUGIN_TRANSLATIONS = 5, N_('Plugin Translations'), N_('Log plugin translation lookups and fallbacks')
+    PLUGIN_UPDATES = 6, N_('Plugin Updates'), N_('Log detailed plugin version checking and update detection')
