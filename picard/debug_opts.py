@@ -59,6 +59,7 @@ class DebugOptEnum(int, Enum):
     def help_text(cls):
         """Returns formatted help text for all debug options"""
         lines = ["Available debug options:"]
+        lines.append("  all                  - Enable all debug options")
         for opt in sorted(cls, key=lambda o: o.optname):
             lines.append(f"  {opt.optname:20} - {opt.description}")
         return '\n'.join(lines)
@@ -66,10 +67,15 @@ class DebugOptEnum(int, Enum):
     @classmethod
     def from_string(cls, string: str):
         """Parse command line argument, a string with comma-separated values,
-        and enable corresponding debug options"""
+        and enable corresponding debug options. Use 'all' to enable all options."""
         opts = {str(o).strip().lower() for o in string.split(',')}
-        for o in cls:
-            o.enabled = o.optname in opts
+        if 'all' in opts:
+            # Enable all debug options
+            for o in cls:
+                o.enabled = True
+        else:
+            for o in cls:
+                o.enabled = o.optname in opts
 
     @classmethod
     def to_string(cls):

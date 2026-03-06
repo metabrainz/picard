@@ -1613,7 +1613,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
     # Handle debug-opts help request
     if args.debug_opts is not None and not args.debug_opts.strip():
         print(DebugOpt.help_text())
-        print(f"\nUsage: --debug-opts={DebugOpt.opt_names()}")
+        print(f"\nUsage: --debug-opts=all  or  --debug-opts={DebugOpt.opt_names()}")
         sys.exit(0)
 
     args.processable = []

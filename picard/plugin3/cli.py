@@ -1900,7 +1900,7 @@ def process_cmdline_args():
         from picard.debug_opts import DebugOpt
 
         print(DebugOpt.help_text())
-        print(f"\nUsage: --debug-opts={DebugOpt.opt_names()}")
+        print(f"\nUsage: --debug-opts=all  or  --debug-opts={DebugOpt.opt_names()}")
         sys.exit(0)
 
     return args, parser
