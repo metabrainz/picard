@@ -450,6 +450,7 @@ class Tagger(QtWidgets.QApplication):
     def _init_tagger_entities(self):
         """Initialize tagger objects/entities"""
         self._pending_files_count = 0
+        self._external_change_count = 0
         self.files = {}
         self.clusters = ClusterList()
         self.albums = {}
