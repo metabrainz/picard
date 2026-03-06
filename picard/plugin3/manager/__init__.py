@@ -207,6 +207,8 @@ class PluginManager(QObject):
     plugin_disabled = pyqtSignal(Plugin)
     plugin_state_changed = pyqtSignal(Plugin)  # Emitted for both enable/disable
     plugin_ref_switched = pyqtSignal(Plugin)
+    refresh_updates_available = pyqtSignal()
+    plugin_update_checks_complete = pyqtSignal(dict)
 
     _primary_plugin_dir: Path | None = None
     _plugin_dirs: list[Path] = []

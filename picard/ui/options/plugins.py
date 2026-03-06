@@ -60,6 +60,7 @@ class Plugins3OptionsPage(OptionsPage):
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setup_ui()
+        self.plugin_manager.plugin_update_checks_complete.connect(self._on_update_check_complete)
 
     def _save_updates(self, updates, update_only=False):
         """Save updates to config, cleaning up stale entries for uninstalled plugins."""
@@ -234,13 +235,9 @@ class Plugins3OptionsPage(OptionsPage):
 
                 # Check for updates (silent - no dialog) - skip fetching since we just did it
                 new_updates = self.plugin_manager.check_updates(skip_fetch=True)
-                self._save_updates(new_updates)
 
-                # Pass updates to widget
-                self.plugin_list.set_updates(new_updates)
-
-                # Refresh UI with network-fetched update status
-                self._filter_plugins()
+                # Save updates and refresh UI
+                self._on_update_check_complete(new_updates)
 
                 plugin_count = len(self.plugin_manager.plugins)
                 update_count = len(new_updates)
@@ -264,6 +261,21 @@ class Plugins3OptionsPage(OptionsPage):
         # Refresh registry from server
         if self.plugin_manager:
             self.plugin_manager.refresh_registry_and_caches(callback=on_registry_refreshed)
+
+    def _on_update_check_complete(self, new_updates):
+        """Save updates to config and update the UI.
+
+        Args:
+            new_updates (dict): Updated plugins.
+        """
+        # Save updates to config
+        self._save_updates(new_updates)
+
+        # Pass updates to widget
+        self.plugin_list.set_updates(new_updates)
+
+        # Refresh UI with network-fetched update status
+        self._filter_plugins()
 
     def _show_disabled_state(self):
         """Show UI when plugin system is disabled."""
@@ -392,6 +404,8 @@ class Plugins3OptionsPage(OptionsPage):
         else:
             pass  # No dialog found
 
+        self.plugin_manager.refresh_updates_available.emit()
+
     def _cleanup_plugin_settings(self, plugin_id):
         """Clean up plugin settings when plugin is uninstalled."""
         config = get_config()
@@ -502,6 +516,8 @@ class Plugins3OptionsPage(OptionsPage):
             QtWidgets.QMessageBox.warning(
                 self, _("Update Failed"), _("Failed to update plugin: {errmsg}").format(errmsg=error_msg)
             )
+
+        self.plugin_manager.refresh_updates_available.emit()
 
         # Continue with next plugin
         self._update_next_plugin(async_manager)

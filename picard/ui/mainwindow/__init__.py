@@ -75,7 +75,10 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const import PROGRAM_UPDATE_LEVELS
+from picard.const import (
+    PLUGINS_BACKGROUND_CHECK_DELAY,
+    PROGRAM_UPDATE_LEVELS,
+)
 from picard.const.appdirs import sessions_folder
 from picard.const.sys import (
     IS_MACOS,
@@ -95,6 +98,7 @@ from picard.options import (
     Option,
     get_option_title,
 )
+from picard.plugin3.manager.update_checker import PluginUpdateChecker
 from picard.script import get_file_naming_script_presets
 from picard.session.constants import SessionConstants
 from picard.session.session_manager import (
@@ -302,10 +306,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         get_config().setting.setting_changed.connect(self.handle_settings_changed)
         get_config().profiles.setting_changed.connect(self.handle_profiles_changed)
 
-        plugin_manager = self.tagger.get_plugin_manager()
-        if plugin_manager:
+        self.plugin_manager = self.tagger.get_plugin_manager()
+        if self.plugin_manager:
             signaler.plugin_tools_updated.connect(self._make_plugin_tools_menu)
-            plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
+            self.plugin_manager.plugin_state_changed.connect(self._make_plugin_tools_menu)
+            self.plugin_manager.refresh_updates_available.connect(self._update_statusbar_plugin_updates_available)
+
+        # Initially set the plugin updates available status in the status bar.
+        self._update_statusbar_plugin_updates_available()
 
     def _setup_player(self):
         from picard.ui.player import get_now_playing_service, get_player
@@ -372,6 +380,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self._auto_update_check()
         self.metadata_box.restore_state()
         QtCore.QTimer.singleShot(100, self.show_startup_dialogs)
+        QtCore.QTimer.singleShot(PLUGINS_BACKGROUND_CHECK_DELAY * 1000, self._check_for_plugin_updates)
 
     def showEvent(self, event):
         if not self.__shown:
@@ -550,8 +559,26 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "\"Tagger\" button on the web page loads the release into Picard."
             )
         )
+
+        if theme.is_dark_theme:
+            icon_plugin = QtGui.QIcon(":/images/plugin-dark.png")
+        else:
+            icon_plugin = QtGui.QIcon(":/images/plugin.png")
+
+        self.plugin_updates_button = QtWidgets.QToolButton()
+        self.plugin_updates_button.setFixedSize(16, 16)
+        self.plugin_updates_button.setIcon(icon_plugin)
+        self.plugin_updates_button.setIconSize(QtCore.QSize(16, 16))
+        self.plugin_updates_button.setStyleSheet("QToolButton { border: none; }")
+        self.plugin_updates_button.setVisible(False)
+        self.plugin_updates_button.setToolTip(
+            _("There are updates available for installed plugins. Click to open the plugin manager.")
+        )
+        self.plugin_updates_button.clicked.connect(partial(self.show_options, page='plugins'))
+
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
+        self.statusBar().addPermanentWidget(self.plugin_updates_button)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self._register_status_indicator(infostatus)
@@ -576,6 +603,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
         else:
             self.listening_label.setVisible(False)
+
+    def _update_statusbar_plugin_updates_available(self):
+        if not self.plugin_manager:
+            self.plugin_updates_button.setVisible(False)
+            return
+
+        updates = self.plugin_manager.check_updates(skip_fetch=True)
+        self.plugin_updates_button.setVisible(bool(updates))
 
     def set_statusbar_message(self, message, *args, **kwargs):
         """Set the status bar message.
@@ -1952,6 +1987,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             update_level=config.setting['update_level'],
             callback=update_last_check_date,
         )
+
+    def _check_for_plugin_updates(self):
+        config = get_config()
+        if config.setting['check_for_plugin_updates']:
+            PluginUpdateChecker(self.plugin_manager).check_for_updates()
+        else:
+            log.info("Skipping plugin update checks based on user settings")
 
     def _check_and_repair_naming_scripts(self):
         """Check the 'file_renaming_scripts' config setting to ensure that the list of scripts

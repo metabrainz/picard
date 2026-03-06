@@ -139,6 +139,8 @@ PLUGINS_API = {
     },
 }
 
+PLUGINS_BACKGROUND_CHECK_DELAY = 10  # seconds
+
 # Maximum number of covers to draw in a stack in CoverArtThumbnail
 MAX_COVERS_TO_STACK = 4
 
