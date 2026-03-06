@@ -20,6 +20,7 @@
 
 
 from enum import Enum
+import sys
 
 from picard.i18n import N_
 
@@ -63,6 +64,13 @@ class DebugOptEnum(int, Enum):
         for opt in sorted(cls, key=lambda o: o.optname):
             lines.append(f"  {opt.optname:20} - {opt.description}")
         return '\n'.join(lines)
+
+    @classmethod
+    def print_help_and_exit(cls):
+        """Print help text and exit"""
+        print(cls.help_text())
+        print(f"\nUsage: --debug-opts=all  or  --debug-opts={cls.opt_names()}")
+        sys.exit(0)
 
     @classmethod
     def from_string(cls, string: str):

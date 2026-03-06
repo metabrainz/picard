@@ -1897,11 +1897,7 @@ def process_cmdline_args():
 
     # Handle debug-opts help request
     if args.debug_opts is not None and not args.debug_opts.strip():
-        from picard.debug_opts import DebugOpt
-
-        print(DebugOpt.help_text())
-        print(f"\nUsage: --debug-opts=all  or  --debug-opts={DebugOpt.opt_names()}")
-        sys.exit(0)
+        DebugOpt.print_help_and_exit()
 
     return args, parser
 
