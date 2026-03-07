@@ -594,6 +594,7 @@ class IgnoreUpdatesContext:
             self._on_enter()
         if self._entered == 1 and self._on_first_enter:
             self._on_first_enter()
+        return self
 
     def __exit__(self, exc_type, exc_value, traceback):
         self._entered -= 1
