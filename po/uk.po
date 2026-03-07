@@ -10,13 +10,14 @@
 # Антон Присяжный <aukrodotua@gmail.com>, 2018
 # Nerten <alex@nerten.info>, 2023.
 # oleh_hishak <ohishak@gmail.com>, 2025, 2026.
+# Arhidimon <arhidimon@ukr.net>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-01-27 07:37+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2026-03-07 00:11+0000\n"
+"Last-Translator: Arhidimon <arhidimon@ukr.net>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
 "Language: uk\n"
@@ -27,7 +28,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -3731,7 +3732,7 @@ msgstr "Ctrl+Shift+Y"
 
 #: picard/ui/mainwindow.py:796
 msgid "Cl&uster"
-msgstr "&Разбити на кластери"
+msgstr "&Розбити на кластери"
 
 #: picard/ui/mainwindow.py:797
 msgid "Cluster files into album clusters"
