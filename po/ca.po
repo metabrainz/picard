@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-25 12:24+0100\n"
-"PO-Revision-Date: 2026-03-04 21:11+0000\n"
+"PO-Revision-Date: 2026-03-07 00:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -1131,7 +1131,7 @@ msgstr "No s'ha pogut analitzar el registre d'extracció «%s»"
 
 #: picard/tagger.py:1307 picard/tagger.py:1322
 msgid "Disc information could not be found"
-msgstr ""
+msgstr "No s'ha pogut trobar la informació del disc"
 
 #: picard/tagger.py:1309 picard/tagger.py:1324 picard/tagger.py:1332
 msgid "Lookup Error"
@@ -1140,15 +1140,18 @@ msgstr "Error de cerca"
 #: picard/tagger.py:1330
 msgid "Selected files contain tags with conflicting disc information"
 msgstr ""
+"Els fitxers seleccionats contenen etiquetes amb informació del disc "
+"conflictiva"
 
 #: picard/tagger.py:1347
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
 msgstr ""
+"No s'ha pogut analitzar la informació del disc a partir de les etiquetes: %s"
 
 #: picard/tagger.py:1356
 msgid "Looking up disc from tags…"
-msgstr ""
+msgstr "S'està cercant el disc a partir de les etiquetes…"
 
 #: picard/track.py:141
 #, python-format
@@ -1828,9 +1831,9 @@ msgid ""
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if **any** of the arguments is not empty."
 msgstr ""
-"Retorna `true` si qualsevol de `x` o `y` no està buit.\n"
+"Retorna true si qualsevol de `x` o `y` no està buit.\n"
 "    Es pot fer servir amb un nombre arbitrari d'arguments.\n"
-"    El resultat és `true` si QUALSEVOL dels arguments no està buit."
+"    El resultat és true si **qualsevol** dels arguments no està buit."
 
 #: picard/script/functions.py:558
 msgid ""
@@ -1838,9 +1841,9 @@ msgid ""
 "    Can be used with an arbitrary number of arguments.\n"
 "    The result is true if **all** of the arguments are not empty."
 msgstr ""
-"Retorna `true` si tant `x` com `y` no estan buits.\n"
+"Retorna true si tant `x` com `y` no estan buits.\n"
 "    Es pot fer servir amb un nombre arbitrari d'arguments.\n"
-"    El resultat és `true` si TOTS els arguments no estan buits."
+"    El resultat és true si **tots** els arguments no estan buits."
 
 #: picard/script/functions.py:571
 msgid "Returns true if `x` is empty."
@@ -5802,7 +5805,7 @@ msgstr "Extensió del fitxer"
 
 #: picard/ui/itemviews/columns.py:198
 msgid "File Creation Time"
-msgstr ""
+msgstr "Hora de creació del fitxer"
 
 #: picard/ui/itemviews/columns.py:202
 msgid "Bitrate"
@@ -6664,26 +6667,22 @@ msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow/actions.py:399
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD &log file…"
-msgstr "Cerca el CD…"
+msgstr "Cerca un &fitxer de registre de CD…"
 
 #: picard/ui/mainwindow/actions.py:400
-#, fuzzy
-#| msgid "Lookup the details of the CD in your drive"
 msgid "Lookup release from a CD ripping log file"
-msgstr "Cerca els detalls del CD a la unitat"
+msgstr "Cerca una publicació a partir d'un fitxer de registre de còpia de CD"
 
 #: picard/ui/mainwindow/actions.py:408
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC &tag…"
-msgstr "Cerca el CD…"
+msgstr "Cerca l'e&tiqueta de TOC…"
 
 #: picard/ui/mainwindow/actions.py:409
 msgid "Lookup release via disc identifiers from track tags"
 msgstr ""
+"Cerca una publicació a partir dels identificadors de disc de les etiquetes "
+"de les pistes"
 
 #: picard/ui/mainwindow/actions.py:417
 msgid "&Scan"
@@ -7371,16 +7370,12 @@ msgid "Submit AcoustIDs"
 msgstr "Envia les empremtes AcoustID"
 
 #: picard/ui/options/interface_toolbar.py:124
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "Cerca el CD…"
+msgstr "Cerca l'etiqueta de TOC…"
 
 #: picard/ui/options/interface_toolbar.py:128
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD log file…"
-msgstr "Cerca el CD…"
+msgstr "Cerca un fitxer de registre de CD…"
 
 #: picard/ui/options/interface_toolbar.py:136 picard/ui/player/toolbar.py:74
 msgid "Play"
