@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-02-25 12:24+0100\n"
-"PO-Revision-Date: 2026-02-20 14:11+0000\n"
+"PO-Revision-Date: 2026-03-09 07:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:201
@@ -8136,11 +8136,11 @@ msgstr "Tag"
 
 #: picard/ui/metadatabox/__init__.py:178
 msgid "Original Value"
-msgstr "Originele waarde"
+msgstr "Originele waarden"
 
 #: picard/ui/metadatabox/__init__.py:178
 msgid "New Value"
-msgstr "Nieuwe waarde"
+msgstr "Nieuwe waarden"
 
 #: picard/ui/metadatabox/__init__.py:198
 msgid "Add New Tag…"
