@@ -44,6 +44,7 @@ import re
 
 from PyQt5 import QtCore
 
+from picard import log
 from picard.config import get_config
 from picard.file import File
 from picard.metadata import (
@@ -163,7 +164,12 @@ class Cluster(FileList):
 
     def remove_file(self, file, new_album=True):
         self.tagger.window.set_processing(True)
-        self.files.remove(file)
+        try:
+            self.files.remove(file)
+        except ValueError as e:
+            log.debug("File %r already removed from cluster %r: %s", file, self, e)
+            self.tagger.window.set_processing(False)
+            return
         self.update(signal=False)
         self.item.remove_file(file)
         if self.can_show_coverart:

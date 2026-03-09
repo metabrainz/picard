@@ -64,6 +64,7 @@ class FakeTagger(QtCore.QObject):
         self.stopping = False
         self.thread_pool = FakeThreadPool()
         self.priority_thread_pool = FakeThreadPool()
+        self.window = Mock()
 
     def register_cleanup(self, func):
         self.exit_cleanup.append(func)
