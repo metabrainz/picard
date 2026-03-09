@@ -19,7 +19,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -115,6 +118,21 @@ class ClusterTest(PicardTestCase):
         self.cluster.metadata.images.append(image)
         self.assertEqual(self.cluster.column('covercount'), '1')
         self.assertEqual(self.cluster.column('coverdimensions'), '100x100')
+
+    def test_remove_file_not_in_list(self):
+        """Test that removing a file not in the cluster doesn't crash (race condition)"""
+        file = Mock()
+        # File is NOT in the cluster
+        self.assertNotIn(file, self.cluster.files)
+        # Mock all the methods that would be called
+        with (
+            patch.object(self.cluster, 'update'),
+            patch.object(self.cluster, '_ui_item', Mock()),
+            patch.object(self.cluster, 'remove_metadata_images_from_children'),
+        ):
+            # This should not raise ValueError
+            self.cluster.remove_file(file, new_album=False)
+            self.cluster.remove_file(file, new_album=False)
 
 
 class ClusteringTest(PicardTestCase):
