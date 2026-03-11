@@ -828,9 +828,9 @@ def enable(api):
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.
 
-### `add_album_task(album, task_id, description, timeout=None, request_factory=None, album_completion_blocking=False)`
+### `add_album_task(album, task_id, description, timeout=None, request_factory=None, blocking=False)`
 
-Add a plugin task to an album. Plugin tasks default to non-blocking and won't prevent the album from being marked as loaded. This behavior can be changed by setting the `album_completion_blocking` parameter to True.
+Add a plugin task to an album. Plugin tasks default to non-blocking and won't prevent the album from being marked as loaded. This behavior can be changed by setting the `blocking` parameter to True.
 
 **Parameters**:
 - `album`: The Album object
@@ -838,7 +838,7 @@ Add a plugin task to an album. Plugin tasks default to non-blocking and won't pr
 - `description`: Human-readable description
 - `timeout`: Optional timeout in seconds
 - `request_factory`: Callable that creates and returns a PendingRequest. Use this to register network requests for automatic cancellation when the album is removed.
-- `album_completion_blocking`: If set to True, the album will not be marked as loaded until this task is completed. Use with caution as this can block the UI if the task takes a long time.
+- `blocking`: If set to True, the album will not be marked as loaded until this task is completed. Use with caution as this can block the UI if the task takes a long time.
 
 **Example - Fetching additional album data**:
 ```python
