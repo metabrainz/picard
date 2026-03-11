@@ -18,8 +18,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 import os
 from pathlib import Path
+from typing import (
+    TYPE_CHECKING,
+    Optional,
+)
 
 from picard import (
     api_versions_tuple,
@@ -30,11 +35,17 @@ from picard.extension_points import (
     set_plugin_uuid,
     unset_plugin_uuid,
 )
+from picard.git.utils import is_local_path
+from picard.plugin3.constants import REGISTRY_TRUST_LEVELS
 from picard.plugin3.installable import UrlInstallablePlugin
 from picard.plugin3.plugin import (
     Plugin,
     PluginState,
 )
+
+
+if TYPE_CHECKING:
+    from picard.plugin3.registry import RegistryPlugin
 
 
 class PluginLifecycleManager:
@@ -230,17 +241,80 @@ class PluginLifecycleManager:
 
         enabled_count = 0
         for plugin in self.manager._plugins:
-            if plugin.uuid and plugin.uuid in self.manager._enabled_plugins:
+            # All loaded plugins have UUIDs (validated during load)
+            if plugin.uuid in self.manager._enabled_plugins:
                 try:
-                    log.info('Loading plugin: %s', plugin.manifest.name() if plugin.manifest else plugin.plugin_id)
+                    plugin_name = plugin.manifest.name() if plugin.manifest else plugin.plugin_id
+                    registry_plugin = self.manager._registry.find_plugin(uuid=plugin.uuid)
+                    trust_level = self._get_trust_level_from_registry(registry_plugin)
+                    source_info = self._get_source_info_from_registry(plugin, registry_plugin)
+
+                    # Enhanced logging with trust level and source
+                    log.info('Loading plugin: %s [%s] %s', plugin_name, trust_level.upper(), source_info)
+
+                    # Warn about unregistered plugins
+                    if trust_level not in REGISTRY_TRUST_LEVELS:
+                        log.warning(
+                            'Plugin "%s" (UUID: %s) is not in the official registry. '
+                            'Only install plugins from trusted sources.',
+                            plugin_name,
+                            plugin.uuid,
+                        )
+
                     plugin.load_module()
                     plugin.enable(self.manager._tagger)
                     enabled_count += 1
                 except Exception as ex:
                     log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
 
-        log.info('Loaded %d plugin%s', enabled_count, 's' if enabled_count != 1 else '')
+        # Build trust level summary and log
+        if enabled_count > 0:
+            trust_summary = defaultdict(int)
+            for plugin in self.manager._plugins:
+                if plugin.uuid in self.manager._enabled_plugins:
+                    registry_plugin = self.manager._registry.find_plugin(uuid=plugin.uuid)
+                    trust_level = self._get_trust_level_from_registry(registry_plugin)
+                    trust_summary[trust_level] += 1
+
+            summary_parts = []
+            # First show known trust levels in order
+            for level in REGISTRY_TRUST_LEVELS:
+                if trust_summary[level] > 0:
+                    summary_parts.append(f'{level}: {trust_summary[level]}')
+            # Then show any other levels (e.g., 'unregistered' or unexpected values)
+            for level in sorted(trust_summary.keys()):
+                if level not in REGISTRY_TRUST_LEVELS and trust_summary[level] > 0:
+                    summary_parts.append(f'{level}: {trust_summary[level]}')
+
+            fmtstr = 'Loaded %d plugins (%s)' if enabled_count != 1 else 'Loaded %d plugin (%s)'
+            log.info(fmtstr, enabled_count, ', '.join(summary_parts))
+
         return blacklisted_plugins
+
+    def _get_trust_level_from_registry(self, registry_plugin: Optional['RegistryPlugin']) -> str:
+        """Get trust level from registry plugin object."""
+        if registry_plugin:
+            trust_level = registry_plugin.trust_level
+            # Validate it's a known trust level
+            if trust_level in REGISTRY_TRUST_LEVELS:
+                return trust_level
+        return 'unregistered'
+
+    def _get_source_info_from_registry(self, plugin: 'Plugin', registry_plugin: Optional['RegistryPlugin']) -> str:
+        """Get human-readable source information for a plugin."""
+        # Check if plugin is from registry (has known git URL)
+        if registry_plugin and registry_plugin.git_url:
+            return f'from {registry_plugin.git_url}'
+
+        # Check metadata for URL (should always exist for installed plugins)
+        metadata = self.manager._metadata.get_plugin_metadata(plugin.uuid)
+        if metadata and metadata.url:
+            if is_local_path(metadata.url):
+                return f'from local {metadata.url}'
+            return f'from {metadata.url}'
+
+        # Fallback for corrupted installation
+        return 'from unknown source'
 
     def _load_config(self):
         """Load enabled plugins list from config."""
