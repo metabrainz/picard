@@ -815,15 +815,15 @@ class PluginApi:
 
         if album_completion_blocking:
             task_type = TaskType.CRITICAL
-            blocking_text = ''
+            blocking_text = ' [BLOCKING]'
         else:
             task_type = TaskType.PLUGIN
-            blocking_text = 'NON-'
+            blocking_text = ''
 
         album.add_task(
             task_id=full_task_id,
             task_type=task_type,
-            description=f'[{self.plugin_id}] {description} [{blocking_text}BLOCKING]',
+            description=f'[{self.plugin_id}] {description}{blocking_text}',
             timeout=timeout,
             plugin_id=self.plugin_id,
             request_factory=request_factory,
