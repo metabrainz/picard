@@ -781,6 +781,7 @@ class PluginApi:
         description: str,
         timeout: float | None = None,
         request_factory: Callable[[], PendingRequest] | None = None,
+        album_completion_blocking: bool = False,
     ) -> None:
         """Add a plugin task to an album.
 
@@ -795,6 +796,9 @@ class PluginApi:
             timeout: Optional timeout in seconds
             request_factory: Optional callable that creates and returns a PendingRequest.
                            If provided, the request is created and registered atomically.
+            album_completion_blocking: If True, the album will not be marked as loaded
+                           until this task is completed. Use with caution as this can
+                           block the UI if the task takes a long time.
 
         Example:
             def fetch_extra_data(api, album, metadata, release):
@@ -808,10 +812,18 @@ class PluginApi:
                 )
         """
         full_task_id = f'{self.plugin_id}_{task_id}'
+
+        if album_completion_blocking:
+            task_type = TaskType.CRITICAL
+            blocking_text = ''
+        else:
+            task_type = TaskType.PLUGIN
+            blocking_text = 'NON-'
+
         album.add_task(
-            full_task_id,
-            TaskType.PLUGIN,
-            f'[{self.plugin_id}] {description}',
+            task_id=full_task_id,
+            task_type=task_type,
+            description=f'[{self.plugin_id}] {description} [{blocking_text}BLOCKING]',
             timeout=timeout,
             plugin_id=self.plugin_id,
             request_factory=request_factory,
