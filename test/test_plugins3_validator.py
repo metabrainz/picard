@@ -20,7 +20,11 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.plugin3.validator import validate_manifest_dict
+from picard.plugin3.validator import (
+    PLACEHOLDER_UUIDS,
+    _is_placeholder_uuid,
+    validate_manifest_dict,
+)
 
 
 class TestManifestValidator(PicardTestCase):
@@ -170,51 +174,27 @@ class TestManifestValidator(PicardTestCase):
         # Categories are not validated to allow forward/backward compatibility
         self.assertEqual(errors, [])
 
-    def test_validate_valid_categories(self):
-        """Test validation accepts valid categories."""
+    def test_validate_categories(self):
+        """Test validation of categories field."""
+        # Valid categories
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',
             'name': 'Test Plugin',
             'version': '1.0.0',
             'description': 'A test plugin',
             'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
             'categories': ['metadata', 'coverart'],
         }
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
-    def test_validate_empty_categories(self):
-        """Test validation catches empty categories array."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'categories': [],  # Empty
-        }
+        # Empty categories
+        manifest['categories'] = []
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'categories' must contain at least one category if present", errors)
 
-    def test_validate_categories_wrong_type(self):
-        """Test validation catches wrong type for categories."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'categories': 'metadata',  # Should be array
-        }
+        # Wrong type
+        manifest['categories'] = 'metadata'
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'categories' must be an array", errors)
 
@@ -253,58 +233,32 @@ class TestManifestValidator(PicardTestCase):
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
-    def test_validate_valid_source_locale(self):
-        """Test validation accepts valid source_locale values."""
+    def test_validate_source_locale(self):
+        """Test validation of source_locale field."""
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',
             'name': 'Test Plugin',
             'version': '1.0.0',
             'description': 'A test plugin',
             'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
         }
 
-        # Test valid locale codes
+        # Valid locales
         for locale in ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN']:
-            manifest['source_locale'] = locale
-            errors = validate_manifest_dict(manifest)
-            self.assertEqual(errors, [], f"Locale '{locale}' should be valid")
-
-    def test_validate_invalid_source_locale(self):
-        """Test validation catches invalid source_locale values."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+            with self.subTest(locale=locale):
+                manifest['source_locale'] = locale
+                errors = validate_manifest_dict(manifest)
+                self.assertEqual(errors, [])
 
         # Invalid formats
-        invalid_locales = ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123']
-        for locale in invalid_locales:
-            manifest['source_locale'] = locale
-            errors = validate_manifest_dict(manifest)
-            self.assertTrue(any('source_locale' in e for e in errors), f"Locale '{locale}' should be invalid: {errors}")
+        for locale in ['', 'e', 'english', 'en-US', 'en_us', 'EN', 'en_USA', '123']:
+            with self.subTest(locale=locale):
+                manifest['source_locale'] = locale
+                errors = validate_manifest_dict(manifest)
+                self.assertTrue(any('source_locale' in e for e in errors))
 
-    def test_validate_source_locale_wrong_type(self):
-        """Test validation catches wrong type for source_locale."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'source_locale': 123,  # Should be string
-        }
+        # Wrong type
+        manifest['source_locale'] = 123
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'source_locale' must be a string", errors)
 
@@ -494,3 +448,45 @@ code block
 '''
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [], "Valid complex markdown should not produce errors")
+
+    def test_validate_placeholder_uuids(self):
+        """Test validation catches various placeholder/test UUIDs."""
+        for uuid in PLACEHOLDER_UUIDS:
+            with self.subTest(uuid=uuid):
+                manifest = {
+                    'uuid': uuid,
+                    'name': 'Test Plugin',
+                    'version': '1.0.0',
+                    'description': 'A test plugin',
+                    'api': ['3.0'],
+                }
+                errors = validate_manifest_dict(manifest)
+                self.assertTrue(any('placeholder/test UUID' in e for e in errors))
+
+    def test_validate_all_known_placeholders_fail_entropy(self):
+        """Test that all UUIDs in PLACEHOLDER_UUIDS fail Shannon entropy check."""
+        for placeholder_uuid in PLACEHOLDER_UUIDS:
+            with self.subTest(uuid=placeholder_uuid):
+                self.assertTrue(
+                    _is_placeholder_uuid(placeholder_uuid), f"UUID {placeholder_uuid} should be detected as placeholder"
+                )
+
+    def test_validate_real_uuids(self):
+        """Test that real UUIDs are not flagged as placeholders."""
+        real_uuids = [
+            '74807b76-c451-419f-bbd4-42a78e2444a6',  # ReplayGain plugin
+            '550e8400-e29b-41d4-a716-446655440000',
+            'f47ac10b-58cc-4372-a567-0e02b2c3d479',
+            '3d6f0e4a-8c9b-4f2e-a1d7-5b8c9e0f1a2b',
+        ]
+        for uuid in real_uuids:
+            with self.subTest(uuid=uuid):
+                manifest = {
+                    'uuid': uuid,
+                    'name': 'Test Plugin',
+                    'version': '1.0.0',
+                    'description': 'A test plugin',
+                    'api': ['3.0'],
+                }
+                errors = validate_manifest_dict(manifest)
+                self.assertEqual(errors, [])

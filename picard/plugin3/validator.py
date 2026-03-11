@@ -24,6 +24,8 @@ This module can be copied to registry maintenance tools without
 requiring the full Picard codebase.
 """
 
+from collections import Counter
+import math
 import re
 
 
@@ -43,6 +45,18 @@ MAX_LONG_DESCRIPTION_LENGTH = 2000
 
 # UUID v4 regex pattern (RFC 4122)
 UUID_PATTERN = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', re.IGNORECASE)
+
+# Known placeholder/test UUIDs that should be rejected
+PLACEHOLDER_UUIDS = {
+    'a1b2c3d4-e5f6-4789-8b9c-1d2e3f4a5b6c',  # Sequential pattern
+    '00000000-0000-4000-8000-000000000000',  # All zeros
+    '12345678-1234-4234-8234-123456789abc',  # Simple sequential
+    'aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa',  # All same character
+    'deadbeef-dead-4eef-beef-deadbeefdead',  # Common test pattern
+    'cafebabe-cafe-4abe-babe-cafebabecafe',  # Common test pattern
+    'ffffffff-ffff-4fff-bfff-ffffffffffff',  # All F's
+    '11111111-1111-4111-8111-111111111111',  # All 1's
+}
 
 
 def _is_valid_locale(locale):
@@ -163,6 +177,58 @@ def _validate_locale_field(manifest_data, field_name, errors):
             errors.append(f"Field '{field_name}' must be a valid locale code (got '{value}')")
 
 
+def _is_placeholder_uuid(uuid_str: str) -> bool:
+    """Check if UUID appears to be a placeholder/test UUID.
+
+    Uses Shannon entropy to detect low-randomness patterns that indicate
+    manually typed or template UUIDs.
+
+    Args:
+        uuid_str: UUID string to check
+
+    Returns:
+        bool: True if UUID looks like a placeholder
+    """
+    uuid_lower = uuid_str.lower()
+
+    # Check against known placeholders
+    if uuid_lower in PLACEHOLDER_UUIDS:
+        return True
+
+    # Calculate Shannon entropy on hex digits only
+    hex_only = uuid_lower.replace('-', '')
+    if not hex_only:
+        return True
+
+    frequencies = Counter(hex_only)
+    len_data = len(hex_only)
+    entropy = -sum((count / len_data) * math.log2(count / len_data) for count in frequencies.values())
+
+    # Threshold 3.0: Real UUIDs have ~3.5-4.0 entropy, placeholders typically < 3.0
+    return entropy < 3.0
+
+
+def _is_valid_uuid(uuid_str: str) -> tuple[bool, str | None]:
+    """Check if UUID is valid and not a placeholder.
+
+    Args:
+        uuid_str: UUID string to check
+
+    Returns:
+        tuple: (is_valid, error_message)
+    """
+    if not UUID_PATTERN.match(uuid_str):
+        return False, f"Field 'uuid' must be a valid UUID v4 (got '{uuid_str}')"
+
+    if _is_placeholder_uuid(uuid_str):
+        return False, (
+            f"Field 'uuid' appears to be a placeholder/test UUID (got '{uuid_str}'). "
+            "Generate a real UUID using 'picard-plugins --manifest', 'uuidgen', or Python's uuid.uuid4()"
+        )
+
+    return True, None
+
+
 def validate_manifest_dict(manifest_data):
     """Validate manifest dictionary (no Version dependency).
 
@@ -179,10 +245,11 @@ def validate_manifest_dict(manifest_data):
         if not manifest_data.get(field):
             errors.append(f"Missing required field: {field}")
 
-    # UUID validation
-    uuid = manifest_data.get('uuid', '')
-    if uuid and not UUID_PATTERN.match(uuid):
-        errors.append(f"Field 'uuid' must be a valid UUID v4 (got '{uuid}')")
+    # UUID validation (only if present, required check above catches missing)
+    if 'uuid' in manifest_data:
+        is_valid, error_msg = _is_valid_uuid(manifest_data['uuid'])
+        if not is_valid:
+            errors.append(error_msg)
 
     # String fields with length constraints
     _validate_string_field(manifest_data, 'name', errors, min_len=1, max_len=MAX_NAME_LENGTH)
