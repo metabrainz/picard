@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-03-09 17:11+0000\n"
+"PO-Revision-Date: 2026-03-12 11:11+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -4840,7 +4840,7 @@ msgstr ""
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
-"Speelplaats voor filters met genres en folksonomietags (wordt bij het "
+"Speelplein voor filters met genres en folksonomietags (wordt bij het "
 "afsluiten gewist):"
 
 #: picard/ui/ui_options_interface.py:118
@@ -5485,7 +5485,7 @@ msgstr "Zet de instellingen van deze pagina terug naar de standaard"
 #: picard/ui/options/dialog.py:148 picard/ui/options/dialog.py:452
 #: picard/ui/options/dialog.py:478
 msgid "Attached Profiles"
-msgstr "Profielen"
+msgstr "Gekoppelde profielen"
 
 #: picard/ui/options/dialog.py:149
 msgid "Show which profiles are attached to the options on this page"
@@ -5660,7 +5660,7 @@ msgid ""
 msgstr ""
 "<html><head/><body>\n"
 "<p>Je kan genres toevoegen om filters te testen, één per regel.<br/>\n"
-"De speelplaats wordt niet opgeslagen als de instellingen worden verlaten.\n"
+"Het speelplein wordt niet opgeslagen als de instellingen worden verlaten.\n"
 "</p>\n"
 "<p>\n"
 "Een rode achtergrond betekent dat de tag wordt overgeslagen.<br/>\n"
