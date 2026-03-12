@@ -793,7 +793,12 @@ class PluginApi:
             album: The Album object to add the task to
             task_id: Unique identifier for this task (will be prefixed with plugin_id)
             description: Human-readable description of what the task does
-            timeout: Optional timeout in seconds
+            timeout: Optional timeout in seconds.  If `blocking` is set to True, the
+                           timeout is set to the lesser of 30 seconds or the value of
+                           timeout`. If `blocking` is set to True and no `timeout` is
+                           specified, the timeout value will be set to the default maximum
+                           of 30 seconds. This 30 second maximum is to help prevent
+                           freezing the UI for a long period of time.
             request_factory: Optional callable that creates and returns a PendingRequest.
                            If provided, the request is created and registered atomically.
             blocking: If True, the task will block the UI until it is completed. Use with
@@ -810,11 +815,15 @@ class PluginApi:
                     )
                 )
         """
+        MAX_TIMEOUT = 30.0  # Maximum allowed timeout for blocking tasks
         full_task_id = f'{self.plugin_id}_{task_id}'
 
         if blocking:
             task_type = TaskType.CRITICAL
             blocking_text = ' [BLOCKING]'
+            if timeout is None:
+                timeout = MAX_TIMEOUT
+            timeout = min(timeout, MAX_TIMEOUT)
         else:
             task_type = TaskType.PLUGIN
             blocking_text = ''

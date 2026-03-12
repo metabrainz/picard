@@ -836,7 +836,7 @@ Add a plugin task to an album. Plugin tasks default to non-blocking and won't pr
 - `album`: The Album object
 - `task_id`: Unique identifier (automatically prefixed with plugin_id)
 - `description`: Human-readable description
-- `timeout`: Optional timeout in seconds
+- `timeout`: Optional timeout in seconds. If `blocking` is set to True, the timeout is set to the lesser of 30 seconds or the value of `timeout`. If `blocking` is set to True and no `timeout` is specified, the timeout value will be set to the default maximum of 30 seconds. This 30 second maximum is to help prevent freezing the UI for a long period of time.
 - `request_factory`: Callable that creates and returns a PendingRequest. Use this to register network requests for automatic cancellation when the album is removed.
 - `blocking`: If set to True, the album will not be marked as loaded until this task is completed. Use with caution as this can block the UI if the task takes a long time.
 
