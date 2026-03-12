@@ -785,24 +785,25 @@ class PluginApi:
     ) -> None:
         """Add a plugin task to an album.
 
-        Plugin tasks are always non-blocking (TaskType.PLUGIN) and will not
-        prevent the album from being marked as loaded. This allows plugins to fetch
-        additional data asynchronously without blocking the user interface.
+        Plugin tasks default to non-blocking (TaskType.PLUGIN) and will not prevent
+        the album from being marked as loaded unless blocking=True is set. This allows
+        plugins to fetch additional data asynchronously without blocking the user interface.
 
         Args:
             album: The Album object to add the task to
             task_id: Unique identifier for this task (will be prefixed with plugin_id)
             description: Human-readable description of what the task does
-            timeout: Optional timeout in seconds.  If `blocking` is set to True, the
-                           timeout is set to the lesser of 30 seconds or the value of
-                           timeout`. If `blocking` is set to True and no `timeout` is
-                           specified, the timeout value will be set to the default maximum
-                           of 30 seconds. This 30 second maximum is to help prevent
-                           freezing the UI for a long period of time.
+            timeout: Optional timeout in seconds. When blocking=True, capped at 30 seconds
+                     maximum (defaults to 30s if not specified) to prevent UI freezing during
+                     album loading. When blocking=False, no plugin-level cap is applied. Note
+                     that all timeouts are ultimately capped by the user-configurable
+                     network_transfer_timeout_seconds setting (default 30s).
             request_factory: Optional callable that creates and returns a PendingRequest.
                            If provided, the request is created and registered atomically.
-            blocking: If True, the task will block the UI until it is completed. Use with
-                           caution as this can block the UI if the task takes a long time.
+            blocking: If True, prevents the album from being marked as loaded until this
+                      task completes (uses TaskType.CRITICAL). Use with caution as this
+                      blocks album loading. Always specify a reasonable timeout when using
+                      blocking=True. Defaults to False (TaskType.PLUGIN).
 
         Example:
             def fetch_extra_data(api, album, metadata, release):
@@ -815,7 +816,9 @@ class PluginApi:
                     )
                 )
         """
-        MAX_TIMEOUT = 30.0  # Maximum allowed timeout for blocking tasks
+        # Hard limit for blocking tasks to prevent UI freezing during album loading,
+        # independent of user-configurable network timeout setting
+        MAX_TIMEOUT = 30.0
         full_task_id = f'{self.plugin_id}_{task_id}'
 
         if blocking:
@@ -823,7 +826,8 @@ class PluginApi:
             blocking_text = ' [BLOCKING]'
             if timeout is None:
                 timeout = MAX_TIMEOUT
-            timeout = min(timeout, MAX_TIMEOUT)
+            else:
+                timeout = min(timeout, MAX_TIMEOUT)
         else:
             task_type = TaskType.PLUGIN
             blocking_text = ''
