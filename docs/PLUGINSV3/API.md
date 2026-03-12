@@ -828,16 +828,17 @@ def enable(api):
 
 Plugins can track asynchronous operations (like web requests) without blocking album loading.
 
-### `add_album_task(album, task_id, description, timeout=None, request_factory=None)`
+### `add_album_task(album, task_id, description, timeout=None, request_factory=None, blocking=False)`
 
-Add a plugin task to an album. Plugin tasks are always non-blocking and won't prevent the album from being marked as loaded.
+Add a plugin task to an album. Plugin tasks default to non-blocking and won't prevent the album from being marked as loaded. This behavior can be changed by setting the `blocking` parameter to True.
 
 **Parameters**:
 - `album`: The Album object
 - `task_id`: Unique identifier (automatically prefixed with plugin_id)
 - `description`: Human-readable description
-- `timeout`: Optional timeout in seconds
+- `timeout`: Optional timeout in seconds. When `blocking=True`, capped at 30 seconds maximum (defaults to 30s if not specified) to prevent UI freezing during album loading. When `blocking=False`, no plugin-level cap is applied. Note that all timeouts are ultimately capped by the user-configurable network_transfer_timeout_seconds setting (default 30s).
 - `request_factory`: Callable that creates and returns a PendingRequest. Use this to register network requests for automatic cancellation when the album is removed.
+- `blocking`: If set to True, the album will not be marked as loaded until this task is completed. Use with caution as this blocks album loading. Always specify a reasonable timeout when using blocking=True.
 
 **Example - Fetching additional album data**:
 ```python
