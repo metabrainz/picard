@@ -584,7 +584,7 @@ class Tagger(QtWidgets.QApplication):
         from picard import config as _cfg
 
         # Expose config on self for session helpers
-        self.config = _cfg  # type: ignore[attr-defined]
+        self.config = _cfg
         return _export_session(self)
 
     def import_session(self, data: dict) -> None:

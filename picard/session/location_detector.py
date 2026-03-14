@@ -66,9 +66,9 @@ class LocationDetector:
             return self._unclustered_location()
 
         if self._is_track_parent(parent):
-            return self._detect_track_location(parent)
+            return self._detect_track_location(parent)  # type: ignore[arg-type]
         elif self._is_cluster_parent(parent):
-            return self._detect_cluster_location(parent)
+            return self._detect_cluster_location(parent)  # type: ignore[arg-type]
         else:
             return self._unclustered_location()
 
@@ -120,13 +120,17 @@ class LocationDetector:
             return SessionItemLocation(type=SessionConstants.LOCATION_NAT, recording_id=parent.id)
 
         # Track placement
-        if getattr(parent, 'id', None):
+        if getattr(parent, 'id', None) and parent.album is not None:
             return SessionItemLocation(
-                type=SessionConstants.LOCATION_TRACK, album_id=parent.album.id, recording_id=parent.id
+                type=SessionConstants.LOCATION_TRACK,
+                album_id=parent.album.id,
+                recording_id=parent.id,
             )
 
         # Fallback to album unmatched
-        return SessionItemLocation(type=SessionConstants.LOCATION_ALBUM_UNMATCHED, album_id=parent.album.id)
+        if parent.album is not None:
+            return SessionItemLocation(type=SessionConstants.LOCATION_ALBUM_UNMATCHED, album_id=parent.album.id)
+        return SessionItemLocation(type=SessionConstants.LOCATION_UNCLUSTERED)
 
     def _detect_cluster_location(self, parent: Cluster) -> SessionItemLocation:
         """Detect location for files under a cluster.

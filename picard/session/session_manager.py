@@ -130,7 +130,7 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
         p = Path(str(p) + SessionConstants.SESSION_FILE_EXTENSION)
 
     # Local import to avoid module-level dependency during static analysis
-    import yaml  # type: ignore[import-not-found]
+    import yaml
 
     data = export_session(tagger)
 
