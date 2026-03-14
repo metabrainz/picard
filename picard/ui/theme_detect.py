@@ -30,6 +30,7 @@ import subprocess  # noqa: S404
 from picard import log
 
 from picard.ui.theme_detect_qtdbus import (
+    DBusThemeDetector,
     detect_freedesktop_color_scheme_dbus,
     detect_gnome_color_scheme_dbus,
     get_dbus_detector,
@@ -56,7 +57,7 @@ def gsettings_get(key: str) -> str | None:
         return None
 
 
-def _try_dbus_detection(detection_method: Callable[[object], bool | None], method_name: str) -> bool | None:
+def _try_dbus_detection(detection_method: Callable[[DBusThemeDetector], bool | None], method_name: str) -> bool | None:
     """
     Helper function to safely attempt D-Bus theme detection.
 
@@ -80,7 +81,7 @@ def _try_dbus_detection(detection_method: Callable[[object], bool | None], metho
 def detect_gnome_color_scheme_dark() -> bool:
     """Detect if GNOME color-scheme is set to dark."""
     # Try D-Bus first (secure method)
-    result = _try_dbus_detection(lambda detector: detector.detect_gnome_color_scheme_dbus(), "gnome color scheme")
+    result = _try_dbus_detection(lambda detector: detector.gnome_color_scheme_is_dark(), "gnome color scheme")
     if result is not None:
         return result
 
