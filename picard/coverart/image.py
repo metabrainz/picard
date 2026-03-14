@@ -67,6 +67,7 @@ from picard.util.filenaming import (
     make_save_path,
     make_short_filename,
 )
+from picard.util.imageinfo import ImageInfo
 from picard.util.scripttofilename import script_to_filename
 
 
@@ -211,10 +212,15 @@ class CoverArtImage:
     # indicator
     is_front: bool | None = None
     sourceprefix: str = 'URL'
+    url: QUrl | None = None
+    datahash: DataHash | None = None
+    thumbnail: 'CoverArtImage | None' = None
+    external_file_coverart: 'CoverArtImage | None' = None
+    format_info: 'ImageInfo | None' = None
 
     def __init__(
         self,
-        url=None,
+        url: QUrl | str | None = None,
         types: list[str] | None = None,
         comment: str = '',
         data: bytes | None = None,
@@ -491,6 +497,7 @@ class CoverArtImage:
                 new_dirname = os.path.dirname(new_filename)
                 if not os.path.isdir(new_dirname):
                     os.makedirs(new_dirname)
+                assert self.tempfile_filename is not None
                 shutil.copyfile(self.tempfile_filename, new_filename)
             except OSError as e:
                 raise CoverArtImageIOError(e) from e
@@ -526,6 +533,7 @@ class CoverArtImage:
     def tempfile_filename(self) -> str | None:
         if self.datahash:
             return self.datahash.filename
+        return None
 
     def normalized_types(self):
         if self.types and self.support_types:

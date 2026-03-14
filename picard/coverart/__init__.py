@@ -153,7 +153,7 @@ class CoverArt:
         provider = next(self.providers)
         result = CoverArtProvider.QueueState._STARTED
         try:
-            instance = provider.cls(self)
+            instance = provider.provider_class(self)
             if provider.enabled and instance.enabled():
                 log.debug("Trying cover art provider %s …", provider.name)
                 result = instance.queue_images()
@@ -170,9 +170,9 @@ class CoverArt:
             info = imageinfo.ImageInfo(
                 width=image.width,
                 height=image.height,
+                datalen=image.datalength,
                 mime=image.mimetype,
                 extension=image.extension,
-                datalen=image.datalength,
             )
             self._process_image_data(image, image.data, info)
             return CoverArtProvider.QueueState.WAIT
@@ -267,7 +267,7 @@ class CoverArt:
                 {
                     'type': image.types_as_string(),
                     'albumid': self.album.id,
-                    'host': image.url.host(),
+                    'host': image.url.host() if image.url else '',
                 },
                 echo=None,
             )

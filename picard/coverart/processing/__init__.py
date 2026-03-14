@@ -82,7 +82,7 @@ class CoverArtImageProcessing:
         self.album = album
         self.queues = get_cover_art_processors()
         self.task_counter: thread.TaskCounter = thread.TaskCounter()
-        self.errors = Queue()
+        self.errors: Queue = Queue()
 
     @handle_processing_exceptions
     def _run_processors_queue(
