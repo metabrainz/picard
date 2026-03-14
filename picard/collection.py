@@ -37,7 +37,7 @@ from picard.i18n import (
 from picard.webservice.api_helpers import MBAPIHelper
 
 
-user_collections = {}
+user_collections: dict[str, 'Collection'] = {}
 
 
 class Collection:
@@ -46,8 +46,8 @@ class Collection:
         self.id = collection_id
         self.name = ''
         self.size = 0
-        self.pending_releases = set()
-        self.releases = set()
+        self.pending_releases: set[str] = set()
+        self.releases: set[str] = set()
         self._mb_api = mb_api
 
     @property
