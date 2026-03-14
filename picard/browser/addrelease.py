@@ -26,6 +26,7 @@ from html import escape
 from operator import attrgetter
 import re
 from secrets import token_bytes
+from types import ModuleType
 
 from PyQt6.QtCore import QCoreApplication
 
@@ -37,12 +38,12 @@ from picard.util.mbserver import build_submission_url
 from picard.util.webbrowser2 import open
 
 
+jwt: ModuleType | None = None
 try:
-    import jwt  # type: ignore[unresolved-import]
-    import jwt.exceptions  # type: ignore[unresolved-import]
+    import jwt  # type: ignore[unresolved-import,no-redef]
+    import jwt.exceptions  # type: ignore[unresolved-import,no-redef]
 except ImportError:
     log.debug("PyJWT not available, addrelease functionality disabled")
-    jwt = None
 
 __key = token_bytes()  # Generating a new secret on each startup
 __algorithm = 'HS256'
