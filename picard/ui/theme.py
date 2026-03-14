@@ -69,7 +69,7 @@ AppKit = None
 winreg = None
 if IS_MACOS:
     try:
-        import AppKit  # type: ignore[unresolved-import,no-redef]
+        import AppKit  # type: ignore[unresolved-import,no-redef,import-not-found]
     except ImportError:
         pass
 

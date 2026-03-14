@@ -43,10 +43,10 @@ from picard.const.sys import (
 
 discid: ModuleType | None = None
 try:
-    from libdiscid.compat import discid  # type: ignore[unresolved-import,no-redef]
+    from libdiscid.compat import discid  # type: ignore[unresolved-import,no-redef,import-not-found]
 except ImportError:
     try:
-        import discid  # type: ignore[unresolved-import,no-redef]
+        import discid  # type: ignore[unresolved-import,no-redef,import-not-found]
     except (ImportError, OSError):
         pass
 

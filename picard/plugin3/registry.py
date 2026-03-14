@@ -38,8 +38,8 @@ from picard.plugin3.plugin import hash_string
 
 try:
     import tomllib  # type: ignore[unresolved-import]
-except ModuleNotFoundError:
-    import tomli as tomllib
+except (ImportError, ModuleNotFoundError):
+    import tomli as tomllib  # type: ignore[no-redef]
 
 
 REGISTRY_CACHE_VERSION = 1  # Increment when cache format changes

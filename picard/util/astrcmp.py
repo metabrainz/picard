@@ -36,7 +36,7 @@ def astrcmp_py(a, b):
 
 
 try:
-    from picard.util._astrcmp import astrcmp as astrcmp_c  # type: ignore[unresolved-import]
+    from picard.util._astrcmp import astrcmp as astrcmp_c  # type: ignore[unresolved-import,import-not-found]
 
     astrcmp = astrcmp_c
     astrcmp_implementation = "C"

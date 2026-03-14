@@ -20,8 +20,8 @@
 
 try:
     import tomllib  # type: ignore[unresolved-import]
-except ImportError:
-    import tomli as tomllib
+except (ImportError, ModuleNotFoundError):
+    import tomli as tomllib  # type: ignore[no-redef]
 
 from typing import BinaryIO
 
