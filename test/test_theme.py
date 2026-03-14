@@ -533,6 +533,7 @@ def test_windows_dark_theme_palette(monkeypatch, apps_use_light_theme, expected_
     ("env", "expected"),
     [
         ({"XDG_CURRENT_DESKTOP": "GNOME"}, "gnome"),
+        ({"XDG_CURRENT_DESKTOP": "ubuntu:GNOME"}, "gnome"),
         ({"XDG_CURRENT_DESKTOP": "KDE"}, "kde"),
         ({"KDE_FULL_SESSION": "true"}, "kde"),
         ({"XDG_SESSION_DESKTOP": "xfce"}, "xfce"),

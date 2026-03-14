@@ -198,6 +198,9 @@ def get_current_desktop_environment() -> str:
     """Detect the current desktop environment (DE) as a lowercase string."""
     de = os.environ.get("XDG_CURRENT_DESKTOP")
     if de:
+        # Ubuntu prefixes the session name with "ubuntu:"
+        if de.startswith("ubuntu:"):
+            de = de[len("ubuntu:") :]
         return de.lower()
     # Fallbacks for KDE, XFCE, LXQt
     if os.environ.get("KDE_FULL_SESSION") == "true":
