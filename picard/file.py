@@ -706,8 +706,9 @@ class File(MetadataItem):
             if new_path != old_path:
                 patterns_string = config.setting['move_additional_files_pattern']
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
+                new_basename = os.path.splitext(os.path.basename(new_filename))[0]
                 try:
-                    moves = self._get_additional_files_moves(old_path, new_path, patterns)
+                    moves = self._get_additional_files_moves(old_path, new_path, patterns, new_basename)
                     self._apply_additional_files_moves(moves, config.setting['move_overwrite_existing_files'])
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
@@ -719,8 +720,9 @@ class File(MetadataItem):
             for pattern in set(patterns_string.lower().split())
         }
 
-    def _get_additional_files_moves(self, old_path, new_path, patterns):
+    def _get_additional_files_moves(self, old_path, new_path, patterns, new_basename):
         if patterns:
+            counters = Counter()
             with os.scandir(old_path) as scan:
                 for entry in scan:
                     is_hidden = entry.name.startswith('.')
@@ -728,9 +730,41 @@ class File(MetadataItem):
                         if is_hidden and not match_hidden:
                             continue
                         if pattern_regex.match(entry.name):
-                            new_file_path = os.path.join(new_path, entry.name)
+                            # Get the extension from the original file
+                            _, ext = os.path.splitext(entry.name)
+                            # Generate new filename with counter for conflicts
+                            new_name = self._get_unique_additional_filename(new_path, new_basename, ext, counters)
+                            new_file_path = os.path.join(new_path, new_name)
                             yield (entry.path, new_file_path)
                             break  # we are done with this file
+
+    def _get_unique_additional_filename(self, new_path, new_basename, ext, counters):
+        """Generate a unique filename for additional files to handle conflicts.
+        
+        Args:
+            new_path: Destination directory
+            new_basename: Base name (from the parent audio file's new name)
+            ext: File extension from the original additional file
+            counters: Dictionary tracking how many times each basename has been used
+        
+        Returns:
+            A unique filename with extension
+        """
+        base_key = new_basename + ext
+        if counters[base_key]:
+            new_name = "%s (%d)%s" % (new_basename, counters[base_key], ext)
+        else:
+            new_name = new_basename + ext
+        counters[base_key] += 1
+        
+        # Handle file system conflicts by adding more counters if file exists
+        test_path = os.path.join(new_path, new_name)
+        while os.path.exists(test_path):
+            new_name = "%s (%d)%s" % (new_basename, counters[base_key], ext)
+            test_path = os.path.join(new_path, new_name)
+            counters[base_key] += 1
+        
+        return new_name
 
     def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
