@@ -659,7 +659,7 @@ class ScriptTextEdit(QTextEdit):
         return (
             force_completion_popup
             or event.key() in {Qt.Key.Key_Backspace, Qt.Key.Key_Delete}
-            or self.autocomplete_trigger_chars.match(event.text())
+            or bool(self.autocomplete_trigger_chars.match(event.text()))
         )
 
     def _should_update_completion_context(

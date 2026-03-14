@@ -185,7 +185,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def __init__(self, parent=None, disable_player=False):
         super().__init__(parent=parent)
-        self.actions = {}
+        self.action_map = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
         self.tagger = QtCore.QCoreApplication.instance()
@@ -329,11 +329,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
-            self.actions[MainAction.ENABLE_RENAMING].setChecked(new_value)
+            self.action_map[MainAction.ENABLE_RENAMING].setChecked(new_value)
         elif name == 'move_files':
-            self.actions[MainAction.ENABLE_MOVING].setChecked(new_value)
+            self.action_map[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'enable_tag_saving':
-            self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
+            self.action_map[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
         elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
             self._make_script_selector_menu()
 
@@ -680,7 +680,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 self.tagger.acoustidmanager.submit()
 
     def _create_actions(self):
-        self.actions = dict(create_actions(self))
+        self.action_map = dict(create_actions(self))
 
     def _create_cd_lookup_menu(self):
         menu = QtWidgets.QMenu(_("Lookup &CD…"))
@@ -801,21 +801,21 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _set_cd_lookup_from_file_actions(self, drives):
         if drives:
             self.cd_lookup_menu.addSeparator()
-        logfile_action = self.actions[MainAction.DISCID_FROM_LOGFILE]
+        logfile_action = self.action_map[MainAction.DISCID_FROM_LOGFILE]
         self.cd_lookup_menu.addAction(logfile_action)
         if not drives:
             self._update_cd_lookup_default_action(logfile_action)
-        self.cd_lookup_menu.addAction(self.actions[MainAction.DISCID_FROM_TAGS])
+        self.cd_lookup_menu.addAction(self.action_map[MainAction.DISCID_FROM_TAGS])
 
     def _update_cd_lookup_default_action(self, action):
         if action:
             target = action.trigger
         else:
             target = self.lookup_cd
-        reconnect(self.actions[MainAction.CD_LOOKUP].triggered, target)
+        reconnect(self.action_map[MainAction.CD_LOOKUP].triggered, target)
 
     def _update_cd_lookup_button(self):
-        button = self.toolbar.widgetForAction(self.actions[MainAction.CD_LOOKUP])
+        button = self.toolbar.widgetForAction(self.action_map[MainAction.CD_LOOKUP])
         enabled = bool(self.cd_lookup_menu.actions())
         self.cd_lookup_menu.setEnabled(enabled)
         if button:
@@ -853,9 +853,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _reset_option_menu_state(self):
         config = get_config()
-        self.actions[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
-        self.actions[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
-        self.actions[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
+        self.action_map[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
+        self.action_map[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
+        self.action_map[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
         self._make_settings_selector_menu()
@@ -880,7 +880,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def add_menu(menu_title, *args):
             menu = self.menuBar().addMenu(menu_title)
             menu.setSeparatorsCollapsible(True)
-            menu_builder(menu, self.actions, *args)
+            menu_builder(menu, self.action_map, *args)
 
         add_menu(
             _("&File"),
@@ -1050,7 +1050,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             toolbar.setMovable(False)
 
         def add_toolbar_action(action_id):
-            action = self.actions[action_id]
+            action = self.action_map[action_id]
             toolbar.addAction(action)
             widget = toolbar.widgetForAction(action)
             widget.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
@@ -1081,14 +1081,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.addToolBar(QtCore.Qt.ToolBarArea.BottomToolBarArea, toolbar)
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
-        self.actions[MainAction.PLAYER_TOOLBAR_TOGGLE] = toolbar.toggleViewAction()
+        self.action_map[MainAction.PLAYER_TOOLBAR_TOGGLE] = toolbar.toggleViewAction()
         toolbar.hide()  # Hide by default
         self.player_toolbar = toolbar
 
     def _create_search_toolbar(self):
         config = get_config()
         self.search_toolbar = toolbar = self.addToolBar(_("Search"))
-        self.actions[MainAction.SEARCH_TOOLBAR_TOGGLE] = self.search_toolbar.toggleViewAction()
+        self.action_map[MainAction.SEARCH_TOOLBAR_TOGGLE] = self.search_toolbar.toggleViewAction()
         toolbar.setObjectName('search_toolbar')
         if self._is_wayland:
             toolbar.setFloatable(False)  # https://bugreports.qt.io/browse/QTBUG-92191
@@ -1109,7 +1109,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         hbox.addWidget(self.search_edit, 0)
         self.search_button = QtWidgets.QToolButton(search_panel)
         self.search_button.setAutoRaise(True)
-        self.search_button.setDefaultAction(self.actions[MainAction.SEARCH])
+        self.search_button.setDefaultAction(self.action_map[MainAction.SEARCH])
         self.search_button.setIconSize(QtCore.QSize(22, 22))
         self.search_button.setAttribute(QtCore.Qt.WidgetAttribute.WA_MacShowFocusRect)
 
@@ -1147,7 +1147,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if action_name not in {'-', 'separator'}:
                 try:
                     action_id = MainAction(action_name)
-                    action = self.actions[action_id]
+                    action = self.action_map[action_id]
                     current_action = self.toolbar.widgetForAction(action)
                 except (ValueError, KeyError) as e:
                     log.debug("Warning: Unknown action name '%s' found in config. Ignored. %s", action_name, e)
@@ -1169,7 +1169,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.SEARCH, self.search_edit.text())
 
     def _trigger_search_action(self):
-        action = self.actions[MainAction.SEARCH]
+        action = self.action_map[MainAction.SEARCH]
         if action.isEnabled():
             action.trigger()
 
@@ -1775,8 +1775,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.enable_action(MainAction.ALBUM_OTHER_VERSIONS, is_album)
 
     def enable_action(self, action_id, enabled):
-        if self.actions[action_id]:
-            self.actions[action_id].setEnabled(bool(enabled))
+        if self.action_map[action_id]:
+            self.action_map[action_id].setEnabled(bool(enabled))
 
     def update_selection(self, objects=None, new_selection=True, drop_album_caches=False):
         if self.ignore_selection_changes:
@@ -1852,7 +1852,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.window.metadata_box.update()
 
     def action_is_checked(self, action_id):
-        return self.actions[action_id].isChecked()
+        return self.action_map[action_id].isChecked()
 
     def show_metadata_view(self):
         """Show/hide the metadata view (including the cover art box)."""

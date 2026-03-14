@@ -104,7 +104,7 @@ class MPRIS2Service(QObject):
         QObject.__init__(self)
         self._bus = bus
         self._player = player
-        self._metadata = {}
+        self._metadata: dict = {}
 
         # Set up adaptors for DBus interfaces
         self._adaptor = MediaPlayer2Adaptor(self)
@@ -203,7 +203,7 @@ class MPRIS2Service(QObject):
         self._bus.send(msg)
 
 
-@pyqtClassInfo('D-Bus Interface', MPRIS2_DBUS_INTERFACE)
+@pyqtClassInfo('D-Bus Interface', MPRIS2_DBUS_INTERFACE)  # type: ignore[func-returns-value]
 class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
     """See https://specifications.freedesktop.org/mpris/latest/Media_Player.html"""
 
@@ -215,7 +215,7 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
     def Fullscreen(self):
         return False
 
-    @Fullscreen.setter
+    @Fullscreen.setter  # type: ignore[no-redef]
     def Fullscreen(self, value):
         raise NotImplementedError()
 
@@ -258,7 +258,7 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
         pass
 
 
-@pyqtClassInfo('D-Bus Interface', MPRIS2_DBUS_INTERFACE_PLAYER)
+@pyqtClassInfo('D-Bus Interface', MPRIS2_DBUS_INTERFACE_PLAYER)  # type: ignore[func-returns-value]
 class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     """See https://specifications.freedesktop.org/mpris/latest/Player_Interface.html"""
 
@@ -285,7 +285,7 @@ class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     def LoopStatus(self):
         return MPRIS2LoopStatus.None_.value
 
-    @LoopStatus.setter
+    @LoopStatus.setter  # type: ignore[no-redef]
     def LoopStatus(self, value):
         # Not supported
         pass
@@ -294,7 +294,7 @@ class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     def Rate(self):
         return self._player.playback_rate
 
-    @Rate.setter
+    @Rate.setter  # type: ignore[no-redef]
     def Rate(self, value):
         # The player automatically limits the value to the allowed minimum / maximum
         self._player.playback_rate = value
@@ -303,7 +303,7 @@ class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     def Shuffle(self):
         return False
 
-    @Shuffle.setter
+    @Shuffle.setter  # type: ignore[no-redef]
     def Shuffle(self, value):
         # Not supported
         pass
@@ -316,7 +316,7 @@ class MediaPlayer2PlayerAdaptor(QDBusAbstractAdaptor):
     def Volume(self):
         return self._player.volume
 
-    @Volume.setter
+    @Volume.setter  # type: ignore[no-redef]
     def Volume(self, value):
         # Ensure the value is inside the range
         value = min(max(value, 0.0), 1.0)

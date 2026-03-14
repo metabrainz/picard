@@ -44,7 +44,7 @@ class MatchingOptionsPage(OptionsPage):
         ('track_matching_threshold', ['track_matching_threshold']),
     )
 
-    _release_type_sliders = {}
+    _release_type_sliders: dict = {}
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

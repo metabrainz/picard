@@ -145,8 +145,10 @@ class TagsFromFileNamesDialog(PicardDialog):
             for i, column in enumerate(columns):
                 values = matches.get(column, [])
                 item.setText(i + 1, '; '.join(values))
-        self.ui.files.header().resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
-        self.ui.files.header().setStretchLastSection(True)
+        header = self.ui.files.header()
+        if header:
+            header.resizeSections(QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
+            header.setStretchLastSection(True)
 
     def accept(self):
         expression = TagMatchExpression(self.ui.format.currentText(), self.ui.replace_underscores.isChecked())

@@ -69,16 +69,16 @@ AppKit = None
 winreg = None
 if IS_MACOS:
     try:
-        import AppKit  # type: ignore[unresolved-import]
+        import AppKit  # type: ignore[unresolved-import,no-redef]
     except ImportError:
-        AppKit = None
+        pass
 
-    OS_SUPPORTS_THEMES = bool(AppKit) and hasattr(AppKit.NSAppearance, '_darkAquaAppearance')
+    OS_SUPPORTS_THEMES = AppKit is not None and hasattr(AppKit.NSAppearance, '_darkAquaAppearance')
 
 elif IS_HAIKU:
     OS_SUPPORTS_THEMES = False
 elif IS_WIN:
-    import winreg
+    import winreg  # type: ignore[assignment]
 
 
 # Those are values stored in config file:

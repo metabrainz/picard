@@ -274,7 +274,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         label = locale.format_string(_(self._rate_fmt), playback_rate)
         self.setText(label)
 
-    def wheelEvent(self, event: QWheelEvent):
+    def wheelEvent(self, event: QWheelEvent | None):
+        if event is None:
+            return
         # Angle delta is in eight of a degree, so 2880 are a full rotation.
         full_rotation = 2880
         delta = event.angleDelta().y()

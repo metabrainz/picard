@@ -24,9 +24,10 @@ def get_logarithmic_volume(linear_volume: float):
     """Return logarithmic scale volume for given linear volume"""
     if linear_volume == 1.0:  # 100% should be 100%, without rounding errors
         return 1.0
+    # PyQt6 stubs are wrong; Qt API uses positional args per Qt docs
     return QAudio.convertVolume(
-        linear_volume,
-        QAudio.VolumeScale.LinearVolumeScale,
+        linear_volume,  # type: ignore[arg-type, call-arg]
+        QAudio.VolumeScale.LinearVolumeScale,  # type: ignore[arg-type]
         QAudio.VolumeScale.LogarithmicVolumeScale,
     )
 
@@ -35,8 +36,9 @@ def get_linear_volume(logarithmic_volume: float):
     """Return linear scale volume for given logarithmic volume"""
     if logarithmic_volume == 1.0:  # 100% should be 100%, without rounding errors
         return 1.0
+    # PyQt6 stubs are wrong; Qt API uses positional args per Qt docs
     return QAudio.convertVolume(
-        logarithmic_volume,
-        QAudio.VolumeScale.LogarithmicVolumeScale,
+        logarithmic_volume,  # type: ignore[arg-type, call-arg]
+        QAudio.VolumeScale.LogarithmicVolumeScale,  # type: ignore[arg-type]
         QAudio.VolumeScale.LinearVolumeScale,
     )

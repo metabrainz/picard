@@ -39,7 +39,7 @@ try:
     from PyQt6 import QtMultimedia  # noqa: F401
 except ImportError as e:
     qt_multimedia_available = False
-    qt_multimedia_errmsg = e.msg
+    qt_multimedia_errmsg: str | None = e.msg
 else:
     qt_multimedia_available = True
     qt_multimedia_errmsg = None
@@ -88,7 +88,7 @@ def get_now_playing_service(player: 'Player') -> NowPlayingService | None:
         return None
 
     try:
-        now_playing_service = None
+        now_playing_service: NowPlayingService | None = None
         if IS_MACOS:
             from picard.ui.player.macos import MacNowPlayingService
 

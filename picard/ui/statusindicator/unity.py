@@ -75,8 +75,8 @@ class UnityLauncherEntryService(QObject):
         return [self._app_uri, self.current_progress]
 
 
-@pyqtClassInfo('D-Bus Interface', DBUS_INTERFACE)
-@pyqtClassInfo(
+@pyqtClassInfo('D-Bus Interface', DBUS_INTERFACE)  # type: ignore[func-returns-value]
+@pyqtClassInfo(  # type: ignore[func-returns-value]
     'D-Bus Introspection',
     '<interface name="%s">\n'
     '  <signal name="Update">\n'

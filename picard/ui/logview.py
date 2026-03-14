@@ -144,30 +144,30 @@ class VerbosityMenu(QtWidgets.QMenu):
         super().__init__(parent=parent)
 
         self.action_group = QtGui.QActionGroup(self)
-        self.actions = {}
+        self.action_map = {}
         for level, feat in log.levels_features.items():
             action = QtGui.QAction(_(feat.name), self)
             action.setCheckable(True)
             action.triggered.connect(partial(self.verbosity_changed.emit, level))
             self.action_group.addAction(action)
             self.addAction(action)
-            self.actions[level] = action
+            self.action_map[level] = action
 
     def set_verbosity(self, level):
-        self.actions[level].setChecked(True)
+        self.action_map[level].setChecked(True)
 
 
 class DebugOptsMenu(QtWidgets.QMenu):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
 
-        self.actions = {}
+        self.action_map = {}
         for debug_opt in DebugOpt:
             action = QtGui.QAction(_(debug_opt.title), self, checkable=True, checked=debug_opt.enabled)
             action.setToolTip(_(debug_opt.description))
             action.triggered.connect(partial(self.debug_opt_changed, debug_opt))
             self.addAction(action)
-            self.actions[debug_opt] = action
+            self.action_map[debug_opt] = action
 
     def debug_opt_changed(self, debug_opt, checked):
         debug_opt.enabled = checked

@@ -444,7 +444,7 @@ class ProfilesOptionsPage(OptionsPage):
         Yields:
             str: Settings key
         """
-        checked_items = set()
+        checked_items: set[str] = set()
         for i in range(self.ui.settings_tree.topLevelItemCount()):
             tl_item = self.ui.settings_tree.topLevelItem(i)
             for j in range(tl_item.childCount()):

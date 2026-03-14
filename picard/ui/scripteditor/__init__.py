@@ -88,7 +88,9 @@ class ScriptFileError(OptionsCheckError):
 
 
 class NotEmptyValidator(QtGui.QValidator):
-    def validate(self, text: str, pos):
+    def validate(self, text: str | None, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
+        if text is None:
+            text = ""
         if bool(text.strip()):
             state = QtGui.QValidator.State.Acceptable
         else:

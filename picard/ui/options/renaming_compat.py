@@ -165,7 +165,9 @@ class RenamingCompatOptionsPage(OptionsPage):
 
 
 class NoDirectorySeparatorValidator(QtGui.QValidator):
-    def validate(self, text: str, pos):
+    def validate(self, text: str | None, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
+        if text is None:
+            text = ""
         if os.sep in text or (os.altsep and os.altsep in text):
             state = QtGui.QValidator.State.Invalid
         else:
@@ -177,7 +179,9 @@ class WinCompatReplacementValidator(QtGui.QValidator):
     # Allow any length, including whitespace, but forbid Windows-illegal characters and directory separators
     _re_forbidden = re.compile(r'["*:<>?|/\\]')
 
-    def validate(self, text: str, pos):
+    def validate(self, text: str | None, pos: int) -> tuple[QtGui.QValidator.State, str, int]:
+        if text is None:
+            text = ""
         if self._re_forbidden.search(text):
             state = QtGui.QValidator.State.Invalid
         else:
