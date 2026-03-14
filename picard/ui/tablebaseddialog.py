@@ -96,7 +96,9 @@ class ResultTable(QtWidgets.QTableWidget):
             return False
 
         vertical_header = self.verticalHeader()
+        assert vertical_header is not None
         horizontal_header = self.horizontalHeader()
+        assert horizontal_header is not None
 
         # Get the visual indices of the visible rows
         # visualIndexAt(0) gives the visual index of the first visible item
