@@ -139,7 +139,7 @@ class Item:
     @property
     def errors(self) -> list[str]:
         if not hasattr(self, '_errors'):
-            self._errors = []
+            self._errors: list[str] = []
         return self._errors
 
     def error_append(self, msg: str):
@@ -219,7 +219,8 @@ class MetadataItem(QtCore.QObject, Item):
     def _track_or_disc_number(self, field):
         """Extract tracknumber or discnumber as int, defaults to 0."""
         try:
-            return int(self.metadata.get(field, '0').split('/')[0])
+            value = self.metadata.get(field, '0') or '0'
+            return int(value.split('/')[0])
         except ValueError:
             return 0
 

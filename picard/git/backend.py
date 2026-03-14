@@ -78,8 +78,8 @@ class GitRef:
     def __init__(
         self,
         name: str,
-        target: str = None,
-        ref_type: GitRefType = None,
+        target: str | None = None,
+        ref_type: GitRefType | None = None,
         is_remote: bool = False,
         is_annotated: bool = False,
     ):
@@ -253,11 +253,11 @@ class GitRepository(ABC):
         """Get commit timestamp for given commit ID"""
 
     @abstractmethod
-    def fetch_remote(self, remote, refspec: str = None, callbacks=None):
+    def fetch_remote(self, remote, refspec: str | None = None, callbacks=None):
         """Fetch from remote with optional refspec"""
 
     @abstractmethod
-    def fetch_remote_with_tags(self, remote, refspec: str = None, callbacks=None):
+    def fetch_remote_with_tags(self, remote, refspec: str | None = None, callbacks=None):
         """Fetch from remote including tags"""
 
     @abstractmethod

@@ -101,7 +101,7 @@ def set_locale_from_env():
 
 
 if IS_WIN:
-    from ctypes import windll
+    from ctypes import windll  # type: ignore[attr-defined]
 
     def _get_default_locale():
         try:

@@ -26,6 +26,7 @@
 
 
 from base64 import urlsafe_b64encode
+from collections.abc import Callable
 from functools import partial
 from hashlib import sha256
 from json.decoder import JSONDecodeError
@@ -253,7 +254,7 @@ class OAuthManager:
         except KeyError as e:
             raise OAuthInvalidStateError from e
 
-    def get_authorization_url(self, scopes, callback: callable):
+    def get_authorization_url(self, scopes, callback: Callable):
         params = {
             'response_type': 'code',
             'client_id': MUSICBRAINZ_OAUTH_CLIENT_ID,

@@ -372,7 +372,9 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         if 'release-group' in release:
             tagger = QtCore.QCoreApplication.instance()
-            rg = tagger.get_release_group_by_id(release['release-group']['id'])
+            if tagger is None:
+                return parts
+            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
             if release['id'] in rg.loaded_albums:
                 parts.append((1.0, 6))
 
