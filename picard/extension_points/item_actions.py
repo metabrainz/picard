@@ -54,7 +54,7 @@ from picard.util.display_title_base import HasDisplayTitle
 
 class BaseAction(QtGui.QAction, HasDisplayTitle):
     TITLE = "Unknown"
-    MENU = []
+    MENU: list = []
 
     def __init__(self, api=None, parent=None):
         super().__init__(self.display_title(), parent=parent)

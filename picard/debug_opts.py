@@ -26,9 +26,11 @@ from picard.i18n import N_
 
 
 class DebugOptEnum(int, Enum):
-    __registry__ = set()
+    __registry__: set = set()
+    title: str
+    description: str
 
-    def __new__(cls, value: int, title: str, description: str) -> None:
+    def __new__(cls, value: int, title: str, description: str) -> 'DebugOptEnum':
         value = int(value)
         obj = super().__new__(cls, value)
         obj._value_ = value

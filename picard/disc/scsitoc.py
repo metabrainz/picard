@@ -65,6 +65,9 @@ def parse_toc_entries(f):
         entries.pop(-1)
         last_track = entries[-1].number
 
+    if leadout_offset is None:
+        raise NotSupportedTOCError("No leadout offset found in TOC")
+
     offsets = tuple(entry.start_sector + PREGAP_LENGTH for entry in entries)
     return (first_track, last_track, leadout_offset + PREGAP_LENGTH) + offsets
 
