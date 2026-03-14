@@ -30,10 +30,13 @@ from test.picardtestcase import (
 
 from picard.formats import asf
 
+from picard.metadata import Metadata
+
 from .common import (
     CommonTests,
     load_metadata,
     load_raw,
+    save_and_load_metadata,
     save_metadata,
     save_raw,
     skipUnlessTestfile,
@@ -87,6 +90,19 @@ class CommonAsfTests:
         def test_ignore_invalid_wm_picture(self):
             # A picture that cannot be unpacked
             self._test_invalid_picture(b'notapicture')
+
+        @skipUnlessTestfile
+        def test_delete_totaldiscs_keeps_discnumber(self):
+            # Deleting totaldiscs must not remove discnumber. Both are stored
+            # in WM/PartOfSet, so a naive delete would wipe the disc number too.
+            metadata = Metadata({'discnumber': '2', 'totaldiscs': '4'})
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual('2', original_metadata['discnumber'])
+            self.assertEqual('4', original_metadata['totaldiscs'])
+            del metadata['totaldiscs']
+            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertEqual('2', new_metadata['discnumber'])
+            self.assertNotIn('totaldiscs', new_metadata)
 
 
 class ASFTest(CommonAsfTests.AsfTestCase):
