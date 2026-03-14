@@ -196,6 +196,23 @@ class CommonVorbisTests:
             self.assertEqual('2023-04-18', metadata['date'])
             self.assertEqual('foo', metadata['title'])
 
+        @skipUnlessTestfile
+        def test_unsyncedlyrics_mapped_to_lyrics(self):
+            # unsyncedlyrics is used by some software as an alternative to lyrics.
+            # On load, Picard should map it to the standard lyrics tag.
+            save_raw(self.filename, {'unsyncedlyrics': 'some lyrics'})
+            metadata = load_metadata(self.format_registry, self.filename)
+            self.assertEqual('some lyrics', metadata['lyrics'])
+            self.assertNotIn('unsyncedlyrics', metadata)
+
+        @skipUnlessTestfile
+        def test_unsyncedlyrics_not_overwrite_lyrics(self):
+            # If both lyrics and unsyncedlyrics exist, lyrics takes priority.
+            save_raw(self.filename, {'lyrics': 'standard', 'unsyncedlyrics': 'alternative'})
+            metadata = load_metadata(self.format_registry, self.filename)
+            self.assertEqual('standard', metadata['lyrics'])
+            self.assertNotIn('unsyncedlyrics', metadata)
+
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'

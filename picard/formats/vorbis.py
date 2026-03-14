@@ -191,6 +191,10 @@ class VCommentFile(File):
                     if 'totaldiscs' in file.tags:
                         continue
                     name = 'totaldiscs'
+                elif name == 'unsyncedlyrics':
+                    if 'lyrics' in file.tags:
+                        continue
+                    name = 'lyrics'
                 elif name == 'metadata_block_picture':
                     try:
                         image = mutagen.flac.Picture(base64.standard_b64decode(value))
