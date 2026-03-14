@@ -133,11 +133,22 @@ class TestAdditionalFilesMoves(SampleFileSystem):
 
     dst_files = list(src_files)
 
+    def test_rename_additional_files(self):
+        """Test that additional files are renamed to match the parent audio file name."""
+        src, dst = self._prepare_files()
+        f = self.format_registry.open(src['test.mp3'])
+        patterns = f._compile_move_additional_files_pattern('*.jpg')
+
+        moves = dict(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns, 'renamed_song'))
+        # Additional files should be renamed to match the new base name
+        self.assertEqual(moves[src['cover1.jpg']], os.path.join(self.dst_directory, 'renamed_song.jpg'))
+        self.assertEqual(moves[src['cover2.JPG']], os.path.join(self.dst_directory, 'renamed_song.JPG'))
+
     def test_no_pattern(self):
         src, dst = self._prepare_files()
         f = self.format_registry.open(src['test.mp3'])
 
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, ()))
+        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, (), 'test'))
         expected = set()
         self.assertEqual(moves, expected)
 
@@ -147,7 +158,7 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         patterns = f._compile_move_additional_files_pattern('*.jpg')
 
         with self.assertRaises(FileNotFoundError):
-            moves = set(f._get_additional_files_moves(self.src_directory + 'donotexist', self.dst_directory, patterns))
+            moves = set(f._get_additional_files_moves(self.src_directory + 'donotexist', self.dst_directory, patterns, 'test'))
             del moves
 
     def test_no_dst_dir(self):
@@ -156,10 +167,10 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         patterns = f._compile_move_additional_files_pattern('*.jpg')
 
         suffix = 'donotexist'
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory + suffix, patterns))
+        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory + suffix, patterns, 'test'))
         expected = {
-            (src['cover1.jpg'], os.path.join(self.dst_directory + suffix, 'cover1.jpg')),
-            (src['cover2.JPG'], os.path.join(self.dst_directory + suffix, 'cover2.JPG')),
+            (src['cover1.jpg'], os.path.join(self.dst_directory + suffix, 'test.jpg')),
+            (src['cover2.JPG'], os.path.join(self.dst_directory + suffix, 'test.JPG')),
         }
         self.assertEqual(moves, expected)
 
@@ -168,10 +179,10 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('*.j?g *.jpg')
 
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
+        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns, 'test'))
         expected = {
-            (src['cover1.jpg'], dst['cover1.jpg']),
-            (src['cover2.JPG'], dst['cover2.JPG']),
+            (src['cover1.jpg'], os.path.join(self.dst_directory, 'test.jpg')),
+            (src['cover2.JPG'], os.path.join(self.dst_directory, 'test.JPG')),
         }
         self.assertEqual(moves, expected)
 
@@ -180,10 +191,10 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('.*.j?g .*.jpg')
 
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
+        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns, 'test'))
         expected = {
-            (src['.hidden1.jpg'], dst['.hidden1.jpg']),
-            (src['.hidden2.JPG'], dst['.hidden2.JPG']),
+            (src['.hidden1.jpg'], os.path.join(self.dst_directory, 'test.jpg')),
+            (src['.hidden2.JPG'], os.path.join(self.dst_directory, 'test.JPG')),
         }
         self.assertEqual(moves, expected)
 
@@ -192,12 +203,15 @@ class TestAdditionalFilesMoves(SampleFileSystem):
         f = self.format_registry.open(src['test.mp3'])
         patterns = f._compile_move_additional_files_pattern('.*1.j?g *1.jpg')
 
-        moves = set(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns))
-        expected = {
-            (src['.hidden1.jpg'], dst['.hidden1.jpg']),
-            (src['cover1.jpg'], dst['cover1.jpg']),
-        }
-        self.assertEqual(moves, expected)
+        moves = dict(f._get_additional_files_moves(self.src_directory, self.dst_directory, patterns, 'test'))
+        # Both files should be moved and renamed to match parent file name
+        # One will be 'test.jpg', the other 'test (1).jpg' (order depends on scan order)
+        self.assertEqual(len(moves), 2)
+        self.assertEqual(set(moves.keys()), {src['cover1.jpg'], src['.hidden1.jpg']})
+        self.assertEqual(
+            set(moves.values()),
+            {os.path.join(self.dst_directory, 'test.jpg'), os.path.join(self.dst_directory, 'test (1).jpg')}
+        )
 
 
 class TestFileSystem(SampleFileSystem):
@@ -205,14 +219,16 @@ class TestFileSystem(SampleFileSystem):
         f = self.format_registry.open(src['test.mp3'])
         f._move_additional_files(src['test.mp3'], dst['test.mp3'], config)
 
-    def _assert_files_moved(self, src, dst):
+    def _assert_files_moved(self, src, dst, dst_rel_path=''):
         self._move_additional_files(src, dst)
-        self._assertFile(dst['cover.jpg'])
+        # Additional files are now renamed to match the parent file name
+        dst_dir = os.path.join(self.dst_directory, dst_rel_path) if dst_rel_path else self.dst_directory
+        self._assertFile(os.path.join(dst_dir, 'test.jpg'))
         self._assertNoFile(src['cover.jpg'])
 
     def _assert_files_not_moved(self, src, dst):
         self._move_additional_files(src, dst)
-        self._assertNoFile(dst['cover.jpg'])
+        self._assertNoFile(os.path.join(self.dst_directory, 'test.jpg'))
         self._assertFile(src['cover.jpg'])
 
     def test_move_additional_files_source_unicode(self):
@@ -221,7 +237,7 @@ class TestFileSystem(SampleFileSystem):
 
     def test_move_additional_files_target_unicode(self):
         src, dst = self._prepare_files(dst_rel_path='música')
-        self._assert_files_moved(src, dst)
+        self._assert_files_moved(src, dst, dst_rel_path='música')
 
     def test_move_additional_files_duplicate_patterns(self):
         src, dst = self._prepare_files()
@@ -231,15 +247,20 @@ class TestFileSystem(SampleFileSystem):
     def test_move_additional_files_hidden_nopattern(self):
         src, dst = self._prepare_files()
         config.setting['move_additional_files_pattern'] = '*.jpg'
-        self._assert_files_moved(src, dst)
-        self._assertNoFile(dst['.hidden.jpg'])
+        self._move_additional_files(src, dst)
+        # cover.jpg should be moved and renamed to test.jpg
+        self._assertFile(os.path.join(self.dst_directory, 'test.jpg'))
+        self._assertNoFile(src['cover.jpg'])
+        # Hidden file should not be moved (pattern doesn't match hidden files)
         self._assertFile(src['.hidden.jpg'])
 
     def test_move_additional_files_hidden_pattern(self):
         src, dst = self._prepare_files()
         config.setting['move_additional_files_pattern'] = '*.jpg .*.jpg'
-        self._assert_files_moved(src, dst)
-        self._assertFile(dst['.hidden.jpg'])
+        self._move_additional_files(src, dst)
+        # Both cover.jpg and .hidden.jpg should be moved and renamed to test.jpg
+        self._assertFile(os.path.join(self.dst_directory, 'test.jpg'))
+        self._assertNoFile(src['cover.jpg'])
         self._assertNoFile(src['.hidden.jpg'])
 
     def test_move_additional_files_disabled(self):
