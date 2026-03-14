@@ -380,9 +380,9 @@ pyinstaller-hooks-contrib==2026.3 \
     --hash=sha256:5ecd1068ad262afecadf07556279d2be52ca93a88b049fae17f1a2eb2969254a \
     --hash=sha256:800d3a198a49a6cd0de2d7fb795005fdca7a0222ed9cb47c0691abd1c27b9310
     # via pyinstaller
-pyjwt==2.11.0 \
-    --hash=sha256:35f95c1f0fbe5d5ba6e43f00271c275f7a1a4db1dab27bf708073b75318ea623 \
-    --hash=sha256:94a6bde30eb5c8e04fee991062b534071fd1439ef58d2adc9ccb823e7bcd0469
+pyjwt==2.12.1 \
+    --hash=sha256:28ca37c070cad8ba8cd9790cd940535d40274d22f80ab87f3ac6a713e6e8454c \
+    --hash=sha256:c74a7a2adf861c04d002db713dd85f84beb242228e671280bf709d765b03672b
     # via picard (pyproject.toml)
 pyobjc-core==12.1 ; sys_platform == 'darwin' \
     --hash=sha256:01c0cf500596f03e21c23aef9b5f326b9fb1f8f118cf0d8b66749b6cf4cbb37a \
@@ -669,4 +669,6 @@ tomli==2.4.0 ; python_full_version < '3.11' \
 typing-extensions==4.15.0 ; python_full_version < '3.11' \
     --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
     --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
-    # via exceptiongroup
+    # via
+    #   exceptiongroup
+    #   pyjwt
