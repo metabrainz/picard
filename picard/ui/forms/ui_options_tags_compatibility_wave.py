@@ -55,7 +55,7 @@ class Ui_TagsCompatibilityOptionsPage(object):
         self.vboxlayout.addItem(spacerItem2)
 
         self.retranslateUi(TagsCompatibilityOptionsPage)
-        self.write_wave_riff_info.toggled['bool'].connect(self.remove_wave_riff_info.setDisabled) # type: ignore
+        self.write_wave_riff_info.toggled['bool'].connect(self.remove_wave_riff_info.setDisabled)
         QtCore.QMetaObject.connectSlotsByName(TagsCompatibilityOptionsPage)
 
     def retranslateUi(self, TagsCompatibilityOptionsPage):

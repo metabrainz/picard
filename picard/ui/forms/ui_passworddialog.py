@@ -61,7 +61,7 @@ class Ui_PasswordDialog(object):
         self.verticalLayout.addWidget(self.buttonbox)
 
         self.retranslateUi(PasswordDialog)
-        self.buttonbox.rejected.connect(PasswordDialog.reject) # type: ignore
+        self.buttonbox.rejected.connect(PasswordDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
 
     def retranslateUi(self, PasswordDialog):

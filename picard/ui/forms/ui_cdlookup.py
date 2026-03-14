@@ -79,8 +79,8 @@ class Ui_CDLookupDialog(object):
 
         self.retranslateUi(CDLookupDialog)
         self.results_view.setCurrentIndex(0)
-        self.ok_button.clicked.connect(CDLookupDialog.accept) # type: ignore
-        self.cancel_button.clicked.connect(CDLookupDialog.reject) # type: ignore
+        self.ok_button.clicked.connect(CDLookupDialog.accept)
+        self.cancel_button.clicked.connect(CDLookupDialog.reject)
         QtCore.QMetaObject.connectSlotsByName(CDLookupDialog)
         CDLookupDialog.setTabOrder(self.release_list, self.submit_button)
         CDLookupDialog.setTabOrder(self.submit_button, self.ok_button)
