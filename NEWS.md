@@ -17,6 +17,7 @@
 ### Improvements
 - [PICARD-2670](https://tickets.metabrainz.org/browse/PICARD-2670) - Add filename and directory as pre-defined columns
 - [PICARD-3203](https://tickets.metabrainz.org/browse/PICARD-3203) - Allow adding "Lookup CD log file" action to toolbar
+- Rename additional files to match the parent audio file name when moving files
 
 
 ## Version 3.0.0a2 - 2026-02-10
