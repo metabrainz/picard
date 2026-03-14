@@ -170,7 +170,7 @@ def detect_freedesktop_color_scheme_dark() -> bool:
 
     # Fallback to subprocess method (legacy support)
     try:
-        result = subprocess.run(  # nosec B603 B607
+        proc_result = subprocess.run(  # nosec B603 B607
             [
                 "gsettings",
                 "get",
@@ -181,7 +181,7 @@ def detect_freedesktop_color_scheme_dark() -> bool:
             text=True,
             check=True,
         )
-        value = result.stdout.strip().strip("'\"")
+        value = proc_result.stdout.strip().strip("'\"")
         if value == "1":
             log.debug("Detected org.freedesktop.appearance.color-scheme: dark (1)")
             return True

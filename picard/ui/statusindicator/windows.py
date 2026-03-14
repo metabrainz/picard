@@ -59,11 +59,13 @@ class WindowsTaskbarStatusIndicator(AbstractProgressStatusIndicator):
         return self._taskbar is not None
 
     def set_progress(self, progress: float):
-        if self.is_available:
-            val = int(progress * 100)
-            self._taskbar.SetProgressState(self._handle, TBPF_NORMAL)
-            self._taskbar.SetProgressValue(self._handle, val, 100)
+        if self._taskbar is None:
+            return
+        val = int(progress * 100)
+        self._taskbar.SetProgressState(self._handle, TBPF_NORMAL)
+        self._taskbar.SetProgressValue(self._handle, val, 100)
 
     def hide_progress(self):
-        if self.is_available:
-            self._taskbar.SetProgressState(self._handle, TBPF_NOPROGRESS)
+        if self._taskbar is None:
+            return
+        self._taskbar.SetProgressState(self._handle, TBPF_NOPROGRESS)

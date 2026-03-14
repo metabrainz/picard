@@ -210,6 +210,8 @@ class ASFFile(File):
         self.__casemap = {}
         file = ASF(encode_filename(filename))
         metadata = Metadata()
+        if not file.tags:
+            return metadata
         for name, values in file.tags.items():
             if name == 'WM/Picture':
                 for image in values:
@@ -262,6 +264,8 @@ class ASFFile(File):
         config = get_config()
         file = ASF(encode_filename(filename))
         tags = file.tags
+        if not tags:
+            return
 
         if config.setting['clear_existing_tags']:
             cover = tags.get('WM/Picture') if config.setting['preserve_images'] else None

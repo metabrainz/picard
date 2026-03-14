@@ -20,7 +20,7 @@
 
 try:
     import tomllib  # type: ignore[unresolved-import]
-except ImportError:
+except (ImportError, ModuleNotFoundError):
     import tomli as tomllib  # type: ignore[no-redef]
 
 from typing import BinaryIO

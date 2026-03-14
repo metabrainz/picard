@@ -212,13 +212,13 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         config = get_config()
         obj = item.obj
         plugin_actions = None
-        can_view_info = self.window.actions[MainAction.VIEW_INFO].isEnabled()
+        can_view_info = self.window.action_map[MainAction.VIEW_INFO].isEnabled()
         can_play = self.window.player is not None
         menu = QtWidgets.QMenu(self)
         menu.setSeparatorsCollapsible(True)
 
         def add_actions(*args):
-            menu_builder(menu, self.window.actions, *args)
+            menu_builder(menu, self.window.action_map, *args)
 
         if isinstance(obj, Track):
             add_actions(
@@ -306,7 +306,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
                 releases_menu,
             )
             action_more_details = releases_menu.addAction(_("Show &more details…"))
-            action_more_details.triggered.connect(self.window.actions[MainAction.ALBUM_OTHER_VERSIONS].trigger)
+            action_more_details.triggered.connect(self.window.action_map[MainAction.ALBUM_OTHER_VERSIONS].trigger)
 
             album = obj
             if len(self.selectedItems()) == 1 and album.release_group:
@@ -741,7 +741,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @staticmethod
     def _matches_file_properties(obj, text: str, filters: set):
-        matches = set()
+        matches: set[str] = set()
         has_tags = False
         if not filters.intersection(FILE_FILTERS):  # No file filters to check
             return has_tags, matches
@@ -757,7 +757,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     @staticmethod
     def _matches_metadata(obj, text: str, filters: set):
-        matches = set()
+        matches: set[str] = set()
         has_tags = False
         test_filters = filters - FILE_FILTERS
         if not test_filters:  # No metadata filters to check

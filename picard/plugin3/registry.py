@@ -38,7 +38,7 @@ from picard.plugin3.plugin import hash_string
 
 try:
     import tomllib  # type: ignore[unresolved-import]
-except ModuleNotFoundError:
+except (ImportError, ModuleNotFoundError):
     import tomli as tomllib  # type: ignore[no-redef]
 
 
@@ -384,6 +384,8 @@ class PluginRegistry:
             set: Set of blacklist types present (e.g. {'url', 'uuid', 'url_regex'})
         """
         if not self._ensure_registry_loaded('get blacklist types'):
+            return set()
+        if not self._registry_data:
             return set()
 
         blacklist = self._registry_data.get('blacklist', [])

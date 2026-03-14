@@ -25,14 +25,17 @@ requiring the full Picard codebase.
 """
 
 from collections import Counter
+from collections.abc import Callable
 import math
 import re
 
 
+render_markdown: Callable[[str], str] | None = None
+
 try:
-    from markdown import markdown as render_markdown  # type: ignore[unresolved-import]
+    from markdown import markdown as render_markdown  # type: ignore[unresolved-import,no-redef]
 except ImportError:
-    render_markdown = None
+    pass
 
 
 # Required MANIFEST.toml fields

@@ -462,7 +462,10 @@ class WebService(QtCore.QObject):
         request.access_token = access_token
         send = self._request_methods[request.method]
         data = request.data
-        reply = send(request, data.encode('utf-8')) if data is not None else send(request)
+        if data is not None:
+            reply = send(request, data.encode('utf-8'))
+        else:
+            reply = send(request)
         self._active_requests[reply] = request
         if task:
             self._task_to_reply[task] = reply

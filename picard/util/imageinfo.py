@@ -35,7 +35,9 @@ class ImageInfo:
     width: int
     height: int
     datalen: int
-    format_info: ImageFormat
+    format_info: ImageFormat | None = None
+    mime: str | None = None
+    extension: str | None = None
 
 
 class IdentificationError(Exception):
@@ -57,7 +59,7 @@ class UnexpectedError(IdentificationError):
 class IdentifyImageType:
     w = -1
     h = -1
-    format_info: ImageFormat = None
+    format_info: ImageFormat | None = None
 
     def __init__(self, data):
         self.data = data

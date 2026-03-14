@@ -35,7 +35,7 @@ class RefItem:
         HEAD = "head"
         COMMIT = "commit"
 
-    def __init__(self, shortname: str, ref_type: 'RefItem.Type | None' = None, commit: str = None):
+    def __init__(self, shortname: str, ref_type: 'RefItem.Type | None' = None, commit: str | None = None):
         self.shortname = shortname
         self.ref_type = ref_type if ref_type is not None else RefItem.Type.COMMIT
         self.commit = commit

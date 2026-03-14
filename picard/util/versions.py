@@ -42,7 +42,7 @@ from picard.i18n import (
 from picard.util.astrcmp import astrcmp_implementation
 
 
-_versions = None
+_versions: dict | None = None
 
 _names = {
     'version': "Picard",

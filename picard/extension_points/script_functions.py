@@ -37,16 +37,11 @@
 
 
 from collections import namedtuple
+from collections.abc import Callable
 from inspect import (
     FullArgSpec,
     getfullargspec,
 )
-
-
-try:
-    from markdown import markdown  # type: ignore[unresolved-import]
-except ImportError:
-    markdown = None
 
 from picard.extension_points import (
     PLUGIN_MODULE_PREFIX,
@@ -54,6 +49,14 @@ from picard.extension_points import (
 )
 from picard.i18n import gettext as _
 from picard.plugin import ExtensionPoint
+
+
+markdown: Callable[[str], str] | None = None
+
+try:
+    from markdown import markdown  # type: ignore[unresolved-import,no-redef]
+except ImportError:
+    pass
 
 
 ext_point_script_functions = ExtensionPoint(label='script_functions')

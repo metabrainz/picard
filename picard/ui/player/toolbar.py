@@ -242,7 +242,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         self._is_updating = IgnoreUpdatesContext()
         self.popover_position = 'bottom'
         self._rate_fmt = N_("%1.1f ×")
-        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
+        style = self.style()
+        assert style is not None
+        button_margin = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self._rate_fmt) % 8.8)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.set_playback_rate(playback_rate)
@@ -274,7 +276,9 @@ class PlaybackRateButton(QtWidgets.QToolButton):
         label = locale.format_string(_(self._rate_fmt), playback_rate)
         self.setText(label)
 
-    def wheelEvent(self, event: QWheelEvent):
+    def wheelEvent(self, event: QWheelEvent | None):
+        if event is None:
+            return
         # Angle delta is in eight of a degree, so 2880 are a full rotation.
         full_rotation = 2880
         delta = event.angleDelta().y()
@@ -301,7 +305,9 @@ class VolumeControlButton(QtWidgets.QToolButton):
         self._step = 3
         self._volume_fmt = N_("%d%%")
         self.set_volume(volume)
-        button_margin = self.style().pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
+        style = self.style()
+        assert style is not None
+        button_margin = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_ButtonMargin)
         min_width = get_text_width(self.font(), _(self._volume_fmt) % 888)
         self.setMinimumWidth(min_width + (2 * button_margin) + 2)
         self.clicked.connect(self.show_popover)

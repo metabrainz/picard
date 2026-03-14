@@ -23,21 +23,26 @@ from collections import (
     OrderedDict,
     namedtuple,
 )
-from collections.abc import MutableSequence
+from collections.abc import (
+    Callable,
+    MutableSequence,
+)
 from enum import IntEnum
 import html
-
-
-try:
-    from markdown import markdown  # type: ignore[unresolved-import]
-except ImportError:
-    markdown = None
 
 from picard.i18n import (
     N_,
     gettext as _,
 )
 from picard.options import get_option_title
+
+
+markdown: Callable[[str], str] | None = None
+
+try:
+    from markdown import markdown  # type: ignore[unresolved-import,no-redef]
+except ImportError:
+    pass
 
 
 DocumentLink = namedtuple('DocumentLink', ('title', 'link'))
@@ -57,7 +62,7 @@ class Section(IntEnum):
     see_also = 4
 
 
-SectionInfo = namedtuple('Section', ('title', 'tagvar_func'))
+SectionInfo = namedtuple('SectionInfo', ('title', 'tagvar_func'))
 SECTIONS = {
     Section.notes: SectionInfo(N_('Notes'), 'notes'),
     Section.options: SectionInfo(N_('Option Settings'), 'related_options_titles'),

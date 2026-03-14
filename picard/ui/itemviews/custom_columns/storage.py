@@ -217,7 +217,7 @@ def _align_from_name(name: str) -> ColumnAlign:
     return normalize_align_name(name)
 
 
-_transforms = defaultdict(lambda: lambda s: s or "")
+_transforms: dict = defaultdict(lambda: lambda s: s or "")
 _transforms[TransformName.UPPER] = lambda s: (s or "").upper()
 _transforms[TransformName.LOWER] = lambda s: (s or "").lower()
 _transforms[TransformName.TITLE] = lambda s: (s or "").title()

@@ -68,18 +68,24 @@ class CheckboxMenuItem(QtWidgets.QWidget):
         if changed:
             self.repaint()
 
-    def keyPressEvent(self, event: QtGui.QKeyEvent):
+    def keyPressEvent(self, event: QtGui.QKeyEvent | None):
+        if event is None:
+            return
         if event.key() in {QtCore.Qt.Key.Key_Enter, QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Space}:
             self._action.toggle()
             event.accept()
         else:
             super().keyPressEvent(event)
 
-    def mousePressEvent(self, event: QtGui.QMouseEvent):
+    def mousePressEvent(self, event: QtGui.QMouseEvent | None):
+        if event is None:
+            return
         self._pressed = True
         event.accept()
 
-    def mouseReleaseEvent(self, event: QtGui.QMouseEvent):
+    def mouseReleaseEvent(self, event: QtGui.QMouseEvent | None):
+        if event is None:
+            return
         if self._pressed:
             self._action.toggle()
         self._pressed = False

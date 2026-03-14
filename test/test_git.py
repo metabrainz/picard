@@ -218,7 +218,7 @@ class TestGitBackend(unittest.TestCase):
             self.assertGreater(len(refs), 0)
 
             # Find tag refs to test
-            tag_refs = [ref for ref in refs if ref.name.startswith('refs/tags/v')]
+            tag_refs = [ref for ref in refs if ref.name.startswith('refs/tags/v')] if refs else []
             self.assertGreater(len(tag_refs), 0, "Repository should have version tags")
 
             # Check that tag refs have proper targets (commit IDs)

@@ -40,7 +40,7 @@ class RemoteCommands:
     """Handler for remote commands processed from the command line using the '-e' option."""
 
     # Collection of command files currently being parsed
-    _command_files = set()
+    _command_files: set[str] = set()
 
     # Flag to indicate whether a 'QUIT' command has been queued
     _has_quit = False
@@ -49,7 +49,7 @@ class RemoteCommands:
     _command_running = False
 
     _lock = threading.Lock()
-    command_queue = queue.Queue()
+    command_queue: queue.Queue = queue.Queue()
 
     @classmethod
     def cmd_files_contains(cls, filepath: str):
@@ -167,7 +167,7 @@ class RemoteCommands:
         Returns:
             list: Command tuples in the form (command, [args]).
         """
-        commands = []
+        commands: list = []
         try:
             lines = open(filepath).readlines()
         except Exception as e:

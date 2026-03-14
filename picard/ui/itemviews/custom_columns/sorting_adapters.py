@@ -275,7 +275,7 @@ class CachedSortAdapter(_AdapterBase):
         elif isinstance(self._base, SortKeyProvider):
             key = self._base.sort_key(obj)
         else:
-            key = (self._base.evaluate(obj) or "").casefold()
+            key = (self._base.evaluate(obj) or "").casefold()  # type: ignore[assignment]
 
         try:
             self._cache[obj] = key

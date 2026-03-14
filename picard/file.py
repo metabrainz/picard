@@ -214,7 +214,7 @@ class File(MetadataItem):
     # Whether date sanitization can be toggled for this format family via settings
     DATE_SANITIZATION_TOGGLEABLE = False
 
-    EXTENSIONS = []
+    EXTENSIONS: list[str] = []
 
     class State(Enum):
         UNDEFINED = -1
@@ -668,7 +668,7 @@ class File(MetadataItem):
         new_path = os.path.join(new_dirname, new_filename)
         return normpath(new_path, realpath=False)
 
-    def _rename(self, old_filename, metadata, settings=None):
+    def _rename(self, old_filename, metadata, settings):
         new_filename = self.make_filename(old_filename, metadata, settings)
         if old_filename == new_filename:
             return old_filename

@@ -454,7 +454,7 @@ class OggTheoraFile(VCommentFile):
 class OggVorbisFile(VCommentFile):
     """Ogg Vorbis file."""
 
-    EXTENSIONS = []
+    EXTENSIONS: list[str] = []
     NAME = "Ogg Vorbis"
     _File = mutagen.oggvorbis.OggVorbis
 
@@ -479,9 +479,9 @@ def OggAudioFile(filename):
     return _guess_format(filename, options)
 
 
-OggAudioFile.EXTENSIONS = [".oga"]
-OggAudioFile.NAME = "Ogg Audio"
-OggAudioFile.supports_tag = VCommentFile.supports_tag
+OggAudioFile.EXTENSIONS = [".oga"]  # type: ignore[attr-defined]
+OggAudioFile.NAME = "Ogg Audio"  # type: ignore[attr-defined]
+OggAudioFile.supports_tag = VCommentFile.supports_tag  # type: ignore[attr-defined]
 
 
 def OggVideoFile(filename):
@@ -490,8 +490,8 @@ def OggVideoFile(filename):
     return _guess_format(filename, options)
 
 
-OggVideoFile.EXTENSIONS = [".ogv"]
-OggVideoFile.NAME = "Ogg Video"
+OggVideoFile.EXTENSIONS = [".ogv"]  # type: ignore[attr-defined]
+OggVideoFile.NAME = "Ogg Video"  # type: ignore[attr-defined]
 OggVideoFile.supports_tag = VCommentFile.supports_tag
 
 

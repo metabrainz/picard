@@ -46,11 +46,16 @@ from picard.util import sanitize_filename
 
 
 if IS_WIN:
-    from pywintypes import error as WinApiError  # type: ignore
-    import win32file  # type: ignore
-    import win32pipe  # type: ignore
+    from pywintypes import error as WinApiError
+    import win32file
+    import win32pipe
 else:
-    WinApiError = None
+
+    class WinApiError(Exception):  # type: ignore[no-redef]
+        """Placeholder for Windows API error on non-Windows platforms."""
+
+        pass
+
     win32file = None
     win32pipe = None
 
@@ -108,10 +113,9 @@ class AbstractPipe(metaclass=ABCMeta):
     MESSAGE_TO_IGNORE: str = '\0'
     TIMEOUT_SECS_WRITE: float = 1.5
 
-    @classmethod
     @property
     @abstractmethod
-    def PIPE_DIRS(cls):
+    def PIPE_DIRS(self):
         """
         Tuple of dirs where pipe could possibly be created
 
@@ -153,7 +157,7 @@ class AbstractPipe(metaclass=ABCMeta):
         if forced_path:
             self._paths = (forced_path,)
         elif IS_WIN or os.getenv('HOME'):
-            self._paths = self.__generate_filenames(app_name, app_version)
+            self._paths = self.__generate_filenames(app_name, app_version)  # type: ignore[assignment]
             self.path_was_forced = False
         else:
             self._paths = (NamedTemporaryFile(delete=False).name,)
@@ -488,9 +492,9 @@ class WinPipe(AbstractPipe):
         if message is not None:
             message = message.decode('utf-8')
             if exit_code == 0:
-                return message  # type: ignore
+                return message
             else:
-                raise PipeErrorInvalidResponse(message)  # type: ignore
+                raise PipeErrorInvalidResponse(message)
         else:
             return self.NO_RESPONSE_MESSAGE
 

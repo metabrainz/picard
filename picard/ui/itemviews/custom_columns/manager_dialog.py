@@ -37,7 +37,7 @@ from dataclasses import (
     replace,
 )
 
-from PyQt6 import (  # type: ignore[unresolved-import]
+from PyQt6 import (
     QtCore,
     QtWidgets,
 )
@@ -288,7 +288,10 @@ class CustomColumnsManagerDialog(PicardDialog):
         int
             Selected row index, or -1 if none is selected.
         """
-        indexes = self._list.selectionModel().selectedIndexes()
+        sel = self._list.selectionModel()
+        if sel is None:
+            return -1
+        indexes = sel.selectedIndexes()
         return indexes[0].row() if indexes else -1
 
     def _selected_rows(self) -> list[int]:
@@ -299,7 +302,10 @@ class CustomColumnsManagerDialog(PicardDialog):
         list[int]
             Sorted list of selected row indices.
         """
-        return sorted({idx.row() for idx in self._list.selectionModel().selectedIndexes()})
+        sel = self._list.selectionModel()
+        if sel is None:
+            return []
+        return sorted({idx.row() for idx in sel.selectedIndexes()})
 
     def _live_spec_check(self) -> None:
         """Handle changes in the expression field to provide live validation feedback."""
@@ -381,7 +387,7 @@ class CustomColumnsManagerDialog(PicardDialog):
         # Reset uncommitted changes flag after populating form
         self._has_uncommitted_changes = False
 
-    def _on_form_changed(self, *args) -> None:  # type: ignore[no-untyped-def]
+    def _on_form_changed(self, *args) -> None:
         """Handle form changes by automatically updating the selected row."""
         if self._populating:
             return
@@ -625,6 +631,8 @@ class CustomColumnsManagerDialog(PicardDialog):
 
     def _update_apply(self) -> None:
         """Update the Apply button state based on dirty state."""
+        if self._btn_apply is None:
+            return
         self._btn_apply.setEnabled(self._dirty)
 
     def _mark_dirty(self) -> None:

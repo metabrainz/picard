@@ -78,7 +78,7 @@ except ImportError:
     # itertools.batched is only available in Python >= 3.12
     from itertools import islice
 
-    def batched(iterable, n):
+    def batched(iterable, n):  # type: ignore[no-redef]
         if n < 1:
             raise ValueError('n must be at least one')
         it = iter(iterable)

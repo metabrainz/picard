@@ -157,7 +157,8 @@ class Cluster(FileList):
         self.update(signal=False)
         if self.can_show_coverart:
             self.add_metadata_images_from_children(added_files)
-        self.ui_item.add_files(added_files)
+        if self.ui_item:
+            self.ui_item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)
 
@@ -173,7 +174,8 @@ class Cluster(FileList):
             self.tagger.window.set_processing(False)
             return
         self.update(signal=False)
-        self.ui_item.remove_file(file)
+        if self.ui_item:
+            self.ui_item.remove_file(file)
         if self.can_show_coverart:
             file.metadata_images_changed.disconnect(self.update_metadata_images)
             self.remove_metadata_images_from_children([file])
@@ -328,7 +330,7 @@ class Cluster(FileList):
         config = get_config()
         various_artists = config.setting['va_name']
 
-        cluster_list = defaultdict(FileCluster)
+        cluster_list: dict[str, FileCluster] = defaultdict(FileCluster)
         for file in files:
             # If the file is attached to a track we should use the original
             # metadata for clustering. This is often used by users when moving

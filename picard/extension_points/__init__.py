@@ -43,7 +43,7 @@ PLUGIN_MODULE_PREFIX = "picard.plugins."
 PLUGIN_MODULE_PREFIX_LEN = len(PLUGIN_MODULE_PREFIX)
 
 _extension_points = []
-_plugin_uuid_to_module = {}  # Maps UUID -> module name for v3 plugins
+_plugin_uuid_to_module: dict[str, str] = {}  # Maps UUID -> module name for v3 plugins
 
 
 class ExtensionPoint:

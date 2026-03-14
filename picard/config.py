@@ -62,7 +62,7 @@ class Option(QtCore.QObject):
     """Generic option."""
 
     registry: dict[tuple[str, str], 'Option'] = {}
-    qtype = None
+    qtype: object = None
 
     def __init__(self, section: str, name: str, default: ConfigValueType, title: str | None = None):
         super().__init__()
@@ -142,12 +142,12 @@ class Option(QtCore.QObject):
 
 
 class TextOption(Option):
-    convert = str  # type: ignore
+    convert = str  # type: ignore[assignment]
     qtype = 'QString'
 
 
 class BoolOption(Option):
-    convert = bool  # type: ignore
+    convert = bool  # type: ignore[assignment]
     qtype = bool
 
 
@@ -161,7 +161,7 @@ class IntOption(Option):
 
 
 class FloatOption(Option):
-    convert = float  # type: ignore
+    convert = float  # type: ignore[assignment]
 
 
 class ListOption(Option):
@@ -194,7 +194,7 @@ class ConfigSection(QtCore.QObject):
         self.__qt_config = config
         self.__name = name
         self.__prefix = self.__name + '/'
-        self._memoization = defaultdict(Memovar)
+        self._memoization: dict[str, Memovar] = defaultdict(Memovar)
 
     def key(self, name):
         return self.__prefix + name
@@ -278,17 +278,17 @@ class ConfigSection(QtCore.QObject):
         if isinstance(default, str):
             option_type = TextOption
         elif isinstance(default, bool):
-            option_type = BoolOption
+            option_type = BoolOption  # type: ignore[assignment]
         elif isinstance(default, int):
-            option_type = IntOption
+            option_type = IntOption  # type: ignore[assignment]
         elif isinstance(default, float):
-            option_type = FloatOption
+            option_type = FloatOption  # type: ignore[assignment]
         elif isinstance(default, list) or isinstance(default, tuple):
-            option_type = ListOption
+            option_type = ListOption  # type: ignore[assignment]
         elif isinstance(default, Enum):
-            option_type = Option
+            option_type = Option  # type: ignore[assignment]
         else:
-            option_type = Option
+            option_type = Option  # type: ignore[assignment]
 
         return option_type(self.__name, name, default)
 
@@ -572,7 +572,7 @@ def load_new_config(filename: str):
 
 
 QuickMenuItem = namedtuple('QuickMenuItem', ['name', 'title'])
-_quick_menu_items = {}
+_quick_menu_items: dict[str, dict] = {}
 
 
 def register_quick_menu_item(group_order: int, group_name: str, group_parent: str, group_title, option: Option):

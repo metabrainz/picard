@@ -32,7 +32,7 @@ from collections import (
 SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
 
 _settings_groups = {}
-_groups_order = defaultdict(lambda: -1)
+_groups_order: dict[str, int] = defaultdict(lambda: -1)
 _groups_count = 0
 _known_settings = set()
 

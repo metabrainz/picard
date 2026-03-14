@@ -1036,7 +1036,7 @@ class PluginManager(QObject):
 
         try:
             description = plugin.manifest.long_description_i18n()
-            if description and render_markdown:
+            if description and render_markdown is not None:
                 return render_markdown(description, output_format='html')
             return description
         except (AttributeError, Exception):

@@ -68,6 +68,8 @@ class CoverArtThumbnail(ActiveLabel):
             window_handle.screenChanged.connect(self.screen_changed)
         else:
             self.pixel_ratio = self.tagger.primaryScreen().devicePixelRatio()
+        if pixmap_cache is None:
+            raise ValueError("pixmap_cache is required")
         self._pixmap_cache = pixmap_cache
         self._update_default_pixmaps()
         self.setPixmap(self.shadow)

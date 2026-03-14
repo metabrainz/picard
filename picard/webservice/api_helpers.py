@@ -61,7 +61,7 @@ def _wrap_xml_metadata(data):
 
 
 class APIHelper:
-    _base_url = None
+    _base_url: QUrl | None = None
 
     def __init__(self, webservice, base_url=None):
         self._webservice = webservice
@@ -69,13 +69,13 @@ class APIHelper:
             self.base_url = base_url
 
     @property
-    def base_url(self):
+    def base_url(self) -> QUrl:
         if self._base_url is None:
             raise ValueError("base_url undefined")
         return self._base_url
 
     @base_url.setter
-    def base_url(self, url):
+    def base_url(self, url: QUrl | str) -> None:
         if not isinstance(url, QUrl):
             url = QUrl(url)
         self._base_url = url

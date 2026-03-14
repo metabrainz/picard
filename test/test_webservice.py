@@ -591,7 +591,7 @@ class WebServiceUtilsTest(PicardTestCase):
 
     def test_host_port_to_url_http_80(self):
         self.assertEqual(
-            host_port_to_url('example.org', 80, as_string=True),
+            host_port_to_url('example.org', 80).toString(),
             'http://example.org',
         )
 
@@ -603,18 +603,18 @@ class WebServiceUtilsTest(PicardTestCase):
 
     def test_host_port_to_url_https_443(self):
         self.assertEqual(
-            host_port_to_url('example.org', 443, as_string=True),
+            host_port_to_url('example.org', 443).toString(),
             'https://example.org',
         )
 
     def test_host_port_to_url_https_scheme_80(self):
         self.assertEqual(
-            host_port_to_url('example.org', 80, scheme='https', as_string=True),
+            host_port_to_url('example.org', 80, scheme='https').toString(),
             'https://example.org:80',
         )
 
     def test_host_port_to_url_http_666_with_path(self):
         self.assertEqual(
-            host_port_to_url('example.org', 666, path='/abc', as_string=True),
+            host_port_to_url('example.org', 666, path='/abc').toString(),
             'http://example.org:666/abc',
         )

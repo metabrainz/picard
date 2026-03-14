@@ -43,8 +43,8 @@ from picard.ui import PicardDialog
 
 class Filter(QtWidgets.QWidget):
     filterChanged = QtCore.pyqtSignal(str, set)
-    filterable_tags = set()
-    instances = set()
+    filterable_tags: set[str] = set()
+    instances: set = set()
     suspended = False
 
     def __init__(self, parent=None):

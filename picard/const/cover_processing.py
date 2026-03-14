@@ -217,7 +217,7 @@ _INFO_MAPPING = {
 }
 
 
-def get_image_format_from_format(format_string: str) -> ImageFormat:
+def get_image_format_from_format(format_string: str) -> ImageFormat | None:
     for fmt in list(ImageFormat):
         if format_string in fmt.aliases:
             return fmt
@@ -227,4 +227,4 @@ def get_image_format_from_format(format_string: str) -> ImageFormat:
 COVER_PROCESSING_SLEEP = 0.001
 
 
-ALLOWED_QT_FORMATS = set([str(x, 'utf-8') for x in QtGui.QImageWriter.supportedImageFormats()])
+ALLOWED_QT_FORMATS: set[str] = {str(x, 'utf-8') for x in QtGui.QImageWriter.supportedImageFormats()}  # type: ignore[call-overload]

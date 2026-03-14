@@ -47,9 +47,9 @@ try:
     from charset_normalizer import detect  # type: ignore[unresolved-import]
 except ImportError:
     try:
-        from chardet import detect  # type: ignore[unresolved-import]
+        from chardet import detect  # type: ignore[unresolved-import,no-redef]
     except ImportError:
-        detect = None
+        detect = None  # type: ignore[assignment]
 from collections import (
     defaultdict,
     namedtuple,
@@ -96,7 +96,7 @@ from picard.util.readthedocs import ReadTheDocs
 
 winreg = None
 if IS_WIN:
-    import winreg
+    import winreg  # type: ignore[assignment]
 
 # Windows path length constraints
 # See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
@@ -689,7 +689,7 @@ def is_hidden(filepath):
 
 
 if IS_WIN:
-    from ctypes import windll
+    from ctypes import windll  # type: ignore[attr-defined]
 
     def _has_hidden_attribute(filepath):
         try:
@@ -1029,7 +1029,9 @@ def extract_year_from_date(dt: str | date | Mapping) -> int | None:
         if isinstance(dt, date):
             return dt.year
         elif isinstance(dt, Mapping):
-            return int(dt.get('year'))
+            if 'year' not in dt:
+                return None
+            return int(dt['year'])
         else:
             if isinstance(dt, str):
                 dt = dt.strip()

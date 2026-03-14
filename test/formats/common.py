@@ -272,8 +272,9 @@ class CommonTests:
                 self.tags.update(dict_tag_value)
 
         def remove_tags(self, tag_list=None):
-            for tag in tag_list:
-                del self.tags[tag]
+            if tag_list:
+                for tag in tag_list:
+                    del self.tags[tag]
 
         @skipUnlessTestfile
         def test_simple_tags(self):

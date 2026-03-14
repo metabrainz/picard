@@ -337,7 +337,7 @@ SORTING_ADAPTER_NAMES: dict[str, SortingAdapterDisplayInfo] = {
 }
 
 
-def get_sorting_adapter_options() -> tuple[tuple[str, str], ...]:
+def get_sorting_adapter_options() -> tuple[tuple[str, SortingAdapterDisplayInfo], ...]:
     """Return sorting adapter options for UI selection.
 
     Returns

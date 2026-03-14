@@ -88,8 +88,8 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
             )
             widget_item.setCheckState(0, QtCore.Qt.CheckState.Unchecked)
             for setting in group['options']:
-                checked = self.menu_items and setting.name in self.menu_items
-                expand |= checked
+                checked = bool(self.menu_items and setting.name in self.menu_items)
+                expand = expand or checked
                 widget_item.addChild(self._make_child_item(setting.name, setting.title, checked))
             added = False
             if parent:

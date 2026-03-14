@@ -168,7 +168,7 @@ class PluginOrderSelectorDialog(PicardDialog):
             column1 = QtGui.QStandardItem(plugin.plugin_name)
             column1.setEditable(False)
             column1.setDropEnabled(False)
-            text = markdown(plugin.plugin_description) if markdown else plugin.plugin_description
+            text = markdown(plugin.plugin_description) if markdown is not None else plugin.plugin_description
             column1.setToolTip(text)
             column1.setData(plugin.key, QtCore.Qt.ItemDataRole.UserRole)
 
@@ -180,7 +180,7 @@ class PluginOrderSelectorDialog(PicardDialog):
             column3 = QtGui.QStandardItem(plugin.function_name)
             column3.setEditable(False)
             column3.setDropEnabled(False)
-            text = markdown(plugin.function_description) if markdown else plugin.function_description
+            text = markdown(plugin.function_description) if markdown is not None else plugin.function_description
             column3.setToolTip(text)
 
             self.tableview._model.appendRow([column1, column2, column3])

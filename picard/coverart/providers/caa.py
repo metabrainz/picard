@@ -69,7 +69,7 @@ from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
 
 
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
-CaaThumbnailListItem = namedtuple('CAAThumbnailListItem', ['url', 'width'])
+CaaThumbnailListItem = namedtuple('CaaThumbnailListItem', ['url', 'width'])
 
 _CAA_THUMBNAIL_SIZE_MAP = OrderedDict(
     [

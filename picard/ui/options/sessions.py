@@ -57,7 +57,9 @@ class SessionsOptionsPage(OptionsPage):
         self.ui.setupUi(self)
 
         # Set open directory icon on folder browse button
-        icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
+        style = self.style()
+        assert style is not None
+        icon = style.standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon)
         self.ui.folder_browse_button.setIcon(icon)
 
         # Set sessions folder path placeholder text to default path

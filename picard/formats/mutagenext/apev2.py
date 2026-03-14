@@ -31,9 +31,9 @@ from mutagen.apev2 import (
 # Attempts to load APEv2 tags for FileType from filething.
 def load_apev2_tags(f: FileType, filething):
     try:
-        f.tags = APEv2(filething)
+        f.tags = APEv2(filething)  # type: ignore[assignment]
         # Correct the calculated length
-        if not hasattr(f.info, 'bitrate') or f.info.bitrate == 0:
+        if f.info is None or not hasattr(f.info, 'bitrate') or f.info.bitrate == 0:
             return
         ape_data = _APEv2Data(filething.fileobj)
         if ape_data.size is not None:
@@ -47,6 +47,6 @@ def load_apev2_tags(f: FileType, filething):
 # Add APEv2 tags to FileType.
 def add_apev2_tags(f: FileType):
     if f.tags is None:
-        f.tags = APEv2()
+        f.tags = APEv2()  # type: ignore[assignment]
     else:
         raise APEError("%r already has tags: %r" % (f, f.tags))

@@ -171,9 +171,9 @@ def fake_edit(monkeypatch: pytest.MonkeyPatch) -> Callable[[Iterable[str]], Scri
         # Bypass __init__ to avoid creating real Qt widgets
         edit = ScriptTextEdit.__new__(ScriptTextEdit)  # type: ignore[call-arg]
         model = _FakeModel(items)
-        edit.completer = _FakeCompleter(model)  # type: ignore[attr-defined]
-        edit._completer_model_signals_connected = False  # type: ignore[attr-defined]
-        return edit  # type: ignore[return-value]
+        edit.completer = _FakeCompleter(model)
+        edit._completer_model_signals_connected = False
+        return edit
 
     return _factory
 
@@ -197,10 +197,10 @@ def test_highlight_first_row_on_show(
     # Trigger highlighting logic
     edit._ensure_first_completion_highlighted()
 
-    current = edit.completer.popup().currentIndex()  # type: ignore[attr-defined]
+    current = edit.completer.popup().currentIndex()
     assert current.isValid()
     assert current.row() == 0
-    assert edit.completer.get_selected() == choices[0]  # type: ignore[attr-defined]
+    assert edit.completer.get_selected() == choices[0]
 
 
 def test_selection_persists_after_model_reset(
@@ -214,10 +214,10 @@ def test_selection_persists_after_model_reset(
     model: _FakeModel = edit.completer.completionModel()  # type: ignore[assignment]
     model.set_items(["$set", "$noop", "$copy"])
 
-    current = edit.completer.popup().currentIndex()  # type: ignore[attr-defined]
+    current = edit.completer.popup().currentIndex()
     assert current.isValid()
     assert current.row() == 0
-    assert edit.completer.get_selected() == "$set"  # type: ignore[attr-defined]
+    assert edit.completer.get_selected() == "$set"
 
 
 def test_selection_persists_after_rows_insert_remove(
@@ -229,14 +229,14 @@ def test_selection_persists_after_rows_insert_remove(
 
     model: _FakeModel = edit.completer.completionModel()  # type: ignore[assignment]
     model.insert_rows(["$noop", "$copy"])
-    current = edit.completer.popup().currentIndex()  # type: ignore[attr-defined]
+    current = edit.completer.popup().currentIndex()
     assert current.isValid() and current.row() == 0
-    assert edit.completer.get_selected() == "$set"  # type: ignore[attr-defined]
+    assert edit.completer.get_selected() == "$set"
 
     model.remove_last_row()
-    current = edit.completer.popup().currentIndex()  # type: ignore[attr-defined]
+    current = edit.completer.popup().currentIndex()
     assert current.isValid() and current.row() == 0
-    assert edit.completer.get_selected() == "$set"  # type: ignore[attr-defined]
+    assert edit.completer.get_selected() == "$set"
 
 
 def test_selection_updates_on_data_changed(
@@ -249,7 +249,7 @@ def test_selection_updates_on_data_changed(
     model: _FakeModel = edit.completer.completionModel()  # type: ignore[assignment]
     model.change_first("$set")
 
-    current = edit.completer.popup().currentIndex()  # type: ignore[attr-defined]
+    current = edit.completer.popup().currentIndex()
     assert current.isValid() and current.row() == 0
     # last_selected should reflect updated row 0 value
-    assert edit.completer.get_selected() == "$set"  # type: ignore[attr-defined]
+    assert edit.completer.get_selected() == "$set"

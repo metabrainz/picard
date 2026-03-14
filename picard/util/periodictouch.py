@@ -30,7 +30,7 @@ from picard import log
 TOUCH_FILES_DELAY_SECONDS = 4 * 3600
 
 _touch_timer = None
-_files_to_touch = set()
+_files_to_touch: set[str] = set()
 
 
 def register_file(filepath):

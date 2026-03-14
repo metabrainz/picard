@@ -66,7 +66,7 @@ class AbstractProgressStatusIndicator:
         self.set_progress(progress_status.progress)
 
     @property
-    def is_available(self):
+    def is_available(self) -> bool:
         return True
 
     def hide_progress(self):
