@@ -112,7 +112,8 @@ class MatchQualityProvider(ColumnValueProvider, DelegateProvider):
 
         # Album object
         matched = obj.get_num_matched_tracks()
-        total = len(obj.tracks) if obj.tracks else 0
+        tracks = getattr(obj, 'tracks', None)
+        total = len(tracks) if tracks else 0
         unmatched = obj.get_num_unmatched_files()
 
         # Calculate duplicates and extra tracks
@@ -122,8 +123,9 @@ class MatchQualityProvider(ColumnValueProvider, DelegateProvider):
 
         # Count files per track to detect duplicates
         track_file_counts = {}
-        for track in obj.tracks:
-            track_file_counts[track] = len(track.files)
+        if tracks:
+            for track in tracks:
+                track_file_counts[track] = len(track.files)
 
         # Count unmatched files
         unmatched_files = obj.unmatched_files.files if hasattr(obj, 'unmatched_files') else []
@@ -138,9 +140,10 @@ class MatchQualityProvider(ColumnValueProvider, DelegateProvider):
             extra = len(unmatched_files)
 
         # Calculate missing tracks (tracks with no files)
-        for track in obj.tracks:
-            if len(track.files) == 0:
-                missing += 1
+        if tracks:
+            for track in tracks:
+                if len(track.files) == 0:
+                    missing += 1
 
         return {
             'matched': matched,
@@ -280,7 +283,7 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
     def paint(
         self,
-        painter: QtGui.QPainter,
+        painter: QtGui.QPainter | None,
         option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex,
     ) -> None:
@@ -299,6 +302,8 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         self.initStyleOption(option, index)
 
         # Draw the background
+        if painter is None:
+            return
         if option.state & QtWidgets.QStyle.StateFlag.State_Selected:
             fill_brush = option.palette.highlight()
         else:
@@ -325,8 +330,8 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
     def helpEvent(
         self,
-        event: QtGui.QHelpEvent,
-        view: QtWidgets.QWidget,
+        event: QtGui.QHelpEvent | None,
+        view: QtWidgets.QAbstractItemView | None,
         option: QtWidgets.QStyleOptionViewItem,
         index: QtCore.QModelIndex,
     ) -> bool:
@@ -350,7 +355,7 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         """
         # Get item data
         item_data = self._get_item_data(index)
-        if not item_data:
+        if not item_data or event is None:
             return False
 
         # Format tooltip text

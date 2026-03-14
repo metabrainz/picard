@@ -151,10 +151,10 @@ class DelegateColumn(Column):
         sortkey_fn = None
         if sort_type == ColumnSortType.SORTKEY:
             if isinstance(sort_provider, SortKeyProvider):
-                sortkey_fn = sort_provider.sort_key  # type: ignore[assignment]
+                sortkey_fn = sort_provider.sort_key
             elif isinstance(provider, SortKeyProvider):
                 # Fallback for backward compatibility if provider implements sorting
-                sortkey_fn = provider.sort_key  # type: ignore[assignment]
+                sortkey_fn = provider.sort_key
 
         super().__init__(
             title,

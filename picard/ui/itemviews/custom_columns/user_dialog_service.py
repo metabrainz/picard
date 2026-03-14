@@ -22,7 +22,7 @@
 
 from typing import Literal
 
-from PyQt6 import QtWidgets  # type: ignore[unresolved-import]
+from PyQt6 import QtWidgets
 
 from picard.i18n import gettext as _
 

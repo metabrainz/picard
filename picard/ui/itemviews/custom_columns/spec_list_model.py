@@ -22,7 +22,7 @@
 
 from collections.abc import Iterable
 
-from PyQt6 import QtCore  # type: ignore[unresolved-import]
+from PyQt6 import QtCore
 
 from picard.ui.itemviews.custom_columns.shared import DEFAULT_NEW_COLUMN_NAME
 from picard.ui.itemviews.custom_columns.storage import CustomColumnSpec
