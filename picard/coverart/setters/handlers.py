@@ -73,8 +73,7 @@ def _handle_album(album: Album, setter):
     """
     log.debug("set_coverart_album %r", album)
 
-    with ExitStack() as stack:
-        stack.enter_context(album.suspend_metadata_images_update)
+    with album.suspend_metadata_images_update:
         setter._set_image(album)
 
         # If the album is still loading, tracks are in `_new_tracks`
@@ -86,7 +85,6 @@ def _handle_album(album: Album, setter):
             setter._set_image(file)
             file.update(signal=False)
 
-    album.update_metadata_images()
     album.update(update_tracks=False)
     return True
 
