@@ -67,8 +67,7 @@ _COLOR_DESCRIPTIONS = {
     'syntax_hl_var': ColorDescription(title=N_("Variable syntax highlight"), group=N_("Syntax Highlighting")),
 }
 
-
-_DEFAULT_COLORS = defaultdict(dict)
+_DEFAULT_COLORS: dict[str, dict] = defaultdict(dict)
 
 
 class DefaultColor:

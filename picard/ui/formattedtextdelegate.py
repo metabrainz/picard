@@ -72,6 +72,8 @@ class FormattedTextDelegate(QStyledItemDelegate):
         # Create a QTextDocument to render the formatted text
         doc = self._create_doc(text, option)
         layout = doc.documentLayout()
+        if not layout:
+            return
 
         # A layout context for rendering the text
         context = QAbstractTextDocumentLayout.PaintContext()

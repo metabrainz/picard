@@ -19,6 +19,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Callable
 import os
 
 from PyQt6 import (
@@ -44,10 +45,12 @@ from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 
 
+render_markdown: Callable[[str], str] | None = None
+
 try:
-    from markdown import markdown as render_markdown  # type: ignore[unresolved-import]
+    from markdown import markdown as render_markdown  # type: ignore[unresolved-import,no-redef]
 except ImportError:
-    render_markdown = None
+    pass
 
 
 # Tab positions
