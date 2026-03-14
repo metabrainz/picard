@@ -35,7 +35,7 @@ class PluginTranslator(QTranslator):
         """Return False to indicate this translator has translations."""
         return not self._translations
 
-    def translate(
+    def translate(  # type: ignore[override]
         self, context: str | None, source_text: str | None, disambiguation: str | None = None, n: int = -1
     ) -> str | None:
         """Translate text from Qt UI files.

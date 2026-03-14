@@ -21,7 +21,7 @@
 try:
     import tomllib  # type: ignore[unresolved-import]
 except ImportError:
-    import tomli as tomllib  # type: ignore[no-redef]
+    import tomli as tomllib
 
 from typing import BinaryIO
 
