@@ -407,7 +407,7 @@ class TestErrorHandling:
     ) -> None:
         """Test that AST traversal handles invalid nodes."""
         result = set()
-        completer._variable_extractor._collect_from_ast(node, result)  # type: ignore
+        completer._variable_extractor._collect_from_ast(node, result)
         assert result == expected_result
 
     @pytest.mark.parametrize(
@@ -421,7 +421,7 @@ class TestErrorHandling:
         self, completer: ScriptCompleter, node: Any, expected_result: Any
     ) -> None:
         """Test that static name extraction handles invalid nodes."""
-        result = completer._variable_extractor._extract_static_name(node)  # type: ignore
+        result = completer._variable_extractor._extract_static_name(node)
         assert result == expected_result
 
     @pytest.mark.parametrize(

@@ -31,6 +31,7 @@
 
 
 import os.path
+from types import ModuleType
 
 from picard import log
 from picard.config import get_config
@@ -40,13 +41,14 @@ from picard.const.sys import (
 )
 
 
+discid: ModuleType | None = None
 try:
-    from libdiscid.compat import discid  # type: ignore[unresolved-import]
+    from libdiscid.compat import discid  # type: ignore[unresolved-import,no-redef]
 except ImportError:
     try:
-        import discid  # type: ignore[unresolved-import]
+        import discid  # type: ignore[unresolved-import,no-redef]
     except (ImportError, OSError):
-        discid = None
+        pass
 
 
 DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functionality disabled"
@@ -87,7 +89,7 @@ def _parse_linux_cdrom_info(f):
 
 
 if IS_WIN:
-    from ctypes import windll
+    from ctypes import windll  # type: ignore[attr-defined]
 
     AUTO_DETECT_DRIVES = True
     DRIVE_TYPE_CDROM = 5

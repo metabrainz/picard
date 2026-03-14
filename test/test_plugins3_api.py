@@ -179,7 +179,7 @@ class TestPluginApiMethods(PicardTestCase):
         # Test fallback to manifest version
         mock_plugin_manager._get_plugin_metadata.return_value = None
         result = api.get_plugin_version()
-        self.assertEqual(result, manifest.version)
+        self.assertEqual(result, str(manifest.version))
 
         # Test no plugin manager
         mock_tagger.get_plugin_manager.return_value = None

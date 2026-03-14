@@ -18,6 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Callable
 
 from PyQt6.QtCore import QLocale
 
@@ -38,7 +39,7 @@ class RtdApiItem:
     """ReadTheDocs API item"""
 
     def __init__(self, title: str, parameter: str):
-        self.available_items = set()
+        self.available_items: set[str] = set()
         """Available items"""
 
         self.check_in_progress = False
@@ -78,7 +79,7 @@ class ReadTheDocs:
         cls.update_documentation_items()
 
     @classmethod
-    def _call_api(cls, api_item: RtdApiItem, handler: callable = None):
+    def _call_api(cls, api_item: RtdApiItem, handler: Callable | None = None):
         """Call the API to query the selected information.
         Args:
             item (RtdApiItem): Item to query.
@@ -189,7 +190,7 @@ class ReadTheDocs:
         cls._languages_api.check_in_progress = False
 
     @classmethod
-    def _get_language(cls, language: str = None) -> str:
+    def _get_language(cls, language: str | None = None) -> str:
         """Gets the best match of language to available languages.
         Args:
             language (str, optional): User language to match. Defaults to None.
@@ -218,7 +219,7 @@ class ReadTheDocs:
         return matched_language
 
     @classmethod
-    def _get_version(cls, version: Version = None) -> str:
+    def _get_version(cls, version: Version | None = None) -> str:
         """Gets the best match of version to available versions.
         Args:
             version (Version, optional): Program version to match. Defaults to None.

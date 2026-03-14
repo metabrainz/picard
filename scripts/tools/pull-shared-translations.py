@@ -50,7 +50,7 @@ logging.basicConfig(
 )
 
 
-def fetch_translations(component_name: str, user_key: str = '', config: WeblateConfig = None):
+def fetch_translations(component_name: str, user_key: str = '', config: WeblateConfig | None = None):
     weblate = Weblate(key=user_key, url=WEBLATE_URL, config=config)
     component = Component(weblate, f'components/{PROJECT_NAME}/{component_name}/')
     logging.info('Processing component %s...', component['name'])
@@ -84,7 +84,7 @@ def get_output_dir(component_name: str) -> str:
     return path
 
 
-def load_config() -> WeblateConfig:
+def load_config() -> WeblateConfig | None:
     config_path = os.path.join(os.path.dirname(__file__), '..', '..', '.weblate.ini')
     if os.path.exists:
         config = WeblateConfig()

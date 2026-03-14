@@ -51,21 +51,21 @@ from picard.webservice.utils import hostkey_from_url
 REQUEST_DELAY_MINIMUM = defaultdict(lambda: 1000)
 
 # Current delay (adaptive) between requests to a given hostkey.
-REQUEST_DELAY = defaultdict(lambda: 1000)  # Conservative initial value.
+REQUEST_DELAY: dict[str, int] = defaultdict(lambda: 1000)  # Conservative initial value.
 
 # Determines delay during exponential backoff phase.
-REQUEST_DELAY_EXPONENT = defaultdict(lambda: 0)
+REQUEST_DELAY_EXPONENT: dict[str, int] = defaultdict(lambda: 0)
 
 # Unacknowledged request counter.
 #
 # Bump this when handing a request to QNetworkManager and trim when receiving
 # a response.
-CONGESTION_UNACK = defaultdict(lambda: 0)
+CONGESTION_UNACK: dict[str, int] = defaultdict(lambda: 0)
 
 # Congestion window size in terms of unacked requests.
 #
 # We're allowed to send up to `int(this)` many requests at a time.
-CONGESTION_WINDOW_SIZE = defaultdict(lambda: 1.0)
+CONGESTION_WINDOW_SIZE: dict[str, float] = defaultdict(lambda: 1.0)
 
 # Slow start threshold.
 #
@@ -75,7 +75,7 @@ CONGESTION_WINDOW_SIZE = defaultdict(lambda: 1.0)
 CONGESTION_SSTHRESH = defaultdict(lambda: 0)
 
 # Storage of last request times per host key
-LAST_REQUEST_TIMES = defaultdict(lambda: 0)
+LAST_REQUEST_TIMES: dict[str, float] = defaultdict(lambda: 0)
 
 
 def set_minimum_delay(hostkey, delay_ms):

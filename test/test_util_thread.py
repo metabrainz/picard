@@ -82,7 +82,7 @@ class ThreadTest(PicardTestCase):
                 return self.result_queue.get_nowait()
             except Empty:
                 # necessary to process Qt events sent by other threads
-                QTest.qWait(100)
+                QTest.qWait(100)  # type: ignore[call-arg]
 
     def test_run_task(self):
         thread.run_task(mock_function, self._send_task_result, thread_pool=self.threadpool)

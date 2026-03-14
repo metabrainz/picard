@@ -1171,7 +1171,7 @@ def remove_options_class_attribute(content):
                             if item.targets[0].id == 'options':
                                 # Mark lines for removal
                                 start_line = item.lineno
-                                end_line = item.end_lineno
+                                end_line = item.end_lineno if item.end_lineno else start_line
                                 for line_num in range(start_line, end_line + 1):
                                     lines_to_remove.add(line_num)
                                 warnings.append(

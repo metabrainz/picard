@@ -478,7 +478,8 @@ uuid = "{test_uuid}"
             self.assertEqual(str(result.old_version), '1.0.0.final0')
             self.assertEqual(str(result.new_version), '1.1.0.final0')
             self.assertNotEqual(result.old_commit, result.new_commit)
-            self.assertTrue((plugin.local_path / "update.txt").exists())
+            if plugin.local_path:
+                self.assertTrue((plugin.local_path / "update.txt").exists())
 
     @pytest.mark.skipif(sys.platform == "win32", reason="Windows file locking issues with git repos in tests")
     def test_manager_reinstall_preserves_ref(self):

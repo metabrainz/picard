@@ -45,8 +45,8 @@ def hostkey_from_url(url):
     return (url.host(), port_from_qurl(url))
 
 
-def host_port_to_url(host, port, path=None, scheme=None, as_string=False):
-    """Convert host & port (with optional path and scheme) to an URL"""
+def host_port_to_url(host: str, port: int, path: str | None = None, scheme: str | None = None) -> QUrl:
+    """Convert host & port (with optional path and scheme) to a QUrl"""
     url = QUrl()
     if scheme is None:
         if port == 443:
@@ -63,4 +63,4 @@ def host_port_to_url(host, port, path=None, scheme=None, as_string=False):
     if path is not None:
         url.setPath(path)
 
-    return url.toString() if as_string else url
+    return url
