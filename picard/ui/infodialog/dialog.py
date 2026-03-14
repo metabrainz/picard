@@ -120,6 +120,93 @@ class InfoDialog(PicardDialog):
         self._display_info_tab()
         self._display_error_tab()
         self._display_artwork_tab()
+        self._display_chaos_tab()
+
+    @staticmethod
+    def _rounded_pixmap(pixmap, radius):
+        rounded = QtGui.QPixmap(pixmap.size())
+        rounded.fill(QtCore.Qt.GlobalColor.transparent)
+        painter = QtGui.QPainter(rounded)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        path = QtGui.QPainterPath()
+        path.addRoundedRect(QtCore.QRectF(pixmap.rect()), radius, radius)
+        painter.setClipPath(path)
+        painter.drawPixmap(0, 0, pixmap)
+        painter.end()
+        return rounded
+
+    def _display_chaos_tab(self):
+        """Display the Chaos tab for 'Never Gonna Give You Up' by Rick Astley."""
+        # "Never Gonna Give You Up" by Rick Astley
+        TRIBUTE_RECORDING_IDS = {
+            '7b084c28-e821-4c63-bc0f-2f8e8c5d5d18',
+        }
+
+        def is_tribute(metadata):
+            if not metadata:
+                return False
+            # Check recording MBID
+            if metadata.get('musicbrainz_recordingid') in TRIBUTE_RECORDING_IDS:
+                return True
+            # Fallback: title and artist match
+            title = metadata.get('title', '').lower()
+            artist = metadata.get('artist', '').lower()
+            return 'never gonna give you up' in title and 'rick astley' in artist
+
+        # Check if this object contains the tribute track
+        show_tab = False
+        if isinstance(self.obj, (Track, File)):
+            show_tab = is_tribute(self.obj.metadata)
+        elif isinstance(self.obj, Album):
+            show_tab = any(is_tribute(track.metadata) for track in self.obj.tracks)
+
+        if not show_tab:
+            self.tab_hide(self.ui.chaos_tab)
+            return
+
+        # Use the existing layout from the UI file
+        layout = self.ui.chaos_layout
+        layout.setContentsMargins(20, 20, 20, 20)
+
+        # Add Rob's image
+        image_label = QtWidgets.QLabel()
+        pixmap = QtGui.QPixmap(":/images/mayhem.jpg")
+        if not pixmap.isNull():
+            pixmap = pixmap.scaled(
+                300,
+                300,
+                QtCore.Qt.AspectRatioMode.KeepAspectRatio,
+                QtCore.Qt.TransformationMode.SmoothTransformation,
+            )
+            image_label.setPixmap(self._rounded_pixmap(pixmap, 20))
+            image_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            image_label.setToolTip(
+                "Rob Kaye at the MetaBrainz Summit,\nBarcelona, Spain, September 26, 2019.\nPhoto by zas."
+            )
+            layout.addWidget(image_label)
+
+        # Add tribute text
+        text_label = QtWidgets.QLabel()
+        text_label.setWordWrap(True)
+        text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        text_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        text_label.setText(
+            "<p style='font-size: 14pt;'>"
+            "Never gonna give you up, never gonna let you down...<br/>"
+            "But Rob's got a message for you from the heavens!"
+            "</p>"
+            "<p style='font-size: 12pt; margin-top: 15px;'>"
+            "<strong>Robert Kaye</strong> (<em>mayhem</em>)<br/>"
+            "1970-2026<br/>"
+            "Founder of MetaBrainz and initial author of MusicBrainz Picard,<br/>"
+            "keeping the chaos alive, never gonna give it up."
+            "</p>"
+            "<p style='font-size: 12pt; margin-top: 20px;'>"
+            "🎵 In loving memory of a legend 🎵"
+            "</p>"
+        )
+        layout.addWidget(text_label)
+        layout.addStretch()
 
     def _display_error_tab(self):
         if getattr(self.obj, 'errors', None):

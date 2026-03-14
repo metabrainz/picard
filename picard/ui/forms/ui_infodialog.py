@@ -7,14 +7,13 @@
 
 from PyQt6 import (
     QtCore,
-    QtGui,
     QtWidgets,
 )
 
 from picard.i18n import gettext as _
 
 
-class Ui_InfoDialog(object):
+class Ui_InfoDialog:
     def setupUi(self, InfoDialog):
         InfoDialog.setObjectName("InfoDialog")
         InfoDialog.resize(665, 436)
@@ -37,9 +36,15 @@ class Ui_InfoDialog(object):
         self.verticalLayoutLabel.setObjectName("verticalLayoutLabel")
         self.info = QtWidgets.QLabel(parent=self.scrollAreaWidgetContents)
         self.info.setText("")
-        self.info.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.info.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        )
         self.info.setWordWrap(True)
-        self.info.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.info.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+        )
         self.info.setObjectName("info")
         self.verticalLayoutLabel.addWidget(self.info)
         self.info_scroll.setWidget(self.scrollAreaWidgetContents)
@@ -59,9 +64,15 @@ class Ui_InfoDialog(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.error = QtWidgets.QLabel(parent=self.scrollAreaWidgetContents_3)
         self.error.setText("")
-        self.error.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignTop)
+        self.error.setAlignment(
+            QtCore.Qt.AlignmentFlag.AlignLeading | QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignTop
+        )
         self.error.setWordWrap(True)
-        self.error.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse|QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard|QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        self.error.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByKeyboard
+            | QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
+        )
         self.error.setObjectName("error")
         self.verticalLayout_2.addWidget(self.error)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_3)
@@ -72,6 +83,11 @@ class Ui_InfoDialog(object):
         self.vboxlayout2 = QtWidgets.QVBoxLayout(self.artwork_tab)
         self.vboxlayout2.setObjectName("vboxlayout2")
         self.tabWidget.addTab(self.artwork_tab, "")
+        self.chaos_tab = QtWidgets.QWidget()
+        self.chaos_tab.setObjectName("chaos_tab")
+        self.chaos_layout = QtWidgets.QVBoxLayout(self.chaos_tab)
+        self.chaos_layout.setObjectName("chaos_layout")
+        self.tabWidget.addTab(self.chaos_tab, "")
         self.verticalLayout.addWidget(self.tabWidget)
         self.buttonBox = QtWidgets.QDialogButtonBox(parent=InfoDialog)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.NoButton)
@@ -87,3 +103,4 @@ class Ui_InfoDialog(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.info_tab), _("&Info"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.error_tab), _("&Error"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.artwork_tab), _("A&rtwork"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.chaos_tab), _("&Chaos"))

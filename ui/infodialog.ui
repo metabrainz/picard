@@ -109,6 +109,12 @@
       </attribute>
       <layout class="QVBoxLayout"/>
      </widget>
+     <widget class="QWidget" name="chaos_tab">
+      <attribute name="title">
+       <string>&amp;Chaos</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="chaos_layout"/>
+     </widget>
     </widget>
    </item>
    <item>
