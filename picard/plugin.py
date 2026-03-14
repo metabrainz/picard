@@ -67,11 +67,11 @@ class PluginFunctions:
     run() method will execute entries with higher priority value first
     """
 
-    def __init__(self, label: str = None):
+    def __init__(self, label: str | None = None):
         self.functions = ExtensionPoint(label=label)
-        self.priorities = {}
-        self.config_priorities = {}
-        self.processor_type = label.split('_')[0]
+        self.priorities: dict = {}
+        self.config_priorities: dict = {}
+        self.processor_type = label.split('_')[0] if label else ''
         Option.add_if_missing('setting', 'plugins3_exec_order', dict())
 
     def make_exec_order_key(self, function):
@@ -96,7 +96,7 @@ class PluginFunctions:
             config_priorities = config.setting['plugins3_exec_order']
             config_priorities[key] = config_priorities[key] if key in config_priorities else priority
 
-    def get_plugin_function_information(self, order_dict: dict = None):
+    def get_plugin_function_information(self, order_dict: dict | None = None):
         """Returns registered functions for manually setting execution order"""
         if order_dict is None:
             config = get_config()

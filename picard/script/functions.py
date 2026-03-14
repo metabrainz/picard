@@ -794,7 +794,7 @@ _Since Picard 0.12_"""
     ),
 )
 def func_firstalphachar(parser, text="", nonalpha="#"):
-    if len(text) == 0:
+    if not text:
         return nonalpha
     firstchar = text[0]
     if firstchar.isalpha():
