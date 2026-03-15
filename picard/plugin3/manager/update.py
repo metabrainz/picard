@@ -81,7 +81,12 @@ class PluginUpdater:
         """Execute operation with plugin enable/disable state management."""
         was_enabled = plugin.state == PluginState.ENABLED
         if was_enabled:
-            self.manager.disable_plugin(plugin)
+            try:
+                self.manager.disable_plugin(plugin)
+            except Exception:
+                log.warning(
+                    "Failed to disable plugin %s before operation, proceeding anyway", plugin.plugin_id, exc_info=True
+                )
 
         try:
             result = operation()
