@@ -657,14 +657,10 @@ class PluginListWidget(QtWidgets.QWidget):
         dialog = UninstallPluginDialog(plugin, self)
         dialog.exec()
         if dialog.uninstall_confirmed:
-            try:
-                async_manager = AsyncPluginManager(self.plugin_manager)
-                async_manager.uninstall_plugin(
-                    plugin, purge=dialog.purge_config, callback=partial(self._on_uninstall_complete, plugin)
-                )
-            except Exception as e:
-                log.error("Failed to uninstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                self._uninstall_error_dialog(plugin, str(e))
+            async_manager = AsyncPluginManager(self.plugin_manager)
+            async_manager.uninstall_plugin(
+                plugin, purge=dialog.purge_config, callback=partial(self._on_uninstall_complete, plugin)
+            )
 
     def _on_uninstall_complete(self, plugin, result):
         """Handle uninstall completion."""
@@ -707,17 +703,18 @@ class PluginListWidget(QtWidgets.QWidget):
             confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
             if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
                 return
-
-            async_manager = AsyncPluginManager(self.plugin_manager)
-            async_manager.install_plugin(
-                url=plugin_url,
-                ref=confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None,
-                reinstall=True,
-                callback=partial(self._on_reinstall_complete, plugin),
-            )
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             self._reinstall_error_dialog(plugin, str(e))
+            return
+
+        async_manager = AsyncPluginManager(self.plugin_manager)
+        async_manager.install_plugin(
+            url=plugin_url,
+            ref=confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None,
+            reinstall=True,
+            callback=partial(self._on_reinstall_complete, plugin),
+        )
 
     def _on_reinstall_complete(self, plugin, result):
         """Handle reinstall completion."""
@@ -740,16 +737,12 @@ class PluginListWidget(QtWidgets.QWidget):
         """Switch plugin ref from context menu."""
         dialog = SwitchRefDialog(plugin, self)
         if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
-            try:
-                async_manager = AsyncPluginManager(self.plugin_manager)
-                async_manager.switch_ref(
-                    plugin=plugin,
-                    ref=dialog.selected_ref.shortname if dialog.selected_ref else None,
-                    callback=partial(self._on_switch_ref_complete, plugin),
-                )
-            except Exception as e:
-                log.error("Failed to switch ref for plugin %s: %s", plugin.plugin_id, e, exc_info=True)
-                self._switch_ref_error_dialog(plugin, str(e))
+            async_manager = AsyncPluginManager(self.plugin_manager)
+            async_manager.switch_ref(
+                plugin=plugin,
+                ref=dialog.selected_ref.shortname if dialog.selected_ref else None,
+                callback=partial(self._on_switch_ref_complete, plugin),
+            )
 
     def _on_switch_ref_complete(self, plugin, result):
         """Handle switch ref completion."""
