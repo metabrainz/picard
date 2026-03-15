@@ -271,6 +271,7 @@ class PluginLifecycleManager:
                     enabled_count += 1
                 except Exception as ex:
                     log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
+                    self.manager._init_failed_plugins.append((plugin.plugin_id, str(ex)))
 
         # Build trust level summary and log
         if enabled_count > 0:

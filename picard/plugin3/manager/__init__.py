@@ -212,6 +212,7 @@ class PluginManager(QObject):
         self._plugins: list[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
+        self._init_failed_plugins: list[tuple[str, str]] = []  # List of (plugin_id, error_message) from init
         self._plugin_dirs: list[Path] = []
         self._primary_plugin_dir: Path | None = None
 
