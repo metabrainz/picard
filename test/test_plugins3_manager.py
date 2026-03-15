@@ -391,6 +391,25 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
         self.assertEqual(registry_id, 'example-plugin')
 
+    def test_get_plugin_registry_id_uses_id_property(self):
+        """Test get_plugin_registry_id uses .id property, not dict-style .get('id')."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+        from picard.plugin3.registry import RegistryPlugin
+
+        registry_plugin = RegistryPlugin({'id': 'my-plugin', 'uuid': 'some-uuid', 'name': 'My Plugin'})
+        registry = Mock()
+        registry.find_plugin.return_value = registry_plugin
+        metadata_manager = PluginMetadataManager(registry)
+
+        mock_plugin = MockPlugin(uuid='some-uuid')
+
+        # Verify __getitem__ raises (dict-style access is forbidden)
+        with self.assertRaises(TypeError):
+            _ = registry_plugin['id']
+
+        result = metadata_manager.get_plugin_registry_id(mock_plugin)
+        self.assertEqual(result, 'my-plugin')
+
     def test_get_plugin_registry_id_not_found(self):
         """Test get_plugin_registry_id returns None when plugin not in registry."""
         from test.test_plugins3_helpers import create_test_registry
@@ -831,6 +850,20 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         result = manager.get_plugin_versioning_scheme(plugin)
         self.assertEqual(result, 'semver')
         manager._registry.find_plugin.assert_called_once_with(uuid='some-uuid-1234')
+
+    def test_plugin_dirs_not_shared_between_instances(self):
+        """_plugin_dirs must be per-instance, not shared across PluginManager instances."""
+        from pathlib import Path
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager1 = PluginManager(None)
+            manager2 = PluginManager(None)
+
+            manager1.add_directory(tmpdir, primary=True)
+
+            self.assertIn(Path(tmpdir), manager1._plugin_dirs)
+            self.assertNotIn(Path(tmpdir), manager2._plugin_dirs)
 
     @patch('picard.plugin3.manager.shutil')
     def test_cleanup_failed_plugin_install(self, mock_shutil):

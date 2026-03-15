@@ -204,9 +204,6 @@ class PluginManager(QObject):
     refresh_updates_available = pyqtSignal()
     plugin_update_checks_complete = pyqtSignal(dict)
 
-    _primary_plugin_dir: Path | None = None
-    _plugin_dirs: list[Path] = []
-
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
 
@@ -217,6 +214,8 @@ class PluginManager(QObject):
         self._plugins: list[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
+        self._plugin_dirs: list[Path] = []
+        self._primary_plugin_dir: Path | None = None
 
         # Initialize lifecycle manager early since _load_config depends on it
         self._lifecycle_manager = PluginLifecycleManager(self)
