@@ -164,6 +164,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
         # Connect to plugin manager signals
         self.plugin_manager.plugin_ref_switched.connect(self._on_plugin_ref_switched)
+        self.plugin_manager.plugin_reenable_failed.connect(self._on_plugin_reenable_failed)
 
         # Guard to prevent double refresh during operations
         self._refreshing = False
@@ -764,6 +765,17 @@ class PluginListWidget(QtWidgets.QWidget):
     def _on_plugin_ref_switched(self, plugin):
         """Handle plugin ref switched signal."""
         self._refresh_plugin_list()
+
+    def _on_plugin_reenable_failed(self, plugin, error):
+        """Handle plugin re-enable failure after update/switch."""
+        QtWidgets.QMessageBox.warning(
+            self,
+            _("Plugin Re-enable Failed"),
+            _(
+                'Plugin "{name}" was updated/switched successfully but could not be re-enabled:\n{error}\n\n'
+                'The plugin is currently disabled.'
+            ).format(name=plugin.name(), error=str(error)),
+        )
 
     def _view_repository(self, plugin):
         """Open plugin repository in browser."""

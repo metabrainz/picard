@@ -92,8 +92,9 @@ class PluginUpdater:
             if was_enabled:
                 try:
                     self.manager.enable_plugin(plugin)
-                except Exception:
+                except Exception as e:
                     log.warning("Failed to re-enable plugin %s", plugin.plugin_id, exc_info=True)
+                    self.manager.plugin_reenable_failed.emit(plugin, e)
 
         try:
             result = operation()

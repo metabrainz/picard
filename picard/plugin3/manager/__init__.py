@@ -198,6 +198,7 @@ class PluginManager(QObject):
     plugin_disabled = pyqtSignal(Plugin)
     plugin_state_changed = pyqtSignal(Plugin)  # Emitted for both enable/disable
     plugin_ref_switched = pyqtSignal(Plugin)
+    plugin_reenable_failed = pyqtSignal(Plugin, Exception)  # Emitted when re-enable fails after update/switch
     refresh_updates_available = pyqtSignal()
     plugin_update_checks_complete = pyqtSignal(dict)
 
