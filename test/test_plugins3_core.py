@@ -106,8 +106,17 @@ class TestPluginManifest(PicardTestCase):
         long_desc_it = manifest.long_description('it')
         self.assertEqual(long_desc_it, long_desc)
 
+    def test_get_current_locale_no_config(self):
+        """_get_current_locale must not crash when get_config() returns None."""
+        from unittest.mock import patch
+
+        manifest = load_plugin_manifest('example')
+        with patch('picard.config.get_config', return_value=None):
+            locale = manifest._get_current_locale()
+        self.assertIsInstance(locale, str)
+        self.assertTrue(len(locale) > 0)
+
     def test_manifest_validate_valid(self):
-        """Test validation of valid manifest."""
         manifest = load_plugin_manifest('example')
         errors = manifest.validate()
         self.assertEqual(errors, [])
