@@ -113,7 +113,6 @@ class PluginRegistry:
 
         self._registry_data = None
         self._plugins = []  # List of RegistryPlugin objects
-        self._fetch_failed = False  # Track permanent fetch failures
 
     def _ensure_registry_loaded(self, operation_name='operation'):
         """Ensure registry data is loaded, with error handling.
@@ -127,10 +126,6 @@ class PluginRegistry:
         Returns:
             bool: True if registry is loaded, False if loading failed
         """
-        # Don't retry if we already know fetch failed permanently
-        if self._fetch_failed:
-            return False
-
         if not self._registry_data:
             # Try loading from cache first
             if self._load_from_cache():
