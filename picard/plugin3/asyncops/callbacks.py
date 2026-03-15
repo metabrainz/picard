@@ -33,7 +33,6 @@ class OperationResult:
     success: bool
     result: Any = None
     error: Exception | None = None
-    error_message: str = ''
 
 
 @dataclass

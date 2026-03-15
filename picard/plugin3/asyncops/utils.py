@@ -61,10 +61,6 @@ def run_async(func, callback, progress_callback=None, cancellation_token=None):
         return func()
 
     def _on_complete(result=None, error=None):
-        callback(
-            OperationResult(
-                success=error is None, result=result, error=error, error_message=str(error) if error else ''
-            )
-        )
+        callback(OperationResult(success=error is None, result=result, error=error))
 
     run_task(_wrapper, _on_complete)
