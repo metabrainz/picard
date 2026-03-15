@@ -44,10 +44,7 @@ from picard.plugin3.manager.find import PluginFinder
 from picard.plugin3.manager.install import PluginInstaller
 from picard.plugin3.manager.lifecycle import PluginLifecycleManager
 from picard.plugin3.manager.registry import PluginRegistryManager
-from picard.plugin3.manager.update import (
-    PluginUpdater,
-    UpdateAllResult,
-)
+from picard.plugin3.manager.update import PluginUpdater
 from picard.plugin3.manager.validation import PluginValidationManager
 from picard.plugin3.plugin import (
     Plugin,
@@ -762,17 +759,7 @@ class PluginManager(QObject):
 
     def update_all_plugins(self):
         """Update all installed plugins."""
-        results = []
-        for plugin in self._plugins:
-            try:
-                result = self.update_plugin(plugin)
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
-            except PluginCommitPinnedError as e:
-                # Commit-pinned plugins are skipped, not failed
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=None, error=str(e)))
-            except Exception as e:
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
-        return results
+        return self._updater.update_all_plugins()
 
     def _is_commit_pin(self, metadata):
         """Check if plugin is pinned to a commit (not updatable)."""
