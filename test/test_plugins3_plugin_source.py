@@ -88,6 +88,54 @@ class TestPluginSourceGit(PicardTestCase):
         self.assertEqual(call_count, 1)
 
 
+class TestListAvailableRefs(PicardTestCase):
+    def _make_mock_ref(self, shortname, ref_type, is_remote=False):
+        from unittest.mock import Mock
+
+        ref = Mock()
+        ref.shortname = shortname
+        ref.ref_type = ref_type
+        ref.is_remote = is_remote
+        return ref
+
+    def test_list_available_refs_with_generator(self):
+        """_list_available_refs must work when list_references() returns a generator."""
+        from unittest.mock import Mock
+
+        from picard.git.backend import GitRefType
+
+        source = PluginSourceGit('https://example.com/repo.git')
+        mock_repo = Mock()
+
+        refs = [
+            self._make_mock_ref('main', GitRefType.BRANCH),
+            self._make_mock_ref('origin/main', GitRefType.BRANCH, is_remote=True),
+            self._make_mock_ref('v1.0', GitRefType.TAG),
+        ]
+        # Use a generator (not a list) to expose the exhaustion bug
+        mock_repo.list_references.return_value = (r for r in refs)
+
+        result = source._list_available_refs(mock_repo)
+        self.assertIn('main', result)
+        self.assertIn('v1.0', result)
+
+    def test_list_available_refs_truncation(self):
+        """_list_available_refs must show truncation count correctly."""
+        from unittest.mock import Mock
+
+        from picard.git.backend import GitRefType
+
+        source = PluginSourceGit('https://example.com/repo.git')
+        mock_repo = Mock()
+
+        # 25 branches, limit=20 → should show "... (5 more)"
+        refs = [self._make_mock_ref(f'branch-{i}', GitRefType.BRANCH) for i in range(25)]
+        mock_repo.list_references.return_value = (r for r in refs)
+
+        result = source._list_available_refs(mock_repo, limit=20)
+        self.assertIn('5 more', result)
+
+
 class TestPluginSourceLocal(PicardTestCase):
     def test_plugin_source_local_sync(self):
         """Test PluginSourceLocal.sync() does nothing."""

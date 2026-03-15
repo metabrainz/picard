@@ -151,7 +151,7 @@ class PluginSourceGit(PluginSource):
             str: Comma-separated list of ref names
         """
         refs = []
-        all_refs = repo.list_references()
+        all_refs = list(repo.list_references())
         for ref in all_refs:
             if ref.ref_type == GitRefType.BRANCH:
                 if ref.is_remote:
