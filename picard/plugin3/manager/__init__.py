@@ -1044,7 +1044,7 @@ class PluginManager(QObject):
 
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
-        if plugin.uuid:
+        if not plugin.uuid:
             return ""
 
         try:

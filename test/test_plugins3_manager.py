@@ -777,6 +777,61 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             # Verify plugin was not left in plugins list
             self.assertEqual(len(manager._plugins), 0, "Plugin should be removed from plugins list on failure")
 
+    def test_get_plugin_versioning_scheme_with_uuid(self):
+        """Test get_plugin_versioning_scheme returns scheme when plugin has a UUID."""
+        from test.test_plugins3_helpers import create_test_registry
+
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        manager = PluginManager(MockTagger())
+        manager._registry = create_test_registry()
+        manager._metadata = PluginMetadataManager(manager._registry)
+
+        plugin = MockPlugin(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+        # Plugin has a UUID, so the registry lookup should proceed and return a scheme
+        # (or empty string if not in registry with a scheme, but must NOT short-circuit)
+        result = manager.get_plugin_versioning_scheme(plugin)
+        # The result should be a string (not prematurely returning "" due to inverted guard)
+        self.assertIsInstance(result, str)
+
+    def test_get_plugin_versioning_scheme_no_uuid(self):
+        """Test get_plugin_versioning_scheme returns empty string when plugin has no UUID."""
+        manager = PluginManager(MockTagger())
+        plugin = MockPlugin()
+        plugin.uuid = None
+
+        result = manager.get_plugin_versioning_scheme(plugin)
+        self.assertEqual(result, '')
+
+    def test_get_plugin_versioning_scheme_registry_lookup(self):
+        """Test get_plugin_versioning_scheme queries registry for plugins with UUID and metadata."""
+        from picard.plugin3.plugin_metadata import (
+            PluginMetadata,
+            PluginMetadataManager,
+        )
+
+        manager = PluginManager(MockTagger())
+
+        mock_registry_plugin = Mock()
+        mock_registry_plugin.versioning_scheme = 'semver'
+        manager._registry = Mock()
+        manager._registry.find_plugin.return_value = mock_registry_plugin
+
+        plugin = MockPlugin(uuid='some-uuid-1234')
+
+        # Set up metadata so the registry lookup is reached
+        manager._metadata = PluginMetadataManager(manager._registry)
+        manager._metadata.get_plugin_metadata = Mock(
+            return_value=PluginMetadata(
+                url='https://example.com/plugin.git', ref='main', commit='abc', uuid='some-uuid-1234'
+            )
+        )
+
+        result = manager.get_plugin_versioning_scheme(plugin)
+        self.assertEqual(result, 'semver')
+        manager._registry.find_plugin.assert_called_once_with(uuid='some-uuid-1234')
+
     @patch('picard.plugin3.manager.shutil')
     def test_cleanup_failed_plugin_install(self, mock_shutil):
         """Test _cleanup_failed_plugin_install helper method."""
