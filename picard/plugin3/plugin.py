@@ -34,6 +34,7 @@ from picard.extension_points import unregister_module_extensions
 from picard.git.backend import (
     GitBackendError,
     GitRefType,
+    GitResetMode,
 )
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
@@ -364,8 +365,6 @@ class PluginSourceGit(PluginSource):
 
         # Determine ref type for the resolved ref (non-relative refs only)
         if self.resolved_ref and not self._is_relative_ref(self.ref):
-            from picard.git.ref_utils import find_git_ref
-
             git_ref = find_git_ref(repo, self.resolved_ref)
             if git_ref:
                 self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
@@ -375,7 +374,6 @@ class PluginSourceGit(PluginSource):
 
         # hard reset to passed ref or HEAD
         # Use backend for reset operation
-        from picard.git.backend import GitResetMode
 
         # Handle relative references that need to be resolved after repo setup
         if commit is None and self.resolved_ref and self._is_relative_ref(self.resolved_ref):
@@ -458,8 +456,6 @@ class PluginSourceGit(PluginSource):
         else:
             # No specific ref, use HEAD
             commit = repo.revparse_to_commit('HEAD')
-
-        from picard.git.backend import GitResetMode
 
         repo.reset(commit.id, GitResetMode.HARD)
         new_commit = commit.id
