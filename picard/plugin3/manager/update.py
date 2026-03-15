@@ -88,17 +88,20 @@ class PluginUpdater:
                     "Failed to disable plugin %s before operation, proceeding anyway", plugin.plugin_id, exc_info=True
                 )
 
+        def try_reenable():
+            if was_enabled:
+                try:
+                    self.manager.enable_plugin(plugin)
+                except Exception:
+                    log.warning("Failed to re-enable plugin %s", plugin.plugin_id, exc_info=True)
+
         try:
             result = operation()
-            # Re-enable plugin if it was enabled before
-            if was_enabled:
-                self.manager.enable_plugin(plugin)
+            try_reenable()
             self.manager.plugin_ref_switched.emit(plugin)
             return result
         except Exception:
-            # Re-enable plugin on failure if it was enabled before
-            if was_enabled:
-                self.manager.enable_plugin(plugin)
+            try_reenable()
             raise
 
     def _check_dirty_working_dir(self, plugin, discard_changes):
