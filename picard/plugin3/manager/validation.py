@@ -60,13 +60,12 @@ class PluginValidationManager:
 
         return False, None
 
-    def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
+    def _validate_manifest_or_rollback(self, plugin, old_commit):
         """Validate plugin manifest after git operations, rollback on failure.
 
         Args:
             plugin: Plugin to validate
             old_commit: Commit ID to rollback to on failure
-            was_enabled: Whether plugin was enabled before operation
 
         Raises:
             PluginManifestInvalidError, PluginManifestReadError: If manifest validation fails
@@ -93,13 +92,6 @@ class PluginValidationManager:
                     log.error('Failed to cleanup broken plugin %s: %s', plugin.plugin_id, cleanup_error)
                 # Raise rollback error instead of original error since rollback failed
                 raise rollback_error
-
-            # Re-enable plugin if it was enabled before rollback
-            if was_enabled:
-                try:
-                    self.manager.enable_plugin(plugin)
-                except Exception as enable_error:
-                    log.error('Failed to re-enable plugin %s after rollback: %s', plugin.plugin_id, enable_error)
 
             # Re-raise the original manifest error
             raise

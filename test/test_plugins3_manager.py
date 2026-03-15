@@ -610,7 +610,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         plugin.read_manifest = Mock()
 
         # Test successful validation
-        manager._validate_manifest_or_rollback(plugin, 'old_commit', False)
+        manager._validate_manifest_or_rollback(plugin, 'old_commit')
 
         # Verify manifest was read
         plugin.read_manifest.assert_called_once()
@@ -635,13 +635,13 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Test validation failure with rollback
             with self.assertRaises(PluginManifestInvalidError):
-                manager._validate_manifest_or_rollback(plugin, 'old_commit', True)
+                manager._validate_manifest_or_rollback(plugin, 'old_commit')
 
             # Verify rollback was attempted
             mock_repo.reset_to_commit.assert_called_once_with('old_commit', hard=True)
 
-            # Verify plugin was re-enabled after rollback
-            mock_enable.assert_called_once()
+            # Verify plugin was NOT re-enabled here (wrapper handles it)
+            mock_enable.assert_not_called()
 
     @patch('picard.plugin3.manager.update.PluginSourceGit')
     @patch('picard.plugin3.manager.update.git_backend')

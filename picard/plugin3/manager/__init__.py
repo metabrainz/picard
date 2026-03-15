@@ -717,9 +717,9 @@ class PluginManager(QObject):
             except Exception as e:
                 log.error('Failed to remove %s %s: %s', description, path, e)
 
-    def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
+    def _validate_manifest_or_rollback(self, plugin, old_commit):
         """Validate plugin manifest after git operations, rollback on failure."""
-        return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
+        return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit)
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
