@@ -178,9 +178,10 @@ pytest test/test_metadata.py
 
 ### AI Assistant Guidelines
 When making code changes:
-1. **Always place imports at the top of files** - avoid inline imports unless absolutely necessary for circular dependency resolution
-2. **Run `ruff format` after all changes** - ensures code follows project style guidelines
-3. **Run `ruff check` to catch issues** - fix any linting errors before committing
+1. **Imports go at the top of files** - local (inline) imports are acceptable only to break circular dependencies; in that case, place them as close to usage as possible with a comment explaining why
+2. **Bug fixes: test first** - write a test that reproduces the bug before fixing it, then verify the fix makes the test pass; keep the test as a permanent regression test when feasible
+3. **Run `ruff format` after all changes** - ensures code follows project style guidelines
+4. **Run `ruff check` to catch issues** - fix any linting errors before committing
 
 ### Contributing
 1. **Create ticket first:** <https://tickets.metabrainz.org/projects/PICARD>
