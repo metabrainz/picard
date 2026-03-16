@@ -23,14 +23,19 @@ from functools import (
     partial,
     update_wrapper,
 )
+import json
 from logging import (
     Logger,
     getLogger,
 )
 from pathlib import Path
+import re
 import sys
 import types
 
+from PyQt6.QtCore import QLocale
+
+from picard import log
 from picard.debug_opts import DebugOpt
 from picard.util.display_title_base import HasDisplayTitle
 from picard.util.imageinfo import ImageInfo
@@ -202,8 +207,6 @@ class PluginApi:
         Returns:
             Tuple of (plugin_name, filename, lineno)
         """
-        import sys
-
         frame = sys._getframe(frame_depth)
         filename = frame.f_code.co_filename
         lineno = frame.f_lineno
@@ -230,8 +233,6 @@ class PluginApi:
             *args: Arguments for message formatting
             frame_depth: Number of frames to go back (default 3)
         """
-        from picard import log
-
         plugin_name, filename, lineno = cls._get_caller_info(frame_depth=frame_depth)
         warning_key = (plugin_name, filename, lineno)
         if warning_key not in cls._deprecation_warnings_emitted:
@@ -298,8 +299,6 @@ class PluginApi:
         Examples: en, de, pt_BR, zh_CN
         Case-insensitive to work on case-insensitive filesystems.
         """
-        import re
-
         return bool(re.match(r'^[a-z]{2,3}(_[a-z]{2})?$', locale, re.IGNORECASE))
 
     def _find_translation_file(self, locale: str) -> tuple[Path | None, str | None]:
@@ -336,8 +335,6 @@ class PluginApi:
                     self._logger.debug(f"Loaded {format.upper()} translation file: {file_path}")
                     return data
             elif format == 'json':
-                import json
-
                 with open(file_path, encoding='utf-8') as f:
                     data = json.load(f)
                     self._logger.debug(f"Loaded {format.upper()} translation file: {file_path}")
@@ -469,8 +466,6 @@ class PluginApi:
         Returns:
             str: Current locale code (e.g., 'en', 'de_DE', 'pt_BR')
         """
-        from PyQt6.QtCore import QLocale
-
         # Use Picard's UI language setting if available
         config = get_config()
         ui_language = config.setting['ui_language']
