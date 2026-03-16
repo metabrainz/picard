@@ -448,6 +448,7 @@ def upgrade_to_v2_7_0dev2(config):
 
 def upgrade_to_v2_7_0dev3(config):
     """Save file naming scripts to dictionary."""
+    # Avoid init-order issue: config_upgrade runs during config init before full module graph is ready
     from picard.script import get_file_naming_script_presets
     from picard.script.serializer import (
         FileNamingScriptInfo,
@@ -516,6 +517,7 @@ def upgrade_to_v2_8_0dev2(config):
 
 def upgrade_to_v2_9_0alpha2(config):
     """Add preset file naming scripts to editable user scripts dictionary"""
+    # Avoid init-order issue: config_upgrade runs during config init before full module graph is ready
     from picard.script import get_file_naming_script_presets
 
     scripts = config.setting['file_renaming_scripts']
