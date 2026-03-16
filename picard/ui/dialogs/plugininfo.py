@@ -26,6 +26,7 @@ from PyQt6 import (
 
 from picard.i18n import gettext as _
 from picard.plugin3.categories import PluginCategorySet
+from picard.plugin3.installable import InstallablePlugin
 
 from picard.ui import PreserveGeometry
 
@@ -178,8 +179,6 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
 
     def _is_installable_plugin(self):
         """Check if this is an InstallablePlugin object vs installed plugin."""
-        from picard.plugin3.installable import InstallablePlugin
-
         return isinstance(self.plugin_data, InstallablePlugin)
 
     def _get_plugin_name(self):
