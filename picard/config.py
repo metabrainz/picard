@@ -32,6 +32,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from contextlib import contextmanager
 from enum import (
     Enum,
     IntEnum,
@@ -377,6 +378,19 @@ class SettingConfigSection(ConfigSection):
 
     def set_settings_override(self, new_settings=None):
         self.settings_override = new_settings
+
+    @contextmanager
+    def no_profile(self):
+        """Context manager that temporarily disables profile lookup."""
+        saved_profiles = self.profiles_override
+        saved_settings = self.settings_override
+        self.profiles_override = []
+        self.settings_override = None
+        try:
+            yield
+        finally:
+            self.profiles_override = saved_profiles
+            self.settings_override = saved_settings
 
 
 class Config(QtCore.QSettings):

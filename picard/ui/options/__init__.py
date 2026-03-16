@@ -94,19 +94,20 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
 
     def restore_defaults(self):
         config = get_config()
-        old_options = {}
-        for option in self._registered_settings[self.NAME]:
-            default_value = option.default
-            name = option.name
-            current_value = config.setting[name]
-            if current_value != default_value:
-                log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
-                old_options[name] = current_value
-                config.setting[name] = default_value
-        self.load()
-        # Restore the config values incase the user doesn't save after restoring defaults
-        for key in old_options:
-            config.setting[key] = old_options[key]
+        with config.setting.no_profile():
+            old_options = {}
+            for option in self._registered_settings[self.NAME]:
+                default_value = option.default
+                name = option.name
+                current_value = config.setting[name]
+                if current_value != default_value:
+                    log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
+                    old_options[name] = current_value
+                    config.setting[name] = default_value
+            self.load()
+            # Restore the config values in case the user doesn't save after restoring defaults
+            for key in old_options:
+                config.setting[key] = old_options[key]
 
     def display_error(self, error):
         dialog = QtWidgets.QMessageBox(

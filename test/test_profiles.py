@@ -356,3 +356,62 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_3], "def")
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
         self.assertEqual(self.config.setting[self.test_setting_3], "abc")
+
+    def test_no_profile_context_manager(self):
+        self.config.setting[self.test_setting_0] = "abc"
+        settings = {
+            "test_key_0": {self.test_setting_0: "profile_value"},
+            "test_key_1": {},
+            "test_key_2": {},
+        }
+        self.config.profiles[self.SETTINGS_KEY] = settings
+        self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
+
+        # With profiles active, profile value is returned
+        self.assertEqual(self.config.setting[self.test_setting_0], "profile_value")
+
+        # Inside no_profile(), base setting is returned
+        with self.config.setting.no_profile():
+            self.assertEqual(self.config.setting[self.test_setting_0], "abc")
+
+        # After exiting, profile value is returned again
+        self.assertEqual(self.config.setting[self.test_setting_0], "profile_value")
+
+    def test_no_profile_restores_existing_overrides(self):
+        self.config.setting[self.test_setting_0] = "abc"
+        settings = {
+            "test_key_0": {self.test_setting_0: "profile_value"},
+            "test_key_1": {},
+            "test_key_2": {},
+        }
+        self.config.profiles[self.SETTINGS_KEY] = settings
+        override_profiles = self.get_profiles(enabled=True)
+        override_settings = {
+            "test_key_0": {self.test_setting_0: "override_value"},
+            "test_key_1": {},
+            "test_key_2": {},
+        }
+        self.config.setting.set_profiles_override(override_profiles)
+        self.config.setting.set_settings_override(override_settings)
+
+        # With overrides active
+        self.assertEqual(self.config.setting[self.test_setting_0], "override_value")
+
+        with self.config.setting.no_profile():
+            self.assertEqual(self.config.setting[self.test_setting_0], "abc")
+
+        # Overrides restored after context manager exits
+        self.assertEqual(self.config.setting[self.test_setting_0], "override_value")
+        self.assertIs(self.config.setting.profiles_override, override_profiles)
+        self.assertIs(self.config.setting.settings_override, override_settings)
+
+    def test_no_profile_restores_on_exception(self):
+        override_profiles = self.get_profiles(enabled=True)
+        self.config.setting.set_profiles_override(override_profiles)
+
+        with self.assertRaises(ValueError):
+            with self.config.setting.no_profile():
+                raise ValueError("test error")
+
+        # Overrides restored even after exception
+        self.assertIs(self.config.setting.profiles_override, override_profiles)
