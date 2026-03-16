@@ -101,7 +101,7 @@ reason = "Security vulnerability in plugin UUID"
 blacklisted_at = "2025-11-21T10:00:00Z"
 
 [[blacklist]]
-url_regex = "https://evilorg\\.com/.*"
+url_regex = "^https://evilorg\\.com/.*"
 reason = "Entire organization blacklisted"
 blacklisted_at = "2025-11-22T10:00:00Z"
 
@@ -588,7 +588,7 @@ reason = "Security vulnerability in plugin UUID"
 blacklisted_at = "2025-11-21T10:00:00Z"
 
 [[blacklist]]
-url_regex = "https://evilorg\\.com/.*"
+url_regex = "^https://evilorg\\.com/.*"
 reason = "Entire organization blacklisted"
 blacklisted_at = "2025-11-22T10:00:00Z"
 

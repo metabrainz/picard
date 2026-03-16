@@ -173,9 +173,14 @@ reason = "Malware detected"
 blacklisted_at = "2025-11-21T10:00:00Z"
 
 [[blacklist]]
-url_regex = "https://badsite\\.com/.*"
+url_regex = "^https://badsite\\.com/.*"
 reason = "Malicious site"
 blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+url_regex = "/malicious-repo\\.git$"
+reason = "Blocked repository name"
+blacklisted_at = "2025-11-22T11:00:00Z"
 
 [[blacklist]]
 uuid = "blacklisted-uuid-1234"

@@ -364,7 +364,7 @@ class PluginRegistry:
             elif 'url_regex' in entry:
                 if normalized_url:
                     try:
-                        if re.match(entry['url_regex'], normalized_url):
+                        if re.search(entry['url_regex'], normalized_url):
                             reason = entry.get('reason', 'Plugin matches blacklisted pattern')
                             return True, reason
                     except re.error:

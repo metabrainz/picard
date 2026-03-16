@@ -117,6 +117,26 @@ class TestPluginRegistry(PicardTestCase):
         is_blacklisted, reason = registry.is_blacklisted('https://goodsite.com/plugin.git')
         self.assertFalse(is_blacklisted)
 
+    def test_registry_blacklist_pattern_end_anchor(self):
+        """Test that url_regex supports end-of-string anchors via re.search.
+
+        This would fail with re.match which only anchors at the start.
+        """
+        registry = create_test_registry()
+
+        # Matches: any URL ending with malicious-repo.git
+        is_blacklisted, reason = registry.is_blacklisted('https://github.com/user/malicious-repo.git')
+        self.assertTrue(is_blacklisted)
+        self.assertIn('Blocked repository name', reason)
+
+        # Different host, same repo name — still blocked
+        is_blacklisted, reason = registry.is_blacklisted('https://gitlab.com/other/malicious-repo.git')
+        self.assertTrue(is_blacklisted)
+
+        # Similar but different name — not blocked
+        is_blacklisted, reason = registry.is_blacklisted('https://github.com/user/not-malicious-repo.git')
+        self.assertFalse(is_blacklisted)
+
     def test_registry_blacklist_plugin_id(self):
         """Test that blacklisted plugin UUIDs are detected."""
         registry = create_test_registry()
