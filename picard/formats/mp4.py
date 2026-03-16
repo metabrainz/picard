@@ -210,13 +210,17 @@ class MP4File(File):
             elif name == 'trkn':
                 try:
                     metadata['tracknumber'] = values[0][0]
-                    metadata['totaltracks'] = values[0][1]
+                    totaltracks = values[0][1]
+                    if totaltracks > 0:
+                        metadata['totaltracks'] = totaltracks
                 except IndexError:
                     log.debug("trkn is invalid, ignoring")
             elif name == 'disk':
                 try:
                     metadata['discnumber'] = values[0][0]
-                    metadata['totaldiscs'] = values[0][1]
+                    totaldiscs = values[0][1]
+                    if totaldiscs > 0:
+                        metadata['totaldiscs'] = totaldiscs
                 except IndexError:
                     log.debug("disk is invalid, ignoring")
             elif name == 'covr':

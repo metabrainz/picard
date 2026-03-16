@@ -439,10 +439,7 @@ class CommonTests:
             self.assertIn('discnumber', loaded_metadata)
             if self.format.supports_tag('totaldiscs'):
                 self.assertIn('totaldiscs', original_metadata)
-            if self.testfile_ext in {'.m4a', '.m4v'}:
-                self.assertEqual('0', loaded_metadata['totaldiscs'])
-            else:
-                self.assertNotIn('totaldiscs', loaded_metadata)
+            self.assertNotIn('totaldiscs', loaded_metadata)
 
         @skipUnlessTestfile
         def test_delete_totaltracks(self):
@@ -460,10 +457,7 @@ class CommonTests:
             self.assertIn('tracknumber', loaded_metadata)
             if self.format.supports_tag('totaltracks'):
                 self.assertIn('totaltracks', original_metadata)
-            if self.testfile_ext in {'.m4a', '.m4v'}:
-                self.assertEqual('0', loaded_metadata['totaltracks'])
-            else:
-                self.assertNotIn('totaltracks', loaded_metadata)
+            self.assertNotIn('totaltracks', loaded_metadata)
 
         @skipUnlessTestfile
         def test_delete_performer(self):
