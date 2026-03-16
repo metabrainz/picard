@@ -23,6 +23,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from weakref import WeakKeyDictionary
 
 from picard.i18n import sort_key as _sort_key
 from picard.item import Item
@@ -246,8 +247,6 @@ class CachedSortAdapter(_AdapterBase):
             use provider.sort_key if available, otherwise use casefolded evaluate.
         """
         super().__init__(base)
-        from weakref import WeakKeyDictionary
-
         self._cache: WeakKeyDictionary[Item, object] = WeakKeyDictionary()
         self._key_func = key_func
 
