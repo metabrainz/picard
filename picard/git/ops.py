@@ -119,6 +119,7 @@ class GitOperations:
         Raises:
             PluginRefNotFoundError: If ref doesn't exist
         """
+        # Avoid circular import: plugin3.manager → git.ops → plugin3.manager
         from picard.plugin3.manager import PluginRefNotFoundError
 
         # For registry plugins with versioning_scheme, validate against version tags
@@ -223,6 +224,7 @@ class GitOperations:
         Raises:
             PluginDirtyError: If plugin has uncommitted changes and discard_changes=False
         """
+        # Avoid circular import: plugin3.manager → git.ops → plugin3.manager
         from picard.plugin3.manager import PluginDirtyError
 
         # Clean Python cache files before checking for changes
