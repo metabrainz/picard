@@ -66,6 +66,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
         try:
             self.callback(objs)
         except Exception:
+            # Avoid circular import: extension_points loaded early before picard.log is fully initialized
             from picard import log
 
             plugin_id = getattr(self.api, 'plugin_id', 'unknown')
