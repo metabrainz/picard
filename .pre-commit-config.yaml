@@ -14,17 +14,17 @@ repos:
       - id: check-shebang-scripts-are-executable
         exclude: ".*\\.in"
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.5
+    rev: v0.15.6
     hooks:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/jackdewinter/pymarkdown
-    rev: v0.9.35
+    rev: v0.9.36
     hooks:
       - id: pymarkdown
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.10.9
+    rev: 0.10.10
     hooks:
       - id: uv-lock
         name: Sync uv.lock with pyproject.toml
