@@ -184,7 +184,7 @@ class PluginInstaller:
             try:
                 self.manager.enable_plugin(plugin)
             except Exception as e:
-                log.error('Plugin installation failed during enable due to manifest error: %s', e)
+                log.error('Plugin installation failed during enable: %s', e)
                 final_path = self.manager._primary_plugin_dir / plugin_name
                 self.manager._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
                 raise

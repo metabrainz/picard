@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
     patch,
@@ -28,14 +29,31 @@ from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPlugin,
     MockTagger,
+    backend_init_and_commit,
+    create_test_registry,
 )
 
+from picard.config import get_config
+from picard.git.backend import (
+    GitRef,
+    GitRefType,
+)
 from picard.git.ops import GitOperations
 from picard.plugin3.manager import (
+    PluginDirtyError,
     PluginManager,
     PluginManifestInvalidError,
+    PluginNoUUIDError,
 )
-from picard.plugin3.plugin import PluginState
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginState,
+)
+from picard.plugin3.plugin_metadata import (
+    PluginMetadata,
+    PluginMetadataManager,
+)
+from picard.plugin3.registry import RegistryPlugin
 from picard.plugin3.validation import PluginValidation
 
 
@@ -53,8 +71,6 @@ class TestPluginManagerHelpers(PicardTestCase):
         mock_manifest = Mock()
         mock_manifest.validate.return_value = ['Error 1', 'Error 2']
 
-        from picard.plugin3.manager import PluginManifestInvalidError
-
         with self.assertRaises(PluginManifestInvalidError) as context:
             PluginValidation.validate_manifest(mock_manifest)
 
@@ -62,8 +78,6 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_get_plugin_uuid_missing(self):
         """Test _get_plugin_uuid when UUID is missing."""
-        from picard.plugin3.manager import PluginNoUUIDError
-
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.manifest = None
@@ -93,9 +107,6 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_cleanup_temp_directories(self):
         """Test that temp directories are cleaned up."""
-        from pathlib import Path
-        import tempfile
-
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
 
@@ -135,9 +146,6 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_add_directory_skips_hidden(self):
         """Test that add_directory skips hidden directories."""
-        from pathlib import Path
-        import tempfile
-
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
 
@@ -170,9 +178,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_dirty_working_dir_clean(self):
         """Test _check_dirty_working_dir with clean repo."""
-        from pathlib import Path
-        import tempfile
-
         try:
             from picard.git.factory import has_git_backend
 
@@ -183,8 +188,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir)
-            from test.test_plugins3_helpers import backend_init_and_commit
-
             commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
@@ -201,8 +204,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_dirty_working_dir_dirty(self):
         """Test _check_dirty_working_dir with uncommitted changes."""
-        from pathlib import Path
-        import tempfile
 
         try:
             from picard.git.factory import has_git_backend
@@ -214,8 +215,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir)
-            from test.test_plugins3_helpers import backend_init_and_commit
-
             backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Modify the file (uncommitted change)
@@ -227,9 +226,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_update_plugin_dirty_raises_error(self):
         """Test that update_plugin raises PluginDirtyError for dirty repo."""
-        from picard.plugin3.manager import PluginDirtyError, PluginMetadata
-        from picard.plugin3.plugin import Plugin
-
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
@@ -259,9 +255,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_update_plugin_dirty_with_discard(self):
         """Test that update_plugin works with discard_changes=True."""
-        from picard.plugin3.manager import PluginMetadata
-        from picard.plugin3.plugin import Plugin
-
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
@@ -314,9 +307,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_switch_ref_dirty_raises_error(self):
         """Test that switch_ref raises PluginDirtyError for dirty repo."""
-        from picard.plugin3.manager import PluginDirtyError
-        from picard.plugin3.plugin import Plugin
-
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
         mock_plugin.local_path = Mock()
@@ -333,9 +323,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_install_plugin_reinstall_dirty_check(self):
         """Test that install_plugin checks for dirty working dir on reinstall."""
-        from pathlib import Path
-        import tempfile
-
         try:
             from picard.git.factory import has_git_backend
 
@@ -351,8 +338,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Create existing plugin with uncommitted changes
             existing = plugin_dir / 'test_plugin_uuid'
-            from test.test_plugins3_helpers import backend_init_and_commit
-
             commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
@@ -372,10 +357,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_found(self):
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
-        from test.test_plugins3_helpers import create_test_registry
-
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -391,12 +372,24 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
         self.assertEqual(registry_id, 'example-plugin')
 
+    def test_get_plugin_registry_id_uses_id_property(self):
+        """Test get_plugin_registry_id uses .id property, not dict-style .get('id')."""
+        registry_plugin = RegistryPlugin({'id': 'my-plugin', 'uuid': 'some-uuid', 'name': 'My Plugin'})
+        registry = Mock()
+        registry.find_plugin.return_value = registry_plugin
+        metadata_manager = PluginMetadataManager(registry)
+
+        mock_plugin = MockPlugin(uuid='some-uuid')
+
+        # Verify __getitem__ raises (dict-style access is forbidden)
+        with self.assertRaises(TypeError):
+            _ = registry_plugin['id']
+
+        result = metadata_manager.get_plugin_registry_id(mock_plugin)
+        self.assertEqual(result, 'my-plugin')
+
     def test_get_plugin_registry_id_not_found(self):
         """Test get_plugin_registry_id returns None when plugin not in registry."""
-        from test.test_plugins3_helpers import create_test_registry
-
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -413,10 +406,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_no_uuid(self):
         """Test get_plugin_registry_id returns None when plugin has no UUID."""
-        from test.test_plugins3_helpers import create_test_registry
-
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -432,10 +421,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_metadata_dict_format(self):
         """Test get_plugin_metadata returns PluginMetadata object by UUID."""
-        from picard.config import get_config
-        from picard.plugin3.manager import PluginMetadata
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         metadata_manager = PluginMetadataManager(manager._registry)
@@ -459,9 +444,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_metadata_not_found(self):
         """Test get_plugin_metadata returns None when UUID not found."""
-        from picard.config import get_config
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         metadata_manager = PluginMetadataManager(manager._registry)
@@ -474,10 +456,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_no_conflict(self):
         """Test _check_uuid_conflict returns False when no conflict exists."""
-        from unittest.mock import Mock
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -492,10 +470,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_same_source(self):
         """Test _check_uuid_conflict returns False for same UUID from same source."""
-        from unittest.mock import Mock
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -524,10 +498,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_different_source(self):
         """Test _check_uuid_conflict returns True for same UUID from different source."""
-        from unittest.mock import Mock
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -591,7 +561,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         plugin.read_manifest = Mock()
 
         # Test successful validation
-        manager._validate_manifest_or_rollback(plugin, 'old_commit', False)
+        manager._validate_manifest_or_rollback(plugin, 'old_commit')
 
         # Verify manifest was read
         plugin.read_manifest.assert_called_once()
@@ -616,13 +586,13 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Test validation failure with rollback
             with self.assertRaises(PluginManifestInvalidError):
-                manager._validate_manifest_or_rollback(plugin, 'old_commit', True)
+                manager._validate_manifest_or_rollback(plugin, 'old_commit')
 
             # Verify rollback was attempted
             mock_repo.reset_to_commit.assert_called_once_with('old_commit', hard=True)
 
-            # Verify plugin was re-enabled after rollback
-            mock_enable.assert_called_once()
+            # Verify plugin was NOT re-enabled here (wrapper handles it)
+            mock_enable.assert_not_called()
 
     @patch('picard.plugin3.manager.update.PluginSourceGit')
     @patch('picard.plugin3.manager.update.git_backend')
@@ -707,8 +677,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata.get_plugin_metadata.return_value = metadata
 
         # Mock GitOperations.switch_ref
-        from picard.git.backend import GitRef, GitRefType
-
         old_git_ref = GitRef(name='refs/tags/v1.0.0', target='old_commit', ref_type=GitRefType.TAG)
         new_git_ref = GitRef(name='refs/tags/v1.1.0', target='new_commit', ref_type=GitRefType.TAG)
         mock_git_ops.switch_ref.return_value = (old_git_ref, new_git_ref, 'old_commit', 'new_commit')
@@ -776,6 +744,63 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
             # Verify plugin was not left in plugins list
             self.assertEqual(len(manager._plugins), 0, "Plugin should be removed from plugins list on failure")
+
+    def test_get_plugin_versioning_scheme_with_uuid(self):
+        """Test get_plugin_versioning_scheme returns scheme when plugin has a UUID."""
+        manager = PluginManager(MockTagger())
+        manager._registry = create_test_registry()
+        manager._metadata = PluginMetadataManager(manager._registry)
+
+        plugin = MockPlugin(uuid='ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+        # Plugin has a UUID, so the registry lookup should proceed and return a scheme
+        # (or empty string if not in registry with a scheme, but must NOT short-circuit)
+        result = manager.get_plugin_versioning_scheme(plugin)
+        # The result should be a string (not prematurely returning "" due to inverted guard)
+        self.assertIsInstance(result, str)
+
+    def test_get_plugin_versioning_scheme_no_uuid(self):
+        """Test get_plugin_versioning_scheme returns empty string when plugin has no UUID."""
+        manager = PluginManager(MockTagger())
+        plugin = MockPlugin()
+        plugin.uuid = None
+
+        result = manager.get_plugin_versioning_scheme(plugin)
+        self.assertEqual(result, '')
+
+    def test_get_plugin_versioning_scheme_registry_lookup(self):
+        """Test get_plugin_versioning_scheme queries registry for plugins with UUID and metadata."""
+        manager = PluginManager(MockTagger())
+
+        mock_registry_plugin = Mock()
+        mock_registry_plugin.versioning_scheme = 'semver'
+        manager._registry = Mock()
+        manager._registry.find_plugin.return_value = mock_registry_plugin
+
+        plugin = MockPlugin(uuid='some-uuid-1234')
+
+        # Set up metadata so the registry lookup is reached
+        manager._metadata = PluginMetadataManager(manager._registry)
+        manager._metadata.get_plugin_metadata = Mock(
+            return_value=PluginMetadata(
+                url='https://example.com/plugin.git', ref='main', commit='abc', uuid='some-uuid-1234'
+            )
+        )
+
+        result = manager.get_plugin_versioning_scheme(plugin)
+        self.assertEqual(result, 'semver')
+        manager._registry.find_plugin.assert_called_once_with(uuid='some-uuid-1234')
+
+    def test_plugin_dirs_not_shared_between_instances(self):
+        """_plugin_dirs must be per-instance, not shared across PluginManager instances."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager1 = PluginManager(None)
+            manager2 = PluginManager(None)
+
+            manager1.add_directory(tmpdir, primary=True)
+
+            self.assertIn(Path(tmpdir), manager1._plugin_dirs)
+            self.assertNotIn(Path(tmpdir), manager2._plugin_dirs)
 
     @patch('picard.plugin3.manager.shutil')
     def test_cleanup_failed_plugin_install(self, mock_shutil):

@@ -22,7 +22,6 @@ import gc
 import os
 from pathlib import Path
 import shutil
-import tempfile
 from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import (
@@ -42,21 +41,13 @@ from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.plugin3.manager.clean import PluginCleanupManager
 from picard.plugin3.manager.find import PluginFinder
-from picard.plugin3.manager.install import (
-    PluginInstaller,
-    get_plugin_directory_name,
-)
+from picard.plugin3.manager.install import PluginInstaller
 from picard.plugin3.manager.lifecycle import PluginLifecycleManager
 from picard.plugin3.manager.registry import PluginRegistryManager
-from picard.plugin3.manager.update import (
-    PluginUpdater,
-    UpdateAllResult,
-)
+from picard.plugin3.manager.update import PluginUpdater
 from picard.plugin3.manager.validation import PluginValidationManager
 from picard.plugin3.plugin import (
     Plugin,
-    PluginSourceGit,
-    hash_string,
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import (
@@ -207,11 +198,9 @@ class PluginManager(QObject):
     plugin_disabled = pyqtSignal(Plugin)
     plugin_state_changed = pyqtSignal(Plugin)  # Emitted for both enable/disable
     plugin_ref_switched = pyqtSignal(Plugin)
+    plugin_reenable_failed = pyqtSignal(Plugin, Exception)  # Emitted when re-enable fails after update/switch
     refresh_updates_available = pyqtSignal()
     plugin_update_checks_complete = pyqtSignal(dict)
-
-    _primary_plugin_dir: Path | None = None
-    _plugin_dirs: list[Path] = []
 
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
         from picard.tagger import Tagger
@@ -223,6 +212,9 @@ class PluginManager(QObject):
         self._plugins: list[Plugin] = []  # Instance variable, not class variable
         self._enabled_plugins: set[str] = set()
         self._failed_plugins: list[tuple[Path, str, str]] = []  # List of (path, name, error_message) tuples
+        self._init_failed_plugins: list[tuple[str, str]] = []  # List of (plugin_id, error_message) from init
+        self._plugin_dirs: list[Path] = []
+        self._primary_plugin_dir: Path | None = None
 
         # Initialize lifecycle manager early since _load_config depends on it
         self._lifecycle_manager = PluginLifecycleManager(self)
@@ -727,9 +719,9 @@ class PluginManager(QObject):
             except Exception as e:
                 log.error('Failed to remove %s %s: %s', description, path, e)
 
-    def _validate_manifest_or_rollback(self, plugin, old_commit, was_enabled):
+    def _validate_manifest_or_rollback(self, plugin, old_commit):
         """Validate plugin manifest after git operations, rollback on failure."""
-        return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit, was_enabled)
+        return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit)
 
     def install_plugin(
         self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
@@ -751,142 +743,6 @@ class PluginManager(QObject):
             url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
         )
 
-    def _install_from_local_directory(
-        self,
-        local_path: Path,
-        reinstall=False,
-        force_blacklisted=False,
-        ref=None,
-        discard_changes=False,
-        enable_after_install=False,
-    ):
-        """Install a plugin from a local directory.
-
-        Args:
-            local_path: Path to local plugin directory
-            reinstall: If True, reinstall even if already exists
-            force_blacklisted: If True, bypass blacklist check (dangerous!)
-            ref: Git ref to checkout if local_path is a git repository
-            discard_changes: If True, discard uncommitted changes on reinstall
-            enable_after_install: If True, enable the plugin after successful installation
-
-        Returns:
-            str: Plugin ID
-        """
-        # Preserve original ref if reinstalling and no ref specified
-        ref = self._preserve_original_ref_if_needed(local_path, ref, reinstall)
-
-        # Check if local directory is a git repository
-        is_git_repo = (local_path / '.git').exists()
-
-        if is_git_repo:
-            # Check if source repository has uncommitted changes
-            try:
-
-                def check_status(source_repo):
-                    if source_repo.get_status():
-                        log.warning('Installing from local repository with uncommitted changes: %s', local_path)
-
-                    # If no ref specified, use the current branch
-                    if not ref and not source_repo.is_head_detached():
-                        current_ref = source_repo.get_head_shorthand()
-                        log.debug('Using current branch from local repo: %s', current_ref)
-                        return current_ref
-                    return ref
-
-                ref = self._with_plugin_repo(local_path, check_status)
-            except Exception:
-                pass  # Ignore errors checking status
-
-            # Use git operations to get ref and commit info
-
-            url_hash = hash_string(str(local_path))
-            temp_path = Path(tempfile.gettempdir()) / f'picard-plugin-{url_hash}'
-
-            try:
-                source = PluginSourceGit(str(local_path), ref)
-                commit_id = source.sync(temp_path, single_branch=True)
-                install_path = temp_path
-                ref_to_save = source.resolved_ref
-                ref_type_to_save = source.resolved_ref_type
-                commit_to_save = commit_id
-            except Exception:
-                # Clean up temp directory on failure
-                self._safe_remove_directory(temp_path, "temp directory after git sync failure")
-                raise
-        else:
-            # All plugins must be git repositories
-            raise ValueError(
-                f"Plugin directory {local_path} is not a git repository. All plugins must be git repositories."
-            )
-
-        # Read MANIFEST to get plugin ID
-        try:
-            manifest = PluginValidation.read_and_validate_manifest(install_path, local_path)
-        except Exception:
-            # Clean up temp directory if manifest validation fails
-            self._safe_remove_directory(temp_path, "temp directory after manifest validation failure")
-            raise
-
-        # Check for UUID conflicts with existing plugins from different sources
-        has_conflict, existing_plugin = self._check_uuid_conflict(manifest, str(local_path))
-        if has_conflict and not reinstall:
-            existing_metadata = self._metadata.get_plugin_metadata(existing_plugin.uuid)
-            existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-            raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, str(local_path))
-
-        # Generate plugin directory name from sanitized name + UUID
-        plugin_name = get_plugin_directory_name(manifest)
-        assert self._primary_plugin_dir is not None
-        final_path = self._primary_plugin_dir / plugin_name
-
-        # Check if already installed and handle reinstall
-        if final_path.exists():
-            if not reinstall:
-                raise PluginAlreadyInstalledError(plugin_name, local_path)
-
-            # Check for uncommitted changes before removing
-            if not discard_changes:
-                changes = GitOperations.check_dirty_working_dir(final_path)
-                if changes:
-                    raise PluginDirtyError(plugin_name, changes)
-
-            self._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")
-
-        # Copy to plugin directory
-        # Move from temp location (git repo was cloned to temp)
-        shutil.move(str(install_path), str(final_path))
-
-        # Store metadata
-        self._metadata.save_plugin_metadata(
-            PluginMetadata(
-                name=plugin_name,
-                url=str(local_path),
-                ref=ref_to_save or '',
-                commit=commit_to_save or '',
-                uuid=manifest.uuid,
-                ref_type=ref_type_to_save,
-            )
-        )
-
-        # Add newly installed plugin to the plugins list
-        plugin = Plugin(self._primary_plugin_dir, plugin_name, uuid=manifest.uuid)
-        self._plugins.append(plugin)
-
-        # Enable plugin if requested
-        if enable_after_install:
-            try:
-                self.enable_plugin(plugin)
-            except PluginManifestError as e:
-                # Remove installed plugin on manifest validation failure during enable
-                log.error('Local plugin installation failed during enable due to manifest error: %s', e)
-                self._cleanup_failed_plugin_install(plugin, plugin_name, final_path)
-                # Re-raise the original error
-                raise
-
-        log.info('Plugin %s installed from local directory %s', plugin_name, local_path)
-        return plugin_name
-
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
         """Find newer version tag for plugin with versioning_scheme."""
         return self._registry_manager._find_newer_version_tag(url, current_tag, versioning_scheme)
@@ -905,17 +761,7 @@ class PluginManager(QObject):
 
     def update_all_plugins(self):
         """Update all installed plugins."""
-        results = []
-        for plugin in self._plugins:
-            try:
-                result = self.update_plugin(plugin)
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
-            except PluginCommitPinnedError as e:
-                # Commit-pinned plugins are skipped, not failed
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=None, error=str(e)))
-            except Exception as e:
-                results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=False, result=None, error=str(e)))
-        return results
+        return self._updater.update_all_plugins()
 
     def _is_commit_pin(self, metadata):
         """Check if plugin is pinned to a commit (not updatable)."""
@@ -1044,7 +890,7 @@ class PluginManager(QObject):
 
     def get_plugin_versioning_scheme(self, plugin):
         """Get versioning scheme for plugin from registry."""
-        if plugin.uuid:
+        if not plugin.uuid:
             return ""
 
         try:

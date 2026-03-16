@@ -34,6 +34,8 @@ from picard.extension_points import unregister_module_extensions
 from picard.git.backend import (
     GitBackendError,
     GitRefType,
+    GitRepository,
+    GitResetMode,
 )
 from picard.git.factory import git_backend
 from picard.git.ref_utils import find_git_ref
@@ -140,33 +142,29 @@ class PluginSourceGit(PluginSource):
         """Check if ref is a relative reference (contains git notation like ^, ~, @)."""
         return ref and any(char in ref for char in ['^', '~', '@', ':'])
 
-    def _list_available_refs(self, repo, limit=20):
+    def _list_available_refs(self, repo: GitRepository, limit: int = 20) -> str:
         """List available refs in repository.
 
         Args:
             repo: GitRepository instance
-            limit: Maximum number of refs to return
+            limit: Maximum number of refs to return. Use 0 or negative to return all.
 
         Returns:
             str: Comma-separated list of ref names
         """
         refs = []
-        all_refs = repo.list_references()
-        for ref in all_refs:
-            if ref.ref_type == GitRefType.BRANCH:
-                if ref.is_remote:
-                    refs.append(ref.shortname)  # Already includes origin/ prefix
-                else:
-                    refs.append(ref.shortname)
-            elif ref.ref_type == GitRefType.TAG:
+        for ref in repo.list_references():
+            if ref.ref_type in (GitRefType.BRANCH, GitRefType.TAG):
                 refs.append(ref.shortname)
 
         if not refs:
             return "none"
 
-        refs = refs[:limit]
-        if len(all_refs) > limit:
-            refs.append(f"... ({len(all_refs) - limit} more)")
+        if limit > 0:
+            truncated = refs[limit:]
+            refs = refs[:limit]
+            if truncated:
+                refs.append(f"... ({len(truncated)} more)")
 
         return ", ".join(refs)
 
@@ -364,8 +362,6 @@ class PluginSourceGit(PluginSource):
 
         # Determine ref type for the resolved ref (non-relative refs only)
         if self.resolved_ref and not self._is_relative_ref(self.ref):
-            from picard.git.ref_utils import find_git_ref
-
             git_ref = find_git_ref(repo, self.resolved_ref)
             if git_ref:
                 self.resolved_ref_type = git_ref.ref_type.value  # 'tag' or 'branch'
@@ -375,7 +371,6 @@ class PluginSourceGit(PluginSource):
 
         # hard reset to passed ref or HEAD
         # Use backend for reset operation
-        from picard.git.backend import GitResetMode
 
         # Handle relative references that need to be resolved after repo setup
         if commit is None and self.resolved_ref and self._is_relative_ref(self.resolved_ref):
@@ -458,8 +453,6 @@ class PluginSourceGit(PluginSource):
         else:
             # No specific ref, use HEAD
             commit = repo.revparse_to_commit('HEAD')
-
-        from picard.git.backend import GitResetMode
 
         repo.reset(commit.id, GitResetMode.HARD)
         new_commit = commit.id

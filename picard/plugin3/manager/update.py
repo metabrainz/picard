@@ -81,19 +81,28 @@ class PluginUpdater:
         """Execute operation with plugin enable/disable state management."""
         was_enabled = plugin.state == PluginState.ENABLED
         if was_enabled:
-            self.manager.disable_plugin(plugin)
+            try:
+                self.manager.disable_plugin(plugin)
+            except Exception:
+                log.warning(
+                    "Failed to disable plugin %s before operation, proceeding anyway", plugin.plugin_id, exc_info=True
+                )
+
+        def try_reenable():
+            if was_enabled:
+                try:
+                    self.manager.enable_plugin(plugin)
+                except Exception as e:
+                    log.warning("Failed to re-enable plugin %s", plugin.plugin_id, exc_info=True)
+                    self.manager.plugin_reenable_failed.emit(plugin, e)
 
         try:
             result = operation()
-            # Re-enable plugin if it was enabled before
-            if was_enabled:
-                self.manager.enable_plugin(plugin)
+            try_reenable()
             self.manager.plugin_ref_switched.emit(plugin)
             return result
         except Exception:
-            # Re-enable plugin on failure if it was enabled before
-            if was_enabled:
-                self.manager.enable_plugin(plugin)
+            try_reenable()
             raise
 
     def _check_dirty_working_dir(self, plugin, discard_changes):
@@ -171,7 +180,7 @@ class PluginUpdater:
             new_commit, commit_date = self.manager._with_plugin_repo(plugin.local_path, get_commit_info)
 
             # Reload manifest to get new version
-            self.manager._validate_manifest_or_rollback(plugin, old_commit, True)  # was_enabled handled by wrapper
+            self.manager._validate_manifest_or_rollback(plugin, old_commit)
 
             new_version = str(plugin.manifest.version) if plugin.manifest and plugin.manifest.version else None
             new_ref = source.ref
@@ -253,7 +262,7 @@ class PluginUpdater:
             )
 
             # Validate manifest after ref switch
-            self.manager._validate_manifest_or_rollback(plugin, old_commit, True)  # was_enabled handled by wrapper
+            self.manager._validate_manifest_or_rollback(plugin, old_commit)
 
             # Update metadata with new ref
             uuid, metadata = self.manager._get_plugin_uuid_and_metadata(plugin)

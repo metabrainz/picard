@@ -50,14 +50,14 @@ class AsyncPluginRegistry:
 
         def _on_response(data, reply, error):
             if error:
-                callback(OperationResult(success=False, error=error, error_message=str(error)))
+                callback(OperationResult(success=False, error=error))
             else:
                 try:
                     registry_data = json.loads(data)
                     self._registry.set_raw_registry_data(registry_data)
                     callback(OperationResult(success=True, result=registry_data))
                 except json.JSONDecodeError as e:
-                    callback(OperationResult(success=False, error=e, error_message=f'Invalid JSON: {e}'))
+                    callback(OperationResult(success=False, error=e))
 
         # Use Picard's WebService for async HTTP
         self._tagger.webservice.get_url(

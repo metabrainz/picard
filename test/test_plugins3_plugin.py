@@ -26,6 +26,7 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 
+from picard.plugin3.manager import PluginManifestInvalidError
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceSyncError,
@@ -70,8 +71,6 @@ class TestPluginManifestReading(PicardTestCase):
                 mock_manifest = Mock()
                 mock_manifest.validate.return_value = ['Error 1', 'Error 2']
                 mock_manifest_class.return_value = mock_manifest
-
-                from picard.plugin3.manager import PluginManifestInvalidError
 
                 plugin = Plugin(Path('/tmp'), 'test-plugin')
 

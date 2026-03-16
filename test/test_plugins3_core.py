@@ -18,7 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from functools import partial
+import logging
+from pathlib import Path
+import tempfile
+from unittest.mock import (
+    Mock,
+    patch,
+)
+
+from PyQt6.QtCore import QSettings
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -27,15 +36,23 @@ from test.picardtestcase import (
 from test.test_plugins3_helpers import (
     MockPlugin,
     MockTagger,
+    generate_unique_uuid,
     load_plugin_manifest,
 )
 
+from picard import log
 from picard.config import (
+    BoolOption,
     ConfigSection,
+    IntOption,
     Option,
+    TextOption,
     get_config,
 )
 from picard.plugin3.api import PluginApi
+from picard.plugin3.manager import PluginManager
+from picard.plugin3.manifest import PluginManifest
+from picard.plugin3.plugin import Plugin
 from picard.version import Version
 
 
@@ -106,19 +123,21 @@ class TestPluginManifest(PicardTestCase):
         long_desc_it = manifest.long_description('it')
         self.assertEqual(long_desc_it, long_desc)
 
+    def test_get_current_locale_no_config(self):
+        """_get_current_locale must not crash when get_config() returns None."""
+        manifest = load_plugin_manifest('example')
+        with patch('picard.config.get_config', return_value=None):
+            locale = manifest._get_current_locale()
+        self.assertIsInstance(locale, str)
+        self.assertTrue(len(locale) > 0)
+
     def test_manifest_validate_valid(self):
-        """Test validation of valid manifest."""
         manifest = load_plugin_manifest('example')
         errors = manifest.validate()
         self.assertEqual(errors, [])
 
     def test_manifest_validate_missing_fields(self):
         """Test validation catches missing required fields."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         # Create minimal invalid manifest
         manifest_content = """
 name = "Test"
@@ -143,11 +162,6 @@ name = "Test"
 
     def test_manifest_validate_invalid_types(self):
         """Test validation catches invalid field types."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         manifest_content = """
 name = 123
 authors = "not an array"
@@ -176,11 +190,6 @@ license_url = "https://example.com"
 
     def test_manifest_validate_empty_i18n_sections(self):
         """Test validation warns about empty i18n sections."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         manifest_content = """
 name = "Test"
 authors = ["Author"]
@@ -226,11 +235,6 @@ license_url = "https://example.com"
 
     def test_manifest_invalid_version(self):
         """Test manifest with invalid version string."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         manifest_content = """
 uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Test"
@@ -256,11 +260,6 @@ license_url = "https://example.com"
 
     def test_manifest_invalid_api_versions(self):
         """Test manifest with invalid API version strings."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         manifest_content = """
 uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Test"
@@ -286,11 +285,6 @@ license_url = "https://example.com"
 
     def test_manifest_missing_api_versions(self):
         """Test manifest with missing API versions."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manifest import PluginManifest
-
         manifest_content = """
 uuid = "550e8400-e29b-41d4-a716-446655440000"
 name = "Test"
@@ -352,10 +346,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_logger_propagates_to_main(self):
         """Test that plugin logger messages propagate to main logger."""
-        import logging
-
-        from picard import log
-
         # Save and restore logging.disable state (other tests may have disabled logging)
         original_disable_level = logging.root.manager.disable
         logging.disable(logging.NOTSET)
@@ -401,11 +391,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_plugin_config_persistence(self):
         """Test that plugin config values are saved and can be retrieved."""
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
         manifest = load_plugin_manifest('example')
         test_uuid = manifest.uuid
 
@@ -457,11 +442,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_plugin_config_operations(self):
         """Test all plugin_config operations."""
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
         manifest = load_plugin_manifest('example')
 
         with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
@@ -529,11 +509,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_plugin_config_type_roundtrip(self):
         """Test that common types survive save/load roundtrip in same process."""
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
         manifest = load_plugin_manifest('example')
 
         with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
@@ -588,17 +563,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_plugin_config_with_options(self):
         """Test that plugin config works with registered Options."""
-        from pathlib import Path
-        import tempfile
-
-        from PyQt6.QtCore import QSettings
-
-        from picard.config import (
-            BoolOption,
-            IntOption,
-            TextOption,
-        )
-
         manifest = load_plugin_manifest('example')
         test_uuid = manifest.uuid
 
@@ -645,8 +609,6 @@ class TestPluginApi(PicardTestCase):
 
         finally:
             # Clean up registered options
-            from picard.config import Option
-
             Option.registry.pop((f'plugin.{test_uuid}', 'text_setting'), None)
             Option.registry.pop((f'plugin.{test_uuid}', 'int_setting'), None)
             Option.registry.pop((f'plugin.{test_uuid}', 'bool_setting'), None)
@@ -654,9 +616,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
-        from functools import partial
-        from unittest.mock import patch
-
         manifest = load_plugin_manifest('example')
         api = PluginApi(manifest, Mock())
 
@@ -681,9 +640,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_event_hooks(self):
         """Test event hook registration methods."""
-        from functools import partial
-        from unittest.mock import patch
-
         manifest = load_plugin_manifest('example')
         api = PluginApi(manifest, Mock())
 
@@ -724,8 +680,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_script_function(self):
         """Test script function registration."""
-        from unittest.mock import patch
-
         manifest = load_plugin_manifest('example')
         api = PluginApi(manifest, Mock())
 
@@ -740,8 +694,6 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_actions(self):
         """Test action registration methods."""
-        from unittest.mock import patch
-
         manifest = load_plugin_manifest('example')
         api = PluginApi(manifest, Mock())
 
@@ -763,8 +715,6 @@ class TestPluginApi(PicardTestCase):
 class TestPluginManager(PicardTestCase):
     def test_config_persistence(self):
         """Test that enabled plugins are saved to and loaded from config."""
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -772,8 +722,6 @@ class TestPluginManager(PicardTestCase):
         self.assertEqual(manager._enabled_plugins, set())
 
         # Create a mock plugin with UUID
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         test_uuid = generate_unique_uuid()
         mock_plugin = MockPlugin(uuid=test_uuid)
 
@@ -797,9 +745,6 @@ class TestPluginManager(PicardTestCase):
 
     def test_init_plugins_only_loads_enabled(self):
         """Test that init_plugins only loads plugins that are enabled in config."""
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -836,10 +781,6 @@ class TestPluginManager(PicardTestCase):
 
     def test_api_version_compatibility_compatible(self):
         """Test that plugins with compatible API versions are loaded."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -852,10 +793,6 @@ class TestPluginManager(PicardTestCase):
 
     def test_api_version_compatibility_incompatible_old(self):
         """Test that plugins with old incompatible API versions are rejected."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -866,10 +803,6 @@ class TestPluginManager(PicardTestCase):
 
     def test_api_version_compatibility_incompatible_new(self):
         """Test that plugins requiring newer API versions are rejected."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -884,10 +817,6 @@ class TestPluginErrors(PicardTestCase):
 
     def test_load_plugin_with_invalid_manifest(self):
         """Test loading plugin with invalid MANIFEST.toml."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -897,10 +826,6 @@ class TestPluginErrors(PicardTestCase):
 
     def test_init_plugins_handles_errors(self):
         """Test that init_plugins handles plugin errors gracefully."""
-
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -924,10 +849,6 @@ class TestPluginErrors(PicardTestCase):
 
     def test_enable_plugin_with_load_error(self):
         """Test enabling plugin that fails to load."""
-
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -940,11 +861,6 @@ class TestPluginErrors(PicardTestCase):
 
     def test_manager_add_directory(self):
         """Test adding plugin directory."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
@@ -960,11 +876,6 @@ class TestPluginErrors(PicardTestCase):
 
     def test_manager_add_directory_twice(self):
         """Test adding same directory twice is ignored."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 

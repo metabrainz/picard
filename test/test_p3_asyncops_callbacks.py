@@ -34,16 +34,14 @@ class TestAsyncopsCallbacks(PicardTestCase):
         self.assertTrue(result.success)
         self.assertEqual(result.result, 'test_value')
         self.assertIsNone(result.error)
-        self.assertEqual(result.error_message, '')
 
     def test_operation_result_error(self):
         """Test OperationResult for failed operation."""
         error = ValueError('test error')
-        result = OperationResult(success=False, error=error, error_message='test error')
+        result = OperationResult(success=False, error=error)
         self.assertFalse(result.success)
         self.assertIsNone(result.result)
         self.assertEqual(result.error, error)
-        self.assertEqual(result.error_message, 'test error')
 
     def test_progress_update_basic(self):
         """Test ProgressUpdate with basic fields."""

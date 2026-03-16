@@ -56,7 +56,12 @@ class PluginLifecycleManager:
 
     def uninstall_plugin(self, plugin: Plugin, purge=False):
         """Uninstall a plugin."""
-        self.manager.disable_plugin(plugin)
+        try:
+            self.manager.disable_plugin(plugin)
+        except Exception:
+            log.warning(
+                "Failed to disable plugin %s during uninstall, proceeding anyway", plugin.plugin_id, exc_info=True
+            )
         plugin_path = plugin.local_path
 
         # Safety check: ensure plugin_path is a child of primary plugin dir, not the dir itself
@@ -266,6 +271,7 @@ class PluginLifecycleManager:
                     enabled_count += 1
                 except Exception as ex:
                     log.error('Failed initializing plugin %s from %s', plugin.plugin_id, plugin.local_path, exc_info=ex)
+                    self.manager._init_failed_plugins.append((plugin.plugin_id, str(ex)))
 
         # Build trust level summary and log
         if enabled_count > 0:

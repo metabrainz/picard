@@ -789,8 +789,6 @@ class Tagger(QtWidgets.QApplication):
 
         # Show warning if any plugins were blacklisted
         if blacklisted_plugins:
-            from PyQt6.QtWidgets import QMessageBox
-
             plugin_list = '\n'.join(f'• {name}: {reason}' for name, reason in blacklisted_plugins)
             message = _(
                 'The following plugins have been blacklisted and disabled:\n\n'
@@ -798,7 +796,18 @@ class Tagger(QtWidgets.QApplication):
                 'These plugins may contain security vulnerabilities or malicious code. '
                 'They have been automatically disabled for your protection.'
             ).format(plugin_list=plugin_list)
-            QMessageBox.warning(self.window, _('Blacklisted Plugins Detected'), message)
+            QtWidgets.QMessageBox.warning(self.window, _('Blacklisted Plugins Detected'), message)
+
+        # Show warning if any plugins failed to initialize
+        if plugin_manager and plugin_manager._init_failed_plugins:
+            plugin_list = '\n'.join(f'• {pid}: {err}' for pid, err in plugin_manager._init_failed_plugins)
+            QtWidgets.QMessageBox.warning(
+                self.window,
+                _('Plugin Initialization Failed'),
+                _('The following plugins failed to load and have been disabled:\n\n{plugin_list}').format(
+                    plugin_list=plugin_list
+                ),
+            )
 
         QtCore.QTimer.singleShot(0, self._run_init)
         self._qt_translators_updated.emit()

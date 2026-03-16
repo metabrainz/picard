@@ -92,6 +92,8 @@ class PluginManifest:
         from picard.config import get_config
 
         config = get_config()
+        if config is None:
+            return 'en'
         locale = config.setting['ui_language']
         if not locale:
             # Fall back to system locale if no UI language set
@@ -164,14 +166,14 @@ class PluginManifest:
         if self._data.get('version'):
             try:
                 Version.from_string(self._data['version'])
-            except (VersionError, Exception) as e:
+            except Exception as e:
                 errors.append(f"Invalid version format: {e}")
 
         if self._data.get('api'):
             for api_ver in self._data['api']:
                 try:
                     Version.from_string(api_ver)
-                except (VersionError, Exception) as e:
+                except Exception as e:
                     errors.append(f"Invalid API version '{api_ver}': {e}")
 
         return errors
