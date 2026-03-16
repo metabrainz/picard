@@ -203,9 +203,6 @@ class PluginManager(QObject):
     plugin_update_checks_complete = pyqtSignal(dict)
 
     def __init__(self, tagger: 'Tagger | None' = None) -> None:
-        # Avoid circular import: tagger ↔ plugin3.manager
-        from picard.tagger import Tagger
-
         # Tests pass in a mock object and not an actual Tagger instance,
         # hence check type before passing it to QObject.
         super().__init__(parent=tagger if isinstance(tagger, QObject) else None)
