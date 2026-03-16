@@ -246,6 +246,52 @@ class TestPluginRegistry(PicardTestCase):
                                 self.assertEqual(metadata.original_url, old_url)
                                 self.assertEqual(metadata.original_uuid, old_uuid)
 
+    def test_install_local_blocks_blacklisted_uuid(self):
+        """Test that local install blocks plugins with blacklisted UUID.
+
+        Regression test: _install_common() was skipping the UUID blacklist
+        check for local installs (is_local=True), allowing locally cloned
+        copies of UUID-blacklisted plugins to be installed.
+        """
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manager import PluginBlacklistedError, PluginManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Create a fake local plugin directory with .git
+            local_plugin = Path(tmpdir) / 'local-plugin'
+            local_plugin.mkdir()
+            (local_plugin / '.git').mkdir()
+
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
+                mock_source = Mock()
+                mock_source.ref = 'main'
+
+                def fake_sync(path, **kwargs):
+                    path.mkdir(parents=True, exist_ok=True)
+                    (path / 'MANIFEST.toml').touch()
+                    return 'abc123'
+
+                mock_source.sync = fake_sync
+                mock_source_class.return_value = mock_source
+
+                with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
+                    mock_manifest = Mock()
+                    mock_manifest.name.return_value = 'Malicious Plugin'
+                    mock_manifest.uuid = 'blacklisted-uuid-1234'
+                    mock_manifest.validate.return_value = []
+                    mock_manifest_class.return_value = mock_manifest
+
+                    with self.assertRaises(PluginBlacklistedError):
+                        manager.install_plugin(str(local_plugin))
+
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
         from pathlib import Path

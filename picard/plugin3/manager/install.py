@@ -80,7 +80,7 @@ class PluginInstaller:
 
         # Initial blacklist check
         if not force_blacklisted:
-            self._check_blacklist_initial(url, ref, local_path)
+            self._check_blacklist(url, ref, local_path)
 
         # Install from local directory or remote URL
         if local_path:
@@ -92,24 +92,16 @@ class PluginInstaller:
             url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
         )
 
-    def _check_blacklist_initial(self, url, ref, local_path):
-        """Perform initial blacklist check before installation."""
+    def _check_blacklist(self, url, ref, local_path=None, plugin_uuid=None):
+        """Check if a plugin is blacklisted by URL and optionally UUID."""
         if local_path:
             plugin = LocalInstallablePlugin(str(local_path), ref, self.manager._registry)
         else:
             plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
-
+        plugin.plugin_uuid = plugin_uuid
         is_blacklisted, blacklist_reason = plugin.is_blacklisted()
         if is_blacklisted:
-            raise PluginBlacklistedError(url, blacklist_reason)
-
-    def _check_blacklist_with_uuid(self, url, ref, manifest):
-        """Check blacklist with actual UUID from manifest."""
-        plugin = UrlInstallablePlugin(url, ref, self.manager._registry)
-        plugin.plugin_uuid = manifest.uuid
-        is_blacklisted, blacklist_reason = plugin.is_blacklisted()
-        if is_blacklisted:
-            raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
+            raise PluginBlacklistedError(url, blacklist_reason, plugin_uuid)
 
     def _check_uuid_conflict(self, manifest, source_url, reinstall):
         """Check for UUID conflicts with existing plugins."""
@@ -241,8 +233,9 @@ class PluginInstaller:
             plugin_name = get_plugin_directory_name(manifest)
 
             # Perform validation checks
-            if not force_blacklisted and not is_local:  # Only check blacklist for remote sources
-                self._check_blacklist_with_uuid(source_url, ref, manifest)
+            if not force_blacklisted:
+                local_path = Path(source_url) if is_local else None
+                self._check_blacklist(source_url, ref, local_path, manifest.uuid)
             self._check_uuid_conflict(manifest, str(source_url), reinstall)
 
             final_path = self.manager._primary_plugin_dir / plugin_name
