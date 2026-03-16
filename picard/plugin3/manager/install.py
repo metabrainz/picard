@@ -95,6 +95,7 @@ class PluginInstaller:
 
         is_blacklisted, blacklist_reason = plugin.is_blacklisted()
         if is_blacklisted:
+            # Avoid circular import: plugin3.manager → plugin3.manager.install → plugin3.manager
             from picard.plugin3.manager import PluginBlacklistedError
 
             raise PluginBlacklistedError(url, blacklist_reason)
@@ -105,6 +106,7 @@ class PluginInstaller:
         plugin.plugin_uuid = manifest.uuid
         is_blacklisted, blacklist_reason = plugin.is_blacklisted()
         if is_blacklisted:
+            # Avoid circular import: plugin3.manager → plugin3.manager.install → plugin3.manager
             from picard.plugin3.manager import PluginBlacklistedError
 
             raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
@@ -116,6 +118,7 @@ class PluginInstaller:
             existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
             existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
 
+            # Avoid circular import: plugin3.manager → plugin3.manager.install → plugin3.manager
             from picard.plugin3.manager import PluginUUIDConflictError
 
             raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, source_url)
@@ -195,6 +198,7 @@ class PluginInstaller:
         """Check if plugin is already installed and handle reinstall."""
         if final_path.exists():
             if not reinstall:
+                # Avoid circular import: plugin3.manager → plugin3.manager.install → plugin3.manager
                 from picard.plugin3.manager import PluginAlreadyInstalledError
 
                 raise PluginAlreadyInstalledError(plugin_name, source_url)
@@ -318,6 +322,7 @@ class PluginInstaller:
         if not discard_changes:
             changes = GitOperations.check_dirty_working_dir(final_path)
             if changes:
+                # Avoid circular import: plugin3.manager → plugin3.manager.install → plugin3.manager
                 from picard.plugin3.manager import PluginDirtyError
 
                 raise PluginDirtyError(plugin_name, changes)
