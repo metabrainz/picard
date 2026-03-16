@@ -21,6 +21,10 @@
 """Git backend factory."""
 
 from picard.git.backend import GitBackend
+from picard.git.backends.pygit2 import (
+    HAS_PYGIT2,
+    Pygit2Backend,
+)
 
 
 def get_git_backend() -> GitBackend:
@@ -29,15 +33,11 @@ def get_git_backend() -> GitBackend:
     Currently only supports pygit2 backend.
     Future backends (CLI, dulwich) can be added here.
     """
-    from picard.git.backends.pygit2 import Pygit2Backend
-
     return Pygit2Backend()
 
 
 def has_git_backend() -> bool:
     """Check if a git backend is available."""
-    from picard.git.backends.pygit2 import HAS_PYGIT2
-
     return HAS_PYGIT2
 
 
