@@ -56,22 +56,35 @@ class CoverArtEncodingError(CoverArtProcessingError):
 
 class ProcessingImage:
     def __init__(self, image: QImage | bytes, info: ImageInfo | None = None):
-        self.set_result(image)
+        self._set_result(image)
         if info is not None:
             self.info = info
         elif isinstance(image, QImage):
             self._set_imageinfo_from_qimage(image)
         elif info is None:
             self.info = identify(image)
+        self._modified = False
+        self._original_format = self.info.format_info
 
     def copy(self):
+        if not self.is_modified() and self._raw_data:
+            return ProcessingImage(self._raw_data, copy(self.info))
         return ProcessingImage(self._qimage.copy(), copy(self.info))
 
     def set_result(self, image: QImage | bytes):
+        self._modified = True
+        self._set_result(image)
+
+    def _set_result(self, image: QImage | bytes):
         if isinstance(image, QImage):
             self._qimage = image
+            self._raw_data = None
         else:
             self._qimage = QImage.fromData(image)
+            self._raw_data = image
+
+    def is_modified(self) -> bool:
+        return self._modified or self.info.format_info != self._original_format
 
     def get_qimage(self):
         return self._qimage
@@ -91,6 +104,11 @@ class ProcessingImage:
             image_format = self.info.format_info
             if not image_format:
                 raise CoverArtEncodingError("No image format specified and info.format_info is missing.")
+
+        # If the image was not manipulated and originally was provided as bytes,
+        # return the raw data directly to avoid re-encoding due to QImage conversion.
+        if image_format == self._original_format and not self._modified and self._raw_data:
+            return self._raw_data
 
         if self._qimage is None:
             raise CoverArtEncodingError("No QImage available to encode.")

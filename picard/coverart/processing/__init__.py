@@ -95,17 +95,16 @@ class CoverArtImageProcessing:
         image: ProcessingImage,
         target: ImageProcessor.Target,
     ):
-        data = initial_data
         try:
             queue = self.queues[target]
             if queue:
                 for processor in queue:
                     processor.run(image, target)
                     time.sleep(COVER_PROCESSING_SLEEP)
-                data = image.get_result()
         except CoverArtProcessingError as e:
             raise e
         finally:
+            data = image.get_result()
             if target in ImageProcessor.Target.SAME | ImageProcessor.Target.TAGS:
                 coverartimage.set_data(data if save_images_to_tags else initial_data)
             if save_images_to_files and target in ImageProcessor.Target.SAME | ImageProcessor.Target.FILE:
