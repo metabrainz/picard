@@ -596,8 +596,11 @@ class Plugin:
 
     def read_manifest(self):
         """Reads metadata for the plugin from the plugin's MANIFEST.toml"""
-        # Avoid circular import: plugin3.manager → plugin3.plugin → plugin3.manager
-        from picard.plugin3.manager import PluginManifestReadError
+        # Avoid circular import: plugin3.plugin → plugin3.manager.errors → plugin3.manager → plugin3.plugin
+        from picard.plugin3.manager.errors import (
+            PluginManifestInvalidError,
+            PluginManifestReadError,
+        )
 
         self.uuid = None
         try:
@@ -610,9 +613,6 @@ class Plugin:
         # Validate manifest
         errors = self.manifest.validate()
         if errors:
-            # Avoid circular import: plugin3.manager → plugin3.plugin → plugin3.manager
-            from picard.plugin3.manager import PluginManifestInvalidError
-
             raise PluginManifestInvalidError(errors)
 
         # Add a shortcut

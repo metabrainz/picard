@@ -36,8 +36,8 @@ class PluginValidation:
         Raises:
             PluginManifestInvalidError: If manifest has validation errors
         """
-        # Avoid circular import: plugin3.manager → plugin3.validation → plugin3.manager
-        from picard.plugin3.manager import PluginManifestInvalidError
+        # Avoid circular import: plugin3.validation → plugin3.manager.errors → plugin3.manager → plugin3.validation
+        from picard.plugin3.manager.errors import PluginManifestInvalidError
 
         errors = manifest.validate()
         if errors:
@@ -58,8 +58,8 @@ class PluginValidation:
             PluginManifestNotFoundError: If MANIFEST.toml doesn't exist
             PluginManifestInvalidError: If manifest has validation errors
         """
-        # Avoid circular import: plugin3.manager → plugin3.validation → plugin3.manager
-        from picard.plugin3.manager import PluginManifestNotFoundError
+        # Avoid circular import: plugin3.validation → plugin3.manager.errors → plugin3.manager → plugin3.validation
+        from picard.plugin3.manager.errors import PluginManifestNotFoundError
         from picard.plugin3.manifest import PluginManifest
 
         manifest_path = Path(path) / 'MANIFEST.toml'
@@ -84,8 +84,8 @@ class PluginValidation:
         Raises:
             PluginNoUUIDError: If plugin has no UUID
         """
-        # Avoid circular import: plugin3.manager → plugin3.validation → plugin3.manager
-        from picard.plugin3.manager import PluginNoUUIDError
+        # Avoid circular import: plugin3.validation → plugin3.manager.errors → plugin3.manager → plugin3.validation
+        from picard.plugin3.manager.errors import PluginNoUUIDError
 
         # Lazy-load manifest if not already loaded
         if not plugin.manifest:

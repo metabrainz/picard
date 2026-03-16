@@ -30,6 +30,10 @@ from picard.git.factory import git_backend
 from picard.git.ops import GitOperations
 from picard.git.ref_utils import find_git_ref
 from picard.plugin3 import GitReferenceError
+from picard.plugin3.manager.errors import (
+    PluginCommitPinnedError,
+    PluginDirtyError,
+)
 from picard.plugin3.plugin import (
     PluginSourceGit,
     PluginState,
@@ -111,9 +115,6 @@ class PluginUpdater:
             assert plugin.local_path is not None
             changes = GitOperations.check_dirty_working_dir(plugin.local_path)
             if changes:
-                # Avoid circular import: plugin3.manager → plugin3.manager.update → plugin3.manager
-                from picard.plugin3.manager import PluginDirtyError
-
                 raise PluginDirtyError(plugin.plugin_id, changes)
 
     def _check_commit_pinned(self, plugin, metadata):
@@ -123,17 +124,11 @@ class PluginUpdater:
         if old_ref:
             ref_type, _ = GitOperations.check_ref_type(plugin.local_path, old_ref)
             if ref_type == 'commit':
-                # Avoid circular import: plugin3.manager → plugin3.manager.update → plugin3.manager
-                from picard.plugin3.manager import PluginCommitPinnedError
-
                 raise PluginCommitPinnedError(plugin.plugin_id, old_ref)
         else:
             # No stored ref, check current HEAD state
             ref_type, ref_name = GitOperations.check_ref_type(plugin.local_path)
             if ref_type == 'commit':
-                # Avoid circular import: plugin3.manager → plugin3.manager.update → plugin3.manager
-                from picard.plugin3.manager import PluginCommitPinnedError
-
                 raise PluginCommitPinnedError(plugin.plugin_id, ref_name)
 
         return ref_type if old_ref else 'commit'
@@ -241,9 +236,6 @@ class PluginUpdater:
                 result = self.update_plugin(plugin)
                 results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=result, error=None))
             except Exception as e:
-                # Avoid circular import: plugin3.manager → plugin3.manager.update → plugin3.manager
-                from picard.plugin3.manager import PluginCommitPinnedError
-
                 if isinstance(e, PluginCommitPinnedError):
                     # Commit-pinned plugins are skipped, not failed
                     results.append(UpdateAllResult(plugin_id=plugin.plugin_id, success=True, result=None, error=str(e)))
