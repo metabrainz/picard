@@ -1202,6 +1202,7 @@ def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
 
 
 def _get_default_numbered_title_format():
+    # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_NUMBERED_TITLE_FORMAT
 
     return gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
@@ -1247,6 +1248,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
 
 def get_base_title(title):
     """Extract the base portion of a title, using the standard suffix."""
+    # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_COPY_TEXT
 
     suffix = gettext_constants(DEFAULT_COPY_TEXT)
@@ -1405,10 +1407,6 @@ def parse_versioning_scheme(versioning_scheme):
     Returns:
         re.Pattern: Compiled regex pattern or None if unknown/invalid scheme
     """
-    import re
-
-    from picard import log
-
     if versioning_scheme == 'semver':
         pattern = r'^\D*\d+\.\d+(\.\d+)?$'
     elif versioning_scheme == 'calver':
