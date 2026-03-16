@@ -131,6 +131,18 @@ class TestListAvailableRefs(PicardTestCase):
         result = source._list_available_refs(mock_repo, limit=20)
         self.assertIn('5 more', result)
 
+    def test_list_available_refs_no_limit(self):
+        """_list_available_refs with limit<=0 must return all refs without truncation."""
+        source = PluginSourceGit('https://example.com/repo.git')
+        mock_repo = Mock()
+
+        refs = [self._make_mock_ref(f'branch-{i}', GitRefType.BRANCH) for i in range(25)]
+        mock_repo.list_references.return_value = iter(refs)
+
+        result = source._list_available_refs(mock_repo, limit=0)
+        self.assertNotIn('more', result)
+        self.assertIn('branch-24', result)
+
 
 class TestPluginSourceLocal(PicardTestCase):
     def test_plugin_source_local_sync(self):

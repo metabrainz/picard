@@ -34,6 +34,7 @@ from picard.extension_points import unregister_module_extensions
 from picard.git.backend import (
     GitBackendError,
     GitRefType,
+    GitRepository,
     GitResetMode,
 )
 from picard.git.factory import git_backend
@@ -141,33 +142,29 @@ class PluginSourceGit(PluginSource):
         """Check if ref is a relative reference (contains git notation like ^, ~, @)."""
         return ref and any(char in ref for char in ['^', '~', '@', ':'])
 
-    def _list_available_refs(self, repo, limit=20):
+    def _list_available_refs(self, repo: GitRepository, limit: int = 20) -> str:
         """List available refs in repository.
 
         Args:
             repo: GitRepository instance
-            limit: Maximum number of refs to return
+            limit: Maximum number of refs to return. Use 0 or negative to return all.
 
         Returns:
             str: Comma-separated list of ref names
         """
         refs = []
-        all_refs = list(repo.list_references())
-        for ref in all_refs:
-            if ref.ref_type == GitRefType.BRANCH:
-                if ref.is_remote:
-                    refs.append(ref.shortname)  # Already includes origin/ prefix
-                else:
-                    refs.append(ref.shortname)
-            elif ref.ref_type == GitRefType.TAG:
+        for ref in repo.list_references():
+            if ref.ref_type in (GitRefType.BRANCH, GitRefType.TAG):
                 refs.append(ref.shortname)
 
         if not refs:
             return "none"
 
-        refs = refs[:limit]
-        if len(all_refs) > limit:
-            refs.append(f"... ({len(all_refs) - limit} more)")
+        if limit > 0:
+            truncated = refs[limit:]
+            refs = refs[:limit]
+            if truncated:
+                refs.append(f"... ({len(truncated)} more)")
 
         return ", ".join(refs)
 
