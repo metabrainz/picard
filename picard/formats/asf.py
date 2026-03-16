@@ -304,6 +304,9 @@ class ASFFile(File):
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
         for tag in metadata.deleted_tags:
+            # totaldiscs is stored together with discnumber and won't be written separately
+            if tag == 'totaldiscs':
+                continue
             real_name = self._get_tag_name(tag)
             if real_name and real_name in tags:
                 del tags[real_name]
