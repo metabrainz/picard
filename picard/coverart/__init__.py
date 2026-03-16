@@ -228,6 +228,11 @@ class CoverArt:
             raise CoverArtImageError(f'Cannot handle image {image!r}, no image data and no URL')
 
     def _process_image_data(self, image: CoverArtImage, data, image_info):
+        # Skip image if it gets filtered
+        if image.can_be_filtered and not run_image_filters(data, image_info, self.album, image):
+            thread.to_main(self.next_in_queue)
+            return
+
         self.album.add_task(
             f'coverart_processing_{id(image)}',
             TaskType.OPTIONAL,
@@ -279,13 +284,9 @@ class CoverArt:
             )
             try:
                 image_info = imageinfo.identify(data)
-                filters_result = True
-                if image.can_be_filtered:
-                    filters_result = run_image_filters(data, image_info, self.album, image)
-                if filters_result:
-                    # next_in_queue will be called by _process_image_data
-                    self._process_image_data(image, data, image_info)
-                    return
+                # next_in_queue will be called by _process_image_data
+                self._process_image_data(image, data, image_info)
+                return
             except imageinfo.IdentificationError as e:
                 log.warning("Couldn't identify image %r: %s", image, e)
                 return
