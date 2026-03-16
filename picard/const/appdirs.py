@@ -22,6 +22,7 @@
 
 import os
 import os.path
+from pathlib import Path
 
 from PyQt6.QtCore import (
     QCoreApplication,
@@ -70,8 +71,7 @@ def sessions_folder():
         returns that path. Otherwise, returns the default path
         <config_folder>/sessions.
     """
-    from pathlib import Path
-
+    # Avoid init-order issue: config not available at import time
     from picard.config import get_config
 
     config = get_config()

@@ -316,6 +316,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._update_statusbar_plugin_updates_available()
 
     def _setup_player(self):
+        # Local import: player depends on QtMultimedia which is an optional runtime dependency
         from picard.ui.player import get_now_playing_service, get_player
 
         player = get_player(self)
@@ -1075,6 +1076,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _create_player_toolbar(self):
         """Create a toolbar with internal player control elements"""
+        # Local import: player depends on QtMultimedia which is an optional runtime dependency
         from picard.ui.player.toolbar import PlayerToolbar
 
         toolbar = PlayerToolbar(self.player, self)

@@ -24,7 +24,9 @@ except (ImportError, ModuleNotFoundError):
     import tomli as tomllib  # type: ignore[no-redef]
 
 from typing import BinaryIO
+import uuid
 
+from picard.plugin3.constants import CATEGORIES
 from picard.plugin3.validator import validate_manifest_dict
 from picard.version import (
     Version,
@@ -89,6 +91,7 @@ class PluginManifest:
 
     def _get_current_locale(self) -> str:
         """Get current locale from Picard's UI language setting or system locale."""
+        # Avoid init-order issue: config not available at import time
         from picard.config import get_config
 
         config = get_config()
@@ -185,10 +188,6 @@ def generate_manifest_template():
     Returns:
         str: MANIFEST.toml template content
     """
-    import uuid
-
-    from picard.plugin3.constants import CATEGORIES
-
     generated_uuid = str(uuid.uuid4())
     categories_str = ', '.join(f'"{c}"' for c in CATEGORIES)
 

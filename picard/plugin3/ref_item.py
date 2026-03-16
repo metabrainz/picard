@@ -24,6 +24,8 @@ from picard.git.backend import (
     GitRef,
     GitRefType,
 )
+from picard.i18n import _
+from picard.plugin3.plugin import short_commit_id
 
 
 class RefItem:
@@ -73,9 +75,6 @@ class RefItem:
 
     def format(self, is_current=False, ref_formatter=None, commit_formatter=None, current_formatter=None) -> str:
         """Format ref and commit for display."""
-        from picard.i18n import _
-        from picard.plugin3.plugin import short_commit_id
-
         # Shorten commit for display
         short_commit = short_commit_id(self.commit) if self.commit else ""
 

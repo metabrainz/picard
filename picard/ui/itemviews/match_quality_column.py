@@ -222,6 +222,7 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
 
         total = stats.get('total', 0)
         if total == 0:
+            # Avoid circular import: ui.itemviews.__init__ → columns → match_quality_column
             from picard.ui.itemviews import FileItem
 
             if hasattr(FileItem, 'match_pending_icons') and len(FileItem.match_pending_icons) > 5:
@@ -238,6 +239,7 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
                 icon_index = THRESHOLD_TO_ICON_INDEX[threshold]
                 break
 
+        # Avoid circular import: ui.itemviews.__init__ → columns → match_quality_column
         from picard.ui.itemviews import FileItem
 
         if hasattr(FileItem, 'match_icons') and icon_index < len(FileItem.match_icons):

@@ -51,11 +51,14 @@ from picard.ui.itemviews.custom_columns import (
     make_provider_column,
     make_transformed_column,
     registry,
+    sorting_adapters,
 )
 from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
 from picard.ui.itemviews.custom_columns.providers import FieldReferenceProvider
+from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
 from picard.ui.itemviews.custom_columns.shared import (
     DEFAULT_ADD_TO,
+    SORTING_ADAPTER_NAMES,
     normalize_align_name,
     parse_add_to,
 )
@@ -259,10 +262,6 @@ def _apply_sorting_adapter(base_provider: ColumnValueProvider, sorting_adapter_n
     if not sorting_adapter_name:
         return base_provider
 
-    # Import the shared mapping to get all available class names
-    from picard.ui.itemviews.custom_columns import sorting_adapters
-    from picard.ui.itemviews.custom_columns.shared import SORTING_ADAPTER_NAMES
-
     # Build mapping dynamically from available class names in SORTING_ADAPTER_NAMES
     # This ensures we only try to map classes that are actually defined in the UI
     available_class_names = {name for name in SORTING_ADAPTER_NAMES.keys() if name}
@@ -323,8 +322,6 @@ def build_column_from_spec(spec: CustomColumnSpec) -> CustomColumn:
         )
     elif spec.kind == CustomColumnKind.SCRIPT:
         # For script columns, we need to create the provider first, then wrap it
-        from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
-
         base_provider = ChainedValueProvider(spec.expression)
         provider = _apply_sorting_adapter(base_provider, sorting_adapter)
         column = make_provider_column(

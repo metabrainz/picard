@@ -187,8 +187,8 @@ def get_recognized_view_columns():
     -------
     dict[str, Any]
         Mapping from view id (e.g., ``FILE_VIEW``) to the corresponding
-        columns collection. Performed via a local import to avoid stale
-        references and import-time side effects.
+        columns collection. Local import to avoid circular dependency:
+        columns → custom_columns → shared.
     """
 
     from picard.ui.itemviews.columns import (

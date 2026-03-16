@@ -126,6 +126,7 @@ else:
 
 def get_cdrom_drives():
     """List available disc drives on the machine"""
+    # Avoid circular import: const.defaults → util.cdrom → const.defaults
     # add default drive from libdiscid to the list
     from picard.const.defaults import DEFAULT_DRIVES
 

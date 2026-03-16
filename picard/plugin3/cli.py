@@ -24,11 +24,13 @@ from datetime import datetime
 from enum import IntEnum
 import logging
 from pathlib import Path
+import shutil
 
 # Additional imports for CLI operations
 import sys
 import tempfile
 import traceback
+from types import SimpleNamespace
 
 from PyQt6 import QtCore
 from PyQt6.QtCore import QCoreApplication
@@ -53,14 +55,28 @@ from picard.git.utils import (
 from picard.options import init_options
 from picard.plugin3.installable import UrlInstallablePlugin
 from picard.plugin3.manager import (
+    PluginAlreadyInstalledError,
+    PluginBlacklistedError,
+    PluginCommitPinnedError,
+    PluginDirtyError,
     PluginManager,
+    PluginManifestError,
+    PluginManifestInvalidError,
+    PluginManifestNotFoundError,
+    PluginNoSourceError,
+    PluginNoUUIDError,
+    PluginRefNotFoundError,
+    PluginRefSwitchError,
 )
 from picard.plugin3.manifest import generate_manifest_template
 from picard.plugin3.output import PluginOutput
 from picard.plugin3.plugin import (
+    PluginAlreadyDisabledError,
+    PluginAlreadyEnabledError,
     PluginSourceGit,
     short_commit_id,
 )
+from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
     RegistryFetchError,
     RegistryParseError,
@@ -351,8 +367,6 @@ class PluginCLI:
         # Only format if we have both ref and commit
         if git_ref.shortname and git_ref.target:
             # Convert GitRef to RefItem for formatting
-            from picard.plugin3.ref_item import RefItem
-
             ref_item = RefItem.from_git_ref(git_ref)
             formatted = ref_item.format()
             return f' ({formatted})' if formatted else ''
@@ -426,8 +440,6 @@ class PluginCLI:
                         git_ref = metadata.get_git_ref()
                         if git_ref.shortname and git_ref.target:
                             # Convert GitRef to RefItem for formatting
-                            from picard.plugin3.ref_item import RefItem
-
                             ref_item = RefItem.from_git_ref(git_ref)
                             version_display = ref_item.format(
                                 ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
@@ -508,8 +520,6 @@ class PluginCLI:
             git_ref = metadata.get_git_ref()
             if git_ref.shortname and git_ref.target:
                 # Convert GitRef to RefItem for formatting
-                from picard.plugin3.ref_item import RefItem
-
                 ref_item = RefItem.from_git_ref(git_ref)
                 version_display = ref_item.format(
                     ref_formatter=self._out.d_version, commit_formatter=self._out.d_commit_old
@@ -858,14 +868,6 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                from picard.plugin3.manager import (
-                    PluginAlreadyInstalledError,
-                    PluginBlacklistedError,
-                    PluginDirtyError,
-                    PluginManifestInvalidError,
-                    PluginManifestNotFoundError,
-                )
-
                 if isinstance(e, PluginAlreadyInstalledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
                     self._out.info(
@@ -940,8 +942,6 @@ class PluginCLI:
 
                 if is_failed:
                     # For failed plugins, just remove the directory
-                    import shutil
-
                     plugin_path = Path(plugin.local_path)
                     plugins_dir = Path(self._manager._primary_plugin_dir)
 
@@ -976,9 +976,6 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_status_enabled("enabled")}')
                 self._out.info('Restart Picard to load the plugin')
             except Exception as e:
-                from picard.plugin3.manager import PluginNoUUIDError
-                from picard.plugin3.plugin import PluginAlreadyEnabledError
-
                 if isinstance(e, PluginAlreadyEnabledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_id)} is already enabled')
                     return ExitCode.SUCCESS
@@ -1002,9 +999,6 @@ class PluginCLI:
                 self._out.success(f'Plugin {self._out.d_status_disabled("disabled")}')
                 self._out.info('Restart Picard for changes to take effect')
             except Exception as e:
-                from picard.plugin3.manager import PluginNoUUIDError
-                from picard.plugin3.plugin import PluginAlreadyDisabledError
-
                 if isinstance(e, PluginAlreadyDisabledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_id)} is already disabled')
                     return ExitCode.SUCCESS
@@ -1038,13 +1032,6 @@ class PluginCLI:
                     self._out.success(f'{self._out.d_name(plugin.plugin_id)}: {version_info}')
                     self._out.info('Restart Picard to load the updated plugin')
             except Exception as e:
-                from picard.plugin3.manager import (
-                    PluginCommitPinnedError,
-                    PluginDirtyError,
-                    PluginManifestInvalidError,
-                    PluginNoSourceError,
-                )
-
                 if isinstance(e, PluginCommitPinnedError):
                     self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(e.commit)}')
                     self._out.info(
@@ -1172,14 +1159,6 @@ class PluginCLI:
             )
             self._out.info('Restart Picard to load the updated plugin')
         except Exception as e:
-            from picard.plugin3.manager import (
-                PluginDirtyError,
-                PluginManifestInvalidError,
-                PluginNoSourceError,
-                PluginRefNotFoundError,
-                PluginRefSwitchError,
-            )
-
             if isinstance(e, PluginDirtyError):
                 success, result = self._handle_dirty_error(e, lambda **kw: self._manager.switch_ref(plugin, ref, **kw))
                 if not success:
@@ -1315,9 +1294,6 @@ class PluginCLI:
             # Check if it's a failed plugin directory name
             for plugin_dir, plugin_name, _ in self._manager._failed_plugins:
                 if plugin_name == identifier or str(plugin_dir).endswith(identifier):
-                    # Return a minimal plugin-like object with just the path
-                    from types import SimpleNamespace
-
                     actual_path = Path(plugin_dir) / plugin_name
                     failed_plugin = SimpleNamespace(local_path=actual_path, plugin_id=plugin_name, manifest=None)
                     return failed_plugin, None
@@ -1340,12 +1316,6 @@ class PluginCLI:
 
             try:
                 # Read and validate manifest using manager method
-                from picard.plugin3.manager import (
-                    PluginManifestError,
-                    PluginManifestInvalidError,
-                    PluginManifestNotFoundError,
-                )
-
                 manifest = self._manager._read_and_validate_manifest(local_path, str(local_path))
 
                 # If we get here, validation passed
@@ -1439,19 +1409,11 @@ class PluginCLI:
             self._out.print('Cloning repository...')
             source = PluginSourceGit(url, ref)
             # Remove the temp directory so git clone can create it
-            import shutil
-
             shutil.rmtree(temp_path)
             source.sync(temp_path, shallow=True)
 
             # Check for MANIFEST.toml and validate using manager method
             self._out.success('MANIFEST.toml found')
-
-            from picard.plugin3.manager import (
-                PluginManifestError,
-                PluginManifestInvalidError,
-                PluginManifestNotFoundError,
-            )
 
             try:
                 manifest = self._manager._read_and_validate_manifest(temp_path, url)
@@ -1535,8 +1497,6 @@ class PluginCLI:
             return ExitCode.ERROR
         finally:
             # Cleanup
-            import shutil
-
             shutil.rmtree(temp_path, ignore_errors=True)
 
     def _build_filter_description(self, category=None, trust_level=None, query=None):
@@ -1772,8 +1732,6 @@ class PluginCLI:
             self._out.print(f'Fetching from {target}...')
             source = PluginSourceGit(target, None)
             # Remove temp dir so git can create it
-            import shutil
-
             shutil.rmtree(temp_path)
             source.sync(temp_path, shallow=True)
 
@@ -1788,8 +1746,6 @@ class PluginCLI:
             self._handle_exception(e, 'Failed to fetch manifest')
             return ExitCode.ERROR
         finally:
-            import shutil
-
             shutil.rmtree(temp_path, ignore_errors=True)
 
     def _get_trust_badge(self, trust_level):

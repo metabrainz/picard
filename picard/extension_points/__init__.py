@@ -34,6 +34,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import defaultdict
+import uuid
 
 from picard import log
 from picard.config import get_config
@@ -49,8 +50,6 @@ _plugin_uuid_to_module: dict[str, str] = {}  # Maps UUID -> module name for v3 p
 class ExtensionPoint:
     def __init__(self, label=None):
         if label is None:
-            import uuid
-
             self.label = uuid.uuid4()
         else:
             self.label = label

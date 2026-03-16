@@ -74,6 +74,7 @@ def crash_handler(exc: Exception):
     a minimal crash dialog to the user.
     This function is supposed to be called from inside an except blog.
     """
+    # Local imports to minimize dependencies in crash path
     import os
     import traceback
 
@@ -104,6 +105,7 @@ def crash_handler(exc: Exception):
 
 def _show_crash_dialog(trace):
     """Show crash dialog with traceback. This function may fail if Qt is broken."""
+    # Local imports to minimize dependencies in crash path
     import os
     import signal
     from tempfile import NamedTemporaryFile

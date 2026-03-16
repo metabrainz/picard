@@ -30,6 +30,12 @@ from picard.plugin3.installable import (
     LocalInstallablePlugin,
     UrlInstallablePlugin,
 )
+from picard.plugin3.manager.errors import (
+    PluginAlreadyInstalledError,
+    PluginBlacklistedError,
+    PluginDirtyError,
+    PluginUUIDConflictError,
+)
 from picard.plugin3.plugin import (
     Plugin,
     PluginSourceGit,
@@ -95,8 +101,6 @@ class PluginInstaller:
 
         is_blacklisted, blacklist_reason = plugin.is_blacklisted()
         if is_blacklisted:
-            from picard.plugin3.manager import PluginBlacklistedError
-
             raise PluginBlacklistedError(url, blacklist_reason)
 
     def _check_blacklist_with_uuid(self, url, ref, manifest):
@@ -105,8 +109,6 @@ class PluginInstaller:
         plugin.plugin_uuid = manifest.uuid
         is_blacklisted, blacklist_reason = plugin.is_blacklisted()
         if is_blacklisted:
-            from picard.plugin3.manager import PluginBlacklistedError
-
             raise PluginBlacklistedError(url, blacklist_reason, manifest.uuid)
 
     def _check_uuid_conflict(self, manifest, source_url, reinstall):
@@ -115,8 +117,6 @@ class PluginInstaller:
         if has_conflict and not reinstall:
             existing_metadata = self.manager._metadata.get_plugin_metadata(existing_plugin.uuid)
             existing_source = existing_metadata.url if existing_metadata else str(existing_plugin.local_path)
-
-            from picard.plugin3.manager import PluginUUIDConflictError
 
             raise PluginUUIDConflictError(manifest.uuid, existing_plugin.plugin_id, existing_source, source_url)
 
@@ -195,8 +195,6 @@ class PluginInstaller:
         """Check if plugin is already installed and handle reinstall."""
         if final_path.exists():
             if not reinstall:
-                from picard.plugin3.manager import PluginAlreadyInstalledError
-
                 raise PluginAlreadyInstalledError(plugin_name, source_url)
             self._handle_existing_plugin_reinstall(final_path, plugin_name, discard_changes)
 
@@ -318,8 +316,6 @@ class PluginInstaller:
         if not discard_changes:
             changes = GitOperations.check_dirty_working_dir(final_path)
             if changes:
-                from picard.plugin3.manager import PluginDirtyError
-
                 raise PluginDirtyError(plugin_name, changes)
 
         self.manager._safe_remove_directory(final_path, f"existing plugin directory for {plugin_name}")

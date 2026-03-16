@@ -64,6 +64,8 @@ from picard.ui import (
     PicardDialog,
     SingletonDialog,
 )
+from picard.ui.colors import interface_colors as _interface_colors
+from picard.ui.forms.ui_options import Ui_OptionsDialog
 from picard.ui.forms.ui_options_attached_profiles import (
     Ui_AttachedProfilesDialog,
 )
@@ -208,8 +210,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         super().__init__(parent=parent)
         self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
-
-        from picard.ui.forms.ui_options import Ui_OptionsDialog
 
         self.ui = Ui_OptionsDialog()
         self.ui.setupUi(self)
@@ -401,10 +401,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
-        from picard.ui.colors import interface_colors as colors
-
-        fg_color = colors.get_color('profile_hl_fg')
-        bg_color = colors.get_color('profile_hl_bg')
+        fg_color = _interface_colors.get_color('profile_hl_fg')
+        bg_color = _interface_colors.get_color('profile_hl_bg')
 
         for page in self.loaded_pages:
             option_group = profile_groups_group_from_page(page)
@@ -557,6 +555,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             log.debug("refresh_plugin_pages: Enabled plugins: %s", enabled_plugins)
 
             # Check UUID mapping
+            # Avoid circular import: ui.options.dialog → extension_points → ui
             from picard.extension_points import _plugin_uuid_to_module
 
             log.debug("refresh_plugin_pages: UUID to module mapping: %s", _plugin_uuid_to_module)

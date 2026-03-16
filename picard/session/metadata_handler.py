@@ -37,6 +37,7 @@ from picard.const.defaults import (
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
+from picard.session.retry_helper import RetryHelper
 
 
 class MetadataHandler:
@@ -159,8 +160,6 @@ class MetadataHandler:
         This method retries applying metadata until files are loaded and ready.
         Files that are still pending will be retried later.
         """
-        from picard.session.retry_helper import RetryHelper
-
         pending: list[Path] = []
         for fpath, md in file_path_to_md.items():
             file = tagger.files.get(str(fpath))
@@ -192,8 +191,6 @@ class MetadataHandler:
         file_path_to_tags : dict[Path, dict[str, list[Any]]]
             Mapping of file paths to tag deltas to apply.
         """
-        from picard.session.retry_helper import RetryHelper
-
         pending: list[Path] = []
         for fpath, tags in file_path_to_tags.items():
             file = tagger.files.get(str(fpath))

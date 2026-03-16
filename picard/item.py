@@ -33,6 +33,7 @@ from collections import (
     UserList,
 )
 from collections.abc import Iterable
+import inspect
 from typing import TYPE_CHECKING
 import weakref
 
@@ -189,8 +190,6 @@ class MetadataItem(QtCore.QObject, Item):
     def tagger(self, value):
         # We used to set tagger property in subclasses, but that's not needed anymore
         assert value == QtCore.QCoreApplication.instance()
-        import inspect
-
         stack = inspect.stack()
         f = stack[1]
         log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)
