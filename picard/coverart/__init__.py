@@ -55,7 +55,10 @@ from picard.coverart.setters import (
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
-from picard.util import imageinfo
+from picard.util import (
+    imageinfo,
+    thread,
+)
 
 
 class CoverArt:
@@ -237,7 +240,10 @@ class CoverArt:
             self.album.error_append("Coverart processing_error: %s" % error)
         self.album.complete_task(f'coverart_processing_{id(image)}')
         self._set_metadata(image)
-        self.next_in_queue()
+
+        # next_in_queue must not be called directly but passed to main loop.
+        # Otherwise the already executing generator function will be called twice.
+        thread.to_main(self.next_in_queue)
 
     def _set_metadata(self, image: CoverArtImage):
         if image.can_be_saved_to_metadata:
