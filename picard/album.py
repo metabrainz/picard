@@ -51,6 +51,7 @@ from collections.abc import (
     Iterable,
 )
 from enum import IntEnum
+import time
 import traceback
 
 from PyQt6 import QtNetwork
@@ -217,8 +218,6 @@ class Album(MetadataItem):
         request_factory: Callable[[], PendingRequest] | None = None,
     ):
         """Add a pending task that must complete before album finalization."""
-        import time
-
         if timeout is not None:
             network_timeout = get_config().setting['network_transfer_timeout_seconds']
             if timeout > network_timeout:
@@ -295,6 +294,7 @@ class Album(MetadataItem):
 
     def _warn_deprecated_requests(self, operation):
         """Emit deprecation warning for album._requests usage (once per location)."""
+        # Avoid circular import: album → plugin3.api → plugin3.api_impl → album
         from picard.plugin3.api import PluginApi
 
         PluginApi.deprecation_warning(
@@ -746,7 +746,7 @@ class Album(MetadataItem):
         if self.loaded:
             # This is not supposed to happen, _finalize_loading should only
             # be called once after all requests finished.
-            import inspect
+            import inspect  # Lazy import: only used in this rare error path
 
             stack = inspect.stack()
             args = [self]
