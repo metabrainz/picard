@@ -97,7 +97,7 @@ class InstallConfirmDialog(PicardDialog):
             registry = self.plugin_manager._registry
 
             # Check blacklist first
-            is_blacklisted, reason = registry.is_blacklisted(self.url)
+            is_blacklisted, reason = registry.is_blacklisted(self.url, self.plugin_uuid)
             if is_blacklisted:
                 self.warning_label.setText(_("ERROR: This plugin is blacklisted: {reason}").format(reason=reason))
                 self.warning_label.setStyleSheet("color: red; font-weight: bold;")

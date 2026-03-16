@@ -630,6 +630,28 @@ class TestPluginRegistry(PicardTestCase):
             self.assertEqual(len(calls), 1)  # Only first URL should be tried
             self.assertFalse(registry.is_registry_loaded())
 
+    def test_ui_dialog_blacklist_check_passes_uuid(self):
+        """Test that blacklist check detects UUID-only blacklist entries.
+
+        Regression test: InstallConfirmDialog.check_trust_and_blacklist()
+        must pass plugin_uuid to is_blacklisted(), otherwise UUID-only
+        blacklist entries are missed.
+        """
+        registry = create_test_registry()
+
+        # UUID "blacklisted-uuid-1234" is blacklisted in test registry.
+        # Using a non-blacklisted URL should still be caught via UUID.
+        url = 'https://example.com/innocent-looking-url.git'
+        plugin_uuid = 'blacklisted-uuid-1234'
+
+        is_blacklisted, reason = registry.is_blacklisted(url, plugin_uuid)
+        self.assertTrue(is_blacklisted, "UUID-only blacklist entry must be detected when UUID is provided")
+        self.assertIn('Security vulnerability', reason)
+
+        # Without UUID, this URL should NOT be blacklisted
+        is_blacklisted, reason = registry.is_blacklisted(url)
+        self.assertFalse(is_blacklisted)
+
     def test_registry_graceful_fallback_on_blacklist_check(self):
         """Test that blacklist check doesn't fail if registry fetch fails."""
         from picard.plugin3.registry import PluginRegistry
