@@ -55,6 +55,7 @@ from dataclasses import (
 )
 from functools import partial
 from hashlib import blake2b
+from io import StringIO
 import logging
 import os
 from pathlib import Path
@@ -81,6 +82,7 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     acoustid,
+    config as _cfg,
     log,
 )
 from picard.acoustid.manager import AcoustIDManager
@@ -581,8 +583,6 @@ class Tagger(QtWidgets.QApplication):
     # Session export / import
     # ==============================
     def export_session(self) -> dict:
-        from picard import config as _cfg
-
         # Expose config on self for session helpers
         self.config = _cfg
         return _export_session(self)
@@ -1367,8 +1367,6 @@ class Tagger(QtWidgets.QApplication):
         self.set_wait_cursor()
 
         # Skip dialog if exactly one match, and match files to album
-        from picard.disc import Disc
-
         disc = Disc()
         disc.lookup_by_toc(toc_string, skip_dialog=True, files_to_match=list(files))
 
@@ -1514,8 +1512,6 @@ class CmdlineArgsParser(argparse.ArgumentParser):
 
     def print_help(self, file=None):
         if is_windowed_app() and file is None:
-            from io import StringIO
-
             file = StringIO()
             super().print_help(file=file)
             file.seek(0)
