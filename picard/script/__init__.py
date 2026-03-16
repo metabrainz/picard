@@ -158,6 +158,7 @@ def get_file_naming_script(settings):
     Returns:
         str: The text of the file naming script if available, otherwise None
     """
+    # Self-import for forward reference to presets defined later in this module
     from picard.script import get_file_naming_script_presets
 
     scripts = settings['file_renaming_scripts']
