@@ -424,17 +424,40 @@ class CommonTests:
                 self.assertNotIn(key, new_metadata)
 
         @skipUnlessTestfile
-        def test_delete_complex_tags(self):
-            metadata = Metadata(self.tags)
+        def test_delete_totaldiscs(self):
+            # discnumber and totaldiscs are for some formats stored in a single tag.
+            # Deleting one must not delete the other.
+            metadata = Metadata(
+                {
+                    'discnumber': '2',
+                    'totaldiscs': '3',
+                }
+            )
             original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
-            del metadata['totaldiscs']
-            new_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            metadata.delete('totaldiscs')
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('discnumber', loaded_metadata)
+            if self.format.supports_tag('totaldiscs'):
+                self.assertIn('totaldiscs', original_metadata)
+            self.assertNotIn('totaldiscs', loaded_metadata)
 
-            self.assertIn('totaldiscs', original_metadata)
-            if self.testfile_ext in {'.m4a', '.m4v'}:
-                self.assertEqual('0', new_metadata['totaldiscs'])
-            else:
-                self.assertNotIn('totaldiscs', new_metadata)
+        @skipUnlessTestfile
+        def test_delete_totaltracks(self):
+            # tracknumber and totaltracks are for some formats stored in a single tag.
+            # Deleting one must not delete the other.
+            metadata = Metadata(
+                {
+                    'tracknumber': '2',
+                    'totaltracks': '3',
+                }
+            )
+            original_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            metadata.delete('totaltracks')
+            loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
+            self.assertIn('tracknumber', loaded_metadata)
+            if self.format.supports_tag('totaltracks'):
+                self.assertIn('totaltracks', original_metadata)
+            self.assertNotIn('totaltracks', loaded_metadata)
 
         @skipUnlessTestfile
         def test_delete_performer(self):

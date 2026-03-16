@@ -126,9 +126,9 @@ class CommonMP4Tests:
             )
             loaded_metadata = save_and_load_metadata(self.format_registry, self.filename, metadata)
             self.assertEqual(metadata['discnumber'], loaded_metadata['discnumber'])
-            self.assertEqual('0', loaded_metadata['totaldiscs'])
+            self.assertEqual('', loaded_metadata['totaldiscs'])
             self.assertEqual(metadata['tracknumber'], loaded_metadata['tracknumber'])
-            self.assertEqual('0', loaded_metadata['totaltracks'])
+            self.assertEqual('', loaded_metadata['totaltracks'])
 
         @skipUnlessTestfile
         def test_invalid_int_tag(self):
