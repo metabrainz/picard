@@ -349,6 +349,8 @@ class ProcessingImageTest(PicardTestCase):
         image = ProcessingImage(data, info)
         self.assertEqual(image.info, info)
         self.assertIsInstance(image._qimage, QImage)
+        self.assertEqual(image._raw_data, data)
+        self.assertFalse(image.is_modified())
 
     def test_image_from_binary_identify_info(self):
         data, info = create_fake_image(500, 500, "jpg")
@@ -363,6 +365,23 @@ class ProcessingImageTest(PicardTestCase):
         self.assertEqual(image.info.height, info.height)
         self.assertEqual(image.info.width, info.width)
         self.assertEqual(image._qimage, qimage)
+        self.assertIsNone(image._raw_data)
+        self.assertFalse(image.is_modified())
+
+    def test_image_from_binary_not_modified(self):
+        data, info = create_fake_image(200, 200, "jpg")
+        image = ProcessingImage(data, info)
+        self.assertFalse(image.is_modified())
+        self.assertEqual(image.get_result(), data)
+
+    def test_image_from_binary_modified(self):
+        data, info = create_fake_image(200, 200, "jpg")
+        image = ProcessingImage(data, info)
+        self.assertFalse(image.is_modified())
+        new_data, _info = create_fake_image(100, 100, "jpg")
+        image.set_result(new_data)
+        self.assertTrue(image.is_modified())
+        self.assertNotEqual(image.get_result(), data)
 
     def test_no_reencoding_without_processors(self):
         """Test that images are not re-encoded when no processors run."""
