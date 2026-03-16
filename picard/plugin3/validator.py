@@ -28,6 +28,7 @@ from collections import Counter
 from collections.abc import Callable
 import math
 import re
+import uuid
 
 
 render_markdown: Callable[[str], str] | None = None
@@ -207,8 +208,9 @@ def _is_placeholder_uuid(uuid_str: str) -> bool:
     len_data = len(hex_only)
     entropy = -sum((count / len_data) * math.log2(count / len_data) for count in frequencies.values())
 
-    # Threshold 3.0: Real UUIDs have ~3.5-4.0 entropy, placeholders typically < 3.0
-    return entropy < 3.0
+    # Threshold 2.8: Real UUIDs have ~3.5-4.0 entropy, placeholders typically < 2.8
+    # Note: ~0.0003% of uuid4() values fall below 2.8, use generate_uuid() to avoid this.
+    return entropy < 2.8
 
 
 def _is_valid_uuid(uuid_str: str) -> tuple[bool, str | None]:
@@ -230,6 +232,14 @@ def _is_valid_uuid(uuid_str: str) -> tuple[bool, str | None]:
         )
 
     return True, None
+
+
+def generate_uuid() -> str:
+    """Generate a UUID v4 that is guaranteed to pass manifest validation."""
+    while True:
+        result = str(uuid.uuid4())
+        if not _is_placeholder_uuid(result):
+            return result
 
 
 def validate_manifest_dict(manifest_data):

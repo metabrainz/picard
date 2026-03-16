@@ -35,6 +35,7 @@ from picard.git.backend import (
 )
 from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
+from picard.plugin3.validator import generate_uuid
 
 
 class TestPluginInstall(PicardTestCase):
@@ -45,9 +46,7 @@ class TestPluginInstall(PicardTestCase):
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         # Save metadata
         manager._save_plugin_metadata(
@@ -254,13 +253,11 @@ class TestPluginInstall(PicardTestCase):
             patch,
         )
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
@@ -306,13 +303,11 @@ class TestPluginInstall(PicardTestCase):
             patch,
         )
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)

@@ -36,7 +36,6 @@ from test.picardtestcase import (
 from test.test_plugins3_helpers import (
     MockPlugin,
     MockTagger,
-    generate_unique_uuid,
     load_plugin_manifest,
 )
 
@@ -53,6 +52,7 @@ from picard.plugin3.api import PluginApi
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.manifest import PluginManifest
 from picard.plugin3.plugin import Plugin
+from picard.plugin3.validator import generate_uuid
 from picard.version import Version
 
 
@@ -722,7 +722,7 @@ class TestPluginManager(PicardTestCase):
         self.assertEqual(manager._enabled_plugins, set())
 
         # Create a mock plugin with UUID
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
         mock_plugin = MockPlugin(uuid=test_uuid)
 
         # Enable plugin - should save to config

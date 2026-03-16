@@ -21,17 +21,12 @@
 from io import StringIO
 from pathlib import Path
 from unittest.mock import Mock
-import uuid
 
 from test.picardtestcase import get_test_data_path
 
 from picard.plugin3.manifest import PluginManifest
 from picard.plugin3.plugin import Plugin
-
-
-def generate_unique_uuid():
-    """Generate a unique UUID for test isolation."""
-    return str(uuid.uuid4())
+from picard.plugin3.validator import generate_uuid
 
 
 class MockPluginManager(Mock):
@@ -230,7 +225,7 @@ class MockPlugin(Plugin):
 
         # Generate unique UUID if not provided
         if uuid is None:
-            uuid = generate_unique_uuid()
+            uuid = generate_uuid()
 
         super().__init__(local_path, name)
         self.local_path = local_path

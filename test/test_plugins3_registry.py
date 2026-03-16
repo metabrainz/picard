@@ -30,6 +30,8 @@ from test.test_plugins3_helpers import (
     create_test_registry,
 )
 
+from picard.plugin3.validator import generate_uuid
+
 
 def mock_webservice_fetch(response_data, error=None):
     """Helper to mock WebService.get_url for registry fetching.
@@ -370,14 +372,12 @@ class TestPluginRegistry(PicardTestCase):
             patch,
         )
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
