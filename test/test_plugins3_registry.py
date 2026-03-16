@@ -128,6 +128,33 @@ class TestPluginRegistry(PicardTestCase):
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'different-uuid')
         self.assertFalse(is_blacklisted)
 
+    def test_registry_blacklist_uuid_url_combo(self):
+        """Test that UUID+URL combo blacklist entries match only when both match.
+
+        The test registry has a combo entry:
+          url = "https://github.com/specific/malware-plugin"
+          uuid = "malicious-uuid-5678"
+
+        This should only match when BOTH UUID and URL match, not either alone.
+        """
+        registry = create_test_registry()
+
+        combo_url = 'https://github.com/specific/malware-plugin'
+        combo_uuid = 'malicious-uuid-5678'
+
+        # Both UUID and URL match -> blacklisted
+        is_blacklisted, reason = registry.is_blacklisted(combo_url, combo_uuid)
+        self.assertTrue(is_blacklisted)
+        self.assertIn('malware', reason.lower())
+
+        # Same UUID, different URL -> not matched by combo entry
+        is_blacklisted, reason = registry.is_blacklisted('https://goodsite.com/other.git', combo_uuid)
+        self.assertFalse(is_blacklisted)
+
+        # Same URL, different UUID -> not matched by combo entry
+        is_blacklisted, reason = registry.is_blacklisted(combo_url, 'innocent-uuid')
+        self.assertFalse(is_blacklisted)
+
     def test_registry_url_redirect(self):
         """Test that URL redirects work."""
         registry = create_test_registry()
