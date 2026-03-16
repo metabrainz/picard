@@ -304,7 +304,7 @@ class PluginCLI:
             elif getattr(self._args, 'search', None):
                 return self._cmd_search(self._args.search)
             elif getattr(self._args, 'check_blacklist', None):
-                return self._cmd_check_blacklist(self._args.check_blacklist)
+                return self._cmd_check_blacklist(self._args.check_blacklist, getattr(self._args, 'uuid', None))
             elif getattr(self._args, 'refresh_registry', None):
                 # Already handled at the start, just return success
                 return ExitCode.SUCCESS
@@ -1627,10 +1627,12 @@ class PluginCLI:
             self._handle_exception(e, 'Failed to search plugins')
             return ExitCode.ERROR
 
-    def _cmd_check_blacklist(self, url):
-        """Check if a URL is blacklisted."""
+    def _cmd_check_blacklist(self, url, plugin_uuid=None):
+        """Check if a URL or UUID is blacklisted."""
         try:
             plugin = UrlInstallablePlugin(url, registry=self._manager._registry)
+            if plugin_uuid:
+                plugin.plugin_uuid = plugin_uuid
 
             is_blacklisted, blacklist_reason = plugin.is_blacklisted()
             if is_blacklisted:
@@ -1817,6 +1819,7 @@ def process_cmdline_args():
     group_discover.add_argument('--browse', action='store_true', help="browse plugins from registry")
     group_discover.add_argument('--search', metavar='QUERY', help="search plugins in registry")
     group_discover.add_argument('--check-blacklist', metavar='URL', help="check if URL is blacklisted")
+    group_discover.add_argument('--uuid', metavar='UUID', help="plugin UUID to use with --check-blacklist")
 
     group_registry = parser.add_argument_group("Registry")
     group_registry.add_argument(

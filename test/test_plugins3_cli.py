@@ -453,6 +453,29 @@ class TestPluginCLI(PicardTestCase):
         self.assertIn('blacklisted', stderr)
         self.assertIn('Security vulnerability', stderr)
 
+    def test_check_blacklist_with_uuid(self):
+        """Test --check-blacklist with --uuid passes UUID to is_blacklisted.
+
+        Regression test: _cmd_check_blacklist did not support UUID,
+        so UUID-only blacklist entries could not be checked via CLI.
+        """
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = MockPluginManager()
+        mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
+
+        exit_code, stdout, stderr = run_cli(
+            mock_manager,
+            check_blacklist='https://github.com/test/plugin',
+            uuid='blacklisted-uuid-1234',
+        )
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('blacklisted', stderr)
+        mock_manager._registry.is_blacklisted.assert_called_once_with(
+            'https://github.com/test/plugin', 'blacklisted-uuid-1234'
+        )
+
     def test_search_with_category_filter(self):
         """Test --search with --category filter."""
         from picard.plugin3.cli import ExitCode

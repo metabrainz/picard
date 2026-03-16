@@ -184,6 +184,7 @@ class MockCliArgs(Mock):
             'browse': False,
             'search': None,
             'check_blacklist': None,
+            'uuid': None,
             'refresh_registry': False,
             'switch_ref': None,
             'clean_config': None,
