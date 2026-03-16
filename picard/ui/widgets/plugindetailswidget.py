@@ -26,6 +26,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
@@ -263,8 +264,6 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Check if plugin is in do_not_update list and ask for confirmation
         if self.current_plugin:
-            from picard.config import get_config
-
             config = get_config()
             do_not_update = config.persist['plugins3_do_not_update']
             plugin_id = self.current_plugin.plugin_id
