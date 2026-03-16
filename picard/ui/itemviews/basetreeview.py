@@ -89,9 +89,11 @@ from picard.util import (
 )
 
 from picard.ui.collectionmenu import CollectionMenu
+from picard.ui.columns import Columns
 from picard.ui.enums import MainAction
 from picard.ui.filter import Filter
 from picard.ui.itemviews.custom_columns import DelegateColumn
+from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
 from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
@@ -411,10 +413,8 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             Whether to update the column count to match the number of columns,
             by default False.
         """
-        from picard.ui.columns import Columns as _Columns
-
         cols = self.columns
-        if isinstance(cols, _Columns):
+        if isinstance(cols, Columns):
             if update_column_count:
                 self.setColumnCount(len(cols))
             labels = tuple(_(c.title) for c in cols)
@@ -467,8 +467,6 @@ class BaseTreeView(QtWidgets.QTreeWidget):
 
     def _on_header_updated(self):
         """Handle global header update events and refresh if applicable."""
-        from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
-
         recognized = set(get_recognized_view_columns().values())
         if self.columns not in recognized:
             return
@@ -661,6 +659,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def add_cluster(self, cluster, parent_item=None):
         if parent_item is None:
             parent_item = self.clusters
+        # Avoid circular import: ui.itemviews.__init__ imports basetreeview
         from picard.ui.itemviews import ClusterItem
 
         cluster_item = ClusterItem(cluster, sortable=not cluster.special, parent=parent_item)
