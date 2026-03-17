@@ -684,29 +684,26 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 
 **By UUID (recommended):**
 ```toml
-{
-  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  "reason": "Contains malicious code",
-  "blacklisted_at": "2025-11-20T10:00:00Z"
-}
+[[blacklist]]
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
 ```
 
 **By URL:**
 ```toml
-{
-  "url": "https://github.com/badactor/malicious-plugin",
-  "reason": "Contains malicious code",
-  "blacklisted_at": "2025-11-20T10:00:00Z"
-}
+[[blacklist]]
+url = "https://github.com/badactor/malicious-plugin"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
 ```
 
 **By URL regex:**
 ```toml
-{
-  "url_regex": "^https://github\\.com/badorg/.*",
-  "reason": "Entire organization blacklisted for malicious activity",
-  "blacklisted_at": "2025-11-22T10:00:00Z"
-}
+[[blacklist]]
+url_regex = "^https://github\\.com/badorg/.*"
+reason = "Entire organization blacklisted for malicious activity"
+blacklisted_at = "2025-11-22T10:00:00Z"
 ```
 
 ### Blacklist Methods Comparison
@@ -724,11 +721,10 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 The blacklist supports regex patterns to block entire organizations:
 
 ```toml
-{
-  "url_regex": "^https://github\\.com/badorg/.*",
-  "reason": "Entire organization blacklisted for malicious activity",
-  "blacklisted_at": "2025-11-22T10:00:00Z"
-}
+[[blacklist]]
+url_regex = "^https://github\\.com/badorg/.*"
+reason = "Entire organization blacklisted for malicious activity"
+blacklisted_at = "2025-11-22T10:00:00Z"
 ```
 
 **Pattern matching:**
@@ -799,10 +795,79 @@ updated_at = "2025-11-26T10:00:00Z"
 
 ### UUID Role in Redirects
 
-- **UUID remains constant** across repository moves
-- Redirects map old URLs → new URL for same UUID
-- Blacklist by UUID blocks plugin at all URLs (old and new)
-- Prevents malicious plugins from evading blacklist by moving repos
+- For **URL redirects** (repo moves), the UUID remains constant — only the URL changes
+- For **UUID redirects** (malware fork response), the legitimate plugin gets a new UUID
+  and the old UUID is added to `redirect_from_uuid` so existing users are migrated
+- Blacklist by UUID blocks a plugin at all URLs (old and new)
+
+### Redirects and Blacklist Interaction
+
+Redirects and the blacklist work together to handle security incidents.
+The client checks the blacklist **after** resolving redirects, using the
+resolved URL and UUID. This means:
+
+- A redirected plugin that is subsequently blacklisted will be blocked
+- A plugin redirected away from a compromised URL will NOT be blocked
+  (the resolved URL/UUID is the safe one)
+
+#### Scenario: Plugin forked as malware (same UUID)
+
+An attacker forks a legitimate plugin, keeps the same UUID, and publishes
+it at a different URL. Registry response:
+
+1. Legitimate author generates a new UUID for the real plugin
+2. Registry entry for the legitimate plugin adds `redirect_from_uuid`
+   with the old (compromised) UUID, so existing users are migrated
+3. Registry blacklists the old UUID
+
+```toml
+# Legitimate plugin with new UUID, redirecting users from old UUID
+[[plugins]]
+uuid = "new-safe-uuid-..."
+git_url = "https://github.com/legit/plugin"
+redirect_from_uuid = [
+    "old-compromised-uuid-...",
+]
+
+# Blacklist the old UUID (blocks the malware fork at any URL)
+[[blacklist]]
+uuid = "old-compromised-uuid-..."
+reason = "UUID compromised by malicious fork"
+```
+
+Result: existing users with the old UUID are redirected to the new safe
+UUID/URL. The blacklist entry for the old UUID blocks any direct install
+of the malware fork (the blacklist check happens after manifest is read,
+which reveals the old UUID). The redirect takes priority over the
+blacklist because after redirect resolution, the user's UUID becomes the
+new safe one.
+
+#### Scenario: Original repository compromised
+
+An attacker gains control of the original repository URL. Registry response:
+
+1. Legitimate author creates a new repository at a new URL
+2. Registry updates the plugin entry with the new `git_url`
+3. Registry adds the old URL to `redirect_from`
+4. Registry blacklists the old URL
+
+```toml
+# Plugin moved to safe URL, redirecting from compromised URL
+[[plugins]]
+uuid = "a1b2c3d4-..."
+git_url = "https://github.com/neworg/plugin"
+redirect_from = [
+    "https://github.com/compromised/plugin",
+]
+
+# Blacklist the compromised URL
+[[blacklist]]
+url = "https://github.com/compromised/plugin"
+reason = "Repository compromised"
+```
+
+Result: existing users are redirected to the safe URL. Direct installs
+from the compromised URL are blocked by the blacklist.
 
 ### Implementation Notes
 
@@ -842,15 +907,17 @@ The client resolves redirects in two stages:
 
 - No circular redirects (registry validation prevents)
 - No duplicate URLs in `redirect_from` across plugins
-- Redirect chains limited to reasonable length (<50 hops)
+- No duplicate UUIDs in `redirect_from_uuid` across plugins
 - Registry always contains current metadata (current UUID, current URL)
 
 **Client Behavior:**
 
 - Registry refreshed: manually by user, periodically, or at Picard restart
 - Redirects resolved transparently during update checks
+- Blacklist checked after redirect resolution (blocks updates to blacklisted plugins)
 - User notified if installed plugin moved (info message, non-blocking)
 - Local metadata updated to track new UUID/URL after redirect
+- On startup, installed plugins are checked against the blacklist and disabled if matched
 
 ### Local Metadata Storage
 
