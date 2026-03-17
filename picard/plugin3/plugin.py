@@ -415,7 +415,19 @@ class PluginSourceGit(PluginSource):
         callbacks = backend.create_remote_callbacks()
         try:
             origin_remote = repo.get_remote('origin')
-            if single_branch and self.ref and not current_is_tag:
+
+            # Update remote URL if source URL changed (e.g., after redirect)
+            if self.url:
+                try:
+                    current_remote_url = origin_remote.url
+                    if current_remote_url != self.url:
+                        log.info('Updating origin remote URL: %s -> %s', current_remote_url, self.url)
+                        repo.set_remote_url('origin', self.url)
+                        origin_remote = repo.get_remote('origin')
+                except (AttributeError, GitBackendError):
+                    pass
+
+            if single_branch and self.ref and not current_is_tag and getattr(self, 'resolved_ref_type', None) != 'tag':
                 # Fetch only the specific ref (branch)
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                 repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)

@@ -245,6 +245,10 @@ class GitRepository(ABC):
         """Create remote"""
 
     @abstractmethod
+    def set_remote_url(self, name: str, url: str):
+        """Set URL for an existing remote"""
+
+    @abstractmethod
     def get_branches(self) -> Any:
         """Get branches object"""
 

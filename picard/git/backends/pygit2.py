@@ -302,6 +302,10 @@ class Pygit2Repository(GitRepository):
         _log_git_call("create_remote", name, url, retval=ret)
         return ret
 
+    def set_remote_url(self, name: str, url: str):
+        self._repo.remotes.set_url(name, url)
+        _log_git_call("set_remote_url", name, url)
+
     def get_branches(self) -> Any:
         ret = self._repo.branches
         _log_git_call("get_branches", retval=ret)
