@@ -214,11 +214,10 @@ class PluginMetadataManager:
 
         return old_url, old_uuid, False
 
-    def get_original_metadata(self, metadata, redirected, old_url, old_uuid):
+    def get_original_metadata(self, redirected, old_url, old_uuid):
         """Get original metadata before redirect.
 
         Args:
-            metadata: Current metadata dict
             redirected: Whether plugin was redirected
             old_url: Original URL
             old_uuid: Original UUID

@@ -184,9 +184,7 @@ class PluginUpdater:
             new_ref = source.ref
 
             # Update metadata
-            original_url, original_uuid = self.manager._metadata.get_original_metadata(
-                metadata, redirected, old_url, old_uuid
-            )
+            original_url, original_uuid = self.manager._metadata.get_original_metadata(redirected, old_url, old_uuid)
             self.manager._metadata.save_plugin_metadata(
                 PluginMetadata(
                     name=plugin.plugin_id,
