@@ -985,3 +985,77 @@ class TestPluginRegistry(PicardTestCase):
         self.assertFalse(redirected)
         self.assertEqual(new_url, 'https://github.com/unknown/plugin')
         self.assertEqual(new_uuid, 'nonexistent-uuid')
+
+    def test_get_original_metadata_not_redirected(self):
+        """Test get_original_metadata returns old values when not redirected."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        url, uuid = metadata_mgr.get_original_metadata(False, 'https://example.com/plugin', 'some-uuid')
+        self.assertEqual(url, 'https://example.com/plugin')
+        self.assertEqual(uuid, 'some-uuid')
+
+    def test_get_original_metadata_redirected_no_stored(self):
+        """Test get_original_metadata returns old values when no stored metadata."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        url, uuid = metadata_mgr.get_original_metadata(True, 'https://example.com/old', 'old-uuid-not-stored')
+        self.assertEqual(url, 'https://example.com/old')
+        self.assertEqual(uuid, 'old-uuid-not-stored')
+
+    def test_get_original_metadata_redirected_with_stored(self):
+        """Test get_original_metadata returns stored values on first redirect."""
+        from picard.plugin3.plugin_metadata import (
+            PluginMetadata,
+            PluginMetadataManager,
+        )
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        test_uuid = 'stored-uuid-1234'
+        metadata_mgr.save_plugin_metadata(
+            PluginMetadata(
+                url='https://example.com/original',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+            )
+        )
+
+        url, uuid = metadata_mgr.get_original_metadata(True, 'https://example.com/original', test_uuid)
+        self.assertEqual(url, 'https://example.com/original')
+        self.assertEqual(uuid, test_uuid)
+
+    def test_get_original_metadata_chained_redirect_preserves_earliest(self):
+        """Test get_original_metadata preserves earliest original across chained redirects."""
+        from picard.plugin3.plugin_metadata import (
+            PluginMetadata,
+            PluginMetadataManager,
+        )
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        # Simulate first redirect: A -> B (original_url/uuid set to A)
+        test_uuid = 'chained-uuid-1234'
+        metadata_mgr.save_plugin_metadata(
+            PluginMetadata(
+                url='https://example.com/B',
+                ref='main',
+                commit='abc123',
+                uuid=test_uuid,
+                original_url='https://example.com/A',
+                original_uuid='original-uuid-A',
+            )
+        )
+
+        # Second redirect: B -> C should still return A as original
+        url, uuid = metadata_mgr.get_original_metadata(True, 'https://example.com/B', test_uuid)
+        self.assertEqual(url, 'https://example.com/A')
+        self.assertEqual(uuid, 'original-uuid-A')
