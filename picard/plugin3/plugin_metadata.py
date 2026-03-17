@@ -176,7 +176,7 @@ class PluginMetadataManager:
         return None
 
     def check_redirects(self, old_url, old_uuid):
-        """Check if plugin was redirected to new URL.
+        """Check if plugin was redirected to new URL and/or UUID.
 
         Args:
             old_url: Original URL
@@ -185,21 +185,28 @@ class PluginMetadataManager:
         Returns:
             tuple: (new_url, new_uuid, redirected) where redirected is True if changed
         """
-        # Check if UUID exists in registry with different URL
+        # Check if UUID exists in registry (possibly via redirect_from_uuid)
         registry_plugin = self._registry.find_plugin(uuid=old_uuid)
         if registry_plugin:
-            new_url = registry_plugin.git_url
-            if new_url and new_url != old_url:
-                log.info('Plugin %s redirected from %s to %s', old_uuid, old_url, new_url)
-                return new_url, old_uuid, True
+            new_url = registry_plugin.git_url or old_url
+            new_uuid = registry_plugin.uuid or old_uuid
+            url_changed = new_url != old_url
+            uuid_changed = new_uuid != old_uuid
+            if url_changed or uuid_changed:
+                log.info('Plugin redirected: url %s -> %s, uuid %s -> %s', old_url, new_url, old_uuid, new_uuid)
+                return new_url, new_uuid, True
+            return old_url, old_uuid, False
 
-        # Check if URL exists in registry with different UUID
+        # Check if URL exists in registry (possibly via redirect_from)
         registry_plugin = self._registry.find_plugin(url=old_url)
         if registry_plugin:
-            new_uuid = registry_plugin.uuid
-            if new_uuid and new_uuid != old_uuid:
-                log.info('Plugin at %s changed UUID from %s to %s', old_url, old_uuid, new_uuid)
-                return old_url, new_uuid, True
+            new_url = registry_plugin.git_url or old_url
+            new_uuid = registry_plugin.uuid or old_uuid
+            url_changed = new_url != old_url
+            uuid_changed = new_uuid != old_uuid
+            if url_changed or uuid_changed:
+                log.info('Plugin redirected: url %s -> %s, uuid %s -> %s', old_url, new_url, old_uuid, new_uuid)
+                return new_url, new_uuid, True
 
         return old_url, old_uuid, False
 
