@@ -20,9 +20,17 @@ echo "=== Testing Plugin Commands (Local Git Repository with Local Registry) ===
 echo "Test directory: $TEST_DIR"
 echo "Registry file: $REGISTRY_FILE"
 
+cleanup() {
+    echo "Cleanup: Removing test directory and plugin"
+    rm -rf "$TEST_DIR"
+    $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>/dev/null || true
+    echo "✓ Cleanup complete"
+}
+trap cleanup EXIT
+
 # Clean up any existing test plugins from previous runs
 echo "Cleaning up any existing test plugins..."
-rm -rf ~/.local/share/MusicBrainz/Picard/plugins3/test_plugin_12345678-1234-4678-9234-123456789abc 2>/dev/null || true
+$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>/dev/null || true
 echo
 
 # Setup: Create a dummy plugin with git repository
@@ -634,17 +642,6 @@ echo
 # Test 44: UUID+URL combo blacklist - only URL matches (should pass)
 echo "44. UUID+URL combo blacklist - only URL matches, different UUID (should pass)"
 $PICARD_PLUGINS --check-blacklist "https://github.com/specific/combo-blocked" --uuid "innocent-uuid-1234"
-echo
-
-# Cleanup
-echo "Cleanup: Removing test directory"
-rm -rf "$TEST_DIR"
-
-# Clean up any broken test plugins that might have been left behind
-echo "Cleaning up any broken test plugins..."
-rm -rf ~/.local/share/MusicBrainz/Picard/plugins3/test_plugin_12345678-1234-4678-9234-123456789abc 2>/dev/null || true
-
-echo "✓ Cleanup complete"
 echo
 
 echo "=== All Local Tests Completed Successfully ==="

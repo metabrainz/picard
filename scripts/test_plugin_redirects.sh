@@ -17,7 +17,7 @@ PICARD_PLUGINS="picard-plugins"
 cleanup() {
     echo "Cleanup: Removing test directory and plugin"
     rm -rf "$TEST_DIR"
-    rm -rf ~/.local/share/MusicBrainz/Picard/plugins3/$PLUGIN_DIR_NAME 2>/dev/null || true
+    $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>/dev/null || true
     echo "✓ Cleanup complete"
 }
 trap cleanup EXIT
