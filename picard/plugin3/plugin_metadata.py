@@ -167,16 +167,9 @@ class PluginMetadataManager:
         normalized_url = normalize_git_url(url) if url else None
         if not normalized_url:
             return None
-        # Handle both dict (new format) and list (old format)
-        if isinstance(metadata, dict):
-            for item in metadata.values():
-                if normalize_git_url(item.get('url', '')) == normalized_url:
-                    return PluginMetadata.from_dict(item)
-        else:
-            # Legacy list format
-            for item in metadata:
-                if normalize_git_url(item.get('url', '')) == normalized_url:
-                    return item
+        for item in metadata.values():
+            if normalize_git_url(item.get('url', '')) == normalized_url:
+                return PluginMetadata.from_dict(item)
         return None
 
     def check_redirects(self, old_url, old_uuid):
@@ -221,14 +214,9 @@ class PluginMetadataManager:
 
         if old_metadata:
             # If already redirected before, keep the earliest original
-            if isinstance(old_metadata, PluginMetadata):
-                if old_metadata.original_url:
-                    return old_metadata.original_url, old_metadata.original_uuid or old_uuid
-                return old_metadata.url or old_url, old_metadata.uuid or old_uuid
-            # Legacy dict format
-            if old_metadata.get('original_url'):
-                return old_metadata['original_url'], old_metadata.get('original_uuid', old_uuid)
-            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
+            if old_metadata.original_url:
+                return old_metadata.original_url, old_metadata.original_uuid or old_uuid
+            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
 
         return old_url, old_uuid
 
