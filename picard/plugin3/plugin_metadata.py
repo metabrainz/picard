@@ -33,6 +33,7 @@ from picard.git.backend import (
     GitRefType,
 )
 from picard.git.factory import git_backend
+from picard.git.utils import normalize_git_url
 
 
 if TYPE_CHECKING:
@@ -163,15 +164,18 @@ class PluginMetadataManager:
             PluginMetadata: Plugin metadata or None if not found
         """
         metadata = get_config().setting['plugins3_metadata']
+        normalized_url = normalize_git_url(url) if url else None
+        if not normalized_url:
+            return None
         # Handle both dict (new format) and list (old format)
         if isinstance(metadata, dict):
             for item in metadata.values():
-                if item.get('url') == url:
+                if normalize_git_url(item.get('url', '')) == normalized_url:
                     return PluginMetadata.from_dict(item)
         else:
             # Legacy list format
             for item in metadata:
-                if item.get('url') == url:
+                if normalize_git_url(item.get('url', '')) == normalized_url:
                     return item
         return None
 
