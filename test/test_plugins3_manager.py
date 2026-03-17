@@ -707,6 +707,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test install_plugin cleans up on manifest validation failure during enable."""
         manager = PluginManager(MockTagger())
         manager._registry = Mock()
+        manager._registry.find_plugin.return_value = None
         manager._metadata = Mock()
         manager._primary_plugin_dir = Path('/plugins')
 
