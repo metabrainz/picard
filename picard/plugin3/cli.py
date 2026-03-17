@@ -51,7 +51,6 @@ from picard.git.factory import has_git_backend
 from picard.git.utils import (
     check_local_repo_dirty,
     get_local_repository_path,
-    normalize_git_url,
 )
 from picard.options import init_options
 from picard.plugin3.installable import UrlInstallablePlugin
@@ -788,16 +787,14 @@ class PluginCLI:
                     url = url_or_id
 
                     # Check if this URL is in the registry (possibly via redirect_from)
-                    registry_plugin = self._manager._registry.find_plugin(url=url)
+                    redirect_plugin = self._manager._registry.resolve_redirect(url=url)
+                    if redirect_plugin:
+                        self._out.warning(f'URL redirected: {url} → {redirect_plugin.git_url}')
+                        url = redirect_plugin.git_url
+                        registry_plugin = redirect_plugin
+                    else:
+                        registry_plugin = self._manager._registry.find_plugin(url=url)
                     if registry_plugin:
-                        registry_url = registry_plugin.git_url
-                        normalized_url = normalize_git_url(url)
-                        normalized_registry_url = normalize_git_url(registry_url) if registry_url else None
-                        if normalized_registry_url and normalized_registry_url != normalized_url:
-                            # URL was found via redirect_from — use the current URL
-                            self._out.warning(f'URL redirected: {url} → {registry_url}')
-                            url = registry_url
-
                         plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
                         install_cmd = f'picard plugins --install {plugin_id}'
