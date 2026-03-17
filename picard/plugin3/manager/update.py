@@ -312,10 +312,7 @@ class PluginUpdater:
         try:
 
             def update_remote(repo):
-                origin = repo.get_remote('origin')
-                if origin.url != new_url:
-                    log.info('Updating remote URL for %s: %s -> %s', plugin.plugin_id, origin.url, new_url)
-                    repo.set_remote_url('origin', new_url)
+                repo.update_remote_url_if_changed('origin', new_url)
 
             self.manager._with_plugin_repo(plugin.local_path, update_remote)
         except Exception as e:

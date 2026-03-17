@@ -248,6 +248,22 @@ class GitRepository(ABC):
     def set_remote_url(self, name: str, url: str):
         """Set URL for an existing remote"""
 
+    def update_remote_url_if_changed(self, name: str, url: str):
+        """Update remote URL if it differs from the current one.
+
+        Returns:
+            True if URL was updated, False otherwise.
+        """
+        try:
+            remote = self.get_remote(name)
+            if remote.url != url:
+                log.info('Updating %s remote URL: %s -> %s', name, remote.url, url)
+                self.set_remote_url(name, url)
+                return True
+        except (AttributeError, KeyError, GitBackendError):
+            pass
+        return False
+
     @abstractmethod
     def get_branches(self) -> Any:
         """Get branches object"""
