@@ -913,3 +913,75 @@ class TestPluginRegistry(PicardTestCase):
         with patch.object(registry, 'fetch_registry', side_effect=RegistryFetchError('test', Exception('error'))):
             result = registry._ensure_registry_loaded('test operation')
             self.assertFalse(result)
+
+    def test_check_redirects_url_change(self):
+        """Test check_redirects detects URL change via UUID lookup."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        # Plugin 'example-plugin' has UUID 'ae5ef1ed-...' and git_url 'https://github.com/test/example'
+        # redirect_from includes 'https://github.com/olduser/example'
+        new_url, new_uuid, redirected = metadata_mgr.check_redirects(
+            'https://github.com/olduser/example', 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        )
+        self.assertTrue(redirected)
+        self.assertEqual(new_url, 'https://github.com/test/example')
+        self.assertEqual(new_uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+    def test_check_redirects_uuid_change(self):
+        """Test check_redirects detects UUID change via URL redirect lookup."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        # 'old-uuid-1234' is in redirect_from_uuid for example-plugin
+        # Looking up by old UUID finds the plugin with new UUID
+        new_url, new_uuid, redirected = metadata_mgr.check_redirects('https://github.com/test/example', 'old-uuid-1234')
+        self.assertTrue(redirected)
+        self.assertEqual(new_uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+    def test_check_redirects_both_url_and_uuid_change(self):
+        """Test check_redirects detects simultaneous URL and UUID change."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        # old-uuid-1234 redirects to example-plugin which has a different URL and UUID
+        new_url, new_uuid, redirected = metadata_mgr.check_redirects(
+            'https://github.com/olduser/example', 'old-uuid-1234'
+        )
+        self.assertTrue(redirected)
+        self.assertEqual(new_url, 'https://github.com/test/example')
+        self.assertEqual(new_uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+    def test_check_redirects_no_change(self):
+        """Test check_redirects returns no redirect when URL and UUID match."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        new_url, new_uuid, redirected = metadata_mgr.check_redirects(
+            'https://github.com/test/example', 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        )
+        self.assertFalse(redirected)
+        self.assertEqual(new_url, 'https://github.com/test/example')
+        self.assertEqual(new_uuid, 'ae5ef1ed-0195-4014-a113-6090de7cf8b7')
+
+    def test_check_redirects_not_in_registry(self):
+        """Test check_redirects returns no redirect when plugin not in registry."""
+        from picard.plugin3.plugin_metadata import PluginMetadataManager
+
+        registry = create_test_registry()
+        metadata_mgr = PluginMetadataManager(registry)
+
+        new_url, new_uuid, redirected = metadata_mgr.check_redirects(
+            'https://github.com/unknown/plugin', 'nonexistent-uuid'
+        )
+        self.assertFalse(redirected)
+        self.assertEqual(new_url, 'https://github.com/unknown/plugin')
+        self.assertEqual(new_uuid, 'nonexistent-uuid')
