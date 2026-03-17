@@ -151,20 +151,10 @@ The `refs` field allows plugins to specify multiple git branches or tags that us
 ### Refs Field Structure
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "main",
-      "description": "Stable release for Picard 3.x",
-      "min_api_version": "3.0"
-    },
-    {
-      "name": "beta",
-      "description": "Testing new features",
-      "min_api_version": "3.0"
-    }
-  ]
-}
+refs = [
+    { name = "main", description = "Stable release for Picard 3.x", min_api_version = "3.0" },
+    { name = "beta", description = "Testing new features", min_api_version = "3.0" },
+]
 ```
 
 **Ref Object Fields:**
@@ -190,83 +180,66 @@ This means most plugins don't need to specify `refs` explicitly.
 
 **Simple plugin (uses defaults):**
 ```toml
-{
-  "id": "simple-plugin",
-  "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "git_url": "https://github.com/user/plugin",
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-  // refs omitted, defaults to [{"name": "main"}]
-}
+[[plugins]]
+id = "simple-plugin"
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+git_url = "https://github.com/user/plugin"
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
+# refs omitted, defaults to [{ name = "main" }]
 ```
 
 **Plugin using master branch:**
 ```toml
-{
-  "id": "old-plugin",
-  "uuid": "650e8400-e29b-41d4-a716-446655440001",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [{"name": "master"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "old-plugin"
+uuid = "650e8400-e29b-41d4-a716-446655440001"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "master" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Plugin with beta channel:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "750e8400-e29b-41d4-a716-446655440002",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [
-    {
-      "name": "stable",
-      "description": "Stable releases only"
-    },
-    {
-      "name": "beta",
-      "description": "Testing new features (may be unstable)"
-    }
-  ],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "750e8400-e29b-41d4-a716-446655440002"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "stable", description = "Stable releases only" },
+    { name = "beta", description = "Testing new features (may be unstable)" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Plugin supporting multiple Picard versions:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "850e8400-e29b-41d4-a716-446655440003",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [
-    {
-      "name": "main",
-      "description": "For Picard 4.x and later",
-      "min_api_version": "4.0"
-    },
-    {
-      "name": "picard-v3",
-      "description": "Maintenance branch for Picard 3.x",
-      "min_api_version": "3.0",
-      "max_api_version": "3.99"
-    }
-  ],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "850e8400-e29b-41d4-a716-446655440003"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "main", description = "For Picard 4.x and later", min_api_version = "4.0" },
+    { name = "picard-v3", description = "Maintenance branch for Picard 3.x", min_api_version = "3.0", max_api_version = "3.99" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 ### Client Behavior
@@ -311,21 +284,10 @@ $ picard-plugins --switch-ref my-plugin beta
 When Picard releases a new major version with breaking API changes, plugin authors can maintain separate branches:
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "main",
-      "description": "For Picard 4.x",
-      "min_api_version": "4.0"
-    },
-    {
-      "name": "picard-v3-stable",
-      "description": "For Picard 3.x (bug fixes only)",
-      "min_api_version": "3.0",
-      "max_api_version": "3.99"
-    }
-  ]
-}
+refs = [
+    { name = "main", description = "For Picard 4.x", min_api_version = "4.0" },
+    { name = "picard-v3-stable", description = "For Picard 3.x (bug fixes only)", min_api_version = "3.0", max_api_version = "3.99" },
+]
 ```
 
 Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branch, while users on Picard 4.x get new features on `main`.
@@ -335,18 +297,10 @@ Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branc
 Plugin authors can offer beta versions for testing:
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "stable",
-      "description": "Stable releases"
-    },
-    {
-      "name": "beta",
-      "description": "Beta releases (may contain bugs)"
-    }
-  ]
-}
+refs = [
+    { name = "stable", description = "Stable releases" },
+    { name = "beta", description = "Beta releases (may contain bugs)" },
+]
 ```
 
 Power users can opt into beta testing with `--ref beta`.
@@ -356,13 +310,12 @@ Power users can opt into beta testing with `--ref beta`.
 Plugins can use any branch naming convention:
 
 ```toml
-{
-  "refs": [
-    {"name": "master"},      // Old GitHub default
-    {"name": "develop"},     // Gitflow workflow
-    {"name": "trunk"}        // Some projects use this
-  ]
-}
+# Various branch naming conventions are supported
+refs = [
+    { name = "master" },      # Old GitHub default
+    { name = "develop" },     # Gitflow workflow
+    { name = "trunk" },       # Some projects use this
+]
 ```
 
 No assumptions are made about branch names - the plugin author explicitly declares what's available.
@@ -392,12 +345,10 @@ The registry validates that all refs exist in the repository:
 # If main/MANIFEST.toml has: api = ["4.0"]
 # And picard-v3/MANIFEST.toml has: api = ["3.0", "3.1"]
 # Then registry stores:
-{
-  "refs": [
-    {"name": "main", "min_api_version": "4.0"},
-    {"name": "picard-v3", "min_api_version": "3.0", "max_api_version": "3.1"}
-  ]
-}
+# refs = [
+#     { name = "main", min_api_version = "4.0" },
+#     { name = "picard-v3", min_api_version = "3.0", max_api_version = "3.1" },
+# ]
 ```
 
 ---
@@ -434,50 +385,53 @@ With `versioning_scheme`:
 
 **Semantic versioning:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "semver",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "semver"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Custom version prefix:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "650e8400-e29b-41d4-a716-446655440001",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "regex:^version\\d+\\.\\d+\\.\\d+$",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "650e8400-e29b-41d4-a716-446655440001"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "regex:^version\\d+\\.\\d+\\.\\d+$"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **With release candidates:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "750e8400-e29b-41d4-a716-446655440002",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "regex:^v\\d+\\.\\d+\\.\\d+(-rc\\d+)?$",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "750e8400-e29b-41d4-a716-446655440002"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "regex:^v\\d+\\.\\d+\\.\\d+(-rc\\d+)?$"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 ### Client Behavior
@@ -558,13 +512,11 @@ picard-plugins --update my-plugin
 
 Use `versioning_scheme` for stable releases and `refs` for development:
 ```toml
-{
-  "versioning_scheme": "semver",
-  "refs": [
-    {"name": "main", "description": "Development branch"},
-    {"name": "beta", "description": "Beta testing"}
-  ]
-}
+versioning_scheme = "semver"
+refs = [
+    { name = "main", description = "Development branch" },
+    { name = "beta", description = "Beta testing" },
+]
 ```
 
 Users can choose:
@@ -1234,18 +1186,17 @@ fr = "Submit listensz votre musique sur ListenBrainz"
 
 **In registry TOML:**
 ```toml
-{
-  "name": "ListenBrainz Submitter",
-  "description": "Submit your music to ListenBrainz",
-  "name_i18n": {
-    "de": "ListenBrainz-Submitter",
-    "fr": "Soumetteur ListenBrainz"
-  },
-  "description_i18n": {
-    "de": "Submit listens deine Musik zu ListenBrainz",
-    "fr": "Submit listensz votre musique sur ListenBrainz"
-  }
-}
+[[plugins]]
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
+
+[plugins.name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+
+[plugins.description_i18n]
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
 See [TRANSLATIONS.md](TRANSLATIONS.md) for details on the translation system.
