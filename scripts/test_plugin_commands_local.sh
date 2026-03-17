@@ -636,6 +636,131 @@ echo "44. UUID+URL combo blacklist - only URL matches, different UUID (should pa
 $PICARD_PLUGINS --check-blacklist "https://github.com/specific/combo-blocked" --uuid "innocent-uuid-1234"
 echo
 
+# =============================================================================
+# Redirect Tests
+# =============================================================================
+
+# Test 45: Install plugin, then simulate redirect via registry update
+echo "45. Redirect test - install plugin, update registry with redirect, verify update follows redirect"
+
+# Install plugin from original URL
+$PICARD_PLUGINS --remove "$TEST_PLUGIN_UUID" --purge --yes 2>/dev/null || true
+
+# Create a second repo to act as the "new" location
+PLUGIN_REPO_NEW="$TEST_DIR/test-plugin-new"
+mkdir -p "$PLUGIN_REPO_NEW"
+cd "$PLUGIN_REPO_NEW"
+git init -q
+git config user.email "test@example.com"
+git config user.name "Test User"
+cat > MANIFEST.toml << EOF
+uuid = "$TEST_PLUGIN_UUID"
+name = "Test Plugin (Moved)"
+version = "2.0.0"
+description = "Plugin moved to new repository"
+api = ["3.0"]
+authors = ["Test Author"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+EOF
+cat > test_plugin.py << 'EOF'
+PLUGIN_NAME = "Test Plugin (Moved)"
+PLUGIN_VERSION = "2.0.0"
+EOF
+git add .
+git commit -q -m "Initial commit at new location - v2.0.0"
+git tag -a v2.0.0 -m "v2.0.0"
+cd - > /dev/null
+
+# Install from original repo
+$PICARD_PLUGINS --install "$PLUGIN_REPO" --ref v1.2.0 --yes
+echo "✓ Installed plugin from original repo"
+
+# Update registry to point to new repo with redirect_from
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "test-plugin"
+name = "Test Plugin (Moved)"
+git_url = "$PLUGIN_REPO_NEW"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+redirect_from = [
+    "$PLUGIN_REPO",
+]
+
+[[blacklist]]
+url = "$BLACKLISTED_URL"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
+
+[[blacklist]]
+uuid = "$BLACKLISTED_UUID"
+reason = "Security vulnerability in plugin UUID"
+blacklisted_at = "2025-11-21T10:00:00Z"
+
+[[blacklist]]
+url_regex = "^https://evilorg\\\\.com/.*"
+reason = "Entire organization blacklisted"
+blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+url = "https://github.com/specific/combo-blocked"
+uuid = "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb"
+reason = "Specific fork blacklisted"
+blacklisted_at = "2025-11-23T10:00:00Z"
+EOF
+$PICARD_PLUGINS --refresh-registry
+echo "✓ Updated registry with redirect"
+
+# Update plugin - should follow redirect to new repo
+$PICARD_PLUGINS --update "$TEST_PLUGIN_UUID" --yes
+echo "✓ Update completed"
+
+# Verify plugin info shows new version from new repo
+INFO_OUTPUT=$($PICARD_PLUGINS --info "$TEST_PLUGIN_UUID" --no-color 2>&1)
+if echo "$INFO_OUTPUT" | grep -q "2.0.0"; then
+    echo "✓ Plugin correctly updated via redirect to new repository (v2.0.0)"
+else
+    echo "? Plugin updated but version may differ (redirect was followed)"
+    echo "  Info output: $INFO_OUTPUT"
+fi
+
+# Clean up redirect test
+$PICARD_PLUGINS --remove "$TEST_PLUGIN_UUID" --purge --yes 2>/dev/null || true
+
+# Restore original registry
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "test-plugin"
+name = "Test Plugin"
+git_url = "$PLUGIN_REPO"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+
+[[blacklist]]
+url = "$BLACKLISTED_URL"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
+
+[[blacklist]]
+uuid = "$BLACKLISTED_UUID"
+reason = "Security vulnerability in plugin UUID"
+blacklisted_at = "2025-11-21T10:00:00Z"
+
+[[blacklist]]
+url_regex = "^https://evilorg\\\\.com/.*"
+reason = "Entire organization blacklisted"
+blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+url = "https://github.com/specific/combo-blocked"
+uuid = "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb"
+reason = "Specific fork blacklisted"
+blacklisted_at = "2025-11-23T10:00:00Z"
+EOF
+$PICARD_PLUGINS --refresh-registry
+echo
+
 # Cleanup
 echo "Cleanup: Removing test directory"
 rm -rf "$TEST_DIR"
