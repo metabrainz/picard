@@ -217,6 +217,9 @@ class PluginMetadataManager:
     def get_original_metadata(self, redirected, old_url, old_uuid):
         """Get original metadata before redirect.
 
+        Preserves the earliest original values across chained redirects
+        (A→B→C keeps A as the original).
+
         Args:
             redirected: Whether plugin was redirected
             old_url: Original URL
@@ -228,15 +231,21 @@ class PluginMetadataManager:
         if not redirected:
             return old_url, old_uuid
 
-        # Try to find metadata by old UUID
+        # Try to find existing metadata to preserve earliest original values
         old_metadata = self.get_plugin_metadata(old_uuid)
-        if old_metadata:
-            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
+        if not old_metadata:
+            old_metadata = self.find_plugin_by_url(old_url)
 
-        # Try to find metadata by old URL
-        old_metadata = self.find_plugin_by_url(old_url)
         if old_metadata:
-            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
+            # If already redirected before, keep the earliest original
+            if isinstance(old_metadata, PluginMetadata):
+                if old_metadata.original_url:
+                    return old_metadata.original_url, old_metadata.original_uuid or old_uuid
+                return old_metadata.url or old_url, old_metadata.uuid or old_uuid
+            # Legacy dict format
+            if old_metadata.get('original_url'):
+                return old_metadata['original_url'], old_metadata.get('original_uuid', old_uuid)
+            return old_metadata.get('url', old_url), old_metadata.get('uuid', old_uuid)
 
         return old_url, old_uuid
 
