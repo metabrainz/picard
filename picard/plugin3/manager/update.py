@@ -31,6 +31,7 @@ from picard.git.ops import GitOperations
 from picard.git.ref_utils import find_git_ref
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.manager.errors import (
+    PluginBlacklistedError,
     PluginCommitPinnedError,
     PluginDirtyError,
 )
@@ -150,6 +151,11 @@ class PluginUpdater:
 
             # Check registry for redirects
             current_url, current_uuid, redirected = self.manager._metadata.check_redirects(old_url, old_uuid)
+
+            # Check if plugin is blacklisted (by current or redirected URL/UUID)
+            is_blacklisted, reason = self.manager._registry.is_blacklisted(current_url, current_uuid)
+            if is_blacklisted:
+                raise PluginBlacklistedError(current_url, reason, current_uuid)
 
             # Check if plugin has versioning_scheme and current ref is a version tag
             new_ref = old_ref

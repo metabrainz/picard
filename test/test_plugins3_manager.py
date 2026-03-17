@@ -621,6 +621,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         # Mock registry - no versioning scheme to avoid complex tag logic
         manager._registry.find_plugin.return_value = None
+        manager._registry.is_blacklisted.return_value = (False, None)
 
         # Mock git operations
         mock_source = Mock()
