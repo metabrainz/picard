@@ -348,4 +348,39 @@ fi
 $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
 echo
 
+# =============================================================================
+# Test 6: Install by old URL redirects to new URL
+# =============================================================================
+echo "--- Test 6: Direct URL install follows redirect ---"
+
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "redirect-test"
+name = "Redirect Test Plugin (Moved)"
+git_url = "$PLUGIN_REPO_NEW"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+redirect_from = [
+    "$PLUGIN_REPO_OLD",
+]
+EOF
+$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+
+# Install using old URL directly - should redirect to new repo
+INSTALL_OUTPUT=$($PICARD_PLUGINS --install "$PLUGIN_REPO_OLD" --yes 2>&1)
+echo "$INSTALL_OUTPUT" | grep -i "redirect" || true
+
+# Verify plugin was installed from new repo (check plugin name contains "Moved")
+INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+if echo "$INFO_OUTPUT" | grep -q "$PLUGIN_REPO_NEW"; then
+    echo "✓ Install via old URL was redirected to new repo"
+else
+    echo "✗ ERROR: Plugin installed from old repo instead of being redirected"
+    echo "  $INFO_OUTPUT"
+    exit 1
+fi
+
+$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+echo
+
 echo "=== All Redirect Tests Completed Successfully ==="
