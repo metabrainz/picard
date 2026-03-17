@@ -444,7 +444,7 @@ class PluginRegistry:
             uuid: Plugin UUID to search for
 
         Returns:
-            dict: Plugin data or None if not found
+            RegistryPlugin: Plugin data or None if not found
         """
         if not self._ensure_registry_loaded('plugin search'):
             # Fail safe: if we can't fetch registry, return None

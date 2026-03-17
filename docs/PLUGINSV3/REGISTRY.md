@@ -764,21 +764,22 @@ Redirects handle plugin repository changes transparently:
 ### Redirect Entry
 
 ```toml
-{
-  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  "id": "my-plugin",
-  "git_url": "https://github.com/neworg/plugin-repo",
-  "refs": [{"name": "main", "min_api_version": "3.0"}],
-  "redirect_from": [
+[[plugins]]
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+id = "my-plugin"
+git_url = "https://github.com/neworg/plugin-repo"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+redirect_from = [
     "https://github.com/olduser/old-repo",
-    "https://github.com/olduser/plugin-collection#my-plugin"
-  ],
-  "trust_level": "community",
-  "authors": ["Author Name"],
-  "categories": ["metadata"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-26T10:00:00Z"
-}
+    "https://github.com/olduser/plugin-collection#my-plugin",
+]
+trust_level = "community"
+authors = ["Author Name"]
+categories = ["metadata"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-26T10:00:00Z"
 ```
 
 ### How Redirects Work
@@ -811,33 +812,31 @@ The registry supports two types of redirects:
 
 1. **URL redirects** - Plugin moved to different repository:
     ```toml
-    {
-      "uuid": "a1b2c3d4-...",
-      "git_url": "https://github.com/neworg/plugin",
-      "redirect_from": [
-        "https://github.com/olduser/plugin"
-      ]
-    }
+    [[plugins]]
+    uuid = "a1b2c3d4-..."
+    git_url = "https://github.com/neworg/plugin"
+    redirect_from = [
+        "https://github.com/olduser/plugin",
+    ]
     ```
 
 2. **UUID redirects** - Plugin was forked/replaced (rare):
     ```toml
-    {
-      "uuid": "new-uuid-...",
-      "git_url": "https://github.com/org/plugin",
-      "redirect_from_uuid": [
-        "old-uuid-..."
-      ]
-    }
+    [[plugins]]
+    uuid = "new-uuid-..."
+    git_url = "https://github.com/org/plugin"
+    redirect_from_uuid = [
+        "old-uuid-...",
+    ]
     ```
 
 **Lookup Algorithm:**
 
-1. Search plugins by current UUID (exact match)
-2. If not found, search plugins by current git_url (exact match)
-3. If not found, search all plugins' `redirect_from` arrays for URL
-4. If not found, search all plugins' `redirect_from_uuid` arrays for UUID
-5. If found via redirect, update local metadata with current UUID/URL
+The client resolves redirects in two stages:
+
+1. Look up by UUID (covers exact UUID match and `redirect_from_uuid`)
+2. If not found, look up by URL (covers exact git_url match and `redirect_from`)
+3. If found via redirect, update local metadata with current UUID/URL
 
 **Registry Guarantees:**
 
@@ -873,7 +872,7 @@ This allows users to:
 - Potentially rollback to original source if needed
 
 **Example metadata after redirect:**
-```toml
+```json
 {
   "test_plugin_a1b2c3d4": {
     "url": "https://github.com/neworg/plugin",

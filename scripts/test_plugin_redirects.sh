@@ -60,7 +60,6 @@ git tag -a v1.0.0 -m "v1.0.0"
 sed -i 's/version = "1.0.0"/version = "1.1.0"/' MANIFEST.toml
 git add .
 git commit -q -m "v1.1.0"
-COMMIT_V1_1_0=$(git rev-parse HEAD)
 git tag -a v1.1.0 -m "v1.1.0"
 cd - > /dev/null
 echo "✓ Old repo created with v1.0.0 and v1.1.0"
@@ -90,13 +89,11 @@ PLUGIN_NAME = "Redirect Test Plugin (Moved)"
 EOF
 git add .
 git commit -q -m "v2.0.0"
-COMMIT_V2_0_0=$(git rev-parse HEAD)
 git tag -a v2.0.0 -m "v2.0.0"
 
 sed -i 's/version = "2.0.0"/version = "2.1.0"/' MANIFEST.toml
 git add .
 git commit -q -m "v2.1.0"
-COMMIT_V2_1_0=$(git rev-parse HEAD)
 git tag -a v2.1.0 -m "v2.1.0"
 cd - > /dev/null
 echo "✓ New repo created with v2.0.0 and v2.1.0"
