@@ -286,6 +286,9 @@ class TestPluginRegistry(PicardTestCase):
                                     # Update plugin
                                     manager.update_plugin(mock_plugin)
 
+                                # Verify check_redirects was called with correct args
+                                mock_check_redirects.assert_called_once_with(old_url, old_uuid)
+
                                 # Verify metadata was saved with NEW URL and UUID
                                 mock_save_meta.assert_called_once()
                                 call_args = mock_save_meta.call_args[0]
