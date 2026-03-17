@@ -459,6 +459,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._find_plugin_by_url = Mock(return_value=None)
         mock_manager._registry = Mock()
         mock_manager._registry.find_plugin = Mock(return_value=None)
+        mock_manager._registry.resolve_redirect = Mock(return_value=None)
         mock_manager._registry.is_blacklisted = Mock(return_value=(False, None))
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager
@@ -505,6 +506,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._find_plugin_by_url = Mock(return_value=None)
         mock_manager._registry = Mock()
         mock_manager._registry.find_plugin = Mock(return_value=None)
+        mock_manager._registry.resolve_redirect = Mock(return_value=None)
         mock_manager._registry.is_blacklisted = Mock(return_value=(False, None))
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager

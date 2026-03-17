@@ -78,6 +78,10 @@ class PluginInstaller:
         # Check if url is a local directory
         local_path = get_local_repository_path(url)
 
+        # For remote URLs, check if registry redirects to a different URL
+        if not local_path:
+            url = self._resolve_redirect(url)
+
         # Initial blacklist check
         if not force_blacklisted:
             self._check_blacklist(url, ref, local_path)
@@ -91,6 +95,14 @@ class PluginInstaller:
         return self._install_from_remote_url(
             url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
         )
+
+    def _resolve_redirect(self, url):
+        """Resolve URL redirect from registry. Returns redirected URL or original."""
+        plugin = self.manager._registry.resolve_redirect(url=url)
+        if plugin:
+            log.info('Install URL redirected: %s -> %s', url, plugin.git_url)
+            return plugin.git_url
+        return url
 
     def _check_blacklist(self, url, ref, local_path=None, plugin_uuid=None):
         """Check if a plugin is blacklisted by URL and optionally UUID."""

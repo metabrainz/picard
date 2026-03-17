@@ -33,6 +33,7 @@ from picard.git.backend import (
     GitRefType,
 )
 from picard.git.factory import git_backend
+from picard.git.utils import normalize_git_url
 
 
 if TYPE_CHECKING:
@@ -163,20 +164,16 @@ class PluginMetadataManager:
             PluginMetadata: Plugin metadata or None if not found
         """
         metadata = get_config().setting['plugins3_metadata']
-        # Handle both dict (new format) and list (old format)
-        if isinstance(metadata, dict):
-            for item in metadata.values():
-                if item.get('url') == url:
-                    return PluginMetadata.from_dict(item)
-        else:
-            # Legacy list format
-            for item in metadata:
-                if item.get('url') == url:
-                    return item
+        normalized_url = normalize_git_url(url) if url else None
+        if not normalized_url:
+            return None
+        for item in metadata.values():
+            if normalize_git_url(item.get('url', '')) == normalized_url:
+                return PluginMetadata.from_dict(item)
         return None
 
     def check_redirects(self, old_url, old_uuid):
-        """Check if plugin was redirected to new URL.
+        """Check if plugin was redirected to new URL and/or UUID.
 
         Args:
             old_url: Original URL
@@ -185,29 +182,21 @@ class PluginMetadataManager:
         Returns:
             tuple: (new_url, new_uuid, redirected) where redirected is True if changed
         """
-        # Check if UUID exists in registry with different URL
-        registry_plugin = self._registry.find_plugin(uuid=old_uuid)
-        if registry_plugin:
-            new_url = registry_plugin.git_url
-            if new_url and new_url != old_url:
-                log.info('Plugin %s redirected from %s to %s', old_uuid, old_url, new_url)
-                return new_url, old_uuid, True
-
-        # Check if URL exists in registry with different UUID
-        registry_plugin = self._registry.find_plugin(url=old_url)
-        if registry_plugin:
-            new_uuid = registry_plugin.uuid
-            if new_uuid and new_uuid != old_uuid:
-                log.info('Plugin at %s changed UUID from %s to %s', old_url, old_uuid, new_uuid)
-                return old_url, new_uuid, True
-
+        plugin = self._registry.resolve_redirect(url=old_url, uuid=old_uuid)
+        if plugin:
+            new_url = plugin.git_url or old_url
+            new_uuid = plugin.uuid or old_uuid
+            log.info('Plugin redirected: url %s -> %s, uuid %s -> %s', old_url, new_url, old_uuid, new_uuid)
+            return new_url, new_uuid, True
         return old_url, old_uuid, False
 
-    def get_original_metadata(self, metadata, redirected, old_url, old_uuid):
+    def get_original_metadata(self, redirected, old_url, old_uuid):
         """Get original metadata before redirect.
 
+        Preserves the earliest original values across chained redirects
+        (A→B→C keeps A as the original).
+
         Args:
-            metadata: Current metadata dict
             redirected: Whether plugin was redirected
             old_url: Original URL
             old_uuid: Original UUID
@@ -218,14 +207,15 @@ class PluginMetadataManager:
         if not redirected:
             return old_url, old_uuid
 
-        # Try to find metadata by old UUID
+        # Try to find existing metadata to preserve earliest original values
         old_metadata = self.get_plugin_metadata(old_uuid)
-        if old_metadata:
-            return old_metadata.url or old_url, old_metadata.uuid or old_uuid
+        if not old_metadata:
+            old_metadata = self.find_plugin_by_url(old_url)
 
-        # Try to find metadata by old URL
-        old_metadata = self.find_plugin_by_url(old_url)
         if old_metadata:
+            # If already redirected before, keep the earliest original
+            if old_metadata.original_url:
+                return old_metadata.original_url, old_metadata.original_uuid or old_uuid
             return old_metadata.url or old_url, old_metadata.uuid or old_uuid
 
         return old_url, old_uuid

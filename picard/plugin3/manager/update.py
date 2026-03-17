@@ -31,6 +31,7 @@ from picard.git.ops import GitOperations
 from picard.git.ref_utils import find_git_ref
 from picard.plugin3 import GitReferenceError
 from picard.plugin3.manager.errors import (
+    PluginBlacklistedError,
     PluginCommitPinnedError,
     PluginDirtyError,
 )
@@ -151,6 +152,11 @@ class PluginUpdater:
             # Check registry for redirects
             current_url, current_uuid, redirected = self.manager._metadata.check_redirects(old_url, old_uuid)
 
+            # Check if plugin is blacklisted (by current or redirected URL/UUID)
+            is_blacklisted, reason = self.manager._registry.is_blacklisted(current_url, current_uuid)
+            if is_blacklisted:
+                raise PluginBlacklistedError(current_url, reason, current_uuid)
+
             # Check if plugin has versioning_scheme and current ref is a version tag
             new_ref = old_ref
             if ref_type == 'tag' and plugin.has_versioning(self.manager._registry, True):
@@ -184,9 +190,7 @@ class PluginUpdater:
             new_ref = source.ref
 
             # Update metadata
-            original_url, original_uuid = self.manager._metadata.get_original_metadata(
-                metadata, redirected, old_url, old_uuid
-            )
+            original_url, original_uuid = self.manager._metadata.get_original_metadata(redirected, old_url, old_uuid)
             self.manager._metadata.save_plugin_metadata(
                 PluginMetadata(
                     name=plugin.plugin_id,
@@ -281,6 +285,26 @@ class PluginUpdater:
             metadata = self.manager._metadata.get_plugin_metadata(plugin.uuid) if plugin.uuid else None
             if not self.manager._should_fetch_plugin_refs(plugin, metadata):
                 continue
+
+            # Skip blacklisted plugins
+            url = metadata.url if metadata else None
+            is_blacklisted, _reason = self.manager._registry.is_blacklisted(url, plugin.uuid)
+            if is_blacklisted:
+                log.debug('Skipping update check for blacklisted plugin %s', plugin.plugin_id)
+                continue
+
+            # Resolve redirects and update remote URL before fetching
+            if metadata and metadata.url and metadata.uuid:
+                current_url, _current_uuid, redirected = self.manager._metadata.check_redirects(
+                    metadata.url, metadata.uuid
+                )
+                if redirected:
+                    try:
+                        self.manager._with_plugin_repo(
+                            plugin.local_path, lambda repo: repo.update_remote_url_if_changed('origin', current_url)
+                        )
+                    except Exception as e:
+                        log.debug('Failed to update remote URL for %s: %s', plugin.plugin_id, e)
 
             update_check = self._check_single_plugin_update(plugin, metadata, skip_fetch)
             if update_check:

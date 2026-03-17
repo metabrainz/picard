@@ -15,7 +15,7 @@ The plugin registry is a centralized TOML file served by the Picard website that
 
 **Registry URLs (tried in order):**
 1. `https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.toml` (Primary - GitHub)
-2. `https://picard.musicbrainz.org/registry/plugins.toml` (Fallback - MusicBrainz proxy)
+2. `https://picard.musicbrainz.org/api/v3/registry/plugins.toml` (Fallback - MusicBrainz proxy)
 
 **Configuration:**
 - Default URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` list in `picard/const/defaults.py`
@@ -151,20 +151,10 @@ The `refs` field allows plugins to specify multiple git branches or tags that us
 ### Refs Field Structure
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "main",
-      "description": "Stable release for Picard 3.x",
-      "min_api_version": "3.0"
-    },
-    {
-      "name": "beta",
-      "description": "Testing new features",
-      "min_api_version": "3.0"
-    }
-  ]
-}
+refs = [
+    { name = "main", description = "Stable release for Picard 3.x", min_api_version = "3.0" },
+    { name = "beta", description = "Testing new features", min_api_version = "3.0" },
+]
 ```
 
 **Ref Object Fields:**
@@ -190,83 +180,66 @@ This means most plugins don't need to specify `refs` explicitly.
 
 **Simple plugin (uses defaults):**
 ```toml
-{
-  "id": "simple-plugin",
-  "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "git_url": "https://github.com/user/plugin",
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-  // refs omitted, defaults to [{"name": "main"}]
-}
+[[plugins]]
+id = "simple-plugin"
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+git_url = "https://github.com/user/plugin"
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
+# refs omitted, defaults to [{ name = "main" }]
 ```
 
 **Plugin using master branch:**
 ```toml
-{
-  "id": "old-plugin",
-  "uuid": "650e8400-e29b-41d4-a716-446655440001",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [{"name": "master"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "old-plugin"
+uuid = "650e8400-e29b-41d4-a716-446655440001"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "master" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Plugin with beta channel:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "750e8400-e29b-41d4-a716-446655440002",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [
-    {
-      "name": "stable",
-      "description": "Stable releases only"
-    },
-    {
-      "name": "beta",
-      "description": "Testing new features (may be unstable)"
-    }
-  ],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "750e8400-e29b-41d4-a716-446655440002"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "stable", description = "Stable releases only" },
+    { name = "beta", description = "Testing new features (may be unstable)" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Plugin supporting multiple Picard versions:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "850e8400-e29b-41d4-a716-446655440003",
-  "git_url": "https://github.com/user/plugin",
-  "refs": [
-    {
-      "name": "main",
-      "description": "For Picard 4.x and later",
-      "min_api_version": "4.0"
-    },
-    {
-      "name": "picard-v3",
-      "description": "Maintenance branch for Picard 3.x",
-      "min_api_version": "3.0",
-      "max_api_version": "3.99"
-    }
-  ],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "850e8400-e29b-41d4-a716-446655440003"
+git_url = "https://github.com/user/plugin"
+refs = [
+    { name = "main", description = "For Picard 4.x and later", min_api_version = "4.0" },
+    { name = "picard-v3", description = "Maintenance branch for Picard 3.x", min_api_version = "3.0", max_api_version = "3.99" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 ### Client Behavior
@@ -311,21 +284,10 @@ $ picard-plugins --switch-ref my-plugin beta
 When Picard releases a new major version with breaking API changes, plugin authors can maintain separate branches:
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "main",
-      "description": "For Picard 4.x",
-      "min_api_version": "4.0"
-    },
-    {
-      "name": "picard-v3-stable",
-      "description": "For Picard 3.x (bug fixes only)",
-      "min_api_version": "3.0",
-      "max_api_version": "3.99"
-    }
-  ]
-}
+refs = [
+    { name = "main", description = "For Picard 4.x", min_api_version = "4.0" },
+    { name = "picard-v3-stable", description = "For Picard 3.x (bug fixes only)", min_api_version = "3.0", max_api_version = "3.99" },
+]
 ```
 
 Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branch, while users on Picard 4.x get new features on `main`.
@@ -335,18 +297,10 @@ Users on Picard 3.x continue receiving bug fixes on the `picard-v3-stable` branc
 Plugin authors can offer beta versions for testing:
 
 ```toml
-{
-  "refs": [
-    {
-      "name": "stable",
-      "description": "Stable releases"
-    },
-    {
-      "name": "beta",
-      "description": "Beta releases (may contain bugs)"
-    }
-  ]
-}
+refs = [
+    { name = "stable", description = "Stable releases" },
+    { name = "beta", description = "Beta releases (may contain bugs)" },
+]
 ```
 
 Power users can opt into beta testing with `--ref beta`.
@@ -356,13 +310,12 @@ Power users can opt into beta testing with `--ref beta`.
 Plugins can use any branch naming convention:
 
 ```toml
-{
-  "refs": [
-    {"name": "master"},      // Old GitHub default
-    {"name": "develop"},     // Gitflow workflow
-    {"name": "trunk"}        // Some projects use this
-  ]
-}
+# Various branch naming conventions are supported
+refs = [
+    { name = "master" },      # Old GitHub default
+    { name = "develop" },     # Gitflow workflow
+    { name = "trunk" },       # Some projects use this
+]
 ```
 
 No assumptions are made about branch names - the plugin author explicitly declares what's available.
@@ -392,12 +345,10 @@ The registry validates that all refs exist in the repository:
 # If main/MANIFEST.toml has: api = ["4.0"]
 # And picard-v3/MANIFEST.toml has: api = ["3.0", "3.1"]
 # Then registry stores:
-{
-  "refs": [
-    {"name": "main", "min_api_version": "4.0"},
-    {"name": "picard-v3", "min_api_version": "3.0", "max_api_version": "3.1"}
-  ]
-}
+# refs = [
+#     { name = "main", min_api_version = "4.0" },
+#     { name = "picard-v3", min_api_version = "3.0", max_api_version = "3.1" },
+# ]
 ```
 
 ---
@@ -434,50 +385,53 @@ With `versioning_scheme`:
 
 **Semantic versioning:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "550e8400-e29b-41d4-a716-446655440000",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "semver",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "semver"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **Custom version prefix:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "650e8400-e29b-41d4-a716-446655440001",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "regex:^version\\d+\\.\\d+\\.\\d+$",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "650e8400-e29b-41d4-a716-446655440001"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "regex:^version\\d+\\.\\d+\\.\\d+$"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 **With release candidates:**
 ```toml
-{
-  "id": "my-plugin",
-  "uuid": "750e8400-e29b-41d4-a716-446655440002",
-  "git_url": "https://github.com/user/plugin",
-  "versioning_scheme": "regex:^v\\d+\\.\\d+\\.\\d+(-rc\\d+)?$",
-  "refs": [{"name": "main"}],
-  "categories": ["metadata"],
-  "trust_level": "community",
-  "authors": ["Plugin Author"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-24T15:00:00Z"
-}
+[[plugins]]
+id = "my-plugin"
+uuid = "750e8400-e29b-41d4-a716-446655440002"
+git_url = "https://github.com/user/plugin"
+versioning_scheme = "regex:^v\\d+\\.\\d+\\.\\d+(-rc\\d+)?$"
+refs = [
+    { name = "main" },
+]
+categories = ["metadata"]
+trust_level = "community"
+authors = ["Plugin Author"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-24T15:00:00Z"
 ```
 
 ### Client Behavior
@@ -558,13 +512,11 @@ picard-plugins --update my-plugin
 
 Use `versioning_scheme` for stable releases and `refs` for development:
 ```toml
-{
-  "versioning_scheme": "semver",
-  "refs": [
-    {"name": "main", "description": "Development branch"},
-    {"name": "beta", "description": "Beta testing"}
-  ]
-}
+versioning_scheme = "semver"
+refs = [
+    { name = "main", description = "Development branch" },
+    { name = "beta", description = "Beta testing" },
+]
 ```
 
 Users can choose:
@@ -684,29 +636,26 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 
 **By UUID (recommended):**
 ```toml
-{
-  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  "reason": "Contains malicious code",
-  "blacklisted_at": "2025-11-20T10:00:00Z"
-}
+[[blacklist]]
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
 ```
 
 **By URL:**
 ```toml
-{
-  "url": "https://github.com/badactor/malicious-plugin",
-  "reason": "Contains malicious code",
-  "blacklisted_at": "2025-11-20T10:00:00Z"
-}
+[[blacklist]]
+url = "https://github.com/badactor/malicious-plugin"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
 ```
 
 **By URL regex:**
 ```toml
-{
-  "url_regex": "^https://github\\.com/badorg/.*",
-  "reason": "Entire organization blacklisted for malicious activity",
-  "blacklisted_at": "2025-11-22T10:00:00Z"
-}
+[[blacklist]]
+url_regex = "^https://github\\.com/badorg/.*"
+reason = "Entire organization blacklisted for malicious activity"
+blacklisted_at = "2025-11-22T10:00:00Z"
 ```
 
 ### Blacklist Methods Comparison
@@ -724,11 +673,10 @@ The registry categorizes plugins into **three trust levels**. A fourth level (`u
 The blacklist supports regex patterns to block entire organizations:
 
 ```toml
-{
-  "url_regex": "^https://github\\.com/badorg/.*",
-  "reason": "Entire organization blacklisted for malicious activity",
-  "blacklisted_at": "2025-11-22T10:00:00Z"
-}
+[[blacklist]]
+url_regex = "^https://github\\.com/badorg/.*"
+reason = "Entire organization blacklisted for malicious activity"
+blacklisted_at = "2025-11-22T10:00:00Z"
 ```
 
 **Pattern matching:**
@@ -764,21 +712,22 @@ Redirects handle plugin repository changes transparently:
 ### Redirect Entry
 
 ```toml
-{
-  "uuid": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
-  "id": "my-plugin",
-  "git_url": "https://github.com/neworg/plugin-repo",
-  "refs": [{"name": "main", "min_api_version": "3.0"}],
-  "redirect_from": [
+[[plugins]]
+uuid = "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"
+id = "my-plugin"
+git_url = "https://github.com/neworg/plugin-repo"
+refs = [
+    { name = "main", min_api_version = "3.0" },
+]
+redirect_from = [
     "https://github.com/olduser/old-repo",
-    "https://github.com/olduser/plugin-collection#my-plugin"
-  ],
-  "trust_level": "community",
-  "authors": ["Author Name"],
-  "categories": ["metadata"],
-  "added_at": "2025-11-24T15:00:00Z",
-  "updated_at": "2025-11-26T10:00:00Z"
-}
+    "https://github.com/olduser/plugin-collection#my-plugin",
+]
+trust_level = "community"
+authors = ["Author Name"]
+categories = ["metadata"]
+added_at = "2025-11-24T15:00:00Z"
+updated_at = "2025-11-26T10:00:00Z"
 ```
 
 ### How Redirects Work
@@ -798,10 +747,79 @@ Redirects handle plugin repository changes transparently:
 
 ### UUID Role in Redirects
 
-- **UUID remains constant** across repository moves
-- Redirects map old URLs → new URL for same UUID
-- Blacklist by UUID blocks plugin at all URLs (old and new)
-- Prevents malicious plugins from evading blacklist by moving repos
+- For **URL redirects** (repo moves), the UUID remains constant — only the URL changes
+- For **UUID redirects** (malware fork response), the legitimate plugin gets a new UUID
+  and the old UUID is added to `redirect_from_uuid` so existing users are migrated
+- Blacklist by UUID blocks a plugin at all URLs (old and new)
+
+### Redirects and Blacklist Interaction
+
+Redirects and the blacklist work together to handle security incidents.
+The client checks the blacklist **after** resolving redirects, using the
+resolved URL and UUID. This means:
+
+- A redirected plugin that is subsequently blacklisted will be blocked
+- A plugin redirected away from a compromised URL will NOT be blocked
+  (the resolved URL/UUID is the safe one)
+
+#### Scenario: Plugin forked as malware (same UUID)
+
+An attacker forks a legitimate plugin, keeps the same UUID, and publishes
+it at a different URL. Registry response:
+
+1. Legitimate author generates a new UUID for the real plugin
+2. Registry entry for the legitimate plugin adds `redirect_from_uuid`
+   with the old (compromised) UUID, so existing users are migrated
+3. Registry blacklists the old UUID
+
+```toml
+# Legitimate plugin with new UUID, redirecting users from old UUID
+[[plugins]]
+uuid = "new-safe-uuid-..."
+git_url = "https://github.com/legit/plugin"
+redirect_from_uuid = [
+    "old-compromised-uuid-...",
+]
+
+# Blacklist the old UUID (blocks the malware fork at any URL)
+[[blacklist]]
+uuid = "old-compromised-uuid-..."
+reason = "UUID compromised by malicious fork"
+```
+
+Result: existing users with the old UUID are redirected to the new safe
+UUID/URL. The blacklist entry for the old UUID blocks any direct install
+of the malware fork (the blacklist check happens after manifest is read,
+which reveals the old UUID). The redirect takes priority over the
+blacklist because after redirect resolution, the user's UUID becomes the
+new safe one.
+
+#### Scenario: Original repository compromised
+
+An attacker gains control of the original repository URL. Registry response:
+
+1. Legitimate author creates a new repository at a new URL
+2. Registry updates the plugin entry with the new `git_url`
+3. Registry adds the old URL to `redirect_from`
+4. Registry blacklists the old URL
+
+```toml
+# Plugin moved to safe URL, redirecting from compromised URL
+[[plugins]]
+uuid = "a1b2c3d4-..."
+git_url = "https://github.com/neworg/plugin"
+redirect_from = [
+    "https://github.com/compromised/plugin",
+]
+
+# Blacklist the compromised URL
+[[blacklist]]
+url = "https://github.com/compromised/plugin"
+reason = "Repository compromised"
+```
+
+Result: existing users are redirected to the safe URL. Direct installs
+from the compromised URL are blocked by the blacklist.
 
 ### Implementation Notes
 
@@ -811,47 +829,47 @@ The registry supports two types of redirects:
 
 1. **URL redirects** - Plugin moved to different repository:
     ```toml
-    {
-      "uuid": "a1b2c3d4-...",
-      "git_url": "https://github.com/neworg/plugin",
-      "redirect_from": [
-        "https://github.com/olduser/plugin"
-      ]
-    }
+    [[plugins]]
+    uuid = "a1b2c3d4-..."
+    git_url = "https://github.com/neworg/plugin"
+    redirect_from = [
+        "https://github.com/olduser/plugin",
+    ]
     ```
 
 2. **UUID redirects** - Plugin was forked/replaced (rare):
     ```toml
-    {
-      "uuid": "new-uuid-...",
-      "git_url": "https://github.com/org/plugin",
-      "redirect_from_uuid": [
-        "old-uuid-..."
-      ]
-    }
+    [[plugins]]
+    uuid = "new-uuid-..."
+    git_url = "https://github.com/org/plugin"
+    redirect_from_uuid = [
+        "old-uuid-...",
+    ]
     ```
 
 **Lookup Algorithm:**
 
-1. Search plugins by current UUID (exact match)
-2. If not found, search plugins by current git_url (exact match)
-3. If not found, search all plugins' `redirect_from` arrays for URL
-4. If not found, search all plugins' `redirect_from_uuid` arrays for UUID
-5. If found via redirect, update local metadata with current UUID/URL
+The client resolves redirects in two stages:
+
+1. Look up by UUID (covers exact UUID match and `redirect_from_uuid`)
+2. If not found, look up by URL (covers exact git_url match and `redirect_from`)
+3. If found via redirect, update local metadata with current UUID/URL
 
 **Registry Guarantees:**
 
 - No circular redirects (registry validation prevents)
 - No duplicate URLs in `redirect_from` across plugins
-- Redirect chains limited to reasonable length (<50 hops)
+- No duplicate UUIDs in `redirect_from_uuid` across plugins
 - Registry always contains current metadata (current UUID, current URL)
 
 **Client Behavior:**
 
 - Registry refreshed: manually by user, periodically, or at Picard restart
 - Redirects resolved transparently during update checks
+- Blacklist checked after redirect resolution (blocks updates to blacklisted plugins)
 - User notified if installed plugin moved (info message, non-blocking)
 - Local metadata updated to track new UUID/URL after redirect
+- On startup, installed plugins are checked against the blacklist and disabled if matched
 
 ### Local Metadata Storage
 
@@ -873,7 +891,7 @@ This allows users to:
 - Potentially rollback to original source if needed
 
 **Example metadata after redirect:**
-```toml
+```json
 {
   "test_plugin_a1b2c3d4": {
     "url": "https://github.com/neworg/plugin",
@@ -892,83 +910,17 @@ This allows users to:
 
 ### PluginRegistry Class
 
-```python
-class PluginRegistry:
-    REGISTRY_URL = "https://picard.musicbrainz.org/api/v3/plugins.toml"
-    CACHE_FILE = "plugin_registry.json"  # Cache uses JSON internally
-    CACHE_TTL = 86400  # 24 hours
+The `PluginRegistry` class in `picard/plugin3/registry.py` manages registry access:
 
-    # Registry trust levels (in registry TOML)
-    REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
+- Registry URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` in `picard/const/defaults.py`
+- Can be overridden via `PICARD_PLUGIN_REGISTRY_URL` environment variable
+- Registry is cached locally and refreshed on demand
 
-    # Client-side trust level values (includes unregistered for local plugins)
-    TRUST_LEVELS = {
-        'official': 3,      # Highest trust - in registry
-        'trusted': 2,       # High trust - in registry
-        'community': 1,     # Low trust - in registry
-        'unregistered': 0   # Lowest trust - NOT in registry (client-side only)
-    }
+Key methods:
 
-    def fetch_registry(self):
-        """Fetch plugin list from website, use cache if fresh"""
-
-    def is_blacklisted(self, git_url):
-        """Check if git URL is blacklisted (supports patterns)"""
-        registry = self.fetch_registry()
-        for entry in registry.get('blacklist', []):
-            blacklist_url = entry['url']
-            # Check for exact match
-            if blacklist_url == git_url:
-                return True
-            # Check for pattern match (e.g., https://github.com/badorg/*)
-            if blacklist_url.endswith('/*'):
-                pattern_base = blacklist_url[:-2]  # Remove /*
-                if git_url.startswith(pattern_base + '/'):
-                    return True
-        return False
-
-    def get_blacklist_reason(self, git_url):
-        """Get reason for blacklisting (checks patterns too)"""
-        registry = self.fetch_registry()
-        for entry in registry.get('blacklist', []):
-            blacklist_url = entry['url']
-            # Check for exact match
-            if blacklist_url == git_url:
-                return entry
-            # Check for pattern match
-            if blacklist_url.endswith('/*'):
-                pattern_base = blacklist_url[:-2]
-                if git_url.startswith(pattern_base + '/'):
-                    return entry
-        return None
-
-    def get_trust_level(self, git_url):
-        """Get trust level for plugin by git URL"""
-        plugin = self.find_plugin_by_url(git_url)
-        if not plugin:
-            return 'unregistered'
-        return plugin.get('trust_level', 'community')
-
-    def find_plugin(self, name_or_id):
-        """Find official plugin by name or ID"""
-
-    def list_official_plugins(self, category=None, trust_level=None):
-        """List all official plugins, optionally filtered by category and trust level"""
-
-    def should_warn_on_install(self, git_url):
-        """Determine if warning should be shown based on trust level"""
-        plugin = self.find_plugin_by_url(git_url)
-        if not plugin:
-            return True, "Plugin not in official registry (unregistered)"
-
-        trust = plugin.get('trust_level')
-        if trust == 'official':
-            return False, None
-        elif trust == 'trusted':
-            return True, "not reviewed by Picard team"
-        else:  # community
-            return True, "not reviewed or endorsed by Picard team"
-```
+- `find_plugin(plugin_id=, url=, uuid=)` — Find plugin by ID, URL, or UUID (with redirect support via `redirect_from` / `redirect_from_uuid`)
+- `is_blacklisted(url, plugin_uuid=)` — Check if a plugin is blacklisted by URL, UUID, URL+UUID combo, or URL regex
+- `get_trust_level(url)` — Get trust level for a plugin URL (`official`, `trusted`, `community`, or `unregistered`)
 
 ---
 
@@ -1168,18 +1120,17 @@ fr = "Submit listensz votre musique sur ListenBrainz"
 
 **In registry TOML:**
 ```toml
-{
-  "name": "ListenBrainz Submitter",
-  "description": "Submit your music to ListenBrainz",
-  "name_i18n": {
-    "de": "ListenBrainz-Submitter",
-    "fr": "Soumetteur ListenBrainz"
-  },
-  "description_i18n": {
-    "de": "Submit listens deine Musik zu ListenBrainz",
-    "fr": "Submit listensz votre musique sur ListenBrainz"
-  }
-}
+[[plugins]]
+name = "ListenBrainz Submitter"
+description = "Submit your music to ListenBrainz"
+
+[plugins.name_i18n]
+de = "ListenBrainz-Submitter"
+fr = "Soumetteur ListenBrainz"
+
+[plugins.description_i18n]
+de = "Submit listens deine Musik zu ListenBrainz"
+fr = "Submit listensz votre musique sur ListenBrainz"
 ```
 
 See [TRANSLATIONS.md](TRANSLATIONS.md) for details on the translation system.

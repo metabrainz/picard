@@ -93,6 +93,9 @@ class MockGitRepository(GitRepository):
     def create_remote(self, name, url):
         return Mock()
 
+    def set_remote_url(self, name, url):
+        pass
+
     def get_branches(self):
         return Mock()
 

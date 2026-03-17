@@ -786,8 +786,14 @@ class PluginCLI:
                 else:
                     url = url_or_id
 
-                    # Warn if this URL is in the registry
-                    registry_plugin = self._manager._registry.find_plugin(url=url)
+                    # Check if this URL is in the registry (possibly via redirect_from)
+                    redirect_plugin = self._manager._registry.resolve_redirect(url=url)
+                    if redirect_plugin:
+                        self._out.warning(f'URL redirected: {url} → {redirect_plugin.git_url}')
+                        url = redirect_plugin.git_url
+                        registry_plugin = redirect_plugin
+                    else:
+                        registry_plugin = self._manager._registry.find_plugin(url=url)
                     if registry_plugin:
                         plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')

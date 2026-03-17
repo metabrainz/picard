@@ -444,7 +444,7 @@ class PluginRegistry:
             uuid: Plugin UUID to search for
 
         Returns:
-            dict: Plugin data or None if not found
+            RegistryPlugin: Plugin data or None if not found
         """
         if not self._ensure_registry_loaded('plugin search'):
             # Fail safe: if we can't fetch registry, return None
@@ -481,6 +481,27 @@ class PluginRegistry:
                         log.info('Found plugin via UUID redirect: %s -> %s', uuid, plugin.uuid)
                         return plugin
 
+        return None
+
+    def resolve_redirect(self, url=None, uuid=None):
+        """Resolve registry redirect for a URL and/or UUID.
+
+        Args:
+            url: Git URL to check for redirect
+            uuid: Plugin UUID to check for redirect
+
+        Returns:
+            RegistryPlugin if a redirect was found, None otherwise.
+        """
+        plugin = self.find_plugin(uuid=uuid) or self.find_plugin(url=url)
+        if not plugin:
+            return None
+        normalized_url = normalize_git_url(url) if url else None
+        normalized_plugin_url = normalize_git_url(plugin.git_url) if plugin.git_url else None
+        url_changed = normalized_plugin_url and normalized_plugin_url != normalized_url
+        uuid_changed = uuid and plugin.uuid and plugin.uuid != uuid
+        if url_changed or uuid_changed:
+            return plugin
         return None
 
     def get_registry_id(self, url=None, uuid=None):
