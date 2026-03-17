@@ -191,20 +191,8 @@ class PluginMetadataManager:
         """
         normalized_old_url = normalize_git_url(old_url) if old_url else old_url
 
-        # Check if UUID exists in registry (possibly via redirect_from_uuid)
-        registry_plugin = self._registry.find_plugin(uuid=old_uuid)
-        if registry_plugin:
-            new_url = registry_plugin.git_url or old_url
-            new_uuid = registry_plugin.uuid or old_uuid
-            url_changed = normalize_git_url(new_url) != normalized_old_url
-            uuid_changed = new_uuid != old_uuid
-            if url_changed or uuid_changed:
-                log.info('Plugin redirected: url %s -> %s, uuid %s -> %s', old_url, new_url, old_uuid, new_uuid)
-                return new_url, new_uuid, True
-            return old_url, old_uuid, False
-
-        # Check if URL exists in registry (possibly via redirect_from)
-        registry_plugin = self._registry.find_plugin(url=old_url)
+        # Check by UUID first (via redirect_from_uuid), then by URL (via redirect_from)
+        registry_plugin = self._registry.find_plugin(uuid=old_uuid) or self._registry.find_plugin(url=old_url)
         if registry_plugin:
             new_url = registry_plugin.git_url or old_url
             new_uuid = registry_plugin.uuid or old_uuid
