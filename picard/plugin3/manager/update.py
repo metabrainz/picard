@@ -286,11 +286,40 @@ class PluginUpdater:
             if not self.manager._should_fetch_plugin_refs(plugin, metadata):
                 continue
 
+            # Skip blacklisted plugins
+            url = metadata.url if metadata else None
+            is_blacklisted, _reason = self.manager._registry.is_blacklisted(url, plugin.uuid)
+            if is_blacklisted:
+                log.debug('Skipping update check for blacklisted plugin %s', plugin.plugin_id)
+                continue
+
+            # Resolve redirects and update remote URL before fetching
+            if metadata and metadata.url and metadata.uuid:
+                current_url, _current_uuid, redirected = self.manager._metadata.check_redirects(
+                    metadata.url, metadata.uuid
+                )
+                if redirected:
+                    self._update_plugin_remote_url(plugin, current_url)
+
             update_check = self._check_single_plugin_update(plugin, metadata, skip_fetch)
             if update_check:
                 updates[plugin.plugin_id] = update_check
 
         return updates
+
+    def _update_plugin_remote_url(self, plugin, new_url):
+        """Update origin remote URL for a plugin repository."""
+        try:
+
+            def update_remote(repo):
+                origin = repo.get_remote('origin')
+                if origin.url != new_url:
+                    log.info('Updating remote URL for %s: %s -> %s', plugin.plugin_id, origin.url, new_url)
+                    repo.set_remote_url('origin', new_url)
+
+            self.manager._with_plugin_repo(plugin.local_path, update_remote)
+        except Exception as e:
+            log.debug('Failed to update remote URL for %s: %s', plugin.plugin_id, e)
 
     def _fetch_plugin_refs(self, repo, skip_fetch):
         """Fetch remote refs for plugin repository."""
