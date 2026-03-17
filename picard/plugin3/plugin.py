@@ -421,7 +421,7 @@ class PluginSourceGit(PluginSource):
                 if repo.update_remote_url_if_changed('origin', self.url):
                     origin_remote = repo.get_remote('origin')
 
-            if single_branch and self.ref and not current_is_tag and getattr(self, 'resolved_ref_type', None) != 'tag':
+            if single_branch and self.ref and not current_is_tag and self.resolved_ref_type != 'tag':
                 # Fetch only the specific ref (branch)
                 refspec = f'+refs/heads/{self.ref}:refs/remotes/origin/{self.ref}'
                 repo.fetch_remote(origin_remote, refspec, callbacks._callbacks)
