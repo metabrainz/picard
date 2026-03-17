@@ -13,6 +13,9 @@ TEST_PLUGIN_UUID="12345678-1234-4678-9234-123456789abc"
 export PICARD_PLUGIN_REGISTRY_URL="$REGISTRY_FILE"
 PICARD_PLUGINS="picard-plugins"
 
+BLACKLISTED_UUID="deadbeef-dead-4bad-beef-deadbeefcafe"
+BLACKLISTED_URL="https://github.com/badactor/malicious-plugin"
+
 echo "=== Testing Plugin Commands (Local Git Repository with Local Registry) ==="
 echo "Test directory: $TEST_DIR"
 echo "Registry file: $REGISTRY_FILE"
@@ -86,6 +89,27 @@ name = "Test Plugin"
 git_url = "$PLUGIN_REPO"
 uuid = "$TEST_PLUGIN_UUID"
 versioning_scheme = "semver"
+
+[[blacklist]]
+url = "$BLACKLISTED_URL"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
+
+[[blacklist]]
+uuid = "$BLACKLISTED_UUID"
+reason = "Security vulnerability in plugin UUID"
+blacklisted_at = "2025-11-21T10:00:00Z"
+
+[[blacklist]]
+url_regex = "^https://evilorg\\\\.com/.*"
+reason = "Entire organization blacklisted"
+blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+url = "https://github.com/specific/combo-blocked"
+uuid = "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb"
+reason = "Specific fork blacklisted"
+blacklisted_at = "2025-11-23T10:00:00Z"
 EOF
 echo "✓ Created plugin repository and registry"
 echo
@@ -390,6 +414,226 @@ else
     echo "✓ Cleaned up broken plugin directory"
     echo "  (Rollback protection is in place for edge cases where enable could fail)"
 fi
+echo
+
+# =============================================================================
+# Blacklist Tests
+# =============================================================================
+
+# Test 31: Check blacklist - non-blacklisted URL
+echo "31. Check blacklist - non-blacklisted URL (should pass)"
+$PICARD_PLUGINS --check-blacklist https://github.com/safe/plugin
+echo
+
+# Test 32: Check blacklist - blacklisted URL (exact match)
+echo "32. Check blacklist - blacklisted URL (should fail)"
+if $PICARD_PLUGINS --check-blacklist "$BLACKLISTED_URL" 2>/dev/null; then
+    echo "✗ ERROR: Blacklisted URL should have been detected"
+    exit 1
+else
+    echo "✓ Blacklisted URL correctly detected"
+fi
+echo
+
+# Test 33: Check blacklist - blacklisted UUID via --uuid
+echo "33. Check blacklist - blacklisted UUID via --uuid (should fail)"
+if $PICARD_PLUGINS --check-blacklist https://example.com/any-url --uuid "$BLACKLISTED_UUID" 2>/dev/null; then
+    echo "✗ ERROR: Blacklisted UUID should have been detected"
+    exit 1
+else
+    echo "✓ Blacklisted UUID correctly detected via --uuid"
+fi
+echo
+
+# Test 34: Check blacklist - non-blacklisted UUID via --uuid
+echo "34. Check blacklist - non-blacklisted UUID via --uuid (should pass)"
+$PICARD_PLUGINS --check-blacklist https://example.com/any-url --uuid "safe-uuid-1234"
+echo
+
+# Test 34b: Check blacklist - UUID only, no URL (should fail)
+echo "34b. Check blacklist - blacklisted UUID only, no URL (should fail)"
+if $PICARD_PLUGINS --check-blacklist --uuid "$BLACKLISTED_UUID" 2>/dev/null; then
+    echo "✗ ERROR: Blacklisted UUID should have been detected"
+    exit 1
+else
+    echo "✓ Blacklisted UUID correctly detected (UUID-only check)"
+fi
+echo
+
+# Test 34c: Check blacklist - non-blacklisted UUID only, no URL (should pass)
+echo "34c. Check blacklist - non-blacklisted UUID only, no URL (should pass)"
+$PICARD_PLUGINS --check-blacklist --uuid "safe-uuid-1234"
+echo
+
+# Test 35: Check blacklist - URL matching regex pattern
+echo "35. Check blacklist - URL matching regex pattern (should fail)"
+if $PICARD_PLUGINS --check-blacklist "https://evilorg.com/some-plugin" 2>/dev/null; then
+    echo "✗ ERROR: URL matching blacklist regex should have been detected"
+    exit 1
+else
+    echo "✓ URL matching blacklist regex correctly detected"
+fi
+echo
+
+# Test 36: Check blacklist - URL not matching regex pattern
+echo "36. Check blacklist - URL not matching regex (should pass)"
+$PICARD_PLUGINS --check-blacklist "https://evilorg.org/different-domain"
+echo
+
+# Test 37: Install blacklisted URL (should be blocked)
+echo "37. Install blacklisted URL (should be blocked)"
+OUTPUT=$($PICARD_PLUGINS --install "$BLACKLISTED_URL" --yes 2>&1 || true)
+if echo "$OUTPUT" | grep -qi "blacklisted"; then
+    echo "✓ Installing blacklisted URL correctly blocked"
+else
+    echo "✗ ERROR: Installing blacklisted URL should have been blocked with blacklist message"
+    echo "  Output: $OUTPUT"
+    exit 1
+fi
+echo
+
+# Test 38: Install blacklisted URL with --force-blacklisted
+echo "38. Install blacklisted URL with --force-blacklisted (should bypass blacklist)"
+echo "Note: Will fail at git clone (URL doesn't exist), but should get past blacklist check"
+OUTPUT=$($PICARD_PLUGINS --install "$BLACKLISTED_URL" --force-blacklisted --yes 2>&1 || true)
+if echo "$OUTPUT" | grep -qi "bypassing blacklist"; then
+    echo "✓ Force-blacklisted correctly bypassed blacklist check"
+else
+    echo "✗ ERROR: Expected 'Bypassing blacklist' message not found"
+    echo "  Output: $OUTPUT"
+    exit 1
+fi
+echo
+
+# Test 39: Install URL matching blacklist regex (should be blocked)
+echo "39. Install URL matching blacklist regex (should be blocked)"
+OUTPUT=$($PICARD_PLUGINS --install "https://evilorg.com/sneaky-plugin" --yes 2>&1 || true)
+if echo "$OUTPUT" | grep -qi "blacklisted"; then
+    echo "✓ Installing URL matching blacklist regex correctly blocked"
+else
+    echo "✗ ERROR: Installing URL matching blacklist regex should have been blocked"
+    echo "  Output: $OUTPUT"
+    exit 1
+fi
+echo
+
+# Test 40: Install local plugin with blacklisted UUID (should be blocked)
+echo "40. Install local plugin with blacklisted UUID (should be blocked)"
+BLACKLISTED_PLUGIN_REPO="$TEST_DIR/blacklisted-plugin"
+mkdir -p "$BLACKLISTED_PLUGIN_REPO"
+cd "$BLACKLISTED_PLUGIN_REPO"
+git init -q
+git config user.email "test@example.com"
+git config user.name "Test User"
+cat > MANIFEST.toml << EOF
+uuid = "$BLACKLISTED_UUID"
+name = "Blacklisted Plugin"
+version = "1.0.0"
+description = "A plugin with a blacklisted UUID"
+api = ["3.0"]
+authors = ["Bad Actor"]
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+EOF
+cat > blacklisted_plugin.py << 'EOF'
+PLUGIN_NAME = "Blacklisted Plugin"
+EOF
+git add .
+git commit -q -m "Initial commit"
+cd - > /dev/null
+
+OUTPUT=$($PICARD_PLUGINS --install "$BLACKLISTED_PLUGIN_REPO" --yes 2>&1 || true)
+if echo "$OUTPUT" | grep -qi "blacklisted"; then
+    echo "✓ Installing local plugin with blacklisted UUID correctly blocked"
+else
+    echo "✗ ERROR: Installing local plugin with blacklisted UUID should have been blocked"
+    echo "  Output: $OUTPUT"
+    $PICARD_PLUGINS --remove "$BLACKLISTED_UUID" --purge --yes 2>/dev/null || true
+    exit 1
+fi
+echo
+
+# Test 41: Retroactive blacklisting - install then blacklist
+echo "41. Retroactive blacklisting - install plugin, then add to blacklist"
+$PICARD_PLUGINS --remove "$TEST_PLUGIN_UUID" --purge --yes 2>/dev/null || true
+cd "$PLUGIN_REPO"
+git checkout v1.2.0 -q 2>/dev/null || true
+cd - > /dev/null
+$PICARD_PLUGINS --install test-plugin --yes
+echo "✓ Installed test plugin"
+
+# Add the test plugin UUID to the blacklist
+cat >> "$REGISTRY_FILE" << EOF
+
+[[blacklist]]
+uuid = "$TEST_PLUGIN_UUID"
+reason = "Retroactively blacklisted for testing"
+blacklisted_at = "2025-12-01T10:00:00Z"
+EOF
+$PICARD_PLUGINS --refresh-registry
+
+# Verify the plugin is now detected as blacklisted
+if $PICARD_PLUGINS --check-blacklist "$PLUGIN_REPO" --uuid "$TEST_PLUGIN_UUID" 2>/dev/null; then
+    echo "✗ ERROR: Retroactively blacklisted plugin should be detected"
+    exit 1
+else
+    echo "✓ Retroactively blacklisted plugin correctly detected"
+fi
+
+# Clean up: remove the test plugin and restore registry
+$PICARD_PLUGINS --remove "$TEST_PLUGIN_UUID" --purge --yes 2>/dev/null || true
+
+# Restore registry without the retroactive blacklist entry
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "test-plugin"
+name = "Test Plugin"
+git_url = "$PLUGIN_REPO"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+
+[[blacklist]]
+url = "$BLACKLISTED_URL"
+reason = "Contains malicious code"
+blacklisted_at = "2025-11-20T10:00:00Z"
+
+[[blacklist]]
+uuid = "$BLACKLISTED_UUID"
+reason = "Security vulnerability in plugin UUID"
+blacklisted_at = "2025-11-21T10:00:00Z"
+
+[[blacklist]]
+url_regex = "^https://evilorg\\\\.com/.*"
+reason = "Entire organization blacklisted"
+blacklisted_at = "2025-11-22T10:00:00Z"
+
+[[blacklist]]
+url = "https://github.com/specific/combo-blocked"
+uuid = "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb"
+reason = "Specific fork blacklisted"
+blacklisted_at = "2025-11-23T10:00:00Z"
+EOF
+$PICARD_PLUGINS --refresh-registry
+echo
+
+# Test 42: UUID+URL combo blacklist - both match
+echo "42. UUID+URL combo blacklist - both match (should fail)"
+if $PICARD_PLUGINS --check-blacklist "https://github.com/specific/combo-blocked" --uuid "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb" 2>/dev/null; then
+    echo "✗ ERROR: UUID+URL combo blacklist should have been detected"
+    exit 1
+else
+    echo "✓ UUID+URL combo blacklist correctly detected"
+fi
+echo
+
+# Test 43: UUID+URL combo blacklist - only UUID matches (should pass)
+echo "43. UUID+URL combo blacklist - only UUID matches, different URL (should pass)"
+$PICARD_PLUGINS --check-blacklist "https://github.com/other/repo" --uuid "c0mb0bad-c0mb-4bad-c0mb-c0mb0badc0mb"
+echo
+
+# Test 44: UUID+URL combo blacklist - only URL matches (should pass)
+echo "44. UUID+URL combo blacklist - only URL matches, different UUID (should pass)"
+$PICARD_PLUGINS --check-blacklist "https://github.com/specific/combo-blocked" --uuid "innocent-uuid-1234"
 echo
 
 # Cleanup

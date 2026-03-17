@@ -158,8 +158,8 @@ usage: picard-plugins [-h] [-c CONFIG_FILE] [--debug] [-v] [-V] [--debug-opts DE
                       [--info PLUGIN] [--validate URL] [--clean-config [PLUGIN]]
                       [--manifest [PLUGIN]] [--list-refs PLUGIN] [--ref REF]
                       [--switch-ref PLUGIN REF] [--browse] [--search QUERY]
-                      [--check-blacklist URL] [--refresh-registry] [--check-updates]
-                      [--reinstall] [--force-blacklisted] [--trust-community]
+                      [--check-blacklist [URL]] [--uuid UUID] [--refresh-registry]
+                      [--check-updates] [--reinstall] [--force-blacklisted] [--trust-community]
                       [--trust LEVEL] [--category CATEGORY] [--purge] [--locale LOCALE]
 
 Manage Picard plugins (install, update, enable, disable)
@@ -206,8 +206,9 @@ Git Version Control:
 Plugin Discovery:
   --browse              browse plugins from registry
   --search QUERY        search plugins in registry
-  --check-blacklist URL
-                        check if URL is blacklisted
+  --check-blacklist [URL]
+                        check if URL and/or UUID is blacklisted
+  --uuid UUID           plugin UUID to use with --check-blacklist
 
 Registry:
   --refresh-registry    force refresh of plugin registry cache
@@ -259,7 +260,8 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `--manifest [target]` | Show MANIFEST.toml (template or from plugin) |
 | `--browse` | Browse official plugins |
 | `--search <term>` | Search official plugins |
-| `--check-blacklist <url>` | Check if URL is blacklisted |
+| `--check-blacklist [url]` | Check if URL and/or UUID is blacklisted |
+| `--uuid <uuid>` | Plugin UUID to use with --check-blacklist |
 | `--refresh-registry` | Force refresh plugin registry cache |
 | `--trust-community` | Skip community plugin warnings |
 | `--trust <level>` | Filter by trust level (with --browse/--search) |
@@ -913,20 +915,26 @@ picard-plugins --search script --trust official
 
 ### Check Blacklist
 
-**Command:** `picard-plugins --check-blacklist <url>`
+**Command:** `picard-plugins --check-blacklist [url] [--uuid <uuid>]`
 
-**Description:** Check if a plugin URL is blacklisted before installing
+**Description:** Check if a plugin URL and/or UUID is blacklisted before installing. At least one of URL or `--uuid` must be provided.
 
 **Examples:**
 ```bash
-# Check if URL is blacklisted
+# Check URL only
 picard-plugins --check-blacklist https://github.com/user/plugin
 
+# Check URL and UUID together
+picard-plugins --check-blacklist https://github.com/user/plugin --uuid a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+
+# Check UUID only
+picard-plugins --check-blacklist --uuid a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
+
 # Example output (not blacklisted):
-# ✓ URL is not blacklisted
+# ✓ Not blacklisted
 
 # Example output (blacklisted):
-# ✗ URL is blacklisted: Security vulnerability CVE-2024-1234
+# ✗ Blacklisted: Security vulnerability CVE-2024-1234
 ```
 
 **Exit codes:**

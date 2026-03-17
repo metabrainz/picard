@@ -73,3 +73,13 @@ build.cfg
 # Ruff stuff
 .ruff_cache/
 test-registry.json
+
+# AI agent configs
+.kiro/
+.cursor/
+.aider*
+.cline/
+.windsurf/
+.augmentcode/
+.github/copilot*
+.copilot/

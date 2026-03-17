@@ -47,123 +47,128 @@ echo "7. Validate plugin from URL"
 $PICARD_PLUGINS --validate $TEST_PLUGIN_URL
 echo
 
-# Test 8: Check blacklist for URL
-echo "8. Check blacklist for URL"
+# Test 8: Check blacklist for URL (not blacklisted)
+echo "8. Check blacklist for URL (should not be blacklisted)"
 $PICARD_PLUGINS --check-blacklist $TEST_PLUGIN_URL
 echo
 
-# Test 9: Install a plugin
-echo "9. Install $TEST_PLUGIN_ID"
+# Test 9: Check blacklist with --uuid (not blacklisted)
+echo "9. Check blacklist with --uuid (should not be blacklisted)"
+$PICARD_PLUGINS --check-blacklist $TEST_PLUGIN_URL --uuid $TEST_PLUGIN_UUID
+echo
+
+# Test 10: Install a plugin
+echo "10. Install $TEST_PLUGIN_ID"
 $PICARD_PLUGINS --install $TEST_PLUGIN_ID --yes
 echo
 
-# Test 10: List installed plugins
-echo "10. List installed plugins"
+# Test 11: List installed plugins
+echo "11. List installed plugins"
 $PICARD_PLUGINS --list
 echo
 
-# Test 11: Show plugin info by ID
-echo "11. Show plugin info for $TEST_PLUGIN_ID"
+# Test 12: Show plugin info by ID
+echo "12. Show plugin info for $TEST_PLUGIN_ID"
 $PICARD_PLUGINS --info $TEST_PLUGIN_ID
 echo
 
-# Test 12: Show plugin info by UUID
-echo "12. Show plugin info by UUID"
+# Test 13: Show plugin info by UUID
+echo "13. Show plugin info by UUID"
 $PICARD_PLUGINS --info $TEST_PLUGIN_UUID
 echo
 
-# Test 13: Show plugin manifest
-echo "13. Show plugin manifest"
+# Test 14: Show plugin manifest
+echo "14. Show plugin manifest"
 $PICARD_PLUGINS --manifest $TEST_PLUGIN_ID
 echo
 
-# Test 14: List refs for plugin
-echo "14. List refs for $TEST_PLUGIN_ID"
+# Test 15: List refs for plugin
+echo "15. List refs for $TEST_PLUGIN_ID"
 $PICARD_PLUGINS --list-refs $TEST_PLUGIN_ID
 echo
 
-# Test 15: Enable plugin
-echo "15. Enable plugin"
+# Test 16: Enable plugin
+echo "16. Enable plugin"
 $PICARD_PLUGINS --enable $TEST_PLUGIN_ID
 echo
 
-# Test 16: Disable plugin
-echo "16. Disable plugin"
+# Test 17: Disable plugin
+echo "17. Disable plugin"
 $PICARD_PLUGINS --disable $TEST_PLUGIN_ID
 echo
 
-# Test 17: Check for updates
-echo "17. Check for updates"
+# Test 18: Check for updates
+echo "18. Check for updates"
 $PICARD_PLUGINS --check-updates
 echo
 
-# Test 18: Update plugin
-echo "18. Update plugin"
+# Test 19: Update plugin
+echo "19. Update plugin"
 $PICARD_PLUGINS --update $TEST_PLUGIN_ID --yes
 echo
 
-# Test 19: Switch to specific ref
-echo "19. Switch to specific ref (v1.0.0)"
+# Test 20: Switch to specific ref
+echo "20. Switch to specific ref (v1.0.0)"
 $PICARD_PLUGINS --switch-ref $TEST_PLUGIN_ID v1.0.0 --yes
 echo
 
-# Test 20: Verify switch
-echo "20. Verify ref switch"
+# Test 21: Verify switch
+echo "21. Verify ref switch"
 $PICARD_PLUGINS --info $TEST_PLUGIN_ID
 echo
 
-# Test 21: Update all plugins
-echo "21. Update all plugins"
+# Test 22: Update all plugins
+echo "22. Update all plugins"
 $PICARD_PLUGINS --update-all --yes
 echo
 
-# Test 22: Test with --no-color flag
-echo "22. List plugins with --no-color"
+# Test 23: Test with --no-color flag
+echo "23. List plugins with --no-color"
 $PICARD_PLUGINS --list --no-color
 echo
 
-# Test 23: Clean plugin config
-echo "23. Clean plugin config"
+# Test 24: Clean plugin config
+echo "24. Clean plugin config"
 $PICARD_PLUGINS --clean-config $TEST_PLUGIN_ID --yes
 echo
 
-# Test 24: Uninstall plugin
-echo "24. Uninstall $TEST_PLUGIN_ID"
+# Test 25: Uninstall plugin
+echo "25. Uninstall $TEST_PLUGIN_ID"
 $PICARD_PLUGINS --remove $TEST_PLUGIN_ID --yes
 echo
 
-# Test 25: Verify uninstall
-echo "25. Verify uninstall"
+# Test 26: Verify uninstall
+echo "26. Verify uninstall"
 $PICARD_PLUGINS --list
 echo
 
-# Test 26: Install with specific ref
-echo "26. Install with specific ref (v1.0.0)"
+# Test 27: Install with specific ref
+echo "27. Install with specific ref (v1.0.0)"
 $PICARD_PLUGINS --install $TEST_PLUGIN_ID --ref v1.0.0 --yes
 echo
 
-# Test 27: Verify installation
-echo "27. Verify installation"
+# Test 28: Verify installation
+echo "28. Verify installation"
 $PICARD_PLUGINS --info $TEST_PLUGIN_ID
 echo
 
-# Test 28: Validate plugin with specific ref
-echo "28. Validate plugin with specific ref"
+# Test 29: Validate plugin with specific ref
+echo "29. Validate plugin with specific ref"
 $PICARD_PLUGINS --validate $TEST_PLUGIN_URL --ref v1.0.0
 echo
 
-# Test 29: Reinstall plugin
-echo "29. Reinstall plugin"
+# Test 30: Reinstall plugin
+echo "30. Reinstall plugin"
 $PICARD_PLUGINS --install $TEST_PLUGIN_ID --reinstall --yes
 echo
 
-# Test 30: Uninstall with purge
-echo "30. Uninstall with purge (delete config)"
+# Test 31: Uninstall with purge
+echo "31. Uninstall with purge (delete config)"
 $PICARD_PLUGINS --remove $TEST_PLUGIN_ID --purge --yes
 echo
 
-# Test 31: Verify final cleanup
-echo "31. Verify final cleanup"
+# Test 32: Verify final cleanup
+echo "32. Verify final cleanup"
 $PICARD_PLUGINS --list
 echo
 

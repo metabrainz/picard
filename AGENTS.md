@@ -1,8 +1,5 @@
 # AI Assistant Context for MusicBrainz Picard
 
-**Last Updated:** 2026-03-03
-**Git Commit:** 2c1780c8abc983ec1b2e4782d267e9c5ed1fbe27
-
 > **Purpose:** Essential patterns, conventions, and gotchas for AI assistants.
 > For architecture, dependencies, and component details, explore the codebase
 > or read existing docs (`README.md`, `CONTRIBUTING.md`, `INSTALL.md`).
@@ -14,7 +11,7 @@
 ## Quick Facts
 
 - **Language:** Python 3.10+, PyQt6, Mutagen
-- **Size:** ~174k LOC, event-driven MVC with plugin system
+- **Size:** Event-driven MVC with plugin system
 - **Entry Point:** `picard/tagger.py:main()` → `Tagger` singleton
 - **Tests:** `test/` directory (pytest)
 - **Docs:** <https://picard-docs.musicbrainz.org/>
@@ -69,6 +66,25 @@ run_task(process_file, file, callback)
 # ❌ Don't block the main thread
 result = slow_network_call()  # UI freezes!
 ```
+
+### Import Rules
+```python
+# ❌ Don't use inline imports (unless breaking circular dependencies)
+def my_function():
+    from picard.some_module import something
+    return something()
+
+# ❌ Don't put multiple imports on one line
+from picard.plugin3.validator import generate_uuid, validate_manifest_dict
+
+# ✅ Imports go at the top of the file, each imported name on its own line with trailing commas
+from picard.plugin3.validator import (
+    generate_uuid,
+    validate_manifest_dict,
+)
+```
+
+**Exception:** Inline imports are acceptable only to break circular dependencies. Place them as close to usage as possible with a comment explaining why.
 
 ---
 
@@ -182,6 +198,8 @@ When making code changes:
 2. **Bug fixes: test first** - write a test that reproduces the bug before fixing it, then verify the fix makes the test pass; keep the test as a permanent regression test when feasible
 3. **Run `ruff format` after all changes** - ensures code follows project style guidelines
 4. **Run `ruff check` to catch issues** - fix any linting errors before committing
+5. **Never commit editor or agent-specific files** - Do not `git add` files from AI tool directories (`.kiro/`, `.cursor/`, `.aider*`, etc.) or any files not part of the project. Review `git diff --cached` before committing to verify only intended files are staged. When in doubt, ask the user before committing.
+6. **Don't push to remote** - without explicit user approval
 
 ### Contributing
 1. **Create ticket first:** <https://tickets.metabrainz.org/projects/PICARD>
@@ -190,6 +208,7 @@ When making code changes:
 4. Run pre-commit checks (above)
 5. **PR title must start with:** `PICARD-XXXX:` (ticket number)
 6. **Don't auto-create tickets/PRs** - let humans handle this
+7. **Don't push to remote** - without explicit user approval
 
 ---
 
@@ -233,7 +252,7 @@ class ManifestTranslations:
 # ❌ Don't edit picard/ui/ui_*.py directly (auto-generated)
 
 # ✅ Edit .ui files with Qt Designer
-qtdesigner ui/options_metadata.ui
+qt6-tools designer ui/options_metadata.ui
 
 # ✅ Regenerate Python files
 python setup.py build_ui
@@ -264,35 +283,35 @@ class MyWidget(QWidget):
 ## Key Locations
 
 ### Core Components
-- **Main app:** `picard/tagger.py` (1,851 LOC)
-- **File handling:** `picard/file.py` (1,175 LOC)
+- **Main app:** `picard/tagger.py`
+- **File handling:** `picard/file.py`
 - **Album/Track:** `picard/album.py`, `picard/track.py`
 - **Metadata:** `picard/metadata.py`
 
 ### Format Handlers
 - **Registry:** `picard/formats/registry.py`
-- **ID3 (MP3):** `picard/formats/id3.py` (1,144 LOC)
+- **ID3 (MP3):** `picard/formats/id3.py`
 - **Vorbis (FLAC/Ogg):** `picard/formats/vorbis.py`
 - **MP4:** `picard/formats/mp4.py`
 
 ### Plugin System
-- **API:** `picard/plugin3/api_impl.py` (862 LOC)
-- **Manager:** `picard/plugin3/manager/__init__.py` (1,092 LOC)
+- **API:** `picard/plugin3/api_impl.py`
+- **Manager:** `picard/plugin3/manager/__init__.py`
 - **Registry:** `picard/plugin3/registry.py`
 
 ### UI
-- **Main window:** `picard/ui/mainwindow/` (2,233 LOC)
-- **Options:** `picard/ui/options/` (20+ pages)
-- **Metadata box:** `picard/ui/metadatabox/` (906 LOC)
-- **Script editor:** `picard/ui/scripteditor/` (1,106 LOC)
+- **Main window:** `picard/ui/mainwindow/`
+- **Options:** `picard/ui/options/`
+- **Metadata box:** `picard/ui/metadatabox/`
+- **Script editor:** `picard/ui/scripteditor/`
 
 ### Scripting
-- **Parser:** `picard/script/parser.py` (420 LOC)
-- **Functions:** `picard/script/functions.py` (1,595 LOC, 80+ functions)
+- **Parser:** `picard/script/parser.py`
+- **Functions:** `picard/script/functions.py`
 
 ### Web Services
-- **HTTP client:** `picard/webservice/__init__.py` (748 LOC)
-- **APIs:** `picard/webservice/api_helpers.py` (352 LOC)
+- **HTTP client:** `picard/webservice/__init__.py`
+- **APIs:** `picard/webservice/api_helpers.py`
 
 ---
 

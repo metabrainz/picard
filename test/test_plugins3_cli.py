@@ -34,6 +34,7 @@ from test.test_plugins3_helpers import (
 from picard.git.factory import has_git_backend
 from picard.plugin3.manager.update import UpdateResult
 from picard.plugin3.ref_item import RefItem
+from picard.plugin3.validator import generate_uuid
 
 
 def create_mock_registry_plugin(data):
@@ -69,9 +70,7 @@ class TestPluginCLI(PicardTestCase):
 
     def test_list_plugins_with_plugins(self):
         """Test listing plugins with details."""
-        from test.test_plugins3_helpers import generate_unique_uuid
-
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
@@ -122,10 +121,8 @@ class TestPluginCLI(PicardTestCase):
 
     def test_find_plugin_by_prefix(self):
         """Test finding plugin by Plugin ID prefix."""
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         # Create plugin with full Plugin ID
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
         mock_plugin = MockPlugin(name=f'example_plugin_{test_uuid}', display_name='Example Plugin')
         mock_manager = MockPluginManager(plugins=[mock_plugin])
 
@@ -437,7 +434,7 @@ class TestPluginCLI(PicardTestCase):
         exit_code, stdout, _ = run_cli(mock_manager, check_blacklist='https://github.com/test/plugin')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        self.assertIn('not blacklisted', stdout)
+        self.assertIn('Not blacklisted', stdout)
         mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
 
     def test_check_blacklist_is_blacklisted(self):
@@ -450,8 +447,47 @@ class TestPluginCLI(PicardTestCase):
         exit_code, stdout, stderr = run_cli(mock_manager, check_blacklist='https://github.com/bad/plugin')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
-        self.assertIn('blacklisted', stderr)
+        self.assertIn('Blacklisted', stderr)
         self.assertIn('Security vulnerability', stderr)
+
+    def test_check_blacklist_with_uuid(self):
+        """Test --check-blacklist with --uuid passes UUID to is_blacklisted."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = MockPluginManager()
+        mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
+
+        exit_code, stdout, stderr = run_cli(
+            mock_manager,
+            check_blacklist='https://github.com/test/plugin',
+            uuid='blacklisted-uuid-1234',
+        )
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Blacklisted', stderr)
+        mock_manager._registry.is_blacklisted.assert_called_once_with(
+            'https://github.com/test/plugin', 'blacklisted-uuid-1234'
+        )
+
+    def test_check_blacklist_uuid_only(self):
+        """Test --check-blacklist --uuid without URL."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = MockPluginManager()
+        mock_manager._registry.is_blacklisted.return_value = (True, 'UUID is blacklisted')
+
+        exit_code, stdout, stderr = run_cli(
+            mock_manager,
+            check_blacklist='',
+            uuid='blacklisted-uuid-1234',
+        )
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Blacklisted', stderr)
+        mock_manager._registry.is_blacklisted.assert_called_once_with(
+            None,
+            'blacklisted-uuid-1234',
+        )
 
     def test_search_with_category_filter(self):
         """Test --search with --category filter."""
@@ -564,11 +600,9 @@ class TestPluginCLI(PicardTestCase):
         """Test update command shows warning for commit-pinned plugins."""
         from unittest.mock import PropertyMock
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         from picard.plugin3.manager import PluginCommitPinnedError
 
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 

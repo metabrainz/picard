@@ -734,7 +734,20 @@ The blacklist supports regex patterns to block entire organizations:
 **Pattern matching:**
 - **Specific URL:** `https://github.com/user/plugin` - blocks only that repository
 - **Regex pattern:** `^https://github\.com/badorg/.*` - blocks all repositories from that organization
-- Uses Python regex matching on normalized URLs
+- Uses Python `re.search()` on normalized URLs — patterns can match anywhere in the URL
+- Use `^` to anchor at the start, `$` to anchor at the end
+
+**Pattern examples:**
+- `^https://github\.com/badorg/` - blocks all repos from an organization
+- `\.evil\.com/` - blocks any URL containing `.evil.com/`
+- `malicious-plugin$` - blocks any URL ending with `malicious-plugin`
+
+**URL normalization:** Before matching, URLs are normalized by `normalize_git_url()`:
+- Remote URLs (containing `://`) are used as-is
+- `file://` prefixes are stripped and the path is resolved to an absolute path
+- Local paths are expanded (`~`) and resolved to absolute paths
+
+This is mainly relevant for local testing with a local registry file. When blacklisting local paths, `url_regex` patterns must match absolute paths (e.g., `^/home/user/.*` not `^file:///home/user/.*`).
 
 ---
 

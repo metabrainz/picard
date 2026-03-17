@@ -24,10 +24,12 @@ except (ImportError, ModuleNotFoundError):
     import tomli as tomllib  # type: ignore[no-redef]
 
 from typing import BinaryIO
-import uuid
 
 from picard.plugin3.constants import CATEGORIES
-from picard.plugin3.validator import validate_manifest_dict
+from picard.plugin3.validator import (
+    generate_uuid,
+    validate_manifest_dict,
+)
 from picard.version import (
     Version,
     VersionError,
@@ -188,7 +190,7 @@ def generate_manifest_template():
     Returns:
         str: MANIFEST.toml template content
     """
-    generated_uuid = str(uuid.uuid4())
+    generated_uuid = generate_uuid()
     categories_str = ', '.join(f'"{c}"' for c in CATEGORIES)
 
     return f'''# MANIFEST.toml Template

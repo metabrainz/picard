@@ -30,6 +30,8 @@ from test.test_plugins3_helpers import (
     create_test_registry,
 )
 
+from picard.plugin3.validator import generate_uuid
+
 
 def mock_webservice_fetch(response_data, error=None):
     """Helper to mock WebService.get_url for registry fetching.
@@ -117,6 +119,26 @@ class TestPluginRegistry(PicardTestCase):
         is_blacklisted, reason = registry.is_blacklisted('https://goodsite.com/plugin.git')
         self.assertFalse(is_blacklisted)
 
+    def test_registry_blacklist_pattern_end_anchor(self):
+        """Test that url_regex supports end-of-string anchors via re.search.
+
+        This would fail with re.match which only anchors at the start.
+        """
+        registry = create_test_registry()
+
+        # Matches: any URL ending with malicious-repo.git
+        is_blacklisted, reason = registry.is_blacklisted('https://github.com/user/malicious-repo.git')
+        self.assertTrue(is_blacklisted)
+        self.assertIn('Blocked repository name', reason)
+
+        # Different host, same repo name — still blocked
+        is_blacklisted, reason = registry.is_blacklisted('https://gitlab.com/other/malicious-repo.git')
+        self.assertTrue(is_blacklisted)
+
+        # Similar but different name — not blocked
+        is_blacklisted, reason = registry.is_blacklisted('https://github.com/user/not-malicious-repo.git')
+        self.assertFalse(is_blacklisted)
+
     def test_registry_blacklist_plugin_id(self):
         """Test that blacklisted plugin UUIDs are detected."""
         registry = create_test_registry()
@@ -126,6 +148,33 @@ class TestPluginRegistry(PicardTestCase):
         self.assertIn('Security vulnerability', reason)
 
         is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin.git', 'different-uuid')
+        self.assertFalse(is_blacklisted)
+
+    def test_registry_blacklist_uuid_url_combo(self):
+        """Test that UUID+URL combo blacklist entries match only when both match.
+
+        The test registry has a combo entry:
+          url = "https://github.com/specific/malware-plugin"
+          uuid = "malicious-uuid-5678"
+
+        This should only match when BOTH UUID and URL match, not either alone.
+        """
+        registry = create_test_registry()
+
+        combo_url = 'https://github.com/specific/malware-plugin'
+        combo_uuid = 'malicious-uuid-5678'
+
+        # Both UUID and URL match -> blacklisted
+        is_blacklisted, reason = registry.is_blacklisted(combo_url, combo_uuid)
+        self.assertTrue(is_blacklisted)
+        self.assertIn('malware', reason.lower())
+
+        # Same UUID, different URL -> not matched by combo entry
+        is_blacklisted, reason = registry.is_blacklisted('https://goodsite.com/other.git', combo_uuid)
+        self.assertFalse(is_blacklisted)
+
+        # Same URL, different UUID -> not matched by combo entry
+        is_blacklisted, reason = registry.is_blacklisted(combo_url, 'innocent-uuid')
         self.assertFalse(is_blacklisted)
 
     def test_registry_url_redirect(self):
@@ -246,6 +295,52 @@ class TestPluginRegistry(PicardTestCase):
                                 self.assertEqual(metadata.original_url, old_url)
                                 self.assertEqual(metadata.original_uuid, old_uuid)
 
+    def test_install_local_blocks_blacklisted_uuid(self):
+        """Test that local install blocks plugins with blacklisted UUID.
+
+        Regression test: _install_common() was skipping the UUID blacklist
+        check for local installs (is_local=True), allowing locally cloned
+        copies of UUID-blacklisted plugins to be installed.
+        """
+        from pathlib import Path
+        import tempfile
+
+        from picard.plugin3.manager import PluginBlacklistedError, PluginManager
+
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+        manager._registry = create_test_registry()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            manager._primary_plugin_dir = Path(tmpdir)
+
+            # Create a fake local plugin directory with .git
+            local_plugin = Path(tmpdir) / 'local-plugin'
+            local_plugin.mkdir()
+            (local_plugin / '.git').mkdir()
+
+            with patch('picard.plugin3.manager.install.PluginSourceGit') as mock_source_class:
+                mock_source = Mock()
+                mock_source.ref = 'main'
+
+                def fake_sync(path, **kwargs):
+                    path.mkdir(parents=True, exist_ok=True)
+                    (path / 'MANIFEST.toml').touch()
+                    return 'abc123'
+
+                mock_source.sync = fake_sync
+                mock_source_class.return_value = mock_source
+
+                with patch('picard.plugin3.manifest.PluginManifest') as mock_manifest_class:
+                    mock_manifest = Mock()
+                    mock_manifest.name.return_value = 'Malicious Plugin'
+                    mock_manifest.uuid = 'blacklisted-uuid-1234'
+                    mock_manifest.validate.return_value = []
+                    mock_manifest_class.return_value = mock_manifest
+
+                    with self.assertRaises(PluginBlacklistedError):
+                        manager.install_plugin(str(local_plugin))
+
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
         from pathlib import Path
@@ -277,14 +372,12 @@ class TestPluginRegistry(PicardTestCase):
             patch,
         )
 
-        from test.test_plugins3_helpers import generate_unique_uuid
-
         from picard.plugin3.manager import PluginManager
 
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
@@ -629,6 +722,28 @@ class TestPluginRegistry(PicardTestCase):
             self.assertIsInstance(result['error'], RegistryParseError)
             self.assertEqual(len(calls), 1)  # Only first URL should be tried
             self.assertFalse(registry.is_registry_loaded())
+
+    def test_ui_dialog_blacklist_check_passes_uuid(self):
+        """Test that blacklist check detects UUID-only blacklist entries.
+
+        Regression test: InstallConfirmDialog.check_trust_and_blacklist()
+        must pass plugin_uuid to is_blacklisted(), otherwise UUID-only
+        blacklist entries are missed.
+        """
+        registry = create_test_registry()
+
+        # UUID "blacklisted-uuid-1234" is blacklisted in test registry.
+        # Using a non-blacklisted URL should still be caught via UUID.
+        url = 'https://example.com/innocent-looking-url.git'
+        plugin_uuid = 'blacklisted-uuid-1234'
+
+        is_blacklisted, reason = registry.is_blacklisted(url, plugin_uuid)
+        self.assertTrue(is_blacklisted, "UUID-only blacklist entry must be detected when UUID is provided")
+        self.assertIn('Security vulnerability', reason)
+
+        # Without UUID, this URL should NOT be blacklisted
+        is_blacklisted, reason = registry.is_blacklisted(url)
+        self.assertFalse(is_blacklisted)
 
     def test_registry_graceful_fallback_on_blacklist_check(self):
         """Test that blacklist check doesn't fail if registry fetch fails."""

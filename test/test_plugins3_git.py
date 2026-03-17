@@ -25,6 +25,8 @@ import tempfile
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import MockTagger
 
+from picard.plugin3.validator import generate_uuid
+
 import pytest
 
 
@@ -171,9 +173,7 @@ class TestPluginGitOperations(PicardTestCase):
 
     def _create_test_plugin(self):
         """Create a test plugin with unique UUID for each test method."""
-        from test.test_plugins3_helpers import generate_unique_uuid
-
-        test_uuid = generate_unique_uuid()
+        test_uuid = generate_uuid()
 
         # Create MANIFEST.toml and __init__.py, then initialize git repo
         manifest_content = f"""name = "Test Plugin"
