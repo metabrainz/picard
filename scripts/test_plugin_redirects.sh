@@ -297,4 +297,55 @@ echo "  $(echo "$INFO_OUTPUT" | grep Version)"
 $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
 echo
 
+# =============================================================================
+# Test 5: Redirected plugin that is blacklisted cannot be updated
+# =============================================================================
+echo "--- Test 5: Blacklisted plugin blocked on update after redirect ---"
+
+# Registry points to old repo (no redirect yet)
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "redirect-test"
+name = "Redirect Test Plugin"
+git_url = "$PLUGIN_REPO_OLD"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+EOF
+$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+
+# Install from old repo at v1.0.0
+$PICARD_PLUGINS --install redirect-test --ref v1.0.0 --yes 2>&1 | tail -1
+echo "✓ Installed v1.0.0 from old repo"
+
+# Now redirect to new repo AND blacklist the UUID
+cat > "$REGISTRY_FILE" << EOF
+[[plugins]]
+id = "redirect-test"
+name = "Redirect Test Plugin (Moved)"
+git_url = "$PLUGIN_REPO_NEW"
+uuid = "$TEST_PLUGIN_UUID"
+versioning_scheme = "semver"
+redirect_from = [
+    "$PLUGIN_REPO_OLD",
+]
+
+[[blacklist]]
+uuid = "$TEST_PLUGIN_UUID"
+reason = "Security vulnerability found"
+EOF
+$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+
+# Update should be blocked by blacklist
+UPDATE_OUTPUT=$($PICARD_PLUGINS --update $TEST_PLUGIN_UUID --yes 2>&1) || true
+if echo "$UPDATE_OUTPUT" | grep -qi "blacklist"; then
+    echo "✓ Update correctly blocked: plugin is blacklisted"
+else
+    echo "✗ ERROR: Update was not blocked by blacklist"
+    echo "  Output: $UPDATE_OUTPUT"
+    exit 1
+fi
+
+$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+echo
+
 echo "=== All Redirect Tests Completed Successfully ==="
