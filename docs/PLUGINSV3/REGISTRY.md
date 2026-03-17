@@ -15,7 +15,7 @@ The plugin registry is a centralized TOML file served by the Picard website that
 
 **Registry URLs (tried in order):**
 1. `https://raw.githubusercontent.com/metabrainz/picard-plugins-registry/refs/heads/main/plugins.toml` (Primary - GitHub)
-2. `https://picard.musicbrainz.org/registry/plugins.toml` (Fallback - MusicBrainz proxy)
+2. `https://picard.musicbrainz.org/api/v3/registry/plugins.toml` (Fallback - MusicBrainz proxy)
 
 **Configuration:**
 - Default URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` list in `picard/const/defaults.py`
@@ -910,83 +910,17 @@ This allows users to:
 
 ### PluginRegistry Class
 
-```python
-class PluginRegistry:
-    REGISTRY_URL = "https://picard.musicbrainz.org/api/v3/plugins.toml"
-    CACHE_FILE = "plugin_registry.json"  # Cache uses JSON internally
-    CACHE_TTL = 86400  # 24 hours
+The `PluginRegistry` class in `picard/plugin3/registry.py` manages registry access:
 
-    # Registry trust levels (in registry TOML)
-    REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
+- Registry URLs are defined in `DEFAULT_PLUGIN_REGISTRY_URLS` in `picard/const/defaults.py`
+- Can be overridden via `PICARD_PLUGIN_REGISTRY_URL` environment variable
+- Registry is cached locally and refreshed on demand
 
-    # Client-side trust level values (includes unregistered for local plugins)
-    TRUST_LEVELS = {
-        'official': 3,      # Highest trust - in registry
-        'trusted': 2,       # High trust - in registry
-        'community': 1,     # Low trust - in registry
-        'unregistered': 0   # Lowest trust - NOT in registry (client-side only)
-    }
+Key methods:
 
-    def fetch_registry(self):
-        """Fetch plugin list from website, use cache if fresh"""
-
-    def is_blacklisted(self, git_url):
-        """Check if git URL is blacklisted (supports patterns)"""
-        registry = self.fetch_registry()
-        for entry in registry.get('blacklist', []):
-            blacklist_url = entry['url']
-            # Check for exact match
-            if blacklist_url == git_url:
-                return True
-            # Check for pattern match (e.g., https://github.com/badorg/*)
-            if blacklist_url.endswith('/*'):
-                pattern_base = blacklist_url[:-2]  # Remove /*
-                if git_url.startswith(pattern_base + '/'):
-                    return True
-        return False
-
-    def get_blacklist_reason(self, git_url):
-        """Get reason for blacklisting (checks patterns too)"""
-        registry = self.fetch_registry()
-        for entry in registry.get('blacklist', []):
-            blacklist_url = entry['url']
-            # Check for exact match
-            if blacklist_url == git_url:
-                return entry
-            # Check for pattern match
-            if blacklist_url.endswith('/*'):
-                pattern_base = blacklist_url[:-2]
-                if git_url.startswith(pattern_base + '/'):
-                    return entry
-        return None
-
-    def get_trust_level(self, git_url):
-        """Get trust level for plugin by git URL"""
-        plugin = self.find_plugin_by_url(git_url)
-        if not plugin:
-            return 'unregistered'
-        return plugin.get('trust_level', 'community')
-
-    def find_plugin(self, name_or_id):
-        """Find official plugin by name or ID"""
-
-    def list_official_plugins(self, category=None, trust_level=None):
-        """List all official plugins, optionally filtered by category and trust level"""
-
-    def should_warn_on_install(self, git_url):
-        """Determine if warning should be shown based on trust level"""
-        plugin = self.find_plugin_by_url(git_url)
-        if not plugin:
-            return True, "Plugin not in official registry (unregistered)"
-
-        trust = plugin.get('trust_level')
-        if trust == 'official':
-            return False, None
-        elif trust == 'trusted':
-            return True, "not reviewed by Picard team"
-        else:  # community
-            return True, "not reviewed or endorsed by Picard team"
-```
+- `find_plugin(plugin_id=, url=, uuid=)` — Find plugin by ID, URL, or UUID (with redirect support via `redirect_from` / `redirect_from_uuid`)
+- `is_blacklisted(url, plugin_uuid=)` — Check if a plugin is blacklisted by URL, UUID, URL+UUID combo, or URL regex
+- `get_trust_level(url)` — Get trust level for a plugin URL (`official`, `trusted`, `community`, or `unregistered`)
 
 ---
 
