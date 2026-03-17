@@ -437,7 +437,7 @@ class TestPluginCLI(PicardTestCase):
         exit_code, stdout, _ = run_cli(mock_manager, check_blacklist='https://github.com/test/plugin')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        self.assertIn('not blacklisted', stdout)
+        self.assertIn('Not blacklisted', stdout)
         mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
 
     def test_check_blacklist_is_blacklisted(self):
@@ -450,15 +450,11 @@ class TestPluginCLI(PicardTestCase):
         exit_code, stdout, stderr = run_cli(mock_manager, check_blacklist='https://github.com/bad/plugin')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
-        self.assertIn('blacklisted', stderr)
+        self.assertIn('Blacklisted', stderr)
         self.assertIn('Security vulnerability', stderr)
 
     def test_check_blacklist_with_uuid(self):
-        """Test --check-blacklist with --uuid passes UUID to is_blacklisted.
-
-        Regression test: _cmd_check_blacklist did not support UUID,
-        so UUID-only blacklist entries could not be checked via CLI.
-        """
+        """Test --check-blacklist with --uuid passes UUID to is_blacklisted."""
         from picard.plugin3.cli import ExitCode
 
         mock_manager = MockPluginManager()
@@ -471,9 +467,29 @@ class TestPluginCLI(PicardTestCase):
         )
 
         self.assertEqual(exit_code, ExitCode.ERROR)
-        self.assertIn('blacklisted', stderr)
+        self.assertIn('Blacklisted', stderr)
         mock_manager._registry.is_blacklisted.assert_called_once_with(
             'https://github.com/test/plugin', 'blacklisted-uuid-1234'
+        )
+
+    def test_check_blacklist_uuid_only(self):
+        """Test --check-blacklist --uuid without URL."""
+        from picard.plugin3.cli import ExitCode
+
+        mock_manager = MockPluginManager()
+        mock_manager._registry.is_blacklisted.return_value = (True, 'UUID is blacklisted')
+
+        exit_code, stdout, stderr = run_cli(
+            mock_manager,
+            check_blacklist='',
+            uuid='blacklisted-uuid-1234',
+        )
+
+        self.assertEqual(exit_code, ExitCode.ERROR)
+        self.assertIn('Blacklisted', stderr)
+        mock_manager._registry.is_blacklisted.assert_called_once_with(
+            None,
+            'blacklisted-uuid-1234',
         )
 
     def test_search_with_category_filter(self):

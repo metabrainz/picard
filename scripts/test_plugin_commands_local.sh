@@ -101,7 +101,7 @@ reason = "Security vulnerability in plugin UUID"
 blacklisted_at = "2025-11-21T10:00:00Z"
 
 [[blacklist]]
-url_regex = "^https://evilorg\\.com/.*"
+url_regex = "^https://evilorg\\\\.com/.*"
 reason = "Entire organization blacklisted"
 blacklisted_at = "2025-11-22T10:00:00Z"
 
@@ -450,6 +450,21 @@ echo "34. Check blacklist - non-blacklisted UUID via --uuid (should pass)"
 $PICARD_PLUGINS --check-blacklist https://example.com/any-url --uuid "safe-uuid-1234"
 echo
 
+# Test 34b: Check blacklist - UUID only, no URL (should fail)
+echo "34b. Check blacklist - blacklisted UUID only, no URL (should fail)"
+if $PICARD_PLUGINS --check-blacklist --uuid "$BLACKLISTED_UUID" 2>/dev/null; then
+    echo "✗ ERROR: Blacklisted UUID should have been detected"
+    exit 1
+else
+    echo "✓ Blacklisted UUID correctly detected (UUID-only check)"
+fi
+echo
+
+# Test 34c: Check blacklist - non-blacklisted UUID only, no URL (should pass)
+echo "34c. Check blacklist - non-blacklisted UUID only, no URL (should pass)"
+$PICARD_PLUGINS --check-blacklist --uuid "safe-uuid-1234"
+echo
+
 # Test 35: Check blacklist - URL matching regex pattern
 echo "35. Check blacklist - URL matching regex pattern (should fail)"
 if $PICARD_PLUGINS --check-blacklist "https://evilorg.com/some-plugin" 2>/dev/null; then
@@ -588,7 +603,7 @@ reason = "Security vulnerability in plugin UUID"
 blacklisted_at = "2025-11-21T10:00:00Z"
 
 [[blacklist]]
-url_regex = "^https://evilorg\\.com/.*"
+url_regex = "^https://evilorg\\\\.com/.*"
 reason = "Entire organization blacklisted"
 blacklisted_at = "2025-11-22T10:00:00Z"
 
