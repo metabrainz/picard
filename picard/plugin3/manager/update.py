@@ -299,24 +299,18 @@ class PluginUpdater:
                     metadata.url, metadata.uuid
                 )
                 if redirected:
-                    self._update_plugin_remote_url(plugin, current_url)
+                    try:
+                        self.manager._with_plugin_repo(
+                            plugin.local_path, lambda repo: repo.update_remote_url_if_changed('origin', current_url)
+                        )
+                    except Exception as e:
+                        log.debug('Failed to update remote URL for %s: %s', plugin.plugin_id, e)
 
             update_check = self._check_single_plugin_update(plugin, metadata, skip_fetch)
             if update_check:
                 updates[plugin.plugin_id] = update_check
 
         return updates
-
-    def _update_plugin_remote_url(self, plugin, new_url):
-        """Update origin remote URL for a plugin repository."""
-        try:
-
-            def update_remote(repo):
-                repo.update_remote_url_if_changed('origin', new_url)
-
-            self.manager._with_plugin_repo(plugin.local_path, update_remote)
-        except Exception as e:
-            log.debug('Failed to update remote URL for %s: %s', plugin.plugin_id, e)
 
     def _fetch_plugin_refs(self, repo, skip_fetch):
         """Fetch remote refs for plugin repository."""
