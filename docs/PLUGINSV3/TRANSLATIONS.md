@@ -34,7 +34,7 @@ Picard will warn you if it detects nested structures in your TOML files.
 
 Both TOML and JSON formats are supported. For each locale, Picard will look for `.toml` first, then `.json`. Each file corresponds to a single locale (e.g. `en.toml` for English). You can mix formats (e.g., `en.json` and `fr.toml`).
 
-The recommended format for translation files is TOML. Translation keys are provided as a flat list with do notation for namespacing the keys.
+The recommended format for translation files is TOML. Translation keys are provided as a flat list with dot notation for namespacing the keys.
 
 ```toml
 "error.network" = "Network error: {error}"
