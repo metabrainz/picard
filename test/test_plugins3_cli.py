@@ -83,6 +83,14 @@ def create_mock_registry_plugin(data):
     return mock_plugin
 
 
+def _make_cli(manager, args, **kwargs):
+    """Create a PluginCLI with captured stderr output."""
+    stderr = StringIO()
+    output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
+    cli = PluginCLI(manager, args, output=output, **kwargs)
+    return cli, stderr
+
+
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
@@ -630,10 +638,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.validate = None
         args.manifest = None
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-
-        cli = PluginCLI(manager, args, output=output, parser=None)
+        cli, stderr = _make_cli(manager, args, parser=None)
         result = cli.run()
 
         self.assertEqual(result, ExitCode.ERROR)
@@ -680,9 +685,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.list = True
 
         # Make _cmd_list raise KeyboardInterrupt
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
         cli._cmd_list = Mock(side_effect=KeyboardInterrupt())
 
         result = cli.run()
@@ -698,9 +701,7 @@ class TestPluginCLIErrors(PicardTestCase):
         args.list = True
 
         # Make _cmd_list raise exception
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
         cli._cmd_list = Mock(side_effect=ValueError('Test error'))
 
         result = cli.run()
@@ -787,9 +788,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         manager.plugins = [plugin1, plugin2]
 
         args = MockCliArgs()
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         # Mock manager.find_plugin to return 'multiple'
         manager.find_plugin = Mock(return_value='multiple')
@@ -806,9 +805,7 @@ class TestPluginCLIFindPlugin(PicardTestCase):
         """Test _find_plugin_or_error when plugin not found."""
         manager = MockPluginManager()
         args = MockCliArgs()
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         manager.find_plugin = Mock(return_value=None)
 
@@ -842,9 +839,7 @@ class TestPluginCLICommands(PicardTestCase):
         args = MockCliArgs()
         args.enable = ['test-plugin']
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
@@ -863,9 +858,7 @@ class TestPluginCLICommands(PicardTestCase):
         args = MockCliArgs()
         args.disable = ['test-plugin']
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
@@ -886,9 +879,7 @@ class TestPluginCLICommands(PicardTestCase):
         args.yes = True
         args.purge = False
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         mock_plugin = MockPlugin()
         mock_plugin.plugin_id = 'test-plugin'
@@ -913,9 +904,7 @@ class TestPluginCLICommands(PicardTestCase):
         args.force_blacklisted = False
         args.ref = None
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-        cli = PluginCLI(manager, args, output=output)
+        cli, stderr = _make_cli(manager, args)
 
         result = cli._cmd_install(['https://example.com/plugin.git'])
 

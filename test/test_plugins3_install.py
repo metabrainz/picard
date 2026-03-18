@@ -61,10 +61,12 @@ from picard.plugin3.validator import generate_uuid
 
 
 class TestPluginInstall(PicardTestCase):
+    def _create_manager(self):
+        return PluginManager(MockTagger())
+
     def test_plugin_metadata_storage(self):
         """Test that plugin metadata is stored and retrieved correctly."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = generate_uuid()
 
@@ -92,8 +94,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_plugin_no_metadata(self):
         """Test that updating plugin without metadata raises error."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
@@ -107,8 +108,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_with_ref(self):
         """Test installing plugin with specific git ref."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         # Mock the install to capture ref parameter
         captured_ref = None
@@ -129,8 +129,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref(self):
         """Test switching plugin to different git ref."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = 'test-uuid-5678'
 
@@ -172,8 +171,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref_no_metadata(self):
         """Test switching ref for plugin without metadata raises error."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
@@ -216,8 +214,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_validates_manifest(self):
         """Test that install validates MANIFEST.toml exists."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
@@ -241,8 +238,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_prevents_duplicate(self):
         """Test that install prevents duplicate installations."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
         test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -280,8 +276,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_with_reinstall_flag(self):
         """Test that --reinstall allows overwriting existing plugin."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
         test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -322,8 +317,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_uninstall_with_purge(self):
         """Test uninstall with purge removes configuration."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         # Create a temporary plugin directory and config file
         test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
@@ -368,8 +362,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_plugin_has_saved_options(self):
         """Test checking if plugin has saved options."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 

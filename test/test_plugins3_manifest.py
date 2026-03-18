@@ -29,6 +29,18 @@ from picard.plugin3.manifest import PluginManifest
 from picard.version import Version
 
 
+def _manifest_from_toml(content):
+    """Create a PluginManifest from a TOML content string."""
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
+        f.write(content)
+        temp_path = Path(f.name)
+    try:
+        with open(temp_path, 'rb') as f:
+            return PluginManifest('test', f)
+    finally:
+        temp_path.unlink()
+
+
 class TestPluginManifest(PicardTestCase):
     def test_load_from_toml(self):
         manifest = load_plugin_manifest('example')
@@ -115,23 +127,15 @@ class TestPluginManifest(PicardTestCase):
         manifest_content = """
 name = "Test"
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            # Should have errors for missing required fields
-            error_text = ' '.join(errors)
-            self.assertIn('uuid', error_text)
-            self.assertIn('description', error_text)
-            self.assertIn('api', error_text)
-        finally:
-            temp_path.unlink()
+        errors = manifest.validate()
+        self.assertGreater(len(errors), 0)
+        # Should have errors for missing required fields
+        error_text = ' '.join(errors)
+        self.assertIn('uuid', error_text)
+        self.assertIn('description', error_text)
+        self.assertIn('api', error_text)
 
     def test_manifest_validate_invalid_types(self):
         """Test validation catches invalid field types."""
@@ -144,22 +148,14 @@ description = "Test"
 license = "MIT"
 license_url = "https://example.com"
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            error_text = ' '.join(errors)
-            self.assertIn('name', error_text)
-            self.assertIn('authors', error_text)
-            self.assertIn('api', error_text)
-        finally:
-            temp_path.unlink()
+        errors = manifest.validate()
+        self.assertGreater(len(errors), 0)
+        error_text = ' '.join(errors)
+        self.assertIn('name', error_text)
+        self.assertIn('authors', error_text)
+        self.assertIn('api', error_text)
 
     def test_manifest_validate_empty_i18n_sections(self):
         """Test validation warns about empty i18n sections."""
@@ -176,22 +172,14 @@ license_url = "https://example.com"
 
 [description_i18n]
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            error_text = ' '.join(errors)
-            self.assertIn('name_i18n', error_text)
-            self.assertIn('description_i18n', error_text)
-            self.assertIn('empty', error_text.lower())
-        finally:
-            temp_path.unlink()
+        errors = manifest.validate()
+        self.assertGreater(len(errors), 0)
+        error_text = ' '.join(errors)
+        self.assertIn('name_i18n', error_text)
+        self.assertIn('description_i18n', error_text)
+        self.assertIn('empty', error_text.lower())
 
     def test_manifest_properties(self):
         """Test manifest property accessors."""
@@ -218,18 +206,10 @@ authors = ["Test"]
 license = "MIT"
 license_url = "https://example.com"
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return None for invalid version
-            self.assertIsNone(manifest.version)
-        finally:
-            temp_path.unlink()
+        # Should return None for invalid version
+        self.assertIsNone(manifest.version)
 
     def test_manifest_invalid_api_versions(self):
         """Test manifest with invalid API version strings."""
@@ -243,18 +223,10 @@ authors = ["Test"]
 license = "MIT"
 license_url = "https://example.com"
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return empty tuple for invalid versions
-            self.assertEqual(manifest.api_versions, tuple())
-        finally:
-            temp_path.unlink()
+        # Should return empty tuple for invalid versions
+        self.assertEqual(manifest.api_versions, tuple())
 
     def test_manifest_missing_api_versions(self):
         """Test manifest with missing API versions."""
@@ -267,15 +239,7 @@ authors = ["Test"]
 license = "MIT"
 license_url = "https://example.com"
 """
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
+        manifest = _manifest_from_toml(manifest_content)
 
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return empty tuple when api field is missing
-            self.assertEqual(manifest.api_versions, tuple())
-        finally:
-            temp_path.unlink()
+        # Should return empty tuple when api field is missing
+        self.assertEqual(manifest.api_versions, tuple())

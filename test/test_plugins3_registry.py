@@ -68,6 +68,27 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestPluginRegistry(PicardTestCase):
+    def _fetch_registry(self, registry, response_data, error=None):
+        """Fetch registry with mocked webservice, return (success, error) result."""
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
+
+        result = {}
+
+        def callback(success, err):
+            result['success'] = success
+            result['error'] = err
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+        return result
+
+    def _create_metadata_mgr(self):
+        """Create a PluginMetadataManager backed by the test registry."""
+        return PluginMetadataManager(create_test_registry())
+
     def test_registry_blacklist_url(self):
         """Test that blacklisted URLs are detected."""
         registry = create_test_registry()
@@ -463,23 +484,12 @@ class TestPluginRegistry(PicardTestCase):
 
         mock_response_data = b'blacklist = []'
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
+        result = self._fetch_registry(registry, mock_response_data)
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertTrue(result['success'])
-            self.assertIsNone(result['error'])
-            self.assertTrue(registry.is_registry_loaded())
-            self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
+        self.assertTrue(result['success'])
+        self.assertIsNone(result['error'])
+        self.assertTrue(registry.is_registry_loaded())
+        self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
@@ -517,43 +527,21 @@ class TestPluginRegistry(PicardTestCase):
         """Test registry fetch error handling."""
         registry = PluginRegistry()
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
+        result = self._fetch_registry(registry, b'', error=Exception('Network error'))
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryFetchError)
-            self.assertIn('Network error', str(result['error']))
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryFetchError)
+        self.assertIn('Network error', str(result['error']))
 
     def test_registry_parse_error(self):
         """Test registry parse error handling."""
         registry = PluginRegistry()
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'invalid toml [')
+        result = self._fetch_registry(registry, b'invalid toml [')
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryParseError)
-            self.assertIn('Failed to parse registry', str(result['error']))
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryParseError)
+        self.assertIn('Failed to parse registry', str(result['error']))
 
     def test_registry_multiple_url_fallback(self):
         """Test registry tries second URL when first fails."""
@@ -834,8 +822,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_url_change(self):
         """Test check_redirects detects URL change via UUID lookup."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # Plugin 'example-plugin' has UUID 'ae5ef1ed-...' and git_url 'https://github.com/test/example'
         # redirect_from includes 'https://github.com/olduser/example'
@@ -848,8 +835,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_uuid_change(self):
         """Test check_redirects detects UUID change via URL redirect lookup."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # 'old-uuid-1234' is in redirect_from_uuid for example-plugin
         # Looking up by old UUID finds the plugin with new UUID
@@ -859,8 +845,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_both_url_and_uuid_change(self):
         """Test check_redirects detects simultaneous URL and UUID change."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # old-uuid-1234 redirects to example-plugin which has a different URL and UUID
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
@@ -872,8 +857,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_no_change(self):
         """Test check_redirects returns no redirect when URL and UUID match."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
             'https://github.com/test/example', 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
@@ -884,8 +868,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_not_in_registry(self):
         """Test check_redirects returns no redirect when plugin not in registry."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
             'https://github.com/unknown/plugin', 'nonexistent-uuid'
@@ -896,8 +879,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_not_redirected(self):
         """Test get_original_metadata returns old values when not redirected."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         url, uuid = metadata_mgr.get_original_metadata(False, 'https://example.com/plugin', 'some-uuid')
         self.assertEqual(url, 'https://example.com/plugin')
@@ -905,8 +887,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_redirected_no_stored(self):
         """Test get_original_metadata returns old values when no stored metadata."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         url, uuid = metadata_mgr.get_original_metadata(True, 'https://example.com/old', 'old-uuid-not-stored')
         self.assertEqual(url, 'https://example.com/old')
@@ -914,8 +895,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_redirected_with_stored(self):
         """Test get_original_metadata returns stored values on first redirect."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         test_uuid = 'stored-uuid-1234'
         metadata_mgr.save_plugin_metadata(
@@ -933,8 +913,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_chained_redirect_preserves_earliest(self):
         """Test get_original_metadata preserves earliest original across chained redirects."""
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # Simulate first redirect: A -> B (original_url/uuid set to A)
         test_uuid = 'chained-uuid-1234'

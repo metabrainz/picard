@@ -166,6 +166,13 @@ class TestPluginGitOperations(PicardTestCase):
         self.plugin_dir = Path(self.tmpdir) / "test-plugin"
         self.plugin_dir.mkdir()
 
+    def _create_manager(self, plugin_dir):
+        """Create a PluginManager with a temporary plugin directory."""
+        manager = PluginManager(MockTagger())
+        manager._primary_plugin_dir = plugin_dir
+        plugin_dir.mkdir(parents=True, exist_ok=True)
+        return manager
+
     def _create_test_plugin(self):
         """Create a test plugin with unique UUID for each test method."""
         test_uuid = generate_uuid()
@@ -341,10 +348,7 @@ def disable():
         self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = MockTagger()
-            manager = PluginManager(mock_tagger)
-            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
-            manager._primary_plugin_dir.mkdir()
+            manager = self._create_manager(Path(tmpdir) / "plugins")
 
             plugin_id = manager.install_plugin(str(self.plugin_dir))
 
@@ -377,10 +381,7 @@ def disable():
         backend_create_branch(self.plugin_dir, 'dev', dev_commit)
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = MockTagger()
-            manager = PluginManager(mock_tagger)
-            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
-            manager._primary_plugin_dir.mkdir()
+            manager = self._create_manager(Path(tmpdir) / "plugins")
 
             plugin_id = manager.install_plugin(str(self.plugin_dir), ref='origin/dev')
 
@@ -399,10 +400,7 @@ def disable():
         test_uuid = self._create_test_plugin()
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = MockTagger()
-            manager = PluginManager(mock_tagger)
-            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
-            manager._primary_plugin_dir.mkdir()
+            manager = self._create_manager(Path(tmpdir) / "plugins")
 
             # Install first
             plugin_id = manager.install_plugin(str(self.plugin_dir))
@@ -448,10 +446,7 @@ uuid = "{test_uuid}"
         backend_create_tag(self.plugin_dir, 'v1.0.0')
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            mock_tagger = MockTagger()
-            manager = PluginManager(mock_tagger)
-            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
-            manager._primary_plugin_dir.mkdir()
+            manager = self._create_manager(Path(tmpdir) / "plugins")
 
             # Install plugin with specific ref (v1.0.0)
             plugin_id = manager.install_plugin(str(self.plugin_dir), ref='v1.0.0')
@@ -502,10 +497,7 @@ uuid = "{test_uuid}"
             backend_init_and_commit(bad_plugin_dir, {"README.md": "No manifest"}, 'Initial')
 
             # Try to install
-            mock_tagger = MockTagger()
-            manager = PluginManager(mock_tagger)
-            manager._primary_plugin_dir = Path(tmpdir) / "plugins"
-            manager._primary_plugin_dir.mkdir()
+            manager = self._create_manager(Path(tmpdir) / "plugins")
 
             with self.assertRaises(PluginManifestNotFoundError) as context:
                 manager.install_plugin(str(bad_plugin_dir))

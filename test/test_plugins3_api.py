@@ -48,10 +48,12 @@ from picard.plugin3.api import PluginApi
 
 
 class TestPluginApiMethods(PicardTestCase):
+    def _create_api(self):
+        return PluginApi(load_plugin_manifest('example'), Mock())
+
     def test_register_file_processors(self):
         """Test file processor registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_processor():
             pass
@@ -76,8 +78,7 @@ class TestPluginApiMethods(PicardTestCase):
 
     def test_register_cover_art_provider(self):
         """Test cover art provider registration."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_provider = Mock()
 
@@ -108,8 +109,7 @@ class TestPluginApiMethods(PicardTestCase):
 
     def test_register_context_menu_actions(self):
         """Test context menu action registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_action = Mock()
 
@@ -135,8 +135,7 @@ class TestPluginApiMethods(PicardTestCase):
 
     def test_register_options_page(self):
         """Test options page registration."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_page = Mock()
 
@@ -147,8 +146,7 @@ class TestPluginApiMethods(PicardTestCase):
 
     def test_processor_metadata_preserved(self):
         """Test that processor function metadata is preserved after wrapping."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def my_processor(api, track, metadata):
             """Process track metadata."""
@@ -165,8 +163,7 @@ class TestPluginApiMethods(PicardTestCase):
 
     def test_register_cover_art_processor(self):
         """Test options page registration."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_processor = Mock()
 
@@ -205,6 +202,9 @@ class TestPluginApiMethods(PicardTestCase):
 
 
 class TestPluginApi(PicardTestCase):
+    def _create_api(self):
+        return PluginApi(load_plugin_manifest('example'), Mock())
+
     def tearDown(self):
         # Clear plugin options created during tests from registry
         for key, _v in list(Option.registry.items()):
@@ -512,8 +512,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_processor():
             pass
@@ -536,8 +535,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_event_hooks(self):
         """Test event hook registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_hook():
             pass
@@ -576,8 +574,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_script_function(self):
         """Test script function registration."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_func():
             pass
@@ -590,8 +587,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_actions(self):
         """Test action registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_action = Mock()
 

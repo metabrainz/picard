@@ -65,6 +65,11 @@ from picard.plugin3.validation import PluginValidation
 from picard.plugin3.validator import generate_uuid
 
 
+def _create_manager():
+    """Create a PluginManager with a MockTagger."""
+    return PluginManager(MockTagger())
+
+
 class TestPluginManagerHelpers(PicardTestCase):
     def test_validate_manifest_valid(self):
         """Test _validate_manifest with valid manifest does not raise."""
@@ -348,8 +353,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_found(self):
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
@@ -381,8 +385,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_not_found(self):
         """Test get_plugin_registry_id returns None when plugin not in registry."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
@@ -397,8 +400,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_no_uuid(self):
         """Test get_plugin_registry_id returns None when plugin has no UUID."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
@@ -412,8 +414,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_metadata_dict_format(self):
         """Test get_plugin_metadata returns PluginMetadata object by UUID."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         metadata_manager = PluginMetadataManager(manager._registry)
 
         test_uuid = 'test-uuid-123'
@@ -435,8 +436,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_metadata_not_found(self):
         """Test get_plugin_metadata returns None when UUID not found."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         metadata_manager = PluginMetadataManager(manager._registry)
 
         config = get_config()
@@ -447,8 +447,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_no_conflict(self):
         """Test _check_uuid_conflict returns False when no conflict exists."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create a mock manifest
         manifest = Mock()
@@ -461,8 +460,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_same_source(self):
         """Test _check_uuid_conflict returns False for same UUID from same source."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create existing plugin with same UUID and source
         existing_plugin = Mock()
@@ -489,8 +487,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_different_source(self):
         """Test _check_uuid_conflict returns True for same UUID from different source."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create existing plugin
         existing_plugin = Mock()
@@ -823,8 +820,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 class TestPluginManager(PicardTestCase):
     def test_config_persistence(self):
         """Test that enabled plugins are saved to and loaded from config."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Initially no plugins enabled
         self.assertEqual(manager._enabled_plugins, set())
@@ -843,7 +839,7 @@ class TestPluginManager(PicardTestCase):
         self.assertIn(test_uuid, config.setting['plugins3_enabled_plugins'])
 
         # Create new manager instance - should load from config
-        manager2 = PluginManager(mock_tagger)
+        manager2 = _create_manager()
         self.assertIn(test_uuid, manager2._enabled_plugins)
 
         # Disable plugin - should remove from config
@@ -853,8 +849,7 @@ class TestPluginManager(PicardTestCase):
 
     def test_init_plugins_only_loads_enabled(self):
         """Test that init_plugins only loads plugins that are enabled in config."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create mock plugins with UUIDs
         enabled_uuid = 'enabled-uuid-1234'
@@ -883,14 +878,13 @@ class TestPluginManager(PicardTestCase):
 
         # Only enabled plugin should be loaded
         enabled_plugin.load_module.assert_called_once()
-        enabled_plugin.enable.assert_called_once_with(mock_tagger)
+        enabled_plugin.enable.assert_called_once_with(manager._tagger)
         disabled_plugin.load_module.assert_not_called()
         disabled_plugin.enable.assert_not_called()
 
     def test_api_version_compatibility_compatible(self):
         """Test that plugins with compatible API versions are loaded."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Load compatible plugin (API 3.0, 3.1)
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
@@ -901,8 +895,7 @@ class TestPluginManager(PicardTestCase):
 
     def test_api_version_compatibility_incompatible_old(self):
         """Test that plugins with old incompatible API versions are rejected."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Load incompatible plugin (API 2.0, 2.1)
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
@@ -911,8 +904,7 @@ class TestPluginManager(PicardTestCase):
 
     def test_api_version_compatibility_incompatible_new(self):
         """Test that plugins requiring newer API versions are rejected."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Load plugin requiring future API (3.5, 3.6)
         plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
@@ -925,8 +917,7 @@ class TestPluginErrors(PicardTestCase):
 
     def test_load_plugin_with_invalid_manifest(self):
         """Test loading plugin with invalid MANIFEST.toml."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Try to load plugin with missing manifest
         plugin = manager._load_plugin(Path('/nonexistent'), 'fake-plugin')
@@ -934,8 +925,7 @@ class TestPluginErrors(PicardTestCase):
 
     def test_init_plugins_handles_errors(self):
         """Test that init_plugins handles plugin errors gracefully."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create a plugin that will fail to load
         bad_uuid = 'bad-uuid-1234'
@@ -957,8 +947,7 @@ class TestPluginErrors(PicardTestCase):
 
     def test_enable_plugin_with_load_error(self):
         """Test enabling plugin that fails to load."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         bad_plugin = Mock(spec=Plugin)
         bad_plugin.plugin_id = 'bad-plugin'
@@ -969,8 +958,7 @@ class TestPluginErrors(PicardTestCase):
 
     def test_manager_add_directory(self):
         """Test adding plugin directory."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
@@ -984,8 +972,7 @@ class TestPluginErrors(PicardTestCase):
 
     def test_manager_add_directory_twice(self):
         """Test adding same directory twice is ignored."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
