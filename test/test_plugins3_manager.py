@@ -98,13 +98,6 @@ class TestPluginManagerHelpers(PicardTestCase):
 
         self.assertEqual(result, 'test-uuid-123')
 
-    def test_get_config_value(self):
-        """Test _get_config_value helper."""
-        with patch('picard.config.get_config') as mock_get_config:
-            mock_config = Mock()
-            mock_config.setting = {'plugins3': {'enabled': ['plugin1']}}
-            mock_get_config.return_value = mock_config
-
     def test_cleanup_temp_directories(self):
         """Test that temp directories are cleaned up."""
         with tempfile.TemporaryDirectory() as tmpdir:
