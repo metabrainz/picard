@@ -103,8 +103,6 @@ class TestRegistryHelpers(PicardTestCase):
 
     def test_normalize_git_url_caching(self):
         """Test that normalize_git_url caches results."""
-        from picard.git.utils import normalize_git_url
-
         url = 'https://github.com/test/plugin.git'
 
         # Clear cache

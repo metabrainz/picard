@@ -19,11 +19,22 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
-from unittest.mock import Mock
+import tempfile
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import (
+    backend_create_tag,
+    backend_init_and_commit,
+)
 
-from picard.git.factory import has_git_backend
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
+)
 from picard.plugin3.plugin import (
     PluginSource,
     PluginSourceGit,
@@ -69,10 +80,6 @@ class TestGitRemoteCallbacks(PicardTestCase):
         if not has_git_backend():
             self.skipTest('git backend not available')
 
-        from unittest.mock import patch
-
-        from picard.git.factory import git_backend
-
         backend = git_backend()
         callbacks = backend.create_remote_callbacks()
         mock_stats = Mock()
@@ -91,15 +98,9 @@ class TestPluginSourceGitUpdate(PicardTestCase):
         if not has_git_backend():
             self.skipTest('git backend not available')
 
-        import tempfile
-
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create a test git repo
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir) / 'source'
-            from test.test_plugins3_helpers import backend_init_and_commit
-
             backend_init_and_commit(repo_dir, {'file.txt': 'content'}, 'Initial')
 
             # Clone it
@@ -120,15 +121,9 @@ class TestPluginSourceGitUpdate(PicardTestCase):
         if not has_git_backend():
             self.skipTest('git backend not available')
 
-        import tempfile
-
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create a test git repo with a tag
         with tempfile.TemporaryDirectory() as tmpdir:
             repo_dir = Path(tmpdir) / 'source'
-            from test.test_plugins3_helpers import backend_create_tag, backend_init_and_commit
-
             commit = backend_init_and_commit(repo_dir, {'file.txt': 'content'}, 'Initial')
 
             # Create a tag

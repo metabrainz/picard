@@ -26,6 +26,8 @@ from unittest.mock import (
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import MockPluginManager
 
+from picard.plugin3.manager import PluginManager
+
 
 class TestVersioningScheme(PicardTestCase):
     def test_select_ref_with_versioning_scheme(self):
@@ -75,8 +77,6 @@ class TestVersioningScheme(PicardTestCase):
 
     def test_find_newer_version_tag(self):
         """Test _find_newer_version_tag returns newest tag when newer exists."""
-        from picard.plugin3.manager import PluginManager
-
         manager = PluginManager(None)
         manager._registry_manager._fetch_version_tags = Mock(return_value=['v2.1.0', 'v2.0.0', 'v1.0.0'])
 
@@ -85,8 +85,6 @@ class TestVersioningScheme(PicardTestCase):
 
     def test_find_newer_version_tag_none_available(self):
         """Test _find_newer_version_tag returns None when already on latest."""
-        from picard.plugin3.manager import PluginManager
-
         manager = PluginManager(None)
         manager._registry_manager._fetch_version_tags = Mock(return_value=['v2.0.0'])
 
@@ -95,8 +93,6 @@ class TestVersioningScheme(PicardTestCase):
 
     def test_find_newer_version_tag_no_tags(self):
         """Test _find_newer_version_tag returns None when no tags available."""
-        from picard.plugin3.manager import PluginManager
-
         manager = PluginManager(None)
         manager._registry_manager._fetch_version_tags = Mock(return_value=[])
 

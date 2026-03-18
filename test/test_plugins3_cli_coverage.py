@@ -594,8 +594,6 @@ class TestPluginCLIManifest(PicardTestCase):
 class TestPluginCLIColorOption(PicardTestCase):
     def test_no_color_option_disables_color(self):
         """Test --no-color option disables colored output."""
-        from picard.plugin3.output import PluginOutput
-
         args = MockCliArgs()
         args.no_color = True
         args.list = False

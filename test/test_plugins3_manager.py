@@ -38,6 +38,10 @@ from picard.git.backend import (
     GitRef,
     GitRefType,
 )
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
+)
 from picard.git.ops import GitOperations
 from picard.plugin3.manager import (
     PluginDirtyError,
@@ -172,8 +176,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_check_dirty_working_dir_clean(self):
         """Test _check_dirty_working_dir with clean repo."""
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -184,8 +186,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(repo_dir)
             backend.reset_hard(repo, commit_id)
@@ -199,8 +199,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test _check_dirty_working_dir with uncommitted changes."""
 
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -317,8 +315,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_install_plugin_reinstall_dirty_check(self):
         """Test that install_plugin checks for dirty working dir on reinstall."""
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -334,8 +330,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(existing)
             backend.reset_hard(repo, commit_id)

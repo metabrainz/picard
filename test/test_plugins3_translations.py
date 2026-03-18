@@ -28,6 +28,10 @@ from test.test_plugins3_helpers import load_plugin_manifest
 
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginState,
+)
 
 
 class TestPluginManifestSourceLocale(PicardTestCase):
@@ -235,10 +239,6 @@ class TestPluginTranslationLoading(PicardTestCase):
 
     def test_translations_loaded_on_plugin_enable(self):
         """Test that translations are loaded when plugin is enabled."""
-        from unittest.mock import Mock
-
-        from picard.plugin3.plugin import Plugin
-
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir) / 'test_plugin'
             plugin_dir.mkdir()
@@ -271,8 +271,6 @@ class TestPluginTranslationLoading(PicardTestCase):
 
             # Verify translations were loaded
             # We can't directly access the api object, but we can verify the plugin enabled successfully
-            from picard.plugin3.plugin import PluginState
-
             self.assertEqual(plugin.state, PluginState.ENABLED)
 
 

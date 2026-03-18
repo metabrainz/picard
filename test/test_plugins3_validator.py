@@ -23,6 +23,7 @@ from test.picardtestcase import PicardTestCase
 from picard.plugin3.validator import (
     PLACEHOLDER_UUIDS,
     _is_placeholder_uuid,
+    render_markdown,
     validate_manifest_dict,
 )
 
@@ -399,13 +400,9 @@ This is **bold** and *italic*.
 
     def test_validate_markdown_parsing(self):
         """Test that markdown module is used to validate syntax."""
-        import unittest
-
-        from picard.plugin3 import validator
-
         # Skip test if markdown module is not available
-        if validator.render_markdown is None:
-            raise unittest.SkipTest("Markdown module not available")
+        if render_markdown is None:
+            self.skipTest("Markdown module not available")
 
         manifest = {
             'uuid': '550e8400-e29b-41d4-a716-446655440000',

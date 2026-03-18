@@ -30,6 +30,7 @@ from unittest.mock import (
 from test.picardtestcase import PicardTestCase
 
 from picard.git.utils import get_local_path
+from picard.plugin3.plugin import hash_string
 from picard.plugin3.registry import PluginRegistry
 
 
@@ -71,8 +72,6 @@ class TestRegistryAdvanced(PicardTestCase):
             cache_dir = Path(tmpdir)
             # We need to know the hash to create the right filename
             # Use custom TOML URL to get predictable hash
-
-            from picard.plugin3.plugin import hash_string
 
             test_url = 'https://test.example.com/registry.toml'
             url_hash = hash_string(test_url)
