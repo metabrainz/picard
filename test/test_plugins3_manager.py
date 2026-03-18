@@ -59,12 +59,12 @@ from picard.plugin3.validation import PluginValidation
 
 class TestPluginManagerHelpers(PicardTestCase):
     def test_validate_manifest_valid(self):
-        """Test _validate_manifest with valid manifest."""
+        """Test _validate_manifest with valid manifest does not raise."""
         mock_manifest = Mock()
         mock_manifest.validate.return_value = []
 
         # Should not raise
-        PluginValidation.validate_manifest(mock_manifest)
+        self.assertIsNone(PluginValidation.validate_manifest(mock_manifest))
 
     def test_validate_manifest_invalid(self):
         """Test _validate_manifest with invalid manifest."""

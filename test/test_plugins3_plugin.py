@@ -56,8 +56,8 @@ class TestPluginSync(PicardTestCase):
         """Test Plugin.sync() without source does nothing."""
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
-        # Should not raise
-        plugin.sync(None)
+        # Should not raise and return None
+        self.assertIsNone(plugin.sync(None))
 
 
 class TestPluginManifestReading(PicardTestCase):
