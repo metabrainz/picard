@@ -18,13 +18,37 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import gc
 from pathlib import Path
+import shutil
 import sys
 import tempfile
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import MockTagger
+from test.test_plugins3_helpers import (
+    MockTagger,
+    backend_add_and_commit,
+    backend_create_branch,
+    backend_create_lightweight_tag,
+    backend_create_tag,
+    backend_init_and_commit,
+    backend_set_detached_head,
+    create_git_repo_with_backend,
+)
 
+from picard.git.factory import git_backend
+from picard.git.ops import (
+    GitOperations,
+    clean_python_cache,
+)
+from picard.plugin3.manager import (
+    PluginManager,
+    PluginManifestNotFoundError,
+)
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginSourceGit,
+)
 from picard.plugin3.validator import generate_uuid
 
 import pytest
@@ -43,8 +67,6 @@ class TestCheckRefType(PicardTestCase):
 
     def test_check_ref_type_with_invalid_repo(self):
         """Test check_ref_type with invalid repository path."""
-        from picard.git.ops import GitOperations
-
         # Should handle repository errors gracefully
         ref_type, ref_name = GitOperations.check_ref_type(Path('/nonexistent'), 'main')
         self.assertIsNone(ref_type)
@@ -61,8 +83,6 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
         self.tmpdir = tempfile.mkdtemp()
         self.repo_dir = Path(self.tmpdir) / "test-repo"
 
-        from picard.git.factory import git_backend
-
         backend = git_backend()
         self.repo = backend.init_repository(self.repo_dir)
 
@@ -72,9 +92,6 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def tearDown(self):
         """Clean up temporary directory."""
-        import gc
-        import shutil
-
         gc.collect()
         if hasattr(self, 'tmpdir'):
             shutil.rmtree(self.tmpdir, ignore_errors=True)
@@ -82,18 +99,12 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_current_branch(self):
         """Test checking current HEAD on a branch."""
-        from picard.git.ops import GitOperations
-
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir)
         self.assertEqual(ref_type, 'branch')
         self.assertEqual(ref_name, 'main')
 
     def test_check_detached_head_commit(self):
         """Test checking detached HEAD (commit)."""
-        from test.test_plugins3_helpers import backend_set_detached_head
-
-        from picard.git.ops import GitOperations
-
         # Checkout specific commit (detached HEAD)
         backend_set_detached_head(self.repo_dir, self.commit1)
 
@@ -103,10 +114,6 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_tag_ref(self):
         """Test checking if a ref is a tag."""
-        from test.test_plugins3_helpers import backend_create_tag
-
-        from picard.git.ops import GitOperations
-
         # Create a tag
         backend_create_tag(self.repo_dir, 'v1.0.0', self.commit1, 'Version 1.0.0')
 
@@ -116,10 +123,6 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_branch_ref(self):
         """Test checking if a ref is a branch."""
-        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
-
-        from picard.git.ops import GitOperations
-
         # Create a dev branch with different content
         (self.repo_dir / "dev.txt").write_text("dev")
         dev_commit = backend_add_and_commit(self.repo_dir, 'Dev')
@@ -131,8 +134,6 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_commit_hash_ref(self):
         """Test checking if a ref is a commit hash."""
-        from picard.git.ops import GitOperations
-
         commit_hash = str(self.commit1)
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, commit_hash)
         self.assertEqual(ref_type, 'commit')
@@ -140,18 +141,12 @@ class TestCheckRefTypeWithRepo(PicardTestCase):
 
     def test_check_nonexistent_ref(self):
         """Test checking a ref that doesn't exist."""
-        from picard.git.ops import GitOperations
-
         ref_type, ref_name = GitOperations.check_ref_type(self.repo_dir, 'nonexistent')
         self.assertIsNone(ref_type)
         self.assertEqual(ref_name, 'nonexistent')
 
     def test_check_lightweight_tag(self):
         """Test checking a lightweight tag (ref to commit, not tag object)."""
-        from test.test_plugins3_helpers import backend_create_lightweight_tag
-
-        from picard.git.ops import GitOperations
-
         # Create a lightweight tag (just a reference, no tag object)
         backend_create_lightweight_tag(self.repo_dir, 'lightweight-v1.0', self.commit1)
 
@@ -186,8 +181,6 @@ license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 uuid = "{test_uuid}"
 """
 
-        from test.test_plugins3_helpers import create_git_repo_with_backend
-
         create_git_repo_with_backend(
             self.plugin_dir,
             {
@@ -205,9 +198,6 @@ def disable():
 
     def tearDown(self):
         """Clean up temporary directory."""
-        import gc
-        import shutil
-
         # Force garbage collection to release file handles on Windows
         gc.collect()
 
@@ -217,8 +207,6 @@ def disable():
 
     def test_plugin_source_git_clone(self):
         """Test cloning a git repository."""
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -236,8 +224,6 @@ def disable():
 
     def test_plugin_source_git_fetch_existing(self):
         """Test fetching updates to existing repository."""
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -256,8 +242,6 @@ def disable():
 
     def test_plugin_source_git_update(self):
         """Test updating an existing git repository."""
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -270,8 +254,6 @@ def disable():
 
             # Make a new commit in source
             (self.plugin_dir / "newfile.txt").write_text("new content")
-            from test.test_plugins3_helpers import backend_add_and_commit
-
             backend_add_and_commit(self.plugin_dir, 'Add new file')
 
             # Update - need to use origin/main after clone
@@ -289,17 +271,12 @@ def disable():
         self._create_test_plugin()
 
         # Create a dev branch in source
-        from picard.git.factory import git_backend
-        from picard.plugin3.plugin import PluginSourceGit
-
         backend = git_backend()
         repo = backend.create_repository(self.plugin_dir)
         repo.free()
 
         # Create file on dev branch
         (self.plugin_dir / "dev-feature.txt").write_text("dev only")
-        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
-
         dev_commit = backend_add_and_commit(self.plugin_dir, 'Dev feature')
         backend_create_branch(self.plugin_dir, 'dev', dev_commit)
 
@@ -319,9 +296,6 @@ def disable():
         self._create_test_plugin()
 
         # Create a tag in source
-        from picard.git.factory import git_backend
-        from picard.plugin3.plugin import PluginSourceGit
-
         backend = git_backend()
         repo = backend.create_repository(self.plugin_dir)
         commit = repo.get_head_target()
@@ -339,9 +313,6 @@ def disable():
 
     def test_plugin_source_git_with_commit_hash(self):
         """Test cloning specific commit."""
-        from picard.git.factory import git_backend
-        from picard.plugin3.plugin import PluginSourceGit
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -352,8 +323,6 @@ def disable():
 
         # Make another commit
         (self.plugin_dir / "second.txt").write_text("second")
-        from test.test_plugins3_helpers import backend_add_and_commit
-
         backend_add_and_commit(self.plugin_dir, 'Second commit')
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -368,8 +337,6 @@ def disable():
 
     def test_manager_install_from_git(self):
         """Test full install flow from git repository."""
-        from picard.plugin3.manager import PluginManager
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -388,8 +355,6 @@ def disable():
             self.assertTrue((plugin_path / "MANIFEST.toml").exists())
 
             # Verify metadata was stored (need to get UUID from manifest)
-            from picard.plugin3.plugin import Plugin
-
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.uuid)
@@ -403,16 +368,11 @@ def disable():
         self._create_test_plugin()
 
         # Create dev branch
-        from picard.git.factory import git_backend
-        from picard.plugin3.manager import PluginManager
-
         backend = git_backend()
         repo = backend.create_repository(self.plugin_dir)
         repo.free()
 
         (self.plugin_dir / "dev.txt").write_text("dev")
-        from test.test_plugins3_helpers import backend_add_and_commit, backend_create_branch
-
         dev_commit = backend_add_and_commit(self.plugin_dir, 'Dev')
         backend_create_branch(self.plugin_dir, 'dev', dev_commit)
 
@@ -428,8 +388,6 @@ def disable():
             self.assertTrue((manager._primary_plugin_dir / plugin_id / "dev.txt").exists())
 
             # Verify ref was stored (should be the actual ref that resolved)
-            from picard.plugin3.plugin import Plugin
-
             plugin = Plugin(manager._primary_plugin_dir, plugin_id)
             plugin.read_manifest()
             metadata = manager._get_plugin_metadata(plugin.uuid)
@@ -437,9 +395,6 @@ def disable():
 
     def test_manager_update_plugin_from_git(self):
         """Test updating plugin from git."""
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
         # Create plugin with unique UUID for this test
         test_uuid = self._create_test_plugin()
 
@@ -468,8 +423,6 @@ uuid = "{test_uuid}"
 """
             (self.plugin_dir / "MANIFEST.toml").write_text(manifest_content)
             (self.plugin_dir / "update.txt").write_text("updated")
-            from test.test_plugins3_helpers import backend_add_and_commit
-
             backend_add_and_commit(self.plugin_dir, 'Update to 1.1.0')
 
             # Update
@@ -484,20 +437,13 @@ uuid = "{test_uuid}"
     @pytest.mark.skipif(sys.platform == "win32", reason="Windows file locking issues with git repos in tests")
     def test_manager_reinstall_preserves_ref(self):
         """Test that reinstalling a plugin preserves the original ref."""
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
         # Create a v1.0.0 tag
-        from picard.git.factory import git_backend
-
         backend = git_backend()
         repo = backend.create_repository(self.plugin_dir)
         repo.free()
-
-        from test.test_plugins3_helpers import backend_create_tag
 
         backend_create_tag(self.plugin_dir, 'v1.0.0')
 
@@ -530,11 +476,6 @@ uuid = "{test_uuid}"
 
     def test_manifest_read_from_git_repo(self):
         """Test reading MANIFEST.toml from cloned git repository."""
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginSourceGit,
-        )
-
         # Create plugin with unique UUID for this test
         self._create_test_plugin()
 
@@ -555,13 +496,9 @@ uuid = "{test_uuid}"
 
     def test_install_validates_manifest_from_git(self):
         """Test that install validates MANIFEST.toml from git repo."""
-        from picard.plugin3.manager import PluginManager
-
         # Create repo without MANIFEST
         with tempfile.TemporaryDirectory() as tmpdir:
             bad_plugin_dir = Path(tmpdir) / "bad-plugin"
-            from test.test_plugins3_helpers import backend_init_and_commit
-
             backend_init_and_commit(bad_plugin_dir, {"README.md": "No manifest"}, 'Initial')
 
             # Try to install
@@ -569,8 +506,6 @@ uuid = "{test_uuid}"
             manager = PluginManager(mock_tagger)
             manager._primary_plugin_dir = Path(tmpdir) / "plugins"
             manager._primary_plugin_dir.mkdir()
-
-            from picard.plugin3.manager import PluginManifestNotFoundError
 
             with self.assertRaises(PluginManifestNotFoundError) as context:
                 manager.install_plugin(str(bad_plugin_dir))
@@ -591,15 +526,11 @@ class TestCleanPythonCache(PicardTestCase):
 
     def tearDown(self):
         """Clean up temporary directory."""
-        import shutil
-
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         super().tearDown()
 
     def test_clean_pycache_directory(self):
         """Test removing __pycache__ directory."""
-        from picard.git.ops import clean_python_cache
-
         pycache = self.test_dir / "__pycache__"
         pycache.mkdir()
         (pycache / "test.cpython-312.pyc").write_text("cache")
@@ -610,8 +541,6 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_pyc_files(self):
         """Test removing .pyc files."""
-        from picard.git.ops import clean_python_cache
-
         pyc_file = self.test_dir / "test.pyc"
         pyc_file.write_text("cache")
 
@@ -621,8 +550,6 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_pyo_files(self):
         """Test removing .pyo files."""
-        from picard.git.ops import clean_python_cache
-
         pyo_file = self.test_dir / "test.pyo"
         pyo_file.write_text("cache")
 
@@ -632,8 +559,6 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_nested_cache(self):
         """Test removing cache files in nested directories."""
-        from picard.git.ops import clean_python_cache
-
         subdir = self.test_dir / "subdir"
         subdir.mkdir()
         pycache = subdir / "__pycache__"
@@ -649,8 +574,6 @@ class TestCleanPythonCache(PicardTestCase):
 
     def test_clean_preserves_other_files(self):
         """Test that non-cache files are preserved."""
-        from picard.git.ops import clean_python_cache
-
         py_file = self.test_dir / "test.py"
         py_file.write_text("code")
         txt_file = self.test_dir / "readme.txt"
@@ -672,31 +595,22 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
         self.tmpdir = tempfile.mkdtemp()
         self.repo_dir = Path(self.tmpdir) / "test-repo"
 
-        from test.test_plugins3_helpers import backend_init_and_commit
-
         backend_init_and_commit(self.repo_dir, {"file.txt": "content"}, 'Initial')
 
     def tearDown(self):
         """Clean up temporary directory."""
-        import gc
-        import shutil
-
         gc.collect()
         shutil.rmtree(self.tmpdir, ignore_errors=True)
         super().tearDown()
 
     def test_clean_working_dir(self):
         """Test that clean working directory returns empty list."""
-        from picard.git.ops import GitOperations
-
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
 
         self.assertEqual(changes, [])
 
     def test_modified_file_detected(self):
         """Test that modified files are detected."""
-        from picard.git.ops import GitOperations
-
         (self.repo_dir / "file.txt").write_text("modified")
 
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
@@ -705,8 +619,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_untracked_file_detected(self):
         """Test that untracked files are detected."""
-        from picard.git.ops import GitOperations
-
         (self.repo_dir / "new.txt").write_text("new")
 
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
@@ -715,8 +627,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pyc_files_ignored(self):
         """Test that .pyc files are ignored."""
-        from picard.git.ops import GitOperations
-
         (self.repo_dir / "test.pyc").write_text("cache")
 
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
@@ -725,8 +635,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pyo_files_ignored(self):
         """Test that .pyo files are ignored."""
-        from picard.git.ops import GitOperations
-
         (self.repo_dir / "test.pyo").write_text("cache")
 
         changes = GitOperations.check_dirty_working_dir(self.repo_dir)
@@ -735,8 +643,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_pycache_directory_ignored(self):
         """Test that __pycache__ directory is ignored."""
-        from picard.git.ops import GitOperations
-
         pycache = self.repo_dir / "__pycache__"
         pycache.mkdir()
         (pycache / "test.cpython-312.pyc").write_text("cache")
@@ -747,8 +653,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_nested_pycache_ignored(self):
         """Test that nested __pycache__ is ignored."""
-        from picard.git.ops import GitOperations
-
         subdir = self.repo_dir / "subdir"
         subdir.mkdir()
         pycache = subdir / "__pycache__"
@@ -761,8 +665,6 @@ class TestCheckDirtyWorkingDir(PicardTestCase):
 
     def test_real_changes_with_cache_files(self):
         """Test that real changes are detected even with cache files present."""
-        from picard.git.ops import GitOperations
-
         (self.repo_dir / "real.txt").write_text("real change")
         (self.repo_dir / "test.pyc").write_text("cache")
         pycache = self.repo_dir / "__pycache__"
