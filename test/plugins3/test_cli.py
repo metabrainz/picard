@@ -94,8 +94,8 @@ def _make_cli(manager, args, **kwargs):
 class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
-        mock_manager = MockPluginManager(plugins=[])
-        exit_code, stdout, _ = run_cli(mock_manager, list=True)
+        manager = MockPluginManager(plugins=[])
+        exit_code, stdout, _ = run_cli(manager, list=True)
 
         self.assertEqual(exit_code, 0)
         self.assertIn('No plugins installed', stdout)
@@ -107,10 +107,10 @@ class TestPluginCLI(PicardTestCase):
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
         mock_plugin = MockPlugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
-        mock_manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={test_uuid})
-        mock_manager._get_plugin_metadata = Mock(return_value={})
+        manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={test_uuid})
+        manager._get_plugin_metadata = Mock(return_value={})
 
-        exit_code, stdout, _ = run_cli(mock_manager, list=True)
+        exit_code, stdout, _ = run_cli(manager, list=True)
 
         self.assertEqual(exit_code, 0)
         self.assertIn('Example plugin', stdout)
@@ -128,10 +128,10 @@ class TestPluginCLI(PicardTestCase):
         plugin3 = MockPlugin(name='middle-plugin', uuid='uuid-3')
         plugin3.manifest.name = Mock(return_value='Middle Plugin')
 
-        mock_manager = MockPluginManager(plugins=[plugin1, plugin2, plugin3])
-        mock_manager._get_plugin_metadata = Mock(return_value={})
+        manager = MockPluginManager(plugins=[plugin1, plugin2, plugin3])
+        manager._get_plugin_metadata = Mock(return_value={})
 
-        exit_code, stdout, _ = run_cli(mock_manager, list=True)
+        exit_code, stdout, _ = run_cli(manager, list=True)
 
         self.assertEqual(exit_code, 0)
         # Check that plugins appear in alphabetical order
@@ -144,9 +144,9 @@ class TestPluginCLI(PicardTestCase):
 
     def test_info_plugin_not_found(self):
         """Test info command for non-existent plugin."""
-        mock_manager = MockPluginManager(plugins=[])
-        mock_manager.find_plugin = Mock(return_value=None)
-        exit_code, _, stderr = run_cli(mock_manager, info='nonexistent')
+        manager = MockPluginManager(plugins=[])
+        manager.find_plugin = Mock(return_value=None)
+        exit_code, _, stderr = run_cli(manager, info='nonexistent')
 
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
@@ -156,12 +156,12 @@ class TestPluginCLI(PicardTestCase):
         # Create plugin with full Plugin ID
         test_uuid = generate_uuid()
         mock_plugin = MockPlugin(name=f'example_plugin_{test_uuid}', display_name='Example Plugin')
-        mock_manager = MockPluginManager(plugins=[mock_plugin])
+        manager = MockPluginManager(plugins=[mock_plugin])
 
         # Mock find_plugin to return the plugin for this test
-        mock_manager.find_plugin = Mock(return_value=mock_plugin)
+        manager.find_plugin = Mock(return_value=mock_plugin)
 
-        result = mock_manager.find_plugin('example_plugin')
+        result = manager.find_plugin('example_plugin')
 
         self.assertEqual(result, mock_plugin)
 
@@ -181,8 +181,8 @@ class TestPluginCLI(PicardTestCase):
 
             plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', manifest_content, add_git=True)
 
-            mock_manager = create_mock_manager_with_manifest_validation()
-            exit_code, stdout, stderr = run_cli(mock_manager, validate=str(plugin_dir))
+            manager = create_mock_manager_with_manifest_validation()
+            exit_code, stdout, stderr = run_cli(manager, validate=str(plugin_dir))
 
             if exit_code != 0:
                 print(f"STDOUT: {stdout}")
@@ -208,25 +208,25 @@ class TestPluginCLI(PicardTestCase):
     def test_update_cli_commands(self):
         """Test that update CLI commands are properly routed."""
         mock_plugin = MockPlugin()
-        mock_manager = MockPluginManager(plugins=[mock_plugin])
-        mock_manager.check_updates = Mock(return_value={})
-        mock_manager.update_all_plugins = Mock(return_value=[])
+        manager = MockPluginManager(plugins=[mock_plugin])
+        manager.check_updates = Mock(return_value={})
+        manager.update_all_plugins = Mock(return_value=[])
 
         # Test --check-updates
-        exit_code, _, _ = run_cli(mock_manager, check_updates=True)
+        exit_code, _, _ = run_cli(manager, check_updates=True)
         self.assertEqual(exit_code, 0)
-        mock_manager.check_updates.assert_called_once()
+        manager.check_updates.assert_called_once()
 
         # Test --update-all
-        exit_code, _, _ = run_cli(mock_manager, update_all=True)
+        exit_code, _, _ = run_cli(manager, update_all=True)
         self.assertEqual(exit_code, 0)
-        mock_manager.update_all_plugins.assert_called_once()
+        manager.update_all_plugins.assert_called_once()
 
     def test_update_plugin_not_found(self):
         """Test update command for non-existent plugin."""
-        mock_manager = MockPluginManager(plugins=[])
-        mock_manager.find_plugin = Mock(return_value=None)
-        exit_code, _, stderr = run_cli(mock_manager, update=['nonexistent'])
+        manager = MockPluginManager(plugins=[])
+        manager.find_plugin = Mock(return_value=None)
+        exit_code, _, stderr = run_cli(manager, update=['nonexistent'])
 
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
@@ -236,10 +236,10 @@ class TestPluginCLI(PicardTestCase):
 
         manifest = load_plugin_manifest('example')
         mock_plugin = MockPlugin(manifest=manifest)
-        mock_manager = MockPluginManager(plugins=[mock_plugin])
+        manager = MockPluginManager(plugins=[mock_plugin])
 
         # Simulate update_plugin returning Version objects (the bug scenario)
-        mock_manager.update_plugin = Mock(
+        manager.update_plugin = Mock(
             return_value=UpdateResult(
                 old_version='1.0.0',
                 new_version='1.1.0',
@@ -251,12 +251,12 @@ class TestPluginCLI(PicardTestCase):
             )
         )
 
-        exit_code, stdout, _ = run_cli(mock_manager, update=['test-plugin'])
+        exit_code, stdout, _ = run_cli(manager, update=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         self.assertIn('1.0.0', stdout)
         self.assertIn('1.1.0', stdout)
-        mock_manager.update_plugin.assert_called_once()
+        manager.update_plugin.assert_called_once()
 
     def test_check_updates_empty(self):
         """Test check_updates with no plugins."""
@@ -285,13 +285,13 @@ class TestPluginCLI(PicardTestCase):
             self.assertEqual(len(test_config.childKeys()), 2)
             test_config.endGroup()
 
-            mock_manager = PluginManager(Mock())
+            manager = PluginManager(Mock())
             with (
                 patch('picard.plugin3.manager.lifecycle.get_config', return_value=test_config),
                 patch('picard.plugin3.manager.clean.get_config', return_value=test_config),
                 patch('picard.plugin3.cli.get_config', return_value=test_config),
             ):
-                exit_code, stdout, _ = run_cli(mock_manager, clean_config=test_uuid, yes=True)
+                exit_code, stdout, _ = run_cli(manager, clean_config=test_uuid, yes=True)
 
             self.assertEqual(exit_code, 0)
             self.assertIn('deleted', stdout.lower())
@@ -304,40 +304,40 @@ class TestPluginCLI(PicardTestCase):
     def test_enable_plugins_command(self):
         """Test enable command."""
         mock_plugin = MockPlugin()
-        mock_manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
-        mock_manager.find_plugin = Mock(return_value=mock_plugin)
+        manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
+        manager.find_plugin = Mock(return_value=mock_plugin)
 
-        exit_code, _, _ = run_cli(mock_manager, enable=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, enable=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
-        mock_manager.enable_plugin.assert_called_once_with(mock_plugin)
+        manager.enable_plugin.assert_called_once_with(mock_plugin)
 
     def test_disable_plugins_command(self):
         """Test disable command."""
         mock_plugin = MockPlugin()
-        mock_manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
-        mock_manager.find_plugin = Mock(return_value=mock_plugin)
+        manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
+        manager.find_plugin = Mock(return_value=mock_plugin)
 
-        exit_code, _, _ = run_cli(mock_manager, disable=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, disable=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
-        mock_manager.disable_plugin.assert_called_once_with(mock_plugin)
+        manager.disable_plugin.assert_called_once_with(mock_plugin)
 
     def test_cli_keyboard_interrupt(self):
         """Test CLI handles KeyboardInterrupt."""
         mock_plugin = MockPlugin()
-        mock_manager = MockPluginManager(plugins=[mock_plugin])
-        mock_manager.check_updates = Mock(side_effect=KeyboardInterrupt())
+        manager = MockPluginManager(plugins=[mock_plugin])
+        manager.check_updates = Mock(side_effect=KeyboardInterrupt())
 
-        exit_code, _, stderr = run_cli(mock_manager, check_updates=True)
+        exit_code, _, stderr = run_cli(manager, check_updates=True)
 
         self.assertEqual(exit_code, 130)
         self.assertIn('cancelled', stderr.lower())
 
     def test_browse_plugins_command(self):
         """Test --browse command."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.list_plugins.return_value = [
+        manager = MockPluginManager()
+        manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
                 {
                     'id': 'plugin1',
@@ -358,15 +358,15 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(mock_manager, browse=True)
+        exit_code, _, _ = run_cli(manager, browse=True)
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
+        manager._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
 
     def test_browse_plugins_with_filters(self):
         """Test --browse with category and trust filters."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.list_plugins.return_value = [
+        manager = MockPluginManager()
+        manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
                 {
                     'id': 'plugin1',
@@ -378,15 +378,15 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(mock_manager, browse=True, category='metadata', trust='official')
+        exit_code, _, _ = run_cli(manager, browse=True, category='metadata', trust='official')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level='official')
+        manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level='official')
 
     def test_search_plugins_command(self):
         """Test --search command."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.list_plugins.return_value = [
+        manager = MockPluginManager()
+        manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
                 {
                     'id': 'listenbrainz',
@@ -400,7 +400,7 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(mock_manager, search='listen')
+        exit_code, _, _ = run_cli(manager, search='listen')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
 
@@ -413,34 +413,34 @@ class TestPluginCLI(PicardTestCase):
         mock_plugin.versioning_scheme = None  # No versioning scheme
         mock_plugin.refs = []  # No explicit refs
 
-        mock_manager = MockPluginManager()
-        mock_manager._registry.find_plugin.return_value = mock_plugin
-        mock_manager._find_plugin_by_url.return_value = None  # Not already installed
-        mock_manager.install_plugin.return_value = 'test-plugin'
+        manager = MockPluginManager()
+        manager._registry.find_plugin.return_value = mock_plugin
+        manager._find_plugin_by_url.return_value = None  # Not already installed
+        manager.install_plugin.return_value = 'test-plugin'
 
-        exit_code, _, _ = run_cli(mock_manager, install=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, install=['test-plugin'])
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
-        mock_manager.install_plugin.assert_called_once()
+        manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
+        manager.install_plugin.assert_called_once()
 
     def test_check_blacklist_not_blacklisted(self):
         """Test --check-blacklist with non-blacklisted URL."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.is_blacklisted.return_value = (False, None)
+        manager = MockPluginManager()
+        manager._registry.is_blacklisted.return_value = (False, None)
 
-        exit_code, stdout, _ = run_cli(mock_manager, check_blacklist='https://github.com/test/plugin')
+        exit_code, stdout, _ = run_cli(manager, check_blacklist='https://github.com/test/plugin')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('Not blacklisted', stdout)
-        mock_manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
+        manager._registry.is_blacklisted.assert_called_once_with('https://github.com/test/plugin', None)
 
     def test_check_blacklist_is_blacklisted(self):
         """Test --check-blacklist with blacklisted URL."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
+        manager = MockPluginManager()
+        manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
-        exit_code, stdout, stderr = run_cli(mock_manager, check_blacklist='https://github.com/bad/plugin')
+        exit_code, stdout, stderr = run_cli(manager, check_blacklist='https://github.com/bad/plugin')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Blacklisted', stderr)
@@ -448,43 +448,43 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_blacklist_with_uuid(self):
         """Test --check-blacklist with --uuid passes UUID to is_blacklisted."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
+        manager = MockPluginManager()
+        manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
         exit_code, stdout, stderr = run_cli(
-            mock_manager,
+            manager,
             check_blacklist='https://github.com/test/plugin',
             uuid='blacklisted-uuid-1234',
         )
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Blacklisted', stderr)
-        mock_manager._registry.is_blacklisted.assert_called_once_with(
+        manager._registry.is_blacklisted.assert_called_once_with(
             'https://github.com/test/plugin', 'blacklisted-uuid-1234'
         )
 
     def test_check_blacklist_uuid_only(self):
         """Test --check-blacklist --uuid without URL."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.is_blacklisted.return_value = (True, 'UUID is blacklisted')
+        manager = MockPluginManager()
+        manager._registry.is_blacklisted.return_value = (True, 'UUID is blacklisted')
 
         exit_code, stdout, stderr = run_cli(
-            mock_manager,
+            manager,
             check_blacklist='',
             uuid='blacklisted-uuid-1234',
         )
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Blacklisted', stderr)
-        mock_manager._registry.is_blacklisted.assert_called_once_with(
+        manager._registry.is_blacklisted.assert_called_once_with(
             None,
             'blacklisted-uuid-1234',
         )
 
     def test_search_with_category_filter(self):
         """Test --search with --category filter."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.list_plugins.return_value = [
+        manager = MockPluginManager()
+        manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
                 {
                     'id': 'metadata-plugin',
@@ -496,51 +496,51 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(mock_manager, search='test', category='metadata')
+        exit_code, _, _ = run_cli(manager, search='test', category='metadata')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level=None)
+        manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level=None)
 
     def test_search_with_trust_filter(self):
         """Test --search with --trust filter."""
-        mock_manager = MockPluginManager()
-        mock_manager._registry.list_plugins.return_value = []
+        manager = MockPluginManager()
+        manager._registry.list_plugins.return_value = []
 
-        exit_code, _, _ = run_cli(mock_manager, search='test', trust='official')
+        exit_code, _, _ = run_cli(manager, search='test', trust='official')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager._registry.list_plugins.assert_called_once_with(category=None, trust_level='official')
+        manager._registry.list_plugins.assert_called_once_with(category=None, trust_level='official')
 
     def test_refresh_registry_command(self):
         """Test --refresh-registry command."""
-        mock_manager = MockPluginManager()
+        manager = MockPluginManager()
 
         # Mock refresh_registry_and_caches to call callback immediately
         def mock_refresh(callback=None):
             if callback:
                 callback(True, None)
 
-        mock_manager.refresh_registry_and_caches = Mock(side_effect=mock_refresh)
-        mock_manager._registry.get_registry_info.return_value = {
+        manager.refresh_registry_and_caches = Mock(side_effect=mock_refresh)
+        manager._registry.get_registry_info.return_value = {
             'plugin_count': 42,
             'api_version': '3.0',
             'registry_url': 'https://test.example.com/registry.toml',
         }
 
-        exit_code, stdout, _ = run_cli(mock_manager, refresh_registry=True)
+        exit_code, stdout, _ = run_cli(manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
-        mock_manager.refresh_registry_and_caches.assert_called_once()
-        mock_manager._registry.get_registry_info.assert_called_once()
+        manager.refresh_registry_and_caches.assert_called_once()
+        manager._registry.get_registry_info.assert_called_once()
         self.assertIn('Registry refreshed successfully', stdout)
         self.assertIn('Plugins available: 42', stdout)
 
     def test_refresh_registry_error(self):
         """Test --refresh-registry command with error."""
-        mock_manager = MockPluginManager()
-        mock_manager.refresh_registry_and_caches.side_effect = Exception('Network error')
+        manager = MockPluginManager()
+        manager.refresh_registry_and_caches.side_effect = Exception('Network error')
 
-        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to refresh registry', stderr)
@@ -548,12 +548,12 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_fetch_error(self):
         """Test --refresh-registry with RegistryFetchError."""
-        mock_manager = MockPluginManager()
-        mock_manager.refresh_registry_and_caches.side_effect = RegistryFetchError(
+        manager = MockPluginManager()
+        manager.refresh_registry_and_caches.side_effect = RegistryFetchError(
             'https://test.example.com/registry.toml', Exception('Connection timeout')
         )
 
-        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to fetch registry', stderr)
@@ -562,12 +562,12 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_parse_error(self):
         """Test --refresh-registry with RegistryParseError."""
-        mock_manager = MockPluginManager()
-        mock_manager.refresh_registry_and_caches.side_effect = RegistryParseError(
+        manager = MockPluginManager()
+        manager.refresh_registry_and_caches.side_effect = RegistryParseError(
             'https://test.example.com/registry.toml', Exception('Invalid JSON')
         )
 
-        exit_code, _, stderr = run_cli(mock_manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to parse registry', stderr)
@@ -581,18 +581,18 @@ class TestPluginCLI(PicardTestCase):
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
 
         mock_plugin = MockPlugin(name='test-plugin', uuid=test_uuid, manifest=manifest)
-        mock_manager = MockPluginManager(plugins=[mock_plugin])
+        manager = MockPluginManager(plugins=[mock_plugin])
 
         # Mock update_plugin to raise PluginCommitPinnedError
-        mock_manager.update_plugin.side_effect = PluginCommitPinnedError('test-plugin', 'abc1234')
+        manager.update_plugin.side_effect = PluginCommitPinnedError('test-plugin', 'abc1234')
 
-        exit_code, stdout, stderr = run_cli(mock_manager, update=['test-plugin'])
+        exit_code, stdout, stderr = run_cli(manager, update=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         self.assertIn('pinned to commit', stderr)
         self.assertIn('switch-ref', stdout)
         # Should have called update_plugin (which raised the exception)
-        mock_manager.update_plugin.assert_called_once()
+        manager.update_plugin.assert_called_once()
 
 
 class TestPluginCLIErrors(PicardTestCase):
