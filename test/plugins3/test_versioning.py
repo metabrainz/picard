@@ -31,6 +31,7 @@ from picard.plugin3.manager.registry import (
     _parse_version_safely,
     _strip_to_first_digit,
 )
+from picard.version import Version
 
 
 class TestStripToFirstDigit(PicardTestCase):
@@ -228,7 +229,7 @@ class TestSelectRefForPlugin(PicardTestCase):
         plugin.refs = [{'name': 'main'}]
         self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')
 
-    @patch('picard.plugin3.manager.registry.api_versions_tuple', (3, 0))
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', [Version.from_string('3.0')])
     def test_no_versioning_uses_refs(self):
         mgr = PluginRegistryManager(Mock())
         plugin = Mock()
@@ -237,7 +238,7 @@ class TestSelectRefForPlugin(PicardTestCase):
         plugin.refs = [{'name': 'main', 'min_api_version': '3.0'}]
         self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')
 
-    @patch('picard.plugin3.manager.registry.api_versions_tuple', (3, 0))
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', [Version.from_string('3.0')])
     def test_api_version_skips_incompatible_refs(self):
         mgr = PluginRegistryManager(Mock())
         plugin = Mock()
@@ -249,7 +250,7 @@ class TestSelectRefForPlugin(PicardTestCase):
         ]
         self.assertEqual(mgr.select_ref_for_plugin(plugin), 'picard-v3')
 
-    @patch('picard.plugin3.manager.registry.api_versions_tuple', (5, 0))
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', [Version.from_string('5.0')])
     def test_api_version_above_max_skips(self):
         mgr = PluginRegistryManager(Mock())
         plugin = Mock()
@@ -269,7 +270,7 @@ class TestSelectRefForPlugin(PicardTestCase):
         plugin.refs = []
         self.assertIsNone(mgr.select_ref_for_plugin(plugin))
 
-    @patch('picard.plugin3.manager.registry.api_versions_tuple', (2, 0))
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', [Version.from_string('2.0')])
     def test_no_compatible_ref_uses_first(self):
         mgr = PluginRegistryManager(Mock())
         plugin = Mock()
@@ -277,5 +278,17 @@ class TestSelectRefForPlugin(PicardTestCase):
         plugin.git_url = 'url'
         plugin.refs = [
             {'name': 'main', 'min_api_version': '3.0'},
+        ]
+        self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')
+
+    @patch('picard.plugin3.manager.registry.api_versions_tuple', [Version.from_string('10.0')])
+    def test_api_version_multi_digit_comparison(self):
+        """Ensure API version 10.0 is correctly compared (not string-based)."""
+        mgr = PluginRegistryManager(Mock())
+        plugin = Mock()
+        plugin.versioning_scheme = None
+        plugin.git_url = 'url'
+        plugin.refs = [
+            {'name': 'main', 'min_api_version': '4.0'},
         ]
         self.assertEqual(mgr.select_ref_for_plugin(plugin), 'main')

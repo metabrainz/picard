@@ -25,6 +25,11 @@ from unittest.mock import (
     patch,
 )
 
+from PyQt6.QtCore import (
+    QCollator,
+    QLocale,
+)
+
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
     backend_add_and_commit,
@@ -255,6 +260,11 @@ class TestPluginNameAndStr(PicardTestCase):
         self.assertEqual(plugin.name(), 'my-plugin')
 
     def test_lt_compares_by_name(self):
+        import picard.i18n
+
+        QLocale.setDefault(QLocale('en'))
+        picard.i18n._qcollator = QCollator()
+
         p1 = Plugin(Path('/tmp'), 'alpha')
         p1.manifest = Mock()
         p1.manifest.name_i18n.return_value = 'Alpha'
