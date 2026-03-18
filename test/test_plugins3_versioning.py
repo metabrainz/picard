@@ -74,51 +74,31 @@ class TestVersioningScheme(PicardTestCase):
         self.assertEqual(ref, 'main')
 
     def test_find_newer_version_tag(self):
-        """Test finding newer version tag."""
+        """Test _find_newer_version_tag returns newest tag when newer exists."""
         from picard.plugin3.manager import PluginManager
 
         manager = PluginManager(None)
+        manager._registry_manager._fetch_version_tags = Mock(return_value=['v2.1.0', 'v2.0.0', 'v1.0.0'])
 
-        # Mock the method
-        manager._find_newer_version_tag = Mock(return_value='v2.1.0')
         newer = manager._find_newer_version_tag('https://github.com/user/plugin', 'v1.0.0', 'semver')
-
         self.assertEqual(newer, 'v2.1.0')
 
     def test_find_newer_version_tag_none_available(self):
-        """Test finding newer version when already on latest."""
+        """Test _find_newer_version_tag returns None when already on latest."""
         from picard.plugin3.manager import PluginManager
 
         manager = PluginManager(None)
+        manager._registry_manager._fetch_version_tags = Mock(return_value=['v2.0.0'])
 
-        # Mock the method
-        manager._find_newer_version_tag = Mock(return_value=None)
         newer = manager._find_newer_version_tag('https://github.com/user/plugin', 'v2.0.0', 'semver')
-
         self.assertIsNone(newer)
 
-    def test_validate_ref_with_versioning_scheme(self):
-        """Test ref validation with versioning_scheme."""
+    def test_find_newer_version_tag_no_tags(self):
+        """Test _find_newer_version_tag returns None when no tags available."""
         from picard.plugin3.manager import PluginManager
 
         manager = PluginManager(None)
+        manager._registry_manager._fetch_version_tags = Mock(return_value=[])
 
-        # Mock _validate_ref to return validation result
-        manager._validate_ref = Mock(return_value=(True, [{'name': 'v1.0.0'}, {'name': 'v2.0.0'}]))
-        is_valid, available = manager._validate_ref('https://github.com/user/plugin', 'v1.0.0')
-
-        self.assertTrue(is_valid)
-        self.assertEqual(len(available), 2)
-
-    def test_validate_ref_invalid(self):
-        """Test ref validation with invalid ref."""
-        from picard.plugin3.manager import PluginManager
-
-        manager = PluginManager(None)
-
-        # Mock _validate_ref to return invalid result
-        manager._validate_ref = Mock(return_value=(False, [{'name': 'v1.0.0'}, {'name': 'v2.0.0'}]))
-        is_valid, available = manager._validate_ref('https://github.com/user/plugin', 'v3.0.0')
-
-        self.assertFalse(is_valid)
-        self.assertEqual(len(available), 2)
+        newer = manager._find_newer_version_tag('https://github.com/user/plugin', 'v1.0.0', 'semver')
+        self.assertIsNone(newer)
