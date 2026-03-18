@@ -18,22 +18,41 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from io import StringIO
+from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
     PropertyMock,
+    patch,
 )
+
+from PyQt6.QtCore import QSettings
 
 from test.picardtestcase import PicardTestCase
 from test.test_plugins3_helpers import (
     MockPlugin,
     MockPluginManager,
+    create_mock_manager_with_manifest_validation,
+    create_test_manifest_content,
+    create_test_plugin_dir,
     load_plugin_manifest,
     run_cli,
 )
 
 from picard.git.factory import has_git_backend
+from picard.plugin3.cli import ExitCode
+from picard.plugin3.manager import (
+    PluginCommitPinnedError,
+    PluginManager,
+)
 from picard.plugin3.manager.update import UpdateResult
+from picard.plugin3.output import PluginOutput
 from picard.plugin3.ref_item import RefItem
+from picard.plugin3.registry import (
+    RegistryFetchError,
+    RegistryParseError,
+)
 from picard.plugin3.validator import generate_uuid
 
 
@@ -135,19 +154,11 @@ class TestPluginCLI(PicardTestCase):
 
     def test_validate_git_url(self):
         """Test validate command with git URL."""
-        import tempfile
-
         if not has_git_backend():
             self.skipTest("git backend not available")
 
         # Create a temporary git repository
         with tempfile.TemporaryDirectory() as tmpdir:
-            from test.test_plugins3_helpers import (
-                create_mock_manager_with_manifest_validation,
-                create_test_manifest_content,
-                create_test_plugin_dir,
-            )
-
             manifest_content = create_test_manifest_content(
                 name='Test Plugin',
                 authors=['Test'],
@@ -169,10 +180,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_output_color_mode(self):
         """Test that color mode works correctly."""
-        from io import StringIO
-
-        from picard.plugin3.output import PluginOutput
-
         # Test with color enabled
         stdout_color = StringIO()
         output_color = PluginOutput(stdout=stdout_color, stderr=StringIO(), color=True)
@@ -240,8 +247,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_updates_empty(self):
         """Test check_updates with no plugins."""
-        from picard.plugin3.manager import PluginManager
-
         manager = PluginManager(Mock())
         manager._plugins = []
 
@@ -250,14 +255,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_clean_config_command(self):
         """Test --clean-config command."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import patch
-
-        from PyQt6.QtCore import QSettings
-
-        from picard.plugin3.manager import PluginManager
-
         test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
         # Create a real temporary config
@@ -326,8 +323,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_browse_plugins_command(self):
         """Test --browse command."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
@@ -357,8 +352,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_browse_plugins_with_filters(self):
         """Test --browse with category and trust filters."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
@@ -379,8 +372,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_search_plugins_command(self):
         """Test --search command."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
@@ -402,10 +393,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_install_by_plugin_id(self):
         """Test installing plugin by ID from registry."""
-        from unittest.mock import Mock
-
-        from picard.plugin3.cli import ExitCode
-
         mock_plugin = Mock()
         mock_plugin.id = 'test-plugin'
         mock_plugin.name = 'Test Plugin'
@@ -426,8 +413,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_blacklist_not_blacklisted(self):
         """Test --check-blacklist with non-blacklisted URL."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (False, None)
 
@@ -439,8 +424,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_blacklist_is_blacklisted(self):
         """Test --check-blacklist with blacklisted URL."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
@@ -452,8 +435,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_blacklist_with_uuid(self):
         """Test --check-blacklist with --uuid passes UUID to is_blacklisted."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
@@ -471,8 +452,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_check_blacklist_uuid_only(self):
         """Test --check-blacklist --uuid without URL."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.is_blacklisted.return_value = (True, 'UUID is blacklisted')
 
@@ -491,8 +470,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_search_with_category_filter(self):
         """Test --search with --category filter."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = [
             create_mock_registry_plugin(
@@ -513,8 +490,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_search_with_trust_filter(self):
         """Test --search with --trust filter."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager._registry.list_plugins.return_value = []
 
@@ -525,8 +500,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_command(self):
         """Test --refresh-registry command."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
 
         # Mock refresh_registry_and_caches to call callback immediately
@@ -551,8 +524,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_error(self):
         """Test --refresh-registry command with error."""
-        from picard.plugin3.cli import ExitCode
-
         mock_manager = MockPluginManager()
         mock_manager.refresh_registry_and_caches.side_effect = Exception('Network error')
 
@@ -564,9 +535,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_fetch_error(self):
         """Test --refresh-registry with RegistryFetchError."""
-        from picard.plugin3.cli import ExitCode
-        from picard.plugin3.registry import RegistryFetchError
-
         mock_manager = MockPluginManager()
         mock_manager.refresh_registry_and_caches.side_effect = RegistryFetchError(
             'https://test.example.com/registry.toml', Exception('Connection timeout')
@@ -581,9 +549,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_refresh_registry_parse_error(self):
         """Test --refresh-registry with RegistryParseError."""
-        from picard.plugin3.cli import ExitCode
-        from picard.plugin3.registry import RegistryParseError
-
         mock_manager = MockPluginManager()
         mock_manager.refresh_registry_and_caches.side_effect = RegistryParseError(
             'https://test.example.com/registry.toml', Exception('Invalid JSON')
@@ -598,10 +563,6 @@ class TestPluginCLI(PicardTestCase):
 
     def test_update_commit_pinned_plugin(self):
         """Test update command shows warning for commit-pinned plugins."""
-        from unittest.mock import PropertyMock
-
-        from picard.plugin3.manager import PluginCommitPinnedError
-
         test_uuid = generate_uuid()
         manifest = load_plugin_manifest('example')
         type(manifest).uuid = PropertyMock(return_value=test_uuid)
