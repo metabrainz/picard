@@ -19,14 +19,31 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+import logging
+from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import load_plugin_manifest
+from PyQt6.QtCore import QSettings
 
+from test.picardtestcase import PicardTestCase
+from test.test_plugins3_helpers import (
+    MockTagger,
+    load_plugin_manifest,
+)
+
+from picard import log
+from picard.config import (
+    BoolOption,
+    ConfigSection,
+    IntOption,
+    Option,
+    TextOption,
+    get_config,
+)
 from picard.plugin3.api import PluginApi
 
 
@@ -185,3 +202,407 @@ class TestPluginApiMethods(PicardTestCase):
         mock_tagger.get_plugin_manager.return_value = None
         result = api.get_plugin_version()
         self.assertEqual(result, "Unknown")
+
+
+class TestPluginApi(PicardTestCase):
+    def tearDown(self):
+        # Clear plugin options created during tests from registry
+        for key, _v in list(Option.registry.items()):
+            if key[0].startswith('plugin.'):
+                del Option.registry[key]
+
+    def test_init(self):
+        manifest = load_plugin_manifest('example')
+
+        mock_tagger = MockTagger()
+        mock_ws = mock_tagger.webservice = Mock()
+
+        api = PluginApi(manifest, mock_tagger)
+        self.assertEqual(api.web_service, mock_ws)
+        self.assertEqual(api.logger.name, 'main.plugin.example')
+        self.assertEqual(api.global_config, get_config())
+        self.assertIsInstance(api.plugin_config, ConfigSection)
+
+    def test_api_properties(self):
+        """Test PluginApi property accessors."""
+        manifest = load_plugin_manifest('example')
+
+        mock_tagger = MockTagger()
+        mock_ws = mock_tagger.webservice = Mock()
+
+        api = PluginApi(manifest, mock_tagger)
+
+        # Test property accessors
+        self.assertEqual(api.web_service, mock_ws)
+        self.assertIsNotNone(api.mb_api)
+        self.assertIsNotNone(api.logger)
+        self.assertEqual(api.plugin_id, 'example')
+        self.assertIsNotNone(api.global_config)
+        self.assertIsNotNone(api.plugin_config)
+
+    def test_logger_propagates_to_main(self):
+        """Test that plugin logger messages propagate to main logger."""
+        # Save and restore logging.disable state (other tests may have disabled logging)
+        original_disable_level = logging.root.manager.disable
+        logging.disable(logging.NOTSET)
+
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, MockTagger())
+
+        # Verify logger name is correct
+        self.assertEqual(api.logger.name, 'main.plugin.example')
+
+        # Create a real handler that captures messages
+        captured_messages = []
+
+        class CaptureHandler(logging.Handler):
+            def emit(self, record):
+                captured_messages.append(record)
+
+        handler = CaptureHandler()
+        handler.setLevel(logging.DEBUG)
+
+        # Add handler to main logger
+        log.main_logger.addHandler(handler)
+
+        try:
+            # Set logger levels to ensure messages are processed
+            original_main_level = log.main_logger.level
+            log.main_logger.setLevel(logging.DEBUG)
+            api.logger.setLevel(logging.DEBUG)
+
+            # Log messages at different levels
+            api.logger.info("Test info message")
+            api.logger.debug("Test debug message")
+
+            # Verify messages were captured
+            self.assertGreater(len(captured_messages), 0, "Plugin logger messages should propagate to main logger")
+            # Verify the messages are from our plugin logger
+            for record in captured_messages:
+                self.assertTrue(record.name.startswith('main.plugin.'))
+        finally:
+            log.main_logger.removeHandler(handler)
+            log.main_logger.setLevel(original_main_level)
+            logging.disable(original_disable_level)
+
+    def test_plugin_config_persistence(self):
+        """Test that plugin config values are saved and can be retrieved."""
+        manifest = load_plugin_manifest('example')
+        test_uuid = manifest.uuid
+
+        # Create a temporary config file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Create a real QSettings instance
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Create mock tagger with real config
+            mock_tagger = MockTagger()
+
+            # Create API with the test config
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Set some config values
+            api.plugin_config['test_string'] = 'hello'
+            api.plugin_config['test_int'] = 42
+            api.plugin_config['test_bool'] = True
+
+            # Force sync to disk
+            settings.sync()
+
+            # Verify values were written to QSettings
+            self.assertEqual(settings.value(f'plugin.{test_uuid}/test_string'), 'hello')
+            self.assertEqual(settings.value(f'plugin.{test_uuid}/test_int'), 42)
+            self.assertEqual(settings.value(f'plugin.{test_uuid}/test_bool'), True)
+
+            # Create a new settings instance to verify persistence
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Verify values persisted across settings instances
+            self.assertEqual(settings2.value(f'plugin.{test_uuid}/test_string'), 'hello')
+            self.assertEqual(settings2.value(f'plugin.{test_uuid}/test_int'), 42)
+            self.assertEqual(settings2.value(f'plugin.{test_uuid}/test_bool'), True)
+
+            # Verify raw_value can read them back
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+            self.assertEqual(api2.plugin_config.raw_value('test_string'), 'hello')
+            self.assertEqual(api2.plugin_config.raw_value('test_int'), 42)
+            self.assertEqual(api2.plugin_config.raw_value('test_bool'), True)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
+    def test_plugin_config_operations(self):
+        """Test all plugin_config operations."""
+        manifest = load_plugin_manifest('example')
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            mock_tagger = MockTagger()
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Test registering options
+            api.plugin_config.register_option('string', 'default')
+            api.plugin_config.register_option('int', 1)
+            api.plugin_config.register_option('float', 1.0)
+            api.plugin_config.register_option('bool', False)
+            api.plugin_config.register_option('list', [])
+            api.plugin_config.register_option('dict', {})
+
+            # Test reading default values
+            self.assertEqual(api.plugin_config['string'], 'default')
+            self.assertEqual(api.plugin_config['int'], 1)
+            self.assertEqual(api.plugin_config['float'], 1.0)
+            self.assertEqual(api.plugin_config['bool'], False)
+            self.assertEqual(api.plugin_config['list'], [])
+            self.assertEqual(api.plugin_config['dict'], {})
+
+            # Test setting various types
+            api.plugin_config['string'] = 'value'
+            api.plugin_config['int'] = 42
+            api.plugin_config['float'] = 3.14
+            api.plugin_config['bool'] = True
+            api.plugin_config['list'] = [1, 2, 3]
+            api.plugin_config['dict'] = {'key': 'value'}
+
+            # Test __contains__
+            self.assertIn('string', api.plugin_config)
+            self.assertIn('int', api.plugin_config)
+            self.assertNotIn('missing', api.plugin_config)
+
+            # Test reading set values with various types
+            self.assertEqual(api.plugin_config['string'], 'value')
+            self.assertEqual(api.plugin_config['int'], 42)
+            self.assertEqual(api.plugin_config['float'], 3.14)
+            self.assertEqual(api.plugin_config['bool'], True)
+            self.assertEqual(api.plugin_config['list'], [1, 2, 3])
+            self.assertEqual(api.plugin_config['dict'], {'key': 'value'})
+
+            # Test .remove()
+            api.plugin_config.remove('string')
+            self.assertNotIn('string', api.plugin_config)
+            self.assertEqual(api.plugin_config['string'], 'default')
+
+            # Verify persistence of complex types
+            settings.sync()
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
+            self.assertEqual(api2.plugin_config['dict'], {'key': 'value'})
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
+    def test_plugin_config_type_roundtrip(self):
+        """Test that common types survive save/load roundtrip in same process."""
+        manifest = load_plugin_manifest('example')
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+            mock_tagger = MockTagger()
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Register options
+            api.plugin_config.register_option('bool_true', False)
+            api.plugin_config.register_option('bool_false', False)
+            api.plugin_config.register_option('int', 0)
+            api.plugin_config.register_option('float', 0.0)
+            api.plugin_config.register_option('string', "")
+            api.plugin_config.register_option('list', [])
+            api.plugin_config.register_option('dict', {})
+
+            # Actually write specific values
+            api.plugin_config['bool_true'] = True
+            api.plugin_config['bool_false'] = False
+            api.plugin_config['int'] = 42
+            api.plugin_config['float'] = 3.14
+            api.plugin_config['string'] = 'hello'
+            api.plugin_config['list'] = [1, 2, 3]
+            api.plugin_config['dict'] = {'key': 'value'}
+            settings.sync()
+
+            # Load in new QSettings instance (same process)
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            # Types are preserved due to QSettings in-memory cache
+            self.assertIs(api2.plugin_config['bool_true'], True)
+            self.assertIs(api2.plugin_config['bool_false'], False)
+            self.assertEqual(api2.plugin_config['int'], 42)
+            self.assertIsInstance(api2.plugin_config['int'], int)
+            self.assertEqual(api2.plugin_config['float'], 3.14)
+            self.assertIsInstance(api2.plugin_config['float'], float)
+            self.assertEqual(api2.plugin_config['string'], 'hello')
+            self.assertIsInstance(api2.plugin_config['string'], str)
+            self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
+            self.assertIsInstance(api2.plugin_config['list'], list)
+            self.assertEqual(api2.plugin_config['dict'], {'key': 'value'})
+            self.assertIsInstance(api2.plugin_config['dict'], dict)
+
+        finally:
+            config_file.unlink(missing_ok=True)
+
+    def test_plugin_config_with_options(self):
+        """Test that plugin config works with registered Options."""
+        manifest = load_plugin_manifest('example')
+        test_uuid = manifest.uuid
+
+        # Create a temporary config file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
+            config_file = Path(f.name)
+
+        try:
+            # Create a real QSettings instance
+            settings = QSettings(str(config_file), QSettings.Format.IniFormat)
+
+            # Create mock tagger
+            mock_tagger = MockTagger()
+
+            # Create API
+            api = PluginApi(manifest, mock_tagger)
+            api._api_config._ConfigSection__qt_config = settings
+
+            # Register options for the plugin
+            TextOption(f'plugin.{test_uuid}', 'text_setting', 'default_text')
+            IntOption(f'plugin.{test_uuid}', 'int_setting', 42)
+            BoolOption(f'plugin.{test_uuid}', 'bool_setting', False)
+
+            # Set values
+            api.plugin_config['text_setting'] = 'hello'
+            api.plugin_config['int_setting'] = 100
+            api.plugin_config['bool_setting'] = True
+
+            # Read back using [] operator (works with registered Options)
+            self.assertEqual(api.plugin_config['text_setting'], 'hello')
+            self.assertEqual(api.plugin_config['int_setting'], 100)
+            self.assertEqual(api.plugin_config['bool_setting'], True)
+
+            # Verify persistence
+            settings.sync()
+            settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
+            api2 = PluginApi(manifest, mock_tagger)
+            api2._api_config._ConfigSection__qt_config = settings2
+
+            # Values should persist and be properly typed
+            self.assertEqual(api2.plugin_config['text_setting'], 'hello')
+            self.assertEqual(api2.plugin_config['int_setting'], 100)
+            self.assertEqual(api2.plugin_config['bool_setting'], True)
+
+        finally:
+            # Clean up registered options
+            Option.registry.pop((f'plugin.{test_uuid}', 'text_setting'), None)
+            Option.registry.pop((f'plugin.{test_uuid}', 'int_setting'), None)
+            Option.registry.pop((f'plugin.{test_uuid}', 'bool_setting'), None)
+            config_file.unlink(missing_ok=True)
+
+    def test_register_metadata_processors(self):
+        """Test metadata processor registration methods."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        def dummy_processor():
+            pass
+
+        with patch('picard.plugin3.api_impl.register_album_metadata_processor') as mock_album:
+            api.register_album_metadata_processor(dummy_processor, priority=5)
+            args, kwargs = mock_album.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 5)
+
+        with patch('picard.plugin3.api_impl.register_track_metadata_processor') as mock_track:
+            api.register_track_metadata_processor(dummy_processor, priority=10)
+            args, kwargs = mock_track.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 10)
+
+    def test_register_event_hooks(self):
+        """Test event hook registration methods."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        def dummy_hook():
+            pass
+
+        with patch('picard.plugin3.api_impl.register_album_post_removal_processor') as mock:
+            api.register_album_post_removal_processor(dummy_hook)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
+
+        with patch('picard.plugin3.api_impl.register_file_post_load_processor') as mock:
+            api.register_file_post_load_processor(dummy_hook)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
+
+        with patch('picard.plugin3.api_impl.register_file_post_save_processor') as mock:
+            api.register_file_post_save_processor(dummy_hook)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
+
+        with patch('picard.plugin3.api_impl.register_file_pre_save_processor') as mock:
+            api.register_file_pre_save_processor(dummy_hook)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_hook)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 0)
+
+    def test_register_script_function(self):
+        """Test script function registration."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        def dummy_func():
+            pass
+
+        with patch('picard.plugin3.api_impl.register_script_function') as mock:
+            api.register_script_function(
+                dummy_func, name='test', eval_args=False, documentation="doc", signature="$test"
+            )
+            mock.assert_called_once_with(dummy_func, 'test', False, True, "doc", "$test")
+
+    def test_register_actions(self):
+        """Test action registration methods."""
+        manifest = load_plugin_manifest('example')
+        api = PluginApi(manifest, Mock())
+
+        mock_action = Mock()
+
+        with patch('picard.plugin3.api_impl.register_album_action') as mock:
+            api.register_album_action(mock_action)
+            mock.assert_called_once_with(mock_action)
+
+        with patch('picard.plugin3.api_impl.register_track_action') as mock:
+            api.register_track_action(mock_action)
+            mock.assert_called_once_with(mock_action)
+
+        with patch('picard.plugin3.api_impl.register_file_action') as mock:
+            api.register_file_action(mock_action)
+            mock.assert_called_once_with(mock_action)

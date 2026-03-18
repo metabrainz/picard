@@ -25,7 +25,10 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
+from test.picardtestcase import (
+    PicardTestCase,
+    get_test_data_path,
+)
 from test.test_plugins3_helpers import (
     MockPlugin,
     MockTagger,
@@ -59,6 +62,7 @@ from picard.plugin3.plugin_metadata import (
 )
 from picard.plugin3.registry import RegistryPlugin
 from picard.plugin3.validation import PluginValidation
+from picard.plugin3.validator import generate_uuid
 
 
 class TestPluginManagerHelpers(PicardTestCase):
@@ -814,3 +818,183 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         # Verify directory removal was attempted
         mock_shutil.rmtree.assert_called_once_with(final_path)
+
+
+class TestPluginManager(PicardTestCase):
+    def test_config_persistence(self):
+        """Test that enabled plugins are saved to and loaded from config."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Initially no plugins enabled
+        self.assertEqual(manager._enabled_plugins, set())
+
+        # Create a mock plugin with UUID
+        test_uuid = generate_uuid()
+        mock_plugin = MockPlugin(uuid=test_uuid)
+
+        # Enable plugin - should save to config
+        manager.enable_plugin(mock_plugin)
+        self.assertIn(test_uuid, manager._enabled_plugins)
+
+        # Verify it was saved to config
+        config = get_config()
+        self.assertIn('plugins3_enabled_plugins', config.setting)
+        self.assertIn(test_uuid, config.setting['plugins3_enabled_plugins'])
+
+        # Create new manager instance - should load from config
+        manager2 = PluginManager(mock_tagger)
+        self.assertIn(test_uuid, manager2._enabled_plugins)
+
+        # Disable plugin - should remove from config
+        manager2.disable_plugin(mock_plugin)
+        self.assertNotIn(test_uuid, manager2._enabled_plugins)
+        self.assertNotIn(test_uuid, config.setting['plugins3_enabled_plugins'])
+
+    def test_init_plugins_only_loads_enabled(self):
+        """Test that init_plugins only loads plugins that are enabled in config."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Create mock plugins with UUIDs
+        enabled_uuid = 'enabled-uuid-1234'
+        enabled_plugin = Mock(spec=Plugin)
+        enabled_plugin.plugin_id = 'enabled-plugin'
+        enabled_plugin.manifest = Mock()
+        enabled_plugin.manifest.uuid = enabled_uuid
+        enabled_plugin.uuid = enabled_uuid
+        enabled_plugin.load_module = Mock()
+        enabled_plugin.enable = Mock()
+
+        disabled_uuid = 'disabled-uuid-5678'
+        disabled_plugin = Mock(spec=Plugin)
+        disabled_plugin.plugin_id = 'disabled-plugin'
+        disabled_plugin.manifest = Mock()
+        disabled_plugin.manifest.uuid = disabled_uuid
+        disabled_plugin.uuid = disabled_uuid
+        disabled_plugin.load_module = Mock()
+        disabled_plugin.enable = Mock()
+
+        manager._plugins = [enabled_plugin, disabled_plugin]
+        manager._enabled_plugins = {enabled_uuid}
+
+        # Initialize plugins
+        manager.init_plugins()
+
+        # Only enabled plugin should be loaded
+        enabled_plugin.load_module.assert_called_once()
+        enabled_plugin.enable.assert_called_once_with(mock_tagger)
+        disabled_plugin.load_module.assert_not_called()
+        disabled_plugin.enable.assert_not_called()
+
+    def test_api_version_compatibility_compatible(self):
+        """Test that plugins with compatible API versions are loaded."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Load compatible plugin (API 3.0, 3.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
+
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin.plugin_id, 'example')
+        self.assertEqual(plugin.manifest.name(), 'Example plugin')
+
+    def test_api_version_compatibility_incompatible_old(self):
+        """Test that plugins with old incompatible API versions are rejected."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Load incompatible plugin (API 2.0, 2.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
+
+        self.assertIsNone(plugin)
+
+    def test_api_version_compatibility_incompatible_new(self):
+        """Test that plugins requiring newer API versions are rejected."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Load plugin requiring future API (3.5, 3.6)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
+
+        self.assertIsNone(plugin)
+
+
+class TestPluginErrors(PicardTestCase):
+    """Test error handling in plugin system."""
+
+    def test_load_plugin_with_invalid_manifest(self):
+        """Test loading plugin with invalid MANIFEST.toml."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Try to load plugin with missing manifest
+        plugin = manager._load_plugin(Path('/nonexistent'), 'fake-plugin')
+        self.assertIsNone(plugin)
+
+    def test_init_plugins_handles_errors(self):
+        """Test that init_plugins handles plugin errors gracefully."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        # Create a plugin that will fail to load
+        bad_uuid = 'bad-uuid-1234'
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.plugin_id = 'bad-plugin'
+        bad_plugin.manifest = Mock()
+        bad_plugin.manifest.uuid = bad_uuid
+        bad_plugin.uuid = bad_uuid
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        manager._plugins = [bad_plugin]
+        manager._enabled_plugins = {bad_uuid}
+
+        # Should not raise, just log error
+        manager.init_plugins()
+
+        # Plugin should have been attempted to load
+        bad_plugin.load_module.assert_called_once()
+
+    def test_enable_plugin_with_load_error(self):
+        """Test enabling plugin that fails to load."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.plugin_id = 'bad-plugin'
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        with self.assertRaises(Exception):  # noqa: B017
+            manager.enable_plugin(bad_plugin)
+
+    def test_manager_add_directory(self):
+        """Test adding plugin directory."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory
+            manager.add_directory(str(plugin_dir), primary=True)
+
+            # Should be registered
+            self.assertIn(plugin_dir, manager._plugin_dirs)
+            self.assertEqual(manager._primary_plugin_dir, plugin_dir)
+
+    def test_manager_add_directory_twice(self):
+        """Test adding same directory twice is ignored."""
+        mock_tagger = MockTagger()
+        manager = PluginManager(mock_tagger)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory twice
+            manager.add_directory(str(plugin_dir))
+            initial_count = len(manager._plugin_dirs)
+
+            manager.add_directory(str(plugin_dir))
+
+            # Should not be added twice
+            self.assertEqual(len(manager._plugin_dirs), initial_count)
