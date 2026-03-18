@@ -18,7 +18,7 @@ class TestPluginMigration(unittest.TestCase):
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
         self.temp_path = Path(self.temp_dir)
-        self.scripts_path = Path(__file__).parent.parent / 'scripts'
+        self.scripts_path = Path(__file__).parent.parent.parent / 'scripts'
         self.original_path_len = len(sys.path)
 
         # Skip if migrate_plugin.py doesn't exist (e.g., when running from installed package)
