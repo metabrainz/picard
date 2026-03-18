@@ -27,8 +27,11 @@ from unittest.mock import (
 
 from test.picardtestcase import PicardTestCase
 from test.plugins3.helpers import (
+    backend_add_and_commit,
     backend_create_tag,
     backend_init_and_commit,
+    create_git_repo_with_backend,
+    skip_if_no_git_backend,
 )
 
 from picard.git.factory import (
@@ -38,9 +41,11 @@ from picard.git.factory import (
 from picard.plugin3.manager import PluginManifestInvalidError
 from picard.plugin3.plugin import (
     Plugin,
+    PluginAlreadyDisabledError,
     PluginSource,
     PluginSourceGit,
     PluginSourceSyncError,
+    PluginState,
 )
 
 
@@ -192,3 +197,227 @@ class TestPluginSourceGitUpdate(PicardTestCase):
             # Should return commit IDs
             self.assertIsNotNone(old)
             self.assertIsNotNone(new)
+
+
+class TestPluginGetCurrentCommitId(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        skip_if_no_git_backend()
+        self.tmpdir = tempfile.mkdtemp()
+
+    def test_returns_full_commit_id(self):
+        repo_path = Path(self.tmpdir) / 'test-plugin'
+        commit_id = create_git_repo_with_backend(repo_path, {'__init__.py': ''})
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        self.assertEqual(plugin.get_current_commit_id(), commit_id)
+
+    def test_returns_short_commit_id(self):
+        repo_path = Path(self.tmpdir) / 'test-plugin'
+        commit_id = create_git_repo_with_backend(repo_path, {'__init__.py': ''})
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        result = plugin.get_current_commit_id(short=True)
+        self.assertTrue(commit_id.startswith(result))
+        self.assertTrue(len(result) < len(commit_id))
+
+    def test_returns_none_no_local_path(self):
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        plugin.local_path = None
+        self.assertIsNone(plugin.get_current_commit_id())
+
+    def test_returns_none_no_git_dir(self):
+        repo_path = Path(self.tmpdir) / 'test-plugin'
+        repo_path.mkdir()
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        self.assertIsNone(plugin.get_current_commit_id())
+
+    def test_returns_none_on_error(self):
+        plugin = Plugin(Path(self.tmpdir), 'nonexistent')
+        plugin.local_path = Path(self.tmpdir) / 'nonexistent'
+        (plugin.local_path / '.git').mkdir(parents=True)
+        self.assertIsNone(plugin.get_current_commit_id())
+
+
+class TestPluginNameAndStr(PicardTestCase):
+    def test_str_returns_plugin_id(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        self.assertEqual(str(plugin), 'my-plugin')
+
+    def test_name_returns_i18n_name(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        plugin.manifest = Mock()
+        plugin.manifest.name_i18n.return_value = 'My Plugin'
+        self.assertEqual(plugin.name(), 'My Plugin')
+
+    def test_name_falls_back_to_plugin_id(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        plugin.manifest = Mock()
+        plugin.manifest.name_i18n.side_effect = Exception('no i18n')
+        self.assertEqual(plugin.name(), 'my-plugin')
+
+    def test_lt_compares_by_name(self):
+        p1 = Plugin(Path('/tmp'), 'alpha')
+        p1.manifest = Mock()
+        p1.manifest.name_i18n.return_value = 'Alpha'
+        p2 = Plugin(Path('/tmp'), 'beta')
+        p2.manifest = Mock()
+        p2.manifest.name_i18n.return_value = 'Beta'
+        self.assertTrue(p1 < p2)
+        self.assertFalse(p2 < p1)
+
+
+class TestPluginDisable(PicardTestCase):
+    def test_disable_already_disabled_raises(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        plugin.state = PluginState.DISABLED
+        with self.assertRaises(PluginAlreadyDisabledError):
+            plugin.disable()
+
+    def test_disable_calls_module_disable(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        plugin.state = PluginState.ENABLED
+        plugin._module = Mock()
+        plugin._module.disable = Mock()
+
+        with (
+            patch('picard.plugin3.plugin.unregister_module_extensions'),
+            patch('picard.plugin3.plugin.PluginApi') as mock_api_cls,
+        ):
+            mock_api_cls._instances = {}
+            plugin.disable()
+
+        plugin._module.disable.assert_called_once()
+        self.assertEqual(plugin.state, PluginState.DISABLED)
+
+    def test_disable_cleans_api_instances(self):
+        plugin = Plugin(Path('/tmp'), 'my-plugin')
+        plugin.state = PluginState.ENABLED
+        module = Mock()
+        plugin._module = module
+        plugin.module_name = 'picard.plugins.my-plugin'
+
+        mock_api = Mock()
+        mock_api._plugin_module = module
+
+        with (
+            patch('picard.plugin3.plugin.unregister_module_extensions'),
+            patch('picard.plugin3.plugin.PluginApi') as mock_api_cls,
+        ):
+            mock_api_cls._instances = {'picard.plugins.my-plugin': mock_api}
+            mock_api_cls._module_cache = {
+                'picard.plugins.my-plugin': mock_api,
+                'picard.plugins.my-plugin.sub': mock_api,
+            }
+            plugin.disable()
+
+        mock_api._remove_qt_translator.assert_called_once()
+        self.assertNotIn('picard.plugins.my-plugin', mock_api_cls._instances)
+        self.assertNotIn('picard.plugins.my-plugin', mock_api_cls._module_cache)
+        self.assertNotIn('picard.plugins.my-plugin.sub', mock_api_cls._module_cache)
+
+
+class TestPluginSourceGitSync(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        skip_if_no_git_backend()
+        self.tmpdir = tempfile.mkdtemp()
+
+    def test_sync_existing_repo_fetches(self):
+        """Sync into existing repo directory triggers fetch path."""
+        repo_path = Path(self.tmpdir) / 'plugin'
+        create_git_repo_with_backend(repo_path, {'__init__.py': ''})
+
+        source = PluginSourceGit(str(repo_path), ref='main')
+        # Sync into existing repo — should take the fetch path, not clone
+        commit_id = source.sync(repo_path)
+        self.assertIsNotNone(commit_id)
+
+    def test_sync_resolves_tag_ref(self):
+        """Sync with a tag ref resolves to the tagged commit."""
+        repo_path = Path(self.tmpdir) / 'source'
+        commit_id = backend_init_and_commit(repo_path, {'__init__.py': ''})
+        backend_create_tag(repo_path, 'v1.0', commit_id, 'Release')
+
+        target = Path(self.tmpdir) / 'target'
+        source = PluginSourceGit(str(repo_path), ref='v1.0')
+        result = source.sync(target)
+        self.assertEqual(result, commit_id)
+        self.assertEqual(source.resolved_ref_type, 'tag')
+
+    def test_sync_no_ref_uses_default_branch(self):
+        """Sync without ref uses the default branch."""
+        repo_path = Path(self.tmpdir) / 'source'
+        commit_id = backend_init_and_commit(repo_path, {'__init__.py': ''})
+
+        target = Path(self.tmpdir) / 'target'
+        source = PluginSourceGit(str(repo_path))
+        result = source.sync(target)
+        self.assertEqual(result, commit_id)
+        self.assertEqual(source.resolved_ref, 'main')
+
+    def test_sync_ref_not_found_raises(self):
+        """Sync with nonexistent ref raises KeyError."""
+        repo_path = Path(self.tmpdir) / 'source'
+        backend_init_and_commit(repo_path, {'__init__.py': ''})
+
+        target = Path(self.tmpdir) / 'target'
+        source = PluginSourceGit(str(repo_path), ref='nonexistent')
+        with self.assertRaises(KeyError):
+            source.sync(target)
+
+
+class TestPluginSourceGitFindLatestTag(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        skip_if_no_git_backend()
+        self.tmpdir = tempfile.mkdtemp()
+
+    def _create_tagged_repo(self, tags):
+        """Create a repo with multiple tagged commits."""
+        repo_path = Path(self.tmpdir) / 'repo'
+        commit_id = backend_init_and_commit(repo_path, {'__init__.py': ''})
+        for tag in tags:
+            (repo_path / '__init__.py').write_text(f'# {tag}')
+            commit_id = backend_add_and_commit(repo_path, f'Tag {tag}')
+            backend_create_tag(repo_path, tag, commit_id, f'Release {tag}')
+        return repo_path
+
+    def test_finds_newer_semver_tag(self):
+        repo_path = self._create_tagged_repo(['v1.0.0', 'v2.0.0'])
+        source = PluginSourceGit(str(repo_path))
+        backend = git_backend()
+        with backend.create_repository(repo_path) as repo:
+            result = source._find_latest_tag(repo, 'v1.0.0')
+        self.assertEqual(result, 'v2.0.0')
+
+    def test_returns_none_when_current_is_latest(self):
+        repo_path = self._create_tagged_repo(['v1.0.0', 'v2.0.0'])
+        source = PluginSourceGit(str(repo_path))
+        backend = git_backend()
+        with backend.create_repository(repo_path) as repo:
+            result = source._find_latest_tag(repo, 'v2.0.0')
+        self.assertIsNone(result)
+
+    def test_returns_none_for_unparseable_tag(self):
+        repo_path = self._create_tagged_repo(['release-candidate'])
+        source = PluginSourceGit(str(repo_path))
+        backend = git_backend()
+        with backend.create_repository(repo_path) as repo:
+            result = source._find_latest_tag(repo, 'release-candidate')
+        self.assertIsNone(result)
+
+    def test_returns_none_for_no_tags(self):
+        repo_path = Path(self.tmpdir) / 'repo'
+        backend_init_and_commit(repo_path, {'__init__.py': ''})
+        source = PluginSourceGit(str(repo_path))
+        backend = git_backend()
+        with backend.create_repository(repo_path) as repo:
+            result = source._find_latest_tag(repo, 'v1.0.0')
+        self.assertIsNone(result)
+
+    def test_date_based_tags(self):
+        repo_path = self._create_tagged_repo(['2024.1.1', '2024.12.30'])
+        source = PluginSourceGit(str(repo_path))
+        backend = git_backend()
+        with backend.create_repository(repo_path) as repo:
+            result = source._find_latest_tag(repo, '2024.1.1')
+        self.assertEqual(result, '2024.12.30')
