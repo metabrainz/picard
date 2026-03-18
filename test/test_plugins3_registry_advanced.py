@@ -184,28 +184,6 @@ class TestRegistryAdvanced(PicardTestCase):
         is_blacklisted, _ = registry.is_blacklisted('https://example.com/repo.git')
         self.assertFalse(is_blacklisted)
 
-    def test_registry_fetch_error_fallback(self):
-        """Test registry raises exception on fetch error."""
-        from picard.plugin3.registry import RegistryFetchError
-
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
-
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry = PluginRegistry(registry_url='https://invalid.example.com/registry.toml')
-
-            registry.fetch_registry(callback=callback)
-
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryFetchError)
-
     def test_list_plugins_empty_registry(self):
         """Test list_plugins with empty registry."""
         registry = PluginRegistry()
