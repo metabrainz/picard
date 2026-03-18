@@ -2,14 +2,16 @@
 
 import sys
 import types
-import unittest
+
+from test.picardtestcase import PicardTestCase
 
 from picard.plugin3.api import PluginApi
 
 
-class TestPluginApiGetApi(unittest.TestCase):
+class TestPluginApiGetApi(PicardTestCase):
     def setUp(self):
         """Clear registries before each test."""
+        super().setUp()
         PluginApi._instances.clear()
         PluginApi._module_cache.clear()
         # Clean up test modules
@@ -24,6 +26,7 @@ class TestPluginApiGetApi(unittest.TestCase):
         for name in list(sys.modules.keys()):
             if name.startswith('test_plugin_'):
                 del sys.modules[name]
+        super().tearDown()
 
     def _create_api(self, module_name):
         """Helper to create and register a fake API instance."""
