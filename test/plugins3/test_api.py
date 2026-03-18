@@ -210,6 +210,7 @@ class TestPluginApi(PicardTestCase):
         for key, _v in list(Option.registry.items()):
             if key[0].startswith('plugin.'):
                 del Option.registry[key]
+        super().tearDown()
 
     def test_init(self):
         manifest = load_plugin_manifest('example')
