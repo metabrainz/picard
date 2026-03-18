@@ -91,23 +91,23 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_get_plugin_uuid_missing(self):
         """Test _get_plugin_uuid when UUID is missing."""
-        mock_plugin = MockPlugin()
-        mock_plugin.plugin_id = 'test-plugin'
-        mock_plugin.manifest = None
-        mock_plugin.uuid = None
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.manifest = None
+        plugin.uuid = None
 
         with self.assertRaises(PluginNoUUIDError) as context:
-            PluginValidation.get_plugin_uuid(mock_plugin)
+            PluginValidation.get_plugin_uuid(plugin)
 
         self.assertIn('has no UUID', str(context.exception))
 
     def test_get_plugin_uuid_success(self):
         """Test _get_plugin_uuid with valid UUID."""
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest.uuid = 'test-uuid-123'
-        mock_plugin.uuid = 'test-uuid-123'
+        plugin = MockPlugin()
+        plugin.manifest.uuid = 'test-uuid-123'
+        plugin.uuid = 'test-uuid-123'
 
-        result = PluginValidation.get_plugin_uuid(mock_plugin)
+        result = PluginValidation.get_plugin_uuid(plugin)
 
         self.assertEqual(result, 'test-uuid-123')
 
@@ -359,12 +359,12 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = Mock()
-        mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
-        mock_plugin.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        plugin = MockPlugin()
+        plugin.manifest = Mock()
+        plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        plugin.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertEqual(registry_id, 'example-plugin')
 
     def test_get_plugin_registry_id_uses_id_property(self):
@@ -374,13 +374,13 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         registry.find_plugin.return_value = registry_plugin
         metadata_manager = PluginMetadataManager(registry)
 
-        mock_plugin = MockPlugin(uuid='some-uuid')
+        plugin = MockPlugin(uuid='some-uuid')
 
         # Verify __getitem__ raises (dict-style access is forbidden)
         with self.assertRaises(TypeError):
             _ = registry_plugin['id']
 
-        result = metadata_manager.get_plugin_registry_id(mock_plugin)
+        result = metadata_manager.get_plugin_registry_id(plugin)
         self.assertEqual(result, 'my-plugin')
 
     def test_get_plugin_registry_id_not_found(self):
@@ -391,11 +391,11 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = Mock()
-        mock_plugin.manifest.uuid = 'nonexistent-uuid'
+        plugin = MockPlugin()
+        plugin.manifest = Mock()
+        plugin.manifest.uuid = 'nonexistent-uuid'
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertIsNone(registry_id)
 
     def test_get_plugin_registry_id_no_uuid(self):
@@ -406,10 +406,10 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin without UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = None
+        plugin = MockPlugin()
+        plugin.manifest = None
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertIsNone(registry_id)
 
     def test_get_plugin_metadata_dict_format(self):
@@ -827,10 +827,10 @@ class TestPluginManager(PicardTestCase):
 
         # Create a mock plugin with UUID
         test_uuid = generate_uuid()
-        mock_plugin = MockPlugin(uuid=test_uuid)
+        plugin = MockPlugin(uuid=test_uuid)
 
         # Enable plugin - should save to config
-        manager.enable_plugin(mock_plugin)
+        manager.enable_plugin(plugin)
         self.assertIn(test_uuid, manager._enabled_plugins)
 
         # Verify it was saved to config
@@ -843,7 +843,7 @@ class TestPluginManager(PicardTestCase):
         self.assertIn(test_uuid, manager2._enabled_plugins)
 
         # Disable plugin - should remove from config
-        manager2.disable_plugin(mock_plugin)
+        manager2.disable_plugin(plugin)
         self.assertNotIn(test_uuid, manager2._enabled_plugins)
         self.assertNotIn(test_uuid, config.setting['plugins3_enabled_plugins'])
 
