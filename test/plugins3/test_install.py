@@ -410,24 +410,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = ['https://example.com/plugin.git']
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.ref = None
-        args.reinstall = False
-        args.force_blacklisted = False
-        args.yes = True
+        args = MockCliArgs(install=['https://example.com/plugin.git'], yes=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -452,23 +435,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = ['https://example.com/plugin.git']
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.ref = None
-        args.reinstall = False
-        args.force_blacklisted = False
+        args = MockCliArgs(install=['https://example.com/plugin.git'])
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
@@ -490,22 +457,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager.uninstall_plugin = Mock()
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.remove = ['test-plugin']
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.yes = True
-        args.purge = False
+        args = MockCliArgs(remove=['test-plugin'], yes=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -533,20 +485,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = ['test-plugin']
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update=['test-plugin'])
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -574,20 +513,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = ['test-plugin']
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update=['test-plugin'])
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -626,20 +552,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = True
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update_all=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
