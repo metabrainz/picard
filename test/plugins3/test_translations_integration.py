@@ -26,7 +26,7 @@ from test.plugins3.helpers import create_test_plugin_api
 from picard.plugin3.manifest import PluginManifest
 
 
-TRANSLATED_PLUGIN_DIR = Path(__file__).parent / 'data' / 'testplugins3' / 'translated'
+TRANSLATED_PLUGIN_DIR = Path(__file__).parent.parent / 'data' / 'testplugins3' / 'translated'
 
 
 class TestPluginTranslationsIntegration(PicardTestCase):
