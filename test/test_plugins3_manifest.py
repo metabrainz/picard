@@ -23,7 +23,7 @@ import tempfile
 from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import load_plugin_manifest
+from test.plugins3.helpers import load_plugin_manifest
 
 from picard.plugin3.manifest import PluginManifest
 from picard.version import Version

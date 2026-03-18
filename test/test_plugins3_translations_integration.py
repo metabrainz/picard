@@ -21,7 +21,7 @@
 from pathlib import Path
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import create_test_plugin_api
+from test.plugins3.helpers import create_test_plugin_api
 
 from picard.plugin3.manifest import PluginManifest
 

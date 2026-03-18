@@ -28,7 +28,7 @@ from unittest.mock import (
 )
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockPlugin,
     MockTagger,
     create_test_registry,

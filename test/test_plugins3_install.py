@@ -30,7 +30,7 @@ from unittest.mock import (
 from PyQt6.QtCore import QSettings
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockCliArgs,
     MockPlugin,
     MockPluginManager,

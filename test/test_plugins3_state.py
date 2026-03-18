@@ -28,7 +28,7 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
-from test.test_plugins3_helpers import MockTagger
+from test.plugins3.helpers import MockTagger
 
 from picard.plugin3.plugin import (
     Plugin,

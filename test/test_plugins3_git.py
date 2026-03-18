@@ -25,7 +25,7 @@ import sys
 import tempfile
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockTagger,
     backend_add_and_commit,
     backend_create_branch,

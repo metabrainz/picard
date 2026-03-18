@@ -24,7 +24,7 @@ import tempfile
 from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     create_test_plugin_api,
     load_plugin_manifest,
 )

@@ -29,7 +29,7 @@ from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockPlugin,
     MockTagger,
     backend_init_and_commit,

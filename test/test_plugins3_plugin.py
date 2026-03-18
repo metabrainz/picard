@@ -26,7 +26,7 @@ from unittest.mock import (
 )
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     backend_create_tag,
     backend_init_and_commit,
 )
