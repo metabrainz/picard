@@ -200,7 +200,7 @@ class TestGitBackend(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a local git repository with tags
             repo_path = Path(tmpdir) / "test-repo"
-            from test.test_plugins3_helpers import backend_create_tag, create_git_repo_with_backend
+            from test.plugins3.helpers import backend_create_tag, create_git_repo_with_backend
 
             # Create repo with initial commit
             commit_id = create_git_repo_with_backend(

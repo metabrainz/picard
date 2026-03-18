@@ -24,9 +24,24 @@ from unittest.mock import Mock
 
 from test.picardtestcase import get_test_data_path
 
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
+)
+from picard.plugin3.api import PluginApi
+from picard.plugin3.cli import PluginCLI
+from picard.plugin3.manager import PluginManager
 from picard.plugin3.manifest import PluginManifest
-from picard.plugin3.plugin import Plugin
+from picard.plugin3.output import PluginOutput
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginState,
+)
+from picard.plugin3.registry import PluginRegistry
+from picard.plugin3.validation import PluginValidation
 from picard.plugin3.validator import generate_uuid
+
+import pytest
 
 
 class MockPluginManager(Mock):
@@ -50,10 +65,6 @@ class MockPluginManager(Mock):
 
         # Add select_ref_for_plugin method that delegates to the real implementation
         def select_ref_for_plugin_impl(plugin):
-            from unittest.mock import Mock
-
-            from picard.plugin3.manager import PluginManager
-
             temp_manager = PluginManager(Mock())
             temp_manager._registry_manager._fetch_version_tags = self._fetch_version_tags
             return temp_manager.select_ref_for_plugin(plugin)
@@ -62,10 +73,6 @@ class MockPluginManager(Mock):
 
         # Add get_registry_plugin_latest_version method that delegates to the real implementation
         def get_registry_plugin_latest_version_impl(plugin_data):
-            from unittest.mock import Mock
-
-            from picard.plugin3.manager import PluginManager
-
             temp_manager = PluginManager(Mock())
             temp_manager._fetch_version_tags = self._fetch_version_tags
             return PluginManager.get_registry_plugin_latest_version(temp_manager, plugin_data)
@@ -74,8 +81,6 @@ class MockPluginManager(Mock):
 
         # Add get_preferred_version method that delegates to the real implementation
         def get_preferred_version_impl(plugin_uuid, manifest_version=''):
-            from picard.plugin3.manager import PluginManager
-
             temp_manager = PluginManager.__new__(PluginManager)
             temp_manager._get_plugin_metadata = self._get_plugin_metadata
             return PluginManager.get_preferred_version(temp_manager, plugin_uuid, manifest_version)
@@ -84,10 +89,6 @@ class MockPluginManager(Mock):
 
         # Add search_registry_plugins method that delegates to the real implementation
         def search_registry_plugins_impl(query=None, category=None, trust_level=None):
-            from unittest.mock import Mock
-
-            from picard.plugin3.manager import PluginManager
-
             temp_manager = PluginManager(Mock())
             temp_manager._registry = self._registry
             return temp_manager.search_registry_plugins(query, category, trust_level)
@@ -96,10 +97,6 @@ class MockPluginManager(Mock):
 
         # Add find_similar_plugin_ids method that delegates to the real implementation
         def find_similar_plugin_ids_impl(query, max_results=10):
-            from unittest.mock import Mock
-
-            from picard.plugin3.manager import PluginManager
-
             temp_manager = PluginManager(Mock())
             temp_manager._registry = self._registry
             return temp_manager.find_similar_plugin_ids(query, max_results)
@@ -145,8 +142,6 @@ def get_test_registry_path():
 
 def create_test_registry():
     """Create PluginRegistry with test data loaded."""
-    from picard.plugin3.registry import PluginRegistry
-
     registry = PluginRegistry()
     registry.set_raw_registry_data(load_test_registry())
     registry._process_plugins()  # Process plugins into RegistryPlugin objects
@@ -155,8 +150,6 @@ def create_test_registry():
 
 def create_cli_output():
     """Create PluginOutput with StringIO streams."""
-    from picard.plugin3.output import PluginOutput
-
     return PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
 
 
@@ -172,7 +165,9 @@ class MockCliArgs(Mock):
             'enable': None,
             'disable': None,
             'install': None,
+            'uninstall': None,
             'remove': None,
+            'status': None,
             'update': None,
             'update_all': False,
             'check_updates': False,
@@ -199,8 +194,6 @@ class MockCliArgs(Mock):
 
 def run_cli(manager, **args_kwargs):
     """Run CLI with given args and return (exit_code, stdout, stderr)."""
-    from picard.plugin3.cli import PluginCLI
-
     output = create_cli_output()
     args = MockCliArgs(**args_kwargs)
     cli = PluginCLI(manager, args, output)
@@ -212,10 +205,6 @@ class MockPlugin(Plugin):
     """Mock Plugin with sensible defaults."""
 
     def __init__(self, name='test-plugin', uuid=None, **kwargs):
-        from pathlib import Path
-
-        from picard.plugin3.plugin import PluginState
-
         # Extract our custom params before passing to Mock
         local_path = kwargs.pop('local_path', Path(f'/tmp/{name}'))
         version = kwargs.pop('version', '1.0.0')
@@ -255,9 +244,6 @@ def create_mock_manager_with_manifest_validation():
     This is useful for tests that need to validate manifests but don't need
     a full PluginManager instance.
     """
-    from picard.plugin3.manager import PluginManager
-    from picard.plugin3.validation import PluginValidation
-
     manager = Mock(spec=PluginManager)
     manager._read_and_validate_manifest = PluginValidation.read_and_validate_manifest
     manager._validate_manifest = PluginValidation.validate_manifest
@@ -267,15 +253,9 @@ def create_mock_manager_with_manifest_validation():
 def skip_if_no_git_backend():
     """Skip test if git backend is not available."""
     try:
-        from picard.git.factory import has_git_backend
-
         if not has_git_backend():
-            import pytest
-
             pytest.skip("git backend not available")
     except ImportError:
-        import pytest
-
         pytest.skip("git backend not available")
 
 
@@ -289,10 +269,6 @@ def create_git_repo_with_backend(repo_path, initial_files=None):
     Returns:
         str: Initial commit ID
     """
-    from pathlib import Path
-
-    from picard.git.factory import git_backend
-
     repo_path = Path(repo_path)
     repo_path.mkdir(parents=True, exist_ok=True)
 
@@ -315,15 +291,11 @@ def create_git_repo_with_backend(repo_path, initial_files=None):
 
 def get_backend_repo(repo_path):
     """Get a backend repository instance for a path."""
-    from picard.git.factory import git_backend
-
     return git_backend().create_repository(repo_path)
 
 
 def backend_create_tag(repo_path, tag_name, commit_id=None, message=""):
     """Create a tag using the git backend."""
-    from picard.git.factory import git_backend
-
     backend = git_backend()
     repo = backend.create_repository(repo_path)
     if commit_id is None:
@@ -334,8 +306,6 @@ def backend_create_tag(repo_path, tag_name, commit_id=None, message=""):
 
 def backend_create_lightweight_tag(repo_path, tag_name, commit_id=None):
     """Create a lightweight tag (reference only) using backend."""
-    from picard.git.factory import git_backend
-
     backend = git_backend()
     repo = backend.create_repository(repo_path)
     if commit_id is None:
@@ -346,8 +316,6 @@ def backend_create_lightweight_tag(repo_path, tag_name, commit_id=None):
 
 def backend_set_detached_head(repo_path, commit_id):
     """Set repository to detached HEAD state using backend."""
-    from picard.git.factory import git_backend
-
     backend = git_backend()
     repo = backend.create_repository(repo_path)
     backend.set_head_detached(repo, commit_id)
@@ -356,8 +324,6 @@ def backend_set_detached_head(repo_path, commit_id):
 
 def backend_create_branch(repo_path, branch_name, commit_id=None):
     """Create a branch using the git backend."""
-    from picard.git.factory import git_backend
-
     backend = git_backend()
     repo = backend.create_repository(repo_path)
     if commit_id is None:
@@ -368,8 +334,6 @@ def backend_create_branch(repo_path, branch_name, commit_id=None):
 
 def backend_add_and_commit(repo_path, message="Commit", author_name="Test", author_email="test@example.com"):
     """Add all files and commit using backend."""
-    from picard.git.factory import git_backend
-
     backend = git_backend()
     repo = backend.create_repository(repo_path)
     commit_id = backend.add_and_commit_files(repo, message, author_name, author_email)
@@ -379,10 +343,6 @@ def backend_add_and_commit(repo_path, message="Commit", author_name="Test", auth
 
 def backend_init_and_commit(repo_path, files=None, message="Initial commit"):
     """Initialize repo and create initial commit using backend."""
-    from pathlib import Path
-
-    from picard.git.factory import git_backend
-
     repo_path = Path(repo_path)
     repo_path.mkdir(parents=True, exist_ok=True)
 
@@ -481,8 +441,6 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
     Returns:
         Path: Path to the created plugin directory
     """
-    from pathlib import Path
-
     plugin_dir = Path(base_dir) / plugin_name
     plugin_dir.mkdir(parents=True, exist_ok=True)
 
@@ -498,8 +456,6 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
     # Initialize git if requested
     if add_git:
         try:
-            from picard.git.factory import has_git_backend
-
             if has_git_backend():
                 create_git_repo_with_backend(
                     plugin_dir, {'MANIFEST.toml': manifest_content, '__init__.py': '# Test plugin\n'}
@@ -509,6 +465,33 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
             pass
 
     return plugin_dir
+
+
+def create_test_plugin_api(plugin_dir, locale='en', module_name='test'):
+    """Create a PluginApi instance wired to a plugin directory with locale support.
+
+    Creates a minimal MANIFEST.toml in plugin_dir (if not present) and returns
+    a PluginApi with _plugin_dir, get_locale, and _load_translations() set up.
+
+    Args:
+        plugin_dir: Path to the plugin directory (should already contain locale/ if needed)
+        locale: Locale string for get_locale mock (default: 'en')
+        module_name: Module name for the manifest (default: 'test')
+
+    Returns:
+        PluginApi: Configured API instance with translations loaded
+    """
+    manifest_path = plugin_dir / 'MANIFEST.toml'
+    if not manifest_path.exists():
+        manifest_path.write_text('name = "Test"\n')
+
+    with open(manifest_path, 'rb') as f:
+        manifest = PluginManifest(module_name, f)
+        api = PluginApi(manifest, Mock())
+        api._plugin_dir = plugin_dir
+        api.get_locale = Mock(return_value=locale)
+        api._load_translations()
+    return api
 
 
 def create_git_commit(repo_path, message='Initial commit', author_name='Test', author_email='test@example.com'):
@@ -524,8 +507,6 @@ def create_git_commit(repo_path, message='Initial commit', author_name='Test', a
         str: Commit ID (SHA)
     """
     try:
-        from picard.git.factory import git_backend, has_git_backend
-
         if not has_git_backend():
             return None
 

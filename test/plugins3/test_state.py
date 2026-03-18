@@ -18,15 +18,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from pathlib import Path
+from unittest.mock import (
+    Mock,
+    patch,
+)
 
 from test.picardtestcase import (
     PicardTestCase,
     get_test_data_path,
 )
-from test.test_plugins3_helpers import MockTagger
+from test.plugins3.helpers import MockTagger
 
-from picard.plugin3.plugin import short_commit_id
+from picard.plugin3.plugin import (
+    Plugin,
+    PluginAlreadyDisabledError,
+    PluginAlreadyEnabledError,
+    PluginState,
+    short_commit_id,
+)
 
 
 class TestPluginHelpers(PicardTestCase):
@@ -40,13 +50,6 @@ class TestPluginHelpers(PicardTestCase):
 class TestPluginState(PicardTestCase):
     def test_plugin_state_transitions(self):
         """Test that plugin state transitions work correctly."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginState,
-        )
-
         mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
@@ -75,14 +78,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_double_enable_error(self):
         """Test that enabling an already enabled plugin raises error."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginAlreadyEnabledError,
-            PluginState,
-        )
-
         mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
@@ -96,14 +91,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_double_disable_error(self):
         """Test that disabling an already disabled plugin raises error."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginAlreadyDisabledError,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.DISABLED
         plugin._module = Mock()
@@ -115,10 +102,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_load_manifest(self):
         """Test Plugin.read_manifest() method."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import Plugin
-
         plugins_dir = Path(get_test_data_path('testplugins3'))
         plugin = Plugin(plugins_dir, 'example')
 
@@ -129,13 +112,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_initial_state(self):
         """Test that new Plugin starts in DISCOVERED state."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
 
         self.assertEqual(plugin.state, PluginState.DISCOVERED)
@@ -144,13 +120,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_disable_with_disable_method(self):
         """Test Plugin.disable() when plugin has disable method."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
 
@@ -167,14 +136,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_disable_without_disable_method(self):
         """Test Plugin.disable() when plugin has no disable method."""
-        from pathlib import Path
-        from unittest.mock import patch
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
 
@@ -190,13 +151,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_load_module_already_loaded(self):
         """Test Plugin.load_module() when already loaded."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.LOADED
         mock_module = Mock()
@@ -210,14 +164,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_load_module_when_enabled(self):
         """Test Plugin.load_module() raises when already enabled."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginAlreadyEnabledError,
-            PluginState,
-        )
-
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED
 
@@ -228,14 +174,6 @@ class TestPluginState(PicardTestCase):
 
     def test_plugin_enable_already_enabled(self):
         """Test Plugin.enable() raises when already enabled."""
-        from pathlib import Path
-
-        from picard.plugin3.plugin import (
-            Plugin,
-            PluginAlreadyEnabledError,
-            PluginState,
-        )
-
         mock_tagger = MockTagger()
         plugin = Plugin(Path('/tmp'), 'test-plugin')
         plugin.state = PluginState.ENABLED

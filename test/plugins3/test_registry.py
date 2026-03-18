@@ -18,18 +18,35 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+import os
+from pathlib import Path
+import tempfile
 from unittest.mock import (
     Mock,
+    mock_open,
     patch,
 )
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockPlugin,
     MockTagger,
     create_test_registry,
 )
 
+from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
+from picard.plugin3.manager import (
+    PluginBlacklistedError,
+    PluginManager,
+    PluginMetadata,
+)
+from picard.plugin3.plugin import Plugin
+from picard.plugin3.plugin_metadata import PluginMetadataManager
+from picard.plugin3.registry import (
+    PluginRegistry,
+    RegistryFetchError,
+    RegistryParseError,
+)
 from picard.plugin3.validator import generate_uuid
 
 
@@ -51,6 +68,27 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestPluginRegistry(PicardTestCase):
+    def _fetch_registry(self, registry, response_data, error=None):
+        """Fetch registry with mocked webservice, return (success, error) result."""
+        mock_tagger = Mock()
+        mock_tagger.webservice = Mock()
+        mock_tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
+
+        result = {}
+
+        def callback(success, err):
+            result['success'] = success
+            result['error'] = err
+
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            registry.fetch_registry(use_cache=False, callback=callback)
+
+        return result
+
+    def _create_metadata_mgr(self):
+        """Create a PluginMetadataManager backed by the test registry."""
+        return PluginMetadataManager(create_test_registry())
+
     def test_registry_blacklist_url(self):
         """Test that blacklisted URLs are detected."""
         registry = create_test_registry()
@@ -64,19 +102,12 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_url_from_parameter(self):
         """Test that registry URL can be set via parameter."""
-        from picard.plugin3.registry import PluginRegistry
-
         custom_url = 'https://custom.example.com/registry.toml'
         registry = PluginRegistry(registry_url=custom_url)
         self.assertEqual(registry.registry_url, custom_url)
 
     def test_registry_url_from_env(self):
         """Test that registry URL can be set via environment variable."""
-        import os
-        from unittest.mock import patch
-
-        from picard.plugin3.registry import PluginRegistry
-
         custom_url = 'https://env.example.com/registry.toml'
         with patch.dict(os.environ, {'PICARD_PLUGIN_REGISTRY_URL': custom_url}):
             registry = PluginRegistry()
@@ -84,11 +115,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_url_priority(self):
         """Test that parameter takes priority over environment variable."""
-        import os
-        from unittest.mock import patch
-
-        from picard.plugin3.registry import PluginRegistry
-
         param_url = 'https://param.example.com/registry.toml'
         env_url = 'https://env.example.com/registry.toml'
 
@@ -98,12 +124,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_url_default(self):
         """Test that default URL is used when no parameter or env var is set."""
-        import os
-        from unittest.mock import patch
-
-        from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
-        from picard.plugin3.registry import PluginRegistry
-
         with patch.dict(os.environ, {}, clear=True):
             registry = PluginRegistry()
             self.assertEqual(registry.registry_url, DEFAULT_PLUGIN_REGISTRY_URLS[0])
@@ -214,15 +234,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_update_plugin_follows_redirect(self):
         """Test that update_plugin follows redirects and updates metadata."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import (
-            Mock,
-            patch,
-        )
-
-        from picard.plugin3.manager import PluginManager
-
         with tempfile.TemporaryDirectory() as tmpdir:
             plugin_dir = Path(tmpdir)
 
@@ -247,8 +258,6 @@ class TestPluginRegistry(PicardTestCase):
 
             # Mock metadata with old URL and UUID
             with patch.object(manager._metadata, 'get_plugin_metadata') as mock_get_meta:
-                from picard.plugin3.manager import PluginMetadata
-
                 mock_get_meta.return_value = PluginMetadata(url=old_url, uuid=old_uuid, ref='main', commit='abc123')
 
                 with patch.object(manager._metadata, 'check_redirects') as mock_check_redirects:
@@ -305,11 +314,6 @@ class TestPluginRegistry(PicardTestCase):
         check for local installs (is_local=True), allowing locally cloned
         copies of UUID-blacklisted plugins to be installed.
         """
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manager import PluginBlacklistedError, PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -346,19 +350,12 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_install_blocks_blacklisted_url(self):
         """Test that install blocks blacklisted plugins."""
-        from pathlib import Path
-        import tempfile
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
-
-            from picard.plugin3.manager import PluginBlacklistedError
 
             with self.assertRaises(PluginBlacklistedError) as context:
                 manager.install_plugin('https://github.com/badactor/malicious-plugin')
@@ -368,15 +365,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_install_with_force_blacklisted(self):
         """Test that --force-blacklisted bypasses blacklist."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import (
-            mock_open,
-            patch,
-        )
-
-        from picard.plugin3.manager import PluginManager
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -414,12 +402,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_blacklisted_plugins_on_startup(self):
         """Test that blacklisted plugins are disabled on startup."""
-        from pathlib import Path
-        from unittest.mock import patch
-
-        from picard.plugin3.manager import PluginManager, PluginMetadata
-        from picard.plugin3.plugin import Plugin
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -457,11 +439,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_blacklist_warning_shown(self):
         """Test that blacklisted plugins are returned for warning display."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager, PluginMetadata
-        from picard.plugin3.plugin import Plugin
-
         mock_tagger = MockTagger()
         manager = PluginManager(mock_tagger)
         manager._registry = create_test_registry()
@@ -503,36 +480,19 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_fetch_from_url(self):
         """Test fetching registry from URL."""
-        from picard.plugin3.registry import PluginRegistry
-
         registry = PluginRegistry(registry_url='https://test.example.com/registry.toml')
 
         mock_response_data = b'blacklist = []'
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
+        result = self._fetch_registry(registry, mock_response_data)
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertTrue(result['success'])
-            self.assertIsNone(result['error'])
-            self.assertTrue(registry.is_registry_loaded())
-            self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
+        self.assertTrue(result['success'])
+        self.assertIsNone(result['error'])
+        self.assertTrue(registry.is_registry_loaded())
+        self.assertEqual(registry.get_raw_registry_data()['blacklist'], [])
 
     def test_registry_cache_save_and_load(self):
         """Test registry caching."""
-        import tempfile
-
-        from picard.plugin3.registry import PluginRegistry
-
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create registry with cache_dir and TOML URL
             registry = PluginRegistry(registry_url='https://test.example.com/registry.toml', cache_dir=tmpdir)
@@ -565,60 +525,26 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_fetch_error_fallback(self):
         """Test registry fetch error handling."""
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryFetchError,
-        )
-
         registry = PluginRegistry()
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
+        result = self._fetch_registry(registry, b'', error=Exception('Network error'))
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryFetchError)
-            self.assertIn('Network error', str(result['error']))
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryFetchError)
+        self.assertIn('Network error', str(result['error']))
 
     def test_registry_parse_error(self):
         """Test registry parse error handling."""
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryParseError,
-        )
-
         registry = PluginRegistry()
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'invalid toml [')
+        result = self._fetch_registry(registry, b'invalid toml [')
 
-        result = {}
-
-        def callback(success, error):
-            result['success'] = success
-            result['error'] = error
-
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
-
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryParseError)
-            self.assertIn('Failed to parse registry', str(result['error']))
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryParseError)
+        self.assertIn('Failed to parse registry', str(result['error']))
 
     def test_registry_multiple_url_fallback(self):
         """Test registry tries second URL when first fails."""
-        from picard.plugin3.registry import PluginRegistry
-
         url1 = 'https://first.example.com/registry.toml'
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
@@ -655,11 +581,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_all_urls_fail(self):
         """Test registry returns error when all URLs fail."""
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryFetchError,
-        )
-
         url1 = 'https://first.example.com/registry.toml'
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
@@ -691,11 +612,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_parse_error_stops_fallback(self):
         """Test that parse errors don't trigger fallback to next URL."""
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryParseError,
-        )
-
         url1 = 'https://first.example.com/registry.toml'
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
@@ -750,8 +666,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_graceful_fallback_on_blacklist_check(self):
         """Test that blacklist check doesn't fail if registry fetch fails."""
-        from picard.plugin3.registry import PluginRegistry
-
         registry = PluginRegistry()
 
         mock_tagger = Mock()
@@ -777,8 +691,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_registry_get_registry_info_not_loaded(self):
         """Test get_registry_info raises error when registry not loaded."""
-        from picard.plugin3.registry import PluginRegistry
-
         registry = PluginRegistry()
 
         with self.assertRaises(RuntimeError) as cm:
@@ -892,8 +804,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_ensure_registry_loaded_success(self):
         """Test _ensure_registry_loaded returns True when registry loads successfully."""
-        from picard.plugin3.registry import PluginRegistry
-
         registry = PluginRegistry()
         registry.set_raw_registry_data({'plugins': []})
 
@@ -903,13 +813,6 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_ensure_registry_loaded_failure(self):
         """Test _ensure_registry_loaded returns False when registry fails to load."""
-        from unittest.mock import patch
-
-        from picard.plugin3.registry import (
-            PluginRegistry,
-            RegistryFetchError,
-        )
-
         registry = PluginRegistry()
 
         # Mock fetch_registry to raise error
@@ -919,10 +822,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_url_change(self):
         """Test check_redirects detects URL change via UUID lookup."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # Plugin 'example-plugin' has UUID 'ae5ef1ed-...' and git_url 'https://github.com/test/example'
         # redirect_from includes 'https://github.com/olduser/example'
@@ -935,10 +835,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_uuid_change(self):
         """Test check_redirects detects UUID change via URL redirect lookup."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # 'old-uuid-1234' is in redirect_from_uuid for example-plugin
         # Looking up by old UUID finds the plugin with new UUID
@@ -948,10 +845,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_both_url_and_uuid_change(self):
         """Test check_redirects detects simultaneous URL and UUID change."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # old-uuid-1234 redirects to example-plugin which has a different URL and UUID
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
@@ -963,10 +857,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_no_change(self):
         """Test check_redirects returns no redirect when URL and UUID match."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
             'https://github.com/test/example', 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
@@ -977,10 +868,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_check_redirects_not_in_registry(self):
         """Test check_redirects returns no redirect when plugin not in registry."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         new_url, new_uuid, redirected = metadata_mgr.check_redirects(
             'https://github.com/unknown/plugin', 'nonexistent-uuid'
@@ -991,10 +879,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_not_redirected(self):
         """Test get_original_metadata returns old values when not redirected."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         url, uuid = metadata_mgr.get_original_metadata(False, 'https://example.com/plugin', 'some-uuid')
         self.assertEqual(url, 'https://example.com/plugin')
@@ -1002,10 +887,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_redirected_no_stored(self):
         """Test get_original_metadata returns old values when no stored metadata."""
-        from picard.plugin3.plugin_metadata import PluginMetadataManager
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         url, uuid = metadata_mgr.get_original_metadata(True, 'https://example.com/old', 'old-uuid-not-stored')
         self.assertEqual(url, 'https://example.com/old')
@@ -1013,13 +895,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_redirected_with_stored(self):
         """Test get_original_metadata returns stored values on first redirect."""
-        from picard.plugin3.plugin_metadata import (
-            PluginMetadata,
-            PluginMetadataManager,
-        )
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         test_uuid = 'stored-uuid-1234'
         metadata_mgr.save_plugin_metadata(
@@ -1037,13 +913,7 @@ class TestPluginRegistry(PicardTestCase):
 
     def test_get_original_metadata_chained_redirect_preserves_earliest(self):
         """Test get_original_metadata preserves earliest original across chained redirects."""
-        from picard.plugin3.plugin_metadata import (
-            PluginMetadata,
-            PluginMetadataManager,
-        )
-
-        registry = create_test_registry()
-        metadata_mgr = PluginMetadataManager(registry)
+        metadata_mgr = self._create_metadata_mgr()
 
         # Simulate first redirect: A -> B (original_url/uuid set to A)
         test_uuid = 'chained-uuid-1234'

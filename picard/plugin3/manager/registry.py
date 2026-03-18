@@ -131,8 +131,8 @@ class PluginRegistryManager:
         if not refs:
             return None
 
-        # Get current Picard API version as string (e.g., "3.0")
-        current_api = '.'.join(map(str, api_versions_tuple[:2]))
+        # Get latest supported Picard plugin API version
+        current_api = api_versions_tuple[-1] if api_versions_tuple else Version.from_string('0.0')
 
         # Find first compatible ref
         for ref in refs:
@@ -140,11 +140,11 @@ class PluginRegistryManager:
             max_api = ref.get('max_api_version')
 
             # Skip if below minimum
-            if min_api and current_api < min_api:
+            if min_api and current_api < Version.from_string(min_api):
                 continue
 
             # Skip if above maximum
-            if max_api and current_api > max_api:
+            if max_api and current_api > Version.from_string(max_api):
                 continue
 
             # Compatible ref found

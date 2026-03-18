@@ -148,5 +148,5 @@ class TestPluginSourceLocal(PicardTestCase):
     def test_plugin_source_local_sync(self):
         """Test PluginSourceLocal.sync() does nothing."""
         source = PluginSourceLocal()
-        # Should not raise
-        source.sync(Path('/tmp/test'))
+        # Should not raise and return None
+        self.assertIsNone(source.sync(Path('/tmp/test')))

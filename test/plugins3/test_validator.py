@@ -23,23 +23,31 @@ from test.picardtestcase import PicardTestCase
 from picard.plugin3.validator import (
     PLACEHOLDER_UUIDS,
     _is_placeholder_uuid,
+    render_markdown,
     validate_manifest_dict,
 )
+
+
+def _valid_manifest(**overrides):
+    """Return a valid manifest dict, with optional field overrides."""
+    manifest = {
+        'uuid': '550e8400-e29b-41d4-a716-446655440000',
+        'name': 'Test Plugin',
+        'version': '1.0.0',
+        'description': 'A test plugin',
+        'api': ['3.0'],
+        'authors': ['Test Author'],
+        'license': 'GPL-2.0-or-later',
+        'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
+    }
+    manifest.update(overrides)
+    return manifest
 
 
 class TestManifestValidator(PicardTestCase):
     def test_validate_valid_manifest(self):
         """Test validation of a valid manifest."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest()
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
@@ -53,31 +61,13 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_invalid_uuid(self):
         """Test validation catches invalid UUID."""
-        manifest = {
-            'uuid': 'not-a-uuid',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(uuid='not-a-uuid')
         errors = validate_manifest_dict(manifest)
         self.assertTrue(any("must be a valid UUID v4" in e for e in errors))
 
     def test_validate_invalid_field_types(self):
         """Test validation catches invalid field types."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 123,  # Should be string
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': '3.0',  # Should be array
-            'authors': 'Test Author',  # Should be array
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(name=123, api='3.0', authors='Test Author')
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'name' must be a string", errors)
         self.assertIn("Field 'authors' must be an array", errors)
@@ -86,16 +76,7 @@ class TestManifestValidator(PicardTestCase):
     def test_validate_string_length_constraints(self):
         """Test validation enforces string length constraints."""
         # Name too long
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'x' * 101,  # Max is 100
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(name='x' * 101)
         errors = validate_manifest_dict(manifest)
         self.assertTrue(any("Field 'name' must be 1-100 characters" in e for e in errors))
 
@@ -113,16 +94,7 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_empty_strings(self):
         """Test validation catches empty strings as missing fields."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': '',  # Empty - treated as missing
-            'version': '1.0.0',
-            'description': '',  # Empty - treated as missing
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(name='', description='')
         errors = validate_manifest_dict(manifest)
         # Empty strings are caught by "missing required field" check
         self.assertIn("Missing required field: name", errors)
@@ -130,46 +102,19 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_invalid_api_version(self):
         """Test validation catches invalid API version."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'description': 'A test plugin',
-            'api': [''],  # Empty string
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(api=[''])
         errors = validate_manifest_dict(manifest)
         self.assertTrue(any("Invalid API version" in e for e in errors))
 
     def test_validate_empty_authors(self):
         """Test validation catches empty authors array."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': [],  # Empty
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-        }
+        manifest = _valid_manifest(authors=[])
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'authors' must contain at least one author if present", errors)
 
     def test_validate_invalid_category(self):
         """Test that unknown categories are accepted (forward compatibility)."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'categories': ['invalid_category'],
-        }
+        manifest = _valid_manifest(categories=['invalid_category'])
         errors = validate_manifest_dict(manifest)
         # Categories are not validated to allow forward/backward compatibility
         self.assertEqual(errors, [])
@@ -177,14 +122,7 @@ class TestManifestValidator(PicardTestCase):
     def test_validate_categories(self):
         """Test validation of categories field."""
         # Valid categories
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'categories': ['metadata', 'coverart'],
-        }
+        manifest = _valid_manifest(categories=['metadata', 'coverart'])
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
@@ -200,48 +138,20 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_empty_i18n_sections(self):
         """Test validation catches empty i18n sections."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'name_i18n': {},
-            'description_i18n': {},
-        }
+        manifest = _valid_manifest(name_i18n={}, description_i18n={})
         errors = validate_manifest_dict(manifest)
         self.assertIn("Section 'name_i18n' is present but empty", errors)
         self.assertIn("Section 'description_i18n' is present but empty", errors)
 
     def test_validate_valid_i18n_sections(self):
         """Test validation accepts valid i18n sections."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'authors': ['Test Author'],
-            'license': 'GPL-2.0-or-later',
-            'license_url': 'https://www.gnu.org/licenses/gpl-2.0.html',
-            'name_i18n': {'de': 'Test Plugin'},
-            'description_i18n': {'de': 'Ein Test Plugin'},
-        }
+        manifest = _valid_manifest(name_i18n={'de': 'Test Plugin'}, description_i18n={'de': 'Ein Test Plugin'})
         errors = validate_manifest_dict(manifest)
         self.assertEqual(errors, [])
 
     def test_validate_source_locale(self):
         """Test validation of source_locale field."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid locales
         for locale in ['en', 'de', 'fr', 'pt', 'en_US', 'pt_BR', 'zh_CN']:
@@ -264,13 +174,7 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_license_field(self):
         """Test validation of license field."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid license
         manifest['license'] = 'GPL-2.0-or-later'
@@ -289,13 +193,7 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_url_fields(self):
         """Test validation of URL fields (license_url, homepage)."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid URLs
         manifest['license_url'] = 'https://www.gnu.org/licenses/gpl-2.0.html'
@@ -316,13 +214,7 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_min_python_version(self):
         """Test validation of min_python_version field."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid version
         manifest['min_python_version'] = '3.9'
@@ -341,13 +233,7 @@ class TestManifestValidator(PicardTestCase):
 
     def test_validate_markdown_in_long_description(self):
         """Test validation of markdown in long_description."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid markdown
         manifest['long_description'] = '''
@@ -378,14 +264,7 @@ This is **bold** and *italic*.
 
     def test_validate_markdown_in_long_description_i18n(self):
         """Test validation of markdown in long_description_i18n."""
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-            'long_description': 'Valid **markdown**',
-        }
+        manifest = _valid_manifest(long_description='Valid **markdown**')
 
         # Valid markdown in i18n
         manifest['long_description_i18n'] = {'de': 'Gültig **markdown**', 'fr': 'Valide **markdown**'}
@@ -399,21 +278,11 @@ This is **bold** and *italic*.
 
     def test_validate_markdown_parsing(self):
         """Test that markdown module is used to validate syntax."""
-        import unittest
-
-        from picard.plugin3 import validator
-
         # Skip test if markdown module is not available
-        if validator.render_markdown is None:
-            raise unittest.SkipTest("Markdown module not available")
+        if render_markdown is None:
+            self.skipTest("Markdown module not available")
 
-        manifest = {
-            'uuid': '550e8400-e29b-41d4-a716-446655440000',
-            'name': 'Test Plugin',
-            'version': '1.0.0',
-            'description': 'A test plugin',
-            'api': ['3.0'],
-        }
+        manifest = _valid_manifest()
 
         # Valid markdown with code blocks
         manifest['long_description'] = '''
@@ -453,13 +322,7 @@ code block
         """Test validation catches various placeholder/test UUIDs."""
         for uuid in PLACEHOLDER_UUIDS:
             with self.subTest(uuid=uuid):
-                manifest = {
-                    'uuid': uuid,
-                    'name': 'Test Plugin',
-                    'version': '1.0.0',
-                    'description': 'A test plugin',
-                    'api': ['3.0'],
-                }
+                manifest = _valid_manifest(uuid=uuid)
                 errors = validate_manifest_dict(manifest)
                 self.assertTrue(any('placeholder/test UUID' in e for e in errors))
 
@@ -481,12 +344,6 @@ code block
         ]
         for uuid in real_uuids:
             with self.subTest(uuid=uuid):
-                manifest = {
-                    'uuid': uuid,
-                    'name': 'Test Plugin',
-                    'version': '1.0.0',
-                    'description': 'A test plugin',
-                    'api': ['3.0'],
-                }
+                manifest = _valid_manifest(uuid=uuid)
                 errors = validate_manifest_dict(manifest)
                 self.assertEqual(errors, [])

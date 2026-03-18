@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
+import shutil
 import sys
 import tempfile
-import unittest
+
+from test.picardtestcase import PicardTestCase
 
 
 try:
@@ -12,13 +14,14 @@ except ImportError:
     import tomli as tomllib
 
 
-class TestPluginMigration(unittest.TestCase):
+class TestPluginMigration(PicardTestCase):
     """Test V2 to V3 plugin migration tool."""
 
     def setUp(self):
+        super().setUp()
         self.temp_dir = tempfile.mkdtemp()
         self.temp_path = Path(self.temp_dir)
-        self.scripts_path = Path(__file__).parent.parent / 'scripts'
+        self.scripts_path = Path(__file__).parent.parent.parent / 'scripts'
         self.original_path_len = len(sys.path)
 
         # Skip if migrate_plugin.py doesn't exist (e.g., when running from installed package)
@@ -26,8 +29,6 @@ class TestPluginMigration(unittest.TestCase):
             self.skipTest('migrate_plugin.py not found (running from installed package)')
 
     def tearDown(self):
-        import shutil
-
         if hasattr(self, 'temp_dir'):
             shutil.rmtree(self.temp_dir, ignore_errors=True)
         # Clean up sys.path
@@ -36,6 +37,7 @@ class TestPluginMigration(unittest.TestCase):
         # Clean up imported module
         if 'migrate_plugin' in sys.modules:
             del sys.modules['migrate_plugin']
+        super().tearDown()
 
     def test_migrate_simple_plugin(self):
         """Test migrating a simple V2 plugin."""

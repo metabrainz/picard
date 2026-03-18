@@ -25,8 +25,11 @@ from unittest.mock import (
     patch,
 )
 
-from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.picardtestcase import (
+    PicardTestCase,
+    get_test_data_path,
+)
+from test.plugins3.helpers import (
     MockPlugin,
     MockTagger,
     backend_init_and_commit,
@@ -37,6 +40,10 @@ from picard.config import get_config
 from picard.git.backend import (
     GitRef,
     GitRefType,
+)
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
 )
 from picard.git.ops import GitOperations
 from picard.plugin3.manager import (
@@ -55,16 +62,22 @@ from picard.plugin3.plugin_metadata import (
 )
 from picard.plugin3.registry import RegistryPlugin
 from picard.plugin3.validation import PluginValidation
+from picard.plugin3.validator import generate_uuid
+
+
+def _create_manager():
+    """Create a PluginManager with a MockTagger."""
+    return PluginManager(MockTagger())
 
 
 class TestPluginManagerHelpers(PicardTestCase):
     def test_validate_manifest_valid(self):
-        """Test _validate_manifest with valid manifest."""
+        """Test _validate_manifest with valid manifest does not raise."""
         mock_manifest = Mock()
         mock_manifest.validate.return_value = []
 
         # Should not raise
-        PluginValidation.validate_manifest(mock_manifest)
+        self.assertIsNone(PluginValidation.validate_manifest(mock_manifest))
 
     def test_validate_manifest_invalid(self):
         """Test _validate_manifest with invalid manifest."""
@@ -78,32 +91,25 @@ class TestPluginManagerHelpers(PicardTestCase):
 
     def test_get_plugin_uuid_missing(self):
         """Test _get_plugin_uuid when UUID is missing."""
-        mock_plugin = MockPlugin()
-        mock_plugin.plugin_id = 'test-plugin'
-        mock_plugin.manifest = None
-        mock_plugin.uuid = None
+        plugin = MockPlugin()
+        plugin.plugin_id = 'test-plugin'
+        plugin.manifest = None
+        plugin.uuid = None
 
         with self.assertRaises(PluginNoUUIDError) as context:
-            PluginValidation.get_plugin_uuid(mock_plugin)
+            PluginValidation.get_plugin_uuid(plugin)
 
         self.assertIn('has no UUID', str(context.exception))
 
     def test_get_plugin_uuid_success(self):
         """Test _get_plugin_uuid with valid UUID."""
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest.uuid = 'test-uuid-123'
-        mock_plugin.uuid = 'test-uuid-123'
+        plugin = MockPlugin()
+        plugin.manifest.uuid = 'test-uuid-123'
+        plugin.uuid = 'test-uuid-123'
 
-        result = PluginValidation.get_plugin_uuid(mock_plugin)
+        result = PluginValidation.get_plugin_uuid(plugin)
 
         self.assertEqual(result, 'test-uuid-123')
-
-    def test_get_config_value(self):
-        """Test _get_config_value helper."""
-        with patch('picard.config.get_config') as mock_get_config:
-            mock_config = Mock()
-            mock_config.setting = {'plugins3': {'enabled': ['plugin1']}}
-            mock_get_config.return_value = mock_config
 
     def test_cleanup_temp_directories(self):
         """Test that temp directories are cleaned up."""
@@ -179,8 +185,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_check_dirty_working_dir_clean(self):
         """Test _check_dirty_working_dir with clean repo."""
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -191,8 +195,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(repo_dir, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(repo_dir)
             backend.reset_hard(repo, commit_id)
@@ -206,8 +208,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         """Test _check_dirty_working_dir with uncommitted changes."""
 
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -324,8 +324,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     def test_install_plugin_reinstall_dirty_check(self):
         """Test that install_plugin checks for dirty working dir on reinstall."""
         try:
-            from picard.git.factory import has_git_backend
-
             if not has_git_backend():
                 self.skipTest("git backend not available")
         except ImportError:
@@ -341,8 +339,6 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
             commit_id = backend_init_and_commit(existing, {'test.txt': 'test'}, 'Initial')
 
             # Reset to clean state
-            from picard.git.factory import git_backend
-
             backend = git_backend()
             repo = backend.create_repository(existing)
             backend.reset_hard(repo, commit_id)
@@ -357,19 +353,18 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_registry_id_found(self):
         """Test get_plugin_registry_id returns registry ID when plugin is in registry."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = Mock()
-        mock_plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
-        mock_plugin.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        plugin = MockPlugin()
+        plugin.manifest = Mock()
+        plugin.manifest.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
+        plugin.uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertEqual(registry_id, 'example-plugin')
 
     def test_get_plugin_registry_id_uses_id_property(self):
@@ -379,50 +374,47 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         registry.find_plugin.return_value = registry_plugin
         metadata_manager = PluginMetadataManager(registry)
 
-        mock_plugin = MockPlugin(uuid='some-uuid')
+        plugin = MockPlugin(uuid='some-uuid')
 
         # Verify __getitem__ raises (dict-style access is forbidden)
         with self.assertRaises(TypeError):
             _ = registry_plugin['id']
 
-        result = metadata_manager.get_plugin_registry_id(mock_plugin)
+        result = metadata_manager.get_plugin_registry_id(plugin)
         self.assertEqual(result, 'my-plugin')
 
     def test_get_plugin_registry_id_not_found(self):
         """Test get_plugin_registry_id returns None when plugin not in registry."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin with manifest and UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = Mock()
-        mock_plugin.manifest.uuid = 'nonexistent-uuid'
+        plugin = MockPlugin()
+        plugin.manifest = Mock()
+        plugin.manifest.uuid = 'nonexistent-uuid'
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertIsNone(registry_id)
 
     def test_get_plugin_registry_id_no_uuid(self):
         """Test get_plugin_registry_id returns None when plugin has no UUID."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         manager._registry = create_test_registry()
         # Reinitialize metadata manager with new registry
         manager._metadata = PluginMetadataManager(manager._registry)
 
         # Mock plugin without UUID
-        mock_plugin = MockPlugin()
-        mock_plugin.manifest = None
+        plugin = MockPlugin()
+        plugin.manifest = None
 
-        registry_id = manager._metadata.get_plugin_registry_id(mock_plugin)
+        registry_id = manager._metadata.get_plugin_registry_id(plugin)
         self.assertIsNone(registry_id)
 
     def test_get_plugin_metadata_dict_format(self):
         """Test get_plugin_metadata returns PluginMetadata object by UUID."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         metadata_manager = PluginMetadataManager(manager._registry)
 
         test_uuid = 'test-uuid-123'
@@ -444,8 +436,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_get_plugin_metadata_not_found(self):
         """Test get_plugin_metadata returns None when UUID not found."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
         metadata_manager = PluginMetadataManager(manager._registry)
 
         config = get_config()
@@ -456,8 +447,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_no_conflict(self):
         """Test _check_uuid_conflict returns False when no conflict exists."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create a mock manifest
         manifest = Mock()
@@ -470,8 +460,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_same_source(self):
         """Test _check_uuid_conflict returns False for same UUID from same source."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create existing plugin with same UUID and source
         existing_plugin = Mock()
@@ -498,8 +487,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
     def test_check_uuid_conflict_different_source(self):
         """Test _check_uuid_conflict returns True for same UUID from different source."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = _create_manager()
 
         # Create existing plugin
         existing_plugin = Mock()
@@ -827,3 +815,173 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
 
         # Verify directory removal was attempted
         mock_shutil.rmtree.assert_called_once_with(final_path)
+
+
+class TestPluginManager(PicardTestCase):
+    def test_config_persistence(self):
+        """Test that enabled plugins are saved to and loaded from config."""
+        manager = _create_manager()
+
+        # Initially no plugins enabled
+        self.assertEqual(manager._enabled_plugins, set())
+
+        # Create a mock plugin with UUID
+        test_uuid = generate_uuid()
+        plugin = MockPlugin(uuid=test_uuid)
+
+        # Enable plugin - should save to config
+        manager.enable_plugin(plugin)
+        self.assertIn(test_uuid, manager._enabled_plugins)
+
+        # Verify it was saved to config
+        config = get_config()
+        self.assertIn('plugins3_enabled_plugins', config.setting)
+        self.assertIn(test_uuid, config.setting['plugins3_enabled_plugins'])
+
+        # Create new manager instance - should load from config
+        manager2 = _create_manager()
+        self.assertIn(test_uuid, manager2._enabled_plugins)
+
+        # Disable plugin - should remove from config
+        manager2.disable_plugin(plugin)
+        self.assertNotIn(test_uuid, manager2._enabled_plugins)
+        self.assertNotIn(test_uuid, config.setting['plugins3_enabled_plugins'])
+
+    def test_init_plugins_only_loads_enabled(self):
+        """Test that init_plugins only loads plugins that are enabled in config."""
+        manager = _create_manager()
+
+        # Create mock plugins with UUIDs
+        enabled_uuid = 'enabled-uuid-1234'
+        enabled_plugin = Mock(spec=Plugin)
+        enabled_plugin.plugin_id = 'enabled-plugin'
+        enabled_plugin.manifest = Mock()
+        enabled_plugin.manifest.uuid = enabled_uuid
+        enabled_plugin.uuid = enabled_uuid
+        enabled_plugin.load_module = Mock()
+        enabled_plugin.enable = Mock()
+
+        disabled_uuid = 'disabled-uuid-5678'
+        disabled_plugin = Mock(spec=Plugin)
+        disabled_plugin.plugin_id = 'disabled-plugin'
+        disabled_plugin.manifest = Mock()
+        disabled_plugin.manifest.uuid = disabled_uuid
+        disabled_plugin.uuid = disabled_uuid
+        disabled_plugin.load_module = Mock()
+        disabled_plugin.enable = Mock()
+
+        manager._plugins = [enabled_plugin, disabled_plugin]
+        manager._enabled_plugins = {enabled_uuid}
+
+        # Initialize plugins
+        manager.init_plugins()
+
+        # Only enabled plugin should be loaded
+        enabled_plugin.load_module.assert_called_once()
+        enabled_plugin.enable.assert_called_once_with(manager._tagger)
+        disabled_plugin.load_module.assert_not_called()
+        disabled_plugin.enable.assert_not_called()
+
+    def test_api_version_compatibility_compatible(self):
+        """Test that plugins with compatible API versions are loaded."""
+        manager = _create_manager()
+
+        # Load compatible plugin (API 3.0, 3.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
+
+        self.assertIsNotNone(plugin)
+        self.assertEqual(plugin.plugin_id, 'example')
+        self.assertEqual(plugin.manifest.name(), 'Example plugin')
+
+    def test_api_version_compatibility_incompatible_old(self):
+        """Test that plugins with old incompatible API versions are rejected."""
+        manager = _create_manager()
+
+        # Load incompatible plugin (API 2.0, 2.1)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
+
+        self.assertIsNone(plugin)
+
+    def test_api_version_compatibility_incompatible_new(self):
+        """Test that plugins requiring newer API versions are rejected."""
+        manager = _create_manager()
+
+        # Load plugin requiring future API (3.5, 3.6)
+        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
+
+        self.assertIsNone(plugin)
+
+
+class TestPluginErrors(PicardTestCase):
+    """Test error handling in plugin system."""
+
+    def test_load_plugin_with_invalid_manifest(self):
+        """Test loading plugin with invalid MANIFEST.toml."""
+        manager = _create_manager()
+
+        # Try to load plugin with missing manifest
+        plugin = manager._load_plugin(Path('/nonexistent'), 'fake-plugin')
+        self.assertIsNone(plugin)
+
+    def test_init_plugins_handles_errors(self):
+        """Test that init_plugins handles plugin errors gracefully."""
+        manager = _create_manager()
+
+        # Create a plugin that will fail to load
+        bad_uuid = 'bad-uuid-1234'
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.plugin_id = 'bad-plugin'
+        bad_plugin.manifest = Mock()
+        bad_plugin.manifest.uuid = bad_uuid
+        bad_plugin.uuid = bad_uuid
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        manager._plugins = [bad_plugin]
+        manager._enabled_plugins = {bad_uuid}
+
+        # Should not raise, just log error
+        manager.init_plugins()
+
+        # Plugin should have been attempted to load
+        bad_plugin.load_module.assert_called_once()
+
+    def test_enable_plugin_with_load_error(self):
+        """Test enabling plugin that fails to load."""
+        manager = _create_manager()
+
+        bad_plugin = Mock(spec=Plugin)
+        bad_plugin.plugin_id = 'bad-plugin'
+        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
+
+        with self.assertRaises(Exception):  # noqa: B017
+            manager.enable_plugin(bad_plugin)
+
+    def test_manager_add_directory(self):
+        """Test adding plugin directory."""
+        manager = _create_manager()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory
+            manager.add_directory(str(plugin_dir), primary=True)
+
+            # Should be registered
+            self.assertIn(plugin_dir, manager._plugin_dirs)
+            self.assertEqual(manager._primary_plugin_dir, plugin_dir)
+
+    def test_manager_add_directory_twice(self):
+        """Test adding same directory twice is ignored."""
+        manager = _create_manager()
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir)
+
+            # Add directory twice
+            manager.add_directory(str(plugin_dir))
+            initial_count = len(manager._plugin_dirs)
+
+            manager.add_directory(str(plugin_dir))
+
+            # Should not be added twice
+            self.assertEqual(len(manager._plugin_dirs), initial_count)

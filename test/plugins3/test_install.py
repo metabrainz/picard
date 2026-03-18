@@ -18,10 +18,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+from io import StringIO
+from pathlib import Path
+import tempfile
+from unittest.mock import (
+    Mock,
+    mock_open,
+    patch,
+)
+
+from PyQt6.QtCore import QSettings
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import (
+from test.plugins3.helpers import (
     MockCliArgs,
     MockPlugin,
     MockPluginManager,
@@ -33,18 +42,31 @@ from picard.git.backend import (
     GitRef,
     GitRefType,
 )
-from picard.plugin3.manager.update import UpdateResult
+from picard.plugin3.cli import PluginCLI
+from picard.plugin3.manager import (
+    PluginAlreadyInstalledError,
+    PluginManager,
+    PluginManifestNotFoundError,
+    PluginMetadata,
+    PluginNoSourceError,
+)
+from picard.plugin3.manager.update import (
+    UpdateAllResult,
+    UpdateResult,
+)
+from picard.plugin3.output import PluginOutput
+from picard.plugin3.plugin import Plugin
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.validator import generate_uuid
 
 
 class TestPluginInstall(PicardTestCase):
+    def _create_manager(self):
+        return PluginManager(MockTagger())
+
     def test_plugin_metadata_storage(self):
         """Test that plugin metadata is stored and retrieved correctly."""
-        from picard.plugin3.manager import PluginManager, PluginMetadata
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = generate_uuid()
 
@@ -72,11 +94,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_plugin_no_metadata(self):
         """Test that updating plugin without metadata raises error."""
-        from picard.plugin3.manager import PluginManager, PluginNoSourceError
-        from picard.plugin3.plugin import Plugin
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
@@ -90,10 +108,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_with_ref(self):
         """Test installing plugin with specific git ref."""
-        from picard.plugin3.manager import PluginManager
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         # Mock the install to capture ref parameter
         captured_ref = None
@@ -114,13 +129,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref(self):
         """Test switching plugin to different git ref."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager, PluginMetadata
-        from picard.plugin3.plugin import Plugin
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = 'test-uuid-5678'
 
@@ -144,8 +153,6 @@ class TestPluginInstall(PicardTestCase):
         )
 
         # Mock GitOperations.switch_ref to return ref changes
-        from unittest.mock import patch
-
         with (
             patch('picard.git.ops.GitOperations.switch_ref') as mock_switch,
             patch.object(manager, 'plugin_ref_switched'),
@@ -164,13 +171,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_switch_ref_no_metadata(self):
         """Test switching ref for plugin without metadata raises error."""
-        from pathlib import Path
-
-        from picard.plugin3.manager import PluginManager, PluginNoSourceError
-        from picard.plugin3.plugin import Plugin
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         mock_plugin = Mock(spec=Plugin)
         mock_plugin.plugin_id = 'test-plugin'
@@ -213,14 +214,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_validates_manifest(self):
         """Test that install validates MANIFEST.toml exists."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import patch
-
-        from picard.plugin3.manager import PluginManager
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         with tempfile.TemporaryDirectory() as tmpdir:
             manager._primary_plugin_dir = Path(tmpdir)
@@ -237,8 +231,6 @@ class TestPluginInstall(PicardTestCase):
                 mock_source.sync = fake_sync
                 mock_source_class.return_value = mock_source
 
-                from picard.plugin3.manager import PluginManifestNotFoundError
-
                 with self.assertRaises(PluginManifestNotFoundError) as context:
                     manager.install_plugin('https://example.com/no-manifest.git')
 
@@ -246,17 +238,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_prevents_duplicate(self):
         """Test that install prevents duplicate installations."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import (
-            mock_open,
-            patch,
-        )
-
-        from picard.plugin3.manager import PluginManager
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
         test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -287,8 +269,6 @@ class TestPluginInstall(PicardTestCase):
                         mock_manifest.validate.return_value = []
                         mock_manifest_class.return_value = mock_manifest
 
-                        from picard.plugin3.manager import PluginAlreadyInstalledError
-
                         with self.assertRaises(PluginAlreadyInstalledError) as context:
                             manager.install_plugin('https://example.com/plugin.git')
 
@@ -296,17 +276,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_with_reinstall_flag(self):
         """Test that --reinstall allows overwriting existing plugin."""
-        from pathlib import Path
-        import tempfile
-        from unittest.mock import (
-            mock_open,
-            patch,
-        )
-
-        from picard.plugin3.manager import PluginManager
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
         test_uuid = generate_uuid()
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -347,19 +317,9 @@ class TestPluginInstall(PicardTestCase):
 
     def test_uninstall_with_purge(self):
         """Test uninstall with purge removes configuration."""
-        from pathlib import Path
-        from unittest.mock import patch
-
-        from PyQt6.QtCore import QSettings
-
-        from picard.plugin3.manager import PluginManager
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         # Create a temporary plugin directory and config file
-        import tempfile
-
         test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -402,16 +362,7 @@ class TestPluginInstall(PicardTestCase):
 
     def test_plugin_has_saved_options(self):
         """Test checking if plugin has saved options."""
-        from unittest.mock import (
-            Mock,
-            patch,
-        )
-
-        from picard.plugin3.manager import PluginManager
-        from picard.plugin3.plugin import Plugin
-
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
+        manager = self._create_manager()
 
         test_uuid = 'ae5ef1ed-0195-4014-a113-6090de7cf8b7'
 
@@ -447,11 +398,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_command_execution(self):
         """Test install command execution path."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
@@ -464,24 +410,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = ['https://example.com/plugin.git']
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.ref = None
-        args.reinstall = False
-        args.force_blacklisted = False
-        args.yes = True
+        args = MockCliArgs(install=['https://example.com/plugin.git'], yes=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -494,11 +423,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_command_with_error(self):
         """Test install command handles errors."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_manager.plugins = []
@@ -511,23 +435,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager._registry.get_trust_level = Mock(return_value='unregistered')
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = ['https://example.com/plugin.git']
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.ref = None
-        args.reinstall = False
-        args.force_blacklisted = False
+        args = MockCliArgs(install=['https://example.com/plugin.git'])
 
         stderr = StringIO()
         output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
@@ -540,11 +448,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_remove_command_with_yes_flag(self):
         """Test remove command with --yes flag."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
@@ -554,22 +457,7 @@ class TestPluginInstall(PicardTestCase):
         mock_manager.uninstall_plugin = Mock()
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.remove = ['test-plugin']
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.yes = True
-        args.purge = False
+        args = MockCliArgs(remove=['test-plugin'], yes=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -582,11 +470,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_command_execution(self):
         """Test update command execution path."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
@@ -602,20 +485,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = ['test-plugin']
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update=['test-plugin'])
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -628,11 +498,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_command_already_up_to_date(self):
         """Test update command when already up to date."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
@@ -648,20 +513,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = ['test-plugin']
-        args.update_all = False
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update=['test-plugin'])
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -674,12 +526,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_update_all_with_results(self):
         """Test update-all command with mixed results."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.manager.update import UpdateAllResult, UpdateResult
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
 
@@ -706,20 +552,7 @@ class TestPluginInstall(PicardTestCase):
         )
         mock_tagger._pluginmanager3 = mock_manager
 
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = True
-        args.check_updates = False
-        args.switch_ref = None
-        args.clean_config = None
+        args = MockCliArgs(update_all=True)
 
         stdout = StringIO()
         output = PluginOutput(stdout=stdout, stderr=StringIO(), color=False)
@@ -735,11 +568,6 @@ class TestPluginInstall(PicardTestCase):
 
     def test_install_multiple_plugins_with_ref_requires_confirmation(self):
         """Test that installing multiple plugins with --ref requires confirmation."""
-        from io import StringIO
-
-        from picard.plugin3.cli import PluginCLI
-        from picard.plugin3.output import PluginOutput
-
         mock_tagger = MockTagger()
         mock_manager = MockPluginManager()
         mock_tagger._pluginmanager3 = mock_manager

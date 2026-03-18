@@ -29,12 +29,8 @@ from unittest.mock import (
 
 from PyQt6.QtCore import QSettings
 
-from test.picardtestcase import (
-    PicardTestCase,
-    get_test_data_path,
-)
-from test.test_plugins3_helpers import (
-    MockPlugin,
+from test.picardtestcase import PicardTestCase
+from test.plugins3.helpers import (
     MockTagger,
     load_plugin_manifest,
 )
@@ -49,271 +45,172 @@ from picard.config import (
     get_config,
 )
 from picard.plugin3.api import PluginApi
-from picard.plugin3.manager import PluginManager
-from picard.plugin3.manifest import PluginManifest
-from picard.plugin3.plugin import Plugin
-from picard.plugin3.validator import generate_uuid
-from picard.version import Version
 
 
-class TestPluginManifest(PicardTestCase):
-    def test_load_from_toml(self):
+class TestPluginApiMethods(PicardTestCase):
+    def _create_api(self):
+        return PluginApi(load_plugin_manifest('example'), Mock())
+
+    def test_register_file_processors(self):
+        """Test file processor registration methods."""
+        api = self._create_api()
+
+        def dummy_processor():
+            pass
+
+        with patch('picard.plugin3.api_impl.register_file_post_addition_to_track_processor') as mock:
+            api.register_file_post_addition_to_track_processor(dummy_processor, priority=5)
+            # Should be called with partial(dummy_processor, api)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 5)
+
+        with patch('picard.plugin3.api_impl.register_file_post_removal_from_track_processor') as mock:
+            api.register_file_post_removal_from_track_processor(dummy_processor, priority=3)
+            # Should be called with partial(dummy_processor, api)
+            args, kwargs = mock.call_args
+            self.assertIsInstance(args[0], partial)
+            self.assertEqual(args[0].func, dummy_processor)
+            self.assertEqual(args[0].args, (api,))
+            self.assertEqual(args[1], 3)
+
+    def test_register_cover_art_provider(self):
+        """Test cover art provider registration."""
+        api = self._create_api()
+
+        mock_provider = Mock()
+
+        with patch('picard.plugin3.api_impl.register_cover_art_provider') as mock:
+            api.register_cover_art_provider(mock_provider)
+            self.assertEqual(mock_provider.api, api)
+            mock.assert_called_once_with(mock_provider)
+
+    def test_register_format(self):
+        """Test file format registration."""
         manifest = load_plugin_manifest('example')
-        self.assertEqual(manifest.module_name, 'example')
-        self.assertEqual(manifest.name(), 'Example plugin')
-        self.assertEqual(manifest.authors, ('Philipp Wolfer',))
-        self.assertEqual(manifest.description(), "This is an example plugin")
-        self.assertEqual(manifest.description('en'), "This is an example plugin")
-        self.assertEqual(manifest.description('fr'), "Ceci est un exemple de plugin")
-        self.assertEqual(manifest.description('it'), "This is an example plugin")
-        self.assertEqual(manifest.version, Version(1, 0, 0))
-        self.assertEqual(manifest.api_versions, (Version(3, 0, 0), Version(3, 1, 0)))
-        self.assertEqual(manifest.license, 'CC0-1.0')
-        self.assertEqual(manifest.license_url, 'https://creativecommons.org/publicdomain/zero/1.0/')
+        mock_tagger = Mock()
+        api = PluginApi(manifest, mock_tagger)
 
-    def test_manifest_missing_translation(self):
-        """Test manifest description with missing translation."""
+        mock_format = Mock()
+
+        api.register_format(mock_format)
+        mock_tagger.format_registry.register.assert_called_once_with(mock_format)
+
+    def test_manifest(self):
         manifest = load_plugin_manifest('example')
+        mock_tagger = Mock()
+        api = PluginApi(manifest, mock_tagger)
 
-        # Request German translation (exists)
-        desc_de = manifest.description('de')
-        self.assertEqual(desc_de, "Dies ist ein Beispiel-Plugin")
+        self.assertEqual(api.manifest, manifest)
+        with self.assertRaises(AttributeError):
+            api.manifest = Mock()
 
-        # Request non-existent language, should fallback to English
-        desc_it = manifest.description('it')
-        self.assertEqual(desc_it, "This is an example plugin")
+    def test_register_context_menu_actions(self):
+        """Test context menu action registration methods."""
+        api = self._create_api()
 
-    def test_manifest_name_translation(self):
-        """Test manifest name translation."""
+        mock_action = Mock()
+
+        with patch('picard.plugin3.api_impl.register_cluster_action') as mock:
+            api.register_cluster_action(mock_action)
+            self.assertEqual(mock_action.api, api)
+            mock.assert_called_once_with(mock_action)
+
+        with patch('picard.plugin3.api_impl.register_clusterlist_action') as mock:
+            api.register_clusterlist_action(mock_action)
+            self.assertEqual(mock_action.api, api)
+            mock.assert_called_once_with(mock_action)
+
+        with patch('picard.plugin3.api_impl.register_track_action') as mock:
+            api.register_track_action(mock_action)
+            self.assertEqual(mock_action.api, api)
+            mock.assert_called_once_with(mock_action)
+
+        with patch('picard.plugin3.api_impl.register_file_action') as mock:
+            api.register_file_action(mock_action)
+            self.assertEqual(mock_action.api, api)
+            mock.assert_called_once_with(mock_action)
+
+    def test_register_options_page(self):
+        """Test options page registration."""
+        api = self._create_api()
+
+        mock_page = Mock()
+
+        with patch('picard.plugin3.api_impl.register_options_page') as mock:
+            api.register_options_page(mock_page)
+            self.assertEqual(mock_page.api, api)
+            mock.assert_called_once_with(mock_page)
+
+    def test_processor_metadata_preserved(self):
+        """Test that processor function metadata is preserved after wrapping."""
+        api = self._create_api()
+
+        def my_processor(api, track, metadata):
+            """Process track metadata."""
+            pass
+
+        with patch('picard.plugin3.api_impl.register_track_metadata_processor') as mock:
+            api.register_track_metadata_processor(my_processor)
+            # Get the wrapped function that was passed
+            wrapped = mock.call_args[0][0]
+            # Verify metadata is preserved
+            self.assertEqual(wrapped.__name__, 'my_processor')
+            self.assertEqual(wrapped.__doc__, 'Process track metadata.')
+            self.assertEqual(wrapped.func, my_processor)
+
+    def test_register_cover_art_processor(self):
+        """Test options page registration."""
+        api = self._create_api()
+
+        mock_processor = Mock()
+
+        with patch('picard.plugin3.api_impl.register_cover_art_processor') as mock:
+            api.register_cover_art_processor(mock_processor)
+            self.assertEqual(mock_processor.api, api)
+            mock.assert_called_once_with(mock_processor)
+
+    def test_get_plugin_version(self):
+        """Test get_plugin_version method."""
         manifest = load_plugin_manifest('example')
+        mock_tagger = Mock()
+        mock_plugin_manager = Mock()
+        mock_tagger.get_plugin_manager.return_value = mock_plugin_manager
 
-        # English (default)
-        self.assertEqual(manifest.name('en'), 'Example plugin')
+        api = PluginApi(manifest, mock_tagger)
 
-        # German translation
-        self.assertEqual(manifest.name('de'), 'Beispiel-Plugin')
+        # Test with git metadata
+        mock_metadata = Mock()
+        mock_plugin_manager._get_plugin_metadata.return_value = mock_metadata
+        mock_plugin_manager.get_plugin_git_info.return_value = "v1.0.0 @abc1234"
 
-        # French translation
-        self.assertEqual(manifest.name('fr'), 'Plugin d\'exemple')
+        result = api.get_plugin_version()
+        self.assertEqual(result, "v1.0.0 @abc1234")
+        mock_plugin_manager._get_plugin_metadata.assert_called_once_with(manifest.uuid)
 
-        # Non-existent translation falls back to base
-        self.assertEqual(manifest.name('it'), 'Example plugin')
+        # Test fallback to manifest version
+        mock_plugin_manager._get_plugin_metadata.return_value = None
+        result = api.get_plugin_version()
+        self.assertEqual(result, str(manifest.version))
 
-    def test_manifest_locale_with_region(self):
-        """Test locale with region code (e.g., de_DE) falls back to language (de)."""
-        manifest = load_plugin_manifest('example')
-
-        # de_DE should fall back to de
-        self.assertEqual(manifest.name('de_DE'), 'Beispiel-Plugin')
-        self.assertEqual(manifest.description('de_AT'), "Dies ist ein Beispiel-Plugin")
-
-    def test_manifest_long_description(self):
-        """Test long_description field and translation."""
-        manifest = load_plugin_manifest('example')
-
-        # English long description
-        long_desc = manifest.long_description('en')
-        self.assertIn('detailed', long_desc.lower())
-
-        # German long description
-        long_desc_de = manifest.long_description('de')
-        self.assertIn('ausführlich', long_desc_de.lower())
-
-        # Non-existent translation falls back to English
-        long_desc_it = manifest.long_description('it')
-        self.assertEqual(long_desc_it, long_desc)
-
-    def test_get_current_locale_no_config(self):
-        """_get_current_locale must not crash when get_config() returns None."""
-        manifest = load_plugin_manifest('example')
-        with patch('picard.config.get_config', return_value=None):
-            locale = manifest._get_current_locale()
-        self.assertIsInstance(locale, str)
-        self.assertTrue(len(locale) > 0)
-
-    def test_manifest_validate_valid(self):
-        manifest = load_plugin_manifest('example')
-        errors = manifest.validate()
-        self.assertEqual(errors, [])
-
-    def test_manifest_validate_missing_fields(self):
-        """Test validation catches missing required fields."""
-        # Create minimal invalid manifest
-        manifest_content = """
-name = "Test"
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            # Should have errors for missing required fields
-            error_text = ' '.join(errors)
-            self.assertIn('uuid', error_text)
-            self.assertIn('description', error_text)
-            self.assertIn('api', error_text)
-        finally:
-            temp_path.unlink()
-
-    def test_manifest_validate_invalid_types(self):
-        """Test validation catches invalid field types."""
-        manifest_content = """
-name = 123
-authors = "not an array"
-api = "not an array"
-version = "1.0.0"
-description = "Test"
-license = "MIT"
-license_url = "https://example.com"
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            error_text = ' '.join(errors)
-            self.assertIn('name', error_text)
-            self.assertIn('authors', error_text)
-            self.assertIn('api', error_text)
-        finally:
-            temp_path.unlink()
-
-    def test_manifest_validate_empty_i18n_sections(self):
-        """Test validation warns about empty i18n sections."""
-        manifest_content = """
-name = "Test"
-authors = ["Author"]
-version = "1.0.0"
-description = "Test"
-api = ["3.0"]
-license = "MIT"
-license_url = "https://example.com"
-
-[name_i18n]
-
-[description_i18n]
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            errors = manifest.validate()
-            self.assertGreater(len(errors), 0)
-            error_text = ' '.join(errors)
-            self.assertIn('name_i18n', error_text)
-            self.assertIn('description_i18n', error_text)
-            self.assertIn('empty', error_text.lower())
-        finally:
-            temp_path.unlink()
-
-    def test_manifest_properties(self):
-        """Test manifest property accessors."""
-        manifest = load_plugin_manifest('example')
-
-        # Test all properties are accessible
-        self.assertIsNotNone(manifest.module_name)
-        self.assertIsNotNone(manifest.name())
-        self.assertIsNotNone(manifest.authors)
-        self.assertIsNotNone(manifest.version)
-        self.assertIsNotNone(manifest.api_versions)
-        self.assertIsNotNone(manifest.license)
-        self.assertIsNotNone(manifest.license_url)
-
-    def test_manifest_invalid_version(self):
-        """Test manifest with invalid version string."""
-        manifest_content = """
-uuid = "550e8400-e29b-41d4-a716-446655440000"
-name = "Test"
-version = "invalid"
-description = "Test"
-api = ["3.0"]
-authors = ["Test"]
-license = "MIT"
-license_url = "https://example.com"
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return None for invalid version
-            self.assertIsNone(manifest.version)
-        finally:
-            temp_path.unlink()
-
-    def test_manifest_invalid_api_versions(self):
-        """Test manifest with invalid API version strings."""
-        manifest_content = """
-uuid = "550e8400-e29b-41d4-a716-446655440000"
-name = "Test"
-version = "1.0.0"
-description = "Test"
-api = ["invalid", "bad"]
-authors = ["Test"]
-license = "MIT"
-license_url = "https://example.com"
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return empty tuple for invalid versions
-            self.assertEqual(manifest.api_versions, tuple())
-        finally:
-            temp_path.unlink()
-
-    def test_manifest_missing_api_versions(self):
-        """Test manifest with missing API versions."""
-        manifest_content = """
-uuid = "550e8400-e29b-41d4-a716-446655440000"
-name = "Test"
-version = "1.0.0"
-description = "Test"
-authors = ["Test"]
-license = "MIT"
-license_url = "https://example.com"
-"""
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.toml', delete=False) as f:
-            f.write(manifest_content)
-            temp_path = Path(f.name)
-
-        try:
-            with open(temp_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-
-            # Should return empty tuple when api field is missing
-            self.assertEqual(manifest.api_versions, tuple())
-        finally:
-            temp_path.unlink()
+        # Test no plugin manager
+        mock_tagger.get_plugin_manager.return_value = None
+        result = api.get_plugin_version()
+        self.assertEqual(result, "Unknown")
 
 
 class TestPluginApi(PicardTestCase):
+    def _create_api(self):
+        return PluginApi(load_plugin_manifest('example'), Mock())
+
     def tearDown(self):
         # Clear plugin options created during tests from registry
         for key, _v in list(Option.registry.items()):
             if key[0].startswith('plugin.'):
                 del Option.registry[key]
+        super().tearDown()
 
     def test_init(self):
         manifest = load_plugin_manifest('example')
@@ -616,8 +513,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_metadata_processors(self):
         """Test metadata processor registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_processor():
             pass
@@ -640,8 +536,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_event_hooks(self):
         """Test event hook registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_hook():
             pass
@@ -680,8 +575,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_script_function(self):
         """Test script function registration."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         def dummy_func():
             pass
@@ -694,8 +588,7 @@ class TestPluginApi(PicardTestCase):
 
     def test_register_actions(self):
         """Test action registration methods."""
-        manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, Mock())
+        api = self._create_api()
 
         mock_action = Mock()
 
@@ -710,183 +603,3 @@ class TestPluginApi(PicardTestCase):
         with patch('picard.plugin3.api_impl.register_file_action') as mock:
             api.register_file_action(mock_action)
             mock.assert_called_once_with(mock_action)
-
-
-class TestPluginManager(PicardTestCase):
-    def test_config_persistence(self):
-        """Test that enabled plugins are saved to and loaded from config."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Initially no plugins enabled
-        self.assertEqual(manager._enabled_plugins, set())
-
-        # Create a mock plugin with UUID
-        test_uuid = generate_uuid()
-        mock_plugin = MockPlugin(uuid=test_uuid)
-
-        # Enable plugin - should save to config
-        manager.enable_plugin(mock_plugin)
-        self.assertIn(test_uuid, manager._enabled_plugins)
-
-        # Verify it was saved to config
-        config = get_config()
-        self.assertIn('plugins3_enabled_plugins', config.setting)
-        self.assertIn(test_uuid, config.setting['plugins3_enabled_plugins'])
-
-        # Create new manager instance - should load from config
-        manager2 = PluginManager(mock_tagger)
-        self.assertIn(test_uuid, manager2._enabled_plugins)
-
-        # Disable plugin - should remove from config
-        manager2.disable_plugin(mock_plugin)
-        self.assertNotIn(test_uuid, manager2._enabled_plugins)
-        self.assertNotIn(test_uuid, config.setting['plugins3_enabled_plugins'])
-
-    def test_init_plugins_only_loads_enabled(self):
-        """Test that init_plugins only loads plugins that are enabled in config."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Create mock plugins with UUIDs
-        enabled_uuid = 'enabled-uuid-1234'
-        enabled_plugin = Mock(spec=Plugin)
-        enabled_plugin.plugin_id = 'enabled-plugin'
-        enabled_plugin.manifest = Mock()
-        enabled_plugin.manifest.uuid = enabled_uuid
-        enabled_plugin.uuid = enabled_uuid
-        enabled_plugin.load_module = Mock()
-        enabled_plugin.enable = Mock()
-
-        disabled_uuid = 'disabled-uuid-5678'
-        disabled_plugin = Mock(spec=Plugin)
-        disabled_plugin.plugin_id = 'disabled-plugin'
-        disabled_plugin.manifest = Mock()
-        disabled_plugin.manifest.uuid = disabled_uuid
-        disabled_plugin.uuid = disabled_uuid
-        disabled_plugin.load_module = Mock()
-        disabled_plugin.enable = Mock()
-
-        manager._plugins = [enabled_plugin, disabled_plugin]
-        manager._enabled_plugins = {enabled_uuid}
-
-        # Initialize plugins
-        manager.init_plugins()
-
-        # Only enabled plugin should be loaded
-        enabled_plugin.load_module.assert_called_once()
-        enabled_plugin.enable.assert_called_once_with(mock_tagger)
-        disabled_plugin.load_module.assert_not_called()
-        disabled_plugin.enable.assert_not_called()
-
-    def test_api_version_compatibility_compatible(self):
-        """Test that plugins with compatible API versions are loaded."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Load compatible plugin (API 3.0, 3.1)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'example')
-
-        self.assertIsNotNone(plugin)
-        self.assertEqual(plugin.plugin_id, 'example')
-        self.assertEqual(plugin.manifest.name(), 'Example plugin')
-
-    def test_api_version_compatibility_incompatible_old(self):
-        """Test that plugins with old incompatible API versions are rejected."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Load incompatible plugin (API 2.0, 2.1)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'incompatible')
-
-        self.assertIsNone(plugin)
-
-    def test_api_version_compatibility_incompatible_new(self):
-        """Test that plugins requiring newer API versions are rejected."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Load plugin requiring future API (3.5, 3.6)
-        plugin = manager._load_plugin(Path(get_test_data_path('testplugins3')), 'newer-api')
-
-        self.assertIsNone(plugin)
-
-
-class TestPluginErrors(PicardTestCase):
-    """Test error handling in plugin system."""
-
-    def test_load_plugin_with_invalid_manifest(self):
-        """Test loading plugin with invalid MANIFEST.toml."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Try to load plugin with missing manifest
-        plugin = manager._load_plugin(Path('/nonexistent'), 'fake-plugin')
-        self.assertIsNone(plugin)
-
-    def test_init_plugins_handles_errors(self):
-        """Test that init_plugins handles plugin errors gracefully."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        # Create a plugin that will fail to load
-        bad_uuid = 'bad-uuid-1234'
-        bad_plugin = Mock(spec=Plugin)
-        bad_plugin.plugin_id = 'bad-plugin'
-        bad_plugin.manifest = Mock()
-        bad_plugin.manifest.uuid = bad_uuid
-        bad_plugin.uuid = bad_uuid
-        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
-
-        manager._plugins = [bad_plugin]
-        manager._enabled_plugins = {bad_uuid}
-
-        # Should not raise, just log error
-        manager.init_plugins()
-
-        # Plugin should have been attempted to load
-        bad_plugin.load_module.assert_called_once()
-
-    def test_enable_plugin_with_load_error(self):
-        """Test enabling plugin that fails to load."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        bad_plugin = Mock(spec=Plugin)
-        bad_plugin.plugin_id = 'bad-plugin'
-        bad_plugin.load_module = Mock(side_effect=Exception('Load failed'))
-
-        with self.assertRaises(Exception):  # noqa: B017
-            manager.enable_plugin(bad_plugin)
-
-    def test_manager_add_directory(self):
-        """Test adding plugin directory."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-
-            # Add directory
-            manager.add_directory(str(plugin_dir), primary=True)
-
-            # Should be registered
-            self.assertIn(plugin_dir, manager._plugin_dirs)
-            self.assertEqual(manager._primary_plugin_dir, plugin_dir)
-
-    def test_manager_add_directory_twice(self):
-        """Test adding same directory twice is ignored."""
-        mock_tagger = MockTagger()
-        manager = PluginManager(mock_tagger)
-
-        with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-
-            # Add directory twice
-            manager.add_directory(str(plugin_dir))
-            initial_count = len(manager._plugin_dirs)
-
-            manager.add_directory(str(plugin_dir))
-
-            # Should not be added twice
-            self.assertEqual(len(manager._plugin_dirs), initial_count)
