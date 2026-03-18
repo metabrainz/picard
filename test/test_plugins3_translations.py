@@ -24,7 +24,10 @@ import tempfile
 from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
-from test.test_plugins3_helpers import load_plugin_manifest
+from test.test_plugins3_helpers import (
+    create_test_plugin_api,
+    load_plugin_manifest,
+)
 
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
@@ -101,91 +104,62 @@ class TestPluginTranslations(PicardTestCase):
         self.assertEqual(result, 'Alice has 5 items')
 
 
+def _create_locale_dir(tmpdir):
+    """Create a plugin directory with a locale subdirectory."""
+    plugin_dir = Path(tmpdir)
+    (plugin_dir / 'locale').mkdir()
+    return plugin_dir
+
+
 class TestPluginTranslationLoading(PicardTestCase):
     def test_load_translations_from_json(self):
         """Test loading translations from JSON files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            # Create translation files
-            (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello', 'farewell': 'Goodbye'}))
-            (locale_dir / 'de.json').write_text(json.dumps({'greeting': 'Hallo', 'farewell': 'Auf Wiedersehen'}))
+            (plugin_dir / 'locale' / 'en.json').write_text(json.dumps({'greeting': 'Hello', 'farewell': 'Goodbye'}))
+            (plugin_dir / 'locale' / 'de.json').write_text(
+                json.dumps({'greeting': 'Hallo', 'farewell': 'Auf Wiedersehen'})
+            )
 
-            # Create manifest
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                self.assertIn('en', api._translations)
-                self.assertEqual(api._translations['en']['greeting'], 'Hello')
+            self.assertIn('en', api._translations)
+            self.assertEqual(api._translations['en']['greeting'], 'Hello')
 
     def test_load_translations_from_toml(self):
         """Test loading translations from TOML files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            # Create TOML translation files with quoted keys
-            (locale_dir / 'en.toml').write_text('"greeting" = "Hello"\n"farewell" = "Goodbye"\n')
-            (locale_dir / 'de.toml').write_text('"greeting" = "Hallo"\n"farewell" = "Auf Wiedersehen"\n')
+            (plugin_dir / 'locale' / 'en.toml').write_text('"greeting" = "Hello"\n"farewell" = "Goodbye"\n')
+            (plugin_dir / 'locale' / 'de.toml').write_text('"greeting" = "Hallo"\n"farewell" = "Auf Wiedersehen"\n')
 
-            # Create manifest
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                self.assertIn('en', api._translations)
-                self.assertEqual(api._translations['en']['greeting'], 'Hello')
+            self.assertIn('en', api._translations)
+            self.assertEqual(api._translations['en']['greeting'], 'Hello')
 
     def test_load_translations_toml_with_dotted_keys(self):
         """Test loading TOML with dotted keys (quoted)."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            # Create TOML with quoted dotted keys
-            (locale_dir / 'en.toml').write_text(
+            (plugin_dir / 'locale' / 'en.toml').write_text(
                 '"message.greeting" = "Hello"\n["message.plurals"]\none = "{n} item"\nother = "{n} items"\n'
             )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                self.assertEqual(api._translations['en']['message.greeting'], 'Hello')
-                self.assertEqual(api._translations['en']['message.plurals']['one'], '{n} item')
+            self.assertEqual(api._translations['en']['message.greeting'], 'Hello')
+            self.assertEqual(api._translations['en']['message.plurals']['one'], '{n} item')
 
     def test_load_translations_toml_warns_on_nested_structure(self):
         """Test that loading TOML with unquoted nested keys produces warning."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            # Create TOML with unquoted nested keys (incorrect)
-            (locale_dir / 'en.toml').write_text('[message]\ngreeting = "Hello"\n')
+            (plugin_dir / 'locale' / 'en.toml').write_text('[message]\ngreeting = "Hello"\n')
 
             manifest_path = plugin_dir / 'MANIFEST.toml'
             manifest_path.write_text('name = "Test"\n')
@@ -196,46 +170,30 @@ class TestPluginTranslationLoading(PicardTestCase):
                 api._plugin_dir = plugin_dir
                 api.get_locale = Mock(return_value='en')
 
-                # Capture log warnings
                 with self.assertLogs(api._logger, level='WARNING') as cm:
                     api._load_translations()
 
-                # Check warning was logged
                 self.assertTrue(any('nested structure' in msg.lower() for msg in cm.output))
                 self.assertTrue(any('quoted' in msg.lower() for msg in cm.output))
 
     def test_load_translations_mixed_formats(self):
         """Test loading translations with mixed JSON and TOML files."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            # Create mixed format files
-            (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello'}))
-            (locale_dir / 'fr.toml').write_text('"greeting" = "Bonjour"\n')
+            (plugin_dir / 'locale' / 'en.json').write_text(json.dumps({'greeting': 'Hello'}))
+            (plugin_dir / 'locale' / 'fr.toml').write_text('"greeting" = "Bonjour"\n')
 
-            # Create manifest
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
+            self.assertIn('en', api._translations)
+            self.assertEqual(api._translations['en']['greeting'], 'Hello')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-
-                # Test loading English
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-                self.assertIn('en', api._translations)
-                self.assertEqual(api._translations['en']['greeting'], 'Hello')
-
-                # Reset and test loading French
-                api._translations = {}
-                api.get_locale = Mock(return_value='fr')
-                api._load_translations()
-                self.assertIn('fr', api._translations)
-                self.assertEqual(api._translations['fr']['greeting'], 'Bonjour')
+            # Reset and test loading French
+            api._translations = {}
+            api.get_locale = Mock(return_value='fr')
+            api._load_translations()
+            self.assertIn('fr', api._translations)
+            self.assertEqual(api._translations['fr']['greeting'], 'Bonjour')
 
     def test_translations_loaded_on_plugin_enable(self):
         """Test that translations are loaded when plugin is enabled."""
@@ -245,10 +203,8 @@ class TestPluginTranslationLoading(PicardTestCase):
             locale_dir = plugin_dir / 'locale'
             locale_dir.mkdir()
 
-            # Create translation file
             (locale_dir / 'fr.json').write_text(json.dumps({'greeting': 'Bonjour'}))
 
-            # Create valid manifest
             manifest_path = plugin_dir / 'MANIFEST.toml'
             manifest_path.write_text(
                 'uuid = "12345678-1234-4234-8234-123456789012"\n'
@@ -257,11 +213,9 @@ class TestPluginTranslationLoading(PicardTestCase):
                 'api = ["3.0"]\n'
             )
 
-            # Create plugin module
             init_file = plugin_dir / '__init__.py'
             init_file.write_text('def enable(api): pass\n')
 
-            # Create and enable plugin
             plugin = Plugin(Path(tmpdir), 'test_plugin')
             plugin.read_manifest()
             plugin.load_module()
@@ -269,8 +223,6 @@ class TestPluginTranslationLoading(PicardTestCase):
             mock_tagger = Mock()
             plugin.enable(mock_tagger)
 
-            # Verify translations were loaded
-            # We can't directly access the api object, but we can verify the plugin enabled successfully
             self.assertEqual(plugin.state, PluginState.ENABLED)
 
 
@@ -278,251 +230,147 @@ class TestPluginTranslationLookup(PicardTestCase):
     def test_tr_uses_current_locale(self):
         """Test tr() uses translations from current locale."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'en.json').write_text(json.dumps({'greeting': 'Hello', 'farewell': 'Goodbye'}))
-            (locale_dir / 'de.json').write_text(json.dumps({'greeting': 'Hallo', 'farewell': 'Auf Wiedersehen'}))
-            (locale_dir / 'de_DE.json').write_text(json.dumps({'greeting': 'Guten Tag'}))
+            (plugin_dir / 'locale' / 'en.json').write_text(json.dumps({'greeting': 'Hello', 'farewell': 'Goodbye'}))
+            (plugin_dir / 'locale' / 'de.json').write_text(
+                json.dumps({'greeting': 'Hallo', 'farewell': 'Auf Wiedersehen'})
+            )
+            (plugin_dir / 'locale' / 'de_DE.json').write_text(json.dumps({'greeting': 'Guten Tag'}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='de')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='de')
-                api._load_translations()
-
-                result = api.tr('greeting', 'Hello')
-                self.assertEqual(result, 'Hallo')
+            result = api.tr('greeting', 'Hello')
+            self.assertEqual(result, 'Hallo')
 
     def test_tr_falls_back_to_language(self):
         """Test tr() falls back to language without region."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'de.json').write_text(json.dumps({'farewell': 'Auf Wiedersehen'}))
+            (plugin_dir / 'locale' / 'de.json').write_text(json.dumps({'farewell': 'Auf Wiedersehen'}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='de_AT')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='de_AT')
-                api._load_translations()
-
-                result = api.tr('farewell', 'Goodbye')
-                self.assertEqual(result, 'Auf Wiedersehen')
+            result = api.tr('farewell', 'Goodbye')
+            self.assertEqual(result, 'Auf Wiedersehen')
 
     def test_tr_falls_back_to_text(self):
         """Test tr() falls back to text parameter when key not found."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'de.json').write_text(json.dumps({'greeting': 'Hallo'}))
+            (plugin_dir / 'locale' / 'de.json').write_text(json.dumps({'greeting': 'Hallo'}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='de')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='de')
-                api._load_translations()
-
-                result = api.tr('unknown_key', 'Fallback text')
-                self.assertEqual(result, 'Fallback text')
+            result = api.tr('unknown_key', 'Fallback text')
+            self.assertEqual(result, 'Fallback text')
 
     def test_tr_returns_key_when_no_text(self):
         """Test tr() returns key when translation and text missing."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'de.json').write_text(json.dumps({'greeting': 'Hallo'}))
+            (plugin_dir / 'locale' / 'de.json').write_text(json.dumps({'greeting': 'Hallo'}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='de')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='de')
-                api._load_translations()
-
-                result = api.tr('unknown_key')
-                self.assertEqual(result, 'unknown_key')
+            result = api.tr('unknown_key')
+            self.assertEqual(result, 'unknown_key')
 
 
 class TestPluginPluralTranslations(PicardTestCase):
     def test_trn_english_singular(self):
         """Test trn() with English singular form."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'en.json').write_text(json.dumps({'files': {'one': '{n} file', 'other': '{n} files'}}))
+            (plugin_dir / 'locale' / 'en.json').write_text(
+                json.dumps({'files': {'one': '{n} file', 'other': '{n} files'}})
+            )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                result = api.trn('files', '{n} file', '{n} files', n=1)
-                self.assertEqual(result, '1 file')
+            result = api.trn('files', '{n} file', '{n} files', n=1)
+            self.assertEqual(result, '1 file')
 
     def test_trn_english_plural(self):
         """Test trn() with English plural form."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'en.json').write_text(json.dumps({'files': {'one': '{n} file', 'other': '{n} files'}}))
+            (plugin_dir / 'locale' / 'en.json').write_text(
+                json.dumps({'files': {'one': '{n} file', 'other': '{n} files'}})
+            )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                result = api.trn('files', '{n} file', '{n} files', n=5)
-                self.assertEqual(result, '5 files')
+            result = api.trn('files', '{n} file', '{n} files', n=5)
+            self.assertEqual(result, '5 files')
 
     def test_trn_polish_one(self):
         """Test trn() with Polish 'one' form."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'pl.json').write_text(
+            (plugin_dir / 'locale' / 'pl.json').write_text(
                 json.dumps({'files': {'one': '{n} plik', 'few': '{n} pliki', 'many': '{n} plików'}})
             )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='pl')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='pl')
-                api._load_translations()
-
-                result = api.trn('files', '{n} file', '{n} files', n=1)
-                self.assertEqual(result, '1 plik')
+            result = api.trn('files', '{n} file', '{n} files', n=1)
+            self.assertEqual(result, '1 plik')
 
     def test_trn_polish_few(self):
         """Test trn() with Polish 'few' form."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'pl.json').write_text(
+            (plugin_dir / 'locale' / 'pl.json').write_text(
                 json.dumps({'files': {'one': '{n} plik', 'few': '{n} pliki', 'many': '{n} plików'}})
             )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='pl')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='pl')
-                api._load_translations()
-
-                result = api.trn('files', '{n} file', '{n} files', n=3)
-                self.assertEqual(result, '3 pliki')
+            result = api.trn('files', '{n} file', '{n} files', n=3)
+            self.assertEqual(result, '3 pliki')
 
     def test_trn_polish_many(self):
         """Test trn() with Polish 'many' form."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'pl.json').write_text(
+            (plugin_dir / 'locale' / 'pl.json').write_text(
                 json.dumps({'files': {'one': '{n} plik', 'few': '{n} pliki', 'many': '{n} plików'}})
             )
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir, locale='pl')
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='pl')
-                api._load_translations()
-
-                result = api.trn('files', '{n} file', '{n} files', n=5)
-                self.assertEqual(result, '5 plików')
+            result = api.trn('files', '{n} file', '{n} files', n=5)
+            self.assertEqual(result, '5 plików')
 
     def test_trn_fallback_to_singular(self):
         """Test trn() falls back to singular parameter."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'en.json').write_text(json.dumps({}))
+            (plugin_dir / 'locale' / 'en.json').write_text(json.dumps({}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                result = api.trn('unknown', '{n} item', '{n} items', n=1)
-                self.assertEqual(result, '1 item')
+            result = api.trn('unknown', '{n} item', '{n} items', n=1)
+            self.assertEqual(result, '1 item')
 
     def test_trn_fallback_to_plural(self):
         """Test trn() falls back to plural parameter."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            plugin_dir = Path(tmpdir)
-            locale_dir = plugin_dir / 'locale'
-            locale_dir.mkdir()
+            plugin_dir = _create_locale_dir(tmpdir)
 
-            (locale_dir / 'en.json').write_text(json.dumps({}))
+            (plugin_dir / 'locale' / 'en.json').write_text(json.dumps({}))
 
-            manifest_path = plugin_dir / 'MANIFEST.toml'
-            manifest_path.write_text('name = "Test"\n')
+            api = create_test_plugin_api(plugin_dir)
 
-            with open(manifest_path, 'rb') as f:
-                manifest = PluginManifest('test', f)
-                api = PluginApi(manifest, Mock())
-                api._plugin_dir = plugin_dir
-                api.get_locale = Mock(return_value='en')
-                api._load_translations()
-
-                result = api.trn('unknown', '{n} item', '{n} items', n=5)
-                self.assertEqual(result, '5 items')
+            result = api.trn('unknown', '{n} item', '{n} items', n=5)
+            self.assertEqual(result, '5 items')

@@ -28,6 +28,7 @@ from picard.git.factory import (
     git_backend,
     has_git_backend,
 )
+from picard.plugin3.api import PluginApi
 from picard.plugin3.cli import PluginCLI
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.manifest import PluginManifest
@@ -462,6 +463,33 @@ def create_test_plugin_dir(base_dir, plugin_name='test-plugin', manifest_content
             pass
 
     return plugin_dir
+
+
+def create_test_plugin_api(plugin_dir, locale='en', module_name='test'):
+    """Create a PluginApi instance wired to a plugin directory with locale support.
+
+    Creates a minimal MANIFEST.toml in plugin_dir (if not present) and returns
+    a PluginApi with _plugin_dir, get_locale, and _load_translations() set up.
+
+    Args:
+        plugin_dir: Path to the plugin directory (should already contain locale/ if needed)
+        locale: Locale string for get_locale mock (default: 'en')
+        module_name: Module name for the manifest (default: 'test')
+
+    Returns:
+        PluginApi: Configured API instance with translations loaded
+    """
+    manifest_path = plugin_dir / 'MANIFEST.toml'
+    if not manifest_path.exists():
+        manifest_path.write_text('name = "Test"\n')
+
+    with open(manifest_path, 'rb') as f:
+        manifest = PluginManifest(module_name, f)
+        api = PluginApi(manifest, Mock())
+        api._plugin_dir = plugin_dir
+        api.get_locale = Mock(return_value=locale)
+        api._load_translations()
+    return api
 
 
 def create_git_commit(repo_path, message='Initial commit', author_name='Test', author_email='test@example.com'):
