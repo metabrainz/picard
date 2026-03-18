@@ -19,6 +19,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from io import StringIO
+from pathlib import Path
+import tempfile
 from unittest.mock import Mock
 
 from test.picardtestcase import PicardTestCase
@@ -26,12 +28,16 @@ from test.test_plugins3_helpers import (
     MockCliArgs,
     MockPlugin,
     MockPluginManager,
+    create_mock_manager_with_manifest_validation,
+    create_test_manifest_content,
+    create_test_plugin_dir,
 )
 
 from picard.plugin3.cli import (
     ExitCode,
     PluginCLI,
 )
+from picard.plugin3.manager import PluginMetadata
 from picard.plugin3.output import PluginOutput
 
 
@@ -172,8 +178,6 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_no_commit(self):
         """Test _format_git_info with no commit."""
-        from picard.plugin3.manager import PluginMetadata
-
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
@@ -184,8 +188,6 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_with_ref_and_commit(self):
         """Test _format_git_info with ref and commit."""
-        from picard.plugin3.manager import PluginMetadata
-
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
@@ -196,8 +198,6 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_commit_only(self):
         """Test _format_git_info with commit only."""
-        from picard.plugin3.manager import PluginMetadata
-
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
@@ -208,8 +208,6 @@ class TestPluginCLIHelpers(PicardTestCase):
 
     def test_format_git_info_ref_is_commit(self):
         """Test _format_git_info when ref is the commit hash."""
-        from picard.plugin3.manager import PluginMetadata
-
         manager = MockPluginManager()
         args = MockCliArgs()
         cli = PluginCLI(manager, args)
@@ -382,11 +380,6 @@ class TestPluginCLICommands(PicardTestCase):
 class TestPluginCLIValidate(PicardTestCase):
     def test_validate_local_no_manifest(self):
         """Test validate with local directory without MANIFEST.toml."""
-        from pathlib import Path
-        import tempfile
-
-        from test.test_plugins3_helpers import create_mock_manager_with_manifest_validation
-
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -406,11 +399,6 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_invalid_manifest(self):
         """Test validate with invalid MANIFEST.toml."""
-        from pathlib import Path
-        import tempfile
-
-        from test.test_plugins3_helpers import create_mock_manager_with_manifest_validation
-
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -434,13 +422,6 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_valid_manifest(self):
         """Test validate with valid MANIFEST.toml."""
-        import tempfile
-
-        from test.test_plugins3_helpers import (
-            create_mock_manager_with_manifest_validation,
-            create_test_plugin_dir,
-        )
-
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -461,14 +442,6 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_with_optional_fields(self):
         """Test validate with optional fields in manifest."""
-        import tempfile
-
-        from test.test_plugins3_helpers import (
-            create_mock_manager_with_manifest_validation,
-            create_test_manifest_content,
-            create_test_plugin_dir,
-        )
-
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -523,9 +496,6 @@ class TestPluginCLIManifest(PicardTestCase):
 
     def test_show_manifest_from_plugin(self):
         """Test _show_manifest from installed plugin."""
-        from pathlib import Path
-        import tempfile
-
         manager = MockPluginManager()
         args = MockCliArgs()
 
@@ -554,9 +524,6 @@ class TestPluginCLIManifest(PicardTestCase):
 
     def test_show_manifest_plugin_no_manifest(self):
         """Test _show_manifest from plugin without MANIFEST.toml."""
-        from pathlib import Path
-        import tempfile
-
         manager = MockPluginManager()
         args = MockCliArgs()
 
@@ -580,9 +547,6 @@ class TestPluginCLIManifest(PicardTestCase):
 
     def test_show_manifest_from_local_dir(self):
         """Test _show_manifest from local directory."""
-        from pathlib import Path
-        import tempfile
-
         manager = MockPluginManager()
         args = MockCliArgs()
 
@@ -608,9 +572,6 @@ class TestPluginCLIManifest(PicardTestCase):
 
     def test_show_manifest_local_dir_no_manifest(self):
         """Test _show_manifest from local directory without manifest."""
-        from pathlib import Path
-        import tempfile
-
         manager = MockPluginManager()
         args = MockCliArgs()
 
