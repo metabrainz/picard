@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-03-19 13:22+0000\n"
+"PO-Revision-Date: 2026-03-19 13:33+0000\n"
 "Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
@@ -512,7 +512,7 @@ msgstr "Зберегти лише одне зображення передньо
 msgid "Always use the primary image type as the file name for non-front images"
 msgstr ""
 "Завжди використовуйте основний тип зображення як назву файлу для зображень, "
-"що не є обкладинкою."
+"що не є обкладинкою"
 
 #: picard/profile.py:148
 msgid "Cover art providers"
@@ -2721,13 +2721,13 @@ msgid ""
 "a>, <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a> "
 "from <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 msgstr ""
-"створені Sambhav Kothari <sambhavs.email@gmail.com> and <a href="
-"\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a href="
-"\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a href="
-"\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, <a "
-"href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>, "
-"<a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</"
-"a>завдяки <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
+"Іконки створені Sambhav Kothari <sambhavs.email@gmail.com> and <a "
+"href=\"http://www.flaticon.com/authors/madebyoliver\">Madebyoliver</a>, <a "
+"href=\"http://www.flaticon.com/authors/pixel-buddha\">Pixel Buddha</a>, <a "
+"href=\"http://www.flaticon.com/authors/nikita-golubev\">Nikita Golubev</a>, "
+"<a href=\"http://www.flaticon.com/authors/maxim-basinski\">Maxim Basinski</a>"
+", <a href=\"https://www.flaticon.com/authors/smashicons\">Smashicons</a>"
+"завдяки <a href=\"https://www.flaticon.com\">www.flaticon.com</a>"
 
 #: picard/ui/aboutdialog.py:101
 #, python-format
@@ -3292,7 +3292,7 @@ msgstr "Містить альбоми та відповідні файли"
 msgid "Processing error(s): See the Errors tab in the Album Info dialog"
 msgstr ""
 "Помилка(и) обробки: див. вкладку «Помилки» в діалоговому вікні «Інформація "
-"про альбом»."
+"про альбом»"
 
 #: picard/ui/itemviews.py:1032
 msgid "Album modified and complete"
@@ -3314,13 +3314,13 @@ msgstr "Альбом не змінено"
 msgid "Processing error(s): See the Errors tab in the Track Info dialog"
 msgstr ""
 "Помилка(и) обробки: див. вкладку «Помилки» в діалоговому вікні «Інформація "
-"про трек»."
+"про трек»"
 
 #: picard/ui/itemviews.py:1152
 msgid "Processing error(s): See the Errors tab in the File Info dialog"
 msgstr ""
 "Помилка(и) обробки: див. вкладку «Помилки» в діалоговому вікні «Інформація "
-"про файл»."
+"про файл»"
 
 #: picard/ui/itemviews.py:1172
 msgid "Track saved"
@@ -3372,7 +3372,7 @@ msgstr "Очистити журнал"
 
 #: picard/ui/logview.py:215
 msgid "Save As…"
-msgstr "Зберегти як"
+msgstr "Зберегти як…"
 
 #: picard/ui/logview.py:260 picard/ui/logview.py:267
 msgid "Save Log View to File"
@@ -4218,24 +4218,24 @@ msgid "overwrite existing metadata (tags) within the file"
 msgid_plural "overwrite existing metadata (tags) within the files"
 msgstr[0] "перезаписати існуючі метадані (теги) у файлі"
 msgstr[1] "перезаписати існуючі метадані (теги) у файлах"
-msgstr[2] ""
-msgstr[3] ""
+msgstr[2] "перезаписати існуючі метадані (теги) у файлах"
+msgstr[3] "перезаписати існуючі метадані (теги) у файлах"
 
 #: picard/ui/savewarningdialog.py:43
 msgid "rename the file"
 msgid_plural "rename the files"
-msgstr[0] "Перейменувати файл"
-msgstr[1] ""
-msgstr[2] "Перейменувати файли"
-msgstr[3] ""
+msgstr[0] "перейменувати файл"
+msgstr[1] "перейменувати файли"
+msgstr[2] "перейменувати файлів"
+msgstr[3] "перейменувати файлів"
 
 #: picard/ui/savewarningdialog.py:48
 msgid "move the file to a different location"
 msgid_plural "move the files to a different location"
 msgstr[0] "перемістити файл в інше місце"
-msgstr[1] ""
-msgstr[2] "перемістити файли в інше місце"
-msgstr[3] ""
+msgstr[1] "перемістити файлм в інше місце"
+msgstr[2] "перемістити файлів в інше місце"
+msgstr[3] "перемістити файлів в інше місце"
 
 #: picard/ui/savewarningdialog.py:54
 msgid "You are about to save {file_count:,d} file and this will:"
@@ -4997,7 +4997,7 @@ msgstr "Різні виконавці:"
 
 #: picard/ui/ui_options_metadata.py:142
 msgid "Standalone recordings:"
-msgstr "Самостійний запис;"
+msgstr "Самостійний запис:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
