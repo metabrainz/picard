@@ -348,7 +348,7 @@ class ConfigurableColumnsHeader(LockableHeaderView):
                 QtWidgets.QHeaderView.ResizeMode.Fixed.value,
                 QtWidgets.QHeaderView.ResizeMode.Interactive.value,
             }:
-                self.resizeSection(i, column_state.get('width', column.width or 100))
+                self.resizeSection(i, column_state.get('width', 0) or column.width or 100)
 
             # Sort indicator uses logical index, independent of visual positioning
             if 'sorted' in column_state:
