@@ -33,7 +33,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-25 12:24+0100\n"
+"POT-Creation-Date: 2026-03-19 18:30+0100\n"
 "PO-Revision-Date: 2026-02-08 20:11+0000\n"
 "Last-Translator: bababasti <babasti@pm.me>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
@@ -46,7 +46,7 @@ msgstr ""
 "X-Generator: Weblate 5.15.2\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: picard/album.py:201
+#: picard/album.py:202
 msgid "Unmatched Files"
 msgstr "Nicht zugeordnete Dateien"
 
@@ -69,26 +69,26 @@ msgstr "[Albuminformationen wird geladen]"
 msgid "[could not load album %s]"
 msgstr "[Album %s konnte nicht geladen werden]"
 
-#: picard/cluster.py:273
+#: picard/cluster.py:281
 #, python-format
 msgid "Cluster %(album)s identified!"
 msgstr "Gruppierung %(album)s identifiziert!"
 
-#: picard/cluster.py:276
+#: picard/cluster.py:284
 #, python-format
 msgid "No matching releases for cluster %(album)s"
 msgstr "Keine passenden Veröffentlichungen für Gruppierung %(album)s"
 
-#: picard/cluster.py:295
+#: picard/cluster.py:303
 #, python-format
 msgid "Looking up the metadata for cluster %(album)s…"
 msgstr "Metadaten für Gruppierung %(album)s werden abgefragt …"
 
-#: picard/cluster.py:352
+#: picard/cluster.py:360
 msgid "Unclustered Files"
 msgstr "Dateien ohne Gruppierung"
 
-#: picard/cluster.py:391
+#: picard/cluster.py:399
 msgid "Clusters"
 msgstr "Gruppierungen"
 
@@ -159,40 +159,60 @@ msgstr "Zusammenführen"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: picard/config_upgrade.py:469
+#: picard/config_upgrade.py:470
 msgid "Primary file naming script"
 msgstr "Primäres Dateibenennungsskript"
 
-#: picard/debug_opts.py:83
+#: picard/debug_opts.py:107
 msgid "Plugin Fullpath"
 msgstr "Vollständiger Plugin-Pfad"
 
-#: picard/debug_opts.py:83
+#: picard/debug_opts.py:107
 msgid "Log plugin full paths"
 msgstr "Vollständige Plugin-Pfade loggen"
 
-#: picard/debug_opts.py:84
+#: picard/debug_opts.py:108
 msgid "Web Service Post Data"
 msgstr "Web Service Post-Daten"
 
-#: picard/debug_opts.py:84
+#: picard/debug_opts.py:108
 msgid "Log data of web service post requests"
 msgstr "Log-Daten der Web Service Post-Anfrage"
 
-#: picard/debug_opts.py:85
+#: picard/debug_opts.py:109
 msgid "Web Service Replies"
 msgstr "Webservice-Antworten"
 
-#: picard/debug_opts.py:85
+#: picard/debug_opts.py:109
 msgid "Log content of web service replies"
 msgstr "Log-Inhalt der Web Service Antworten"
 
-#: picard/debug_opts.py:86
+#: picard/debug_opts.py:110
 msgid "Git Backend"
 msgstr "Git-Backend"
 
-#: picard/debug_opts.py:86
+#: picard/debug_opts.py:110
 msgid "Log git backend method calls"
+msgstr ""
+
+#: picard/debug_opts.py:111
+#, fuzzy
+#| msgid "Plugin Information"
+msgid "Plugin Translations"
+msgstr "Plugin-Informationen"
+
+#: picard/debug_opts.py:111
+msgid "Log plugin translation lookups and fallbacks"
+msgstr ""
+
+#: picard/debug_opts.py:112
+#, fuzzy
+#| msgid "Picard Plugins Update"
+msgid "Plugin Updates"
+msgstr "Picard Plugins-Update"
+
+#: picard/debug_opts.py:112
+msgid "Log detailed plugin version checking and update detection"
 msgstr ""
 
 #: picard/file.py:315
@@ -246,11 +266,11 @@ msgid_plural "%i different images among tracks"
 msgstr[0] "%i Bild nicht in allen Titeln"
 msgstr[1] "%i verschiedene Bilder inmitten der Tracks"
 
-#: picard/log.py:100 picard/ui/dialogs/installplugin.py:530
-#: picard/ui/options/renaming.py:270 picard/ui/scripteditor/__init__.py:555
-#: picard/ui/scripteditor/__init__.py:558
-#: picard/ui/scripteditor/__init__.py:849
-#: picard/ui/scripteditor/__init__.py:1077
+#: picard/log.py:100 picard/ui/dialogs/installplugin.py:533
+#: picard/ui/options/renaming.py:270 picard/ui/scripteditor/__init__.py:557
+#: picard/ui/scripteditor/__init__.py:560
+#: picard/ui/scripteditor/__init__.py:851
+#: picard/ui/scripteditor/__init__.py:1079
 msgid "Error"
 msgstr "Fehler"
 
@@ -258,7 +278,7 @@ msgstr "Fehler"
 msgid "Warning"
 msgstr "Warnung"
 
-#: picard/log.py:102 picard/ui/dialogs/installplugin.py:370
+#: picard/log.py:102 picard/ui/dialogs/installplugin.py:373
 #: picard/ui/infodialog/__init__.py:47 picard/ui/infodialog/dialog.py:115
 #: picard/ui/options/interface_toolbar.py:108
 msgid "Info"
@@ -268,15 +288,15 @@ msgstr "Info"
 msgid "Debug"
 msgstr "Debug"
 
-#: picard/oauth.py:199
+#: picard/oauth.py:200
 msgid "Unexpected token revocation error"
 msgstr "Unerwarteter Fehler beim Rückruf des Authentifizierungs-Tokens"
 
-#: picard/oauth.py:363 picard/oauth.py:390
+#: picard/oauth.py:364 picard/oauth.py:391
 msgid "Unexpected authentication error"
 msgstr "Unerwarteter Authentifizierungsfehler"
 
-#: picard/oauth.py:402
+#: picard/oauth.py:403
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
 msgstr "Unerwarteter Anfragefehler (HTTP-Code %s)"
@@ -487,7 +507,7 @@ msgstr "AcoustID-Fingerabdrücke verwenden"
 msgid "Save AcoustID fingerprints"
 msgstr "AcoustID-Fingerabdrücke speichern"
 
-#: picard/options.py:265 picard/ui/forms/ui_options_general.py:214
+#: picard/options.py:265 picard/ui/forms/ui_options_general.py:218
 msgid "Automatically scan all new files"
 msgstr "Alle neuen Dateien automatisch analysieren"
 
@@ -503,11 +523,11 @@ msgstr "Auf Plugin-Updates prüfen"
 msgid "Check for program updates"
 msgstr "Auf Programm-Updates prüfen"
 
-#: picard/options.py:269 picard/ui/forms/ui_options_general.py:215
+#: picard/options.py:269 picard/ui/forms/ui_options_general.py:219
 msgid "Automatically cluster all new files"
 msgstr "Alle neuen Dateien automatisch gruppieren"
 
-#: picard/options.py:270 picard/ui/forms/ui_options_general.py:216
+#: picard/options.py:270 picard/ui/forms/ui_options_general.py:220
 msgid "Ignore MBIDs when loading new files"
 msgstr "MBIDs beim Laden neuer Dateien ignorieren"
 
@@ -988,16 +1008,16 @@ msgid "Unknown Plugin"
 msgstr "Unbekanntes Plugin"
 
 #: picard/plugin.py:119 picard/ui/cdlookup.py:65
-#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1030
+#: picard/ui/itemviews/columns.py:156 picard/ui/mainwindow/__init__.py:1103
 msgid "Album"
 msgstr "Album"
 
-#: picard/plugin.py:121 picard/ui/mainwindow/__init__.py:1032
+#: picard/plugin.py:121 picard/ui/mainwindow/__init__.py:1105
 msgid "Track"
 msgstr "Titel"
 
 #: picard/coverart/utils.py:43 picard/plugin.py:123
-#: picard/ui/dialogs/plugininfo.py:244 picard/ui/dialogs/plugininfo.py:254
+#: picard/ui/dialogs/plugininfo.py:243 picard/ui/dialogs/plugininfo.py:253
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -1052,29 +1072,29 @@ msgstr "[kein Strichcode]"
 msgid "[no release info]"
 msgstr "[keine Informationen zur Veröffentlichung]"
 
-#: picard/tagger.py:431
+#: picard/tagger.py:434
 msgid "Git backend not available"
 msgstr ""
 
-#: picard/tagger.py:433
+#: picard/tagger.py:436
 msgid "Disabled by command line parameter"
 msgstr ""
 
-#: picard/tagger.py:628 picard/ui/forms/ui_options_general.py:210
+#: picard/tagger.py:629 picard/ui/forms/ui_options_general.py:214
 msgid "MusicBrainz Account"
 msgstr "MusicBrainz Benutzerkonto"
 
-#: picard/tagger.py:629
+#: picard/tagger.py:630
 msgid "Authorization code:"
 msgstr "Berechtigungscode:"
 
-#: picard/tagger.py:749 picard/ui/mainwindow/__init__.py:1397
-#: picard/ui/mainwindow/__init__.py:1423
+#: picard/tagger.py:750 picard/ui/mainwindow/__init__.py:1470
+#: picard/ui/mainwindow/__init__.py:1496
 msgid "Failed to load session"
 msgstr "Fehler beim Laden der Sitzung"
 
-#: picard/tagger.py:750 picard/ui/mainwindow/__init__.py:1398
-#: picard/ui/mainwindow/__init__.py:1424
+#: picard/tagger.py:751 picard/ui/mainwindow/__init__.py:1471
+#: picard/ui/mainwindow/__init__.py:1497
 #, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
@@ -1085,7 +1105,7 @@ msgstr ""
 "\n"
 "%(error)s"
 
-#: picard/tagger.py:795
+#: picard/tagger.py:794
 #, python-brace-format
 msgid ""
 "The following plugins have been blacklisted and disabled:\n"
@@ -1103,30 +1123,44 @@ msgstr ""
 "Diese Plugins können Sicherheitslücken oder bösartigen Code enthalten. Sie "
 "wurden zu Ihrem Schutz automatisch deaktiviert."
 
-#: picard/tagger.py:800
+#: picard/tagger.py:799
 msgid "Blacklisted Plugins Detected"
 msgstr "Plugins auf der schwarzen Liste erkannt"
 
-#: picard/tagger.py:1182
+#: picard/tagger.py:806
+#, fuzzy
+#| msgid "Installation Failed"
+msgid "Plugin Initialization Failed"
+msgstr "Installation fehlgeschlagen"
+
+#: picard/tagger.py:807
+#, python-brace-format
+msgid ""
+"The following plugins failed to load and have been disabled:\n"
+"\n"
+"{plugin_list}"
+msgstr ""
+
+#: picard/tagger.py:1192
 #, python-format
 msgid "Removing album %(id)s: %(artist)s - %(album)s"
 msgstr "Album %(id)s wird entfernt: %(artist)s - %(album)s"
 
-#: picard/tagger.py:1211
+#: picard/tagger.py:1221
 #, python-format
 msgid "Failed moving \"%(filename)s\" to trash"
 msgstr "„%(filename)s“ konnte nicht in den Papierkorb verschoben werden"
 
-#: picard/tagger.py:1216
+#: picard/tagger.py:1226
 #, python-format
 msgid "Moved %(count)i files to trash"
 msgstr "%(count)i Dateien in den Papierkorb verschoben"
 
-#: picard/tagger.py:1222
+#: picard/tagger.py:1232
 msgid "CD Lookup Error"
 msgstr "CD-Abfrage-Fehler"
 
-#: picard/tagger.py:1222
+#: picard/tagger.py:1232
 #, python-format
 msgid ""
 "Error while reading CD:\n"
@@ -1137,53 +1171,53 @@ msgstr ""
 "\n"
 "%s"
 
-#: picard/tagger.py:1251
+#: picard/tagger.py:1261
 msgid "All supported log files"
 msgstr "Alle unterstützten Protokolldateien"
 
-#: picard/tagger.py:1252
+#: picard/tagger.py:1262
 msgid "EAC / XLD / Whipper / fre:ac log files"
 msgstr "EAC- / XLD- / Whipper- / fre:ac-Protokolldateien"
 
-#: picard/tagger.py:1253
+#: picard/tagger.py:1263
 msgid "dBpoweramp log files"
 msgstr "dBpoweramp-Protokolldateien"
 
-#: picard/tagger.py:1254
+#: picard/tagger.py:1264
 msgid "SCSI TOC file"
 msgstr "SCSI-TOC-Datei"
 
-#: picard/script/serializer.py:381 picard/tagger.py:1255
-#: picard/ui/coverartbox/__init__.py:382 picard/ui/mainwindow/__init__.py:1141
+#: picard/script/serializer.py:381 picard/tagger.py:1265
+#: picard/ui/coverartbox/__init__.py:382 picard/ui/mainwindow/__init__.py:1214
 #: picard/ui/options/maintenance.py:220 picard/ui/options/scripting.py:138
 msgid "All files"
 msgstr "Alle Dateien"
 
-#: picard/tagger.py:1287
+#: picard/tagger.py:1297
 #, python-format
 msgid "Failed parsing ripping log \"%s\""
 msgstr "Fehler beim Parsen des Ripper-Protokolls „%s“"
 
-#: picard/tagger.py:1307 picard/tagger.py:1322
+#: picard/tagger.py:1317 picard/tagger.py:1332
 msgid "Disc information could not be found"
 msgstr ""
 
-#: picard/tagger.py:1309 picard/tagger.py:1324 picard/tagger.py:1332
+#: picard/tagger.py:1319 picard/tagger.py:1334 picard/tagger.py:1342
 #, fuzzy
 #| msgid "CD Lookup Error"
 msgid "Lookup Error"
 msgstr "CD-Abfrage-Fehler"
 
-#: picard/tagger.py:1330
+#: picard/tagger.py:1340
 msgid "Selected files contain tags with conflicting disc information"
 msgstr ""
 
-#: picard/tagger.py:1347
+#: picard/tagger.py:1357
 #, python-format
 msgid "Failed to parse disc information from tags: %s"
 msgstr ""
 
-#: picard/tagger.py:1356
+#: picard/tagger.py:1366
 msgid "Looking up disc from tags…"
 msgstr ""
 
@@ -1255,31 +1289,31 @@ msgid "AcoustID submission failed with error \"%(error)s\": %(message)s"
 msgstr ""
 "AcoustID-Übermittlung fehlgeschlagen mit Fehler „%(error)s“: %(message)s"
 
-#: picard/browser/addrelease.py:145
+#: picard/browser/addrelease.py:146
 msgid "Add cluster as release"
 msgstr "Gruppierung als Veröffentlichung hinzufügen"
 
-#: picard/browser/addrelease.py:147
+#: picard/browser/addrelease.py:148
 msgid "Add cluster as release…"
 msgstr "Gruppierung als Veröffentlichung hinzufügen …"
 
-#: picard/browser/addrelease.py:155
+#: picard/browser/addrelease.py:156
 msgid "Add file as release"
 msgstr "Datei als Veröffentlichung hinzufügen"
 
-#: picard/browser/addrelease.py:157
+#: picard/browser/addrelease.py:158
 msgid "Add file as release…"
 msgstr "Datei als Veröffentlichung hinzufügen …"
 
-#: picard/browser/addrelease.py:165
+#: picard/browser/addrelease.py:166
 msgid "Add file as recording"
 msgstr "Datei als Aufnahme hinzufügen"
 
-#: picard/browser/addrelease.py:167
+#: picard/browser/addrelease.py:168
 msgid "Add file as recording…"
 msgstr "Datei als Aufnahme hinzufügen …"
 
-#: picard/coverart/__init__.py:198
+#: picard/coverart/__init__.py:201
 #, python-format
 msgid ""
 "Downloading cover art of type \"%(type)s\" for %(albumid)s from %(host)s …"
@@ -1287,7 +1321,7 @@ msgstr ""
 "Cover-Art des Typs „%(type)s“ wird heruntergeladen für %(albumid)s von "
 "%(host)s …"
 
-#: picard/coverart/__init__.py:266
+#: picard/coverart/__init__.py:277
 #, python-format
 msgid "Cover art of type \"%(type)s\" downloaded for %(albumid)s from %(host)s"
 msgstr ""
@@ -1371,12 +1405,12 @@ msgstr "Scripting"
 msgid "UI"
 msgstr "UI"
 
-#: picard/plugin3/ref_item.py:103
+#: picard/plugin3/ref_item.py:102
 #, python-brace-format
 msgid "{base} (current)"
 msgstr "{base} (aktuell)"
 
-#: picard/script/__init__.py:183
+#: picard/script/__init__.py:184
 msgid ""
 "This preset example file naming script does not require any special "
 "settings, tagging scripts or plugins."
@@ -1384,20 +1418,20 @@ msgstr ""
 "Dieses voreingestellte Beispielskript zur Benennung von Dateien erfordert "
 "keine besonderen Einstellungen, Tagging-Skripte oder Plugins."
 
-#: picard/script/__init__.py:188
+#: picard/script/__init__.py:189
 #, python-format
 msgid "Preset %(number)d: %(title)s"
 msgstr "Voreinstellung %(number)d: %(title)s"
 
-#: picard/script/__init__.py:195
+#: picard/script/__init__.py:196
 msgid "Default file naming script"
 msgstr "Voreingestelltes Dateibenennungsskript"
 
-#: picard/script/__init__.py:207
+#: picard/script/__init__.py:208
 msgid "[album artist]/[album]/[track #]. [title]"
 msgstr "[Albuminterpret]/[Album]/[Titelnr.]. [Titel]"
 
-#: picard/script/__init__.py:219
+#: picard/script/__init__.py:220
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
 "[Albuminterpret]/[Album]/[Tonträger- und Titelnr.] [Interpret] - [Titel]"
@@ -3087,55 +3121,55 @@ msgstr "<p><em>%{name}%</em> [{tagdesc}]</p>{content}"
 msgid "<p><em>%{name}%</em></p>{content}"
 msgstr "<p><em>%{name}%</em></p>{content}"
 
-#: picard/tags/tagvar.py:62
+#: picard/tags/tagvar.py:67
 msgid "Notes"
 msgstr "Hinweise"
 
-#: picard/tags/tagvar.py:63
+#: picard/tags/tagvar.py:68
 msgid "Option Settings"
 msgstr "Einstellungen"
 
-#: picard/tags/tagvar.py:64
+#: picard/tags/tagvar.py:69
 msgid "Links"
 msgstr "Verweise"
 
-#: picard/tags/tagvar.py:65
+#: picard/tags/tagvar.py:70
 msgid "See Also"
 msgstr "Siehe auch"
 
-#: picard/tags/tagvar.py:68
+#: picard/tags/tagvar.py:73
 msgid "No description available."
 msgstr "Keine Beschreibung verfügbar."
 
-#: picard/tags/tagvar.py:71
+#: picard/tags/tagvar.py:76
 msgid "multi-value variable"
 msgstr "mehrwertige Variable"
 
-#: picard/tags/tagvar.py:72
+#: picard/tags/tagvar.py:77
 msgid "preserved read-only"
 msgstr "wird nicht geschrieben, nur gelesen"
 
-#: picard/tags/tagvar.py:73
+#: picard/tags/tagvar.py:78
 msgid "not for use in scripts"
 msgstr "nicht für die Verwendung in Skripten"
 
-#: picard/tags/tagvar.py:74
+#: picard/tags/tagvar.py:79
 msgid "calculated"
 msgstr "berechnet"
 
-#: picard/tags/tagvar.py:75
+#: picard/tags/tagvar.py:80
 msgid "info from audio file"
 msgstr "Info aus Audio-Datei"
 
-#: picard/tags/tagvar.py:76
+#: picard/tags/tagvar.py:81
 msgid "not provided from MusicBrainz data"
 msgstr "nicht aus MusicBrainz-Daten bereitgestellt"
 
-#: picard/tags/tagvar.py:77
+#: picard/tags/tagvar.py:82
 msgid "not populated by stock Picard"
 msgstr "standardmäßig nicht von Picard befüllt"
 
-#: picard/tags/tagvar.py:306
+#: picard/tags/tagvar.py:311
 #, python-brace-format
 msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"
@@ -3297,12 +3331,12 @@ msgid "C&lear all"
 msgstr "Alle ent&fernen"
 
 #: picard/ui/caa_types_selector.py:275 picard/ui/options/dialog.py:240
-#: picard/ui/options/renaming_compat.py:203
+#: picard/ui/options/renaming_compat.py:207
 msgid "Restore &Defaults"
 msgstr "&Standard wiederherstellen"
 
 #: picard/ui/cdlookup.py:66 picard/ui/itemviews/columns.py:151
-#: picard/ui/mainwindow/__init__.py:1031 picard/ui/searchdialog/album.py:159
+#: picard/ui/mainwindow/__init__.py:1104 picard/ui/searchdialog/album.py:159
 #: picard/ui/searchdialog/track.py:74
 msgid "Artist"
 msgstr "Interpret"
@@ -3324,7 +3358,7 @@ msgstr "Katalognummern"
 msgid "Refresh List"
 msgstr "Liste aktualisieren"
 
-#: picard/ui/collectionmenu.py:148
+#: picard/ui/collectionmenu.py:150
 #, python-format
 msgid "%(name)s (%(count)i release)"
 msgid_plural "%(name)s (%(count)i releases)"
@@ -3768,7 +3802,7 @@ msgid "All supported image formats"
 msgstr "Alle unterstützten Bildformate"
 
 #: picard/ui/coverartbox/__init__.py:407
-#: picard/ui/itemviews/basetreeview.py:308
+#: picard/ui/itemviews/basetreeview.py:310
 msgid "Show &more details…"
 msgstr "&Mehr Details anzeigen …"
 
@@ -3792,15 +3826,15 @@ msgstr "Titelcover ersetzen"
 msgid "Append front cover art"
 msgstr "Titelcover hinzufügen"
 
-#: picard/ui/coverartbox/coverartthumbnail.py:329
+#: picard/ui/coverartbox/coverartthumbnail.py:331
 msgid "View release on MusicBrainz"
 msgstr "Veröffentlichung auf MusicBrainz ansehen"
 
-#: picard/ui/coverartbox/coverartthumbnail.py:335
+#: picard/ui/coverartbox/coverartthumbnail.py:337
 msgid "Common images on all tracks"
 msgstr "Gemeinsame Bilder bei allen Titeln"
 
-#: picard/ui/coverartbox/coverartthumbnail.py:337
+#: picard/ui/coverartbox/coverartthumbnail.py:339
 msgid "Tracks contain different images"
 msgstr "Titel beinhaltet verschiedene Bilder"
 
@@ -3840,7 +3874,7 @@ msgid "ERROR: This plugin is blacklisted: {reason}"
 msgstr "FEHLER: Dieses Plugin ist gesperrt: {reason}"
 
 #: picard/ui/dialogs/installconfirm.py:113
-#: picard/ui/dialogs/installplugin.py:421
+#: picard/ui/dialogs/installplugin.py:424
 msgid ""
 "Warning: This is a community plugin. Community plugins are not reviewed by "
 "the Picard team. Only install plugins from sources you trust."
@@ -3849,7 +3883,7 @@ msgstr ""
 "geprüft. Installiere Plugins nur aus Quellen, denen du vertraust."
 
 #: picard/ui/dialogs/installconfirm.py:119
-#: picard/ui/dialogs/installplugin.py:430
+#: picard/ui/dialogs/installplugin.py:433
 msgid ""
 "Warning: This plugin is not in the official registry. Installing "
 "unregistered plugins may pose security risks. Only install plugins from "
@@ -3859,71 +3893,71 @@ msgstr ""
 "registrierte Plugins zu installieren, kann ein Sicherheitsrisiko darstellen. "
 "Installiere Plugins nur aus Quellen, denen du vertraust."
 
-#: picard/ui/dialogs/installplugin.py:67
+#: picard/ui/dialogs/installplugin.py:70
 msgid "Install Plugin"
 msgstr "Plugin installieren"
 
-#: picard/ui/dialogs/installplugin.py:101 picard/ui/options/plugins.py:105
+#: picard/ui/dialogs/installplugin.py:104 picard/ui/options/plugins.py:106
 msgid "Search plugins…"
 msgstr "Plugin suchen …"
 
-#: picard/ui/dialogs/installplugin.py:106
+#: picard/ui/dialogs/installplugin.py:109
 msgid "All Categories"
 msgstr "Alle Kategorien"
 
-#: picard/ui/dialogs/installplugin.py:115
+#: picard/ui/dialogs/installplugin.py:118
 msgid "Trust"
 msgstr "Vertrauen"
 
-#: picard/ui/dialogs/installplugin.py:115 picard/ui/searchdialog/album.py:157
+#: picard/ui/dialogs/installplugin.py:118 picard/ui/searchdialog/album.py:157
 #: picard/ui/searchdialog/artist.py:47 picard/ui/searchdialog/track.py:64
 msgid "Name"
 msgstr "Name"
 
-#: picard/ui/dialogs/installplugin.py:115
+#: picard/ui/dialogs/installplugin.py:118
 msgid "Categories"
 msgstr "Kategorien"
 
-#: picard/ui/dialogs/installplugin.py:133
+#: picard/ui/dialogs/installplugin.py:136
 msgid "Registry"
 msgstr "Katalog"
 
-#: picard/ui/dialogs/installplugin.py:139
+#: picard/ui/dialogs/installplugin.py:142
 msgid "Install from URL"
 msgstr "Von URL installieren"
 
-#: picard/ui/dialogs/installplugin.py:143
+#: picard/ui/dialogs/installplugin.py:146
 msgid "https://github.com/user/plugin"
 msgstr "https://github.com/benutzer/plugin"
 
-#: picard/ui/dialogs/installplugin.py:144
+#: picard/ui/dialogs/installplugin.py:147
 msgid "Git URL:"
 msgstr "Git-URL:"
 
-#: picard/ui/dialogs/installplugin.py:147
-#: picard/ui/dialogs/installplugin.py:178
+#: picard/ui/dialogs/installplugin.py:150
+#: picard/ui/dialogs/installplugin.py:181
 msgid "main"
 msgstr "main"
 
-#: picard/ui/dialogs/installplugin.py:148
-#: picard/ui/dialogs/installplugin.py:179
+#: picard/ui/dialogs/installplugin.py:151
+#: picard/ui/dialogs/installplugin.py:182
 msgid "Ref/Tag:"
 msgstr "Ref/Tag:"
 
-#: picard/ui/dialogs/installplugin.py:152
+#: picard/ui/dialogs/installplugin.py:155
 msgid "URL"
 msgstr "URL"
 
-#: picard/ui/dialogs/installplugin.py:158
+#: picard/ui/dialogs/installplugin.py:161
 msgid "Install from Local Directory"
 msgstr "Von lokalem Verzeichnis installieren"
 
-#: picard/ui/dialogs/installplugin.py:164
+#: picard/ui/dialogs/installplugin.py:167
 msgid "/path/to/plugin/directory"
 msgstr "/pfad/zum/plugin/verzeichnis"
 
-#: picard/ui/dialogs/installplugin.py:170
-#: picard/ui/dialogs/installplugin.py:171
+#: picard/ui/dialogs/installplugin.py:173
+#: picard/ui/dialogs/installplugin.py:174
 #: picard/ui/forms/ui_options_advanced_sessions.py:115
 #: picard/ui/forms/ui_options_interface.py:151
 #: picard/ui/forms/ui_options_maintenance.py:149
@@ -3931,67 +3965,67 @@ msgstr "/pfad/zum/plugin/verzeichnis"
 msgid "Select directory"
 msgstr "Verzeichnis auswählen"
 
-#: picard/ui/dialogs/installplugin.py:175
+#: picard/ui/dialogs/installplugin.py:178
 msgid "Directory:"
 msgstr "Verzeichnis:"
 
-#: picard/ui/dialogs/installplugin.py:183 picard/ui/dialogs/plugininfo.py:242
+#: picard/ui/dialogs/installplugin.py:186 picard/ui/dialogs/plugininfo.py:241
 msgid "Local"
 msgstr "Lokal"
 
-#: picard/ui/dialogs/installplugin.py:203
+#: picard/ui/dialogs/installplugin.py:206
 msgid "Install…"
 msgstr "Installieren …"
 
-#: picard/ui/dialogs/installplugin.py:274
+#: picard/ui/dialogs/installplugin.py:277
 msgid "Official plugin - reviewed by Picard team"
 msgstr "Offizielles Plugin – vom Picard-Team geprüft"
 
-#: picard/ui/dialogs/installplugin.py:275
+#: picard/ui/dialogs/installplugin.py:278
 msgid "Trusted plugin - from known developers"
 msgstr "Vertrauenswürdiges Plugin – von bekannten Entwicklern"
 
-#: picard/ui/dialogs/installplugin.py:276
+#: picard/ui/dialogs/installplugin.py:279
 msgid "Community plugin - not reviewed"
 msgstr "Community-Plugin – nicht geprüft"
 
-#: picard/ui/dialogs/installplugin.py:277
+#: picard/ui/dialogs/installplugin.py:280
 msgid "Unregistered plugin - not in official registry"
 msgstr "Unregistriertes Plugin – nicht im offiziellen Katalog enthalten"
 
-#: picard/ui/dialogs/installplugin.py:322
+#: picard/ui/dialogs/installplugin.py:325
 msgid "Double-click to view detailed plugin information"
 msgstr "Doppelklicken, um detaillierte Plugin-Informationen anzuzeigen"
 
-#: picard/ui/dialogs/installplugin.py:390
+#: picard/ui/dialogs/installplugin.py:393
 msgid "Select Plugin Directory"
 msgstr "Plugin-Verzeichnis auswählen"
 
-#: picard/ui/dialogs/installplugin.py:410
+#: picard/ui/dialogs/installplugin.py:413
 msgid "Plugin not found in registry"
 msgstr "Plugin im Katalog nicht gefunden"
 
-#: picard/ui/dialogs/installplugin.py:477
+#: picard/ui/dialogs/installplugin.py:480
 msgid "No Directory Selected"
 msgstr "Kein Verzeichnis ausgewählt"
 
-#: picard/ui/dialogs/installplugin.py:477
+#: picard/ui/dialogs/installplugin.py:480
 msgid "Please select a local plugin directory."
 msgstr "Bitte eine lokales Plugin-Verzeichnis auswählen."
 
-#: picard/ui/dialogs/installplugin.py:483
+#: picard/ui/dialogs/installplugin.py:486
 msgid "Invalid Directory"
 msgstr "Ungültiges Verzeichnis"
 
-#: picard/ui/dialogs/installplugin.py:483
+#: picard/ui/dialogs/installplugin.py:486
 msgid "The selected path is not a directory."
 msgstr "Der ausgewählte Pfad ist kein Verzeichnis."
 
-#: picard/ui/dialogs/installplugin.py:491
+#: picard/ui/dialogs/installplugin.py:494
 msgid "Invalid Plugin Directory"
 msgstr "Ungültiges Plugin-Verzeichnis"
 
-#: picard/ui/dialogs/installplugin.py:493
+#: picard/ui/dialogs/installplugin.py:496
 msgid ""
 "The selected directory does not contain a MANIFEST.toml file. A valid plugin "
 "requires both a git repository and a MANIFEST.toml file."
@@ -4000,29 +4034,29 @@ msgstr ""
 "Plugin-Verzeichnis erfordert sowohl ein Git-Repository als auch die Datei "
 "MANIFEST.toml."
 
-#: picard/ui/dialogs/installplugin.py:530
+#: picard/ui/dialogs/installplugin.py:533
 msgid "Plugin has no repository URL"
 msgstr "Plugin hat keine Repository-URL"
 
-#: picard/ui/dialogs/installplugin.py:577
+#: picard/ui/dialogs/installplugin.py:580
 msgid "Plugin installed successfully"
 msgstr "Plugin erfolgreich installiert"
 
-#: picard/ui/dialogs/installplugin.py:582
+#: picard/ui/dialogs/installplugin.py:585
 msgid "Installation failed"
 msgstr "Installation fehlgeschlagen"
 
-#: picard/ui/dialogs/installplugin.py:583 picard/ui/options/plugins.py:493
-#: picard/ui/widgets/plugindetailswidget.py:210
-#: picard/ui/widgets/plugindetailswidget.py:355
-#: picard/ui/widgets/pluginlistwidget.py:644
-#: picard/ui/widgets/pluginlistwidget.py:675
-#: picard/ui/widgets/pluginlistwidget.py:728
-#: picard/ui/widgets/pluginlistwidget.py:761
+#: picard/ui/dialogs/installplugin.py:586 picard/ui/options/plugins.py:515
+#: picard/ui/widgets/plugindetailswidget.py:211
+#: picard/ui/widgets/plugindetailswidget.py:354
+#: picard/ui/widgets/pluginlistwidget.py:645
+#: picard/ui/widgets/pluginlistwidget.py:672
+#: picard/ui/widgets/pluginlistwidget.py:726
+#: picard/ui/widgets/pluginlistwidget.py:755
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
-#: picard/ui/dialogs/installplugin.py:584
+#: picard/ui/dialogs/installplugin.py:587
 msgid "Installation Failed"
 msgstr "Installation fehlgeschlagen"
 
@@ -4072,7 +4106,7 @@ msgid "Move selected plugin down"
 msgstr "Ausgewähltes Plugin nach unten verschieben"
 
 #: picard/ui/dialogs/plugin_order_selector.py:202
-#: picard/ui/options/dialog.py:737
+#: picard/ui/options/dialog.py:736
 msgid "Confirm Reset"
 msgstr "Zurücksetzen bestätigen"
 
@@ -4083,98 +4117,98 @@ msgstr ""
 "Soll die Ausführungsreihenfolge wirklich auf den Plugin-Standard "
 "zurückgesetzt werden?"
 
-#: picard/ui/dialogs/plugininfo.py:46
+#: picard/ui/dialogs/plugininfo.py:47
 msgid "Plugin Information"
 msgstr "Plugin-Informationen"
 
-#: picard/ui/dialogs/plugininfo.py:102
+#: picard/ui/dialogs/plugininfo.py:103
 msgid "ID:"
 msgstr "ID:"
 
-#: picard/ui/dialogs/plugininfo.py:103
+#: picard/ui/dialogs/plugininfo.py:104
 msgid "UUID:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:104
+#: picard/ui/dialogs/plugininfo.py:105
 msgid "Registry ID:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:105
+#: picard/ui/dialogs/plugininfo.py:106
 msgid "State:"
 msgstr "Status:"
 
-#: picard/ui/dialogs/plugininfo.py:106
+#: picard/ui/dialogs/plugininfo.py:107
 #: picard/ui/forms/ui_scripteditor_details.py:103
-#: picard/ui/widgets/plugindetailswidget.py:78
+#: picard/ui/widgets/plugindetailswidget.py:79
 msgid "Version:"
 msgstr "Version:"
 
-#: picard/ui/dialogs/plugininfo.py:107
+#: picard/ui/dialogs/plugininfo.py:108
 msgid "API Version:"
 msgstr "API-Version:"
 
-#: picard/ui/dialogs/plugininfo.py:108
+#: picard/ui/dialogs/plugininfo.py:109
 msgid "Trust Level:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:109
+#: picard/ui/dialogs/plugininfo.py:110
 msgid "Categories:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:110
-#: picard/ui/widgets/plugindetailswidget.py:83
+#: picard/ui/dialogs/plugininfo.py:111
+#: picard/ui/widgets/plugindetailswidget.py:84
 msgid "Authors:"
 msgstr "Autoren:"
 
-#: picard/ui/dialogs/plugininfo.py:111
-#: picard/ui/widgets/plugindetailswidget.py:88
+#: picard/ui/dialogs/plugininfo.py:112
+#: picard/ui/widgets/plugindetailswidget.py:89
 msgid "Maintainers:"
 msgstr "Betreuer:"
 
-#: picard/ui/dialogs/plugininfo.py:112
-#: picard/ui/widgets/plugindetailswidget.py:96
+#: picard/ui/dialogs/plugininfo.py:113
+#: picard/ui/widgets/plugindetailswidget.py:97
 msgid "Repository:"
 msgstr "Repository:"
 
-#: picard/ui/dialogs/plugininfo.py:113
+#: picard/ui/dialogs/plugininfo.py:114
 #: picard/ui/forms/ui_scripteditor_details.py:104
 msgid "License:"
 msgstr "Lizenz:"
 
-#: picard/ui/dialogs/plugininfo.py:114
+#: picard/ui/dialogs/plugininfo.py:115
 msgid "License URL:"
 msgstr "Lizenz-URL:"
 
-#: picard/ui/dialogs/plugininfo.py:115
+#: picard/ui/dialogs/plugininfo.py:116
 msgid "Homepage:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:116
+#: picard/ui/dialogs/plugininfo.py:117
 msgid "Path:"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:117
+#: picard/ui/dialogs/plugininfo.py:118
 msgid "Versioning:"
 msgstr "Versionierung:"
 
-#: picard/ui/dialogs/plugininfo.py:124
+#: picard/ui/dialogs/plugininfo.py:125
 #: picard/ui/forms/ui_scripteditor_details.py:107
 msgid "Description:"
 msgstr "Beschreibung:"
 
-#: picard/ui/dialogs/plugininfo.py:249
+#: picard/ui/dialogs/plugininfo.py:248
 msgid "Official"
 msgstr "Offiziell"
 
-#: picard/ui/dialogs/plugininfo.py:250
+#: picard/ui/dialogs/plugininfo.py:249
 msgid "Trusted"
 msgstr ""
 
-#: picard/ui/dialogs/plugininfo.py:251
+#: picard/ui/dialogs/plugininfo.py:250
 msgid "Community"
 msgstr "Gemeinschaft"
 
-#: picard/ui/dialogs/plugininfo.py:252
+#: picard/ui/dialogs/plugininfo.py:251
 msgid "Unregistered"
 msgstr ""
 
@@ -4182,13 +4216,13 @@ msgstr ""
 msgid "About Picard"
 msgstr "Über Picard"
 
-#: picard/ui/forms/ui_aboutdialog.py:90 picard/ui/mainwindow/__init__.py:247
+#: picard/ui/forms/ui_aboutdialog.py:90 picard/ui/mainwindow/__init__.py:252
 msgid "MusicBrainz Picard"
 msgstr "MusicBrainz Picard"
 
 #: picard/ui/forms/ui_cdlookup.py:91 picard/ui/forms/ui_options_cdlookup.py:46
 #: picard/ui/forms/ui_options_cdlookup_select.py:53
-#: picard/ui/options/cdlookup.py:48
+#: picard/ui/options/cdlookup.py:46
 msgid "CD Lookup"
 msgstr "CD abfragen"
 
@@ -4275,18 +4309,22 @@ msgstr "Ausgewählte Schrift nach unten verschieben"
 msgid "Available Language Scripts"
 msgstr "Verfügbare Schriften"
 
-#: picard/ui/forms/ui_infodialog.py:87 picard/ui/infodialog/__init__.py:79
+#: picard/ui/forms/ui_infodialog.py:103 picard/ui/infodialog/__init__.py:79
 #: picard/ui/infodialog/__init__.py:83 picard/ui/infodialog/__init__.py:101
 msgid "&Info"
 msgstr "&Info"
 
-#: picard/ui/forms/ui_infodialog.py:88
+#: picard/ui/forms/ui_infodialog.py:104
 msgid "&Error"
 msgstr "&Fehler"
 
-#: picard/ui/forms/ui_infodialog.py:89
+#: picard/ui/forms/ui_infodialog.py:105
 msgid "A&rtwork"
 msgstr "Cove&r-Bild"
+
+#: picard/ui/forms/ui_infodialog.py:106
+msgid "&Chaos"
+msgstr ""
 
 #: picard/ui/forms/ui_infostatus.py:112
 #: picard/ui/forms/ui_options_cover_processing.py:296
@@ -4614,11 +4652,11 @@ msgstr "API-Schlüssel:"
 msgid "Get API key…"
 msgstr "API-Schlüssel anfordern …"
 
-#: picard/ui/forms/ui_options_general.py:205
+#: picard/ui/forms/ui_options_general.py:209
 msgid "MusicBrainz Server"
 msgstr "MusicBrainz-Server"
 
-#: picard/ui/forms/ui_options_general.py:206
+#: picard/ui/forms/ui_options_general.py:210
 msgid ""
 "You have configured an unofficial MusicBrainz server. By default submissions "
 "of releases, recordings and disc IDs will go to the primary database on "
@@ -4628,49 +4666,55 @@ msgstr ""
 "werden Veröffentlichungen, Aufnahmen und Disc-IDs an die primäre Datenbank "
 "auf musicbrainz.org übermittelt."
 
-#: picard/ui/forms/ui_options_general.py:207
+#: picard/ui/forms/ui_options_general.py:211
 msgid "Submit data to the configured server"
 msgstr "Daten an den konfigurierten Server übermitteln"
 
-#: picard/ui/forms/ui_options_general.py:208
+#: picard/ui/forms/ui_options_general.py:212
 #: picard/ui/forms/ui_options_network.py:166
 msgid "Port:"
 msgstr "Port:"
 
-#: picard/ui/forms/ui_options_general.py:209
+#: picard/ui/forms/ui_options_general.py:213
 #: picard/ui/forms/ui_options_network.py:168
 msgid "Server address:"
 msgstr "Serveradresse:"
 
-#: picard/ui/forms/ui_options_general.py:211
+#: picard/ui/forms/ui_options_general.py:215
 msgid "Log in"
 msgstr "Einloggen"
 
-#: picard/ui/forms/ui_options_general.py:212
+#: picard/ui/forms/ui_options_general.py:216
 msgid "Log out"
 msgstr "Abmelden"
 
-#: picard/ui/forms/ui_options_general.py:213 picard/ui/options/general.py:56
+#: picard/ui/forms/ui_options_general.py:217 picard/ui/options/general.py:56
 msgid "General"
 msgstr "Allgemein"
 
-#: picard/ui/forms/ui_options_general.py:217
+#: picard/ui/forms/ui_options_general.py:221
 msgid "Update Checking"
 msgstr "Auf Updates prüfen"
 
-#: picard/ui/forms/ui_options_general.py:218
+#: picard/ui/forms/ui_options_general.py:222
 msgid "Check for documentation updates during startup"
 msgstr "Beim Start nach Dokumentations-Updates suchen"
 
-#: picard/ui/forms/ui_options_general.py:219
+#: picard/ui/forms/ui_options_general.py:223
+#, fuzzy
+#| msgid "Check for program updates during startup"
+msgid "Check for plugin updates during startup"
+msgstr "Beim Start nach Programm-Updates suchen"
+
+#: picard/ui/forms/ui_options_general.py:224
 msgid "Check for program updates during startup"
 msgstr "Beim Start nach Programm-Updates suchen"
 
-#: picard/ui/forms/ui_options_general.py:220
+#: picard/ui/forms/ui_options_general.py:225
 msgid "Days between checks:"
 msgstr "Tage zwischen Überprüfungen:"
 
-#: picard/ui/forms/ui_options_general.py:221
+#: picard/ui/forms/ui_options_general.py:226
 msgid "Updates to check:"
 msgstr "Überprüfen auf:"
 
@@ -5311,7 +5355,7 @@ msgid "Windows-1252"
 msgstr "Windows-1252"
 
 #: picard/ui/forms/ui_passworddialog.py:68
-#: picard/ui/mainwindow/__init__.py:1824
+#: picard/ui/mainwindow/__init__.py:1897
 msgid "Authentication Required"
 msgstr "Authentifizierung erforderlich"
 
@@ -5464,7 +5508,7 @@ msgstr[1] "%i Dateien in diesem Titel"
 msgid "Cluster Info"
 msgstr "Informationen zur Gruppierung"
 
-#: picard/ui/infodialog/dialog.py:150
+#: picard/ui/infodialog/dialog.py:237
 #, python-format
 msgid ""
 "<strong>%(message)s</strong><br />Temporary file: <em>%(tempfile)s</em><br /"
@@ -5473,11 +5517,11 @@ msgstr ""
 "<strong>%(message)s</strong><br />Temporäre Datei: <em>%(tempfile)s</em><br /"
 ">Quelle: <em>%(sourcefile)s</em>"
 
-#: picard/ui/infodialog/dialog.py:186
+#: picard/ui/infodialog/dialog.py:273
 msgid "Double-click to open in external viewer"
 msgstr "Doppelklicken, um in externem Betrachter zu öffnen"
 
-#: picard/ui/infodialog/dialog.py:191
+#: picard/ui/infodialog/dialog.py:278
 msgid "Missing temporary file"
 msgstr "Fehlende temporäre Dateien"
 
@@ -5687,53 +5731,53 @@ msgstr ""
 "Für diese Datei wurde kein Fingerabdruck generiert. Verwende „Analysieren“ "
 "oder „AcoustID-Fingerabdrücke generieren“ um den Fingerabdruck zu generieren."
 
-#: picard/ui/itemviews/basetreeview.py:165
+#: picard/ui/itemviews/basetreeview.py:167
 #, python-format
 msgid "&Other versions (%d)"
 msgstr "&Andere Versionen (%d)"
 
-#: picard/ui/itemviews/basetreeview.py:196
+#: picard/ui/itemviews/basetreeview.py:198
 msgid "&Expand all"
 msgstr "Alles &ausklappen"
 
-#: picard/ui/itemviews/basetreeview.py:198
+#: picard/ui/itemviews/basetreeview.py:200
 msgid "&Collapse all"
 msgstr "Alles &einklappen"
 
-#: picard/ui/itemviews/basetreeview.py:200
+#: picard/ui/itemviews/basetreeview.py:202
 msgid "Select &all"
 msgstr "&Alle auswählen"
 
-#: picard/ui/itemviews/basetreeview.py:202
+#: picard/ui/itemviews/basetreeview.py:204
 msgid "Ctrl+A"
 msgstr "Ctrl+A"
 
-#: picard/ui/itemviews/basetreeview.py:301
+#: picard/ui/itemviews/basetreeview.py:303
 msgid "&Other versions"
 msgstr "&Andere Versionen"
 
-#: picard/ui/itemviews/basetreeview.py:313
+#: picard/ui/itemviews/basetreeview.py:315
 msgid "Loading…"
 msgstr "Laden …"
 
-#: picard/ui/itemviews/basetreeview.py:340
+#: picard/ui/itemviews/basetreeview.py:342
 msgid "Collections"
 msgstr "Sammlungen"
 
-#: picard/ui/itemviews/basetreeview.py:344
+#: picard/ui/itemviews/basetreeview.py:346
 msgid "P&lugins"
 msgstr "&Plugins"
 
-#: picard/ui/itemviews/basetreeview.py:367
+#: picard/ui/itemviews/basetreeview.py:372
 msgid "&Run scripts"
 msgstr "Skripte &ausführen"
 
-#: picard/ui/itemviews/basetreeview.py:729
+#: picard/ui/itemviews/basetreeview.py:731
 #, python-format
 msgid "Matches on: %s"
 msgstr ""
 
-#: picard/ui/itemviews/basetreeview.py:731
+#: picard/ui/itemviews/basetreeview.py:733
 msgid "No tags found for selected filters."
 msgstr "Keine Tags für ausgewählte Filter gefunden."
 
@@ -5829,27 +5873,27 @@ msgstr "Cover"
 msgid "Cover Dimensions"
 msgstr ""
 
-#: picard/ui/itemviews/match_quality_column.py:265
+#: picard/ui/itemviews/match_quality_column.py:270
 #, python-format
 msgid "Match: %(matched)d/%(total)d (%(percent).1f%%)"
 msgstr ""
 
-#: picard/ui/itemviews/match_quality_column.py:274
+#: picard/ui/itemviews/match_quality_column.py:279
 #, python-format
 msgid "Missing tracks: %(count)d"
 msgstr ""
 
-#: picard/ui/itemviews/match_quality_column.py:275
+#: picard/ui/itemviews/match_quality_column.py:280
 #, python-format
 msgid "Duplicate files: %(count)d"
 msgstr ""
 
-#: picard/ui/itemviews/match_quality_column.py:276
+#: picard/ui/itemviews/match_quality_column.py:281
 #, python-format
 msgid "Extra files: %(count)d"
 msgstr "Zusätzliche Dateien: %(count)d"
 
-#: picard/ui/itemviews/match_quality_column.py:277
+#: picard/ui/itemviews/match_quality_column.py:282
 #, python-format
 msgid "Unmatched files: %(count)d"
 msgstr "Nicht zugeordnete Dateien: %(count)d"
@@ -5888,7 +5932,7 @@ msgstr "Zu Ansichten hinzufügen"
 msgid "You have unsaved changes. Do you want to save them?"
 msgstr ""
 
-#: picard/ui/itemviews/custom_columns/manager_dialog.py:491
+#: picard/ui/itemviews/custom_columns/manager_dialog.py:497
 msgid ""
 "You have unsaved changes. Do you want to save them before deleting this "
 "column?"
@@ -6000,7 +6044,7 @@ msgid "Empty/whitespace values sort last."
 msgstr ""
 
 #: picard/ui/itemviews/custom_columns/user_dialog_service.py:52
-#: picard/ui/mainwindow/__init__.py:418
+#: picard/ui/mainwindow/__init__.py:429
 msgid "Unsaved Changes"
 msgstr "Nicht gespeicherte Änderungen"
 
@@ -6156,11 +6200,11 @@ msgstr ""
 msgid "Unknown views in add_to: %s"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:419
+#: picard/ui/mainwindow/__init__.py:430
 msgid "Are you sure you want to quit Picard?"
 msgstr "Soll Picard wirklich beendet werden?"
 
-#: picard/ui/mainwindow/__init__.py:422
+#: picard/ui/mainwindow/__init__.py:433
 #, python-format
 msgid "There is %d unsaved file. Closing Picard will lose all unsaved changes."
 msgid_plural ""
@@ -6172,45 +6216,45 @@ msgstr[1] ""
 "%d Dateien wurden nicht gespeichert. Das Beenden von Picard führt zum "
 "Verlust aller nicht gespeicherten Änderungen."
 
-#: picard/ui/mainwindow/__init__.py:431
+#: picard/ui/mainwindow/__init__.py:442
 msgid "&Quit Picard"
 msgstr "Picard &beenden"
 
-#: picard/ui/mainwindow/__init__.py:464
+#: picard/ui/mainwindow/__init__.py:475
 msgid "Close Session"
 msgstr "Sitzung schließen"
 
-#: picard/ui/mainwindow/__init__.py:465
+#: picard/ui/mainwindow/__init__.py:476
 msgid "Do you want to save the current session before continuing?"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:466
+#: picard/ui/mainwindow/__init__.py:477
 msgid ""
 "Closing the session will clear all files, clusters and albums from the view."
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:468 picard/ui/mainwindow/actions.py:600
+#: picard/ui/mainwindow/__init__.py:479 picard/ui/mainwindow/actions.py:600
 msgid "&Save Session"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:469
+#: picard/ui/mainwindow/__init__.py:480
 msgid "Do&n't Save"
 msgstr "&Nicht speichern"
 
-#: picard/ui/mainwindow/__init__.py:498 picard/ui/mainwindow/__init__.py:1361
+#: picard/ui/mainwindow/__init__.py:509 picard/ui/mainwindow/__init__.py:1434
 #, python-format
 msgid "Session saved to \"%(path)s\""
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:501 picard/ui/mainwindow/__init__.py:1358
+#: picard/ui/mainwindow/__init__.py:512 picard/ui/mainwindow/__init__.py:1431
 msgid "Failed to save session"
 msgstr "Fehler beim Speichern der Sitzung"
 
-#: picard/ui/mainwindow/__init__.py:538
+#: picard/ui/mainwindow/__init__.py:549
 msgid "Ready"
 msgstr "Bereit"
 
-#: picard/ui/mainwindow/__init__.py:547
+#: picard/ui/mainwindow/__init__.py:558
 msgid ""
 "Picard listens on this port to integrate with your browser. When you "
 "\"Search\" or \"Open in Browser\" from Picard, clicking the \"Tagger\" "
@@ -6220,16 +6264,22 @@ msgstr ""
 "„Suchen“ oder „Im Browser öffnen“ gewählt, so lädt ein Klick auf den "
 "„Tagger“-Button auf der Webseite die Veröffentlichung in Picard."
 
-#: picard/ui/mainwindow/__init__.py:575
+#: picard/ui/mainwindow/__init__.py:576
+msgid ""
+"There are updates available for installed plugins. Click to open the plugin "
+"manager."
+msgstr ""
+
+#: picard/ui/mainwindow/__init__.py:604
 #, python-format
 msgid "Listening on port %(port)d"
 msgstr "Auf Port %(port)d wird gelauscht"
 
-#: picard/ui/mainwindow/__init__.py:633
+#: picard/ui/mainwindow/__init__.py:670
 msgid "AcoustID submission not configured"
 msgstr "AcoustID-Übermittlung nicht konfiguriert"
 
-#: picard/ui/mainwindow/__init__.py:634
+#: picard/ui/mainwindow/__init__.py:671
 msgid ""
 "You need to configure your AcoustID API key before you can submit "
 "fingerprints."
@@ -6237,132 +6287,132 @@ msgstr ""
 "Der eigene AcoustID-API-Schlüssel muss angeben sein, um Fingerabdrücke "
 "übermitteln zu können."
 
-#: picard/ui/mainwindow/__init__.py:636
+#: picard/ui/mainwindow/__init__.py:673
 msgid "Open AcoustID options"
 msgstr "AcoustID-Einstellungen öffnen"
 
-#: picard/ui/mainwindow/__init__.py:650 picard/ui/mainwindow/actions.py:389
+#: picard/ui/mainwindow/__init__.py:687 picard/ui/mainwindow/actions.py:389
 msgid "Lookup &CD…"
 msgstr "&CD abfragen …"
 
-#: picard/ui/mainwindow/__init__.py:660
+#: picard/ui/mainwindow/__init__.py:697
 msgid "Recent Sessions"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:698
+#: picard/ui/mainwindow/__init__.py:735
 msgid "Recent sessions cleared"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:717
+#: picard/ui/mainwindow/__init__.py:754
 msgid "Empty"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:733 picard/ui/mainwindow/actions.py:624
+#: picard/ui/mainwindow/__init__.py:770 picard/ui/mainwindow/actions.py:624
 msgid "Clear Recent Sessions"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:850 picard/ui/scripteditor/__init__.py:241
+#: picard/ui/mainwindow/__init__.py:887 picard/ui/scripteditor/__init__.py:243
 msgid "&File"
 msgstr "&Datei"
 
-#: picard/ui/mainwindow/__init__.py:873
+#: picard/ui/mainwindow/__init__.py:910
 msgid "&Edit"
 msgstr "&Bearbeiten"
 
-#: picard/ui/mainwindow/__init__.py:882 picard/ui/scripteditor/__init__.py:301
+#: picard/ui/mainwindow/__init__.py:919 picard/ui/scripteditor/__init__.py:303
 msgid "&View"
 msgstr "&Ansicht"
 
-#: picard/ui/mainwindow/__init__.py:893
+#: picard/ui/mainwindow/__init__.py:930
 msgid "&Select file naming script"
 msgstr "Dateibenennungsskript &auswählen"
 
-#: picard/ui/mainwindow/__init__.py:897
+#: picard/ui/mainwindow/__init__.py:934
 msgid "&Enable/disable profiles"
 msgstr "Profile &aktivieren/deaktivieren"
 
-#: picard/ui/mainwindow/__init__.py:900
+#: picard/ui/mainwindow/__init__.py:937
 msgid "&Quick settings"
 msgstr "&Schnelleinstellungen"
 
-#: picard/ui/mainwindow/__init__.py:904
+#: picard/ui/mainwindow/__init__.py:941
 msgid "&Options"
 msgstr "&Einstellungen"
 
-#: picard/ui/mainwindow/__init__.py:920
+#: picard/ui/mainwindow/__init__.py:957
 msgid "&Tools"
 msgstr "E&xtras"
 
-#: picard/ui/mainwindow/__init__.py:935
+#: picard/ui/mainwindow/__init__.py:972
 msgid "&Plugin Tools"
 msgstr "&Plugin-Werkzeuge"
 
-#: picard/ui/mainwindow/__init__.py:942 picard/ui/scripteditor/__init__.py:322
+#: picard/ui/mainwindow/__init__.py:979 picard/ui/scripteditor/__init__.py:324
 msgid "&Help"
 msgstr "&Hilfe"
 
-#: picard/ui/mainwindow/__init__.py:977
+#: picard/ui/mainwindow/__init__.py:1044
 msgid "Actions"
 msgstr "Aktionen"
 
-#: picard/ui/mainwindow/__init__.py:1019 picard/ui/mainwindow/actions.py:381
+#: picard/ui/mainwindow/__init__.py:1092 picard/ui/mainwindow/actions.py:381
 #: picard/ui/searchdialog/__init__.py:64
 msgid "Search"
 msgstr "Suchen"
 
-#: picard/ui/mainwindow/__init__.py:1049
+#: picard/ui/mainwindow/__init__.py:1122
 msgid "&Advanced search"
 msgstr "&Erweiterte Suche"
 
-#: picard/ui/mainwindow/__init__.py:1050
+#: picard/ui/mainwindow/__init__.py:1123
 msgid "&Builtin search"
 msgstr "Einge&baute Suche"
 
-#: picard/ui/mainwindow/__init__.py:1140
+#: picard/ui/mainwindow/__init__.py:1213
 msgid "All supported formats"
 msgstr "Alle unterstützten Formate"
 
-#: picard/ui/mainwindow/__init__.py:1177
+#: picard/ui/mainwindow/__init__.py:1250
 #, python-format
 msgid "Adding multiple directories from \"%(directory)s\" …"
 msgstr "Füge mehrere Verzeichnisse von „%(directory)s“ hinzu …"
 
-#: picard/ui/mainwindow/__init__.py:1182
+#: picard/ui/mainwindow/__init__.py:1255
 #, python-format
 msgid "Adding directory: \"%(directory)s\" …"
 msgstr "Verzeichnis hinzufügen: „%(directory)s“ …"
 
-#: picard/ui/mainwindow/__init__.py:1258
+#: picard/ui/mainwindow/__init__.py:1331
 #, python-brace-format
 msgid "Move \"{filename}\" to trash?"
 msgid_plural "Move {count} files to trash?"
 msgstr[0] "„{filename}“ in Papierkorb verschieben?"
 msgstr[1] "{count} Dateien in Papierkorb verschieben?"
 
-#: picard/ui/mainwindow/__init__.py:1264 picard/ui/mainwindow/actions.py:198
+#: picard/ui/mainwindow/__init__.py:1337 picard/ui/mainwindow/actions.py:198
 msgid "Move files to trash"
 msgstr "Dateien in Papierkorb verschieben"
 
-#: picard/ui/mainwindow/__init__.py:1350 picard/ui/mainwindow/__init__.py:1382
+#: picard/ui/mainwindow/__init__.py:1423 picard/ui/mainwindow/__init__.py:1455
 #, python-format
 msgid "MusicBrainz Picard Session (%s);;All files (*)"
 msgstr ""
 
-#: picard/ui/mainwindow/__init__.py:1387 picard/ui/mainwindow/__init__.py:1412
+#: picard/ui/mainwindow/__init__.py:1460 picard/ui/mainwindow/__init__.py:1485
 #, python-format
 msgid "Loading session from \"%(path)s\" …"
 msgstr "Lade Sitzung von „%(path)s“ …"
 
-#: picard/ui/mainwindow/__init__.py:1403 picard/ui/mainwindow/__init__.py:1430
+#: picard/ui/mainwindow/__init__.py:1476 picard/ui/mainwindow/__init__.py:1503
 #, python-format
 msgid "Session loaded from \"%(path)s\""
 msgstr "Sitzung wurde von „%(path)s“ geladen"
 
-#: picard/ui/mainwindow/__init__.py:1505
+#: picard/ui/mainwindow/__init__.py:1578
 msgid "Configuration Required"
 msgstr "Konfiguration erforderlich"
 
-#: picard/ui/mainwindow/__init__.py:1506
+#: picard/ui/mainwindow/__init__.py:1579
 msgid ""
 "Audio fingerprinting is not yet configured. Would you like to configure it "
 "now?"
@@ -6370,11 +6420,11 @@ msgstr ""
 "Das Erzeugen von Audio-Fingerabdrücken wurde noch nicht konfiguriert. Soll "
 "dies jetzt vorgenommen werden?"
 
-#: picard/ui/mainwindow/__init__.py:1622
+#: picard/ui/mainwindow/__init__.py:1695
 msgid "Browser integration not enabled"
 msgstr "Browser-Integration nicht aktiviert"
 
-#: picard/ui/mainwindow/__init__.py:1624
+#: picard/ui/mainwindow/__init__.py:1697
 msgid ""
 "Submitting releases to MusicBrainz requires the browser integration to be "
 "enabled. Do you want to enable the browser integration now?"
@@ -6382,27 +6432,27 @@ msgstr ""
 "Für die Übermittlung von Veröffentlichungen an MusicBrainz muss die Browser-"
 "Integration aktiviert sein. Die Browser-Integration jetzt aktivieren?"
 
-#: picard/ui/mainwindow/__init__.py:1736
+#: picard/ui/mainwindow/__init__.py:1809
 #, python-format
 msgid "%(filename)s (error: %(error)s)"
 msgstr "%(filename)s (Fehler: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1742
+#: picard/ui/mainwindow/__init__.py:1815
 #, python-format
 msgid "%(filename)s"
 msgstr "%(filename)s"
 
-#: picard/ui/mainwindow/__init__.py:1751
+#: picard/ui/mainwindow/__init__.py:1824
 #, python-format
 msgid "%(filename)s (%(similarity)d%%) (error: %(error)s)"
 msgstr "%(filename)s (%(similarity)d%%) (Fehler: %(error)s)"
 
-#: picard/ui/mainwindow/__init__.py:1758
+#: picard/ui/mainwindow/__init__.py:1831
 #, python-format
 msgid "%(filename)s (%(similarity)d%%)"
 msgstr "%(filename)s (%(similarity)d%%)"
 
-#: picard/ui/mainwindow/__init__.py:1826
+#: picard/ui/mainwindow/__init__.py:1899
 msgid ""
 "Picard needs authorization to access your personal data on the MusicBrainz "
 "server. Would you like to log in now?"
@@ -6410,11 +6460,11 @@ msgstr ""
 "Picard benötigt die Berechtigung, auf persönlichen Daten auf dem MusicBrainz "
 "Server zuzugreifen. Dazu jetzt einloggen?"
 
-#: picard/ui/mainwindow/__init__.py:1844
+#: picard/ui/mainwindow/__init__.py:1917
 msgid "Authentication failed"
 msgstr "Authentifizierung fehlgeschlagen"
 
-#: picard/ui/mainwindow/__init__.py:1845 picard/ui/options/general.py:150
+#: picard/ui/mainwindow/__init__.py:1918 picard/ui/options/general.py:153
 #, python-format
 msgid "Login failed: %s"
 msgstr "Anmeldung fehlgeschlagen: %s"
@@ -6439,7 +6489,7 @@ msgstr "&Ausschneiden"
 msgid "&Paste"
 msgstr "&Einfügen"
 
-#: picard/ui/mainwindow/actions.py:117 picard/ui/scripteditor/__init__.py:325
+#: picard/ui/mainwindow/actions.py:117 picard/ui/scripteditor/__init__.py:327
 msgid "&Help…"
 msgstr "&Hilfe …"
 
@@ -6811,7 +6861,7 @@ msgstr "&Aktivitätshistorie anzeigen"
 msgid "Ctrl+Shift+H"
 msgstr "Ctrl+Shift+H"
 
-#: picard/ui/mainwindow/actions.py:546 picard/ui/scripteditor/__init__.py:316
+#: picard/ui/mainwindow/actions.py:546 picard/ui/scripteditor/__init__.py:318
 msgid "Ctrl+H"
 msgstr "Ctrl+H"
 
@@ -6975,7 +7025,7 @@ msgid_plural "(missing from %d items)"
 msgstr[0] "(nicht vorhanden in %d Element)"
 msgstr[1] "(nicht vorhanden in %d Elementen)"
 
-#: picard/ui/options/__init__.py:130
+#: picard/ui/options/__init__.py:132
 msgid "Regex Error"
 msgstr "Regex-Fehler"
 
@@ -7013,23 +7063,23 @@ msgstr ""
 msgid "Processing"
 msgstr ""
 
-#: picard/ui/options/dialog.py:119
+#: picard/ui/options/dialog.py:121
 msgid "This page failed to initialize"
 msgstr "Fehler beim initialisieren dieser Seite"
 
-#: picard/ui/options/dialog.py:121
+#: picard/ui/options/dialog.py:123
 #, python-format
 msgid "Error while initializing option page \"%s\":"
 msgstr "Fehler beim Initialisieren der Einstellungsseite „%s“:"
 
-#: picard/ui/options/dialog.py:135
+#: picard/ui/options/dialog.py:137
 #, python-format
 msgid ""
 "Please see <a href=\"%s\">Troubleshooting documentation</a> and eventually "
 "report a bug."
 msgstr ""
 
-#: picard/ui/options/dialog.py:180
+#: picard/ui/options/dialog.py:182
 #, python-format
 msgid "%s (error)"
 msgstr "%s (Fehler)"
@@ -7054,8 +7104,8 @@ msgstr "Alle Einstellungen für die aktuelle Optionsseite zurücksetzen"
 msgid "Make It So!"
 msgstr "Übernehmen"
 
-#: picard/ui/options/dialog.py:257 picard/ui/options/dialog.py:748
-#: picard/ui/options/dialog.py:774
+#: picard/ui/options/dialog.py:257 picard/ui/options/dialog.py:747
+#: picard/ui/options/dialog.py:773
 msgid "Attached Profiles"
 msgstr "Zugewiesene Profile"
 
@@ -7072,57 +7122,57 @@ msgstr ""
 "Es ist aktuell nicht möglich die Einstellungen auf dieser Seite in Profilen "
 "zu verwalten."
 
-#: picard/ui/options/dialog.py:438
+#: picard/ui/options/dialog.py:436
 #, python-format
 msgid "This option will be saved to profile: %s"
 msgstr "Diese Option wird in folgendes Profil gespeichert: %s"
 
-#: picard/ui/options/dialog.py:509
+#: picard/ui/options/dialog.py:507
 #, python-format
 msgid "profile \"%s\""
 msgstr "Profil „%s“"
 
-#: picard/ui/options/dialog.py:511
+#: picard/ui/options/dialog.py:509
 #, python-format
 msgid "profiles %s"
 msgstr "Profile %s"
 
-#: picard/ui/options/dialog.py:512
+#: picard/ui/options/dialog.py:510
 #, python-format
 msgid "The highlighted settings will be applied to %s"
 msgstr ""
 
-#: picard/ui/options/dialog.py:680
+#: picard/ui/options/dialog.py:679
 msgid "Unexpected error"
 msgstr "Unerwarteter Fehler"
 
-#: picard/ui/options/dialog.py:726
+#: picard/ui/options/dialog.py:725
 msgid "You are about to reset your options for this page."
 msgstr "Du bist dabei, die Einstellungen für diese Seite zurückzusetzen."
 
-#: picard/ui/options/dialog.py:730
+#: picard/ui/options/dialog.py:729
 msgid "Warning! This will reset all of your settings."
 msgstr "Warnung! Dadurch werden alle eigenen Einstellungen zurückgesetzt."
 
-#: picard/ui/options/dialog.py:738
+#: picard/ui/options/dialog.py:737
 msgid "Are you sure?"
 msgstr "Bist du sicher?"
 
-#: picard/ui/options/dialog.py:774 picard/ui/options/maintenance.py:108
+#: picard/ui/options/dialog.py:773 picard/ui/options/maintenance.py:108
 msgid "Option"
 msgstr "Einstellung"
 
-#: picard/ui/options/dialog.py:777
+#: picard/ui/options/dialog.py:776
 #, python-format
 msgid "Profiles Attached to Options in %s Section"
 msgstr "Zu Einstellungen zugewiesene Profile im Abschnitt %s"
 
-#: picard/ui/options/dialog.py:792
+#: picard/ui/options/dialog.py:791
 #, python-brace-format
 msgid "{profile} [Enabled]"
 msgstr "{profile} [aktiviert]"
 
-#: picard/ui/options/dialog.py:796 picard/ui/options/profiles.py:306
+#: picard/ui/options/dialog.py:795 picard/ui/options/profiles.py:306
 msgid "None"
 msgstr "Keine"
 
@@ -7130,25 +7180,25 @@ msgstr "Keine"
 msgid "Fingerprinting"
 msgstr "Fingerabdrücke"
 
-#: picard/ui/options/fingerprinting.py:182
-#: picard/ui/options/fingerprinting.py:186
+#: picard/ui/options/fingerprinting.py:184
+#: picard/ui/options/fingerprinting.py:188
 msgid "Please select a valid fpcalc executable."
 msgstr "Bitte eine gültige fpcalc.exe auswählen."
 
-#: picard/ui/options/fingerprinting.py:186
+#: picard/ui/options/fingerprinting.py:188
 msgid "Invalid fpcalc executable"
 msgstr "Ungültige fpcalc-Datei"
 
-#: picard/ui/options/general.py:143
+#: picard/ui/options/general.py:146
 #, python-format
 msgid "Logged in as <b>%s</b>."
 msgstr "Angemeldet als <b>%s</b>."
 
-#: picard/ui/options/general.py:173
+#: picard/ui/options/general.py:176
 msgid "Logout error"
 msgstr "Fehler bei der Abmeldung"
 
-#: picard/ui/options/general.py:176
+#: picard/ui/options/general.py:179
 #, python-format
 msgid ""
 "A server error occurred while revoking access to the MusicBrainz server: %s\n"
@@ -7600,67 +7650,72 @@ msgstr "Netzwerk"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: picard/ui/options/plugins.py:93
+#: picard/ui/options/plugins.py:94
 #, python-brace-format
 msgid "Plugins unavailable: {reason}."
 msgstr ""
 
-#: picard/ui/options/plugins.py:112
+#: picard/ui/options/plugins.py:113
 msgid "Install Plugin…"
 msgstr "Plugin installieren …"
 
-#: picard/ui/options/plugins.py:113
+#: picard/ui/options/plugins.py:114
 msgid "Install a new plugin from the registry or a custom URL"
 msgstr ""
 
-#: picard/ui/options/plugins.py:117 picard/ui/options/plugins.py:258
+#: picard/ui/options/plugins.py:118 picard/ui/options/plugins.py:259
 msgid "Refresh All"
 msgstr "Alles &aktualisieren"
 
-#: picard/ui/options/plugins.py:118
+#: picard/ui/options/plugins.py:119
 msgid "Refresh plugin registry, list, and check for updates"
 msgstr ""
 
-#: picard/ui/options/plugins.py:124 picard/ui/options/plugins.py:318
+#: picard/ui/options/plugins.py:125 picard/ui/options/plugins.py:338
 msgid "Hide Details"
 msgstr "Details verbergen"
 
-#: picard/ui/options/plugins.py:127
+#: picard/ui/options/plugins.py:128
 msgid "Show/hide plugin details panel"
 msgstr ""
 
-#: picard/ui/options/plugins.py:186
+#: picard/ui/options/plugins.py:187
 msgid "Loading plugins…"
 msgstr "Plugins werden geladen …"
 
-#: picard/ui/options/plugins.py:208
+#: picard/ui/options/plugins.py:209
 #, python-brace-format
 msgid "Loaded {plugin_count:,d} plugin"
 msgid_plural "Loaded {plugin_count:,d} plugins"
 msgstr[0] "{plugin_count:,d} Plugin geladen"
 msgstr[1] "{plugin_count:,d} Plugins geladen"
 
-#: picard/ui/options/plugins.py:217
+#: picard/ui/options/plugins.py:218
 #, python-brace-format
 msgid "Error loading plugins: {}"
 msgstr "Fehler beim Laden der Plugins: {}"
 
-#: picard/ui/options/plugins.py:222
+#: picard/ui/options/plugins.py:223
 msgid "Refreshing…"
 msgstr "Aktualisiere …"
 
-#: picard/ui/options/plugins.py:223
+#: picard/ui/options/plugins.py:224
 msgid "Refreshing plugin registry, list, and checking for updates…"
 msgstr "Aktualisiere Pugin-Katalog und -Liste und prüfe auf Aktualisierungen …"
 
-#: picard/ui/options/plugins.py:245
+#: picard/ui/options/plugins.py:230 picard/ui/options/plugins.py:256
+#, python-brace-format
+msgid "Error refreshing: {}"
+msgstr "Fehler bei Aktualisierung: {}"
+
+#: picard/ui/options/plugins.py:244
 #, python-brace-format
 msgid "{plugin_count:,d} plugin"
 msgid_plural "{plugin_count:,d} plugins"
 msgstr[0] "{plugin_count:,d} Plugin"
 msgstr[1] "{plugin_count:,d} Plugins"
 
-#: picard/ui/options/plugins.py:249
+#: picard/ui/options/plugins.py:248
 #, python-brace-format
 msgid "{update_count:,d} update available"
 msgid_plural "{update_count:,d} updates available"
@@ -7672,44 +7727,39 @@ msgstr[1] "{update_count:,d} Aktualisierungen verfügbar"
 msgid "Refreshed - {plugins}, {updates}"
 msgstr "Akualisiert – {plugins}, {updates}"
 
-#: picard/ui/options/plugins.py:255
-#, python-brace-format
-msgid "Error refreshing: {}"
-msgstr "Fehler bei Aktualisierung: {}"
-
-#: picard/ui/options/plugins.py:267
+#: picard/ui/options/plugins.py:287
 msgid "Plugin system not available - Git backend required"
 msgstr "Plugin-System nicht verfügbar – Git-Backend erforderlich"
 
-#: picard/ui/options/plugins.py:321
+#: picard/ui/options/plugins.py:341
 msgid "Show Details"
 msgstr "Details anzeigen"
 
-#: picard/ui/options/plugins.py:359
+#: picard/ui/options/plugins.py:379
 #, python-brace-format
 msgid "Plugin \"{name}\" {action}"
 msgstr "Plugin „{name}“ {action}"
 
-#: picard/ui/options/plugins.py:422
+#: picard/ui/options/plugins.py:444
 #, python-brace-format
 msgid "Plugin \"{name}\" installed successfully"
 msgstr "Plugin „{name}“ erfolgreich installiert"
 
-#: picard/ui/options/plugins.py:459
+#: picard/ui/options/plugins.py:481
 msgid "All plugin updates completed"
 msgstr "Alle Plugin-Aktualisierungen beendet"
 
-#: picard/ui/options/plugins.py:470
+#: picard/ui/options/plugins.py:492
 #, python-brace-format
 msgid "Updating {name}…"
 msgstr "Aktualisiere {name} …"
 
-#: picard/ui/options/plugins.py:495
-#: picard/ui/widgets/plugindetailswidget.py:356
+#: picard/ui/options/plugins.py:517
+#: picard/ui/widgets/plugindetailswidget.py:355
 msgid "Update Failed"
 msgstr "Aktualisierung fehlgeschlagen"
 
-#: picard/ui/options/plugins.py:495
+#: picard/ui/options/plugins.py:517
 #, python-brace-format
 msgid "Failed to update plugin: {errmsg}"
 msgstr "Fehler bei Plugin-Aktualisierung: {errmsg}"
@@ -7722,7 +7772,7 @@ msgstr "Einstellungs-Profile"
 msgid "Create a new profile"
 msgstr "Neues Profil erstellen"
 
-#: picard/ui/options/profiles.py:118 picard/ui/scripteditor/__init__.py:925
+#: picard/ui/options/profiles.py:118 picard/ui/scripteditor/__init__.py:927
 msgid "Copy"
 msgstr "Kopieren"
 
@@ -7819,7 +7869,7 @@ msgstr "Dateibenennung"
 msgid "The location to move files to must not be empty."
 msgstr "Das Zielverzeichnis für verschobene Dateien darf nicht leer sein."
 
-#: picard/ui/options/renaming.py:280 picard/ui/scripteditor/__init__.py:969
+#: picard/ui/options/renaming.py:280 picard/ui/scripteditor/__init__.py:971
 msgid "The file naming format must not be empty."
 msgstr "Das Format des Dateinamens darf nicht leer sein."
 
@@ -7865,7 +7915,7 @@ msgstr "Das aktuelle Skript in eine Datei exportieren."
 msgid "Picard tagging script package"
 msgstr "Picard Taggerskriptpaket"
 
-#: picard/ui/options/scripting.py:184 picard/ui/scripteditor/__init__.py:888
+#: picard/ui/options/scripting.py:184 picard/ui/scripteditor/__init__.py:890
 msgid "File Error"
 msgstr "Datei-Fehler"
 
@@ -7882,7 +7932,7 @@ msgstr "Skriptfehler"
 msgid "Sessions"
 msgstr "Sitzungen"
 
-#: picard/ui/options/sessions.py:103
+#: picard/ui/options/sessions.py:105
 msgid "Select Sessions Folder"
 msgstr "Sitzungsverzeichnis auswählen"
 
@@ -7946,160 +7996,160 @@ msgstr "Unbekannter Interpret"
 msgid "%1.1f ×"
 msgstr "%1.1f ×"
 
-#: picard/ui/player/toolbar.py:250
+#: picard/ui/player/toolbar.py:252
 msgid "Change playback speed"
 msgstr "Wiedergabegeschwindigkeit ändern"
 
-#: picard/ui/player/toolbar.py:256
+#: picard/ui/player/toolbar.py:258
 msgid "Playback speed"
 msgstr "Wiedergabegeschwindigkeit"
 
-#: picard/ui/player/toolbar.py:302
+#: picard/ui/player/toolbar.py:306
 #, python-format
 msgid "%d%%"
 msgstr "%d%%"
 
-#: picard/ui/player/toolbar.py:308
+#: picard/ui/player/toolbar.py:314
 msgid "Change audio volume"
 msgstr "Lautstärke ändern"
 
-#: picard/ui/player/toolbar.py:313
+#: picard/ui/player/toolbar.py:319
 msgid "Volume up"
 msgstr "Lautstärke hoch"
 
-#: picard/ui/player/toolbar.py:314
+#: picard/ui/player/toolbar.py:320
 msgid "Increase audio volume"
 msgstr "Lautstärke erhöhen"
 
-#: picard/ui/player/toolbar.py:319
+#: picard/ui/player/toolbar.py:325
 msgid "Ctrl+Shift++"
 msgstr "Ctrl+Shift++"
 
-#: picard/ui/player/toolbar.py:323
+#: picard/ui/player/toolbar.py:329
 msgid "Volume down"
 msgstr "Lautstärke runter"
 
-#: picard/ui/player/toolbar.py:324
+#: picard/ui/player/toolbar.py:330
 msgid "Decrease audio volume"
 msgstr "Lautstärke verringern"
 
-#: picard/ui/player/toolbar.py:329
+#: picard/ui/player/toolbar.py:335
 msgid "Ctrl+Shift+-"
 msgstr "Ctrl+Shift+-"
 
-#: picard/ui/player/toolbar.py:334
+#: picard/ui/player/toolbar.py:340
 msgid "Audio volume"
 msgstr "Lautstärke"
 
-#: picard/ui/scripteditor/__init__.py:102
+#: picard/ui/scripteditor/__init__.py:104
 msgid "File naming script editor"
 msgstr "Dateibenennungsskripteditor"
 
-#: picard/ui/scripteditor/__init__.py:244
+#: picard/ui/scripteditor/__init__.py:246
 msgid "&Import a script file"
 msgstr "Skriptdatei &importieren"
 
-#: picard/ui/scripteditor/__init__.py:245
+#: picard/ui/scripteditor/__init__.py:247
 msgid "Import a file as a new script"
 msgstr "Datei als neues Skript importieren"
 
-#: picard/ui/scripteditor/__init__.py:250
+#: picard/ui/scripteditor/__init__.py:252
 msgid "&Export a script file"
 msgstr "Skriptdatei &exportieren"
 
-#: picard/ui/scripteditor/__init__.py:251
+#: picard/ui/scripteditor/__init__.py:253
 msgid "Export the script to a file"
 msgstr "Ein Skript in eine Datei exportieren"
 
-#: picard/ui/scripteditor/__init__.py:256
+#: picard/ui/scripteditor/__init__.py:258
 msgid "&Reset all scripts"
 msgstr "Alle Skripte zu&rücksetzen"
 
-#: picard/ui/scripteditor/__init__.py:257
+#: picard/ui/scripteditor/__init__.py:259
 msgid "Reset all scripts to the saved values"
 msgstr "Setzt alle Skripte auf die gespeicherten Werte zurück"
 
-#: picard/ui/scripteditor/__init__.py:262
+#: picard/ui/scripteditor/__init__.py:264
 msgid "&Save and exit"
 msgstr "&Speichern und schließen"
 
-#: picard/ui/scripteditor/__init__.py:263
+#: picard/ui/scripteditor/__init__.py:265
 msgid "Save changes to the script settings and exit"
 msgstr "Skript-Änderungen speichern und schließen"
 
-#: picard/ui/scripteditor/__init__.py:268
+#: picard/ui/scripteditor/__init__.py:270
 msgid "E&xit without saving"
 msgstr "&Ohne Speichern schließen"
 
-#: picard/ui/scripteditor/__init__.py:269
+#: picard/ui/scripteditor/__init__.py:271
 msgid "Close the script editor without saving changes"
 msgstr "Den Skripteditor schließen, ohne die Änderungen zu speichern"
 
-#: picard/ui/scripteditor/__init__.py:274
+#: picard/ui/scripteditor/__init__.py:276
 msgid "&Script"
 msgstr "&Skript"
 
-#: picard/ui/scripteditor/__init__.py:277
+#: picard/ui/scripteditor/__init__.py:279
 msgid "View/Edit Script &Metadata"
 msgstr "Skript-&Metadaten ansehen/bearbeiten"
 
-#: picard/ui/scripteditor/__init__.py:278
+#: picard/ui/scripteditor/__init__.py:280
 msgid "Display the details for the script"
 msgstr "Details dieses Skripts anzeigen"
 
-#: picard/ui/scripteditor/__init__.py:280
+#: picard/ui/scripteditor/__init__.py:282
 msgid "Ctrl+M"
 msgstr "Ctrl+M"
 
-#: picard/ui/scripteditor/__init__.py:283
+#: picard/ui/scripteditor/__init__.py:285
 msgid "Add a &new script"
 msgstr "&Neues Skript hinzufügen"
 
-#: picard/ui/scripteditor/__init__.py:288
+#: picard/ui/scripteditor/__init__.py:290
 msgid "&Copy the current script"
 msgstr "Aktuelles Skript &kopieren"
 
-#: picard/ui/scripteditor/__init__.py:289
+#: picard/ui/scripteditor/__init__.py:291
 msgid "Save a copy of the script as a new script"
 msgstr "Eine Kopie des Skripts als neues Skript speichern"
 
-#: picard/ui/scripteditor/__init__.py:294
+#: picard/ui/scripteditor/__init__.py:296
 msgid "&Delete the current script"
 msgstr "Aktuelles Skript &löschen"
 
-#: picard/ui/scripteditor/__init__.py:295
+#: picard/ui/scripteditor/__init__.py:297
 msgid "Delete the script"
 msgstr "Skript löschen"
 
-#: picard/ui/scripteditor/__init__.py:304
+#: picard/ui/scripteditor/__init__.py:306
 msgid "&Reload random example files"
 msgstr "Zufällige Beispieldateien &neu laden"
 
-#: picard/ui/scripteditor/__init__.py:313
+#: picard/ui/scripteditor/__init__.py:315
 msgid "&Show documentation"
 msgstr "&Dokumentation anzeigen"
 
-#: picard/ui/scripteditor/__init__.py:314
+#: picard/ui/scripteditor/__init__.py:316
 msgid "View the scripting documentation in a sidebar"
 msgstr "Skript-Dokumentation in der Seitenleiste anzeigen"
 
-#: picard/ui/scripteditor/__init__.py:330
+#: picard/ui/scripteditor/__init__.py:332
 msgid "&Scripting documentation…"
 msgstr "&Skript-Dokumentation …"
 
-#: picard/ui/scripteditor/__init__.py:331
+#: picard/ui/scripteditor/__init__.py:333
 msgid "Open the scripting documentation in your browser"
 msgstr "Skript-Dokumentation im Browser öffnen"
 
-#: picard/ui/scripteditor/__init__.py:348
+#: picard/ui/scripteditor/__init__.py:350
 msgid "Empty / blank script"
 msgstr "Leeres Skript"
 
-#: picard/ui/scripteditor/__init__.py:348
+#: picard/ui/scripteditor/__init__.py:350
 msgid "New Script"
 msgstr "Neues Skript"
 
-#: picard/ui/scripteditor/__init__.py:438
+#: picard/ui/scripteditor/__init__.py:440
 #, python-brace-format
 msgid ""
 "At least one unsaved script has been attached to an option profile.\n"
@@ -8126,21 +8176,21 @@ msgstr ""
 "\n"
 "Soll wirklich fortgefahren werden?"
 
-#: picard/ui/scripteditor/__init__.py:555
+#: picard/ui/scripteditor/__init__.py:557
 msgid "There is already a script with that title."
 msgstr "Es gibt bereits ein Skript mit diesem Titel."
 
-#: picard/ui/scripteditor/__init__.py:558
-#: picard/ui/scripteditor/__init__.py:849
-#: picard/ui/scripteditor/__init__.py:1078
+#: picard/ui/scripteditor/__init__.py:560
+#: picard/ui/scripteditor/__init__.py:851
+#: picard/ui/scripteditor/__init__.py:1080
 msgid "The script title must not be empty."
 msgstr "Der Skript-Titel darf nicht leer sein."
 
-#: picard/ui/scripteditor/__init__.py:799
+#: picard/ui/scripteditor/__init__.py:801
 msgid "Error Deleting Script"
 msgstr "Fehler beim Löschen des Skripts"
 
-#: picard/ui/scripteditor/__init__.py:800
+#: picard/ui/scripteditor/__init__.py:802
 #, python-format
 msgid ""
 "The script could not be deleted because it is used in one of the user "
@@ -8153,15 +8203,15 @@ msgstr ""
 "\n"
 "Profile: %s"
 
-#: picard/ui/scripteditor/__init__.py:807
+#: picard/ui/scripteditor/__init__.py:809
 msgid "Are you sure that you want to delete the script?"
 msgstr "Soll dieses Skript wirklich gelöscht werden?"
 
-#: picard/ui/scripteditor/__init__.py:907 picard/ui/scripteditor/utils.py:43
+#: picard/ui/scripteditor/__init__.py:909 picard/ui/scripteditor/utils.py:43
 msgid "Confirm"
 msgstr "Bestätigen"
 
-#: picard/ui/scripteditor/__init__.py:910
+#: picard/ui/scripteditor/__init__.py:912
 #, python-brace-format
 msgid ""
 "A script named \"{script_name}\" already exists.\n"
@@ -8172,15 +8222,15 @@ msgstr ""
 "\n"
 "Skript überschreiben, als Kopie hinzufügen oder abbrechen?"
 
-#: picard/ui/scripteditor/__init__.py:923
+#: picard/ui/scripteditor/__init__.py:925
 msgid "Overwrite"
 msgstr "Überschreiben"
 
-#: picard/ui/scripteditor/__init__.py:1008
+#: picard/ui/scripteditor/__init__.py:1010
 msgid "Script Details"
 msgstr "Skript-Details"
 
-#: picard/ui/scripteditor/__init__.py:1063
+#: picard/ui/scripteditor/__init__.py:1065
 msgid ""
 "There are unsaved changes to the current metadata.\n"
 "\n"
@@ -8343,40 +8393,40 @@ msgstr ""
 "Die Tabelle ist gesperrt. Um die Sortierung oder Spaltengrößen zu ändern,\n"
 "entsperre die Tabelle über das Kontextmenü des Tabellenkopfs."
 
-#: picard/ui/widgets/plugindetailswidget.py:103
-#: picard/ui/widgets/plugindetailswidget.py:344
-#: picard/ui/widgets/pluginlistwidget.py:553
+#: picard/ui/widgets/plugindetailswidget.py:104
+#: picard/ui/widgets/plugindetailswidget.py:343
+#: picard/ui/widgets/pluginlistwidget.py:554
 msgid "Update"
 msgstr "Aktualisierung"
 
-#: picard/ui/widgets/plugindetailswidget.py:107
-#: picard/ui/widgets/pluginlistwidget.py:558
+#: picard/ui/widgets/plugindetailswidget.py:108
+#: picard/ui/widgets/pluginlistwidget.py:559
 msgid "Uninstall"
 msgstr "Deinstallieren"
 
-#: picard/ui/widgets/plugindetailswidget.py:111
-#: picard/ui/widgets/pluginlistwidget.py:574
+#: picard/ui/widgets/plugindetailswidget.py:112
+#: picard/ui/widgets/pluginlistwidget.py:575
 msgid "Information"
 msgstr "Informationen"
 
-#: picard/ui/widgets/plugindetailswidget.py:139
+#: picard/ui/widgets/plugindetailswidget.py:140
 msgid "No description available"
 msgstr "Keine Beschreibung verfügbar"
 
-#: picard/ui/widgets/plugindetailswidget.py:211
-#: picard/ui/widgets/plugindetailswidget.py:326
+#: picard/ui/widgets/plugindetailswidget.py:212
+#: picard/ui/widgets/plugindetailswidget.py:325
 msgid "Uninstall Failed"
 msgstr "Deinstallation fehlgeschlagen"
 
-#: picard/ui/widgets/plugindetailswidget.py:248
+#: picard/ui/widgets/plugindetailswidget.py:249
 msgid "N/A"
 msgstr "nicht verfügbar"
 
-#: picard/ui/widgets/plugindetailswidget.py:276
+#: picard/ui/widgets/plugindetailswidget.py:275
 msgid "Update Plugin"
 msgstr "Plugin aktualisieren"
 
-#: picard/ui/widgets/plugindetailswidget.py:277
+#: picard/ui/widgets/plugindetailswidget.py:276
 #, python-brace-format
 msgid ""
 "Plugin \"{name}\" is set to not update automatically.\n"
@@ -8387,12 +8437,12 @@ msgstr ""
 "\n"
 "Plugin trotzdem aktualisieren?"
 
-#: picard/ui/widgets/plugindetailswidget.py:326
+#: picard/ui/widgets/plugindetailswidget.py:325
 #, python-brace-format
 msgid "Failed to uninstall plugin: {errmsg}"
 msgstr "Plugin-Deinstallation fehlgeschlagen: {errmsg}"
 
-#: picard/ui/widgets/plugindetailswidget.py:333
+#: picard/ui/widgets/plugindetailswidget.py:332
 msgid "Updating…"
 msgstr "Aktualisiere …"
 
@@ -8423,59 +8473,59 @@ msgstr "Version"
 msgid "New Version"
 msgstr "Neue Version"
 
-#: picard/ui/widgets/pluginlistwidget.py:254
+#: picard/ui/widgets/pluginlistwidget.py:255
 msgid "This plugin is included in updates"
 msgstr "Diese Plugin wird bei Aktualisierungen beachtet"
 
-#: picard/ui/widgets/pluginlistwidget.py:256
+#: picard/ui/widgets/pluginlistwidget.py:257
 msgid "This plugin is excluded from updates"
 msgstr "Dieses Plugin ist von Aktualisierungen ausgeschlossen"
 
-#: picard/ui/widgets/pluginlistwidget.py:262
+#: picard/ui/widgets/pluginlistwidget.py:263
 msgid "In Progress…"
 msgstr "In Arbeit …"
 
-#: picard/ui/widgets/pluginlistwidget.py:271
-#: picard/ui/widgets/pluginlistwidget.py:298
-#: picard/ui/widgets/pluginlistwidget.py:317
-#: picard/ui/widgets/pluginlistwidget.py:324
+#: picard/ui/widgets/pluginlistwidget.py:272
+#: picard/ui/widgets/pluginlistwidget.py:299
+#: picard/ui/widgets/pluginlistwidget.py:318
+#: picard/ui/widgets/pluginlistwidget.py:325
 msgid "Available"
 msgstr "Verfügbar"
 
-#: picard/ui/widgets/pluginlistwidget.py:544
+#: picard/ui/widgets/pluginlistwidget.py:545
 msgid "Disable"
 msgstr "Deaktivieren"
 
-#: picard/ui/widgets/pluginlistwidget.py:547
+#: picard/ui/widgets/pluginlistwidget.py:548
 msgid "Enable"
 msgstr "Aktivieren"
 
-#: picard/ui/widgets/pluginlistwidget.py:562
+#: picard/ui/widgets/pluginlistwidget.py:563
 msgid "Reinstall"
 msgstr "Neu installieren"
 
-#: picard/ui/widgets/pluginlistwidget.py:566
+#: picard/ui/widgets/pluginlistwidget.py:567
 msgid "Switch Ref"
 msgstr "Git-Ref wechseln"
 
-#: picard/ui/widgets/pluginlistwidget.py:580
+#: picard/ui/widgets/pluginlistwidget.py:581
 msgid "View Repository"
 msgstr "Repository anzeigen"
 
-#: picard/ui/widgets/pluginlistwidget.py:586
+#: picard/ui/widgets/pluginlistwidget.py:587
 msgid "Execution Order"
 msgstr "Ausführungsreihenfolge"
 
-#: picard/ui/widgets/pluginlistwidget.py:595
-#: picard/ui/widgets/pluginlistwidget.py:602
-#: picard/ui/widgets/pluginlistwidget.py:632
-#: picard/ui/widgets/pluginlistwidget.py:650
-#: picard/ui/widgets/pluginlistwidget.py:681
-#: picard/ui/widgets/pluginlistwidget.py:734
+#: picard/ui/widgets/pluginlistwidget.py:596
+#: picard/ui/widgets/pluginlistwidget.py:603
+#: picard/ui/widgets/pluginlistwidget.py:633
+#: picard/ui/widgets/pluginlistwidget.py:651
+#: picard/ui/widgets/pluginlistwidget.py:678
+#: picard/ui/widgets/pluginlistwidget.py:732
 msgid "Plugin Error"
 msgstr "Plugin-Fehler"
 
-#: picard/ui/widgets/pluginlistwidget.py:596
+#: picard/ui/widgets/pluginlistwidget.py:597
 #, python-brace-format
 msgid ""
 "Failed to enable plugin \"{name}\":\n"
@@ -8484,7 +8534,7 @@ msgstr ""
 "Aktivierung des Plugins „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:603
+#: picard/ui/widgets/pluginlistwidget.py:604
 #, python-brace-format
 msgid ""
 "Failed to disable plugin \"{name}\":\n"
@@ -8493,7 +8543,7 @@ msgstr ""
 "Deaktivierung des Plugins „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:633
+#: picard/ui/widgets/pluginlistwidget.py:634
 #, python-brace-format
 msgid ""
 "Failed to update plugin \"{name}\":\n"
@@ -8502,7 +8552,7 @@ msgstr ""
 "Aktualisierung des Plugins „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:651
+#: picard/ui/widgets/pluginlistwidget.py:652
 #, python-brace-format
 msgid ""
 "Failed to uninstall plugin \"{name}\":\n"
@@ -8511,7 +8561,7 @@ msgstr ""
 "Deinstallation des Plugins „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:682
+#: picard/ui/widgets/pluginlistwidget.py:679
 #, python-brace-format
 msgid ""
 "Failed to reinstall plugin \"{name}\":\n"
@@ -8520,11 +8570,11 @@ msgstr ""
 "Neuinstallation des Plugins „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:692
+#: picard/ui/widgets/pluginlistwidget.py:689
 msgid "Could not find plugin repository URL"
 msgstr "Konnte Plugin-Repository-URL nicht finden"
 
-#: picard/ui/widgets/pluginlistwidget.py:735
+#: picard/ui/widgets/pluginlistwidget.py:733
 #, python-brace-format
 msgid ""
 "Failed to switch ref for plugin \"{name}\":\n"
@@ -8533,53 +8583,67 @@ msgstr ""
 "Wechseln der Git-Ref von Plugin „{name}“ fehlgeschlagen:\n"
 "{errmsg}"
 
-#: picard/ui/widgets/pluginlistwidget.py:798
+#: picard/ui/widgets/pluginlistwidget.py:766
+msgid "Plugin Re-enable Failed"
+msgstr ""
+
+#: picard/ui/widgets/pluginlistwidget.py:768
+#, python-brace-format
+msgid ""
+"Plugin \"{name}\" was updated/switched successfully but could not be re-"
+"enabled:\n"
+"{error}\n"
+"\n"
+"The plugin is currently disabled."
+msgstr ""
+
+#: picard/ui/widgets/pluginlistwidget.py:803
 msgid "There were no installed metadata processing plugins found."
 msgstr "Es wurden keine Plugins für die Metadatenverarbeitung gefunden."
 
-#: picard/ui/widgets/pluginlistwidget.py:799
+#: picard/ui/widgets/pluginlistwidget.py:804
 msgid "No Data"
 msgstr "Keine Daten"
 
-#: picard/ui/widgets/pluginlistwidget.py:819
+#: picard/ui/widgets/pluginlistwidget.py:824
 msgid "Uninstall Plugin"
 msgstr "Plugin deinstallieren"
 
-#: picard/ui/widgets/pluginlistwidget.py:827
+#: picard/ui/widgets/pluginlistwidget.py:832
 #, python-brace-format
 msgid "Are you sure you want to uninstall \"{name}\"?"
 msgstr "Soll „{name}“ wirklich deinstalliert werden?"
 
-#: picard/ui/widgets/pluginlistwidget.py:830
+#: picard/ui/widgets/pluginlistwidget.py:835
 msgid "Also remove plugin configuration"
 msgstr "Auch Plugin-Konfiguration entfernen"
 
-#: picard/ui/widgets/pluginlistwidget.py:831
+#: picard/ui/widgets/pluginlistwidget.py:836
 msgid "Remove all saved settings and configuration for this plugin"
 msgstr "Alle gespeicherten Einstellungen für dieses Plugin entfernen"
 
-#: picard/ui/widgets/pluginlistwidget.py:835
+#: picard/ui/widgets/pluginlistwidget.py:840
 msgid "Yes, Uninstall!"
 msgstr "Ja, deinstallieren!"
 
-#: picard/ui/widgets/pluginlistwidget.py:859
+#: picard/ui/widgets/pluginlistwidget.py:864
 msgid "Switch Git Ref"
 msgstr "Git-Ref wechseln"
 
-#: picard/ui/widgets/pluginlistwidget.py:870
+#: picard/ui/widgets/pluginlistwidget.py:875
 #, python-brace-format
 msgid "Switch ref for \"{name}\""
 msgstr "Git-Ref für „{name}“ wechseln"
 
-#: picard/ui/widgets/pluginlistwidget.py:880
+#: picard/ui/widgets/pluginlistwidget.py:885
 msgid "Yes, Switch!"
 msgstr "Ja, wechseln!"
 
-#: picard/ui/widgets/pluginlistwidget.py:909
+#: picard/ui/widgets/pluginlistwidget.py:914
 msgid "No Ref Selected"
 msgstr "Keine Git-Ref ausgewählt"
 
-#: picard/ui/widgets/pluginlistwidget.py:910
+#: picard/ui/widgets/pluginlistwidget.py:915
 msgid "Please select or enter a ref to switch to."
 msgstr ""
 "Bitte eine Git-Ref, auf die gewechselt werden soll, auswählen oder eingeben."
@@ -8934,9 +8998,6 @@ msgstr ""
 
 #~ msgid "Perform this check again the next time you start Picard."
 #~ msgstr "Diese Prüfung beim nächsten Start von Picard erneut durchführen."
-
-#~ msgid "Picard Plugins Update"
-#~ msgstr "Picard Plugins-Update"
 
 #~ msgid ""
 #~ "There is an update available for one of your currently installed plugins:"
