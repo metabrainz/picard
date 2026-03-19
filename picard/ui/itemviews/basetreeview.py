@@ -460,6 +460,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # reflect the actual visibility state, especially for newly added columns
         header = self.header()
         header.sync_visible_columns()
+        # Restore fixed size for non-resizeable columns, e.g. after being
+        # stretched by stretchLastSection when they were the last column.
+        for i, c in enumerate(self.columns):
+            if not c.resizeable and c.width is not None:
+                header.resizeSection(i, c.width)
 
     def _refresh_all_items_data(self):
         """Refresh data for all items in the tree view."""
