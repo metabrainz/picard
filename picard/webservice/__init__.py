@@ -474,7 +474,7 @@ class WebService(QtCore.QObject):
         # Check if task was aborted before starting
         task = task_ref() if task_ref else None
         if task and task.aborted:
-            log.debug("Skipping aborted task for %s", request.url.toString())
+            log.debug("Skipping aborted task for %s", request.url().toString())
             return
 
         if request.mblogin and request.path != "/oauth2/token":
