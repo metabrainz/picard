@@ -412,7 +412,7 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
-    def _init_cache(self, cache_size_in_bytes=None):
+    def _init_cache(self):
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
         self.manager.setCache(cache)
