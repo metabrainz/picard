@@ -139,6 +139,17 @@ FILE_COMPARISON_WEIGHTS = {
 }
 
 
+class ExternalChange(Enum):
+    MISSING = auto()
+    MODIFIED = auto()
+
+
+class ExternalFileModifiedError(Exception):
+    """Raised when file changed externally before save."""
+
+    pass
+
+
 class FileIdentityError(Exception):
     pass
 
@@ -450,6 +461,12 @@ class File(MetadataItem):
         return self.state == File.State.ERROR
 
     def save(self):
+        # Allow retry if previous save failed due to external modification
+        if self.state == File.State.ERROR:
+            change = self._external_file_change(self.filename)
+            if change == ExternalChange.MODIFIED:
+                self._loaded_identity = FileIdentity(self.filename)
+                self.clear_errors()
         self.set_pending()
         run_file_pre_save_processors(self)
         metadata = Metadata()
@@ -458,6 +475,7 @@ class File(MetadataItem):
             partial(self._save_and_rename, self.filename, metadata),
             self._saving_finished,
             thread_pool=self.tagger.save_thread_pool,
+            traceback=False,
         )
 
     def _preserve_times(self, filename, func):
@@ -480,6 +498,20 @@ class File(MetadataItem):
             raise self.PreserveTimesUtimeError(errmsg) from None
         return (st.st_atime_ns, st.st_mtime_ns)
 
+    def _external_file_change(self, filename):
+        if not self._loaded_identity:
+            return None
+        try:
+            current = FileIdentity(filename)
+        except FileNotFoundError:
+            return ExternalChange.MISSING
+        except OSError as e:
+            log.warning("Cannot stat file %r: %s", filename, e)
+            return None
+        if current != self._loaded_identity:
+            return ExternalChange.MODIFIED
+        return None
+
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
         config = get_config()
@@ -494,11 +526,11 @@ class File(MetadataItem):
         new_filename = old_filename
         if config.setting['enable_tag_saving']:
             # Detect source changes before saving (debug only)
-            current = FileIdentity(old_filename)
-            if current and current != self._loaded_identity:
-                log.warning("File externally modified.")
-            elif not current:
-                log.warning("File missing!")
+            change = self._external_file_change(old_filename)
+            if change == ExternalChange.MISSING:
+                raise FileNotFoundError(f"{old_filename} no longer exists")
+            elif change == ExternalChange.MODIFIED:
+                raise ExternalFileModifiedError(f"{old_filename} was modified externally")
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
@@ -539,6 +571,14 @@ class File(MetadataItem):
             return
         old_filename = new_filename = self.filename
         if error is not None:
+            if isinstance(error, ExternalFileModifiedError):
+                self.clear_pending(signal=False)
+                self.state = File.State.ERROR
+                self.error_append(_("Cannot save file: it was modified externally after loading."))
+                # Track batch external changes
+                self.tagger._external_change_count += 1
+                self.update()
+                return
             self._set_error(error)
         else:
             self.filename = new_filename = result
