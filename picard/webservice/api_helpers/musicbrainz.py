@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018, 2020-2021, 2023-2024 Laurent Monin
-# Copyright (C) 2018-2023 Philipp Wolfer
+# Copyright (C) 2018-2023, 2026 Philipp Wolfer
 # Copyright (C) 2026 metaisfacil
 #
 # This program is free software; you can redistribute it and/or
@@ -18,31 +18,17 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 import re
 from xml.sax.saxutils import quoteattr  # nosec: B406
 
-from PyQt6.QtCore import QUrl
-
-from picard import PICARD_VERSION_STR
 from picard.config import get_config
-from picard.const import (
-    ACOUSTID_KEY,
-    ACOUSTID_URL,
-    MUSICBRAINZ_SERVERS,
-)
-from picard.util import encoded_queryargs
-from picard.webservice import (
-    CLIENT_STRING,
-    ratecontrol,
-)
+from picard.const import MUSICBRAINZ_SERVERS
+from picard.webservice import CLIENT_STRING
 from picard.webservice.utils import host_port_to_url
 
-
-ratecontrol.set_minimum_delay_for_url(ACOUSTID_URL, 333)
+from .apihelper import APIHelper
 
 
 def escape_lucene_query(text):
@@ -58,63 +44,6 @@ def _wrap_xml_metadata(data):
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data
     )
-
-
-class APIHelper:
-    _base_url: QUrl | None = None
-
-    def __init__(self, webservice, base_url=None):
-        self._webservice = webservice
-        if base_url is not None:
-            self.base_url = base_url
-
-    @property
-    def base_url(self) -> QUrl:
-        if self._base_url is None:
-            raise ValueError("base_url undefined")
-        return self._base_url
-
-    @base_url.setter
-    def base_url(self, url: QUrl | str) -> None:
-        if not isinstance(url, QUrl):
-            url = QUrl(url)
-        self._base_url = url
-
-    @property
-    def webservice(self):
-        return self._webservice
-
-    def url_from_path(self, path):
-        url = QUrl(self.base_url)
-        url.setPath(url.path() + path)
-        return url
-
-    def get(self, path, handler, **kwargs):
-        kwargs['url'] = self.url_from_path(path)
-        kwargs['handler'] = handler
-        return self._webservice.get_url(**kwargs)
-
-    def post(self, path, data, handler, **kwargs):
-        kwargs['url'] = self.url_from_path(path)
-        kwargs['handler'] = handler
-        kwargs['data'] = data
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
-        return self._webservice.post_url(**kwargs)
-
-    def put(self, path, data, handler, **kwargs):
-        kwargs['url'] = self.url_from_path(path)
-        kwargs['handler'] = handler
-        kwargs['data'] = data
-        kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
-        return self._webservice.put_url(**kwargs)
-
-    def delete(self, path, handler, **kwargs):
-        kwargs['url'] = self.url_from_path(path)
-        kwargs['handler'] = handler
-        kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
-        return self._webservice.delete_url(**kwargs)
 
 
 class MBAPIHelper(APIHelper):
@@ -301,52 +230,3 @@ class MBAPIHelper(APIHelper):
     def delete_from_collection(self, collection_id, releases, handler):
         for path in self._collection_request(collection_id, releases):
             self.delete(path, handler, unencoded_queryargs=self._get_client_queryarg())
-
-
-class AcoustIdAPIHelper(APIHelper):
-    client_key = ACOUSTID_KEY
-    client_version = PICARD_VERSION_STR
-
-    def __init__(self, webservice):
-        super().__init__(webservice, base_url=ACOUSTID_URL)
-
-    def _encode_acoustid_args(self, args):
-        args['client'] = self.client_key
-        args['clientversion'] = self.client_version
-        args['format'] = 'json'
-        return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
-
-    def query_acoustid(self, handler, **args):
-        body = self._encode_acoustid_args(args)
-        return self.post(
-            "/lookup",
-            body,
-            handler,
-            priority=False,
-            important=False,
-            mblogin=False,
-            request_mimetype='application/x-www-form-urlencoded',
-        )
-
-    @staticmethod
-    def _submissions_to_args(submissions):
-        config = get_config()
-        args = {'user': config.setting['acoustid_apikey']}
-        for i, submission in enumerate(submissions):
-            for key, value in submission.args.items():
-                if value:
-                    args[".".join((key, str(i)))] = value
-        return args
-
-    def submit_acoustid_fingerprints(self, submissions, handler):
-        args = self._submissions_to_args(submissions)
-        body = self._encode_acoustid_args(args)
-        return self.post(
-            "/submit",
-            body,
-            handler,
-            priority=True,
-            important=False,
-            mblogin=False,
-            request_mimetype='application/x-www-form-urlencoded',
-        )
