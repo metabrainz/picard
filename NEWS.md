@@ -14,7 +14,7 @@
 - [PICARD-3221](https://tickets.metabrainz.org/browse/PICARD-3221) - Picard tries to remove a file from cluster twice, raising an exception
 - [PICARD-3227](https://tickets.metabrainz.org/browse/PICARD-3227) - Dark theme detection for GNOME can fail
 - [PICARD-3229](https://tickets.metabrainz.org/browse/PICARD-3229) - Guessing track number and title from filename fails with "index out of range"
-- [PICARD-3230](https://tickets.metabrainz.org/browse/PICARD-3230) - Deleting totaldiscs also removes discnumber from ASF tags
+- [PICARD-3230](https://tickets.metabrainz.org/browse/PICARD-3230) - Deleting `totaldiscs` also removes `discnumber` from ASF tags
 - [PICARD-3234](https://tickets.metabrainz.org/browse/PICARD-3234) - Columns being added are not visible
 - [PICARD-3235](https://tickets.metabrainz.org/browse/PICARD-3235) - Fingerprint column shows text overlapping the icon
 
@@ -35,9 +35,12 @@
 - [PICARD-2862](https://tickets.metabrainz.org/browse/PICARD-2862) - Update documentation for new date sanitization settings
 - [PICARD-2877](https://tickets.metabrainz.org/browse/PICARD-2877) - Update documentation for revised Options > Advanced > Maintenance page
 - [PICARD-3136](https://tickets.metabrainz.org/browse/PICARD-3136) - Update documentation for ReadTheDocs support options
-- [PICARD-3217](https://tickets.metabrainz.org/browse/PICARD-3217) - Document automatic plugin update checking
+- [PICARD-3183](https://tickets.metabrainz.org/browse/PICARD-3183) - Clarify documentation of option profiles in the section Configuration
 - [PICARD-3200](https://tickets.metabrainz.org/browse/PICARD-3200) - Clarify documentation “Understanding Acoustic Fingerprinting and AcoustIDs”
+- [PICARD-3217](https://tickets.metabrainz.org/browse/PICARD-3217) - Document automatic plugin update checking
+- [PICARD-3226](https://tickets.metabrainz.org/browse/PICARD-3226) - Enable the Dutch translation of the documentation
 - [PICARD-3233](https://tickets.metabrainz.org/browse/PICARD-3233) - Redirect documentation URL from GitHub Pages to ReadTheDocs
+
 
 ## Version 3.0.0a3 - 2026-02-25
 
