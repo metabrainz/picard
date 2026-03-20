@@ -64,9 +64,7 @@ READTHEDOCS_PROJECT_API = 'https://app.readthedocs.org/api/v3/projects/' + READT
 READTHEDOCS_BASE_LANGUAGE = 'en'
 READTHEDOCS_BASE_VERSION = 'latest'
 
-# FIXME: Switch to the musicbrainz.org domain once it has been redirected to ReadTheDocs
-# DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
-DOCS_SERVER_URL = "https://picard-docs.readthedocs.io/"
+DOCS_SERVER_URL = 'https://picard-docs.musicbrainz.org/'
 
 MB_DOCS_BASE_URL = "https://musicbrainz.org/doc"
 
