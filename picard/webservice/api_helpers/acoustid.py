@@ -27,12 +27,12 @@ from picard.const import (
     ACOUSTID_URL,
 )
 from picard.util import encoded_queryargs
-import picard.webservice.ratecontrol
+from picard.webservice import ratecontrol
 
 from .apihelper import APIHelper
 
 
-picard.webservice.ratecontrol.set_minimum_delay_for_url(ACOUSTID_URL, 333)
+ratecontrol.set_minimum_delay_for_url(ACOUSTID_URL, 333)
 
 
 class AcoustIdAPIHelper(APIHelper):
