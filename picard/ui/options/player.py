@@ -36,7 +36,11 @@ class PlayerOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_player.html"
 
-    OPTIONS = (('player_now_playing', ['player_now_playing']),)
+    OPTIONS = (
+        ('player_now_playing', ['player_now_playing']),
+        ('listenbrainz_enabled', ['listenbrainz_enabled']),
+        ('listenbrainz_user', ['listenbrainz_user']),
+    )
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -49,9 +53,13 @@ class PlayerOptionsPage(OptionsPage):
     def load(self):
         config = get_config()
         self.ui.player_now_playing.setChecked(config.setting['player_now_playing'])
+        self.ui.listenbrainz_enabled.setChecked(config.setting['listenbrainz_enabled'])
+        self.ui.listenbrainz_user.setText(config.setting['listenbrainz_user'])
 
     def save(self):
         config = get_config()
+        config.setting['listenbrainz_enabled'] = self.ui.listenbrainz_enabled.isChecked()
+        config.setting['listenbrainz_user'] = self.ui.listenbrainz_user.text()
         self._update_now_playing_settings(config)
 
     def _update_now_playing_settings(self, config):
