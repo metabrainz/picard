@@ -140,6 +140,7 @@ class WSRequest(QNetworkRequest):
         url: QUrl | str | None = None,
         queryargs: dict | None = None,
         unencoded_queryargs: dict | None = None,
+        headers: dict[str, str] | None = None,
     ):
         """
         Args:
@@ -161,6 +162,7 @@ class WSRequest(QNetworkRequest):
             url: URL passed as a string or as a QUrl to use for this request
             queryargs: Encoded query arguments, a dictionary mapping field names to values
             unencoded_queryargs: Unencoded query arguments, a dictionary mapping field names to values
+            headers: Additional headers to include with the request, a dictionary mapping header names to values
         """
         # mandatory parameters
         if method not in {'GET', 'PUT', 'DELETE', 'POST'}:
@@ -203,6 +205,7 @@ class WSRequest(QNetworkRequest):
         self.refresh = refresh
         self.has_priority = priority
         self.important = important
+        self.extra_headers = headers
 
         # set headers and attributes
         self.access_token = None  # call _update_authorization_header
@@ -237,6 +240,10 @@ class WSRequest(QNetworkRequest):
             if not self.request_mimetype:
                 self.request_mimetype = self.response_mimetype or 'application/x-www-form-urlencoded'
             self.setHeader(QNetworkRequest.KnownHeaders.ContentTypeHeader, self.request_mimetype)
+
+        if self.extra_headers:
+            for name, value in self.extra_headers.items():
+                self.setRawHeader(name.encode('utf-8'), value.encode('utf-8'))
 
     @property
     def has_auth(self):

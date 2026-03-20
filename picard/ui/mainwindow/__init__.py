@@ -44,6 +44,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 from collections import namedtuple
 from contextlib import suppress
 from copy import deepcopy
@@ -322,6 +323,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _setup_player(self):
         # Local import: player depends on QtMultimedia which is an optional runtime dependency
         from picard.ui.player import get_now_playing_service, get_player
+        from picard.ui.player.listenbrainz import ListenBrainzSubmissionService
 
         player = get_player(self)
         if not (player and player.available):
@@ -331,6 +333,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.player.error.connect(self._on_player_error)
         self.player.playback_available.connect(self._on_player_available_changed)
         self._player_now_playing = get_now_playing_service(player)
+        self._listenbrainz_submission = ListenBrainzSubmissionService(player, self.tagger.webservice, self.tagger)
+        self._listenbrainz_submission.enable()
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
