@@ -405,7 +405,7 @@ class WSRequestTest(PicardTestCase):
         self.assertIsNone(request.request_mimetype)
         self.assertFalse(request.mblogin)
         self.assertFalse(request.refresh)
-        self.assertFalse(request.priority)
+        self.assertFalse(request.has_priority)
         self.assertFalse(request.important)
         self.assertFalse(request.has_auth)
 
@@ -418,7 +418,7 @@ class WSRequestTest(PicardTestCase):
             important=True,
             refresh=True,
         )
-        self.assertTrue(request.priority)
+        self.assertTrue(request.has_priority)
         self.assertTrue(request.important)
         self.assertTrue(request.refresh)
 

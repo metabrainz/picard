@@ -190,7 +190,7 @@ class WSRequest(QNetworkRequest):
         self.mblogin = mblogin
         self.cacheloadcontrol = cacheloadcontrol
         self.refresh = refresh
-        self.priority = priority
+        self.has_priority = priority
         self.important = important
 
         # set headers and attributes
@@ -277,7 +277,7 @@ class WSRequest(QNetworkRequest):
         # the load an album unlucky enough to hit a temporary service
         # snag.
         self.important = important
-        self.priority = priority
+        self.has_priority = priority
         self._retries += 1
         return self._retries
 
@@ -294,7 +294,7 @@ class PendingRequest:
     @staticmethod
     def from_request(request: WSRequest, func):
         # priority is a boolean
-        return PendingRequest(request.get_host_key(), func, int(request.priority))
+        return PendingRequest(request.get_host_key(), func, int(request.has_priority))
 
 
 class RequestPriorityQueue:
