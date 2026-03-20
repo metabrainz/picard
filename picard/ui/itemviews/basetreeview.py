@@ -92,7 +92,10 @@ from picard.ui.collectionmenu import CollectionMenu
 from picard.ui.columns import Columns
 from picard.ui.enums import MainAction
 from picard.ui.filter import Filter
-from picard.ui.itemviews.custom_columns import DelegateColumn
+from picard.ui.itemviews.custom_columns import (
+    DelegateColumn,
+    IconColumn,
+)
 from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
 from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
@@ -417,8 +420,19 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         if isinstance(cols, Columns):
             if update_column_count:
                 self.setColumnCount(len(cols))
-            labels = tuple(_(c.title) for c in cols)
+            labels = []
+            header_tooltips = {}
+            for i, c in enumerate(cols):
+                if isinstance(c, IconColumn):
+                    labels.append('')
+                    header_tooltips[i] = _(c.title)
+                else:
+                    labels.append(_(c.title))
             self.setHeaderLabels(labels)
+            if header_tooltips:
+                header_item = self.headerItem()
+                for i, tooltip in header_tooltips.items():
+                    header_item.setToolTip(i, tooltip)
 
     def restore_default_columns(self):
         self._set_header_labels(update_column_count=False)
@@ -446,6 +460,11 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # reflect the actual visibility state, especially for newly added columns
         header = self.header()
         header.sync_visible_columns()
+        # Restore fixed size for non-resizeable columns, e.g. after being
+        # stretched by stretchLastSection when they were the last column.
+        for i, c in enumerate(self.columns):
+            if not c.resizeable and c.width is not None:
+                header.resizeSection(i, c.width)
 
     def _refresh_all_items_data(self):
         """Refresh data for all items in the tree view."""
