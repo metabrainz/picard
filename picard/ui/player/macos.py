@@ -21,12 +21,12 @@ from picard import log
 from picard.coverart.image import CoverArtImage
 from picard.file import File
 
-from AppKit import (
+from AppKit import (  # type: ignore[unresolved-import]
     NSCompositingOperationSourceOver,
     NSImage,
     NSMakeRect,
 )
-from MediaPlayer import (
+from MediaPlayer import (  # type: ignore[unresolved-import]
     MPMediaItemArtwork,
     MPMediaItemPropertyAlbumTitle,
     MPMediaItemPropertyAlbumTrackNumber,
