@@ -318,6 +318,7 @@ BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced sea
 BoolOption('setting', 'player_now_playing', True, title=N_('Enable "now playing" notifications'))
 BoolOption('setting', 'listenbrainz_enabled', False, title=N_('Enable ListenBrainz listen submissions'))
 TextOption('setting', 'listenbrainz_user', '', title=N_('ListenBrainz username'))
+TextOption('setting', 'listenbrainz_token', '', title=N_('ListenBrainz user token'))
 
 # picard/ui/options/interface_colors.py
 # Colors
