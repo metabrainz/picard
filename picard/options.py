@@ -56,6 +56,7 @@ from picard.const.defaults import (
     DEFAULT_FILTER_COLUMNS,
     DEFAULT_FPCALC_THREADS,
     DEFAULT_LOCAL_COVER_ART_REGEX,
+    DEFAULT_LOCAL_COVER_ART_SCRIPT,
     DEFAULT_LONG_PATHS,
     DEFAULT_MUSIC_DIR,
     DEFAULT_PROGRAM_UPDATE_LEVEL,
@@ -115,6 +116,8 @@ BoolOption('setting', 'caa_restrict_image_types', True)
 # picard/coverart/providers/local.py
 # Local Files
 TextOption('setting', 'local_cover_regex', DEFAULT_LOCAL_COVER_ART_REGEX)
+TextOption('setting', 'local_cover_script', DEFAULT_LOCAL_COVER_ART_SCRIPT)
+BoolOption('setting', 'local_cover_use_script', False)
 
 # picard/ui/cdlookup.py
 #
