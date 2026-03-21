@@ -22,6 +22,8 @@ import gc
 import os
 from pathlib import Path
 import shutil
+import stat
+import sys
 from typing import TYPE_CHECKING
 
 from PyQt6.QtCore import (
@@ -601,12 +603,23 @@ class PluginManager(QObject):
             path: Path to remove (Path object or string)
             description: Description for logging (default: "directory")
         """
+
+        def _remove_readonly(func, path, _exc_info):
+            """Clear read-only flag and retry removal (handles .git pack files on Windows)."""
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+
         path = Path(path)
         if path.exists():
             try:
                 # Force garbage collection to release file handles on Windows
                 gc.collect()
-                shutil.rmtree(path)
+                # onerror is deprecated since Python 3.12 in favor of onexc,
+                # use onexc when available, onerror for older versions.
+                if sys.version_info >= (3, 12):
+                    shutil.rmtree(path, onexc=_remove_readonly)
+                else:
+                    shutil.rmtree(path, onerror=_remove_readonly)
                 log.debug('Cleaned up %s: %s', description, path)
             except Exception as e:
                 log.error('Failed to remove %s %s: %s', description, path, e)
