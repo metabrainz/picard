@@ -22,10 +22,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import re
 
-from PyQt6.QtCore import QXmlStreamReader
+from PyQt6.QtCore import (
+    QIODevice,
+    QXmlStreamReader,
+)
 
 
 _node_name_re = re.compile('[^a-zA-Z0-9]')
@@ -60,7 +62,7 @@ def _node_name(n):
     return _node_name_re.sub('_', n)
 
 
-def parse_xml(response):
+def parse_xml(response: QIODevice) -> XmlNode:
     stream = QXmlStreamReader(response)
     document = XmlNode()
     current_node = document

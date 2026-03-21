@@ -31,9 +31,9 @@ Asynchronous web service.
 from collections import (
     defaultdict,
     deque,
-    namedtuple,
 )
 from collections.abc import Callable
+from dataclasses import dataclass
 from functools import partial
 import os.path
 import platform
@@ -95,7 +95,12 @@ CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_S
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
-Parser = namedtuple('Parser', 'mimetype parser')
+
+@dataclass
+class Parser:
+    mimetype: str
+    parser: Callable[[QNetworkReply], Any]
+
 
 ReplyHandler: TypeAlias = Callable[[Any, QNetworkReply, QNetworkReply.NetworkError | Exception | None], None]
 
@@ -531,7 +536,7 @@ class WebService(QtCore.QObject):
             self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s", display_reply_url)
-            request.handler(reply.readAll(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
+            request.handler(reply.readAll().data(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
 
     def _handle_reply(self, reply: QNetworkReply, request: WSRequest):
         hostkey = request.get_host_key()
@@ -583,7 +588,7 @@ class WebService(QtCore.QObject):
                 self.add_request(request)
 
             elif handler is not None:
-                handler(reply.readAll(), reply, error)
+                handler(reply.readAll().data(), reply, error)
 
             slow_down = slow_down or response_code >= 500
 
@@ -739,18 +744,18 @@ class WebService(QtCore.QObject):
             self._timer_count_pending_requests.start(0)
 
     @classmethod
-    def add_parser(cls, response_type, mimetype, parser):
+    def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):
         cls.PARSERS[response_type] = Parser(mimetype=mimetype, parser=parser)
 
     @classmethod
-    def get_response_mimetype(cls, response_type):
+    def get_response_mimetype(cls, response_type: str) -> str:
         if response_type in cls.PARSERS:
             return cls.PARSERS[response_type].mimetype
         else:
             raise UnknownResponseParserError(response_type)
 
     @classmethod
-    def get_response_parser(cls, response_type):
+    def get_response_parser(cls, response_type: str) -> Callable[[QNetworkReply], Any]:
         if response_type in cls.PARSERS:
             return cls.PARSERS[response_type].parser
         else:
