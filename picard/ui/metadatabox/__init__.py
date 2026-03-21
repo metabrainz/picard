@@ -415,8 +415,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def _can_paste(self):
         mimedata = self.tagger.clipboard().mimeData()
-        has_valid_mime_data = any(self.mimedata_helper.decode_funcs(mimedata))
-        return has_valid_mime_data and len(self.tracks) <= 1 and len(self.files) <= 1
+        return any(self.mimedata_helper.decode_funcs(mimedata))
 
     def _paste_value(self):
         if not self._can_paste():
