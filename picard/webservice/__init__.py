@@ -304,9 +304,8 @@ class PendingRequest:
 
 
 class RequestPriorityQueue:
-    def __init__(self, ratecontrol):
+    def __init__(self):
         self._queues = defaultdict(lambda: defaultdict(deque))
-        self._ratecontrol = ratecontrol
         self._count = 0
 
     def count(self):
@@ -335,12 +334,12 @@ class RequestPriorityQueue:
             if not prio_queue:
                 del self._queues[prio]
                 continue
-            for hostkey in sorted(prio_queue.keys(), key=self._ratecontrol.current_delay):
+            for hostkey in sorted(prio_queue.keys(), key=ratecontrol.current_delay):
                 queue = self._queues[prio][hostkey]
                 if not queue:
                     del self._queues[prio][hostkey]
                     continue
-                wait, d = self._ratecontrol.get_delay_to_next_request(hostkey)
+                wait, d = ratecontrol.get_delay_to_next_request(hostkey)
                 if not wait:
                     queue.popleft()()
                     self._count -= 1
@@ -407,7 +406,7 @@ class WebService(QtCore.QObject):
     def _init_queues(self):
         self._active_requests = {}
         self._task_to_reply: dict[PendingRequest, QNetworkReply] = {}
-        self._queue = RequestPriorityQueue(ratecontrol)
+        self._queue = RequestPriorityQueue()
         self.num_pending_web_requests = 0
 
     def _init_timers(self):
