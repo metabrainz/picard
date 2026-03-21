@@ -507,7 +507,7 @@ class WebService(QtCore.QObject):
             QUrl.UrlFormattingOption.RemovePort
         ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
-    def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect):
+    def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect: QUrl):
         # merge with base url (to cover the possibility of the URL being relative)
         redirect_url = request.url().resolved(redirect)
         reply_url = reply.request().url()
