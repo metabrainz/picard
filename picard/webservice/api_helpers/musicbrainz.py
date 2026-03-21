@@ -49,7 +49,7 @@ def build_lucene_query(args: dict) -> str:
     return ' '.join('%s:(%s)' % (item, escape_lucene_query(value)) for item, value in args.items() if value)
 
 
-def _wrap_xml_metadata(data: str) -> str:
+def wrap_xml_metadata(data: str) -> str:
     return (
         '<?xml version="1.0" encoding="UTF-8"?>'
         '<metadata xmlns="http://musicbrainz.org/ns/mmd-2.0#">%s</metadata>' % data
@@ -202,7 +202,7 @@ class MBAPIHelper(APIHelper):
             for i, j in ratings.items()
             if i[0] == 'recording'
         )
-        return _wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
+        return wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
     def submit_ratings(self, ratings, handler):
         params = {'client': CLIENT_STRING}
