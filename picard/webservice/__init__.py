@@ -272,7 +272,7 @@ class WSRequest(QNetworkRequest):
         self._mblogin = mblogin
         self._update_authorization_header()
 
-    def get_host_key(self):
+    def get_host_key(self) -> ratecontrol.HostKey:
         return (self.host, self.port)
 
     def max_retries_reached(self):
@@ -291,7 +291,7 @@ class WSRequest(QNetworkRequest):
 class PendingRequest:
     """Represents a queued webservice request."""
 
-    def __init__(self, hostkey, func: Callable | None, priority: int):
+    def __init__(self, hostkey: ratecontrol.HostKey, func: Callable | None, priority: int):
         self.hostkey = hostkey
         self.func = func
         self.priority = priority

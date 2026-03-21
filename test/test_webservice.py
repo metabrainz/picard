@@ -275,7 +275,7 @@ class RequestPriorityQueueTest(PicardTestCase):
         self.assertEqual(len(queue._queues[0][key]), 0)
 
         # Try to remove a non existing task and check for errors
-        non_existing_task = (1, "a", "b")
+        non_existing_task = PendingRequest(("foo", 1), None, 0)
         queue.remove_task(non_existing_task)
 
     def test_run_task(self):

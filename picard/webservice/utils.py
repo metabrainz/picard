@@ -28,7 +28,13 @@
 Asynchronous web service utilities.
 """
 
+from typing import TYPE_CHECKING
+
 from PyQt6.QtCore import QUrl
+
+
+if TYPE_CHECKING:
+    from picard.webservice.ratecontrol import HostKey
 
 
 def port_from_qurl(qurl) -> int:
@@ -38,7 +44,7 @@ def port_from_qurl(qurl) -> int:
     return qurl.port(80)
 
 
-def hostkey_from_url(url: str | QUrl) -> tuple[str, int]:
+def hostkey_from_url(url: str | QUrl) -> 'HostKey':
     """Returns (host, port) from passed url (as string or QUrl)"""
     if not isinstance(url, QUrl):
         url = QUrl(url)
