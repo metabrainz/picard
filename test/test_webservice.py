@@ -44,7 +44,6 @@ from picard.webservice import (
     UnknownResponseParserError,
     WebService,
     WSRequest,
-    ratecontrol,
 )
 from picard.webservice.utils import (
     host_port_to_url,
@@ -238,7 +237,7 @@ class WebserviceRequestTest(PicardTestCase):
 
 class RequestPriorityQueueTest(PicardTestCase):
     def test_add_task(self):
-        queue = RequestPriorityQueue(ratecontrol)
+        queue = RequestPriorityQueue()
         key = ("abc.xyz", 80)
 
         task1 = PendingRequest(key, dummy_handler, priority=0)
@@ -261,7 +260,7 @@ class RequestPriorityQueueTest(PicardTestCase):
         self.assertEqual(queue._queues[1][key][1], task2.func)
 
     def test_remove_task(self):
-        queue = RequestPriorityQueue(ratecontrol)
+        queue = RequestPriorityQueue()
         key = ("abc.xyz", 80)
 
         # Add a task and check for its existence
@@ -276,58 +275,58 @@ class RequestPriorityQueueTest(PicardTestCase):
         self.assertEqual(len(queue._queues[0][key]), 0)
 
         # Try to remove a non existing task and check for errors
-        non_existing_task = (1, "a", "b")
+        non_existing_task = PendingRequest(("foo", 1), None, 0)
         queue.remove_task(non_existing_task)
 
     def test_run_task(self):
-        mock_ratecontrol = MagicMock()
-        delay_func = mock_ratecontrol.get_delay_to_next_request = MagicMock()
+        with patch('picard.webservice.ratecontrol') as mock_ratecontrol:
+            delay_func = mock_ratecontrol.get_delay_to_next_request = MagicMock()
 
-        queue = RequestPriorityQueue(mock_ratecontrol)
-        key = ("abc.xyz", 80)
+            queue = RequestPriorityQueue()
+            key = ("abc.xyz", 80)
 
-        # Patching the get delay function to delay the 2nd task on queue to the next call
-        delay_func.side_effect = [(False, 0), (True, 0), (False, 0), (False, 0), (False, 0), (False, 0)]
-        func1 = MagicMock()
-        task1 = PendingRequest(key, func1, priority=0)
-        queue.add_task(task1)
-        func2 = MagicMock()
-        task2 = PendingRequest(key, func2, priority=1)
-        queue.add_task(task2)
-        task3 = PendingRequest(key, func1, priority=0)
-        queue.add_task(task3)
-        task4 = PendingRequest(key, func1, priority=0)
-        queue.add_task(task4)
+            # Patching the get delay function to delay the 2nd task on queue to the next call
+            delay_func.side_effect = [(False, 0), (True, 0), (False, 0), (False, 0), (False, 0), (False, 0)]
+            func1 = MagicMock()
+            task1 = PendingRequest(key, func1, priority=0)
+            queue.add_task(task1)
+            func2 = MagicMock()
+            task2 = PendingRequest(key, func2, priority=1)
+            queue.add_task(task2)
+            task3 = PendingRequest(key, func1, priority=0)
+            queue.add_task(task3)
+            task4 = PendingRequest(key, func1, priority=0)
+            queue.add_task(task4)
 
-        # Ensure no tasks are run before run_next_task is called
-        self.assertEqual(func1.call_count, 0)
-        queue.run_ready_tasks()
+            # Ensure no tasks are run before run_next_task is called
+            self.assertEqual(func1.call_count, 0)
+            queue.run_ready_tasks()
 
-        # Ensure priority task is run first
-        self.assertEqual(func2.call_count, 1)
-        self.assertEqual(func1.call_count, 0)
-        self.assertIn(key, queue._queues[1])
+            # Ensure priority task is run first
+            self.assertEqual(func2.call_count, 1)
+            self.assertEqual(func1.call_count, 0)
+            self.assertIn(key, queue._queues[1])
 
-        # Ensure that the calls are run as expected
-        queue.run_ready_tasks()
-        self.assertEqual(func1.call_count, 1)
+            # Ensure that the calls are run as expected
+            queue.run_ready_tasks()
+            self.assertEqual(func1.call_count, 1)
 
-        # Checking if the cleanup occurred on the prio queue
-        self.assertNotIn(key, queue._queues[1])
+            # Checking if the cleanup occurred on the prio queue
+            self.assertNotIn(key, queue._queues[1])
 
-        # Check the call counts on proper execution of tasks
-        queue.run_ready_tasks()
-        self.assertEqual(func1.call_count, 2)
-        queue.run_ready_tasks()
-        self.assertEqual(func1.call_count, 3)
+            # Check the call counts on proper execution of tasks
+            queue.run_ready_tasks()
+            self.assertEqual(func1.call_count, 2)
+            queue.run_ready_tasks()
+            self.assertEqual(func1.call_count, 3)
 
-        # Ensure that the clean up happened on the normal queue
-        queue.run_ready_tasks()
-        self.assertEqual(func1.call_count, 3)
-        self.assertNotIn(key, queue._queues[0])
+            # Ensure that the clean up happened on the normal queue
+            queue.run_ready_tasks()
+            self.assertEqual(func1.call_count, 3)
+            self.assertNotIn(key, queue._queues[0])
 
     def test_count(self):
-        queue = RequestPriorityQueue(ratecontrol)
+        queue = RequestPriorityQueue()
         key = ("abc.xyz", 80)
 
         self.assertEqual(0, queue.count())
@@ -405,7 +404,7 @@ class WSRequestTest(PicardTestCase):
         self.assertIsNone(request.request_mimetype)
         self.assertFalse(request.mblogin)
         self.assertFalse(request.refresh)
-        self.assertFalse(request.priority)
+        self.assertFalse(request.has_priority)
         self.assertFalse(request.important)
         self.assertFalse(request.has_auth)
 
@@ -418,7 +417,7 @@ class WSRequestTest(PicardTestCase):
             important=True,
             refresh=True,
         )
-        self.assertTrue(request.priority)
+        self.assertTrue(request.has_priority)
         self.assertTrue(request.important)
         self.assertTrue(request.refresh)
 

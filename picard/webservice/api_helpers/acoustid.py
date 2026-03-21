@@ -20,6 +20,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from collections.abc import Iterable
+from typing import TYPE_CHECKING
+
 from picard import PICARD_VERSION_STR
 from picard.config import get_config
 from picard.const import (
@@ -27,10 +30,17 @@ from picard.const import (
     ACOUSTID_URL,
 )
 from picard.util import encoded_queryargs
-from picard.webservice import ratecontrol
+from picard.webservice import (
+    ReplyHandler,
+    WebService,
+    ratecontrol,
+)
 
 from .apihelper import APIHelper
 
+
+if TYPE_CHECKING:
+    from picard.acoustid.manager import Submission
 
 ratecontrol.set_minimum_delay_for_url(ACOUSTID_URL, 333)
 
@@ -39,16 +49,16 @@ class AcoustIdAPIHelper(APIHelper):
     client_key = ACOUSTID_KEY
     client_version = PICARD_VERSION_STR
 
-    def __init__(self, webservice):
+    def __init__(self, webservice: WebService):
         super().__init__(webservice, base_url=ACOUSTID_URL)
 
-    def _encode_acoustid_args(self, args):
+    def _encode_acoustid_args(self, args: dict[str, str]) -> str:
         args['client'] = self.client_key
         args['clientversion'] = self.client_version
         args['format'] = 'json'
         return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
 
-    def query_acoustid(self, handler, **args):
+    def query_acoustid(self, handler: ReplyHandler, **args):
         body = self._encode_acoustid_args(args)
         return self.post(
             "/lookup",
@@ -61,7 +71,7 @@ class AcoustIdAPIHelper(APIHelper):
         )
 
     @staticmethod
-    def _submissions_to_args(submissions):
+    def _submissions_to_args(submissions: 'Iterable[Submission]'):
         config = get_config()
         args = {'user': config.setting['acoustid_apikey']}
         for i, submission in enumerate(submissions):
@@ -70,7 +80,7 @@ class AcoustIdAPIHelper(APIHelper):
                     args[".".join((key, str(i)))] = value
         return args
 
-    def submit_acoustid_fingerprints(self, submissions, handler):
+    def submit_acoustid_fingerprints(self, submissions: 'Iterable[Submission]', handler: ReplyHandler):
         args = self._submissions_to_args(submissions)
         body = self._encode_acoustid_args(args)
         return self.post(

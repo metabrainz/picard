@@ -5,7 +5,7 @@
 # Copyright (C) 2007 Lukáš Lalinský
 # Copyright (C) 2009 Carlin Mangar
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2018-2022, 2024 Philipp Wolfer
+# Copyright (C) 2018-2022, 2024, 2026 Philipp Wolfer
 # Copyright (C) 2018-2024 Laurent Monin
 # Copyright (C) 2021 Tche333
 #
@@ -31,19 +31,27 @@ Asynchronous web service.
 from collections import (
     defaultdict,
     deque,
-    namedtuple,
 )
+from collections.abc import Callable
+from dataclasses import dataclass
 from functools import partial
 import os.path
 import platform
 import sys
+from typing import (
+    Any,
+    TypeAlias,
+)
 import weakref
 
 from PyQt6 import (
     QtCore,
     QtNetwork,
 )
-from PyQt6.QtCore import QUrl
+from PyQt6.QtCore import (
+    QObject,
+    QUrl,
+)
 from PyQt6.QtNetwork import (
     QNetworkReply,
     QNetworkRequest,
@@ -87,7 +95,14 @@ CLIENT_STRING = '%s %s-%s' % (PICARD_ORG_NAME, PICARD_APP_NAME, PICARD_VERSION_S
 
 DEFAULT_RESPONSE_PARSER_TYPE = "json"
 
-Parser = namedtuple('Parser', 'mimetype parser')
+
+@dataclass
+class Parser:
+    mimetype: str
+    parser: Callable[[QNetworkReply], Any]
+
+
+ReplyHandler: TypeAlias = Callable[[Any, QNetworkReply, QNetworkReply.NetworkError | Exception | None], None]
 
 
 class UnknownResponseParserError(Exception):
@@ -103,7 +118,7 @@ class WSRequest(QNetworkRequest):
 
     _access_token = None
     _high_prio_no_cache = True
-    _mblogin = None
+    _mblogin = False
     _retries = 0
 
     response_mimetype = None
@@ -112,19 +127,19 @@ class WSRequest(QNetworkRequest):
     def __init__(
         self,
         *,
-        method=None,
-        handler=None,
-        parse_response_type=None,
-        data=None,
-        mblogin=False,
-        cacheloadcontrol=None,
-        refresh=False,
-        priority=False,
-        important=False,
-        request_mimetype=None,
-        url=None,
-        queryargs=None,
-        unencoded_queryargs=None,
+        method: str | None = None,
+        handler: ReplyHandler | None = None,
+        parse_response_type: str | None = None,
+        data: str | None = None,
+        mblogin: bool = False,
+        cacheloadcontrol: QNetworkRequest.CacheLoadControl | None = None,
+        refresh: bool = False,
+        priority: bool = False,
+        important: bool = False,
+        request_mimetype: str | None = None,
+        url: QUrl | str | None = None,
+        queryargs: dict | None = None,
+        unencoded_queryargs: dict | None = None,
     ):
         """
         Args:
@@ -148,13 +163,13 @@ class WSRequest(QNetworkRequest):
             unencoded_queryargs: Unencoded query arguments, a dictionary mapping field names to values
         """
         # mandatory parameters
-        self.method = method
-        if self.method not in {'GET', 'PUT', 'DELETE', 'POST'}:
+        if method not in {'GET', 'PUT', 'DELETE', 'POST'}:
             raise AssertionError('invalid method')
+        self.method = method
 
-        self.handler = handler
-        if self.handler is None:
+        if handler is None:
             raise AssertionError('handler undefined')
+        self.handler: ReplyHandler = handler
 
         if url is None:
             raise AssertionError('URL undefined')
@@ -186,7 +201,7 @@ class WSRequest(QNetworkRequest):
         self.mblogin = mblogin
         self.cacheloadcontrol = cacheloadcontrol
         self.refresh = refresh
-        self.priority = priority
+        self.has_priority = priority
         self.important = important
 
         # set headers and attributes
@@ -228,41 +243,41 @@ class WSRequest(QNetworkRequest):
         return self.mblogin and self.access_token
 
     def _update_authorization_header(self):
-        if self.has_auth:
+        if self.mblogin and self.access_token:
             auth = 'Bearer ' + self.access_token
             self.setRawHeader(b'Authorization', auth.encode('utf-8'))
 
     @property
-    def host(self):
+    def host(self) -> str:
         return self.url().host()
 
     @property
-    def port(self):
+    def port(self) -> int:
         return port_from_qurl(self.url())
 
     @property
-    def path(self):
+    def path(self) -> str:
         return self.url().path()
 
     @property
-    def access_token(self):
+    def access_token(self) -> str | None:
         return self._access_token
 
     @access_token.setter
-    def access_token(self, access_token):
+    def access_token(self, access_token: str | None):
         self._access_token = access_token
         self._update_authorization_header()
 
     @property
-    def mblogin(self):
+    def mblogin(self) -> bool:
         return self._mblogin
 
     @mblogin.setter
-    def mblogin(self, mblogin):
+    def mblogin(self, mblogin: bool):
         self._mblogin = mblogin
         self._update_authorization_header()
 
-    def get_host_key(self):
+    def get_host_key(self) -> ratecontrol.HostKey:
         return (self.host, self.port)
 
     def max_retries_reached(self):
@@ -273,7 +288,7 @@ class WSRequest(QNetworkRequest):
         # the load an album unlucky enough to hit a temporary service
         # snag.
         self.important = important
-        self.priority = priority
+        self.has_priority = priority
         self._retries += 1
         return self._retries
 
@@ -281,28 +296,27 @@ class WSRequest(QNetworkRequest):
 class PendingRequest:
     """Represents a queued webservice request."""
 
-    def __init__(self, hostkey, func, priority):
+    def __init__(self, hostkey: ratecontrol.HostKey, func: Callable | None, priority: int):
         self.hostkey = hostkey
         self.func = func
         self.priority = priority
         self.aborted = False
 
     @staticmethod
-    def from_request(request, func):
+    def from_request(request: WSRequest, func: Callable | None):
         # priority is a boolean
-        return PendingRequest(request.get_host_key(), func, int(request.priority))
+        return PendingRequest(request.get_host_key(), func, int(request.has_priority))
 
 
 class RequestPriorityQueue:
-    def __init__(self, ratecontrol):
+    def __init__(self):
         self._queues = defaultdict(lambda: defaultdict(deque))
-        self._ratecontrol = ratecontrol
         self._count = 0
 
     def count(self):
         return self._count
 
-    def add_task(self, task, important=False):
+    def add_task(self, task: PendingRequest, important: bool = False) -> PendingRequest:
         queue = self._queues[task.priority][task.hostkey]
         if important:
             queue.appendleft(task.func)
@@ -311,7 +325,7 @@ class RequestPriorityQueue:
         self._count += 1
         return task
 
-    def remove_task(self, task):
+    def remove_task(self, task: PendingRequest):
         try:
             self._queues[task.priority][task.hostkey].remove(task.func)
             self._count -= 1
@@ -325,12 +339,12 @@ class RequestPriorityQueue:
             if not prio_queue:
                 del self._queues[prio]
                 continue
-            for hostkey in sorted(prio_queue.keys(), key=self._ratecontrol.current_delay):
+            for hostkey in sorted(prio_queue.keys(), key=ratecontrol.current_delay):
                 queue = self._queues[prio][hostkey]
                 if not queue:
                     del self._queues[prio][hostkey]
                     continue
-                wait, d = self._ratecontrol.get_delay_to_next_request(hostkey)
+                wait, d = ratecontrol.get_delay_to_next_request(hostkey)
                 if not wait:
                     queue.popleft()()
                     self._count -= 1
@@ -344,7 +358,7 @@ class WebService(QtCore.QObject):
 
     pending_requests_changed = QtCore.pyqtSignal()
 
-    def __init__(self, parent=None):
+    def __init__(self, parent: QObject | None = None):
         super().__init__(parent)
         self.tagger = QtCore.QCoreApplication.instance()
         self.manager = QtNetwork.QNetworkAccessManager()
@@ -356,7 +370,7 @@ class WebService(QtCore.QObject):
         self.setup_proxy()
         self.set_transfer_timeout(config.setting['network_transfer_timeout_seconds'])
         self.manager.finished.connect(self._process_reply)
-        self._request_methods = {
+        self._request_methods: dict[str, Callable] = {
             'GET': self.manager.get,
             'POST': self.manager.post,
             'PUT': self.manager.put,
@@ -365,31 +379,31 @@ class WebService(QtCore.QObject):
         self._init_queues()
         self._init_timers()
 
-    def ssl_errors(self, reply, errors):
+    def ssl_errors(self, reply: QNetworkReply, errors: list[QSslError]):
         # According to forums, sometimes sslErrors is triggered with errors set to NoError
         # This can also be used to ignore others if needed
         ignored_errors = {
-            QSslError.NoError,
+            QSslError.SslError.NoError,
         }
         has_errors = False
         for error in errors:
-            if error not in ignored_errors:
+            if error.error() not in ignored_errors:
                 has_errors = True
                 log.error("SSL error: %s" % error.errorString())
         if not has_errors:
             reply.ignoreSslErrors()
 
     @staticmethod
-    def http_response_code(reply):
+    def http_response_code(reply: QNetworkReply) -> int:
         response_code = reply.attribute(QNetworkRequest.Attribute.HttpStatusCodeAttribute)
         return int(response_code) if response_code else 0
 
     @staticmethod
-    def http_response_phrase(reply):
+    def http_response_phrase(reply: QNetworkReply) -> Any:
         return reply.attribute(QNetworkRequest.Attribute.HttpReasonPhraseAttribute)
 
     @staticmethod
-    def display_url(url):
+    def display_url(url: QUrl) -> str:
         return url.toDisplayString(
             QUrl.UrlFormattingOption.RemoveUserInfo | QUrl.ComponentFormattingOption.EncodeSpaces
         )
@@ -397,7 +411,7 @@ class WebService(QtCore.QObject):
     def _init_queues(self):
         self._active_requests = {}
         self._task_to_reply: dict[PendingRequest, QNetworkReply] = {}
-        self._queue = RequestPriorityQueue(ratecontrol)
+        self._queue = RequestPriorityQueue()
         self.num_pending_web_requests = 0
 
     def _init_timers(self):
@@ -408,7 +422,7 @@ class WebService(QtCore.QObject):
         self._timer_count_pending_requests.setSingleShot(True)
         self._timer_count_pending_requests.timeout.connect(self._count_pending_requests)
 
-    def _init_cache(self, cache_size_in_bytes=None):
+    def _init_cache(self):
         cache = QtNetwork.QNetworkDiskCache()
         cache.setCacheDirectory(os.path.join(appdirs.cache_folder(), 'network'))
         self.manager.setCache(cache)
@@ -427,7 +441,7 @@ class WebService(QtCore.QObject):
     def set_cache_size(self):
         cache_size_in_bytes = self.get_valid_cache_size()
         cache = self.manager.cache()
-        if cache.maximumCacheSize() != cache_size_in_bytes:
+        if isinstance(cache, QtNetwork.QNetworkDiskCache) and cache.maximumCacheSize() != cache_size_in_bytes:
             cache.setMaximumCacheSize(cache_size_in_bytes)
             log.debug(
                 "NetworkDiskCache size: %s maxsize: %s",
@@ -451,11 +465,11 @@ class WebService(QtCore.QObject):
                 proxy.setPassword(config.setting['proxy_password'])
         self.manager.setProxy(proxy)
 
-    def set_transfer_timeout(self, timeout):
+    def set_transfer_timeout(self, timeout: int):
         timeout_ms = timeout * 1000
         self.manager.setTransferTimeout(timeout_ms)
 
-    def _send_request(self, request, task=None, access_token=None):
+    def _send_request(self, request: WSRequest, task: PendingRequest | None = None, access_token=None):
         hostkey = request.get_host_key()
         ratecontrol.increment_requests(hostkey)
 
@@ -467,14 +481,14 @@ class WebService(QtCore.QObject):
         else:
             reply = send(request)
         self._active_requests[reply] = request
-        if task:
+        if task and reply:
             self._task_to_reply[task] = reply
 
-    def _start_request(self, request, task_ref=None):
+    def _start_request(self, request: WSRequest, task_ref: weakref.ReferenceType[PendingRequest] | None = None):
         # Check if task was aborted before starting
         task = task_ref() if task_ref else None
         if task and task.aborted:
-            log.debug("Skipping aborted task for %s", request.url.toString())
+            log.debug("Skipping aborted task for %s", request.url().toString())
             return
 
         if request.mblogin and request.path != "/oauth2/token":
@@ -483,7 +497,7 @@ class WebService(QtCore.QObject):
             self._send_request(request, task)
 
     @staticmethod
-    def urls_equivalent(leftUrl, rightUrl):
+    def urls_equivalent(leftUrl: QUrl, rightUrl: QUrl) -> bool:
         """
         Lazy method to determine whether two QUrls are equivalent. At the moment it assumes that if ports are unset
         that they are port 80 - in absence of a URL normalization function in QUrl or ability to use qHash
@@ -493,8 +507,7 @@ class WebService(QtCore.QObject):
             QUrl.UrlFormattingOption.RemovePort
         ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
-    def _handle_redirect(self, reply, request, redirect):
-        error = int(reply.error())
+    def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect):
         # merge with base url (to cover the possibility of the URL being relative)
         redirect_url = request.url().resolved(redirect)
         reply_url = reply.request().url()
@@ -523,9 +536,9 @@ class WebService(QtCore.QObject):
             self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s", display_reply_url)
-            request.handler(reply.readAll(), reply, error)
+            request.handler(reply.readAll().data(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
 
-    def _handle_reply(self, reply, request):
+    def _handle_reply(self, reply: QNetworkReply, request: WSRequest):
         hostkey = request.get_host_key()
         ratecontrol.decrement_requests(hostkey)
 
@@ -575,7 +588,7 @@ class WebService(QtCore.QObject):
                 self.add_request(request)
 
             elif handler is not None:
-                handler(reply.readAll(), reply, error)
+                handler(reply.readAll().data(), reply, error)
 
             slow_down = slow_down or response_code >= 500
 
@@ -603,17 +616,17 @@ class WebService(QtCore.QObject):
                             log.debug("Response received: %s", document)
                     except Exception as e:
                         log.error("Unable to parse the response for %s -> %s", display_reply_url, e)
-                        document = bytes(reply.readAll())
+                        document = reply.readAll().data()
                         error = e
                     finally:
                         handler(document, reply, error)
                 else:
                     # readAll() returns QtCore.QByteArray, so convert to bytes
-                    handler(bytes(reply.readAll()), reply, error)
+                    handler(reply.readAll().data(), reply, error)
 
         ratecontrol.adjust(hostkey, slow_down)
 
-    def _process_reply(self, reply):
+    def _process_reply(self, reply: QNetworkReply):
         try:
             request = self._active_requests.pop(reply)
         except KeyError:
@@ -630,12 +643,12 @@ class WebService(QtCore.QObject):
                 # Qt object may already be deleted
                 pass
 
-    def get_url(self, **kwargs):
+    def get_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'GET'
         kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
         return self.add_request(WSRequest(**kwargs))
 
-    def post_url(self, **kwargs):
+    def post_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'POST'
         kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
@@ -643,19 +656,19 @@ class WebService(QtCore.QObject):
             log.debug("POST-DATA %r", kwargs['data'])
         return self.add_request(WSRequest(**kwargs))
 
-    def put_url(self, **kwargs):
+    def put_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'PUT'
         kwargs['priority'] = kwargs.get('priority', True)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self.add_request(WSRequest(**kwargs))
 
-    def delete_url(self, **kwargs):
+    def delete_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'DELETE'
         kwargs['priority'] = kwargs.get('priority', True)
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self.add_request(WSRequest(**kwargs))
 
-    def download_url(self, **kwargs):
+    def download_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'GET'
         return self.add_request(WSRequest(**kwargs))
 
@@ -677,7 +690,7 @@ class WebService(QtCore.QObject):
         if delay < sys.maxsize:
             self._timer_run_next_task.start(delay)
 
-    def add_task(self, func, request):
+    def add_task(self, func: Callable, request: WSRequest):
         task = PendingRequest.from_request(request, func)
         self._queue.add_task(task, request.important)
 
@@ -689,7 +702,7 @@ class WebService(QtCore.QObject):
 
         return task
 
-    def add_request(self, request):
+    def add_request(self, request: WSRequest) -> PendingRequest:
         task = PendingRequest.from_request(request, None)
         task.func = partial(self._start_request, request, weakref.ref(task))
         self._queue.add_task(task, request.important)
@@ -702,11 +715,11 @@ class WebService(QtCore.QObject):
 
         return task
 
-    def abort_task(self, task):
+    def abort_task(self, task: PendingRequest):
         """Abort a request task, whether queued or active.
 
         Args:
-            task: WebserviceRequest to abort
+            task: PendingRequest to abort
         """
         # Mark task as aborted so it won't execute if still queued
         task.aborted = True
@@ -724,25 +737,25 @@ class WebService(QtCore.QObject):
         # Try to remove from queue (may already be executing)
         self._remove_task(task)
 
-    def _remove_task(self, task):
+    def _remove_task(self, task: PendingRequest):
         """Internal method to remove a task from the queue."""
         self._queue.remove_task(task)
         if not self._timer_count_pending_requests.isActive():
             self._timer_count_pending_requests.start(0)
 
     @classmethod
-    def add_parser(cls, response_type, mimetype, parser):
+    def add_parser(cls, response_type: str, mimetype: str, parser: Callable[[QNetworkReply], Any]):
         cls.PARSERS[response_type] = Parser(mimetype=mimetype, parser=parser)
 
     @classmethod
-    def get_response_mimetype(cls, response_type):
+    def get_response_mimetype(cls, response_type: str) -> str:
         if response_type in cls.PARSERS:
             return cls.PARSERS[response_type].mimetype
         else:
             raise UnknownResponseParserError(response_type)
 
     @classmethod
-    def get_response_parser(cls, response_type):
+    def get_response_parser(cls, response_type: str) -> Callable[[QNetworkReply], Any]:
         if response_type in cls.PARSERS:
             return cls.PARSERS[response_type].parser
         else:

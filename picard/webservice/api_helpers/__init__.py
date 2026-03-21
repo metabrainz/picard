@@ -23,6 +23,7 @@ from .musicbrainz import (
     MBAPIHelper,
     build_lucene_query,
     escape_lucene_query,
+    wrap_xml_metadata,
 )
 
 
@@ -32,4 +33,9 @@ __all__ = [
     'MBAPIHelper',
     'build_lucene_query',
     'escape_lucene_query',
+    'wrap_xml_metadata',
 ]
+
+
+# For backwards compatibility with plugins importing _wrap_xml_metadata from here.
+_wrap_xml_metadata = wrap_xml_metadata

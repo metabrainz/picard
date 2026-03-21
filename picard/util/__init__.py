@@ -42,6 +42,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import Any
+
+from PyQt6.QtCore import QByteArray
+from PyQt6.QtNetwork import QNetworkReply
+
 
 try:
     from charset_normalizer import detect  # type: ignore[unresolved-import]
@@ -862,7 +867,7 @@ def union_sorted_lists(list1, list2):
     return union
 
 
-def __convert_to_string(obj):
+def __convert_to_string(obj: Any) -> str:
     """Appropriately converts the input `obj` to a string.
 
     Args:
@@ -873,14 +878,14 @@ def __convert_to_string(obj):
 
     """
     if isinstance(obj, QtCore.QByteArray):
-        return bytes(obj).decode()
+        return obj.data().decode()
     elif isinstance(obj, (bytes, bytearray)):
         return obj.decode()
     else:
         return str(obj)
 
 
-def load_json(data):
+def load_json(data: bytes | QByteArray | str) -> Any:
     """Deserializes a string or bytes like json response and converts
     it to a python object.
 
@@ -894,7 +899,7 @@ def load_json(data):
     return json.loads(__convert_to_string(data))
 
 
-def parse_json(reply):
+def parse_json(reply: QNetworkReply) -> Any:
     return load_json(reply.readAll())
 
 
