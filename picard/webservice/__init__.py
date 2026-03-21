@@ -374,7 +374,7 @@ class WebService(QtCore.QObject):
         self._init_queues()
         self._init_timers()
 
-    def ssl_errors(self, reply: QNetworkReply, errors: list[QSslError.SslError]):
+    def ssl_errors(self, reply: QNetworkReply, errors: list[QSslError]):
         # According to forums, sometimes sslErrors is triggered with errors set to NoError
         # This can also be used to ignore others if needed
         ignored_errors = {
@@ -382,7 +382,7 @@ class WebService(QtCore.QObject):
         }
         has_errors = False
         for error in errors:
-            if error not in ignored_errors:
+            if error.error() not in ignored_errors:
                 has_errors = True
                 log.error("SSL error: %s" % error.errorString())
         if not has_errors:
