@@ -22,11 +22,16 @@
 
 from PyQt6.QtCore import QUrl
 
+from picard.webservice import (
+    ReplyHandler,
+    WebService,
+)
+
 
 class APIHelper:
     _base_url: QUrl | None = None
 
-    def __init__(self, webservice, base_url=None):
+    def __init__(self, webservice: WebService, base_url: QUrl | str | None = None):
         self._webservice = webservice
         if base_url is not None:
             self.base_url = base_url
@@ -44,27 +49,27 @@ class APIHelper:
         self._base_url = url
 
     @property
-    def webservice(self):
+    def webservice(self) -> WebService:
         return self._webservice
 
-    def url_from_path(self, path):
+    def url_from_path(self, path: str) -> QUrl:
         url = QUrl(self.base_url)
         url.setPath(url.path() + path)
         return url
 
-    def get(self, path, handler, **kwargs):
+    def get(self, path: str, handler: ReplyHandler, **kwargs):
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         return self._webservice.get_url(**kwargs)
 
-    def post(self, path, data, handler, **kwargs):
+    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.post_url(**kwargs)
 
-    def put(self, path, data, handler, **kwargs):
+    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
@@ -72,7 +77,7 @@ class APIHelper:
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.put_url(**kwargs)
 
-    def delete(self, path, handler, **kwargs):
+    def delete(self, path: str, handler: ReplyHandler, **kwargs):
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['priority'] = kwargs.get('priority', True)
