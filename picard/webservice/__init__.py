@@ -503,7 +503,6 @@ class WebService(QtCore.QObject):
         ) == rightUrl.toString(QUrl.UrlFormattingOption.RemovePort)
 
     def _handle_redirect(self, reply: QNetworkReply, request: WSRequest, redirect):
-        error = reply.error().value
         # merge with base url (to cover the possibility of the URL being relative)
         redirect_url = request.url().resolved(redirect)
         reply_url = reply.request().url()
@@ -532,7 +531,7 @@ class WebService(QtCore.QObject):
             self.add_request(redirect_request)
         else:
             log.error("Redirect loop: %s", display_reply_url)
-            request.handler(reply.readAll(), reply, error)
+            request.handler(reply.readAll(), reply, QNetworkReply.NetworkError.TooManyRedirectsError)
 
     def _handle_reply(self, reply: QNetworkReply, request: WSRequest):
         hostkey = request.get_host_key()
