@@ -31,14 +31,14 @@ Asynchronous web service utilities.
 from PyQt6.QtCore import QUrl
 
 
-def port_from_qurl(qurl):
+def port_from_qurl(qurl) -> int:
     """Returns QUrl port or default ports (443 for https, 80 for http)"""
     if qurl.scheme() == 'https':
         return qurl.port(443)
     return qurl.port(80)
 
 
-def hostkey_from_url(url):
+def hostkey_from_url(url: str | QUrl) -> tuple[str, int]:
     """Returns (host, port) from passed url (as string or QUrl)"""
     if not isinstance(url, QUrl):
         url = QUrl(url)
