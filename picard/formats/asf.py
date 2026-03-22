@@ -146,6 +146,7 @@ class ASFFile(File):
         'isrc': 'WM/ISRC',
         'copyright': 'Copyright',
         'lyrics': 'WM/Lyrics',
+        'syncedlyrics': 'WM/Lyrics_Synchronised',
         '~rating': 'WM/SharedUserRating',
         'media': 'WM/Media',
         'barcode': 'WM/Barcode',
