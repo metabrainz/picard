@@ -180,6 +180,17 @@ class VCommentFile(File):
                         value = str(round(float(value) * (config.setting['rating_steps'] - 1)))
                     except ValueError:
                         log.warning('Invalid rating value in %r: %s', filename, value)
+                elif name == 'unsyncedlyrics' or name.startswith('unsyncedlyrics:'):
+                    # Map UNSYNCEDLYRICS to LYRICS.  There is no official
+                    # Vorbis comment field for lyrics; two de facto conventions
+                    # exist: LYRICS (used by foobar2000, MusicBee, and the
+                    # Hydrogenaudio Tag Mapping reference) and UNSYNCEDLYRICS
+                    # (used by Mp3tag and Bandcamp).  We read both but always
+                    # write LYRICS, consistent with the Hydrogenaudio standard
+                    # and most major players.
+                    # See https://wiki.hydrogenaud.io/index.php?title=Tag_Mapping
+                    # See https://tickets.metabrainz.org/browse/PICARD-3199
+                    name = 'lyrics' + name[len('unsyncedlyrics') :]
                 elif name == 'fingerprint' and value.startswith('MusicMagic Fingerprint'):
                     name = 'musicip_fingerprint'
                     value = value[22:]
