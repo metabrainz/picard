@@ -27,13 +27,14 @@
 # vitorgatti <vitorgatti@yahoo.com.br>, 2012
 # Willer Portugal <willer_tj@hotmail.com>, 2019
 # Willer Silva <programacaowp@gmail.com>, 2019
+# cristian_emanuel <cristianemanuelsao100@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-03-19 18:30+0100\n"
-"PO-Revision-Date: 2023-12-20 14:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-03-22 16:11+0000\n"
+"Last-Translator: cristian_emanuel <cristianemanuelsao100@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://translations.metabrainz.org/"
 "projects/picard/3/app/pt_BR/>\n"
 "Language: pt_BR\n"
@@ -42,7 +43,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : ((n != 0 && n % "
 "1000000 == 0) ? 1 : 2);\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -228,7 +229,7 @@ msgstr ""
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
-msgstr ""
+msgstr "Alguma coisa"
 
 #: picard/file.py:1035
 #, fuzzy, python-format
