@@ -617,7 +617,7 @@ requires-dist = [
     { name = "opencc", marker = "extra == 'plugins'", specifier = ">=1.1.9" },
     { name = "pygit2", marker = "python_full_version < '3.11'", specifier = ">=1.18.2,<1.19" },
     { name = "pygit2", marker = "python_full_version >= '3.11'", specifier = "~=1.19" },
-    { name = "pyjwt", specifier = "~=2.12" },
+    { name = "pyjwt", specifier = "~=2.0" },
     { name = "pyobjc-core", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<13" },
     { name = "pyobjc-framework-cocoa", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<13" },
     { name = "pyobjc-framework-mediaplayer", marker = "sys_platform == 'darwin'", specifier = ">=6.2,<13" },
