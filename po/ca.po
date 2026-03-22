@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-03-19 18:30+0100\n"
-"PO-Revision-Date: 2026-03-07 00:11+0000\n"
+"PO-Revision-Date: 2026-03-22 16:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -177,24 +177,24 @@ msgid "Log git backend method calls"
 msgstr "Registra les crides als mètodes del rerefons del Git"
 
 #: picard/debug_opts.py:111
-#, fuzzy
-#| msgid "Plugin Information"
 msgid "Plugin Translations"
-msgstr "Informació del connector"
+msgstr "Traduccions dels connectors"
 
 #: picard/debug_opts.py:111
 msgid "Log plugin translation lookups and fallbacks"
 msgstr ""
+"Registra les cerques i commutacions per error de les traduccions dels "
+"connectors"
 
 #: picard/debug_opts.py:112
-#, fuzzy
-#| msgid "Picard Plugins Update"
 msgid "Plugin Updates"
-msgstr "Actualització de connectors de Picard"
+msgstr "Actualitzacions dels connectors"
 
 #: picard/debug_opts.py:112
 msgid "Log detailed plugin version checking and update detection"
 msgstr ""
+"Registra detalladament les comprovacions i detecció d'actualitzacions de les "
+"versions dels connectors"
 
 #: picard/file.py:315
 msgid "Cannot save file: the file no longer exists."
@@ -1093,10 +1093,8 @@ msgid "Blacklisted Plugins Detected"
 msgstr "S'han detectat connectors no permesos"
 
 #: picard/tagger.py:806
-#, fuzzy
-#| msgid "Installation Failed"
 msgid "Plugin Initialization Failed"
-msgstr "S'ha produït un error d'instal·lació"
+msgstr "S'ha produït un error en inicialitzar el connector"
 
 #: picard/tagger.py:807
 #, python-brace-format
@@ -1105,6 +1103,10 @@ msgid ""
 "\n"
 "{plugin_list}"
 msgstr ""
+"S'ha produït un error en carregar els connectors següents i s'han "
+"inhabilitat:\n"
+"\n"
+"{plugin_list}"
 
 #: picard/tagger.py:1192
 #, python-format
@@ -4302,7 +4304,7 @@ msgstr "Material g&ràfic"
 
 #: picard/ui/forms/ui_infodialog.py:106
 msgid "&Chaos"
-msgstr ""
+msgstr "&Caos"
 
 #: picard/ui/forms/ui_infostatus.py:112
 #: picard/ui/forms/ui_options_cover_processing.py:296
@@ -4692,10 +4694,8 @@ msgid "Check for documentation updates during startup"
 msgstr "Comprova si hi ha actualitzacions de la documentació en iniciar"
 
 #: picard/ui/forms/ui_options_general.py:223
-#, fuzzy
-#| msgid "Check for program updates during startup"
 msgid "Check for plugin updates during startup"
-msgstr "Comprova si hi ha actualitzacions del programa en iniciar"
+msgstr "Comprova si hi ha actualitzacions dels connectors en iniciar"
 
 #: picard/ui/forms/ui_options_general.py:224
 msgid "Check for program updates during startup"
@@ -6280,6 +6280,8 @@ msgid ""
 "There are updates available for installed plugins. Click to open the plugin "
 "manager."
 msgstr ""
+"Hi ha actualitzacions disponibles per als connectors instal·lats. Feu clic "
+"per a obrir el gestor de connectors."
 
 #: picard/ui/mainwindow/__init__.py:604
 #, python-format
@@ -8578,7 +8580,7 @@ msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:766
 msgid "Plugin Re-enable Failed"
-msgstr ""
+msgstr "S'ha produït un error en tornar a habilitar el connector"
 
 #: picard/ui/widgets/pluginlistwidget.py:768
 #, python-brace-format
@@ -8589,6 +8591,11 @@ msgid ""
 "\n"
 "The plugin is currently disabled."
 msgstr ""
+"El connector «{name}» s'ha actualitzat/canviat correctament, però no s'ha "
+"pogut tornar a habilitar:\n"
+"{error}\n"
+"\n"
+"Actualment, el connector està inhabilitat."
 
 #: picard/ui/widgets/pluginlistwidget.py:803
 msgid "There were no installed metadata processing plugins found."
