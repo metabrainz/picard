@@ -215,7 +215,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
             self.progress_slider.setValue(position)
         self.position_label.setText(format_time(position, display_zero=True))
 
-    def on_media_changed(self, media: File):
+    def on_media_changed(self, media: File | None):
         if not (media and media.filename):
             self.media_name_label.setText('')
             self.progress_slider.setEnabled(False)

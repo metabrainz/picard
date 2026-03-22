@@ -167,7 +167,7 @@ class MacNowPlayingService:
         new_position = self._player.position + interval_ms
         self._set_position(new_position)
 
-    def _set_position(self, position):
+    def _set_position(self, position: int):
         # clamp to track range, with a one second offset to the end to allow the
         # track to end naturally.
         position = min(max(0, position), self._player.duration - 1000)

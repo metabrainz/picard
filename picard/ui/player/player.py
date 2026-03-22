@@ -20,9 +20,11 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import deque
+from collections.abc import Iterable
 from enum import Enum
 
 from PyQt6 import QtCore
+from PyQt6.QtCore import QObject
 from PyQt6.QtMultimedia import (
     QAudioOutput,
     QMediaPlayer,
@@ -32,6 +34,7 @@ from picard import log
 from picard.config import get_config
 from picard.file import File
 from picard.i18n import gettext as _
+from picard.item import Item
 from picard.util import iter_files_from_objects
 
 from .util import (
@@ -60,7 +63,7 @@ class Player(QtCore.QObject):
     volume_changed = QtCore.pyqtSignal(float)
     media_changed = QtCore.pyqtSignal(File)
 
-    def __init__(self, parent):
+    def __init__(self, parent: QObject | None = None):
         super().__init__(parent)
         self._toolbar = None
         self._selected_objects = []
@@ -98,23 +101,23 @@ class Player(QtCore.QObject):
         config.persist['mediaplayer_volume'] = int(self.volume * 100)
 
     @property
-    def available(self):
+    def available(self) -> bool:
         return self._player.isAvailable()
 
     @property
-    def can_play(self):
+    def can_play(self) -> bool:
         return self._can_play
 
     @property
-    def is_playing(self):
+    def is_playing(self) -> bool:
         return self._playback_state == Player.PlaybackState.PLAYING
 
     @property
-    def is_paused(self):
+    def is_paused(self) -> bool:
         return self._playback_state == Player.PlaybackState.PAUSED
 
     @property
-    def is_stopped(self):
+    def is_stopped(self) -> bool:
         return self._playback_state == Player.PlaybackState.STOPPED
 
     @property
@@ -175,7 +178,7 @@ class Player(QtCore.QObject):
     def current_file(self) -> File | None:
         return self._current_file
 
-    def set_objects(self, objects):
+    def set_objects(self, objects: Iterable[Item]):
         self._selected_objects = objects
         can_play = bool(any(iter_files_from_objects(self._selected_objects)))
         if self._can_play != can_play:
@@ -240,7 +243,7 @@ class Player(QtCore.QObject):
             self.media_changed.emit(None)
             self.playback_available.emit(self._can_play)
 
-    def _on_playback_state_changed(self, state):
+    def _on_playback_state_changed(self, state: QMediaPlayer.PlaybackState):
         # if the track stopped while playing and we have more in the queue,
         # continue with next track.
         if state == QMediaPlayer.PlaybackState.StoppedState and self.is_playing:
@@ -257,10 +260,10 @@ class Player(QtCore.QObject):
                 self._playback_state = new_state
                 self.playback_state_changed.emit(new_state)
 
-    def _on_volume_changed(self, volume):
+    def _on_volume_changed(self, volume: float):
         self.volume_changed.emit(get_logarithmic_volume(volume))
 
-    def _on_error(self, error):
+    def _on_error(self, error: QMediaPlayer.Error):
         if error == QMediaPlayer.Error.FormatError:
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
         elif error == QMediaPlayer.Error.AccessDeniedError:
