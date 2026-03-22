@@ -2,6 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
+# Copyright (C) 2026 invo-coder19
 # Copyright (C) 2026 iron-prog
 # Copyright (C) 2026 Laurent Monin
 #
@@ -20,9 +21,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import os
+from pathlib import Path
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
@@ -300,3 +303,151 @@ class TestFileIdentity(PicardTestCase):
         os.utime(fname, (stat.st_atime, stat.st_mtime))
         id2 = FileIdentity(fname)
         self.assertNotEqual(id1, id2)
+
+    # ------------------------------------------------------------------ #
+    # New edge-case tests                                                  #
+    # ------------------------------------------------------------------ #
+
+    def test_both_missing_equal(self):
+        """Two FileIdentity objects for a path that never existed are equal.
+
+        The __eq__ branch 'if not self._exists: return True' (both non-existent)
+        must return True.  This is a deliberate design choice: "nothing == nothing".
+        """
+        non_existent = os.path.join(tempfile.gettempdir(), "__picard_no_such_file_xyz__.bin")
+        id1 = FileIdentity(non_existent)
+        id2 = FileIdentity(non_existent)
+        self.assertFalse(id1)
+        self.assertFalse(id2)
+        self.assertEqual(id1, id2)
+
+    def test_eq_with_non_fileidentity_raises(self):
+        """Comparing FileIdentity with an unrelated object raises AttributeError.
+
+        FileIdentity.__eq__ accesses other._exists directly without an
+        isinstance guard.  Documenting this behaviour ensures any future
+        guard change is a conscious decision.
+        """
+        fname = self._write_temp(b"data")
+        identity = FileIdentity(fname)
+        with self.assertRaises(AttributeError):
+            identity == "not-a-file-identity"  # noqa: B015
+
+    def test_hash_none_at_init_computed_lazily_during_eq(self):
+        """When _hash is None after __init__ (e.g. hash failed), __eq__ computes
+        it lazily via _fast_hash().  The lazy path (lines 187-190 of file.py)
+        is exercised by patching _fast_hash to fail during __init__ only.
+        """
+        fname = self._write_temp(b"lazy hash content")
+        call_count = [0]
+        original_fast_hash = FileIdentity._fast_hash
+
+        def fail_once(self_inner):
+            call_count[0] += 1
+            if call_count[0] == 1:
+                raise FileIdentityError("simulated init hash failure")
+            return original_fast_hash(self_inner)
+
+        with patch.object(FileIdentity, "_fast_hash", fail_once):
+            id1 = FileIdentity(fname)
+
+        # _hash should be None because the first call during __init__ raised
+        self.assertIsNone(id1._hash)
+        id2 = FileIdentity(fname)
+        # Equality should succeed: id1._hash gets computed lazily inside __eq__
+        self.assertEqual(id1, id2)
+        self.assertIsNotNone(id1._hash)
+
+    def test_identity_empty_file_equal(self):
+        """Two FileIdentity objects for a 0-byte file are equal."""
+        fname = self._write_temp(b"")
+        id1 = FileIdentity(fname)
+        id2 = FileIdentity(fname)
+        self.assertTrue(id1)
+        self.assertEqual(id1, id2)
+
+    def test_fast_hash_empty_file(self):
+        """_fast_hash returns a consistent non-empty string for a 0-byte file."""
+        fname = self._write_temp(b"")
+        identity = FileIdentity(fname)
+        h = identity._fast_hash()
+        self.assertIsNotNone(h)
+        self.assertIsInstance(h, str)
+        self.assertGreater(len(h), 0)
+        # Calling twice gives the same result
+        self.assertEqual(h, identity._fast_hash())
+
+    def test_identity_filepath_stored_as_path(self):
+        """FileIdentity stores the filename as a pathlib.Path object."""
+        fname = self._write_temp(b"path check")
+        identity = FileIdentity(fname)
+        self.assertIsInstance(identity._filepath, Path)
+        self.assertEqual(identity._filepath, Path(fname))
+
+    @unittest.skipIf(IS_WIN, "Symlinks behave differently on Windows")
+    def test_identity_symlink_same_as_target(self):
+        """A symlink and its target compare equal: same inode/size/mtime/hash."""
+        fname = self._write_temp(b"symlink target content")
+        link_name = fname + ".link"
+        try:
+            os.symlink(fname, link_name)
+            id_real = FileIdentity(fname)
+            id_link = FileIdentity(link_name)
+            self.assertEqual(id_real, id_link)
+        finally:
+            try:
+                os.remove(link_name)
+            except OSError:
+                pass
+
+    @unittest.skipIf(IS_WIN, "Symlink retargeting is a Unix concept")
+    def test_identity_symlink_after_retarget_not_equal(self):
+        """After re-pointing a symlink to a different file, the new identity
+        must not equal the old one (different inode).
+        """
+        fname1 = self._write_temp(b"file one")
+        fname2 = self._write_temp(b"file two")
+        link_name = fname1 + ".link"
+        try:
+            os.symlink(fname1, link_name)
+            id_before = FileIdentity(link_name)  # points at fname1
+            os.remove(link_name)
+            os.symlink(fname2, link_name)         # now points at fname2
+            id_after = FileIdentity(link_name)
+            self.assertNotEqual(id_before, id_after)
+        finally:
+            try:
+                os.remove(link_name)
+            except OSError:
+                pass
+
+    @unittest.skipUnless(IS_WIN, "Windows inode is always 0 — test applies only on Windows")
+    def test_windows_inode_zero_same_file_equal(self):
+        """On Windows st_ino == 0, so equality falls through to size/mtime/hash.
+        Two captures of the same unchanged file must still compare equal.
+        """
+        fname = self._write_temp(b"windows inode test")
+        id1 = FileIdentity(fname)
+        id2 = FileIdentity(fname)
+        self.assertEqual(id1._inode, 0)  # confirm Windows inode behaviour
+        self.assertEqual(id1, id2)
+
+    @unittest.skipUnless(IS_WIN, "Windows inode is always 0 — test applies only on Windows")
+    def test_windows_inode_zero_different_files_same_size_not_equal(self):
+        """On Windows, two *different* files with the same size must still be
+        distinguished by hash even though both have inode == 0.
+        """
+        content = b"SAME_SIZE"
+        fa = self._write_temp(content)
+        fb = self._write_temp(content + b"!")[:len(content)]  # same byte count, different content
+        # Ensure same size
+        with open(fb, "wb") as f:
+            f.write(b"DIFF_CONT")  # same length as "SAME_SIZE" (9 bytes)
+        # Force identical mtime so only hash can distinguish them
+        stat_a = os.stat(fa)
+        os.utime(fb, (stat_a.st_atime, stat_a.st_mtime))
+        id_a = FileIdentity(fa)
+        id_b = FileIdentity(fb)
+        self.assertEqual(id_a._inode, 0)
+        self.assertEqual(id_b._inode, 0)
+        self.assertNotEqual(id_a, id_b)
