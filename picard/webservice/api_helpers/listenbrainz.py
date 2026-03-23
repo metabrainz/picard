@@ -16,6 +16,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 from dataclasses import (
     asdict,
     dataclass,
@@ -24,13 +25,30 @@ import enum
 import json
 from typing import Any
 
+from picard import PICARD_DISPLAY_NAME, PICARD_VERSION_STR
 from picard.const import LISTENBRAINZ_API_URL
+from picard.metadata import Metadata
 from picard.webservice import (
     ReplyHandler,
     WebService,
 )
 
 from .apihelper import APIHelper
+
+
+_SINGLE_VALUE_MAPPINGS = {
+    'musicbrainz_albumid': 'release_mbid',
+    'musicbrainz_recordingid': 'recording_mbid',
+    'musicbrainz_releasegroupid': 'release_group_mbid',
+    'musicbrainz_trackid': 'track_mbid',
+    'tracknumber': 'tracknumber',
+    'isrc': 'isrc',
+}
+
+_MULTI_VALUE_MAPPINGS = {
+    'musicbrainz_artistid': 'artist_mbids',
+    'musicbrainz_workid': 'work_mbids',
+}
 
 
 class ListenType(enum.Enum):
@@ -45,6 +63,26 @@ class TrackMetadata:
     track_name: str
     release_name: str | None = None
     additional_info: dict[str, str | int | list[str]] | None = None
+
+    @staticmethod
+    def from_metadata(metadata: Metadata) -> 'TrackMetadata':
+        additional_info = {
+            'media_player': PICARD_DISPLAY_NAME,
+            'media_player_version': PICARD_VERSION_STR,
+            'duration_ms': metadata.length,
+        }
+        for tag, field in _SINGLE_VALUE_MAPPINGS.items():
+            if tag in metadata:
+                additional_info[field] = metadata[tag]
+        for tag, field in _MULTI_VALUE_MAPPINGS.items():
+            if tag in metadata:
+                additional_info[field] = metadata.getall(tag)
+        return TrackMetadata(
+            artist_name=metadata['artist'],
+            track_name=metadata['title'],
+            release_name=metadata['album'],
+            additional_info=additional_info,
+        )
 
 
 @dataclass

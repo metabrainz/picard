@@ -23,6 +23,8 @@ from PyQt6.QtCore import QUrl
 
 from test.picardtestcase import PicardTestCase
 
+from picard import PICARD_VERSION_STR
+from picard.metadata import Metadata
 from picard.webservice.api_helpers.listenbrainz import (
     ListenBrainzAPIHelper,
     ListenPayload,
@@ -55,3 +57,35 @@ class TestListenBrainzAPIHelper(PicardTestCase):
         listen = ListenSubmission(ListenType.SINGLE, [ListenPayload(TrackMetadata('Artist', 'Track'), 1771628400)])
         expected_json = '{"listen_type": "single", "payload": [{"listened_at": 1771628400, "track_metadata": {"artist_name": "Artist", "track_name": "Track"}}]}'
         self.assertEqual(listen.as_json(), expected_json)
+
+    def test_track_from_metadata(self):
+        metadata = Metadata(
+            {
+                'artist': 'Artist',
+                'title': 'Track',
+                'album': 'Release',
+                'musicbrainz_recordingid': '00000000-0000-0000-0000-000000000001',
+                'musicbrainz_artistid': [
+                    '00000000-0000-0000-0000-000000000002',
+                    '00000000-0000-0000-0000-000000000003',
+                ],
+            }
+        )
+        metadata.length = 300000
+        track = TrackMetadata.from_metadata(metadata)
+        self.assertEqual(track.artist_name, 'Artist')
+        self.assertEqual(track.track_name, 'Track')
+        self.assertEqual(track.release_name, 'Release')
+        self.assertEqual(
+            track.additional_info,
+            {
+                'media_player': 'MusicBrainz Picard',
+                'media_player_version': PICARD_VERSION_STR,
+                'duration_ms': 300000,
+                'recording_mbid': '00000000-0000-0000-0000-000000000001',
+                'artist_mbids': [
+                    '00000000-0000-0000-0000-000000000002',
+                    '00000000-0000-0000-0000-000000000003',
+                ],
+            },
+        )
