@@ -651,6 +651,19 @@ def upgrade_to_v3_0_0a3(config):
     config.persist.remove('album_view_header_state')
     config.persist.remove('file_view_header_state')
 
+    if 'move_conflict_strategy' not in config.setting:
+        if 'move_overwrite_existing_files' in config.setting:
+            old_value = config.setting['move_overwrite_existing_files']
+
+            if old_value:
+                config.setting['move_conflict_strategy'] = "overwrite"
+            else:
+                config.setting['move_conflict_strategy'] = "rename"
+
+            config.setting.remove('move_overwrite_existing_files')
+        else:
+            config.setting['move_conflict_strategy'] = "rename"
+
 
 @contextmanager
 def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
