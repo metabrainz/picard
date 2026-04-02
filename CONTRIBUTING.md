@@ -18,26 +18,10 @@ pip install -r requirements-dev.txt
 
 To fix or preserve imports style, one can use `isort .` command (requires the [isort](https://github.com/PyCQA/isort) tool, see `.isort.cfg`).
 
-It is recommended to add a pre-commit hook to check whether imports in changed code
-follow the conventions. Add a file `.git/hooks/pre-commit` with the following content
-and make it executable:
+It is recommended to add a pre-commit hook to check whether imports in changed code follow the conventions. You can install the default pre-commit hooks using the [pre-commit](https://pre-commit.com/) utility:
 
 ```bash
-#!/usr/bin/env bash
-
-PYFILES=$(git diff --cached --name-only | grep "\\.py$" | grep --invert-match \
-  -e "^tagger\\.py$" \
-  -e "^picard/resources\\.py$" \
-  -e "^picard/\(coverart/providers\|formats\)/__init__\\.py$" \
-  -e "^picard/const/\(__init__\|attributes\|countries\)\\.py$" \
-  -e "^picard/ui/ui_.*\\.py$" \
-  -e "^scripts/picard\\.in$")
-
-if [ ! -z "$PYFILES" ]; then
-  set -e
-  isort --check-only --diff --quiet $PYFILES
-  flake8 $PYFILES
-fi
+pre-commit install
 ```
 
 

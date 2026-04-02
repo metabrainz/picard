@@ -2,6 +2,7 @@ autopep8
 Babel>=2.6.0
 flake8
 isort>=5.0
+pre-commit
 pycodestyle
 pylint>=2.6.0
 wlc
