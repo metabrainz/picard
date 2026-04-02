@@ -86,7 +86,7 @@ jobs:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Azure login
-      uses: azure/login@v2
+      uses: azure/login@v3
       if: env.CODESIGN == 'true'
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
