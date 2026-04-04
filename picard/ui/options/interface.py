@@ -144,6 +144,16 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
+        # Add reset tutorial button after the new user dialog checkbox
+        new_user_idx = self.ui.vboxlayout1.indexOf(self.ui.new_user_dialog)
+        self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial…"))
+        self.reset_tutorial_button.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Maximum,
+            QtWidgets.QSizePolicy.Policy.Fixed,
+        )
+        self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
+        self.ui.vboxlayout1.insertWidget(new_user_idx + 1, self.reset_tutorial_button)
+
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
@@ -241,6 +251,19 @@ class InterfaceOptionsPage(OptionsPage):
         )
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
             self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+    def _reset_tutorial(self):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Question,
+            _("Reset Tutorial"),
+            _("This will reset the tutorial so all tips are shown again. Continue?"),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            self,
+        )
+        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
+            config = get_config()
+            config.persist['tutorial_steps_shown'] = []
+            config.persist['tutorial_disabled'] = False
 
 
 register_options_page(InterfaceOptionsPage)
