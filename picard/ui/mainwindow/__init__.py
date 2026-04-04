@@ -1848,6 +1848,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)
+            if obj:
+                self._show_tutorial_cover_art()
 
         if metadata_visible:
             if new_selection:
@@ -2355,6 +2357,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "'Original Value' is what's currently in your file, "
                 "'New Value' is what Picard will write when you save. "
                 "Double-click a value to edit it."
+            ),
+        )
+
+    def _show_tutorial_cover_art(self):
+        self.tutorial.show_tip(
+            'cover_art',
+            self.cover_art_box,
+            _(
+                "Cover art for the selected item is shown here. "
+                "You can drag and drop images, or right-click for more options. "
+                "Picard fetches cover art from the Cover Art Archive."
             ),
         )
 
