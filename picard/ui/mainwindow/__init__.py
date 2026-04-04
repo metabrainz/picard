@@ -1224,6 +1224,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config = get_config()
             config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
+            self._show_tutorial_add_files()
 
     def add_directory(self):
         """Add directory to the tagger."""
@@ -1260,6 +1261,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 )
 
             self.tagger.add_paths(dir_list)
+            self._show_tutorial_add_files()
 
     def close_active_window(self):
         self.tagger.activeWindow().close()
@@ -2274,6 +2276,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "the right pane shows matched albums. Add files, then use Cluster, Lookup "
                 "or Scan to match them. The bottom area shows metadata and cover art for "
                 "the selected item."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
+    def _show_tutorial_add_files(self):
+        self.tutorial.show_tip(
+            'add_files',
+            self.panel,
+            _(
+                "Your files are now in the left pane under 'Unmatched Files'. "
+                "Next step: click 'Cluster' to group them by album, or use "
+                "'Lookup' / 'Scan' to identify them."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
