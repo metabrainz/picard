@@ -113,6 +113,16 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.browse_autobackup_dir.clicked.connect(self._dialog_autobackup_dir_browse)
         self.ui.autobackup_dir.editingFinished.connect(self._check_autobackup_dir)
 
+        # Add reset tutorial button to the backup buttons row
+        self.reset_tutorial_button = QtWidgets.QToolButton()
+        self.reset_tutorial_button.setText(_("Reset tutorial…"))
+        self.reset_tutorial_button.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Fixed,
+        )
+        self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
+        self.ui.horizontalLayout.insertWidget(0, self.reset_tutorial_button)
+
         # Set the palette of the config file QLineEdit widget to inactive.
         palette_normal = self.ui.config_file.palette()
         palette_readonly = QtGui.QPalette(palette_normal)
@@ -145,6 +155,18 @@ class MaintenanceOptionsPage(OptionsPage):
             self,
         )
         dialog.exec()
+
+    def _reset_tutorial(self):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Question,
+            _("Reset Tutorial"),
+            _("This will reset the tutorial so all tips are shown again. Continue?"),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            self,
+        )
+        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
+            config = get_config()
+            config.persist['tutorial_steps_shown'] = []
 
     def _dialog_autobackup_dir_browse(self):
         path = FileDialog.getExistingDirectory(

@@ -156,6 +156,7 @@ ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
 TextOption('persist', 'last_session_path', '')
 ListOption('persist', 'recent_sessions', [])
 TextOption('persist', 'session_autosave_path', '')
+ListOption('persist', 'tutorial_steps_shown', [])
 
 # picard/ui/metadatabox.py
 #
