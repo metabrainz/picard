@@ -29,20 +29,16 @@ from picard.config import get_config
 from picard.i18n import gettext as _
 
 
-class TutorialTip(QtWidgets.QFrame):
-    """A non-modal tooltip-style widget anchored near a target widget."""
+class TutorialTip(QtWidgets.QDialog):
+    """A non-modal dialog for tutorial tips, positioned near a target widget."""
 
-    closed = QtCore.pyqtSignal()
     disabled = QtCore.pyqtSignal()
 
     def __init__(self, text, doc_url=None, parent=None):
         super().__init__(parent=parent)
-        self.setWindowFlags(QtCore.Qt.WindowType.ToolTip)
-        self.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
-        self.setStyleSheet("TutorialTip { background: palette(window); border: 1px solid palette(mid); padding: 8px; }")
+        self.setWindowTitle(_("Picard Tutorial"))
 
         layout = QtWidgets.QVBoxLayout(self)
-        layout.setContentsMargins(8, 8, 8, 8)
 
         label = QtWidgets.QLabel(text)
         label.setWordWrap(True)
@@ -65,18 +61,18 @@ class TutorialTip(QtWidgets.QFrame):
         button_layout.addWidget(disable_button)
         button_layout.addStretch()
         close_button = QtWidgets.QPushButton(_("Got it"))
-        close_button.clicked.connect(self.close)
+        close_button.setDefault(True)
+        close_button.clicked.connect(self.accept)
         button_layout.addWidget(close_button)
         layout.addLayout(button_layout)
 
     def _on_disable(self):
         self.disabled.emit()
-        self.close()
+        self.accept()
 
-    def show_at_widget(self, widget):
+    def show_near_widget(self, widget):
         self.adjustSize()
         pos = widget.mapToGlobal(QtCore.QPoint(0, widget.height()))
-        # Keep on screen
         screen = widget.screen()
         if screen:
             screen_rect = screen.availableGeometry()
@@ -86,10 +82,6 @@ class TutorialTip(QtWidgets.QFrame):
                 pos = widget.mapToGlobal(QtCore.QPoint(0, -self.height()))
         self.move(pos)
         self.show()
-
-    def closeEvent(self, event):
-        self.closed.emit()
-        super().closeEvent(event)
 
 
 class TutorialManager:
@@ -121,17 +113,17 @@ class TutorialManager:
             return
         self._close_active_tip()
         tip = TutorialTip(text, doc_url=doc_url, parent=self._window)
-        tip.closed.connect(partial(self.mark_shown, step_id))
-        tip.closed.connect(partial(self._on_tip_closed, tip))
+        tip.finished.connect(partial(self.mark_shown, step_id))
+        tip.finished.connect(partial(self._on_tip_closed, tip))
         tip.disabled.connect(self.disable)
         self._active_tip = tip
-        tip.show_at_widget(widget)
+        tip.show_near_widget(widget)
 
     def _close_active_tip(self):
         if self._active_tip:
             self._active_tip.close()
             self._active_tip = None
 
-    def _on_tip_closed(self, tip):
+    def _on_tip_closed(self, tip, _result=None):
         if self._active_tip is tip:
             self._active_tip = None
