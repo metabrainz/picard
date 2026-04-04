@@ -166,6 +166,7 @@ from picard.ui.statusindicator import (
 )
 from picard.ui.tagsfromfilenames import TagsFromFileNamesDialog
 from picard.ui.theme import theme
+from picard.ui.tutorial import TutorialManager
 from picard.ui.util import (
     FileDialog,
     find_starting_directory,
@@ -225,6 +226,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         self._check_and_repair_naming_scripts()
         self._check_and_repair_profiles()
+
+        self.tutorial = TutorialManager(self)
 
         self.setupUi()
 
@@ -2246,6 +2249,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         self.show_new_user_dialog(config)
         self.show_allow_rtd_updates_dialog(config)
+        self._show_tutorial_overview()
 
     def show_new_user_dialog(self, config):
         if config.setting['show_new_user_dialog']:
@@ -2260,6 +2264,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.setting['rtd_updates_ask'] = ask
 
         ReadTheDocs.update_documentation_items()  # Retry updates if required
+
+    def _show_tutorial_overview(self):
+        self.tutorial.show_tip(
+            'overview',
+            self.panel,
+            _(
+                "Welcome to MusicBrainz Picard! The left pane shows your unmatched files, "
+                "the right pane shows matched albums. Add files, then use Cluster, Lookup "
+                "or Scan to match them. The bottom area shows metadata and cover art for "
+                "the selected item."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
