@@ -1853,6 +1853,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if new_selection:
                 self.metadata_box.selection_dirty = True
             self.metadata_box.update(drop_album_caches=drop_album_caches)
+            if new_selection and objects:
+                self._show_tutorial_metadata()
         self.selection_updated.emit(objects)
         self._update_script_editor_example_files()
 
@@ -2342,6 +2344,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "indicate how well a file matches a track. Green means a good match."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
+    def _show_tutorial_metadata(self):
+        self.tutorial.show_tip(
+            'metadata',
+            self.metadata_box,
+            _(
+                "The metadata view shows tags for the selected item. "
+                "'Original Value' is what's currently in your file, "
+                "'New Value' is what Picard will write when you save. "
+                "Double-click a value to edit it."
+            ),
         )
 
     def show_plugins_options_page(self):
