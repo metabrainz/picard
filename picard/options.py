@@ -157,6 +157,7 @@ TextOption('persist', 'last_session_path', '')
 ListOption('persist', 'recent_sessions', [])
 TextOption('persist', 'session_autosave_path', '')
 ListOption('persist', 'tutorial_steps_shown', [])
+BoolOption('persist', 'tutorial_disabled', False)
 
 # picard/ui/metadatabox.py
 #

@@ -33,6 +33,7 @@ class TutorialTip(QtWidgets.QFrame):
     """A non-modal tooltip-style widget anchored near a target widget."""
 
     closed = QtCore.pyqtSignal()
+    disabled = QtCore.pyqtSignal()
 
     def __init__(self, text, doc_url=None, parent=None):
         super().__init__(parent=parent)
@@ -59,11 +60,18 @@ class TutorialTip(QtWidgets.QFrame):
             layout.addWidget(link)
 
         button_layout = QtWidgets.QHBoxLayout()
+        disable_button = QtWidgets.QPushButton(_("Don't show tips again"))
+        disable_button.clicked.connect(self._on_disable)
+        button_layout.addWidget(disable_button)
         button_layout.addStretch()
         close_button = QtWidgets.QPushButton(_("Got it"))
         close_button.clicked.connect(self.close)
         button_layout.addWidget(close_button)
         layout.addLayout(button_layout)
+
+    def _on_disable(self):
+        self.disabled.emit()
+        self.close()
 
     def show_at_widget(self, widget):
         self.adjustSize()
@@ -93,6 +101,8 @@ class TutorialManager:
 
     def should_show(self, step_id):
         config = get_config()
+        if config.persist['tutorial_disabled']:
+            return False
         return step_id not in config.persist['tutorial_steps_shown']
 
     def mark_shown(self, step_id):
@@ -102,6 +112,10 @@ class TutorialManager:
             shown.append(step_id)
             config.persist['tutorial_steps_shown'] = shown
 
+    def disable(self):
+        config = get_config()
+        config.persist['tutorial_disabled'] = True
+
     def show_tip(self, step_id, widget, text, doc_url=None):
         if not self.should_show(step_id):
             return
@@ -109,6 +123,7 @@ class TutorialManager:
         tip = TutorialTip(text, doc_url=doc_url, parent=self._window)
         tip.closed.connect(partial(self.mark_shown, step_id))
         tip.closed.connect(partial(self._on_tip_closed, tip))
+        tip.disabled.connect(self.disable)
         self._active_tip = tip
         tip.show_at_widget(widget)
 

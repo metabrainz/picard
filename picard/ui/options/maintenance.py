@@ -167,6 +167,7 @@ class MaintenanceOptionsPage(OptionsPage):
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
             config = get_config()
             config.persist['tutorial_steps_shown'] = []
+            config.persist['tutorial_disabled'] = False
 
     def _dialog_autobackup_dir_browse(self):
         path = FileDialog.getExistingDirectory(
