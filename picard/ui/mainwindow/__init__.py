@@ -1526,6 +1526,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def callback(fingerprinting_system):
             if fingerprinting_system:
                 self.tagger.analyze(self.selected_objects)
+                self._show_tutorial_scan()
 
         self._ensure_fingerprinting_configured(callback)
 
@@ -1930,6 +1931,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def autotag(self):
         self.tagger.autotag(self.selected_objects)
+        self._show_tutorial_lookup()
 
     def copy_files(self, objects):
         mimeData = QtCore.QMimeData()
@@ -2302,6 +2304,30 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Right-click a cluster and choose 'Lookup' to find the "
                 "matching MusicBrainz release, or select a cluster and "
                 "click 'Lookup' in the toolbar."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
+    def _show_tutorial_lookup(self):
+        self.tutorial.show_tip(
+            'lookup',
+            self.panel,
+            _(
+                "Picard is looking up your selection on MusicBrainz. "
+                "Matched albums will appear in the right pane. "
+                "You can then review the metadata before saving."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
+    def _show_tutorial_scan(self):
+        self.tutorial.show_tip(
+            'scan',
+            self.panel,
+            _(
+                "Picard is generating audio fingerprints and looking up "
+                "your files on AcoustID. Matched files will move to the "
+                "right pane automatically."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
