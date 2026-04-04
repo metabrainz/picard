@@ -1672,6 +1672,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ):
             self.panel.select_object(self.tagger.clusters)
         self._update_actions()
+        self._show_tutorial_cluster()
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
@@ -2288,6 +2289,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Your files are now in the left pane under 'Unmatched Files'. "
                 "Next step: click 'Cluster' to group them by album, or use "
                 "'Lookup' / 'Scan' to identify them."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
+    def _show_tutorial_cluster(self):
+        self.tutorial.show_tip(
+            'cluster',
+            self.panel,
+            _(
+                "Files have been grouped into clusters by album. "
+                "Right-click a cluster and choose 'Lookup' to find the "
+                "matching MusicBrainz release, or select a cluster and "
+                "click 'Lookup' in the toolbar."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
