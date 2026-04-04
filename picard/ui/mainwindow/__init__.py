@@ -1315,6 +1315,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
+        self._show_tutorial_save()
         config = get_config()
         if config.setting['file_save_warning']:
             count = len(list(iter_files_from_objects(self.selected_objects)))
@@ -2368,6 +2369,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Cover art for the selected item is shown here. "
                 "You can drag and drop images, or right-click for more options. "
                 "Picard fetches cover art from the Cover Art Archive."
+            ),
+        )
+
+    def _show_tutorial_save(self):
+        self.tutorial.show_tip(
+            'save',
+            self.panel,
+            _(
+                "Saving writes the new metadata to your files. "
+                "If renaming or moving is enabled in the options, "
+                "files will also be renamed or moved accordingly."
             ),
         )
 
