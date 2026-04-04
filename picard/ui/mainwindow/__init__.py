@@ -2383,6 +2383,17 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             ),
         )
 
+    def _show_tutorial_drag_drop(self):
+        self.tutorial.show_tip(
+            'drag_drop',
+            self.panel,
+            _(
+                "You can drag files between the left and right panes to "
+                "manually match them to albums and tracks, or drag them "
+                "back to unmatch."
+            ),
+        )
+
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
 
