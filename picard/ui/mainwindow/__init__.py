@@ -2332,6 +2332,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
 
+    def _show_tutorial_album_loaded(self):
+        self.tutorial.show_tip(
+            'album_loaded',
+            self.panel,
+            _(
+                "An album has been loaded in the right pane. Expand it to see "
+                "tracks and matched files. The similarity percentage and color "
+                "indicate how well a file matches a track. Green means a good match."
+            ),
+            doc_url="https://picard.musicbrainz.org/quick-start/",
+        )
+
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
 
