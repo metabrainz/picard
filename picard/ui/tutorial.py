@@ -20,6 +20,7 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from functools import partial
 
 from PyQt6 import (
@@ -28,7 +29,118 @@ from PyQt6 import (
 )
 
 from picard.config import get_config
-from picard.i18n import gettext as _
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
+from picard.util import get_url
+
+
+@dataclass(frozen=True)
+class TipDef:
+    """Definition of a tutorial tip."""
+
+    text: str
+    widget_attr: str
+    doc_path: str | None = None
+
+
+TIPS: dict[str, TipDef] = {
+    'overview': TipDef(
+        text=N_(
+            "Welcome to MusicBrainz Picard! Start by adding your music files: "
+            "use 'Add Files' or 'Add Directory' from the toolbar or the File menu."
+        ),
+        widget_attr='panel',
+        doc_path='/getting_started/screen_main.html',
+    ),
+    'add_files': TipDef(
+        text=N_(
+            "Your files are now in the left pane under 'Unmatched Files'. "
+            "Next step: click 'Cluster' in the toolbar to group them by album, "
+            "or select files and use 'Lookup' or 'Scan' to identify them."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/retrieve.html',
+    ),
+    'cluster': TipDef(
+        text=N_(
+            "Files have been grouped into clusters by album. "
+            "Now select a cluster and click 'Lookup' in the toolbar to find "
+            "the matching MusicBrainz release."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/retrieve_lookup.html',
+    ),
+    'lookup': TipDef(
+        text=N_(
+            "Picard is looking up your selection on MusicBrainz. "
+            "Matched albums will appear in the right pane. "
+            "You can then review the metadata before saving."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/retrieve_lookup.html',
+    ),
+    'scan': TipDef(
+        text=N_(
+            "Picard is generating audio fingerprints and looking up "
+            "your files on AcoustID. Matched files will move to the "
+            "right pane automatically."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/retrieve_scan.html',
+    ),
+    'album_loaded': TipDef(
+        text=N_(
+            "An album has been loaded in the right pane and files have been "
+            "matched to tracks. The color indicates match quality: green means "
+            "a good match. Review the results, then click 'Save' in the toolbar "
+            "to write the new tags to your files."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/match.html',
+    ),
+    'metadata': TipDef(
+        text=N_(
+            "The metadata view shows tags for the selected item. "
+            "'Original Value' is what's currently in your file, "
+            "'New Value' is what Picard will write. "
+            "Double-click a value to edit it. When you're happy with "
+            "the tags, click 'Save' in the toolbar to write them."
+        ),
+        widget_attr='metadata_box',
+        doc_path='/workflows/workflow_metadata.html',
+    ),
+    'cover_art': TipDef(
+        text=N_(
+            "Cover art for the selected item is shown here. "
+            "You can drag and drop images, or right-click for more options. "
+            "Picard fetches cover art from the Cover Art Archive."
+        ),
+        widget_attr='cover_art_box',
+        doc_path='/usage/coverart.html',
+    ),
+    'save': TipDef(
+        text=N_(
+            "Saving writes the new metadata to your files. "
+            "If renaming or moving is enabled in the options, "
+            "files will also be renamed or moved accordingly."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/save.html',
+    ),
+    'drag_drop': TipDef(
+        text=N_(
+            "You can drag files between the left and right panes to "
+            "manually match them to albums and tracks, or drag them "
+            "back to unmatch. To add an album to the right pane, use "
+            "'Lookup' on a cluster, search for it via 'Search', or "
+            "paste a MusicBrainz URL."
+        ),
+        widget_attr='panel',
+        doc_path='/usage/retrieve_manual.html',
+    ),
+}
 
 
 class TutorialTip(QtWidgets.QDialog):
@@ -111,7 +223,14 @@ class TutorialManager:
         config = get_config()
         config.persist['tutorial_disabled'] = True
 
-    def show_tip(self, step_id: str, widget: QtWidgets.QWidget, text: str, doc_url: str | None = None) -> bool:
+    def show(self, step_id: str) -> bool:
+        """Show a tutorial tip by step ID. Returns True if shown."""
+        tip_def = TIPS[step_id]
+        widget = getattr(self._window, tip_def.widget_attr)
+        doc_url = get_url(tip_def.doc_path) if tip_def.doc_path else None
+        return self._show_tip(step_id, widget, _(tip_def.text), doc_url)
+
+    def _show_tip(self, step_id: str, widget: QtWidgets.QWidget, text: str, doc_url: str | None = None) -> bool:
         if not self.should_show(step_id):
             return False
         self._close_active_tip()

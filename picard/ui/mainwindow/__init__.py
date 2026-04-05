@@ -108,7 +108,6 @@ from picard.session.session_manager import (
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
-    get_url,
     icontheme,
     iter_files_from_objects,
     iter_unique,
@@ -1226,7 +1225,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config = get_config()
             config.persist['current_directory'] = os.path.dirname(files[0])
             self.tagger.add_files(files)
-            self._show_tutorial_add_files()
+            self.tutorial.show('add_files')
 
     def add_directory(self):
         """Add directory to the tagger."""
@@ -1263,7 +1262,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 )
 
             self.tagger.add_paths(dir_list)
-            self._show_tutorial_add_files()
+            self.tutorial.show('add_files')
 
     def close_active_window(self):
         self.tagger.activeWindow().close()
@@ -1317,7 +1316,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def save(self):
         """Tell the tagger to save the selected objects."""
-        self._show_tutorial_save()
+        self.tutorial.show('save')
         config = get_config()
         if config.setting['file_save_warning']:
             count = len(list(iter_files_from_objects(self.selected_objects)))
@@ -1529,7 +1528,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         def callback(fingerprinting_system):
             if fingerprinting_system:
                 self.tagger.analyze(self.selected_objects)
-                self._show_tutorial_scan()
+                self.tutorial.show('scan')
 
         self._ensure_fingerprinting_configured(callback)
 
@@ -1676,7 +1675,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         ):
             self.panel.select_object(self.tagger.clusters)
         self._update_actions()
-        self._show_tutorial_cluster()
+        self.tutorial.show('cluster')
 
     def refresh(self):
         self.tagger.refresh(self.selected_objects)
@@ -1863,9 +1862,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # if the metadata tip was already seen.
         if new_selection and objects:
             has_album_data = any(isinstance(o, (Album, Track)) for o in objects)
-            if metadata_visible and has_album_data and not self._show_tutorial_metadata():
+            if metadata_visible and has_album_data and not self.tutorial.show('metadata'):
                 if coverart_visible and obj:
-                    self._show_tutorial_cover_art()
+                    self.tutorial.show('cover_art')
         self.selection_updated.emit(objects)
         self._update_script_editor_example_files()
 
@@ -1944,7 +1943,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def autotag(self):
         self.tagger.autotag(self.selected_objects)
-        self._show_tutorial_lookup()
+        self.tutorial.show('lookup')
 
     def copy_files(self, objects):
         mimeData = QtCore.QMimeData()
@@ -2268,7 +2267,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_new_user_dialog(config)
         self.show_setup_wizard()
         self.show_allow_rtd_updates_dialog(config)
-        self._show_tutorial_overview()
+        self.tutorial.show('overview')
 
     def show_setup_wizard(self) -> None:
         if SetupWizard.should_show():
@@ -2288,130 +2287,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             config.setting['rtd_updates_ask'] = ask
 
         ReadTheDocs.update_documentation_items()  # Retry updates if required
-
-    def _show_tutorial_overview(self):
-        self.tutorial.show_tip(
-            'overview',
-            self.panel,
-            _(
-                "Welcome to MusicBrainz Picard! Start by adding your music files: "
-                "use 'Add Files' or 'Add Directory' from the toolbar or the File menu."
-            ),
-            doc_url=get_url('/getting_started/screen_main.html'),
-        )
-
-    def _show_tutorial_add_files(self):
-        self.tutorial.show_tip(
-            'add_files',
-            self.panel,
-            _(
-                "Your files are now in the left pane under 'Unmatched Files'. "
-                "Next step: click 'Cluster' in the toolbar to group them by album, "
-                "or select files and use 'Lookup' or 'Scan' to identify them."
-            ),
-            doc_url=get_url('/usage/retrieve.html'),
-        )
-
-    def _show_tutorial_cluster(self):
-        self.tutorial.show_tip(
-            'cluster',
-            self.panel,
-            _(
-                "Files have been grouped into clusters by album. "
-                "Now select a cluster and click 'Lookup' in the toolbar to find "
-                "the matching MusicBrainz release."
-            ),
-            doc_url=get_url('/usage/retrieve_lookup.html'),
-        )
-
-    def _show_tutorial_lookup(self):
-        self.tutorial.show_tip(
-            'lookup',
-            self.panel,
-            _(
-                "Picard is looking up your selection on MusicBrainz. "
-                "Matched albums will appear in the right pane. "
-                "You can then review the metadata before saving."
-            ),
-            doc_url=get_url('/usage/retrieve_lookup.html'),
-        )
-
-    def _show_tutorial_scan(self):
-        self.tutorial.show_tip(
-            'scan',
-            self.panel,
-            _(
-                "Picard is generating audio fingerprints and looking up "
-                "your files on AcoustID. Matched files will move to the "
-                "right pane automatically."
-            ),
-            doc_url=get_url('/usage/retrieve_scan.html'),
-        )
-
-    def _show_tutorial_album_loaded(self):
-        self.tutorial.show_tip(
-            'album_loaded',
-            self.panel,
-            _(
-                "An album has been loaded in the right pane and files have been "
-                "matched to tracks. The color indicates match quality: green means "
-                "a good match. Review the results, then click 'Save' in the toolbar "
-                "to write the new tags to your files."
-            ),
-            doc_url=get_url('/usage/match.html'),
-        )
-
-    def _show_tutorial_metadata(self):
-        return self.tutorial.show_tip(
-            'metadata',
-            self.metadata_box,
-            _(
-                "The metadata view shows tags for the selected item. "
-                "'Original Value' is what's currently in your file, "
-                "'New Value' is what Picard will write. "
-                "Double-click a value to edit it. When you're happy with "
-                "the tags, click 'Save' in the toolbar to write them."
-            ),
-            doc_url=get_url('/workflows/workflow_metadata.html'),
-        )
-
-    def _show_tutorial_cover_art(self):
-        return self.tutorial.show_tip(
-            'cover_art',
-            self.cover_art_box,
-            _(
-                "Cover art for the selected item is shown here. "
-                "You can drag and drop images, or right-click for more options. "
-                "Picard fetches cover art from the Cover Art Archive."
-            ),
-            doc_url=get_url('/usage/coverart.html'),
-        )
-
-    def _show_tutorial_save(self):
-        self.tutorial.show_tip(
-            'save',
-            self.panel,
-            _(
-                "Saving writes the new metadata to your files. "
-                "If renaming or moving is enabled in the options, "
-                "files will also be renamed or moved accordingly."
-            ),
-            doc_url=get_url('/usage/save.html'),
-        )
-
-    def _show_tutorial_drag_drop(self):
-        self.tutorial.show_tip(
-            'drag_drop',
-            self.panel,
-            _(
-                "You can drag files between the left and right panes to "
-                "manually match them to albums and tracks, or drag them "
-                "back to unmatch. To add an album to the right pane, use "
-                "'Lookup' on a cluster, search for it via 'Search', or "
-                "paste a MusicBrainz URL."
-            ),
-            doc_url=get_url('/usage/retrieve_manual.html'),
-        )
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')

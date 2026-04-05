@@ -636,7 +636,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
         if event.isAccepted() and event.source() and event.source() is not self:
-            self.window._show_tutorial_drag_drop()
+            self.window.tutorial.show('drag_drop')
 
     def dropMimeData(self, parent, index, data, action):
         target = None
