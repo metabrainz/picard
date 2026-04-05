@@ -156,9 +156,12 @@ class TutorialTip(QtWidgets.QDialog):
 
         header = QtWidgets.QHBoxLayout()
         icon_label = QtWidgets.QLabel()
-        icon_label.setPixmap(
-            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxInformation).pixmap(32, 32)
-        )
+        style = self.style()
+        if style:
+            icon_label.setPixmap(
+                style.standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxInformation).pixmap(32, 32)
+            )
+        icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
         header.addWidget(icon_label, 0)
         text_label = QtWidgets.QLabel(text)
         text_label.setWordWrap(True)
@@ -232,16 +235,13 @@ class TutorialManager:
 
     def show(self, step_id: str) -> bool:
         """Show a tutorial tip by step ID. Returns True if shown."""
+        if not self.should_show(step_id):
+            return False
         tip_def = TIPS[step_id]
         widget = getattr(self._window, tip_def.widget_attr)
         doc_url = get_url(tip_def.doc_path) if tip_def.doc_path else None
-        return self._show_tip(step_id, widget, _(tip_def.text), doc_url)
-
-    def _show_tip(self, step_id: str, widget: QtWidgets.QWidget, text: str, doc_url: str | None = None) -> bool:
-        if not self.should_show(step_id):
-            return False
         self._close_active_tip()
-        tip = TutorialTip(text, doc_url=doc_url, parent=self._window)
+        tip = TutorialTip(_(tip_def.text), doc_url=doc_url, parent=self._window)
         tip.finished.connect(partial(self.mark_shown, step_id))
         tip.finished.connect(partial(self._on_tip_closed, tip))
         tip.disabled.connect(self.disable)

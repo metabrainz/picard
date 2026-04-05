@@ -1865,6 +1865,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             if metadata_visible and has_album_data and not self.tutorial.show('metadata'):
                 if coverart_visible and obj:
                     self.tutorial.show('cover_art')
+
         self.selection_updated.emit(objects)
         self._update_script_editor_example_files()
 
