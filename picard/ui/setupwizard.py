@@ -102,7 +102,9 @@ class FileOrganizationPage(SetupWizardPage):
         self.move_to_edit.setEnabled(False)
         move_to_layout.addWidget(self.move_to_edit)
         self.browse_button = QtWidgets.QToolButton()
-        self.browse_button.setText(_("…"))
+        style = self.style()
+        if style:
+            self.browse_button.setIcon(style.standardIcon(QtWidgets.QStyle.StandardPixmap.SP_DirOpenIcon))
         self.browse_button.setEnabled(False)
         self.browse_button.clicked.connect(self._browse_directory)
         move_to_layout.addWidget(self.browse_button)
