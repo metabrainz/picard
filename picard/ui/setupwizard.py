@@ -70,14 +70,7 @@ class FileOrganizationPage(SetupWizardPage):
     def __init__(self, parent: QtWidgets.QWizard | None = None):
         super().__init__(parent)
         self.setTitle(_("File Organization"))
-        self.setSubTitle(
-            _(
-                "Choose whether Picard should rename and move your files "
-                "when saving tags. You can change these later from the "
-                "Options menu or under Options \N{RIGHTWARDS ARROW} "
-                "Options \N{RIGHTWARDS ARROW} File Naming."
-            )
-        )
+        self.setSubTitle(_("Choose whether Picard should rename and move your files when saving tags."))
 
         layout = QtWidgets.QVBoxLayout(self)
 
@@ -100,6 +93,15 @@ class FileOrganizationPage(SetupWizardPage):
         layout.addLayout(move_to_layout)
 
         layout.addStretch()
+        hint = QtWidgets.QLabel(
+            _(
+                "You can change these later from the Options menu "
+                "or under Options \N{RIGHTWARDS ARROW} Options "
+                "\N{RIGHTWARDS ARROW} File Naming."
+            )
+        )
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
@@ -132,13 +134,7 @@ class CoverArtPage(SetupWizardPage):
     def __init__(self, parent: QtWidgets.QWizard | None = None):
         super().__init__(parent)
         self.setTitle(_("Cover Art"))
-        self.setSubTitle(
-            _(
-                "Choose how Picard should handle album cover art. "
-                "You can change these later under "
-                "Options \N{RIGHTWARDS ARROW} Cover Art."
-            )
-        )
+        self.setSubTitle(_("Choose how Picard should handle album cover art."))
 
         layout = QtWidgets.QVBoxLayout(self)
 
@@ -149,6 +145,11 @@ class CoverArtPage(SetupWizardPage):
         layout.addWidget(self.save_to_files_checkbox)
 
         layout.addStretch()
+        hint = QtWidgets.QLabel(
+            _("You can change these later under Options \N{RIGHTWARDS ARROW} Options \N{RIGHTWARDS ARROW} Cover Art.")
+        )
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
 
     def initializePage(self) -> None:
         config = get_config()
