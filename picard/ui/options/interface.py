@@ -255,7 +255,7 @@ class InterfaceOptionsPage(OptionsPage):
         dialog = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Icon.Question,
             _("Reset Tutorial"),
-            _("This will reset the tutorial so all tips are shown again. Continue?"),
+            _("This will reset the tutorial and setup wizard so they are shown again. Continue?"),
             QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
             self,
         )
@@ -263,6 +263,7 @@ class InterfaceOptionsPage(OptionsPage):
             config = get_config()
             config.persist['tutorial_steps_shown'] = []
             config.persist['tutorial_disabled'] = False
+            config.persist['setup_wizard_completed'] = False
 
 
 register_options_page(InterfaceOptionsPage)
