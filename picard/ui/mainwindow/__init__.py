@@ -108,6 +108,7 @@ from picard.session.session_manager import (
 from picard.track import Track
 from picard.util import (
     IgnoreUpdatesContext,
+    get_url,
     icontheme,
     iter_files_from_objects,
     iter_unique,
@@ -2289,7 +2290,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Welcome to MusicBrainz Picard! Start by adding your music files: "
                 "use 'Add Files' or 'Add Directory' from the toolbar or the File menu."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/getting_started/screen_main.html'),
         )
 
     def _show_tutorial_add_files(self):
@@ -2301,7 +2302,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Next step: click 'Cluster' in the toolbar to group them by album, "
                 "or select files and use 'Lookup' or 'Scan' to identify them."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/usage/retrieve.html'),
         )
 
     def _show_tutorial_cluster(self):
@@ -2313,7 +2314,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Now select a cluster and click 'Lookup' in the toolbar to find "
                 "the matching MusicBrainz release."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/usage/retrieve_lookup.html'),
         )
 
     def _show_tutorial_lookup(self):
@@ -2325,7 +2326,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Matched albums will appear in the right pane. "
                 "You can then review the metadata before saving."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/usage/retrieve_lookup.html'),
         )
 
     def _show_tutorial_scan(self):
@@ -2337,7 +2338,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "your files on AcoustID. Matched files will move to the "
                 "right pane automatically."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/usage/retrieve_scan.html'),
         )
 
     def _show_tutorial_album_loaded(self):
@@ -2350,7 +2351,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "a good match. Review the results, then click 'Save' in the toolbar "
                 "to write the new tags to your files."
             ),
-            doc_url="https://picard.musicbrainz.org/quick-start/",
+            doc_url=get_url('/usage/match.html'),
         )
 
     def _show_tutorial_metadata(self):
@@ -2364,6 +2365,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "Double-click a value to edit it. When you're happy with "
                 "the tags, click 'Save' in the toolbar to write them."
             ),
+            doc_url=get_url('/workflows/workflow_metadata.html'),
         )
 
     def _show_tutorial_cover_art(self):
@@ -2375,6 +2377,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "You can drag and drop images, or right-click for more options. "
                 "Picard fetches cover art from the Cover Art Archive."
             ),
+            doc_url=get_url('/usage/coverart.html'),
         )
 
     def _show_tutorial_save(self):
@@ -2386,6 +2389,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "If renaming or moving is enabled in the options, "
                 "files will also be renamed or moved accordingly."
             ),
+            doc_url=get_url('/usage/save.html'),
         )
 
     def _show_tutorial_drag_drop(self):
@@ -2399,6 +2403,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 "'Lookup' on a cluster, search for it via 'Search', or "
                 "paste a MusicBrainz URL."
             ),
+            doc_url=get_url('/usage/retrieve_manual.html'),
         )
 
     def show_plugins_options_page(self):
