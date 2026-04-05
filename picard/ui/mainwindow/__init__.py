@@ -1856,10 +1856,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.metadata_box.update(drop_album_caches=drop_album_caches)
 
         # Show tutorial tips for metadata/cover art on first selection.
-        # Prioritize metadata; cover art shows on a later selection if
-        # the metadata tip was already seen.
+        # Metadata tip only for right pane items (album/track), so it shows
+        # after files have been matched. Cover art shows on a later selection
+        # if the metadata tip was already seen.
         if new_selection and objects:
-            if metadata_visible and not self._show_tutorial_metadata():
+            has_album_data = any(isinstance(o, (Album, Track)) for o in objects)
+            if metadata_visible and has_album_data and not self._show_tutorial_metadata():
                 if coverart_visible and obj:
                     self._show_tutorial_cover_art()
         self.selection_updated.emit(objects)
