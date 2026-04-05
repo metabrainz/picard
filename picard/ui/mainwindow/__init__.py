@@ -161,6 +161,7 @@ from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
 from picard.ui.searchdialog.album import AlbumSearchDialog
 from picard.ui.searchdialog.track import TrackSearchDialog
+from picard.ui.setupwizard import SetupWizard
 from picard.ui.statusindicator import (
     DesktopStatusIndicator,
     ProgressStatus,
@@ -2265,8 +2266,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_startup_dialogs(self):
         config = get_config()
         self.show_new_user_dialog(config)
+        self.show_setup_wizard()
         self.show_allow_rtd_updates_dialog(config)
         self._show_tutorial_overview()
+
+    def show_setup_wizard(self) -> None:
+        if SetupWizard.should_show():
+            wizard = SetupWizard(self)
+            wizard.exec()
 
     def show_new_user_dialog(self, config):
         if config.setting['show_new_user_dialog']:
