@@ -51,7 +51,7 @@ TIPS: dict[str, TipDef] = {
             "Welcome to MusicBrainz Picard! Start by adding your music files: "
             "use 'Add Files' or 'Add Directory' from the toolbar or the File menu."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/getting_started/screen_main.html',
     ),
     'add_files': TipDef(
@@ -60,7 +60,7 @@ TIPS: dict[str, TipDef] = {
             "Next step: click 'Cluster' in the toolbar to group them by album, "
             "or select files and use 'Lookup' or 'Scan' to identify them."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/usage/retrieve.html',
     ),
     'cluster': TipDef(
@@ -69,7 +69,7 @@ TIPS: dict[str, TipDef] = {
             "Now select a cluster and click 'Lookup' in the toolbar to find "
             "the matching MusicBrainz release."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/usage/retrieve_lookup.html',
     ),
     'lookup': TipDef(
@@ -78,7 +78,7 @@ TIPS: dict[str, TipDef] = {
             "Matched albums will appear in the right pane. "
             "You can then review the metadata before saving."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/usage/retrieve_lookup.html',
     ),
     'scan': TipDef(
@@ -87,7 +87,7 @@ TIPS: dict[str, TipDef] = {
             "your files on AcoustID. Matched files will move to the "
             "right pane automatically."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/usage/retrieve_scan.html',
     ),
     'album_loaded': TipDef(
@@ -126,7 +126,7 @@ TIPS: dict[str, TipDef] = {
             "If renaming or moving is enabled in the options, "
             "files will also be renamed or moved accordingly."
         ),
-        widget_attr='panel',
+        widget_attr='toolbar',
         doc_path='/usage/save.html',
     ),
     'drag_drop': TipDef(
