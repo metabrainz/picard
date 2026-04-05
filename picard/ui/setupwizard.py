@@ -73,7 +73,8 @@ class FileOrganizationPage(SetupWizardPage):
         self.setSubTitle(
             _(
                 "Choose whether Picard should rename and move your files "
-                "when saving tags. You can change these later under "
+                "when saving tags. You can change these later from the "
+                "Options menu or under Options \N{RIGHTWARDS ARROW} "
                 "Options \N{RIGHTWARDS ARROW} File Naming."
             )
         )
