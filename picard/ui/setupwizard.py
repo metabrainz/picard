@@ -27,7 +27,14 @@ from picard.i18n import gettext as _
 from picard.util import get_url
 
 
-class WelcomePage(QtWidgets.QWizardPage):
+class SetupWizardPage(QtWidgets.QWizardPage):
+    """Base class for setup wizard pages that can save settings."""
+
+    def save_settings(self) -> None:
+        """Save page settings to config. Override in subclasses."""
+
+
+class WelcomePage(SetupWizardPage):
     """Welcome page introducing Picard to new users."""
 
     def __init__(self, parent: QtWidgets.QWizard | None = None):
@@ -54,7 +61,7 @@ class WelcomePage(QtWidgets.QWizardPage):
         layout.addStretch()
 
 
-class FileOrganizationPage(QtWidgets.QWizardPage):
+class FileOrganizationPage(SetupWizardPage):
     """Page for configuring file renaming and moving."""
 
     def __init__(self, parent: QtWidgets.QWizard | None = None):
@@ -90,6 +97,12 @@ class FileOrganizationPage(QtWidgets.QWizardPage):
         self.move_checkbox.setChecked(config.setting['move_files'])
         self.move_to_edit.setText(config.setting['move_files_to'])
 
+    def save_settings(self) -> None:
+        config = get_config()
+        config.setting['rename_files'] = self.rename_checkbox.isChecked()
+        config.setting['move_files'] = self.move_checkbox.isChecked()
+        config.setting['move_files_to'] = self.move_to_edit.text()
+
     def _update_move_to_state(self, checked: bool) -> None:
         self.move_to_edit.setEnabled(checked)
         self.browse_button.setEnabled(checked)
@@ -104,7 +117,7 @@ class FileOrganizationPage(QtWidgets.QWizardPage):
             self.move_to_edit.setText(directory)
 
 
-class CoverArtPage(QtWidgets.QWizardPage):
+class CoverArtPage(SetupWizardPage):
     """Page for configuring cover art settings."""
 
     def __init__(self, parent: QtWidgets.QWizard | None = None):
@@ -127,9 +140,20 @@ class CoverArtPage(QtWidgets.QWizardPage):
         self.embed_checkbox.setChecked(config.setting['save_images_to_tags'])
         self.save_to_files_checkbox.setChecked(config.setting['save_images_to_files'])
 
+    def save_settings(self) -> None:
+        config = get_config()
+        config.setting['save_images_to_tags'] = self.embed_checkbox.isChecked()
+        config.setting['save_images_to_files'] = self.save_to_files_checkbox.isChecked()
+
 
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
+
+    PAGES: dict[str, type[SetupWizardPage]] = {
+        'welcome': WelcomePage,
+        'file_organization': FileOrganizationPage,
+        'cover_art': CoverArtPage,
+    }
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
@@ -138,21 +162,16 @@ class SetupWizard(QtWidgets.QWizard):
         self.setMinimumSize(500, 350)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
 
-        self.welcome_page = WelcomePage(self)
-        self.file_org_page = FileOrganizationPage(self)
-        self.cover_art_page = CoverArtPage(self)
-
-        self.addPage(self.welcome_page)
-        self.addPage(self.file_org_page)
-        self.addPage(self.cover_art_page)
+        self._pages: dict[str, SetupWizardPage] = {}
+        for name, page_class in self.PAGES.items():
+            page = page_class(self)
+            self._pages[name] = page
+            self.addPage(page)
 
     def accept(self) -> None:
+        for page in self._pages.values():
+            page.save_settings()
         config = get_config()
-        config.setting['rename_files'] = self.file_org_page.rename_checkbox.isChecked()
-        config.setting['move_files'] = self.file_org_page.move_checkbox.isChecked()
-        config.setting['move_files_to'] = self.file_org_page.move_to_edit.text()
-        config.setting['save_images_to_tags'] = self.cover_art_page.embed_checkbox.isChecked()
-        config.setting['save_images_to_files'] = self.cover_art_page.save_to_files_checkbox.isChecked()
         config.persist['setup_wizard_completed'] = True
         super().accept()
 
