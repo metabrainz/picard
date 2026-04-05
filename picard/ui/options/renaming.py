@@ -38,7 +38,8 @@ import os.path
 from PyQt6 import QtWidgets
 from PyQt6.QtGui import QPalette
 
-from picard.config import get_config, log
+from picard import log
+from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
@@ -77,6 +78,7 @@ class RenamingOptionsPage(OptionsPage):
         ('move_files_to', ['move_files_to']),
         ('move_additional_files', ['move_additional_files']),
         ('move_additional_files_pattern', ['move_additional_files_pattern']),
+        ('move_conflict_strategy', ['move_conflict_skip', 'move_conflict_rename', 'move_conflict_overwrite']),
         ('delete_empty_dirs', ['delete_empty_dirs']),
         ('rename_files', ['rename_files']),
         ('selected_file_naming_script_id', ['naming_script_selector']),
