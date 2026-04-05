@@ -18,6 +18,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from __future__ import annotations
+
 from functools import partial
 
 from PyQt6 import (
@@ -34,7 +36,7 @@ class TutorialTip(QtWidgets.QDialog):
 
     disabled = QtCore.pyqtSignal()
 
-    def __init__(self, text, doc_url=None, parent=None):
+    def __init__(self, text: str, doc_url: str | None = None, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent=parent)
         self.setWindowTitle(_("Picard Tutorial"))
 
@@ -66,11 +68,11 @@ class TutorialTip(QtWidgets.QDialog):
         button_layout.addWidget(close_button)
         layout.addLayout(button_layout)
 
-    def _on_disable(self):
+    def _on_disable(self) -> None:
         self.disabled.emit()
         self.accept()
 
-    def show_near_widget(self, widget):
+    def show_near_widget(self, widget: QtWidgets.QWidget) -> None:
         self.adjustSize()
         pos = widget.mapToGlobal(QtCore.QPoint(0, widget.height()))
         screen = widget.screen()
@@ -87,28 +89,28 @@ class TutorialTip(QtWidgets.QDialog):
 class TutorialManager:
     """Manages contextual tutorial tips shown once to new users."""
 
-    def __init__(self, window):
+    def __init__(self, window: QtWidgets.QMainWindow):
         self._window = window
-        self._active_tip = None
+        self._active_tip: TutorialTip | None = None
 
-    def should_show(self, step_id):
+    def should_show(self, step_id: str) -> bool:
         config = get_config()
         if config.persist['tutorial_disabled']:
             return False
         return step_id not in config.persist['tutorial_steps_shown']
 
-    def mark_shown(self, step_id):
+    def mark_shown(self, step_id: str) -> None:
         config = get_config()
         shown = config.persist['tutorial_steps_shown']
         if step_id not in shown:
             shown.append(step_id)
             config.persist['tutorial_steps_shown'] = shown
 
-    def disable(self):
+    def disable(self) -> None:
         config = get_config()
         config.persist['tutorial_disabled'] = True
 
-    def show_tip(self, step_id, widget, text, doc_url=None):
+    def show_tip(self, step_id: str, widget: QtWidgets.QWidget, text: str, doc_url: str | None = None) -> bool:
         if not self.should_show(step_id):
             return False
         self._close_active_tip()
@@ -120,11 +122,11 @@ class TutorialManager:
         tip.show_near_widget(widget)
         return True
 
-    def _close_active_tip(self):
+    def _close_active_tip(self) -> None:
         if self._active_tip:
             self._active_tip.close()
             self._active_tip = None
 
-    def _on_tip_closed(self, tip, _result=None):
+    def _on_tip_closed(self, tip: TutorialTip, _result: int | None = None) -> None:
         if self._active_tip is tip:
             self._active_tip = None
