@@ -2395,7 +2395,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             _(
                 "You can drag files between the left and right panes to "
                 "manually match them to albums and tracks, or drag them "
-                "back to unmatch."
+                "back to unmatch. To add an album to the right pane, use "
+                "'Lookup' on a cluster, search for it via 'Search', or "
+                "paste a MusicBrainz URL."
             ),
         )
 
