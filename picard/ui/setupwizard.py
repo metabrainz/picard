@@ -22,7 +22,10 @@ from __future__ import annotations
 
 from PyQt6 import QtWidgets
 
-from picard.config import get_config
+from picard.config import (
+    Config,
+    get_config,
+)
 from picard.i18n import gettext as _
 from picard.util import get_url
 
@@ -30,7 +33,7 @@ from picard.util import get_url
 class SetupWizardPage(QtWidgets.QWizardPage):
     """Base class for setup wizard pages that can save settings."""
 
-    def save_settings(self) -> None:
+    def save_settings(self, config: Config) -> None:
         """Save page settings to config. Override in subclasses."""
 
 
@@ -97,8 +100,7 @@ class FileOrganizationPage(SetupWizardPage):
         self.move_checkbox.setChecked(config.setting['move_files'])
         self.move_to_edit.setText(config.setting['move_files_to'])
 
-    def save_settings(self) -> None:
-        config = get_config()
+    def save_settings(self, config: Config) -> None:
         config.setting['rename_files'] = self.rename_checkbox.isChecked()
         config.setting['move_files'] = self.move_checkbox.isChecked()
         config.setting['move_files_to'] = self.move_to_edit.text()
@@ -140,8 +142,7 @@ class CoverArtPage(SetupWizardPage):
         self.embed_checkbox.setChecked(config.setting['save_images_to_tags'])
         self.save_to_files_checkbox.setChecked(config.setting['save_images_to_files'])
 
-    def save_settings(self) -> None:
-        config = get_config()
+    def save_settings(self, config: Config) -> None:
         config.setting['save_images_to_tags'] = self.embed_checkbox.isChecked()
         config.setting['save_images_to_files'] = self.save_to_files_checkbox.isChecked()
 
@@ -169,9 +170,9 @@ class SetupWizard(QtWidgets.QWizard):
             self.addPage(page)
 
     def accept(self) -> None:
-        for page in self._pages.values():
-            page.save_settings()
         config = get_config()
+        for page in self._pages.values():
+            page.save_settings(config)
         config.persist['setup_wizard_completed'] = True
         super().accept()
 
