@@ -64,13 +64,19 @@ class WelcomePage(SetupWizardPage):
                 "<p>This wizard will help you configure a few important settings "
                 "before you get started. You can always change these later in "
                 "the Options dialog.</p>"
-                "<p><a href='{doc_url}'>Read the documentation</a></p>"
-            ).format(doc_url=doc_url)
+            )
         )
         text.setWordWrap(True)
-        text.setOpenExternalLinks(True)
-        text.setToolTip(doc_url)
         layout.addWidget(text)
+        link = QtWidgets.QLabel(
+            '<a href="{url}">{text}</a>'.format(
+                url=doc_url,
+                text=_("Read the documentation"),
+            )
+        )
+        link.setToolTip(doc_url)
+        link.setOpenExternalLinks(True)
+        layout.addWidget(link)
         layout.addStretch()
 
 
