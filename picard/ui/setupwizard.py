@@ -36,6 +36,7 @@ class WelcomePage(QtWidgets.QWizardPage):
 
         layout = QtWidgets.QVBoxLayout(self)
 
+        doc_url = get_url('/getting_started/screen_main.html')
         text = QtWidgets.QLabel(
             _(
                 "<p>Picard helps you tag and organize your music collection "
@@ -44,10 +45,11 @@ class WelcomePage(QtWidgets.QWizardPage):
                 "before you get started. You can always change these later in "
                 "the Options dialog.</p>"
                 "<p><a href='{doc_url}'>Read the documentation</a></p>"
-            ).format(doc_url=get_url('/getting_started/screen_main.html'))
+            ).format(doc_url=doc_url)
         )
         text.setWordWrap(True)
         text.setOpenExternalLinks(True)
+        text.setToolTip(doc_url)
         layout.addWidget(text)
         layout.addStretch()
 

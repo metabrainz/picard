@@ -144,8 +144,8 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
-        # Add reset tutorial button at the end of the Miscellaneous group
-        self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial…"))
+        # Add reset button for tutorial and setup wizard at the end of the Miscellaneous group
+        self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial and setup wizard…"))
         self.reset_tutorial_button.setSizePolicy(
             QtWidgets.QSizePolicy.Policy.Maximum,
             QtWidgets.QSizePolicy.Policy.Fixed,

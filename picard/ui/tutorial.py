@@ -54,6 +54,7 @@ class TutorialTip(QtWidgets.QDialog):
                     text=_("Learn more…"),
                 )
             )
+            link.setToolTip(doc_url)
             link.setOpenExternalLinks(True)
             layout.addWidget(link)
 
