@@ -154,10 +154,17 @@ class TutorialTip(QtWidgets.QDialog):
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        label = QtWidgets.QLabel(text)
-        label.setWordWrap(True)
-        label.setOpenExternalLinks(True)
-        layout.addWidget(label)
+        header = QtWidgets.QHBoxLayout()
+        icon_label = QtWidgets.QLabel()
+        icon_label.setPixmap(
+            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxInformation).pixmap(32, 32)
+        )
+        header.addWidget(icon_label, 0)
+        text_label = QtWidgets.QLabel(text)
+        text_label.setWordWrap(True)
+        text_label.setOpenExternalLinks(True)
+        header.addWidget(text_label, 1)
+        layout.addLayout(header)
 
         if doc_url:
             link = QtWidgets.QLabel(

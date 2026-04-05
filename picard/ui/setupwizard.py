@@ -27,11 +27,21 @@ from picard.config import (
     get_config,
 )
 from picard.i18n import gettext as _
-from picard.util import get_url
+from picard.util import (
+    get_url,
+    icontheme,
+)
 
 
 class SetupWizardPage(QtWidgets.QWizardPage):
     """Base class for setup wizard pages that can save settings."""
+
+    def __init__(self, parent: QtWidgets.QWizard | None = None):
+        super().__init__(parent)
+        self.setPixmap(
+            QtWidgets.QWizard.WizardPixmap.LogoPixmap,
+            icontheme.lookup('preferences-desktop').pixmap(32, 32),
+        )
 
     def save_settings(self, config: Config) -> None:
         """Save page settings to config. Override in subclasses."""
@@ -173,7 +183,6 @@ class SetupWizard(QtWidgets.QWizard):
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
-        self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
         self.setMinimumSize(500, 350)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
 
