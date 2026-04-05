@@ -144,15 +144,14 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
-        # Add reset tutorial button after the new user dialog checkbox
-        new_user_idx = self.ui.vboxlayout1.indexOf(self.ui.new_user_dialog)
+        # Add reset tutorial button at the end of the Miscellaneous group
         self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial…"))
         self.reset_tutorial_button.setSizePolicy(
             QtWidgets.QSizePolicy.Policy.Maximum,
             QtWidgets.QSizePolicy.Policy.Fixed,
         )
         self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
-        self.ui.vboxlayout1.insertWidget(new_user_idx + 1, self.reset_tutorial_button)
+        self.ui.vboxlayout1.addWidget(self.reset_tutorial_button)
 
     def load(self):
         # Don't display the multi-selection warning when loading values.
