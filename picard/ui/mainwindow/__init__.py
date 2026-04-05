@@ -2343,9 +2343,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             'album_loaded',
             self.panel,
             _(
-                "An album has been loaded in the right pane. Click on a track "
-                "to review its metadata and cover art in the bottom panels. "
-                "The color indicates match quality: green means a good match."
+                "An album has been loaded in the right pane and files have been "
+                "matched to tracks. The color indicates match quality: green means "
+                "a good match. Review the results, then click 'Save' in the toolbar "
+                "to write the new tags to your files."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
