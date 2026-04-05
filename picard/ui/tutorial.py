@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import partial
+import time
 
 from PyQt6 import (
     QtCore,
@@ -211,9 +212,14 @@ class TutorialTip(QtWidgets.QDialog):
 class TutorialManager:
     """Manages contextual tutorial tips shown once to new users."""
 
+    MIN_DISPLAY_SECS = 3.0
+
     def __init__(self, window: QtWidgets.QMainWindow):
         self._window = window
         self._active_tip: TutorialTip | None = None
+        self._tip_shown_at: float = 0
+        self._pending_step: str | None = None
+        self._pending_timer: QtCore.QTimer | None = None
 
     def should_show(self, step_id: str) -> bool:
         config = get_config()
@@ -236,6 +242,40 @@ class TutorialManager:
         """Show a tutorial tip by step ID. Returns True if shown."""
         if not self.should_show(step_id):
             return False
+        # If a tip is active and hasn't been shown long enough, queue this one
+        remaining_ms = self._tip_remaining_ms()
+        if self._active_tip and remaining_ms > 0:
+            self._queue_pending(step_id, remaining_ms)
+            return True
+        self._cancel_pending()
+        self._show_now(step_id)
+        return True
+
+    def _tip_remaining_ms(self) -> int:
+        elapsed = time.monotonic() - self._tip_shown_at
+        return max(0, int((self.MIN_DISPLAY_SECS - elapsed) * 1000))
+
+    def _queue_pending(self, step_id: str, delay_ms: int) -> None:
+        self._cancel_pending()
+        self._pending_step = step_id
+        self._pending_timer = QtCore.QTimer(self._window)
+        self._pending_timer.setSingleShot(True)
+        self._pending_timer.timeout.connect(self._show_pending)
+        self._pending_timer.start(delay_ms)
+
+    def _cancel_pending(self) -> None:
+        if self._pending_timer:
+            self._pending_timer.stop()
+            self._pending_timer = None
+        self._pending_step = None
+
+    def _show_pending(self) -> None:
+        step_id = self._pending_step
+        self._cancel_pending()
+        if step_id and self.should_show(step_id):
+            self._show_now(step_id)
+
+    def _show_now(self, step_id: str) -> None:
         tip_def = TIPS[step_id]
         widget = getattr(self._window, tip_def.widget_attr)
         doc_url = get_url(tip_def.doc_path) if tip_def.doc_path else None
@@ -245,8 +285,8 @@ class TutorialManager:
         tip.finished.connect(partial(self._on_tip_closed, tip))
         tip.disabled.connect(self.disable)
         self._active_tip = tip
+        self._tip_shown_at = time.monotonic()
         tip.show_near_widget(widget)
-        return True
 
     def _close_active_tip(self) -> None:
         if self._active_tip:
