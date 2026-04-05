@@ -1849,15 +1849,19 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
         if coverart_visible and new_selection:
             self.cover_art_box.set_item(obj)
-            if obj:
-                self._show_tutorial_cover_art()
 
         if metadata_visible:
             if new_selection:
                 self.metadata_box.selection_dirty = True
             self.metadata_box.update(drop_album_caches=drop_album_caches)
-            if new_selection and objects:
-                self._show_tutorial_metadata()
+
+        # Show tutorial tips for metadata/cover art on first selection.
+        # Prioritize metadata; cover art shows on a later selection if
+        # the metadata tip was already seen.
+        if new_selection and objects:
+            if metadata_visible and not self._show_tutorial_metadata():
+                if coverart_visible and obj:
+                    self._show_tutorial_cover_art()
         self.selection_updated.emit(objects)
         self._update_script_editor_example_files()
 
@@ -2280,10 +2284,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             'overview',
             self.panel,
             _(
-                "Welcome to MusicBrainz Picard! The left pane shows your unmatched files, "
-                "the right pane shows matched albums. Add files, then use Cluster, Lookup "
-                "or Scan to match them. The bottom area shows metadata and cover art for "
-                "the selected item."
+                "Welcome to MusicBrainz Picard! Start by adding your music files: "
+                "use 'Add Files' or 'Add Directory' from the toolbar or the File menu."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
@@ -2294,8 +2296,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.panel,
             _(
                 "Your files are now in the left pane under 'Unmatched Files'. "
-                "Next step: click 'Cluster' to group them by album, or use "
-                "'Lookup' / 'Scan' to identify them."
+                "Next step: click 'Cluster' in the toolbar to group them by album, "
+                "or select files and use 'Lookup' or 'Scan' to identify them."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
@@ -2306,9 +2308,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.panel,
             _(
                 "Files have been grouped into clusters by album. "
-                "Right-click a cluster and choose 'Lookup' to find the "
-                "matching MusicBrainz release, or select a cluster and "
-                "click 'Lookup' in the toolbar."
+                "Now select a cluster and click 'Lookup' in the toolbar to find "
+                "the matching MusicBrainz release."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
@@ -2342,27 +2343,28 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             'album_loaded',
             self.panel,
             _(
-                "An album has been loaded in the right pane. Expand it to see "
-                "tracks and matched files. The similarity percentage and color "
-                "indicate how well a file matches a track. Green means a good match."
+                "An album has been loaded in the right pane. Click on a track "
+                "to review its metadata and cover art in the bottom panels. "
+                "The color indicates match quality: green means a good match."
             ),
             doc_url="https://picard.musicbrainz.org/quick-start/",
         )
 
     def _show_tutorial_metadata(self):
-        self.tutorial.show_tip(
+        return self.tutorial.show_tip(
             'metadata',
             self.metadata_box,
             _(
                 "The metadata view shows tags for the selected item. "
                 "'Original Value' is what's currently in your file, "
-                "'New Value' is what Picard will write when you save. "
-                "Double-click a value to edit it."
+                "'New Value' is what Picard will write. "
+                "Double-click a value to edit it. When you're happy with "
+                "the tags, click 'Save' in the toolbar to write them."
             ),
         )
 
     def _show_tutorial_cover_art(self):
-        self.tutorial.show_tip(
+        return self.tutorial.show_tip(
             'cover_art',
             self.cover_art_box,
             _(

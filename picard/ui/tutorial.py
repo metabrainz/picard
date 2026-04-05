@@ -110,7 +110,7 @@ class TutorialManager:
 
     def show_tip(self, step_id, widget, text, doc_url=None):
         if not self.should_show(step_id):
-            return
+            return False
         self._close_active_tip()
         tip = TutorialTip(text, doc_url=doc_url, parent=self._window)
         tip.finished.connect(partial(self.mark_shown, step_id))
@@ -118,6 +118,7 @@ class TutorialManager:
         tip.disabled.connect(self.disable)
         self._active_tip = tip
         tip.show_near_widget(widget)
+        return True
 
     def _close_active_tip(self):
         if self._active_tip:
