@@ -70,7 +70,13 @@ class FileOrganizationPage(SetupWizardPage):
     def __init__(self, parent: QtWidgets.QWizard | None = None):
         super().__init__(parent)
         self.setTitle(_("File Organization"))
-        self.setSubTitle(_("Choose whether Picard should rename and move your files when saving tags."))
+        self.setSubTitle(
+            _(
+                "Choose whether Picard should rename and move your files "
+                "when saving tags. You can change these later under "
+                "Options \N{RIGHTWARDS ARROW} File Naming."
+            )
+        )
 
         layout = QtWidgets.QVBoxLayout(self)
 
@@ -125,7 +131,13 @@ class CoverArtPage(SetupWizardPage):
     def __init__(self, parent: QtWidgets.QWizard | None = None):
         super().__init__(parent)
         self.setTitle(_("Cover Art"))
-        self.setSubTitle(_("Choose how Picard should handle album cover art."))
+        self.setSubTitle(
+            _(
+                "Choose how Picard should handle album cover art. "
+                "You can change these later under "
+                "Options \N{RIGHTWARDS ARROW} Cover Art."
+            )
+        )
 
         layout = QtWidgets.QVBoxLayout(self)
 
