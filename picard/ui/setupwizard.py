@@ -150,11 +150,11 @@ class CoverArtPage(SetupWizardPage):
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
 
-    PAGES: dict[str, type[SetupWizardPage]] = {
-        'welcome': WelcomePage,
-        'file_organization': FileOrganizationPage,
-        'cover_art': CoverArtPage,
-    }
+    PAGES: list[type[SetupWizardPage]] = [
+        WelcomePage,
+        FileOrganizationPage,
+        CoverArtPage,
+    ]
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
@@ -163,15 +163,15 @@ class SetupWizard(QtWidgets.QWizard):
         self.setMinimumSize(500, 350)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
 
-        self._pages: dict[str, SetupWizardPage] = {}
-        for name, page_class in self.PAGES.items():
+        self._pages: list[SetupWizardPage] = []
+        for page_class in self.PAGES:
             page = page_class(self)
-            self._pages[name] = page
+            self._pages.append(page)
             self.addPage(page)
 
     def accept(self) -> None:
         config = get_config()
-        for page in self._pages.values():
+        for page in self._pages:
             page.save_settings(config)
         config.persist['setup_wizard_completed'] = True
         super().accept()
