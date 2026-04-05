@@ -114,8 +114,7 @@ TIPS: dict[str, TipDef] = {
     'cover_art': TipDef(
         text=N_(
             "Cover art for the selected item is shown here. "
-            "You can drag and drop images, or right-click for more options. "
-            "Picard fetches cover art from the Cover Art Archive."
+            "You can drag and drop images, or right-click for more options."
         ),
         widget_attr='cover_art_box',
         doc_path='/usage/coverart.html',
