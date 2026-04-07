@@ -358,7 +358,7 @@ class Track(FileListItem):
         genres = genres_filter.filter(genres, minusage=minusage)
 
         # Find most common genres
-        most_common_genres = genres.most_common(limit)
+        most_common_genres = sorted(genres.items(), key=lambda x: (-x[1], x[0]))[:limit]
         genres_list = [titlecase(name) for name, _count in most_common_genres]
         genres_list.sort()
 
