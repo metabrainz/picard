@@ -151,8 +151,8 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._width.setSpecialValueText("")
         self._width.setValue(DialogConfig.DEFAULT_WIDTH)
         self._width.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-        set_widget_fixed_width_for_text(self._width, "9999" + _(' px'), padding=30)
         self._width.setSuffix(_(' px'))
+        set_widget_fixed_width_for_text(self._width, padding=30)
         self._align = QtWidgets.QComboBox(self._editor_panel)
         for label, enum_val in get_align_options():
             self._align.addItem(_(label), enum_val)

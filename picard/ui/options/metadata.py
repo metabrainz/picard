@@ -292,7 +292,7 @@ class ScriptExceptionSelector(PicardDialog):
         super().__init__(parent=parent)
         self.ui = Ui_ExceptionScriptSelector()
         self.ui.setupUi(self)
-        set_widget_fixed_width_for_text(self.ui.weighting_selector, "100", padding=20)
+        set_widget_fixed_width_for_text(self.ui.weighting_selector, padding=20)
         self.ui.button_box.accepted.connect(self.save_changes)
         self.ui.button_box.rejected.connect(self.reject)
         self.move_view = MoveableListView(self.ui.selected_scripts, self.ui.move_up, self.ui.move_down)

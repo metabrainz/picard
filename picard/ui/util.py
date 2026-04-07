@@ -188,7 +188,20 @@ def _get_widget_text(widget):
 
     For QComboBox, returns the longest item text to ensure the widget
     is wide enough for all options.
+
+    For QSpinBox, computes the widest possible display string by
+    considering prefix, suffix, min/max values, and special value text.
     """
+    if isinstance(widget, QtWidgets.QSpinBox):
+        font = widget.font()
+        candidates = [
+            str(widget.minimum()),
+            str(widget.maximum()),
+            widget.specialValueText(),
+        ]
+        number_text = max(candidates, key=lambda t: get_text_width(font, t))
+        text = widget.prefix() + number_text + widget.suffix()
+        return text
     if isinstance(widget, QtWidgets.QComboBox):
         longest = ''
         for i in range(widget.count()):
