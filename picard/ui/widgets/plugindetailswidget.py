@@ -61,7 +61,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Plugin name
         self.name_label = QtWidgets.QLabel()
-        self.name_label.setStyleSheet("font-weight: bold; font-size: 14px;")
+        font = self.name_label.font()
+        font.setBold(True)
+        font.setPointSizeF(font.pointSizeF() * 1.2)
+        self.name_label.setFont(font)
         self.name_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(self.name_label)
 
