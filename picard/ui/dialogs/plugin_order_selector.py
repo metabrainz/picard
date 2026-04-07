@@ -40,6 +40,7 @@ except ImportError:
 
 
 from picard.ui import PicardDialog
+from picard.ui.util import font_scaled_size
 from picard.ui.widgets.orderabletableview import OrderableTableView
 
 
@@ -60,7 +61,7 @@ class PluginOrderSelectorDialog(PicardDialog):
 
         self.setWindowTitle(_("Plugin Execution Order"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        self.setMinimumWidth(650)
+        self.setMinimumSize(font_scaled_size(self, 80, 25))
         self._layout = QtWidgets.QVBoxLayout(self)
 
         instructions = QtWidgets.QLabel(

@@ -220,6 +220,20 @@ def set_widget_fixed_width_for_text(widget, reference_text=None, padding=0):
     widget.setFixedWidth(width)
 
 
+def font_scaled_size(widget, width_chars, height_lines):
+    """Return a QSize scaled to the widget's font metrics.
+
+    Args:
+        widget: The QWidget whose font is used for measurement.
+        width_chars: Desired width expressed as number of '0' characters.
+        height_lines: Desired height expressed as number of text lines.
+    """
+    metrics = QtGui.QFontMetrics(widget.font())
+    char_width = metrics.horizontalAdvance('0')
+    line_height = metrics.height()
+    return QtCore.QSize(char_width * width_chars, line_height * height_lines)
+
+
 def qlistwidget_items(qlistwidget):
     """Yield all items from a QListWidget"""
     for i in range(qlistwidget.count()):

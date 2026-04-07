@@ -31,6 +31,7 @@ from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import font_scaled_size
 from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
 
 
@@ -54,7 +55,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
     def setup_ui(self):
         """Setup the details widget."""
         # Set minimum width to prevent resizing when content changes
-        self.setMinimumWidth(250)
+        self.setMinimumWidth(font_scaled_size(self, 30, 1).width())
 
         layout = QtWidgets.QVBoxLayout(self)
 

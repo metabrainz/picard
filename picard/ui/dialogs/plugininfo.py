@@ -29,6 +29,7 @@ from picard.plugin3.categories import PluginCategorySet
 from picard.plugin3.installable import InstallablePlugin
 
 from picard.ui import PreserveGeometry
+from picard.ui.util import font_scaled_size
 
 
 class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
@@ -46,7 +47,7 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
 
         self.setWindowTitle(_("Plugin Information"))
         self.setModal(True)
-        self.setMinimumSize(500, 300)
+        self.setMinimumSize(font_scaled_size(self, 60, 20))
         self.setup_ui()
 
     def showEvent(self, event):
