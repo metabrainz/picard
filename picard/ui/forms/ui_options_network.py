@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_network.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -52,6 +52,7 @@ class Ui_NetworkOptionsPage(object):
         self.password.setObjectName("password")
         self.gridlayout.addWidget(self.password, 9, 0, 1, 2)
         self.server_port = QtWidgets.QSpinBox(parent=self.web_proxy)
+        self.server_port.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.server_port.setMinimum(1)
         self.server_port.setMaximum(65535)
         self.server_port.setProperty("value", 80)
@@ -85,6 +86,7 @@ class Ui_NetworkOptionsPage(object):
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_3.addWidget(self.label_3)
         self.transfer_timeout = QtWidgets.QSpinBox(parent=self.networkopts)
+        self.transfer_timeout.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.transfer_timeout.setMaximum(900)
         self.transfer_timeout.setProperty("value", 30)
         self.transfer_timeout.setObjectName("transfer_timeout")
@@ -98,6 +100,7 @@ class Ui_NetworkOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_cache_size.sizePolicy().hasHeightForWidth())
         self.label_cache_size.setSizePolicy(sizePolicy)
+        self.label_cache_size.setWordWrap(False)
         self.label_cache_size.setObjectName("label_cache_size")
         self.horizontalLayout.addWidget(self.label_cache_size, 0, QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.network_cache_size = QtWidgets.QLineEdit(parent=self.networkopts)
@@ -106,6 +109,9 @@ class Ui_NetworkOptionsPage(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.network_cache_size.sizePolicy().hasHeightForWidth())
         self.network_cache_size.setSizePolicy(sizePolicy)
+        self.network_cache_size.setMinimumSize(QtCore.QSize(60, 0))
+        self.network_cache_size.setMaximumSize(QtCore.QSize(60, 16777215))
+        self.network_cache_size.setText("")
         self.network_cache_size.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.network_cache_size.setObjectName("network_cache_size")
         self.horizontalLayout.addWidget(self.network_cache_size)
@@ -128,6 +134,7 @@ class Ui_NetworkOptionsPage(object):
         self.label_2.setObjectName("label_2")
         self.horizontalLayout_4.addWidget(self.label_2)
         self.browser_integration_port = QtWidgets.QSpinBox(parent=self.browser_integration)
+        self.browser_integration_port.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.browser_integration_port.setMinimum(1)
         self.browser_integration_port.setMaximum(65535)
         self.browser_integration_port.setProperty("value", 8000)

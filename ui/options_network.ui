@@ -72,7 +72,7 @@
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -93,12 +93,15 @@
       <item row="9" column="0" colspan="2">
        <widget class="QLineEdit" name="password">
         <property name="echoMode">
-         <enum>QLineEdit::Password</enum>
+         <enum>QLineEdit::EchoMode::Password</enum>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
        <widget class="QSpinBox" name="server_port">
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -150,7 +153,7 @@
      </layout>
     </widget>
    </item>
-   <item alignment="Qt::AlignVCenter">
+   <item alignment="Qt::AlignmentFlag::AlignVCenter">
     <widget class="QGroupBox" name="networkopts">
      <property name="title">
       <string>Network options</string>
@@ -173,6 +176,9 @@
         </item>
         <item>
          <widget class="QSpinBox" name="transfer_timeout">
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
           <property name="maximum">
            <number>900</number>
           </property>
@@ -185,7 +191,7 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
-        <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
+        <item alignment="Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter">
          <widget class="QLabel" name="label_cache_size">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -195,6 +201,9 @@
           </property>
           <property name="text">
            <string>Cache size (MB):</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -206,8 +215,23 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
           <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -245,6 +269,9 @@
         </item>
         <item>
          <widget class="QSpinBox" name="browser_integration_port">
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          </property>
           <property name="minimum">
            <number>1</number>
           </property>
@@ -274,7 +301,7 @@
    <item>
     <spacer>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
