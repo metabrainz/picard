@@ -39,6 +39,7 @@ from picard.tags import (
 from picard.tags.docs import display_tag_tooltip
 
 from picard.ui import PicardDialog
+from picard.ui.util import set_widget_fixed_width_for_text
 
 
 class Filter(QtWidgets.QWidget):
@@ -63,7 +64,7 @@ class Filter(QtWidgets.QWidget):
 
         # filter button
         self.filter_button = QtWidgets.QPushButton(Filter.make_button_text(self.selected_filters), self)
-        self.filter_button.setMaximumWidth(120)
+        set_widget_fixed_width_for_text(self.filter_button, padding=20)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 

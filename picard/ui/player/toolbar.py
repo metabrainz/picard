@@ -45,17 +45,12 @@ from .player import (
     Player,
 )
 
+from picard.ui.util import get_text_width
 from picard.ui.widgets import (
     ClickableSlider,
     ElidedLabel,
     SliderPopover,
 )
-
-
-def get_text_width(font, text):
-    metrics = QtGui.QFontMetrics(font)
-    size = metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text)
-    return size.width()
 
 
 class PlayerToolbar(QtWidgets.QToolBar):
