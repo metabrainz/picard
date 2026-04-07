@@ -60,7 +60,8 @@ class Plugins3OptionsPage(OptionsPage):
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setup_ui()
-        self.plugin_manager.plugin_update_checks_complete.connect(self._on_update_check_complete)
+        if self.plugin_manager:
+            self.plugin_manager.plugin_update_checks_complete.connect(self._on_update_check_complete)
 
     def _save_updates(self, updates, update_only=False):
         """Save updates to config, cleaning up stale entries for uninstalled plugins."""

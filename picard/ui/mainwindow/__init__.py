@@ -1992,7 +1992,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _check_for_plugin_updates(self):
         config = get_config()
-        if config.setting['check_for_plugin_updates']:
+        if self.plugin_manager and config.setting['check_for_plugin_updates']:
             PluginUpdateChecker(self.plugin_manager).check_for_updates()
         else:
             log.info("Skipping plugin update checks based on user settings")

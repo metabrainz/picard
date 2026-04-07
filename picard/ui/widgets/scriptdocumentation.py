@@ -126,7 +126,7 @@ class FunctionsDocumentationPage(DocumentationPage):
                 html = ''
             template = '<dt>%s</dt><dd>%s%s</dd>'
             if function.module is not None and function.module != 'picard.script.functions':
-                if function.plugin_id:
+                if function.plugin_id and manager:
                     plugin = manager.plugin_id_to_plugin(function.plugin_id)
                     name = _("Plugin: {plugin_name}").format(plugin_name=plugin.name()) if plugin else function.module
                     module = '[' + name + ']'
