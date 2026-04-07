@@ -61,6 +61,7 @@ from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
 )
+from picard.ui.util import set_widget_fixed_width_for_text
 
 
 class RenamingCompatOptionsPage(OptionsPage):
@@ -87,6 +88,7 @@ class RenamingCompatOptionsPage(OptionsPage):
         self.win_compat_replacements = config.setting['win_compat_replacements']
         self.ui = Ui_RenamingCompatOptionsPage()
         self.ui.setupUi(self)
+        set_widget_fixed_width_for_text(self.ui.replace_dir_separator, "MMM", padding=10)
         self.ui.ascii_filenames.toggled.connect(self.on_options_changed)
         self.ui.windows_compatibility.toggled.connect(self.on_options_changed)
         self.ui.windows_long_paths.toggled.connect(self.on_options_changed)
@@ -195,6 +197,16 @@ class WinCompatDialog(PicardDialog):
         self.replacements = dict(replacements)
         self.ui = Ui_WinCompatDialog()
         self.ui.setupUi(self)
+        for widget in (
+            self.ui.replace_asterisk,
+            self.ui.replace_colon,
+            self.ui.replace_gt,
+            self.ui.replace_lt,
+            self.ui.replace_pipe,
+            self.ui.replace_questionmark,
+            self.ui.replace_quotationmark,
+        ):
+            set_widget_fixed_width_for_text(widget, "MMM", padding=10)
         self.ui.replace_asterisk.setValidator(WinCompatReplacementValidator())
         self.ui.replace_colon.setValidator(WinCompatReplacementValidator())
         self.ui.replace_gt.setValidator(WinCompatReplacementValidator())
