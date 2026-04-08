@@ -39,6 +39,10 @@ from picard.tags import (
 from picard.tags.docs import display_tag_tooltip
 
 from picard.ui import PicardDialog
+from picard.ui.util import (
+    font_scaled_size,
+    get_text_width,
+)
 
 
 class Filter(QtWidgets.QWidget):
@@ -63,7 +67,7 @@ class Filter(QtWidgets.QWidget):
 
         # filter button
         self.filter_button = QtWidgets.QPushButton(Filter.make_button_text(self.selected_filters), self)
-        self.filter_button.setMaximumWidth(120)
+        self.filter_button.setMaximumWidth(get_text_width(self.filter_button.font(), '0' * 16) + 20)
         self.filter_button.clicked.connect(self._show_filter_dialog)
         layout.addWidget(self.filter_button)
 
@@ -171,7 +175,7 @@ class FilterDialog(PicardDialog):
         super().__init__(parent)
         self._selected_filters = selected_filters
         self.setWindowTitle(_("Select Filters"))
-        self.setMinimumWidth(300)
+        self.setMinimumSize(font_scaled_size(self, 40, 20))
         self._setup_ui()
 
     def get_selected_tags(self):
@@ -221,7 +225,6 @@ class FilterDialog(PicardDialog):
         button_box.rejected.connect(self.reject)
         button_box.helpRequested.connect(self.show_help)
         layout.addWidget(button_box)
-        self.setMinimumWidth(300)
 
     def _check_all_box_clicked(self):
         state = self.check_all_box.checkState() == QtCore.Qt.CheckState.Checked

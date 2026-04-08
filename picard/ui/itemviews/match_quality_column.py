@@ -386,5 +386,7 @@ class MatchQualityColumnDelegate(QtWidgets.QStyledItemDelegate):
         QtCore.QSize
             A size that accommodates both icon and text.
         """
-        # Return a size that accommodates both icon and text
-        return QtCore.QSize(57, 16)
+        # Return a size that accommodates the icon with margin
+        icon_size = 16
+        icon_margin = 2
+        return QtCore.QSize(icon_size + 2 * icon_margin, icon_size)

@@ -173,6 +173,80 @@ class FileDialog(QtWidgets.QFileDialog):
         return tuple(dirs)
 
 
+def get_text_width(font, text):
+    """Calculate the pixel width of text rendered in the given font.
+
+    Uses QFontMetrics to measure the text, ensuring the result adapts
+    to the user's font size settings.
+    """
+    metrics = QtGui.QFontMetrics(font)
+    return metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text).width()
+
+
+def _get_widget_text(widget):
+    """Extract the current display text from a widget.
+
+    For QComboBox, returns the longest item text to ensure the widget
+    is wide enough for all options.
+
+    For QSpinBox, computes the widest possible display string by
+    considering prefix, suffix, min/max values, and special value text.
+    """
+    if isinstance(widget, QtWidgets.QSpinBox):
+        font = widget.font()
+        candidates = [
+            str(widget.minimum()),
+            str(widget.maximum()),
+            widget.specialValueText(),
+        ]
+        number_text = max(candidates, key=lambda t: get_text_width(font, t))
+        text = widget.prefix() + number_text + widget.suffix()
+        return text
+    if isinstance(widget, QtWidgets.QComboBox):
+        longest = ''
+        for i in range(widget.count()):
+            text = widget.itemText(i)
+            if len(text) > len(longest):
+                longest = text
+        return longest
+    if hasattr(widget, 'text'):
+        return widget.text()
+    return ''
+
+
+def set_widget_fixed_width_for_text(widget, reference_text=None, padding=0):
+    """Set a widget's fixed width based on the pixel width of reference_text.
+
+    Uses font metrics instead of hardcoded pixel widths, so the result
+    adapts to the user's font size settings.
+
+    Args:
+        widget: The QWidget to resize.
+        reference_text: A representative text string (e.g. "99999" for a
+            5-digit number field).  If not provided, the widget's current
+            text is used.
+        padding: Extra pixels to add (e.g. for margins/borders).
+    """
+    if reference_text is None:
+        reference_text = _get_widget_text(widget)
+    width = get_text_width(widget.font(), reference_text) + padding
+    widget.setFixedWidth(width)
+
+
+def font_scaled_size(widget, width_chars, height_lines):
+    """Return a QSize scaled to the widget's font metrics.
+
+    Args:
+        widget: The QWidget whose font is used for measurement.
+        width_chars: Desired width expressed as number of '0' characters.
+        height_lines: Desired height expressed as number of text lines.
+    """
+    metrics = QtGui.QFontMetrics(widget.font())
+    char_width = metrics.horizontalAdvance('0')
+    line_height = metrics.height()
+    return QtCore.QSize(char_width * width_chars, line_height * height_lines)
+
+
 def qlistwidget_items(qlistwidget):
     """Yield all items from a QListWidget"""
     for i in range(qlistwidget.count()):

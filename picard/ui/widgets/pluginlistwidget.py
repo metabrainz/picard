@@ -42,6 +42,7 @@ from picard.util import temporary_disconnect
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import font_scaled_size
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -863,8 +864,8 @@ class SwitchRefDialog(QtWidgets.QDialog):
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
         self.setModal(True)
-        self.resize(400, 300)
-        self.setMinimumSize(400, 300)
+        self.resize(font_scaled_size(self, 50, 20))
+        self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()
         self.load_refs()
 

@@ -80,6 +80,7 @@ from picard.ui.options.scripting import (
     OptionsCheckError,
     ScriptCheckError,
 )
+from picard.ui.util import set_widget_fixed_width_for_text
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 
 
@@ -1022,6 +1023,8 @@ class ScriptDetailsEditor(PicardDialog, HasDisplayTitle):
         self.script_item = script_item
         self.ui = Ui_ScriptDetails()
         self.ui.setupUi(self)
+        set_widget_fixed_width_for_text(self.ui.script_version, "00.00.00", padding=10)
+        set_widget_fixed_width_for_text(self.ui.script_last_updated, "0000-00-00 00:00 UTC", padding=10)
 
         self.ui.buttonBox.accepted.connect(self.save_changes)
         self.ui.buttonBox.rejected.connect(self.close_window)

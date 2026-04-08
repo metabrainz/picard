@@ -654,7 +654,7 @@ class TestMatchQualityColumnDelegate:
 
         size = delegate.sizeHint(option, index)
 
-        assert size == QtCore.QSize(57, 16)
+        assert size == QtCore.QSize(20, 16)
 
 
 class TestItemViewsIntegration:

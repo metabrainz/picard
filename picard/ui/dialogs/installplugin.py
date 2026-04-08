@@ -43,6 +43,7 @@ from picard.plugin3.registry import RegistryPlugin
 from picard.ui import PicardDialog
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import font_scaled_size
 
 
 render_markdown: Callable[[str], str] | None = None
@@ -69,7 +70,7 @@ class InstallPluginDialog(PicardDialog):
         super().__init__(parent)
         self.setWindowTitle(_("Install Plugin"))
         self.setModal(True)
-        self.setMinimumSize(500, 300)
+        self.setMinimumSize(font_scaled_size(self, 60, 20))
 
         # Cache frequently accessed objects
         self.plugin_manager = self.tagger.get_plugin_manager()

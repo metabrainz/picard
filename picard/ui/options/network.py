@@ -29,6 +29,7 @@ from picard.i18n import N_
 
 from picard.ui.forms.ui_options_network import Ui_NetworkOptionsPage
 from picard.ui.options import OptionsPage
+from picard.ui.util import set_widget_fixed_width_for_text
 
 
 class NetworkOptionsPage(OptionsPage):
@@ -57,6 +58,7 @@ class NetworkOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
+        set_widget_fixed_width_for_text(self.ui.network_cache_size, "99999")
 
     def load(self):
         config = get_config()
