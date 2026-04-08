@@ -192,3 +192,26 @@ class TrackGenresToMetadataTest(PicardTestCase):
         genres = Counter(pop=6, rock=7, blues=2)
         ret = Track._genres_to_metadata(genres, join_with=',')
         self.assertEqual(ret, ['Blues,Pop,Rock'])
+
+    def test_limit_with_tied_counts(self):
+        """Genres with equal counts must be selected deterministically.
+
+        Counter.most_common() returns tied items in insertion order, which
+        can vary depending on the order the API response is parsed.  The
+        result must be the same regardless of insertion order.
+        See https://community.metabrainz.org/t/genre-keeps-changing/814606
+        """
+        # Simulate two different insertion orders from the API
+        genres_order1 = Counter()
+        genres_order1['modern classical'] = 1
+        genres_order1['electronic'] = 1
+        genres_order1['pop'] = 1
+
+        genres_order2 = Counter()
+        genres_order2['electronic'] = 1
+        genres_order2['pop'] = 1
+        genres_order2['modern classical'] = 1
+
+        ret1 = Track._genres_to_metadata(genres_order1, limit=1)
+        ret2 = Track._genres_to_metadata(genres_order2, limit=1)
+        self.assertEqual(ret1, ret2)
