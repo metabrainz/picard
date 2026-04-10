@@ -338,6 +338,7 @@ class AlbumTreeView(BaseTreeView):
             item.setFont(i, font)
             item.setText(i, album.column(column.key))
         self.add_cluster(album.unmatched_files, item)
+        self.window.tutorial.show('album_loaded')
 
     def remove_album(self, album):
         album.ui_item.setSelected(False)

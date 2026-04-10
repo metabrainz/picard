@@ -144,6 +144,15 @@ class InterfaceOptionsPage(OptionsPage):
 
         self.ui.allow_multi_dirs_selection.stateChanged.connect(self.multi_selection_warning)
 
+        # Add reset button for tutorial and setup wizard at the end of the Miscellaneous group
+        self.reset_tutorial_button = QtWidgets.QPushButton(_("Reset tutorial and setup wizard…"))
+        self.reset_tutorial_button.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Maximum,
+            QtWidgets.QSizePolicy.Policy.Fixed,
+        )
+        self.reset_tutorial_button.clicked.connect(self._reset_tutorial)
+        self.ui.vboxlayout1.addWidget(self.reset_tutorial_button)
+
     def load(self):
         # Don't display the multi-selection warning when loading values.
         # This is required because loading a different option profile could trigger the warning.
@@ -241,6 +250,20 @@ class InterfaceOptionsPage(OptionsPage):
         )
         if dialog.exec() == QtWidgets.QMessageBox.StandardButton.No:
             self.ui.allow_multi_dirs_selection.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+    def _reset_tutorial(self):
+        dialog = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Icon.Question,
+            _("Reset Tutorial"),
+            _("This will reset the tutorial and setup wizard so they are shown again. Continue?"),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            self,
+        )
+        if dialog.exec() == QtWidgets.QMessageBox.StandardButton.Yes:
+            config = get_config()
+            config.persist['tutorial_steps_shown'] = []
+            config.persist['tutorial_disabled'] = False
+            config.persist['setup_wizard_completed'] = False
 
 
 register_options_page(InterfaceOptionsPage)
