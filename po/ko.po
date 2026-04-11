@@ -7,13 +7,14 @@
 # Hyeon-ho Shin <crossxp64@gmail.com>, 2017
 # Nikki, 2006
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2019-2023, 2024, 2026.
+# coldified_ <me@coldified.dev>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-03-19 18:30+0100\n"
-"PO-Revision-Date: 2026-01-23 22:47+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-04-11 05:11+0000\n"
+"Last-Translator: coldified_ <me@coldified.dev>\n"
 "Language-Team: Korean <https://translations.metabrainz.org/projects/picard/3/"
 "app/ko/>\n"
 "Language: ko\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -138,104 +139,99 @@ msgstr "초기 파일 이름 생성 스크립트"
 
 #: picard/debug_opts.py:107
 msgid "Plugin Fullpath"
-msgstr ""
+msgstr "플러그인 전체 경로"
 
 #: picard/debug_opts.py:107
 msgid "Log plugin full paths"
-msgstr ""
+msgstr "플러그인의 전체 경로를 기록"
 
 #: picard/debug_opts.py:108
 msgid "Web Service Post Data"
-msgstr ""
+msgstr "웹 서비스 Post 데이터"
 
 #: picard/debug_opts.py:108
 msgid "Log data of web service post requests"
-msgstr ""
+msgstr "웹 서비스 Post 요청 데이터 기록"
 
 #: picard/debug_opts.py:109
 msgid "Web Service Replies"
-msgstr ""
+msgstr "웹 서비스 응답"
 
 #: picard/debug_opts.py:109
 msgid "Log content of web service replies"
-msgstr ""
+msgstr "웹 서비스 응답 기록"
 
 #: picard/debug_opts.py:110
 msgid "Git Backend"
-msgstr ""
+msgstr "Git 백엔드"
 
 #: picard/debug_opts.py:110
 msgid "Log git backend method calls"
-msgstr ""
+msgstr "Git 백엔드 메소드 호출 기록"
 
 #: picard/debug_opts.py:111
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Translations"
-msgstr "[앨범 정보 로드 중]"
+msgstr "플러그인 번역"
 
 #: picard/debug_opts.py:111
 msgid "Log plugin translation lookups and fallbacks"
-msgstr ""
+msgstr "플러그인 번역 조회 및 대체 처리 기록"
 
 #: picard/debug_opts.py:112
-#, fuzzy
-#| msgid "Plugins"
 msgid "Plugin Updates"
-msgstr "플러그인"
+msgstr "플러그인 업데이트"
 
 #: picard/debug_opts.py:112
 msgid "Log detailed plugin version checking and update detection"
-msgstr ""
+msgstr "플러그인 버전 및 업데이트 확인 상세 기록"
 
 #: picard/file.py:315
 msgid "Cannot save file: the file no longer exists."
-msgstr ""
+msgstr "파일 저장 실패: 파일이 더 이상 존재하지 않습니다."
 
 #: picard/file.py:319
 msgid "Cannot save file: permission denied."
-msgstr ""
+msgstr "파일 저장 실패: 권한이 거부되었습니다."
 
 #: picard/file.py:324
 msgid ""
 "The file failed to parse, either the file is damaged or has an unsupported "
 "file format."
 msgstr ""
+"파일 파싱에 실패했습니다. 파일이 손상되었거나 지원되지 않는 파일 형식을 "
+"사용합니다."
 
 #: picard/file.py:1035
-#, fuzzy, python-format
-#| msgid "No matching tracks above the threshold for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks above the threshold for file \"%(filename)s\""
-msgstr "기준치 이상으로 '%(filename)s' 파일에 대한 일치 트랙 없음"
+msgstr "기준치 이상으로 \"%(filename)s\" 파일에 일치하는 트랙 없음"
 
 #: picard/file.py:1037
-#, fuzzy, python-format
-#| msgid "File '%(filename)s' identified!"
+#, python-format
 msgid "File \"%(filename)s\" identified!"
-msgstr "'%(filename)s' 파일 식별!"
+msgstr "\"%(filename)s\" 파일 식별됨!"
 
 #: picard/file.py:1049
-#, fuzzy, python-format
-#| msgid "No matching tracks for file '%(filename)s'"
+#, python-format
 msgid "No matching tracks for file \"%(filename)s\""
-msgstr "'%(filename)s' 파일에 대한 일치 트랙 없음"
+msgstr "\"%(filename)s\" 파일에 일치하는 트랙 없음"
 
 #: picard/file.py:1078
 #, python-format
 msgid "Looking up the metadata for file %(filename)s …"
-msgstr "%(filename)s 파일에 대한 메타데이터 조회 중 …"
+msgstr "%(filename)s 파일에 대한 메타데이터 조회 중…"
 
 #: picard/item.py:341
 #, python-format
 msgid "%i image"
 msgid_plural "%i images"
-msgstr[0] ""
+msgstr[0] "이미지 %i개"
 
 #: picard/item.py:344
 #, python-format
 msgid "%i image not in all tracks"
 msgid_plural "%i different images among tracks"
-msgstr[0] ""
+msgstr[0] "트랙 간 서로 다른 이미지 %i개"
 
 #: picard/log.py:100 picard/ui/dialogs/installplugin.py:533
 #: picard/ui/options/renaming.py:270 picard/ui/scripteditor/__init__.py:557
@@ -247,7 +243,7 @@ msgstr "오류"
 
 #: picard/log.py:101
 msgid "Warning"
-msgstr ""
+msgstr "경고"
 
 #: picard/log.py:102 picard/ui/dialogs/installplugin.py:373
 #: picard/ui/infodialog/__init__.py:47 picard/ui/infodialog/dialog.py:115
@@ -257,80 +253,64 @@ msgstr "정보"
 
 #: picard/log.py:103
 msgid "Debug"
-msgstr ""
+msgstr "디버그"
 
 #: picard/oauth.py:200
-#, fuzzy
-#| msgid "Unexpected authentication error"
 msgid "Unexpected token revocation error"
-msgstr "예상치 못한 인증 에러"
+msgstr "예기치 않은 토큰 무효화 오류"
 
 #: picard/oauth.py:364 picard/oauth.py:391
 msgid "Unexpected authentication error"
-msgstr "예상치 못한 인증 에러"
+msgstr "예기치 않은 인증 오류"
 
 #: picard/oauth.py:403
 #, python-format
 msgid "Unexpected request error (HTTP code %s)"
-msgstr "(HTTP 코드 %s ) 예상치 못한 리뭬스트 에러"
+msgstr "예기치 않은 요청 오류 (HTTP 코드 %s)"
 
 #: picard/options.py:167
 msgid "Tags to ignore for comparison"
-msgstr "비교 무시 태그"
+msgstr "비교 단계에서 무시할 태그"
 
 #: picard/options.py:168
-#, fuzzy
-#| msgid "Completeness check ignore: Data tracks"
 msgid "Completeness ignore: Data tracks"
-msgstr "완전 체크 무시: 데이터트랙"
+msgstr "완전성 무시: 데이터 트랙"
 
 #: picard/options.py:169
-#, fuzzy
-#| msgid "Completeness check ignore: Pregap tracks"
 msgid "Completeness ignore: Pregap tracks"
-msgstr "완전 체크 무시: 프리갭 트랙"
+msgstr "완전성 무시: 프리갭 트랙"
 
 #: picard/options.py:170
-#, fuzzy
-#| msgid "Completeness check ignore: Silent tracks"
 msgid "Completeness ignore: Silent tracks"
-msgstr "완전 체크 무시: 사일런트트랙"
+msgstr "완전성 무시: 무음 트랙"
 
 #: picard/options.py:171
-#, fuzzy
-#| msgid "Completeness check ignore: Video tracks"
 msgid "Completeness ignore: Video tracks"
-msgstr "완전 체크 무시: 비디오 트랙"
+msgstr "완전성 무시: 비디오 트랙"
 
 #: picard/options.py:172 picard/ui/forms/ui_options_advanced.py:153
 msgid "Ignore hidden files"
-msgstr "숨김 파일 무시"
+msgstr "숨겨진 파일 무시"
 
 #: picard/options.py:173
-#, fuzzy
-#| msgid "Ignore file paths matching a regular expression"
 msgid "Ignore file paths (regular expression)"
-msgstr "정규표현에 매치되는 파일 경로들 무시하기"
+msgstr "파일 경로 무시하기 (정규 표현식)"
 
 #: picard/options.py:174
 msgid "Allowed track difference (seconds)"
-msgstr ""
+msgstr "트랙 길이 오차 허용치 (초)"
 
 #: picard/options.py:179
-#, fuzzy
-#| msgid "MusicBrainz Server"
 msgid "Maximum MusicBrainz query items"
-msgstr "MusicBrainz 서버"
+msgstr "MusicBrainz 쿼리 최대 항목 수"
 
 #: picard/options.py:181
-#, fuzzy
-#| msgid "Include sub-folders when adding files from folder"
 msgid "Include sub-folders when adding files"
-msgstr "폴더에 파일 넣을 때 부 폴더들 무시하기"
+msgstr "파일 추가 시 서브폴더들 무시"
 
 #: picard/options.py:189
 msgid "Cover art providers"
-msgstr "아트 제공자들을 커버하세요."
+msgstr "커버 아트 제공자"
 
 #: picard/options.py:190
 msgid "File name for images"
@@ -338,81 +318,59 @@ msgstr "이미지 파일 이름"
 
 #: picard/options.py:191 picard/ui/forms/ui_options_cover.py:125
 msgid "Embed only a single front image"
-msgstr "싱글 폰터 프론트 이미지 넣기"
+msgstr "앞면 이미지 하나만 넣기"
 
 #: picard/options.py:192
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace images with smaller ones"
-msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
+msgstr "해상도가 더 작은 이미지로 교체하지 않기"
 
 #: picard/options.py:193
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace images of selected types"
-msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
+msgstr "선택한 유형의 이미지를 교체하지 않기"
 
 #: picard/options.py:198
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Never replace images of these types"
-msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
+msgstr "선택한 유형의 이미지 교체하지 않기"
 
 #: picard/options.py:204
-#, fuzzy
-#| msgid "Download only cover art images matching selected types"
 msgid "Always replace images of these types"
-msgstr "선택한 유형과 일치하는 커버 아트 이미지만 다운로드"
+msgstr "선택한 유형의 이미지 항상 교체하기"
 
 #: picard/options.py:210
 msgid "Primary image type as the file name"
-msgstr ""
+msgstr "기본 이미지 유형을 파일 이름으로 사용"
 
 #: picard/options.py:212
 msgid "Overwrite existing image files"
-msgstr "현재있는 이미지 파일을 덮어씌우기."
+msgstr "기존 이미지 파일 덮어쓰기"
 
 #: picard/options.py:213
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save images as separate files"
-msgstr "커버 이미지를 별도 파일로 저장"
+msgstr "이미지를 별도 파일로 저장"
 
 #: picard/options.py:214
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed images into tags"
-msgstr "태그에 커버 이미지 첨부"
+msgstr "태그에 이미지 추가"
 
 #: picard/options.py:215
-#, fuzzy
-#| msgid "Embed only a single front image"
 msgid "Save only one front image"
-msgstr "싱글 폰터 프론트 이미지 넣기"
+msgstr "앞면 표지 이미지 하나만 넣기"
 
 #: picard/options.py:216
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Show cover art details in view"
-msgstr "커버 이미지를 별도 파일로 저장"
+msgstr "커버 아트 세부 정보 표시"
 
 #: picard/options.py:217
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Show cover art type"
-msgstr "커버 아트 형식"
+msgstr "커버 아트 형식 표시"
 
 #: picard/options.py:218
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show cover art file size"
-msgstr "숨김 파일 표시(&H)"
+msgstr "커버 아트 파일 크기 표시"
 
 #: picard/options.py:219
-#, fuzzy
-#| msgid "Show &hidden files"
 msgid "Show cover art dimensions"
-msgstr "숨김 파일 표시(&H)"
+msgstr "커버 아트 크기 표시"
 
 #: picard/options.py:220
 #, fuzzy
@@ -5578,7 +5536,7 @@ msgstr "오디오 볼륨 바꾸기"
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:120
 #: picard/ui/options/profiles.py:111
 msgid "New"
-msgstr "새로운"
+msgstr "새로 만들기"
 
 #: picard/ui/itemviews/custom_columns/manager_dialog.py:122
 msgid "Duplicate"
@@ -8021,10 +7979,8 @@ msgid "Information"
 msgstr ""
 
 #: picard/ui/widgets/plugindetailswidget.py:140
-#, fuzzy
-#| msgid "New version available"
 msgid "No description available"
-msgstr "새로운 버전 사용가능"
+msgstr "설명이 없습니다"
 
 #: picard/ui/widgets/plugindetailswidget.py:212
 #: picard/ui/widgets/plugindetailswidget.py:325
