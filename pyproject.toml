@@ -68,7 +68,7 @@ plugins = [
 build = [
     "Babel>=2.10.0",
     "PyInstaller~=6.17",
-    "pytest>=8.1",
+    "pytest>=9.0.3",
     "setuptools>=77.0.1",
 ]
 dev = [
