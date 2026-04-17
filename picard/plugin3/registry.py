@@ -99,6 +99,7 @@ class PluginRegistry:
 
         self._registry_data = None
         self._plugins = []  # List of RegistryPlugin objects
+        self._logged_not_loaded = False
 
     def _ensure_registry_loaded(self, operation_name='operation'):
         """Ensure registry data is loaded, with error handling.
@@ -119,7 +120,9 @@ class PluginRegistry:
 
             # Try loading from local file if URL is local
             if not self._load_from_local_file(self.registry_urls[0]):
-                log.debug('Registry not loaded for %s (no cache or local file available)', operation_name)
+                if not self._logged_not_loaded:
+                    log.debug('Registry not loaded (no cache or local file available)')
+                    self._logged_not_loaded = True
                 return False
 
         # Process plugins if not already done
