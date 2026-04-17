@@ -79,7 +79,9 @@ class InstallPluginDialog(PicardDialog):
         log.debug('InstallPluginDialog: Fetching registry on dialog open')
 
         def on_registry_fetched(success, error):
-            if not success:
+            if success:
+                self._load_registry_plugins()
+            else:
                 log.debug('InstallPluginDialog: Registry fetch failed: %s', error)
 
         self.plugin_manager._registry.fetch_registry(use_cache=True, callback=on_registry_fetched)
