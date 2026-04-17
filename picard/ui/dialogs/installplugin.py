@@ -75,6 +75,8 @@ class InstallPluginDialog(PicardDialog):
         # Cache frequently accessed objects
         self.plugin_manager = self.tagger.get_plugin_manager()
 
+        self.setup_ui()
+
         # Fetch registry on dialog open, fallback to cache if network fails
         log.debug('InstallPluginDialog: Fetching registry on dialog open')
 
@@ -85,8 +87,6 @@ class InstallPluginDialog(PicardDialog):
                 log.debug('InstallPluginDialog: Registry fetch failed: %s', error)
 
         self.plugin_manager._registry.fetch_registry(use_cache=True, callback=on_registry_fetched)
-
-        self.setup_ui()
 
     def setup_ui(self):
         """Setup the dialog UI."""
