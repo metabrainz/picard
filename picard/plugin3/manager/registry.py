@@ -82,7 +82,7 @@ class PluginRegistryManager:
             list: Plugin dictionaries with similar IDs (empty if too many matches)
         """
         all_plugins = self.manager._registry.list_plugins()
-        matches = [p for p in all_plugins if query.lower() in p['id'].lower()]
+        matches = [p for p in all_plugins if query.lower() in p.id.lower()]
         return matches if 1 <= len(matches) <= max_results else []
 
     def get_registry_plugin_latest_version(self, plugin):
