@@ -91,11 +91,8 @@ class PluginRegistry:
         self.registry_url = self.registry_urls[0]
 
         # Create URL-specific cache path using SHA1 hash
-        if cache_dir:
-            url_hash = hash_string(self.registry_url)
-            self.cache_path = Path(cache_dir) / f'plugin_registry_{url_hash}.toml'
-        else:
-            self.cache_path = None
+        self._cache_dir = Path(cache_dir) if cache_dir else None
+        self.cache_path = self._cache_path_for_url(self.registry_url)
 
         self._registry_data = None
         self._plugins = []  # List of RegistryPlugin objects
@@ -160,20 +157,27 @@ class PluginRegistry:
     def _load_from_cache(self):
         """Load registry from cache if available.
 
+        Tries cache files for all registry URLs (primary first, then fallbacks).
+
         Returns:
             bool: True if loaded from cache, False otherwise
         """
-        if not self.cache_path or not Path(self.cache_path).exists():
+        if not self._cache_dir:
             return False
 
-        try:
-            with open(self.cache_path, 'rb') as f:
-                self._registry_data = tomllib.load(f)
-            self._process_plugins()
-            log.debug('Loaded registry from cache: %s', self.cache_path)
-            return True
-        except Exception as e:
-            log.debug('Failed to load registry cache: %s', e)
+        for url in self.registry_urls:
+            cache_path = self._cache_path_for_url(url)
+            if not cache_path or not cache_path.exists():
+                continue
+            try:
+                with open(cache_path, 'rb') as f:
+                    self._registry_data = tomllib.load(f)
+                self.cache_path = cache_path
+                self._process_plugins()
+                log.debug('Loaded registry from cache: %s', cache_path)
+                return True
+            except Exception as e:
+                log.debug('Failed to load registry cache: %s', e)
 
         return False
 
@@ -263,6 +267,7 @@ class PluginRegistry:
                     callback(False, fetch_error)
             else:
                 try:
+                    self._update_cache_path(url)
                     self._save_cache(response)
                     self._registry_data = tomllib.loads(response.decode('utf-8'))
                     self.registry_url = url
@@ -284,6 +289,16 @@ class PluginRegistry:
             cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferCache,
             parse_response_type=None,  # Don't parse, we'll handle TOML ourselves
         )
+
+    def _cache_path_for_url(self, url):
+        """Get cache file path for a registry URL."""
+        if self._cache_dir:
+            return self._cache_dir / f'plugin_registry_{hash_string(url)}.toml'
+        return None
+
+    def _update_cache_path(self, url):
+        """Update cache path to match the URL that provided the data."""
+        self.cache_path = self._cache_path_for_url(url)
 
     def _save_cache(self, data):
         """Save raw registry data to cache file.
