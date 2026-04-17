@@ -991,9 +991,9 @@ Continue? [y/N]
 
 ## Caching Strategy
 
-- Registry cached locally for 24 hours
-- Cache file: `~/.local/share/MusicBrainz/Picard/plugin_registry.json`
-- Automatic refresh on cache expiry
+- Registry is cached locally as a raw copy of the remote TOML file
+- Cache file: `~/.cache/MusicBrainz/Picard/plugin_registry_<hash>.toml`
+- Automatically fetched on first use if no cache exists
 - Manual refresh: `picard-plugins --refresh-registry`
 - Fallback to cache if network unavailable
 
