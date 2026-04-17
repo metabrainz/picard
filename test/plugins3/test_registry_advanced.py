@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import os
 from pathlib import Path
 import tempfile
@@ -82,8 +81,8 @@ class TestRegistryAdvanced(PicardTestCase):
 
             test_url = 'https://test.example.com/registry.toml'
             url_hash = hash_string(test_url)
-            cache_file = cache_dir / f'plugin_registry_{url_hash}.json'
-            cache_file.write_text('invalid json{')
+            cache_file = cache_dir / f'plugin_registry_{url_hash}.toml'
+            cache_file.write_text('invalid toml{{{')
 
             # Mock WebService to return valid TOML data
             mock_tagger = Mock()
@@ -120,29 +119,36 @@ class TestRegistryAdvanced(PicardTestCase):
 
     def test_registry_save_cache_error(self):
         """Test registry handles cache save errors gracefully."""
-        toml_content = '[[plugins]]\n\n[[blacklist]]\n'
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Make cache dir read-only to prevent writing
+            cache_dir = Path(tmpdir) / 'cache'
+            cache_dir.mkdir()
 
-        registry_file = _write_temp_toml(toml_content)
+            registry = PluginRegistry(
+                registry_url='https://test.example.com/registry.toml',
+                cache_dir=str(cache_dir),
+            )
 
-        try:
-            with tempfile.TemporaryDirectory() as tmpdir:
-                registry = PluginRegistry(registry_url=registry_file, cache_dir=tmpdir)
+            # Make cache dir read-only after registry init
+            cache_dir.chmod(0o444)
 
-                # Patch json.dump to fail on cache save
-                original_dump = json.dump
+            mock_tagger = Mock()
+            mock_tagger.webservice = Mock()
+            mock_tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
 
-                def failing_dump(obj, fp, *args, **kwargs):
-                    # Check if we're writing to cache (not reading from registry file)
-                    if hasattr(fp, 'name') and 'plugin_registry_' in fp.name:
-                        raise OSError('Write failed')
-                    return original_dump(obj, fp, *args, **kwargs)
+            result = {}
 
-                with patch('picard.plugin3.registry.json.dump', side_effect=failing_dump):
-                    registry.fetch_registry()
+            def callback(success, error):
+                result['success'] = success
+
+            try:
+                with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+                    registry.fetch_registry(use_cache=False, callback=callback)
                     # Should not raise, just log warning
+                    self.assertTrue(result['success'])
                     self.assertTrue(registry.is_registry_loaded())
-        finally:
-            Path(registry_file).unlink(missing_ok=True)
+            finally:
+                cache_dir.chmod(0o755)
 
     def test_blacklist_uuid_and_url(self):
         """Test blacklist with both UUID and URL."""

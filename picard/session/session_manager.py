@@ -44,39 +44,14 @@ with version information, options, file locations, and metadata overrides.
 
 from __future__ import annotations
 
-import contextlib
 import gzip
 from pathlib import Path
-import tempfile
 from typing import Any
 
 from picard.session.constants import SessionConstants
 from picard.session.session_exporter import SessionExporter
 from picard.session.session_loader import SessionLoader
-
-
-def _atomic_write(path: Path, data: bytes) -> None:
-    """Write bytes atomically to the given path.
-
-    The function writes to a temporary file in the destination directory and
-    replaces the target file to ensure atomicity. On failure, it attempts to
-    clean up the temporary file and re-raises the exception.
-    """
-    p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
-
-    temp_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(dir=p.parent, prefix=p.stem + "_", suffix=p.suffix, delete=False) as temp_file:
-            temp_path = Path(temp_file.name)
-            temp_path.write_bytes(data)
-
-        temp_path.replace(p)
-    except (OSError, PermissionError):
-        if temp_path and temp_path.exists():
-            with contextlib.suppress(OSError, PermissionError):
-                temp_path.unlink()
-        raise  # caller should handle the exception
+from picard.util import atomic_write
 
 
 def export_session(tagger: Any) -> dict[str, Any]:
@@ -137,7 +112,7 @@ def save_session_to_path(tagger: Any, path: str | Path) -> None:
     yaml_text = yaml.dump(data, default_flow_style=False, allow_unicode=True, sort_keys=False)
     compressed = gzip.compress(yaml_text.encode("utf-8"))
 
-    _atomic_write(p, compressed)
+    atomic_write(p, compressed)
 
 
 def load_session_from_path(tagger: Any, path: str | Path) -> None:

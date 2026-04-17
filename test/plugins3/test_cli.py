@@ -424,6 +424,17 @@ class TestPluginCLI(PicardTestCase):
         manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
         manager.install_plugin.assert_called_once()
 
+    def test_install_by_plugin_id_not_found(self):
+        """Test installing plugin by ID that doesn't exist in registry."""
+        manager = MockPluginManager()
+        manager._registry.find_plugin.return_value = None
+        manager._registry.list_plugins.return_value = []
+
+        exit_code, _, stderr = run_cli(manager, install=['nonexistent'])
+
+        self.assertEqual(exit_code, ExitCode.NOT_FOUND)
+        self.assertIn('not found in registry', stderr)
+
     def test_check_blacklist_not_blacklisted(self):
         """Test --check-blacklist with non-blacklisted URL."""
         manager = MockPluginManager()
