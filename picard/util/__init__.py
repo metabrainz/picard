@@ -60,7 +60,10 @@ from collections import (
     namedtuple,
 )
 from collections.abc import Mapping
-from contextlib import contextmanager
+from contextlib import (
+    contextmanager,
+    suppress,
+)
 from datetime import (
     date,
     datetime,
@@ -70,10 +73,14 @@ import json
 import ntpath
 from operator import attrgetter
 import os
-from pathlib import PurePath
+from pathlib import (
+    Path,
+    PurePath,
+)
 import re
 import subprocess  # nosec: B404
 import sys
+import tempfile
 from time import monotonic
 import unicodedata
 
@@ -1427,3 +1434,35 @@ def parse_versioning_scheme(versioning_scheme):
     except re.error as e:
         log.error('Invalid regex pattern in versioning scheme %s: %s', versioning_scheme, e)
         return None
+
+
+def atomic_write(path, data):
+    """Write bytes atomically to the given path.
+
+    Writes to a temporary file in the destination directory and replaces
+    the target file to ensure atomicity. On failure, cleans up the
+    temporary file and re-raises the exception.
+
+    Args:
+        path: Target file path (str or Path)
+        data: Bytes to write
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            dir=p.parent,
+            prefix=p.stem + '_',
+            suffix=p.suffix,
+            delete=False,
+        ) as f:
+            temp_path = Path(f.name)
+            f.write(data)
+        temp_path.replace(p)
+    except (OSError, PermissionError):
+        if temp_path and temp_path.exists():
+            with suppress(OSError, PermissionError):
+                temp_path.unlink()
+        raise
