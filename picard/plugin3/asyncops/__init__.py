@@ -32,7 +32,6 @@ from picard.plugin3.asyncops.callbacks import (
     ProgressUpdate,
 )
 from picard.plugin3.asyncops.manager import AsyncPluginManager
-from picard.plugin3.asyncops.registry import AsyncPluginRegistry
 from picard.plugin3.asyncops.utils import (
     CancellationToken,
     OperationCancelled,
@@ -41,7 +40,6 @@ from picard.plugin3.asyncops.utils import (
 
 __all__ = [
     'AsyncPluginManager',
-    'AsyncPluginRegistry',
     'CancellationToken',
     'OperationCallback',
     'OperationCancelled',
