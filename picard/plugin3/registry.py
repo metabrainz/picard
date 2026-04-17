@@ -33,6 +33,7 @@ from picard.git.utils import normalize_git_url
 from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
+from picard.util import atomic_write
 
 
 try:
@@ -267,9 +268,9 @@ class PluginRegistry:
                     callback(False, fetch_error)
             else:
                 try:
+                    self._registry_data = tomllib.loads(response.decode('utf-8'))
                     self._update_cache_path(url)
                     self._save_cache(response)
-                    self._registry_data = tomllib.loads(response.decode('utf-8'))
                     self.registry_url = url
                     self._process_plugins()
                     if callback:
@@ -301,7 +302,7 @@ class PluginRegistry:
         self.cache_path = self._cache_path_for_url(url)
 
     def _save_cache(self, data):
-        """Save raw registry data to cache file.
+        """Save raw registry data to cache file atomically.
 
         Args:
             data: Raw TOML bytes from the registry
@@ -309,9 +310,7 @@ class PluginRegistry:
         if not self.cache_path:
             return
         try:
-            Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
-            with open(self.cache_path, 'wb') as f:
-                f.write(data)
+            atomic_write(self.cache_path, data)
             log.debug('Saved registry to cache: %s', self.cache_path)
         except Exception as e:
             log.warning('Failed to save registry cache: %s', e)
