@@ -31,9 +31,50 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
+from picard.move_conflict import MoveConflictStrategy
 
 
 class SaveWarningDialog:
+    @staticmethod
+    def _get_move_action(file_count, move_to, strategy):
+        if strategy == MoveConflictStrategy.SKIP:
+            return ngettext(
+                "move the file to <em>{move_to}</em> (skip moving if destination file exists)",
+                "move the files to <em>{move_to}</em> (skip moving if destination file exists)",
+                file_count,
+            ).format(move_to=move_to)
+        if strategy == MoveConflictStrategy.OVERWRITE:
+            return ngettext(
+                "move the file to <em>{move_to}</em> (overwrite destination file if it exists)",
+                "move the files to <em>{move_to}</em> (overwrite destination file if it exists)",
+                file_count,
+            ).format(move_to=move_to)
+        return ngettext(
+            "move the file to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+            "move the files to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+            file_count,
+        ).format(move_to=move_to)
+
+    @staticmethod
+    def _get_additional_files_action(file_count, move_to, strategy, pattern):
+        if strategy == MoveConflictStrategy.SKIP:
+            return ngettext(
+                "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (skip moving if destination file exists)",
+                "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (skip moving if destination file exists)",
+                file_count,
+            ).format(pattern=pattern, move_to=move_to)
+        if strategy == MoveConflictStrategy.OVERWRITE:
+            return ngettext(
+                "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (overwrite destination file if it exists)",
+                "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (overwrite destination file if it exists)",
+                file_count,
+            ).format(pattern=pattern, move_to=move_to)
+        return ngettext(
+            "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+            "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+            file_count,
+        ).format(pattern=pattern, move_to=move_to)
+
     def __init__(self, parent, file_count):
         actions = []
         config = get_config()
@@ -46,12 +87,22 @@ class SaveWarningDialog:
                     file_count,
                 )
             )
+
         if config.setting['rename_files']:
-            actions.append(ngettext("rename the file", "rename the files", file_count))
-        if config.setting['move_files']:
             actions.append(
-                ngettext("move the file to a different location", "move the files to a different location", file_count)
+                ngettext(
+                    "rename the file according to the configured file naming script",
+                    "rename the files according to the configured file naming script",
+                    file_count,
+                )
             )
+        if config.setting['move_files']:
+            move_to = config.setting['move_files_to']
+            strategy = MoveConflictStrategy.from_config(config.setting['move_conflict_strategy'])
+            actions.append(self._get_move_action(file_count, move_to, strategy))
+            if config.setting['move_additional_files']:
+                pattern = config.setting['move_additional_files_pattern']
+                actions.append(self._get_additional_files_action(file_count, move_to, strategy, pattern))
 
         if actions:
             header = ngettext(

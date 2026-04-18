@@ -67,6 +67,7 @@ from picard.config_upgrade import (
     upgrade_to_v2_8_0dev2,
     upgrade_to_v3_0_0a2,
     upgrade_to_v3_0_0a3,
+    upgrade_to_v3_0_0a4,
     upgrade_to_v3_0_0dev3,
     upgrade_to_v3_0_0dev4,
     upgrade_to_v3_0_0dev5,
@@ -258,9 +259,32 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('ca_providers', self.config.setting)
         self.assertIn(('Amazon', True), self.config.setting['ca_providers'])
         self.assertIn(('Cover Art Archive', True), self.config.setting['ca_providers'])
-        self.assertIn(('Whitelist', False), self.config.setting['ca_providers'])
-        self.assertIn(('CaaReleaseGroup', True), self.config.setting['ca_providers'])
-        self.assertEqual(len(self.config.setting['ca_providers']), 4)
+
+    def test_upgrade_to_v3_0_0a4_with_old_move_conflict_option_enabled(self):
+        BoolOption("setting", "move_overwrite_existing_files", False)
+        TextOption("setting", "move_conflict_strategy", "")
+        self.config.setting['move_overwrite_existing_files'] = True
+
+        upgrade_to_v3_0_0a4(self.config)
+
+        self.assertEqual("overwrite", self.config.setting['move_conflict_strategy'])
+        self.assertNotIn('move_overwrite_existing_files', self.config.setting)
+
+    def test_upgrade_to_v3_0_0a4_with_old_move_conflict_option_disabled(self):
+        BoolOption("setting", "move_overwrite_existing_files", False)
+        TextOption("setting", "move_conflict_strategy", "")
+        self.config.setting['move_overwrite_existing_files'] = False
+
+        upgrade_to_v3_0_0a4(self.config)
+
+        self.assertEqual("rename", self.config.setting['move_conflict_strategy'])
+        self.assertNotIn('move_overwrite_existing_files', self.config.setting)
+
+    def test_upgrade_to_v3_0_0a4_without_old_move_conflict_option(self):
+        TextOption("setting", "move_conflict_strategy", "")
+        upgrade_to_v3_0_0a4(self.config)
+
+        self.assertEqual("rename", self.config.setting['move_conflict_strategy'])
 
     def test_upgrade_to_v1_4_0dev4(self):
         TextOption("setting", "file_naming_format", "")

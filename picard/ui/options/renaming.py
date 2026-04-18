@@ -38,13 +38,13 @@ import os.path
 from PyQt6 import QtWidgets
 from PyQt6.QtGui import QPalette
 
-from picard import log
 from picard.config import get_config
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.move_conflict import MoveConflictStrategy
 from picard.script import ScriptParser
 
 from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
@@ -251,16 +251,13 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting['move_additional_files'])
         self.ui.move_additional_files_pattern.setText(config.setting['move_additional_files_pattern'])
-        strategy = config.setting['move_conflict_strategy'] or "rename"
-        if strategy == "skip":
+        strategy = MoveConflictStrategy.from_config(config.setting['move_conflict_strategy'])
+        if strategy == MoveConflictStrategy.SKIP:
             self.ui.move_conflict_skip.setChecked(True)
-        elif strategy == "rename":
+        elif strategy == MoveConflictStrategy.RENAME:
             self.ui.move_conflict_rename.setChecked(True)
-        elif strategy == "overwrite":
+        elif strategy == MoveConflictStrategy.OVERWRITE:
             self.ui.move_conflict_overwrite.setChecked(True)
-        else:
-            log.warning("Invalid move_conflict_strategy: %r, defaulting to 'rename'", strategy)
-            self.ui.move_conflict_rename.setChecked(True)
         self.ui.delete_empty_dirs.setChecked(config.setting['delete_empty_dirs'])
         self.naming_scripts = config.setting['file_renaming_scripts']
         self.selected_naming_script_id = config.setting['selected_file_naming_script_id']
@@ -296,13 +293,13 @@ class RenamingOptionsPage(OptionsPage):
         config.setting['move_files_to'] = os.path.normpath(self.ui.move_files_to.text())
         config.setting['move_additional_files'] = self.ui.move_additional_files.isChecked()
         if self.ui.move_conflict_skip.isChecked():
-            config.setting['move_conflict_strategy'] = "skip"
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.SKIP.value
         elif self.ui.move_conflict_rename.isChecked():
-            config.setting['move_conflict_strategy'] = "rename"
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.RENAME.value
         elif self.ui.move_conflict_overwrite.isChecked():
-            config.setting['move_conflict_strategy'] = "overwrite"
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.OVERWRITE.value
         else:
-            config.setting['move_conflict_strategy'] = "rename"
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.RENAME.value
         config.setting['move_additional_files_pattern'] = self.ui.move_additional_files_pattern.text()
         config.setting['delete_empty_dirs'] = self.ui.delete_empty_dirs.isChecked()
         config.setting['selected_file_naming_script_id'] = self.selected_naming_script_id

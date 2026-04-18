@@ -653,8 +653,10 @@ def upgrade_to_v3_0_0a3(config):
 
 
 def upgrade_to_v3_0_0a4(config):
+    """Rename move_overwrite_existing_files to move_conflict_strategy."""
     if 'move_overwrite_existing_files' in config.setting:
-        old_value = config.setting['move_overwrite_existing_files']
+        with temp_option(BoolOption, 'setting', 'move_overwrite_existing_files', False) as old_opt:
+            old_value = config.setting.value(old_opt, False)
 
         if old_value:
             config.setting['move_conflict_strategy'] = "overwrite"

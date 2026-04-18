@@ -87,6 +87,7 @@ from picard.metadata import (
     Metadata,
     SimMatchTrack,
 )
+from picard.move_conflict import MoveConflictStrategy
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
 from picard.tags import (
@@ -449,19 +450,15 @@ class File(MetadataItem):
     def has_error(self):
         return self.state == File.State.ERROR
 
-    def _handle_conflict(self, new_path, old_path):
-        config = get_config()
-        strategy = config.setting['move_conflict_strategy']
-        if strategy not in ("skip", "rename", "overwrite"):
-            strategy = "rename"
-
+    @staticmethod
+    def _handle_conflict(new_path, old_path, strategy):
         if not os.path.exists(new_path):
             return new_path
 
-        if strategy == "skip":
+        if strategy == MoveConflictStrategy.SKIP:
             log.warning("Destination exists, skipping %r", old_path)
             return None
-        elif strategy == "rename":
+        if strategy == MoveConflictStrategy.RENAME:
             return get_available_filename(new_path, old_path)
         return new_path
 
@@ -692,7 +689,8 @@ class File(MetadataItem):
         new_dirname = os.path.dirname(new_filename)
         if not os.path.isdir(new_dirname):
             os.makedirs(new_dirname)
-        new_filename = self._handle_conflict(new_filename, old_filename)
+        strategy = MoveConflictStrategy.from_config(settings['move_conflict_strategy'])
+        new_filename = self._handle_conflict(new_filename, old_filename, strategy)
         if new_filename is None:
             return old_filename
         log.debug("Moving file %r => %r", old_filename, new_filename)
@@ -723,9 +721,10 @@ class File(MetadataItem):
             if new_path != old_path:
                 patterns_string = config.setting['move_additional_files_pattern']
                 patterns = self._compile_move_additional_files_pattern(patterns_string)
+                strategy = MoveConflictStrategy.from_config(config.setting['move_conflict_strategy'])
                 try:
                     moves = self._get_additional_files_moves(old_path, new_path, patterns)
-                    self._apply_additional_files_moves(moves)
+                    self._apply_additional_files_moves(moves, strategy)
                 except OSError as why:
                     log.error("Failed to scan %r: %s", old_path, why)
 
@@ -749,13 +748,13 @@ class File(MetadataItem):
                             yield (entry.path, new_file_path)
                             break  # we are done with this file
 
-    def _apply_additional_files_moves(self, moves):
+    def _apply_additional_files_moves(self, moves, strategy):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
             if self.tagger.files.get(decode_filename(old_file_path)):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
-            new_file_path = self._handle_conflict(new_file_path, old_file_path)
+            new_file_path = self._handle_conflict(new_file_path, old_file_path, strategy)
             if new_file_path is None:
                 continue
             log.debug("Moving %r to %r", old_file_path, new_file_path)

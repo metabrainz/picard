@@ -81,6 +81,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="move_conflict_skip">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
         <property name="text">
           <string>Do not move duplicate files</string>
         </property>
@@ -88,6 +91,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="move_conflict_rename">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
         <property name="text">
          <string>Move and rename file with numeric suffix</string>
         </property>
@@ -95,6 +101,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="move_conflict_overwrite">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
         <property name="text">
          <string>Move and overwrite existing files</string>
         </property>
@@ -319,9 +328,12 @@
   <tabstop>naming_script_selector</tabstop>
   <tabstop>open_script_editor</tabstop>
   <tabstop>example_filename_before</tabstop>
-  <tabstop>example_filename_after</tabstop>
-  <tabstop>example_filename_sample_files_button</tabstop>
+ <tabstop>example_filename_after</tabstop>
+ <tabstop>example_filename_sample_files_button</tabstop>
  </tabstops>
+ <buttongroups>
+  <buttongroup name="move_conflict_group"/>
+ </buttongroups>
  <resources/>
  <connections/>
 </ui>
