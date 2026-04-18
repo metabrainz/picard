@@ -112,3 +112,4 @@ git tag -d "release-$PICARD_VERSION"
 git reset --hard "before-release-$PICARD_VERSION"
 git push "$PICARD_REMOTE" :"$TAG"
 git push "$PICARD_REMOTE" "before-release-$PICARD_VERSION":master --force
+```
