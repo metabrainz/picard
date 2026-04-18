@@ -34,8 +34,8 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-03-19 18:30+0100\n"
-"PO-Revision-Date: 2026-03-21 15:11+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-04-18 08:53+0000\n"
+"Last-Translator: bababasti <babasti@pm.me>\n"
 "Language-Team: German <https://translations.metabrainz.org/projects/picard/3/"
 "app/de/>\n"
 "Language: de\n"
@@ -43,7 +43,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -193,7 +193,7 @@ msgstr "Git-Backend"
 
 #: picard/debug_opts.py:110
 msgid "Log git backend method calls"
-msgstr ""
+msgstr "Methodenaufrufe des Git-Backends loggen"
 
 #: picard/debug_opts.py:111
 msgid "Plugin Translations"
@@ -201,7 +201,7 @@ msgstr "Plugin-Übersetzungen"
 
 #: picard/debug_opts.py:111
 msgid "Log plugin translation lookups and fallbacks"
-msgstr ""
+msgstr "Das Suchen von Plugin-Übersetzungen (mit Ausweichlösungen) loggen"
 
 #: picard/debug_opts.py:112
 msgid "Plugin Updates"
@@ -209,7 +209,7 @@ msgstr "Plugin-Aktualisierungen"
 
 #: picard/debug_opts.py:112
 msgid "Log detailed plugin version checking and update detection"
-msgstr ""
+msgstr "Detaillierte Plugin-Versionsprüfung und Update-Erkennung loggen"
 
 #: picard/file.py:315
 msgid "Cannot save file: the file no longer exists."
@@ -411,19 +411,19 @@ msgstr "Kleine Bilder verwerfen"
 
 #: picard/options.py:225
 msgid "Minimum image width"
-msgstr "Minimale Bildbreite:"
+msgstr "Minimale Bildbreite"
 
 #: picard/options.py:226
 msgid "Minimum image height"
-msgstr "Minimale Bildhöhe:"
+msgstr "Minimale Bildhöhe"
 
 #: picard/options.py:227
 msgid "Allow enlarging tag images"
-msgstr ""
+msgstr "Vergrößern von Tag-Bildern erlauben"
 
 #: picard/options.py:228
 msgid "Allow resizing tag images"
-msgstr ""
+msgstr "Größenanpassungen von Tag-Bildern erlauben"
 
 #: picard/options.py:229
 #, fuzzy
@@ -446,10 +446,8 @@ msgid "Convert tag image format"
 msgstr "Alle unterstützten Bildformate"
 
 #: picard/options.py:233
-#, fuzzy
-#| msgid "New format:"
 msgid "New tag image format"
-msgstr "Neues Format:"
+msgstr "Neues Tag-Bild-Format"
 
 #: picard/options.py:234
 #, fuzzy
