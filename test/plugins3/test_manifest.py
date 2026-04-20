@@ -55,6 +55,7 @@ class TestPluginManifest(PicardTestCase):
         self.assertEqual(manifest.api_versions, (Version(3, 0, 0), Version(3, 1, 0)))
         self.assertEqual(manifest.license, 'CC0-1.0')
         self.assertEqual(manifest.license_url, 'https://creativecommons.org/publicdomain/zero/1.0/')
+        self.assertEqual(manifest.report_bugs_to, 'https://github.com/example/plugin/issues')
 
     def test_manifest_missing_translation(self):
         """Test manifest description with missing translation."""
@@ -243,3 +244,15 @@ license_url = "https://example.com"
 
         # Should return empty tuple when api field is missing
         self.assertEqual(manifest.api_versions, tuple())
+
+    def test_manifest_report_bugs_to_default(self):
+        """Test report_bugs_to defaults to empty string when missing."""
+        manifest_content = """
+uuid = "550e8400-e29b-41d4-a716-446655440000"
+name = "Test"
+version = "1.0.0"
+description = "Test"
+api = ["3.0"]
+"""
+        manifest = _manifest_from_toml(manifest_content)
+        self.assertEqual(manifest.report_bugs_to, '')
