@@ -83,6 +83,7 @@ def disable():
 | `long_description` | string | Detailed description (multi-line, 1-2000 chars, Python-Markdown supported) | See below |
 | `categories` | array | Plugin categories | `["metadata", "coverart"]` |
 | `homepage` | string | Plugin homepage URL | `"https://..."` |
+| `report_bugs_to` | string | URL for bug reports (http, https, or mailto) | `"https://..."` or `"mailto:bugs@example.com"` |
 | `min_python_version` | string | Minimum Python version | `"3.9"` |
 | `source_locale` | string | Source language for translations | `"en"` (default) |
 
@@ -124,6 +125,7 @@ maintainers = ["Philipp Wolfer"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
 homepage = "https://github.com/metabrainz/picard-plugin-listenbrainz"
+report_bugs_to = "https://github.com/metabrainz/picard-plugin-listenbrainz/issues"
 categories = ["metadata"]
 min_python_version = "3.9"
 source_locale = "en"
@@ -393,6 +395,12 @@ Vollständige deutsche Beschreibung hier...
 - Optional
 - URL to plugin homepage or repository
 - Typically GitHub repository URL
+
+### `report_bugs_to`
+- Optional
+- URL for reporting bugs (http, https, or mailto scheme)
+- For email, use `"mailto:bugs@example.com"`
+- Displayed in plugin info dialog and CLI `--info` output
 
 ### `min_python_version`
 - Optional

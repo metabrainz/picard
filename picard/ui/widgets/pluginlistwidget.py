@@ -582,6 +582,12 @@ class PluginListWidget(QtWidgets.QWidget):
             view_repo_action = menu.addAction(_("View Repository"))
             view_repo_action.triggered.connect(lambda: self._view_repository(plugin))
 
+        # Report bug action (if available)
+        report_bugs_to = self._get_report_bugs_to(plugin)
+        if report_bugs_to:
+            report_bug_action = menu.addAction(_("Report a Bug"))
+            report_bug_action.triggered.connect(lambda: self._open_report_bugs_to(report_bugs_to))
+
         menu.addSeparator()
 
         # Open plugin priority editor
@@ -776,6 +782,16 @@ class PluginListWidget(QtWidgets.QWidget):
         remote_url = self._get_plugin_remote_url(plugin)
         if remote_url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(remote_url))
+
+    def _get_report_bugs_to(self, plugin):
+        """Get report_bugs_to value from plugin manifest."""
+        return plugin.manifest.report_bugs_to if plugin.manifest else ''
+
+    def _open_report_bugs_to(self, value):
+        """Open bug report URL."""
+        if not value:
+            return
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(value))
 
     def _show_plugin_info(self, plugin):
         """Show detailed plugin information dialog."""

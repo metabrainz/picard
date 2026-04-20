@@ -289,7 +289,14 @@ def validate_manifest_dict(manifest_data):
     _validate_string_field(manifest_data, 'license', errors)
     _validate_string_field(manifest_data, 'license_url', errors)
     _validate_string_field(manifest_data, 'homepage', errors)
+    _validate_string_field(manifest_data, 'report_bugs_to', errors)
     _validate_string_field(manifest_data, 'min_python_version', errors)
+
+    # report_bugs_to must be a URL (http, https, or mailto)
+    if 'report_bugs_to' in manifest_data and isinstance(manifest_data['report_bugs_to'], str):
+        value = manifest_data['report_bugs_to'].strip()
+        if value and not value.startswith(('http://', 'https://', 'mailto:')):
+            errors.append("Field 'report_bugs_to' must be a URL (http, https, or mailto)")
 
     # Optional array fields
     _validate_array_field(manifest_data, 'authors', errors, 'author')
