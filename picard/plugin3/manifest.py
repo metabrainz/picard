@@ -154,6 +154,10 @@ class PluginManifest:
         return self._data.get('license_url', '')
 
     @property
+    def report_bugs_to(self) -> str:
+        return self._data.get('report_bugs_to', '')
+
+    @property
     def source_locale(self) -> str:
         """Get source locale for translations, defaults to 'en'."""
         return self._data.get('source_locale', 'en')
@@ -213,6 +217,7 @@ api = ["3.0"]
 # """
 # categories = [{categories_str}]
 # homepage = "https://github.com/username/plugin-name"
+# report_bugs_to = "https://github.com/username/plugin-name/issues"
 # min_python_version = "3.9"
 # source_locale = "en"  # Source language for translations (default: "en")
 
