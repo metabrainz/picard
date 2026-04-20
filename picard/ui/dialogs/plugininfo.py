@@ -19,6 +19,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from html import escape
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -115,6 +117,7 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
         self._add_field(details_layout, _("License:"), self._get_license())
         self._add_field(details_layout, _("License URL:"), self._get_license_url())
         self._add_field(details_layout, _("Homepage:"), self._get_homepage())
+        self._add_field(details_layout, _("Report Bugs To:"), self._get_report_bugs_to())
         self._add_field(details_layout, _("Path:"), self._get_path())
         self._add_field(details_layout, _("Versioning:"), self._get_versioning_scheme())
 
@@ -163,9 +166,9 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
         if value:
             value_label = self._make_label()
 
-            # Check if value is a URL and make it clickable
-            if isinstance(value, str) and (value.startswith('http://') or value.startswith('https://')):
-                value_label.setText(f'<a href="{value}">{value}</a>')
+            if isinstance(value, str) and value.startswith(('http://', 'https://', 'mailto:')):
+                escaped = escape(value)
+                value_label.setText(f'<a href="{escaped}">{escaped}</a>')
                 value_label.setTextInteractionFlags(
                     QtCore.Qt.TextInteractionFlag.TextSelectableByMouse
                     | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
@@ -361,6 +364,16 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
         else:
             try:
                 return self.plugin_data.manifest._data.get('homepage', '') if self.plugin_data.manifest else ''
+            except (AttributeError, Exception):
+                return ''
+
+    def _get_report_bugs_to(self):
+        """Get report bugs URL or email."""
+        if self._is_installable_plugin():
+            return getattr(self.plugin_data, 'report_bugs_to', '') or ''
+        else:
+            try:
+                return self.plugin_data.manifest.report_bugs_to if self.plugin_data.manifest else ''
             except (AttributeError, Exception):
                 return ''
 
