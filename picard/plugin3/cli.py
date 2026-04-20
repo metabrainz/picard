@@ -598,6 +598,9 @@ class PluginCLI:
         if homepage:
             self._out.print(f'Homepage: {self._out.d_url(homepage)}')
 
+        if plugin.manifest.report_bugs_to:
+            self._out.print(f'Report Bugs To: {self._out.d_url(plugin.manifest.report_bugs_to)}')
+
         min_python = plugin.manifest._data.get('min_python_version')
         if min_python:
             self._out.print(f'Min Python: {min_python}')
@@ -1419,6 +1422,9 @@ class PluginCLI:
                 homepage = manifest._data.get('homepage')
                 if homepage:
                     self._out.info(f'  Homepage: {homepage}')
+
+                if manifest.report_bugs_to:
+                    self._out.info(f'  Report bugs to: {manifest.report_bugs_to}')
 
                 min_python = manifest._data.get('min_python_version')
                 if min_python:
