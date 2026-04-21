@@ -2,7 +2,10 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2026 Philipp Wolfer
+# Copyright (C) 2017 Sambhav Kothari
+# Copyright (C) 2018 Wieland Hoffmann
+# Copyright (C) 2018, 2020-2023 Laurent Monin
+# Copyright (C) 2019-2023 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,100 +18,45 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, see <https://www.gnu.org/licenses/>.
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import Mock
+
+from unittest.mock import MagicMock
 
 from PyQt6.QtCore import QUrl
 
 from test.picardtestcase import PicardTestCase
 
-from picard import PICARD_VERSION_STR
-from picard.metadata import Metadata
-from picard.webservice.api_helpers.listenbrainz import (
-    ListenBrainzAPIHelper,
-    ListenPayload,
-    ListenSubmission,
-    ListenType,
-    TrackMetadata,
-)
+from picard.webservice import WebService
+from picard.webservice.api_helpers import APIHelper
 
 
-class TestListenBrainzAPIHelper(PicardTestCase):
-    def test_submit_listen(self):
-        webservice = Mock()
-        api_helper = ListenBrainzAPIHelper(webservice)
-        user_token = '12345'
-        submission = ListenSubmission(ListenType.SINGLE, [ListenPayload(TrackMetadata('Artist', 'Track'))])
+class APITest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        base_url = "http://abc.com/v1"
+        self.path = "/test/more/test"
+        self.complete_url = QUrl(base_url + self.path)
+        self.ws = MagicMock(auto_spec=WebService)
+        self.api = APIHelper(self.ws, base_url=base_url)
 
-        def reply_handler(data, reply, error):
-            pass
+    def _test_ws_function_args(self, ws_function):
+        self.assertGreater(ws_function.call_count, 0)
+        self.assertEqual(ws_function.call_args[1]['url'], self.complete_url)
 
-        api_helper.submit_listen(user_token, submission, reply_handler)
-        webservice.post_url.assert_called_once_with(
-            url=QUrl('https://api.listenbrainz.org/1/submit-listens'),
-            data=submission.as_json(),
-            handler=reply_handler,
-            mblogin=False,
-            headers={'Authorization': f'Token {user_token}'},
-        )
+    def test_get(self):
+        self.api.get(self.path, None)
+        self._test_ws_function_args(self.ws.get_url)
 
-    def test_serialize_listen(self):
-        listen = ListenSubmission(ListenType.SINGLE, [ListenPayload(TrackMetadata('Artist', 'Track'), 1771628400)])
-        expected_json = '{"listen_type": "single", "payload": [{"listened_at": 1771628400, "track_metadata": {"artist_name": "Artist", "track_name": "Track"}}]}'
-        self.assertEqual(listen.as_json(), expected_json)
+    def test_post(self):
+        self.api.post(self.path, None, None)
+        self._test_ws_function_args(self.ws.post_url)
 
-    def test_track_from_metadata(self):
-        metadata = Metadata(
-            {
-                'artist': 'Artist',
-                'title': 'Track',
-                'album': 'Release',
-                'musicbrainz_recordingid': '00000000-0000-0000-0000-000000000001',
-                'musicbrainz_artistid': [
-                    '00000000-0000-0000-0000-000000000002',
-                    '00000000-0000-0000-0000-000000000003',
-                ],
-            }
-        )
-        metadata.length = 300000
-        track = TrackMetadata.from_metadata(metadata)
-        self.assertEqual(track.artist_name, 'Artist')
-        self.assertEqual(track.track_name, 'Track')
-        self.assertEqual(track.release_name, 'Release')
-        self.assertEqual(
-            track.additional_info,
-            {
-                'media_player': 'MusicBrainz Picard',
-                'media_player_version': PICARD_VERSION_STR,
-                'duration_ms': 300000,
-                'recording_mbid': '00000000-0000-0000-0000-000000000001',
-                'artist_mbids': [
-                    '00000000-0000-0000-0000-000000000002',
-                    '00000000-0000-0000-0000-000000000003',
-                ],
-            },
-        )
+    def test_put(self):
+        self.api.put(self.path, None, None)
+        self._test_ws_function_args(self.ws.put_url)
 
-    def test_track_from_dict(self):
-        track = TrackMetadata.from_dict(
-            {
-                'artist_name': 'Artist',
-                'track_name': 'Track',
-                'release_name': 'Release',
-                'additional_info': {
-                    'duration_ms': 300000,
-                    'recording_mbid': '00000000-0000-0000-0000-000000000001',
-                },
-            }
-        )
-        self.assertEqual(track.artist_name, 'Artist')
-        self.assertEqual(track.track_name, 'Track')
-        self.assertEqual(track.release_name, 'Release')
-        self.assertEqual(
-            track.additional_info,
-            {
-                'duration_ms': 300000,
-                'recording_mbid': '00000000-0000-0000-0000-000000000001',
-            },
-        )
+    def test_delete(self):
+        self.api.delete(self.path, None)
+        self._test_ws_function_args(self.ws.delete_url)
