@@ -25,10 +25,6 @@ from enum import Enum
 
 from PyQt6 import QtCore
 from PyQt6.QtCore import QObject
-from PyQt6.QtMultimedia import (
-    QAudioOutput,
-    QMediaPlayer,
-)
 
 from picard import log
 from picard.config import get_config
@@ -37,10 +33,19 @@ from picard.i18n import gettext as _
 from picard.item import Item
 from picard.util import iter_files_from_objects
 
-from .util import (
-    get_linear_volume,
-    get_logarithmic_volume,
-)
+
+try:
+    from PyQt6.QtMultimedia import (
+        QAudioOutput,
+        QMediaPlayer,
+    )
+
+    from .util import (
+        get_linear_volume,
+        get_logarithmic_volume,
+    )
+except ImportError:
+    log.warning("Failed to import QtMultimedia", exc_info=True)
 
 
 MIN_PLAYBACK_RATE = 0.5
@@ -243,7 +248,7 @@ class Player(QtCore.QObject):
             self.media_changed.emit(None)
             self.playback_available.emit(self._can_play)
 
-    def _on_playback_state_changed(self, state: QMediaPlayer.PlaybackState):
+    def _on_playback_state_changed(self, state: 'QMediaPlayer.PlaybackState'):
         # if the track stopped while playing and we have more in the queue,
         # continue with next track.
         if state == QMediaPlayer.PlaybackState.StoppedState and self.is_playing:
@@ -263,7 +268,7 @@ class Player(QtCore.QObject):
     def _on_volume_changed(self, volume: float):
         self.volume_changed.emit(get_logarithmic_volume(volume))
 
-    def _on_error(self, error: QMediaPlayer.Error):
+    def _on_error(self, error: 'QMediaPlayer.Error'):
         if error == QMediaPlayer.Error.FormatError:
             msg = _("Internal player: The format of a media resource isn't (fully) supported")
         elif error == QMediaPlayer.Error.AccessDeniedError:
