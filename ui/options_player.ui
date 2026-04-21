@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
+    <width>498</width>
     <height>360</height>
    </rect>
   </property>
@@ -54,6 +54,22 @@
        <widget class="QLineEdit" name="listenbrainz_token">
         <property name="accessibleDescription">
          <string>ListenBrainz user token</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="listenbrainz_hint">
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Your user token is available in the &lt;a href=&quot;https://listenbrainz.org/settings/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#308cc6;&quot;&gt;ListenBrainz settings&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::TextFormat::RichText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+        <property name="openExternalLinks">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

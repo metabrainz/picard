@@ -17,7 +17,7 @@ from picard.i18n import gettext as _
 class Ui_PlayerOptionsPage(object):
     def setupUi(self, PlayerOptionsPage):
         PlayerOptionsPage.setObjectName("PlayerOptionsPage")
-        PlayerOptionsPage.resize(466, 360)
+        PlayerOptionsPage.resize(498, 360)
         self.vboxlayout = QtWidgets.QVBoxLayout(PlayerOptionsPage)
         self.vboxlayout.setObjectName("vboxlayout")
         self.player_now_playing = QtWidgets.QCheckBox(parent=PlayerOptionsPage)
@@ -38,6 +38,12 @@ class Ui_PlayerOptionsPage(object):
         self.listenbrainz_token = QtWidgets.QLineEdit(parent=self.listenbrainz_enabled)
         self.listenbrainz_token.setObjectName("listenbrainz_token")
         self.verticalLayout.addWidget(self.listenbrainz_token)
+        self.listenbrainz_hint = QtWidgets.QLabel(parent=self.listenbrainz_enabled)
+        self.listenbrainz_hint.setTextFormat(QtCore.Qt.TextFormat.RichText)
+        self.listenbrainz_hint.setWordWrap(True)
+        self.listenbrainz_hint.setOpenExternalLinks(True)
+        self.listenbrainz_hint.setObjectName("listenbrainz_hint")
+        self.verticalLayout.addWidget(self.listenbrainz_hint)
         self.vboxlayout.addWidget(self.listenbrainz_enabled)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem)
@@ -56,3 +62,4 @@ class Ui_PlayerOptionsPage(object):
         self.listenbrainz_submit_only_tagged.setText(_("Submit only tagged files"))
         self.listenbrainz_token_label.setText(_("ListenBrainz user token:"))
         self.listenbrainz_token.setAccessibleDescription(_("ListenBrainz user token"))
+        self.listenbrainz_hint.setText(_("<html><head/><body><p>Your user token is available in the <a href=\"https://listenbrainz.org/settings/\"><span style=\" text-decoration: underline; color:#308cc6;\">ListenBrainz settings</span></a>.</p></body></html>"))
