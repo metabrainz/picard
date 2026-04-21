@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_player.ui'
 #
-# Created by: PyQt6 UI code generator 6.10.2
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -28,6 +28,10 @@ class Ui_PlayerOptionsPage(object):
         self.listenbrainz_enabled.setObjectName("listenbrainz_enabled")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.listenbrainz_enabled)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.listenbrainz_submit_only_tagged = QtWidgets.QCheckBox(parent=self.listenbrainz_enabled)
+        self.listenbrainz_submit_only_tagged.setChecked(True)
+        self.listenbrainz_submit_only_tagged.setObjectName("listenbrainz_submit_only_tagged")
+        self.verticalLayout.addWidget(self.listenbrainz_submit_only_tagged)
         self.listenbrainz_user_label = QtWidgets.QLabel(parent=self.listenbrainz_enabled)
         self.listenbrainz_user_label.setObjectName("listenbrainz_user_label")
         self.verticalLayout.addWidget(self.listenbrainz_user_label)
@@ -48,11 +52,16 @@ class Ui_PlayerOptionsPage(object):
 
         self.retranslateUi(PlayerOptionsPage)
         QtCore.QMetaObject.connectSlotsByName(PlayerOptionsPage)
+        PlayerOptionsPage.setTabOrder(self.player_now_playing, self.listenbrainz_enabled)
+        PlayerOptionsPage.setTabOrder(self.listenbrainz_enabled, self.listenbrainz_submit_only_tagged)
+        PlayerOptionsPage.setTabOrder(self.listenbrainz_submit_only_tagged, self.listenbrainz_user)
+        PlayerOptionsPage.setTabOrder(self.listenbrainz_user, self.listenbrainz_token)
 
     def retranslateUi(self, PlayerOptionsPage):
         PlayerOptionsPage.setAccessibleName(_("ListenBrainz user name"))
         self.player_now_playing.setText(_("Enable audio player \"now playing\" notifications"))
         self.listenbrainz_enabled.setTitle(_("Submit listens to ListenBrainz"))
+        self.listenbrainz_submit_only_tagged.setText(_("Submit only tagged files"))
         self.listenbrainz_user_label.setText(_("ListenBrainz username:"))
         self.listenbrainz_user.setAccessibleName(_("ListenBrainz username"))
         self.listenbrainz_token_label.setText(_("ListenBrainz user token:"))

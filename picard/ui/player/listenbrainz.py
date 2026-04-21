@@ -126,7 +126,7 @@ class ListenBrainzSubmissionService:
         if self._current and self._current.can_submit:
             self._submit_listen(self._current)
 
-        if media:
+        if media and self._is_eligible_for_submission(media):
             self._current = PreparedSubmission(metadata=media.metadata, start_time=int(time.time()))
         else:
             self._current = None
@@ -168,6 +168,12 @@ class ListenBrainzSubmissionService:
         )
         self._queue.add(payload)
         submission.submitted = True
+
+    def _is_eligible_for_submission(self, file: File) -> bool:
+        config = get_config()
+        if config.setting['listenbrainz_submit_only_tagged'] and not file.metadata['musicbrainz_recordingid']:
+            return False
+        return True
 
 
 class ListenQueue:

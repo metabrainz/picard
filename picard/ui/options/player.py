@@ -39,6 +39,7 @@ class PlayerOptionsPage(OptionsPage):
     OPTIONS = (
         ('player_now_playing', ['player_now_playing']),
         ('listenbrainz_enabled', ['listenbrainz_enabled']),
+        ('listenbrainz_submit_only_tagged', ['listenbrainz_submit_only_tagged']),
         ('listenbrainz_user', ['listenbrainz_user']),
         ('listenbrainz_token', ['listenbrainz_token']),
     )
@@ -55,12 +56,14 @@ class PlayerOptionsPage(OptionsPage):
         config = get_config()
         self.ui.player_now_playing.setChecked(config.setting['player_now_playing'])
         self.ui.listenbrainz_enabled.setChecked(config.setting['listenbrainz_enabled'])
+        self.ui.listenbrainz_submit_only_tagged.setChecked(config.setting['listenbrainz_submit_only_tagged'])
         self.ui.listenbrainz_user.setText(config.setting['listenbrainz_user'])
         self.ui.listenbrainz_token.setText(config.setting['listenbrainz_token'])
 
     def save(self):
         config = get_config()
         config.setting['listenbrainz_enabled'] = self.ui.listenbrainz_enabled.isChecked()
+        config.setting['listenbrainz_submit_only_tagged'] = self.ui.listenbrainz_submit_only_tagged.isChecked()
         config.setting['listenbrainz_user'] = self.ui.listenbrainz_user.text()
         config.setting['listenbrainz_token'] = self.ui.listenbrainz_token.text()
         self._update_now_playing_settings(config)

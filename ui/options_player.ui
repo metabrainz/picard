@@ -31,6 +31,16 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QCheckBox" name="listenbrainz_submit_only_tagged">
+        <property name="text">
+         <string>Submit only tagged files</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="listenbrainz_user_label">
         <property name="text">
          <string>ListenBrainz username:</string>
@@ -82,6 +92,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>player_now_playing</tabstop>
+  <tabstop>listenbrainz_enabled</tabstop>
+  <tabstop>listenbrainz_submit_only_tagged</tabstop>
+  <tabstop>listenbrainz_user</tabstop>
+  <tabstop>listenbrainz_token</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
