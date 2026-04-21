@@ -41,23 +41,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="listenbrainz_user_label">
-        <property name="text">
-         <string>ListenBrainz username:</string>
-        </property>
-        <property name="buddy">
-         <cstring>listenbrainz_user</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLineEdit" name="listenbrainz_user">
-        <property name="accessibleName">
-         <string>ListenBrainz username</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="listenbrainz_token_label">
         <property name="text">
          <string>ListenBrainz user token:</string>
@@ -96,7 +79,6 @@
   <tabstop>player_now_playing</tabstop>
   <tabstop>listenbrainz_enabled</tabstop>
   <tabstop>listenbrainz_submit_only_tagged</tabstop>
-  <tabstop>listenbrainz_user</tabstop>
   <tabstop>listenbrainz_token</tabstop>
  </tabstops>
  <resources/>
