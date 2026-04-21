@@ -23,6 +23,7 @@ import argparse
 from datetime import datetime
 from enum import IntEnum
 import logging
+import os
 from pathlib import Path
 import shutil
 
@@ -1981,8 +1982,9 @@ def main():
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
     # Create output with color setting from args
-    color = not getattr(cmdline_args, 'no_color', False)
-    output = PluginOutput(color=color)
+    # None = auto-detect (isatty), False = explicitly disabled
+    no_color = getattr(cmdline_args, 'no_color', False) or 'NO_COLOR' in os.environ
+    output = PluginOutput(color=False if no_color else None)
 
     exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
     sys.exit(exit_code)
