@@ -1108,7 +1108,7 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
 
     Args:
         pattern: The pattern as a string
-        allow_wildcards: If true and if the the pattern is not interpreted as a regex wildard matching is allowed.
+        allow_wildcards: If true and if the pattern is not interpreted as a regex wildcard matching is allowed.
         flags: Additional regex flags to set (e.g. `re.I`)
 
     Returns: An re.Pattern instance

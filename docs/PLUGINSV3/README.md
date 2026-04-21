@@ -73,7 +73,7 @@ This directory contains comprehensive documentation for Picard's Plugin v3 syste
 - TOML manifests
 - JSON translations
 - PyQt6 support
-- Python 3.9+
+- Python 3.10+
 
 ---
 

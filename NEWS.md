@@ -1905,7 +1905,7 @@
 - [PICARD-857](https://tickets.metabrainz.org/browse/PICARD-857) - Improper detection of Gnome as a desktop environment and no support for gnome 3
 - [PICARD-858](https://tickets.metabrainz.org/browse/PICARD-858) - Apparent non-functional tagger button
 - [PICARD-859](https://tickets.metabrainz.org/browse/PICARD-859) - Picard does not read Ogg/Opus files with an ".ogg" file exension
-- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in in `$num` function as length causes picard to become unresponsive
+- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in `$num` function as length causes picard to become unresponsive
 - [PICARD-867](https://tickets.metabrainz.org/browse/PICARD-867) - id3 deletion needs to be improved
 - [PICARD-868](https://tickets.metabrainz.org/browse/PICARD-868) - id3v2.3 does not properly handle TMOO ( mood tag)
 - [PICARD-870](https://tickets.metabrainz.org/browse/PICARD-870) - Coverart providers duplicates on reset
