@@ -89,3 +89,26 @@ class TestListenBrainzAPIHelper(PicardTestCase):
                 ],
             },
         )
+
+    def test_track_from_dict(self):
+        track = TrackMetadata.from_dict(
+            {
+                'artist_name': 'Artist',
+                'track_name': 'Track',
+                'release_name': 'Release',
+                'additional_info': {
+                    'duration_ms': 300000,
+                    'recording_mbid': '00000000-0000-0000-0000-000000000001',
+                },
+            }
+        )
+        self.assertEqual(track.artist_name, 'Artist')
+        self.assertEqual(track.track_name, 'Track')
+        self.assertEqual(track.release_name, 'Release')
+        self.assertEqual(
+            track.additional_info,
+            {
+                'duration_ms': 300000,
+                'recording_mbid': '00000000-0000-0000-0000-000000000001',
+            },
+        )

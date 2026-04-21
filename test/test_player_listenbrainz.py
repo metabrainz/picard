@@ -17,11 +17,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+from unittest.mock import Mock
+
+from PyQt6.QtNetwork import (
+    QNetworkReply,
+    QNetworkRequest,
+)
+
 from test.picardtestcase import PicardTestCase
 
 from picard.metadata import Metadata
+from picard.webservice.api_helpers.listenbrainz import (
+    ListenPayload,
+    ListenSubmission,
+    ListenType,
+    TrackMetadata,
+)
 
-from picard.ui.player.listenbrainz import PreparedSubmission
+from picard.ui.player.listenbrainz import (
+    ListenQueue,
+    PreparedSubmission,
+)
 
 
 class TestPreparedSubmissionService(PicardTestCase):
@@ -64,3 +80,50 @@ class TestPreparedSubmissionService(PicardTestCase):
         self.assertFalse(submission.can_submit)
         metadata.length = 999
         self.assertFalse(submission.can_submit)
+
+
+class FakeListenBrainzAPIHelper:
+    def __init__(self, data=None, status_code=200, error=None):
+        self._data = data or {}
+        self._status_code = status_code
+        self._error = error
+        self.submit_listen = Mock()
+        self.submit_listen.side_effect = self._submit_listen
+
+    def _submit_listen(self, token, listen, callback):
+        reply = Mock()
+
+        def get_attribute(code):
+            if code == QNetworkRequest.Attribute.HttpStatusCodeAttribute:
+                return self._status_code
+            else:
+                return None
+
+        reply.attribute.side_effect = get_attribute
+        callback(self._data, reply, self._error)
+
+
+class TestListenQueue(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.set_config_values({"listenbrainz_token": "test_token"})
+
+    def test_add(self):
+        lbapi = FakeListenBrainzAPIHelper()
+        queue = ListenQueue(lbapi)
+        queue._on_submit_listen_response = Mock()
+        payload = ListenPayload(track_metadata=TrackMetadata(artist_name="", track_name=""))
+        queue.add(payload)
+        lbapi.submit_listen.assert_called_once()
+        args = lbapi.submit_listen.call_args.args
+        self.assertEqual(args[0], "test_token")
+        self.assertEqual(args[1], ListenSubmission(ListenType.SINGLE, [payload]))
+        queue._on_submit_listen_response.assert_called_once()
+        self.assertEqual([], queue._queue)
+
+    def test_add_failure(self):
+        lbapi = FakeListenBrainzAPIHelper(status_code=401, error=QNetworkReply.NetworkError.AuthenticationRequiredError)
+        queue = ListenQueue(lbapi)
+        payload = ListenPayload(track_metadata=TrackMetadata(artist_name="", track_name=""))
+        queue.add(payload)
+        self.assertEqual([payload], queue._queue)

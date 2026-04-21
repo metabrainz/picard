@@ -84,6 +84,15 @@ class TrackMetadata:
             additional_info=additional_info,
         )
 
+    @staticmethod
+    def from_dict(obj: dict) -> 'TrackMetadata':
+        return TrackMetadata(
+            artist_name=obj['artist_name'],
+            track_name=obj['track_name'],
+            release_name=obj.get('release_name'),
+            additional_info=obj.get('additional_info'),
+        )
+
 
 @dataclass
 class ListenPayload:
