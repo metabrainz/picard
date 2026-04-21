@@ -62,22 +62,12 @@ class PlayerOptionsPage(OptionsPage):
 
     def save(self):
         config = get_config()
+        config.setting['player_now_playing'] = self.ui.player_now_playing.isChecked()
         config.setting['listenbrainz_enabled'] = self.ui.listenbrainz_enabled.isChecked()
         config.setting['listenbrainz_submit_only_tagged'] = self.ui.listenbrainz_submit_only_tagged.isChecked()
         config.setting['listenbrainz_user'] = self.ui.listenbrainz_user.text()
         config.setting['listenbrainz_token'] = self.ui.listenbrainz_token.text()
-        self._update_now_playing_settings(config)
-
-    def _update_now_playing_settings(self, config):
-        old_player_now_playing = config.setting['player_now_playing']
-        new_player_now_playing = self.ui.player_now_playing.isChecked()
-        if old_player_now_playing != new_player_now_playing:
-            config.setting['player_now_playing'] = new_player_now_playing
-            if now_playing_service := getattr(self.tagger.window, '_player_now_playing', None):
-                if new_player_now_playing:
-                    now_playing_service.enable()
-                else:
-                    now_playing_service.disable()
+        self.tagger.window.update_now_playing_services()
 
 
 register_options_page(PlayerOptionsPage)

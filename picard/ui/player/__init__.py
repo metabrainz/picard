@@ -27,7 +27,6 @@ from typing import (
 from PyQt6.QtCore import QObject
 
 from picard import log
-from picard.config import get_config
 from picard.const.sys import (
     IS_HAIKU,
     IS_MACOS,
@@ -97,9 +96,6 @@ def get_now_playing_service(player: 'Player') -> NowPlayingService | None:
             from picard.ui.player.mpris import MPRIS2NowPlayingService
 
             now_playing_service = MPRIS2NowPlayingService(player)
-
-        if now_playing_service and get_config().setting['player_now_playing']:
-            now_playing_service.enable()
 
         return now_playing_service
     except Exception as err:

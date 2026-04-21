@@ -156,6 +156,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.player import NowPlayingService
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -332,9 +333,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.player = player
         self.player.error.connect(self._on_player_error)
         self.player.playback_available.connect(self._on_player_available_changed)
-        self._player_now_playing = get_now_playing_service(player)
-        self._listenbrainz_submission = ListenBrainzSubmissionService(player, self.tagger.webservice, self.tagger)
-        self._listenbrainz_submission.enable()
+
+        # Setup now playing services
+        self._now_playing_services: list[tuple[NowPlayingService, str]] = []
+        now_playing_service = get_now_playing_service(player)
+        if now_playing_service:
+            self._now_playing_services.append((now_playing_service, 'player_now_playing'))
+        self._now_playing_services.append(
+            (ListenBrainzSubmissionService(player, self.tagger.webservice, self.tagger), 'listenbrainz_enabled')
+        )
+        self.update_now_playing_services()
+
+    def update_now_playing_services(self):
+        config = get_config()
+        for service, config_key in getattr(self, '_now_playing_services', []):
+            if config.setting[config_key]:
+                service.enable()
+            else:
+                service.disable()
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
