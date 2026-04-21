@@ -98,7 +98,7 @@ def get_now_playing_service(player: 'Player') -> NowPlayingService | None:
 
             now_playing_service = MPRIS2NowPlayingService(player)
 
-        if get_config().setting['player_now_playing']:
+        if now_playing_service and get_config().setting['player_now_playing']:
             now_playing_service.enable()
 
         return now_playing_service
