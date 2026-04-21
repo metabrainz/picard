@@ -48,6 +48,9 @@ class PlayerOptionsPage(OptionsPage):
         self.ui = Ui_PlayerOptionsPage()
         self.ui.setupUi(self)
 
+        if not getattr(self.tagger.window, 'player', None):
+            self.ACTIVE = False
+
         if not OS_SUPPORTS_NOW_PLAYING:
             self.ui.player_now_playing.hide()
 
