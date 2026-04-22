@@ -26,6 +26,7 @@ from picard.config import (
     Config,
     get_config,
 )
+from picard.const.sys import IS_WIN
 from picard.i18n import gettext as _
 from picard.util import (
     get_url,
@@ -193,6 +194,8 @@ class SetupWizard(QtWidgets.QWizard):
         self.setWindowTitle(_("Picard Setup"))
         self.setMinimumSize(500, 350)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
+        if IS_WIN:
+            self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
 
         self._pages: list[SetupWizardPage] = []
         for page_class in self.PAGES:
