@@ -674,8 +674,7 @@ class File(MetadataItem):
             return old_filename
 
         new_dirname = os.path.dirname(new_filename)
-        if not os.path.isdir(new_dirname):
-            os.makedirs(new_dirname)
+        os.makedirs(new_dirname, exist_ok=True)
         if not settings['move_overwrite_existing_files']:
             new_filename = get_available_filename(new_filename, old_filename)
         log.debug("Moving file %r => %r", old_filename, new_filename)
