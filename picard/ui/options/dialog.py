@@ -89,6 +89,7 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     matching,
     metadata,
     network,
+    player,
     plugins,
     profiles,
     ratings,
@@ -173,8 +174,8 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     # Plugin manager not available, assume active
                     page_active = True
 
-            # Skip disabled plugin pages entirely
-            if api is not None and not page_active:
+            # Skip disabled pages entirely
+            if not page_active:
                 continue
 
             item = HashableTreeWidgetItem(parent_item)

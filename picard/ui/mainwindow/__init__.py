@@ -44,6 +44,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 from collections import namedtuple
 from contextlib import suppress
 from copy import deepcopy
@@ -155,6 +156,7 @@ from picard.ui.passworddialog import (
     PasswordDialog,
     ProxyDialog,
 )
+from picard.ui.player import NowPlayingService
 from picard.ui.savewarningdialog import SaveWarningDialog
 from picard.ui.scripteditor import ScriptEditorDialog
 from picard.ui.scripteditor.examples import ScriptEditorExamples
@@ -322,6 +324,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def _setup_player(self):
         # Local import: player depends on QtMultimedia which is an optional runtime dependency
         from picard.ui.player import get_now_playing_service, get_player
+        from picard.ui.player.listenbrainz import ListenBrainzSubmissionService
 
         player = get_player(self)
         if not (player and player.available):
@@ -330,7 +333,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.player = player
         self.player.error.connect(self._on_player_error)
         self.player.playback_available.connect(self._on_player_available_changed)
-        self._player_now_playing = get_now_playing_service(player)
+
+        # Setup now playing services
+        self._now_playing_services: list[tuple[NowPlayingService, str]] = []
+        now_playing_service = get_now_playing_service(player)
+        if now_playing_service:
+            self._now_playing_services.append((now_playing_service, 'player_now_playing'))
+        self._now_playing_services.append(
+            (ListenBrainzSubmissionService(player, self.tagger.webservice, self.tagger), 'listenbrainz_enabled')
+        )
+        self.update_now_playing_services()
+
+    def update_now_playing_services(self):
+        config = get_config()
+        for service, config_key in getattr(self, '_now_playing_services', []):
+            if config.setting[config_key]:
+                service.enable()
+            else:
+                service.disable()
 
     def handle_settings_changed(self, name, old_value, new_value):
         if name == 'rename_files':
