@@ -91,7 +91,7 @@ if has_module('opencc'):
     hiddenimports.append('opencc')  # opencc module
 
 if has_module('zstandard'):
-    hiddenimports.append('opencc')  # xqaf plugin
+    hiddenimports.append('zstandard')  # xqaf plugin
 
 excludes = []
 
