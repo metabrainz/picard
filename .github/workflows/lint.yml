@@ -27,12 +27,12 @@ jobs:
               - 'pyproject.toml'
               - '**/*.py'
       - name: Ruff lint
-        uses: astral-sh/ruff-action@v3
+        uses: astral-sh/ruff-action@v4
         if: steps.changes.outputs.src == 'true'
         with:
           args: "check --output-format=github"
       - name: Ruff format check
-        uses: astral-sh/ruff-action@v3
+        uses: astral-sh/ruff-action@v4
         if: steps.changes.outputs.src == 'true'
         with:
           args: "format --diff"
