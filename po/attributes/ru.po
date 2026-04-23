@@ -30,7 +30,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-01-19 12:11+0000\n"
+"PO-Revision-Date: 2026-04-06 18:11+0000\n"
 "Last-Translator: wileyfoxyx "
 "<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/"
@@ -42,7 +42,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -7392,7 +7392,7 @@ msgstr "Коллекция групп релизов"
 #: DB:release_group_alias_type/name:1
 msgctxt "alias_type"
 msgid "Release group name"
-msgstr "Название Релиз группы"
+msgstr "Название группы релизов"
 
 #: DB:series_type/name:1
 msgctxt "series_type"
