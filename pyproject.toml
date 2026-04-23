@@ -89,7 +89,7 @@ ext-modules = [
 ]
 
 [tool.setuptools.dynamic]
-version = {attr = "picard.PICARD_VERSION_STR_SHORT"}
+version = {attr = "picard.__version__"}
 readme = {file = ["README.md"], content-type = "text/markdown"}
 
 [tool.setuptools.packages.find]
