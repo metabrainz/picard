@@ -299,7 +299,7 @@ class RenamingOptionsPage(OptionsPage):
         elif self.ui.move_conflict_overwrite.isChecked():
             config.setting['move_conflict_strategy'] = MoveConflictStrategy.OVERWRITE.value
         else:
-            config.setting['move_conflict_strategy'] = MoveConflictStrategy.RENAME.value
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
         config.setting['move_additional_files_pattern'] = self.ui.move_additional_files_pattern.text()
         config.setting['delete_empty_dirs'] = self.ui.delete_empty_dirs.isChecked()
         config.setting['selected_file_naming_script_id'] = self.selected_naming_script_id

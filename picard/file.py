@@ -687,8 +687,7 @@ class File(MetadataItem):
             return old_filename
 
         new_dirname = os.path.dirname(new_filename)
-        if not os.path.isdir(new_dirname):
-            os.makedirs(new_dirname)
+        os.makedirs(new_dirname, exist_ok=True)
         strategy = MoveConflictStrategy.from_config(settings['move_conflict_strategy'])
         new_filename = self._handle_conflict(new_filename, old_filename, strategy)
         if new_filename is None:

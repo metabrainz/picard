@@ -29,9 +29,13 @@ class MoveConflictStrategy(str, Enum):
     OVERWRITE = "overwrite"
 
     @classmethod
+    def default(cls):
+        return cls.RENAME
+
+    @classmethod
     def from_config(cls, value, default=None):
         if default is None:
-            default = cls.RENAME
+            default = cls.default()
         try:
             return cls(value)
         except ValueError:

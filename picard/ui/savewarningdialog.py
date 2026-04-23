@@ -63,17 +63,20 @@ class SaveWarningDialog:
                 "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (skip moving if destination file exists)",
                 file_count,
             ).format(pattern=pattern, move_to=move_to)
-        if strategy == MoveConflictStrategy.OVERWRITE:
+
+        elif strategy == MoveConflictStrategy.OVERWRITE:
             return ngettext(
                 "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (overwrite destination file if it exists)",
                 "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (overwrite destination file if it exists)",
                 file_count,
             ).format(pattern=pattern, move_to=move_to)
-        return ngettext(
-            "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
-            "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
-            file_count,
-        ).format(pattern=pattern, move_to=move_to)
+
+        else:
+            return ngettext(
+                "move additional file matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+                "move additional files matching pattern <code>{pattern}</code> to <em>{move_to}</em> (rename with a numeric suffix if destination file exists)",
+                file_count,
+            ).format(pattern=pattern, move_to=move_to)
 
     def __init__(self, parent, file_count):
         actions = []
