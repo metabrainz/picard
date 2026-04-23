@@ -99,7 +99,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
     - name: Sign picard.exe
-      uses: azure/artifact-signing-action@v1
+      uses: azure/artifact-signing-action@v1.2.0
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
@@ -136,7 +136,7 @@ jobs:
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Sign final executable
-      uses: azure/artifact-signing-action@v1
+      uses: azure/artifact-signing-action@v1.2.0
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
