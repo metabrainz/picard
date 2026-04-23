@@ -77,6 +77,7 @@ class Version(namedtuple('VersionBase', 'major minor patch identifier revision')
         return set(cls._identifiers.keys())
 
     def short_str(self):
+        """Return version string in PEP 440 canonical format."""
         if self.identifier in {'alpha', 'beta'}:
             version = self._replace(identifier=self.identifier[0])
         else:
