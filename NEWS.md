@@ -1,5 +1,31 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b1 - 2026-04-23
+
+### Bugfixes
+- [PICARD-3236](https://tickets.metabrainz.org/browse/PICARD-3236) - PyJWT~=2.12 requirement too strict and impacts distro packaging
+- [PICARD-3237](https://tickets.metabrainz.org/browse/PICARD-3237) - AppStream metadata validation fails due to changed FAQ URL
+- [PICARD-3238](https://tickets.metabrainz.org/browse/PICARD-3238) - No longer able to paste text value into multiple tracks
+- [PICARD-3239](https://tickets.metabrainz.org/browse/PICARD-3239) - Picard can not remove plugin data on Windows
+- [PICARD-3246](https://tickets.metabrainz.org/browse/PICARD-3246) - Genre tag changes on every reload when multiple genres have equal vote counts
+- [PICARD-3249](https://tickets.metabrainz.org/browse/PICARD-3249) - Tags not suggested in Edit Tag dialog
+
+### New Features
+- [PICARD-2982](https://tickets.metabrainz.org/browse/PICARD-2982) - Submit Listens to ListenBrainz using Picard
+- [PICARD-3250](https://tickets.metabrainz.org/browse/PICARD-3250) - Support Simplified Chinese to Traditional Chinese plugin in official builds
+
+### Improvements
+- [PICARD-292](https://tickets.metabrainz.org/browse/PICARD-292) - Wizard/configuration tutorial on first run
+- [PICARD-3199](https://tickets.metabrainz.org/browse/PICARD-3199) - Detect FLAC `unsyncedlyrics` tag
+- [PICARD-3240](https://tickets.metabrainz.org/browse/PICARD-3240) - Map `syncedlyrics` to `WM/Lyrics_Synchronised` for ASF
+- [PICARD-3244](https://tickets.metabrainz.org/browse/PICARD-3244) - Fix word-wrap issue regarding the network cache size option setting
+- [PICARD-3254](https://tickets.metabrainz.org/browse/PICARD-3254) - Plugins v3 MANIFEST: add support for `report_bugs_to` field
+
+### Tasks
+- [PICARD-3243](https://tickets.metabrainz.org/browse/PICARD-3243) - Documentation: Add note about unnecessary spaces in script functions
+- [PICARD-3247](https://tickets.metabrainz.org/browse/PICARD-3247) - Update snap build for Picard 3 with Qt6
+
+
 ## Version 3.0.0a4 - 2026-03-20
 
 ### Bugfixes
