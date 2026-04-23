@@ -58,15 +58,16 @@ MUSICBRAINZ_OAUTH_CLIENT_SECRET = 'IVg2qnvErgX046Ptz3FsTxW4dbyQM9Jr'
 # Cover art archive URL
 CAA_URL = 'https://coverartarchive.org'
 
+# ListenBrainz API URL
+LISTENBRAINZ_API_URL = 'https://api.listenbrainz.org/1/'
+
 # Documentation ReadTheDocs project information
 READTHEDOCS_PROJECT = 'picard-docs'
 READTHEDOCS_PROJECT_API = 'https://app.readthedocs.org/api/v3/projects/' + READTHEDOCS_PROJECT
 READTHEDOCS_BASE_LANGUAGE = 'en'
 READTHEDOCS_BASE_VERSION = 'latest'
 
-# FIXME: Switch to the musicbrainz.org domain once it has been redirected to ReadTheDocs
-# DOCS_SERVER_URL = "https://picard-docs.musicbrainz.org/"
-DOCS_SERVER_URL = "https://picard-docs.readthedocs.io/"
+DOCS_SERVER_URL = 'https://picard-docs.musicbrainz.org/'
 
 MB_DOCS_BASE_URL = "https://musicbrainz.org/doc"
 

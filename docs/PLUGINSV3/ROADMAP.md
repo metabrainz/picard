@@ -576,7 +576,7 @@ See [REGISTRY.md](REGISTRY.md) and [WEBSITE.md](WEBSITE.md) for details.
 
 **Tasks:**
 - [x] Implement `PluginRegistry` class
-- [x] Fetch and cache registry JSON
+- [x] Fetch and cache registry TOML
 - [x] Add trust level checking
 - [ ] Show trust level badges in UI (Phase 4)
 - [x] Implement repository-level blacklist patterns
@@ -678,7 +678,7 @@ See [CLI.md](CLI.md) for command specifications.
 - [ ] No known critical bugs
 
 ### Phase 3 Complete
-- [ ] Website serves plugin registry JSON
+- [ ] Website serves plugin registry TOML
 - [ ] Picard fetches and caches registry
 - [ ] Can browse official plugins via CLI
 - [ ] Can search official plugins

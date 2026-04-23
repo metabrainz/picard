@@ -18,7 +18,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import json
 import os
 from pathlib import Path
 import re
@@ -34,15 +33,13 @@ from picard.git.utils import normalize_git_url
 from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
+from picard.util import atomic_write
 
 
 try:
     import tomllib  # type: ignore[unresolved-import]
 except (ImportError, ModuleNotFoundError):
     import tomli as tomllib  # type: ignore[no-redef]
-
-
-REGISTRY_CACHE_VERSION = 1  # Increment when cache format changes
 
 
 class RegistryError(Exception):
@@ -61,22 +58,12 @@ class RegistryFetchError(RegistryError):
 
 
 class RegistryParseError(RegistryError):
-    """Raised when registry JSON cannot be parsed."""
+    """Raised when registry TOML cannot be parsed."""
 
     def __init__(self, url, original_error):
         self.url = url
         self.original_error = original_error
         super().__init__(f"Failed to parse registry from {url}: {original_error}")
-
-
-class RegistryCacheError(RegistryError):
-    """Raised when registry cache cannot be read or written."""
-
-    def __init__(self, cache_path, operation, original_error):
-        self.cache_path = cache_path
-        self.operation = operation
-        self.original_error = original_error
-        super().__init__(f"Failed to {operation} registry cache {cache_path}: {original_error}")
 
 
 class PluginRegistry:
@@ -105,14 +92,12 @@ class PluginRegistry:
         self.registry_url = self.registry_urls[0]
 
         # Create URL-specific cache path using SHA1 hash
-        if cache_dir:
-            url_hash = hash_string(self.registry_url)
-            self.cache_path = Path(cache_dir) / f'plugin_registry_{url_hash}.json'
-        else:
-            self.cache_path = None
+        self._cache_dir = Path(cache_dir) if cache_dir else None
+        self.cache_path = self._cache_path_for_url(self.registry_url)
 
         self._registry_data = None
         self._plugins = []  # List of RegistryPlugin objects
+        self._logged_not_loaded = False
 
     def _ensure_registry_loaded(self, operation_name='operation'):
         """Ensure registry data is loaded, with error handling.
@@ -133,7 +118,9 @@ class PluginRegistry:
 
             # Try loading from local file if URL is local
             if not self._load_from_local_file(self.registry_urls[0]):
-                log.debug('Registry not loaded for %s (no cache or local file available)', operation_name)
+                if not self._logged_not_loaded:
+                    log.debug('Registry not loaded (no cache or local file available)')
+                    self._logged_not_loaded = True
                 return False
 
         # Process plugins if not already done
@@ -171,24 +158,27 @@ class PluginRegistry:
     def _load_from_cache(self):
         """Load registry from cache if available.
 
+        Tries cache files for all registry URLs (primary first, then fallbacks).
+
         Returns:
             bool: True if loaded from cache, False otherwise
         """
-        if not self.cache_path or not Path(self.cache_path).exists():
+        if not self._cache_dir:
             return False
 
-        try:
-            with open(self.cache_path, 'r') as f:
-                data = json.load(f)
-                # Check cache version (missing version = old cache before versioning)
-                if data.get('version') == REGISTRY_CACHE_VERSION:
-                    self._registry_data = data.get('data', {})
-                    self._process_plugins()
-                    log.debug('Loaded registry from cache: %s', self.cache_path)
-                    return True
-        except Exception as e:
-            # Corrupted or old format cache - fetch from URL
-            log.debug('Failed to load registry cache: %s', e)
+        for url in self.registry_urls:
+            cache_path = self._cache_path_for_url(url)
+            if not cache_path or not cache_path.exists():
+                continue
+            try:
+                with open(cache_path, 'rb') as f:
+                    self._registry_data = tomllib.load(f)
+                self.cache_path = cache_path
+                self._process_plugins()
+                log.debug('Loaded registry from cache: %s', cache_path)
+                return True
+            except Exception as e:
+                log.debug('Failed to load registry cache: %s', e)
 
         return False
 
@@ -279,9 +269,10 @@ class PluginRegistry:
             else:
                 try:
                     self._registry_data = tomllib.loads(response.decode('utf-8'))
+                    self._update_cache_path(url)
+                    self._save_cache(response)
                     self.registry_url = url
                     self._process_plugins()
-                    self._save_cache()
                     if callback:
                         callback(True, None)
                 except tomllib.TOMLDecodeError as e:
@@ -300,19 +291,29 @@ class PluginRegistry:
             parse_response_type=None,  # Don't parse, we'll handle TOML ourselves
         )
 
-    def _save_cache(self):
-        """Save registry data to cache file."""
-        if self.cache_path and self._registry_data:
-            try:
-                Path(self.cache_path).parent.mkdir(parents=True, exist_ok=True)
-                # Wrap registry data with version
-                data = {'version': REGISTRY_CACHE_VERSION, 'data': self._registry_data}
-                with open(self.cache_path, 'w') as f:
-                    json.dump(data, f)
-                log.debug('Saved registry to cache: %s', self.cache_path)
-            except Exception as e:
-                # Cache write failure is not critical, just log warning
-                log.warning('Failed to save registry cache: %s', e)
+    def _cache_path_for_url(self, url):
+        """Get cache file path for a registry URL."""
+        if self._cache_dir:
+            return self._cache_dir / f'plugin_registry_{hash_string(url)}.toml'
+        return None
+
+    def _update_cache_path(self, url):
+        """Update cache path to match the URL that provided the data."""
+        self.cache_path = self._cache_path_for_url(url)
+
+    def _save_cache(self, data):
+        """Save raw registry data to cache file atomically.
+
+        Args:
+            data: Raw TOML bytes from the registry
+        """
+        if not self.cache_path:
+            return
+        try:
+            atomic_write(self.cache_path, data)
+            log.debug('Saved registry to cache: %s', self.cache_path)
+        except Exception as e:
+            log.warning('Failed to save registry cache: %s', e)
 
     def is_blacklisted(self, url, plugin_uuid=None):
         """Check if a plugin URL or UUID is blacklisted.

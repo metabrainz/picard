@@ -43,6 +43,7 @@ from picard.plugin3.registry import RegistryPlugin
 from picard.ui import PicardDialog
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import font_scaled_size
 
 
 render_markdown: Callable[[str], str] | None = None
@@ -69,21 +70,23 @@ class InstallPluginDialog(PicardDialog):
         super().__init__(parent)
         self.setWindowTitle(_("Install Plugin"))
         self.setModal(True)
-        self.setMinimumSize(500, 300)
+        self.setMinimumSize(font_scaled_size(self, 60, 20))
 
         # Cache frequently accessed objects
         self.plugin_manager = self.tagger.get_plugin_manager()
+
+        self.setup_ui()
 
         # Fetch registry on dialog open, fallback to cache if network fails
         log.debug('InstallPluginDialog: Fetching registry on dialog open')
 
         def on_registry_fetched(success, error):
-            if not success:
+            if success:
+                self._load_registry_plugins()
+            else:
                 log.debug('InstallPluginDialog: Registry fetch failed: %s', error)
 
         self.plugin_manager._registry.fetch_registry(use_cache=True, callback=on_registry_fetched)
-
-        self.setup_ui()
 
     def setup_ui(self):
         """Setup the dialog UI."""

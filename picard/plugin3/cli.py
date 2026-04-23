@@ -23,6 +23,7 @@ import argparse
 from datetime import datetime
 from enum import IntEnum
 import logging
+import os
 from pathlib import Path
 import shutil
 
@@ -145,6 +146,36 @@ class PluginCLI:
     def _is_debug_mode(self):
         """Check if debug mode is enabled."""
         return getattr(self._args, 'debug', False)
+
+    def _ensure_registry(self):
+        """Ensure registry is loaded, fetching from remote if needed.
+
+        Returns:
+            bool: True if registry is available, False on failure
+        """
+        if self._manager._registry.is_registry_loaded():
+            return True
+
+        result = {'success': False, 'error': None, 'done': False}
+
+        def callback(success, error):
+            result['success'] = success
+            result['error'] = error
+            result['done'] = True
+
+        self._manager._registry.fetch_registry(callback=callback)
+
+        app = QCoreApplication.instance()
+        while not result['done']:
+            app.processEvents()
+
+        if not result['success']:
+            if result['error']:
+                self._handle_exception(result['error'], 'Failed to fetch registry')
+            else:
+                self._out.error('Failed to load plugin registry')
+            return False
+        return True
 
     def _handle_exception(self, e, message=None):
         """Handle exception with optional traceback in debug mode.
@@ -568,6 +599,9 @@ class PluginCLI:
         if homepage:
             self._out.print(f'Homepage: {self._out.d_url(homepage)}')
 
+        if plugin.manifest.report_bugs_to:
+            self._out.print(f'Report Bugs To: {self._out.d_url(plugin.manifest.report_bugs_to)}')
+
         min_python = plugin.manifest._data.get('min_python_version')
         if min_python:
             self._out.print(f'Min Python: {min_python}')
@@ -737,6 +771,9 @@ class PluginCLI:
             try:
                 # Check if it's a plugin ID (no slashes, no protocol)
                 if '/' not in url_or_id and '://' not in url_or_id:
+                    if not self._ensure_registry():
+                        return ExitCode.ERROR
+
                     # If reinstalling, check if it's an installed plugin identifier
                     if reinstall:
                         installed_plugin = self._manager.find_plugin(url_or_id)
@@ -1387,6 +1424,9 @@ class PluginCLI:
                 if homepage:
                     self._out.info(f'  Homepage: {homepage}')
 
+                if manifest.report_bugs_to:
+                    self._out.info(f'  Report bugs to: {manifest.report_bugs_to}')
+
                 min_python = manifest._data.get('min_python_version')
                 if min_python:
                     self._out.info(f'  Min Python version: {min_python}')
@@ -1527,6 +1567,9 @@ class PluginCLI:
 
     def _cmd_browse(self):
         """Browse plugins from registry."""
+        if not self._ensure_registry():
+            return ExitCode.ERROR
+
         category = getattr(self._args, 'category', None)
         trust_level = getattr(self._args, 'trust', None)
 
@@ -1588,6 +1631,9 @@ class PluginCLI:
 
     def _cmd_search(self, query):
         """Search plugins in registry."""
+        if not self._ensure_registry():
+            return ExitCode.ERROR
+
         category = getattr(self._args, 'category', None)
         trust_level = getattr(self._args, 'trust', None)
 
@@ -1936,8 +1982,9 @@ def main():
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
     # Create output with color setting from args
-    color = not getattr(cmdline_args, 'no_color', False)
-    output = PluginOutput(color=color)
+    # None = auto-detect (isatty), False = explicitly disabled
+    no_color = getattr(cmdline_args, 'no_color', False) or 'NO_COLOR' in os.environ
+    output = PluginOutput(color=False if no_color else None)
 
     exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
     sys.exit(exit_code)

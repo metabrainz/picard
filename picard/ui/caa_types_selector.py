@@ -51,7 +51,10 @@ from picard.i18n import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.util import qlistwidget_items
+from picard.ui.util import (
+    font_scaled_size,
+    qlistwidget_items,
+)
 
 
 class ArrowButton(QtWidgets.QPushButton):
@@ -122,12 +125,9 @@ class ListBox(QtWidgets.QListWidget):
         parent {[type]} -- Parent of the QListWidget object being created (default: {None})
     """
 
-    LISTBOX_WIDTH = 100
-    LISTBOX_HEIGHT = 250
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.setMinimumSize(QtCore.QSize(self.LISTBOX_WIDTH, self.LISTBOX_HEIGHT))
+        self.setMinimumSize(font_scaled_size(self, 12, 15))
         self.setSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.setSortingEnabled(True)
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)

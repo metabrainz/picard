@@ -55,9 +55,13 @@ git ls-tree --full-tree -r HEAD --name-only |while read f; do sed -i '1s/^\xEF\x
 python setup.py update_constants && git diff --quiet || git commit -a -m 'Update constants' -- picard/const/*.py
 ```
 
-## Update NEWS.txt
+## Update NEWS.md
 
-TODO: explain how
+1. Open `NEWS.md` and add a new section for the upcoming version at the top.
+2. The header format should be `## Version X.Y.Z - YYYY-MM-DD`.
+3. List changes categorized under `### Bugfixes`, `### New Features`, and `### Improvements`.
+4. Each entry should include a link to the corresponding JIRA ticket, e.g., `- [PICARD-123](https://tickets.metabrainz.org/browse/PICARD-123) - Description of the change`.
+5. Ensure all changes since the last release are included.
 
 ## Update Picard version
 

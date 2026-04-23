@@ -1,5 +1,73 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b1 - 2026-04-23
+
+### Bugfixes
+- [PICARD-3236](https://tickets.metabrainz.org/browse/PICARD-3236) - PyJWT~=2.12 requirement too strict and impacts distro packaging
+- [PICARD-3237](https://tickets.metabrainz.org/browse/PICARD-3237) - AppStream metadata validation fails due to changed FAQ URL
+- [PICARD-3238](https://tickets.metabrainz.org/browse/PICARD-3238) - No longer able to paste text value into multiple tracks
+- [PICARD-3239](https://tickets.metabrainz.org/browse/PICARD-3239) - Picard can not remove plugin data on Windows
+- [PICARD-3246](https://tickets.metabrainz.org/browse/PICARD-3246) - Genre tag changes on every reload when multiple genres have equal vote counts
+- [PICARD-3249](https://tickets.metabrainz.org/browse/PICARD-3249) - Tags not suggested in Edit Tag dialog
+
+### New Features
+- [PICARD-2982](https://tickets.metabrainz.org/browse/PICARD-2982) - Submit Listens to ListenBrainz using Picard
+- [PICARD-3250](https://tickets.metabrainz.org/browse/PICARD-3250) - Support Simplified Chinese to Traditional Chinese plugin in official builds
+
+### Improvements
+- [PICARD-292](https://tickets.metabrainz.org/browse/PICARD-292) - Wizard/configuration tutorial on first run
+- [PICARD-3199](https://tickets.metabrainz.org/browse/PICARD-3199) - Detect FLAC `unsyncedlyrics` tag
+- [PICARD-3240](https://tickets.metabrainz.org/browse/PICARD-3240) - Map `syncedlyrics` to `WM/Lyrics_Synchronised` for ASF
+- [PICARD-3244](https://tickets.metabrainz.org/browse/PICARD-3244) - Fix word-wrap issue regarding the network cache size option setting
+- [PICARD-3254](https://tickets.metabrainz.org/browse/PICARD-3254) - Plugins v3 MANIFEST: add support for `report_bugs_to` field
+
+### Tasks
+- [PICARD-3243](https://tickets.metabrainz.org/browse/PICARD-3243) - Documentation: Add note about unnecessary spaces in script functions
+- [PICARD-3247](https://tickets.metabrainz.org/browse/PICARD-3247) - Update snap build for Picard 3 with Qt6
+
+
+## Version 3.0.0a4 - 2026-03-20
+
+### Bugfixes
+- [PICARD-3189](https://tickets.metabrainz.org/browse/PICARD-3189) - Restore defaults does not work properly when profile is enabled
+- [PICARD-3204](https://tickets.metabrainz.org/browse/PICARD-3204) - PyQt6-Qt6 dependency breaks Linux distro environments
+- [PICARD-3205](https://tickets.metabrainz.org/browse/PICARD-3205) - fpcalc error message in options stays red even after selecting a valid fpcalc
+- [PICARD-3206](https://tickets.metabrainz.org/browse/PICARD-3206) - `itunes_cddb_1` should map to `COMM:iTunes_CDDB_1` in ID3
+- [PICARD-3211](https://tickets.metabrainz.org/browse/PICARD-3211) - macOS: SSL CERTIFICATE_VERIFY_FAILED loading plugins registry
+- [PICARD-3213](https://tickets.metabrainz.org/browse/PICARD-3213) - `is_local_path` incorrectly handles Windows drive-relative paths (C:repo)
+- [PICARD-3219](https://tickets.metabrainz.org/browse/PICARD-3219) - Cover art not displayed
+- [PICARD-3220](https://tickets.metabrainz.org/browse/PICARD-3220) - Image processing filters (e.g. ignore smaller images) are ignored for local files
+- [PICARD-3221](https://tickets.metabrainz.org/browse/PICARD-3221) - Picard tries to remove a file from cluster twice, raising an exception
+- [PICARD-3227](https://tickets.metabrainz.org/browse/PICARD-3227) - Dark theme detection for GNOME can fail
+- [PICARD-3229](https://tickets.metabrainz.org/browse/PICARD-3229) - Guessing track number and title from filename fails with "index out of range"
+- [PICARD-3230](https://tickets.metabrainz.org/browse/PICARD-3230) - Deleting `totaldiscs` also removes `discnumber` from ASF tags
+- [PICARD-3234](https://tickets.metabrainz.org/browse/PICARD-3234) - Columns being added are not visible
+- [PICARD-3235](https://tickets.metabrainz.org/browse/PICARD-3235) - Fingerprint column shows text overlapping the icon
+
+### New Features
+- [PICARD-2383](https://tickets.metabrainz.org/browse/PICARD-2383) - Add `musicbrainz_composerid` tag
+- [PICARD-3216](https://tickets.metabrainz.org/browse/PICARD-3216) - Provide option for automatically checking for available plugin updates
+- [PICARD-3223](https://tickets.metabrainz.org/browse/PICARD-3223) - Allow plugins to add blocking album tasks
+
+### Improvements
+- [PICARD-3212](https://tickets.metabrainz.org/browse/PICARD-3212) - Qt's toolbar extension button (overflow arrow) uses a dark icon that is almost invisible on dark backgrounds
+- [PICARD-3231](https://tickets.metabrainz.org/browse/PICARD-3231) - Improve plugin blacklist implementation and associated tests
+- [PICARD-3232](https://tickets.metabrainz.org/browse/PICARD-3232) - Review and improve plugins registry redirects code and tests
+
+### Tasks
+- [PICARD-2859](https://tickets.metabrainz.org/browse/PICARD-2859) - Update documentation for profile highlight color options
+- [PICARD-2860](https://tickets.metabrainz.org/browse/PICARD-2860) - Update documentation for new command line options for additional debug output
+- [PICARD-2861](https://tickets.metabrainz.org/browse/PICARD-2861) - Update documentation for new network cache size option setting
+- [PICARD-2862](https://tickets.metabrainz.org/browse/PICARD-2862) - Update documentation for new date sanitization settings
+- [PICARD-2877](https://tickets.metabrainz.org/browse/PICARD-2877) - Update documentation for revised Options > Advanced > Maintenance page
+- [PICARD-3136](https://tickets.metabrainz.org/browse/PICARD-3136) - Update documentation for ReadTheDocs support options
+- [PICARD-3183](https://tickets.metabrainz.org/browse/PICARD-3183) - Clarify documentation of option profiles in the section Configuration
+- [PICARD-3200](https://tickets.metabrainz.org/browse/PICARD-3200) - Clarify documentation “Understanding Acoustic Fingerprinting and AcoustIDs”
+- [PICARD-3217](https://tickets.metabrainz.org/browse/PICARD-3217) - Document automatic plugin update checking
+- [PICARD-3226](https://tickets.metabrainz.org/browse/PICARD-3226) - Enable the Dutch translation of the documentation
+- [PICARD-3233](https://tickets.metabrainz.org/browse/PICARD-3233) - Redirect documentation URL from GitHub Pages to ReadTheDocs
+
+
 ## Version 3.0.0a3 - 2026-02-25
 
 ### Bugfixes
@@ -1863,7 +1931,7 @@
 - [PICARD-857](https://tickets.metabrainz.org/browse/PICARD-857) - Improper detection of Gnome as a desktop environment and no support for gnome 3
 - [PICARD-858](https://tickets.metabrainz.org/browse/PICARD-858) - Apparent non-functional tagger button
 - [PICARD-859](https://tickets.metabrainz.org/browse/PICARD-859) - Picard does not read Ogg/Opus files with an ".ogg" file exension
-- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in in `$num` function as length causes picard to become unresponsive
+- [PICARD-865](https://tickets.metabrainz.org/browse/PICARD-865) - Setting a large value in `$num` function as length causes picard to become unresponsive
 - [PICARD-867](https://tickets.metabrainz.org/browse/PICARD-867) - id3 deletion needs to be improved
 - [PICARD-868](https://tickets.metabrainz.org/browse/PICARD-868) - id3v2.3 does not properly handle TMOO ( mood tag)
 - [PICARD-870](https://tickets.metabrainz.org/browse/PICARD-870) - Coverart providers duplicates on reset

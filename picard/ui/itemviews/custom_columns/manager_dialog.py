@@ -68,6 +68,7 @@ from picard.ui.itemviews.custom_columns.user_dialog_service import UserDialogSer
 from picard.ui.itemviews.custom_columns.validation import ColumnSpecValidator
 from picard.ui.itemviews.custom_columns.view_selector import ViewSelector
 from picard.ui.itemviews.events import header_events
+from picard.ui.util import set_widget_fixed_width_for_text
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
 from picard.ui.widgets.scripttextedit import ScriptTextEdit
 
@@ -150,19 +151,19 @@ class CustomColumnsManagerDialog(PicardDialog):
         self._width.setSpecialValueText("")
         self._width.setValue(DialogConfig.DEFAULT_WIDTH)
         self._width.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-        self._width.setMaximumWidth(100)
         self._width.setSuffix(_(' px'))
+        set_widget_fixed_width_for_text(self._width, padding=30)
         self._align = QtWidgets.QComboBox(self._editor_panel)
         for label, enum_val in get_align_options():
             self._align.addItem(_(label), enum_val)
-        self._align.setMaximumWidth(100)
+        set_widget_fixed_width_for_text(self._align, padding=40)
 
         # Sorting adapter dropdown
         self._sorting_adapter = QtWidgets.QComboBox(self._editor_panel)
         for i, (class_name, display_info) in enumerate(get_sorting_adapter_options()):
             self._sorting_adapter.addItem(_(display_info.display_name), class_name)
             self._sorting_adapter.setItemData(i, _(display_info.tooltip), QtCore.Qt.ItemDataRole.ToolTipRole)
-        self._sorting_adapter.setMaximumWidth(200)
+        set_widget_fixed_width_for_text(self._sorting_adapter, padding=40)
 
         self._view_selector = ViewSelector(self._editor_panel)
         self._form_handler = ColumnFormHandler(

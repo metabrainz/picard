@@ -156,6 +156,9 @@ ListOption('persist', 'filters_AlbumTreeView', DEFAULT_FILTER_COLUMNS)
 TextOption('persist', 'last_session_path', '')
 ListOption('persist', 'recent_sessions', [])
 TextOption('persist', 'session_autosave_path', '')
+ListOption('persist', 'tutorial_steps_shown', [])
+BoolOption('persist', 'tutorial_disabled', False)
+BoolOption('persist', 'setup_wizard_completed', False)
 
 # picard/ui/metadatabox.py
 #
@@ -303,13 +306,19 @@ BoolOption('setting', 'quit_confirmation', True, title=N_("Confirm quit if unsav
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"))
 BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"))
 BoolOption('setting', 'rtd_updates_ask', True, N_("Show documentation update request"))
-BoolOption('setting', 'player_now_playing', True, title=N_('Enable "now playing" notifications'))
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"))
 TextOption('setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"))
 BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons"))
 TextOption('setting', 'ui_language', '', title=N_("User interface language"))
 TextOption('setting', 'ui_theme', DEFAULT_THEME_NAME, title=N_("User interface color theme"))
 BoolOption('setting', 'use_adv_search_syntax', False, title=N_("Use advanced search syntax"))
+
+# picard/ui/options/interface_player.py
+# Audio Player
+BoolOption('setting', 'player_now_playing', True, title=N_('Enable "now playing" notifications'))
+BoolOption('setting', 'listenbrainz_enabled', False, title=N_('Enable ListenBrainz listen submissions'))
+BoolOption('setting', 'listenbrainz_submit_only_tagged', True, title=N_('Submit only tagged files ListenBrainz'))
+TextOption('setting', 'listenbrainz_token', '', title=N_('ListenBrainz user token'))
 
 # picard/ui/options/interface_colors.py
 # Colors

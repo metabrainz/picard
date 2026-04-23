@@ -56,7 +56,10 @@ from picard.ui.forms.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.forms.ui_options_metadata import Ui_MetadataOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
-from picard.ui.util import qlistwidget_items
+from picard.ui.util import (
+    qlistwidget_items,
+    set_widget_fixed_width_for_text,
+)
 
 
 def iter_sorted_locales(locales):
@@ -289,6 +292,7 @@ class ScriptExceptionSelector(PicardDialog):
         super().__init__(parent=parent)
         self.ui = Ui_ExceptionScriptSelector()
         self.ui.setupUi(self)
+        set_widget_fixed_width_for_text(self.ui.weighting_selector, padding=20)
         self.ui.button_box.accepted.connect(self.save_changes)
         self.ui.button_box.rejected.connect(self.reject)
         self.move_view = MoveableListView(self.ui.selected_scripts, self.ui.move_up, self.ui.move_down)

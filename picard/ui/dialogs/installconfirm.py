@@ -26,6 +26,7 @@ from PyQt6 import (
 from picard.i18n import gettext as _
 
 from picard.ui import PicardDialog
+from picard.ui.util import font_scaled_size
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -47,7 +48,7 @@ class InstallConfirmDialog(PicardDialog):
 
         self.setWindowTitle(_("Confirm Plugin Installation"))
         self.setModal(True)
-        self.setMinimumSize(500, 300)
+        self.setMinimumSize(font_scaled_size(self, 60, 20))
         self.setup_ui()
         self.check_trust_and_blacklist()
         self.load_refs()

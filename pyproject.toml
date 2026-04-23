@@ -34,7 +34,7 @@ dependencies = [
     "discid~=1.0",
     "Markdown~=3.2",
     "mutagen~=1.45",
-    "PyJWT~=2.12",
+    "PyJWT~=2.0",
     "pyobjc-core>=6.2, <13; sys_platform == 'darwin'",
     "pyobjc-framework-Cocoa>=6.2, <13; sys_platform == 'darwin'",
     "pyobjc-framework-MediaPlayer>=6.2, <13; sys_platform == 'darwin'",

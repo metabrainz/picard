@@ -45,17 +45,12 @@ from .player import (
     Player,
 )
 
+from picard.ui.util import get_text_width
 from picard.ui.widgets import (
     ClickableSlider,
     ElidedLabel,
     SliderPopover,
 )
-
-
-def get_text_width(font, text):
-    metrics = QtGui.QFontMetrics(font)
-    size = metrics.size(QtCore.Qt.TextFlag.TextSingleLine, text)
-    return size.width()
 
 
 class PlayerToolbar(QtWidgets.QToolBar):
@@ -215,7 +210,7 @@ class PlaybackProgressSlider(QtWidgets.QWidget):
             self.progress_slider.setValue(position)
         self.position_label.setText(format_time(position, display_zero=True))
 
-    def on_media_changed(self, media: File):
+    def on_media_changed(self, media: File | None):
         if not (media and media.filename):
             self.media_name_label.setText('')
             self.progress_slider.setEnabled(False)

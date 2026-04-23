@@ -81,7 +81,7 @@ jobs:
         python-version: '3.14'
     - uses: actions/download-artifact@v8
       with:
-        pattern: picard-*.dmg
+        pattern: MusicBrainz-Picard-*.dmg
         path: artifacts/
         merge-multiple: true
     - uses: actions/download-artifact@v8

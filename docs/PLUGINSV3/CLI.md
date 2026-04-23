@@ -971,7 +971,7 @@ picard-plugins --refresh-registry --browse
 - Forcing immediate update of registry data
 - Clearing stale cache
 
-**Note:** The registry is cached for 24 hours by default. Use `--refresh-registry` to bypass the cache and fetch the latest version immediately. It can be combined with any other command that uses the registry (--browse, --search, --install, etc.).
+**Note:** The registry is cached locally. Use `--refresh-registry` to bypass the cache and fetch the latest version immediately. It can be combined with any other command that uses the registry (--browse, --search, --install, etc.).
 
 ---
 

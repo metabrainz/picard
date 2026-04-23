@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2019-2023 Philipp Wolfer
+# Copyright (C) 2019-2023, 2026 Philipp Wolfer
 # Copyright (C) 2020 Julius Michaelis
 # Copyright (C) 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2021 Gabriel Ferreira
@@ -20,6 +20,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+import os
+
 from PyQt6.QtCore import (
     QObject,
     pyqtClassInfo,
@@ -30,6 +32,7 @@ from PyQt6.QtDBus import (
     QDBusConnection,
     QDBusMessage,
 )
+from PyQt6.QtWidgets import QMainWindow
 
 from picard import PICARD_DESKTOP_NAME
 
@@ -37,10 +40,11 @@ from . import AbstractProgressStatusIndicator
 
 
 DBUS_INTERFACE = 'com.canonical.Unity.LauncherEntry'
+APP_ID = PICARD_DESKTOP_NAME if not os.getenv('SNAP') else 'picard_picard.desktop'
 
 
 class UnityLauncherEntryService(QObject):
-    def __init__(self, bus, app_id):
+    def __init__(self, bus: QDBusConnection, app_id: str):
         super().__init__()
         self._bus = bus
         self._app_uri = 'application://' + app_id
@@ -61,7 +65,7 @@ class UnityLauncherEntryService(QObject):
     def is_available(self):
         return self._available
 
-    def update(self, progress, visible=True):
+    def update(self, progress: float, visible: bool = True) -> None:
         self._progress = progress
         self._visible = visible
         # Automatic forwarding of Qt signals does not work in this case
@@ -101,10 +105,10 @@ class UnityLauncherEntryAdaptor(QDBusAbstractAdaptor):
 
 
 class UnityLauncherEntryStatusIndicator(AbstractProgressStatusIndicator):
-    def __init__(self, window):
+    def __init__(self, window: QMainWindow):
         super().__init__()
         bus = QDBusConnection.sessionBus()
-        self._service = UnityLauncherEntryService(bus, PICARD_DESKTOP_NAME)
+        self._service = UnityLauncherEntryService(bus, APP_ID)
 
     @property
     def is_available(self):

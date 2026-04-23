@@ -107,7 +107,11 @@ DEFAULT_PROGRAM_UPDATE_LEVEL = 0
 # On macOS it is not common that the global menu shows icons
 DEFAULT_SHOW_MENU_ICONS = not IS_MACOS
 
-DEFAULT_STARTING_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
+# When running as a snap, use the real home directory instead of the snap home directory
+if home := os.environ.get('SNAP_REAL_HOME'):
+    DEFAULT_STARTING_DIR = home
+else:
+    DEFAULT_STARTING_DIR = QStandardPaths.writableLocation(QStandardPaths.StandardLocation.HomeLocation)
 
 DEFAULT_THEME_NAME = str(UiTheme.DEFAULT)
 

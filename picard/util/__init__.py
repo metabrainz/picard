@@ -42,6 +42,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from typing import Any
+
+from PyQt6.QtCore import QByteArray
+from PyQt6.QtNetwork import QNetworkReply
+
 
 try:
     from charset_normalizer import detect  # type: ignore[unresolved-import]
@@ -55,7 +60,10 @@ from collections import (
     namedtuple,
 )
 from collections.abc import Mapping
-from contextlib import contextmanager
+from contextlib import (
+    contextmanager,
+    suppress,
+)
 from datetime import (
     date,
     datetime,
@@ -65,10 +73,14 @@ import json
 import ntpath
 from operator import attrgetter
 import os
-from pathlib import PurePath
+from pathlib import (
+    Path,
+    PurePath,
+)
 import re
 import subprocess  # nosec: B404
 import sys
+import tempfile
 from time import monotonic
 import unicodedata
 
@@ -862,7 +874,7 @@ def union_sorted_lists(list1, list2):
     return union
 
 
-def __convert_to_string(obj):
+def __convert_to_string(obj: Any) -> str:
     """Appropriately converts the input `obj` to a string.
 
     Args:
@@ -873,14 +885,14 @@ def __convert_to_string(obj):
 
     """
     if isinstance(obj, QtCore.QByteArray):
-        return bytes(obj).decode()
+        return obj.data().decode()
     elif isinstance(obj, (bytes, bytearray)):
         return obj.decode()
     else:
         return str(obj)
 
 
-def load_json(data):
+def load_json(data: bytes | QByteArray | str) -> Any:
     """Deserializes a string or bytes like json response and converts
     it to a python object.
 
@@ -894,7 +906,7 @@ def load_json(data):
     return json.loads(__convert_to_string(data))
 
 
-def parse_json(reply):
+def parse_json(reply: QNetworkReply) -> Any:
     return load_json(reply.readAll())
 
 
@@ -1096,7 +1108,7 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
 
     Args:
         pattern: The pattern as a string
-        allow_wildcards: If true and if the the pattern is not interpreted as a regex wildard matching is allowed.
+        allow_wildcards: If true and if the pattern is not interpreted as a regex wildcard matching is allowed.
         flags: Additional regex flags to set (e.g. `re.I`)
 
     Returns: An re.Pattern instance
@@ -1422,3 +1434,35 @@ def parse_versioning_scheme(versioning_scheme):
     except re.error as e:
         log.error('Invalid regex pattern in versioning scheme %s: %s', versioning_scheme, e)
         return None
+
+
+def atomic_write(path, data):
+    """Write bytes atomically to the given path.
+
+    Writes to a temporary file in the destination directory and replaces
+    the target file to ensure atomicity. On failure, cleans up the
+    temporary file and re-raises the exception.
+
+    Args:
+        path: Target file path (str or Path)
+        data: Bytes to write
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            dir=p.parent,
+            prefix=p.stem + '_',
+            suffix=p.suffix,
+            delete=False,
+        ) as f:
+            temp_path = Path(f.name)
+            f.write(data)
+        temp_path.replace(p)
+    except (OSError, PermissionError):
+        if temp_path and temp_path.exists():
+            with suppress(OSError, PermissionError):
+                temp_path.unlink()
+        raise

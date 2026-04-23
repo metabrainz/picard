@@ -157,13 +157,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="player_now_playing">
-        <property name="text">
-         <string>Enable audio player &quot;now playing&quot; notifications</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QCheckBox" name="starting_directory">
         <property name="text">
          <string>Begin browsing in the following directory:</string>
@@ -249,7 +242,6 @@
   <tabstop>quit_confirmation</tabstop>
   <tabstop>file_save_warning</tabstop>
   <tabstop>filebrowser_horizontal_autoscroll</tabstop>
-  <tabstop>player_now_playing</tabstop>
   <tabstop>starting_directory</tabstop>
   <tabstop>starting_directory_path</tabstop>
   <tabstop>starting_directory_browse</tabstop>

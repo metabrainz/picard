@@ -1,6 +1,7 @@
 # -*- mode: python -*-
 
 import glob
+from importlib import import_module
 import os
 import platform
 import sys
@@ -45,6 +46,15 @@ def get_locale_messages():
     return data_files
 
 
+def has_module(module_name):
+    """Check whether the given module is available."""
+    try:
+        import_module(module_name)
+        return True
+    except ImportError:
+        return False
+
+
 os_name = platform.system()
 build_portable = bool(os.environ.get('PICARD_BUILD_PORTABLE'))
 binaries = []
@@ -76,22 +86,18 @@ hiddenimports = [
     'cffi',  # Needed for pygit2
     'dataclasses',  # Provide dataclasses support for plugins
 ]
-try:
-    import zstandard as _
 
-    hiddenimports.append('zstandard')
-except ImportError:
-    # zstandard is not available, so we don't need to include it
-    pass
+if has_module('opencc'):
+    hiddenimports.append('opencc')  # opencc module
+
+if has_module('zstandard'):
+    hiddenimports.append('zstandard')  # xqaf plugin
 
 excludes = []
-try:
-    # If tomllib is available, tomli can be excluded
-    import tomllib  # type: ignore[unresolved-import] # noqa F401
 
+# If tomllib is available, tomli can be excluded
+if has_module('tomllib'):
     excludes.append('tomli')
-except ImportError:
-    pass
 
 a = Analysis(
     ['tagger.py'],

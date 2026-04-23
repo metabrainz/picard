@@ -212,6 +212,45 @@ class TestManifestValidator(PicardTestCase):
         errors = validate_manifest_dict(manifest)
         self.assertIn("Field 'homepage' must be a string", errors)
 
+    def test_validate_report_bugs_to(self):
+        """Test validation of report_bugs_to field (URL schemes only)."""
+        manifest = _valid_manifest()
+
+        # Valid https URL
+        manifest['report_bugs_to'] = 'https://github.com/user/plugin/issues'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Valid http URL
+        manifest['report_bugs_to'] = 'http://bugs.example.com'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Valid mailto URL
+        manifest['report_bugs_to'] = 'mailto:bugs@example.com'
+        errors = validate_manifest_dict(manifest)
+        self.assertEqual(errors, [])
+
+        # Invalid: bare email (must use mailto:)
+        manifest['report_bugs_to'] = 'bugs@example.com'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any("report_bugs_to" in e for e in errors))
+
+        # Invalid: not a URL
+        manifest['report_bugs_to'] = 'not-a-url'
+        errors = validate_manifest_dict(manifest)
+        self.assertTrue(any("report_bugs_to" in e for e in errors))
+
+        # Empty string
+        manifest['report_bugs_to'] = ''
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'report_bugs_to' must not be empty", errors)
+
+        # Wrong type
+        manifest['report_bugs_to'] = 123
+        errors = validate_manifest_dict(manifest)
+        self.assertIn("Field 'report_bugs_to' must be a string", errors)
+
     def test_validate_min_python_version(self):
         """Test validation of min_python_version field."""
         manifest = _valid_manifest()

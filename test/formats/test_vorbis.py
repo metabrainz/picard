@@ -196,6 +196,50 @@ class CommonVorbisTests:
             self.assertEqual('2023-04-18', metadata['date'])
             self.assertEqual('foo', metadata['title'])
 
+        @skipUnlessTestfile
+        def test_unsyncedlyrics_mapped_to_lyrics(self):
+            # UNSYNCEDLYRICS is a de facto Vorbis comment tag used by Mp3tag
+            # and Bandcamp.  It should be read as lyrics.
+            # See https://tickets.metabrainz.org/browse/PICARD-3199
+            save_raw(
+                self.filename,
+                {
+                    'unsyncedlyrics': 'Plain text lyrics',
+                },
+            )
+            metadata = load_metadata(self.format_registry, self.filename)
+            self.assertEqual('Plain text lyrics', metadata['lyrics'])
+
+        @skipUnlessTestfile
+        def test_unsyncedlyrics_with_description_mapped_to_lyrics(self):
+            save_raw(
+                self.filename,
+                {
+                    'unsyncedlyrics:desc': 'Lyrics with description',
+                },
+            )
+            metadata = load_metadata(self.format_registry, self.filename)
+            self.assertEqual('Lyrics with description', metadata['lyrics:desc'])
+
+        @skipUnlessTestfile
+        def test_unsyncedlyrics_saved_as_lyrics(self):
+            # After loading UNSYNCEDLYRICS and re-saving with clear_existing_tags,
+            # the tag should be written as LYRICS (the Hydrogenaudio standard
+            # name) and the old UNSYNCEDLYRICS tag should be removed.
+            save_raw(
+                self.filename,
+                {
+                    'unsyncedlyrics': 'Test lyrics',
+                },
+            )
+            config.setting['clear_existing_tags'] = True
+            metadata = load_metadata(self.format_registry, self.filename)
+            save_metadata(self.format_registry, self.filename, metadata)
+            raw = load_raw(self.filename)
+            self.assertIn('LYRICS', raw)
+            self.assertNotIn('UNSYNCEDLYRICS', raw)
+            self.assertEqual('Test lyrics', raw['LYRICS'][0])
+
 
 class FLACTest(CommonVorbisTests.VorbisTestCase):
     testfile = 'test.flac'

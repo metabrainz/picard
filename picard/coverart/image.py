@@ -495,8 +495,7 @@ class CoverArtImage:
             log.debug("Saving cover image to %r", new_filename)
             try:
                 new_dirname = os.path.dirname(new_filename)
-                if not os.path.isdir(new_dirname):
-                    os.makedirs(new_dirname)
+                os.makedirs(new_dirname, exist_ok=True)
                 assert self.tempfile_filename is not None
                 shutil.copyfile(self.tempfile_filename, new_filename)
             except OSError as e:

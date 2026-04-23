@@ -2,11 +2,11 @@
 # Translators:
 # Aniol, 2015
 # 0x1026 <me@hugovidafe.dev>, 2024.
-# Marc Riera <marc@marcriera.cat>, 2025.
+# Marc Riera <marc@marcriera.cat>, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2025-04-09 01:20+0000\n"
+"PO-Revision-Date: 2026-03-17 14:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/"
 "musicbrainz/countries/ca/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #. iso.code:AF
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:1
@@ -784,7 +784,6 @@ msgstr "Moçambic"
 
 #. iso.code:MM
 #: DB:area JOIN iso_3166_1 iso ON iso.area = area.id/area.name:146
-#, fuzzy
 msgid "Myanmar"
 msgstr "Myanmar"
 

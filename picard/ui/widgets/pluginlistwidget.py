@@ -42,6 +42,7 @@ from picard.util import temporary_disconnect
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.util import font_scaled_size
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -581,6 +582,12 @@ class PluginListWidget(QtWidgets.QWidget):
             view_repo_action = menu.addAction(_("View Repository"))
             view_repo_action.triggered.connect(lambda: self._view_repository(plugin))
 
+        # Report bug action (if available)
+        report_bugs_to = self._get_report_bugs_to(plugin)
+        if report_bugs_to:
+            report_bug_action = menu.addAction(_("Report a Bug"))
+            report_bug_action.triggered.connect(lambda: self._open_report_bugs_to(report_bugs_to))
+
         menu.addSeparator()
 
         # Open plugin priority editor
@@ -776,6 +783,16 @@ class PluginListWidget(QtWidgets.QWidget):
         if remote_url:
             QtGui.QDesktopServices.openUrl(QtCore.QUrl(remote_url))
 
+    def _get_report_bugs_to(self, plugin):
+        """Get report_bugs_to value from plugin manifest."""
+        return plugin.manifest.report_bugs_to if plugin.manifest else ''
+
+    def _open_report_bugs_to(self, value):
+        """Open bug report URL."""
+        if not value:
+            return
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(value))
+
     def _show_plugin_info(self, plugin):
         """Show detailed plugin information dialog."""
         dialog = PluginInfoDialog(plugin, self)
@@ -863,8 +880,8 @@ class SwitchRefDialog(QtWidgets.QDialog):
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
         self.setModal(True)
-        self.resize(400, 300)
-        self.setMinimumSize(400, 300)
+        self.resize(font_scaled_size(self, 50, 20))
+        self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()
         self.load_refs()
 

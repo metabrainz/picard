@@ -19,7 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from pathlib import Path
+import stat
+import sys
 import tempfile
+import unittest
 from unittest.mock import (
     Mock,
     patch,
@@ -37,6 +40,7 @@ from test.plugins3.helpers import (
 )
 
 from picard.config import get_config
+from picard.const.sys import IS_WIN
 from picard.git.backend import (
     GitRef,
     GitRefType,
@@ -814,7 +818,45 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
         self.assertEqual(len(manager._plugins), 0)
 
         # Verify directory removal was attempted
-        mock_shutil.rmtree.assert_called_once_with(final_path)
+        mock_shutil.rmtree.assert_called_once()
+        call_args = mock_shutil.rmtree.call_args
+        self.assertEqual(call_args[0][0], final_path)
+        error_handler_key = 'onexc' if sys.version_info >= (3, 12) else 'onerror'
+        self.assertIn(error_handler_key, call_args[1])
+
+    @unittest.skipUnless(IS_WIN, "read-only file attribute only blocks deletion on Windows")
+    def test_safe_remove_directory_with_readonly_files(self):
+        """Test _safe_remove_directory handles read-only files (e.g. .git pack files)."""
+        manager = PluginManager(MockTagger())
+        with tempfile.TemporaryDirectory() as tmpdir:
+            # Create a nested structure with a read-only file, similar to .git pack files
+            subdir = Path(tmpdir) / 'plugin' / '.git' / 'objects' / 'pack'
+            subdir.mkdir(parents=True)
+            readonly_file = subdir / 'pack-test.idx'
+            readonly_file.write_bytes(b'test')
+            readonly_file.chmod(stat.S_IREAD)
+
+            plugin_dir = Path(tmpdir) / 'plugin'
+            manager._safe_remove_directory(plugin_dir, "test plugin")
+            self.assertFalse(plugin_dir.exists())
+
+    @unittest.skipIf(IS_WIN, "non-Windows test")
+    def test_safe_remove_directory(self):
+        """Test _safe_remove_directory removes a directory tree."""
+        manager = PluginManager(MockTagger())
+        with tempfile.TemporaryDirectory() as tmpdir:
+            plugin_dir = Path(tmpdir) / 'plugin'
+            plugin_dir.mkdir()
+            (plugin_dir / 'file.txt').write_text('test')
+
+            manager._safe_remove_directory(plugin_dir, "test plugin")
+            self.assertFalse(plugin_dir.exists())
+
+    def test_safe_remove_directory_nonexistent(self):
+        """Test _safe_remove_directory is a no-op for nonexistent paths."""
+        manager = PluginManager(MockTagger())
+        manager._safe_remove_directory(Path('/nonexistent/path'), "test")
+        # No exception raised
 
 
 class TestPluginManager(PicardTestCase):

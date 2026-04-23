@@ -22,11 +22,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 from collections import defaultdict
 import math
 import sys
 import time
+from typing import TypeAlias
 
 from picard import log
 from picard.webservice.utils import hostkey_from_url
@@ -45,40 +45,41 @@ from picard.webservice.utils import hostkey_from_url
 # >>> from picard.webservice import ratecontrol
 # >>> ratecontrol.set_minimum_delay(('myservice.org', 80), 100)  # 10 requests/second
 
+HostKey: TypeAlias = tuple[str, int]
 
 # Minimum delay for the given hostkey (in milliseconds), can be set using
 # set_minimum_delay()
 REQUEST_DELAY_MINIMUM = defaultdict(lambda: 1000)
 
 # Current delay (adaptive) between requests to a given hostkey.
-REQUEST_DELAY: dict[str, int] = defaultdict(lambda: 1000)  # Conservative initial value.
+REQUEST_DELAY: dict[HostKey, int] = defaultdict(lambda: 1000)  # Conservative initial value.
 
 # Determines delay during exponential backoff phase.
-REQUEST_DELAY_EXPONENT: dict[str, int] = defaultdict(lambda: 0)
+REQUEST_DELAY_EXPONENT: dict[HostKey, int] = defaultdict(lambda: 0)
 
 # Unacknowledged request counter.
 #
 # Bump this when handing a request to QNetworkManager and trim when receiving
 # a response.
-CONGESTION_UNACK: dict[str, int] = defaultdict(lambda: 0)
+CONGESTION_UNACK: dict[HostKey, int] = defaultdict(lambda: 0)
 
 # Congestion window size in terms of unacked requests.
 #
 # We're allowed to send up to `int(this)` many requests at a time.
-CONGESTION_WINDOW_SIZE: dict[str, float] = defaultdict(lambda: 1.0)
+CONGESTION_WINDOW_SIZE: dict[HostKey, float] = defaultdict(lambda: 1.0)
 
 # Slow start threshold.
 #
 # After placing this many unacknowledged requests on the wire, switch from
 # slow start to congestion avoidance.  (See `_adjust_throttle`.)  Initialized
 # upon encountering a temporary error.
-CONGESTION_SSTHRESH = defaultdict(lambda: 0)
+CONGESTION_SSTHRESH: dict[HostKey, int] = defaultdict(lambda: 0)
 
 # Storage of last request times per host key
-LAST_REQUEST_TIMES: dict[str, float] = defaultdict(lambda: 0)
+LAST_REQUEST_TIMES: dict[HostKey, float] = defaultdict(lambda: 0)
 
 
-def set_minimum_delay(hostkey, delay_ms):
+def set_minimum_delay(hostkey: HostKey, delay_ms: int):
     """Set the minimum delay between requests
     hostkey is an unique key, for example (host, port)
     delay_ms is the delay in milliseconds
@@ -86,7 +87,7 @@ def set_minimum_delay(hostkey, delay_ms):
     REQUEST_DELAY_MINIMUM[hostkey] = int(delay_ms)
 
 
-def set_minimum_delay_for_url(url, delay_ms):
+def set_minimum_delay_for_url(url: str, delay_ms: int):
     """Set the minimum delay between requests
     url will be converted to an unique key (host, port)
     delay_ms is the delay in milliseconds
@@ -94,14 +95,14 @@ def set_minimum_delay_for_url(url, delay_ms):
     set_minimum_delay(hostkey_from_url(url), delay_ms)
 
 
-def current_delay(hostkey):
+def current_delay(hostkey: HostKey) -> int:
     """Returns the current delay (adaptive) between requests for this hostkey
     hostkey is an unique key, for example (host, port)
     """
     return REQUEST_DELAY[hostkey]
 
 
-def get_delay_to_next_request(hostkey):
+def get_delay_to_next_request(hostkey: HostKey) -> tuple[bool, int]:
     """Calculate delay to next request to hostkey (host, port)
     returns a tuple (wait, delay) where:
         wait is True if a delay is needed
@@ -131,12 +132,12 @@ def get_delay_to_next_request(hostkey):
     return (True, delay)
 
 
-def _remember_request_time(hostkey):
+def _remember_request_time(hostkey: HostKey):
     if REQUEST_DELAY[hostkey]:
         LAST_REQUEST_TIMES[hostkey] = time.time()
 
 
-def increment_requests(hostkey):
+def increment_requests(hostkey: HostKey):
     """Store the request time for this hostkey, and increment counter
     It has to be called on each request
     """
@@ -146,14 +147,14 @@ def increment_requests(hostkey):
     log.debug("%s: Incrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
 
 
-def decrement_requests(hostkey):
+def decrement_requests(hostkey: HostKey):
     """Decrement counter, it has to be called on each reply"""
     assert CONGESTION_UNACK[hostkey] > 0
     CONGESTION_UNACK[hostkey] -= 1
     log.debug("%s: Decrementing requests to: %d", hostkey, CONGESTION_UNACK[hostkey])
 
 
-def copy_minimal_delay(from_hostkey, to_hostkey):
+def copy_minimal_delay(from_hostkey: HostKey, to_hostkey: HostKey):
     """Copy minimal delay from one hostkey to another
     Useful for redirections
     """
@@ -167,7 +168,7 @@ def copy_minimal_delay(from_hostkey, to_hostkey):
         )
 
 
-def adjust(hostkey, slow_down):
+def adjust(hostkey: HostKey, slow_down: bool):
     """Adjust `REQUEST` and `CONGESTION` metrics when a HTTP request completes.
 
     Args:
@@ -182,7 +183,7 @@ def adjust(hostkey, slow_down):
         _out_of_backoff(hostkey)
 
 
-def _slow_down(hostkey):
+def _slow_down(hostkey: HostKey):
     # Backoff exponentially until ~30 seconds between requests.
     delay = max(pow(2, REQUEST_DELAY_EXPONENT[hostkey]) * 1000, REQUEST_DELAY_MINIMUM[hostkey])
 
@@ -205,7 +206,7 @@ def _slow_down(hostkey):
     REQUEST_DELAY[hostkey] = delay
 
 
-def _out_of_backoff(hostkey):
+def _out_of_backoff(hostkey: HostKey):
     REQUEST_DELAY_EXPONENT[hostkey] = 0  # Coming out of backoff, so reset.
 
     # Shrink the delay between requests with each successive reply to
