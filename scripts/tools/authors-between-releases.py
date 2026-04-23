@@ -41,6 +41,12 @@ from urllib.request import (
 )
 
 
+try:
+    from wlc.config import WeblateConfig
+except ImportError:
+    WeblateConfig = None  # type: ignore
+
+
 EXCLUDE = {'Weblate', 'dependabot[bot]'}
 
 WEBLATE_API_URL = 'https://translations.metabrainz.org/api'
@@ -181,10 +187,23 @@ def get_weblate_users_from_api(api_key, rev_range):
     return credits
 
 
+def get_weblate_api_key() -> str | None:
+    api_key = os.environ.get('WEBLATE_API_KEY')
+    if not api_key and WeblateConfig:
+        config_path = os.path.join(os.path.dirname(__file__), '..', '..', '.weblate.ini')
+        if os.path.exists:
+            config = WeblateConfig()
+            config.load(config_path)
+            url, key = config.get_url_key()
+            if url.rstrip('/') == WEBLATE_API_URL:
+                api_key = key
+    return api_key
+
+
 def get_weblate_users(rev_range):
     """Map author names to Weblate usernames from noreply emails and API credits."""
     users = get_weblate_users_from_emails(rev_range)
-    api_key = os.environ.get('WEBLATE_API_KEY')
+    api_key = get_weblate_api_key()
     if api_key:
         for name, username in get_weblate_users_from_api(api_key, rev_range).items():
             users.setdefault(name, username)
