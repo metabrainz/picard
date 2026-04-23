@@ -69,6 +69,18 @@ class MBAPIHelper(APIHelper):
         self._base_url.setPath('/ws/2')
         return self._base_url
 
+    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return super().post(path, data, handler, **kwargs)
+
+    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return super().put(path, data, handler, **kwargs)
+
+    def delete(self, path: str, handler: ReplyHandler, **kwargs):
+        kwargs['mblogin'] = kwargs.get('mblogin', True)
+        return super().delete(path, handler, **kwargs)
+
     def _get_by_id(
         self, entitytype: str, entityid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs
     ):

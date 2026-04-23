@@ -66,7 +66,6 @@ class AcoustIdAPIHelper(APIHelper):
             handler,
             priority=False,
             important=False,
-            mblogin=False,
             request_mimetype='application/x-www-form-urlencoded',
         )
 
@@ -89,6 +88,5 @@ class AcoustIdAPIHelper(APIHelper):
             handler,
             priority=True,
             important=False,
-            mblogin=False,
             request_mimetype='application/x-www-form-urlencoded',
         )

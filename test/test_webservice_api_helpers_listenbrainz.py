@@ -49,7 +49,6 @@ class TestListenBrainzAPIHelper(PicardTestCase):
             url=QUrl('https://api.listenbrainz.org/1/submit-listens'),
             data=submission.as_json(),
             handler=reply_handler,
-            mblogin=False,
             headers={'Authorization': f'Token {user_token}'},
         )
 

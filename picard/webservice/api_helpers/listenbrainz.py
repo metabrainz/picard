@@ -118,7 +118,7 @@ class ListenBrainzAPIHelper(APIHelper):
         headers = {
             'Authorization': f'Token {user_token}',
         }
-        self.post('submit-listens', submission.as_json(), handler, mblogin=False, headers=headers)
+        self.post('submit-listens', submission.as_json(), handler, headers=headers)
 
 
 def _json_serializer(obj: Any):
