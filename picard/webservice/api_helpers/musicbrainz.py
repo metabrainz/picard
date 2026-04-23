@@ -34,6 +34,7 @@ from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.webservice import (
     CLIENT_STRING,
+    PendingRequest,
     ReplyHandler,
 )
 from picard.webservice.utils import host_port_to_url
@@ -69,33 +70,39 @@ class MBAPIHelper(APIHelper):
         self._base_url.setPath('/ws/2')
         return self._base_url
 
-    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return super().post(path, data, handler, **kwargs)
 
-    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return super().put(path, data, handler, **kwargs)
 
-    def delete(self, path: str, handler: ReplyHandler, **kwargs):
+    def delete(self, path: str, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['mblogin'] = kwargs.get('mblogin', True)
         return super().delete(path, handler, **kwargs)
 
     def _get_by_id(
         self, entitytype: str, entityid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs
-    ):
+    ) -> PendingRequest:
         if inc:
             kwargs['unencoded_queryargs'] = kwargs.get('queryargs', {})
             kwargs['unencoded_queryargs']['inc'] = self._make_inc_arg(inc)
         return self.get(f"/{entitytype}/{entityid}", handler, **kwargs)
 
-    def get_release_by_id(self, releaseid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs):
+    def get_release_by_id(
+        self, releaseid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs
+    ) -> PendingRequest:
         return self._get_by_id('release', releaseid, handler, inc, **kwargs)
 
-    def get_track_by_id(self, trackid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs):
+    def get_track_by_id(
+        self, trackid: str, handler: ReplyHandler, inc: Iterable[str] | None = None, **kwargs
+    ) -> PendingRequest:
         return self._get_by_id('recording', trackid, handler, inc, **kwargs)
 
-    def lookup_discid(self, discid: str, handler: ReplyHandler, priority=True, important=True, refresh=False):
+    def lookup_discid(
+        self, discid: str, handler: ReplyHandler, priority=True, important=True, refresh=False
+    ) -> PendingRequest:
         inc = ('artist-credits', 'labels')
         return self._get_by_id(
             'discid',
@@ -110,7 +117,7 @@ class MBAPIHelper(APIHelper):
 
     def lookup_toc(
         self, toc: str, handler: ReplyHandler, priority: bool = True, important: bool = True, refresh: bool = False
-    ):
+    ) -> PendingRequest:
         """Lookup a discid by table of contents (TOC) string."""
         inc = ('artist-credits', 'labels')
         queryargs = {
@@ -127,7 +134,7 @@ class MBAPIHelper(APIHelper):
             refresh=refresh,
         )
 
-    def _find(self, entitytype: str, handler: ReplyHandler, **kwargs):
+    def _find(self, entitytype: str, handler: ReplyHandler, **kwargs) -> PendingRequest:
         filters = {}
 
         limit = kwargs.pop('limit')
@@ -159,17 +166,17 @@ class MBAPIHelper(APIHelper):
             refresh=False,
         )
 
-    def find_releases(self, handler: ReplyHandler, **kwargs):
+    def find_releases(self, handler: ReplyHandler, **kwargs) -> PendingRequest:
         return self._find('release', handler, **kwargs)
 
-    def find_tracks(self, handler: ReplyHandler, **kwargs):
+    def find_tracks(self, handler: ReplyHandler, **kwargs) -> PendingRequest:
         return self._find('recording', handler, **kwargs)
 
-    def find_artists(self, handler: ReplyHandler, **kwargs):
+    def find_artists(self, handler: ReplyHandler, **kwargs) -> PendingRequest:
         return self._find('artist', handler, **kwargs)
 
     @staticmethod
-    def _make_inc_arg(inc: Iterable):
+    def _make_inc_arg(inc: Iterable) -> str:
         """
         Convert an iterable to a string to be passed as inc parameter to MB
 
@@ -185,7 +192,7 @@ class MBAPIHelper(APIHelper):
         inc: Iterable[str] | None = None,
         queryargs: dict[str, str] | None = None,
         mblogin: bool = False,
-    ):
+    ) -> PendingRequest:
         if queryargs is None:
             queryargs = {}
         if inc:
@@ -200,15 +207,15 @@ class MBAPIHelper(APIHelper):
             refresh=False,
         )
 
-    def browse_releases(self, handler: ReplyHandler, **kwargs):
+    def browse_releases(self, handler: ReplyHandler, **kwargs) -> PendingRequest:
         inc = ('media', 'labels')
         return self._browse('release', handler, inc, queryargs=kwargs)
 
-    def browse_recordings(self, handler: ReplyHandler, inc: Iterable[str], **kwargs):
+    def browse_recordings(self, handler: ReplyHandler, inc: Iterable[str], **kwargs) -> PendingRequest:
         return self._browse('recording', handler, inc, queryargs=kwargs)
 
     @staticmethod
-    def _xml_ratings(ratings) -> str:
+    def _xml_ratings(ratings: dict[tuple[str, str], int]) -> str:
         recordings = ''.join(
             '<recording id=%s><user-rating>%s</user-rating></recording>' % (quoteattr(i[1]), int(j) * 20)
             for i, j in ratings.items()
@@ -216,7 +223,7 @@ class MBAPIHelper(APIHelper):
         )
         return wrap_xml_metadata('<recording-list>%s</recording-list>' % recordings)
 
-    def submit_ratings(self, ratings, handler):
+    def submit_ratings(self, ratings: dict[tuple[str, str], int], handler: ReplyHandler) -> PendingRequest:
         params = {'client': CLIENT_STRING}
         data = self._xml_ratings(ratings)
         return self.post(
@@ -229,7 +236,9 @@ class MBAPIHelper(APIHelper):
             request_mimetype='application/xml; charset=utf-8',
         )
 
-    def get_collection(self, collection_id: str | None, handler: ReplyHandler, limit: int = 100, offset: int = 0):
+    def get_collection(
+        self, collection_id: str | None, handler: ReplyHandler, limit: int = 100, offset: int = 0
+    ) -> PendingRequest:
         if collection_id is not None:
             inc = ('releases', 'artist-credits', 'media')
             path = f"/collection/{collection_id}/releases"
@@ -243,7 +252,7 @@ class MBAPIHelper(APIHelper):
             queryargs = None
         return self.get(path, handler, priority=True, important=True, mblogin=True, unencoded_queryargs=queryargs)
 
-    def get_collection_list(self, handler: ReplyHandler):
+    def get_collection_list(self, handler: ReplyHandler) -> PendingRequest:
         return self.get_collection(None, handler)
 
     @staticmethod
@@ -258,10 +267,10 @@ class MBAPIHelper(APIHelper):
     def _get_client_queryarg():
         return {'client': CLIENT_STRING}
 
-    def put_to_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler):
+    def put_to_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler) -> None:
         for path in self._collection_request(collection_id, releases):
             self.put(path, "", handler, unencoded_queryargs=self._get_client_queryarg())
 
-    def delete_from_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler):
+    def delete_from_collection(self, collection_id: str, releases: Sequence[str], handler: ReplyHandler) -> None:
         for path in self._collection_request(collection_id, releases):
             self.delete(path, handler, unencoded_queryargs=self._get_client_queryarg())
