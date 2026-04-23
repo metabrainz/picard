@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import re
 import unittest
 
 from test.picardtestcase import PicardTestCase
@@ -55,6 +56,16 @@ class VersionsTest(PicardTestCase):
             self.assertEqual(str(version_tuple), version_string)
             self.assertEqual(version_tuple, Version.from_string(version_string))
 
+    # PEP 440 canonical version regex from PEP 440 Appendix B
+    _pep440_canonical_re = re.compile(
+        r'^([1-9][0-9]*!)?'
+        r'(0|[1-9][0-9]*)'
+        r'(\.(0|[1-9][0-9]*))*'
+        r'((a|b|rc)(0|[1-9][0-9]*))?'
+        r'(\.post(0|[1-9][0-9]*))?'
+        r'(\.dev(0|[1-9][0-9]*))?$'
+    )
+
     def test_version_conversion_short(self):
         versions = (
             (Version(1, 1, 0, 'final', 0), '1.1'),
@@ -69,6 +80,7 @@ class VersionsTest(PicardTestCase):
         )
         for version_tuple, version_string in versions:
             self.assertEqual(version_tuple.short_str(), version_string)
+            self.assertRegex(version_string, self._pep440_canonical_re)
             self.assertEqual(version_tuple, Version.from_string(version_string))
 
     def test_version_from_string_underscores(self):
