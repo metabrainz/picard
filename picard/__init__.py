@@ -45,20 +45,17 @@ PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
 PICARD_VERSION = Version(3, 0, 0, 'alpha', 4)
 
 
-# optional build version
-# it should be in the form '<platform>_<YYMMDDHHMMSS>'
-# ie. win32_20140415091256
-PICARD_BUILD_VERSION_STR = ""
-
-
 PICARD_VERSION_STR = str(PICARD_VERSION)
-PICARD_VERSION_STR_SHORT = PICARD_VERSION.short_str()
+__version__ = PICARD_VERSION.short_str()
+PICARD_FANCY_VERSION_STR = __version__
+
+# optional build version
+# it should be in the form '<platform>.<YYYYMMDDHHMMSS>'
+# ie. win32.20140415091256
+PICARD_BUILD_VERSION_STR = ""
 if PICARD_BUILD_VERSION_STR:
-    __version__ = "%s+%s" % (PICARD_VERSION_STR_SHORT, PICARD_BUILD_VERSION_STR)
-    PICARD_FANCY_VERSION_STR = "%s (%s)" % (PICARD_VERSION_STR_SHORT, PICARD_BUILD_VERSION_STR)
-else:
-    __version__ = PICARD_VERSION_STR_SHORT
-    PICARD_FANCY_VERSION_STR = PICARD_VERSION_STR_SHORT
+    __version__ = f"{__version__}+{PICARD_BUILD_VERSION_STR}"
+    PICARD_FANCY_VERSION_STR = f"{PICARD_FANCY_VERSION_STR} ({PICARD_BUILD_VERSION_STR})"
 
 # Keep those ordered
 api_versions = [
