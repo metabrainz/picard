@@ -199,6 +199,7 @@ class PluginApi:
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path | None = None
         self._qt_translator: PluginTranslator | None = None
+        self._mb_api: MBAPIHelper | None = None
 
     @staticmethod
     def _get_caller_info(frame_depth=2):
@@ -429,7 +430,9 @@ class PluginApi:
 
     @property
     def mb_api(self) -> MBAPIHelper:
-        return MBAPIHelper(self._tagger.webservice)
+        if not self._mb_api:
+            self._mb_api = MBAPIHelper(self._tagger.webservice)
+        return self._mb_api
 
     @property
     def logger(self) -> Logger:
