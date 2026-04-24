@@ -658,7 +658,6 @@ class WebService(QtCore.QObject):
     def post_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'POST'
         kwargs['parse_response_type'] = kwargs.get('parse_response_type', DEFAULT_RESPONSE_PARSER_TYPE)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         if DebugOpt.WS_POST.enabled:
             log.debug("POST-DATA %r", kwargs['data'])
         return self.add_request(WSRequest(**kwargs))
@@ -666,13 +665,11 @@ class WebService(QtCore.QObject):
     def put_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'PUT'
         kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self.add_request(WSRequest(**kwargs))
 
     def delete_url(self, **kwargs) -> PendingRequest:
         kwargs['method'] = 'DELETE'
         kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self.add_request(WSRequest(**kwargs))
 
     def download_url(self, **kwargs) -> PendingRequest:

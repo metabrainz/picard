@@ -23,6 +23,7 @@
 from PyQt6.QtCore import QUrl
 
 from picard.webservice import (
+    PendingRequest,
     ReplyHandler,
     WebService,
 )
@@ -57,29 +58,26 @@ class APIHelper:
         url.setPath(url.path() + path)
         return url
 
-    def get(self, path: str, handler: ReplyHandler, **kwargs):
+    def get(self, path: str, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         return self._webservice.get_url(**kwargs)
 
-    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+    def post(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.post_url(**kwargs)
 
-    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs):
+    def put(self, path: str, data: str | None, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['data'] = data
         kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.put_url(**kwargs)
 
-    def delete(self, path: str, handler: ReplyHandler, **kwargs):
+    def delete(self, path: str, handler: ReplyHandler, **kwargs) -> PendingRequest:
         kwargs['url'] = self.url_from_path(path)
         kwargs['handler'] = handler
         kwargs['priority'] = kwargs.get('priority', True)
-        kwargs['mblogin'] = kwargs.get('mblogin', True)
         return self._webservice.delete_url(**kwargs)
