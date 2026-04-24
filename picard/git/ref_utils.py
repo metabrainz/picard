@@ -34,20 +34,16 @@ def find_git_ref(repo, ref_name):
     if not ref_name:
         return None
 
-    try:
-        references = repo.list_references()
+    references = repo.list_references()
 
-        # Check shortname first (most common case)
-        for git_ref in references:
-            if git_ref.shortname == ref_name:
-                return git_ref
+    # Check shortname first (most common case)
+    for git_ref in references:
+        if git_ref.shortname == ref_name:
+            return git_ref
 
-        # Check full name
-        for git_ref in references:
-            if git_ref.name == ref_name:
-                return git_ref
-
-    except Exception:
-        pass
+    # Check full name
+    for git_ref in references:
+        if git_ref.name == ref_name:
+            return git_ref
 
     return None
