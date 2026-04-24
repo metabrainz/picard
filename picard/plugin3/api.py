@@ -17,6 +17,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
+"""Public Plugin API for Picard plugins v3.
+
+Import plugin-facing classes and helpers from this module only:
+
+    from picard.plugin3.api import PluginApi, Metadata
+
+This module is the supported import surface for plugin authors. Names listed in
+``__all__`` are part of the public API contract for plugins. Imports from
+internal modules (for example ``picard.plugin3.api_impl``) are implementation
+details and may change without notice.
+
+Exported names:
+- Core API: ``PluginApi``
+- Data models: ``Album``, ``Track``, ``File``, ``Metadata``, ``Cluster``
+- Actions and options: ``BaseAction``, ``OptionsPage``
+- Cover art: ``CoverArtProvider``, ``CoverArtImage``, ``ImageProcessor``,
+  ``ImageInfo``, ``ProcessingImage``, ``ProviderOptions``
+- Utilities: ``ScriptParser``, ``t_``
+"""
+
 from picard.cluster import Cluster
 from picard.extension_points.cover_art_processors import ProcessingImage
 from picard.plugin3.api_impl import (
