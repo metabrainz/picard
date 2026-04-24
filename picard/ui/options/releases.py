@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from operator import itemgetter
 
 from PyQt6 import (
     QtCore,
@@ -291,6 +292,7 @@ class ReleasesOptionsPage(OptionsPage):
             return sort_key(x[1])
 
         source_list = [(c[0], translate_func(c[1])) for c in source.items()]
+        target_list = []
         source_list.sort(key=fcmp)
         config = get_config()
         saved_data = config.setting[setting]
@@ -298,10 +300,14 @@ class ReleasesOptionsPage(OptionsPage):
             item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
             try:
-                saved_data.index(data)
-                list2.addItem(item)
+                i = saved_data.index(data)
+                target_list.append((i, item))
             except ValueError:
                 list1.addItem(item)
+
+        target_list.sort(key=itemgetter(0))
+        for _i, item in target_list:
+            list2.addItem(item)
 
     def _save_list_items(self, setting, list1):
         data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]
