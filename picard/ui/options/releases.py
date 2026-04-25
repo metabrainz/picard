@@ -236,12 +236,14 @@ class ReleasesOptionsPage(OptionsPage):
         self._load_list_items(
             'preferred_release_countries',
             RELEASE_COUNTRIES,
+            gettext_countries,
             self.ui.country_list,
             self.ui.preferred_country_list,
         )
         self._load_list_items(
             'preferred_release_formats',
             RELEASE_FORMATS,
+            partial(pgettext_attributes, 'medium_format'),
             self.ui.format_list,
             self.ui.preferred_format_list,
         )
@@ -280,14 +282,7 @@ class ReleasesOptionsPage(OptionsPage):
             list2.addItem(clone)
             list1.takeItem(list1.row(item))
 
-    def _load_list_items(self, setting, source, list1, list2):
-        if setting == 'preferred_release_countries':
-            translate_func = gettext_countries
-        elif setting == 'preferred_release_formats':
-            translate_func = partial(pgettext_attributes, 'medium_format')
-        else:
-            translate_func = _
-
+    def _load_list_items(self, setting, source, translate_func, list1, list2):
         source_list = [(key, translate_func(name)) for key, name in source.items()]
         source_list.sort(key=lambda x: sort_key(x[1]))
         config = get_config()
