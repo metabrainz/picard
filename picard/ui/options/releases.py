@@ -271,8 +271,9 @@ class ReleasesOptionsPage(OptionsPage):
             list1.takeItem(list1.row(item))
 
     def _load_release_countries(self):
+        config = get_config()
         self._load_list_items(
-            'preferred_release_countries',
+            config.setting['preferred_release_countries'],
             gettext_countries,
             RELEASE_COUNTRIES,
             self.ui.country_list,
@@ -280,19 +281,19 @@ class ReleasesOptionsPage(OptionsPage):
         )
 
     def _load_release_formats(self):
+        config = get_config()
         self._load_list_items(
-            'preferred_release_formats',
+            config.setting['preferred_release_formats'],
             partial(pgettext_attributes, 'medium_format'),
             RELEASE_FORMATS,
             self.ui.format_list,
             self.ui.preferred_format_list,
         )
 
-    def _load_list_items(self, setting, translate_func, source, list1, list2):
+    def _load_list_items(self, saved_data, translate_func, source, list1, list2):
         source_list = [(key, translate_func(name)) for key, name in source.items()]
         source_list.sort(key=lambda x: sort_key(x[1]))
-        config = get_config()
-        saved_order = {data: i for i, data in enumerate(config.setting[setting])}
+        saved_order = {data: i for i, data in enumerate(saved_data)}
         target_list = []
         for data, name in source_list:
             item = QtWidgets.QListWidgetItem(name)
