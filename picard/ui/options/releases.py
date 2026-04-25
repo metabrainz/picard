@@ -290,22 +290,22 @@ class ReleasesOptionsPage(OptionsPage):
             self.ui.preferred_format_list,
         )
 
-    def _load_list_items(self, saved_data, translate_func, source, list1, list2):
+    def _load_list_items(self, preferred, translate_func, source, available_list, preferred_list):
         source_list = [(key, translate_func(name)) for key, name in source.items()]
         source_list.sort(key=lambda x: sort_key(x[1]))
-        saved_order = {data: i for i, data in enumerate(saved_data)}
+        preferred_order = {data: i for i, data in enumerate(preferred)}
         target_list = []
         for data, name in source_list:
             item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
-            if data in saved_order:
-                target_list.append((saved_order[data], item))
+            if data in preferred_order:
+                target_list.append((preferred_order[data], item))
             else:
-                list1.addItem(item)
+                available_list.addItem(item)
 
         target_list.sort(key=itemgetter(0))
         for _i, item in target_list:
-            list2.addItem(item)
+            preferred_list.addItem(item)
 
     def _save_list_items(self, setting, list1):
         data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]
