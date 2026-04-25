@@ -288,21 +288,17 @@ class ReleasesOptionsPage(OptionsPage):
         else:
             translate_func = _
 
-        def fcmp(x):
-            return sort_key(x[1])
-
-        source_list = [(c[0], translate_func(c[1])) for c in source.items()]
-        target_list = []
-        source_list.sort(key=fcmp)
+        source_list = [(key, translate_func(name)) for key, name in source.items()]
+        source_list.sort(key=lambda x: sort_key(x[1]))
         config = get_config()
-        saved_data = config.setting[setting]
+        saved_order = {data: i for i, data in enumerate(config.setting[setting])}
+        target_list = []
         for data, name in source_list:
             item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
-            try:
-                i = saved_data.index(data)
-                target_list.append((i, item))
-            except ValueError:
+            if data in saved_order:
+                target_list.append((saved_order[data], item))
+            else:
                 list1.addItem(item)
 
         target_list.sort(key=itemgetter(0))
