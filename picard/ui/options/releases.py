@@ -271,41 +271,71 @@ class ReleasesOptionsPage(OptionsPage):
             list1.takeItem(list1.row(item))
 
     def _load_release_countries(self):
+        """Load preferred release countries from config into the UI lists."""
         config = get_config()
         self._load_list_items(
             config.setting['preferred_release_countries'],
             gettext_countries,
             RELEASE_COUNTRIES,
-            self.ui.country_list,
-            self.ui.preferred_country_list,
+            self._add_list_item(self.ui.country_list, self.ui.preferred_country_list),
         )
 
     def _load_release_formats(self):
+        """Load preferred release formats from config into the UI lists."""
         config = get_config()
         self._load_list_items(
             config.setting['preferred_release_formats'],
             partial(pgettext_attributes, 'medium_format'),
             RELEASE_FORMATS,
-            self.ui.format_list,
-            self.ui.preferred_format_list,
+            self._add_list_item(self.ui.format_list, self.ui.preferred_format_list),
         )
 
-    def _load_list_items(self, preferred, translate_func, source, available_list, preferred_list):
+    @staticmethod
+    def _add_list_item(available_list, preferred_list):
+        """Return a callback that creates a QListWidgetItem and adds it
+        to the appropriate list widget.
+        """
+
+        def add_item(name, data, is_preferred):
+            """Create a QListWidgetItem and add it to the preferred or
+            available list widget.
+            """
+            item = QtWidgets.QListWidgetItem(name)
+            item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
+            if is_preferred:
+                preferred_list.addItem(item)
+            else:
+                available_list.addItem(item)
+
+        return add_item
+
+    @staticmethod
+    def _load_list_items(preferred, translate_func, source, add_item):
+        """Split source items into available and preferred, calling add_item
+        for each.
+
+        Available items are sorted alphabetically by translated name.
+        Preferred items preserve their saved order.
+
+        Args:
+            preferred: List of previously selected item keys.
+            translate_func: Callable to translate source names for display.
+            source: Dict mapping item keys to untranslated names.
+            add_item: Callback called as add_item(name, data, is_preferred).
+        """
         source_list = [(key, translate_func(name)) for key, name in source.items()]
         source_list.sort(key=lambda x: sort_key(x[1]))
         preferred_order = {data: i for i, data in enumerate(preferred)}
         target_list = []
         for data, name in source_list:
-            item = QtWidgets.QListWidgetItem(name)
-            item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
             if data in preferred_order:
-                target_list.append((preferred_order[data], item))
+                target_list.append((preferred_order[data], name, data))
             else:
-                available_list.addItem(item)
+                add_item(name, data, False)
 
         target_list.sort(key=itemgetter(0))
-        for _i, item in target_list:
-            preferred_list.addItem(item)
+        for _i, name, data in target_list:
+            add_item(name, data, True)
 
     def _save_list_items(self, setting, list1):
         data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]
