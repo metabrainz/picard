@@ -233,20 +233,8 @@ class ReleasesOptionsPage(OptionsPage):
         for release_type, release_type_slider in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type, DEFAULT_RELEASE_SCORE))
 
-        self._load_list_items(
-            'preferred_release_countries',
-            RELEASE_COUNTRIES,
-            gettext_countries,
-            self.ui.country_list,
-            self.ui.preferred_country_list,
-        )
-        self._load_list_items(
-            'preferred_release_formats',
-            RELEASE_FORMATS,
-            partial(pgettext_attributes, 'medium_format'),
-            self.ui.format_list,
-            self.ui.preferred_format_list,
-        )
+        self._load_release_countries()
+        self._load_release_formats()
 
     def save(self):
         config = get_config()
@@ -282,7 +270,25 @@ class ReleasesOptionsPage(OptionsPage):
             list2.addItem(clone)
             list1.takeItem(list1.row(item))
 
-    def _load_list_items(self, setting, source, translate_func, list1, list2):
+    def _load_release_countries(self):
+        self._load_list_items(
+            'preferred_release_countries',
+            gettext_countries,
+            RELEASE_COUNTRIES,
+            self.ui.country_list,
+            self.ui.preferred_country_list,
+        )
+
+    def _load_release_formats(self):
+        self._load_list_items(
+            'preferred_release_formats',
+            partial(pgettext_attributes, 'medium_format'),
+            RELEASE_FORMATS,
+            self.ui.format_list,
+            self.ui.preferred_format_list,
+        )
+
+    def _load_list_items(self, setting, translate_func, source, list1, list2):
         source_list = [(key, translate_func(name)) for key, name in source.items()]
         source_list.sort(key=lambda x: sort_key(x[1]))
         config = get_config()
