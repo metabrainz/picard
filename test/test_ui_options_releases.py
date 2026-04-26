@@ -25,26 +25,26 @@ from test.picardtestcase import PicardTestCase
 from picard.ui.options.releases import ReleasesOptionsPage
 
 
-def _noop(s):
+def _noop(s: str) -> str:
     return s
 
 
 class TestLoadListItems(PicardTestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         patcher = patch('picard.ui.options.releases.sort_key', side_effect=str.casefold)
         patcher.start()
         self.addCleanup(patcher.stop)
-        self.available = []
-        self.preferred = []
+        self.available: list[tuple[str, str]] = []
+        self.preferred: list[tuple[str, str]] = []
 
-    def _add_item(self, name, data, is_preferred):
+    def _add_item(self, name: str, data: str, is_preferred: bool) -> None:
         if is_preferred:
             self.preferred.append((data, name))
         else:
             self.available.append((data, name))
 
-    def _load(self, preferred, source):
+    def _load(self, preferred: list[str], source: dict[str, str]) -> None:
         ReleasesOptionsPage._load_list_items(preferred, _noop, source, self._add_item)
 
     def test_no_saved_preferences(self):

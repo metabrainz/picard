@@ -26,6 +26,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import (
+    Callable,
+    Mapping,
+)
 from functools import partial
 from operator import itemgetter
 
@@ -270,7 +274,7 @@ class ReleasesOptionsPage(OptionsPage):
             list2.addItem(clone)
             list1.takeItem(list1.row(item))
 
-    def _load_release_countries(self):
+    def _load_release_countries(self) -> None:
         """Load preferred release countries from config into the UI lists."""
         config = get_config()
         self._load_list_items(
@@ -280,7 +284,7 @@ class ReleasesOptionsPage(OptionsPage):
             self._add_list_item(self.ui.country_list, self.ui.preferred_country_list),
         )
 
-    def _load_release_formats(self):
+    def _load_release_formats(self) -> None:
         """Load preferred release formats from config into the UI lists."""
         config = get_config()
         self._load_list_items(
@@ -291,12 +295,15 @@ class ReleasesOptionsPage(OptionsPage):
         )
 
     @staticmethod
-    def _add_list_item(available_list, preferred_list):
+    def _add_list_item(
+        available_list: QtWidgets.QListWidget,
+        preferred_list: QtWidgets.QListWidget,
+    ) -> Callable[[str, str, bool], None]:
         """Return a callback that creates a QListWidgetItem and adds it
         to the appropriate list widget.
         """
 
-        def add_item(name, data, is_preferred):
+        def add_item(name: str, data: str, is_preferred: bool) -> None:
             """Create a QListWidgetItem and add it to the preferred or
             available list widget.
             """
@@ -310,7 +317,12 @@ class ReleasesOptionsPage(OptionsPage):
         return add_item
 
     @staticmethod
-    def _load_list_items(preferred, translate_func, source, add_item):
+    def _load_list_items(
+        preferred: list[str],
+        translate_func: Callable[[str], str],
+        source: Mapping[str, str],
+        add_item: Callable[[str, str, bool], None],
+    ) -> None:
         """Split source items into available and preferred, calling add_item
         for each.
 
