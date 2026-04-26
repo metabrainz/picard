@@ -653,7 +653,7 @@ def upgrade_to_v3_0_0a3(config):
     config.persist.remove('file_view_header_state')
 
 
-def upgrade_to_v3_0_0a4(config):
+def upgrade_to_v3_0_0b2(config):
     """Rename move_overwrite_existing_files to move_conflict_strategy."""
     if 'move_overwrite_existing_files' in config.setting:
         with temp_option(BoolOption, 'setting', 'move_overwrite_existing_files', False) as old_opt:
