@@ -537,8 +537,6 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
     def test_upgrade_to_v3_0_0dev9(self):
         from PyQt6 import QtCore
 
-        from picard.config import ListOption, Option
-
         # Add old plugin options that should be removed
         Option('persist', 'plugins_list_sort_order', QtCore.Qt.SortOrder.AscendingOrder)
         Option('persist', 'plugins_list_sort_section', 0)
