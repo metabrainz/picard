@@ -48,6 +48,21 @@ from picard.ui.theme import UiTheme
 
 
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
+    def test_all_hooks_have_tests(self):
+        """Ensure every upgrade hook has at least one corresponding test method."""
+        from picard.config_upgrade import (
+            UPGRADE_FUNCTION_PREFIX,
+            autodetect_upgrade_hooks,
+        )
+
+        hooks = autodetect_upgrade_hooks()
+        test_prefix = 'test_' + UPGRADE_FUNCTION_PREFIX
+        test_methods = {m for m in dir(self) if m.startswith(test_prefix)}
+        for version, hook in hooks.items():
+            prefix = 'test_' + hook.__name__
+            matching = {m for m in test_methods if m.startswith(prefix)}
+            self.assertTrue(matching, f"No test found for {hook.__name__} (version {version})")
+
     def test_upgrade_to_v1_0_0final0_A(self):
         TextOption('setting', 'file_naming_format', '')
 
@@ -158,6 +173,9 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['file_naming_format'] = hooks.OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3
         hooks.upgrade_to_v1_4_0dev4(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
+
+    def test_upgrade_to_v1_4_0dev5(self):
+        hooks.upgrade_to_v1_4_0dev5(self.config)
 
     def test_upgrade_to_v1_4_0dev6(self):
         BoolOption('setting', 'enable_tagger_scripts', False)
