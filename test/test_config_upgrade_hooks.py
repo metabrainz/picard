@@ -338,6 +338,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('ui_theme', self.config.setting)
         self.assertEqual('system', self.config.setting['ui_theme'])
 
+    def test_upgrade_to_v2_7_0dev2(self):
+        Option('persist', 'bottom_splitter_state', b'')
+        Option('persist', 'splitter_state', b'')
+        Option('persist', 'splitters_MainWindow', {})
+        self.config.persist['bottom_splitter_state'] = b'bottom'
+        self.config.persist['splitter_state'] = b'main'
+        hooks.upgrade_to_v2_7_0dev2(self.config)
+        self.assertNotIn('bottom_splitter_state', self.config.persist)
+        self.assertNotIn('splitter_state', self.config.persist)
+        splitters = self.config.persist['splitters_MainWindow']
+        self.assertEqual(b'bottom', splitters['main_window_bottom_splitter'])
+        self.assertEqual(b'main', splitters['main_panel_splitter'])
+
     def test_upgrade_to_v2_7_0dev3(self):
         # Legacy settings
         ListOption('setting', 'file_naming_scripts', [])
@@ -414,6 +427,34 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v2_8_0dev2(self.config)
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
 
+    def test_upgrade_to_v2_9_0alpha2(self):
+        from picard.script import get_file_naming_script_presets
+
+        Option('setting', 'file_renaming_scripts', {})
+        self.config.setting['file_renaming_scripts'] = {}
+        hooks.upgrade_to_v2_9_0alpha2(self.config)
+        scripts = self.config.setting['file_renaming_scripts']
+        preset_ids = {item['id'] for item in get_file_naming_script_presets()}
+        for preset_id in preset_ids:
+            self.assertIn(preset_id, scripts)
+
+    def test_upgrade_to_v3_0_0dev1(self):
+        Option('persist', 'current_directory', '')
+        Option('persist', 'obsolete_qt5_state', b'')
+        self.config.persist['current_directory'] = '/home/test'
+        self.config.persist['obsolete_qt5_state'] = b'data'
+        # Write directly to simulate Qt5 persisted keys
+        self.config.setValue('persist/some_unknown_key', b'old')
+        hooks.upgrade_to_v3_0_0dev1(self.config)
+        self.assertEqual('/home/test', self.config.persist['current_directory'])
+        self.assertNotIn('persist/some_unknown_key', self.config.allKeys())
+
+    def test_upgrade_to_v3_0_0dev2(self):
+        Option('persist', 'splitters_OptionsDialog', b'')
+        self.config.persist['splitters_OptionsDialog'] = b'state'
+        hooks.upgrade_to_v3_0_0dev2(self.config)
+        self.assertEqual(b'', self.config.persist['splitters_OptionsDialog'])
+
     def test_upgrade_to_v3_0_0dev3(self):
         BoolOption('setting', 'allow_multi_dirs_selection', False)
 
@@ -453,6 +494,13 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             self.config.setting['replace_dir_separator'] = os.altsep
             hooks.upgrade_to_v3_0_0dev5(self.config)
             self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+    def test_upgrade_to_v3_0_0dev6(self):
+        BoolOption('setting', 'standardize_instruments', False)
+        BoolOption('setting', 'standardize_vocals', False)
+        self.config.setting['standardize_instruments'] = True
+        hooks.upgrade_to_v3_0_0dev6(self.config)
+        self.assertTrue(self.config.setting['standardize_vocals'])
 
     def test_upgrade_to_v3_0_0dev7(self):
         TextOption('setting', 'ui_theme', DEFAULT_THEME_NAME)
