@@ -325,11 +325,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0dev1_frozen(self):
+        from unittest.mock import patch
+
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
-        hooks.IS_FROZEN = True
-        hooks.upgrade_to_v2_6_0dev1(self.config)
-        hooks.IS_FROZEN = False
+        with patch.object(hooks, 'IS_FROZEN', True):
+            hooks.upgrade_to_v2_6_0dev1(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
     def test_upgrade_to_v2_6_0beta2(self):
