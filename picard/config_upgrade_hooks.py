@@ -64,22 +64,41 @@ from picard.util import unique_numbered_title
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
 #
-# Add a new method here, named using the following scheme:
-# UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
+# 1. Add a new method here, named using the following scheme:
+#    UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
 #
-# For example:
-# `upgrade_to_v1_0_0dev1()` for an upgrade hook upgrading to 1.0.0dev1
+#    For example:
+#    `upgrade_to_v1_0_0dev1(config)` for an upgrade hook upgrading to 1.0.0dev1
 #
-# It will be automatically detected and registered by `upgrade_config()`.
-# After adding an upgrade hook you have to update `PICARD_VERSION` to match it.
+#    The only parameter passed when hooks are executed at startup is `config`.
+#    Extra parameters can be added for testability (see `upgrade_to_v1_0_0final0`).
 #
-# The only parameter passed is when hooks are executed at startup is `config`,
-# but extra parameters might be needed for tests.
+#    Describe changes using a docstring — it is logged when the hook is executed.
 #
-# To rename old option to new one, use helper method `rename_option()`.
+# 2. Update `PICARD_VERSION` to match the new hook version.
 #
-# Note: it is important to describe changes made by the method using a docstring.
-# The text can be logged when the hook is executed.
+# 3. Add a corresponding test in test/test_config_upgrade_hooks.py, named
+#    `test_` + the hook function name (e.g. `test_upgrade_to_v1_0_0dev1`).
+#    The `test_all_hooks_have_tests` test will fail if a test is missing.
+#
+#
+# COMMON PATTERNS:
+# ---------------
+#
+# Rename an option:
+#   rename_option(config, 'old_name', 'new_name', BoolOption, False)
+#
+# Rename an option with reversed boolean value:
+#   rename_option(config, 'old_name', 'new_name', BoolOption, False, reverse=True)
+#
+# Read and remove a legacy option using a temporary registration
+# (needed so config.setting.value() knows the type for deserialization):
+#   with temp_option(TextOption, 'setting', 'old_name', '') as old_opt:
+#       value = config.setting.value(old_opt)
+#   config.setting.remove('old_name')
+#
+# Remove an obsolete option:
+#   config.setting.remove('old_name')
 
 
 def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
