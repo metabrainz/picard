@@ -26,6 +26,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
+      with:
+        fetch-depth: 1000
+        fetch-tags: true
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
