@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-22 07:04+0200\n"
-"PO-Revision-Date: 2026-02-03 19:11+0000\n"
+"PO-Revision-Date: 2026-04-29 16:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -23,9 +23,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
-"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
-"1 : n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.15.2\n"
+"11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
+": n % 1 != 0 ? 2: 3);\n"
+"X-Generator: Weblate 5.17\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:202
@@ -980,10 +980,8 @@ msgid "ID3v2 text encoding"
 msgstr "ID3v2 teksto kodavimas"
 
 #: picard/options.py:492
-#, fuzzy
-#| msgid "Save iTunes compatible grouping and work"
 msgid "iTunes compatible grouping / work"
-msgstr "Išsaugoti „iTunes“ suderintą grupavimą ir kūrinį"
+msgstr "„iTunes“ suderintas grupavims / kūrinys"
 
 #: picard/options.py:493
 msgid "Write ID3v1 tags"
@@ -3874,14 +3872,22 @@ msgid ""
 "user interface language.</p><p>Do you want to allow Picard to check the "
 "available languages and versions for the documentation on ReadTheDocs?</p>"
 msgstr ""
+"<p>Dabartiniai nustatymai <strong>neleidžia</strong> „Picard“ tikrinti „"
+"ReadTheDocs“ dėl dokumentacijos pasiekiamų kalbų ir versijų. Tai reiškia, "
+"kad „Picard“ rodys „naujausią“ dokumentacijos versiją anglų kalba atvėrius "
+"jūsų naršyklėje.</p><p>Įjungus šį nustatymą, „Picard“ rodys dabartinę "
+"dokumentacijos versiją geriausia pasiekiama kalba, atsižvelgiant į šiuo metu "
+"pasirinktą naudotojo sąsajos kalbą.</p><p>Ar norite leisti „Picard“ "
+"patikrinti pasiekiamas dokumentacijos kalbas ir versijas platformoje „"
+"ReadTheDocs“?</p>"
 
 #: picard/ui/allowrtdupdatesdialog.py:47 picard/ui/newuserdialog.py:50
 msgid "Show this message again the next time you start Picard."
-msgstr "Rodyti šį pranešimą dar kartą, kai kitą kartą paleisi Picard."
+msgstr "Rodyti šį pranešimą vėl kitą kartą paleidus „Picard“"
 
 #: picard/ui/allowrtdupdatesdialog.py:52
 msgid "ReadTheDocs Updates"
-msgstr ""
+msgstr "„ReadTheDocs“ naujinimai"
 
 #: picard/ui/caa_types_selector.py:187
 msgid "Cover art types"
@@ -4249,15 +4255,14 @@ msgid ""
 "work in small batches</li></ul><p>Picard is open source software written by "
 "volunteers. It is provided as-is and with no warranty.</p>"
 msgstr ""
-"<p><strong>Pakeitimai, kuriuos atliko Picard, yra negrįžtami.</strong></"
-"p><p>Picard – labai lankstus muzikos žymėjimo įrankis, kuriuo galima "
+"<p><strong>Pakeitimai, kuriuos atliko „Picard“, yra negrįžtami.</strong></p>"
+"<p>„Picard“ – labai lankstus muzikos žymėjimo įrankis, kuriuo galima "
 "pervadinti failus ir perrašyti žymas. <strong>Primygtinai rekomenduojame</"
-"strong>, kad: </p><ul><li>perskaitytum <a "
-"href='{documentation_url}'>naudotojo vadovą</a> (jį taip pat galima rasti "
-"pagalbos meniu)</li><li>išbandytum su savo muzikos kopijomis ir veiktum "
-"nedidelėmis partijomis</li></ul><p>Picard yra atvirojo kodo programinė "
-"įranga, parašyta savanorių. Ji teikiama tokia, kokia yra, ir be jokių "
-"garantijų.</p>"
+"strong>, kad: </p><ul><li>perskaitytumėte <a href='{documentation_url}'>"
+"naudotojo vadovą</a> (jį taip pat galima rasti pagalbos meniu)</li><li>"
+"išbandytumėte su savo muzikos kopijomis ir veiktumėte nedidelėmis "
+"partijomis</li></ul><p>„Picard“ atvirojo kodo programinė įranga, parašyta "
+"savanorių. Ji teikiama tokia, kokia yra, ir be jokių garantijų.</p>"
 
 #: picard/ui/newuserdialog.py:55
 msgid "New User Warning"
@@ -4352,10 +4357,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr ""
 
 #: picard/ui/setupwizard.py:55
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "„MusicBrainz Picard“"
+msgstr "Sveiki atvykę į „MusicBrainz Picard“"
 
 #: picard/ui/setupwizard.py:62
 msgid ""
@@ -4364,31 +4367,33 @@ msgid ""
 "important settings before you get started. You can always change these later "
 "in the Options dialog.</p>"
 msgstr ""
+"<p>„Picard“ padeda žymėti ir tvarkyti muzikos kolekciją naudojant „"
+"MusicBrainz“ duomenų bazę.</p><p>Šis vedlys padės jums sukonfigūruoti keletą "
+"svarbių nustatymų prieš pradedant. Vėliau juos visada galite pakeisti "
+"Parinkčių dialogo lange.</p>"
 
 #: picard/ui/setupwizard.py:74
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Read the documentation"
-msgstr "&Rodyti dokumentaciją"
+msgstr "Skaityti dokumentaciją"
 
 #: picard/ui/setupwizard.py:88
-#, fuzzy
-#| msgid "Select an action"
 msgid "File Organization"
-msgstr "Pasirinkti veiksmą"
+msgstr "Failų organizavimas"
 
 #: picard/ui/setupwizard.py:89
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr ""
+"Pasirinkite, ar „Picard“ turi pavadinti ir perkelti jūsų failus išsaugant "
+"žymes."
 
 #: picard/ui/setupwizard.py:93
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
-msgstr ""
+msgstr "Pervardinti failus pagal žymes (pvz., „Atlikėjas – Pavadinimas.mp3“)"
 
 #: picard/ui/setupwizard.py:96
 msgid "Move files to a directory structure based on tags"
-msgstr ""
+msgstr "Perkelti failus į katalogų struktūrą pagal žymes"
 
 #: picard/ui/setupwizard.py:116
 msgid ""
@@ -4407,26 +4412,20 @@ msgid "Choose how Picard should handle album cover art."
 msgstr ""
 
 #: picard/ui/setupwizard.py:159
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Įterpti viršelio vaizdus į žymes"
+msgstr "Įterpti viršelio vaizdų į garso įrašų failus"
 
 #: picard/ui/setupwizard.py:162
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
-msgstr "Išsaugoti viršelio vaizdus kaip atskirus failus"
+msgstr "Išsaugoti viršelio vaizdus kaip atskirus vaizdo failus"
 
 #: picard/ui/setupwizard.py:167
 msgid "You can change these later under Options → Options → Cover Art."
-msgstr ""
+msgstr "Vėliau jas galite pakeisti po Parinkčių → Parinktys → Viršelio vaizdai."
 
 #: picard/ui/setupwizard.py:193
-#, fuzzy
-#| msgid "Picard Update"
 msgid "Picard Setup"
-msgstr "„Picard“ naujinimas"
+msgstr "„Picard“ sąranka"
 
 #: picard/ui/itemviews/columns.py:194 picard/ui/tagsfromfilenames.py:129
 #: picard/ui/tagsfromfilenames.py:140
@@ -4438,6 +4437,9 @@ msgid ""
 "Welcome to MusicBrainz Picard! Start by adding your music files: use 'Add "
 "Files' or 'Add Directory' from the toolbar or the File menu."
 msgstr ""
+"Sveiki atvykę į „MusicBrainz Picard“! Pradėkite pridedant savo muzikos "
+"failus: naudokite Pridėti failus arba Pridėti katalogą iš įrankių juostos "
+"arba Failo meniu."
 
 #: picard/ui/tutorial.py:60
 msgid ""
@@ -4502,21 +4504,19 @@ msgstr ""
 
 #: picard/ui/tutorial.py:153
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "„Picard“ mokymas"
 
 #: picard/ui/tutorial.py:176
 msgid "Learn more…"
-msgstr ""
+msgstr "Sužinoti daugiau…"
 
 #: picard/ui/tutorial.py:184
-#, fuzzy
-#| msgid "Don't show this warning again."
 msgid "Don't show tips again"
-msgstr "Daugiau nerodyti šio įspėjimo"
+msgstr "Daugiau nerodyti patarimų"
 
 #: picard/ui/tutorial.py:188
 msgid "Got it"
-msgstr ""
+msgstr "Supratau"
 
 #: picard/ui/util.py:55
 #, python-format
@@ -7664,7 +7664,7 @@ msgstr "Ctrl+Shift+M"
 
 #: picard/ui/mainwindow/actions.py:346
 msgid "&Cover Art"
-msgstr "&Viršelis"
+msgstr "&Viršelio vaizdas"
 
 #: picard/ui/mainwindow/actions.py:358
 msgid "&Actions"
@@ -8038,14 +8038,6 @@ msgid "Advanced"
 msgstr "Išplėstinis"
 
 #: picard/ui/options/cover.py:149
-#, fuzzy
-#| msgid ""
-#| "CAA images with an image type found in the 'Include' list will be "
-#| "downloaded and used UNLESS they also have an image type found in the "
-#| "'Exclude' list. Images with types found in the 'Exclude' list will NEVER "
-#| "be used. Image types not appearing in the 'Include' or 'Exclude' lists "
-#| "will not be considered when determining whether or not to download and "
-#| "use a CAA image.\n"
 msgid ""
 "Embedded cover art images with a type found in the \"Include\" list will "
 "never be replaced by a newly downloaded image UNLESS they also have an image "
@@ -8055,11 +8047,12 @@ msgid ""
 "considered when determining whether or not to replace an embedded cover art "
 "image.\n"
 msgstr ""
-"CAA vaizdai su vaizdo tipu, esančiu sąraše Įtraukti, bus atsisiunčiami ir "
-"naudojami, NEBENT jie taip pat turi vaizdo tipą, esantį sąraše Neįtraukti. "
-"Vaizdai su tipais, esančiais sąraše Neįtraukti, NIEKADA nebus naudojami. "
-"Vaizdų tipai nepateikti sąrašuose Įtraukti arba Neįtraukti nebus vertinami "
-"nustatant, ar atsisiųsti ir naudoti CAA vaizdą, ar ne.\n"
+"Įterptieji viršelių vaizdai su tipu, esančiu sąraše „Įtraukti“, niekada "
+"nebus pakeisti naujai atsisiųstu vaizdu, NEBENT jie taip pat turėtų vaizdo "
+"tipą, esantį sąraše „Neįtraukti“. Vaizdai, kurių tipai yra „Neįtraukti“ "
+"sąraše, visada bus pakeisti atsisiųstais to paties tipo vaizdais. Vaizdų "
+"tipai nepateikti „Įtraukti“ ar „Neįtraukti“ sąraše nebus atsižvelgiami "
+"sprendžiant, ar pakeisti įterptą viršelio vaizdą.\n"
 
 #: picard/ui/options/cover_processing.py:50
 msgid "Processing"
@@ -8304,7 +8297,7 @@ msgstr "Sistemos numatytoji"
 
 #: picard/ui/options/interface.py:143
 msgid "Reset tutorial and setup wizard…"
-msgstr ""
+msgstr "Atkurti mokymą ir sąrankos vedlį…"
 
 #: picard/ui/options/interface.py:195
 msgid "You have changed the application theme."
@@ -8329,16 +8322,14 @@ msgid ""
 msgstr ""
 
 #: picard/ui/options/interface.py:238
-#, fuzzy
-#| msgid "Reset all"
 msgid "Reset Tutorial"
-msgstr "Atkurti viską"
+msgstr "Atkurti mokymą"
 
 #: picard/ui/options/interface.py:239
 msgid ""
 "This will reset the tutorial and setup wizard so they are shown again. "
 "Continue?"
-msgstr ""
+msgstr "Tai atkurs mokymą ir sąrankos vedlį, kad jie būtų rodomi vėl. Tęsti?"
 
 #: picard/ui/options/interface_colors.py:72
 msgid "Choose a color"
@@ -8353,10 +8344,8 @@ msgid "You have changed the interface colors."
 msgstr "Pakeitėte sąsajos spalvas."
 
 #: picard/ui/options/interface_cover_art_box.py:34
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover Art Box"
-msgstr "Viršelio vaizdai"
+msgstr "Viršelio vaizdų langelis"
 
 #: picard/ui/options/interface_quick_menu.py:78
 #: picard/ui/options/profiles.py:218
