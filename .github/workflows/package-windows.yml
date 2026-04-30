@@ -58,12 +58,7 @@ jobs:
     - name: Install dependencies
       run: uv sync --group build --group dev --extra plugins
     - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
-        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Add-Content $Env:GITHUB_ENV "BUILD_NUMBER=$BuildNumber"
-        uv run python setup.py patch_version --platform=$BuildNumber.$(git rev-parse --short HEAD)
+      run: uv run bash -c "./scripts/tools/patch-version.sh"
     - name: Run tests
       timeout-minutes: 30
       run: uv run pytest --verbose
@@ -73,12 +68,14 @@ jobs:
         uv run python setup.py clean
     - name: Build TaskbarLib.tlb
       run: |
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          midl TaskbarLib.idl /tlb TaskbarLib.tlb
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        midl TaskbarLib.idl /tlb TaskbarLib.tlb
       shell: cmd
     - name: Build
       run: |
-        uv run python setup.py build --build-number=$Env:BUILD_NUMBER --disable-locales
+        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
+        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
+        uv run python setup.py build --build-number=$BuildNumber --disable-locales
         uv run python setup.py build_locales
         uv run python setup.py build_ext -i
         uv run pyinstaller --noconfirm --clean picard.spec

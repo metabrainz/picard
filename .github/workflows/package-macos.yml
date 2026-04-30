@@ -40,9 +40,6 @@ jobs:
         ./scripts/package/macos-setup.sh
         PYTHON_BASE_VERSION=$(echo $PYTHON_VERSION | sed -e "s/\.[0-9]\{1,\}$//")
         echo "/Library/Frameworks/Python.framework/Versions/$PYTHON_BASE_VERSION/bin" >> $GITHUB_PATH
-        RELEASE_TAG=$(git describe --match "release-*" --abbrev=0 --always HEAD)
-        BUILD_NUMBER=$(git rev-list --count $RELEASE_TAG..HEAD)
-        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
         echo "TARGET_ARCH=$(uname -m)" >> $GITHUB_ENV
         mkdir artifacts
         python3 -m pip install --upgrade pip setuptools wheel
@@ -51,9 +48,7 @@ jobs:
       env:
         PYINSTALLER_COMPILE_BOOTLOADER: "1"
     - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        uv run python setup.py patch_version --platform=$BUILD_NUMBER.$(git rev-parse --short HEAD)
+      run: uv run ./scripts/tools/patch-version.sh
     - name: Prepare code signing certificate
       run: |
         if [ -n "$CODESIGN_MACOS_P12_URL" ] && [ -n "$AWS_ACCESS_KEY_ID" ]; then
