@@ -4,13 +4,15 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2024.
 # Dino RTX <rtxdino36@gmail.com>, 2025.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-10-22 07:08+0000\n"
-"Last-Translator: Dino RTX <rtxdino36@gmail.com>\n"
+"PO-Revision-Date: 2026-05-01 11:11+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "3/constants/es/>\n"
 "Language: es\n"
@@ -18,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -3159,7 +3161,7 @@ msgstr ""
 
 #: picard/const/locales.py:777
 msgid "Prussian"
-msgstr ""
+msgstr "Prusiano"
 
 #: picard/const/locales.py:778
 msgid "Prussian (world)"
@@ -3491,7 +3493,7 @@ msgstr ""
 
 #: picard/const/locales.py:864
 msgid "Tachelhit"
-msgstr ""
+msgstr "Tachelhit"
 
 #: picard/const/locales.py:865
 msgid "Tachelhit (Latin)"
