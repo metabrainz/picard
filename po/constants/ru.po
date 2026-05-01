@@ -6,14 +6,14 @@
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2026.
 # oleh_hishak <ohishak@gmail.com>, 2025.
 # Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
+# Wonordel <megorka2014@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
 "PO-Revision-Date: 2026-05-01 11:12+0000\n"
-"Last-Translator: Automatic translation add-on <noreply-addon-"
-"autotranslate@weblate.org>\n"
+"Last-Translator: Wonordel <megorka2014@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ru/>\n"
 "Language: ru\n"
@@ -507,7 +507,7 @@ msgstr ""
 
 #: picard/const/locales.py:86
 msgid "Asturian"
-msgstr "астурийский"
+msgstr "Астурийский"
 
 #: picard/const/locales.py:87
 msgid "Asturian (Spain)"
@@ -559,7 +559,7 @@ msgstr "Башкирский (Россия)"
 
 #: picard/const/locales.py:99
 msgid "Baluchi"
-msgstr "белуджский"
+msgstr "Белуджи"
 
 #: picard/const/locales.py:100
 msgid "Baluchi (Arabic)"
