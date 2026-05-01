@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-22 07:04+0200\n"
-"PO-Revision-Date: 2026-04-29 16:11+0000\n"
+"PO-Revision-Date: 2026-05-01 11:11+0000\n"
 "Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/app/lt/>\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
 ": n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:202
@@ -182,20 +182,16 @@ msgid "Log git backend method calls"
 msgstr "Žurnalo vidinio „Git“ metodo kreipiniai"
 
 #: picard/debug_opts.py:111
-#, fuzzy
-#| msgid "[loading album information]"
 msgid "Plugin Translations"
-msgstr "[įkeliama albumo informacija]"
+msgstr "Įskiepių vertimai"
 
 #: picard/debug_opts.py:111
 msgid "Log plugin translation lookups and fallbacks"
-msgstr ""
+msgstr "Žurnaluoti įskiepių vertimus ir atsarginius variantus"
 
 #: picard/debug_opts.py:112
-#, fuzzy
-#| msgid "Picard Plugins Update"
 msgid "Plugin Updates"
-msgstr "Picard įskiepių naujinimas"
+msgstr "Įskiepių naujinimai"
 
 #: picard/debug_opts.py:112
 msgid "Log detailed plugin version checking and update detection"
@@ -400,7 +396,7 @@ msgstr "Rodyti viršelio vaizdą MIME tipu"
 
 #: picard/options.py:227
 msgid "Discard small images"
-msgstr ""
+msgstr "Atmesti mažus vaizdus"
 
 #: picard/options.py:228
 msgid "Minimum image width"
@@ -408,11 +404,11 @@ msgstr ""
 
 #: picard/options.py:229
 msgid "Minimum image height"
-msgstr ""
+msgstr "Mažiausias vaizdo aukštis"
 
 #: picard/options.py:230
 msgid "Allow enlarging tag images"
-msgstr ""
+msgstr "Leisti didinimo žymių vaizdus"
 
 #: picard/options.py:231
 msgid "Allow resizing tag images"
