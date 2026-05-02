@@ -5,13 +5,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
 # oleh_hishak <ohishak@gmail.com>, 2025.
+# Wonordel <megorka2014@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2025-08-30 12:36+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2026-05-02 11:11+0000\n"
+"Last-Translator: Wonordel <megorka2014@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "2/constants/ru/>\n"
 "Language: ru\n"
@@ -20,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -436,7 +437,7 @@ msgstr ""
 
 #: picard/const/locales.py:83
 msgid "Asturian"
-msgstr ""
+msgstr "Астурийский"
 
 #: picard/const/locales.py:84
 msgid "Asturian (Spain)"
@@ -488,7 +489,7 @@ msgstr "Башкирский (Россия)"
 
 #: picard/const/locales.py:96
 msgid "Baluchi"
-msgstr ""
+msgstr "Белуджи"
 
 #: picard/const/locales.py:97
 msgid "Baluchi (Arabic)"
