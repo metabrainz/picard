@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-05-01 11:12+0000\n"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
 "Last-Translator: Wonordel <megorka2014@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "3/constants/ru/>\n"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: picard/const/cover_processing.py:85
 msgid "Crop to fit"
-msgstr ""
+msgstr "Обрезать по размеру"
 
 #: picard/const/cover_processing.py:87
 msgid ""
@@ -95,7 +95,7 @@ msgstr ""
 
 #: picard/const/cover_processing.py:102
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Растянуть по размеру"
 
 #: picard/const/cover_processing.py:104
 msgid ""
