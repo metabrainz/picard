@@ -2,15 +2,16 @@
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
-#
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2023-08-26 13:00+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
-"Language-Team: Welsh <https://translate.uploadedlobster.com/projects/picard/"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
+"Language-Team: Welsh <https://translations.metabrainz.org/projects/picard/3/"
 "constants/cy/>\n"
 "Language: cy\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=(n==0) ? 0 : (n==1) ? 1 : (n==2) ? 2 : "
 "(n==3) ? 3 :(n==6) ? 4 : 5;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4264,7 +4265,7 @@ msgstr ""
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Bysbrint AcoustID"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4275,7 +4276,7 @@ msgstr ""
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/const/tags.py:57
 msgid ""
@@ -4287,7 +4288,7 @@ msgstr ""
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr ""
+msgstr "Artist Albwm"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4322,7 +4323,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Trefn Artist Albwm"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4340,7 +4341,7 @@ msgstr ""
 
 #: picard/const/tags.py:114
 msgid "Album"
-msgstr ""
+msgstr "Albwm"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
@@ -4348,7 +4349,7 @@ msgstr ""
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Trefn Albwm"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4367,7 +4368,7 @@ msgstr ""
 
 #: picard/const/tags.py:135
 msgid "Artist"
-msgstr ""
+msgstr "Artist"
 
 #: picard/const/tags.py:137
 msgid ""
@@ -4401,7 +4402,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Trefn Artist"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4419,7 +4420,7 @@ msgstr ""
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
@@ -4429,7 +4430,7 @@ msgstr ""
 
 #: picard/const/tags.py:186
 msgid "Barcode"
-msgstr ""
+msgstr "Cod bar"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
@@ -4445,7 +4446,7 @@ msgstr ""
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
@@ -4469,7 +4470,7 @@ msgstr ""
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Rhif Catalog"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4488,7 +4489,7 @@ msgstr ""
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Sylw"
 
 #: picard/const/tags.py:247
 msgid ""
@@ -4506,7 +4507,7 @@ msgstr ""
 
 #: picard/const/tags.py:260
 msgid "Composer"
-msgstr ""
+msgstr "Cyfansoddwr"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
@@ -4522,7 +4523,7 @@ msgstr ""
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Arweinydd"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4533,7 +4534,7 @@ msgstr ""
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Hawlfraint"
 
 #: picard/const/tags.py:285
 msgid ""
@@ -4551,7 +4552,7 @@ msgstr ""
 
 #: picard/const/tags.py:299
 msgid "Date"
-msgstr ""
+msgstr "Dyddiad"
 
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
@@ -4600,7 +4601,7 @@ msgstr ""
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Rhif Disg"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
@@ -4617,7 +4618,7 @@ msgstr ""
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Isdeitl Disg"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
@@ -4685,7 +4686,7 @@ msgstr ""
 
 #: picard/const/tags.py:416
 msgid "File Name"
-msgstr ""
+msgstr "Enw Ffeil"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
@@ -4727,7 +4728,7 @@ msgstr ""
 
 #: picard/const/tags.py:460
 msgid "Genre"
-msgstr ""
+msgstr "Genre"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
@@ -4770,7 +4771,7 @@ msgstr ""
 
 #: picard/const/tags.py:498
 msgid "Language"
-msgstr ""
+msgstr "Iaith"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -4778,7 +4779,7 @@ msgstr ""
 
 #: picard/const/tags.py:504
 msgid "Length"
-msgstr ""
+msgstr "Hyd"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
@@ -4786,7 +4787,7 @@ msgstr ""
 
 #: picard/const/tags.py:511
 msgid "License"
-msgstr ""
+msgstr "Trwydded"
 
 #: picard/const/tags.py:512
 msgid ""
@@ -5000,7 +5001,7 @@ msgstr ""
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "Bysbrint MusicIP"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
@@ -5139,7 +5140,7 @@ msgstr ""
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Cynhyrchydd"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
@@ -5165,7 +5166,7 @@ msgstr ""
 
 #: picard/const/tags.py:802
 msgid "Rating"
-msgstr ""
+msgstr "Gradd"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
@@ -5474,7 +5475,7 @@ msgstr ""
 
 #: picard/const/tags.py:1073
 msgid "Script"
-msgstr ""
+msgstr "Sgript"
 
 #: picard/const/tags.py:1075
 msgid ""
@@ -5540,7 +5541,7 @@ msgstr ""
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Isdeitl"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
@@ -5556,7 +5557,7 @@ msgstr ""
 
 #: picard/const/tags.py:1139
 msgid "Title"
-msgstr ""
+msgstr "Teitl"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
@@ -5564,7 +5565,7 @@ msgstr ""
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Trefn Teitl"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5580,7 +5581,7 @@ msgstr ""
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Cyfanswm Disgiau"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
@@ -5588,7 +5589,7 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Cyfanswm Traciau"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
@@ -5596,7 +5597,7 @@ msgstr ""
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
-msgstr ""
+msgstr "Rhif y Trac"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
@@ -5677,7 +5678,7 @@ msgstr ""
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr ""
+msgstr "Ysgrifennwr"
 
 #: picard/const/tags.py:1234
 msgid ""

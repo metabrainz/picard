@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-05-01 11:12+0000\n"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
 "Last-Translator: Automatic translation add-on <noreply-addon-"
 "autotranslate@weblate.org>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
@@ -4266,7 +4266,7 @@ msgstr ""
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Impressão digital do AcoustID"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4277,7 +4277,7 @@ msgstr ""
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
-msgstr ""
+msgstr "AcoustID"
 
 #: picard/const/tags.py:57
 msgid ""
@@ -4289,7 +4289,7 @@ msgstr ""
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr ""
+msgstr "Artista do álbum"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4324,7 +4324,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Ordenar pelo artista do álbum"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4342,7 +4342,7 @@ msgstr ""
 
 #: picard/const/tags.py:114
 msgid "Album"
-msgstr ""
+msgstr "Álbum"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
@@ -4350,7 +4350,7 @@ msgstr ""
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Ordenar pelo álbum"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4358,7 +4358,7 @@ msgstr ""
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Arranjador"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4369,7 +4369,7 @@ msgstr ""
 
 #: picard/const/tags.py:135
 msgid "Artist"
-msgstr ""
+msgstr "Artista"
 
 #: picard/const/tags.py:137
 msgid ""
@@ -4380,7 +4380,7 @@ msgstr ""
 
 #: picard/const/tags.py:145
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: picard/const/tags.py:147
 msgid ""
@@ -4403,7 +4403,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Ordenar pelo artista"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4421,7 +4421,7 @@ msgstr ""
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
@@ -4431,7 +4431,7 @@ msgstr ""
 
 #: picard/const/tags.py:186
 msgid "Barcode"
-msgstr ""
+msgstr "Código de barras"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
@@ -4447,7 +4447,7 @@ msgstr ""
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
@@ -4471,7 +4471,7 @@ msgstr ""
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Número de catálogo"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4490,7 +4490,7 @@ msgstr ""
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Comentário"
 
 #: picard/const/tags.py:247
 msgid ""
@@ -4500,7 +4500,7 @@ msgstr ""
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Compilação (iTunes)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
@@ -4508,7 +4508,7 @@ msgstr ""
 
 #: picard/const/tags.py:260
 msgid "Composer"
-msgstr ""
+msgstr "Compositor"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
@@ -4524,7 +4524,7 @@ msgstr ""
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Maestro"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4535,7 +4535,7 @@ msgstr ""
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Direitos de autor"
 
 #: picard/const/tags.py:285
 msgid ""
@@ -4553,7 +4553,7 @@ msgstr ""
 
 #: picard/const/tags.py:299
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
@@ -4602,7 +4602,7 @@ msgstr ""
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Número do disco"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
@@ -4619,7 +4619,7 @@ msgstr ""
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Sub-título do Disco"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
@@ -4627,7 +4627,7 @@ msgstr ""
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-Mixer"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
@@ -4635,7 +4635,7 @@ msgstr ""
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
-msgstr ""
+msgstr "Codificado por"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
@@ -4643,7 +4643,7 @@ msgstr ""
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Configurações do codificador"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
@@ -4651,7 +4651,7 @@ msgstr ""
 
 #: picard/const/tags.py:380
 msgid "Engineer"
-msgstr ""
+msgstr "Engenheiro"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
@@ -4687,7 +4687,7 @@ msgstr ""
 
 #: picard/const/tags.py:416
 msgid "File Name"
-msgstr ""
+msgstr "Nome do ficheiro"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
@@ -4729,7 +4729,7 @@ msgstr ""
 
 #: picard/const/tags.py:460
 msgid "Genre"
-msgstr ""
+msgstr "Género"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
@@ -4737,7 +4737,7 @@ msgstr ""
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr ""
+msgstr "A agrupar"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
@@ -4745,7 +4745,7 @@ msgstr ""
 
 #: picard/const/tags.py:475
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:477
 msgid ""
@@ -4756,7 +4756,7 @@ msgstr ""
 
 #: picard/const/tags.py:485
 msgid "Key"
-msgstr ""
+msgstr "Tom"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
@@ -4764,7 +4764,7 @@ msgstr ""
 
 #: picard/const/tags.py:491
 msgid "Record Label"
-msgstr ""
+msgstr "Editora"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
@@ -4772,7 +4772,7 @@ msgstr ""
 
 #: picard/const/tags.py:498
 msgid "Language"
-msgstr ""
+msgstr "Idioma"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
@@ -4780,7 +4780,7 @@ msgstr ""
 
 #: picard/const/tags.py:504
 msgid "Length"
-msgstr ""
+msgstr "Duração"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
@@ -4788,7 +4788,7 @@ msgstr ""
 
 #: picard/const/tags.py:511
 msgid "License"
-msgstr ""
+msgstr "Licença"
 
 #: picard/const/tags.py:512
 msgid ""
@@ -4798,7 +4798,7 @@ msgstr ""
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
-msgstr ""
+msgstr "Letrista"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
@@ -4814,7 +4814,7 @@ msgstr ""
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
-msgstr ""
+msgstr "Letras"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
@@ -4822,7 +4822,7 @@ msgstr ""
 
 #: picard/const/tags.py:537
 msgid "Media"
-msgstr ""
+msgstr "Média"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
@@ -4830,7 +4830,7 @@ msgstr ""
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr ""
+msgstr "Misturador"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -4838,7 +4838,7 @@ msgstr ""
 
 #: picard/const/tags.py:550
 msgid "Mood"
-msgstr ""
+msgstr "Disposição"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
@@ -4846,7 +4846,7 @@ msgstr ""
 
 #: picard/const/tags.py:556
 msgid "Movement"
-msgstr ""
+msgstr "Movimento"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
@@ -4854,7 +4854,7 @@ msgstr ""
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
-msgstr ""
+msgstr "Número do movimento"
 
 #: picard/const/tags.py:564
 msgid ""
@@ -4864,7 +4864,7 @@ msgstr ""
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
-msgstr ""
+msgstr "Contagem do movimento"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
@@ -5002,7 +5002,7 @@ msgstr ""
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "Impressão digital do MusicIP"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
@@ -5010,7 +5010,7 @@ msgstr ""
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "PUID MusicIP"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
@@ -5018,7 +5018,7 @@ msgstr ""
 
 #: picard/const/tags.py:685
 msgid "Original Album"
-msgstr ""
+msgstr "Álbum original"
 
 #: picard/const/tags.py:687
 msgid ""
@@ -5028,7 +5028,7 @@ msgstr ""
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
-msgstr ""
+msgstr "Artista original"
 
 #: picard/const/tags.py:696
 msgid ""
@@ -5038,7 +5038,7 @@ msgstr ""
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
-msgstr ""
+msgstr "Data original de lançamento"
 
 #: picard/const/tags.py:705
 msgid ""
@@ -5060,7 +5060,7 @@ msgstr ""
 
 #: picard/const/tags.py:719
 msgid "Original Year"
-msgstr ""
+msgstr "Ano original"
 
 #: picard/const/tags.py:721
 msgid ""
@@ -5087,7 +5087,7 @@ msgstr ""
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr ""
+msgstr "Intérprete"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5141,7 +5141,7 @@ msgstr ""
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Produtor"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
@@ -5167,7 +5167,7 @@ msgstr ""
 
 #: picard/const/tags.py:802
 msgid "Rating"
-msgstr ""
+msgstr "Avaliação"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
@@ -5258,7 +5258,7 @@ msgstr ""
 
 #: picard/const/tags.py:879
 msgid "Release Country"
-msgstr ""
+msgstr "País de lançamento"
 
 #: picard/const/tags.py:881
 msgid ""
@@ -5383,7 +5383,7 @@ msgstr ""
 
 #: picard/const/tags.py:989
 msgid "Release Status"
-msgstr ""
+msgstr "Estado de lançamento"
 
 #: picard/const/tags.py:991
 msgid ""
@@ -5394,7 +5394,7 @@ msgstr ""
 
 #: picard/const/tags.py:998
 msgid "Release Type"
-msgstr ""
+msgstr "Tipo de lançamento"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
@@ -5402,7 +5402,7 @@ msgstr ""
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr ""
+msgstr "Remistura"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
@@ -5517,7 +5517,7 @@ msgstr ""
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Mostrar obra e movimento"
 
 #: picard/const/tags.py:1110
 msgid ""
@@ -5544,7 +5544,7 @@ msgstr ""
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Sub-título"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
@@ -5560,7 +5560,7 @@ msgstr ""
 
 #: picard/const/tags.py:1139
 msgid "Title"
-msgstr ""
+msgstr "Título"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
@@ -5568,7 +5568,7 @@ msgstr ""
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Ordenar pelo título"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5584,7 +5584,7 @@ msgstr ""
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Total de discos"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
@@ -5592,7 +5592,7 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Total de faixas"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
@@ -5600,7 +5600,7 @@ msgstr ""
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
-msgstr ""
+msgstr "Número da faixa"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
@@ -5616,7 +5616,7 @@ msgstr ""
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
-msgstr ""
+msgstr "Site do artista"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
@@ -5624,7 +5624,7 @@ msgstr ""
 
 #: picard/const/tags.py:1187
 msgid "Work"
-msgstr ""
+msgstr "Obra"
 
 #: picard/const/tags.py:1188
 msgid ""
@@ -5681,7 +5681,7 @@ msgstr ""
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr ""
+msgstr "Autor"
 
 #: picard/const/tags.py:1234
 msgid ""
