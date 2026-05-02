@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-05-01 11:12+0000\n"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
 "Last-Translator: Automatic translation add-on <noreply-addon-"
 "autotranslate@weblate.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
@@ -4266,7 +4266,7 @@ msgstr ""
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "AcoustID Parmakizi"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4289,7 +4289,7 @@ msgstr ""
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr ""
+msgstr "Albüm Sanatçısı"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4324,7 +4324,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Albüm Sanatçısı Sıralama Düzeni"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4342,7 +4342,7 @@ msgstr ""
 
 #: picard/const/tags.py:114
 msgid "Album"
-msgstr ""
+msgstr "Albüm"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
@@ -4350,7 +4350,7 @@ msgstr ""
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Albüm Sıralama Düzeni"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4358,7 +4358,7 @@ msgstr ""
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Düzenleyen"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4369,7 +4369,7 @@ msgstr ""
 
 #: picard/const/tags.py:135
 msgid "Artist"
-msgstr ""
+msgstr "Sanatçı"
 
 #: picard/const/tags.py:137
 msgid ""
@@ -4380,7 +4380,7 @@ msgstr ""
 
 #: picard/const/tags.py:145
 msgid "Artists"
-msgstr ""
+msgstr "Sanatçılar"
 
 #: picard/const/tags.py:147
 msgid ""
@@ -4403,7 +4403,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Sanatçı Sıralama Düzeni"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4421,7 +4421,7 @@ msgstr ""
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
@@ -4431,7 +4431,7 @@ msgstr ""
 
 #: picard/const/tags.py:186
 msgid "Barcode"
-msgstr ""
+msgstr "Barkod"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
@@ -4447,7 +4447,7 @@ msgstr ""
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
@@ -4471,7 +4471,7 @@ msgstr ""
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Katalog Numarası"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4490,7 +4490,7 @@ msgstr ""
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Yorum"
 
 #: picard/const/tags.py:247
 msgid ""
@@ -4500,7 +4500,7 @@ msgstr ""
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Derleme (iTunes)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
@@ -4508,7 +4508,7 @@ msgstr ""
 
 #: picard/const/tags.py:260
 msgid "Composer"
-msgstr ""
+msgstr "Besteci"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
@@ -4524,7 +4524,7 @@ msgstr ""
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Orkestra Şefi"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4535,7 +4535,7 @@ msgstr ""
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Telif Hakkı"
 
 #: picard/const/tags.py:285
 msgid ""
@@ -4553,7 +4553,7 @@ msgstr ""
 
 #: picard/const/tags.py:299
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
@@ -4602,7 +4602,7 @@ msgstr ""
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Disk Numarası"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
@@ -4619,7 +4619,7 @@ msgstr ""
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Disk Alt başlığı"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
@@ -4627,7 +4627,7 @@ msgstr ""
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-Mikser"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
@@ -4635,7 +4635,7 @@ msgstr ""
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
-msgstr ""
+msgstr "Kodlayan"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
@@ -4651,7 +4651,7 @@ msgstr ""
 
 #: picard/const/tags.py:380
 msgid "Engineer"
-msgstr ""
+msgstr "Mühendis"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
@@ -4687,7 +4687,7 @@ msgstr ""
 
 #: picard/const/tags.py:416
 msgid "File Name"
-msgstr ""
+msgstr "Dosya Adı"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
@@ -4729,7 +4729,7 @@ msgstr ""
 
 #: picard/const/tags.py:460
 msgid "Genre"
-msgstr ""
+msgstr "Tarz"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
@@ -4737,7 +4737,7 @@ msgstr ""
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr ""
+msgstr "Gruplama"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
@@ -4745,7 +4745,7 @@ msgstr ""
 
 #: picard/const/tags.py:475
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:477
 msgid ""
@@ -4764,7 +4764,7 @@ msgstr ""
 
 #: picard/const/tags.py:491
 msgid "Record Label"
-msgstr ""
+msgstr "Plak Şirketi"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
@@ -4780,7 +4780,7 @@ msgstr ""
 
 #: picard/const/tags.py:504
 msgid "Length"
-msgstr ""
+msgstr "Süre"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
@@ -4788,7 +4788,7 @@ msgstr ""
 
 #: picard/const/tags.py:511
 msgid "License"
-msgstr ""
+msgstr "Lisans"
 
 #: picard/const/tags.py:512
 msgid ""
@@ -4798,7 +4798,7 @@ msgstr ""
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
-msgstr ""
+msgstr "Söz Yazarı"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
@@ -4814,7 +4814,7 @@ msgstr ""
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
-msgstr ""
+msgstr "Sözler"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
@@ -4822,7 +4822,7 @@ msgstr ""
 
 #: picard/const/tags.py:537
 msgid "Media"
-msgstr ""
+msgstr "Medya"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
@@ -4830,7 +4830,7 @@ msgstr ""
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr ""
+msgstr "Mikser"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -4838,7 +4838,7 @@ msgstr ""
 
 #: picard/const/tags.py:550
 msgid "Mood"
-msgstr ""
+msgstr "Ruh Hâli"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
@@ -5002,7 +5002,7 @@ msgstr ""
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "MusicIP Parmak izi"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
@@ -5010,7 +5010,7 @@ msgstr ""
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "MusicIP PUID"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
@@ -5038,7 +5038,7 @@ msgstr ""
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
-msgstr ""
+msgstr "Orijinal Sürüm Tarihi"
 
 #: picard/const/tags.py:705
 msgid ""
@@ -5060,7 +5060,7 @@ msgstr ""
 
 #: picard/const/tags.py:719
 msgid "Original Year"
-msgstr ""
+msgstr "Orijinal Yıl"
 
 #: picard/const/tags.py:721
 msgid ""
@@ -5087,7 +5087,7 @@ msgstr ""
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr ""
+msgstr "İcracı"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5141,7 +5141,7 @@ msgstr ""
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Yapımcı"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
@@ -5260,7 +5260,7 @@ msgstr ""
 
 #: picard/const/tags.py:879
 msgid "Release Country"
-msgstr ""
+msgstr "Yayımlanan Ülke"
 
 #: picard/const/tags.py:881
 msgid ""
@@ -5385,7 +5385,7 @@ msgstr ""
 
 #: picard/const/tags.py:989
 msgid "Release Status"
-msgstr ""
+msgstr "Sürüm Durumu"
 
 #: picard/const/tags.py:991
 msgid ""
@@ -5396,7 +5396,7 @@ msgstr ""
 
 #: picard/const/tags.py:998
 msgid "Release Type"
-msgstr ""
+msgstr "Sürüm Tipi"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
@@ -5404,7 +5404,7 @@ msgstr ""
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr ""
+msgstr "Remiks yapan"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
@@ -5546,7 +5546,7 @@ msgstr ""
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Alt başlık"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
@@ -5562,7 +5562,7 @@ msgstr ""
 
 #: picard/const/tags.py:1139
 msgid "Title"
-msgstr ""
+msgstr "Başlık"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
@@ -5570,7 +5570,7 @@ msgstr ""
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Başlık Sıralama Düzeni"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5586,7 +5586,7 @@ msgstr ""
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Toplam Disk"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
@@ -5594,7 +5594,7 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Toplam Parça"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
@@ -5602,7 +5602,7 @@ msgstr ""
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
-msgstr ""
+msgstr "Parça Numarası"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
@@ -5618,7 +5618,7 @@ msgstr ""
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
-msgstr ""
+msgstr "Sanatçı İnternet Sitesi"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
@@ -5626,7 +5626,7 @@ msgstr ""
 
 #: picard/const/tags.py:1187
 msgid "Work"
-msgstr ""
+msgstr "Eser"
 
 #: picard/const/tags.py:1188
 msgid ""
@@ -5683,7 +5683,7 @@ msgstr ""
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr ""
+msgstr "Yazar"
 
 #: picard/const/tags.py:1234
 msgid ""
