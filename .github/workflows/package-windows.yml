@@ -34,7 +34,7 @@ jobs:
       with:
         python-version: '3.14'
     - name: Install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v8.1.0
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 `
