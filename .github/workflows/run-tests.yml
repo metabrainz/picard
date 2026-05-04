@@ -15,6 +15,10 @@ on:
     paths: *path-list
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
 jobs:
   test-latest:
     runs-on: ${{ matrix.os }}
