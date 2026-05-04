@@ -86,7 +86,7 @@ jobs:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Azure login
-      uses: azure/login@v3
+      uses: azure/login@v3.0.0
       if: env.CODESIGN == 'true'
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -94,7 +94,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
     - name: Sign picard.exe
-      uses: azure/artifact-signing-action@v1
+      uses: azure/artifact-signing-action@v1.2.0
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
@@ -120,7 +120,7 @@ jobs:
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
     - name: Sign final executable
-      uses: azure/artifact-signing-action@v1
+      uses: azure/artifact-signing-action@v1.2.0
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
