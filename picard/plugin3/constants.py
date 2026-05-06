@@ -25,3 +25,13 @@ REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 
 # Plugin categories
 CATEGORIES = ['metadata', 'coverart', 'ui', 'scripting', 'formats', 'other']
+
+# Common SPDX licenses for plugins
+LICENSES = {
+    'GPL-2.0-or-later': 'https://www.gnu.org/licenses/gpl-2.0.html',
+    'GPL-3.0-or-later': 'https://www.gnu.org/licenses/gpl-3.0.html',
+    'MIT': 'https://opensource.org/license/MIT',
+    'BSD-2-Clause': 'https://opensource.org/license/BSD-2-Clause',
+    'BSD-3-Clause': 'https://opensource.org/license/BSD-3-Clause',
+    'Apache-2.0': 'https://www.apache.org/licenses/LICENSE-2.0',
+}
