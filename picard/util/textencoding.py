@@ -467,3 +467,21 @@ def _replace_char(map, ch, pathsave=False, win_compat=False):
         return result
     except KeyError:
         return ch
+
+
+def error_simplify(e: UnicodeError):
+    """Encoding error handler that attempts to replace the character with a simplified equivalent.
+    If no replacement can be found, it behaves like the standard "replace" error handler.
+    """
+    if isinstance(e, UnicodeEncodeError):
+        chars = e.object[e.start:e.end]
+        chars = unicode_simplify_combinations(chars)
+        chars = unicode_simplify_punctuation(chars)
+        chars = unicode_simplify_compatibility(chars)
+        chars = unicode_simplify_accents(chars)
+        repl = chars.encode(e.encoding, errors='replace')
+        return (repl, e.end)
+    raise e
+
+
+codecs.register_error('simplify', error_simplify)
