@@ -20,6 +20,7 @@
 
 from io import StringIO
 from pathlib import Path
+import shutil
 import tempfile
 from unittest.mock import (
     Mock,
@@ -37,10 +38,13 @@ from test.plugins3.helpers import (
     create_mock_manager_with_manifest_validation,
     create_test_manifest_content,
     create_test_plugin_dir,
+    get_backend_repo,
     load_plugin_manifest,
     run_cli,
+    skip_if_no_git_backend,
 )
 
+from picard.git.backend import GitStatusFlag
 from picard.git.factory import has_git_backend
 from picard.plugin3.cli import (
     ExitCode,
@@ -58,7 +62,10 @@ from picard.plugin3.registry import (
     RegistryFetchError,
     RegistryParseError,
 )
-from picard.plugin3.validator import generate_uuid
+from picard.plugin3.validator import (
+    MAX_NAME_LENGTH,
+    generate_uuid,
+)
 
 
 def create_mock_registry_plugin(data):
@@ -968,6 +975,7 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_valid_manifest(self):
         """Test validate with valid MANIFEST.toml."""
+        skip_if_no_git_backend()
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -988,6 +996,7 @@ class TestPluginCLIValidate(PicardTestCase):
 
     def test_validate_local_with_optional_fields(self):
         """Test validate with optional fields in manifest."""
+        skip_if_no_git_backend()
         manager = create_mock_manager_with_manifest_validation()
         args = MockCliArgs()
 
@@ -1178,3 +1187,437 @@ class TestPluginCLIColorOption(PicardTestCase):
         # When stdout is not a tty, color will be False
         # So we just test the logic works
         self.assertTrue(color)
+
+
+class TestPluginCLIInit(PicardTestCase):
+    """Tests for --init command (non-interactive mode)."""
+
+    def setUp(self):
+        super().setUp()
+        self.tmpdir = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_init_creates_directory(self):
+        """--init NAME creates picard-plugin-<slug> directory."""
+        target = self.tmpdir / 'picard-plugin-my-cool-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='My Cool Plugin', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue(target.exists())
+
+    def test_init_creates_manifest(self):
+        """--init creates MANIFEST.toml with correct name."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test Plugin', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('name = "Test Plugin"', manifest)
+        self.assertIn('api = ["3.0"]', manifest)
+
+    def test_init_creates_init_py(self):
+        """--init creates __init__.py with enable/disable stubs."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        init_py = (target / '__init__.py').read_text(encoding='utf-8')
+        self.assertIn('def enable(api: PluginApi)', init_py)
+        self.assertIn('def disable()', init_py)
+
+    def test_init_creates_readme(self):
+        """--init creates README.md with plugin name."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='My Plugin', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        readme = (target / 'README.md').read_text(encoding='utf-8')
+        self.assertIn('# My Plugin', readme)
+
+    def test_init_creates_gitignore(self):
+        """--init creates .gitignore."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        gitignore = (target / '.gitignore').read_text(encoding='utf-8')
+        self.assertIn('__pycache__/', gitignore)
+
+    def test_init_with_author(self):
+        """--init --author sets authors in MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe')
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('authors = ["Jane Doe"]', manifest)
+
+    def test_init_with_author_email_notation(self):
+        """--init --author 'Name <email>' parses name for MANIFEST and email for git."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('authors = ["Jane Doe"]', manifest)
+
+    def test_init_author_email_sets_report_bugs_to(self):
+        """--init --author 'Name <email>' sets report_bugs_to mailto in MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('report_bugs_to = "mailto:jane@example.com"', manifest)
+
+    def test_init_no_email_has_report_bugs_to_comment(self):
+        """--init without email has commented report_bugs_to in MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('# report_bugs_to =', manifest)
+
+    def test_init_with_category(self):
+        """--init --category sets categories in MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), category='metadata'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('categories = ["metadata"]', manifest)
+
+    def test_init_default_directory_name(self):
+        """--init without --target-dir uses picard-plugin-<slug> in cwd."""
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test Plugin', target_dir=str(self.tmpdir / 'picard-plugin-test-plugin')
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((self.tmpdir / 'picard-plugin-test-plugin').exists())
+
+    def test_init_existing_nonempty_dir_fails(self):
+        """--init fails if target directory exists and is not empty."""
+        target = self.tmpdir / 'existing'
+        target.mkdir()
+        (target / 'somefile').write_text('content')
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.ERROR, exit_code)
+        self.assertIn('not empty', stderr)
+
+    def test_init_existing_empty_dir_succeeds(self):
+        """--init succeeds if target directory exists but is empty."""
+        target = self.tmpdir / 'empty'
+        target.mkdir()
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / 'MANIFEST.toml').exists())
+
+    def test_init_no_name_with_yes_fails(self):
+        """--init --yes without name fails."""
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', yes=True)
+        self.assertEqual(ExitCode.ERROR, exit_code)
+        self.assertIn('required', stderr)
+
+    def test_init_prints_summary(self):
+        """--init prints created files summary."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertIn('MANIFEST.toml', stdout)
+        self.assertIn('__init__.py', stdout)
+        self.assertIn('README.md', stdout)
+        self.assertIn('.gitignore', stdout)
+
+    def test_init_name_too_long(self):
+        """--init fails if name exceeds MAX_NAME_LENGTH."""
+        long_name = 'A' * (MAX_NAME_LENGTH + 1)
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init=long_name, target_dir=str(self.tmpdir / 'test'))
+        self.assertEqual(ExitCode.ERROR, exit_code)
+        self.assertIn('maximum length', stderr)
+
+    def test_init_parent_dir(self):
+        """--parent-dir sets the parent directory."""
+        parent = self.tmpdir / 'projects'
+        parent.mkdir()
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test Plugin', parent_dir=str(parent))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((parent / 'picard-plugin-test-plugin').exists())
+
+    def test_init_parent_dir_with_target_dir(self):
+        """--target-dir is relative to --parent-dir."""
+        parent = self.tmpdir / 'projects'
+        parent.mkdir()
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', parent_dir=str(parent), target_dir='custom-name'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((parent / 'custom-name').exists())
+
+    def test_init_empty_slug_no_target_dir_fails(self):
+        """--init with a name that produces an empty slug and no --target-dir fails."""
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='!!!')
+        self.assertEqual(ExitCode.ERROR, exit_code)
+        self.assertIn('--target-dir', stderr)
+
+    def test_init_with_translations_manifest(self):
+        """--init --with-translations adds source_locale and i18n comments to MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('source_locale = "en"', manifest)
+        self.assertIn('# [name_i18n]', manifest)
+        self.assertIn('# [description_i18n]', manifest)
+
+    def test_init_with_translations_init_py(self):
+        """--init --with-translations generates __init__.py with t_ and api.tr usage."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        init_py = (target / '__init__.py').read_text(encoding='utf-8')
+        self.assertIn('from picard.plugin3.api import', init_py)
+        self.assertIn('t_,', init_py)
+        self.assertIn('api.tr(', init_py)
+
+    def test_init_with_translations_creates_locale_dir(self):
+        """--init --with-translations creates locale/ directory with source locale file."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / 'locale').is_dir())
+        self.assertIn('locale/', stdout)
+        en_toml = (target / 'locale' / 'en.toml').read_text(encoding='utf-8')
+        self.assertIn('message.greeting', en_toml)
+
+    def test_init_without_i18n_no_locale_dir(self):
+        """--init without --with-translations does not create locale/ directory."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertFalse((target / 'locale').exists())
+
+    def test_init_without_i18n_no_source_locale(self):
+        """--init without --with-translations does not add source_locale to MANIFEST."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertNotIn('source_locale', manifest)
+
+
+class TestPluginCLIInitInteractive(PicardTestCase):
+    """Tests for --init interactive mode."""
+
+    def setUp(self):
+        super().setUp()
+        self.tmpdir = Path(tempfile.mkdtemp())
+        patcher = patch('picard.plugin3.cli.get_git_config_author', return_value=('', ''))
+        self._mock_git_config = patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    @staticmethod
+    def _init_inputs(
+        name='Test',
+        target_path='',
+        author='',
+        email='',
+        description='',
+        category='',
+        license='',
+        with_i18n='n',
+        git_commit='y',
+    ):
+        """Build input side_effect list for _cmd_init_interactive prompts.
+
+        Only specify the values that differ from defaults.
+        The email prompt only appears when author is non-empty.
+        """
+        inputs = [name, target_path, author]
+        if author:
+            inputs.append(email)
+        inputs.extend([description, category, license, with_i18n, git_commit])
+        return inputs
+
+    def test_interactive_full(self):
+        """Interactive mode with all fields filled in."""
+        target = self.tmpdir / 'picard-plugin-my-plugin'
+        inputs = self._init_inputs(
+            name='My Plugin',
+            author='Alice',
+            email='alice@example.com',
+            description='A test plugin',
+            category='1',
+        )
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('name = "My Plugin"', manifest)
+        self.assertIn('authors = ["Alice"]', manifest)
+        self.assertIn('description = "A test plugin"', manifest)
+        self.assertIn('categories = ["metadata"]', manifest)
+
+    def test_interactive_minimal(self):
+        """Interactive mode with only name provided."""
+        target = self.tmpdir / 'picard-plugin-my-plugin'
+        inputs = self._init_inputs(name='My Plugin')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / 'MANIFEST.toml').exists())
+
+    def test_interactive_empty_name_fails(self):
+        """Interactive mode fails if name is empty."""
+        inputs = self._init_inputs(name='')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='')
+        self.assertEqual(ExitCode.ERROR, exit_code)
+        self.assertIn('required', stderr)
+
+    def test_interactive_custom_license(self):
+        """Interactive mode with custom license."""
+        target = self.tmpdir / 'test'
+        inputs = self._init_inputs(license='MIT')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('license = "MIT"', manifest)
+
+    def test_interactive_default_license(self):
+        """Interactive mode defaults to GPL-2.0-or-later."""
+        target = self.tmpdir / 'test'
+        inputs = self._init_inputs()
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('license = "GPL-2.0-or-later"', manifest)
+        self.assertIn('license_url = "https://www.gnu.org/licenses/gpl-2.0.html"', manifest)
+
+    def test_interactive_invalid_category_ignored(self):
+        """Interactive mode ignores invalid category input."""
+        target = self.tmpdir / 'test'
+        inputs = self._init_inputs(category='invalid')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertNotIn('categories', manifest)
+
+    def test_interactive_multiple_categories(self):
+        """Interactive mode accepts multiple comma-separated categories."""
+        target = self.tmpdir / 'test'
+        inputs = self._init_inputs(category='1,3')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('categories = ["metadata", "ui"]', manifest)
+
+    def test_interactive_default_destination(self):
+        """Interactive mode shows default destination and accepts it."""
+        target = self.tmpdir / 'picard-plugin-test'
+        inputs = self._init_inputs()
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', parent_dir=str(self.tmpdir))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / 'MANIFEST.toml').exists())
+
+    def test_interactive_custom_destination(self):
+        """Interactive mode allows overriding destination directory."""
+        custom_target = self.tmpdir / 'custom-dir'
+        inputs = self._init_inputs(target_path=str(custom_target))
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='')
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((custom_target / 'MANIFEST.toml').exists())
+
+
+class TestPluginCLIInitGit(PicardTestCase):
+    """Tests for --init git repository initialization."""
+
+    def setUp(self):
+        super().setUp()
+        skip_if_no_git_backend()
+        self.tmpdir = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        super().tearDown()
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_init_creates_git_repo(self):
+        """--init creates a git repository."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / '.git').is_dir())
+
+    def test_init_creates_initial_commit(self):
+        """--init creates an initial commit with all files."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        repo = get_backend_repo(target)
+        # Should have a HEAD pointing to a commit
+        head = repo.get_head_target()
+        self.assertIsNotNone(head)
+        repo.free()
+
+    def test_init_git_message_in_output(self):
+        """--init prints git initialization message."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertIn('Git repository initialized', stdout)
+
+    def test_init_all_files_committed(self):
+        """--init commits all generated files (clean working tree)."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        repo = get_backend_repo(target)
+        status = repo.get_status()
+        # Filter out ignored files - only check for modified/new files
+        dirty = {f for f, s in status.items() if s != GitStatusFlag.IGNORED}
+        self.assertEqual(dirty, set(), f'Uncommitted files: {dirty}')
+        repo.free()
+
+    def test_init_commit_uses_provided_author(self):
+        """--init --author uses the provided name for the git commit."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe')
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        repo = get_backend_repo(target)
+        commit_id = repo.get_head_target()
+        author_name, _ = repo.get_commit_author(commit_id)
+        self.assertEqual(author_name, 'Jane Doe')
+        repo.free()
+
+    def test_init_no_commit_skips_initial_commit(self):
+        """--init --no-commit creates git repo but no commit."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_commit=True)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / '.git').is_dir())
+        repo = get_backend_repo(target)
+        self.assertEqual(repo.list_references(), [])
+        repo.free()
+
+    def test_init_no_commit_output_message(self):
+        """--init --no-commit shows 'initialized' without 'initial commit'."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_commit=True)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertIn('Git repository initialized', stdout)
+        self.assertNotIn('initial commit', stdout)

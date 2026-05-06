@@ -43,17 +43,29 @@ from picard import (
     log,
 )
 from picard.config import (
+    Option,
     get_config,
     setup_config,
 )
 from picard.const import USER_PLUGIN_DIR
 from picard.debug_opts import DebugOpt
-from picard.git.factory import has_git_backend
+from picard.git.factory import (
+    git_backend,
+    has_git_backend,
+)
 from picard.git.utils import (
     check_local_repo_dirty,
     get_local_repository_path,
 )
 from picard.options import init_options
+from picard.plugin3.constants import CATEGORIES as VALID_CATEGORIES, LICENSES
+from picard.plugin3.init_templates import (
+    get_git_author,
+    get_git_config_author,
+    parse_author_string,
+    slugify_name,
+    write_plugin_project,
+)
 from picard.plugin3.installable import UrlInstallablePlugin
 from picard.plugin3.manager import (
     PluginAlreadyInstalledError,
@@ -82,6 +94,7 @@ from picard.plugin3.registry import (
     RegistryFetchError,
     RegistryParseError,
 )
+from picard.plugin3.validator import MAX_NAME_LENGTH
 from picard.util import (
     cli,
     versions,
@@ -132,6 +145,8 @@ class ExitCode(IntEnum):
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 MAX_VERSIONS = 20
+
+Option('persist', 'cli_plugins_init', {})
 
 
 class PluginCLI:
@@ -322,7 +337,6 @@ class PluginCLI:
             elif self._args.install:
                 return self._cmd_install(self._args.install)
             elif self._args.remove:
-                print(self._args.remove)
                 return self._cmd_remove(self._args.remove)
             elif self._args.update:
                 return self._cmd_update(self._args.update)
@@ -352,6 +366,8 @@ class PluginCLI:
                 return self._cmd_validate(self._args.validate, ref)
             elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
                 return self._cmd_manifest(self._args.manifest)
+            elif hasattr(self._args, 'init') and self._args.init is not None:
+                return self._cmd_init(self._args.init)
             else:
                 if self._parser:
                     self._parser.print_help()
@@ -1762,6 +1778,257 @@ class PluginCLI:
         except FileNotFoundError:
             return None
 
+    def _cmd_init(self, name):
+        """Create a new plugin project directory."""
+        if not name:
+            if self._args.yes:
+                self._out.error('Plugin name is required in non-interactive mode (--yes)')
+                return ExitCode.ERROR
+            return self._cmd_init_interactive()
+
+        return self._create_plugin_project(name)
+
+    def _cmd_init_interactive(self):
+        """Run interactive plugin project creation."""
+        self._out.print(self._out.bold('Create a new Picard plugin project'))
+        self._out.nl()
+
+        # Name (required)
+        name = input(f'{self._out.bold("Plugin name")}: ').strip()
+        if not name:
+            self._out.error('Plugin name is required')
+            return ExitCode.ERROR
+        if len(name) > MAX_NAME_LENGTH:
+            self._out.error(f'Plugin name exceeds maximum length of {MAX_NAME_LENGTH} characters')
+            return ExitCode.ERROR
+
+        # Destination directory
+        slug = slugify_name(name)
+        if not slug:
+            self._out.error('Cannot derive directory name from plugin name')
+            return ExitCode.ERROR
+        parent_dir = getattr(self._args, 'parent_dir', None)
+        base = Path(parent_dir) if parent_dir else Path.cwd()
+        target_dir = getattr(self._args, 'target_dir', None)
+        default_target = base / target_dir if target_dir else base / f'picard-plugin-{slug}'
+        target_input = input(
+            f'{self._out.bold("Destination directory")} [{self._out.d_path(default_target)}]: '
+        ).strip()
+        target = Path(target_input) if target_input else default_target
+
+        if target.exists() and any(target.iterdir()):
+            self._out.error(f'Directory {target} already exists and is not empty')
+            return ExitCode.ERROR
+
+        # Author (optional) - prefer persisted value, then git config
+        config = get_config()
+        saved = config.persist['cli_plugins_init']
+        git_name, git_email = get_git_config_author()
+        default_name = saved.get('author_name', '') or git_name
+        default_email_val = saved.get('author_email', '') or git_email
+        default_author = f' [{self._out.dim(default_name)}]' if default_name else ''
+        author = input(f'{self._out.bold("Author name")}{default_author} (optional): ').strip() or default_name
+        authors = [author] if author else None
+
+        # Author email (optional, shown only if author was provided)
+        author_email = ''
+        if author:
+            default_email = f' [{self._out.dim(default_email_val)}]' if default_email_val else ''
+            author_email = (
+                input(f'{self._out.bold("Author email")}{default_email} (optional): ').strip() or default_email_val
+            )
+
+        # Description (optional)
+        description = input(f'{self._out.bold("Short description")} (optional): ').strip()
+
+        # Category (optional, comma-separated numbers for multiple)
+        self._out.print(f'{self._out.bold("Categories")}:')
+        for i, cat in enumerate(VALID_CATEGORIES, 1):
+            self._out.info(f'{self._out.d_number(i)}. {cat}')
+        cat_input = input(f'{self._out.bold("Category numbers")} (comma-separated, optional): ').strip()
+        categories = None
+        if cat_input:
+            cats = set()
+            for part in cat_input.split(','):
+                part = part.strip()
+                if part.isdigit():
+                    idx = int(part) - 1
+                    if 0 <= idx < len(VALID_CATEGORIES):
+                        cats.add(VALID_CATEGORIES[idx])
+            if cats:
+                categories = sorted(cats)
+
+        # License (optional, show choices)
+        default_license = saved.get('license', '') or 'GPL-2.0-or-later'
+        self._out.print(f'{self._out.bold("Licenses")}:')
+        license_ids = list(LICENSES.keys())
+        for i, lid in enumerate(license_ids, 1):
+            self._out.info(f'{self._out.d_number(i)}. {lid}')
+        self._out.info(f'{self._out.d_number(len(license_ids) + 1)}. Other (enter SPDX identifier)')
+        license_input = input(f'{self._out.bold("License")} [{self._out.dim(default_license)}]: ').strip()
+        if license_input.isdigit():
+            idx = int(license_input) - 1
+            if 0 <= idx < len(license_ids):
+                license_id = license_ids[idx]
+            else:
+                license_id = default_license
+        else:
+            license_id = license_input or default_license
+        license_url = LICENSES.get(license_id, '')
+
+        self._out.nl()
+
+        # Save defaults for next run
+        config.persist['cli_plugins_init'] = {
+            'author_name': author,
+            'author_email': author_email,
+            'license': license_id,
+        }
+
+        return self._create_plugin_project(
+            name,
+            description,
+            authors,
+            categories,
+            license_id,
+            license_url,
+            author_email=author_email,
+            target=target,
+            with_i18n=getattr(self._args, 'with_translations', False)
+            or self._out.yesno('Include translation support (i18n)?', default='N'),
+            git_commit=not getattr(self._args, 'no_commit', False)
+            and self._out.yesno('Create initial git commit?', default='Y'),
+        )
+
+    def _create_plugin_project(
+        self,
+        name,
+        description='',
+        authors=None,
+        categories=None,
+        license_id='',
+        license_url='',
+        author_email='',
+        target=None,
+        git_commit=True,
+        with_i18n=False,
+    ):
+        """Create the plugin project directory and files.
+
+        Args:
+            name: Plugin name
+            description: Short description
+            authors: List of author names
+            categories: List of category strings
+            license_id: SPDX license identifier
+            license_url: License URL
+            author_email: Author email for git commit
+            target: Explicit target directory (overrides --parent-dir/--target-dir)
+            git_commit: Whether to create an initial git commit
+            with_i18n: Whether to generate translation-enabled skeleton
+
+        Returns:
+            ExitCode
+        """
+        # Validate name length
+        if len(name) > MAX_NAME_LENGTH:
+            self._out.error(f'Plugin name exceeds maximum length of {MAX_NAME_LENGTH} characters')
+            return ExitCode.ERROR
+
+        # Collect optional values from CLI flags
+        author = getattr(self._args, 'author', None)
+        if author and not authors:
+            parsed_name, parsed_email = parse_author_string(author)
+            authors = [parsed_name]
+            if parsed_email and not author_email:
+                author_email = parsed_email
+        category = getattr(self._args, 'category', None)
+        if category and not categories:
+            categories = [category]
+
+        # Check --with-translations flag
+        if not with_i18n:
+            with_i18n = getattr(self._args, 'with_translations', False)
+
+        # Check --no-commit flag
+        if git_commit:
+            git_commit = not getattr(self._args, 'no_commit', False)
+
+        # Determine target directory
+        if target is None:
+            target_dir = getattr(self._args, 'target_dir', None)
+            parent_dir = getattr(self._args, 'parent_dir', None)
+            base = Path(parent_dir) if parent_dir else Path.cwd()
+
+            if target_dir:
+                target = base / target_dir
+            else:
+                slug = slugify_name(name)
+                if not slug:
+                    self._out.error('Cannot derive directory name from plugin name, use --target-dir to specify one')
+                    return ExitCode.ERROR
+                target = base / f'picard-plugin-{slug}'
+
+        # Check target directory
+        if target.exists() and any(target.iterdir()):
+            self._out.error(f'Directory {target} already exists and is not empty')
+            return ExitCode.ERROR
+
+        # Create directory and files
+        report_bugs_to = f'mailto:{author_email}' if author_email else ''
+        try:
+            filenames = write_plugin_project(
+                target,
+                name,
+                description,
+                authors,
+                categories,
+                license_id,
+                license_url,
+                with_i18n=with_i18n,
+                report_bugs_to=report_bugs_to,
+            )
+        except OSError as e:
+            self._out.error(f'Failed to create plugin project: {e}')
+            return ExitCode.ERROR
+
+        self._out.success(f'Created plugin {self._out.d_name(name)} in {self._out.d_path(target)}')
+        for filename in filenames:
+            self._out.info(filename)
+
+        # Initialize git repository
+        try:
+            backend = git_backend()
+            repo = backend.init_repository(target)
+            try:
+                if git_commit:
+                    author_name, commit_email = get_git_author(authors, author_email)
+                    backend.add_and_commit_files(
+                        repo,
+                        'Initial plugin scaffold',
+                        author_name=author_name,
+                        author_email=commit_email,
+                    )
+                    self._out.success('Git repository initialized with initial commit')
+                else:
+                    self._out.success('Git repository initialized')
+            finally:
+                repo.free()
+        except Exception as e:
+            self._out.warning(f'Git initialization failed: {e}')
+
+        self._out.nl()
+        self._out.print('Next steps:')
+        self._out.info(f'cd {self._out.d_path(target)}')
+        self._out.info(f'Edit {self._out.d_path("__init__.py")} to add your plugin code')
+        self._out.info(f'Edit {self._out.d_path("MANIFEST.toml")} to update metadata')
+        self._out.info(f'Run {self._out.d_command("picard-plugins --validate .")} to check your plugin')
+        if not git_commit:
+            commit_cmd = 'git add -A && git commit -m "Initial plugin scaffold"'
+            self._out.info(f'Run {self._out.d_command(commit_cmd)} to commit')
+
+        return ExitCode.SUCCESS
+
     def _cmd_manifest(self, target):
         """Show MANIFEST.toml template or from plugin."""
         # No argument - show template
@@ -1868,6 +2135,9 @@ def process_cmdline_args():
     group_management.add_argument(
         '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
     )
+    group_management.add_argument(
+        '--init', nargs='?', const='', metavar='NAME', help="create a new plugin project (interactive if no name given)"
+    )
 
     group_git = parser.add_argument_group("Git Version Control")
     group_git.add_argument('--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin")
@@ -1905,6 +2175,15 @@ def process_cmdline_args():
         '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
     )
     group_advanced.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
+    group_advanced.add_argument('--target-dir', metavar='DIR', help="override directory name for --init")
+    group_advanced.add_argument(
+        '--parent-dir', metavar='DIR', help="parent directory for --init (default: current directory)"
+    )
+    group_advanced.add_argument('--author', metavar='NAME', help="author name for --init")
+    group_advanced.add_argument(
+        '--with-translations', action='store_true', help="include translation support (locale files and examples)"
+    )
+    group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit with --init")
     group_advanced.add_argument(
         '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
     )
