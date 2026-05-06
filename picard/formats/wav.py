@@ -144,7 +144,7 @@ class RiffListInfo(MutableMapping):
         return value.rstrip('\0')
 
     def __encode_data(self, value):
-        return value.encode(self.encoding, errors='replace') + b'\x00'
+        return value.encode(self.encoding, errors='simplify') + b'\x00'
 
     def __contains__(self, name):
         return self.__tags.__contains__(name)
