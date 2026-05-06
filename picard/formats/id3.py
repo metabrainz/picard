@@ -105,7 +105,7 @@ def id3text(text, encoding):
     """
 
     if encoding == Id3Encoding.LATIN1:
-        return text.encode('latin1', 'replace').decode('latin1')
+        return text.encode('latin1', errors='simplify').decode('latin1')
     return text
 
 

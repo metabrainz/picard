@@ -722,8 +722,8 @@ class Id3UtilTest(PicardTestCase):
         self.assertEqual(id3.Id3Encoding.UTF8, id3.Id3Encoding.from_config('utf-8'))
 
     def test_id3text(self):
-        teststring = '日本語testÖäß'
-        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.LATIN1), '???testÖäß')
+        teststring = '日本語testÖäßŌš…'
+        self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.LATIN1), '???testÖäßOs...')
         self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF16), teststring)
         self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF16BE), teststring)
         self.assertEqual(id3.id3text(teststring, id3.Id3Encoding.UTF8), teststring)
