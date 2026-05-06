@@ -180,6 +180,10 @@ class MockCliArgs(Mock):
             'clean_config': None,
             'validate': None,
             'manifest': None,
+            'init': None,
+            'target_dir': None,
+            'parent_dir': None,
+            'author': None,
             'yes': False,
             'purge': False,
             'reinstall': False,
@@ -187,6 +191,8 @@ class MockCliArgs(Mock):
             'category': None,
             'trust': None,
             'locale': 'en',
+            'with_translations': False,
+            'no_commit': False,
         }
         defaults.update(kwargs)
         super().__init__(**defaults)

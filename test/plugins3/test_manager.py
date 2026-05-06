@@ -37,6 +37,7 @@ from test.plugins3.helpers import (
     MockTagger,
     backend_init_and_commit,
     create_test_registry,
+    skip_if_no_git_backend,
 )
 
 from picard.config import get_config
@@ -590,6 +591,7 @@ uuid = "3fa397ec-0f2a-47dd-9223-e47ce9f2d692"
     @patch('picard.plugin3.manager.update.git_backend')
     def test_update_plugin_rollback_on_manifest_error(self, mock_git_backend, mock_source_git):
         """Test update_plugin rolls back on manifest validation failure."""
+        skip_if_no_git_backend()
         manager = PluginManager(MockTagger())
         manager._registry = Mock()
         manager._metadata = Mock()
