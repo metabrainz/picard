@@ -197,7 +197,7 @@ class picard_build(build):
             )
 
             self.run_command('build_appxmanifest')
-        elif sys.platform not in {'darwin', 'haiku1', 'win32'}:
+        elif sys.platform not in {'darwin', 'haiku', 'win32'}:
             self.run_command('build_appdata')
             self.run_command('build_desktop_file')
         super().run()
@@ -721,7 +721,7 @@ def make_executable(filename):
     os.chmod(filename, os.stat(filename).st_mode | stat.S_IEXEC)
 
 
-if sys.platform not in {'darwin', 'haiku1', 'win32'}:
+if sys.platform not in {'darwin', 'haiku', 'win32'}:
     args['data_files'].append(('share/applications', [PICARD_DESKTOP_NAME]))
     args['data_files'].append(('share/icons/hicolor/scalable/apps', ['resources/%s.svg' % PICARD_APP_ID]))
     for size in (16, 24, 32, 48, 128, 256):
