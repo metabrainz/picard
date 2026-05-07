@@ -11,13 +11,15 @@
 # Nerten <alex@nerten.info>, 2023.
 # oleh_hishak <ohishak@gmail.com>, 2025, 2026.
 # Arhidimon <arhidimon@ukr.net>, 2026.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-03-19 13:33+0000\n"
-"Last-Translator: oleh_hishak <ohishak@gmail.com>\n"
+"PO-Revision-Date: 2026-05-07 14:11+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Ukrainian <https://translations.metabrainz.org/projects/"
 "picard/2/app/uk/>\n"
 "Language: uk\n"
@@ -28,7 +30,7 @@ msgstr ""
 "? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > "
 "14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % "
 "100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -6540,7 +6542,7 @@ msgstr "Авторське право"
 
 #: picard/util/tags.py:57
 msgid "Director"
-msgstr ""
+msgstr "Директор"
 
 #: picard/util/tags.py:58
 msgid "Disc Id"
@@ -6568,7 +6570,7 @@ msgstr "Звукооператор"
 
 #: picard/util/tags.py:65
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Безперервне відтворення"
 
 #: picard/util/tags.py:67
 msgid "Grouping"
@@ -6608,11 +6610,11 @@ msgstr "Частина твору"
 
 #: picard/util/tags.py:80
 msgid "Movement Number"
-msgstr ""
+msgstr "Номер руху"
 
 #: picard/util/tags.py:81
 msgid "Movement Count"
-msgstr ""
+msgstr "Кількість рухів"
 
 #: picard/util/tags.py:82
 msgid "MusicBrainz Release Artist Id"
@@ -6696,11 +6698,11 @@ msgstr "Виробник"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "Посилення альбому R128"
 
 #: picard/util/tags.py:104
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "Посилення треку R128"
 
 #: picard/util/tags.py:105
 msgid "Rating"
@@ -6724,31 +6726,31 @@ msgstr "Ремікс"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain Album Gain"
 
 #: picard/util/tags.py:112
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "Пік альбому ReplayGain"
 
 #: picard/util/tags.py:113
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "Діапазон альбомів ReplayGain"
 
 #: picard/util/tags.py:114
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain (Посилення повторного відтворення)"
 
 #: picard/util/tags.py:115
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "Посилення відстеження"
 
 #: picard/util/tags.py:116
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "Пік треку ReplayGain"
 
 #: picard/util/tags.py:117
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "Діапазон треків ReplayGain"
 
 #: picard/util/tags.py:118
 msgid "Script"
@@ -6756,15 +6758,15 @@ msgstr "Сценарій"
 
 #: picard/util/tags.py:119
 msgid "Show Name"
-msgstr ""
+msgstr "Показати ім'я"
 
 #: picard/util/tags.py:120
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Показати порядок сортування за іменем"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Показати твір та частину"
 
 #: picard/util/tags.py:122
 msgid "Subtitle"

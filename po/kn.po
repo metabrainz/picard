@@ -5,21 +5,23 @@
 # Translators:
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2023-08-23 19:09+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-05-07 14:11+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Kannada <https://translations.metabrainz.org/projects/picard/"
-"app/kn/>\n"
+"2/app/kn/>\n"
 "Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.18.2\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 0.9.6\n"
 
 #: picard/album.py:150
@@ -5289,7 +5291,7 @@ msgstr ""
 
 #: picard/ui/options/tags_compatibility_aac.py:41
 msgid "AAC"
-msgstr ""
+msgstr "AAC"
 
 #: picard/ui/options/tags_compatibility_ac3.py:41
 msgid "AC3"

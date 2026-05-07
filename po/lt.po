@@ -9,13 +9,15 @@
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # "Vac31." <Vaclovas@users.noreply.translations.metabrainz.org>, 2024.
 # Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025, 2026.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-04-29 16:11+0000\n"
-"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
+"PO-Revision-Date: 2026-05-07 14:11+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/2/app/lt/>\n"
 "Language: lt\n"
@@ -25,7 +27,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n % 10 == 1 && (n % 100 > 19 || n % 100 < "
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? 1 "
 ": n % 1 != 0 ? 2: 3);\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.6.0\n"
 
 #: picard/album.py:150
@@ -5033,7 +5035,7 @@ msgstr ""
 #: picard/ui/options/tags_compatibility_id3.py:44
 #: picard/ui/ui_options_tags_compatibility_id3.py:115
 msgid "ID3"
-msgstr ""
+msgstr "ID3"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:116
 msgid "ID3v2 Version"

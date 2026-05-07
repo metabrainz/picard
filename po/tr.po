@@ -13,13 +13,15 @@
 # portik <yetmisbeskere75@hotmail.com>, 2013-2014
 # portik <yetmisbeskere75@hotmail.com>, 2012
 # brtc <brtc@users.noreply.translations.metabrainz.org>, 2024.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2025-01-09 11:51+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-05-07 14:11+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Turkish <https://translations.metabrainz.org/projects/picard/"
 "2/app/tr/>\n"
 "Language: tr\n"
@@ -27,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4429,7 +4431,7 @@ msgstr ""
 
 #: picard/ui/ui_options_script.py:130
 msgid "Documentation"
-msgstr ""
+msgstr "Kullanım Kılavuzu"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
