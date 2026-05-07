@@ -39,6 +39,13 @@ from picard.config import (
     ConfigValueType,
     Option,
 )
+from picard.const.sys import IS_FROZEN
+from picard.i18n import (
+    gettext as _,
+    gettext_constants,
+)
+from picard.move_conflict import MoveConflictStrategy
+from picard.util import unique_numbered_title
 from picard.version import (
     Version,
     VersionError,
@@ -54,6 +61,20 @@ _HOOKS_MODULE = 'picard.config_upgrade_hooks'
 
 # TO ADD AN UPGRADE HOOK:
 # See config_upgrade_hooks.py
+
+
+def upgrade_to_v3_0_0b2(config):
+    """Rename move_overwrite_existing_files to move_conflict_strategy."""
+    if 'move_overwrite_existing_files' in config.setting:
+        with temp_option(BoolOption, 'setting', 'move_overwrite_existing_files', False) as old_opt:
+            old_value = config.setting.value(old_opt, False)
+            if old_value:
+                config.setting['move_conflict_strategy'] = MoveConflictStrategy.OVERWRITE.value
+            else:
+                config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
+            config.setting.remove('move_overwrite_existing_files')
+    else:
+        config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
 
 
 @contextmanager

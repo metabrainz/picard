@@ -80,9 +80,32 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="move_overwrite_existing_files">
+       <widget class="QRadioButton" name="move_conflict_skip">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
         <property name="text">
-         <string>Overwrite existing files</string>
+          <string>Do not move duplicate files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="move_conflict_rename">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
+        <property name="text">
+         <string>Move and rename file with numeric suffix</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="move_conflict_overwrite">
+        <attribute name="buttonGroup">
+         <string notr="true">move_conflict_group</string>
+        </attribute>
+        <property name="text">
+         <string>Move and overwrite existing files</string>
         </property>
        </widget>
       </item>
@@ -298,7 +321,9 @@
   <tabstop>move_additional_files</tabstop>
   <tabstop>move_additional_files_pattern</tabstop>
   <tabstop>delete_empty_dirs</tabstop>
-  <tabstop>move_overwrite_existing_files</tabstop>
+  <tabstop>move_conflict_skip</tabstop>
+  <tabstop>move_conflict_rename</tabstop>
+  <tabstop>move_conflict_overwrite</tabstop>
   <tabstop>rename_files</tabstop>
   <tabstop>naming_script_selector</tabstop>
   <tabstop>open_script_editor</tabstop>
@@ -306,6 +331,9 @@
   <tabstop>example_filename_after</tabstop>
   <tabstop>example_filename_sample_files_button</tabstop>
  </tabstops>
+ <buttongroups>
+  <buttongroup name="move_conflict_group"/>
+ </buttongroups>
  <resources/>
  <connections/>
 </ui>
