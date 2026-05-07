@@ -738,7 +738,7 @@ class Album(MetadataItem):
         for func, _run_on_error in self._after_load_callbacks:
             func()
         self._after_load_callbacks = []
-        if self.ui_item.isSelected():
+        if self.ui_item and self.ui_item.isSelected():
             self.tagger.window.refresh_metadatabox()
             self.tagger.window.cover_art_box.update_metadata()
 

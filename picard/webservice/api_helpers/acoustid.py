@@ -31,6 +31,7 @@ from picard.const import (
 )
 from picard.util import encoded_queryargs
 from picard.webservice import (
+    PendingRequest,
     ReplyHandler,
     WebService,
     ratecontrol,
@@ -58,7 +59,7 @@ class AcoustIdAPIHelper(APIHelper):
         args['format'] = 'json'
         return '&'.join((k + '=' + v for k, v in encoded_queryargs(args).items()))
 
-    def query_acoustid(self, handler: ReplyHandler, **args):
+    def query_acoustid(self, handler: ReplyHandler, **args) -> PendingRequest:
         body = self._encode_acoustid_args(args)
         return self.post(
             "/lookup",
@@ -66,12 +67,11 @@ class AcoustIdAPIHelper(APIHelper):
             handler,
             priority=False,
             important=False,
-            mblogin=False,
             request_mimetype='application/x-www-form-urlencoded',
         )
 
     @staticmethod
-    def _submissions_to_args(submissions: 'Iterable[Submission]'):
+    def _submissions_to_args(submissions: 'Iterable[Submission]') -> dict[str, str]:
         config = get_config()
         args = {'user': config.setting['acoustid_apikey']}
         for i, submission in enumerate(submissions):
@@ -80,7 +80,9 @@ class AcoustIdAPIHelper(APIHelper):
                     args[".".join((key, str(i)))] = value
         return args
 
-    def submit_acoustid_fingerprints(self, submissions: 'Iterable[Submission]', handler: ReplyHandler):
+    def submit_acoustid_fingerprints(
+        self, submissions: 'Iterable[Submission]', handler: ReplyHandler
+    ) -> PendingRequest:
         args = self._submissions_to_args(submissions)
         body = self._encode_acoustid_args(args)
         return self.post(
@@ -89,6 +91,5 @@ class AcoustIdAPIHelper(APIHelper):
             handler,
             priority=True,
             important=False,
-            mblogin=False,
             request_mimetype='application/x-www-form-urlencoded',
         )

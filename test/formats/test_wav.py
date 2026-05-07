@@ -123,16 +123,16 @@ class WAVTest(CommonId3Tests.Id3TestCase):
     @skipUnlessTestfile
     def test_riff_info_encoding_windows_1252(self):
         info = RiffListInfo()
-        info['INAM'] = 'fooßü‰€œžŸ文字'
+        info['INAM'] = 'fooßü‰€œžŸŌš文字…'
         info.save(self.filename)
         loaded_info = RiffListInfo()
         loaded_info.load(self.filename)
-        self.assertEqual('fooßü‰€œžŸ??', loaded_info['INAM'])
+        self.assertEqual('fooßü‰€œžŸOš??…', loaded_info['INAM'])
 
     @skipUnlessTestfile
     def test_riff_info_encoding_utf_8(self):
         info = RiffListInfo(encoding="utf-8")
-        info['INAM'] = 'fooßü‰€œžŸ文字'
+        info['INAM'] = 'fooßü‰€œžŸŌš文字…'
         info.save(self.filename)
         loaded_info = RiffListInfo()
         loaded_info.load(self.filename)

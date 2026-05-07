@@ -15,6 +15,10 @@ on:
     paths: *path-list
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
 jobs:
   test-latest:
     runs-on: ${{ matrix.os }}
@@ -33,7 +37,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v8.1.0
     - name: Install dependencies (Linux)
       if: runner.os == 'linux'
       run: |
@@ -69,7 +73,7 @@ jobs:
         os: [ubuntu-latest]
         python-version: ['3.10']
         dependencies: [
-          "PyQt6==6.5.3 PyQt6-Qt6==6.5.3 mutagen==1.45 PyYAML==5.1 tomlkit==0.13.3 pygit2==1.18.2",  # minimal versions, minimum dependencies
+          "PyQt6==6.5.3 PyQt6-Qt6==6.5.3 mutagen==1.45 PyYAML==5.1 tomlkit==0.13.3",  # minimal versions, minimum dependencies
           "PyQt6>=6.5.3 PyQt6-Qt6>=6.5.3,!=6.10.* mutagen~=1.45 PyYAML~=6.0 discid==1.0 tomlkit==0.13.3 pygit2==1.18.2",
           "PyQt6>=6.5.3 PyQt6-Qt6>=6.5.3,!=6.10.* mutagen~=1.45 PyYAML~=6.0 python-libdiscid tomlkit==0.13.3 pygit2==1.18.2",
           "PyQt6>=6.5.3 PyQt6-Qt6>=6.5.3,!=6.10.* mutagen~=1.45 PyYAML~=6.0 charset-normalizer==2.0.6 tomlkit==0.13.3 pygit2==1.18.2",

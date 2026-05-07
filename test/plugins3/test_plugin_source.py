@@ -35,7 +35,6 @@ from picard.plugin3 import (
 from picard.plugin3.plugin import (
     PluginSourceGit,
     PluginSourceLocal,
-    PluginSourceSyncError,
 )
 
 
@@ -45,10 +44,9 @@ class TestPluginSourceGit(PicardTestCase):
         if has_git_backend():
             self.skipTest('git backend is available')
 
-        with self.assertRaises(PluginSourceSyncError) as context:
-            PluginSourceGit('https://example.com/repo.git')
-
-        self.assertIn('git backend is not available', str(context.exception))
+        source = PluginSourceGit('https://example.com/repo.git')
+        with self.assertRaises(ImportError):
+            source.sync(Path('/tmp/test-plugin'))
 
     def test_plugin_source_git_retry_on_network_error(self):
         """Test PluginSourceGit retries on network errors."""

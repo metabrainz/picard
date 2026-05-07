@@ -4,13 +4,15 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # reosarevok <reosarevok@users.noreply.translations.metabrainz.org>, 2024.
 # Dino RTX <rtxdino36@gmail.com>, 2025.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-10-22 07:08+0000\n"
-"Last-Translator: Dino RTX <rtxdino36@gmail.com>\n"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Spanish <https://translations.metabrainz.org/projects/picard/"
 "3/constants/es/>\n"
 "Language: es\n"
@@ -18,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13.3\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -3159,7 +3161,7 @@ msgstr ""
 
 #: picard/const/locales.py:777
 msgid "Prussian"
-msgstr ""
+msgstr "Prusiano"
 
 #: picard/const/locales.py:778
 msgid "Prussian (world)"
@@ -3491,7 +3493,7 @@ msgstr ""
 
 #: picard/const/locales.py:864
 msgid "Tachelhit"
-msgstr ""
+msgstr "Tachelhit"
 
 #: picard/const/locales.py:865
 msgid "Tachelhit (Latin)"
@@ -4270,7 +4272,7 @@ msgstr ""
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
-msgstr ""
+msgstr "Huella de AcousticID"
 
 #: picard/const/tags.py:46
 msgid ""
@@ -4328,7 +4330,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Orden de artistas de álbumes"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4354,7 +4356,7 @@ msgstr ""
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr ""
+msgstr "Orden de álbumes"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
@@ -4362,7 +4364,7 @@ msgstr ""
 
 #: picard/const/tags.py:126
 msgid "Arranger"
-msgstr ""
+msgstr "Arreglista"
 
 #: picard/const/tags.py:128
 msgid ""
@@ -4384,7 +4386,7 @@ msgstr ""
 
 #: picard/const/tags.py:145
 msgid "Artists"
-msgstr ""
+msgstr "Artistas"
 
 #: picard/const/tags.py:147
 msgid ""
@@ -4407,7 +4409,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Ordenar por artista"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4425,7 +4427,7 @@ msgstr ""
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
@@ -4451,7 +4453,7 @@ msgstr ""
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
@@ -4475,7 +4477,7 @@ msgstr ""
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Número de catálogo"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4504,7 +4506,7 @@ msgstr ""
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Compilación (iTunes)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
@@ -4520,7 +4522,7 @@ msgstr ""
 
 #: picard/const/tags.py:267
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Ordenar por compositor"
 
 #: picard/const/tags.py:268
 msgid "The sort names of the composers for the associated work."
@@ -4528,7 +4530,7 @@ msgstr ""
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Director de orquesta"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4539,7 +4541,7 @@ msgstr ""
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Derechos de autor"
 
 #: picard/const/tags.py:285
 msgid ""
@@ -4606,7 +4608,7 @@ msgstr ""
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Número de disco"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
@@ -4631,7 +4633,7 @@ msgstr ""
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ-Mezclador"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
@@ -4639,7 +4641,7 @@ msgstr ""
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
-msgstr ""
+msgstr "Codificado por"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
@@ -4647,7 +4649,7 @@ msgstr ""
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Configuración del codificador"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
@@ -4655,7 +4657,7 @@ msgstr ""
 
 #: picard/const/tags.py:380
 msgid "Engineer"
-msgstr ""
+msgstr "Ingeniero"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
@@ -4723,7 +4725,7 @@ msgstr ""
 
 #: picard/const/tags.py:454
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Reproducción sin pausas"
 
 #: picard/const/tags.py:455
 msgid ""
@@ -4741,7 +4743,7 @@ msgstr ""
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr ""
+msgstr "Agrupación"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
@@ -4749,7 +4751,7 @@ msgstr ""
 
 #: picard/const/tags.py:475
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:477
 msgid ""
@@ -4760,7 +4762,7 @@ msgstr ""
 
 #: picard/const/tags.py:485
 msgid "Key"
-msgstr ""
+msgstr "Tonalidad"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
@@ -4768,7 +4770,7 @@ msgstr ""
 
 #: picard/const/tags.py:491
 msgid "Record Label"
-msgstr ""
+msgstr "Sello discográfico"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
@@ -4802,7 +4804,7 @@ msgstr ""
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
-msgstr ""
+msgstr "Letrista"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
@@ -4818,7 +4820,7 @@ msgstr ""
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
-msgstr ""
+msgstr "Letras"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
@@ -4834,7 +4836,7 @@ msgstr ""
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr ""
+msgstr "Mezclador"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -4842,7 +4844,7 @@ msgstr ""
 
 #: picard/const/tags.py:550
 msgid "Mood"
-msgstr ""
+msgstr "Estado de ánimo"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
@@ -4850,7 +4852,7 @@ msgstr ""
 
 #: picard/const/tags.py:556
 msgid "Movement"
-msgstr ""
+msgstr "Movimiento"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
@@ -4858,7 +4860,7 @@ msgstr ""
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
-msgstr ""
+msgstr "Número de Movimiento"
 
 #: picard/const/tags.py:564
 msgid ""
@@ -4868,7 +4870,7 @@ msgstr ""
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
-msgstr ""
+msgstr "Cuenta de Movimiento"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
@@ -5006,7 +5008,7 @@ msgstr ""
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "Huella de MusicIP"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
@@ -5014,7 +5016,7 @@ msgstr ""
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "MusicIP PUID"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
@@ -5022,7 +5024,7 @@ msgstr ""
 
 #: picard/const/tags.py:685
 msgid "Original Album"
-msgstr ""
+msgstr "Álbum original"
 
 #: picard/const/tags.py:687
 msgid ""
@@ -5032,7 +5034,7 @@ msgstr ""
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
-msgstr ""
+msgstr "Artista original"
 
 #: picard/const/tags.py:696
 msgid ""
@@ -5056,7 +5058,7 @@ msgstr ""
 
 #: picard/const/tags.py:713
 msgid "Original Filename"
-msgstr ""
+msgstr "Nombre de archivo original"
 
 #: picard/const/tags.py:714
 msgid "The original name of the audio file."
@@ -5064,7 +5066,7 @@ msgstr ""
 
 #: picard/const/tags.py:719
 msgid "Original Year"
-msgstr ""
+msgstr "Año original"
 
 #: picard/const/tags.py:721
 msgid ""
@@ -5091,7 +5093,7 @@ msgstr ""
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr ""
+msgstr "Intérprete"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5107,7 +5109,7 @@ msgstr ""
 
 #: picard/const/tags.py:753
 msgid "Podcast"
-msgstr ""
+msgstr "Podcast"
 
 #: picard/const/tags.py:754
 msgid "Indicates whether or not the recording is a podcast."
@@ -5115,7 +5117,7 @@ msgstr ""
 
 #: picard/const/tags.py:759
 msgid "Podcast URL"
-msgstr ""
+msgstr "URL del podcast"
 
 #: picard/const/tags.py:760
 msgid "The associated URL if the recording is a podcast."
@@ -5145,7 +5147,7 @@ msgstr ""
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Productor"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
@@ -5153,7 +5155,7 @@ msgstr ""
 
 #: picard/const/tags.py:788
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "R128 Ganancia del Álbum"
 
 #: picard/const/tags.py:789
 msgid ""
@@ -5162,7 +5164,7 @@ msgstr ""
 
 #: picard/const/tags.py:795
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "R128 Ganancia de la Pista"
 
 #: picard/const/tags.py:796
 msgid ""
@@ -5264,7 +5266,7 @@ msgstr ""
 
 #: picard/const/tags.py:879
 msgid "Release Country"
-msgstr ""
+msgstr "País de publicación"
 
 #: picard/const/tags.py:881
 msgid ""
@@ -5389,7 +5391,7 @@ msgstr ""
 
 #: picard/const/tags.py:989
 msgid "Release Status"
-msgstr ""
+msgstr "Estado de publicación"
 
 #: picard/const/tags.py:991
 msgid ""
@@ -5400,7 +5402,7 @@ msgstr ""
 
 #: picard/const/tags.py:998
 msgid "Release Type"
-msgstr ""
+msgstr "Tipo de publicación"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
@@ -5408,7 +5410,7 @@ msgstr ""
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr ""
+msgstr "Remezclador"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
@@ -5416,7 +5418,7 @@ msgstr ""
 
 #: picard/const/tags.py:1014
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "ReplayGain Ganancia del Álbum"
 
 #: picard/const/tags.py:1015
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
@@ -5424,7 +5426,7 @@ msgstr ""
 
 #: picard/const/tags.py:1021
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "ReplayGain Pico del Álbum"
 
 #: picard/const/tags.py:1022
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
@@ -5432,7 +5434,7 @@ msgstr ""
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "ReplayGain Rango del Álbum"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
@@ -5440,7 +5442,7 @@ msgstr ""
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "ReplayGain Volumen de Referencia"
 
 #: picard/const/tags.py:1036
 msgid ""
@@ -5450,7 +5452,7 @@ msgstr ""
 
 #: picard/const/tags.py:1042
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "ReplayGain Ganancia de la pista"
 
 #: picard/const/tags.py:1043
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
@@ -5458,7 +5460,7 @@ msgstr ""
 
 #: picard/const/tags.py:1049
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "ReplayGain Pico de la pista"
 
 #: picard/const/tags.py:1050
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
@@ -5466,7 +5468,7 @@ msgstr ""
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "ReplayGain Rango de la pista"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
@@ -5513,7 +5515,7 @@ msgstr ""
 
 #: picard/const/tags.py:1102
 msgid "Show Name"
-msgstr ""
+msgstr "Nombre del espectáculo"
 
 #: picard/const/tags.py:1103
 msgid ""
@@ -5523,7 +5525,7 @@ msgstr ""
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Mostrar obra y movimiento"
 
 #: picard/const/tags.py:1110
 msgid ""
@@ -5540,7 +5542,7 @@ msgstr ""
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Ordenación del nombre del espectáculo"
 
 #: picard/const/tags.py:1122
 msgid ""
@@ -5550,7 +5552,7 @@ msgstr ""
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Subtítulo"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
@@ -5574,7 +5576,7 @@ msgstr ""
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Ordenar por título"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5590,7 +5592,7 @@ msgstr ""
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Total de discos"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
@@ -5598,7 +5600,7 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Total de pistas"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
@@ -5606,7 +5608,7 @@ msgstr ""
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
-msgstr ""
+msgstr "Número de pista"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
@@ -5622,7 +5624,7 @@ msgstr ""
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
-msgstr ""
+msgstr "Página web del artista"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
@@ -5630,7 +5632,7 @@ msgstr ""
 
 #: picard/const/tags.py:1187
 msgid "Work"
-msgstr ""
+msgstr "Obra"
 
 #: picard/const/tags.py:1188
 msgid ""
@@ -5687,7 +5689,7 @@ msgstr ""
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr ""
+msgstr "Autor"
 
 #: picard/const/tags.py:1234
 msgid ""

@@ -273,6 +273,14 @@ class GitRepository(ABC):
         """Get commit timestamp for given commit ID"""
 
     @abstractmethod
+    def get_commit_author(self, commit_id: str) -> tuple[str, str]:
+        """Get commit author name and email for given commit ID.
+
+        Returns:
+            tuple: (author_name, author_email)
+        """
+
+    @abstractmethod
     def fetch_remote(self, remote, refspec: str | None = None, callbacks=None):
         """Fetch from remote with optional refspec"""
 
@@ -362,3 +370,15 @@ class GitBackend(ABC):
     @abstractmethod
     def create_remote_callbacks(self) -> GitRemoteCallbacks:
         """Create remote callbacks for authentication"""
+
+    @abstractmethod
+    def get_config_value(self, key: str, default: str = '') -> str:
+        """Read a value from git config (merged system/global/local).
+
+        Args:
+            key: Config key (e.g. 'user.name', 'user.email')
+            default: Value to return if key is not set
+
+        Returns:
+            str: Config value or default
+        """

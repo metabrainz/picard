@@ -316,6 +316,12 @@ class Pygit2Repository(GitRepository):
         _log_git_call("get_commit_date", commit_id, retval=commit.commit_time)
         return commit.commit_time
 
+    def get_commit_author(self, commit_id: str) -> tuple[str, str]:
+        commit = self._repo.get(commit_id)
+        ret = (commit.author.name, commit.author.email)
+        _log_git_call("get_commit_author", commit_id, retval=ret)
+        return ret
+
     def fetch_remote(self, remote, refspec: str | None = None, callbacks=None):
         _log_git_call("fetch_remote", str(remote.name), refspec)
         if refspec:
@@ -520,3 +526,15 @@ class Pygit2Backend(GitBackend):
     def create_remote_callbacks(self) -> GitRemoteCallbacks:
         _log_git_call("create_remote_callbacks")
         return Pygit2RemoteCallbacks()
+
+    def get_config_value(self, key: str, default: str = '') -> str:
+        try:
+            cfg = pygit2.Config.get_global_config()
+            if key in cfg:
+                ret = cfg[key]
+                _log_git_call("get_config_value", key, retval=ret)
+                return ret
+        except Exception:
+            pass
+        _log_git_call("get_config_value", key, retval=default)
+        return default

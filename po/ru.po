@@ -29,14 +29,14 @@
 # Дмитрий Суворов, 2023
 # Dimlbur <Dimlbur@users.noreply.translations.metabrainz.org>, 2024.
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024, 2026.
+# Wonordel <megorka2014@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-22 07:04+0200\n"
-"PO-Revision-Date: 2026-02-26 20:11+0000\n"
-"Last-Translator: wileyfoxyx "
-"<wileyfoxyx@users.noreply.translations.metabrainz.org>\n"
+"PO-Revision-Date: 2026-05-01 11:11+0000\n"
+"Last-Translator: Wonordel <megorka2014@gmail.com>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "3/app/ru/>\n"
 "Language: ru\n"
@@ -46,7 +46,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
-"X-Generator: Weblate 5.16.1\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -794,7 +794,6 @@ msgid "Don't sanitize dates for these formats"
 msgstr ""
 
 #: picard/options.py:398
-#, fuzzy
 msgid "Browser integration"
 msgstr "Интеграция с браузером"
 
@@ -1012,9 +1011,8 @@ msgid "iTunes compatible grouping / work"
 msgstr ""
 
 #: picard/options.py:493
-#, fuzzy
 msgid "Write ID3v1 tags"
-msgstr "Напишите ID3v2.3 тэги"
+msgstr "Напишите ID3v1 теги"
 
 #: picard/options.py:494
 msgid "ID3v2 version to write"
@@ -1516,15 +1514,14 @@ msgid "Default file naming script"
 msgstr "Скрипт именования файла по умолчанию"
 
 #: picard/script/__init__.py:208
-#, fuzzy
 msgid "[album artist]/[album]/[track #]. [title]"
-msgstr "[исполнитель альбома]/[альбом]/[№ трека]. [название]"
+msgstr "[исполнитель альбома]/[альбом]/[номер трека]. [название]"
 
 #: picard/script/__init__.py:220
-#, fuzzy
 msgid "[album artist]/[album]/[disc and track #] [artist] - [title]"
 msgstr ""
-"[исполнитель альбома]/[альбом]/[№ диска и трека] [исполнитель] - [название]"
+"[исполнитель альбома]/[альбом]/[номер диска и трека] [исполнитель] - "
+"[название]"
 
 #: picard/script/functions.py:75
 msgid "$if(if,then[,else])"
@@ -2629,7 +2626,6 @@ msgid "Error exporting file \"%(filename)s\": %(error)s."
 msgstr "Ошибка при экспорте файла \"%(filename)s\": %(error)s."
 
 #: picard/script/serializer.py:224
-#, fuzzy
 msgid "Export Script File"
 msgstr "Экспортировать файл скрипта"
 
@@ -2653,12 +2649,10 @@ msgid "Error decoding \"%(filename)s\": %(error)s"
 msgstr "Ошибка декодирования \"%(filename)s\": %(error)s"
 
 #: picard/script/serializer.py:266
-#, fuzzy
 msgid "Import Script File"
 msgstr "Импортировать файл скрипта"
 
 #: picard/script/serializer.py:289
-#, fuzzy
 msgid "The file was empty"
 msgstr "Файл был пуст"
 
@@ -2668,7 +2662,6 @@ msgid "Imported from %s"
 msgstr "Импортировано из %s"
 
 #: picard/script/serializer.py:318
-#, fuzzy
 msgid "Argument is not a dictionary"
 msgstr "Аргумент не является словарём"
 
@@ -2846,7 +2839,6 @@ msgid "Supported formats"
 msgstr "Поддерживаемые форматы"
 
 #: picard/ui/aboutdialog.py:112
-#, fuzzy
 msgid "Please donate"
 msgstr "Пожалуйста, сделайте пожертвование"
 
@@ -5511,9 +5503,9 @@ msgid "Artist:"
 msgstr "Исполнитель:"
 
 #: picard/ui/infodialog/utils.py:109
-#, fuzzy, python-format
+#, python-format
 msgid "Disc %d"
-msgstr "Номер диска"
+msgstr "Диск %d"
 
 #: picard/ui/infodialog/utils.py:113
 msgid "Tracklist:"

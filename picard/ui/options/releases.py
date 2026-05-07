@@ -26,7 +26,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import (
+    Callable,
+    Mapping,
+)
 from functools import partial
+from operator import itemgetter
 
 from PyQt6 import (
     QtCore,
@@ -232,18 +237,8 @@ class ReleasesOptionsPage(OptionsPage):
         for release_type, release_type_slider in self._release_type_sliders.items():
             release_type_slider.setValue(scores.get(release_type, DEFAULT_RELEASE_SCORE))
 
-        self._load_list_items(
-            'preferred_release_countries',
-            RELEASE_COUNTRIES,
-            self.ui.country_list,
-            self.ui.preferred_country_list,
-        )
-        self._load_list_items(
-            'preferred_release_formats',
-            RELEASE_FORMATS,
-            self.ui.format_list,
-            self.ui.preferred_format_list,
-        )
+        self._load_release_countries()
+        self._load_release_formats()
 
     def save(self):
         config = get_config()
@@ -279,29 +274,80 @@ class ReleasesOptionsPage(OptionsPage):
             list2.addItem(clone)
             list1.takeItem(list1.row(item))
 
-    def _load_list_items(self, setting, source, list1, list2):
-        if setting == 'preferred_release_countries':
-            translate_func = gettext_countries
-        elif setting == 'preferred_release_formats':
-            translate_func = partial(pgettext_attributes, 'medium_format')
-        else:
-            translate_func = _
-
-        def fcmp(x):
-            return sort_key(x[1])
-
-        source_list = [(c[0], translate_func(c[1])) for c in source.items()]
-        source_list.sort(key=fcmp)
+    def _load_release_countries(self) -> None:
+        """Load preferred release countries from config into the UI lists."""
         config = get_config()
-        saved_data = config.setting[setting]
-        for data, name in source_list:
+        self._load_list_items(
+            config.setting['preferred_release_countries'],
+            gettext_countries,
+            RELEASE_COUNTRIES,
+            self._add_list_item(self.ui.country_list, self.ui.preferred_country_list),
+        )
+
+    def _load_release_formats(self) -> None:
+        """Load preferred release formats from config into the UI lists."""
+        config = get_config()
+        self._load_list_items(
+            config.setting['preferred_release_formats'],
+            partial(pgettext_attributes, 'medium_format'),
+            RELEASE_FORMATS,
+            self._add_list_item(self.ui.format_list, self.ui.preferred_format_list),
+        )
+
+    @staticmethod
+    def _add_list_item(
+        available_list: QtWidgets.QListWidget,
+        preferred_list: QtWidgets.QListWidget,
+    ) -> Callable[[str, str, bool], None]:
+        """Return a callback that creates a QListWidgetItem and adds it
+        to the appropriate list widget.
+        """
+
+        def add_item(name: str, data: str, is_preferred: bool) -> None:
+            """Create a QListWidgetItem and add it to the preferred or
+            available list widget.
+            """
             item = QtWidgets.QListWidgetItem(name)
             item.setData(QtCore.Qt.ItemDataRole.UserRole, data)
-            try:
-                saved_data.index(data)
-                list2.addItem(item)
-            except ValueError:
-                list1.addItem(item)
+            if is_preferred:
+                preferred_list.addItem(item)
+            else:
+                available_list.addItem(item)
+
+        return add_item
+
+    @staticmethod
+    def _load_list_items(
+        preferred: list[str],
+        translate_func: Callable[[str], str],
+        source: Mapping[str, str],
+        add_item: Callable[[str, str, bool], None],
+    ) -> None:
+        """Split source items into available and preferred, calling add_item
+        for each.
+
+        Available items are sorted alphabetically by translated name.
+        Preferred items preserve their saved order.
+
+        Args:
+            preferred: List of previously selected item keys.
+            translate_func: Callable to translate source names for display.
+            source: Dict mapping item keys to untranslated names.
+            add_item: Callback called as add_item(name, data, is_preferred).
+        """
+        source_list = [(key, translate_func(name)) for key, name in source.items()]
+        source_list.sort(key=lambda x: sort_key(x[1]))
+        preferred_order = {data: i for i, data in enumerate(preferred)}
+        target_list = []
+        for data, name in source_list:
+            if data in preferred_order:
+                target_list.append((preferred_order[data], name, data))
+            else:
+                add_item(name, data, False)
+
+        target_list.sort(key=itemgetter(0))
+        for _i, name, data in target_list:
+            add_item(name, data, True)
 
     def _save_list_items(self, setting, list1):
         data = [item.data(QtCore.Qt.ItemDataRole.UserRole) for item in qlistwidget_items(list1)]

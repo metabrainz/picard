@@ -25,6 +25,8 @@ from unittest.mock import (
     patch,
 )
 
+from test.plugins3.helpers import skip_if_no_git_backend
+
 from picard.git.backend import (
     GitBackend,
     GitObject,
@@ -102,6 +104,9 @@ class MockGitRepository(GitRepository):
     def get_commit_date(self, commit_id):
         return 1234567890  # Mock timestamp
 
+    def get_commit_author(self, commit_id):
+        return ('Test Author', 'test@example.com')  # Mock author
+
     def fetch_remote(self, remote, refspec=None, callbacks=None):
         pass
 
@@ -145,6 +150,9 @@ class MockGitBackend(GitBackend):
 
     def get_remote(self, name):
         return Mock()
+
+    def get_config_value(self, key, default=''):
+        return default
 
     def create_commit(self, repo, message, author_name="Test", author_email="test@example.com"):
         return "abc123"
@@ -190,10 +198,7 @@ class TestGitBackend(unittest.TestCase):
         """Test fetch_remote_refs with a local repository to ensure refs have proper targets"""
         import tempfile
 
-        from picard.git.factory import has_git_backend
-
-        if not has_git_backend():
-            self.skipTest("git backend not available")
+        skip_if_no_git_backend()
 
         backend = git_backend()
 
@@ -270,6 +275,8 @@ class TestGitBackend(unittest.TestCase):
 
     def test_git_backend_exceptions(self):
         """Test that git backend raises proper exceptions"""
+        skip_if_no_git_backend()
+
         from picard.plugin3 import GitReferenceError, GitRepositoryError
 
         backend = git_backend()
@@ -358,6 +365,26 @@ class TestGitBackend(unittest.TestCase):
         self.assertIn("name='refs/tags/v1.0'", repr(ref))
         self.assertIn("remote=True", repr(ref))
         self.assertIn("annotated=True", repr(ref))
+
+    def test_get_commit_author(self):
+        """Test get_commit_author returns author name and email."""
+        import tempfile
+
+        skip_if_no_git_backend()
+
+        backend = git_backend()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            repo_path = Path(tmpdir) / "test-repo"
+            repo_path.mkdir()
+            repo = backend.init_repository(repo_path)
+            (repo_path / "file.txt").write_text("test")
+            commit_id = backend.add_and_commit_files(
+                repo, "Test commit", author_name="Alice", author_email="alice@example.com"
+            )
+            name, email = repo.get_commit_author(commit_id)
+            self.assertEqual(name, "Alice")
+            self.assertEqual(email, "alice@example.com")
+            repo.free()
 
 
 if __name__ == '__main__':

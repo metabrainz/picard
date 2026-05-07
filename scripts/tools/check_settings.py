@@ -35,7 +35,7 @@ RE_CREATE_OPTION = re.compile(
 )
 
 # Ignore option checking in these files
-CHECK_OPTION_FILES_TO_IGNORE = {'config_upgrade.py'}
+CHECK_OPTION_FILES_TO_IGNORE = {'config_upgrade_hooks.py'}
 
 # Identify options accessed
 RE_CHECK_OPTION = re.compile(

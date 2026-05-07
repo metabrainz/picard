@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-22 07:04+0200\n"
-"PO-Revision-Date: 2026-03-12 11:11+0000\n"
+"PO-Revision-Date: 2026-04-26 08:18+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -4282,6 +4282,15 @@ msgid ""
 "user interface language.</p><p>Do you want to allow Picard to check the "
 "available languages and versions for the documentation on ReadTheDocs?</p>"
 msgstr ""
+"<p>De huidige instellingen staan <strong>niet</strong> toe dat Picard "
+"ReadTheDocs vraagt naar de beschikbare talen en versies van de documentatie. "
+"Dat betekent dat Picard de ‘nieuwste’ versie van de Engelstalige "
+"documentatie zal weergeven wanneer je de documentatie in je webbrowser "
+"opent.</p><p>Als deze instelling is ingeschakeld, geeft Picard de huidige "
+"versie van de documentatie weer in de meest geschikte taal (gebaseerd op de "
+"taal die voor de gebruikersinterface is geselecteerd).</p><p>Wil je dat "
+"Picard de beschikbare talen en versies van de documentatie op ReadTheDocs "
+"opvraagt?</p>"
 
 #: picard/ui/allowrtdupdatesdialog.py:47 picard/ui/newuserdialog.py:50
 msgid "Show this message again the next time you start Picard."
@@ -4778,10 +4787,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Scriptfout in “%(script)s”: %(message)s"
 
 #: picard/ui/setupwizard.py:55
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "Welkom bij MusicBrainz Picard"
 
 #: picard/ui/setupwizard.py:62
 msgid ""
@@ -4790,37 +4797,41 @@ msgid ""
 "important settings before you get started. You can always change these later "
 "in the Options dialog.</p>"
 msgstr ""
+"<p>Met Picard kan je jouw muziekverzameling aan de hand van de databank van "
+"MusicBrainz taggen en organiseren.</p><p>Deze wizard helpt je met het "
+"configureren van een aantal belangrijke instellingen, zodat je aan de slag "
+"kan. Je kan deze instellingen later in de Opties weer aanpassen.</p>"
 
 #: picard/ui/setupwizard.py:74
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Read the documentation"
-msgstr "&Documentatie weergeven"
+msgstr "Lees de documentatie"
 
 #: picard/ui/setupwizard.py:88
-#, fuzzy
-#| msgid "Select all"
 msgid "File Organization"
-msgstr "Alles selecteren"
+msgstr "Bestanden ordenen"
 
 #: picard/ui/setupwizard.py:89
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr ""
+"Selecteer of Picard je bestanden moet hernoemen en verplaatsen wanneer hij "
+"de tags opslaat."
 
 #: picard/ui/setupwizard.py:93
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
-msgstr ""
+msgstr "Bestanden op basis van de tags hernoemen (bijv. ‘Artiest - Titel.mp3’)"
 
 #: picard/ui/setupwizard.py:96
 msgid "Move files to a directory structure based on tags"
-msgstr ""
+msgstr "Bestanden op basis van de tags naar een map verplaatsen"
 
 #: picard/ui/setupwizard.py:116
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
 msgstr ""
+"Je kan deze instellingen later in de Opties veranderen, onder Opties → "
+"Opties → Bestandsnamen."
 
 #: picard/ui/setupwizard.py:142
 #, fuzzy
@@ -4830,17 +4841,13 @@ msgstr "Doelmap"
 
 #: picard/ui/setupwizard.py:155
 msgid "Choose how Picard should handle album cover art."
-msgstr ""
+msgstr "Selecteer wat Picard met hoesafbeeldingen moet doen."
 
 #: picard/ui/setupwizard.py:159
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Hoesafbeeldingen in tags opslaan"
+msgstr "Hoesafbeeldingen in audiobestanden opslaan"
 
 #: picard/ui/setupwizard.py:162
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
 msgstr "Hoesafbeeldingen als aparte bestanden opslaan"
 
@@ -4864,6 +4871,9 @@ msgid ""
 "Welcome to MusicBrainz Picard! Start by adding your music files: use 'Add "
 "Files' or 'Add Directory' from the toolbar or the File menu."
 msgstr ""
+"Welkom bij MusicBrainz Picard! Voeg om te beginnen je muziekbestanden toe: "
+"gebruik in de taakbalk of het bestandsmenu ‘Bestanden toevoegen’ of ‘Map "
+"toevoegen’."
 
 #: picard/ui/tutorial.py:60
 msgid ""
@@ -4932,17 +4942,15 @@ msgstr ""
 
 #: picard/ui/tutorial.py:176
 msgid "Learn more…"
-msgstr ""
+msgstr "Meer info"
 
 #: picard/ui/tutorial.py:184
-#, fuzzy
-#| msgid "Don't show this warning again."
 msgid "Don't show tips again"
-msgstr "Deze waarschuwing niet meer tonen."
+msgstr "Tips niet meer weergeven"
 
 #: picard/ui/tutorial.py:188
 msgid "Got it"
-msgstr ""
+msgstr "Begrepen"
 
 #: picard/ui/util.py:55
 #, python-format

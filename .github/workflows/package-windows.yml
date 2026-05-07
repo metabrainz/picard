@@ -27,14 +27,14 @@ jobs:
     steps:
     - uses: actions/checkout@v6
       with:
-        fetch-depth: 0  # Fetch entire history, needed for setting the build number
-    - run: git fetch --depth=1 origin +refs/tags/release-*:refs/tags/release-*
+        fetch-depth: 1000
+        fetch-tags: true
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
         python-version: '3.14'
     - name: Install uv
-      uses: astral-sh/setup-uv@v7
+      uses: astral-sh/setup-uv@v8.1.0
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 `
@@ -58,12 +58,7 @@ jobs:
     - name: Install dependencies
       run: uv sync --group build --group dev --extra plugins
     - name: Patch build version
-      if: startsWith(github.ref, 'refs/tags/') != true
-      run: |
-        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
-        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
-        Add-Content $Env:GITHUB_ENV "BUILD_NUMBER=$BuildNumber"
-        uv run python setup.py patch_version --platform=$BuildNumber.$(git rev-parse --short HEAD)
+      run: uv run bash -c "./scripts/tools/patch-version.sh"
     - name: Run tests
       timeout-minutes: 30
       run: uv run pytest --verbose
@@ -73,12 +68,14 @@ jobs:
         uv run python setup.py clean
     - name: Build TaskbarLib.tlb
       run: |
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          midl TaskbarLib.idl /tlb TaskbarLib.tlb
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        midl TaskbarLib.idl /tlb TaskbarLib.tlb
       shell: cmd
     - name: Build
       run: |
-        uv run python setup.py build --build-number=$Env:BUILD_NUMBER --disable-locales
+        $ReleaseTag = $(git describe --match "release-*" --abbrev=0 --always HEAD)
+        $BuildNumber = $(git rev-list --count "$ReleaseTag..HEAD")
+        uv run python setup.py build --build-number=$BuildNumber --disable-locales
         uv run python setup.py build_locales
         uv run python setup.py build_ext -i
         uv run pyinstaller --noconfirm --clean picard.spec
@@ -91,7 +88,7 @@ jobs:
         PICARD_BUILD_PORTABLE: ${{ matrix.setup.build-portable }}
         PICARD_DISABLE_AUTOUPDATE: ${{ matrix.setup.disable-autoupdate }}
     - name: Azure login
-      uses: azure/login@v3
+      uses: azure/login@v3.0.0
       if: env.CODESIGN == 'true'
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}

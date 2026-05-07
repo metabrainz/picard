@@ -254,6 +254,38 @@ class ReplaceNonAsciiTest(PicardTestCase):
         self.assertNotEqual(util.textencoding.replace_non_ascii("Lukáš"), "Luk____")
 
 
+class CodecErrorHandlerSimplifyTest(PicardTestCase):
+    def test_encode_simplify(self):
+        self.assertEqual(
+            "Lukáš".encode('iso-8859-1', errors='simplify'),
+            b"Luk\xe1s",
+        )
+        self.assertEqual(
+            "Lukáš".encode('ascii', errors='simplify'),
+            b"Lukas",
+        )
+        self.assertEqual(
+            "Ēbn-Ōzn".encode('iso-8859-1', errors='simplify'),
+            b"Ebn-Ozn",
+        )
+        self.assertEqual(
+            "Ænima".encode('iso-8859-2', errors='simplify'),
+            b"AEnima",
+        )
+
+    def test_encode_simplify_no_change(self):
+        self.assertEqual(
+            "Lukáš".encode('iso-8859-2', errors='simplify'),
+            b"Luk\xe1\xb9",
+        )
+
+    def test_encode_simplify_replacement(self):
+        self.assertEqual(
+            "小室哲哉".encode('iso-8859-1', errors='simplify'),
+            b"????",
+        )
+
+
 if show_latin2ascii_coverage:
     # The following code set blocks are taken from:
     # http://en.wikipedia.org/wiki/Latin_script_in_Unicode

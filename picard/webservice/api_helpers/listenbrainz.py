@@ -29,6 +29,7 @@ from picard import PICARD_DISPLAY_NAME, PICARD_VERSION_STR
 from picard.const import LISTENBRAINZ_API_URL
 from picard.metadata import Metadata
 from picard.webservice import (
+    PendingRequest,
     ReplyHandler,
     WebService,
 )
@@ -114,14 +115,14 @@ class ListenBrainzAPIHelper(APIHelper):
     def __init__(self, webservice: WebService):
         super().__init__(webservice, base_url=LISTENBRAINZ_API_URL)
 
-    def submit_listen(self, user_token: str, submission: ListenSubmission, handler: ReplyHandler):
+    def submit_listen(self, user_token: str, submission: ListenSubmission, handler: ReplyHandler) -> PendingRequest:
         headers = {
             'Authorization': f'Token {user_token}',
         }
-        self.post('submit-listens', submission.as_json(), handler, mblogin=False, headers=headers)
+        return self.post('submit-listens', submission.as_json(), handler, headers=headers)
 
 
-def _json_serializer(obj: Any):
+def _json_serializer(obj: Any) -> Any:
     if isinstance(obj, ListenType):
         return obj.value
     raise TypeError(f'Object of type {obj.__class__.__name__} is not JSON serializable')

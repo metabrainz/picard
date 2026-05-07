@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-22 07:04+0200\n"
-"PO-Revision-Date: 2026-03-22 16:11+0000\n"
+"PO-Revision-Date: 2026-04-25 09:11+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -609,15 +609,15 @@ msgstr "Habilita les notificacions «En reproducció»"
 
 #: picard/options.py:319
 msgid "Enable ListenBrainz listen submissions"
-msgstr ""
+msgstr "Habilita l'enviament de reproduccions a ListenBrainz"
 
 #: picard/options.py:320
 msgid "Submit only tagged files ListenBrainz"
-msgstr ""
+msgstr "Envia només els fitxers etiquetats a ListenBrainz"
 
 #: picard/options.py:321 picard/ui/forms/ui_options_player.py:64
 msgid "ListenBrainz user token"
-msgstr ""
+msgstr "Testimoni d'usuari de ListenBrainz"
 
 #: picard/options.py:329
 msgid "Colors to use for light theme"
@@ -3720,10 +3720,8 @@ msgid "Script error in \"%(script)s\": %(message)s"
 msgstr "Hi ha un error a l'script «%(script)s»: %(message)s"
 
 #: picard/ui/setupwizard.py:55
-#, fuzzy
-#| msgid "MusicBrainz Picard"
 msgid "Welcome to MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "Us donem la benvinguda a MusicBrainz Picard"
 
 #: picard/ui/setupwizard.py:62
 msgid ""
@@ -3732,69 +3730,67 @@ msgid ""
 "important settings before you get started. You can always change these later "
 "in the Options dialog.</p>"
 msgstr ""
+"<p>Picard us ajuda a etiquetar i organitzar la vostra col·lecció musical amb "
+"la base de dades de MusicBrainz.</p><p>Aquest assistent us ajudarà a "
+"configurar alguns paràmetres importants abans de començar. Sempre els podeu "
+"canviar des del quadre de diàleg d'opcions.</p>"
 
 #: picard/ui/setupwizard.py:74
-#, fuzzy
-#| msgid "&Show documentation"
 msgid "Read the documentation"
-msgstr "Mo&stra la documentació"
+msgstr "Llegeix la documentació"
 
 #: picard/ui/setupwizard.py:88
-#, fuzzy
-#| msgid "File Creation Time"
 msgid "File Organization"
-msgstr "Hora de creació del fitxer"
+msgstr "Organització dels fitxers"
 
 #: picard/ui/setupwizard.py:89
 msgid ""
 "Choose whether Picard should rename and move your files when saving tags."
 msgstr ""
+"Trieu si Picard ha de canviar el nom i moure els fitxers en desar les "
+"etiquetes."
 
 #: picard/ui/setupwizard.py:93
 msgid "Rename files based on tags (e.g. \"Artist - Title.mp3\")"
 msgstr ""
+"Canvia el nom dels fitxers segons les etiquetes (p. ex., «Artista - Títol.mp3"
+"»)"
 
 #: picard/ui/setupwizard.py:96
 msgid "Move files to a directory structure based on tags"
-msgstr ""
+msgstr "Mou els fitxers a una estructura de directoris segons les etiquetes"
 
 #: picard/ui/setupwizard.py:116
 msgid ""
 "You can change these later from the Options menu or under Options → Options "
 "→ File Naming."
 msgstr ""
+"Podeu canviar-ho més tard des del menú «Opcions» o a «Opcions → Opcions → "
+"Nom dels fitxers»."
 
 #: picard/ui/setupwizard.py:142
-#, fuzzy
-#| msgid "Destination directory"
 msgid "Select destination directory"
-msgstr "Directori de destinació"
+msgstr "Seleccioneu el directori de destinació"
 
 #: picard/ui/setupwizard.py:155
 msgid "Choose how Picard should handle album cover art."
-msgstr ""
+msgstr "Trieu com ha de tractar Picard les caràtules dels àlbums."
 
 #: picard/ui/setupwizard.py:159
-#, fuzzy
-#| msgid "Embed cover images into tags"
 msgid "Embed cover art into audio files"
-msgstr "Incrusta les imatges de la caràtula a les etiquetes"
+msgstr "Incrusta les caràtules als fitxers d'àudio"
 
 #: picard/ui/setupwizard.py:162
-#, fuzzy
-#| msgid "Save cover images as separate files"
 msgid "Save cover art as separate image files"
-msgstr "Desa les imatges de la caràtula com a fitxers independents"
+msgstr "Desa les caràtules com a fitxers d'imatge independents"
 
 #: picard/ui/setupwizard.py:167
 msgid "You can change these later under Options → Options → Cover Art."
-msgstr ""
+msgstr "Podeu canviar-ho més tard a «Opcions → Opcions → Caràtules»."
 
 #: picard/ui/setupwizard.py:193
-#, fuzzy
-#| msgid "Picard Update"
 msgid "Picard Setup"
-msgstr "Actualització de Picard"
+msgstr "Configuració de Picard"
 
 #: picard/ui/itemviews/columns.py:194 picard/ui/tagsfromfilenames.py:129
 #: picard/ui/tagsfromfilenames.py:140
@@ -3806,6 +3802,9 @@ msgid ""
 "Welcome to MusicBrainz Picard! Start by adding your music files: use 'Add "
 "Files' or 'Add Directory' from the toolbar or the File menu."
 msgstr ""
+"Us donem la benvinguda a MusicBrainz Picard! Comenceu afegint els vostres "
+"fitxers de música: seleccioneu «Afegeix fitxers» o «Afegeix un directori» a "
+"la barra d'eines o al menú «Fitxer»."
 
 #: picard/ui/tutorial.py:60
 msgid ""
@@ -3813,24 +3812,36 @@ msgid ""
 "click 'Cluster' in the toolbar to group them by album, or select files and "
 "use 'Lookup' or 'Scan' to identify them."
 msgstr ""
+"Els vostres fitxers ara són a la subfinestra esquerra, a «Fitxers sense "
+"coincidències». Pas següent: feu clic a «Agrupa» a la barra d'eines per a "
+"agrupar-los per àlbum, o seleccioneu els fitxers i feu servir «Cerca» o «"
+"Analitza» per a identificar-los."
 
 #: picard/ui/tutorial.py:69
 msgid ""
 "Files have been grouped into clusters by album. Now select a cluster and "
 "click 'Lookup' in the toolbar to find the matching MusicBrainz release."
 msgstr ""
+"Els fitxers s'han agrupat en agrupacions per àlbum. Ara seleccioneu una "
+"agrupació i feu clic a «Cerca» a la barra d'eines per a cercar la publicació "
+"de MusicBrainz coincident."
 
 #: picard/ui/tutorial.py:78
 msgid ""
 "Picard is looking up your selection on MusicBrainz. Matched albums will "
 "appear in the right pane. You can then review the metadata before saving."
 msgstr ""
+"Picard està cercant la vostra selecció a MusicBrainz. Els àlbums coincidents "
+"apareixeran a la subfinestra dreta. Podreu revisar les metadades abans de "
+"desar-les."
 
 #: picard/ui/tutorial.py:87
 msgid ""
 "Picard is generating audio fingerprints and looking up your files on "
 "AcoustID. Matched files will move to the right pane automatically."
 msgstr ""
+"Picard està generant les empremtes d'àudio i cercant els fitxers a AcoustID. "
+"Els fitxers coincidents es mouran a la subfinestra dreta automàticament."
 
 #: picard/ui/tutorial.py:96
 msgid ""
@@ -3839,6 +3850,10 @@ msgid ""
 "the results, then click 'Save' in the toolbar to write the new tags to your "
 "files."
 msgstr ""
+"S'ha carregat un àlbum a la subfinestra dreta i els fitxers s'han assignat a "
+"les pistes. El color indica la qualitat de les coincidències: el color verd "
+"representa una bona coincidència. Reviseu els resultats i feu clic a «Desa» "
+"a la barra d'eines per a escriure les etiquetes noves als fitxers."
 
 #: picard/ui/tutorial.py:106
 msgid ""
@@ -3847,18 +3862,28 @@ msgid ""
 "click a value to edit it. When you're happy with the tags, click 'Save' in "
 "the toolbar to write them."
 msgstr ""
+"La visualització de metadades mostra les etiquetes de l'element seleccionat. "
+"«Valor original» és el que conté el fitxer actualment i «Valor nou» és el "
+"que escriurà Picard. Feu doble clic en un valor per a editar-lo. Quan les "
+"etiquetes us satisfacin, feu clic a «Desa» a la barra d'eines per a escriure-"
+"les."
 
 #: picard/ui/tutorial.py:117
 msgid ""
 "Cover art for the selected item is shown here. You can drag and drop images, "
 "or right-click for more options."
 msgstr ""
+"La caràtula de l'element seleccionat es mostra aquí. Podeu arrossegar i "
+"deixar anar imatges o fer clic dret per a veure més opcions."
 
 #: picard/ui/tutorial.py:125
 msgid ""
 "Saving writes the new metadata to your files. If renaming or moving is "
 "enabled in the options, files will also be renamed or moved accordingly."
 msgstr ""
+"Les metadades noves s'escriuen quan deseu els fitxers. Si habiliteu el canvi "
+"de nom i el desplaçament a les opcions, els fitxers també canvien de nom i "
+"ubicació segons les metadades."
 
 #: picard/ui/tutorial.py:134
 msgid ""
@@ -3867,24 +3892,26 @@ msgid ""
 "right pane, use 'Lookup' on a cluster, search for it via 'Search', or paste "
 "a MusicBrainz URL."
 msgstr ""
+"Podeu arrossegar fitxers entre les subfinestres esquerra i dreta per a "
+"assignar-los manualment a àlbums i pistes, o bé eliminar les coincidències. "
+"Per a afegir un àlbum a la subfinestra dreta, feu servir «Cerca» en una "
+"agrupació, cerqueu-lo amb barra de cerca o enganxeu un URL de MusicBrainz."
 
 #: picard/ui/tutorial.py:153
 msgid "Picard Tutorial"
-msgstr ""
+msgstr "Tutorial de Picard"
 
 #: picard/ui/tutorial.py:176
 msgid "Learn more…"
-msgstr ""
+msgstr "Més informació…"
 
 #: picard/ui/tutorial.py:184
-#, fuzzy
-#| msgid "Don't show this warning again."
 msgid "Don't show tips again"
-msgstr "No tornis a mostrar aquest avís."
+msgstr "No tornis a mostrar els consells"
 
 #: picard/ui/tutorial.py:188
 msgid "Got it"
-msgstr ""
+msgstr "Entesos"
 
 #: picard/ui/util.py:55
 #, python-format
@@ -4340,10 +4367,8 @@ msgid "Homepage:"
 msgstr "Lloc web:"
 
 #: picard/ui/dialogs/plugininfo.py:120
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report Bugs To:"
-msgstr "Info&rma d'un error…"
+msgstr "Informeu dels errors a:"
 
 #: picard/ui/dialogs/plugininfo.py:121
 msgid "Path:"
@@ -5206,25 +5231,23 @@ msgstr "Port d'escolta per defecte:"
 
 #: picard/ui/forms/ui_options_player.py:59
 msgid "ListenBrainz user name"
-msgstr ""
+msgstr "Nom d'usuari de ListenBrainz"
 
 #: picard/ui/forms/ui_options_player.py:60
 msgid "Enable audio player \"now playing\" notifications"
 msgstr "Habilita les notificacions «En reproducció» del reproductor d'àudio"
 
 #: picard/ui/forms/ui_options_player.py:61
-#, fuzzy
-#| msgid "Submit ratings to MusicBrainz"
 msgid "Submit listens to ListenBrainz"
-msgstr "Envia les puntuacions a MusicBrainz"
+msgstr "Envia les reproduccions a ListenBrainz"
 
 #: picard/ui/forms/ui_options_player.py:62
 msgid "Submit only tagged files"
-msgstr ""
+msgstr "Envia només els fitxers etiquetats"
 
 #: picard/ui/forms/ui_options_player.py:63
 msgid "ListenBrainz user token:"
-msgstr ""
+msgstr "Testimoni d'usuari de ListenBrainz:"
 
 #: picard/ui/forms/ui_options_player.py:65
 msgid ""
@@ -5232,6 +5255,10 @@ msgid ""
 "listenbrainz.org/settings/\"><span style=\" text-decoration: underline; "
 "color:#308cc6;\">ListenBrainz settings</span></a>.</p></body></html>"
 msgstr ""
+"<html><head/><body><p>Podeu trobar el t'estimoni d'usuari als <a "
+"href=\"https://listenbrainz.org/settings/\"><span style=\" text-decoration: "
+"underline; color:#308cc6;\">paràmetres de ListenBrainz</span></a>.</p></body>"
+"</html>"
 
 #: picard/ui/forms/ui_options_profiles.py:81
 msgid "Option Profile(s)"
@@ -7542,7 +7569,7 @@ msgstr "Valor per defecte del sistema"
 
 #: picard/ui/options/interface.py:143
 msgid "Reset tutorial and setup wizard…"
-msgstr ""
+msgstr "Reinicialitza el tutorial i l'assistent de configuració…"
 
 #: picard/ui/options/interface.py:195
 msgid "You have changed the application theme."
@@ -7571,16 +7598,16 @@ msgstr ""
 "Segur que voleu habilitar aquesta opció?"
 
 #: picard/ui/options/interface.py:238
-#, fuzzy
-#| msgid "Reset all"
 msgid "Reset Tutorial"
-msgstr "Reinicialitza-ho tot"
+msgstr "Reinicialitza el tutorial"
 
 #: picard/ui/options/interface.py:239
 msgid ""
 "This will reset the tutorial and setup wizard so they are shown again. "
 "Continue?"
 msgstr ""
+"Això reinicialitzarà el tutorial i l'assistent de configuració perquè es "
+"tornin a mostrar. Voleu continuar?"
 
 #: picard/ui/options/interface_colors.py:72
 msgid "Choose a color"
@@ -7873,10 +7900,8 @@ msgid "Network"
 msgstr "Xarxa"
 
 #: picard/ui/options/player.py:33
-#, fuzzy
-#| msgid "Player"
 msgid "Audio Player"
-msgstr "Reproductor"
+msgstr "Reproductor d'àudio"
 
 #: picard/ui/options/plugins.py:50
 msgid "Plugins"
@@ -8736,10 +8761,8 @@ msgid "View Repository"
 msgstr "Visualitza el repositori"
 
 #: picard/ui/widgets/pluginlistwidget.py:588
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report a Bug"
-msgstr "Info&rma d'un error…"
+msgstr "Informa d'un error"
 
 #: picard/ui/widgets/pluginlistwidget.py:594
 msgid "Execution Order"

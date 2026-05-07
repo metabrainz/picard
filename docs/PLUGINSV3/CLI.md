@@ -1114,9 +1114,111 @@ categories = ["metadata"]
 
 
 ### Update Workflow
+
 ```bash
 picard-plugins --check-updates
 picard-plugins --update-all
+```
+
+### Create a New Plugin
+
+**Command:** `picard-plugins --init [NAME]`
+
+**Description:** Create a new plugin project with all required files and a git
+repository.
+
+**Use cases:**
+
+- Scaffold a new plugin project interactively (no argument)
+- Create a plugin project non-interactively with a name
+
+**Generated files:**
+
+- `MANIFEST.toml` — Plugin metadata with a generated UUID
+- `__init__.py` — Plugin code with `enable()`/`disable()` stubs
+- `README.md` — Basic readme with plugin name
+- `.gitignore` — Python-specific ignore rules
+
+With `--with-translations`, the following are also generated or modified:
+
+- `MANIFEST.toml` includes `source_locale` and commented `[name_i18n]`/`[description_i18n]` sections
+- `__init__.py` includes `t_` and `api.tr()` usage examples
+- `locale/en.toml` — Source locale translation file
+
+A git repository is always initialized. In interactive mode, you are asked
+whether to create an initial commit. In non-interactive mode, the initial
+commit is created automatically.
+
+**Interactive mode prompts:**
+
+When run without a name (`picard-plugins --init`), the following prompts
+appear in order:
+
+1. Plugin name (required)
+2. Destination directory — shows computed default, can be overridden
+3. Author name — defaults to last used value or git config
+4. Author email — shown only if author is provided
+5. Short description
+6. Categories — comma-separated numbers for multiple (e.g. `1,3`)
+7. License — defaults to last used value or GPL-2.0-or-later
+8. Create initial git commit? — yes/no (default: yes)
+
+Author name, email, and license are persisted across runs.
+
+**Options:**
+
+| Flag | Description |
+|------|-------------|
+| `--target-dir NAME` | Override project directory name (relative to `--parent-dir`, default: `picard-plugin-<slug>`) |
+| `--parent-dir DIR` | Parent directory where the project is created (default: current directory) |
+| `--author NAME` | Author name for MANIFEST.toml |
+| `--category CATEGORY` | Plugin category (metadata, coverart, ui, etc.) |
+| `--with-translations` | Include translation support (locale files and examples) |
+| `--no-commit` | Skip initial git commit (works in both interactive and non-interactive modes) |
+
+**Examples:**
+
+```bash
+# Interactive mode - prompts for all fields
+picard-plugins --init
+
+# Non-interactive with just a name
+picard-plugins --init "My Cool Plugin"
+
+# Non-interactive with all options
+picard-plugins --init "My Cool Plugin" --author "Jane Doe" --category metadata
+
+# Create in a specific parent directory
+picard-plugins --init "My Cool Plugin" --parent-dir ~/dev
+
+# Override the directory name
+picard-plugins --init "My Cool Plugin" --target-dir my-plugin
+
+# Both: custom name inside custom parent (creates ~/dev/my-plugin)
+picard-plugins --init "My Cool Plugin" --parent-dir ~/dev --target-dir my-plugin
+
+# With translation support
+picard-plugins --init "My Cool Plugin" --with-translations
+
+# Skip initial git commit
+picard-plugins --init "My Cool Plugin" --no-commit
+```
+
+**Output:**
+
+```text
+✓ Created plugin My Cool Plugin in /home/user/picard-plugin-my-cool-plugin
+  MANIFEST.toml
+  __init__.py
+  README.md
+  .gitignore
+✓ Git repository initialized with initial commit
+
+Next steps:
+  cd /home/user/picard-plugin-my-cool-plugin
+  Edit __init__.py to add your plugin code
+  Edit MANIFEST.toml to update metadata
+  Run picard-plugins --validate . to check your plugin
 ```
 
 ### Testing Workflow

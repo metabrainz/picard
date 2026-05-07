@@ -4,13 +4,15 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # "Vac31." <gateway_31@protonmail.com>, 2023, 2024.
 # Vaclovas Intas <gateway_31@protonmail.com>, 2024, 2025.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-08-29 21:36+0000\n"
-"Last-Translator: Vaclovas Intas <gateway_31@protonmail.com>\n"
+"PO-Revision-Date: 2026-05-02 12:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Lithuanian <https://translations.metabrainz.org/projects/"
 "picard/3/constants/lt/>\n"
 "Language: lt\n"
@@ -20,7 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n % 10 == 1 && (n % 100 < 11 || n % 100 > "
 "19)) ? 0 : ((n % 10 >= 2 && n % 10 <= 9 && (n % 100 < 11 || n % 100 > 19)) ? "
 "1 : 2);\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -492,7 +494,7 @@ msgstr ""
 
 #: picard/const/locales.py:82
 msgid "Assamese"
-msgstr ""
+msgstr "asamių"
 
 #: picard/const/locales.py:83
 msgid "Assamese (India)"
@@ -508,7 +510,7 @@ msgstr "azu k. (Tanzanija)"
 
 #: picard/const/locales.py:86
 msgid "Asturian"
-msgstr ""
+msgstr "astūriečių"
 
 #: picard/const/locales.py:87
 msgid "Asturian (Spain)"
@@ -552,7 +554,7 @@ msgstr ""
 
 #: picard/const/locales.py:97
 msgid "Bashkir"
-msgstr ""
+msgstr "baškirų"
 
 #: picard/const/locales.py:98
 msgid "Bashkir (Russia)"
@@ -560,7 +562,7 @@ msgstr "Baškirų k. (Rusija)"
 
 #: picard/const/locales.py:99
 msgid "Baluchi"
-msgstr ""
+msgstr "balučių"
 
 #: picard/const/locales.py:100
 msgid "Baluchi (Arabic)"
@@ -600,7 +602,7 @@ msgstr ""
 
 #: picard/const/locales.py:109
 msgid "Bemba"
-msgstr ""
+msgstr "bembų"
 
 #: picard/const/locales.py:110
 msgid "Bemba (Zambia)"
@@ -616,7 +618,7 @@ msgstr ""
 
 #: picard/const/locales.py:113
 msgid "Bulgarian"
-msgstr ""
+msgstr "bulgarų"
 
 #: picard/const/locales.py:114
 msgid "Bulgarian (Bulgaria)"
@@ -656,7 +658,7 @@ msgstr ""
 
 #: picard/const/locales.py:123
 msgid "Bhojpuri"
-msgstr ""
+msgstr "bhojpurų"
 
 #: picard/const/locales.py:124
 msgid "Bhojpuri (India)"
@@ -672,7 +674,7 @@ msgstr ""
 
 #: picard/const/locales.py:127
 msgid "Bambara"
-msgstr ""
+msgstr "bambarų"
 
 #: picard/const/locales.py:128
 msgid "Bambara (Mali)"
@@ -700,7 +702,7 @@ msgstr ""
 
 #: picard/const/locales.py:134
 msgid "Tibetan"
-msgstr ""
+msgstr "tibeto"
 
 #: picard/const/locales.py:135
 msgid "Tibetan (China)"
@@ -712,7 +714,7 @@ msgstr ""
 
 #: picard/const/locales.py:137
 msgid "Breton"
-msgstr ""
+msgstr "bretonų"
 
 #: picard/const/locales.py:138
 msgid "Breton (France)"
@@ -724,11 +726,11 @@ msgstr ""
 
 #: picard/const/locales.py:140
 msgid "Bodo (India)"
-msgstr ""
+msgstr "bodų (Indija)"
 
 #: picard/const/locales.py:141
 msgid "Bosnian"
-msgstr ""
+msgstr "bosnių"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Cyrillic)"
@@ -756,7 +758,7 @@ msgstr ""
 
 #: picard/const/locales.py:148
 msgid "Blin"
-msgstr ""
+msgstr "blinų"
 
 #: picard/const/locales.py:149
 msgid "Blin (Eritrea)"
@@ -784,7 +786,7 @@ msgstr ""
 
 #: picard/const/locales.py:156
 msgid "Caddo"
-msgstr ""
+msgstr "kaddų"
 
 #: picard/const/locales.py:157
 msgid "Caddo (United States)"
@@ -800,7 +802,7 @@ msgstr ""
 
 #: picard/const/locales.py:160
 msgid "Chakma"
-msgstr ""
+msgstr "čakmų"
 
 #: picard/const/locales.py:161
 msgid "Chakma (Bangladesh)"
@@ -812,7 +814,7 @@ msgstr ""
 
 #: picard/const/locales.py:163
 msgid "Chechen"
-msgstr ""
+msgstr "čečėnų"
 
 #: picard/const/locales.py:164
 msgid "Chechen (Russia)"
@@ -820,7 +822,7 @@ msgstr ""
 
 #: picard/const/locales.py:165
 msgid "Cebuano"
-msgstr ""
+msgstr "sebuanų"
 
 #: picard/const/locales.py:166
 msgid "Cebuano (Philippines)"
@@ -836,7 +838,7 @@ msgstr ""
 
 #: picard/const/locales.py:169
 msgid "Choctaw"
-msgstr ""
+msgstr "čokotų"
 
 #: picard/const/locales.py:170
 msgid "Choctaw (United States)"
@@ -844,7 +846,7 @@ msgstr ""
 
 #: picard/const/locales.py:171
 msgid "Cherokee"
-msgstr ""
+msgstr "čerokių"
 
 #: picard/const/locales.py:172
 msgid "Cherokee (United States)"
@@ -872,7 +874,7 @@ msgstr ""
 
 #: picard/const/locales.py:178
 msgid "Corsican"
-msgstr ""
+msgstr "korsikiečių"
 
 #: picard/const/locales.py:179
 msgid "Corsican (France)"
@@ -884,7 +886,7 @@ msgstr ""
 
 #: picard/const/locales.py:182
 msgid "Church Slavic"
-msgstr ""
+msgstr "bažnyčios slavų"
 
 #: picard/const/locales.py:183
 msgid "Church Slavic (Russia)"
@@ -892,7 +894,7 @@ msgstr ""
 
 #: picard/const/locales.py:184
 msgid "Chuvash"
-msgstr ""
+msgstr "čuvašų"
 
 #: picard/const/locales.py:185
 msgid "Chuvash (Russia)"
@@ -900,7 +902,7 @@ msgstr ""
 
 #: picard/const/locales.py:186
 msgid "Welsh"
-msgstr ""
+msgstr "velsiečių"
 
 #: picard/const/locales.py:187
 msgid "Welsh (United Kingdom)"
@@ -952,7 +954,7 @@ msgstr "Vokiečių k. (Liuksemburgas)"
 
 #: picard/const/locales.py:201
 msgid "Zarma"
-msgstr ""
+msgstr "zarmų"
 
 #: picard/const/locales.py:202
 msgid "Zarma (Niger)"
@@ -960,7 +962,7 @@ msgstr ""
 
 #: picard/const/locales.py:203
 msgid "Dogri"
-msgstr ""
+msgstr "dogrų"
 
 #: picard/const/locales.py:204
 msgid "Dogri (India)"
@@ -976,7 +978,7 @@ msgstr ""
 
 #: picard/const/locales.py:207
 msgid "Duala"
-msgstr ""
+msgstr "dualų"
 
 #: picard/const/locales.py:208
 msgid "Duala (Cameroon)"
@@ -984,7 +986,7 @@ msgstr ""
 
 #: picard/const/locales.py:209
 msgid "Divehi"
-msgstr ""
+msgstr "maldyvų"
 
 #: picard/const/locales.py:210
 msgid "Divehi (Maldives)"
@@ -1000,7 +1002,7 @@ msgstr ""
 
 #: picard/const/locales.py:213
 msgid "Dzongkha"
-msgstr ""
+msgstr "botijų"
 
 #: picard/const/locales.py:214
 msgid "Dzongkha (Bhutan)"
@@ -1016,7 +1018,7 @@ msgstr ""
 
 #: picard/const/locales.py:217
 msgid "Ewe"
-msgstr ""
+msgstr "evių"
 
 #: picard/const/locales.py:218
 msgid "Ewe (Ghana)"
@@ -1468,7 +1470,7 @@ msgstr ""
 
 #: picard/const/locales.py:335
 msgid "Esperanto"
-msgstr ""
+msgstr "esperanto"
 
 #: picard/const/locales.py:336
 msgid "Esperanto (world)"
@@ -1592,7 +1594,7 @@ msgstr ""
 
 #: picard/const/locales.py:368
 msgid "Basque"
-msgstr ""
+msgstr "baskų"
 
 #: picard/const/locales.py:369
 msgid "Basque (Spain)"
@@ -1600,7 +1602,7 @@ msgstr ""
 
 #: picard/const/locales.py:370
 msgid "Ewondo"
-msgstr ""
+msgstr "evondų"
 
 #: picard/const/locales.py:371
 msgid "Ewondo (Cameroon)"
@@ -1732,7 +1734,7 @@ msgstr ""
 
 #: picard/const/locales.py:404
 msgid "Filipino"
-msgstr ""
+msgstr "filipinų"
 
 #: picard/const/locales.py:405
 msgid "Filipino (Philippines)"
@@ -1740,7 +1742,7 @@ msgstr ""
 
 #: picard/const/locales.py:406
 msgid "Faroese"
-msgstr ""
+msgstr "farerų"
 
 #: picard/const/locales.py:407
 msgid "Faroese (Denmark)"
@@ -1940,7 +1942,7 @@ msgstr ""
 
 #: picard/const/locales.py:458
 msgid "Friulian"
-msgstr ""
+msgstr "friulų"
 
 #: picard/const/locales.py:459
 msgid "Friulian (Italy)"
@@ -1956,7 +1958,7 @@ msgstr ""
 
 #: picard/const/locales.py:462
 msgid "Irish"
-msgstr ""
+msgstr "airių"
 
 #: picard/const/locales.py:463
 msgid "Irish (United Kingdom)"
@@ -1968,7 +1970,7 @@ msgstr ""
 
 #: picard/const/locales.py:465
 msgid "Ga"
-msgstr ""
+msgstr "ga"
 
 #: picard/const/locales.py:466
 msgid "Ga (Ghana)"
@@ -1984,7 +1986,7 @@ msgstr ""
 
 #: picard/const/locales.py:469
 msgid "Geez"
-msgstr ""
+msgstr "gezo"
 
 #: picard/const/locales.py:470
 msgid "Geez (Eritrea)"
@@ -2000,7 +2002,7 @@ msgstr ""
 
 #: picard/const/locales.py:474
 msgid "Guarani"
-msgstr ""
+msgstr "gvaranių"
 
 #: picard/const/locales.py:475
 msgid "Guarani (Paraguay)"
@@ -2024,7 +2026,7 @@ msgstr ""
 
 #: picard/const/locales.py:480
 msgid "Gujarati"
-msgstr ""
+msgstr "gudžaratų"
 
 #: picard/const/locales.py:481
 msgid "Gujarati (India)"
@@ -2040,7 +2042,7 @@ msgstr ""
 
 #: picard/const/locales.py:484
 msgid "Manx"
-msgstr ""
+msgstr "Manksų"
 
 #: picard/const/locales.py:485
 msgid "Manx (Isle of Man)"
@@ -2048,7 +2050,7 @@ msgstr ""
 
 #: picard/const/locales.py:486
 msgid "Hausa"
-msgstr ""
+msgstr "hausų"
 
 #: picard/const/locales.py:487
 msgid "Hausa (Arabic)"
@@ -2096,7 +2098,7 @@ msgstr ""
 
 #: picard/const/locales.py:498
 msgid "Hawaiian"
-msgstr ""
+msgstr "havajiečių"
 
 #: picard/const/locales.py:499
 msgid "Hawaiian (United States)"
@@ -2108,7 +2110,7 @@ msgstr ""
 
 #: picard/const/locales.py:502
 msgid "Hindi"
-msgstr ""
+msgstr "hindų"
 
 #: picard/const/locales.py:503
 msgid "Hindi (India)"
@@ -2136,7 +2138,7 @@ msgstr ""
 
 #: picard/const/locales.py:509
 msgid "Croatian"
-msgstr ""
+msgstr "kroatų"
 
 #: picard/const/locales.py:510
 msgid "Croatian (Bosnia & Herzegovina)"
@@ -2160,7 +2162,7 @@ msgstr ""
 
 #: picard/const/locales.py:516
 msgid "Armenian"
-msgstr ""
+msgstr "armėnų"
 
 #: picard/const/locales.py:517
 msgid "Armenian (Armenia)"
@@ -2172,7 +2174,7 @@ msgstr ""
 
 #: picard/const/locales.py:519
 msgid "Interlingua"
-msgstr ""
+msgstr "interlingva"
 
 #: picard/const/locales.py:520
 msgid "Interlingua (world)"
@@ -2180,7 +2182,7 @@ msgstr ""
 
 #: picard/const/locales.py:521
 msgid "Indonesian"
-msgstr ""
+msgstr "indoneziečių"
 
 #: picard/const/locales.py:522
 msgid "Indonesian (Indonesia)"
@@ -2188,7 +2190,7 @@ msgstr ""
 
 #: picard/const/locales.py:523
 msgid "Igbo"
-msgstr ""
+msgstr "igbų"
 
 #: picard/const/locales.py:524
 msgid "Igbo (Nigeria)"
@@ -2204,7 +2206,7 @@ msgstr ""
 
 #: picard/const/locales.py:527
 msgid "Ido"
-msgstr ""
+msgstr "ido"
 
 #: picard/const/locales.py:528
 msgid "Ido (world)"
@@ -2232,7 +2234,7 @@ msgstr ""
 
 #: picard/const/locales.py:536
 msgid "Inuktitut"
-msgstr ""
+msgstr "inuktitutas"
 
 #: picard/const/locales.py:537
 msgid "Inuktitut (Canada)"
@@ -2252,7 +2254,7 @@ msgstr ""
 
 #: picard/const/locales.py:542
 msgid "Lojban"
-msgstr ""
+msgstr "Ložbanų"
 
 #: picard/const/locales.py:543
 msgid "Lojban (world)"
@@ -2276,7 +2278,7 @@ msgstr ""
 
 #: picard/const/locales.py:548
 msgid "Javanese"
-msgstr ""
+msgstr "javanų"
 
 #: picard/const/locales.py:549
 msgid "Javanese (Indonesia)"
@@ -2284,7 +2286,7 @@ msgstr ""
 
 #: picard/const/locales.py:550
 msgid "Georgian"
-msgstr ""
+msgstr "gruzinų"
 
 #: picard/const/locales.py:551
 msgid "Georgian (Georgia)"
@@ -2292,7 +2294,7 @@ msgstr ""
 
 #: picard/const/locales.py:552
 msgid "Kabyle"
-msgstr ""
+msgstr "kabilų"
 
 #: picard/const/locales.py:553
 msgid "Kabyle (Algeria)"
@@ -2308,7 +2310,7 @@ msgstr ""
 
 #: picard/const/locales.py:556
 msgid "Kamba"
-msgstr ""
+msgstr "kambų"
 
 #: picard/const/locales.py:557
 msgid "Kamba (Kenya)"
@@ -2332,7 +2334,7 @@ msgstr ""
 
 #: picard/const/locales.py:562
 msgid "Kabuverdianu"
-msgstr ""
+msgstr "kabuverdianų"
 
 #: picard/const/locales.py:563
 msgid "Kabuverdianu (Cape Verde)"
@@ -2372,7 +2374,7 @@ msgstr ""
 
 #: picard/const/locales.py:572
 msgid "Kikuyu"
-msgstr ""
+msgstr "kikujų"
 
 #: picard/const/locales.py:573
 msgid "Kikuyu (Kenya)"
@@ -2380,7 +2382,7 @@ msgstr ""
 
 #: picard/const/locales.py:574
 msgid "Kazakh"
-msgstr ""
+msgstr "kazachų"
 
 #: picard/const/locales.py:575
 msgid "Kazakh (Cyrillic)"
@@ -2420,7 +2422,7 @@ msgstr ""
 
 #: picard/const/locales.py:584
 msgid "Khmer"
-msgstr ""
+msgstr "khmerų"
 
 #: picard/const/locales.py:585
 msgid "Khmer (Cambodia)"
@@ -2428,7 +2430,7 @@ msgstr ""
 
 #: picard/const/locales.py:586
 msgid "Kannada"
-msgstr ""
+msgstr "kanadų"
 
 #: picard/const/locales.py:587
 msgid "Kannada (India)"
@@ -2444,7 +2446,7 @@ msgstr ""
 
 #: picard/const/locales.py:591
 msgid "Konkani"
-msgstr ""
+msgstr "konkanų"
 
 #: picard/const/locales.py:592
 msgid "Konkani (India)"
@@ -2452,7 +2454,7 @@ msgstr ""
 
 #: picard/const/locales.py:593
 msgid "Kpelle"
-msgstr ""
+msgstr "kpelių"
 
 #: picard/const/locales.py:594
 msgid "Kpelle (Guinea)"
@@ -2464,7 +2466,7 @@ msgstr ""
 
 #: picard/const/locales.py:596
 msgid "Kashmiri"
-msgstr ""
+msgstr "kašmyrų"
 
 #: picard/const/locales.py:597
 msgid "Kashmiri (Arabic)"
@@ -2508,7 +2510,7 @@ msgstr ""
 
 #: picard/const/locales.py:607
 msgid "Kurdish"
-msgstr ""
+msgstr "Kurdų"
 
 #: picard/const/locales.py:608
 msgid "Kurdish (Türkiye)"
@@ -2516,7 +2518,7 @@ msgstr ""
 
 #: picard/const/locales.py:609
 msgid "Cornish"
-msgstr ""
+msgstr "kornų"
 
 #: picard/const/locales.py:610
 msgid "Cornish (United Kingdom)"
@@ -2572,7 +2574,7 @@ msgstr ""
 
 #: picard/const/locales.py:623
 msgid "Lakota"
-msgstr ""
+msgstr "Lakotų"
 
 #: picard/const/locales.py:624
 msgid "Lakota (United States)"
@@ -2588,7 +2590,7 @@ msgstr ""
 
 #: picard/const/locales.py:627
 msgid "Lingala"
-msgstr ""
+msgstr "Lingalų"
 
 #: picard/const/locales.py:628
 msgid "Lingala (Angola)"
@@ -2608,7 +2610,7 @@ msgstr ""
 
 #: picard/const/locales.py:632
 msgid "Lao"
-msgstr ""
+msgstr "laosų"
 
 #: picard/const/locales.py:633
 msgid "Lao (Laos)"
@@ -2632,7 +2634,7 @@ msgstr ""
 
 #: picard/const/locales.py:639
 msgid "Luba-Katanga"
-msgstr ""
+msgstr "Luba katangų"
 
 #: picard/const/locales.py:640
 msgid "Luba-Katanga (Congo - Kinshasa)"
@@ -2640,7 +2642,7 @@ msgstr ""
 
 #: picard/const/locales.py:641
 msgid "Luo"
-msgstr ""
+msgstr "Lumių"
 
 #: picard/const/locales.py:642
 msgid "Luo (Kenya)"
@@ -2648,7 +2650,7 @@ msgstr ""
 
 #: picard/const/locales.py:643
 msgid "Luyia"
-msgstr ""
+msgstr "Lujų"
 
 #: picard/const/locales.py:644
 msgid "Luyia (Kenya)"
@@ -2656,7 +2658,7 @@ msgstr ""
 
 #: picard/const/locales.py:645
 msgid "Latvian"
-msgstr ""
+msgstr "Latvių"
 
 #: picard/const/locales.py:646
 msgid "Latvian (Latvia)"
@@ -2664,7 +2666,7 @@ msgstr ""
 
 #: picard/const/locales.py:647
 msgid "Maithili"
-msgstr ""
+msgstr "Maithilių"
 
 #: picard/const/locales.py:648
 msgid "Maithili (India)"
@@ -2672,7 +2674,7 @@ msgstr ""
 
 #: picard/const/locales.py:649
 msgid "Masai"
-msgstr ""
+msgstr "Masajų"
 
 #: picard/const/locales.py:650
 msgid "Masai (Kenya)"
@@ -2684,7 +2686,7 @@ msgstr ""
 
 #: picard/const/locales.py:652
 msgid "Moksha"
-msgstr ""
+msgstr "Mokošų"
 
 #: picard/const/locales.py:653
 msgid "Moksha (Russia)"
@@ -2708,7 +2710,7 @@ msgstr ""
 
 #: picard/const/locales.py:658
 msgid "Malagasy"
-msgstr ""
+msgstr "Malagasių"
 
 #: picard/const/locales.py:659
 msgid "Malagasy (Madagascar)"
@@ -2740,7 +2742,7 @@ msgstr ""
 
 #: picard/const/locales.py:666
 msgid "Macedonian"
-msgstr ""
+msgstr "Makedoniečių"
 
 #: picard/const/locales.py:667
 msgid "Macedonian (North Macedonia)"
@@ -2748,7 +2750,7 @@ msgstr ""
 
 #: picard/const/locales.py:668
 msgid "Malayalam"
-msgstr ""
+msgstr "malajalamų"
 
 #: picard/const/locales.py:669
 msgid "Malayalam (India)"
@@ -2756,7 +2758,7 @@ msgstr ""
 
 #: picard/const/locales.py:670
 msgid "Mongolian"
-msgstr ""
+msgstr "mongolų"
 
 #: picard/const/locales.py:671
 msgid "Mongolian (Cyrillic)"
@@ -2784,7 +2786,7 @@ msgstr ""
 
 #: picard/const/locales.py:677
 msgid "Manipuri"
-msgstr ""
+msgstr "Manipurų"
 
 #: picard/const/locales.py:678
 msgid "Manipuri (Bangla)"
@@ -2804,7 +2806,7 @@ msgstr ""
 
 #: picard/const/locales.py:682
 msgid "Mohawk"
-msgstr ""
+msgstr "Mohavkų"
 
 #: picard/const/locales.py:683
 msgid "Mohawk (Canada)"
@@ -2812,7 +2814,7 @@ msgstr ""
 
 #: picard/const/locales.py:684
 msgid "Marathi"
-msgstr ""
+msgstr "Maratų"
 
 #: picard/const/locales.py:685
 msgid "Marathi (India)"
@@ -2820,7 +2822,7 @@ msgstr ""
 
 #: picard/const/locales.py:686
 msgid "Malay"
-msgstr ""
+msgstr "Malajiečių"
 
 #: picard/const/locales.py:687
 msgid "Malay (Arabic)"
@@ -2848,7 +2850,7 @@ msgstr ""
 
 #: picard/const/locales.py:694
 msgid "Maltese"
-msgstr ""
+msgstr "Maltiečių"
 
 #: picard/const/locales.py:695
 msgid "Maltese (Malta)"
@@ -2872,7 +2874,7 @@ msgstr ""
 
 #: picard/const/locales.py:700
 msgid "Burmese"
-msgstr ""
+msgstr "birmiečių"
 
 #: picard/const/locales.py:701
 msgid "Burmese (Myanmar (Burma))"
@@ -2880,7 +2882,7 @@ msgstr ""
 
 #: picard/const/locales.py:702
 msgid "Erzya"
-msgstr ""
+msgstr "erzių"
 
 #: picard/const/locales.py:703
 msgid "Erzya (Russia)"
@@ -3032,7 +3034,7 @@ msgstr ""
 
 #: picard/const/locales.py:742
 msgid "Navajo"
-msgstr ""
+msgstr "Navahų"
 
 #: picard/const/locales.py:743
 msgid "Navajo (United States)"
@@ -3364,7 +3366,7 @@ msgstr ""
 
 #: picard/const/locales.py:831
 msgid "Yakut"
-msgstr ""
+msgstr "jakutų"
 
 #: picard/const/locales.py:832
 msgid "Yakut (Russia)"
@@ -3528,7 +3530,7 @@ msgstr ""
 
 #: picard/const/locales.py:872
 msgid "Sinhala"
-msgstr ""
+msgstr "sinhalų"
 
 #: picard/const/locales.py:873
 msgid "Sinhala (Sri Lanka)"
@@ -3708,7 +3710,7 @@ msgstr ""
 
 #: picard/const/locales.py:920
 msgid "Sundanese"
-msgstr ""
+msgstr "sundaniečių"
 
 #: picard/const/locales.py:921
 msgid "Sundanese (Latin)"
@@ -3752,7 +3754,7 @@ msgstr ""
 
 #: picard/const/locales.py:932
 msgid "Syriac"
-msgstr ""
+msgstr "sirų"
 
 #: picard/const/locales.py:933
 msgid "Syriac (Iraq)"
@@ -3772,7 +3774,7 @@ msgstr ""
 
 #: picard/const/locales.py:937
 msgid "Tamil"
-msgstr ""
+msgstr "tamlių"
 
 #: picard/const/locales.py:938
 msgid "Tamil (India)"
@@ -3792,7 +3794,7 @@ msgstr ""
 
 #: picard/const/locales.py:942
 msgid "Telugu"
-msgstr ""
+msgstr "telugų"
 
 #: picard/const/locales.py:943
 msgid "Telugu (India)"
@@ -3828,7 +3830,7 @@ msgstr ""
 
 #: picard/const/locales.py:951 picard/const/scripts.py:41
 msgid "Thai"
-msgstr ""
+msgstr "tajų"
 
 #: picard/const/locales.py:952
 msgid "Thai (Thailand)"
@@ -3856,7 +3858,7 @@ msgstr ""
 
 #: picard/const/locales.py:958
 msgid "Turkmen"
-msgstr ""
+msgstr "Turkmėnų"
 
 #: picard/const/locales.py:959
 msgid "Turkmen (Turkmenistan)"
@@ -3864,7 +3866,7 @@ msgstr ""
 
 #: picard/const/locales.py:960
 msgid "Tswana"
-msgstr ""
+msgstr "Tsvanų"
 
 #: picard/const/locales.py:961
 msgid "Tswana (Botswana)"
@@ -3884,7 +3886,7 @@ msgstr ""
 
 #: picard/const/locales.py:965
 msgid "Toki Pona"
-msgstr ""
+msgstr "Toki ponų"
 
 #: picard/const/locales.py:966
 msgid "Toki Pona (world)"
@@ -3892,7 +3894,7 @@ msgstr ""
 
 #: picard/const/locales.py:967
 msgid "Tok Pisin"
-msgstr ""
+msgstr "Tok pisinų"
 
 #: picard/const/locales.py:968
 msgid "Tok Pisin (Papua New Guinea)"
@@ -4072,7 +4074,7 @@ msgstr ""
 
 #: picard/const/locales.py:1014
 msgid "Walloon"
-msgstr ""
+msgstr "valonų"
 
 #: picard/const/locales.py:1015
 msgid "Walloon (Belgium)"
@@ -4096,7 +4098,7 @@ msgstr ""
 
 #: picard/const/locales.py:1020
 msgid "Warlpiri"
-msgstr ""
+msgstr "varlpirių"
 
 #: picard/const/locales.py:1021
 msgid "Warlpiri (Australia)"
@@ -4112,7 +4114,7 @@ msgstr ""
 
 #: picard/const/locales.py:1024
 msgid "Xhosa"
-msgstr ""
+msgstr "ksosų"
 
 #: picard/const/locales.py:1025
 msgid "Xhosa (South Africa)"
@@ -4344,7 +4346,7 @@ msgstr ""
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr ""
+msgstr "Albumo atlikėjo rikiavimo tvarka"
 
 #: picard/const/tags.py:102
 msgid ""
@@ -4402,7 +4404,7 @@ msgstr ""
 
 #: picard/const/tags.py:145
 msgid "Artists"
-msgstr ""
+msgstr "Atlikėjai"
 
 #: picard/const/tags.py:147
 msgid ""
@@ -4425,7 +4427,7 @@ msgstr ""
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr ""
+msgstr "Atlikėjo rikiavimo tvarka"
 
 #: picard/const/tags.py:168
 msgid ""
@@ -4443,7 +4445,7 @@ msgstr ""
 
 #: picard/const/tags.py:180
 msgid "ASIN"
-msgstr ""
+msgstr "ASIN"
 
 #: picard/const/tags.py:181
 msgid ""
@@ -4453,7 +4455,7 @@ msgstr ""
 
 #: picard/const/tags.py:186
 msgid "Barcode"
-msgstr ""
+msgstr "Brūkšninis kodas"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
@@ -4469,7 +4471,7 @@ msgstr ""
 
 #: picard/const/tags.py:199
 msgid "BPM"
-msgstr ""
+msgstr "BPM (beatai per minutę)"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
@@ -4493,7 +4495,7 @@ msgstr ""
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
-msgstr ""
+msgstr "Katalogo numeris"
 
 #: picard/const/tags.py:227
 msgid ""
@@ -4512,7 +4514,7 @@ msgstr ""
 
 #: picard/const/tags.py:245
 msgid "Comment"
-msgstr ""
+msgstr "Komentaras"
 
 #: picard/const/tags.py:247
 msgid ""
@@ -4522,7 +4524,7 @@ msgstr ""
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
-msgstr ""
+msgstr "Rinkinys („iTunes“)"
 
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
@@ -4530,7 +4532,7 @@ msgstr ""
 
 #: picard/const/tags.py:260
 msgid "Composer"
-msgstr ""
+msgstr "Kompozitorius"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
@@ -4538,7 +4540,7 @@ msgstr ""
 
 #: picard/const/tags.py:267
 msgid "Composer Sort Order"
-msgstr ""
+msgstr "Kompozitoriaus rikiavimo tvarka"
 
 #: picard/const/tags.py:268
 msgid "The sort names of the composers for the associated work."
@@ -4546,7 +4548,7 @@ msgstr ""
 
 #: picard/const/tags.py:273
 msgid "Conductor"
-msgstr ""
+msgstr "Dirigentas"
 
 #: picard/const/tags.py:275
 msgid ""
@@ -4557,7 +4559,7 @@ msgstr ""
 
 #: picard/const/tags.py:283
 msgid "Copyright"
-msgstr ""
+msgstr "Autorinės teisės"
 
 #: picard/const/tags.py:285
 msgid ""
@@ -4575,7 +4577,7 @@ msgstr ""
 
 #: picard/const/tags.py:299
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
@@ -4584,7 +4586,7 @@ msgstr ""
 
 #: picard/const/tags.py:305
 msgid "Director"
-msgstr ""
+msgstr "Režisierius"
 
 #: picard/const/tags.py:307
 msgid ""
@@ -4624,7 +4626,7 @@ msgstr ""
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
-msgstr ""
+msgstr "Disko numeris"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
@@ -4641,7 +4643,7 @@ msgstr ""
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
-msgstr ""
+msgstr "Disko popavadinimas"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
@@ -4649,7 +4651,7 @@ msgstr ""
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
-msgstr ""
+msgstr "DJ miksuotojas"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
@@ -4657,7 +4659,7 @@ msgstr ""
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
-msgstr ""
+msgstr "Užkoduota pagal"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
@@ -4665,7 +4667,7 @@ msgstr ""
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
-msgstr ""
+msgstr "Koderio nustatymai"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
@@ -4673,7 +4675,7 @@ msgstr ""
 
 #: picard/const/tags.py:380
 msgid "Engineer"
-msgstr ""
+msgstr "Muzikos inžinierius"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
@@ -4741,7 +4743,7 @@ msgstr ""
 
 #: picard/const/tags.py:454
 msgid "Gapless Playback"
-msgstr ""
+msgstr "Be tarpų įrašo peržiūra"
 
 #: picard/const/tags.py:455
 msgid ""
@@ -4751,7 +4753,7 @@ msgstr ""
 
 #: picard/const/tags.py:460
 msgid "Genre"
-msgstr ""
+msgstr "Žanras"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
@@ -4759,7 +4761,7 @@ msgstr ""
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr ""
+msgstr "Grupavimas"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
@@ -4767,7 +4769,7 @@ msgstr ""
 
 #: picard/const/tags.py:475
 msgid "ISRC"
-msgstr ""
+msgstr "ISRC"
 
 #: picard/const/tags.py:477
 msgid ""
@@ -4778,7 +4780,7 @@ msgstr ""
 
 #: picard/const/tags.py:485
 msgid "Key"
-msgstr ""
+msgstr "Tonacija"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
@@ -4786,7 +4788,7 @@ msgstr ""
 
 #: picard/const/tags.py:491
 msgid "Record Label"
-msgstr ""
+msgstr "Įrašų leidykla"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
@@ -4804,7 +4806,7 @@ msgstr ""
 
 #: picard/const/tags.py:504
 msgid "Length"
-msgstr ""
+msgstr "Ilgis"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
@@ -4812,7 +4814,7 @@ msgstr ""
 
 #: picard/const/tags.py:511
 msgid "License"
-msgstr ""
+msgstr "Licencija"
 
 #: picard/const/tags.py:512
 msgid ""
@@ -4822,7 +4824,7 @@ msgstr ""
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
-msgstr ""
+msgstr "Dainos žodžių kūrėjas"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
@@ -4838,7 +4840,7 @@ msgstr ""
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
-msgstr ""
+msgstr "Dainos žodžiai"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
@@ -4846,7 +4848,7 @@ msgstr ""
 
 #: picard/const/tags.py:537
 msgid "Media"
-msgstr ""
+msgstr "Medija"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
@@ -4854,7 +4856,7 @@ msgstr ""
 
 #: picard/const/tags.py:543
 msgid "Mixer"
-msgstr ""
+msgstr "Suvedėjas"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
@@ -4862,7 +4864,7 @@ msgstr ""
 
 #: picard/const/tags.py:550
 msgid "Mood"
-msgstr ""
+msgstr "Nuotaika"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
@@ -4870,7 +4872,7 @@ msgstr ""
 
 #: picard/const/tags.py:556
 msgid "Movement"
-msgstr ""
+msgstr "Dalis"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
@@ -4878,7 +4880,7 @@ msgstr ""
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
-msgstr ""
+msgstr "Dalies numeris"
 
 #: picard/const/tags.py:564
 msgid ""
@@ -4888,7 +4890,7 @@ msgstr ""
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
-msgstr ""
+msgstr "Dalies skaičius"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
@@ -5026,7 +5028,7 @@ msgstr ""
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
-msgstr ""
+msgstr "„MusicIP“ atspaudas"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
@@ -5034,7 +5036,7 @@ msgstr ""
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
-msgstr ""
+msgstr "„MusicIP“ PUID"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
@@ -5042,7 +5044,7 @@ msgstr ""
 
 #: picard/const/tags.py:685
 msgid "Original Album"
-msgstr ""
+msgstr "Originalus albumas"
 
 #: picard/const/tags.py:687
 msgid ""
@@ -5052,7 +5054,7 @@ msgstr ""
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
-msgstr ""
+msgstr "Originalus atlikėjas"
 
 #: picard/const/tags.py:696
 msgid ""
@@ -5062,7 +5064,7 @@ msgstr ""
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
-msgstr ""
+msgstr "Originali leidinio data"
 
 #: picard/const/tags.py:705
 msgid ""
@@ -5076,7 +5078,7 @@ msgstr ""
 
 #: picard/const/tags.py:713
 msgid "Original Filename"
-msgstr ""
+msgstr "Originalus failo pavadinimas"
 
 #: picard/const/tags.py:714
 msgid "The original name of the audio file."
@@ -5084,7 +5086,7 @@ msgstr ""
 
 #: picard/const/tags.py:719
 msgid "Original Year"
-msgstr ""
+msgstr "Originalūs metai"
 
 #: picard/const/tags.py:721
 msgid ""
@@ -5111,7 +5113,7 @@ msgstr ""
 
 #: picard/const/tags.py:740
 msgid "Performer"
-msgstr ""
+msgstr "Muzikos atlikėjas"
 
 #: picard/const/tags.py:742
 msgid ""
@@ -5127,7 +5129,7 @@ msgstr ""
 
 #: picard/const/tags.py:753
 msgid "Podcast"
-msgstr ""
+msgstr "Tinklalaidė"
 
 #: picard/const/tags.py:754
 msgid "Indicates whether or not the recording is a podcast."
@@ -5135,7 +5137,7 @@ msgstr ""
 
 #: picard/const/tags.py:759
 msgid "Podcast URL"
-msgstr ""
+msgstr "Tinklalaidės URL"
 
 #: picard/const/tags.py:760
 msgid "The associated URL if the recording is a podcast."
@@ -5165,7 +5167,7 @@ msgstr ""
 
 #: picard/const/tags.py:781
 msgid "Producer"
-msgstr ""
+msgstr "Prodiuseris"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
@@ -5173,7 +5175,7 @@ msgstr ""
 
 #: picard/const/tags.py:788
 msgid "R128 Album Gain"
-msgstr ""
+msgstr "„R128“ albumo stiprinimas"
 
 #: picard/const/tags.py:789
 msgid ""
@@ -5182,7 +5184,7 @@ msgstr ""
 
 #: picard/const/tags.py:795
 msgid "R128 Track Gain"
-msgstr ""
+msgstr "„R128“ takelio stiprinimas"
 
 #: picard/const/tags.py:796
 msgid ""
@@ -5284,7 +5286,7 @@ msgstr ""
 
 #: picard/const/tags.py:879
 msgid "Release Country"
-msgstr ""
+msgstr "Leidinio šalis"
 
 #: picard/const/tags.py:881
 msgid ""
@@ -5295,7 +5297,7 @@ msgstr ""
 
 #: picard/const/tags.py:888
 msgid "Release Date"
-msgstr ""
+msgstr "Leidinio data"
 
 #: picard/const/tags.py:891
 #, python-format
@@ -5409,7 +5411,7 @@ msgstr ""
 
 #: picard/const/tags.py:989
 msgid "Release Status"
-msgstr ""
+msgstr "Leidinio būsena"
 
 #: picard/const/tags.py:991
 msgid ""
@@ -5420,7 +5422,7 @@ msgstr ""
 
 #: picard/const/tags.py:998
 msgid "Release Type"
-msgstr ""
+msgstr "Leidinio tipas"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
@@ -5428,7 +5430,7 @@ msgstr ""
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
-msgstr ""
+msgstr "Remiksuotojas"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
@@ -5436,7 +5438,7 @@ msgstr ""
 
 #: picard/const/tags.py:1014
 msgid "ReplayGain Album Gain"
-msgstr ""
+msgstr "„ReplayGain“ albumo stiprinimas"
 
 #: picard/const/tags.py:1015
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
@@ -5444,7 +5446,7 @@ msgstr ""
 
 #: picard/const/tags.py:1021
 msgid "ReplayGain Album Peak"
-msgstr ""
+msgstr "„ReplayGain“ albumo pikas"
 
 #: picard/const/tags.py:1022
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
@@ -5452,7 +5454,7 @@ msgstr ""
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr ""
+msgstr "„ReplayGain“ albumo rėžis"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
@@ -5460,7 +5462,7 @@ msgstr ""
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
-msgstr ""
+msgstr "„ReplayGain“ patariamojo garsumas"
 
 #: picard/const/tags.py:1036
 msgid ""
@@ -5470,7 +5472,7 @@ msgstr ""
 
 #: picard/const/tags.py:1042
 msgid "ReplayGain Track Gain"
-msgstr ""
+msgstr "„ReplayGain“ takelio stiprinimas"
 
 #: picard/const/tags.py:1043
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
@@ -5478,7 +5480,7 @@ msgstr ""
 
 #: picard/const/tags.py:1049
 msgid "ReplayGain Track Peak"
-msgstr ""
+msgstr "„ReplayGain“ takelio pikas"
 
 #: picard/const/tags.py:1050
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
@@ -5486,7 +5488,7 @@ msgstr ""
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
-msgstr ""
+msgstr "„ReplayGain“ takelio rėžis"
 
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
@@ -5534,7 +5536,7 @@ msgstr ""
 
 #: picard/const/tags.py:1102
 msgid "Show Name"
-msgstr ""
+msgstr "Šou pavadinimas"
 
 #: picard/const/tags.py:1103
 msgid ""
@@ -5544,7 +5546,7 @@ msgstr ""
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
-msgstr ""
+msgstr "Šou kūrinys ir dalis"
 
 #: picard/const/tags.py:1110
 msgid ""
@@ -5561,7 +5563,7 @@ msgstr ""
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr ""
+msgstr "Šou pavadinimo rikiavimo tvarka"
 
 #: picard/const/tags.py:1122
 msgid ""
@@ -5571,7 +5573,7 @@ msgstr ""
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
-msgstr ""
+msgstr "Popavadinimas"
 
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
@@ -5587,7 +5589,7 @@ msgstr ""
 
 #: picard/const/tags.py:1139
 msgid "Title"
-msgstr ""
+msgstr "Pavadinimas"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
@@ -5595,7 +5597,7 @@ msgstr ""
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
-msgstr ""
+msgstr "Pavadinimo rikiavimo tvarka"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
@@ -5611,7 +5613,7 @@ msgstr ""
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
-msgstr ""
+msgstr "Iš viso diskų"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
@@ -5619,7 +5621,7 @@ msgstr ""
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
-msgstr ""
+msgstr "Iš viso takelių"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."

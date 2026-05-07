@@ -58,7 +58,7 @@ class NetworkOptionsPage(OptionsPage):
         super().__init__(parent=parent)
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
-        set_widget_fixed_width_for_text(self.ui.network_cache_size, "99999")
+        set_widget_fixed_width_for_text(self.ui.network_cache_size, "99999", padding=12)
 
     def load(self):
         config = get_config()
