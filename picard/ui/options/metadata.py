@@ -66,7 +66,7 @@ def iter_sorted_locales(locales):
     generic_names = []
     grouped_locales = {}
     for locale, name in locales.items():
-        name = _(name)
+        name = gettext_constants(name)
         generic_locale = locale.split('_', 1)[0]
         if generic_locale == locale:
             generic_names.append((name, generic_locale))
