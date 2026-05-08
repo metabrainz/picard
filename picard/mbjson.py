@@ -290,12 +290,11 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
 
 def _locales_from_aliases(
     aliases: list[dict[str, Any]],
-) -> tuple[dict[str, AliasMatch], dict[str, AliasMatch]]:
+) -> dict[str, AliasMatch]:
     def check_higher_score(locale_dict: dict[str, AliasMatch], locale: str, score: float) -> bool:
         return locale not in locale_dict or score > locale_dict[locale].score
 
-    full_locales = {}
-    root_locales = {}
+    locales = {}
     for alias in aliases:
         if not alias.get('primary'):
             continue
@@ -322,13 +321,13 @@ def _locales_from_aliases(
         full_parts.append((score, 5))
         root_parts.append((score, 5))
         comb = linear_combination_of_weights(full_parts)
-        if check_higher_score(full_locales, full_locale, comb):
-            full_locales[full_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
+        if check_higher_score(locales, full_locale, comb):
+            locales[full_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
         comb = linear_combination_of_weights(root_parts)
-        if check_higher_score(root_locales, root_locale, comb):
-            root_locales[root_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
+        if check_higher_score(locales, root_locale, comb):
+            locales[root_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
 
-    return full_locales, root_locales
+    return locales
 
 
 def _first_alias_match_in_order(order: Iterable[str], mapping: dict[str, AliasMatch]) -> Alias | None:
@@ -376,16 +375,16 @@ def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_l
     if not aliases:
         return None
 
-    full_locales, root_locales = _locales_from_aliases(aliases)
+    locales = _locales_from_aliases(aliases)
 
-    # 1) Exact full-locale match
-    name = _first_alias_match_in_order(preferred_locales, full_locales)
+    # 1) Exact preferred locale match
+    name = _first_alias_match_in_order(preferred_locales, locales)
     if name:
         return name
 
-    # 2) Root language match
-    root_order = (locale.split('_')[0] for locale in preferred_locales)
-    return _first_alias_match_in_order(root_order, root_locales)
+    # 2) Fallback to preferred languages root locale
+    root_order = (locale.split('_')[0] for locale in preferred_locales if '_' in locale)
+    return _first_alias_match_in_order(root_order, locales)
 
 
 def _is_script_exception_enabled(config: Any) -> bool:

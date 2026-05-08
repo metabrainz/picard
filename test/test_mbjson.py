@@ -751,69 +751,61 @@ class TestAliasesLocales(PicardTestCase):
         ]
 
     def test_1(self):
-        expect_full = {
+        expected = {
             'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
     def test_2(self):
         self.aliases[2]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
 
-        expect_full = {
+        expected = {
             'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.65, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
     def test_3(self):
         self.aliases[0]['primary'] = True
         del self.aliases[0]['locale']
 
-        expect_full = {
+        expected = {
             'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
     def test_4(self):
         self.aliases[2]['type-id'] = ALIAS_TYPE_SEARCH_HINT_ID
 
-        expect_full = {
+        expected = {
             'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.4, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
     def test_5(self):
         self.aliases[1]['locale'] = 'en_US'
         self.aliases[1]['name'] = 'Ed Sheeran (en_US)'
+        self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
 
-        expect_full = {
-            'en_US': AliasMatch(0.8, Alias('Ed Sheeran (en_US)', 'Sheeran, Ed')),
+        expected = {
+            'en_US': AliasMatch(0.65, Alias('Ed Sheeran (en_US)', 'Sheeran, Ed')),
             'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en': AliasMatch(0.6, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': AliasMatch(0.6, Alias('Ed Sheeran (en_US)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
     def test_6(self):
         self.aliases[2]['locale'] = 'en'
@@ -822,12 +814,10 @@ class TestAliasesLocales(PicardTestCase):
         self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
         self.aliases[1]['name'] = 'Ed Sheeran (en1)'
 
-        expect_full = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en2)', 'Sheeran, Ed'))}
-        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+        expected = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en2)', 'Sheeran, Ed'))}
 
-        full_locales, root_locales = _locales_from_aliases(self.aliases)
-        self.assertDictEqual(expect_full, full_locales)
-        self.assertDictEqual(expect_root, root_locales)
+        locales = _locales_from_aliases(self.aliases)
+        self.assertDictEqual(expected, locales)
 
 
 class ReleaseGroupTest(MBJSONTest):

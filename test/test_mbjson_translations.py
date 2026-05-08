@@ -69,43 +69,41 @@ def mock_get_config(monkeypatch: pytest.MonkeyPatch, config: Any) -> Callable[[]
 
 
 @pytest.mark.parametrize(
-    ('aliases', 'expected_full', 'expected_root'),
+    ('aliases', 'expected'),
     [
         (
             [
                 {'locale': 'en_US', 'name': 'Color', 'primary': True},
                 {'locale': 'en', 'name': 'Colour', 'primary': True},
                 {'locale': 'fr', 'name': 'Couleur', 'primary': True, 'type-id': ALIAS_TYPE_LEGAL_NAME_ID},
+                {'locale': 'de_DE', 'name': 'Farbe', 'primary': True, 'type-id': ALIAS_TYPE_ARTIST_NAME_ID},
             ],
             {
                 'en_US': mbjson.AliasMatch(0.4, mbjson.Alias('Color', None)),
                 'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', None)),
                 'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', None)),
-            },
-            {
-                'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', None)),
-                'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', None)),
+                'de': mbjson.AliasMatch(score=0.6, alias=mbjson.Alias(name='Farbe', sort_name=None)),
+                'de_DE': mbjson.AliasMatch(score=0.8, alias=mbjson.Alias(name='Farbe', sort_name=None)),
             },
         ),
         (
             [
                 {'locale': 'pt_BR', 'name': 'Título', 'primary': True},
                 {'locale': 'pt', 'name': 'Título', 'primary': True, 'type-id': ALIAS_TYPE_ARTIST_NAME_ID},
+                {'locale': 'fr_FR', 'name': 'Titre', 'primary': True},
             ],
             {
                 'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', None)),
                 'pt_BR': mbjson.AliasMatch(0.4, mbjson.Alias('Título', None)),
+                'fr': mbjson.AliasMatch(0.2, mbjson.Alias('Titre', None)),
+                'fr_FR': mbjson.AliasMatch(0.4, mbjson.Alias('Titre', None)),
             },
-            {'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', None))},
         ),
     ],
 )
-def test_build_alias_locale_maps(
-    aliases: list[dict[str, str]], expected_full: dict[str, str], expected_root: dict[str, str]
-) -> None:
-    full, root = mbjson._locales_from_aliases(aliases)
-    assert full == expected_full
-    assert root == expected_root
+def test_build_alias_locale_maps(aliases: list[dict[str, str]], expected: dict[str, mbjson.AliasMatch]) -> None:
+    alias_matches = mbjson._locales_from_aliases(aliases)
+    assert alias_matches == expected
 
 
 @pytest.mark.parametrize(
@@ -140,14 +138,22 @@ def test_first_alias_match_in_order(
         (['de_DE', 'en'], mbjson.Alias('Colour', 'Colour')),  # root language fallback
         (['de', 'es'], None),  # no match
         (['pt'], None),  # no primary match
+        (['zh', 'en'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
+        (['zh', 'en_US'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
+        (['pt', 'zh', 'en_US'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
+        (['zh_Hant', 'en'], mbjson.Alias('Colour', 'Colour')),
+        (['fr_CA', 'pt'], mbjson.Alias('Couleur', None)),  # should fall back to root locale
+        # should prefer secondary exact match over primary root locale fallback
+        (['fr_CA', 'en'], mbjson.Alias('Colour', 'Colour')),
     ],
 )
 def test_find_localized_alias_name(preferred: list[str], expected: str | None) -> None:
     aliases: list[dict[str, Any]] = [
         {'locale': 'en_US', 'name': 'Color', 'primary': True},
         {'locale': 'en', 'name': 'Colour', 'sort-name': 'Colour', 'primary': True},
-        {'locale': 'pt', 'name': 'Colour', 'sort-name': 'Colour', 'primary': False},
+        {'locale': 'pt', 'name': 'Cor', 'sort-name': 'Cor', 'primary': False},
         {'locale': 'fr', 'name': 'Couleur', 'primary': True},
+        {'locale': 'zh_Hans', 'name': '颜色', 'primary': True},
     ]
     assert mbjson._find_localized_alias_name(aliases, preferred) == expected
 
