@@ -2,7 +2,7 @@
 #
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2025 The MusicBrainz Team
+# Copyright (C) 2025-2026 The MusicBrainz Team
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,6 +23,11 @@
 from collections.abc import Callable
 import types
 from typing import Any
+
+from picard.const import (
+    ALIAS_TYPE_ARTIST_NAME_ID,
+    ALIAS_TYPE_LEGAL_NAME_ID,
+)
 
 # Import the functions under test from the refactored module
 import picard.mbjson as mbjson
@@ -68,27 +73,37 @@ def mock_get_config(monkeypatch: pytest.MonkeyPatch, config: Any) -> Callable[[]
     [
         (
             [
-                {'locale': 'en_US', 'name': 'Color'},
-                {'locale': 'en', 'name': 'Colour'},
-                {'locale': 'fr', 'name': 'Couleur'},
+                {'locale': 'en_US', 'name': 'Color', 'primary': True},
+                {'locale': 'en', 'name': 'Colour', 'primary': True},
+                {'locale': 'fr', 'name': 'Couleur', 'primary': True, 'type-id': ALIAS_TYPE_LEGAL_NAME_ID},
             ],
-            {'en_US': 'Color', 'en': 'Colour', 'fr': 'Couleur'},
-            {'en': 'Colour', 'fr': 'Couleur'},
+            {
+                'en_US': mbjson.AliasMatch(0.4, mbjson.Alias('Color', None)),
+                'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', None)),
+                'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', None)),
+            },
+            {
+                'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', None)),
+                'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', None)),
+            },
         ),
         (
             [
-                {'locale': 'pt_BR', 'name': 'Título'},
-                {'locale': 'pt', 'name': 'Título'},
+                {'locale': 'pt_BR', 'name': 'Título', 'primary': True},
+                {'locale': 'pt', 'name': 'Título', 'primary': True, 'type-id': ALIAS_TYPE_ARTIST_NAME_ID},
             ],
-            {'pt_BR': 'Título', 'pt': 'Título'},
-            {'pt': 'Título'},
+            {
+                'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', None)),
+                'pt_BR': mbjson.AliasMatch(0.4, mbjson.Alias('Título', None)),
+            },
+            {'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', None))},
         ),
     ],
 )
 def test_build_alias_locale_maps(
     aliases: list[dict[str, str]], expected_full: dict[str, str], expected_root: dict[str, str]
 ) -> None:
-    full, root = mbjson._build_alias_locale_maps(aliases)
+    full, root = mbjson._locales_from_aliases(aliases)
     assert full == expected_full
     assert root == expected_root
 
@@ -96,28 +111,43 @@ def test_build_alias_locale_maps(
 @pytest.mark.parametrize(
     ('order', 'mapping', 'expected'),
     [
-        (['b', 'a'], {'a': 'A', 'b': 'B'}, 'B'),
-        (['x', 'y', 'a'], {'a': 'A'}, 'A'),
-        (['x', 'y'], {'a': 'A'}, None),
+        (
+            ['b', 'a'],
+            {
+                'a': mbjson.AliasMatch(0, mbjson.Alias('A', None)),
+                'b': mbjson.AliasMatch(0, mbjson.Alias('B', None)),
+            },
+            mbjson.Alias('B', None),
+        ),
+        (
+            ['x', 'y', 'a'],
+            {'a': mbjson.AliasMatch(0, mbjson.Alias('A', None))},
+            mbjson.Alias('A', None),
+        ),
+        (['x', 'y'], {'a': mbjson.AliasMatch(0, mbjson.Alias('A', None))}, None),
     ],
 )
-def test_first_match_in_order(order: list[str], mapping: dict[str, str], expected: str | None) -> None:
-    assert mbjson._first_match_in_order(order, mapping) == expected
+def test_first_alias_match_in_order(
+    order: list[str], mapping: dict[str, mbjson.AliasMatch], expected: str | None
+) -> None:
+    assert mbjson._first_alias_match_in_order(order, mapping) == expected
 
 
 @pytest.mark.parametrize(
     ('preferred', 'expected'),
     [
-        (['en_US', 'en'], 'Color'),  # exact full-locale match
-        (['de_DE', 'en'], 'Colour'),  # root language fallback
+        (['en_US', 'en'], mbjson.Alias('Color', None)),  # exact full-locale match
+        (['de_DE', 'en'], mbjson.Alias('Colour', 'Colour')),  # root language fallback
         (['de', 'es'], None),  # no match
+        (['pt'], None),  # no primary match
     ],
 )
 def test_find_localized_alias_name(preferred: list[str], expected: str | None) -> None:
     aliases: list[dict[str, Any]] = [
-        {'locale': 'en_US', 'name': 'Color'},
-        {'locale': 'en', 'name': 'Colour'},
-        {'locale': 'fr', 'name': 'Couleur'},
+        {'locale': 'en_US', 'name': 'Color', 'primary': True},
+        {'locale': 'en', 'name': 'Colour', 'sort-name': 'Colour', 'primary': True},
+        {'locale': 'pt', 'name': 'Colour', 'sort-name': 'Colour', 'primary': False},
+        {'locale': 'fr', 'name': 'Couleur', 'primary': True},
     ]
     assert mbjson._find_localized_alias_name(aliases, preferred) == expected
 
@@ -172,7 +202,7 @@ def test_release_to_metadata_respects_script_exceptions(
         'id': 'release-1',
         'title': 'العنوان',  # some non-latin characters
         'aliases': [
-            {'locale': 'en', 'name': 'Album Title EN'},
+            {'locale': 'en', 'name': 'Album Title EN', 'primary': True},
         ],
     }
     m = Metadata()
@@ -201,7 +231,7 @@ def test_recording_to_metadata_respects_script_exceptions(
         'id': 'rec-1',
         'title': 'タイトル',
         'aliases': [
-            {'locale': 'en', 'name': 'Track Title EN'},
+            {'locale': 'en', 'name': 'Track Title EN', 'primary': True},
         ],
         'artist-credit': [],
     }
@@ -233,7 +263,7 @@ def test_release_to_metadata_translation_toggle(
         'id': 'release-1',
         'title': 'العنوان',
         'aliases': [
-            {'locale': 'en', 'name': 'Album Title EN'},
+            {'locale': 'en', 'name': 'Album Title EN', 'primary': True},
         ],
     }
     m = Metadata()
@@ -261,7 +291,7 @@ def test_recording_to_metadata_translation_toggle(
         'id': 'rec-1',
         'title': 'タイトル',
         'aliases': [
-            {'locale': 'en', 'name': 'Track Title EN'},
+            {'locale': 'en', 'name': 'Track Title EN', 'primary': True},
         ],
         'artist-credit': [],
     }

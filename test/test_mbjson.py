@@ -5,7 +5,7 @@
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2017, 2019-2024 Laurent Monin
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2018-2023, 2025 Philipp Wolfer
+# Copyright (C) 2018-2023, 2025-2026 Philipp Wolfer
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2021, 2025 Bob Swift
 # Copyright (C) 2021 Vladislav Karbovskii
@@ -40,6 +40,8 @@ from picard.const import (
     ALIAS_TYPE_SEARCH_HINT_ID,
 )
 from picard.mbjson import (
+    Alias,
+    AliasMatch,
     _locales_from_aliases,
     _node_skip_empty_iter,
     _parse_attributes,
@@ -612,8 +614,8 @@ class ArtistTranslationTest(MBJSONTest):
             "artist_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Ed Sheeran (en_CA)')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Ed Sheeran (en_CA)')
 
     def test_locale_specific_match_first_exc(self):
         settings = {
@@ -629,8 +631,8 @@ class ArtistTranslationTest(MBJSONTest):
             "artist_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Ed Sheeran')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Ed Sheeran')
 
     def test_locale_specific_match_second(self):
         settings = {
@@ -645,8 +647,8 @@ class ArtistTranslationTest(MBJSONTest):
             "artist_locales": ['en_UK', 'en'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Ed Sheeran (en)')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Ed Sheeran (en)')
 
     def test_artist_match_root_locale_fallback(self):
         settings = {
@@ -661,8 +663,8 @@ class ArtistTranslationTest(MBJSONTest):
             "artist_locales": ['en_UK'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Ed Sheeran (en)')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Ed Sheeran (en)')
 
     def test_artist_no_match(self):
         settings = {
@@ -677,8 +679,8 @@ class ArtistTranslationTest(MBJSONTest):
             "artist_locales": ['de'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Ed Sheeran')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Ed Sheeran')
 
 
 class ArtistTranslationArabicExceptionsTest(MBJSONTest):
@@ -698,8 +700,8 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             "artist_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'Mohamed Mounir')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'Mohamed Mounir')
 
     def test_locale_specific_match_first_exc2(self):
         settings = {
@@ -715,8 +717,8 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             "artist_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
-        (artist_name, artist_sort_name) = _translate_artist_node(self.json_doc)
-        self.assertEqual(artist_name, 'محمد منير')
+        alias = _translate_artist_node(self.json_doc)
+        self.assertEqual(alias.name, 'محمد منير')
 
 
 class TestAliasesLocales(PicardTestCase):
@@ -750,10 +752,10 @@ class TestAliasesLocales(PicardTestCase):
 
     def test_1(self):
         expect_full = {
-            'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')),
-            'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
+            'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
@@ -763,10 +765,10 @@ class TestAliasesLocales(PicardTestCase):
         self.aliases[2]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
 
         expect_full = {
-            'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')),
-            'en_CA': (0.65, ('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
+            'en_CA': AliasMatch(0.65, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
@@ -777,10 +779,10 @@ class TestAliasesLocales(PicardTestCase):
         del self.aliases[0]['locale']
 
         expect_full = {
-            'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')),
-            'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
+            'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
@@ -790,10 +792,10 @@ class TestAliasesLocales(PicardTestCase):
         self.aliases[2]['type-id'] = ALIAS_TYPE_SEARCH_HINT_ID
 
         expect_full = {
-            'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed')),
-            'en_CA': (0.4, ('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed')),
+            'en_CA': AliasMatch(0.4, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': (0.8, ('Ed Sheeran (en)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
@@ -804,10 +806,10 @@ class TestAliasesLocales(PicardTestCase):
         self.aliases[1]['name'] = 'Ed Sheeran (en_US)'
 
         expect_full = {
-            'en_US': (0.8, ('Ed Sheeran (en_US)', 'Sheeran, Ed')),
-            'en_CA': (0.8, ('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
+            'en_US': AliasMatch(0.8, Alias('Ed Sheeran (en_US)', 'Sheeran, Ed')),
+            'en_CA': AliasMatch(0.8, Alias('Ed Sheeran (en_CA)', 'Sheeran, Ed')),
         }
-        expect_root = {'en': (0.6, ('Ed Sheeran (en_US)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.6, Alias('Ed Sheeran (en_US)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
@@ -820,8 +822,8 @@ class TestAliasesLocales(PicardTestCase):
         self.aliases[1]['type-id'] = ALIAS_TYPE_LEGAL_NAME_ID
         self.aliases[1]['name'] = 'Ed Sheeran (en1)'
 
-        expect_full = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
-        expect_root = {'en': (0.8, ('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+        expect_full = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en2)', 'Sheeran, Ed'))}
+        expect_root = {'en': AliasMatch(0.8, Alias('Ed Sheeran (en2)', 'Sheeran, Ed'))}
 
         full_locales, root_locales = _locales_from_aliases(self.aliases)
         self.assertDictEqual(expect_full, full_locales)
