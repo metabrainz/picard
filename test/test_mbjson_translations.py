@@ -48,7 +48,7 @@ def config() -> Any:
             'translate_artist_names': True,
             'translate_album_titles': True,
             'translate_track_titles': True,
-            'artist_locales': ['en'],
+            'translation_locales': ['en'],
             'translate_artist_names_script_exception': False,
             'script_exceptions': [],
             'standardize_artists': False,
@@ -200,7 +200,7 @@ def test_release_to_metadata_respects_script_exceptions(
 ) -> None:
     # Arrange config and behavior
     config.setting['translate_album_titles'] = True
-    config.setting['artist_locales'] = ['en']
+    config.setting['translation_locales'] = ['en']
     monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: skip)
 
     # Album node with localized alias
@@ -230,7 +230,7 @@ def test_recording_to_metadata_respects_script_exceptions(
 ) -> None:
     # Arrange config and behavior
     config.setting['translate_track_titles'] = True
-    config.setting['artist_locales'] = ['en']
+    config.setting['translation_locales'] = ['en']
     monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: skip)
 
     node = {
@@ -260,7 +260,7 @@ def test_release_to_metadata_translation_toggle(
     toggle: bool,
 ) -> None:
     config.setting['translate_album_titles'] = toggle
-    config.setting['artist_locales'] = ['en']
+    config.setting['translation_locales'] = ['en']
     # Ensure exceptions do not interfere
     config.setting['translate_artist_names_script_exception'] = False
     monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: False)
@@ -289,7 +289,7 @@ def test_recording_to_metadata_translation_toggle(
     toggle: bool,
 ) -> None:
     config.setting['translate_track_titles'] = toggle
-    config.setting['artist_locales'] = ['en']
+    config.setting['translation_locales'] = ['en']
     config.setting['translate_artist_names_script_exception'] = False
     monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: False)
 

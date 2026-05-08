@@ -612,3 +612,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
 
         self.assertNotIn('album_view_header_state', self.config.persist)
         self.assertNotIn('file_view_header_state', self.config.persist)
+
+    def test_upgrade_to_v3_0_0b2(self):
+        ListOption('setting', 'translation_locales', ['en'])
+
+        self.config.setting['artist_locales'] = ['fr', 'de']
+        hooks.upgrade_to_v3_0_0b2(self.config)
+        self.assertNotIn('artist_locales', self.config.setting)
+        self.assertEqual(self.config.setting['translation_locales'], ['fr', 'de'])

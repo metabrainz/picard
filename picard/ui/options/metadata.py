@@ -91,7 +91,7 @@ class MetadataOptionsPage(OptionsPage):
         ('translate_artist_names', ['translate_artist_names']),
         ('translate_album_titles', ['translate_album_titles']),
         ('translate_track_titles', ['translate_track_titles']),
-        ('artist_locales', ['selected_locales']),
+        ('translation_locales', ['selected_locales']),
         ('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
         ('script_exceptions', ['selected_scripts']),
         ('standardize_artists', ['standardize_artists']),
@@ -123,7 +123,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_artist_names.setChecked(config.setting['translate_artist_names'])
         self.ui.translate_album_titles.setChecked(config.setting['translate_album_titles'])
         self.ui.translate_track_titles.setChecked(config.setting['translate_track_titles'])
-        self.current_locales = config.setting['artist_locales']
+        self.current_locales = config.setting['translation_locales']
         self.make_locales_text()
         self.current_scripts = config.setting['script_exceptions']
         self.make_scripts_text()
@@ -162,7 +162,7 @@ class MetadataOptionsPage(OptionsPage):
         config.setting['translate_artist_names'] = self.ui.translate_artist_names.isChecked()
         config.setting['translate_album_titles'] = self.ui.translate_album_titles.isChecked()
         config.setting['translate_track_titles'] = self.ui.translate_track_titles.isChecked()
-        config.setting['artist_locales'] = self.current_locales
+        config.setting['translation_locales'] = self.current_locales
         config.setting['translate_artist_names_script_exception'] = (
             self.ui.translate_artist_names_script_exception.isChecked()
         )

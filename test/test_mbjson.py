@@ -75,7 +75,7 @@ settings = {
     "standardize_vocals": True,
     "release_ars": True,
     "preferred_release_countries": [],
-    "artist_locales": ['en'],
+    "translation_locales": ['en'],
 }
 
 
@@ -611,7 +611,7 @@ class ArtistTranslationTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_CA', 'en'],
+            "translation_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -628,7 +628,7 @@ class ArtistTranslationTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_CA', 'en'],
+            "translation_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -644,7 +644,7 @@ class ArtistTranslationTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_UK', 'en'],
+            "translation_locales": ['en_UK', 'en'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -660,7 +660,7 @@ class ArtistTranslationTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_UK'],
+            "translation_locales": ['en_UK'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -676,7 +676,7 @@ class ArtistTranslationTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['de'],
+            "translation_locales": ['de'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -697,7 +697,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_CA', 'en'],
+            "translation_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)
@@ -714,7 +714,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
             "standardize_instruments": True,
             "release_ars": True,
             "preferred_release_countries": [],
-            "artist_locales": ['en_CA', 'en'],
+            "translation_locales": ['en_CA', 'en'],
         }
         self.set_config_values(settings)
         alias = _translate_artist_node(self.json_doc)

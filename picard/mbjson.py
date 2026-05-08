@@ -528,7 +528,7 @@ def _translate_artist_node(node, config=None) -> Alias:
 
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
-            translated_alias = _find_localized_alias_name(node['aliases'], config.setting['artist_locales'])
+            translated_alias = _find_localized_alias_name(node['aliases'], config.setting['translation_locales'])
             if translated_alias:
                 return translated_alias
 
@@ -715,7 +715,7 @@ def recording_to_metadata(node, m, track=None):
     # Translate track title from recording aliases if enabled, unless script exception applies
     if config.setting['translate_track_titles']:
         if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
             if alias:
                 m['title'] = alias.name
     if m['title']:
@@ -810,7 +810,7 @@ def release_to_metadata(node, m, album=None):
     # Translate album title from release aliases if enabled, unless script exception applies
     if config.setting['translate_album_titles']:
         if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
+            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
             if alias:
                 m['album'] = alias.name
     add_genres_from_node(node, album)
