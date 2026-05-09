@@ -6,13 +6,15 @@
 # wileyfoxyx <wileyfoxyx@users.noreply.translations.metabrainz.org>, 2024.
 # oleh_hishak <ohishak@gmail.com>, 2025.
 # Wonordel <megorka2014@gmail.com>, 2026.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2026-05-02 11:11+0000\n"
-"Last-Translator: Wonordel <megorka2014@gmail.com>\n"
+"PO-Revision-Date: 2026-05-09 13:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Russian <https://translations.metabrainz.org/projects/picard/"
 "2/constants/ru/>\n"
 "Language: ru\n"
@@ -529,7 +531,7 @@ msgstr "Белорусский (орфография Тарашкевича)"
 
 #: picard/const/locales.py:106
 msgid "Bemba"
-msgstr ""
+msgstr "бемба"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
@@ -585,7 +587,7 @@ msgstr ""
 
 #: picard/const/locales.py:120
 msgid "Bhojpuri"
-msgstr ""
+msgstr "бходжпури"
 
 #: picard/const/locales.py:121
 msgid "Bhojpuri (India)"
@@ -601,7 +603,7 @@ msgstr ""
 
 #: picard/const/locales.py:124
 msgid "Bambara"
-msgstr ""
+msgstr "бамана"
 
 #: picard/const/locales.py:125
 msgid "Bambara (Mali)"
@@ -641,7 +643,7 @@ msgstr "Тибетский (Индия)"
 
 #: picard/const/locales.py:134
 msgid "Breton"
-msgstr ""
+msgstr "бретонский"
 
 #: picard/const/locales.py:135
 msgid "Breton (France)"
@@ -713,7 +715,7 @@ msgstr ""
 
 #: picard/const/locales.py:153
 msgid "Caddo"
-msgstr ""
+msgstr "каддо"
 
 #: picard/const/locales.py:154
 msgid "Caddo (United States)"
@@ -741,7 +743,7 @@ msgstr ""
 
 #: picard/const/locales.py:160
 msgid "Chechen"
-msgstr ""
+msgstr "чеченский"
 
 #: picard/const/locales.py:161
 msgid "Chechen (Russia)"
@@ -749,7 +751,7 @@ msgstr ""
 
 #: picard/const/locales.py:162
 msgid "Cebuano"
-msgstr ""
+msgstr "себуанский"
 
 #: picard/const/locales.py:163
 msgid "Cebuano (Philippines)"
@@ -765,7 +767,7 @@ msgstr ""
 
 #: picard/const/locales.py:166
 msgid "Choctaw"
-msgstr ""
+msgstr "чоктавский"
 
 #: picard/const/locales.py:167
 msgid "Choctaw (United States)"
@@ -801,7 +803,7 @@ msgstr ""
 
 #: picard/const/locales.py:175
 msgid "Corsican"
-msgstr ""
+msgstr "корсиканский"
 
 #: picard/const/locales.py:176
 msgid "Corsican (France)"
@@ -813,7 +815,7 @@ msgstr ""
 
 #: picard/const/locales.py:179
 msgid "Church Slavic"
-msgstr ""
+msgstr "церковнославянский"
 
 #: picard/const/locales.py:180
 msgid "Church Slavic (Russia)"
@@ -821,7 +823,7 @@ msgstr ""
 
 #: picard/const/locales.py:181
 msgid "Chuvash"
-msgstr ""
+msgstr "чувашский"
 
 #: picard/const/locales.py:182
 msgid "Chuvash (Russia)"
@@ -889,7 +891,7 @@ msgstr ""
 
 #: picard/const/locales.py:200
 msgid "Dogri"
-msgstr ""
+msgstr "догри"
 
 #: picard/const/locales.py:201
 msgid "Dogri (India)"
@@ -905,7 +907,7 @@ msgstr ""
 
 #: picard/const/locales.py:204
 msgid "Duala"
-msgstr ""
+msgstr "дуала"
 
 #: picard/const/locales.py:205
 msgid "Duala (Cameroon)"
@@ -1529,7 +1531,7 @@ msgstr "Баскский (Испания)"
 
 #: picard/const/locales.py:367
 msgid "Ewondo"
-msgstr ""
+msgstr "эвондо"
 
 #: picard/const/locales.py:368
 msgid "Ewondo (Cameroon)"
@@ -2133,7 +2135,7 @@ msgstr "Носу (Китай)"
 
 #: picard/const/locales.py:524
 msgid "Ido"
-msgstr ""
+msgstr "идо"
 
 #: picard/const/locales.py:525
 msgid "Ido (world)"
@@ -2485,7 +2487,7 @@ msgstr ""
 
 #: picard/const/locales.py:616
 msgid "Ganda"
-msgstr ""
+msgstr "луганда"
 
 #: picard/const/locales.py:617
 msgid "Ganda (Uganda)"
@@ -2809,7 +2811,7 @@ msgstr ""
 
 #: picard/const/locales.py:699
 msgid "Erzya"
-msgstr ""
+msgstr "эрзянский"
 
 #: picard/const/locales.py:700
 msgid "Erzya (Russia)"
@@ -3093,7 +3095,7 @@ msgstr "Польский (Польша)"
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "прусский"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
@@ -3425,7 +3427,7 @@ msgstr ""
 
 #: picard/const/locales.py:861
 msgid "Tachelhit"
-msgstr ""
+msgstr "шильхский"
 
 #: picard/const/locales.py:862
 msgid "Tachelhit (Latin)"

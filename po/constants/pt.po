@@ -4,13 +4,15 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023, 2024.
 # evarfino <evarfino@gmail.com>, 2024.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-12-13 22:31+0100\n"
-"PO-Revision-Date: 2024-03-05 08:28+0000\n"
-"Last-Translator: Philipp Wolfer <ph.wolfer@gmail.com>\n"
+"PO-Revision-Date: 2026-05-09 13:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Portuguese <https://translations.metabrainz.org/projects/"
 "picard/2/constants/pt/>\n"
 "Language: pt\n"
@@ -18,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.4\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:171
@@ -234,7 +236,7 @@ msgstr ""
 
 #: picard/const/locales.py:32
 msgid "Abkhazian"
-msgstr ""
+msgstr "Abecásio"
 
 #: picard/const/locales.py:33
 msgid "Abkhazian (Georgia)"
@@ -278,7 +280,7 @@ msgstr ""
 
 #: picard/const/locales.py:43
 msgid "Aragonese"
-msgstr ""
+msgstr "Aragonês"
 
 #: picard/const/locales.py:44
 msgid "Aragonese (Spain)"
@@ -442,7 +444,7 @@ msgstr ""
 
 #: picard/const/locales.py:85
 msgid "Azerbaijani"
-msgstr ""
+msgstr "Azerbaijano"
 
 #: picard/const/locales.py:86
 msgid "Azerbaijani (Arabic)"
@@ -514,7 +516,7 @@ msgstr ""
 
 #: picard/const/locales.py:103
 msgid "Belarusian"
-msgstr ""
+msgstr "Bielorrusso"
 
 #: picard/const/locales.py:104
 msgid "Belarusian (Belarus)"
@@ -526,7 +528,7 @@ msgstr ""
 
 #: picard/const/locales.py:106
 msgid "Bemba"
-msgstr ""
+msgstr "Bemba"
 
 #: picard/const/locales.py:107
 msgid "Bemba (Zambia)"
@@ -1394,7 +1396,7 @@ msgstr ""
 
 #: picard/const/locales.py:332
 msgid "Esperanto"
-msgstr ""
+msgstr "Esperanto"
 
 #: picard/const/locales.py:333
 msgid "Esperanto (world)"
@@ -2906,7 +2908,7 @@ msgstr ""
 
 #: picard/const/locales.py:726
 msgid "Norwegian Nynorsk"
-msgstr ""
+msgstr "Norueguês Nynorsk"
 
 #: picard/const/locales.py:727
 msgid "Norwegian Nynorsk (Norway)"
@@ -2922,7 +2924,7 @@ msgstr ""
 
 #: picard/const/locales.py:730
 msgid "Norwegian"
-msgstr ""
+msgstr "Norueguês"
 
 #: picard/const/locales.py:731
 msgid "N’Ko"
@@ -3090,7 +3092,7 @@ msgstr ""
 
 #: picard/const/locales.py:774
 msgid "Prussian"
-msgstr ""
+msgstr "Prussiano"
 
 #: picard/const/locales.py:775
 msgid "Prussian (world)"
