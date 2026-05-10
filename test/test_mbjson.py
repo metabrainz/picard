@@ -296,6 +296,55 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15'])
 
 
+class DjMixReleaseTest(MBJSONTest):
+    filename = 'release_djmix.json'
+
+    def test_release_djmix(self):
+        m = Metadata()
+        a = Album("1")
+        release_to_metadata(self.json_doc, m, a)
+        expected_medium_metadata = {
+            2: Metadata({'djmixer': ['Frankmusik']}),
+        }
+        self.assertNotIn('djmixer', m)
+        self.assertEqual(expected_medium_metadata, dict(a.per_medium_metadata))
+
+    def test_release_djmix_with_all_medium_ar(self):
+        m = Metadata()
+        a = Album("1")
+        self.json_doc['relations'].append(
+            {
+                "direction": "backward",
+                "source-credit": "",
+                "attribute-values": {},
+                "attributes": [],
+                "target-credit": "",
+                "type": "mix-DJ",
+                "attribute-ids": {},
+                "type-id": "9162dedd-790c-446c-838e-240f877dbfe2",
+                "artist": {
+                    "disambiguation": "",
+                    "name": "Global DJ",
+                    "id": "3dc9ba23-0126-464a-90cc-4924b6bb37b4",
+                    "type": "Person",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "country": "GB",
+                    "sort-name": "Global DJ",
+                },
+                "ended": False,
+                "end": None,
+                "target-type": "artist",
+                "begin": None,
+            }
+        )
+        release_to_metadata(self.json_doc, m, a)
+        expected_medium_metadata = {
+            2: Metadata({'djmixer': ['Frankmusik']}),
+        }
+        self.assertEqual(m.getall('djmixer'), ['Global DJ'])
+        self.assertEqual(expected_medium_metadata, dict(a.per_medium_metadata))
+
+
 class NullReleaseTest(MBJSONTest):
     filename = 'release_null.json'
 

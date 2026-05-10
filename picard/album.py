@@ -204,6 +204,7 @@ class Album(MetadataItem):
         self.status = AlbumStatus.NONE
         self._album_artists = []
         self.update_children_metadata_attrs = {'metadata', 'orig_metadata'}
+        self.per_medium_metadata: defaultdict[int, Metadata] = defaultdict(Metadata)
 
     def __repr__(self):
         return '<Album %s %r>' % (self.id, self.metadata['album'])
@@ -624,10 +625,6 @@ class Album(MetadataItem):
 
         va = self._new_metadata['musicbrainz_albumartistid'] == VARIOUS_ARTISTS_ID
 
-        djmix_ars = {}
-        if hasattr(self._new_metadata, '_djmix_ars'):
-            djmix_ars = self._new_metadata._djmix_ars
-
         for medium_node in self._release_node['media']:
             mm = Metadata()
             mm.copy(self._new_metadata)
@@ -636,8 +633,9 @@ class Album(MetadataItem):
             if fmt:
                 all_media.append(fmt)
 
-            for dj in djmix_ars.get(mm['discnumber'], []):
-                mm.add('djmixer', dj)
+            for key, values in self.per_medium_metadata[medium_node['position']].rawitems():
+                for v in values:
+                    mm.add_unique(key, v)
 
             if va:
                 mm['compilation'] = '1'

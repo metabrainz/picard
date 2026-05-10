@@ -27,6 +27,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections import defaultdict
 from collections.abc import (
     Callable,
     Iterable,
@@ -59,6 +60,7 @@ from picard.util.script_detector_weighted import detect_script_weighted
 
 
 if TYPE_CHECKING:
+    from picard.album import Album
     from picard.metadata import Metadata
     from picard.track import Track
 
@@ -165,6 +167,7 @@ class RelFuncContext:
     use_instrument_credits: bool
     use_vocal_credits: bool
     metadata_was_cleared: dict[str, bool]
+    per_medium_metadata: defaultdict[int, Metadata]
 
 
 @dataclass
@@ -221,10 +224,13 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
             attr_credits = {}
         name = 'performer:' + _parse_attributes(attribs, reltype, attr_credits)
     elif reltype == 'mix-DJ' and attribs:
-        if not hasattr(m, '_djmix_ars'):
-            m._djmix_ars = {}
         for attr in attribs:
-            m._djmix_ars.setdefault(attr.split()[1], []).append(translated_alias.name)
+            if attr.startswith('medium'):
+                try:
+                    medium_no = int(attr.split()[1])
+                    context.per_medium_metadata[medium_no].add_unique('djmixer', translated_alias.name)
+                except ValueError:
+                    log.warning('Invalid medium number in mix-DJ attribute: %s', attr)
         return
     else:
         try:
@@ -311,7 +317,9 @@ def _relations_to_metadata(
     instrumental: bool = False,
     config: Config | None = None,
     entity: str | None = None,
-):
+) -> RelFuncContext:
+    from picard.metadata import Metadata  # inline import to avoid circular imports
+
     config = config or get_config()
     context = RelFuncContext(
         config=config,
@@ -321,6 +329,7 @@ def _relations_to_metadata(
         use_instrument_credits=not config.setting['standardize_instruments'],
         use_vocal_credits=not config.setting['standardize_vocals'],
         metadata_was_cleared=dict(),
+        per_medium_metadata=defaultdict(Metadata),
     )
     for relation in relations:
         target = relation['target-type']
@@ -329,6 +338,7 @@ def _relations_to_metadata(
             if target not in context.metadata_was_cleared:
                 context.metadata_was_cleared[target] = not relfunc.clear_metadata_first
             relfunc.func(relation, m, context)
+    return context
 
 
 def _locales_from_aliases(aliases: list[Node]) -> dict[str, AliasMatch]:
@@ -814,7 +824,7 @@ def artist_to_metadata(node, m):
             m['endarea'] = value['name']
 
 
-def release_to_metadata(node, m, album=None):
+def release_to_metadata(node: Node, m: 'Metadata', album: 'Album | None' = None):
     """Make metadata dict from a JSON 'release' node."""
     config = get_config()
     m.add_unique('musicbrainz_albumid', node['id'])
@@ -832,7 +842,9 @@ def release_to_metadata(node, m, album=None):
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations' and config.setting['release_ars']:
-            _relations_to_metadata(value, m, config=config, entity='release')
+            context = _relations_to_metadata(value, m, config=config, entity='release')
+            if album:
+                album.per_medium_metadata = context.per_medium_metadata
         elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
         elif key == 'text-representation':
