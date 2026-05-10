@@ -73,30 +73,48 @@ def mock_get_config(monkeypatch: pytest.MonkeyPatch, config: Any) -> Callable[[]
     [
         (
             [
-                {'locale': 'en_US', 'name': 'Color', 'primary': True},
-                {'locale': 'en', 'name': 'Colour', 'primary': True},
-                {'locale': 'fr', 'name': 'Couleur', 'primary': True, 'type-id': ALIAS_TYPE_LEGAL_NAME_ID},
-                {'locale': 'de_DE', 'name': 'Farbe', 'primary': True, 'type-id': ALIAS_TYPE_ARTIST_NAME_ID},
+                {'locale': 'en_US', 'name': 'Color', 'sort-name': 'Color', 'primary': True},
+                {'locale': 'en', 'name': 'Colour', 'sort-name': 'Colour', 'primary': True},
+                {
+                    'locale': 'fr',
+                    'name': 'Couleur',
+                    'sort-name': 'Couleur',
+                    'primary': True,
+                    'type-id': ALIAS_TYPE_LEGAL_NAME_ID,
+                },
+                {
+                    'locale': 'de_DE',
+                    'name': 'Farbe',
+                    'sort-name': 'Farbe',
+                    'primary': True,
+                    'type-id': ALIAS_TYPE_ARTIST_NAME_ID,
+                },
             ],
             {
-                'en_US': mbjson.AliasMatch(0.4, mbjson.Alias('Color', None)),
-                'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', None)),
-                'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', None)),
-                'de': mbjson.AliasMatch(score=0.6, alias=mbjson.Alias(name='Farbe', sort_name=None)),
-                'de_DE': mbjson.AliasMatch(score=0.8, alias=mbjson.Alias(name='Farbe', sort_name=None)),
+                'en_US': mbjson.AliasMatch(0.4, mbjson.Alias('Color', 'Color')),
+                'en': mbjson.AliasMatch(0.4, mbjson.Alias('Colour', 'Colour')),
+                'fr': mbjson.AliasMatch(0.65, mbjson.Alias('Couleur', 'Couleur')),
+                'de': mbjson.AliasMatch(score=0.6, alias=mbjson.Alias('Farbe', 'Farbe')),
+                'de_DE': mbjson.AliasMatch(score=0.8, alias=mbjson.Alias('Farbe', 'Farbe')),
             },
         ),
         (
             [
-                {'locale': 'pt_BR', 'name': 'Título', 'primary': True},
-                {'locale': 'pt', 'name': 'Título', 'primary': True, 'type-id': ALIAS_TYPE_ARTIST_NAME_ID},
-                {'locale': 'fr_FR', 'name': 'Titre', 'primary': True},
+                {'locale': 'pt_BR', 'name': 'Título', 'sort-name': 'Título', 'primary': True},
+                {
+                    'locale': 'pt',
+                    'name': 'Título',
+                    'sort-name': 'Título',
+                    'primary': True,
+                    'type-id': ALIAS_TYPE_ARTIST_NAME_ID,
+                },
+                {'locale': 'fr_FR', 'name': 'Titre', 'sort-name': 'Titre', 'primary': True},
             ],
             {
-                'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', None)),
-                'pt_BR': mbjson.AliasMatch(0.4, mbjson.Alias('Título', None)),
-                'fr': mbjson.AliasMatch(0.2, mbjson.Alias('Titre', None)),
-                'fr_FR': mbjson.AliasMatch(0.4, mbjson.Alias('Titre', None)),
+                'pt': mbjson.AliasMatch(0.8, mbjson.Alias('Título', 'Título')),
+                'pt_BR': mbjson.AliasMatch(0.4, mbjson.Alias('Título', 'Título')),
+                'fr': mbjson.AliasMatch(0.2, mbjson.Alias('Titre', 'Titre')),
+                'fr_FR': mbjson.AliasMatch(0.4, mbjson.Alias('Titre', 'Titre')),
             },
         ),
     ],
@@ -112,17 +130,17 @@ def test_build_alias_locale_maps(aliases: list[dict[str, str]], expected: dict[s
         (
             ['b', 'a'],
             {
-                'a': mbjson.AliasMatch(0, mbjson.Alias('A', None)),
-                'b': mbjson.AliasMatch(0, mbjson.Alias('B', None)),
+                'a': mbjson.AliasMatch(0, mbjson.Alias('A', 'A')),
+                'b': mbjson.AliasMatch(0, mbjson.Alias('B', 'B')),
             },
-            mbjson.Alias('B', None),
+            mbjson.Alias('B', 'B'),
         ),
         (
             ['x', 'y', 'a'],
-            {'a': mbjson.AliasMatch(0, mbjson.Alias('A', None))},
-            mbjson.Alias('A', None),
+            {'a': mbjson.AliasMatch(0, mbjson.Alias('A', 'A'))},
+            mbjson.Alias('A', 'A'),
         ),
-        (['x', 'y'], {'a': mbjson.AliasMatch(0, mbjson.Alias('A', None))}, None),
+        (['x', 'y'], {'a': mbjson.AliasMatch(0, mbjson.Alias('A', 'A'))}, None),
     ],
 )
 def test_first_alias_match_in_order(
@@ -134,26 +152,26 @@ def test_first_alias_match_in_order(
 @pytest.mark.parametrize(
     ('preferred', 'expected'),
     [
-        (['en_US', 'en'], mbjson.Alias('Color', None)),  # exact full-locale match
+        (['en_US', 'en'], mbjson.Alias('Color', 'Color')),  # exact full-locale match
         (['de_DE', 'en'], mbjson.Alias('Colour', 'Colour')),  # root language fallback
         (['de', 'es'], None),  # no match
         (['pt'], None),  # no primary match
-        (['zh', 'en'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
-        (['zh', 'en_US'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
-        (['pt', 'zh', 'en_US'], mbjson.Alias('颜色', None)),  # should prefer root locale over exact secondary match
+        (['zh', 'en'], mbjson.Alias('颜色', '颜色')),  # should prefer root locale over exact secondary match
+        (['zh', 'en_US'], mbjson.Alias('颜色', '颜色')),  # should prefer root locale over exact secondary match
+        (['pt', 'zh', 'en_US'], mbjson.Alias('颜色', '颜色')),  # should prefer root locale over exact secondary match
         (['zh_Hant', 'en'], mbjson.Alias('Colour', 'Colour')),
-        (['fr_CA', 'pt'], mbjson.Alias('Couleur', None)),  # should fall back to root locale
+        (['fr_CA', 'pt'], mbjson.Alias('Couleur', 'Couleur')),  # should fall back to root locale
         # should prefer secondary exact match over primary root locale fallback
         (['fr_CA', 'en'], mbjson.Alias('Colour', 'Colour')),
     ],
 )
 def test_find_localized_alias_name(preferred: list[str], expected: str | None) -> None:
     aliases: list[dict[str, Any]] = [
-        {'locale': 'en_US', 'name': 'Color', 'primary': True},
+        {'locale': 'en_US', 'name': 'Color', 'sort-name': 'Color', 'primary': True},
         {'locale': 'en', 'name': 'Colour', 'sort-name': 'Colour', 'primary': True},
         {'locale': 'pt', 'name': 'Cor', 'sort-name': 'Cor', 'primary': False},
-        {'locale': 'fr', 'name': 'Couleur', 'primary': True},
-        {'locale': 'zh_Hans', 'name': '颜色', 'primary': True},
+        {'locale': 'fr', 'name': 'Couleur', 'sort-name': 'Couleur', 'primary': True},
+        {'locale': 'zh_Hans', 'name': '颜色', 'sort-name': '颜色', 'primary': True},
     ]
     assert mbjson._find_localized_alias_name(aliases, preferred) == expected
 
@@ -208,7 +226,7 @@ def test_release_to_metadata_respects_script_exceptions(
         'id': 'release-1',
         'title': 'العنوان',  # some non-latin characters
         'aliases': [
-            {'locale': 'en', 'name': 'Album Title EN', 'primary': True},
+            {'locale': 'en', 'name': 'Album Title EN', 'sort-name': 'Album Title EN', 'primary': True},
         ],
     }
     m = Metadata()
@@ -216,7 +234,7 @@ def test_release_to_metadata_respects_script_exceptions(
 
     if skip:
         # When skipping, alias should not override
-        assert m.get('album') != 'Album Title EN'
+        assert m['album'] != 'Album Title EN'
     else:
         assert m['album'] == 'Album Title EN'
 
@@ -237,7 +255,7 @@ def test_recording_to_metadata_respects_script_exceptions(
         'id': 'rec-1',
         'title': 'タイトル',
         'aliases': [
-            {'locale': 'en', 'name': 'Track Title EN', 'primary': True},
+            {'locale': 'en', 'name': 'Track Title EN', 'sort-name': 'Track Title EN', 'primary': True},
         ],
         'artist-credit': [],
     }
@@ -247,7 +265,7 @@ def test_recording_to_metadata_respects_script_exceptions(
 
     if skip:
         # Alias should not be applied
-        assert m.get('title') != 'Track Title EN'
+        assert m['title'] != 'Track Title EN'
     else:
         assert m['title'] == 'Track Title EN'
 
@@ -269,7 +287,7 @@ def test_release_to_metadata_translation_toggle(
         'id': 'release-1',
         'title': 'العنوان',
         'aliases': [
-            {'locale': 'en', 'name': 'Album Title EN', 'primary': True},
+            {'locale': 'en', 'name': 'Album Title EN', 'sort-name': 'Album Title EN', 'primary': True},
         ],
     }
     m = Metadata()
@@ -278,7 +296,7 @@ def test_release_to_metadata_translation_toggle(
     if toggle:
         assert m['album'] == 'Album Title EN'
     else:
-        assert m.get('album') != 'Album Title EN'
+        assert m['album'] != 'Album Title EN'
 
 
 @pytest.mark.parametrize('toggle', [False, True])
@@ -297,7 +315,7 @@ def test_recording_to_metadata_translation_toggle(
         'id': 'rec-1',
         'title': 'タイトル',
         'aliases': [
-            {'locale': 'en', 'name': 'Track Title EN', 'primary': True},
+            {'locale': 'en', 'name': 'Track Title EN', 'sort-name': 'Track Title EN', 'primary': True},
         ],
         'artist-credit': [],
     }
@@ -308,4 +326,4 @@ def test_recording_to_metadata_translation_toggle(
     if toggle:
         assert m['title'] == 'Track Title EN'
     else:
-        assert m.get('title') != 'Track Title EN'
+        assert m['title'] != 'Track Title EN'

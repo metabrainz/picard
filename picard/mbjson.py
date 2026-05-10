@@ -124,7 +124,7 @@ _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 @dataclass
 class Alias:
     name: str
-    sort_name: str | None
+    sort_name: str
 
 
 @dataclass
@@ -322,10 +322,10 @@ def _locales_from_aliases(
         root_parts.append((score, 5))
         comb = linear_combination_of_weights(full_parts)
         if check_higher_score(locales, full_locale, comb):
-            locales[full_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
+            locales[full_locale] = AliasMatch(comb, Alias(alias['name'], alias['sort-name']))
         comb = linear_combination_of_weights(root_parts)
         if check_higher_score(locales, root_locale, comb):
-            locales[root_locale] = AliasMatch(comb, Alias(alias['name'], alias.get('sort-name', None)))
+            locales[root_locale] = AliasMatch(comb, Alias(alias['name'], alias['sort-name']))
 
     return locales
 
