@@ -1,16 +1,35 @@
 #!/usr/bin/env python3
-"""
-Synthetic corpus generator and evaluation harness for release matching.
+"""Release matching evaluation harness.
 
-Generates file metadata from known releases with various degradation patterns,
-then measures how often the matcher correctly identifies the source release
-among a set of candidates (correct + distractors).
+Measures how accurately Picard's release matcher identifies the correct release
+from a set of candidates when file metadata is degraded in various ways.
+
+Usage:
+    python scripts/eval_matching/eval_matching.py
+
+How it works:
+    1. For each scenario, a "target" release is the correct answer and
+       "distractors" are plausible wrong candidates.
+    2. File metadata is generated from the target, then degraded (typos,
+       missing fields, wrong values) to simulate real-world imperfect tags.
+    3. The matcher scores all candidates; we check if the target wins.
+
+Extending:
+    - Add releases: drop JSON files in corpus/ (fetched from MB API with
+      inc=artist-credits+media+release-groups&fmt=json)
+    - Add scenarios: append to SCENARIOS list
+    - Add degradations: define a function(metadata, release) and add to DEGRADATIONS
 """
 
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 import random
 import sys
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 
 # Add project root to path
@@ -21,450 +40,452 @@ from picard.mbjson import release_to_metadata
 from picard.metadata import Metadata
 
 
-CORPUS_DIR = Path(__file__).parent / 'corpus'
+CORPUS_DIR = Path(__file__).parent / "corpus"
 
-# Real MB releases grouped by confusability scenario
-# Each group: (target_file, [distractor_files], scenario_description)
-EVAL_SCENARIOS = [
-    # Same title, same artist, different albums (Weezer Blue vs Green)
+
+# =============================================================================
+# Scenarios
+# =============================================================================
+# Each scenario defines a target release and distractors (plausible wrong matches).
+# To add a new scenario: add a release JSON to corpus/, then append here.
+
+SCENARIOS = [
+    # --- Same title, same artist, different albums ---
     {
-        'target': 'eval_release_3a8a6113.json',  # Weezer Blue 1994 US
-        'distractors': [
-            'eval_release_a9897d0b.json',  # Weezer Green 2001
-            'eval_release_b072b162.json',  # Weezer Blue 1994 DE (same RG, different edition)
+        "target": "eval_release_3a8a6113.json",  # Weezer Blue 1994 US
+        "distractors": [
+            "eval_release_a9897d0b.json",  # Weezer Green 2001
+            "eval_release_b072b162.json",  # Weezer Blue 1994 DE edition
         ],
-        'scenario': 'same_title_different_albums',
+        "scenario": "same_title_different_albums",
     },
     {
-        'target': 'eval_release_a9897d0b.json',  # Weezer Green 2001
-        'distractors': [
-            'eval_release_3a8a6113.json',  # Weezer Blue 1994 US
-            'eval_release_b072b162.json',  # Weezer Blue 1994 DE
+        "target": "eval_release_a9897d0b.json",  # Weezer Green 2001
+        "distractors": [
+            "eval_release_3a8a6113.json",  # Weezer Blue 1994 US
+            "eval_release_b072b162.json",  # Weezer Blue 1994 DE
         ],
-        'scenario': 'same_title_different_albums',
+        "scenario": "same_title_different_albums",
     },
-    # Same album, different editions (title spelling varies, artist name varies)
+    # --- Same album, variant title spellings / artist name changes ---
     {
-        'target': 'eval_release_6a76904c.json',  # GY!BE kranky US "Lift Yr."
-        'distractors': [
-            'eval_release_e3334c4e.json',  # GY!BE Constellation AU "Lift Your...!"
-            'eval_release_f77eeaef.json',  # GY!BE 2017 reissue "Lift Your..." (no !)
-            'eval_release_748e3e26.json',  # GY!BE 2018 vinyl "Lift Your...To Heaven"
+        "target": "eval_release_6a76904c.json",  # GY!BE kranky US "Lift Yr."
+        "distractors": [
+            "eval_release_e3334c4e.json",  # Constellation AU "Lift Your...!"
+            "eval_release_f77eeaef.json",  # 2017 reissue "Lift Your..."
+            "eval_release_748e3e26.json",  # 2018 vinyl "...To Heaven"
         ],
-        'scenario': 'same_album_variant_titles',
-    },
-    {
-        'target': 'eval_release_e3334c4e.json',  # GY!BE Constellation AU
-        'distractors': [
-            'eval_release_6a76904c.json',  # GY!BE kranky US
-            'eval_release_f77eeaef.json',  # GY!BE 2017 reissue
-            'eval_release_748e3e26.json',  # GY!BE 2018 vinyl
-        ],
-        'scenario': 'same_album_variant_titles',
-    },
-    # Multi-artist, different editions with different track counts
-    {
-        'target': 'eval_release_2810aeef.json',  # Collision Course 23 tracks
-        'distractors': [
-            'eval_release_a72497d5.json',  # Collision Course 13 tracks
-            'eval_release_2c5e4198.json',  # Jay-Z solo album (wrong artist combo)
-        ],
-        'scenario': 'multi_artist_editions',
+        "scenario": "same_album_variant_titles",
     },
     {
-        'target': 'eval_release_a72497d5.json',  # Collision Course 13 tracks
-        'distractors': [
-            'eval_release_2810aeef.json',  # Collision Course 23 tracks
-            'eval_release_2c5e4198.json',  # Jay-Z solo album
+        "target": "eval_release_e3334c4e.json",  # GY!BE Constellation AU
+        "distractors": [
+            "eval_release_6a76904c.json",  # kranky US
+            "eval_release_f77eeaef.json",  # 2017 reissue
+            "eval_release_748e3e26.json",  # 2018 vinyl
         ],
-        'scenario': 'multi_artist_editions',
+        "scenario": "same_album_variant_titles",
     },
-    # EP vs other releases by same artist
+    # --- Multi-artist, different editions with different track counts ---
     {
-        'target': 'eval_release_20b2dd9a.json',  # Radiohead My Iron Lung EP
-        'distractors': [
-            'eval_release_2810aeef.json',  # Different artist entirely
-            'eval_release_3a8a6113.json',  # Different artist entirely
+        "target": "eval_release_2810aeef.json",  # Collision Course 23 tracks
+        "distractors": [
+            "eval_release_a72497d5.json",  # Collision Course 13 tracks
+            "eval_release_2c5e4198.json",  # Jay-Z solo album
         ],
-        'scenario': 'ep_identification',
-    },
-    # Greatest Hits compilations - same artist, same title, different compilations
-    {
-        'target': 'eval_release_bab57bb1.json',  # Queen Greatest Hits 1981 US (14 tracks, no barcode)
-        'distractors': [
-            'eval_release_ee99a91b.json',  # Queen Greatest Hits 2008 (39 tracks)
-            'eval_release_fcb78d0d.json',  # Queen Greatest Hits 1981 DE (18 tracks, no barcode)
-        ],
-        'scenario': 'greatest_hits_compilations',
+        "scenario": "multi_artist_editions",
     },
     {
-        'target': 'eval_release_ee99a91b.json',  # Queen Greatest Hits 2008 (39 tracks)
-        'distractors': [
-            'eval_release_bab57bb1.json',  # Queen Greatest Hits 1981 US (14 tracks)
-            'eval_release_fcb78d0d.json',  # Queen Greatest Hits 1981 DE (18 tracks)
+        "target": "eval_release_a72497d5.json",  # Collision Course 13 tracks
+        "distractors": [
+            "eval_release_2810aeef.json",  # Collision Course 23 tracks
+            "eval_release_2c5e4198.json",  # Jay-Z solo album
         ],
-        'scenario': 'greatest_hits_compilations',
+        "scenario": "multi_artist_editions",
     },
-    # Classical - same composition, different performers
+    # --- EP identification ---
     {
-        'target': 'eval_release_f390ab14.json',  # Beethoven 5 - Karajan/BPO 1978
-        'distractors': [
-            'eval_release_f394e886.json',  # Beethoven 5 - Szell/Cleveland 1977
+        "target": "eval_release_20b2dd9a.json",  # Radiohead My Iron Lung EP
+        "distractors": [
+            "eval_release_2810aeef.json",  # Different artist
+            "eval_release_3a8a6113.json",  # Different artist
         ],
-        'scenario': 'classical_same_composition',
+        "scenario": "ep_identification",
     },
+    # --- Greatest Hits: same artist, same title, different compilations ---
     {
-        'target': 'eval_release_f394e886.json',  # Beethoven 5 - Szell/Cleveland 1977
-        'distractors': [
-            'eval_release_f390ab14.json',  # Beethoven 5 - Karajan/BPO 1978
+        "target": "eval_release_bab57bb1.json",  # Queen GH 1981 US (14t, no barcode)
+        "distractors": [
+            "eval_release_ee99a91b.json",  # Queen GH 2008 (39t)
+            "eval_release_fcb78d0d.json",  # Queen GH 1981 DE (18t, no barcode)
         ],
-        'scenario': 'classical_same_composition',
-    },
-    # Non-Latin scripts - same album, different editions
-    {
-        'target': 'eval_release_3ac4a81e.json',  # 椎名林檎 三毒史 digital
-        'distractors': [
-            'eval_release_4fdf1514.json',  # 椎名林檎 三毒史 CD edition
-        ],
-        'scenario': 'non_latin_editions',
+        "scenario": "greatest_hits_compilations",
     },
     {
-        'target': 'eval_release_4fdf1514.json',  # 椎名林檎 三毒史 CD edition
-        'distractors': [
-            'eval_release_3ac4a81e.json',  # 椎名林檎 三毒史 digital
+        "target": "eval_release_ee99a91b.json",  # Queen GH 2008 (39t)
+        "distractors": [
+            "eval_release_bab57bb1.json",  # Queen GH 1981 US (14t)
+            "eval_release_fcb78d0d.json",  # Queen GH 1981 DE (18t)
         ],
-        'scenario': 'non_latin_editions',
+        "scenario": "greatest_hits_compilations",
     },
-    # Live vs studio - same artist, different albums
+    # --- Classical: same composition, different performers ---
     {
-        'target': 'eval_release_eccae410.json',  # Nirvana Nevermind (studio)
-        'distractors': [
-            'eval_release_f4469159.json',  # Nirvana MTV Unplugged (live)
-            'eval_release_8e061dc4.json',  # Nevermind US alt edition (barcode with leading 0)
+        "target": "eval_release_f390ab14.json",  # Beethoven 5 - Karajan 1978
+        "distractors": [
+            "eval_release_f394e886.json",  # Beethoven 5 - Szell 1977
         ],
-        'scenario': 'live_vs_studio',
+        "scenario": "classical_same_composition",
     },
     {
-        'target': 'eval_release_f4469159.json',  # Nirvana MTV Unplugged (live)
-        'distractors': [
-            'eval_release_eccae410.json',  # Nirvana Nevermind (studio)
-            'eval_release_8e061dc4.json',  # Nevermind US alt edition
+        "target": "eval_release_f394e886.json",  # Beethoven 5 - Szell 1977
+        "distractors": [
+            "eval_release_f390ab14.json",  # Beethoven 5 - Karajan 1978
         ],
-        'scenario': 'live_vs_studio',
+        "scenario": "classical_same_composition",
+    },
+    # --- Non-Latin scripts: same album, different editions ---
+    {
+        "target": "eval_release_3ac4a81e.json",  # 椎名林檎 三毒史 digital
+        "distractors": [
+            "eval_release_4fdf1514.json",  # 椎名林檎 三毒史 CD
+        ],
+        "scenario": "non_latin_editions",
+    },
+    {
+        "target": "eval_release_4fdf1514.json",  # 椎名林檎 三毒史 CD
+        "distractors": [
+            "eval_release_3ac4a81e.json",  # 椎名林檎 三毒史 digital
+        ],
+        "scenario": "non_latin_editions",
+    },
+    # --- Live vs studio: same artist, different albums ---
+    {
+        "target": "eval_release_eccae410.json",  # Nirvana Nevermind
+        "distractors": [
+            "eval_release_f4469159.json",  # Nirvana MTV Unplugged
+            "eval_release_8e061dc4.json",  # Nevermind alt edition (leading-0 barcode)
+        ],
+        "scenario": "live_vs_studio",
+    },
+    {
+        "target": "eval_release_f4469159.json",  # Nirvana MTV Unplugged
+        "distractors": [
+            "eval_release_eccae410.json",  # Nirvana Nevermind
+            "eval_release_8e061dc4.json",  # Nevermind alt edition
+        ],
+        "scenario": "live_vs_studio",
     },
 ]
 
 
-def load_release(filename):
-    with open(CORPUS_DIR / filename, encoding='utf-8') as f:
-        return json.load(f)
-
-
-# --- Degradation patterns ---
+# =============================================================================
+# Degradation patterns
+# =============================================================================
+# Each function mutates a Metadata object to simulate imperfect file tags.
+# Signature: fn(metadata: Metadata, release: dict) -> None
+# To add a new degradation: define the function and append to DEGRADATIONS.
 
 
 def perfect(metadata, release):
     """No degradation — metadata exactly matches release."""
-    pass
 
 
 def missing_barcode(metadata, release):
-    """File has no barcode tag (very common)."""
-    metadata.pop('barcode', None)
+    """Remove barcode tag (very common in real files)."""
+    metadata.pop("barcode", None)
 
 
 def missing_date(metadata, release):
-    """File has no date tag."""
-    metadata.pop('date', None)
+    """Remove date tag entirely."""
+    metadata.pop("date", None)
 
 
 def year_only(metadata, release):
-    """File has only the year, not full date."""
-    if 'date' in metadata:
-        date = metadata['date']
-        if len(date) > 4:
-            metadata['date'] = date[:4]
+    """Truncate date to year only (e.g., '1994-05-10' → '1994')."""
+    if "date" in metadata and len(metadata["date"]) > 4:
+        metadata["date"] = metadata["date"][:4]
 
 
 def typo_album(metadata, release):
-    """Album name has a typo."""
-    album = metadata.get('album', '')
+    """Introduce a single-character typo in album name."""
+    album = metadata.get("album", "")
     if len(album) > 3:
         i = random.randint(1, len(album) - 2)
-        metadata['album'] = album[:i] + 'x' + album[i + 1 :]
+        metadata["album"] = album[:i] + "x" + album[i + 1 :]
 
 
 def wrong_case_album(metadata, release):
-    """Album name in wrong case."""
-    if 'album' in metadata:
-        metadata['album'] = metadata['album'].lower()
+    """Lowercase the album name."""
+    if "album" in metadata:
+        metadata["album"] = metadata["album"].lower()
 
 
 def missing_artist(metadata, release):
-    """No albumartist tag."""
-    metadata.pop('albumartist', None)
+    """Remove albumartist tag."""
+    metadata.pop("albumartist", None)
 
 
 def extra_artist_suffix(metadata, release):
-    """Artist has extra text (e.g., 'feat.' suffix)."""
-    if 'albumartist' in metadata:
-        metadata['albumartist'] = metadata['albumartist'] + ' feat. Someone'
+    """Append 'feat. Someone' to artist (common in poorly tagged files)."""
+    if "albumartist" in metadata:
+        metadata["albumartist"] = metadata["albumartist"] + " feat. Someone"
 
 
 def wrong_track_count(metadata, release):
-    """Track count is off by one (bonus track edition)."""
-    if '~totalalbumtracks' in metadata:
-        try:
-            n = int(metadata['~totalalbumtracks'])
-            metadata['~totalalbumtracks'] = str(n + 1)
-        except ValueError:
-            pass
-    if 'totaltracks' in metadata:
-        try:
-            n = int(metadata['totaltracks'])
-            metadata['totaltracks'] = str(n + 1)
-        except ValueError:
-            pass
+    """Increment track count by 1 (simulates bonus track edition)."""
+    for key in ("~totalalbumtracks", "totaltracks"):
+        if key in metadata:
+            try:
+                metadata[key] = str(int(metadata[key]) + 1)
+            except ValueError:
+                pass
 
 
 def wrong_barcode(metadata, release):
-    """File has a barcode but it's wrong."""
-    metadata['barcode'] = '9999999999999'
+    """Replace barcode with an incorrect value."""
+    metadata["barcode"] = "9999999999999"
 
 
 def missing_most(metadata, release):
-    """Only album name and artist remain."""
-    keep = {'album', 'albumartist'}
+    """Strip everything except album and artist (minimal metadata)."""
+    keep = {"album", "albumartist"}
     for key in list(metadata.keys()):
-        if key not in keep and not key.startswith('~'):
+        if key not in keep and not key.startswith("~"):
             metadata.pop(key, None)
 
 
 def swapped_artist_album(metadata, release):
-    """Artist and album are swapped (common ripping error)."""
-    album = metadata.get('album', '')
-    artist = metadata.get('albumartist', '')
+    """Swap artist and album fields (common ripping/tagging error)."""
+    album = metadata.get("album", "")
+    artist = metadata.get("albumartist", "")
     if album and artist:
-        metadata['album'] = artist
-        metadata['albumartist'] = album
+        metadata["album"] = artist
+        metadata["albumartist"] = album
 
 
 DEGRADATIONS = [
-    ('perfect', perfect),
-    ('missing_barcode', missing_barcode),
-    ('missing_date', missing_date),
-    ('year_only', year_only),
-    ('typo_album', typo_album),
-    ('wrong_case_album', wrong_case_album),
-    ('missing_artist', missing_artist),
-    ('extra_artist_suffix', extra_artist_suffix),
-    ('wrong_track_count', wrong_track_count),
-    ('wrong_barcode', wrong_barcode),
-    ('missing_most', missing_most),
-    ('swapped_artist_album', swapped_artist_album),
+    ("perfect", perfect),
+    ("missing_barcode", missing_barcode),
+    ("missing_date", missing_date),
+    ("year_only", year_only),
+    ("typo_album", typo_album),
+    ("wrong_case_album", wrong_case_album),
+    ("missing_artist", missing_artist),
+    ("extra_artist_suffix", extra_artist_suffix),
+    ("wrong_track_count", wrong_track_count),
+    ("wrong_barcode", wrong_barcode),
+    ("missing_most", missing_most),
+    ("swapped_artist_album", swapped_artist_album),
 ]
 
 
-# --- Corpus generation ---
+# =============================================================================
+# Corpus generation
+# =============================================================================
+
+
+def load_release(filename):
+    """Load a release JSON fixture from the corpus directory."""
+    with open(CORPUS_DIR / filename, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def metadata_from_release(release):
-    """Convert a release dict to Metadata as if it were file tags."""
+    """Convert a MB release dict to Metadata, simulating file tags.
+
+    Populates album, artist, date, barcode, totaltracks, etc. from the
+    release data as if a file had been tagged from this release.
+    """
     m = Metadata()
     release_to_metadata(release, m)
-    # Also set totaltracks from media
-    total = 0
-    for media in release.get('media', []):
-        total += media.get('track-count', 0)
+    total = sum(media.get("track-count", 0) for media in release.get("media", []))
     if total:
-        m['totaltracks'] = str(release.get('media', [{}])[0].get('track-count', total))
-        m['~totalalbumtracks'] = str(total)
+        first_medium_tracks = release.get("media", [{}])[0].get("track-count", total)
+        m["totaltracks"] = str(first_medium_tracks)
+        m["~totalalbumtracks"] = str(total)
     return m
 
 
 def generate_corpus():
-    """Generate test cases using real MB releases as targets and distractors."""
-    corpus = []
+    """Build the evaluation corpus from scenarios and degradations.
 
-    for scenario in EVAL_SCENARIOS:
-        target = load_release(scenario['target'])
-        distractors = [load_release(f) for f in scenario['distractors']]
+    For each scenario × degradation combination, generates one test case
+    consisting of degraded file metadata and a candidate set (target + distractors).
+    """
+    corpus = []
+    for scenario in SCENARIOS:
+        target = load_release(scenario["target"])
+        distractors = [load_release(f) for f in scenario["distractors"]]
         candidates = [target] + distractors
 
         for deg_name, deg_fn in DEGRADATIONS:
             m = metadata_from_release(target)
             deg_fn(m, target)
-
             corpus.append(
                 {
-                    'degradation': deg_name,
-                    'release_title': target['title'],
-                    'scenario': scenario['scenario'],
-                    'metadata': m,
-                    'correct_id': target['id'],
-                    'candidates': candidates,
+                    "degradation": deg_name,
+                    "scenario": scenario["scenario"],
+                    "release_title": target["title"],
+                    "metadata": m,
+                    "correct_id": target["id"],
+                    "candidates": candidates,
                 }
             )
-
     return corpus
 
 
-# --- Evaluation ---
+# =============================================================================
+# Evaluation
+# =============================================================================
 
 
 def evaluate(corpus, weights):
-    """Run the matcher on each corpus entry and report accuracy."""
-    results = {'correct': 0, 'wrong': 0, 'ambiguous': 0, 'details': []}
+    """Score each corpus entry and classify as correct/ambiguous/wrong.
+
+    Returns a dict with counts and per-entry details including margin
+    (score difference between best and second-best candidate).
+    """
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
 
     for entry in corpus:
-        metadata = entry['metadata']
-        scores = []
-
-        for candidate in entry['candidates']:
-            match = metadata.compare_to_release(candidate, weights)
-            scores.append((match.similarity, candidate['id']))
-
+        scores = [(entry["metadata"].compare_to_release(c, weights).similarity, c["id"]) for c in entry["candidates"]]
         scores.sort(key=lambda x: x[0], reverse=True)
-        best_sim = scores[0][0]
-        best_id = scores[0][1]
+        best_sim, best_id = scores[0]
+        margin = best_sim - scores[1][0] if len(scores) > 1 else 0
 
-        # Check for ties at the top
-        tied_ids = [cid for sim, cid in scores if sim == best_sim]
-        if len(tied_ids) > 1 and entry['correct_id'] in tied_ids:
-            status = 'ambiguous'
-            results['ambiguous'] += 1
-        elif best_id == entry['correct_id']:
-            status = 'correct'
-            results['correct'] += 1
+        # Classify result
+        tied_ids = {cid for sim, cid in scores if sim == best_sim}
+        if len(tied_ids) > 1 and entry["correct_id"] in tied_ids:
+            status = "ambiguous"
+        elif best_id == entry["correct_id"]:
+            status = "correct"
         else:
-            status = 'wrong'
-            results['wrong'] += 1
+            status = "wrong"
+        results[status] += 1
 
-        results['details'].append(
+        results["details"].append(
             {
-                'release': entry['release_title'],
-                'degradation': entry['degradation'],
-                'scenario': entry.get('scenario', '?'),
-                'status': status,
-                'best_sim': best_sim,
-                'picked_id': best_id,
-                'expected_id': entry['correct_id'],
-                'margin': best_sim - scores[1][0] if len(scores) > 1 else 0,
+                "release": entry["release_title"],
+                "degradation": entry["degradation"],
+                "scenario": entry["scenario"],
+                "status": status,
+                "best_sim": best_sim,
+                "margin": margin,
             }
         )
 
     return results
 
 
-def print_report(results, weights_name):
-    total = results['correct'] + results['wrong'] + results['ambiguous']
-    results['correct'] / total if total else 0
-    print(f"\n{'=' * 70}")
-    print(f"Matching evaluation: {weights_name}")
-    print(f"{'=' * 70}")
-    print(f"Correct:   {results['correct']}/{total} ({results['correct'] / total:.1%})")
-    print(f"Ambiguous: {results['ambiguous']}/{total} ({results['ambiguous'] / total:.1%}) [tied with distractor]")
-    print(f"Wrong:     {results['wrong']}/{total} ({results['wrong'] / total:.1%})")
-    print()
+# =============================================================================
+# Reporting
+# =============================================================================
 
-    # Show problems
-    problems = [d for d in results['details'] if d['status'] != 'correct']
+
+def _grouped_breakdown(details, group_key, group_names=None):
+    """Compute per-group OK/ambiguous/fail counts from detail entries."""
+    ok = Counter()
+    amb = Counter()
+    fail = Counter()
+    total = Counter()
+    margins = defaultdict(list)
+
+    for d in details:
+        g = d[group_key]
+        total[g] += 1
+        margins[g].append(d["margin"])
+        if d["status"] == "correct":
+            ok[g] += 1
+        elif d["status"] == "ambiguous":
+            amb[g] += 1
+        else:
+            fail[g] += 1
+
+    names = group_names or sorted(total.keys())
+    return [(n, ok[n], amb[n], fail[n], total[n], margins[n]) for n in names]
+
+
+def print_report(results, weights_name):
+    """Print a formatted evaluation report to stdout."""
+    total = results["correct"] + results["wrong"] + results["ambiguous"]
+    print(f"\n{'=' * 70}")
+    print(f"  {weights_name}")
+    print(f"{'=' * 70}")
+    print(f"  Correct:   {results['correct']:>3}/{total} ({results['correct'] / total:.1%})")
+    print(f"  Ambiguous: {results['ambiguous']:>3}/{total} ({results['ambiguous'] / total:.1%})")
+    print(f"  Wrong:     {results['wrong']:>3}/{total} ({results['wrong'] / total:.1%})")
+
+    # Problems
+    problems = [d for d in results["details"] if d["status"] != "correct"]
     if problems:
-        print("PROBLEMS:")
-        print(f"{'Release':<25} {'Degradation':<22} {'Status':<10} {'Sim':<8} {'Margin':<8}")
-        print(f"{'-' * 25} {'-' * 22} {'-' * 10} {'-' * 8} {'-' * 8}")
+        print(f"\n  {'Release':<25} {'Degradation':<22} {'Status':<9} {'Sim':>6} {'Margin':>6}")
+        print(f"  {'-' * 25} {'-' * 22} {'-' * 9} {'-' * 6} {'-' * 6}")
         for p in problems:
             print(
-                f"{p['release']:<25} {p['degradation']:<22} {p['status']:<10} {p['best_sim']:<8.4f} {p['margin']:<8.4f}"
+                f"  {p['release'][:25]:<25} {p['degradation']:<22} "
+                f"{p['status']:<9} {p['best_sim']:6.4f} {p['margin']:6.4f}"
             )
-    else:
-        print("All cases matched correctly with clear margins!")
 
-    # Per-degradation summary
-    print("\nPer-degradation breakdown:")
-    print(f"{'Degradation':<25} {'OK':<5} {'Amb':<5} {'Fail':<5} {'Total':<5} {'Rate':<8} {'Avg Margin':<10}")
-    print(f"{'-' * 25} {'-' * 5} {'-' * 5} {'-' * 5} {'-' * 5} {'-' * 8} {'-' * 10}")
-    from collections import Counter
+    # Per-degradation
+    deg_names = [name for name, _ in DEGRADATIONS]
+    rows = _grouped_breakdown(results["details"], "degradation", deg_names)
+    print(f"\n  {'Degradation':<25} {'OK':>3} {'Amb':>3} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
+    print(f"  {'-' * 25} {'-' * 3} {'-' * 3} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
+    for name, ok, amb, fail, n, margins in rows:
+        rate = ok / n if n else 0
+        avg_m = sum(margins) / len(margins) if margins else 0
+        flag = " ✗" if rate < 1.0 else ""
+        print(f"  {name:<25} {ok:>3} {amb:>3} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
 
-    deg_ok = Counter()
-    deg_amb = Counter()
-    deg_fail = Counter()
-    deg_total = Counter()
-    deg_margins = {}
-    for d in results['details']:
-        deg = d['degradation']
-        deg_total[deg] += 1
-        deg_margins.setdefault(deg, []).append(d['margin'])
-        if d['status'] == 'correct':
-            deg_ok[deg] += 1
-        elif d['status'] == 'ambiguous':
-            deg_amb[deg] += 1
-        else:
-            deg_fail[deg] += 1
-    for deg in [name for name, _ in DEGRADATIONS]:
-        ok = deg_ok[deg]
-        amb = deg_amb[deg]
-        fail = deg_fail[deg]
-        t = deg_total[deg]
-        rate = ok / t if t else 0
-        avg_margin = sum(deg_margins.get(deg, [0])) / len(deg_margins.get(deg, [1]))
-        marker = ' ✗' if rate < 1.0 else ''
-        print(f"{deg:<25} {ok:<5} {amb:<5} {fail:<5} {t:<5} {rate:<8.1%} {avg_margin:<10.4f}{marker}")
+    # Per-scenario
+    rows = _grouped_breakdown(results["details"], "scenario")
+    print(f"\n  {'Scenario':<30} {'OK':>3} {'Amb':>3} {'Fail':>4} {'N':>3} {'Rate':>6}")
+    print(f"  {'-' * 30} {'-' * 3} {'-' * 3} {'-' * 4} {'-' * 3} {'-' * 6}")
+    for name, ok, amb, fail, n, _ in rows:
+        rate = ok / n if n else 0
+        flag = " ✗" if rate < 1.0 else ""
+        print(f"  {name:<30} {ok:>3} {amb:>3} {fail:>4} {n:>3} {rate:>5.0%}{flag}")
 
-    # Per-scenario summary
-    from collections import Counter as Counter2
 
-    scen_ok = Counter2()
-    scen_amb = Counter2()
-    scen_fail = Counter2()
-    scen_total = Counter2()
-    for d in results['details']:
-        scen = d.get('scenario', '?')
-        scen_total[scen] += 1
-        if d['status'] == 'correct':
-            scen_ok[scen] += 1
-        elif d['status'] == 'ambiguous':
-            scen_amb[scen] += 1
-        else:
-            scen_fail[scen] += 1
-    print("\nPer-scenario breakdown:")
-    print(f"{'Scenario':<30} {'OK':<5} {'Amb':<5} {'Fail':<5} {'Total':<5} {'Rate':<8}")
-    print(f"{'-' * 30} {'-' * 5} {'-' * 5} {'-' * 5} {'-' * 5} {'-' * 8}")
-    for scen in sorted(scen_total.keys()):
-        ok = scen_ok[scen]
-        amb = scen_amb[scen]
-        fail = scen_fail[scen]
-        t = scen_total[scen]
-        rate = ok / t if t else 0
-        marker = ' ✗' if rate < 1.0 else ''
-        print(f"{scen:<30} {ok:<5} {amb:<5} {fail:<5} {t:<5} {rate:<8.1%}{marker}")
+# =============================================================================
+# Main
+# =============================================================================
+
+
+def _mock_config():
+    """Create a mock config suitable for release_to_metadata and matching."""
+    settings = defaultdict(
+        lambda: False,
+        {
+            "preferred_release_countries": [],
+            "preferred_release_formats": [],
+            "release_type_scores": [
+                ("Album", 1.0),
+                ("Single", 0.5),
+                ("EP", 0.7),
+                ("Other", 0.3),
+            ],
+        },
+    )
+    mock = MagicMock()
+    mock.setting = settings
+    return mock
 
 
 def main():
-    random.seed(42)  # Reproducible
+    random.seed(42)
 
-    from collections import defaultdict
-    from unittest.mock import MagicMock, patch
-
-    defaults = defaultdict(
-        lambda: False,
-        {
-            'preferred_release_countries': [],
-            'preferred_release_formats': [],
-            'release_type_scores': [('Album', 1.0), ('Single', 0.5), ('EP', 0.7), ('Other', 0.3)],
-        },
-    )
-    mock_config = MagicMock()
-    mock_config.setting = defaults
+    mock_config = _mock_config()
     with (
-        patch('picard.config.get_config', return_value=mock_config),
-        patch('picard.mbjson.get_config', return_value=mock_config),
-        patch('picard.metadata.get_config', return_value=mock_config),
+        patch("picard.config.get_config", return_value=mock_config),
+        patch("picard.mbjson.get_config", return_value=mock_config),
+        patch("picard.metadata.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus()
         results = evaluate(corpus, CLUSTER_COMPARISON_WEIGHTS)
-        print_report(results, 'CLUSTER_COMPARISON_WEIGHTS')
+        print_report(results, "CLUSTER_COMPARISON_WEIGHTS")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
