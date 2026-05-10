@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import sys
 import time
+import urllib.error
 import urllib.request
 
 
@@ -43,12 +44,28 @@ def append_to_registry(mbid, description):
         f.write(f"{mbid}\t{description}\n")
 
 
-def fetch_release(release_id):
-    """Fetch a release from the MusicBrainz API."""
+def fetch_release(release_id, retries=3):
+    """Fetch a release from the MusicBrainz API, with retry on transient errors."""
     url = f"{MB_API}/{release_id}?inc={MB_INC}&fmt=json"
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req) as resp:
-        return json.loads(resp.read())
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503) and attempt < retries - 1:
+                wait = REQUEST_DELAY * (attempt + 2)
+                print(f"    HTTP {e.code}, retrying in {wait:.0f}s...", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                raise
+        except urllib.error.URLError:
+            if attempt < retries - 1:
+                wait = REQUEST_DELAY * (attempt + 2)
+                print(f"    Network error, retrying in {wait:.0f}s...", file=sys.stderr)
+                time.sleep(wait)
+            else:
+                raise
 
 
 def save_release(data):
