@@ -268,6 +268,23 @@ def length_large_diff(metadata, release):
         metadata.length = metadata.length + 15000
 
 
+def title_remaster_suffix(metadata, release):
+    """Track title has '(Remastered)' appended (common in streaming/reissues)."""
+    if "title" in metadata:
+        metadata["title"] = metadata["title"] + " (Remastered)"
+
+
+def missing_tracknumber(metadata, release):
+    """No track number tag (common in poorly ripped files)."""
+    metadata.pop("tracknumber", None)
+
+
+def wrong_date_year(metadata, release):
+    """Date is a reissue year instead of original (off by ~10 years)."""
+    if "date" in metadata:
+        metadata["date"] = "2003"
+
+
 def swapped_artist_album(metadata, release):
     """Swap artist and album fields (common ripping/tagging error)."""
     album = metadata.get("album", "")
@@ -290,6 +307,9 @@ DEGRADATIONS = [
     ("wrong_barcode", wrong_barcode),
     ("length_small_diff", length_small_diff),
     ("length_large_diff", length_large_diff),
+    ("title_remaster_suffix", title_remaster_suffix),
+    ("missing_tracknumber", missing_tracknumber),
+    ("wrong_date_year", wrong_date_year),
     ("missing_most", missing_most),
     ("swapped_artist_album", swapped_artist_album),
 ]
