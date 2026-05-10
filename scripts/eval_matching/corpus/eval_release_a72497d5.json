@@ -1,0 +1,125 @@
+{
+  "country": "XE",
+  "artist-credit": [
+    {
+      "joinphrase": " / ",
+      "name": "Jay\u2010Z",
+      "artist": {
+        "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+        "name": "JAY\u2010Z",
+        "disambiguation": "US rapper",
+        "sort-name": "JAY\u2010Z",
+        "country": "US",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+      }
+    },
+    {
+      "name": "Linkin Park",
+      "joinphrase": "",
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "country": "US",
+        "sort-name": "Linkin Park",
+        "name": "Linkin Park",
+        "disambiguation": "American rock band",
+        "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+      }
+    }
+  ],
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "cover-art-archive": {
+    "artwork": true,
+    "count": 9,
+    "back": true,
+    "darkened": false,
+    "front": true
+  },
+  "packaging": "Jewel Case",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "asin": "B0006FWZ20",
+  "date": "2004-11-29",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "name": "Europe",
+        "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+        "type": null,
+        "type-id": null,
+        "sort-name": "Europe",
+        "iso-3166-1-codes": [
+          "XE"
+        ]
+      },
+      "date": "2004-11-29"
+    }
+  ],
+  "barcode": "093624896326",
+  "title": "MTV Ultimate Mash\u2010Ups Presents: Collision Course",
+  "release-group": {
+    "primary-type": "EP",
+    "secondary-type-ids": [],
+    "artist-credit": [
+      {
+        "artist": {
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "country": "US",
+          "sort-name": "JAY\u2010Z",
+          "name": "JAY\u2010Z",
+          "disambiguation": "US rapper",
+          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+        },
+        "name": "Jay\u2010Z",
+        "joinphrase": " / "
+      },
+      {
+        "artist": {
+          "disambiguation": "American rock band",
+          "name": "Linkin Park",
+          "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "type": "Group",
+          "country": "US",
+          "sort-name": "Linkin Park"
+        },
+        "name": "Linkin Park",
+        "joinphrase": ""
+      }
+    ],
+    "first-release-date": "2004-11-29",
+    "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+    "title": "Collision Course",
+    "id": "8ef859e3-feb2-4dd1-93da-22b91280d768",
+    "disambiguation": "",
+    "secondary-types": []
+  },
+  "status": "Official",
+  "quality": "normal",
+  "id": "a72497d5-b677-3738-8e39-16af84ddb171",
+  "disambiguation": "",
+  "media": [
+    {
+      "id": "e0fc8351-f4ec-34e4-8624-96ad7b6fefe1",
+      "title": "",
+      "format": "CD",
+      "track-count": 6,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 1
+    },
+    {
+      "position": 2,
+      "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+      "track-count": 7,
+      "format": "DVD-Video",
+      "title": "",
+      "id": "d44c95c5-1a43-387b-a539-07f6c08da552"
+    }
+  ]
+}

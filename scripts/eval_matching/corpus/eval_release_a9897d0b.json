@@ -1,0 +1,91 @@
+{
+  "country": "CA",
+  "artist-credit": [
+    {
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "sort-name": "Weezer",
+        "country": "US",
+        "name": "Weezer",
+        "disambiguation": "American rock band",
+        "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+      },
+      "name": "Weezer",
+      "joinphrase": ""
+    }
+  ],
+  "cover-art-archive": {
+    "front": true,
+    "artwork": true,
+    "back": true,
+    "darkened": false,
+    "count": 5
+  },
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "packaging": "Jewel Case",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "asin": null,
+  "date": "2001-05-15",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "release-events": [
+    {
+      "date": "2001-05-15",
+      "area": {
+        "sort-name": "Canada",
+        "iso-3166-1-codes": [
+          "CA"
+        ],
+        "type": null,
+        "type-id": null,
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "name": "Canada",
+        "disambiguation": ""
+      }
+    }
+  ],
+  "barcode": "606949304522",
+  "release-group": {
+    "disambiguation": "Green Album",
+    "secondary-types": [],
+    "id": "923d5ba6-7eee-3bce-bcb2-c913b2bd69d4",
+    "title": "Weezer",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "first-release-date": "2001-05-07",
+    "artist-credit": [
+      {
+        "name": "Weezer",
+        "joinphrase": "",
+        "artist": {
+          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+          "name": "Weezer",
+          "disambiguation": "American rock band",
+          "country": "US",
+          "sort-name": "Weezer",
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        }
+      }
+    ],
+    "primary-type": "Album"
+  },
+  "title": "Weezer",
+  "status": "Official",
+  "quality": "normal",
+  "id": "a9897d0b-b05a-41d9-baa5-68a754e917c3",
+  "disambiguation": "green album",
+  "media": [
+    {
+      "id": "1f982571-137d-39fa-b6a7-558ff1b77588",
+      "title": "",
+      "format": "CD",
+      "track-count": 10,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 1
+    }
+  ]
+}

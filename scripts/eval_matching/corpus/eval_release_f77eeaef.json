@@ -1,0 +1,99 @@
+{
+  "status": "Official",
+  "quality": "normal",
+  "id": "f77eeaef-878e-4db3-ae65-5161cf929f14",
+  "disambiguation": "",
+  "media": [
+    {
+      "id": "9b7181b5-8287-3b0f-93eb-cbffd746946f",
+      "title": "",
+      "format": "Digital Media",
+      "track-count": 2,
+      "position": 1,
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794"
+    },
+    {
+      "id": "a36b332a-5c4a-3701-8030-0f8c1105312e",
+      "title": "",
+      "format": "Digital Media",
+      "track-count": 2,
+      "position": 2,
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794"
+    }
+  ],
+  "artist-credit": [
+    {
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "country": "CA",
+        "sort-name": "Godspeed You! Black Emperor",
+        "name": "Godspeed You! Black Emperor",
+        "disambiguation": "",
+        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4"
+      },
+      "name": "Godspeed You! Black Emperor",
+      "joinphrase": ""
+    }
+  ],
+  "country": "XW",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "cover-art-archive": {
+    "count": 1,
+    "back": false,
+    "darkened": false,
+    "artwork": true,
+    "front": true
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging": "None",
+  "date": "2017-09-18",
+  "asin": null,
+  "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+  "release-events": [
+    {
+      "area": {
+        "iso-3166-1-codes": [
+          "XW"
+        ],
+        "sort-name": "[Worldwide]",
+        "type-id": null,
+        "type": null,
+        "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+        "name": "[Worldwide]",
+        "disambiguation": ""
+      },
+      "date": "2017-09-18"
+    }
+  ],
+  "barcode": "887396825833",
+  "title": "Lift Your Skinny Fists Like Antennas to Heaven",
+  "release-group": {
+    "secondary-type-ids": [],
+    "first-release-date": "2000-10-09",
+    "artist-credit": [
+      {
+        "name": "Godspeed You Black Emperor!",
+        "joinphrase": "",
+        "artist": {
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "sort-name": "Godspeed You! Black Emperor",
+          "country": "CA",
+          "disambiguation": "",
+          "name": "Godspeed You! Black Emperor",
+          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4"
+        }
+      }
+    ],
+    "primary-type": "Album",
+    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
+    "disambiguation": "",
+    "secondary-types": [],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!"
+  }
+}

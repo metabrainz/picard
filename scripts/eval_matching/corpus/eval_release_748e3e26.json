@@ -1,0 +1,99 @@
+{
+  "country": "CA",
+  "artist-credit": [
+    {
+      "artist": {
+        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+        "disambiguation": "",
+        "name": "Godspeed You! Black Emperor",
+        "country": "CA",
+        "sort-name": "Godspeed You! Black Emperor",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group"
+      },
+      "name": "Godspeed You Black Emperor!",
+      "joinphrase": ""
+    }
+  ],
+  "date": "2018",
+  "asin": null,
+  "packaging": "Gatefold Cover",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "cover-art-archive": {
+    "artwork": false,
+    "darkened": false,
+    "back": false,
+    "count": 0,
+    "front": false
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "name": "Canada",
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "type-id": null,
+        "type": null,
+        "iso-3166-1-codes": [
+          "CA"
+        ],
+        "sort-name": "Canada"
+      },
+      "date": "2018"
+    }
+  ],
+  "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+  "title": "Lift Your Skinny Fists Like Antennas To Heaven",
+  "release-group": {
+    "secondary-types": [],
+    "disambiguation": "",
+    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
+    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "artist-credit": [
+      {
+        "artist": {
+          "country": "CA",
+          "sort-name": "Godspeed You! Black Emperor",
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+          "name": "Godspeed You! Black Emperor",
+          "disambiguation": ""
+        },
+        "name": "Godspeed You Black Emperor!",
+        "joinphrase": ""
+      }
+    ],
+    "first-release-date": "2000-10-09",
+    "secondary-type-ids": [],
+    "primary-type": "Album"
+  },
+  "barcode": "666561001216",
+  "status": "Official",
+  "quality": "normal",
+  "disambiguation": "",
+  "id": "748e3e26-1b4a-4ba9-a2f8-f8bf72ca532d",
+  "media": [
+    {
+      "title": "",
+      "id": "f4ebbf2c-8f46-3e25-98e1-e61de42afe40",
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "position": 1,
+      "format": "12\" Vinyl",
+      "track-count": 2
+    },
+    {
+      "position": 2,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "track-count": 2,
+      "format": "12\" Vinyl",
+      "title": "",
+      "id": "d6d8e20a-4695-3490-8368-19cc897265d4"
+    }
+  ]
+}

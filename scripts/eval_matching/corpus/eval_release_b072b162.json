@@ -1,0 +1,91 @@
+{
+  "media": [
+    {
+      "id": "8ba83815-4e62-315d-8929-0f3ef246ffab",
+      "title": "",
+      "track-count": 10,
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 1
+    }
+  ],
+  "id": "b072b162-a733-3137-a4a0-4375172d98c9",
+  "disambiguation": "blue album",
+  "quality": "normal",
+  "status": "Official",
+  "barcode": "720642462928",
+  "title": "Weezer",
+  "release-group": {
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "artist-credit": [
+      {
+        "artist": {
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "type": "Group",
+          "country": "US",
+          "sort-name": "Weezer",
+          "disambiguation": "American rock band",
+          "name": "Weezer",
+          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+        },
+        "joinphrase": "",
+        "name": "Weezer"
+      }
+    ],
+    "first-release-date": "1994-05-10",
+    "title": "Weezer",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "Blue Album",
+    "secondary-types": [],
+    "id": "c7b245c9-8099-32ea-af95-893acedde2cf"
+  },
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "release-events": [
+    {
+      "date": "1994-05-16",
+      "area": {
+        "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+        "name": "Germany",
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "DE"
+        ],
+        "sort-name": "Germany",
+        "type-id": null,
+        "type": null
+      }
+    }
+  ],
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "cover-art-archive": {
+    "front": true,
+    "back": true,
+    "count": 11,
+    "darkened": false,
+    "artwork": true
+  },
+  "packaging": "Jewel Case",
+  "asin": "B000003TAW",
+  "date": "1994-05-16",
+  "country": "DE",
+  "artist-credit": [
+    {
+      "name": "Weezer",
+      "joinphrase": "",
+      "artist": {
+        "country": "US",
+        "sort-name": "Weezer",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+        "name": "Weezer",
+        "disambiguation": "American rock band"
+      }
+    }
+  ]
+}

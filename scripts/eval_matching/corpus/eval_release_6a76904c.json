@@ -1,0 +1,99 @@
+{
+  "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!",
+  "asin": "B00004ZD69",
+  "packaging": "Gatefold Cover",
+  "country": "US",
+  "date": "2000-10-09",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "artist-credit": [
+    {
+      "artist": {
+        "sort-name": "Godspeed You! Black Emperor",
+        "type": "Group",
+        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+        "disambiguation": "",
+        "country": "CA",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "Godspeed You! Black Emperor"
+      },
+      "joinphrase": "",
+      "name": "Godspeed You Black Emperor!"
+    }
+  ],
+  "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "release-group": {
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "name": "Godspeed You Black Emperor!",
+        "artist": {
+          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+          "disambiguation": "",
+          "sort-name": "Godspeed You! Black Emperor",
+          "type": "Group",
+          "country": "CA",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Godspeed You! Black Emperor"
+        }
+      }
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "first-release-date": "2000-10-09",
+    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!",
+    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
+    "disambiguation": "",
+    "primary-type": "Album"
+  },
+  "id": "6a76904c-0caf-34e1-8cc2-7d95e86a3824",
+  "status": "Official",
+  "media": [
+    {
+      "title": "",
+      "track-count": 2,
+      "id": "b5d710e7-201c-3b7b-8f46-98e745a85ac0",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD",
+      "position": 1
+    },
+    {
+      "track-count": 2,
+      "title": "",
+      "position": 2,
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "7c04c3c6-74bf-34b3-90d6-be53f1907cc6"
+    }
+  ],
+  "disambiguation": "",
+  "release-events": [
+    {
+      "date": "2000-10-09",
+      "area": {
+        "name": "United States",
+        "type-id": null,
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "type": null,
+        "sort-name": "United States"
+      }
+    }
+  ],
+  "cover-art-archive": {
+    "back": true,
+    "darkened": false,
+    "artwork": true,
+    "count": 11,
+    "front": true
+  },
+  "barcode": "796441804320",
+  "quality": "normal"
+}

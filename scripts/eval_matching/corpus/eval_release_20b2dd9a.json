@@ -1,0 +1,91 @@
+{
+  "disambiguation": "",
+  "title": "My Iron Lung",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "artist-credit": [
+    {
+      "artist": {
+        "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+        "country": "GB",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "Radiohead",
+        "disambiguation": "",
+        "sort-name": "Radiohead",
+        "type": "Group"
+      },
+      "name": "Radiohead",
+      "joinphrase": ""
+    }
+  ],
+  "asin": "B000007361",
+  "date": "1994-09-24",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Jewel Case",
+  "release-events": [
+    {
+      "date": "1994-09-24",
+      "area": {
+        "type": null,
+        "name": "United Kingdom",
+        "disambiguation": "",
+        "sort-name": "United Kingdom",
+        "type-id": null,
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "iso-3166-1-codes": [
+          "GB"
+        ]
+      }
+    }
+  ],
+  "media": [
+    {
+      "title": "",
+      "id": "7ff8e57b-561a-37a6-8e68-a837a05c2755",
+      "track-count": 8,
+      "format": "CD",
+      "position": 1,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31"
+    }
+  ],
+  "country": "GB",
+  "status": "Official",
+  "release-group": {
+    "title": "My Iron Lung",
+    "secondary-type-ids": [],
+    "first-release-date": "1994-09-24",
+    "disambiguation": "",
+    "secondary-types": [],
+    "id": "99445a2b-578a-321e-851e-c6539bfbbd7f",
+    "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "artist": {
+          "type": "Group",
+          "name": "Radiohead",
+          "disambiguation": "",
+          "sort-name": "Radiohead",
+          "country": "GB",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+        },
+        "name": "Radiohead"
+      }
+    ],
+    "primary-type": "EP"
+  },
+  "id": "20b2dd9a-cee1-4767-8bc1-5b3b08cfcae5",
+  "quality": "normal",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "barcode": "724383147823",
+  "cover-art-archive": {
+    "front": true,
+    "back": true,
+    "artwork": true,
+    "darkened": false,
+    "count": 6
+  }
+}

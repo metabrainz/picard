@@ -1,0 +1,91 @@
+{
+  "packaging": "Jewel Case",
+  "asin": null,
+  "title": "Weezer",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "name": "Weezer",
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "Weezer",
+        "country": "US",
+        "type": "Group",
+        "sort-name": "Weezer",
+        "disambiguation": "American rock band",
+        "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+      }
+    }
+  ],
+  "country": "US",
+  "date": "1994-05-10",
+  "status": "Official",
+  "id": "3a8a6113-03dc-46a2-aa94-2b25e553fb64",
+  "release-group": {
+    "secondary-type-ids": [],
+    "title": "Weezer",
+    "first-release-date": "1994-05-10",
+    "id": "c7b245c9-8099-32ea-af95-893acedde2cf",
+    "disambiguation": "Blue Album",
+    "primary-type": "Album",
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "name": "Weezer",
+        "joinphrase": "",
+        "artist": {
+          "disambiguation": "American rock band",
+          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+          "type": "Group",
+          "sort-name": "Weezer",
+          "name": "Weezer",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "country": "US"
+        }
+      }
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "disambiguation": "blue album, JVC Pressing",
+  "media": [
+    {
+      "track-count": 10,
+      "title": "",
+      "id": "2714ee37-5c8f-3500-b2be-6880553650ab",
+      "position": 1,
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31"
+    }
+  ],
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "quality": "normal",
+  "barcode": "720642462928",
+  "cover-art-archive": {
+    "count": 0,
+    "front": false,
+    "darkened": false,
+    "artwork": false,
+    "back": false
+  },
+  "release-events": [
+    {
+      "date": "1994-05-10",
+      "area": {
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "type": null,
+        "sort-name": "United States",
+        "name": "United States",
+        "type-id": null
+      }
+    }
+  ]
+}

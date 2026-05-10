@@ -1,0 +1,99 @@
+{
+  "asin": "B000078JKX",
+  "date": "2002-11-12",
+  "media": [
+    {
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD",
+      "position": 1,
+      "title": "The Gift",
+      "track-count": 11,
+      "id": "43ad3795-a9d6-3daf-8c59-610c30281d58"
+    },
+    {
+      "track-count": 14,
+      "id": "412c27aa-3365-3a72-bf4b-d7312390da8f",
+      "title": "The Curse",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 2,
+      "format": "CD"
+    }
+  ],
+  "country": "US",
+  "packaging": null,
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "release-events": [
+    {
+      "area": {
+        "type-id": null,
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "type": null,
+        "sort-name": "United States",
+        "name": "United States",
+        "disambiguation": ""
+      },
+      "date": "2002-11-12"
+    }
+  ],
+  "title": "The Blueprint\u00b2: The Gift & The Curse",
+  "disambiguation": "clean/edited",
+  "packaging-id": null,
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "country": "US",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+        "type": "Person",
+        "disambiguation": "US rapper",
+        "name": "JAY\u2010Z",
+        "sort-name": "JAY\u2010Z"
+      },
+      "name": "Jay\u2010Z"
+    }
+  ],
+  "barcode": "044006338026",
+  "cover-art-archive": {
+    "back": true,
+    "artwork": true,
+    "front": true,
+    "count": 4,
+    "darkened": false
+  },
+  "quality": "high",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "status": "Official",
+  "id": "2c5e4198-24cf-3c95-a16e-83be8e877dfa",
+  "release-group": {
+    "artist-credit": [
+      {
+        "name": "Jay\u2010Z",
+        "artist": {
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "country": "US",
+          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+          "type": "Person",
+          "sort-name": "JAY\u2010Z",
+          "name": "JAY\u2010Z",
+          "disambiguation": "US rapper"
+        },
+        "joinphrase": ""
+      }
+    ],
+    "id": "c0cdbbdd-006d-3f4a-90bb-31e259d839e4",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-types": [],
+    "first-release-date": "2002-11-12",
+    "disambiguation": "",
+    "secondary-type-ids": [],
+    "title": "The Blueprint\u00b2: The Gift & The Curse",
+    "primary-type": "Album"
+  }
+}

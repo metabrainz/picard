@@ -1,0 +1,127 @@
+{
+  "release-group": {
+    "secondary-type-ids": [],
+    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
+    "primary-type": "Album",
+    "disambiguation": "",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!",
+    "first-release-date": "2000-10-09",
+    "artist-credit": [
+      {
+        "artist": {
+          "name": "Godspeed You! Black Emperor",
+          "type": "Group",
+          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+          "disambiguation": "",
+          "country": "CA",
+          "sort-name": "Godspeed You! Black Emperor",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        },
+        "joinphrase": "",
+        "name": "Godspeed You Black Emperor!"
+      }
+    ],
+    "secondary-types": []
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging": "Gatefold Cover",
+  "country": "AU",
+  "status": "Official",
+  "artist-credit": [
+    {
+      "name": "Godspeed You Black Emperor!",
+      "artist": {
+        "sort-name": "Godspeed You! Black Emperor",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+        "disambiguation": "",
+        "country": "CA",
+        "name": "Godspeed You! Black Emperor",
+        "type": "Group"
+      },
+      "joinphrase": ""
+    }
+  ],
+  "cover-art-archive": {
+    "artwork": true,
+    "front": true,
+    "back": true,
+    "count": 7,
+    "darkened": false
+  },
+  "quality": "normal",
+  "id": "e3334c4e-9612-43a2-923b-27e33acbd705",
+  "disambiguation": "",
+  "date": "2000-10-09",
+  "barcode": "666561001216",
+  "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+  "release-events": [
+    {
+      "date": "2000-10-09",
+      "area": {
+        "sort-name": "Australia",
+        "type-id": null,
+        "iso-3166-1-codes": [
+          "AU"
+        ],
+        "type": null,
+        "name": "Australia",
+        "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+        "disambiguation": ""
+      }
+    },
+    {
+      "area": {
+        "sort-name": "Canada",
+        "type-id": null,
+        "iso-3166-1-codes": [
+          "CA"
+        ],
+        "type": null,
+        "name": "Canada",
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "disambiguation": ""
+      },
+      "date": "2000-10-09"
+    },
+    {
+      "date": "2000-10-09",
+      "area": {
+        "type": null,
+        "name": "United Kingdom",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "disambiguation": "",
+        "sort-name": "United Kingdom",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "type-id": null
+      }
+    }
+  ],
+  "media": [
+    {
+      "title": "",
+      "position": 1,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "format": "12\" Vinyl",
+      "id": "0a422cdd-8519-3660-9407-a2e304bba86e",
+      "track-count": 2
+    },
+    {
+      "title": "",
+      "position": 2,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "track-count": 2,
+      "format": "12\" Vinyl",
+      "id": "a4a189bc-c3be-3b2a-b256-4ec136b32025"
+    }
+  ],
+  "asin": "B00004ZD69",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "title": "Lift Your Skinny Fists Like Antennas to Heaven!"
+}
