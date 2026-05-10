@@ -149,6 +149,17 @@ class Alias:
 
 
 @dataclass
+class ArtistCreditInfo:
+    """Artist credit info, including the combined name and all individual artist names and countries."""
+
+    name: str
+    sort_name: str
+    names: list[str]
+    sort_names: list[str]
+    countries: list[str]
+
+
+@dataclass
 class AliasMatch:
     """Combines an alias with a matching score when selecting the best matching alias for an entity."""
 
@@ -571,7 +582,7 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None
     return matched
 
 
-def _translate_artist_node(node, config=None) -> Alias:
+def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
     config = config or get_config()
     if config.setting['translate_artist_names']:
         if _should_skip_translation_due_to_scripts(node['name'], config=config):
@@ -591,7 +602,7 @@ def _translate_artist_node(node, config=None) -> Alias:
     return Alias(translated_name, sort_name)
 
 
-def artist_credit_from_node(node):
+def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_name = ''
     artist_sort_name = ''
     artist_names = []
@@ -619,26 +630,26 @@ def artist_credit_from_node(node):
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
-    return (artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
+    return ArtistCreditInfo(artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
 
 
-def artist_credit_to_metadata(node, m, release=False):
+def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = False):
     ids = [n['artist']['id'] for n in node]
-    artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries = artist_credit_from_node(node)
+    credits = artist_credit_from_node(node)
     if release:
         m['musicbrainz_albumartistid'] = ids
-        m['albumartist'] = artist_name
-        m['albumartistsort'] = artist_sort_name
-        m['~albumartists'] = artist_names
-        m['~albumartists_sort'] = artist_sort_names
-        m['~albumartists_countries'] = artist_countries
+        m['albumartist'] = credits.name
+        m['albumartistsort'] = credits.sort_name
+        m['~albumartists'] = credits.names
+        m['~albumartists_sort'] = credits.sort_names
+        m['~albumartists_countries'] = credits.countries
     else:
         m['musicbrainz_artistid'] = ids
-        m['artist'] = artist_name
-        m['artistsort'] = artist_sort_name
-        m['artists'] = artist_names
-        m['~artists_sort'] = artist_sort_names
-        m['~artists_countries'] = artist_countries
+        m['artist'] = credits.name
+        m['artistsort'] = credits.sort_name
+        m['artists'] = credits.names
+        m['~artists_sort'] = credits.sort_names
+        m['~artists_countries'] = credits.countries
 
 
 def _release_event_iter(node):

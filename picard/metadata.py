@@ -279,7 +279,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
             if 'albumartist' in self and 'albumartist' in weights:
                 a = self['albumartist']
-                b = artist_credit_from_node(release['artist-credit'])[0]
+                b = artist_credit_from_node(release['artist-credit']).name
                 parts.append((similarity2(a, b), weights['albumartist']))
 
             if 'totaltracks' in weights:
@@ -393,7 +393,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if 'artist' in self:
                 a = self['artist']
                 artist_credits = track.get('artist-credit', [])
-                b = artist_credit_from_node(artist_credits)[0]
+                b = artist_credit_from_node(artist_credits).name
                 parts.append((similarity2(a, b), weights["artist"]))
 
             a = self.length
