@@ -58,6 +58,7 @@ from picard.similarity import similarity2
 from picard.tags import preserved_tag_names
 from picard.util import (
     ReadWriteLockContext,
+    compare_barcodes,
     extract_year_from_date,
     linear_combination_of_weights,
 )
@@ -369,6 +370,17 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 config.setting['release_type_scores'],
                 weights['releasetype'],
             )
+
+        if 'barcode' in weights:
+            file_barcode = self.get('barcode', '')
+            if file_barcode:
+                release_barcode = release.get('barcode', '')
+                if compare_barcodes(file_barcode, release_barcode):
+                    parts.append((1.0, weights['barcode']))
+                elif release_barcode:
+                    parts.append((0.0, weights['barcode']))
+                else:
+                    parts.append((0.5, weights['barcode']))
 
         if 'release-group' in release:
             tagger = QtCore.QCoreApplication.instance()

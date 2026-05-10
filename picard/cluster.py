@@ -75,6 +75,7 @@ if TYPE_CHECKING:
 CLUSTER_COMPARISON_WEIGHTS = {
     'album': 17,
     'albumartist': 6,
+    'barcode': 6,
     'date': 4,
     'format': 2,
     'releasecountry': 2,
