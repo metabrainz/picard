@@ -1,0 +1,91 @@
+{
+  "quality": "normal",
+  "status": "Official",
+  "media": [
+    {
+      "position": 1,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD",
+      "track-count": 13,
+      "title": "",
+      "id": "361ab452-f9da-34f8-89c0-8b2197e145d2"
+    }
+  ],
+  "disambiguation": "\u521d\u56de\u9650\u5b9a\u751f\u7523\u76e4",
+  "id": "4fdf1514-5876-4e62-bf1e-afd7cc873392",
+  "date": "2019-05-27",
+  "asin": "B07QF91KKC",
+  "cover-art-archive": {
+    "front": false,
+    "darkened": false,
+    "back": false,
+    "count": 0,
+    "artwork": false
+  },
+  "text-representation": {
+    "script": "Jpan",
+    "language": "jpn"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging": null,
+  "artist-credit": [
+    {
+      "name": "\u690e\u540d\u6797\u6a8e",
+      "joinphrase": "",
+      "artist": {
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "country": "JP",
+        "sort-name": "Sheena, Ringo",
+        "name": "\u690e\u540d\u6797\u6a8e",
+        "disambiguation": "",
+        "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
+      }
+    }
+  ],
+  "country": "JP",
+  "title": "\u4e09\u6bd2\u53f2",
+  "release-group": {
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "title": "\u4e09\u6bd2\u53f2",
+    "id": "397121b6-85c7-4b9a-970c-be7fdc40eb58",
+    "disambiguation": "",
+    "secondary-types": [],
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "first-release-date": "2019-05-27",
+    "artist-credit": [
+      {
+        "name": "\u690e\u540d\u6797\u6a8e",
+        "joinphrase": "",
+        "artist": {
+          "country": "JP",
+          "sort-name": "Sheena, Ringo",
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+          "name": "\u690e\u540d\u6797\u6a8e",
+          "disambiguation": ""
+        }
+      }
+    ]
+  },
+  "barcode": "4988031329207",
+  "release-events": [
+    {
+      "area": {
+        "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+        "disambiguation": "",
+        "name": "Japan",
+        "sort-name": "Japan",
+        "iso-3166-1-codes": [
+          "JP"
+        ],
+        "type": null,
+        "type-id": null
+      },
+      "date": "2019-05-27"
+    }
+  ],
+  "packaging-id": null
+}

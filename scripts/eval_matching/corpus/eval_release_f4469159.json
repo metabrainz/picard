@@ -1,0 +1,109 @@
+{
+  "disambiguation": "Disctronics S pressing, BIEM/GEMA",
+  "status": "Official",
+  "asin": null,
+  "release-events": [
+    {
+      "area": {
+        "name": "Europe",
+        "type-id": null,
+        "type": null,
+        "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+        "disambiguation": "",
+        "sort-name": "Europe",
+        "iso-3166-1-codes": [
+          "XE"
+        ]
+      },
+      "date": "1994-10-31"
+    },
+    {
+      "date": "1994-10-31",
+      "area": {
+        "type": null,
+        "type-id": null,
+        "name": "United Kingdom",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "disambiguation": "",
+        "sort-name": "United Kingdom",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed"
+      }
+    }
+  ],
+  "country": "XE",
+  "media": [
+    {
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "title": "",
+      "track-count": 14,
+      "position": 1,
+      "format": "CD",
+      "id": "a7215e2a-88dd-45f9-afdc-7208f7df5a2a"
+    }
+  ],
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "barcode": "720642472729",
+  "packaging": "Jewel Case",
+  "id": "f4469159-1395-40b5-81e6-a507e2ad34ef",
+  "quality": "normal",
+  "release-group": {
+    "secondary-type-ids": [
+      "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+    ],
+    "id": "fb3770f6-83fb-32b7-85c4-1f522a92287e",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "",
+    "title": "MTV Unplugged in New York",
+    "first-release-date": "1994-10-31",
+    "artist-credit": [
+      {
+        "artist": {
+          "type": "Group",
+          "name": "Nirvana",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "disambiguation": "1980s\u20131990s US grunge band",
+          "sort-name": "Nirvana",
+          "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+          "country": "US"
+        },
+        "name": "Nirvana",
+        "joinphrase": ""
+      }
+    ],
+    "secondary-types": [
+      "Live"
+    ],
+    "primary-type": "Album"
+  },
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "MTV Unplugged in New York",
+  "cover-art-archive": {
+    "count": 10,
+    "artwork": true,
+    "darkened": false,
+    "front": true,
+    "back": true
+  },
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "name": "Nirvana",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+        "country": "US",
+        "sort-name": "Nirvana",
+        "disambiguation": "1980s\u20131990s US grunge band"
+      },
+      "name": "Nirvana"
+    }
+  ],
+  "date": "1994-10-31"
+}

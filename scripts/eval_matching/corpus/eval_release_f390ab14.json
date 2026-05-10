@@ -1,0 +1,143 @@
+{
+  "barcode": "",
+  "asin": null,
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "country": "GB",
+  "title": "Symphony no. 5",
+  "status": "Official",
+  "id": "f390ab14-095d-42aa-ade3-fbbafe093f9d",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "artist-credit": [
+    {
+      "joinphrase": "; ",
+      "name": "Beethoven",
+      "artist": {
+        "name": "Ludwig van Beethoven",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "disambiguation": "German composer",
+        "country": "DE",
+        "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+        "sort-name": "Beethoven, Ludwig van",
+        "type": "Person"
+      }
+    },
+    {
+      "joinphrase": ", ",
+      "name": "Berlin Philharmonic Orchestra",
+      "artist": {
+        "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+        "type": "Orchestra",
+        "sort-name": "Berliner Philharmoniker",
+        "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+        "name": "Berliner Philharmoniker",
+        "country": "DE",
+        "disambiguation": ""
+      }
+    },
+    {
+      "joinphrase": "",
+      "artist": {
+        "name": "Herbert von Karajan",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "disambiguation": "conductor",
+        "country": "AT",
+        "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+        "sort-name": "Karajan, Herbert von",
+        "type": "Person"
+      },
+      "name": "Herbert von Karajan"
+    }
+  ],
+  "date": "1978",
+  "media": [
+    {
+      "format": "12\" Vinyl",
+      "title": "",
+      "id": "a7d0790f-29cf-3d0a-8e10-62d493f041f2",
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "position": 1,
+      "track-count": 4
+    }
+  ],
+  "release-group": {
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "artist-credit": [
+      {
+        "name": "Beethoven",
+        "artist": {
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "name": "Ludwig van Beethoven",
+          "country": "DE",
+          "disambiguation": "German composer",
+          "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+          "type": "Person",
+          "sort-name": "Beethoven, Ludwig van"
+        },
+        "joinphrase": "; "
+      },
+      {
+        "name": "Berlin Philharmonic Orchestra",
+        "artist": {
+          "disambiguation": "",
+          "country": "DE",
+          "name": "Berliner Philharmoniker",
+          "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+          "sort-name": "Berliner Philharmoniker",
+          "type": "Orchestra",
+          "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce"
+        },
+        "joinphrase": ", "
+      },
+      {
+        "joinphrase": "",
+        "artist": {
+          "type": "Person",
+          "sort-name": "Karajan, Herbert von",
+          "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+          "country": "AT",
+          "disambiguation": "conductor",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "name": "Herbert von Karajan"
+        },
+        "name": "Herbert von Karajan"
+      }
+    ],
+    "primary-type": "Album",
+    "disambiguation": "",
+    "secondary-types": [],
+    "secondary-type-ids": [],
+    "first-release-date": "1978",
+    "title": "Symphony No 5",
+    "id": "d5cb0b10-ddeb-4879-b343-5af4e01712e3"
+  },
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "disambiguation": "",
+  "packaging": "Cardboard/Paper Sleeve",
+  "cover-art-archive": {
+    "back": true,
+    "darkened": false,
+    "front": true,
+    "artwork": true,
+    "count": 2
+  },
+  "quality": "normal",
+  "release-events": [
+    {
+      "date": "1978",
+      "area": {
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "type-id": null,
+        "name": "United Kingdom",
+        "type": null,
+        "sort-name": "United Kingdom",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed"
+      }
+    }
+  ]
+}

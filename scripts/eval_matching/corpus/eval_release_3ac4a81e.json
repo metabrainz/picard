@@ -1,0 +1,91 @@
+{
+  "release-events": [
+    {
+      "area": {
+        "iso-3166-1-codes": [
+          "JP"
+        ],
+        "type-id": null,
+        "sort-name": "Japan",
+        "disambiguation": "",
+        "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+        "name": "Japan",
+        "type": null
+      },
+      "date": "2019-05-27"
+    }
+  ],
+  "date": "2019-05-27",
+  "barcode": "0602577684647",
+  "packaging-id": null,
+  "disambiguation": "24bit/96kHz",
+  "id": "3ac4a81e-8106-4858-bce0-f7a78c6354b0",
+  "text-representation": {
+    "script": "Jpan",
+    "language": "jpn"
+  },
+  "asin": null,
+  "title": "\u4e09\u6bd2\u53f2",
+  "media": [
+    {
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
+      "position": 1,
+      "title": "",
+      "format": "Digital Media",
+      "id": "eef5a1ed-833e-31b7-9282-95857cdee5e7",
+      "track-count": 13
+    }
+  ],
+  "country": "JP",
+  "packaging": null,
+  "release-group": {
+    "disambiguation": "",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "id": "397121b6-85c7-4b9a-970c-be7fdc40eb58",
+    "primary-type": "Album",
+    "title": "\u4e09\u6bd2\u53f2",
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "name": "\u690e\u540d\u6797\u6a8e",
+        "joinphrase": "",
+        "artist": {
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "sort-name": "Sheena, Ringo",
+          "country": "JP",
+          "disambiguation": "",
+          "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+          "type": "Person",
+          "name": "\u690e\u540d\u6797\u6a8e"
+        }
+      }
+    ],
+    "first-release-date": "2019-05-27"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "quality": "normal",
+  "artist-credit": [
+    {
+      "name": "\u690e\u540d\u6797\u6a8e",
+      "artist": {
+        "sort-name": "Sheena, Ringo",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+        "country": "JP",
+        "disambiguation": "",
+        "type": "Person",
+        "name": "\u690e\u540d\u6797\u6a8e"
+      },
+      "joinphrase": ""
+    }
+  ],
+  "cover-art-archive": {
+    "darkened": false,
+    "back": false,
+    "count": 1,
+    "artwork": true,
+    "front": true
+  },
+  "status": "Official"
+}

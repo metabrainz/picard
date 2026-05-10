@@ -1,0 +1,95 @@
+{
+  "artist-credit": [
+    {
+      "name": "Queen",
+      "joinphrase": "",
+      "artist": {
+        "name": "Queen",
+        "disambiguation": "UK rock group",
+        "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "sort-name": "Queen",
+        "country": "GB"
+      }
+    }
+  ],
+  "country": "US",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Cardboard/Paper Sleeve",
+  "cover-art-archive": {
+    "count": 6,
+    "back": true,
+    "darkened": false,
+    "artwork": true,
+    "front": true
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "asin": null,
+  "date": "1981-11-03",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "release-events": [
+    {
+      "date": "1981-11-03",
+      "area": {
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "disambiguation": "",
+        "name": "United States",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "sort-name": "United States",
+        "type-id": null,
+        "type": null
+      }
+    }
+  ],
+  "barcode": "",
+  "release-group": {
+    "primary-type": "Album",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "first-release-date": "1981-11-03",
+    "artist-credit": [
+      {
+        "artist": {
+          "disambiguation": "UK rock group",
+          "name": "Queen",
+          "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "country": "GB",
+          "sort-name": "Queen"
+        },
+        "name": "Queen",
+        "joinphrase": ""
+      }
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "title": "Greatest Hits",
+    "id": "69ce61c8-127f-3809-95d8-62fdf3ae1347",
+    "disambiguation": "",
+    "secondary-types": [
+      "Compilation"
+    ]
+  },
+  "title": "Greatest Hits",
+  "status": "Official",
+  "quality": "normal",
+  "id": "bab57bb1-67a7-460a-a5c4-15c9a1df7d2d",
+  "disambiguation": "",
+  "media": [
+    {
+      "track-count": 14,
+      "format": "12\" Vinyl",
+      "position": 1,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "id": "d00a3c2c-0fa1-34eb-9f9f-62e296de264c",
+      "title": ""
+    }
+  ]
+}

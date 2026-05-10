@@ -1,0 +1,103 @@
+{
+  "release-group": {
+    "first-release-date": "2008",
+    "disambiguation": "",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "title": "Greatest Hits",
+    "id": "b6d1f1a6-fc62-49bc-8426-dcfd8a95de91",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "artist-credit": [
+      {
+        "artist": {
+          "type": "Group",
+          "sort-name": "Queen",
+          "disambiguation": "UK rock group",
+          "name": "Queen",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "country": "GB",
+          "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+        },
+        "name": "Queen",
+        "joinphrase": ""
+      }
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "primary-type": "Album"
+  },
+  "id": "ee99a91b-e1c2-405b-9c83-99378667f09f",
+  "status": "Bootleg",
+  "status-id": "1156806e-d06a-38bd-83f0-cf2284a808b9",
+  "quality": "normal",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": true,
+    "front": true,
+    "count": 10,
+    "darkened": false
+  },
+  "barcode": "4607147861714",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "type": "Group",
+        "sort-name": "Queen",
+        "disambiguation": "UK rock group",
+        "name": "Queen",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "country": "GB",
+        "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+      },
+      "name": "Queen"
+    }
+  ],
+  "packaging-id": "8f931351-d2e2-310f-afc6-37b89ddba246",
+  "disambiguation": "",
+  "title": "Greatest Hits",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Digipak",
+  "release-events": [
+    {
+      "date": "2008",
+      "area": {
+        "type": null,
+        "disambiguation": "",
+        "name": "Russia",
+        "sort-name": "Russia",
+        "type-id": null,
+        "id": "1f1fc3a4-9500-39b8-9f10-f0a465557eef",
+        "iso-3166-1-codes": [
+          "RU"
+        ]
+      }
+    }
+  ],
+  "country": "RU",
+  "media": [
+    {
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 1,
+      "format": "CD",
+      "track-count": 22,
+      "id": "1a21bb5a-01b4-35d6-8e62-e3f33047adc2",
+      "title": ""
+    },
+    {
+      "format": "CD",
+      "position": 2,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "title": "",
+      "id": "a41acaa5-332d-32f8-89a2-c17475c5e56e",
+      "track-count": 17
+    }
+  ],
+  "asin": null,
+  "date": "2008"
+}

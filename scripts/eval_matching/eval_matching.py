@@ -88,6 +88,70 @@ EVAL_SCENARIOS = [
         ],
         'scenario': 'ep_identification',
     },
+    # Greatest Hits compilations - same artist, same title, different compilations
+    {
+        'target': 'eval_release_bab57bb1.json',  # Queen Greatest Hits 1981 US (14 tracks, no barcode)
+        'distractors': [
+            'eval_release_ee99a91b.json',  # Queen Greatest Hits 2008 (39 tracks)
+            'eval_release_fcb78d0d.json',  # Queen Greatest Hits 1981 DE (18 tracks, no barcode)
+        ],
+        'scenario': 'greatest_hits_compilations',
+    },
+    {
+        'target': 'eval_release_ee99a91b.json',  # Queen Greatest Hits 2008 (39 tracks)
+        'distractors': [
+            'eval_release_bab57bb1.json',  # Queen Greatest Hits 1981 US (14 tracks)
+            'eval_release_fcb78d0d.json',  # Queen Greatest Hits 1981 DE (18 tracks)
+        ],
+        'scenario': 'greatest_hits_compilations',
+    },
+    # Classical - same composition, different performers
+    {
+        'target': 'eval_release_f390ab14.json',  # Beethoven 5 - Karajan/BPO 1978
+        'distractors': [
+            'eval_release_f394e886.json',  # Beethoven 5 - Szell/Cleveland 1977
+        ],
+        'scenario': 'classical_same_composition',
+    },
+    {
+        'target': 'eval_release_f394e886.json',  # Beethoven 5 - Szell/Cleveland 1977
+        'distractors': [
+            'eval_release_f390ab14.json',  # Beethoven 5 - Karajan/BPO 1978
+        ],
+        'scenario': 'classical_same_composition',
+    },
+    # Non-Latin scripts - same album, different editions
+    {
+        'target': 'eval_release_3ac4a81e.json',  # 椎名林檎 三毒史 digital
+        'distractors': [
+            'eval_release_4fdf1514.json',  # 椎名林檎 三毒史 CD edition
+        ],
+        'scenario': 'non_latin_editions',
+    },
+    {
+        'target': 'eval_release_4fdf1514.json',  # 椎名林檎 三毒史 CD edition
+        'distractors': [
+            'eval_release_3ac4a81e.json',  # 椎名林檎 三毒史 digital
+        ],
+        'scenario': 'non_latin_editions',
+    },
+    # Live vs studio - same artist, different albums
+    {
+        'target': 'eval_release_eccae410.json',  # Nirvana Nevermind (studio)
+        'distractors': [
+            'eval_release_f4469159.json',  # Nirvana MTV Unplugged (live)
+            'eval_release_8e061dc4.json',  # Nevermind US alt edition (barcode with leading 0)
+        ],
+        'scenario': 'live_vs_studio',
+    },
+    {
+        'target': 'eval_release_f4469159.json',  # Nirvana MTV Unplugged (live)
+        'distractors': [
+            'eval_release_eccae410.json',  # Nirvana Nevermind (studio)
+            'eval_release_8e061dc4.json',  # Nevermind US alt edition
+        ],
+        'scenario': 'live_vs_studio',
+    },
 ]
 
 

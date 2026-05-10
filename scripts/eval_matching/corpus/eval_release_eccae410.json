@@ -1,0 +1,91 @@
+{
+  "status": "Official",
+  "release-group": {
+    "primary-type": "Album",
+    "title": "Nevermind",
+    "secondary-type-ids": [],
+    "disambiguation": "",
+    "first-release-date": "1991-09-24",
+    "secondary-types": [],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "id": "1b022e01-4da6-387b-8658-8678046e4cef",
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "name": "Nirvana",
+        "artist": {
+          "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "country": "US",
+          "sort-name": "Nirvana",
+          "name": "Nirvana",
+          "disambiguation": "1980s\u20131990s US grunge band",
+          "type": "Group"
+        }
+      }
+    ]
+  },
+  "id": "eccae410-7577-4daa-b602-92d305828331",
+  "quality": "normal",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "cover-art-archive": {
+    "count": 4,
+    "darkened": false,
+    "artwork": true,
+    "back": true,
+    "front": true
+  },
+  "barcode": "720642442524",
+  "disambiguation": "",
+  "title": "Nevermind",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "artist-credit": [
+    {
+      "artist": {
+        "sort-name": "Nirvana",
+        "disambiguation": "1980s\u20131990s US grunge band",
+        "name": "Nirvana",
+        "type": "Group",
+        "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "country": "US"
+      },
+      "name": "Nirvana",
+      "joinphrase": ""
+    }
+  ],
+  "asin": null,
+  "date": "1991-09-24",
+  "release-events": [
+    {
+      "date": "1991-09-24",
+      "area": {
+        "type": null,
+        "disambiguation": "",
+        "name": "Australia",
+        "sort-name": "Australia",
+        "type-id": null,
+        "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+        "iso-3166-1-codes": [
+          "AU"
+        ]
+      }
+    }
+  ],
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Jewel Case",
+  "media": [
+    {
+      "id": "38c57f12-ab7a-3f9d-9b93-14768c7886d2",
+      "track-count": 12,
+      "title": "",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "position": 1,
+      "format": "CD"
+    }
+  ],
+  "country": "AU"
+}

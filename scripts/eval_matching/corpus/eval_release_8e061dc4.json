@@ -1,0 +1,91 @@
+{
+  "release-events": [
+    {
+      "date": "1991-09-24",
+      "area": {
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "type-id": null,
+        "disambiguation": "",
+        "name": "United States",
+        "sort-name": "United States",
+        "type": null
+      }
+    }
+  ],
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Jewel Case",
+  "media": [
+    {
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD",
+      "position": 1,
+      "title": "",
+      "track-count": 12,
+      "id": "c3e97a4e-ac8a-3ccf-aa52-000dedf9a34e"
+    }
+  ],
+  "country": "US",
+  "asin": "B000003TA4",
+  "date": "1991-09-24",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "artist-credit": [
+    {
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "country": "US",
+        "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+        "type": "Group",
+        "sort-name": "Nirvana",
+        "name": "Nirvana",
+        "disambiguation": "1980s\u20131990s US grunge band"
+      },
+      "name": "Nirvana",
+      "joinphrase": ""
+    }
+  ],
+  "disambiguation": "",
+  "title": "Nevermind",
+  "barcode": "0720642442524",
+  "cover-art-archive": {
+    "front": true,
+    "back": false,
+    "artwork": true,
+    "darkened": false,
+    "count": 1
+  },
+  "status": "Official",
+  "release-group": {
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "title": "Nevermind",
+    "disambiguation": "",
+    "first-release-date": "1991-09-24",
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "artist": {
+          "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "country": "US",
+          "sort-name": "Nirvana",
+          "name": "Nirvana",
+          "disambiguation": "1980s\u20131990s US grunge band",
+          "type": "Group"
+        },
+        "name": "Nirvana"
+      }
+    ],
+    "id": "1b022e01-4da6-387b-8658-8678046e4cef",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "id": "8e061dc4-790e-4587-ba53-011e7852f88d",
+  "quality": "normal",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+}

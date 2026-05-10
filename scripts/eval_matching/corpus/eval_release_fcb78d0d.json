@@ -1,0 +1,95 @@
+{
+  "media": [
+    {
+      "id": "9e718827-96ff-3a3c-9c6b-b9c586a9b763",
+      "format": "12\" Vinyl",
+      "track-count": 18,
+      "position": 1,
+      "title": "",
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64"
+    }
+  ],
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "asin": null,
+  "title": "Greatest Hits",
+  "id": "fcb78d0d-8067-4b93-ae58-1e4347e20216",
+  "disambiguation": "",
+  "date": "1981",
+  "barcode": "",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "release-events": [
+    {
+      "area": {
+        "sort-name": "Germany",
+        "type-id": null,
+        "iso-3166-1-codes": [
+          "DE"
+        ],
+        "type": null,
+        "name": "Germany",
+        "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+        "disambiguation": ""
+      },
+      "date": "1981"
+    }
+  ],
+  "status": "Official",
+  "cover-art-archive": {
+    "darkened": false,
+    "back": false,
+    "count": 1,
+    "front": true,
+    "artwork": true
+  },
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "sort-name": "Queen",
+        "name": "Queen",
+        "type": "Group",
+        "disambiguation": "UK rock group",
+        "country": "GB",
+        "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+      },
+      "name": "Queen"
+    }
+  ],
+  "quality": "normal",
+  "release-group": {
+    "title": "Greatest Hits",
+    "first-release-date": "1981-11-03",
+    "artist-credit": [
+      {
+        "name": "Queen",
+        "joinphrase": "",
+        "artist": {
+          "sort-name": "Queen",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Queen",
+          "type": "Group",
+          "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+          "disambiguation": "UK rock group",
+          "country": "GB"
+        }
+      }
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "primary-type": "Album",
+    "id": "69ce61c8-127f-3809-95d8-62fdf3ae1347",
+    "disambiguation": "",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "country": "DE",
+  "packaging": "Cardboard/Paper Sleeve"
+}

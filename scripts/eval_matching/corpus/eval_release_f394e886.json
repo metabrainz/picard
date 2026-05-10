@@ -1,0 +1,133 @@
+{
+  "disambiguation": "",
+  "id": "f394e886-5485-4b66-9b7c-ca45b4734b6e",
+  "media": [
+    {
+      "format": "12\" Vinyl",
+      "track-count": 7,
+      "position": 1,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "id": "50a8ed69-ce0e-3428-8853-4b243d846c48",
+      "title": ""
+    }
+  ],
+  "status": "Official",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": null,
+      "date": "1977"
+    }
+  ],
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "release-group": {
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "artist-credit": [
+      {
+        "name": "Beethoven",
+        "joinphrase": "; ",
+        "artist": {
+          "sort-name": "Beethoven, Ludwig van",
+          "country": "DE",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "type": "Person",
+          "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+          "disambiguation": "German composer",
+          "name": "Ludwig van Beethoven"
+        }
+      },
+      {
+        "joinphrase": ", ",
+        "name": "Cleveland Orchestra",
+        "artist": {
+          "sort-name": "Cleveland Orchestra, The",
+          "country": "US",
+          "type": "Orchestra",
+          "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+          "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+          "disambiguation": "",
+          "name": "The Cleveland Orchestra"
+        }
+      },
+      {
+        "artist": {
+          "country": "US",
+          "sort-name": "Szell, George",
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+          "name": "George Szell",
+          "disambiguation": "conductor, pianist, composer"
+        },
+        "name": "George Szell",
+        "joinphrase": ""
+      }
+    ],
+    "first-release-date": "1977",
+    "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "",
+    "secondary-types": [],
+    "id": "b7f65937-646e-4039-a182-fb54cb4d5039"
+  },
+  "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4",
+  "barcode": "",
+  "country": null,
+  "artist-credit": [
+    {
+      "artist": {
+        "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+        "disambiguation": "German composer",
+        "name": "Ludwig van Beethoven",
+        "country": "DE",
+        "sort-name": "Beethoven, Ludwig van",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person"
+      },
+      "joinphrase": "; ",
+      "name": "Beethoven"
+    },
+    {
+      "artist": {
+        "sort-name": "Cleveland Orchestra, The",
+        "country": "US",
+        "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+        "type": "Orchestra",
+        "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+        "name": "The Cleveland Orchestra",
+        "disambiguation": ""
+      },
+      "name": "Cleveland Orchestra",
+      "joinphrase": ", "
+    },
+    {
+      "joinphrase": "",
+      "name": "George Szell",
+      "artist": {
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "sort-name": "Szell, George",
+        "country": "US",
+        "disambiguation": "conductor, pianist, composer",
+        "name": "George Szell",
+        "id": "642116e0-69e6-48a8-a19d-f272cb5b7756"
+      }
+    }
+  ],
+  "date": "1977",
+  "asin": null,
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "cover-art-archive": {
+    "darkened": false,
+    "back": false,
+    "count": 0,
+    "artwork": false,
+    "front": false
+  },
+  "packaging": "Cardboard/Paper Sleeve"
+}
