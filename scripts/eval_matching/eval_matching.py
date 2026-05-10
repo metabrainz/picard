@@ -441,8 +441,8 @@ def generate_file_corpus():
 def evaluate(corpus, weights):
     """Score each corpus entry and classify as correct/ambiguous/wrong.
 
-    Returns a dict with counts and per-entry details including margin
-    (score difference between best and second-best candidate).
+    Returns a dict with counts and per-entry details including all candidate
+    scores for diagnostic purposes.
     """
     results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
 
@@ -470,6 +470,8 @@ def evaluate(corpus, weights):
                 "status": status,
                 "best_sim": best_sim,
                 "margin": margin,
+                "scores": scores,
+                "correct_id": entry["correct_id"],
             }
         )
 
@@ -511,6 +513,8 @@ def evaluate_file_corpus(corpus, weights):
                 "status": status,
                 "best_sim": best_sim,
                 "margin": margin,
+                "scores": scores,
+                "correct_id": entry["correct_id"],
             }
         )
 
@@ -545,8 +549,12 @@ def _grouped_breakdown(details, group_key, group_names=None):
     return [(n, ok[n], amb[n], fail[n], total[n], margins[n]) for n in names]
 
 
-def print_report(results, weights_name):
-    """Print a formatted evaluation report to stdout."""
+def print_report(results, weights_name, verbose=False):
+    """Print a formatted evaluation report to stdout.
+
+    With verbose=True, shows per-candidate scores for failed cases
+    so the operator can see exactly why the matcher got confused.
+    """
     total = results["correct"] + results["wrong"] + results["ambiguous"]
     print(f"\n{'=' * 70}")
     print(f"  {weights_name}")
@@ -555,9 +563,9 @@ def print_report(results, weights_name):
     print(f"  Ambiguous: {results['ambiguous']:>3}/{total} ({results['ambiguous'] / total:.1%})")
     print(f"  Wrong:     {results['wrong']:>3}/{total} ({results['wrong'] / total:.1%})")
 
-    # Problems
+    # Problems summary (always shown)
     problems = [d for d in results["details"] if d["status"] != "correct"]
-    if problems:
+    if not verbose and problems:
         print(f"\n  {'Release':<25} {'Degradation':<22} {'Status':<9} {'Sim':>6} {'Margin':>6}")
         print(f"  {'-' * 25} {'-' * 22} {'-' * 9} {'-' * 6} {'-' * 6}")
         for p in problems:
@@ -565,6 +573,23 @@ def print_report(results, weights_name):
                 f"  {p['release'][:25]:<25} {p['degradation']:<22} "
                 f"{p['status']:<9} {p['best_sim']:6.4f} {p['margin']:6.4f}"
             )
+
+    # Verbose: show candidate scores for each failure
+    if verbose and problems:
+        print(f"\n  DETAILED DIAGNOSTICS ({len(problems)} problems)")
+        print(f"  {'─' * 66}")
+        for p in problems:
+            correct_id = p["correct_id"]
+            print(f"\n  [{p['status'].upper()}] {p['release']} | {p['scenario']}")
+            print(f"  degradation: {p['degradation']}")
+            print("  candidates (▶ = correct, ✗ = picked wrong):")
+            for sim, cid in p["scores"]:
+                marker = "  "
+                if cid == correct_id:
+                    marker = "▶ "
+                elif cid == p["scores"][0][1] and p["status"] == "wrong":
+                    marker = "✗ "
+                print(f"    {marker}{sim:.4f}  {cid[:8]}")
 
     # Per-degradation
     deg_names = [name for name, _ in DEGRADATIONS]
@@ -710,28 +735,67 @@ def print_comparison(all_results):
 
 
 def main():
-    random.seed(42)
+    import argparse
 
-    all_results = {}
-    for profile_name in CONFIG_PROFILES:
+    parser = argparse.ArgumentParser(description="Evaluate release matching accuracy")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show per-candidate scores for failures")
+    parser.add_argument(
+        "-s",
+        "--scenario",
+        help="Run only scenarios matching this substring",
+    )
+    parser.add_argument(
+        "-p",
+        "--profile",
+        choices=list(CONFIG_PROFILES),
+        help="Run only this config profile (default: all)",
+    )
+    parser.add_argument(
+        "--file-only",
+        action="store_true",
+        help="Run only file-level evaluation",
+    )
+    parser.add_argument(
+        "--cluster-only",
+        action="store_true",
+        help="Run only cluster-level evaluation",
+    )
+    args = parser.parse_args()
+
+    profiles = [args.profile] if args.profile else list(CONFIG_PROFILES)
+
+    if not args.file_only:
+        all_results = {}
+        for profile_name in profiles:
+            random.seed(42)
+            results = _run_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
+            if args.scenario:
+                results["details"] = [d for d in results["details"] if args.scenario in d["scenario"]]
+                results["correct"] = sum(1 for d in results["details"] if d["status"] == "correct")
+                results["ambiguous"] = sum(1 for d in results["details"] if d["status"] == "ambiguous")
+                results["wrong"] = sum(1 for d in results["details"] if d["status"] == "wrong")
+            all_results[profile_name] = results
+            print_report(results, f"CLUSTER_COMPARISON_WEIGHTS [{profile_name}]", verbose=args.verbose)
+
+        if len(profiles) > 1:
+            print_comparison(all_results)
+
+    if not args.cluster_only:
         random.seed(42)
-        results = _run_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
-        all_results[profile_name] = results
-        print_report(results, f"CLUSTER_COMPARISON_WEIGHTS [{profile_name}]")
-
-    print_comparison(all_results)
-
-    # File-level evaluation (neutral config only for clarity)
-    random.seed(42)
-    mock_config = _make_config("neutral")
-    with (
-        patch("picard.config.get_config", return_value=mock_config),
-        patch("picard.mbjson.get_config", return_value=mock_config),
-        patch("picard.metadata.get_config", return_value=mock_config),
-    ):
-        file_corpus = generate_file_corpus()
-        file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
-        print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]")
+        mock_config = _make_config(profiles[0] if args.profile else "neutral")
+        with (
+            patch("picard.config.get_config", return_value=mock_config),
+            patch("picard.mbjson.get_config", return_value=mock_config),
+            patch("picard.metadata.get_config", return_value=mock_config),
+        ):
+            file_corpus = generate_file_corpus()
+            file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
+            if args.scenario:
+                file_results["details"] = [d for d in file_results["details"] if args.scenario in d["scenario"]]
+                file_results["correct"] = sum(1 for d in file_results["details"] if d["status"] == "correct")
+                file_results["ambiguous"] = sum(1 for d in file_results["details"] if d["status"] == "ambiguous")
+                file_results["wrong"] = sum(1 for d in file_results["details"] if d["status"] == "wrong")
+            print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]", verbose=args.verbose)
 
 
 if __name__ == "__main__":
