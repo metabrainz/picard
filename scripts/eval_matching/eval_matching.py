@@ -913,6 +913,9 @@ def main():
     parser = argparse.ArgumentParser(description="Evaluate release matching accuracy")
     parser.add_argument("-v", "--verbose", action="store_true", help="Show per-candidate scores for failures")
     parser.add_argument(
+        "-l", "--list", action="store_true", help="List available scenarios, degradations, and profiles"
+    )
+    parser.add_argument(
         "-s",
         "--scenario",
         help="Run only scenarios matching this substring",
@@ -949,6 +952,18 @@ def main():
         help="Compare current results against a previous snapshot",
     )
     args = parser.parse_args()
+
+    if args.list:
+        print("Scenarios:")
+        for s in sorted({sc["scenario"] for sc in SCENARIOS}):
+            print(f"  {s}")
+        print("\nDegradations:")
+        for name, _ in DEGRADATIONS:
+            print(f"  {name}")
+        print("\nProfiles:")
+        for name in CONFIG_PROFILES:
+            print(f"  {name}")
+        return
 
     profiles = [args.profile] if args.profile else list(CONFIG_PROFILES)
 
