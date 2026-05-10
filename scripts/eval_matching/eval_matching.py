@@ -312,6 +312,12 @@ DEGRADATIONS = [
     ("wrong_date_year", wrong_date_year),
     ("missing_most", missing_most),
     ("swapped_artist_album", swapped_artist_album),
+    # Combined degradations (realistic multi-issue files)
+    ("combo_no_barcode_year_only", lambda m, r: (missing_barcode(m, r), year_only(m, r))),
+    ("combo_no_barcode_typo", lambda m, r: (missing_barcode(m, r), typo_album(m, r))),
+    ("combo_no_barcode_no_date", lambda m, r: (missing_barcode(m, r), missing_date(m, r))),
+    ("combo_remaster_length", lambda m, r: (title_remaster_suffix(m, r), length_small_diff(m, r))),
+    ("combo_wrong_date_no_barcode", lambda m, r: (wrong_date_year(m, r), missing_barcode(m, r))),
 ]
 
 
