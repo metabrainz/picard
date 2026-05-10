@@ -768,6 +768,21 @@ def print_comparison(all_results):
         print(row)
 
 
+def _filter_results(results, scenario=None, degradation=None):
+    """Filter result details by scenario and/or degradation substring."""
+    details = results["details"]
+    if scenario:
+        details = [d for d in details if scenario in d["scenario"]]
+    if degradation:
+        details = [d for d in details if degradation in d["degradation"]]
+    return {
+        "correct": sum(1 for d in details if d["status"] == "correct"),
+        "ambiguous": sum(1 for d in details if d["status"] == "ambiguous"),
+        "wrong": sum(1 for d in details if d["status"] == "wrong"),
+        "details": details,
+    }
+
+
 def main():
     import argparse
 
@@ -777,6 +792,11 @@ def main():
         "-s",
         "--scenario",
         help="Run only scenarios matching this substring",
+    )
+    parser.add_argument(
+        "-d",
+        "--degradation",
+        help="Run only degradations matching this substring",
     )
     parser.add_argument(
         "-p",
@@ -803,11 +823,7 @@ def main():
         for profile_name in profiles:
             random.seed(42)
             results = _run_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
-            if args.scenario:
-                results["details"] = [d for d in results["details"] if args.scenario in d["scenario"]]
-                results["correct"] = sum(1 for d in results["details"] if d["status"] == "correct")
-                results["ambiguous"] = sum(1 for d in results["details"] if d["status"] == "ambiguous")
-                results["wrong"] = sum(1 for d in results["details"] if d["status"] == "wrong")
+            results = _filter_results(results, args.scenario, args.degradation)
             all_results[profile_name] = results
             print_report(results, f"CLUSTER_COMPARISON_WEIGHTS [{profile_name}]", verbose=args.verbose)
 
@@ -824,11 +840,7 @@ def main():
         ):
             file_corpus = generate_file_corpus()
             file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
-            if args.scenario:
-                file_results["details"] = [d for d in file_results["details"] if args.scenario in d["scenario"]]
-                file_results["correct"] = sum(1 for d in file_results["details"] if d["status"] == "correct")
-                file_results["ambiguous"] = sum(1 for d in file_results["details"] if d["status"] == "ambiguous")
-                file_results["wrong"] = sum(1 for d in file_results["details"] if d["status"] == "wrong")
+            file_results = _filter_results(file_results, args.scenario, args.degradation)
             print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]", verbose=args.verbose)
 
 
