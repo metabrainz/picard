@@ -1,18 +1,613 @@
 {
-  "disambiguation": "",
-  "id": "f394e886-5485-4b66-9b7c-ca45b4734b6e",
   "media": [
     {
-      "format": "12\" Vinyl",
+      "track-offset": 0,
       "track-count": 7,
-      "position": 1,
-      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
       "id": "50a8ed69-ce0e-3428-8853-4b243d846c48",
-      "title": ""
+      "format": "12\" Vinyl",
+      "tracks": [
+        {
+          "length": 601000,
+          "id": "a9bade69-b70f-4012-9cc4-56107d93aab1",
+          "number": "A1",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beethoven, Ludwig van",
+                "country": "DE",
+                "disambiguation": "German composer",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "type": "Person",
+                "name": "Ludwig van Beethoven"
+              },
+              "joinphrase": "; ",
+              "name": "Beethoven"
+            },
+            {
+              "joinphrase": ", ",
+              "artist": {
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                "name": "The Cleveland Orchestra",
+                "type": "Orchestra",
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "disambiguation": "",
+                "country": "US"
+              },
+              "name": "Cleveland Orchestra"
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "country": "US",
+                "disambiguation": "conductor, pianist, composer",
+                "type": "Person",
+                "name": "George Szell",
+                "sort-name": "Szell, George",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "George Szell"
+            }
+          ],
+          "recording": {
+            "disambiguation": "",
+            "video": false,
+            "id": "048e8ffe-cbc2-4b87-bcfe-6cf696934a36",
+            "length": 601413,
+            "artist-credit": [
+              {
+                "name": "Cleveland Orchestra",
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "type": "Orchestra",
+                  "name": "The Cleveland Orchestra",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "sort-name": "Cleveland Orchestra, The"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "conductor, pianist, composer",
+                  "country": "US",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                  "name": "George Szell",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Szell, George"
+                },
+                "name": "George Szell"
+              }
+            ],
+            "first-release-date": "1977",
+            "title": "Symphony no. 4 in B-flat major, op. 60: I. Adagio \u2014 Allegro vivace"
+          },
+          "position": 1,
+          "title": "Symphony No. 4 in B-flat major, Op. 60: I - Adagio; Allegro Vivace"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "; ",
+              "artist": {
+                "country": "DE",
+                "disambiguation": "German composer",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "type": "Person",
+                "name": "Ludwig van Beethoven",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beethoven, Ludwig van"
+              },
+              "name": "Beethoven"
+            },
+            {
+              "name": "Cleveland Orchestra",
+              "artist": {
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "country": "US",
+                "disambiguation": "",
+                "type": "Orchestra",
+                "name": "The Cleveland Orchestra"
+              },
+              "joinphrase": ", "
+            },
+            {
+              "name": "George Szell",
+              "joinphrase": "",
+              "artist": {
+                "type": "Person",
+                "name": "George Szell",
+                "country": "US",
+                "disambiguation": "conductor, pianist, composer",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Szell, George"
+              }
+            }
+          ],
+          "title": "Symphony No. 4 in B-flat major, Op. 60: II - Adagio",
+          "position": 2,
+          "recording": {
+            "first-release-date": "1977",
+            "artist-credit": [
+              {
+                "name": "Cleveland Orchestra",
+                "artist": {
+                  "sort-name": "Cleveland Orchestra, The",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "name": "The Cleveland Orchestra",
+                  "type": "Orchestra",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "disambiguation": "",
+                  "country": "US"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "conductor, pianist, composer",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                  "type": "Person",
+                  "name": "George Szell",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Szell, George"
+                },
+                "name": "George Szell"
+              }
+            ],
+            "title": "Symphony no. 4 in B-flat major, op. 60: II. Adagio",
+            "id": "1f628c28-bd54-4901-998b-1a4a4a41a319",
+            "length": 588226,
+            "video": false,
+            "disambiguation": ""
+          },
+          "id": "a9fae011-3a6d-4600-8a22-503f6aab5360",
+          "length": 585000,
+          "number": "A2"
+        },
+        {
+          "position": 3,
+          "title": "Symphony No. 4 in B-flat major, Op. 60: III - Allegro Vivace",
+          "recording": {
+            "disambiguation": "",
+            "video": false,
+            "id": "391b6276-c8ed-42f3-9a3b-7911724349e3",
+            "length": 355146,
+            "title": "Symphony no. 4 in B-flat major, op. 60: III. Allegro vivace \u2014 Un poco meno allegro",
+            "artist-credit": [
+              {
+                "name": "Cleveland Orchestra",
+                "artist": {
+                  "type": "Orchestra",
+                  "name": "The Cleveland Orchestra",
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "sort-name": "Cleveland Orchestra, The"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "name": "George Szell",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Szell, George",
+                  "disambiguation": "conductor, pianist, composer",
+                  "country": "US",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                  "name": "George Szell",
+                  "type": "Person"
+                }
+              }
+            ],
+            "first-release-date": "1977"
+          },
+          "artist-credit": [
+            {
+              "name": "Beethoven",
+              "artist": {
+                "sort-name": "Beethoven, Ludwig van",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "country": "DE",
+                "name": "Ludwig van Beethoven",
+                "type": "Person"
+              },
+              "joinphrase": "; "
+            },
+            {
+              "name": "Cleveland Orchestra",
+              "joinphrase": ", ",
+              "artist": {
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "disambiguation": "",
+                "country": "US",
+                "name": "The Cleveland Orchestra",
+                "type": "Orchestra"
+              }
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Szell, George",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "type": "Person",
+                "name": "George Szell",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "country": "US",
+                "disambiguation": "conductor, pianist, composer"
+              },
+              "name": "George Szell"
+            }
+          ],
+          "number": "A3",
+          "id": "1f574119-e0d0-4a88-82fd-3c8591f97087",
+          "length": 355000
+        },
+        {
+          "length": 355000,
+          "id": "71e2ef50-6700-4b7f-aced-0abc2146a012",
+          "number": "A4",
+          "artist-credit": [
+            {
+              "joinphrase": "; ",
+              "artist": {
+                "sort-name": "Beethoven, Ludwig van",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Ludwig van Beethoven",
+                "type": "Person",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "country": "DE"
+              },
+              "name": "Beethoven"
+            },
+            {
+              "name": "Cleveland Orchestra",
+              "artist": {
+                "type": "Orchestra",
+                "name": "The Cleveland Orchestra",
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "country": "US",
+                "disambiguation": "",
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+              },
+              "joinphrase": ", "
+            },
+            {
+              "artist": {
+                "type": "Person",
+                "name": "George Szell",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "country": "US",
+                "disambiguation": "conductor, pianist, composer",
+                "sort-name": "Szell, George",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "George Szell"
+            }
+          ],
+          "position": 4,
+          "title": "Symphony No. 4 in B-flat major, Op. 60: IV - Allegro Ma Non Troppo",
+          "recording": {
+            "title": "Symphony no. 4 in B-flat major, op. 60: IV. Allegro ma non troppo",
+            "first-release-date": "1977",
+            "artist-credit": [
+              {
+                "name": "Cleveland Orchestra",
+                "artist": {
+                  "name": "The Cleveland Orchestra",
+                  "type": "Orchestra",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "sort-name": "Cleveland Orchestra, The"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "artist": {
+                  "sort-name": "Szell, George",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                  "country": "US",
+                  "disambiguation": "conductor, pianist, composer",
+                  "type": "Person",
+                  "name": "George Szell"
+                },
+                "joinphrase": "",
+                "name": "George Szell"
+              }
+            ],
+            "id": "aa0dc869-a6b4-43c8-9f0b-837cd3fadf8d",
+            "length": 365026,
+            "video": false,
+            "disambiguation": ""
+          }
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Beethoven",
+              "artist": {
+                "country": "DE",
+                "disambiguation": "German composer",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "type": "Person",
+                "name": "Ludwig van Beethoven",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beethoven, Ludwig van"
+              },
+              "joinphrase": "; "
+            },
+            {
+              "joinphrase": ", ",
+              "artist": {
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "country": "US",
+                "disambiguation": "",
+                "type": "Orchestra",
+                "name": "The Cleveland Orchestra",
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+              },
+              "name": "Cleveland Orchestra"
+            },
+            {
+              "name": "George Szell",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Szell, George",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "country": "US",
+                "disambiguation": "conductor, pianist, composer",
+                "type": "Person",
+                "name": "George Szell"
+              }
+            }
+          ],
+          "recording": {
+            "disambiguation": "",
+            "video": false,
+            "length": 365000,
+            "id": "d90cbb74-8409-4972-aa75-b7abb350dfbc",
+            "title": "Symphony No. 5 in C minor, Op. 67: I - Allegro Con Brio",
+            "artist-credit": [
+              {
+                "name": "The Cleveland Orchestra",
+                "joinphrase": ", ",
+                "artist": {
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "sort-name": "Cleveland Orchestra, The",
+                  "type": "Orchestra",
+                  "name": "The Cleveland Orchestra",
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa"
+                }
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Szell, George",
+                  "type": "Person",
+                  "name": "George Szell",
+                  "country": "US",
+                  "disambiguation": "conductor, pianist, composer",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756"
+                },
+                "name": "George Szell"
+              }
+            ],
+            "first-release-date": "1977"
+          },
+          "title": "Symphony No. 5 in C minor, Op. 67: I - Allegro Con Brio",
+          "position": 5,
+          "length": 365000,
+          "id": "f9d1b56e-8c12-4ecf-b2a6-172e38ae1b15",
+          "number": "B1"
+        },
+        {
+          "length": 599000,
+          "id": "907b68b9-fe67-420d-b171-c426970bc30d",
+          "number": "B2",
+          "artist-credit": [
+            {
+              "name": "Beethoven",
+              "artist": {
+                "type": "Person",
+                "name": "Ludwig van Beethoven",
+                "country": "DE",
+                "disambiguation": "German composer",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beethoven, Ludwig van"
+              },
+              "joinphrase": "; "
+            },
+            {
+              "artist": {
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "disambiguation": "",
+                "country": "US",
+                "name": "The Cleveland Orchestra",
+                "type": "Orchestra",
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+              },
+              "joinphrase": ", ",
+              "name": "Cleveland Orchestra"
+            },
+            {
+              "name": "George Szell",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Szell, George",
+                "disambiguation": "conductor, pianist, composer",
+                "country": "US",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "name": "George Szell",
+                "type": "Person"
+              }
+            }
+          ],
+          "recording": {
+            "title": "Symphony No. 5 in C minor, Op. 67: II - Andante Con Moto",
+            "first-release-date": "1977",
+            "artist-credit": [
+              {
+                "joinphrase": ", ",
+                "artist": {
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "country": "US",
+                  "disambiguation": "",
+                  "type": "Orchestra",
+                  "name": "The Cleveland Orchestra",
+                  "sort-name": "Cleveland Orchestra, The",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+                },
+                "name": "The Cleveland Orchestra"
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Szell, George",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "name": "George Szell",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                  "country": "US",
+                  "disambiguation": "conductor, pianist, composer"
+                },
+                "name": "George Szell"
+              }
+            ],
+            "id": "229753fd-7c2c-4d6a-ae4f-8c7af629cec4",
+            "length": 599000,
+            "disambiguation": "",
+            "video": false
+          },
+          "position": 6,
+          "title": "Symphony No. 5 in C minor, Op. 67: II - Andante Con Moto"
+        },
+        {
+          "number": "B3",
+          "length": 840000,
+          "id": "38471f02-0663-4f64-921e-8a3cdedf8910",
+          "title": "Symphony No. 5 in C minor, Op. 67: III - Scherzo: Allegro IV - Allegro",
+          "position": 7,
+          "recording": {
+            "id": "b63ce3ff-0b25-40a2-a374-6cc95a120e09",
+            "length": 840000,
+            "disambiguation": "",
+            "video": false,
+            "first-release-date": "1977",
+            "artist-credit": [
+              {
+                "name": "The Cleveland Orchestra",
+                "joinphrase": ", ",
+                "artist": {
+                  "sort-name": "Cleveland Orchestra, The",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                  "country": "US",
+                  "disambiguation": "",
+                  "type": "Orchestra",
+                  "name": "The Cleveland Orchestra"
+                }
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Szell, George",
+                  "name": "George Szell",
+                  "type": "Person",
+                  "disambiguation": "conductor, pianist, composer",
+                  "country": "US",
+                  "id": "642116e0-69e6-48a8-a19d-f272cb5b7756"
+                },
+                "name": "George Szell"
+              }
+            ],
+            "title": "Symphony No. 5 in C minor, Op. 67: III - Scherzo: Allegro IV - Allegro"
+          },
+          "artist-credit": [
+            {
+              "name": "Beethoven",
+              "joinphrase": "; ",
+              "artist": {
+                "name": "Ludwig van Beethoven",
+                "type": "Person",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "country": "DE",
+                "sort-name": "Beethoven, Ludwig van",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            },
+            {
+              "joinphrase": ", ",
+              "artist": {
+                "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+                "disambiguation": "",
+                "country": "US",
+                "name": "The Cleveland Orchestra",
+                "type": "Orchestra",
+                "sort-name": "Cleveland Orchestra, The",
+                "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+              },
+              "name": "Cleveland Orchestra"
+            },
+            {
+              "name": "George Szell",
+              "artist": {
+                "sort-name": "Szell, George",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+                "disambiguation": "conductor, pianist, composer",
+                "country": "US",
+                "name": "George Szell",
+                "type": "Person"
+              },
+              "joinphrase": ""
+            }
+          ]
+        }
+      ],
+      "title": "",
+      "position": 1,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64"
     }
   ],
-  "status": "Official",
-  "quality": "normal",
+  "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "asin": null,
+  "disambiguation": "",
+  "id": "f394e886-5485-4b66-9b7c-ca45b4734b6e",
   "release-events": [
     {
       "area": null,
@@ -20,114 +615,110 @@
     }
   ],
   "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
-  "release-group": {
-    "primary-type": "Album",
-    "secondary-type-ids": [],
-    "artist-credit": [
-      {
-        "name": "Beethoven",
-        "joinphrase": "; ",
-        "artist": {
-          "sort-name": "Beethoven, Ludwig van",
-          "country": "DE",
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-          "type": "Person",
-          "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
-          "disambiguation": "German composer",
-          "name": "Ludwig van Beethoven"
-        }
-      },
-      {
-        "joinphrase": ", ",
-        "name": "Cleveland Orchestra",
-        "artist": {
-          "sort-name": "Cleveland Orchestra, The",
-          "country": "US",
-          "type": "Orchestra",
-          "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
-          "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
-          "disambiguation": "",
-          "name": "The Cleveland Orchestra"
-        }
-      },
-      {
-        "artist": {
-          "country": "US",
-          "sort-name": "Szell, George",
-          "type": "Person",
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-          "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
-          "name": "George Szell",
-          "disambiguation": "conductor, pianist, composer"
-        },
-        "name": "George Szell",
-        "joinphrase": ""
-      }
-    ],
-    "first-release-date": "1977",
-    "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4",
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "disambiguation": "",
-    "secondary-types": [],
-    "id": "b7f65937-646e-4039-a182-fb54cb4d5039"
-  },
-  "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4",
+  "date": "1977",
   "barcode": "",
-  "country": null,
+  "cover-art-archive": {
+    "artwork": false,
+    "front": false,
+    "darkened": false,
+    "back": false,
+    "count": 0
+  },
   "artist-credit": [
     {
       "artist": {
-        "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
-        "disambiguation": "German composer",
-        "name": "Ludwig van Beethoven",
-        "country": "DE",
         "sort-name": "Beethoven, Ludwig van",
         "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+        "disambiguation": "German composer",
+        "country": "DE",
+        "name": "Ludwig van Beethoven",
         "type": "Person"
       },
       "joinphrase": "; ",
       "name": "Beethoven"
     },
     {
+      "joinphrase": ", ",
       "artist": {
-        "sort-name": "Cleveland Orchestra, The",
+        "disambiguation": "",
         "country": "US",
-        "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
-        "type": "Orchestra",
         "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
         "name": "The Cleveland Orchestra",
-        "disambiguation": ""
+        "type": "Orchestra",
+        "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+        "sort-name": "Cleveland Orchestra, The"
       },
-      "name": "Cleveland Orchestra",
-      "joinphrase": ", "
+      "name": "Cleveland Orchestra"
     },
     {
-      "joinphrase": "",
       "name": "George Szell",
+      "joinphrase": "",
       "artist": {
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "type": "Person",
-        "sort-name": "Szell, George",
+        "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
         "country": "US",
         "disambiguation": "conductor, pianist, composer",
+        "type": "Person",
         "name": "George Szell",
-        "id": "642116e0-69e6-48a8-a19d-f272cb5b7756"
+        "sort-name": "Szell, George",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
       }
     }
   ],
-  "date": "1977",
-  "asin": null,
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
-  },
+  "status": "Official",
+  "quality": "normal",
+  "packaging": "Cardboard/Paper Sleeve",
+  "country": null,
   "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-  "cover-art-archive": {
-    "darkened": false,
-    "back": false,
-    "count": 0,
-    "artwork": false,
-    "front": false
-  },
-  "packaging": "Cardboard/Paper Sleeve"
+  "release-group": {
+    "id": "b7f65937-646e-4039-a182-fb54cb4d5039",
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "",
+    "first-release-date": "1977",
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "name": "Beethoven",
+        "joinphrase": "; ",
+        "artist": {
+          "name": "Ludwig van Beethoven",
+          "type": "Person",
+          "disambiguation": "German composer",
+          "country": "DE",
+          "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "sort-name": "Beethoven, Ludwig van"
+        }
+      },
+      {
+        "name": "Cleveland Orchestra",
+        "artist": {
+          "name": "The Cleveland Orchestra",
+          "type": "Orchestra",
+          "id": "f33b188e-b80f-4058-92ca-0e30c04ad2fa",
+          "disambiguation": "",
+          "country": "US",
+          "sort-name": "Cleveland Orchestra, The",
+          "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+        },
+        "joinphrase": ", "
+      },
+      {
+        "name": "George Szell",
+        "artist": {
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "sort-name": "Szell, George",
+          "disambiguation": "conductor, pianist, composer",
+          "country": "US",
+          "id": "642116e0-69e6-48a8-a19d-f272cb5b7756",
+          "name": "George Szell",
+          "type": "Person"
+        },
+        "joinphrase": ""
+      }
+    ],
+    "title": "Conducts Beethoven-Symphony No. 5; Symphony No. 4"
+  }
 }

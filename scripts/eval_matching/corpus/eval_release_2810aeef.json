@@ -1,66 +1,1778 @@
 {
-  "media": [
-    {
-      "format-id": "8a08dc62-1aa2-34de-a904-fa467c53052c",
-      "title": "",
-      "position": 1,
-      "format": "Enhanced CD",
-      "id": "946baadc-4bde-32e8-b38e-4c3001f04e54",
-      "track-count": 6
-    },
-    {
-      "track-count": 17,
-      "format": "DVD-Video",
-      "id": "5859dccf-ef96-371b-bcdd-9bb66a5bedfc",
-      "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
-      "title": "",
-      "position": 2
-    }
-  ],
   "title": "MTV Ultimate Mash\u2010Ups Presents: Collision Course",
+  "asin": "B00069A6P4",
   "text-representation": {
     "script": "Latn",
     "language": "eng"
   },
-  "asin": "B00069A6P4",
-  "disambiguation": "",
-  "id": "2810aeef-eaf4-4ea3-a0ee-fd41f8e64285",
+  "media": [
+    {
+      "track-offset": 0,
+      "id": "946baadc-4bde-32e8-b38e-4c3001f04e54",
+      "format": "Enhanced CD",
+      "track-count": 6,
+      "position": 1,
+      "title": "",
+      "tracks": [
+        {
+          "length": 244693,
+          "id": "286718cc-5def-47a7-8bd9-cb561bfd5f65",
+          "number": "1",
+          "artist-credit": [
+            {
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "position": 1,
+          "title": "Dirt Off Your Shoulder / Lying From You",
+          "recording": {
+            "title": "Dirt Off Your Shoulder / Lying From You",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z"
+                }
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "name": "Linkin Park",
+                  "type": "Group"
+                },
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-15",
+            "video": false,
+            "disambiguation": "explicit",
+            "id": "3dfe34e4-2768-4179-8b3f-a8e0b3e80006",
+            "length": 244693
+          }
+        },
+        {
+          "number": "2",
+          "length": 156320,
+          "id": "a9e2866f-bfe3-4924-b726-bf53219bec08",
+          "title": "Big Pimpin\u2019 / Papercut",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US"
+                }
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "title": "Big Pimpin\u2019 / Papercut",
+            "video": false,
+            "disambiguation": "explicit",
+            "length": 156320,
+            "id": "648f62a1-8786-45a6-90fb-d9fd5a136bd6"
+          },
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+              },
+              "joinphrase": " / "
+            },
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park",
+                "type": "Group",
+                "name": "Linkin Park",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+              },
+              "joinphrase": "",
+              "name": "Linkin Park"
+            }
+          ]
+        },
+        {
+          "number": "3",
+          "length": 211173,
+          "id": "9bf01a68-04e0-4b7b-8ad3-93caa06d628f",
+          "position": 3,
+          "title": "Jigga What / Faint",
+          "recording": {
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Jigga What / Faint",
+            "id": "5d8d54f1-db6b-4b84-9a8e-4b68122b063e",
+            "length": 211173,
+            "video": false,
+            "disambiguation": "explicit"
+          },
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "country": "US",
+                "disambiguation": "US rapper"
+              },
+              "joinphrase": " / "
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "type": "Group",
+                "name": "Linkin Park",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Linkin Park"
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "name": "Linkin Park",
+                "type": "Group",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "name": "JAY\u2010Z",
+                  "type": "Person"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "artist": {
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "title": "Numb / Encore",
+            "video": false,
+            "disambiguation": "explicit",
+            "length": 205280,
+            "id": "daccb724-8023-432a-854c-e0accb6c8678"
+          },
+          "title": "Numb / Encore",
+          "position": 4,
+          "id": "ed23e1d1-ce41-45ff-b56a-180e09086b32",
+          "length": 205280,
+          "number": "4"
+        },
+        {
+          "number": "5",
+          "id": "25663c9c-7c09-4b18-beea-481c9b99929d",
+          "length": 164866,
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "artist": {
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "title": "Izzo / In the End",
+            "disambiguation": "explicit",
+            "video": false,
+            "id": "9be2b5c5-717f-4bf5-9f12-4c14a96fde58",
+            "length": 164866
+          },
+          "title": "Izzo / In the End",
+          "position": 5,
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Linkin Park",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "country": "US",
+                "disambiguation": "American rock band"
+              },
+              "joinphrase": ""
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Linkin Park",
+                "type": "Group",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US"
+              }
+            }
+          ],
+          "recording": {
+            "id": "d6199ea7-fe69-45c7-b455-59bdaa58f257",
+            "length": 295826,
+            "disambiguation": "explicit",
+            "video": false,
+            "first-release-date": "2004-11-15",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " / "
+              },
+              {
+                "name": "Linkin Park",
+                "joinphrase": "",
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park"
+                }
+              }
+            ],
+            "title": "Points of Authority / 99 Problems / One Step Closer"
+          },
+          "title": "Points of Authority / 99 Problems / One Step Closer",
+          "position": 6,
+          "id": "3f94fe03-bdde-482d-b844-8b862b80337d",
+          "length": 295826,
+          "number": "6"
+        }
+      ],
+      "format-id": "8a08dc62-1aa2-34de-a904-fa467c53052c",
+      "data-tracks": [
+        {
+          "id": "0f479fc4-ef0e-4799-a4cb-c8a74e7df910",
+          "length": null,
+          "number": "7",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "US",
+                "disambiguation": "American rock band",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "type": "Group",
+                "name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "id": "564d4588-5242-4095-b95c-dbf757d01a72",
+            "length": null,
+            "video": false,
+            "disambiguation": "",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person"
+                },
+                "joinphrase": " / "
+              },
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ],
+            "title": "[data track]"
+          },
+          "title": "[data track]",
+          "position": 7
+        }
+      ]
+    },
+    {
+      "title": "",
+      "position": 2,
+      "tracks": [
+        {
+          "title": "Intro",
+          "position": 1,
+          "recording": {
+            "video": true,
+            "disambiguation": "",
+            "length": 33000,
+            "id": "9ca8d9d8-9d5a-4852-9733-9f4747632125",
+            "title": "Intro",
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2004-11-29"
+          },
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park",
+                "name": "Linkin Park",
+                "type": "Group",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "1",
+          "length": 33000,
+          "id": "9629fcdc-843d-4cff-afad-cd712cf11f5d"
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "title": "In The Studio",
+          "position": 2,
+          "recording": {
+            "length": 240000,
+            "id": "15dc6429-0d49-498d-908a-6d3d5e2f2eb9",
+            "disambiguation": "",
+            "video": true,
+            "title": "In the Studio",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z"
+                }
+              },
+              {
+                "artist": {
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ]
+          },
+          "id": "049f2ec5-1bdb-4d8f-b5a6-a8c0269ad0c5",
+          "length": 240000,
+          "number": "2"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": " / ",
+              "artist": {
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            },
+            {
+              "artist": {
+                "name": "Linkin Park",
+                "type": "Group",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park"
+              },
+              "joinphrase": "",
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "length": 461000,
+            "id": "2f0fa361-84d4-442b-8a95-d42c952d30d3",
+            "video": true,
+            "disambiguation": "",
+            "title": "Jay\u2010Z Arrives",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " / "
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Linkin Park"
+              }
+            ]
+          },
+          "title": "Jay\u2010Z Arrives",
+          "position": 3,
+          "length": 461000,
+          "id": "0ef91683-35e8-49ae-83cd-866220c3a7ae",
+          "number": "3"
+        },
+        {
+          "id": "d439eab4-665a-4116-8049-86882465ce5e",
+          "length": 153000,
+          "number": "4",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "type": "Group",
+                "name": "Linkin Park"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "name": "JAY\u2010Z",
+                  "type": "Person"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park"
+                },
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "title": "Rehearsal",
+            "video": true,
+            "disambiguation": "",
+            "length": 153000,
+            "id": "7f0a32b7-fe93-4a5f-810f-917169e97bd6"
+          },
+          "title": "Rehearsal",
+          "position": 4
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Linkin Park",
+                "type": "Group",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US"
+              }
+            }
+          ],
+          "recording": {
+            "title": "Sound Check",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Linkin Park"
+                }
+              }
+            ],
+            "length": 96000,
+            "id": "3e9911dd-9c7f-40bb-bf50-b7940cbd8216",
+            "video": true,
+            "disambiguation": ""
+          },
+          "position": 5,
+          "title": "Sound Check",
+          "length": 96000,
+          "id": "8a816e51-0ef1-41f8-b654-c68a3fa16772",
+          "number": "5"
+        },
+        {
+          "length": 268000,
+          "id": "3ed15d8d-d538-4a2b-9b26-383af9c39ffc",
+          "number": "6",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z"
+              }
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park",
+                "name": "Linkin Park",
+                "type": "Group",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "title": "Dirt Off Your Shoulder / Lying From You",
+          "position": 6,
+          "recording": {
+            "title": "Dirt Off Your Shoulder / Lying From You",
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "name": "JAY\u2010Z"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                }
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "disambiguation": "",
+            "video": true,
+            "id": "c4d62c71-0506-4fea-a6be-20161a3a3a45",
+            "length": 268000
+          }
+        },
+        {
+          "number": "7",
+          "length": 156000,
+          "id": "db253f1b-23bc-44d2-9c1e-f60598b28ec7",
+          "title": "Big Pimpin\u2019 / Papercut",
+          "position": 7,
+          "recording": {
+            "id": "e5403a7c-cf01-42a7-a5e5-71db0eedadf3",
+            "length": 156000,
+            "video": true,
+            "disambiguation": "",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+                },
+                "joinphrase": " / "
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "name": "Linkin Park",
+                  "type": "Group"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Big Pimpin\u2019 / Papercut"
+          },
+          "artist-credit": [
+            {
+              "joinphrase": " / ",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+              },
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "joinphrase": "",
+              "artist": {
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group",
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ]
+        },
+        {
+          "length": 248000,
+          "id": "c9a2b410-04f7-4ad5-82fb-9a350101fccd",
+          "number": "8",
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "US rapper",
+                "country": "US",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park",
+                "type": "Group",
+                "name": "Linkin Park",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Linkin Park"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "title": "Jigga What / Faint",
+            "disambiguation": "",
+            "video": true,
+            "length": 248000,
+            "id": "7cd76b0b-73fd-4e48-a691-41a0c91b3256"
+          },
+          "title": "Jigga What / Faint",
+          "position": 8
+        },
+        {
+          "number": "9",
+          "id": "92e3de04-6af8-4209-a6b2-d98b28d07756",
+          "length": 209000,
+          "recording": {
+            "length": 209000,
+            "id": "bc264735-06dd-41a5-b755-924567f2258c",
+            "video": true,
+            "disambiguation": "",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "country": "US",
+                  "disambiguation": "US rapper"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Linkin Park"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Numb / Encore"
+          },
+          "position": 9,
+          "title": "Numb / Encore",
+          "artist-credit": [
+            {
+              "joinphrase": " / ",
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            },
+            {
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "type": "Group",
+                "name": "Linkin Park"
+              },
+              "joinphrase": "",
+              "name": "Linkin Park"
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group"
+              },
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "title": "Izzo / In the End",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "name": "JAY\u2010Z",
+                  "type": "Person"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band"
+                },
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "disambiguation": "",
+            "video": true,
+            "id": "917b11f9-2e42-4662-a326-e45329493b74",
+            "length": 160000
+          },
+          "position": 10,
+          "title": "Izzo / In the End",
+          "id": "81a2a07a-e413-4c93-8b40-0bb6d3719c8c",
+          "length": 160000,
+          "number": "10"
+        },
+        {
+          "number": "11",
+          "length": 467000,
+          "id": "9168784b-6096-467d-94d7-8704a3f82bcb",
+          "title": "Points of Authority / 99 Problems / One Step Closer",
+          "position": 11,
+          "recording": {
+            "disambiguation": "",
+            "video": true,
+            "length": 467000,
+            "id": "db93cea0-25e7-4549-bb35-cbac518cb1fd",
+            "title": "Points of Authority / 99 Problems / One Step Closer",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "name": "JAY\u2010Z"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Linkin Park",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2004-11-29"
+          },
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "country": "US"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Linkin Park",
+                "type": "Group",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US"
+              },
+              "joinphrase": ""
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Linkin Park",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Linkin Park",
+                "type": "Group",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "recording": {
+            "id": "afe909fe-ca37-481c-b8be-8e66992457f0",
+            "length": 205000,
+            "video": true,
+            "disambiguation": "",
+            "title": "End Credits",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z"
+                }
+              },
+              {
+                "name": "Linkin Park",
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park"
+                }
+              }
+            ]
+          },
+          "title": "End Credits",
+          "position": 12,
+          "length": 205000,
+          "id": "0f0f608f-fe3b-4614-babd-cf76477ad4f6",
+          "number": "12"
+        },
+        {
+          "number": "13",
+          "id": "312e4d4f-4e21-4b08-96cf-c208864273b2",
+          "length": 84000,
+          "position": 13,
+          "title": "It\u2019s Going Down (MTV Ultimate Mash\u2010Ups)",
+          "recording": {
+            "id": "b4e7d3fe-fc3b-458a-a3f2-56996df18789",
+            "length": 84000,
+            "video": true,
+            "disambiguation": "",
+            "title": "It\u2019s Going Down (MTV Ultimate Mash\u2010Ups)",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "joinphrase": " / ",
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "type": "Group",
+                  "name": "Linkin Park"
+                },
+                "name": "Linkin Park"
+              }
+            ]
+          },
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "country": "US",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " / "
+            },
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group",
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Linkin Park"
+            }
+          ]
+        },
+        {
+          "number": "14",
+          "id": "ec70285d-658a-4cb0-8465-9edca8a6c187",
+          "length": 288000,
+          "position": 14,
+          "title": "Dirt Off Your Shoulder / Lying From You (MTV Ultimate Mash\u2010Ups)",
+          "recording": {
+            "title": "Dirt Off Your Shoulder / Lying From You (MTV Ultimate Mash\u2010Ups)",
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "country": "US",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z"
+                }
+              },
+              {
+                "name": "Linkin Park",
+                "joinphrase": "",
+                "artist": {
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
+            "id": "f816d75e-2230-423b-af69-ed6979ff892d",
+            "length": 288000,
+            "disambiguation": "",
+            "video": true
+          },
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z"
+              },
+              "joinphrase": " / "
+            },
+            {
+              "name": "Linkin Park",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group"
+              }
+            }
+          ]
+        },
+        {
+          "length": 280000,
+          "id": "d72d2940-a743-4c55-b111-b241fcd7401e",
+          "number": "15",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+              },
+              "joinphrase": " / "
+            },
+            {
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "name": "Linkin Park",
+                "type": "Group"
+              },
+              "joinphrase": "",
+              "name": "Linkin Park"
+            }
+          ],
+          "recording": {
+            "video": true,
+            "disambiguation": "",
+            "id": "5517e8e9-8fb9-4de1-bd83-f55e1f52ac89",
+            "length": 280000,
+            "title": "Jigga What / Faint (MTV Ultimate Mash\u2010Ups)",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Linkin Park"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29"
+          },
+          "position": 15,
+          "title": "Jigga What / Faint (MTV Ultimate Mash\u2010Ups)"
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " / ",
+              "artist": {
+                "disambiguation": "US rapper",
+                "country": "US",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              }
+            },
+            {
+              "name": "Linkin Park",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Linkin Park",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "type": "Group",
+                "name": "Linkin Park"
+              }
+            }
+          ],
+          "recording": {
+            "title": "Numb / Encore (MTV Ultimate Mash\u2010Ups)",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " / ",
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              },
+              {
+                "artist": {
+                  "sort-name": "Linkin Park",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "name": "Linkin Park",
+                  "type": "Group"
+                },
+                "joinphrase": "",
+                "name": "Linkin Park"
+              }
+            ],
+            "first-release-date": "2004-11-29",
+            "video": true,
+            "disambiguation": "",
+            "length": 229000,
+            "id": "336a0e1d-bd90-4f56-8a3f-dc81f79efc3f"
+          },
+          "position": 16,
+          "title": "Numb / Encore (MTV Ultimate Mash\u2010Ups)",
+          "id": "fc20e410-d498-4465-be17-bd7b755add48",
+          "length": 229000,
+          "number": "16"
+        },
+        {
+          "number": "17",
+          "id": "3918bdcd-d2cc-41f4-bc40-4b4148c2f5f0",
+          "length": 414000,
+          "recording": {
+            "length": 414000,
+            "id": "173498c2-0244-4698-bbb0-644305655095",
+            "disambiguation": "",
+            "video": true,
+            "first-release-date": "2004-11-29",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " / ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Linkin Park",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Linkin Park",
+                  "name": "Linkin Park",
+                  "type": "Group",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Points of Authority / 99 Problems / One Step Closer (MTV Ultimate Mash\u2010Ups)"
+          },
+          "title": "Points of Authority / 99 Problems / One Step Closer (MTV Ultimate Mash\u2010Ups)",
+          "position": 17,
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "JAY\u2010Z"
+              },
+              "joinphrase": " / ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "artist": {
+                "sort-name": "Linkin Park",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "type": "Group",
+                "name": "Linkin Park"
+              },
+              "joinphrase": "",
+              "name": "Linkin Park"
+            }
+          ]
+        }
+      ],
+      "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+      "track-offset": 0,
+      "id": "5859dccf-ef96-371b-bcdd-9bb66a5bedfc",
+      "format": "DVD-Video",
+      "track-count": 17
+    }
+  ],
   "release-events": [
     {
-      "date": "2004-11-29",
       "area": {
-        "name": "Europe",
-        "type": null,
         "disambiguation": "",
         "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+        "type": null,
+        "name": "Europe",
+        "type-id": null,
         "iso-3166-1-codes": [
           "XE"
         ],
-        "type-id": null,
         "sort-name": "Europe"
-      }
+      },
+      "date": "2004-11-29"
     }
   ],
   "packaging-id": "8f931351-d2e2-310f-afc6-37b89ddba246",
   "date": "2004-11-29",
   "barcode": "093624896227",
+  "disambiguation": "",
+  "id": "2810aeef-eaf4-4ea3-a0ee-fd41f8e64285",
+  "quality": "normal",
   "artist-credit": [
     {
-      "name": "Jay\u2010Z",
-      "joinphrase": " / ",
       "artist": {
         "sort-name": "JAY\u2010Z",
         "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "type": "Person",
-        "name": "JAY\u2010Z",
         "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+        "disambiguation": "US rapper",
         "country": "US",
-        "disambiguation": "US rapper"
-      }
+        "name": "JAY\u2010Z",
+        "type": "Person"
+      },
+      "joinphrase": " / ",
+      "name": "Jay\u2010Z"
     },
     {
       "name": "Linkin Park",
-      "joinphrase": "",
       "artist": {
         "type": "Group",
         "name": "Linkin Park",
@@ -69,57 +1781,57 @@
         "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
         "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
         "sort-name": "Linkin Park"
-      }
+      },
+      "joinphrase": ""
     }
   ],
   "cover-art-archive": {
-    "back": true,
-    "count": 29,
-    "darkened": false,
+    "artwork": true,
     "front": true,
-    "artwork": true
+    "darkened": false,
+    "count": 29,
+    "back": true
   },
   "status": "Official",
-  "quality": "normal",
-  "packaging": "Digipak",
   "country": "XE",
+  "packaging": "Digipak",
   "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "release-group": {
-    "first-release-date": "2004-11-29",
-    "secondary-types": [],
-    "artist-credit": [
-      {
-        "name": "Jay\u2010Z",
-        "artist": {
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-          "sort-name": "JAY\u2010Z",
-          "type": "Person",
-          "name": "JAY\u2010Z",
-          "country": "US",
-          "disambiguation": "US rapper",
-          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
-        },
-        "joinphrase": " / "
-      },
-      {
-        "joinphrase": "",
-        "artist": {
-          "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
-          "disambiguation": "American rock band",
-          "country": "US",
-          "name": "Linkin Park",
-          "type": "Group",
-          "sort-name": "Linkin Park",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-        },
-        "name": "Linkin Park"
-      }
-    ],
-    "title": "Collision Course",
     "primary-type": "EP",
     "id": "8ef859e3-feb2-4dd1-93da-22b91280d768",
     "secondary-type-ids": [],
     "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
-    "disambiguation": ""
+    "disambiguation": "",
+    "title": "Collision Course",
+    "first-release-date": "2004-11-29",
+    "artist-credit": [
+      {
+        "artist": {
+          "sort-name": "JAY\u2010Z",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "type": "Person",
+          "name": "JAY\u2010Z",
+          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+          "country": "US",
+          "disambiguation": "US rapper"
+        },
+        "joinphrase": " / ",
+        "name": "Jay\u2010Z"
+      },
+      {
+        "artist": {
+          "country": "US",
+          "disambiguation": "American rock band",
+          "id": "f59c5520-5f46-4d2c-b2c4-822eabf53419",
+          "type": "Group",
+          "name": "Linkin Park",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "sort-name": "Linkin Park"
+        },
+        "joinphrase": "",
+        "name": "Linkin Park"
+      }
+    ],
+    "secondary-types": []
   }
 }

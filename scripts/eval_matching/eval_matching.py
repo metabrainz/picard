@@ -36,6 +36,7 @@ from unittest.mock import (
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from picard.cluster import CLUSTER_COMPARISON_WEIGHTS
+from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.mbjson import release_to_metadata
 from picard.metadata import Metadata
 
@@ -335,6 +336,103 @@ def generate_corpus():
     return corpus
 
 
+def metadata_from_track(track, release):
+    """Convert a track + its release to Metadata, simulating a tagged file.
+
+    Populates title, artist, length, plus release-level fields (album, date, etc.).
+    """
+    m = metadata_from_release(release)
+    m["title"] = track["title"]
+    if "artist-credit" in track:
+        ac = track["artist-credit"]
+        m["artist"] = "".join(c.get("name", "") + c.get("joinphrase", "") for c in ac)
+    m.length = track.get("length", 0) or 0
+    m["tracknumber"] = track.get("number", "1")
+    return m
+
+
+def _build_track_candidates(track, release, distractors):
+    """Build track dicts with attached releases for compare_to_track.
+
+    Returns a list of (track_dict, release_id) tuples. Each track_dict
+    has a 'releases' key containing the parent release, as expected by
+    compare_to_track.
+    """
+    candidates = []
+
+    # Correct track from target release
+    correct_track = dict(track)
+    correct_track["releases"] = [release]
+    candidates.append((correct_track, release["id"]))
+
+    # Find a matching-position track from each distractor, or use first track
+    pos = track.get("position", 1)
+    for dist in distractors:
+        dist_track = None
+        for media in dist.get("media", []):
+            for t in media.get("tracks", []):
+                if t.get("position") == pos:
+                    dist_track = t
+                    break
+            if dist_track:
+                break
+        if not dist_track:
+            # Fall back to first track
+            for media in dist.get("media", []):
+                if media.get("tracks"):
+                    dist_track = media["tracks"][0]
+                    break
+        if dist_track:
+            dt = dict(dist_track)
+            dt["releases"] = [dist]
+            candidates.append((dt, dist["id"]))
+
+    return candidates
+
+
+def generate_file_corpus():
+    """Build file-level evaluation corpus.
+
+    For each scenario, picks a track from the target release and tests
+    whether compare_to_track correctly identifies it among tracks from
+    distractor releases. Tests first and middle tracks.
+    """
+    corpus = []
+    for scenario in SCENARIOS:
+        target = load_release(scenario["target"])
+        distractors = [load_release(f) for f in scenario["distractors"]]
+
+        # Pick tracks to test: first track and a middle track
+        all_tracks = []
+        for media in target.get("media", []):
+            all_tracks.extend(media.get("tracks", []))
+        if not all_tracks:
+            continue
+
+        test_tracks = [all_tracks[0]]
+        if len(all_tracks) > 2:
+            test_tracks.append(all_tracks[len(all_tracks) // 2])
+
+        for track in test_tracks:
+            candidates = _build_track_candidates(track, target, distractors)
+
+            for deg_name, deg_fn in DEGRADATIONS:
+                m = metadata_from_track(track, target)
+                deg_fn(m, target)
+                corpus.append(
+                    {
+                        "degradation": deg_name,
+                        "scenario": scenario["scenario"],
+                        "release_title": target["title"],
+                        "track_title": track["title"],
+                        "metadata": m,
+                        "correct_id": target["id"],
+                        "candidates": candidates,
+                    }
+                )
+    return corpus
+
+
 # =============================================================================
 # Evaluation
 # =============================================================================
@@ -355,6 +453,47 @@ def evaluate(corpus, weights):
         margin = best_sim - scores[1][0] if len(scores) > 1 else 0
 
         # Classify result
+        tied_ids = {cid for sim, cid in scores if sim == best_sim}
+        if len(tied_ids) > 1 and entry["correct_id"] in tied_ids:
+            status = "ambiguous"
+        elif best_id == entry["correct_id"]:
+            status = "correct"
+        else:
+            status = "wrong"
+        results[status] += 1
+
+        results["details"].append(
+            {
+                "release": entry["release_title"],
+                "degradation": entry["degradation"],
+                "scenario": entry["scenario"],
+                "status": status,
+                "best_sim": best_sim,
+                "margin": margin,
+            }
+        )
+
+    return results
+
+
+def evaluate_file_corpus(corpus, weights):
+    """Score file-level corpus using compare_to_track.
+
+    Each entry has candidates as (track_dict, release_id) tuples.
+    compare_to_track returns SimMatchTrack with the best release match.
+    """
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
+
+    for entry in corpus:
+        scores = []
+        for track_dict, release_id in entry["candidates"]:
+            match = entry["metadata"].compare_to_track(track_dict, weights)
+            scores.append((match.similarity, release_id))
+
+        scores.sort(key=lambda x: x[0], reverse=True)
+        best_sim, best_id = scores[0]
+        margin = best_sim - scores[1][0] if len(scores) > 1 else 0
+
         tied_ids = {cid for sim, cid in scores if sim == best_sim}
         if len(tied_ids) > 1 and entry["correct_id"] in tied_ids:
             status = "ambiguous"
@@ -575,12 +714,24 @@ def main():
 
     all_results = {}
     for profile_name in CONFIG_PROFILES:
-        random.seed(42)  # Reset seed for each profile (consistent degradations)
+        random.seed(42)
         results = _run_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
         all_results[profile_name] = results
         print_report(results, f"CLUSTER_COMPARISON_WEIGHTS [{profile_name}]")
 
     print_comparison(all_results)
+
+    # File-level evaluation (neutral config only for clarity)
+    random.seed(42)
+    mock_config = _make_config("neutral")
+    with (
+        patch("picard.config.get_config", return_value=mock_config),
+        patch("picard.mbjson.get_config", return_value=mock_config),
+        patch("picard.metadata.get_config", return_value=mock_config),
+    ):
+        file_corpus = generate_file_corpus()
+        file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
+        print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]")
 
 
 if __name__ == "__main__":
