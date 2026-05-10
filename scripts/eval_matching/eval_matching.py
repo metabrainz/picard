@@ -449,42 +449,138 @@ def print_report(results, weights_name):
 
 
 # =============================================================================
+# Configuration profiles
+# =============================================================================
+# Each profile represents a different user configuration.
+# To add a new profile: append to CONFIG_PROFILES.
+
+CONFIG_PROFILES = {
+    "neutral": {
+        "preferred_release_countries": [],
+        "preferred_release_formats": [],
+        "release_type_scores": [
+            ("Album", 1.0),
+            ("Single", 0.5),
+            ("EP", 0.7),
+            ("Other", 0.3),
+        ],
+    },
+    "prefer_us_cd": {
+        "preferred_release_countries": ["US"],
+        "preferred_release_formats": ["CD"],
+        "release_type_scores": [
+            ("Album", 1.0),
+            ("Single", 0.5),
+            ("EP", 0.7),
+            ("Other", 0.3),
+        ],
+    },
+    "prefer_eu_vinyl": {
+        "preferred_release_countries": ["XE", "DE", "GB"],
+        "preferred_release_formats": ["12\" Vinyl", "Vinyl"],
+        "release_type_scores": [
+            ("Album", 1.0),
+            ("Single", 0.5),
+            ("EP", 0.7),
+            ("Other", 0.3),
+        ],
+    },
+    "prefer_jp_digital": {
+        "preferred_release_countries": ["JP"],
+        "preferred_release_formats": ["Digital Media"],
+        "release_type_scores": [
+            ("Album", 1.0),
+            ("Single", 0.5),
+            ("EP", 0.7),
+            ("Other", 0.3),
+        ],
+    },
+    "compilations_low": {
+        "preferred_release_countries": [],
+        "preferred_release_formats": [],
+        "release_type_scores": [
+            ("Album", 1.0),
+            ("Single", 0.3),
+            ("EP", 0.5),
+            ("Compilation", 0.2),
+            ("Other", 0.1),
+        ],
+    },
+}
+
+
+# =============================================================================
 # Main
 # =============================================================================
 
 
-def _mock_config():
-    """Create a mock config suitable for release_to_metadata and matching."""
-    settings = defaultdict(
-        lambda: False,
-        {
-            "preferred_release_countries": [],
-            "preferred_release_formats": [],
-            "release_type_scores": [
-                ("Album", 1.0),
-                ("Single", 0.5),
-                ("EP", 0.7),
-                ("Other", 0.3),
-            ],
-        },
-    )
+def _make_config(profile_name):
+    """Create a mock config from a named profile."""
+    profile = CONFIG_PROFILES[profile_name]
+    settings = defaultdict(lambda: False)
+    settings.update(profile)
     mock = MagicMock()
     mock.setting = settings
     return mock
 
 
-def main():
-    random.seed(42)
-
-    mock_config = _mock_config()
+def _run_with_config(profile_name, weights):
+    """Generate corpus and evaluate with a specific config profile."""
+    mock_config = _make_config(profile_name)
     with (
         patch("picard.config.get_config", return_value=mock_config),
         patch("picard.mbjson.get_config", return_value=mock_config),
         patch("picard.metadata.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus()
-        results = evaluate(corpus, CLUSTER_COMPARISON_WEIGHTS)
-        print_report(results, "CLUSTER_COMPARISON_WEIGHTS")
+        return evaluate(corpus, weights)
+
+
+def print_comparison(all_results):
+    """Print a side-by-side comparison of all config profiles."""
+    print(f"\n{'=' * 70}")
+    print("  CONFIG COMPARISON")
+    print(f"{'=' * 70}")
+    print(f"\n  {'Profile':<20} {'Correct':>8} {'Ambiguous':>10} {'Wrong':>8} {'Score':>6}")
+    print(f"  {'-' * 20} {'-' * 8} {'-' * 10} {'-' * 8} {'-' * 6}")
+    for name, results in all_results.items():
+        total = results["correct"] + results["wrong"] + results["ambiguous"]
+        # Score: correct=1, ambiguous=0.5, wrong=0
+        score = (results["correct"] + 0.5 * results["ambiguous"]) / total
+        print(
+            f"  {name:<20} {results['correct']:>3}/{total:<3} "
+            f"{results['ambiguous']:>4}/{total:<3}  "
+            f"{results['wrong']:>3}/{total:<3} "
+            f"{score:>5.1%}"
+        )
+
+    # Per-scenario comparison across configs
+    scenarios = sorted({d["scenario"] for d in next(iter(all_results.values()))["details"]})
+    print("\n  Per-scenario correct rate by config:")
+    header = f"  {'Scenario':<30}" + "".join(f" {n[:12]:>12}" for n in all_results)
+    print(header)
+    print(f"  {'-' * 30}" + "".join(f" {'-' * 12}" for _ in all_results))
+    for scen in scenarios:
+        row = f"  {scen:<30}"
+        for results in all_results.values():
+            scen_details = [d for d in results["details"] if d["scenario"] == scen]
+            n = len(scen_details)
+            ok = sum(1 for d in scen_details if d["status"] == "correct")
+            row += f" {ok:>3}/{n:<3} {ok / n:>4.0%}" if n else f" {'N/A':>12}"
+        print(row)
+
+
+def main():
+    random.seed(42)
+
+    all_results = {}
+    for profile_name in CONFIG_PROFILES:
+        random.seed(42)  # Reset seed for each profile (consistent degradations)
+        results = _run_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
+        all_results[profile_name] = results
+        print_report(results, f"CLUSTER_COMPARISON_WEIGHTS [{profile_name}]")
+
+    print_comparison(all_results)
 
 
 if __name__ == "__main__":
