@@ -9,8 +9,16 @@ from a set of confusable candidates when file metadata is degraded.
 # Run full evaluation (all configs, cluster + file level)
 python scripts/eval_matching/eval_matching.py
 
-# Focus on a specific problem
+# Focus on a specific problem with diagnostics
 python scripts/eval_matching/eval_matching.py -v -s non_latin --cluster-only -p neutral
+
+# Filter by degradation pattern
+python scripts/eval_matching/eval_matching.py -d combo --cluster-only -p neutral
+
+# Save baseline, make changes, compare
+python scripts/eval_matching/eval_matching.py --cluster-only -p neutral --save baseline.json
+# ... edit matching code ...
+python scripts/eval_matching/eval_matching.py --cluster-only -p neutral --compare baseline.json
 
 # Refresh corpus from MusicBrainz (after API changes)
 python scripts/eval_matching/refresh_corpus.py
@@ -38,11 +46,62 @@ Two matching levels are tested:
 
 | Flag | Description |
 |------|-------------|
-| `-v`, `--verbose` | Show per-candidate scores for each failure |
+| `-v`, `--verbose` | Show per-candidate scores and field diffs for failures |
 | `-s`, `--scenario` | Filter to scenarios matching a substring |
+| `-d`, `--degradation` | Filter to degradations matching a substring |
 | `-p`, `--profile` | Run only one config profile (neutral, prefer_us_cd, etc.) |
 | `--cluster-only` | Skip file-level evaluation |
 | `--file-only` | Skip cluster-level evaluation |
+| `--save FILE` | Save results snapshot for later comparison |
+| `--compare FILE` | Compare current results against a previous snapshot |
+
+## Score Delta Workflow
+
+When iterating on the matching algorithm:
+
+```bash
+# 1. Save baseline before changes
+python scripts/eval_matching/eval_matching.py --cluster-only -p neutral --save baseline.json
+
+# 2. Make changes to picard/metadata.py, picard/cluster.py, etc.
+
+# 3. Compare against baseline
+python scripts/eval_matching/eval_matching.py --cluster-only -p neutral --compare baseline.json
+```
+
+The delta report shows exactly which cases improved or regressed:
+
+```text
+  SCORE DELTA
+======================================================================
+  Previous: 150/255 correct
+  Current:  158/255 correct
+  Improved: 10  Regressed: 2
+
+  IMPROVED (10):
+    三毒史                 perfect                ambiguous → correct  (1.0000 → 1.0000)
+    ...
+
+  REGRESSED (2):
+    Weezer               wrong_date_year          correct → wrong    (0.9838 → 0.9200)
+```
+
+## Verbose Diagnostics
+
+With `-v`, failures show per-candidate scores and which fields differ between
+tied candidates:
+
+```text
+  [AMBIGUOUS] MTV Ultimate Mash‐Ups Presents: Collision Course | multi_artist_editions
+  degradation: perfect
+  candidates (▶ = correct, ✗ = picked wrong):
+    ▶ 0.9189  2810aeef
+      0.9189  a72497d5
+      0.5947  2c5e4198
+  differs on: barcode, track-count
+    2810aeef: barcode=093624896227, track-count=23
+    a72497d5: barcode=093624896326, track-count=13
+```
 
 ## Scenarios
 
@@ -73,8 +132,25 @@ Each scenario is tested with all degradations applied to the file metadata:
 | `extra_artist_suffix` | Artist has "feat. Someone" appended |
 | `wrong_track_count` | Track count off by one |
 | `wrong_barcode` | Barcode present but incorrect |
+| `length_small_diff` | Track duration off by 3 seconds |
+| `length_large_diff` | Track duration off by 15 seconds |
+| `title_remaster_suffix` | Track title has "(Remastered)" appended |
+| `missing_tracknumber` | No track number tag |
+| `wrong_date_year` | Date is a reissue year (2003) |
 | `missing_most` | Only album + artist remain |
 | `swapped_artist_album` | Artist and album fields swapped |
+
+### Combined Degradations
+
+Realistic multi-issue patterns (filter with `-d combo`):
+
+| Degradation | Simulates |
+|-------------|-----------|
+| `combo_no_barcode_year_only` | Missing barcode + year-only date |
+| `combo_no_barcode_typo` | Missing barcode + album typo |
+| `combo_no_barcode_no_date` | Missing barcode + missing date |
+| `combo_remaster_length` | Remaster title suffix + small length diff |
+| `combo_wrong_date_no_barcode` | Wrong date year + missing barcode |
 
 ## Config Profiles
 
@@ -120,5 +196,7 @@ to include it in the evaluation.
 - **New scenario**: add release JSONs to corpus (via `refresh_corpus.py --add`),
   then append to `SCENARIOS` in `eval_matching.py`.
 - **New degradation**: define a `fn(metadata, release)` function, append to
+  `DEGRADATIONS`.
+- **New combined degradation**: add a lambda composing existing functions to
   `DEGRADATIONS`.
 - **New config profile**: append to `CONFIG_PROFILES` dict.
