@@ -256,6 +256,18 @@ def missing_most(metadata, release):
             metadata.pop(key, None)
 
 
+def length_small_diff(metadata, release):
+    """Track duration off by 3 seconds (encoding/padding variance)."""
+    if metadata.length > 0:
+        metadata.length = metadata.length + 3000
+
+
+def length_large_diff(metadata, release):
+    """Track duration off by 15 seconds (different edit/version)."""
+    if metadata.length > 0:
+        metadata.length = metadata.length + 15000
+
+
 def swapped_artist_album(metadata, release):
     """Swap artist and album fields (common ripping/tagging error)."""
     album = metadata.get("album", "")
@@ -276,6 +288,8 @@ DEGRADATIONS = [
     ("extra_artist_suffix", extra_artist_suffix),
     ("wrong_track_count", wrong_track_count),
     ("wrong_barcode", wrong_barcode),
+    ("length_small_diff", length_small_diff),
+    ("length_large_diff", length_large_diff),
     ("missing_most", missing_most),
     ("swapped_artist_album", swapped_artist_album),
 ]
