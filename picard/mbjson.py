@@ -30,7 +30,10 @@
 from collections.abc import Iterable
 from dataclasses import dataclass
 from types import SimpleNamespace
-from typing import Any
+from typing import (
+    Any,
+    TypeAlias,
+)
 
 from picard import log
 from picard.config import get_config
@@ -119,6 +122,9 @@ _RELEASE_GROUP_TO_METADATA = {
 
 _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
+
+
+Node: TypeAlias = dict[str, Any]
 
 
 @dataclass
@@ -292,9 +298,7 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             relfunc.func(relation, m, context)
 
 
-def _locales_from_aliases(
-    aliases: list[dict[str, Any]],
-) -> dict[str, AliasMatch]:
+def _locales_from_aliases(aliases: list[Node]) -> dict[str, AliasMatch]:
     def check_higher_score(locale_dict: dict[str, AliasMatch], locale: str, score: float) -> bool:
         return locale not in locale_dict or score > locale_dict[locale].score
 
@@ -356,7 +360,7 @@ def _first_alias_match_in_order(order: Iterable[str], mapping: dict[str, AliasMa
     return None
 
 
-def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_locales: list[str]) -> Alias | None:
+def _find_localized_alias_name(aliases: list[Node] | None, preferred_locales: list[str]) -> Alias | None:
     """
     Select a localized alias by preferred locales for non-artist entities.
 
@@ -365,7 +369,7 @@ def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_l
 
     Parameters
     ----------
-    aliases : list[dict[str, Any]] or None
+    aliases : list[Node] or None
         Alias entries as provided by the web service, each containing at
         least ``name`` and ``locale``.
     preferred_locales : list[str]
