@@ -112,7 +112,7 @@ class CDLookupDialog(PicardDialog):
                     selected = item
                 values = {
                     'album': release['title'],
-                    'artist': artist_credit_from_node(release['artist-credit'])[0],
+                    'artist': artist_credit_from_node(release['artist-credit']).name,
                     'dates': myjoin(dates),
                     'countries': myjoin(countries),
                     'labels': myjoin(labels),

@@ -27,13 +27,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from collections.abc import Iterable
+from collections import defaultdict
+from collections.abc import (
+    Callable,
+    Generator,
+    Iterable,
+)
 from dataclasses import dataclass
-from types import SimpleNamespace
-from typing import Any
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    TypeAlias,
+)
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    Config,
+    get_config,
+)
 from picard.const import (
     ALIAS_TYPE_ARTIST_NAME_ID,
     ALIAS_TYPE_LEGAL_NAME_ID,
@@ -47,6 +58,14 @@ from picard.util import (
     translate_from_sortname,
 )
 from picard.util.script_detector_weighted import detect_script_weighted
+
+
+if TYPE_CHECKING:
+    from picard.album import Album
+    from picard.item import MetadataItem
+    from picard.metadata import Metadata
+    from picard.releasegroup import ReleaseGroup
+    from picard.track import Track
 
 
 _ARTIST_REL_TYPES = {
@@ -121,12 +140,26 @@ _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 
+Node: TypeAlias = dict[str, Any]
+
+
 @dataclass
 class Alias:
     """Represents an alias (alternative name) for an entity, including the name and sort name."""
 
     name: str
     sort_name: str
+
+
+@dataclass
+class ArtistCreditInfo:
+    """Artist credit info, including the combined name and all individual artist names and countries."""
+
+    name: str
+    sort_name: str
+    names: list[str]
+    sort_names: list[str]
+    countries: list[str]
 
 
 @dataclass
@@ -137,7 +170,29 @@ class AliasMatch:
     alias: Alias
 
 
-def _parse_attributes(attrs, reltype, attr_credits):
+@dataclass
+class RelFuncContext:
+    """Give context for a RelFunc."""
+
+    config: Config
+    entity: str | None
+    instrumental: bool
+    use_credited_as: bool
+    use_instrument_credits: bool
+    use_vocal_credits: bool
+    metadata_was_cleared: dict[str, bool]
+    per_medium_metadata: 'defaultdict[int, Metadata]'
+
+
+@dataclass
+class RelFunc:
+    """Encapsulates a relation function with a clear_metadata_first flag."""
+
+    func: 'Callable[[Node, Metadata, RelFuncContext], None]'
+    clear_metadata_first: bool = False
+
+
+def _parse_attributes(attrs: Iterable[str], reltype: str, attr_credits: dict[str, str]) -> str:
     prefixes = []
     nouns = []
     for attr in attrs:
@@ -157,14 +212,14 @@ def _parse_attributes(attrs, reltype, attr_credits):
     return " ".join([prefix, result]).strip()
 
 
-def _relation_attributes(relation):
+def _relation_attributes(relation: Node) -> tuple[str, ...]:
     try:
         return tuple(relation['attributes'])
     except KeyError:
         return tuple()
 
 
-def _relations_to_metadata_target_type_artist(relation, m, context):
+def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     artist = relation['artist']
     translated_alias = _translate_artist_node(artist, config=context.config)
     has_translation = translated_alias.name != artist['name']
@@ -183,10 +238,13 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
             attr_credits = {}
         name = 'performer:' + _parse_attributes(attribs, reltype, attr_credits)
     elif reltype == 'mix-DJ' and attribs:
-        if not hasattr(m, '_djmix_ars'):
-            m._djmix_ars = {}
         for attr in attribs:
-            m._djmix_ars.setdefault(attr.split()[1], []).append(translated_alias.name)
+            if attr.startswith('medium'):
+                try:
+                    medium_no = int(attr.split()[1])
+                    context.per_medium_metadata[medium_no].add_unique('djmixer', translated_alias.name)
+                except ValueError:
+                    log.warning('Invalid medium number in mix-DJ attribute: %s', attr)
         return
     else:
         try:
@@ -207,7 +265,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         m.add_unique('~writersort', translated_alias.sort_name)
 
 
-def _relations_to_metadata_target_type_work(relation, m, context):
+def _relations_to_metadata_target_type_work(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     if relation['type'] == 'performance':
         performance_attributes = _relation_attributes(relation)
         for attribute in performance_attributes:
@@ -216,7 +274,7 @@ def _relations_to_metadata_target_type_work(relation, m, context):
         work_to_metadata(relation['work'], m, instrumental)
 
 
-def _relations_to_metadata_target_type_url(relation, m, context):
+def _relations_to_metadata_target_type_url(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     if relation['type'] == 'amazon asin' and 'asin' not in m:
         amz = parse_amazon_url(relation['url']['resource'])
         if amz is not None:
@@ -226,7 +284,7 @@ def _relations_to_metadata_target_type_url(relation, m, context):
         m.add('license', url)
 
 
-def _relations_to_metadata_target_type_series(relation, m, context):
+def _relations_to_metadata_target_type_series(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     if relation['type'] == 'part of':
         entity = context.entity
         series = relation['series']
@@ -250,14 +308,9 @@ def _relations_to_metadata_target_type_series(relation, m, context):
         m.add(number, relation['attribute-values'].get('number', ''))
 
 
-def _relations_to_metadata_target_type_label(relation, m, context):
+def _relations_to_metadata_target_type_label(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
     if relation['type'] == 'broadcast' and 'begin' in relation:
         m['~broadcast_date'] = relation['begin']
-
-
-class RelFunc(SimpleNamespace):
-    clear_metadata_first = False
-    func = None
 
 
 _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
@@ -272,9 +325,17 @@ _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
 }
 
 
-def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
+def _relations_to_metadata(
+    relations: list[Node],
+    m: 'Metadata',
+    instrumental: bool = False,
+    config: Config | None = None,
+    entity: str | None = None,
+) -> RelFuncContext:
+    from picard.metadata import Metadata  # inline import to avoid circular imports
+
     config = config or get_config()
-    context = SimpleNamespace(
+    context = RelFuncContext(
         config=config,
         entity=entity,
         instrumental=instrumental,
@@ -282,6 +343,7 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
         use_instrument_credits=not config.setting['standardize_instruments'],
         use_vocal_credits=not config.setting['standardize_vocals'],
         metadata_was_cleared=dict(),
+        per_medium_metadata=defaultdict(Metadata),
     )
     for relation in relations:
         target = relation['target-type']
@@ -290,11 +352,10 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             if target not in context.metadata_was_cleared:
                 context.metadata_was_cleared[target] = not relfunc.clear_metadata_first
             relfunc.func(relation, m, context)
+    return context
 
 
-def _locales_from_aliases(
-    aliases: list[dict[str, Any]],
-) -> dict[str, AliasMatch]:
+def _locales_from_aliases(aliases: list[Node]) -> dict[str, AliasMatch]:
     def check_higher_score(locale_dict: dict[str, AliasMatch], locale: str, score: float) -> bool:
         return locale not in locale_dict or score > locale_dict[locale].score
 
@@ -356,7 +417,7 @@ def _first_alias_match_in_order(order: Iterable[str], mapping: dict[str, AliasMa
     return None
 
 
-def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_locales: list[str]) -> Alias | None:
+def _find_localized_alias_name(aliases: list[Node] | None, preferred_locales: list[str]) -> Alias | None:
     """
     Select a localized alias by preferred locales for non-artist entities.
 
@@ -365,7 +426,7 @@ def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_l
 
     Parameters
     ----------
-    aliases : list[dict[str, Any]] or None
+    aliases : list[Node] or None
         Alias entries as provided by the web service, each containing at
         least ``name`` and ``locale``.
     preferred_locales : list[str]
@@ -391,7 +452,7 @@ def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_l
     return _first_alias_match_in_order(root_order, locales)
 
 
-def _is_script_exception_enabled(config: Any) -> bool:
+def _is_script_exception_enabled(config: Config) -> bool:
     """
     Check whether script-exception matching is enabled.
 
@@ -409,7 +470,7 @@ def _is_script_exception_enabled(config: Any) -> bool:
     return config.setting['translate_artist_names_script_exception']
 
 
-def _get_script_exceptions(config: Any) -> list[tuple[str, int]]:
+def _get_script_exceptions(config: Config) -> list[tuple[str, int]]:
     """
     Get configured script-exception thresholds.
 
@@ -524,7 +585,7 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None
     return matched
 
 
-def _translate_artist_node(node, config=None) -> Alias:
+def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
     config = config or get_config()
     if config.setting['translate_artist_names']:
         if _should_skip_translation_due_to_scripts(node['name'], config=config):
@@ -544,7 +605,7 @@ def _translate_artist_node(node, config=None) -> Alias:
     return Alias(translated_name, sort_name)
 
 
-def artist_credit_from_node(node):
+def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_name = ''
     artist_sort_name = ''
     artist_names = []
@@ -572,34 +633,34 @@ def artist_credit_from_node(node):
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
-    return (artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
+    return ArtistCreditInfo(artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
 
 
-def artist_credit_to_metadata(node, m, release=False):
+def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = False) -> None:
     ids = [n['artist']['id'] for n in node]
-    artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries = artist_credit_from_node(node)
+    credits = artist_credit_from_node(node)
     if release:
         m['musicbrainz_albumartistid'] = ids
-        m['albumartist'] = artist_name
-        m['albumartistsort'] = artist_sort_name
-        m['~albumartists'] = artist_names
-        m['~albumartists_sort'] = artist_sort_names
-        m['~albumartists_countries'] = artist_countries
+        m['albumartist'] = credits.name
+        m['albumartistsort'] = credits.sort_name
+        m['~albumartists'] = credits.names
+        m['~albumartists_sort'] = credits.sort_names
+        m['~albumartists_countries'] = credits.countries
     else:
         m['musicbrainz_artistid'] = ids
-        m['artist'] = artist_name
-        m['artistsort'] = artist_sort_name
-        m['artists'] = artist_names
-        m['~artists_sort'] = artist_sort_names
-        m['~artists_countries'] = artist_countries
+        m['artist'] = credits.name
+        m['artistsort'] = credits.sort_name
+        m['artists'] = credits.names
+        m['~artists_sort'] = credits.sort_names
+        m['~artists_countries'] = credits.countries
 
 
-def _release_event_iter(node):
+def _release_event_iter(node: Node) -> Generator[Node, None, None]:
     if 'release-events' in node:
         yield from node['release-events']
 
 
-def _country_from_release_event(release_event):
+def _country_from_release_event(release_event: Node) -> str | None:
     try:
         return release_event['area']['iso-3166-1-codes'][0]
     # TypeError in case object is None
@@ -608,7 +669,7 @@ def _country_from_release_event(release_event):
     return None
 
 
-def countries_from_node(node):
+def countries_from_node(node: Node) -> list[str]:
     countries = []
     for release_event in _release_event_iter(node):
         country_code = _country_from_release_event(release_event)
@@ -617,7 +678,7 @@ def countries_from_node(node):
     return sorted(countries)
 
 
-def release_dates_and_countries_from_node(node):
+def release_dates_and_countries_from_node(node: Node) -> tuple[list[str], list[str]]:
     dates = []
     countries = []
     for release_event in _release_event_iter(node):
@@ -628,7 +689,7 @@ def release_dates_and_countries_from_node(node):
     return dates, countries
 
 
-def label_info_from_node(node):
+def label_info_from_node(node: list[Node]) -> tuple[list[str], list[str]]:
     labels = []
     catalog_numbers = []
     for label_info in node:
@@ -643,7 +704,7 @@ def label_info_from_node(node):
     return (labels, catalog_numbers)
 
 
-def media_formats_from_node(node):
+def media_formats_from_node(node: list[Node]) -> str:
     formats_count = {}
     formats_order = []
     for medium in node:
@@ -669,7 +730,7 @@ def _node_skip_empty_iter(node):
             yield key, value
 
 
-def track_to_metadata(node, track):
+def track_to_metadata(node: Node, track: 'Track') -> None:
     m = track.metadata
     recording_to_metadata(node['recording'], m, track)
     config = get_config()
@@ -690,7 +751,7 @@ def track_to_metadata(node, track):
         m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node, m, track=None):
+def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = None) -> None:
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     config = get_config()
@@ -728,7 +789,7 @@ def recording_to_metadata(node, m, track=None):
         m['~length'] = format_time(m.length)
 
 
-def work_to_metadata(work, m, instrumental=False):
+def work_to_metadata(work: Node, m: 'Metadata', instrumental: bool = False) -> None:
     m.add_unique('musicbrainz_workid', work['id'])
     if instrumental:
         m.add_unique('language', 'zxx')  # no lyrics
@@ -745,7 +806,7 @@ def work_to_metadata(work, m, instrumental=False):
         _relations_to_metadata(work['relations'], m, instrumental, entity='work')
 
 
-def medium_to_metadata(node, m):
+def medium_to_metadata(node: Node, m: 'Metadata') -> None:
     for key, value in _node_skip_empty_iter(node):
         if key in _MEDIUM_TO_METADATA:
             m[_MEDIUM_TO_METADATA[key]] = value
@@ -756,7 +817,7 @@ def medium_to_metadata(node, m):
         m['totaltracks'] = totaltracks
 
 
-def artist_to_metadata(node, m):
+def artist_to_metadata(node: Node, m: 'Metadata') -> None:
     """Make metadata dict from a JSON 'artist' node."""
     m.add_unique('musicbrainz_artistid', node['id'])
     for key, value in _node_skip_empty_iter(node):
@@ -777,7 +838,7 @@ def artist_to_metadata(node, m):
             m['endarea'] = value['name']
 
 
-def release_to_metadata(node, m, album=None):
+def release_to_metadata(node: Node, m: 'Metadata', album: 'Album | None' = None) -> None:
     """Make metadata dict from a JSON 'release' node."""
     config = get_config()
     m.add_unique('musicbrainz_albumid', node['id'])
@@ -795,7 +856,9 @@ def release_to_metadata(node, m, album=None):
                     artist_obj = album.append_album_artist(artist['id'])
                     add_genres_from_node(artist, artist_obj)
         elif key == 'relations' and config.setting['release_ars']:
-            _relations_to_metadata(value, m, config=config, entity='release')
+            context = _relations_to_metadata(value, m, config=config, entity='release')
+            if album:
+                album.per_medium_metadata = context.per_medium_metadata
         elif key == 'label-info':
             m['label'], m['catalognumber'] = label_info_from_node(value)
         elif key == 'text-representation':
@@ -820,7 +883,7 @@ def release_to_metadata(node, m, album=None):
     add_genres_from_node(node, album)
 
 
-def release_group_to_metadata(node, m, release_group=None):
+def release_group_to_metadata(node: Node, m: 'Metadata', release_group: 'ReleaseGroup | None' = None) -> None:
     """Make metadata dict from a JSON 'release-group' node taken from inside a 'release' node."""
     config = get_config()
     m.add_unique('musicbrainz_releasegroupid', node['id'])
@@ -840,12 +903,12 @@ def release_group_to_metadata(node, m, release_group=None):
     m['releasetype'] = m.getall('~primaryreleasetype') + m.getall('~secondaryreleasetype')
 
 
-def add_secondary_release_types(node, m):
+def add_secondary_release_types(node: list[str], m: 'Metadata') -> None:
     for secondary_type in node:
         m.add_unique('~secondaryreleasetype', secondary_type.lower())
 
 
-def add_genres_from_node(node, obj):
+def add_genres_from_node(node: Node, obj: 'MetadataItem | None') -> None:
     if obj is None:
         return
     if 'tags' in node:
@@ -858,32 +921,32 @@ def add_genres_from_node(node, obj):
         add_user_genres(node['user-genres'], obj)
 
 
-def add_genres(node, obj):
+def add_genres(node: list[Node], obj: 'MetadataItem') -> None:
     for tag in node:
         obj.add_genre(tag['name'], tag['count'])
 
 
-def add_user_genres(node, obj):
+def add_user_genres(node: list[Node], obj: 'MetadataItem') -> None:
     for tag in node:
         obj.add_genre(tag['name'], 1)
 
 
-def add_tags(node, obj):
+def add_tags(node: list[Node], obj: 'MetadataItem') -> None:
     for tag in node:
         obj.add_folksonomy_tag(tag['name'], tag['count'])
 
 
-def add_user_tags(node, obj):
+def add_user_tags(node: list[Node], obj: 'MetadataItem') -> None:
     for tag in node:
         obj.add_folksonomy_tag(tag['name'], 1)
 
 
-def add_isrcs_to_metadata(node, metadata):
+def add_isrcs_to_metadata(node: list[str], metadata: 'Metadata') -> None:
     for isrc in node:
         metadata.add('isrc', isrc)
 
 
-def get_score(node):
+def get_score(node: Node) -> float:
     """Returns the score attribute for a node.
     The score is expected to be an integer between 0 and 100, it is returned as
     a value between 0.0 and 1.0. If there is no score attribute or it has an

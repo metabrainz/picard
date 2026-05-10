@@ -1,0 +1,291 @@
+{
+  "quality": "normal",
+  "status": "Official",
+  "relations": [
+    {
+      "type-id": "f3b80a09-5ebf-4ad2-9c46-3e6bce971d1b",
+      "attribute-ids": {},
+      "type": "art direction",
+      "target-credit": "",
+      "attributes": [],
+      "direction": "backward",
+      "attribute-values": {},
+      "source-credit": "",
+      "ended": false,
+      "artist": {
+        "id": "c4f0a476-4362-4d90-a4b4-3145fd3b587c",
+        "disambiguation": "UK art direction",
+        "name": "Red Design",
+        "country": "GB",
+        "sort-name": "Red Design",
+        "type": "Other",
+        "type-id": "ac897045-5043-3294-969b-187360e45d86"
+      },
+      "begin": null,
+      "target-type": "artist",
+      "end": null
+    },
+    {
+      "ended": false,
+      "artist": {
+        "type": "Other",
+        "type-id": "ac897045-5043-3294-969b-187360e45d86",
+        "country": "GB",
+        "sort-name": "Red Design",
+        "disambiguation": "UK art direction",
+        "name": "Red Design",
+        "id": "c4f0a476-4362-4d90-a4b4-3145fd3b587c"
+      },
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
+      "type": "design/illustration",
+      "attribute-ids": {},
+      "target-credit": "",
+      "attributes": [],
+      "attribute-values": {},
+      "direction": "backward",
+      "source-credit": ""
+    },
+    {
+      "end": null,
+      "begin": null,
+      "target-type": "artist",
+      "artist": {
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "sort-name": "Seveso, Alberto",
+        "country": "GB",
+        "disambiguation": "",
+        "name": "Alberto Seveso",
+        "id": "70b6de03-77b7-4f80-8b0d-c1fe5c2e2d6a"
+      },
+      "ended": false,
+      "attributes": [],
+      "direction": "backward",
+      "source-credit": "",
+      "attribute-values": {},
+      "target-credit": "",
+      "type-id": "307e95dd-88b5-419b-8223-b146d4a0d439",
+      "attribute-ids": {},
+      "type": "design/illustration"
+    },
+    {
+      "type-id": "f30c29d3-a3f1-420d-9b6c-a750fd6bc2aa",
+      "attribute-ids": {},
+      "type": "editor",
+      "attributes": [],
+      "attribute-values": {},
+      "source-credit": "",
+      "direction": "backward",
+      "target-credit": "",
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "ended": false,
+      "artist": {
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "sort-name": "Frankmusik",
+        "country": "GB",
+        "name": "Frankmusik",
+        "disambiguation": "",
+        "id": "612231ce-633b-4ebc-99bf-9b14e8d1cb74"
+      }
+    },
+    {
+      "end": null,
+      "begin": null,
+      "target-type": "artist",
+      "artist": {
+        "name": "Tim Debney",
+        "disambiguation": "",
+        "id": "a7344984-8027-4ad3-89f9-cbaa25d1166a",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "country": "GB",
+        "sort-name": "Debney, Tim"
+      },
+      "ended": false,
+      "target-credit": "",
+      "attributes": [],
+      "attribute-values": {},
+      "source-credit": "",
+      "direction": "backward",
+      "type-id": "84453d28-c3e8-4864-9aae-25aa968bcf9e",
+      "type": "mastering",
+      "attribute-ids": {}
+    },
+    {
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "ended": false,
+      "artist": {
+        "name": "John Webber",
+        "disambiguation": "mastering engineer",
+        "id": "e724dab4-ee52-4f8d-a844-dd827b615a66",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "country": "GB",
+        "sort-name": "Webber, John"
+      },
+      "type-id": "84453d28-c3e8-4864-9aae-25aa968bcf9e",
+      "type": "mastering",
+      "attribute-ids": {},
+      "attributes": [],
+      "attribute-values": {},
+      "direction": "backward",
+      "source-credit": "",
+      "target-credit": ""
+    },
+    {
+      "direction": "backward",
+      "source-credit": "",
+      "attribute-values": {},
+      "attributes": ["medium 2"],
+      "target-credit": "",
+      "type": "mix-DJ",
+      "attribute-ids": { "medium 2": "5a2cd122-6104-3fae-a4c1-56f0b3ad07bc" },
+      "type-id": "9162dedd-790c-446c-838e-240f877dbfe2",
+      "artist": {
+        "disambiguation": "",
+        "name": "Frankmusik",
+        "id": "612231ce-633b-4ebc-99bf-9b14e8d1cb74",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "country": "GB",
+        "sort-name": "Frankmusik"
+      },
+      "ended": false,
+      "end": null,
+      "target-type": "artist",
+      "begin": null
+    },
+    {
+      "type-id": "0b58dc9b-9c49-4b19-bb58-9c06d41c8fbf",
+      "attribute-ids": {},
+      "type": "photography",
+      "target-credit": "",
+      "attributes": [],
+      "source-credit": "",
+      "direction": "backward",
+      "attribute-values": {},
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "ended": false,
+      "artist": {
+        "country": null,
+        "sort-name": "Beard, Tom",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "id": "895d7272-8ebd-46c5-a927-956762e4080b",
+        "disambiguation": "photographer",
+        "name": "Tom Beard"
+      }
+    },
+    {
+      "type-id": "8bf377ba-8d71-4ecc-97f2-7bb2d8a2a75f",
+      "type": "producer",
+      "attribute-ids": { "executive": "e0039285-6667-4f94-80d6-aa6520c6d359" },
+      "attributes": ["executive"],
+      "source-credit": "",
+      "attribute-values": {},
+      "direction": "backward",
+      "target-credit": "",
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "ended": false,
+      "artist": {
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "sort-name": "Frankmusik",
+        "country": "GB",
+        "disambiguation": "",
+        "name": "Frankmusik",
+        "id": "612231ce-633b-4ebc-99bf-9b14e8d1cb74"
+      }
+    },
+    {
+      "ended": false,
+      "artist": {
+        "name": "David Norland",
+        "disambiguation": "",
+        "id": "1cbe3926-9250-481e-88e6-42d91c274231",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person",
+        "sort-name": "Norland, David",
+        "country": null
+      },
+      "begin": null,
+      "target-type": "artist",
+      "end": null,
+      "type-id": "8bf377ba-8d71-4ecc-97f2-7bb2d8a2a75f",
+      "type": "producer",
+      "attribute-ids": { "executive": "e0039285-6667-4f94-80d6-aa6520c6d359" },
+      "target-credit": "",
+      "attributes": ["executive"],
+      "direction": "backward",
+      "source-credit": "",
+      "attribute-values": {}
+    },
+    {
+      "target-type": "artist",
+      "begin": null,
+      "end": null,
+      "ended": false,
+      "artist": {
+        "id": "612231ce-633b-4ebc-99bf-9b14e8d1cb74",
+        "disambiguation": "",
+        "name": "Frankmusik",
+        "country": "GB",
+        "sort-name": "Frankmusik",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+      },
+      "type": "remixer",
+      "attribute-ids": {},
+      "type-id": "ac6a86db-f757-4815-a07e-744428d2382b",
+      "target-credit": "",
+      "direction": "backward",
+      "source-credit": "",
+      "attribute-values": {},
+      "attributes": []
+    }
+  ],
+  "disambiguation": "",
+  "id": "9ba03e85-de11-411c-914c-4e956e53e292",
+  "date": "2009-08-03",
+  "asin": "B002C73VZK",
+  "packaging": null,
+  "text-representation": { "script": "Latn", "language": "eng" },
+  "cover-art-archive": {
+    "back": true,
+    "darkened": false,
+    "count": 22,
+    "artwork": true,
+    "front": true
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "country": "GB",
+  "title": "Complete Me",
+  "barcode": "0602527121956",
+  "release-events": [
+    {
+      "date": "2009-08-03",
+      "area": {
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "disambiguation": "",
+        "name": "United Kingdom",
+        "sort-name": "United Kingdom",
+        "iso-3166-1-codes": ["GB"],
+        "type": null,
+        "type-id": null
+      }
+    }
+  ],
+  "packaging-id": null
+}

@@ -42,12 +42,15 @@ from picard.const import (
 from picard.mbjson import (
     Alias,
     AliasMatch,
+    ArtistCreditInfo,
     _locales_from_aliases,
     _node_skip_empty_iter,
     _parse_attributes,
     _relations_to_metadata,
     _relations_to_metadata_target_type_url,
     _translate_artist_node,
+    artist_credit_from_node,
+    artist_credit_to_metadata,
     artist_to_metadata,
     countries_from_node,
     get_score,
@@ -296,6 +299,55 @@ class ReleaseTest(MBJSONTest):
         self.assertEqual(m.getall('~releasegroup_seriesnumber'), ['15'])
 
 
+class DjMixReleaseTest(MBJSONTest):
+    filename = 'release_djmix.json'
+
+    def test_release_djmix(self):
+        m = Metadata()
+        a = Album("1")
+        release_to_metadata(self.json_doc, m, a)
+        expected_medium_metadata = {
+            2: Metadata({'djmixer': ['Frankmusik']}),
+        }
+        self.assertNotIn('djmixer', m)
+        self.assertEqual(expected_medium_metadata, dict(a.per_medium_metadata))
+
+    def test_release_djmix_with_all_medium_ar(self):
+        m = Metadata()
+        a = Album("1")
+        self.json_doc['relations'].append(
+            {
+                "direction": "backward",
+                "source-credit": "",
+                "attribute-values": {},
+                "attributes": [],
+                "target-credit": "",
+                "type": "mix-DJ",
+                "attribute-ids": {},
+                "type-id": "9162dedd-790c-446c-838e-240f877dbfe2",
+                "artist": {
+                    "disambiguation": "",
+                    "name": "Global DJ",
+                    "id": "3dc9ba23-0126-464a-90cc-4924b6bb37b4",
+                    "type": "Person",
+                    "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                    "country": "GB",
+                    "sort-name": "Global DJ",
+                },
+                "ended": False,
+                "end": None,
+                "target-type": "artist",
+                "begin": None,
+            }
+        )
+        release_to_metadata(self.json_doc, m, a)
+        expected_medium_metadata = {
+            2: Metadata({'djmixer': ['Frankmusik']}),
+        }
+        self.assertEqual(m.getall('djmixer'), ['Global DJ'])
+        self.assertEqual(expected_medium_metadata, dict(a.per_medium_metadata))
+
+
 class NullReleaseTest(MBJSONTest):
     filename = 'release_null.json'
 
@@ -372,6 +424,51 @@ class RecordingMultiArtistsTest1(MBJSONTest):
         t = Track('1')
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['~artists_countries'], 'GB; US; US')
+
+    def test_artist_credit_from_node(self):
+        credits = artist_credit_from_node(self.json_doc['artist-credit'])
+        expected = ArtistCreditInfo(
+            'Ed Sheeran feat. Meek Mill & A Boogie Wit da Hoodie',
+            'Sheeran, Ed feat. Meek Mill & Boogie Wit da Hoodie, A',
+            ['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'],
+            ['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'],
+            ['GB', 'US', 'US'],
+        )
+        self.assertEqual(expected, credits)
+
+    def test_artist_credit_to_metadata_track(self):
+        m = Metadata()
+        artist_credit_to_metadata(self.json_doc['artist-credit'], m)
+        self.assertEqual(
+            [
+                'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6',
+                '31bcadcc-e1da-4cad-bec8-2f4f1d41b095',
+                'c1708d03-8a66-46eb-848e-fe0d233ffb39',
+            ],
+            m.getall('musicbrainz_artistid'),
+        )
+        self.assertEqual('Ed Sheeran feat. Meek Mill & A Boogie Wit da Hoodie', m['artist'])
+        self.assertEqual('Sheeran, Ed feat. Meek Mill & Boogie Wit da Hoodie, A', m['artistsort'])
+        self.assertEqual(['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'], m.getall('artists'))
+        self.assertEqual(['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'], m.getall('~artists_sort'))
+        self.assertEqual(['GB', 'US', 'US'], m.getall('~artists_countries'))
+
+    def test_artist_credit_to_metadata_release(self):
+        m = Metadata()
+        artist_credit_to_metadata(self.json_doc['artist-credit'], m, release=True)
+        self.assertEqual(
+            [
+                'b8a7c51f-362c-4dcb-a259-bc6e0095f0a6',
+                '31bcadcc-e1da-4cad-bec8-2f4f1d41b095',
+                'c1708d03-8a66-46eb-848e-fe0d233ffb39',
+            ],
+            m.getall('musicbrainz_albumartistid'),
+        )
+        self.assertEqual('Ed Sheeran feat. Meek Mill & A Boogie Wit da Hoodie', m['albumartist'])
+        self.assertEqual('Sheeran, Ed feat. Meek Mill & Boogie Wit da Hoodie, A', m['albumartistsort'])
+        self.assertEqual(['Ed Sheeran', 'Meek Mill', 'A Boogie Wit da Hoodie'], m.getall('~albumartists'))
+        self.assertEqual(['Sheeran, Ed', 'Meek Mill', 'Boogie Wit da Hoodie, A'], m.getall('~albumartists_sort'))
+        self.assertEqual(['GB', 'US', 'US'], m.getall('~albumartists_countries'))
 
 
 class RecordingMultiArtistsTest2(MBJSONTest):
