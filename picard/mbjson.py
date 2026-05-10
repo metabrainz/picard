@@ -123,12 +123,16 @@ _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 @dataclass
 class Alias:
+    """Represents an alias (alternative name) for an entity, including the name and sort name."""
+
     name: str
     sort_name: str
 
 
 @dataclass
 class AliasMatch:
+    """Combines an alias with a matching score when selecting the best matching alias for an entity."""
+
     score: float
     alias: Alias
 
