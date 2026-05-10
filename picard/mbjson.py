@@ -27,16 +27,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from collections.abc import Iterable
+from collections.abc import (
+    Callable,
+    Iterable,
+)
 from dataclasses import dataclass
-from types import SimpleNamespace
 from typing import (
+    TYPE_CHECKING,
     Any,
     TypeAlias,
 )
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    Config,
+    get_config,
+)
 from picard.const import (
     ALIAS_TYPE_ARTIST_NAME_ID,
     ALIAS_TYPE_LEGAL_NAME_ID,
@@ -50,6 +56,11 @@ from picard.util import (
     translate_from_sortname,
 )
 from picard.util.script_detector_weighted import detect_script_weighted
+
+
+if TYPE_CHECKING:
+    from picard.metadata import Metadata
+    from picard.track import Track
 
 
 _ARTIST_REL_TYPES = {
@@ -143,6 +154,27 @@ class AliasMatch:
     alias: Alias
 
 
+@dataclass
+class RelFuncContext:
+    """Give context for a RelFunc."""
+
+    config: Config
+    entity: str | None
+    instrumental: bool
+    use_credited_as: bool
+    use_instrument_credits: bool
+    use_vocal_credits: bool
+    metadata_was_cleared: dict[str, bool]
+
+
+@dataclass
+class RelFunc:
+    """Encapsulates a relation function with a clear_metadata_first flag."""
+
+    func: Callable[[Node, Metadata, RelFuncContext], None]
+    clear_metadata_first: bool = False
+
+
 def _parse_attributes(attrs, reltype, attr_credits):
     prefixes = []
     nouns = []
@@ -170,7 +202,7 @@ def _relation_attributes(relation):
         return tuple()
 
 
-def _relations_to_metadata_target_type_artist(relation, m, context):
+def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', context: RelFuncContext):
     artist = relation['artist']
     translated_alias = _translate_artist_node(artist, config=context.config)
     has_translation = translated_alias.name != artist['name']
@@ -213,7 +245,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         m.add_unique('~writersort', translated_alias.sort_name)
 
 
-def _relations_to_metadata_target_type_work(relation, m, context):
+def _relations_to_metadata_target_type_work(relation: Node, m: 'Metadata', context: RelFuncContext):
     if relation['type'] == 'performance':
         performance_attributes = _relation_attributes(relation)
         for attribute in performance_attributes:
@@ -222,7 +254,7 @@ def _relations_to_metadata_target_type_work(relation, m, context):
         work_to_metadata(relation['work'], m, instrumental)
 
 
-def _relations_to_metadata_target_type_url(relation, m, context):
+def _relations_to_metadata_target_type_url(relation: Node, m: 'Metadata', context: RelFuncContext):
     if relation['type'] == 'amazon asin' and 'asin' not in m:
         amz = parse_amazon_url(relation['url']['resource'])
         if amz is not None:
@@ -232,7 +264,7 @@ def _relations_to_metadata_target_type_url(relation, m, context):
         m.add('license', url)
 
 
-def _relations_to_metadata_target_type_series(relation, m, context):
+def _relations_to_metadata_target_type_series(relation: Node, m: 'Metadata', context: RelFuncContext):
     if relation['type'] == 'part of':
         entity = context.entity
         series = relation['series']
@@ -256,14 +288,9 @@ def _relations_to_metadata_target_type_series(relation, m, context):
         m.add(number, relation['attribute-values'].get('number', ''))
 
 
-def _relations_to_metadata_target_type_label(relation, m, context):
+def _relations_to_metadata_target_type_label(relation: Node, m: 'Metadata', context: RelFuncContext):
     if relation['type'] == 'broadcast' and 'begin' in relation:
         m['~broadcast_date'] = relation['begin']
-
-
-class RelFunc(SimpleNamespace):
-    clear_metadata_first = False
-    func = None
 
 
 _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
@@ -278,9 +305,15 @@ _RELATIONS_TO_METADATA_TARGET_TYPE_FUNC = {
 }
 
 
-def _relations_to_metadata(relations, m, instrumental=False, config=None, entity=None):
+def _relations_to_metadata(
+    relations: list[Node],
+    m: 'Metadata',
+    instrumental: bool = False,
+    config: Config | None = None,
+    entity: str | None = None,
+):
     config = config or get_config()
-    context = SimpleNamespace(
+    context = RelFuncContext(
         config=config,
         entity=entity,
         instrumental=instrumental,
@@ -694,7 +727,7 @@ def track_to_metadata(node, track):
         m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node, m, track=None):
+def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = None):
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     config = get_config()
