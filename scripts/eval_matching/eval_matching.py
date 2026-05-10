@@ -830,6 +830,77 @@ def _filter_results(results, scenario=None, degradation=None):
     }
 
 
+def _snapshot_key(detail):
+    """Create a unique key for a result entry."""
+    return (detail["scenario"], detail["release"], detail["degradation"], detail.get("correct_id", ""))
+
+
+def _save_snapshot(results, path):
+    """Save a results snapshot for later comparison."""
+    snapshot = []
+    for d in results["details"]:
+        snapshot.append(
+            {
+                "scenario": d["scenario"],
+                "release": d["release"],
+                "degradation": d["degradation"],
+                "correct_id": d.get("correct_id", ""),
+                "status": d["status"],
+                "best_sim": round(d["best_sim"], 6),
+            }
+        )
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(snapshot, f, indent=2)
+        f.write("\n")
+    print(f"\n  Snapshot saved to {path} ({len(snapshot)} entries)")
+
+
+def _compare_snapshot(current_results, snapshot_path):
+    """Compare current results against a saved snapshot and show changes."""
+    with open(snapshot_path, encoding="utf-8") as f:
+        previous = json.load(f)
+
+    prev_by_key = {(e["scenario"], e["release"], e["degradation"], e.get("correct_id", "")): e for e in previous}
+    curr_by_key = {_snapshot_key(d): d for d in current_results["details"]}
+
+    improved = []
+    regressed = []
+    STATUS_RANK = {"wrong": 0, "ambiguous": 1, "correct": 2}
+
+    for key, curr in curr_by_key.items():
+        prev = prev_by_key.get(key)
+        if not prev:
+            continue
+        prev_rank = STATUS_RANK[prev["status"]]
+        curr_rank = STATUS_RANK[curr["status"]]
+        if curr_rank > prev_rank:
+            improved.append((key, prev["status"], curr["status"], prev["best_sim"], curr["best_sim"]))
+        elif curr_rank < prev_rank:
+            regressed.append((key, prev["status"], curr["status"], prev["best_sim"], curr["best_sim"]))
+
+    prev_correct = sum(1 for e in previous if e["status"] == "correct")
+    curr_correct = current_results["correct"]
+
+    print(f"\n{'=' * 70}")
+    print("  SCORE DELTA")
+    print(f"{'=' * 70}")
+    print(f"  Previous: {prev_correct}/{len(previous)} correct")
+    print(f"  Current:  {curr_correct}/{len(curr_by_key)} correct")
+    print(f"  Improved: {len(improved)}  Regressed: {len(regressed)}")
+
+    if improved:
+        print(f"\n  IMPROVED ({len(improved)}):")
+        for key, prev_s, curr_s, prev_sim, curr_sim in improved:
+            _, release, deg, _ = key
+            print(f"    {release[:20]:<20} {deg:<22} {prev_s:>9} → {curr_s:<9} ({prev_sim:.4f} → {curr_sim:.4f})")
+
+    if regressed:
+        print(f"\n  REGRESSED ({len(regressed)}):")
+        for key, prev_s, curr_s, prev_sim, curr_sim in regressed:
+            _, release, deg, _ = key
+            print(f"    {release[:20]:<20} {deg:<22} {prev_s:>9} → {curr_s:<9} ({prev_sim:.4f} → {curr_sim:.4f})")
+
+
 def main():
     import argparse
 
@@ -861,6 +932,16 @@ def main():
         action="store_true",
         help="Run only cluster-level evaluation",
     )
+    parser.add_argument(
+        "--save",
+        metavar="FILE",
+        help="Save results snapshot to FILE for later comparison",
+    )
+    parser.add_argument(
+        "--compare",
+        metavar="FILE",
+        help="Compare current results against a previous snapshot",
+    )
     args = parser.parse_args()
 
     profiles = [args.profile] if args.profile else list(CONFIG_PROFILES)
@@ -889,6 +970,18 @@ def main():
             file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
             file_results = _filter_results(file_results, args.scenario, args.degradation)
             print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]", verbose=args.verbose)
+
+    # Save/compare snapshots (uses neutral cluster results)
+    if not args.file_only:
+        current = all_results.get("neutral", all_results.get(profiles[0]))
+    else:
+        current = file_results
+
+    if args.save:
+        _save_snapshot(current, args.save)
+
+    if args.compare:
+        _compare_snapshot(current, args.compare)
 
 
 if __name__ == "__main__":
