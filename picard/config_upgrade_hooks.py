@@ -42,6 +42,7 @@ from picard import log
 from picard.config import (
     BoolOption,
     IntOption,
+    ListOption,
     TextOption,
 )
 from picard.config_upgrade import (
@@ -661,3 +662,10 @@ def upgrade_to_v3_0_0a3(config):
     """Remove persisted column configuration"""
     config.persist.remove('album_view_header_state')
     config.persist.remove('file_view_header_state')
+
+
+def upgrade_to_v3_0_0b2(config):
+    """Option "artist_locales" was renamed to "translation_locales"."""
+    old_opt = 'artist_locales'
+    new_opt = 'translation_locales'
+    rename_option(config, old_opt, new_opt, ListOption, ['en'])

@@ -370,7 +370,7 @@ FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Similarity for
 
 # picard/ui/options/metadata.py
 # Metadata
-ListOption('setting', 'artist_locales', ['en'], title=N_("Translation locales"))
+ListOption('setting', 'translation_locales', ['en'], title=N_("Translation locales"))
 BoolOption('setting', 'convert_punctuation', False, title=N_("Convert Unicode punctuation to ASCII"))
 BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track number and title"))
 TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name"))

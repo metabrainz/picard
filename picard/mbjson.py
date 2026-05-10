@@ -5,7 +5,7 @@
 # Copyright (C) 2017 David Mandelberg
 # Copyright (C) 2017-2018 Sambhav Kothari
 # Copyright (C) 2017-2023 Laurent Monin
-# Copyright (C) 2018-2023 Philipp Wolfer
+# Copyright (C) 2018-2023, 2026 Philipp Wolfer
 # Copyright (C) 2019 Michael Wiencek
 # Copyright (C) 2020 dukeyin
 # Copyright (C) 2020, 2023, 2025 David Kellner
@@ -27,7 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from collections.abc import Iterable
+from dataclasses import dataclass
 from types import SimpleNamespace
 from typing import Any
 
@@ -36,6 +37,7 @@ from picard.config import get_config
 from picard.const import (
     ALIAS_TYPE_ARTIST_NAME_ID,
     ALIAS_TYPE_LEGAL_NAME_ID,
+    ALIAS_TYPE_RECORDING_NAME_ID,
     RELEASE_FORMATS,
 )
 from picard.util import (
@@ -119,6 +121,22 @@ _PREFIX_ATTRS = {'guest', 'additional', 'minor', 'solo'}
 _BLANK_SPECIAL_RELTYPES = {'vocal': 'vocals'}
 
 
+@dataclass
+class Alias:
+    """Represents an alias (alternative name) for an entity, including the name and sort name."""
+
+    name: str
+    sort_name: str
+
+
+@dataclass
+class AliasMatch:
+    """Combines an alias with a matching score when selecting the best matching alias for an entity."""
+
+    score: float
+    alias: Alias
+
+
 def _parse_attributes(attrs, reltype, attr_credits):
     prefixes = []
     nouns = []
@@ -148,12 +166,12 @@ def _relation_attributes(relation):
 
 def _relations_to_metadata_target_type_artist(relation, m, context):
     artist = relation['artist']
-    translated_name, sort_name = _translate_artist_node(artist, config=context.config)
-    has_translation = translated_name != artist['name']
+    translated_alias = _translate_artist_node(artist, config=context.config)
+    has_translation = translated_alias.name != artist['name']
     if not has_translation and context.use_credited_as and 'target-credit' in relation:
         credited_as = relation['target-credit']
         if credited_as:
-            translated_name = credited_as
+            translated_alias.name = credited_as
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
@@ -168,7 +186,7 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
         if not hasattr(m, '_djmix_ars'):
             m._djmix_ars = {}
         for attr in attribs:
-            m._djmix_ars.setdefault(attr.split()[1], []).append(translated_name)
+            m._djmix_ars.setdefault(attr.split()[1], []).append(translated_alias.name)
         return
     else:
         try:
@@ -177,16 +195,16 @@ def _relations_to_metadata_target_type_artist(relation, m, context):
             return
     if context.instrumental and name == 'lyricist':
         return
-    m.add_unique(name, translated_name)
+    m.add_unique(name, translated_alias.name)
     artist_id = artist.get('id')
     if name == 'composer':
-        m.add_unique('composersort', sort_name)
+        m.add_unique('composersort', translated_alias.sort_name)
         if artist_id:
             m.add_unique('musicbrainz_composerid', artist_id)
     elif name == 'lyricist':
-        m.add_unique('~lyricistsort', sort_name)
+        m.add_unique('~lyricistsort', translated_alias.sort_name)
     elif name == 'writer':
-        m.add_unique('~writersort', sort_name)
+        m.add_unique('~writersort', translated_alias.sort_name)
 
 
 def _relations_to_metadata_target_type_work(relation, m, context):
@@ -274,12 +292,13 @@ def _relations_to_metadata(relations, m, instrumental=False, config=None, entity
             relfunc.func(relation, m, context)
 
 
-def _locales_from_aliases(aliases):
-    def check_higher_score(locale_dict, locale, score):
-        return locale not in locale_dict or score > locale_dict[locale][0]
+def _locales_from_aliases(
+    aliases: list[dict[str, Any]],
+) -> dict[str, AliasMatch]:
+    def check_higher_score(locale_dict: dict[str, AliasMatch], locale: str, score: float) -> bool:
+        return locale not in locale_dict or score > locale_dict[locale].score
 
-    full_locales = {}
-    root_locales = {}
+    locales = {}
     for alias in aliases:
         if not alias.get('primary'):
             continue
@@ -295,61 +314,27 @@ def _locales_from_aliases(aliases):
             score = 0.4
         root_parts.append((score, 5))
         type_id = alias.get('type-id')
-        if type_id == ALIAS_TYPE_ARTIST_NAME_ID:
+        if type_id in {ALIAS_TYPE_ARTIST_NAME_ID, ALIAS_TYPE_RECORDING_NAME_ID}:
             score = 0.8
         elif type_id == ALIAS_TYPE_LEGAL_NAME_ID:
             score = 0.5
         else:
-            # as 2014/09/19, only Artist or Legal names should have the
+            # as 2014/09/19, only entity names or artist legal names should have the
             # Primary flag
             score = 0.0
         full_parts.append((score, 5))
         root_parts.append((score, 5))
         comb = linear_combination_of_weights(full_parts)
-        if check_higher_score(full_locales, full_locale, comb):
-            full_locales[full_locale] = (comb, (alias['name'], alias['sort-name']))
+        if check_higher_score(locales, full_locale, comb):
+            locales[full_locale] = AliasMatch(comb, Alias(alias['name'], alias['sort-name']))
         comb = linear_combination_of_weights(root_parts)
-        if check_higher_score(root_locales, root_locale, comb):
-            root_locales[root_locale] = (comb, (alias['name'], alias['sort-name']))
+        if check_higher_score(locales, root_locale, comb):
+            locales[root_locale] = AliasMatch(comb, Alias(alias['name'], alias['sort-name']))
 
-    return full_locales, root_locales
-
-
-def _build_alias_locale_maps(aliases: list[dict[str, Any]]) -> tuple[dict[str, str], dict[str, str]]:
-    """
-    Build maps of full and root locales from alias entries.
-
-    Parameters
-    ----------
-    aliases : list[dict[str, Any]]
-        Alias dictionaries that can include ``name`` and ``locale`` keys.
-
-    Returns
-    -------
-    tuple[dict[str, str], dict[str, str]]
-        A pair ``(full_locales, root_locales)`` where ``full_locales`` maps
-        full locale identifiers (e.g., ``"en_US"``) to names and
-        ``root_locales`` maps root language codes (e.g., ``"en"``) to names.
-    """
-    full_locales: dict[str, str] = {}
-    root_locales: dict[str, str] = {}
-    for alias in aliases:
-        locale = alias.get('locale')
-        name = alias.get('name')
-        if not locale or not name:
-            continue
-        full_locales.setdefault(locale, name)
-        root = locale.split('_')[0]
-        # Prefer explicit root-locale aliases (e.g., "en") over values derived
-        # from full locales (e.g., "en_US").
-        if '_' in locale:
-            root_locales.setdefault(root, name)
-        else:
-            root_locales[root] = name
-    return full_locales, root_locales
+    return locales
 
 
-def _first_match_in_order(order: list[str], mapping: dict[str, str]) -> str | None:
+def _first_alias_match_in_order(order: Iterable[str], mapping: dict[str, AliasMatch]) -> Alias | None:
     """
     Return the value for the first key in ``order`` that exists in ``mapping``.
 
@@ -362,17 +347,16 @@ def _first_match_in_order(order: list[str], mapping: dict[str, str]) -> str | No
 
     Returns
     -------
-    str or None
+    Alias or None
         The value corresponding to the first matching key; otherwise ``None``.
     """
     for key in order:
-        value = mapping.get(key)
-        if value:
-            return value
+        if value := mapping.get(key):
+            return value.alias
     return None
 
 
-def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_locales: list[str]) -> str | None:
+def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_locales: list[str]) -> Alias | None:
     """
     Select a localized alias by preferred locales for non-artist entities.
 
@@ -389,22 +373,22 @@ def _find_localized_alias_name(aliases: list[dict[str, Any]] | None, preferred_l
 
     Returns
     -------
-    str or None
+    Alias or None
         The localized alias name if a match is found; otherwise ``None``.
     """
     if not aliases:
         return None
 
-    full_locales, root_locales = _build_alias_locale_maps(aliases)
+    locales = _locales_from_aliases(aliases)
 
-    # 1) Exact full-locale match
-    name = _first_match_in_order(preferred_locales, full_locales)
+    # 1) Exact preferred locale match
+    name = _first_alias_match_in_order(preferred_locales, locales)
     if name:
         return name
 
-    # 2) Root language match
-    root_order = [locale.split('_')[0] for locale in preferred_locales]
-    return _first_match_in_order(root_order, root_locales)
+    # 2) Fallback to preferred languages root locale
+    root_order = (locale.split('_')[0] for locale in preferred_locales if '_' in locale)
+    return _first_alias_match_in_order(root_order, locales)
 
 
 def _is_script_exception_enabled(config: Any) -> bool:
@@ -540,34 +524,24 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None
     return matched
 
 
-def _translate_artist_node(node, config=None):
+def _translate_artist_node(node, config=None) -> Alias:
     config = config or get_config()
-    translated_name, sort_name = None, None
     if config.setting['translate_artist_names']:
         if _should_skip_translation_due_to_scripts(node['name'], config=config):
-            return node['name'], node['sort-name']
+            return Alias(node['name'], node['sort-name'])
 
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
-            full_locales, root_locales = _locales_from_aliases(node['aliases'])
-
-            # First pass to match full locale if available
-            for locale in config.setting['artist_locales']:
-                if locale in full_locales:
-                    return full_locales[locale][1]
-
-            # Second pass to match root locale if available
-            for locale in config.setting['artist_locales']:
-                lang = locale.split('_')[0]
-                if lang in root_locales:
-                    return root_locales[lang][1]
+            translated_alias = _find_localized_alias_name(node['aliases'], config.setting['translation_locales'])
+            if translated_alias:
+                return translated_alias
 
         # No matches found in available alias locales
         sort_name = node['sort-name']
         translated_name = translate_from_sortname(node['name'] or '', sort_name)
     else:
         translated_name, sort_name = node['name'], node['sort-name']
-    return (translated_name, sort_name)
+    return Alias(translated_name, sort_name)
 
 
 def artist_credit_from_node(node):
@@ -583,18 +557,18 @@ def artist_credit_from_node(node):
         if artist and 'id' in artist and artist['id']:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
             artist_countries.append(artist['country'] if 'country' in artist and artist['country'] else 'XX')
-        translated_name, sort_name = _translate_artist_node(artist, config=config)
-        has_translation = translated_name != artist['name']
+        translated_alias = _translate_artist_node(artist, config=config)
+        has_translation = translated_alias.name != artist['name']
         if has_translation:
-            name = translated_name
+            name = translated_alias.name
         elif use_credited_as and 'name' in artist_info:
             name = artist_info['name']
         else:
             name = artist['name']
         artist_name += name
-        artist_sort_name += sort_name or ''
+        artist_sort_name += translated_alias.sort_name or ''
         artist_names.append(name)
-        artist_sort_names.append(sort_name or '')
+        artist_sort_names.append(translated_alias.sort_name or '')
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
@@ -745,9 +719,9 @@ def recording_to_metadata(node, m, track=None):
     # Translate track title from recording aliases if enabled, unless script exception applies
     if config.setting['translate_track_titles']:
         if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
-            if alias_name:
-                m['title'] = alias_name
+            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
+            if alias:
+                m['title'] = alias.name
     if m['title']:
         m['~recordingtitle'] = m['title']
     if m.length:
@@ -840,9 +814,9 @@ def release_to_metadata(node, m, album=None):
     # Translate album title from release aliases if enabled, unless script exception applies
     if config.setting['translate_album_titles']:
         if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias_name = _find_localized_alias_name(node.get('aliases'), config.setting['artist_locales'])
-            if alias_name:
-                m['album'] = alias_name
+            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
+            if alias:
+                m['album'] = alias.name
     add_genres_from_node(node, album)
 
 
