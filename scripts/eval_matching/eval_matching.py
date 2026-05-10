@@ -506,6 +506,7 @@ def evaluate(corpus, weights):
                 "margin": margin,
                 "scores": scores,
                 "correct_id": entry["correct_id"],
+                "candidates": {c["id"]: c for c in entry["candidates"]},
             }
         )
 
@@ -583,6 +584,49 @@ def _grouped_breakdown(details, group_key, group_names=None):
     return [(n, ok[n], amb[n], fail[n], total[n], margins[n]) for n in names]
 
 
+_DIFF_FIELDS = ["barcode", "date", "country", "title", "track-count"]
+
+
+def _print_field_diff(problem):
+    """Print fields that differ between tied candidates."""
+    scores = problem["scores"]
+    best_sim = scores[0][0]
+    tied_ids = [cid for sim, cid in scores if sim == best_sim]
+    if len(tied_ids) < 2:
+        return
+    candidates = problem.get("candidates", {})
+    releases = [candidates[cid] for cid in tied_ids if cid in candidates]
+    if len(releases) < 2:
+        return
+
+    diffs = []
+    for field in _DIFF_FIELDS:
+        values = set()
+        for r in releases:
+            if field == "track-count":
+                val = sum(m.get("track-count", 0) for m in r.get("media", []))
+            else:
+                val = r.get(field, "")
+            values.add(str(val))
+        if len(values) > 1:
+            diffs.append(field)
+
+    if diffs:
+        print(f"  differs on: {', '.join(diffs)}")
+        for cid in tied_ids:
+            r = candidates.get(cid, {})
+            vals = []
+            for f in diffs:
+                if f == "track-count":
+                    v = sum(m.get("track-count", 0) for m in r.get("media", []))
+                else:
+                    v = r.get(f, "")
+                vals.append(f"{f}={v}")
+            print(f"    {cid[:8]}: {', '.join(vals)}")
+    else:
+        print("  differs on: nothing visible (identical release-level metadata)")
+
+
 def print_report(results, weights_name, verbose=False):
     """Print a formatted evaluation report to stdout.
 
@@ -624,6 +668,9 @@ def print_report(results, weights_name, verbose=False):
                 elif cid == p["scores"][0][1] and p["status"] == "wrong":
                     marker = "✗ "
                 print(f"    {marker}{sim:.4f}  {cid[:8]}")
+            # Show fields that differ between tied candidates
+            if p["status"] == "ambiguous" and "candidates" in p:
+                _print_field_diff(p)
 
     # Per-degradation
     deg_names = [name for name, _ in DEGRADATIONS]
