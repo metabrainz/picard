@@ -79,6 +79,8 @@ def generate_manifest(
     license_url: str = '',
     with_i18n: bool = False,
     report_bugs_to: str = '',
+    source_locale: str = 'en',
+    long_description: str = '',
 ) -> str:
     """Generate a filled-in MANIFEST.toml for a new plugin.
 
@@ -91,6 +93,8 @@ def generate_manifest(
         license_url: License URL
         with_i18n: Whether to include translation fields
         report_bugs_to: Bug tracker URL or mailto: address
+        source_locale: Locale for the source strings
+        long_description: Long description
 
     Returns:
         str: MANIFEST.toml content
@@ -117,14 +121,22 @@ def generate_manifest(
         lines.append(f'report_bugs_to = "{toml_escape(report_bugs_to)}"')
     else:
         lines.append('# report_bugs_to = "https://your.plugin.bugtracker/issues"')
+    if long_description:
+        lines.append(f'long_description = "{toml_escape(long_description)}"')
     if with_i18n:
-        lines.append('source_locale = "en"')
+        source_locale = source_locale.strip() or 'en'
+        other_locale = 'de' if source_locale != 'de' else 'en'  # ensure different from source locale
+        lines.append(f'source_locale = "{source_locale}"')
         lines.append('')
         lines.append('# [name_i18n]')
-        lines.append('# de = ""')
+        lines.append(f'# {other_locale} = ""')
         lines.append('')
         lines.append('# [description_i18n]')
-        lines.append('# de = ""')
+        lines.append(f'# {other_locale} = ""')
+        if long_description:
+            lines.append('')
+            lines.append('# [long_description_i18n]')
+            lines.append(f'# {other_locale} = ""')
     lines.append('')  # trailing newline
     return '\n'.join(lines)
 
