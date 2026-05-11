@@ -1,226 +1,241 @@
 {
+  "release-group": {
+    "disambiguation": "Blue Album",
+    "title": "Weezer",
+    "secondary-types": [],
+    "id": "c7b245c9-8099-32ea-af95-893acedde2cf",
+    "first-release-date": "1994-05-10",
+    "artist-credit": [
+      {
+        "artist": {
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "sort-name": "Weezer",
+          "disambiguation": "American rock band",
+          "country": "US",
+          "name": "Weezer",
+          "type": "Group",
+          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+        },
+        "name": "Weezer",
+        "joinphrase": ""
+      }
+    ],
+    "secondary-type-ids": [],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "primary-type": "Album"
+  },
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
   "country": "DE",
+  "packaging": "Jewel Case",
+  "status": "Official",
+  "title": "Weezer",
+  "release-events": [
+    {
+      "area": {
+        "type-id": null,
+        "sort-name": "Germany",
+        "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "DE"
+        ],
+        "name": "Germany",
+        "type": null
+      },
+      "date": "1994-05-16"
+    }
+  ],
+  "cover-art-archive": {
+    "back": true,
+    "artwork": true,
+    "front": true,
+    "count": 11,
+    "darkened": false
+  },
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "asin": "B000003TAW",
+  "disambiguation": "blue album",
   "media": [
     {
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "track-count": 10,
       "tracks": [
         {
+          "position": 1,
           "length": 204466,
           "number": "1",
-          "position": 1,
+          "recording": {
+            "disambiguation": "",
+            "video": false,
+            "id": "392cea06-94c2-416b-80aa-f5b1e7d0fb1c",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "name": "Weezer",
+                  "type": "Group",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Weezer"
+                },
+                "name": "Weezer",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1994-05-10",
+            "title": "My Name Is Jonas",
+            "length": 204466
+          },
+          "title": "My Name Is Jonas",
+          "id": "9e0b1186-f382-3ff9-931f-a080cf24ccc7",
+          "artist-credit": [
+            {
+              "name": "Weezer",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Weezer",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "type": "Group",
+                "name": "Weezer"
+              }
+            }
+          ]
+        },
+        {
+          "recording": {
+            "disambiguation": "",
+            "video": false,
+            "first-release-date": "1994-05-10",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "type": "Group",
+                  "name": "Weezer",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Weezer"
+                },
+                "name": "Weezer",
+                "joinphrase": ""
+              }
+            ],
+            "id": "271a81af-6c2d-44cf-a0b8-a25ad74c82f9",
+            "title": "No One Else",
+            "length": 184666
+          },
+          "length": 184666,
+          "number": "2",
+          "position": 2,
+          "id": "10c41f28-413e-3d59-894f-64e0ed305ac2",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Weezer",
+              "artist": {
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "name": "Weezer",
+                "type": "Group",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Weezer"
+              }
+            }
+          ],
+          "title": "No One Else"
+        },
+        {
+          "title": "The World Has Turned and Left Me Here",
+          "id": "b3944b6b-7096-3934-b250-76d5cbcca81c",
           "artist-credit": [
             {
               "artist": {
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "sort-name": "Weezer",
                 "name": "Weezer",
+                "type": "Group",
+                "country": "US",
                 "disambiguation": "American rock band",
-                "type": "Group"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Weezer"
               },
               "name": "Weezer",
               "joinphrase": ""
             }
           ],
-          "id": "9e0b1186-f382-3ff9-931f-a080cf24ccc7",
           "recording": {
-            "title": "My Name Is Jonas",
-            "first-release-date": "1994-05-10",
-            "disambiguation": "",
-            "id": "392cea06-94c2-416b-80aa-f5b1e7d0fb1c",
+            "title": "The World Has Turned and Left Me Here",
+            "id": "5d7e41b2-ec4b-44dd-b25a-a576d7a08adb",
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Weezer",
                 "artist": {
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "US",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type": "Group",
                   "sort-name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "name": "Weezer"
-                }
-              }
-            ],
-            "video": false,
-            "length": 204466
-          },
-          "title": "My Name Is Jonas"
-        },
-        {
-          "length": 184666,
-          "number": "2",
-          "position": 2,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "Weezer",
-                "disambiguation": "American rock band",
-                "name": "Weezer",
-                "type": "Group",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US"
-              },
-              "name": "Weezer"
-            }
-          ],
-          "id": "10c41f28-413e-3d59-894f-64e0ed305ac2",
-          "recording": {
-            "video": false,
-            "length": 184666,
-            "artist-credit": [
-              {
-                "name": "Weezer",
-                "artist": {
                   "type": "Group",
-                  "sort-name": "Weezer",
                   "name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "US",
+                  "disambiguation": "American rock band",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
                 },
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Weezer"
               }
             ],
-            "id": "271a81af-6c2d-44cf-a0b8-a25ad74c82f9",
-            "disambiguation": "",
             "first-release-date": "1994-05-10",
-            "title": "No One Else"
+            "video": false,
+            "disambiguation": "",
+            "length": 259266
           },
-          "title": "No One Else"
+          "position": 3,
+          "length": 259266,
+          "number": "3"
         },
         {
-          "position": 3,
-          "number": "3",
-          "length": 259266,
-          "title": "The World Has Turned and Left Me Here",
-          "id": "b3944b6b-7096-3934-b250-76d5cbcca81c",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Weezer",
-              "artist": {
-                "type": "Group",
-                "sort-name": "Weezer",
-                "disambiguation": "American rock band",
-                "name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-              }
-            }
-          ],
+          "position": 4,
+          "length": 159400,
+          "number": "4",
           "recording": {
-            "length": 259266,
+            "disambiguation": "",
             "video": false,
+            "first-release-date": "1994-05-10",
             "artist-credit": [
               {
                 "joinphrase": "",
                 "name": "Weezer",
                 "artist": {
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "country": "US",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Weezer",
+                  "type": "Group",
                   "name": "Weezer",
                   "disambiguation": "American rock band",
-                  "sort-name": "Weezer",
-                  "type": "Group"
+                  "country": "US",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
                 }
-              }
-            ],
-            "id": "5d7e41b2-ec4b-44dd-b25a-a576d7a08adb",
-            "disambiguation": "",
-            "first-release-date": "1994-05-10",
-            "title": "The World Has Turned and Left Me Here"
-          }
-        },
-        {
-          "length": 159400,
-          "number": "4",
-          "position": 4,
-          "recording": {
-            "first-release-date": "1994-05-10",
-            "disambiguation": "",
-            "title": "Buddy Holly",
-            "artist-credit": [
-              {
-                "name": "Weezer",
-                "artist": {
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "US",
-                  "sort-name": "Weezer",
-                  "name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "type": "Group"
-                },
-                "joinphrase": ""
               }
             ],
             "id": "d615590b-1546-441d-9703-b3cf88487cbd",
-            "length": 160000,
-            "video": false
+            "title": "Buddy Holly",
+            "length": 160000
           },
+          "title": "Buddy Holly",
           "id": "78d7855e-5a0f-336b-8101-54fbc6fe0bdd",
           "artist-credit": [
             {
-              "joinphrase": "",
               "artist": {
+                "sort-name": "Weezer",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "name": "Weezer",
                 "type": "Group",
-                "sort-name": "Weezer",
-                "name": "Weezer",
-                "disambiguation": "American rock band"
-              },
-              "name": "Weezer"
-            }
-          ],
-          "title": "Buddy Holly"
-        },
-        {
-          "position": 5,
-          "number": "5",
-          "length": 305400,
-          "title": "Undone \u2014 The Sweater Song",
-          "recording": {
-            "length": 305400,
-            "video": false,
-            "title": "Undone \u2013 The Sweater Song",
-            "first-release-date": "1994-05-10",
-            "disambiguation": "",
-            "id": "48908d8b-3a40-46fa-bfee-3a88012c2689",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "type": "Group",
-                  "name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "sort-name": "Weezer",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-                },
-                "name": "Weezer"
-              }
-            ]
-          },
-          "id": "59df98f1-8e59-38a0-bc09-221ad57636d6",
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Weezer",
-                "name": "Weezer",
                 "disambiguation": "American rock band",
-                "type": "Group",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "US"
               },
               "name": "Weezer",
@@ -230,315 +245,300 @@
         },
         {
           "recording": {
-            "length": 186506,
-            "video": false,
+            "length": 305400,
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Weezer",
                 "artist": {
+                  "sort-name": "Weezer",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "name": "Weezer",
+                  "type": "Group",
+                  "country": "US",
+                  "disambiguation": "American rock band"
+                },
+                "joinphrase": "",
+                "name": "Weezer"
+              }
+            ],
+            "first-release-date": "1994-05-10",
+            "id": "48908d8b-3a40-46fa-bfee-3a88012c2689",
+            "title": "Undone \u2013 The Sweater Song",
+            "disambiguation": "",
+            "video": false
+          },
+          "number": "5",
+          "length": 305400,
+          "position": 5,
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Weezer",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Weezer",
+                "country": "US",
+                "disambiguation": "American rock band",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+              },
+              "joinphrase": "",
+              "name": "Weezer"
+            }
+          ],
+          "id": "59df98f1-8e59-38a0-bc09-221ad57636d6",
+          "title": "Undone \u2014 The Sweater Song"
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Weezer",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Weezer",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Weezer",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+              }
+            }
+          ],
+          "id": "26d89e96-639a-3145-9ef3-e231c069fac6",
+          "title": "Surf Wax America",
+          "recording": {
+            "length": 186506,
+            "video": false,
+            "disambiguation": "",
+            "title": "Surf Wax America",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Weezer",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "disambiguation": "American rock band",
+                  "country": "US",
+                  "type": "Group",
+                  "name": "Weezer"
+                },
+                "joinphrase": "",
+                "name": "Weezer"
+              }
+            ],
+            "first-release-date": "1994-05-10",
+            "id": "d8f04ba0-8f7e-4016-b818-5f07514d11e8"
+          },
+          "number": "6",
+          "length": 186506,
+          "position": 6
+        },
+        {
+          "length": 258800,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "length": 258800,
+            "title": "Say It Ain\u2019t So",
+            "id": "e7ada1d0-0604-4ff2-9361-939ebf5b53af",
+            "artist-credit": [
+              {
+                "name": "Weezer",
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
                   "name": "Weezer",
                   "disambiguation": "American rock band",
-                  "sort-name": "Weezer",
-                  "type": "Group",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                   "country": "US",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "sort-name": "Weezer",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 }
               }
             ],
-            "id": "d8f04ba0-8f7e-4016-b818-5f07514d11e8",
-            "disambiguation": "",
             "first-release-date": "1994-05-10",
-            "title": "Surf Wax America"
-          },
-          "id": "26d89e96-639a-3145-9ef3-e231c069fac6",
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "sort-name": "Weezer",
-                "disambiguation": "American rock band",
-                "name": "Weezer",
-                "type": "Group"
-              },
-              "name": "Weezer",
-              "joinphrase": ""
-            }
-          ],
-          "title": "Surf Wax America",
-          "length": 186506,
-          "number": "6",
-          "position": 6
-        },
-        {
-          "number": "7",
-          "length": 258800,
-          "position": 7,
-          "recording": {
-            "length": 258800,
             "video": false,
-            "artist-credit": [
-              {
-                "name": "Weezer",
-                "artist": {
-                  "type": "Group",
-                  "disambiguation": "American rock band",
-                  "name": "Weezer",
-                  "sort-name": "Weezer",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "id": "e7ada1d0-0604-4ff2-9361-939ebf5b53af",
-            "title": "Say It Ain\u2019t So",
-            "disambiguation": "album version",
-            "first-release-date": "1994-05-10"
+            "disambiguation": "album version"
           },
           "id": "08907b66-cd89-334d-b952-7c334721ca56",
           "artist-credit": [
             {
               "joinphrase": "",
+              "name": "Weezer",
               "artist": {
                 "type": "Group",
-                "disambiguation": "American rock band",
                 "name": "Weezer",
-                "sort-name": "Weezer",
+                "disambiguation": "American rock band",
                 "country": "US",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-              },
-              "name": "Weezer"
+                "sort-name": "Weezer"
+              }
             }
           ],
           "title": "Say It Ain\u2019t So"
         },
         {
-          "title": "In the Garage",
+          "length": 235760,
+          "number": "8",
+          "position": 8,
           "recording": {
-            "video": false,
-            "length": 235760,
-            "disambiguation": "",
-            "first-release-date": "1994-05-10",
             "title": "In the Garage",
+            "id": "3761f313-1239-46e9-b720-9d24b06da5ab",
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Weezer",
                 "artist": {
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "name": "Weezer",
-                  "disambiguation": "American rock band",
                   "sort-name": "Weezer",
-                  "type": "Group"
-                }
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Weezer",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+                },
+                "joinphrase": "",
+                "name": "Weezer"
               }
             ],
-            "id": "3761f313-1239-46e9-b720-9d24b06da5ab"
+            "first-release-date": "1994-05-10",
+            "video": false,
+            "disambiguation": "",
+            "length": 235760
           },
           "id": "3d9bd318-85b5-3218-9e6e-e638e886907f",
           "artist-credit": [
             {
               "name": "Weezer",
+              "joinphrase": "",
               "artist": {
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                 "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Weezer",
                 "disambiguation": "American rock band",
-                "sort-name": "Weezer",
-                "type": "Group"
-              },
-              "joinphrase": ""
+                "type": "Group",
+                "name": "Weezer",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Weezer"
+              }
             }
           ],
-          "position": 8,
-          "number": "8",
-          "length": 235760
+          "title": "In the Garage"
         },
         {
-          "length": 204866,
-          "number": "9",
-          "position": 9,
           "id": "d95d81fc-4ae8-3d9c-b236-5c49bba61526",
           "artist-credit": [
             {
+              "joinphrase": "",
               "name": "Weezer",
               "artist": {
-                "name": "Weezer",
-                "disambiguation": "American rock band",
                 "sort-name": "Weezer",
-                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "name": "Weezer",
+                "type": "Group",
                 "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              },
-              "joinphrase": ""
+                "disambiguation": "American rock band"
+              }
             }
           ],
+          "title": "Holiday",
           "recording": {
-            "id": "e5b7a191-79d2-41ca-aa96-2d041c741aac",
-            "artist-credit": [
-              {
-                "name": "Weezer",
-                "artist": {
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type": "Group",
-                  "name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "sort-name": "Weezer"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "title": "Holiday",
-            "disambiguation": "",
-            "first-release-date": "1994-05-10",
-            "length": 204866,
-            "video": false
-          },
-          "title": "Holiday"
-        },
-        {
-          "number": "10",
-          "length": 478440,
-          "position": 10,
-          "recording": {
-            "video": false,
-            "length": 479000,
-            "id": "e1b7cd2e-bdf9-45d5-b52e-cc8a94d5d1da",
             "artist-credit": [
               {
                 "joinphrase": "",
                 "name": "Weezer",
                 "artist": {
-                  "country": "US",
+                  "sort-name": "Weezer",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type": "Group",
-                  "name": "Weezer",
+                  "country": "US",
                   "disambiguation": "American rock band",
-                  "sort-name": "Weezer"
+                  "type": "Group",
+                  "name": "Weezer"
                 }
               }
             ],
             "first-release-date": "1994-05-10",
+            "id": "e5b7a191-79d2-41ca-aa96-2d041c741aac",
+            "title": "Holiday",
             "disambiguation": "",
-            "title": "Only in Dreams"
+            "video": false,
+            "length": 204866
           },
+          "length": 204866,
+          "number": "9",
+          "position": 9
+        },
+        {
+          "position": 10,
+          "number": "10",
+          "length": 478440,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Weezer",
+                  "country": "US",
+                  "disambiguation": "American rock band",
+                  "type": "Group",
+                  "name": "Weezer",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+                },
+                "joinphrase": "",
+                "name": "Weezer"
+              }
+            ],
+            "first-release-date": "1994-05-10",
+            "id": "e1b7cd2e-bdf9-45d5-b52e-cc8a94d5d1da",
+            "title": "Only in Dreams",
+            "disambiguation": "",
+            "video": false,
+            "length": 479000
+          },
+          "title": "Only in Dreams",
           "artist-credit": [
             {
-              "joinphrase": "",
               "artist": {
-                "type": "Group",
-                "disambiguation": "American rock band",
-                "name": "Weezer",
-                "sort-name": "Weezer",
-                "country": "US",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Weezer",
+                "disambiguation": "American rock band",
+                "country": "US",
+                "type": "Group",
+                "name": "Weezer",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
               },
+              "joinphrase": "",
               "name": "Weezer"
             }
           ],
-          "id": "bacded83-7227-35bc-bf05-38f561958123",
-          "title": "Only in Dreams"
+          "id": "bacded83-7227-35bc-bf05-38f561958123"
         }
       ],
-      "title": "",
       "id": "8ba83815-4e62-315d-8929-0f3ef246ffab",
-      "track-count": 10,
       "track-offset": 0,
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "format": "CD",
-      "position": 1
+      "title": "",
+      "position": 1,
+      "format": "CD"
     }
   ],
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
-  },
-  "release-events": [
-    {
-      "area": {
-        "type-id": null,
-        "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
-        "iso-3166-1-codes": [
-          "DE"
-        ],
-        "type": null,
-        "disambiguation": "",
-        "name": "Germany",
-        "sort-name": "Germany"
-      },
-      "date": "1994-05-16"
-    }
-  ],
-  "packaging": "Jewel Case",
-  "date": "1994-05-16",
-  "asin": "B000003TAW",
+  "quality": "normal",
   "artist-credit": [
     {
       "joinphrase": "",
       "name": "Weezer",
       "artist": {
-        "sort-name": "Weezer",
-        "disambiguation": "American rock band",
         "name": "Weezer",
         "type": "Group",
+        "country": "US",
+        "disambiguation": "American rock band",
         "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-        "country": "US"
+        "sort-name": "Weezer",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
       }
     }
   ],
-  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
-  "title": "Weezer",
-  "disambiguation": "blue album",
-  "barcode": "720642462928",
-  "cover-art-archive": {
-    "count": 11,
-    "darkened": false,
-    "artwork": true,
-    "back": true,
-    "front": true
-  },
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-  "quality": "normal",
   "id": "b072b162-a733-3137-a4a0-4375172d98c9",
-  "release-group": {
-    "primary-type": "Album",
-    "secondary-types": [],
-    "id": "c7b245c9-8099-32ea-af95-893acedde2cf",
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "artist-credit": [
-      {
-        "artist": {
-          "type": "Group",
-          "sort-name": "Weezer",
-          "name": "Weezer",
-          "disambiguation": "American rock band",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-          "country": "US",
-          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-        },
-        "name": "Weezer",
-        "joinphrase": ""
-      }
-    ],
-    "secondary-type-ids": [],
-    "title": "Weezer",
-    "disambiguation": "Blue Album",
-    "first-release-date": "1994-05-10"
-  },
-  "status": "Official"
+  "barcode": "720642462928",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "date": "1994-05-16"
 }

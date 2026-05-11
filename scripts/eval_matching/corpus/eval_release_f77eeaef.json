@@ -1,285 +1,285 @@
 {
-  "disambiguation": "",
-  "status": "Official",
   "asin": null,
+  "release-group": {
+    "artist-credit": [
+      {
+        "name": "Godspeed You Black Emperor!",
+        "artist": {
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Godspeed You! Black Emperor",
+          "type": "Group",
+          "country": "CA",
+          "sort-name": "Godspeed You! Black Emperor",
+          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+          "disambiguation": ""
+        },
+        "joinphrase": ""
+      }
+    ],
+    "secondary-types": [],
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "first-release-date": "2000-10-09",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "",
+    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
+    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!"
+  },
+  "status": "Official",
+  "artist-credit": [
+    {
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "Godspeed You! Black Emperor",
+        "type": "Group",
+        "country": "CA",
+        "sort-name": "Godspeed You! Black Emperor",
+        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+        "disambiguation": ""
+      },
+      "joinphrase": "",
+      "name": "Godspeed You! Black Emperor"
+    }
+  ],
+  "id": "f77eeaef-878e-4db3-ae65-5161cf929f14",
+  "disambiguation": "",
   "release-events": [
     {
+      "date": "2017-09-18",
       "area": {
-        "type": null,
-        "type-id": null,
         "name": "[Worldwide]",
+        "type-id": null,
+        "sort-name": "[Worldwide]",
         "iso-3166-1-codes": [
           "XW"
         ],
+        "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
         "disambiguation": "",
-        "sort-name": "[Worldwide]",
-        "id": "525d4e18-3d00-31b9-a58b-a146a916de8f"
-      },
-      "date": "2017-09-18"
+        "type": null
+      }
     }
   ],
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "title": "Lift Your Skinny Fists Like Antennas to Heaven",
   "media": [
     {
-      "format": "Digital Media",
       "id": "9b7181b5-8287-3b0f-93eb-cbffd746946f",
+      "title": "",
       "position": 1,
-      "title": "",
-      "track-count": 2,
-      "track-offset": 0,
-      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
       "tracks": [
         {
-          "position": 1,
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "name": "Godspeed You! Black Emperor",
-                  "type": "Group",
-                  "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-                  "country": "CA",
-                  "sort-name": "Godspeed You! Black Emperor",
-                  "disambiguation": ""
-                },
-                "name": "Godspeed You Black Emperor!"
-              }
-            ],
-            "length": 1352413,
-            "first-release-date": "2000-10-09",
-            "video": false,
-            "id": "519e6d2f-c762-48b1-8798-8f0299e11cc7",
-            "disambiguation": "",
-            "title": "Storm"
-          },
-          "id": "c86854a9-e109-4e51-b862-255c617ae328",
           "artist-credit": [
             {
               "artist": {
-                "sort-name": "Godspeed You! Black Emperor",
-                "disambiguation": "",
-                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-                "country": "CA",
-                "type": "Group",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Godspeed You! Black Emperor"
-              },
-              "name": "Godspeed You Black Emperor!",
-              "joinphrase": ""
-            }
-          ],
-          "length": 1352413,
-          "number": "1",
-          "title": "Storm"
-        },
-        {
-          "position": 2,
-          "id": "581e6ddc-4ab6-4c25-9335-50df92c7cd89",
-          "recording": {
-            "id": "30d53b2b-dbd5-4975-bbdf-48986b4bd089",
-            "disambiguation": "",
-            "title": "Static",
-            "first-release-date": "2000-10-09",
-            "length": 1355946,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Godspeed You Black Emperor!",
-                "artist": {
-                  "country": "CA",
-                  "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-                  "sort-name": "Godspeed You! Black Emperor",
-                  "disambiguation": "",
-                  "name": "Godspeed You! Black Emperor",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group"
-                }
-              }
-            ],
-            "video": false
-          },
-          "length": 1355946,
-          "artist-credit": [
-            {
-              "name": "Godspeed You Black Emperor!",
-              "artist": {
-                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-                "country": "CA",
-                "disambiguation": "",
-                "sort-name": "Godspeed You! Black Emperor",
                 "name": "Godspeed You! Black Emperor",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "type": "Group"
+                "sort-name": "Godspeed You! Black Emperor",
+                "disambiguation": "",
+                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+                "type": "Group",
+                "country": "CA"
               },
-              "joinphrase": ""
-            }
-          ],
-          "number": "2",
-          "title": "Static"
-        }
-      ]
-    },
-    {
-      "format": "Digital Media",
-      "id": "a36b332a-5c4a-3701-8030-0f8c1105312e",
-      "position": 2,
-      "track-offset": 0,
-      "track-count": 2,
-      "title": "",
-      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
-      "tracks": [
-        {
-          "length": 1397000,
-          "artist-credit": [
-            {
               "joinphrase": "",
-              "name": "Godspeed You Black Emperor!",
-              "artist": {
-                "sort-name": "Godspeed You! Black Emperor",
-                "disambiguation": "",
-                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-                "country": "CA",
-                "type": "Group",
-                "name": "Godspeed You! Black Emperor",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              }
+              "name": "Godspeed You Black Emperor!"
             }
           ],
           "number": "1",
-          "title": "Sleep",
+          "length": 1352413,
+          "title": "Storm",
           "position": 1,
-          "id": "95b751c9-e04f-496b-8b22-68b795a2872d",
           "recording": {
-            "title": "Sleep",
-            "disambiguation": "",
-            "id": "b8f1c93d-4273-4428-96cb-c38c6fb0d867",
-            "video": false,
-            "length": 1397746,
             "artist-credit": [
               {
                 "name": "Godspeed You Black Emperor!",
                 "artist": {
                   "sort-name": "Godspeed You! Black Emperor",
                   "disambiguation": "",
-                  "country": "CA",
                   "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
                   "type": "Group",
+                  "country": "CA",
                   "name": "Godspeed You! Black Emperor",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
                 "joinphrase": ""
               }
             ],
-            "first-release-date": "2000-10-09"
-          }
+            "video": false,
+            "first-release-date": "2000-10-09",
+            "length": 1352413,
+            "title": "Storm",
+            "disambiguation": "",
+            "id": "519e6d2f-c762-48b1-8798-8f0299e11cc7"
+          },
+          "id": "c86854a9-e109-4e51-b862-255c617ae328"
         },
         {
+          "number": "2",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "CA",
+                "type": "Group",
+                "disambiguation": "",
+                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+                "sort-name": "Godspeed You! Black Emperor",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Godspeed You! Black Emperor"
+              },
+              "name": "Godspeed You Black Emperor!"
+            }
+          ],
+          "title": "Static",
           "position": 2,
           "recording": {
-            "id": "5fb00c2b-5bc9-420a-882a-cc024d137a08",
+            "id": "30d53b2b-dbd5-4975-bbdf-48986b4bd089",
             "disambiguation": "",
-            "title": "Antennas to Heaven",
-            "length": 1137586,
+            "title": "Static",
+            "first-release-date": "2000-10-09",
+            "video": false,
+            "length": 1355946,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
+                  "country": "CA",
+                  "sort-name": "Godspeed You! Black Emperor",
+                  "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+                  "disambiguation": "",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Godspeed You! Black Emperor"
+                },
+                "name": "Godspeed You Black Emperor!"
+              }
+            ]
+          },
+          "id": "581e6ddc-4ab6-4c25-9335-50df92c7cd89",
+          "length": 1355946
+        }
+      ],
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
+      "track-count": 2,
+      "track-offset": 0,
+      "format": "Digital Media"
+    },
+    {
+      "id": "a36b332a-5c4a-3701-8030-0f8c1105312e",
+      "position": 2,
+      "title": "",
+      "tracks": [
+        {
+          "title": "Sleep",
+          "recording": {
             "artist-credit": [
               {
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "name": "Godspeed You! Black Emperor",
-                  "type": "Group",
                   "country": "CA",
+                  "type": "Group",
                   "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
                   "disambiguation": "",
-                  "sort-name": "Godspeed You! Black Emperor"
+                  "sort-name": "Godspeed You! Black Emperor",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Godspeed You! Black Emperor"
                 },
-                "name": "Godspeed You Black Emperor!",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Godspeed You Black Emperor!"
               }
             ],
             "first-release-date": "2000-10-09",
-            "video": false
+            "video": false,
+            "length": 1397746,
+            "title": "Sleep",
+            "disambiguation": "",
+            "id": "b8f1c93d-4273-4428-96cb-c38c6fb0d867"
           },
-          "id": "13424d71-e7d2-45d5-8c0e-fa636599696e",
-          "length": 1137000,
+          "position": 1,
+          "id": "95b751c9-e04f-496b-8b22-68b795a2872d",
+          "length": 1397000,
+          "number": "1",
           "artist-credit": [
             {
-              "name": "Godspeed You Black Emperor!",
+              "joinphrase": "",
               "artist": {
+                "sort-name": "Godspeed You! Black Emperor",
+                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+                "disambiguation": "",
+                "type": "Group",
+                "country": "CA",
+                "name": "Godspeed You! Black Emperor",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Godspeed You Black Emperor!"
+            }
+          ]
+        },
+        {
+          "id": "13424d71-e7d2-45d5-8c0e-fa636599696e",
+          "position": 2,
+          "title": "Like Antennas to Heaven\u2026",
+          "recording": {
+            "length": 1137586,
+            "first-release-date": "2000-10-09",
+            "video": false,
+            "title": "Antennas to Heaven",
+            "disambiguation": "",
+            "id": "5fb00c2b-5bc9-420a-882a-cc024d137a08",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
+                  "disambiguation": "",
+                  "sort-name": "Godspeed You! Black Emperor",
+                  "country": "CA",
+                  "type": "Group",
+                  "name": "Godspeed You! Black Emperor",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Godspeed You Black Emperor!"
+              }
+            ]
+          },
+          "length": 1137000,
+          "number": "2",
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
                 "disambiguation": "",
                 "sort-name": "Godspeed You! Black Emperor",
                 "country": "CA",
-                "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
                 "type": "Group",
                 "name": "Godspeed You! Black Emperor",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Godspeed You Black Emperor!"
             }
-          ],
-          "number": "2",
-          "title": "Like Antennas to Heaven\u2026"
+          ]
         }
-      ]
+      ],
+      "format-id": "907a28d9-b3b2-3ef6-89a8-7b18d91d4794",
+      "track-count": 2,
+      "track-offset": 0,
+      "format": "Digital Media"
     }
   ],
+  "date": "2017-09-18",
+  "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+  "cover-art-archive": {
+    "darkened": false,
+    "back": false,
+    "front": true,
+    "count": 1,
+    "artwork": true
+  },
   "country": "XW",
-  "packaging": "None",
-  "barcode": "887396825833",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "quality": "normal",
-  "id": "f77eeaef-878e-4db3-ae65-5161cf929f14",
+  "barcode": "887396825833",
   "text-representation": {
     "language": "eng",
     "script": "Latn"
   },
-  "release-group": {
-    "id": "3822abb6-ca53-3ae1-a4ec-7718cb321e9b",
-    "secondary-type-ids": [],
-    "disambiguation": "",
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "first-release-date": "2000-10-09",
-    "artist-credit": [
-      {
-        "joinphrase": "",
-        "artist": {
-          "sort-name": "Godspeed You! Black Emperor",
-          "disambiguation": "",
-          "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-          "country": "CA",
-          "type": "Group",
-          "name": "Godspeed You! Black Emperor",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-        },
-        "name": "Godspeed You Black Emperor!"
-      }
-    ],
-    "primary-type": "Album",
-    "secondary-types": [],
-    "title": "Lift Yr. Skinny Fists Like Antennas to Heaven!"
-  },
-  "cover-art-archive": {
-    "back": false,
-    "darkened": false,
-    "front": true,
-    "artwork": true,
-    "count": 1
-  },
-  "title": "Lift Your Skinny Fists Like Antennas to Heaven",
-  "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
-  "artist-credit": [
-    {
-      "artist": {
-        "country": "CA",
-        "id": "3648db01-b29d-4ab9-835c-83f6a5068fe4",
-        "sort-name": "Godspeed You! Black Emperor",
-        "disambiguation": "",
-        "name": "Godspeed You! Black Emperor",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-        "type": "Group"
-      },
-      "name": "Godspeed You! Black Emperor",
-      "joinphrase": ""
-    }
-  ],
-  "date": "2017-09-18"
+  "packaging": "None"
 }

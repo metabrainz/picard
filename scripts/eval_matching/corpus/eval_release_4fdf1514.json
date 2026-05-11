@@ -1,692 +1,692 @@
 {
-  "packaging": null,
-  "title": "\u4e09\u6bd2\u53f2",
-  "asin": "B07QF91KKC",
-  "artist-credit": [
-    {
-      "artist": {
-        "country": "JP",
-        "name": "\u690e\u540d\u6797\u6a8e",
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-        "disambiguation": "",
-        "sort-name": "Sheena, Ringo",
-        "type": "Person"
-      },
-      "joinphrase": "",
-      "name": "\u690e\u540d\u6797\u6a8e"
-    }
-  ],
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "country": "JP",
-  "date": "2019-05-27",
-  "id": "4fdf1514-5876-4e62-bf1e-afd7cc873392",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "cover-art-archive": {
+    "artwork": false,
+    "count": 0,
+    "front": false,
+    "back": false,
+    "darkened": false
+  },
+  "packaging-id": null,
+  "quality": "normal",
+  "barcode": "4988031329207",
+  "packaging": null,
+  "text-representation": {
+    "language": "jpn",
+    "script": "Jpan"
+  },
   "release-group": {
-    "secondary-types": [],
     "artist-credit": [
       {
-        "joinphrase": "",
         "name": "\u690e\u540d\u6797\u6a8e",
+        "joinphrase": "",
         "artist": {
-          "sort-name": "Sheena, Ringo",
-          "type": "Person",
-          "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-          "disambiguation": "",
           "country": "JP",
-          "name": "\u690e\u540d\u6797\u6a8e",
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          "type": "Person",
+          "disambiguation": "",
+          "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+          "sort-name": "Sheena, Ringo",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "name": "\u690e\u540d\u6797\u6a8e"
         }
       }
     ],
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "secondary-type-ids": [],
-    "title": "\u4e09\u6bd2\u53f2",
-    "first-release-date": "2019-05-27",
-    "id": "397121b6-85c7-4b9a-970c-be7fdc40eb58",
     "primary-type": "Album",
-    "disambiguation": ""
+    "secondary-type-ids": [],
+    "secondary-types": [],
+    "first-release-date": "2019-05-27",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "id": "397121b6-85c7-4b9a-970c-be7fdc40eb58",
+    "disambiguation": "",
+    "title": "\u4e09\u6bd2\u53f2"
   },
+  "asin": "B07QF91KKC",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "type": "Person",
+        "country": "JP",
+        "sort-name": "Sheena, Ringo",
+        "disambiguation": "",
+        "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "name": "\u690e\u540d\u6797\u6a8e"
+      },
+      "name": "\u690e\u540d\u6797\u6a8e"
+    }
+  ],
   "status": "Official",
   "media": [
     {
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "id": "361ab452-f9da-34f8-89c0-8b2197e145d2",
-      "title": "",
-      "track-count": 13,
-      "track-offset": 0,
       "format": "CD",
-      "position": 1,
+      "track-count": 13,
       "tracks": [
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type": "Person",
+                "country": "JP",
+                "sort-name": "Sheena, Ringo",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": ""
+              },
+              "joinphrase": "",
+              "name": "\u690e\u540d\u6797\u6a8e"
+            }
+          ],
+          "number": "1",
+          "length": 182666,
+          "id": "00d5455f-5b4f-4ce2-a16d-9d82625006bd",
           "recording": {
-            "title": "\u9d8f\u3068\u86c7\u3068\u8c5a",
+            "artist-credit": [
+              {
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "country": "JP",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "sort-name": "Sheena, Ringo"
+                },
+                "joinphrase": ""
+              }
+            ],
             "first-release-date": "2019-05-27",
+            "video": false,
             "length": 182666,
-            "id": "e3363ad3-0cf1-419e-86fa-82aa7809b120",
+            "title": "\u9d8f\u3068\u86c7\u3068\u8c5a",
             "disambiguation": "",
+            "id": "e3363ad3-0cf1-419e-86fa-82aa7809b120"
+          },
+          "title": "\u9d8f\u3068\u86c7\u3068\u8c5a",
+          "position": 1
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "artist": {
+                "sort-name": "Sheena, Ringo",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": "",
+                "type": "Person",
+                "country": "JP",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "2",
+          "length": 220346,
+          "title": "\u7363\u3086\u304f\u7d30\u9053",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "joinphrase": "\u3068",
+                "artist": {
+                  "country": "JP",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "sort-name": "Sheena, Ringo",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "\u690e\u540d\u6797\u6a8e"
+                }
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "\u30a8\u30ec\u30d5\u30a1\u30f3\u30c8\u30ab\u30b7\u30de\u30b7",
+                  "id": "15f27586-9157-4f6e-b469-557a414308b7",
+                  "sort-name": "Miyamoto, Hiroji",
+                  "country": "JP",
+                  "type": "Person",
+                  "name": "\u5bae\u672c\u6d69\u6b21",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "\u5bae\u672c\u6d69\u6b21"
+              }
+            ],
+            "length": 220346,
+            "first-release-date": "2018-10-02",
+            "video": false,
+            "id": "419294a2-e332-4472-8d4b-7434046160fd",
+            "disambiguation": "",
+            "title": "\u7363\u3086\u304f\u7d30\u9053"
+          },
+          "id": "8d59dc1d-ff8d-4eeb-a0b2-258df7ef03ba"
+        },
+        {
+          "id": "b3f05dcf-fc7b-483d-a7a5-ca37bd908919",
+          "title": "\u30de\u30fb\u30b7\u30a7\u30ea",
+          "recording": {
+            "id": "07eca33e-af49-4ce8-9b65-f62431bc8f25",
+            "disambiguation": "",
+            "title": "\u30de\u30fb\u30b7\u30a7\u30ea",
+            "length": 218346,
+            "video": false,
+            "first-release-date": "2019-05-27",
             "artist-credit": [
               {
                 "artist": {
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
                   "name": "\u690e\u540d\u6797\u6a8e",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Sheena, Ringo",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "disambiguation": "",
+                  "type": "Person",
                   "country": "JP"
                 },
                 "joinphrase": "",
                 "name": "\u690e\u540d\u6797\u6a8e"
               }
-            ],
-            "video": false
+            ]
           },
-          "length": 182666,
-          "id": "00d5455f-5b4f-4ce2-a16d-9d82625006bd",
-          "title": "\u9d8f\u3068\u86c7\u3068\u8c5a",
-          "position": 1,
-          "number": "1",
+          "position": 3,
+          "length": 218346,
+          "number": "3",
           "artist-credit": [
             {
               "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e",
               "artist": {
-                "type": "Person",
                 "sort-name": "Sheena, Ringo",
                 "disambiguation": "",
                 "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "type": "Person",
+                "country": "JP",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "\u690e\u540d\u6797\u6a8e"
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "joinphrase": "",
+              "artist": {
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "\u690e\u540d\u6797\u6a8e",
-                "country": "JP"
+                "country": "JP",
+                "type": "Person",
+                "disambiguation": "",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "sort-name": "Sheena, Ringo"
+              }
+            }
+          ],
+          "number": "4",
+          "length": 185093,
+          "id": "b8164ce8-c85b-4ce5-bc2c-376b301cc4b3",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "sort-name": "Sheena, Ringo",
+                  "country": "JP",
+                  "type": "Person"
+                },
+                "joinphrase": "",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              }
+            ],
+            "title": "\u99c6\u3051\u843d\u3061\u8005",
+            "disambiguation": "",
+            "id": "5e3a930e-965d-438e-b4f9-9da40f623bb4",
+            "length": 185093,
+            "first-release-date": "2019-05-27",
+            "video": false
+          },
+          "position": 4,
+          "title": "\u99c6\u3051\u843d\u3061\u8005"
+        },
+        {
+          "length": 140680,
+          "title": "\u3069\u3093\u5e95\u307e\u3067",
+          "position": 5,
+          "recording": {
+            "first-release-date": "2019-05-27",
+            "video": false,
+            "length": 140680,
+            "title": "\u3069\u3093\u5e95\u307e\u3067",
+            "id": "5aab17cd-af63-481c-ab05-33a7a393b624",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "artist": {
+                  "sort-name": "Sheena, Ringo",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "disambiguation": "",
+                  "type": "Person",
+                  "country": "JP",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": ""
+              }
+            ]
+          },
+          "id": "b06b4973-4f5f-41fc-9c89-b352a8260f01",
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type": "Person",
+                "country": "JP",
+                "sort-name": "Sheena, Ringo",
+                "disambiguation": "",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "5"
+        },
+        {
+          "id": "42b9669e-ee9f-4b8e-aece-e77104f3d6ac",
+          "title": "\u795e\u69d8\u3001\u4ecf\u69d8",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Sheena, Ringo",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "type": "Person",
+                  "country": "JP"
+                },
+                "name": "\u690e\u540d\u6797\u6a8e"
+              }
+            ],
+            "first-release-date": "2019-05-27",
+            "video": false,
+            "length": 217960,
+            "title": "\u795e\u69d8\u3001\u4ecf\u69d8",
+            "id": "63eba6a3-82b1-4952-9602-8a3accbb566b",
+            "disambiguation": ""
+          },
+          "length": 217960,
+          "number": "6",
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "sort-name": "Sheena, Ringo",
+                "country": "JP",
+                "type": "Person",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               }
             }
           ]
         },
         {
-          "id": "8d59dc1d-ff8d-4eeb-a0b2-258df7ef03ba",
-          "length": 220346,
-          "recording": {
-            "id": "419294a2-e332-4472-8d4b-7434046160fd",
-            "length": 220346,
-            "disambiguation": "",
-            "title": "\u7363\u3086\u304f\u7d30\u9053",
-            "first-release-date": "2018-10-02",
-            "artist-credit": [
-              {
-                "artist": {
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "country": "JP",
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
-                },
-                "joinphrase": "\u3068",
-                "name": "\u690e\u540d\u6797\u6a8e"
-              },
-              {
-                "artist": {
-                  "country": "JP",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u5bae\u672c\u6d69\u6b21",
-                  "sort-name": "Miyamoto, Hiroji",
-                  "type": "Person",
-                  "id": "15f27586-9157-4f6e-b469-557a414308b7",
-                  "disambiguation": "\u30a8\u30ec\u30d5\u30a1\u30f3\u30c8\u30ab\u30b7\u30de\u30b7"
-                },
-                "name": "\u5bae\u672c\u6d69\u6b21",
-                "joinphrase": ""
-              }
-            ],
-            "video": false
-          },
-          "title": "\u7363\u3086\u304f\u7d30\u9053",
           "artist-credit": [
             {
               "name": "\u690e\u540d\u6797\u6a8e",
-              "joinphrase": "",
               "artist": {
+                "type": "Person",
                 "country": "JP",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
+                "sort-name": "Sheena, Ringo",
                 "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
                 "disambiguation": "",
-                "sort-name": "Sheena, Ringo",
-                "type": "Person"
-              }
-            }
-          ],
-          "number": "2",
-          "position": 2
-        },
-        {
-          "length": 218346,
-          "id": "b3f05dcf-fc7b-483d-a7a5-ca37bd908919",
-          "recording": {
-            "video": false,
-            "artist-credit": [
-              {
-                "artist": {
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "country": "JP",
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
-                },
-                "joinphrase": "",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "\u690e\u540d\u6797\u6a8e"
-              }
-            ],
-            "first-release-date": "2019-05-27",
-            "title": "\u30de\u30fb\u30b7\u30a7\u30ea",
-            "disambiguation": "",
-            "id": "07eca33e-af49-4ce8-9b65-f62431bc8f25",
-            "length": 218346
-          },
-          "title": "\u30de\u30fb\u30b7\u30a7\u30ea",
-          "number": "3",
-          "artist-credit": [
-            {
-              "artist": {
-                "country": "JP",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "disambiguation": "",
-                "sort-name": "Sheena, Ringo",
-                "type": "Person"
               },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
-            }
-          ],
-          "position": 3
-        },
-        {
-          "title": "\u99c6\u3051\u843d\u3061\u8005",
-          "id": "b8164ce8-c85b-4ce5-bc2c-376b301cc4b3",
-          "length": 185093,
-          "recording": {
-            "video": false,
-            "artist-credit": [
-              {
-                "artist": {
-                  "country": "JP",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "sort-name": "Sheena, Ringo",
-                  "type": "Person",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "disambiguation": ""
-                },
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e"
-              }
-            ],
-            "disambiguation": "",
-            "id": "5e3a930e-965d-438e-b4f9-9da40f623bb4",
-            "length": 185093,
-            "title": "\u99c6\u3051\u843d\u3061\u8005",
-            "first-release-date": "2019-05-27"
-          },
-          "artist-credit": [
-            {
-              "name": "\u690e\u540d\u6797\u6a8e",
-              "joinphrase": "",
-              "artist": {
-                "type": "Person",
-                "sort-name": "Sheena, Ringo",
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "country": "JP"
-              }
-            }
-          ],
-          "number": "4",
-          "position": 4
-        },
-        {
-          "id": "b06b4973-4f5f-41fc-9c89-b352a8260f01",
-          "length": 140680,
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "artist": {
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "country": "JP"
-                }
-              }
-            ],
-            "video": false,
-            "first-release-date": "2019-05-27",
-            "title": "\u3069\u3093\u5e95\u307e\u3067",
-            "length": 140680,
-            "id": "5aab17cd-af63-481c-ab05-33a7a393b624",
-            "disambiguation": ""
-          },
-          "title": "\u3069\u3093\u5e95\u307e\u3067",
-          "number": "5",
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "type": "Person",
-                "sort-name": "Sheena, Ringo",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "country": "JP"
-              },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
-            }
-          ],
-          "position": 5
-        },
-        {
-          "title": "\u795e\u69d8\u3001\u4ecf\u69d8",
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "artist": {
-                  "sort-name": "Sheena, Ringo",
-                  "type": "Person",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "disambiguation": "",
-                  "country": "JP",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e"
-                }
-              }
-            ],
-            "video": false,
-            "length": 217960,
-            "id": "63eba6a3-82b1-4952-9602-8a3accbb566b",
-            "disambiguation": "",
-            "first-release-date": "2019-05-27",
-            "title": "\u795e\u69d8\u3001\u4ecf\u69d8"
-          },
-          "id": "42b9669e-ee9f-4b8e-aece-e77104f3d6ac",
-          "length": 217960,
-          "position": 6,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e",
-              "artist": {
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "JP",
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "type": "Person",
-                "sort-name": "Sheena, Ringo"
-              }
-            }
-          ],
-          "number": "6"
-        },
-        {
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "JP",
-                "type": "Person",
-                "sort-name": "Sheena, Ringo",
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
-              },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
+              "joinphrase": ""
             }
           ],
           "number": "7",
-          "position": 7,
-          "title": "TOKYO",
-          "id": "9b5babc5-d8d5-49ac-9a86-806fb6a78a60",
           "length": 223600,
           "recording": {
             "disambiguation": "",
             "id": "1fd4f588-1f24-4634-bb69-4b095e705c67",
-            "length": 223600,
             "title": "Tokyo",
-            "first-release-date": "2019-05-27",
             "video": false,
+            "first-release-date": "2019-05-27",
+            "length": 223600,
             "artist-credit": [
               {
-                "name": "\u690e\u540d\u6797\u6a8e",
                 "joinphrase": "",
                 "artist": {
                   "type": "Person",
+                  "country": "JP",
                   "sort-name": "Sheena, Ringo",
                   "disambiguation": "",
                   "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "country": "JP"
-                }
+                  "name": "\u690e\u540d\u6797\u6a8e"
+                },
+                "name": "\u690e\u540d\u6797\u6a8e"
               }
             ]
-          }
+          },
+          "position": 7,
+          "title": "TOKYO",
+          "id": "9b5babc5-d8d5-49ac-9a86-806fb6a78a60"
         },
         {
-          "artist-credit": [
-            {
-              "artist": {
-                "country": "JP",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "disambiguation": "",
-                "sort-name": "Sheena, Ringo",
-                "type": "Person"
-              },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
-            }
-          ],
-          "number": "8",
-          "position": 8,
-          "title": "\u9577\u304f\u77ed\u3044\u796d",
           "length": 249173,
           "id": "9355cbf9-ab24-45ce-b1fc-e2715b516f62",
+          "position": 8,
           "recording": {
             "length": 249173,
-            "id": "92236c0d-c0ed-474b-aba5-8d2ab22b3233",
-            "disambiguation": "",
+            "video": false,
             "first-release-date": "2015-07-10",
             "title": "\u9577\u304f\u77ed\u3044\u796d",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "artist": {
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "country": "JP"
-                }
-              }
-            ],
-            "video": false
-          }
-        },
-        {
-          "position": 9,
-          "artist-credit": [
-            {
-              "artist": {
-                "type": "Person",
-                "sort-name": "Sheena, Ringo",
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "JP"
-              },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
-            }
-          ],
-          "number": "9",
-          "recording": {
-            "first-release-date": "2015-02-25",
-            "title": "\u81f3\u4e0a\u306e\u4eba\u751f",
+            "id": "92236c0d-c0ed-474b-aba5-8d2ab22b3233",
             "disambiguation": "",
-            "id": "ed2e131d-cc85-4f7b-8cae-0320dc15984a",
-            "length": 248640,
-            "video": false,
             "artist-credit": [
               {
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "joinphrase": "",
                 "artist": {
-                  "country": "JP",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e",
                   "sort-name": "Sheena, Ringo",
-                  "type": "Person",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "disambiguation": ""
-                }
-              }
-            ]
-          },
-          "length": 248640,
-          "id": "fc2b29c1-918d-47c1-8a87-f08ca64877c1",
-          "title": "\u81f3\u4e0a\u306e\u4eba\u751f"
-        },
-        {
-          "artist-credit": [
-            {
-              "artist": {
-                "country": "JP",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "disambiguation": "",
-                "sort-name": "Sheena, Ringo",
-                "type": "Person"
-              },
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e"
-            }
-          ],
-          "number": "10",
-          "position": 10,
-          "title": "\u6025\u304c\u3070\u56de\u308c",
-          "id": "04542afb-48a2-4e8f-85ea-bdbaea2d343e",
-          "length": 176026,
-          "recording": {
-            "artist-credit": [
-              {
-                "artist": {
-                  "country": "JP",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
                   "disambiguation": "",
-                  "sort-name": "Sheena, Ringo",
-                  "type": "Person"
-                },
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "joinphrase": ""
-              }
-            ],
-            "video": false,
-            "title": "\u6025\u304c\u3070\u56de\u308c",
-            "first-release-date": "2019-05-27",
-            "id": "0afa9676-8c2d-4935-929c-6a9e0b238a15",
-            "length": 176026,
-            "disambiguation": ""
-          }
-        },
-        {
-          "recording": {
-            "disambiguation": "",
-            "id": "1d82d914-d60d-4d58-9329-df9d74cf6e1e",
-            "length": 176933,
-            "first-release-date": "2019-05-27",
-            "title": "\u30b8\u30e6\u30fc\u30c0\u30e0",
-            "video": false,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "artist": {
-                  "country": "JP",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "disambiguation": "",
-                  "sort-name": "Sheena, Ringo",
-                  "type": "Person"
-                }
-              }
-            ]
-          },
-          "length": 176933,
-          "id": "5293d613-9f2d-45b5-b18a-040a6bb186f5",
-          "title": "\u30b8\u30e6\u30fc\u30c0\u30e0",
-          "position": 11,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e",
-              "artist": {
-                "country": "JP",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "disambiguation": "",
-                "sort-name": "Sheena, Ringo",
-                "type": "Person"
-              }
-            }
-          ],
-          "number": "11"
-        },
-        {
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "\u690e\u540d\u6797\u6a8e",
-              "artist": {
-                "sort-name": "Sheena, Ringo",
-                "type": "Person",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                "disambiguation": "",
-                "country": "JP",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e"
-              }
-            }
-          ],
-          "number": "12",
-          "position": 12,
-          "title": "\u76ee\u629c\u304d\u901a\u308a",
-          "id": "c1c0b3d4-c9b9-40e0-abde-072a33736a5c",
-          "length": 193280,
-          "recording": {
-            "video": false,
-            "artist-credit": [
-              {
-                "artist": {
-                  "country": "JP",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Sheena, Ringo",
                   "type": "Person",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "disambiguation": ""
+                  "country": "JP",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
                 },
                 "joinphrase": "",
                 "name": "\u690e\u540d\u6797\u6a8e"
               }
-            ],
-            "first-release-date": "2019-05-27",
-            "title": "\u76ee\u629c\u304d\u901a\u308a",
-            "disambiguation": "",
-            "id": "04bdcd96-31de-466a-a554-8096bdbd7665",
-            "length": 193280
-          }
-        },
-        {
-          "title": "\u3042\u306e\u4e16\u306e\u9580",
-          "length": 181266,
-          "id": "39d0f534-c521-4607-a68a-d48ea8567fe7",
-          "recording": {
-            "video": false,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "artist": {
-                  "type": "Person",
-                  "sort-name": "Sheena, Ringo",
-                  "disambiguation": "",
-                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "\u690e\u540d\u6797\u6a8e",
-                  "country": "JP"
-                }
-              }
-            ],
-            "first-release-date": "2019-05-27",
-            "title": "\u3042\u306e\u4e16\u306e\u9580",
-            "disambiguation": "",
-            "length": 181266,
-            "id": "1b82aab5-431b-433c-ab15-b626b80b0e04"
+            ]
           },
+          "title": "\u9577\u304f\u77ed\u3044\u796d",
           "artist-credit": [
             {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "\u690e\u540d\u6797\u6a8e",
-                "country": "JP",
-                "type": "Person",
-                "sort-name": "Sheena, Ringo",
-                "disambiguation": "",
-                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87"
-              },
               "name": "\u690e\u540d\u6797\u6a8e",
+              "artist": {
+                "type": "Person",
+                "country": "JP",
+                "sort-name": "Sheena, Ringo",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": "",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              },
               "joinphrase": ""
             }
           ],
+          "number": "8"
+        },
+        {
+          "number": "9",
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "artist": {
+                "sort-name": "Sheena, Ringo",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": "",
+                "type": "Person",
+                "country": "JP",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type": "Person",
+                  "country": "JP",
+                  "sort-name": "Sheena, Ringo",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "disambiguation": ""
+                },
+                "joinphrase": "",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              }
+            ],
+            "title": "\u81f3\u4e0a\u306e\u4eba\u751f",
+            "id": "ed2e131d-cc85-4f7b-8cae-0320dc15984a",
+            "disambiguation": "",
+            "length": 248640,
+            "video": false,
+            "first-release-date": "2015-02-25"
+          },
+          "title": "\u81f3\u4e0a\u306e\u4eba\u751f",
+          "position": 9,
+          "id": "fc2b29c1-918d-47c1-8a87-f08ca64877c1",
+          "length": 248640
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Sheena, Ringo",
+                "disambiguation": "",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "type": "Person",
+                "country": "JP",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            }
+          ],
+          "number": "10",
+          "length": 176026,
+          "id": "04542afb-48a2-4e8f-85ea-bdbaea2d343e",
+          "position": 10,
+          "title": "\u6025\u304c\u3070\u56de\u308c",
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Sheena, Ringo",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "type": "Person",
+                  "country": "JP",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              }
+            ],
+            "title": "\u6025\u304c\u3070\u56de\u308c",
+            "id": "0afa9676-8c2d-4935-929c-6a9e0b238a15",
+            "disambiguation": "",
+            "length": 176026,
+            "video": false,
+            "first-release-date": "2019-05-27"
+          }
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "country": "JP",
+                "type": "Person",
+                "disambiguation": "",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "sort-name": "Sheena, Ringo"
+              },
+              "joinphrase": "",
+              "name": "\u690e\u540d\u6797\u6a8e"
+            }
+          ],
+          "number": "11",
+          "length": 176933,
+          "id": "5293d613-9f2d-45b5-b18a-040a6bb186f5",
+          "recording": {
+            "first-release-date": "2019-05-27",
+            "video": false,
+            "length": 176933,
+            "title": "\u30b8\u30e6\u30fc\u30c0\u30e0",
+            "disambiguation": "",
+            "id": "1d82d914-d60d-4d58-9329-df9d74cf6e1e",
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "JP",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "sort-name": "Sheena, Ringo",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "\u690e\u540d\u6797\u6a8e"
+                },
+                "joinphrase": "",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              }
+            ]
+          },
+          "position": 11,
+          "title": "\u30b8\u30e6\u30fc\u30c0\u30e0"
+        },
+        {
+          "id": "c1c0b3d4-c9b9-40e0-abde-072a33736a5c",
+          "title": "\u76ee\u629c\u304d\u901a\u308a",
+          "position": 12,
+          "recording": {
+            "length": 193280,
+            "first-release-date": "2019-05-27",
+            "video": false,
+            "title": "\u76ee\u629c\u304d\u901a\u308a",
+            "id": "04bdcd96-31de-466a-a554-8096bdbd7665",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "joinphrase": "",
+                "artist": {
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Sheena, Ringo",
+                  "disambiguation": "",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "type": "Person",
+                  "country": "JP"
+                }
+              }
+            ]
+          },
+          "length": 193280,
+          "number": "12",
+          "artist-credit": [
+            {
+              "name": "\u690e\u540d\u6797\u6a8e",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e",
+                "country": "JP",
+                "type": "Person",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": "",
+                "sort-name": "Sheena, Ringo"
+              }
+            }
+          ]
+        },
+        {
+          "title": "\u3042\u306e\u4e16\u306e\u9580",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "\u690e\u540d\u6797\u6a8e",
+                  "type": "Person",
+                  "country": "JP",
+                  "sort-name": "Sheena, Ringo",
+                  "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                  "disambiguation": ""
+                },
+                "joinphrase": "",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              }
+            ],
+            "id": "1b82aab5-431b-433c-ab15-b626b80b0e04",
+            "disambiguation": "",
+            "title": "\u3042\u306e\u4e16\u306e\u9580",
+            "first-release-date": "2019-05-27",
+            "video": false,
+            "length": 181266
+          },
+          "position": 13,
+          "id": "39d0f534-c521-4607-a68a-d48ea8567fe7",
+          "length": 181266,
           "number": "13",
-          "position": 13
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "JP",
+                "type": "Person",
+                "id": "9e414497-23b7-4ab7-9ec6-8ea9864c9e87",
+                "disambiguation": "",
+                "sort-name": "Sheena, Ringo",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "\u690e\u540d\u6797\u6a8e"
+              },
+              "joinphrase": "",
+              "name": "\u690e\u540d\u6797\u6a8e"
+            }
+          ]
         }
-      ]
+      ],
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "track-offset": 0,
+      "id": "361ab452-f9da-34f8-89c0-8b2197e145d2",
+      "title": "",
+      "position": 1
     }
   ],
-  "disambiguation": "\u521d\u56de\u9650\u5b9a\u751f\u7523\u76e4",
-  "text-representation": {
-    "script": "Jpan",
-    "language": "jpn"
-  },
-  "packaging-id": null,
-  "cover-art-archive": {
-    "front": false,
-    "count": 0,
-    "artwork": false,
-    "darkened": false,
-    "back": false
-  },
-  "barcode": "4988031329207",
-  "quality": "normal",
+  "title": "\u4e09\u6bd2\u53f2",
   "release-events": [
     {
+      "date": "2019-05-27",
       "area": {
-        "disambiguation": "",
-        "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+        "name": "Japan",
+        "type-id": null,
         "iso-3166-1-codes": [
           "JP"
         ],
-        "type": null,
         "sort-name": "Japan",
-        "name": "Japan",
-        "type-id": null
-      },
-      "date": "2019-05-27"
+        "disambiguation": "",
+        "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+        "type": null
+      }
     }
-  ]
+  ],
+  "id": "4fdf1514-5876-4e62-bf1e-afd7cc873392",
+  "disambiguation": "\u521d\u56de\u9650\u5b9a\u751f\u7523\u76e4",
+  "date": "2019-05-27"
 }
