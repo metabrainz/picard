@@ -23,7 +23,7 @@
       <string>Metadata</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -145,6 +145,13 @@
        </layout>
       </item>
       <item>
+       <widget class="QCheckBox" name="translate_from_sortname">
+        <property name="text">
+         <string>Use artist sort name for translation</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="standardize_artists">
         <property name="text">
          <string>Use standardized artist names</string>
@@ -263,7 +270,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -284,6 +291,7 @@
   <tabstop>translate_artist_names_script_exception</tabstop>
   <tabstop>selected_scripts</tabstop>
   <tabstop>select_scripts</tabstop>
+  <tabstop>translate_from_sortname</tabstop>
   <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>standardize_vocals</tabstop>

@@ -587,10 +587,9 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Config | N
 
 def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
     config = config or get_config()
-    if config.setting['translate_artist_names']:
-        if _should_skip_translation_due_to_scripts(node['name'], config=config):
-            return Alias(node['name'], node['sort-name'])
-
+    if config.setting['translate_artist_names'] and not _should_skip_translation_due_to_scripts(
+        node['name'], config=config
+    ):
         # Prepare dictionaries of available locale aliases
         if 'aliases' in node:
             translated_alias = _find_localized_alias_name(node['aliases'], config.setting['translation_locales'])
@@ -599,10 +598,13 @@ def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
 
         # No matches found in available alias locales
         sort_name = node['sort-name']
-        translated_name = translate_from_sortname(node['name'] or '', sort_name)
+        if config.setting['translate_from_sortname']:
+            translated_name = translate_from_sortname(node['name'] or '', sort_name)
+        else:
+            translated_name = node['name']
     else:
         translated_name, sort_name = node['name'], node['sort-name']
-    return Alias(translated_name, sort_name)
+    return Alias(translated_name or '', sort_name or '')
 
 
 def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:

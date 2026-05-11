@@ -504,10 +504,20 @@ class RecordingComposerCreditsTest(MBJSONTest):
         self.assertEqual(m['composer'], 'Tchaikovsky')
         self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
 
-    def test_translate(self):
+    def test_translate_no_sortname_fallback(self):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = True
+        config.setting['translate_from_sortname'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['composer'], 'Tchaikovsky')
+        self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
+
+    def test_translate_sortname_fallback(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = True
+        config.setting['translate_from_sortname'] = True
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['composer'], 'Pyotr Ilyich Tchaikovsky')
         self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
@@ -531,6 +541,18 @@ class MultiWorkRecordingTest(MBJSONTest):
     def test_recording(self):
         m = Metadata()
         t = Track('1')
+        config.setting['translate_artist_names'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertIn('instrumental', m.getall('~performance_attributes'))
+        self.assertEqual(m['language'], 'jpn; eng; zxx')
+        self.assertEqual(m['lyricist'], '神前暁; 畑亜貴; 白石みのる')
+        self.assertEqual(m['~lyricistsort'], 'Kōsaki, Satoru; Hata, Aki; Shiraishi, Minoru')
+
+    def test_recording_translate_from_sortname(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = True
+        config.setting['translate_from_sortname'] = True
         recording_to_metadata(self.json_doc, m, t)
         self.assertIn('instrumental', m.getall('~performance_attributes'))
         self.assertEqual(m['language'], 'jpn; eng; zxx')

@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_metadata.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -86,6 +86,9 @@ class Ui_MetadataOptionsPage(object):
         self.scripts_container.addLayout(self.horizontalLayout_4)
         self.translation_language_containers.addLayout(self.scripts_container)
         self.verticalLayout_3.addLayout(self.translation_language_containers)
+        self.translate_from_sortname = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
+        self.translate_from_sortname.setObjectName("translate_from_sortname")
+        self.verticalLayout_3.addWidget(self.translate_from_sortname)
         self.standardize_artists = QtWidgets.QCheckBox(parent=self.metadata_groupbox)
         self.standardize_artists.setObjectName("standardize_artists")
         self.verticalLayout_3.addWidget(self.standardize_artists)
@@ -152,7 +155,8 @@ class Ui_MetadataOptionsPage(object):
         MetadataOptionsPage.setTabOrder(self.select_locales, self.translate_artist_names_script_exception)
         MetadataOptionsPage.setTabOrder(self.translate_artist_names_script_exception, self.selected_scripts)
         MetadataOptionsPage.setTabOrder(self.selected_scripts, self.select_scripts)
-        MetadataOptionsPage.setTabOrder(self.select_scripts, self.standardize_artists)
+        MetadataOptionsPage.setTabOrder(self.select_scripts, self.translate_from_sortname)
+        MetadataOptionsPage.setTabOrder(self.translate_from_sortname, self.standardize_artists)
         MetadataOptionsPage.setTabOrder(self.standardize_artists, self.standardize_instruments)
         MetadataOptionsPage.setTabOrder(self.standardize_instruments, self.standardize_vocals)
         MetadataOptionsPage.setTabOrder(self.standardize_vocals, self.convert_punctuation)
@@ -174,6 +178,7 @@ class Ui_MetadataOptionsPage(object):
         self.select_locales.setText(_("Select…"))
         self.translate_artist_names_script_exception.setText(_("Ignore name translation for these language scripts:"))
         self.select_scripts.setText(_("Select…"))
+        self.translate_from_sortname.setText(_("Use artist sort name for translation"))
         self.standardize_artists.setText(_("Use standardized artist names"))
         self.standardize_instruments.setText(_("Use standardized instrument credits"))
         self.standardize_vocals.setText(_("Use standardized vocal credits"))

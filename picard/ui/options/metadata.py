@@ -93,6 +93,7 @@ class MetadataOptionsPage(OptionsPage):
         ('translate_track_titles', ['translate_track_titles']),
         ('translation_locales', ['selected_locales']),
         ('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
+        ('translate_from_sortname', ['translate_from_sortname']),
         ('script_exceptions', ['selected_scripts']),
         ('standardize_artists', ['standardize_artists']),
         ('standardize_instruments', ['standardize_instruments']),
@@ -136,6 +137,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.track_ars.setChecked(config.setting['track_ars'])
         self.ui.va_name.setText(config.setting['va_name'])
         self.ui.nat_name.setText(config.setting['nat_name'])
+        self.ui.translate_from_sortname.setChecked(config.setting['translate_from_sortname'])
         self.ui.standardize_artists.setChecked(config.setting['standardize_artists'])
         self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
         self.ui.standardize_vocals.setChecked(config.setting['standardize_vocals'])
@@ -176,6 +178,7 @@ class MetadataOptionsPage(OptionsPage):
             config.setting['nat_name'] = nat_name
             if self.tagger.nats is not None:
                 self.tagger.nats.update()
+        config.setting['translate_from_sortname'] = self.ui.translate_from_sortname.isChecked()
         config.setting['standardize_artists'] = self.ui.standardize_artists.isChecked()
         config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
         config.setting['standardize_vocals'] = self.ui.standardize_vocals.isChecked()
@@ -202,6 +205,7 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.select_locales.setEnabled(translate_checked)
         self.ui.selected_locales.setEnabled(translate_checked)
         self.ui.translate_artist_names_script_exception.setEnabled(translate_checked)
+        self.ui.translate_from_sortname.setEnabled(translate_checked)
         # Enable script selector if any translation is enabled and exceptions are checked
         select_scripts_enabled = translate_checked and translate_exception_checked
         self.ui.selected_scripts.setEnabled(select_scripts_enabled)
