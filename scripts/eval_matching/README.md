@@ -200,3 +200,31 @@ to include it in the evaluation.
 - **New combined degradation**: add a lambda composing existing functions to
   `DEGRADATIONS`.
 - **New config profile**: append to `CONFIG_PROFILES` dict.
+
+## Per-Config Expectations
+
+By default, a test case passes when the matcher picks the target release
+("correct"). Some scenarios are inherently ambiguous or config-dependent — for
+example, two releases identical except for media format. For these, you can
+define the expected outcome per config profile:
+
+```python
+{
+    "target": "eval_release_3ac4a81e.json",  # digital edition
+    "distractors": [
+        "eval_release_4fdf1514.json",  # CD edition
+    ],
+    "scenario": "non_latin_editions",
+    "expectations": {
+        "*": "ambiguous",              # wildcard default
+        "prefer_jp_digital": "correct",
+        "prefer_us_cd": "wrong",
+    },
+}
+```
+
+Rules:
+- If `expectations` is not set, the expected outcome is `"correct"` for all profiles.
+- A specific profile key takes priority over the `"*"` wildcard.
+- Valid expected values: `"correct"`, `"ambiguous"`, `"wrong"`.
+- A test **passes** when the actual outcome matches the expected outcome.

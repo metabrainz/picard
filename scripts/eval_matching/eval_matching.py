@@ -152,6 +152,11 @@ SCENARIOS = [
             "eval_release_4fdf1514.json",  # 椎名林檎 三毒史 CD
         ],
         "scenario": "non_latin_editions",
+        "expectations": {
+            "*": "ambiguous",
+            "prefer_jp_digital": "correct",
+            "prefer_us_cd": "wrong",
+        },
     },
     {
         "target": "eval_release_4fdf1514.json",  # 椎名林檎 三毒史 CD
@@ -159,6 +164,11 @@ SCENARIOS = [
             "eval_release_3ac4a81e.json",  # 椎名林檎 三毒史 digital
         ],
         "scenario": "non_latin_editions",
+        "expectations": {
+            "*": "ambiguous",
+            "prefer_us_cd": "correct",
+            "prefer_jp_digital": "wrong",
+        },
     },
     # --- Live vs studio: same artist, different albums ---
     {
@@ -371,6 +381,7 @@ def generate_corpus():
                     "metadata": m,
                     "correct_id": target["id"],
                     "candidates": candidates,
+                    "expectations": scenario.get("expectations"),
                 }
             )
     return corpus
@@ -468,6 +479,7 @@ def generate_file_corpus():
                         "metadata": m,
                         "correct_id": target["id"],
                         "candidates": candidates,
+                        "expectations": scenario.get("expectations"),
                     }
                 )
     return corpus
@@ -478,11 +490,26 @@ def generate_file_corpus():
 # =============================================================================
 
 
-def evaluate(corpus, weights):
+def _get_expected_status(entry, config_profile):
+    """Get the expected status for a corpus entry given the config profile.
+
+    Looks up expectations dict on the entry: specific profile key first,
+    then "*" wildcard, then defaults to "correct".
+    """
+    expectations = entry.get("expectations")
+    if not expectations:
+        return "correct"
+    if config_profile in expectations:
+        return expectations[config_profile]
+    return expectations.get("*", "correct")
+
+
+def evaluate(corpus, weights, config_profile="neutral"):
     """Score each corpus entry and classify as correct/ambiguous/wrong.
 
     Returns a dict with counts and per-entry details including all candidate
-    scores for diagnostic purposes.
+    scores for diagnostic purposes. When a test case has expectations defined,
+    the result is scored against the expected outcome for the given config_profile.
     """
     results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
 
@@ -500,6 +527,10 @@ def evaluate(corpus, weights):
             status = "correct"
         else:
             status = "wrong"
+
+        # Check against expected outcome for this config profile
+        expected = _get_expected_status(entry, config_profile)
+        met_expectation = status == expected
         results[status] += 1
 
         results["details"].append(
@@ -508,6 +539,8 @@ def evaluate(corpus, weights):
                 "degradation": entry["degradation"],
                 "scenario": entry["scenario"],
                 "status": status,
+                "expected_status": expected,
+                "met_expectation": met_expectation,
                 "best_sim": best_sim,
                 "margin": margin,
                 "scores": scores,
@@ -519,7 +552,7 @@ def evaluate(corpus, weights):
     return results
 
 
-def evaluate_file_corpus(corpus, weights):
+def evaluate_file_corpus(corpus, weights, config_profile="neutral"):
     """Score file-level corpus using compare_to_track.
 
     Each entry has candidates as (track_dict, release_id) tuples.
@@ -544,6 +577,9 @@ def evaluate_file_corpus(corpus, weights):
             status = "correct"
         else:
             status = "wrong"
+
+        expected = _get_expected_status(entry, config_profile)
+        met_expectation = status == expected
         results[status] += 1
 
         results["details"].append(
@@ -552,6 +588,8 @@ def evaluate_file_corpus(corpus, weights):
                 "degradation": entry["degradation"],
                 "scenario": entry["scenario"],
                 "status": status,
+                "expected_status": expected,
+                "met_expectation": met_expectation,
                 "best_sim": best_sim,
                 "margin": margin,
                 "scores": scores,
@@ -568,9 +606,8 @@ def evaluate_file_corpus(corpus, weights):
 
 
 def _grouped_breakdown(details, group_key, group_names=None):
-    """Compute per-group OK/ambiguous/fail counts from detail entries."""
+    """Compute per-group pass/fail counts from detail entries."""
     ok = Counter()
-    amb = Counter()
     fail = Counter()
     total = Counter()
     margins = defaultdict(list)
@@ -579,15 +616,13 @@ def _grouped_breakdown(details, group_key, group_names=None):
         g = d[group_key]
         total[g] += 1
         margins[g].append(d["margin"])
-        if d["status"] == "correct":
+        if d.get("met_expectation", d["status"] == "correct"):
             ok[g] += 1
-        elif d["status"] == "ambiguous":
-            amb[g] += 1
         else:
             fail[g] += 1
 
     names = group_names or sorted(total.keys())
-    return [(n, ok[n], amb[n], fail[n], total[n], margins[n]) for n in names]
+    return [(n, ok[n], fail[n], total[n], margins[n]) for n in names]
 
 
 _DIFF_FIELDS = ["barcode", "date", "country", "title", "track-count"]
@@ -640,15 +675,19 @@ def print_report(results, weights_name, verbose=False):
     so the operator can see exactly why the matcher got confused.
     """
     total = results["correct"] + results["wrong"] + results["ambiguous"]
+    met = sum(1 for d in results["details"] if d.get("met_expectation", d["status"] == "correct"))
+    unmet = total - met
     print(f"\n{'=' * 70}")
     print(f"  {weights_name}")
     print(f"{'=' * 70}")
-    print(f"  Correct:   {results['correct']:>3}/{total} ({results['correct'] / total:.1%})")
-    print(f"  Ambiguous: {results['ambiguous']:>3}/{total} ({results['ambiguous'] / total:.1%})")
-    print(f"  Wrong:     {results['wrong']:>3}/{total} ({results['wrong'] / total:.1%})")
+    print(f"  Pass:      {met:>3}/{total} ({met / total:.1%})")
+    print(f"  Fail:      {unmet:>3}/{total} ({unmet / total:.1%})")
+    print(
+        f"  (actual breakdown: correct={results['correct']}, ambiguous={results['ambiguous']}, wrong={results['wrong']})"
+    )
 
     # Problems summary (always shown)
-    problems = [d for d in results["details"] if d["status"] != "correct"]
+    problems = [d for d in results["details"] if not d.get("met_expectation", d["status"] == "correct")]
     if not verbose and problems:
         print(f"\n  {'Release':<25} {'Degradation':<22} {'Status':<9} {'Sim':>6} {'Margin':>6}")
         print(f"  {'-' * 25} {'-' * 22} {'-' * 9} {'-' * 6} {'-' * 6}")
@@ -664,8 +703,11 @@ def print_report(results, weights_name, verbose=False):
         print(f"  {'─' * 66}")
         for p in problems:
             correct_id = p["correct_id"]
+            expected = p.get("expected_status", "correct")
             print(f"\n  [{p['status'].upper()}] {p['release']} | {p['scenario']}")
             print(f"  degradation: {p['degradation']}")
+            if expected != "correct":
+                print(f"  expected: {expected}")
             print("  candidates (▶ = correct, ✗ = picked wrong):")
             for sim, cid in p["scores"]:
                 marker = "  "
@@ -681,22 +723,22 @@ def print_report(results, weights_name, verbose=False):
     # Per-degradation
     deg_names = [name for name, _ in DEGRADATIONS]
     rows = _grouped_breakdown(results["details"], "degradation", deg_names)
-    print(f"\n  {'Degradation':<25} {'OK':>3} {'Amb':>3} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
-    print(f"  {'-' * 25} {'-' * 3} {'-' * 3} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
-    for name, ok, amb, fail, n, margins in rows:
+    print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
+    print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
+    for name, ok, fail, n, margins in rows:
         rate = ok / n if n else 0
         avg_m = sum(margins) / len(margins) if margins else 0
         flag = " ✗" if rate < 1.0 else ""
-        print(f"  {name:<25} {ok:>3} {amb:>3} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
+        print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
 
     # Per-scenario
     rows = _grouped_breakdown(results["details"], "scenario")
-    print(f"\n  {'Scenario':<30} {'OK':>3} {'Amb':>3} {'Fail':>4} {'N':>3} {'Rate':>6}")
-    print(f"  {'-' * 30} {'-' * 3} {'-' * 3} {'-' * 4} {'-' * 3} {'-' * 6}")
-    for name, ok, amb, fail, n, _ in rows:
+    print(f"\n  {'Scenario':<30} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6}")
+    print(f"  {'-' * 30} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6}")
+    for name, ok, fail, n, _ in rows:
         rate = ok / n if n else 0
         flag = " ✗" if rate < 1.0 else ""
-        print(f"  {name:<30} {ok:>3} {amb:>3} {fail:>4} {n:>3} {rate:>5.0%}{flag}")
+        print(f"  {name:<30} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%}{flag}")
 
 
 # =============================================================================
@@ -784,7 +826,7 @@ def _run_with_config(profile_name, weights):
         patch("picard.metadata.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus()
-        return evaluate(corpus, weights)
+        return evaluate(corpus, weights, config_profile=profile_name)
 
 
 def print_comparison(all_results):
@@ -792,22 +834,17 @@ def print_comparison(all_results):
     print(f"\n{'=' * 70}")
     print("  CONFIG COMPARISON")
     print(f"{'=' * 70}")
-    print(f"\n  {'Profile':<20} {'Correct':>8} {'Ambiguous':>10} {'Wrong':>8} {'Score':>6}")
-    print(f"  {'-' * 20} {'-' * 8} {'-' * 10} {'-' * 8} {'-' * 6}")
+    print(f"\n  {'Profile':<20} {'Pass':>8} {'Fail':>8} {'Rate':>6}")
+    print(f"  {'-' * 20} {'-' * 8} {'-' * 8} {'-' * 6}")
     for name, results in all_results.items():
         total = results["correct"] + results["wrong"] + results["ambiguous"]
-        # Score: correct=1, ambiguous=0.5, wrong=0
-        score = (results["correct"] + 0.5 * results["ambiguous"]) / total
-        print(
-            f"  {name:<20} {results['correct']:>3}/{total:<3} "
-            f"{results['ambiguous']:>4}/{total:<3}  "
-            f"{results['wrong']:>3}/{total:<3} "
-            f"{score:>5.1%}"
-        )
+        met = sum(1 for d in results["details"] if d.get("met_expectation", d["status"] == "correct"))
+        rate = met / total if total else 0
+        print(f"  {name:<20} {met:>3}/{total:<3}  {total - met:>3}/{total:<3} {rate:>5.1%}")
 
     # Per-scenario comparison across configs
     scenarios = sorted({d["scenario"] for d in next(iter(all_results.values()))["details"]})
-    print("\n  Per-scenario correct rate by config:")
+    print("\n  Per-scenario pass rate by config:")
     header = f"  {'Scenario':<30}" + "".join(f" {n[:12]:>12}" for n in all_results)
     print(header)
     print(f"  {'-' * 30}" + "".join(f" {'-' * 12}" for _ in all_results))
@@ -816,7 +853,7 @@ def print_comparison(all_results):
         for results in all_results.values():
             scen_details = [d for d in results["details"] if d["scenario"] == scen]
             n = len(scen_details)
-            ok = sum(1 for d in scen_details if d["status"] == "correct")
+            ok = sum(1 for d in scen_details if d.get("met_expectation", d["status"] == "correct"))
             row += f" {ok:>3}/{n:<3} {ok / n:>4.0%}" if n else f" {'N/A':>12}"
         print(row)
 
@@ -981,16 +1018,17 @@ def main():
 
     if not args.cluster_only:
         random.seed(42)
-        mock_config = _make_config(profiles[0] if args.profile else "neutral")
+        file_profile = profiles[0] if args.profile else "neutral"
+        mock_config = _make_config(file_profile)
         with (
             patch("picard.config.get_config", return_value=mock_config),
             patch("picard.mbjson.get_config", return_value=mock_config),
             patch("picard.metadata.get_config", return_value=mock_config),
         ):
             file_corpus = generate_file_corpus()
-            file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS)
+            file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS, config_profile=file_profile)
             file_results = _filter_results(file_results, args.scenario, args.degradation)
-            print_report(file_results, "FILE_COMPARISON_WEIGHTS [neutral]", verbose=args.verbose)
+            print_report(file_results, f"FILE_COMPARISON_WEIGHTS [{file_profile}]", verbose=args.verbose)
 
     # Save/compare snapshots (uses neutral cluster results)
     if not args.file_only:
