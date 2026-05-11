@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>655</height>
+    <height>721</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -23,127 +23,9 @@
       <string>Metadata</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="translation_prompt_label">
-        <property name="text">
-         <string>Translate names when available:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="translation_options_layout">
-        <property name="leftMargin">
-         <number>20</number>
-        </property>
-        <item>
-         <widget class="QCheckBox" name="translate_artist_names">
-          <property name="text">
-           <string>Artist names</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="translate_album_titles">
-          <property name="text">
-           <string>Album titles</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="translate_track_titles">
-          <property name="text">
-           <string>Track titles</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="translation_language_containers">
-        <property name="spacing">
-         <number>3</number>
-        </property>
-        <item>
-         <layout class="QVBoxLayout" name="locales_container">
-          <property name="spacing">
-           <number>4</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="locales_prompt_label">
-            <property name="text">
-             <string>Preferred locales:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="selected_locales">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="select_locales">
-              <property name="text">
-               <string>Select…</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="scripts_container">
-          <property name="spacing">
-           <number>4</number>
-          </property>
-          <item>
-           <widget class="QCheckBox" name="translate_artist_names_script_exception">
-            <property name="text">
-             <string>Ignore name translation for these language scripts:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="selected_scripts">
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="select_scripts">
-              <property name="text">
-               <string>Select…</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </item>
       <item>
        <widget class="QCheckBox" name="standardize_artists">
         <property name="text">
@@ -190,6 +72,140 @@
        <widget class="QCheckBox" name="guess_tracknumber_and_title">
         <property name="text">
          <string>Guess track number and title from filename if empty</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="translations_groupbox">
+     <property name="title">
+      <string>Translations</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="translation_prompt_label">
+        <property name="text">
+         <string>Translate names when available:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="translation_options_layout">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="translate_artist_names">
+          <property name="text">
+           <string>Artist names</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="translate_album_titles">
+          <property name="text">
+           <string>Album titles</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="translate_track_titles">
+          <property name="text">
+           <string>Track titles</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="locales_container">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="locales_prompt_label">
+          <property name="text">
+           <string>Preferred locales:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="selected_locales">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="select_locales">
+            <property name="text">
+             <string>Select…</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="translation_language_containers">
+        <property name="spacing">
+         <number>3</number>
+        </property>
+        <item>
+         <layout class="QVBoxLayout" name="scripts_container">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <item>
+           <widget class="QCheckBox" name="translate_artist_names_script_exception">
+            <property name="text">
+             <string>Ignore name translation for these language scripts:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="selected_scripts">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="select_scripts">
+              <property name="text">
+               <string>Select…</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="translate_from_sortname">
+        <property name="text">
+         <string>Use artist sort name for translation</string>
         </property>
        </widget>
       </item>
@@ -263,7 +279,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -276,6 +292,13 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>standardize_artists</tabstop>
+  <tabstop>standardize_instruments</tabstop>
+  <tabstop>standardize_vocals</tabstop>
+  <tabstop>convert_punctuation</tabstop>
+  <tabstop>release_ars</tabstop>
+  <tabstop>track_ars</tabstop>
+  <tabstop>guess_tracknumber_and_title</tabstop>
   <tabstop>translate_artist_names</tabstop>
   <tabstop>translate_album_titles</tabstop>
   <tabstop>translate_track_titles</tabstop>
@@ -284,13 +307,7 @@
   <tabstop>translate_artist_names_script_exception</tabstop>
   <tabstop>selected_scripts</tabstop>
   <tabstop>select_scripts</tabstop>
-  <tabstop>standardize_artists</tabstop>
-  <tabstop>standardize_instruments</tabstop>
-  <tabstop>standardize_vocals</tabstop>
-  <tabstop>convert_punctuation</tabstop>
-  <tabstop>release_ars</tabstop>
-  <tabstop>track_ars</tabstop>
-  <tabstop>guess_tracknumber_and_title</tabstop>
+  <tabstop>translate_from_sortname</tabstop>
   <tabstop>va_name</tabstop>
   <tabstop>va_name_default</tabstop>
   <tabstop>nat_name</tabstop>
