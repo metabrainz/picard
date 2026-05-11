@@ -458,7 +458,7 @@ def _is_script_exception_enabled(config: Config) -> bool:
 
     Parameters
     ----------
-    config : Any
+    config : Config
         Configuration object with a ``setting`` mapping.
 
     Returns
@@ -476,7 +476,7 @@ def _get_script_exceptions(config: Config) -> list[tuple[str, int]]:
 
     Parameters
     ----------
-    config : Any
+    config : Config
         Configuration object with a ``setting`` mapping.
 
     Returns
@@ -547,7 +547,7 @@ def _log_selected_scripts_match(exceptions: list[tuple[str, int]], matched: bool
     log.debug("%s found in selected scripts: %s", prefix, details)
 
 
-def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None = None) -> bool:
+def _should_skip_translation_due_to_scripts(text: str | None, config: Config | None = None) -> bool:
     """
     Determine whether translation should be skipped based on script exceptions.
 
@@ -555,7 +555,7 @@ def _should_skip_translation_due_to_scripts(text: str | None, config: Any | None
     ----------
     text : str or None
         The input text whose writing system scripts will be detected.
-    config : Any, optional
+    config : Config, optional
         Configuration object providing settings, by default ``None``. If
         ``None``, the global configuration from ``get_config()`` is used.
 
@@ -724,7 +724,7 @@ def media_formats_from_node(node: list[Node]) -> str:
     return " + ".join(formats)
 
 
-def _node_skip_empty_iter(node):
+def _node_skip_empty_iter(node: Node) -> Generator[tuple[str, Any], None, None]:
     for key, value in node.items():
         if value or value == 0:
             yield key, value
