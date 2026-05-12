@@ -225,7 +225,7 @@ def generate_readme(name: str, long_description: str | None = None) -> str:
     """
     slug = slugify_name(name)
     escaped_name = markdown_escape(name)
-    if type(long_description) is str:
+    if isinstance(long_description, str):
         long_description = long_description.strip()
     if not long_description:
         long_description = "A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/)."
