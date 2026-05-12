@@ -27,6 +27,7 @@ import re
 import unicodedata
 
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
+from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.validator import generate_uuid
 
 
@@ -284,18 +285,7 @@ def generate_source_locale_toml() -> str:
 
 def write_plugin_project(
     target: Path,
-    name: str,
-    description: str = '',
-    authors: list[str] | None = None,
-    categories: list[str] | None = None,
-    license_id: str = '',
-    license_url: str = '',
-    with_i18n: bool = False,
-    report_bugs_to: str = '',
-    source_locale: str = DEFAULT_SOURCE_LOCALE,
-    long_description: str = '',
-    init_py_content: str = '',
-    locale_toml_content: str = '',
+    project: PluginProjectConfig,
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -303,49 +293,38 @@ def write_plugin_project(
 
     Args:
         target: Path to the plugin directory
-        name: Plugin name
-        description: Short description
-        authors: List of author names
-        categories: List of category strings
-        license_id: SPDX license identifier
-        license_url: License URL
-        with_i18n: Whether to generate translation-enabled skeleton
-        report_bugs_to: Bug tracker URL or mailto: address
-        source_locale: Locale for the source strings
-        long_description: Long description
-        init_py_content: Alternate content to use for __init__.py
-        locale_toml_content: Alternate content to use for locale/*.toml
+        project: Plugin project configuration
 
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
-    source_locale = source_locale.strip() or DEFAULT_SOURCE_LOCALE
+    source_locale = project.source_locale.strip() or DEFAULT_SOURCE_LOCALE
     target.mkdir(parents=True, exist_ok=True)
     (target / 'MANIFEST.toml').write_text(
         generate_manifest(
-            name,
-            description,
-            authors,
-            categories,
-            license_id,
-            license_url,
-            with_i18n=with_i18n,
-            report_bugs_to=report_bugs_to,
+            project.name,
+            project.description,
+            project.authors or None,
+            project.categories or None,
+            project.license_id,
+            project.license_url,
+            with_i18n=project.with_i18n,
+            report_bugs_to=project.report_bugs_to,
             source_locale=source_locale,
-            long_description=long_description,
+            long_description=project.long_description,
         ),
         encoding='utf-8',
     )
-    init_py_content = init_py_content.strip() or generate_plugin_init_py(with_i18n=with_i18n)
+    init_py_content = project.init_py_content.strip() or generate_plugin_init_py(with_i18n=project.with_i18n)
     (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
-    (target / 'README.md').write_text(generate_readme(name), encoding='utf-8')
+    (target / 'README.md').write_text(generate_readme(project.name), encoding='utf-8')
     (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
     filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
-    if with_i18n:
+    if project.with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
         locale_filename = source_locale + '.toml'
-        locale_toml_content = locale_toml_content.strip() or generate_source_locale_toml()
+        locale_toml_content = project.locale_toml_content.strip() or generate_source_locale_toml()
         (locale_dir / locale_filename).write_text(locale_toml_content, encoding='utf-8')
         filenames.append('locale/')
     return filenames

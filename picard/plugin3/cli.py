@@ -93,6 +93,7 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
+from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
     RegistryFetchError,
@@ -1996,18 +1997,18 @@ class PluginCLI:
         # Create directory and files
         report_bugs_to = f'mailto:{author_email}' if author_email else ''
         try:
-            filenames = write_plugin_project(
-                target,
-                name,
-                description,
-                authors,
-                categories,
-                license_id,
-                license_url,
+            project = PluginProjectConfig(
+                name=name,
+                description=description,
+                authors=authors or [],
+                categories=categories or [],
+                license_id=license_id,
+                license_url=license_url,
                 with_i18n=with_i18n,
                 report_bugs_to=report_bugs_to,
                 source_locale=source_locale,
             )
+            filenames = write_plugin_project(target, project)
         except OSError as e:
             self._out.error(f'Failed to create plugin project: {e}')
             return ExitCode.ERROR
