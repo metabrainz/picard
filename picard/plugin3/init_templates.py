@@ -107,7 +107,10 @@ def generate_manifest(project: PluginProjectConfig) -> str:
     else:
         lines.append('# report_bugs_to = "https://your.plugin.bugtracker/issues"')
     if project.long_description:
-        lines.append(f'long_description = "{toml_escape(project.long_description)}"')
+        if '\n' in project.long_description:
+            lines.append(f'long_description = """\n{project.long_description}\n"""')
+        else:
+            lines.append(f'long_description = "{toml_escape(project.long_description)}"')
     if project.min_python_version:
         lines.append(f'min_python_version = "{toml_escape(project.min_python_version)}"')
     if project.with_i18n:
