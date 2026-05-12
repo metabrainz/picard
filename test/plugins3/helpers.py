@@ -30,6 +30,7 @@ from picard.git.factory import (
 )
 from picard.plugin3.api import PluginApi
 from picard.plugin3.cli import PluginCLI
+from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 from picard.plugin3.manager import PluginManager
 from picard.plugin3.manifest import PluginManifest
 from picard.plugin3.output import PluginOutput
@@ -193,7 +194,7 @@ class MockCliArgs(Mock):
             'locale': 'en',
             'with_translations': False,
             'no_commit': False,
-            'source_locale': 'en',
+            'source_locale': DEFAULT_SOURCE_LOCALE,
         }
         defaults.update(kwargs)
         super().__init__(**defaults)

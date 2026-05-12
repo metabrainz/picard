@@ -26,6 +26,7 @@ from pathlib import Path
 import re
 import unicodedata
 
+from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 from picard.plugin3.validator import generate_uuid
 
 
@@ -79,7 +80,7 @@ def generate_manifest(
     license_url: str = '',
     with_i18n: bool = False,
     report_bugs_to: str = '',
-    source_locale: str = 'en',
+    source_locale: str = DEFAULT_SOURCE_LOCALE,
     long_description: str = '',
 ) -> str:
     """Generate a filled-in MANIFEST.toml for a new plugin.
@@ -124,7 +125,7 @@ def generate_manifest(
     if long_description:
         lines.append(f'long_description = "{toml_escape(long_description)}"')
     if with_i18n:
-        source_locale = source_locale.strip() or 'en'
+        source_locale = source_locale.strip() or DEFAULT_SOURCE_LOCALE
         other_locale = 'de' if source_locale != 'de' else 'en'  # ensure different from source locale
         lines.append(f'source_locale = "{toml_escape(source_locale)}"')
         lines.append('')
@@ -286,7 +287,7 @@ def write_plugin_project(
     license_url: str = '',
     with_i18n: bool = False,
     report_bugs_to: str = '',
-    source_locale: str = 'en',
+    source_locale: str = DEFAULT_SOURCE_LOCALE,
     long_description: str = '',
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
@@ -309,7 +310,7 @@ def write_plugin_project(
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
-    source_locale = source_locale.strip() or 'en'
+    source_locale = source_locale.strip() or DEFAULT_SOURCE_LOCALE
     target.mkdir(parents=True, exist_ok=True)
     (target / 'MANIFEST.toml').write_text(
         generate_manifest(

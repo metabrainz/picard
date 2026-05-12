@@ -58,7 +58,11 @@ from picard.git.utils import (
     get_local_repository_path,
 )
 from picard.options import init_options
-from picard.plugin3.constants import CATEGORIES as VALID_CATEGORIES, LICENSES
+from picard.plugin3.constants import (
+    CATEGORIES as VALID_CATEGORIES,
+    DEFAULT_SOURCE_LOCALE,
+    LICENSES,
+)
 from picard.plugin3.init_templates import (
     get_git_author,
     get_git_config_author,
@@ -1888,7 +1892,7 @@ class PluginCLI:
         with_i18n = getattr(self._args, 'with_translations', False) or self._out.yesno(
             'Include translation support (i18n)?', default='N'
         )
-        source_locale = getattr(self._args, 'source_locale', 'en')
+        source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
         if with_i18n:
             locale_input = input(f'{self._out.bold("Source locale")} [{self._out.dim(source_locale)}]: ').strip()
             if locale_input:
@@ -1963,7 +1967,7 @@ class PluginCLI:
 
         # Check --source-locale flag
         if source_locale is None:
-            source_locale = getattr(self._args, 'source_locale', 'en')
+            source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
 
         # Check --no-commit flag
         if git_commit:
@@ -2203,8 +2207,8 @@ def process_cmdline_args():
     group_advanced.add_argument(
         '--source-locale',
         metavar='LOCALE',
-        default='en',
-        help="source locale for --init with --with-translations (default: en)",
+        default=DEFAULT_SOURCE_LOCALE,
+        help=f"source locale for --init with --with-translations (default: {DEFAULT_SOURCE_LOCALE})",
     )
     group_advanced.add_argument(
         '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
