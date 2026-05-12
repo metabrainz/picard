@@ -286,6 +286,8 @@ def write_plugin_project(
     license_url: str = '',
     with_i18n: bool = False,
     report_bugs_to: str = '',
+    source_locale: str = 'en',
+    long_description: str = '',
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -301,6 +303,8 @@ def write_plugin_project(
         license_url: License URL
         with_i18n: Whether to generate translation-enabled skeleton
         report_bugs_to: Bug tracker URL or mailto: address
+        source_locale: Locale for the source strings
+        long_description: Long description
 
     Returns:
         list: Filenames/dirs created (for display purposes)
@@ -316,6 +320,8 @@ def write_plugin_project(
             license_url,
             with_i18n=with_i18n,
             report_bugs_to=report_bugs_to,
+            source_locale=source_locale,
+            long_description=long_description,
         ),
         encoding='utf-8',
     )
