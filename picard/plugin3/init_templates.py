@@ -309,6 +309,7 @@ def write_plugin_project(
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
+    source_locale = source_locale.strip() or 'en'
     target.mkdir(parents=True, exist_ok=True)
     (target / 'MANIFEST.toml').write_text(
         generate_manifest(
@@ -332,7 +333,7 @@ def write_plugin_project(
     if with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
-        locale_filename = (source_locale.strip() or 'en') + '.toml'
+        locale_filename = source_locale + '.toml'
         (locale_dir / locale_filename).write_text(generate_source_locale_toml(), encoding='utf-8')
         filenames.append('locale/')
     return filenames
