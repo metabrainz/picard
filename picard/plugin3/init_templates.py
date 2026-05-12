@@ -332,7 +332,8 @@ def write_plugin_project(
     if with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
-        (locale_dir / 'en.toml').write_text(generate_source_locale_toml(), encoding='utf-8')
+        locale_filename = (source_locale.strip() or 'en') + '.toml'
+        (locale_dir / locale_filename).write_text(generate_source_locale_toml(), encoding='utf-8')
         filenames.append('locale/')
     return filenames
 
