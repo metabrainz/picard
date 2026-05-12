@@ -212,20 +212,25 @@ def markdown_escape(text: str) -> str:
     return text
 
 
-def generate_readme(name: str) -> str:
+def generate_readme(name: str, long_description: str | None = None) -> str:
     """Generate a basic README.md for a new plugin.
 
     Args:
         name: Plugin name
+        long_description: Long description
 
     Returns:
         str: README.md content
     """
     slug = slugify_name(name)
     escaped_name = markdown_escape(name)
+    if type(long_description) is str:
+        long_description = long_description.strip()
+    if not long_description:
+        long_description = "A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/)."
     return f'''# {escaped_name}
 
-A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/).
+{long_description}
 
 ## Installation
 
