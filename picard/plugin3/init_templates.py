@@ -91,6 +91,9 @@ def generate_manifest(project: PluginProjectConfig) -> str:
     if project.authors:
         authors_str = ', '.join(f'"{toml_escape(a)}"' for a in project.authors)
         lines.append(f'authors = [{authors_str}]')
+    if project.maintainers:
+        maintainers_str = ', '.join(f'"{toml_escape(m)}"' for m in project.maintainers)
+        lines.append(f'maintainers = [{maintainers_str}]')
     if project.license_id:
         lines.append(f'license = "{toml_escape(project.license_id)}"')
     if project.license_url:
@@ -105,6 +108,8 @@ def generate_manifest(project: PluginProjectConfig) -> str:
         lines.append('# report_bugs_to = "https://your.plugin.bugtracker/issues"')
     if project.long_description:
         lines.append(f'long_description = "{toml_escape(project.long_description)}"')
+    if project.min_python_version:
+        lines.append(f'min_python_version = "{toml_escape(project.min_python_version)}"')
     if project.with_i18n:
         source_locale = project.source_locale.strip() or DEFAULT_SOURCE_LOCALE
         other_locale = 'de' if source_locale != 'de' else 'en'  # ensure different from source locale

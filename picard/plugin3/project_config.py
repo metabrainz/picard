@@ -41,6 +41,7 @@ class PluginProjectConfig:
     name: str
     description: str = ''
     authors: list[str] = field(default_factory=list)
+    maintainers: list[str] = field(default_factory=list)
     categories: list[str] = field(default_factory=list)
     license_id: str = ''
     license_url: str = ''
@@ -48,5 +49,6 @@ class PluginProjectConfig:
     report_bugs_to: str = ''
     with_i18n: bool = False
     source_locale: str = DEFAULT_SOURCE_LOCALE
+    min_python_version: str = ''
     init_py_content: str | None = None
     locale_toml_content: str | None = None
