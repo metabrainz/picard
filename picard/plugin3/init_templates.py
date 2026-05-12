@@ -294,6 +294,7 @@ def write_plugin_project(
     report_bugs_to: str = '',
     source_locale: str = DEFAULT_SOURCE_LOCALE,
     long_description: str = '',
+    write_init: bool = True,
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -311,6 +312,7 @@ def write_plugin_project(
         report_bugs_to: Bug tracker URL or mailto: address
         source_locale: Locale for the source strings
         long_description: Long description
+        write_init: Write the __init__.py file
 
     Returns:
         list: Filenames/dirs created (for display purposes)
@@ -332,10 +334,13 @@ def write_plugin_project(
         ),
         encoding='utf-8',
     )
-    (target / '__init__.py').write_text(generate_plugin_init_py(with_i18n=with_i18n), encoding='utf-8')
+    if write_init:
+        (target / '__init__.py').write_text(generate_plugin_init_py(with_i18n=with_i18n), encoding='utf-8')
     (target / 'README.md').write_text(generate_readme(name), encoding='utf-8')
     (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
     filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
+    if not write_init:
+        filenames.remove('__init__.py')
     if with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
