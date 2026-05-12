@@ -48,5 +48,5 @@ class PluginProjectConfig:
     report_bugs_to: str = ''
     with_i18n: bool = False
     source_locale: str = DEFAULT_SOURCE_LOCALE
-    init_py_content: str = ''
-    locale_toml_content: str = ''
+    init_py_content: str | None = None
+    locale_toml_content: str | None = None

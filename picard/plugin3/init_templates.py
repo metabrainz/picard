@@ -315,7 +315,11 @@ def write_plugin_project(
         ),
         encoding='utf-8',
     )
-    init_py_content = project.init_py_content.strip() or generate_plugin_init_py(with_i18n=project.with_i18n)
+    init_py_content = (
+        project.init_py_content
+        if project.init_py_content is not None
+        else generate_plugin_init_py(with_i18n=project.with_i18n)
+    )
     (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
     (target / 'README.md').write_text(generate_readme(project.name, project.long_description), encoding='utf-8')
     (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
@@ -324,7 +328,9 @@ def write_plugin_project(
         locale_dir = target / 'locale'
         locale_dir.mkdir()
         locale_filename = source_locale + '.toml'
-        locale_toml_content = project.locale_toml_content.strip() or generate_source_locale_toml()
+        locale_toml_content = (
+            project.locale_toml_content if project.locale_toml_content is not None else generate_source_locale_toml()
+        )
         (locale_dir / locale_filename).write_text(locale_toml_content, encoding='utf-8')
         filenames.append('locale/')
     return filenames
