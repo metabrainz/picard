@@ -193,6 +193,7 @@ class MockCliArgs(Mock):
             'locale': 'en',
             'with_translations': False,
             'no_commit': False,
+            'source_locale': 'en',
         }
         defaults.update(kwargs)
         super().__init__(**defaults)
