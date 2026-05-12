@@ -317,7 +317,7 @@ def write_plugin_project(
     )
     init_py_content = project.init_py_content.strip() or generate_plugin_init_py(with_i18n=project.with_i18n)
     (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
-    (target / 'README.md').write_text(generate_readme(project.name), encoding='utf-8')
+    (target / 'README.md').write_text(generate_readme(project.name, project.long_description), encoding='utf-8')
     (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
     filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
     if project.with_i18n:
