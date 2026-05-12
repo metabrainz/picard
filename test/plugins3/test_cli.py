@@ -1410,6 +1410,18 @@ class TestPluginCLIInit(PicardTestCase):
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertNotIn('source_locale', manifest)
 
+    def test_init_with_custom_source_locale(self):
+        """--init --with-translations --source-locale creates correct locale file and manifest."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True, source_locale='fr'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('source_locale = "fr"', manifest)
+        self.assertTrue((target / 'locale' / 'fr.toml').exists())
+        self.assertFalse((target / 'locale' / 'en.toml').exists())
+
 
 class TestPluginCLIInitInteractive(PicardTestCase):
     """Tests for --init interactive mode."""

@@ -58,7 +58,11 @@ from picard.git.utils import (
     get_local_repository_path,
 )
 from picard.options import init_options
-from picard.plugin3.constants import CATEGORIES as VALID_CATEGORIES, LICENSES
+from picard.plugin3.constants import (
+    CATEGORIES as VALID_CATEGORIES,
+    DEFAULT_SOURCE_LOCALE,
+    LICENSES,
+)
 from picard.plugin3.init_templates import (
     get_git_author,
     get_git_config_author,
@@ -1885,6 +1889,15 @@ class PluginCLI:
             'license': license_id,
         }
 
+        with_i18n = getattr(self._args, 'with_translations', False) or self._out.yesno(
+            'Include translation support (i18n)?', default='N'
+        )
+        source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
+        if with_i18n:
+            locale_input = input(f'{self._out.bold("Source locale")} [{self._out.dim(source_locale)}]: ').strip()
+            if locale_input:
+                source_locale = locale_input
+
         return self._create_plugin_project(
             name,
             description,
@@ -1894,8 +1907,8 @@ class PluginCLI:
             license_url,
             author_email=author_email,
             target=target,
-            with_i18n=getattr(self._args, 'with_translations', False)
-            or self._out.yesno('Include translation support (i18n)?', default='N'),
+            with_i18n=with_i18n,
+            source_locale=source_locale,
             git_commit=not getattr(self._args, 'no_commit', False)
             and self._out.yesno('Create initial git commit?', default='Y'),
         )
@@ -1912,6 +1925,7 @@ class PluginCLI:
         target=None,
         git_commit=True,
         with_i18n=False,
+        source_locale=None,
     ):
         """Create the plugin project directory and files.
 
@@ -1926,6 +1940,7 @@ class PluginCLI:
             target: Explicit target directory (overrides --parent-dir/--target-dir)
             git_commit: Whether to create an initial git commit
             with_i18n: Whether to generate translation-enabled skeleton
+            source_locale: Source locale for translations
 
         Returns:
             ExitCode
@@ -1949,6 +1964,10 @@ class PluginCLI:
         # Check --with-translations flag
         if not with_i18n:
             with_i18n = getattr(self._args, 'with_translations', False)
+
+        # Check --source-locale flag
+        if source_locale is None:
+            source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
 
         # Check --no-commit flag
         if git_commit:
@@ -1987,6 +2006,7 @@ class PluginCLI:
                 license_url,
                 with_i18n=with_i18n,
                 report_bugs_to=report_bugs_to,
+                source_locale=source_locale,
             )
         except OSError as e:
             self._out.error(f'Failed to create plugin project: {e}')
@@ -2184,6 +2204,12 @@ def process_cmdline_args():
         '--with-translations', action='store_true', help="include translation support (locale files and examples)"
     )
     group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit with --init")
+    group_advanced.add_argument(
+        '--source-locale',
+        metavar='LOCALE',
+        default=DEFAULT_SOURCE_LOCALE,
+        help=f"source locale for --init with --with-translations (default: {DEFAULT_SOURCE_LOCALE})",
+    )
     group_advanced.add_argument(
         '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
     )

@@ -147,6 +147,50 @@ class TestGenerateManifest(PicardTestCase):
         data = tomllib.loads(result)
         self.assertEqual(data['name'], "Plugin d'Étiquetage")
 
+    def test_with_source_locale(self):
+        """Custom source_locale is included when i18n is enabled."""
+        result = generate_manifest('Test', with_i18n=True, source_locale='fr')
+        data = tomllib.loads(result)
+        self.assertEqual(data['source_locale'], 'fr')
+
+    def test_source_locale_default(self):
+        """Default source_locale is 'en'."""
+        result = generate_manifest('Test', with_i18n=True)
+        data = tomllib.loads(result)
+        self.assertEqual(data['source_locale'], 'en')
+
+    def test_source_locale_whitespace_fallback(self):
+        """Whitespace-only source_locale falls back to 'en'."""
+        result = generate_manifest('Test', with_i18n=True, source_locale='  ')
+        data = tomllib.loads(result)
+        self.assertEqual(data['source_locale'], 'en')
+
+    def test_other_locale_differs_from_source(self):
+        """i18n example locale differs from source_locale."""
+        result = generate_manifest('Test', with_i18n=True, source_locale='de')
+        self.assertIn('# en = ""', result)
+
+    def test_other_locale_default_is_de(self):
+        """When source_locale is not 'de', example locale is 'de'."""
+        result = generate_manifest('Test', with_i18n=True, source_locale='en')
+        self.assertIn('# de = ""', result)
+
+    def test_with_long_description(self):
+        """long_description produces valid TOML."""
+        result = generate_manifest('Test', long_description='A longer description')
+        data = tomllib.loads(result)
+        self.assertEqual(data['long_description'], 'A longer description')
+
+    def test_long_description_i18n_section(self):
+        """long_description with i18n includes long_description_i18n comment."""
+        result = generate_manifest('Test', long_description='Long desc', with_i18n=True)
+        self.assertIn('# [long_description_i18n]', result)
+
+    def test_no_long_description_i18n_without_long_description(self):
+        """Without long_description, no long_description_i18n section."""
+        result = generate_manifest('Test', with_i18n=True)
+        self.assertNotIn('long_description_i18n', result)
+
 
 class TestGeneratePluginInitPy(PicardTestCase):
     def test_contains_enable(self):
