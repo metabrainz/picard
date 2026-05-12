@@ -126,7 +126,7 @@ def generate_manifest(
     if with_i18n:
         source_locale = source_locale.strip() or 'en'
         other_locale = 'de' if source_locale != 'de' else 'en'  # ensure different from source locale
-        lines.append(f'source_locale = "{source_locale}"')
+        lines.append(f'source_locale = "{toml_escape(source_locale)}"')
         lines.append('')
         lines.append('# [name_i18n]')
         lines.append(f'# {other_locale} = ""')
