@@ -93,6 +93,7 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
+from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
     RegistryFetchError,
@@ -1790,7 +1791,7 @@ class PluginCLI:
                 return ExitCode.ERROR
             return self._cmd_init_interactive()
 
-        return self._create_plugin_project(name)
+        return self._create_plugin_project(PluginProjectConfig(name=name))
 
     def _cmd_init_interactive(self):
         """Run interactive plugin project creation."""
@@ -1899,75 +1900,64 @@ class PluginCLI:
                 source_locale = locale_input
 
         return self._create_plugin_project(
-            name,
-            description,
-            authors,
-            categories,
-            license_id,
-            license_url,
+            PluginProjectConfig(
+                name=name,
+                description=description,
+                authors=authors or [],
+                categories=categories or [],
+                license_id=license_id,
+                license_url=license_url,
+                with_i18n=with_i18n,
+                source_locale=source_locale,
+            ),
             author_email=author_email,
             target=target,
-            with_i18n=with_i18n,
-            source_locale=source_locale,
             git_commit=not getattr(self._args, 'no_commit', False)
             and self._out.yesno('Create initial git commit?', default='Y'),
         )
 
     def _create_plugin_project(
         self,
-        name,
-        description='',
-        authors=None,
-        categories=None,
-        license_id='',
-        license_url='',
+        project: PluginProjectConfig,
+        *,
         author_email='',
         target=None,
         git_commit=True,
-        with_i18n=False,
-        source_locale=None,
     ):
         """Create the plugin project directory and files.
 
         Args:
-            name: Plugin name
-            description: Short description
-            authors: List of author names
-            categories: List of category strings
-            license_id: SPDX license identifier
-            license_url: License URL
+            project: Plugin project configuration
             author_email: Author email for git commit
             target: Explicit target directory (overrides --parent-dir/--target-dir)
             git_commit: Whether to create an initial git commit
-            with_i18n: Whether to generate translation-enabled skeleton
-            source_locale: Source locale for translations
 
         Returns:
             ExitCode
         """
         # Validate name length
-        if len(name) > MAX_NAME_LENGTH:
+        if len(project.name) > MAX_NAME_LENGTH:
             self._out.error(f'Plugin name exceeds maximum length of {MAX_NAME_LENGTH} characters')
             return ExitCode.ERROR
 
         # Collect optional values from CLI flags
         author = getattr(self._args, 'author', None)
-        if author and not authors:
+        if author and not project.authors:
             parsed_name, parsed_email = parse_author_string(author)
-            authors = [parsed_name]
+            project.authors = [parsed_name]
             if parsed_email and not author_email:
                 author_email = parsed_email
         category = getattr(self._args, 'category', None)
-        if category and not categories:
-            categories = [category]
+        if category and not project.categories:
+            project.categories = [category]
 
         # Check --with-translations flag
-        if not with_i18n:
-            with_i18n = getattr(self._args, 'with_translations', False)
+        if not project.with_i18n:
+            project.with_i18n = getattr(self._args, 'with_translations', False)
 
         # Check --source-locale flag
-        if source_locale is None:
-            source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
+        if project.source_locale == DEFAULT_SOURCE_LOCALE:
+            project.source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
 
         # Check --no-commit flag
         if git_commit:
@@ -1982,7 +1972,7 @@ class PluginCLI:
             if target_dir:
                 target = base / target_dir
             else:
-                slug = slugify_name(name)
+                slug = slugify_name(project.name)
                 if not slug:
                     self._out.error('Cannot derive directory name from plugin name, use --target-dir to specify one')
                     return ExitCode.ERROR
@@ -1994,25 +1984,15 @@ class PluginCLI:
             return ExitCode.ERROR
 
         # Create directory and files
-        report_bugs_to = f'mailto:{author_email}' if author_email else ''
+        if not project.report_bugs_to and author_email:
+            project.report_bugs_to = f'mailto:{author_email}'
         try:
-            filenames = write_plugin_project(
-                target,
-                name,
-                description,
-                authors,
-                categories,
-                license_id,
-                license_url,
-                with_i18n=with_i18n,
-                report_bugs_to=report_bugs_to,
-                source_locale=source_locale,
-            )
+            filenames = write_plugin_project(target, project)
         except OSError as e:
             self._out.error(f'Failed to create plugin project: {e}')
             return ExitCode.ERROR
 
-        self._out.success(f'Created plugin {self._out.d_name(name)} in {self._out.d_path(target)}')
+        self._out.success(f'Created plugin {self._out.d_name(project.name)} in {self._out.d_path(target)}')
         for filename in filenames:
             self._out.info(filename)
 
@@ -2022,7 +2002,7 @@ class PluginCLI:
             repo = backend.init_repository(target)
             try:
                 if git_commit:
-                    author_name, commit_email = get_git_author(authors, author_email)
+                    author_name, commit_email = get_git_author(project.authors or None, author_email)
                     backend.add_and_commit_files(
                         repo,
                         'Initial plugin scaffold',

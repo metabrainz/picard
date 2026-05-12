@@ -33,6 +33,7 @@ from picard.plugin3.init_templates import (
     generate_readme,
     slugify_name,
 )
+from picard.plugin3.project_config import PluginProjectConfig
 
 
 class TestSlugifyName(PicardTestCase):
@@ -75,47 +76,51 @@ class TestSlugifyName(PicardTestCase):
 
 class TestGenerateManifest(PicardTestCase):
     def test_minimal(self):
-        result = generate_manifest('My Plugin')
+        result = generate_manifest(PluginProjectConfig(name='My Plugin'))
         self.assertIn('name = "My Plugin"', result)
         self.assertIn('api = ["3.0"]', result)
         self.assertIn('uuid = "', result)
         self.assertIn('description = "A Picard plugin"', result)
 
     def test_with_description(self):
-        result = generate_manifest('Test', description='Does things')
+        result = generate_manifest(PluginProjectConfig(name='Test', description='Does things'))
         self.assertIn('description = "Does things"', result)
 
     def test_with_authors(self):
-        result = generate_manifest('Test', authors=['Alice', 'Bob'])
+        result = generate_manifest(PluginProjectConfig(name='Test', authors=['Alice', 'Bob']))
         self.assertIn('authors = ["Alice", "Bob"]', result)
 
     def test_with_license(self):
         result = generate_manifest(
-            'Test', license_id='GPL-2.0-or-later', license_url='https://www.gnu.org/licenses/gpl-2.0.html'
+            PluginProjectConfig(
+                name='Test', license_id='GPL-2.0-or-later', license_url='https://www.gnu.org/licenses/gpl-2.0.html'
+            )
         )
         self.assertIn('license = "GPL-2.0-or-later"', result)
         self.assertIn('license_url = "https://www.gnu.org/licenses/gpl-2.0.html"', result)
 
     def test_with_categories(self):
-        result = generate_manifest('Test', categories=['metadata', 'ui'])
+        result = generate_manifest(PluginProjectConfig(name='Test', categories=['metadata', 'ui']))
         self.assertIn('categories = ["metadata", "ui"]', result)
 
     def test_with_report_bugs_to(self):
-        result = generate_manifest('Test', report_bugs_to='mailto:dev@example.com')
+        result = generate_manifest(PluginProjectConfig(name='Test', report_bugs_to='mailto:dev@example.com'))
         self.assertIn('report_bugs_to = "mailto:dev@example.com"', result)
 
     def test_without_report_bugs_to_has_comment(self):
-        result = generate_manifest('Test')
+        result = generate_manifest(PluginProjectConfig(name='Test'))
         self.assertIn('# report_bugs_to =', result)
 
     def test_report_bugs_to_url(self):
-        result = generate_manifest('Test', report_bugs_to='https://github.com/user/repo/issues')
+        result = generate_manifest(
+            PluginProjectConfig(name='Test', report_bugs_to='https://github.com/user/repo/issues')
+        )
         data = tomllib.loads(result)
         self.assertEqual(data['report_bugs_to'], 'https://github.com/user/repo/issues')
 
     def test_uuid_is_valid(self):
         """Generated manifest should contain a valid UUID."""
-        result = generate_manifest('Test')
+        result = generate_manifest(PluginProjectConfig(name='Test'))
         # Extract UUID from the output
         for line in result.splitlines():
             if line.startswith('uuid = "'):
@@ -126,7 +131,9 @@ class TestGenerateManifest(PicardTestCase):
 
     def test_parseable_toml(self):
         """Generated manifest should be valid TOML."""
-        result = generate_manifest('Test', description='Desc', authors=['Me'], categories=['metadata'])
+        result = generate_manifest(
+            PluginProjectConfig(name='Test', description='Desc', authors=['Me'], categories=['metadata'])
+        )
         data = tomllib.loads(result)
         self.assertEqual(data['name'], 'Test')
         self.assertEqual(data['description'], 'Desc')
@@ -136,59 +143,59 @@ class TestGenerateManifest(PicardTestCase):
 
     def test_special_characters_in_name(self):
         """Names with quotes and backslashes produce valid TOML."""
-        result = generate_manifest('Plugin "Foo" \\Bar', description='A "test" plugin')
+        result = generate_manifest(PluginProjectConfig(name='Plugin "Foo" \\Bar', description='A "test" plugin'))
         data = tomllib.loads(result)
         self.assertEqual(data['name'], 'Plugin "Foo" \\Bar')
         self.assertEqual(data['description'], 'A "test" plugin')
 
     def test_unicode_name(self):
         """Unicode names produce valid TOML."""
-        result = generate_manifest("Plugin d'Étiquetage")
+        result = generate_manifest(PluginProjectConfig(name="Plugin d'Étiquetage"))
         data = tomllib.loads(result)
         self.assertEqual(data['name'], "Plugin d'Étiquetage")
 
     def test_with_source_locale(self):
         """Custom source_locale is included when i18n is enabled."""
-        result = generate_manifest('Test', with_i18n=True, source_locale='fr')
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True, source_locale='fr'))
         data = tomllib.loads(result)
         self.assertEqual(data['source_locale'], 'fr')
 
     def test_source_locale_default(self):
         """Default source_locale is 'en'."""
-        result = generate_manifest('Test', with_i18n=True)
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True))
         data = tomllib.loads(result)
         self.assertEqual(data['source_locale'], 'en')
 
     def test_source_locale_whitespace_fallback(self):
         """Whitespace-only source_locale falls back to 'en'."""
-        result = generate_manifest('Test', with_i18n=True, source_locale='  ')
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True, source_locale='  '))
         data = tomllib.loads(result)
         self.assertEqual(data['source_locale'], 'en')
 
     def test_other_locale_differs_from_source(self):
         """i18n example locale differs from source_locale."""
-        result = generate_manifest('Test', with_i18n=True, source_locale='de')
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True, source_locale='de'))
         self.assertIn('# en = ""', result)
 
     def test_other_locale_default_is_de(self):
         """When source_locale is not 'de', example locale is 'de'."""
-        result = generate_manifest('Test', with_i18n=True, source_locale='en')
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True, source_locale='en'))
         self.assertIn('# de = ""', result)
 
     def test_with_long_description(self):
         """long_description produces valid TOML."""
-        result = generate_manifest('Test', long_description='A longer description')
+        result = generate_manifest(PluginProjectConfig(name='Test', long_description='A longer description'))
         data = tomllib.loads(result)
         self.assertEqual(data['long_description'], 'A longer description')
 
     def test_long_description_i18n_section(self):
         """long_description with i18n includes long_description_i18n comment."""
-        result = generate_manifest('Test', long_description='Long desc', with_i18n=True)
+        result = generate_manifest(PluginProjectConfig(name='Test', long_description='Long desc', with_i18n=True))
         self.assertIn('# [long_description_i18n]', result)
 
     def test_no_long_description_i18n_without_long_description(self):
         """Without long_description, no long_description_i18n section."""
-        result = generate_manifest('Test', with_i18n=True)
+        result = generate_manifest(PluginProjectConfig(name='Test', with_i18n=True))
         self.assertNotIn('long_description_i18n', result)
 
 
