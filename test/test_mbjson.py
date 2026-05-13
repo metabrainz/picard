@@ -523,6 +523,28 @@ class RecordingComposerCreditsTest(MBJSONTest):
         self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
 
 
+class RecordingArtistAliasesTest(MBJSONTest):
+    filename = 'recording_artist_aliases.json'
+
+    def test_standardize_artists(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artists'] = True
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'クー子')
+        self.assertEqual(m['artistsort'], 'Kūko')
+
+    def test_use_credited_as(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artists'] = False
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], '後ろから這いより隊C')
+        self.assertEqual(m['artistsort'], 'Ushirokara Haiyoritai C')
+
+
 class RecordingInstrumentalTest(MBJSONTest):
     filename = 'recording_instrumental.json'
 
