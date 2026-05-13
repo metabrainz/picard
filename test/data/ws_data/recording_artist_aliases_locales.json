@@ -1,0 +1,48 @@
+{
+  "first-release-date": "2013-02-20",
+  "aliases": [],
+  "title": "そして伝説のように × my burning desire",
+  "length": 289840,
+  "id": "3cf17055-68db-477a-a9b6-a3271f188f27",
+  "video": false,
+  "disambiguation": "",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "type": "Character",
+        "type-id": "5c1375b0-f18d-3db7-a164-a49d7a63773f",
+        "id": "9d844524-86b7-4424-98d4-4fae85c7eeb8",
+        "sort-name": "Kūko",
+        "disambiguation": "這いよれ！ニャル子さん",
+        "country": "JP",
+        "name": "クー子",
+        "aliases": [
+          {
+            "ended": false,
+            "locale": "ja",
+            "name": "後ろから這いより隊C",
+            "primary": true,
+            "begin": null,
+            "type": "Artist name",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "end": null,
+            "sort-name": "ウシロカラハイヨリタイC"
+          },
+          {
+            "ended": false,
+            "locale": "en",
+            "name": "後ろから這いより隊C",
+            "primary": true,
+            "begin": null,
+            "type": "Artist name",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "end": null,
+            "sort-name": "Ushirokara Haiyoritai C"
+          }
+        ]
+      },
+      "name": "後ろから這いより隊C"
+    }
+  ]
+}

@@ -223,10 +223,13 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
     artist = relation['artist']
     translated_alias = _translate_artist_node(artist, config=context.config)
     has_translation = translated_alias.name != artist['name']
+    artist_name = translated_alias.name
+    artist_sort_name = translated_alias.sort_name
     if not has_translation and context.use_credited_as and 'target-credit' in relation:
         credited_as = relation['target-credit']
-        if credited_as:
-            translated_alias.name = credited_as
+        if credited_as and credited_as != artist['name']:
+            artist_name = credited_as
+            artist_sort_name = _select_sort_name_from_aliases(artist, credited_as, config=context.config)
     reltype = relation['type']
     attribs = _relation_attributes(relation)
     if reltype in {'vocal', 'instrument', 'performer'}:
@@ -242,7 +245,7 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
             if attr.startswith('medium'):
                 try:
                     medium_no = int(attr.split()[1])
-                    context.per_medium_metadata[medium_no].add_unique('djmixer', translated_alias.name)
+                    context.per_medium_metadata[medium_no].add_unique('djmixer', artist_name)
                 except ValueError:
                     log.warning('Invalid medium number in mix-DJ attribute: %s', attr)
         return
@@ -253,16 +256,16 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
             return
     if context.instrumental and name == 'lyricist':
         return
-    m.add_unique(name, translated_alias.name)
+    m.add_unique(name, artist_name)
     artist_id = artist.get('id')
     if name == 'composer':
-        m.add_unique('composersort', translated_alias.sort_name)
+        m.add_unique('composersort', artist_sort_name)
         if artist_id:
             m.add_unique('musicbrainz_composerid', artist_id)
     elif name == 'lyricist':
-        m.add_unique('~lyricistsort', translated_alias.sort_name)
+        m.add_unique('~lyricistsort', artist_sort_name)
     elif name == 'writer':
-        m.add_unique('~writersort', translated_alias.sort_name)
+        m.add_unique('~writersort', artist_sort_name)
 
 
 def _relations_to_metadata_target_type_work(relation: Node, m: 'Metadata', context: RelFuncContext) -> None:
@@ -607,6 +610,30 @@ def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
     return Alias(translated_name or '', sort_name or '')
 
 
+def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None = None) -> str:
+    """Find a sort name matching the given credited name in the artist's aliases.
+
+    If translation is enabled, prefers an alias whose locale matches the
+    configured translation locales.  Falls back to the artist's default
+    sort-name, or the credited name itself if sort-name is empty.
+    """
+    if 'aliases' in node:
+        config = config or get_config()
+        candidates = [alias for alias in node['aliases'] if alias['name'] == name and alias['sort-name']]
+
+        # If translation is enabled, use alias from preferred locales first
+        if config.setting['translate_artist_names']:
+            if alias := _find_localized_alias_name(candidates, config.setting['translation_locales']):
+                return alias.sort_name
+
+        # Otherwise, use the first candidate (if any)
+        if candidates:
+            return candidates[0]['sort-name']
+
+    # Fallback: use the artist's own sort-name, or the credited name if empty
+    return node['sort-name'] or name
+
+
 def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_name = ''
     artist_sort_name = ''
@@ -622,16 +649,16 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             artist_countries.append(artist['country'] if 'country' in artist and artist['country'] else 'XX')
         translated_alias = _translate_artist_node(artist, config=config)
         has_translation = translated_alias.name != artist['name']
-        if has_translation:
-            name = translated_alias.name
-        elif use_credited_as and 'name' in artist_info:
+        if not has_translation and use_credited_as and 'name' in artist_info:
             name = artist_info['name']
+            sort_name = _select_sort_name_from_aliases(artist, name, config=config)
         else:
-            name = artist['name']
+            name = translated_alias.name
+            sort_name = translated_alias.sort_name
         artist_name += name
-        artist_sort_name += translated_alias.sort_name or ''
+        artist_sort_name += sort_name or ''
         artist_names.append(name)
-        artist_sort_names.append(translated_alias.sort_name or '')
+        artist_sort_names.append(sort_name or '')
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
