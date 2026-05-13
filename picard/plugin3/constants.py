@@ -26,6 +26,9 @@ REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 # Plugin categories
 CATEGORIES = ['metadata', 'coverart', 'ui', 'scripting', 'formats', 'other']
 
+# Default source locale for plugin translations
+DEFAULT_SOURCE_LOCALE = 'en'
+
 # Common SPDX licenses for plugins
 LICENSES = {
     'GPL-2.0-or-later': 'https://www.gnu.org/licenses/gpl-2.0.html',

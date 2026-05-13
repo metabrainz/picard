@@ -26,6 +26,8 @@ from pathlib import Path
 import re
 import unicodedata
 
+from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
+from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.validator import generate_uuid
 
 
@@ -70,27 +72,11 @@ def toml_escape(value: str) -> str:
     return value
 
 
-def generate_manifest(
-    name: str,
-    description: str = '',
-    authors: list[str] | None = None,
-    categories: list[str] | None = None,
-    license_id: str = '',
-    license_url: str = '',
-    with_i18n: bool = False,
-    report_bugs_to: str = '',
-) -> str:
+def generate_manifest(project: PluginProjectConfig) -> str:
     """Generate a filled-in MANIFEST.toml for a new plugin.
 
     Args:
-        name: Plugin name (required)
-        description: Short description
-        authors: List of author names
-        categories: List of category strings
-        license_id: SPDX license identifier
-        license_url: License URL
-        with_i18n: Whether to include translation fields
-        report_bugs_to: Bug tracker URL or mailto: address
+        project: Plugin project configuration
 
     Returns:
         str: MANIFEST.toml content
@@ -98,33 +84,49 @@ def generate_manifest(
     generated_uuid = generate_uuid()
     lines = [
         f'uuid = "{generated_uuid}"',
-        f'name = "{toml_escape(name)}"',
-        f'description = "{toml_escape(description or "A Picard plugin")}"',
+        f'name = "{toml_escape(project.name)}"',
+        f'description = "{toml_escape(project.description or "A Picard plugin")}"',
         'api = ["3.0"]',
     ]
-    if authors:
-        authors_str = ', '.join(f'"{toml_escape(a)}"' for a in authors)
+    if project.authors:
+        authors_str = ', '.join(f'"{toml_escape(a)}"' for a in project.authors)
         lines.append(f'authors = [{authors_str}]')
-    if license_id:
-        lines.append(f'license = "{toml_escape(license_id)}"')
-    if license_url:
-        lines.append(f'license_url = "{toml_escape(license_url)}"')
-    if categories:
-        cats_str = ', '.join(f'"{toml_escape(c)}"' for c in categories)
+    if project.maintainers:
+        maintainers_str = ', '.join(f'"{toml_escape(m)}"' for m in project.maintainers)
+        lines.append(f'maintainers = [{maintainers_str}]')
+    if project.license_id:
+        lines.append(f'license = "{toml_escape(project.license_id)}"')
+    if project.license_url:
+        lines.append(f'license_url = "{toml_escape(project.license_url)}"')
+    if project.categories:
+        cats_str = ', '.join(f'"{toml_escape(c)}"' for c in project.categories)
         lines.append(f'categories = [{cats_str}]')
     lines.append('# homepage = "https://github.com/username/plugin-name"')
-    if report_bugs_to:
-        lines.append(f'report_bugs_to = "{toml_escape(report_bugs_to)}"')
+    if project.report_bugs_to:
+        lines.append(f'report_bugs_to = "{toml_escape(project.report_bugs_to)}"')
     else:
         lines.append('# report_bugs_to = "https://your.plugin.bugtracker/issues"')
-    if with_i18n:
-        lines.append('source_locale = "en"')
+    if project.long_description:
+        if '\n' in project.long_description:
+            lines.append(f'long_description = """\n{project.long_description}\n"""')
+        else:
+            lines.append(f'long_description = "{toml_escape(project.long_description)}"')
+    if project.min_python_version:
+        lines.append(f'min_python_version = "{toml_escape(project.min_python_version)}"')
+    if project.with_i18n:
+        source_locale = project.source_locale.strip() or DEFAULT_SOURCE_LOCALE
+        other_locale = 'de' if source_locale != 'de' else 'en'  # ensure different from source locale
+        lines.append(f'source_locale = "{toml_escape(source_locale)}"')
         lines.append('')
         lines.append('# [name_i18n]')
-        lines.append('# de = ""')
+        lines.append(f'# {other_locale} = ""')
         lines.append('')
         lines.append('# [description_i18n]')
-        lines.append('# de = ""')
+        lines.append(f'# {other_locale} = ""')
+        if project.long_description:
+            lines.append('')
+            lines.append('# [long_description_i18n]')
+            lines.append(f'# {other_locale} = ""')
     lines.append('')  # trailing newline
     return '\n'.join(lines)
 
@@ -199,20 +201,25 @@ def markdown_escape(text: str) -> str:
     return text
 
 
-def generate_readme(name: str) -> str:
+def generate_readme(name: str, long_description: str | None = None) -> str:
     """Generate a basic README.md for a new plugin.
 
     Args:
         name: Plugin name
+        long_description: Long description
 
     Returns:
         str: README.md content
     """
     slug = slugify_name(name)
     escaped_name = markdown_escape(name)
+    if isinstance(long_description, str):
+        long_description = long_description.strip()
+    if not long_description:
+        long_description = "A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/)."
     return f'''# {escaped_name}
 
-A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/).
+{long_description}
 
 ## Installation
 
@@ -266,14 +273,7 @@ def generate_source_locale_toml() -> str:
 
 def write_plugin_project(
     target: Path,
-    name: str,
-    description: str = '',
-    authors: list[str] | None = None,
-    categories: list[str] | None = None,
-    license_id: str = '',
-    license_url: str = '',
-    with_i18n: bool = False,
-    report_bugs_to: str = '',
+    project: PluginProjectConfig,
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -281,40 +281,33 @@ def write_plugin_project(
 
     Args:
         target: Path to the plugin directory
-        name: Plugin name
-        description: Short description
-        authors: List of author names
-        categories: List of category strings
-        license_id: SPDX license identifier
-        license_url: License URL
-        with_i18n: Whether to generate translation-enabled skeleton
-        report_bugs_to: Bug tracker URL or mailto: address
+        project: Plugin project configuration
 
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
     target.mkdir(parents=True, exist_ok=True)
     (target / 'MANIFEST.toml').write_text(
-        generate_manifest(
-            name,
-            description,
-            authors,
-            categories,
-            license_id,
-            license_url,
-            with_i18n=with_i18n,
-            report_bugs_to=report_bugs_to,
-        ),
+        generate_manifest(project),
         encoding='utf-8',
     )
-    (target / '__init__.py').write_text(generate_plugin_init_py(with_i18n=with_i18n), encoding='utf-8')
-    (target / 'README.md').write_text(generate_readme(name), encoding='utf-8')
+    init_py_content = (
+        project.init_py_content
+        if project.init_py_content is not None
+        else generate_plugin_init_py(with_i18n=project.with_i18n)
+    )
+    (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
+    (target / 'README.md').write_text(generate_readme(project.name, project.long_description), encoding='utf-8')
     (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
     filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
-    if with_i18n:
+    if project.with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
-        (locale_dir / 'en.toml').write_text(generate_source_locale_toml(), encoding='utf-8')
+        locale_filename = (project.source_locale.strip() or DEFAULT_SOURCE_LOCALE) + '.toml'
+        locale_toml_content = (
+            project.locale_toml_content if project.locale_toml_content is not None else generate_source_locale_toml()
+        )
+        (locale_dir / locale_filename).write_text(locale_toml_content, encoding='utf-8')
         filenames.append('locale/')
     return filenames
 

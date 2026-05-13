@@ -25,7 +25,10 @@ except (ImportError, ModuleNotFoundError):
 
 from typing import BinaryIO
 
-from picard.plugin3.constants import CATEGORIES
+from picard.plugin3.constants import (
+    CATEGORIES,
+    DEFAULT_SOURCE_LOCALE,
+)
 from picard.plugin3.validator import (
     generate_uuid,
     validate_manifest_dict,
@@ -160,7 +163,7 @@ class PluginManifest:
     @property
     def source_locale(self) -> str:
         """Get source locale for translations, defaults to 'en'."""
-        return self._data.get('source_locale', 'en')
+        return self._data.get('source_locale', DEFAULT_SOURCE_LOCALE)
 
     def validate(self) -> list:
         """Validate manifest and return list of errors.

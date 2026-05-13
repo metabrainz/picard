@@ -50,6 +50,7 @@ from picard.plugin3.cli import (
     ExitCode,
     PluginCLI,
 )
+from picard.plugin3.init_templates import generate_readme
 from picard.plugin3.manager import (
     PluginCommitPinnedError,
     PluginManager,
@@ -1233,6 +1234,28 @@ class TestPluginCLIInit(PicardTestCase):
         readme = (target / 'README.md').read_text(encoding='utf-8')
         self.assertIn('# My Plugin', readme)
 
+    def test_init_creates_readme_with_provided_description(self):
+        """Creates README.md content with provided long description."""
+        long_description = "This the test long description."
+        readme_content = generate_readme('Test Plugin', long_description)
+        self.assertIn(long_description, readme_content)
+
+    def test_init_creates_readme_without_provided_description(self):
+        """Creates README.md content without provided long description."""
+        default_description = "A plugin for [MusicBrainz Picard](https://picard.musicbrainz.org/)."
+        # Test with no long description specified (use default of None)
+        readme_content = generate_readme('Test Plugin')
+        self.assertIn(default_description, readme_content)
+        # Test with long description specified as empty string
+        readme_content = generate_readme('Test Plugin', '')
+        self.assertIn(default_description, readme_content)
+        # Test with long description specified as whitespace only
+        readme_content = generate_readme('Test Plugin', ' ')
+        self.assertIn(default_description, readme_content)
+        # Test with long description specified as newline only
+        readme_content = generate_readme('Test Plugin', '\n')
+        self.assertIn(default_description, readme_content)
+
     def test_init_creates_gitignore(self):
         """--init creates .gitignore."""
         target = self.tmpdir / 'test-plugin'
@@ -1409,6 +1432,18 @@ class TestPluginCLIInit(PicardTestCase):
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertNotIn('source_locale', manifest)
+
+    def test_init_with_custom_source_locale(self):
+        """--init --with-translations --source-locale creates correct locale file and manifest."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True, source_locale='fr'
+        )
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
+        self.assertIn('source_locale = "fr"', manifest)
+        self.assertTrue((target / 'locale' / 'fr.toml').exists())
+        self.assertFalse((target / 'locale' / 'en.toml').exists())
 
 
 class TestPluginCLIInitInteractive(PicardTestCase):
