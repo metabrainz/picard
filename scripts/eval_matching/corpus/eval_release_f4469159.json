@@ -1,0 +1,742 @@
+{
+  "release-group": {
+    "disambiguation": "",
+    "secondary-type-ids": [
+      "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+    ],
+    "primary-type": "Album",
+    "id": "fb3770f6-83fb-32b7-85c4-1f522a92287e",
+    "artist-credit": [
+      {
+        "name": "Nirvana",
+        "artist": {
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+          "sort-name": "Nirvana",
+          "disambiguation": "1980s\u20131990s US grunge band",
+          "country": "US",
+          "name": "Nirvana"
+        },
+        "joinphrase": ""
+      }
+    ],
+    "first-release-date": "1994-10-31",
+    "secondary-types": [
+      "Live"
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "title": "MTV Unplugged in New York"
+  },
+  "disambiguation": "Disctronics S pressing, BIEM/GEMA",
+  "id": "f4469159-1395-40b5-81e6-a507e2ad34ef",
+  "date": "1994-10-31",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "barcode": "720642472729",
+  "country": "XE",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "name": "Nirvana",
+      "artist": {
+        "name": "Nirvana",
+        "country": "US",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "type": "Group",
+        "disambiguation": "1980s\u20131990s US grunge band",
+        "sort-name": "Nirvana",
+        "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da"
+      }
+    }
+  ],
+  "packaging": "Jewel Case",
+  "asin": null,
+  "status": "Official",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "release-events": [
+    {
+      "date": "1994-10-31",
+      "area": {
+        "type-id": null,
+        "type": null,
+        "disambiguation": "",
+        "sort-name": "Europe",
+        "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+        "iso-3166-1-codes": [
+          "XE"
+        ],
+        "name": "Europe"
+      }
+    },
+    {
+      "area": {
+        "type": null,
+        "type-id": null,
+        "sort-name": "United Kingdom",
+        "disambiguation": "",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "name": "United Kingdom"
+      },
+      "date": "1994-10-31"
+    }
+  ],
+  "media": [
+    {
+      "id": "a7215e2a-88dd-45f9-afdc-7208f7df5a2a",
+      "position": 1,
+      "track-offset": 0,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "tracks": [
+        {
+          "title": "About a Girl",
+          "recording": {
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "video": false,
+            "id": "d550b70a-31cd-4c23-a7c3-0f1488b84417",
+            "length": 218000,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "name": "Nirvana",
+                  "country": "US",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da"
+                },
+                "name": "Nirvana"
+              }
+            ],
+            "first-release-date": "1994-10-24",
+            "title": "About a Girl"
+          },
+          "number": "1",
+          "artist-credit": [
+            {
+              "name": "Nirvana",
+              "artist": {
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "position": 1,
+          "length": 218000,
+          "id": "da12fabf-13cf-4167-a706-5b2acabede83"
+        },
+        {
+          "recording": {
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "id": "9738401c-5720-4569-8f56-9780b8b0ab2e",
+            "length": 253893,
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "Nirvana",
+                  "country": "US",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group"
+                },
+                "name": "Nirvana",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1994-10-31",
+            "title": "Come as You Are"
+          },
+          "title": "Come as You Are",
+          "number": "2",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "name": "Nirvana"
+            }
+          ],
+          "length": 253893,
+          "position": 2,
+          "id": "6704365c-de01-4794-84ca-09e7cb3b07a6"
+        },
+        {
+          "title": "Jesus Doesn\u2019t Want Me for a Sunbeam",
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "country": "US",
+                  "name": "Nirvana",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
+            "id": "b890f7e9-e1c9-441a-a072-6a1975b82875",
+            "length": 277266,
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "title": "Jesus Doesn\u2019t Want Me for a Sunbeam",
+            "first-release-date": "1994-10-31"
+          },
+          "id": "3076e961-4cb0-4931-b1fa-7f614b6ba9e2",
+          "position": 3,
+          "length": 277266,
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "country": "US",
+                "name": "Nirvana"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "number": "3"
+        },
+        {
+          "title": "The Man Who Sold the World",
+          "recording": {
+            "title": "The Man Who Sold the World",
+            "first-release-date": "1994-10-31",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "country": "US",
+                  "name": "Nirvana"
+                }
+              }
+            ],
+            "id": "fed94ef8-3d92-4fac-a721-5d9a50469628",
+            "length": 261093,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "video": false
+          },
+          "id": "27a7af87-e918-407a-8c3e-e4b4e80387d1",
+          "position": 4,
+          "length": 261106,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "US",
+                "name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Nirvana"
+            }
+          ],
+          "number": "4"
+        },
+        {
+          "recording": {
+            "first-release-date": "1994-10-31",
+            "title": "Pennyroyal Tea",
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "id": "4741ce2a-636c-4eaa-9507-eb1c37ad9c5d",
+            "length": 220493,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "country": "US",
+                  "name": "Nirvana"
+                }
+              }
+            ]
+          },
+          "title": "Pennyroyal Tea",
+          "artist-credit": [
+            {
+              "name": "Nirvana",
+              "artist": {
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "5",
+          "position": 5,
+          "length": 220493,
+          "id": "39ea040e-ce8a-483a-8df1-317260fecf3b"
+        },
+        {
+          "recording": {
+            "length": 172933,
+            "id": "656cfcb3-5870-4db8-8510-6cb598b47aad",
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "country": "US",
+                  "name": "Nirvana"
+                },
+                "name": "Nirvana",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1994-10-31",
+            "title": "Dumb"
+          },
+          "title": "Dumb",
+          "number": "6",
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "position": 6,
+          "length": 172933,
+          "id": "efdcb494-8bf7-4718-a624-718ad19f05b0"
+        },
+        {
+          "number": "7",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "id": "abadfd88-250b-4a48-8de7-4ee65d551c1f",
+          "position": 7,
+          "length": 196466,
+          "recording": {
+            "first-release-date": "1994-10-31",
+            "title": "Polly",
+            "id": "31ea5270-bbcf-4e51-aa53-5cb84cc4c99e",
+            "length": 196466,
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "country": "US",
+                  "name": "Nirvana",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band"
+                }
+              }
+            ]
+          },
+          "title": "Polly"
+        },
+        {
+          "number": "8",
+          "artist-credit": [
+            {
+              "name": "Nirvana",
+              "artist": {
+                "country": "US",
+                "name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "length": 224733,
+          "position": 8,
+          "id": "befec6be-bacc-4beb-8a08-f57ef7a5d2c2",
+          "recording": {
+            "first-release-date": "1994-10-31",
+            "title": "On a Plain",
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "video": false,
+            "id": "6e3a9fd2-3660-49b2-97cc-9cd9c03744df",
+            "length": 224733,
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "country": "US",
+                  "name": "Nirvana"
+                },
+                "name": "Nirvana",
+                "joinphrase": ""
+              }
+            ]
+          },
+          "title": "On a Plain"
+        },
+        {
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Nirvana",
+                  "country": "US"
+                },
+                "name": "Nirvana",
+                "joinphrase": ""
+              }
+            ],
+            "id": "c15254c7-79ae-4d39-81b7-61fdddadc5bf",
+            "length": 241533,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "video": false,
+            "title": "Something in the Way",
+            "first-release-date": "1994-10-31"
+          },
+          "title": "Something in the Way",
+          "position": 9,
+          "id": "845f69e2-e99f-42f9-b72d-41026a7ca74c",
+          "length": 241533,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "name": "Nirvana",
+                "country": "US",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group"
+              },
+              "name": "Nirvana"
+            }
+          ],
+          "number": "9"
+        },
+        {
+          "position": 10,
+          "length": 218133,
+          "id": "392e53a9-15cb-44d4-8853-cca8b9840331",
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Nirvana",
+                "country": "US"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "number": "10",
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Nirvana",
+                "artist": {
+                  "name": "Nirvana",
+                  "country": "US",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 218133,
+            "id": "7e630960-3960-4f7f-97e2-378d58fcd6ce",
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "title": "Plateau",
+            "first-release-date": "1994-10-31"
+          },
+          "title": "Plateau"
+        },
+        {
+          "title": "Oh Me",
+          "recording": {
+            "title": "Oh Me",
+            "first-release-date": "1994-10-31",
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "Nirvana",
+                  "country": "US",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Nirvana",
+                "joinphrase": ""
+              }
+            ],
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "length": 206173,
+            "id": "c727762f-75de-46ec-b28e-8097c1f3881a"
+          },
+          "artist-credit": [
+            {
+              "artist": {
+                "name": "Nirvana",
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "sort-name": "Nirvana",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "number": "11",
+          "position": 11,
+          "length": 206173,
+          "id": "91454f2e-23b7-49db-bd22-3acf07eec112"
+        },
+        {
+          "id": "f0fa0747-b9cb-4521-9203-4486d88fbbe0",
+          "position": 12,
+          "length": 175960,
+          "number": "12",
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "US",
+                "name": "Nirvana"
+              },
+              "name": "Nirvana",
+              "joinphrase": ""
+            }
+          ],
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "country": "US",
+                  "name": "Nirvana"
+                }
+              }
+            ],
+            "length": 175960,
+            "id": "6d054703-b851-4671-a4fa-6fa75222b45f",
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "title": "Lake of Fire",
+            "first-release-date": "1994-10-31"
+          },
+          "title": "Lake of Fire"
+        },
+        {
+          "recording": {
+            "title": "All Apologies",
+            "first-release-date": "1994-10-31",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                  "sort-name": "Nirvana",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "country": "US",
+                  "name": "Nirvana"
+                },
+                "name": "Nirvana"
+              }
+            ],
+            "length": 263240,
+            "id": "18eb6dcd-2377-4260-a818-a0b958bd21c2",
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "video": false
+          },
+          "title": "All Apologies",
+          "number": "13",
+          "artist-credit": [
+            {
+              "name": "Nirvana",
+              "artist": {
+                "name": "Nirvana",
+                "country": "US",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "position": 13,
+          "id": "0d39aeca-74e0-48c4-a4d5-6e673350340a",
+          "length": 263240
+        },
+        {
+          "title": "Where Did You Sleep Last Night",
+          "recording": {
+            "length": 306066,
+            "id": "49d5edae-4f85-4b40-bb30-30b4f71dbbae",
+            "video": false,
+            "disambiguation": "live, 1993\u201011\u201018: Sony Studios, New York, NY, USA",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Nirvana",
+                "artist": {
+                  "name": "Nirvana",
+                  "country": "US",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "1980s\u20131990s US grunge band",
+                  "sort-name": "Nirvana",
+                  "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da"
+                }
+              }
+            ],
+            "first-release-date": "1994-10-31",
+            "title": "Where Did You Sleep Last Night"
+          },
+          "id": "8e66dfef-d69c-40dd-80dd-66184ec4d209",
+          "position": 14,
+          "length": 306066,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "id": "5b11f4ce-a62d-471e-81fc-a69a8278c7da",
+                "sort-name": "Nirvana",
+                "disambiguation": "1980s\u20131990s US grunge band",
+                "country": "US",
+                "name": "Nirvana"
+              },
+              "name": "Nirvana"
+            }
+          ],
+          "number": "14"
+        }
+      ],
+      "format": "CD",
+      "track-count": 14,
+      "title": ""
+    }
+  ],
+  "cover-art-archive": {
+    "back": true,
+    "darkened": false,
+    "count": 10,
+    "artwork": true,
+    "front": true
+  },
+  "title": "MTV Unplugged in New York",
+  "quality": "normal"
+}

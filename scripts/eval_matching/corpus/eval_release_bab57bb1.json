@@ -1,0 +1,754 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "sort-name": "Queen",
+        "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+        "type": "Group",
+        "country": "GB",
+        "disambiguation": "UK rock group",
+        "name": "Queen",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+      },
+      "joinphrase": "",
+      "name": "Queen"
+    }
+  ],
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "date": "1981-11-03",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "barcode": "",
+  "disambiguation": "",
+  "country": "US",
+  "release-events": [
+    {
+      "date": "1981-11-03",
+      "area": {
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "type-id": null,
+        "disambiguation": "",
+        "name": "United States",
+        "type": null,
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "sort-name": "United States"
+      }
+    }
+  ],
+  "release-group": {
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "first-release-date": "1981-11-03",
+    "title": "Greatest Hits",
+    "id": "69ce61c8-127f-3809-95d8-62fdf3ae1347",
+    "secondary-types": [
+      "Compilation"
+    ],
+    "disambiguation": "",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "artist-credit": [
+      {
+        "artist": {
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Queen",
+          "country": "GB",
+          "disambiguation": "UK rock group",
+          "type": "Group",
+          "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+          "sort-name": "Queen"
+        },
+        "name": "Queen",
+        "joinphrase": ""
+      }
+    ],
+    "primary-type": "Album"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging": "Cardboard/Paper Sleeve",
+  "id": "bab57bb1-67a7-460a-a5c4-15c9a1df7d2d",
+  "title": "Greatest Hits",
+  "asin": null,
+  "status": "Official",
+  "media": [
+    {
+      "track-offset": 0,
+      "title": "",
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "position": 1,
+      "track-count": 14,
+      "format": "12\" Vinyl",
+      "tracks": [
+        {
+          "position": 1,
+          "id": "127d2e56-4bba-3d05-b5ed-aa453e177f37",
+          "recording": {
+            "id": "6b235773-16bd-4fc5-b57e-c966f9d1db6d",
+            "video": false,
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "disambiguation": "UK rock group",
+                  "country": "GB",
+                  "name": "Queen"
+                },
+                "joinphrase": "",
+                "name": "Queen"
+              }
+            ],
+            "first-release-date": "1980-06-24",
+            "length": 215160,
+            "title": "Another One Bites the Dust"
+          },
+          "length": 216000,
+          "title": "Another One Bites the Dust",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Queen",
+              "artist": {
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "type": "Group",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "number": "1"
+        },
+        {
+          "number": "2",
+          "length": 355893,
+          "title": "Bohemian Rhapsody",
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen"
+              },
+              "joinphrase": "",
+              "name": "Queen"
+            }
+          ],
+          "recording": {
+            "video": false,
+            "id": "b1a9c0e9-d987-4042-ae91-78d6a3267d69",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Queen",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+                },
+                "name": "Queen",
+                "joinphrase": ""
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1975-11-21",
+            "title": "Bohemian Rhapsody",
+            "length": 355106
+          },
+          "id": "28f53d2a-a04a-3380-bb97-827362703457",
+          "position": 2
+        },
+        {
+          "id": "9da239fc-2c6b-3278-9749-6cf2072fca55",
+          "position": 3,
+          "recording": {
+            "title": "Crazy Little Thing Called Love",
+            "length": 163706,
+            "first-release-date": "1979-10-05",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Queen",
+                  "disambiguation": "UK rock group",
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+                },
+                "name": "Queen",
+                "joinphrase": ""
+              }
+            ],
+            "disambiguation": "",
+            "video": false,
+            "id": "fd125370-5ac9-45eb-86ad-ab99e258404b"
+          },
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "disambiguation": "UK rock group",
+                "country": "GB",
+                "name": "Queen",
+                "type": "Group",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen"
+              },
+              "name": "Queen",
+              "joinphrase": ""
+            }
+          ],
+          "length": 163826,
+          "title": "Crazy Little Thing Called Love",
+          "number": "3"
+        },
+        {
+          "id": "db82788c-6110-3222-8186-75e478720766",
+          "position": 4,
+          "recording": {
+            "title": "Killer Queen",
+            "length": 180906,
+            "first-release-date": "1974-10",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Queen",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "UK rock group",
+                  "country": "GB",
+                  "name": "Queen",
+                  "type": "Group",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen"
+                }
+              }
+            ],
+            "id": "7b3d96c9-3e22-4337-be32-f8a26b816685",
+            "video": false
+          },
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "type": "Group",
+                "name": "Queen",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Queen",
+              "joinphrase": ""
+            }
+          ],
+          "title": "Killer Queen",
+          "length": 181000,
+          "number": "4"
+        },
+        {
+          "recording": {
+            "first-release-date": "1978-11-10",
+            "length": 257000,
+            "title": "Fat Bottomed Girls",
+            "id": "0d538e7c-9261-46ec-bde9-cae13e42372c",
+            "video": false,
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "Queen",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "type": "Group",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "name": "Queen",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ]
+          },
+          "id": "ac3debd1-049e-3fdf-9fd2-a87f38419e3f",
+          "position": 5,
+          "number": "5",
+          "title": "Fat Bottomed Girls",
+          "length": 257266,
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen"
+              },
+              "joinphrase": "",
+              "name": "Queen"
+            }
+          ]
+        },
+        {
+          "number": "6",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen",
+                "type": "Group",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen"
+              },
+              "name": "Queen",
+              "joinphrase": ""
+            }
+          ],
+          "title": "Bicycle Race",
+          "length": 182493,
+          "recording": {
+            "first-release-date": "1978-10-13",
+            "length": 182000,
+            "title": "Bicycle Race",
+            "video": false,
+            "id": "135214af-6058-4705-9f17-18d396f36191",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Queen",
+                "artist": {
+                  "name": "Queen",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen"
+                }
+              }
+            ],
+            "disambiguation": ""
+          },
+          "position": 6,
+          "id": "91e2fecb-3bf7-344b-bcfc-5322014a44b9"
+        },
+        {
+          "number": "7",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "GB",
+                "name": "Queen",
+                "disambiguation": "UK rock group",
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+              },
+              "joinphrase": " & ",
+              "name": "Queen"
+            },
+            {
+              "name": "David Bowie",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Bowie, David",
+                "id": "5441c29d-3602-4898-b1a1-b77fa23b8e50",
+                "type": "Person",
+                "disambiguation": "English singer\u2010songwriter",
+                "country": "GB",
+                "name": "David Bowie",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            }
+          ],
+          "title": "Under Pressure",
+          "length": 237933,
+          "recording": {
+            "first-release-date": "1981-10",
+            "title": "Under Pressure",
+            "length": 243000,
+            "video": false,
+            "id": "32c7e292-14f1-4080-bddf-ef852e0a4c59",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Queen",
+                  "disambiguation": "UK rock group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Queen",
+                "joinphrase": " & "
+              },
+              {
+                "name": "David Bowie",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "David Bowie",
+                  "country": "GB",
+                  "disambiguation": "English singer\u2010songwriter",
+                  "type": "Person",
+                  "id": "5441c29d-3602-4898-b1a1-b77fa23b8e50",
+                  "sort-name": "Bowie, David"
+                }
+              }
+            ],
+            "disambiguation": ""
+          },
+          "id": "7680344d-c974-3999-ba4f-255aa66f97e0",
+          "position": 7
+        },
+        {
+          "title": "We Will Rock You",
+          "length": 122133,
+          "artist-credit": [
+            {
+              "name": "Queen",
+              "joinphrase": "",
+              "artist": {
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen",
+                "country": "GB",
+                "name": "Queen",
+                "disambiguation": "UK rock group",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "number": "8",
+          "id": "3861a432-b684-33a5-b1de-742e3fdc6a86",
+          "position": 8,
+          "recording": {
+            "first-release-date": "1977-10-28",
+            "title": "We Will Rock You",
+            "length": 122000,
+            "id": "f8581c2b-61ac-465d-82ae-0fa2916a4799",
+            "video": false,
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "Queen",
+                "joinphrase": "",
+                "artist": {
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen",
+                  "disambiguation": "UK rock group",
+                  "country": "GB",
+                  "name": "Queen",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "recording": {
+            "length": 181026,
+            "title": "We Are the Champions",
+            "first-release-date": "1977-10-28",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "name": "Queen",
+                  "type": "Group",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen"
+                },
+                "joinphrase": "",
+                "name": "Queen"
+              }
+            ],
+            "disambiguation": "",
+            "video": false,
+            "id": "3604eb06-4bc2-4416-9b31-ceadae51bc70"
+          },
+          "id": "5416842c-87a9-3b19-b232-fa1f049e65d4",
+          "position": 9,
+          "number": "9",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Queen",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen",
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+              }
+            }
+          ],
+          "title": "We Are the Champions",
+          "length": 181400
+        },
+        {
+          "recording": {
+            "length": 168426,
+            "title": "Flash",
+            "first-release-date": "1980",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Queen",
+                  "country": "GB",
+                  "disambiguation": "UK rock group"
+                },
+                "name": "Queen",
+                "joinphrase": ""
+              }
+            ],
+            "disambiguation": "",
+            "video": false,
+            "id": "e61e12a1-118a-4441-9a58-b5eaff2ce9bc"
+          },
+          "position": 10,
+          "id": "9af3a5ca-d9da-3a5f-8e08-c94ce2c104f3",
+          "number": "10",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "name": "Queen",
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+              },
+              "joinphrase": "",
+              "name": "Queen"
+            }
+          ],
+          "title": "Flash",
+          "length": 168400
+        },
+        {
+          "number": "11",
+          "length": 296866,
+          "title": "Somebody to Love",
+          "artist-credit": [
+            {
+              "name": "Queen",
+              "joinphrase": "",
+              "artist": {
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen",
+                "name": "Queen",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "recording": {
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "Queen",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Queen",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Queen",
+                  "country": "GB",
+                  "disambiguation": "UK rock group"
+                }
+              }
+            ],
+            "id": "3b286fbf-0dc9-45b8-bf4a-5036ac72526d",
+            "video": false,
+            "title": "Somebody to Love",
+            "length": 296466,
+            "first-release-date": "1976-11"
+          },
+          "id": "9e94c49d-6413-3b5e-8847-334f424a61b4",
+          "position": 11
+        },
+        {
+          "position": 12,
+          "id": "1cee1da6-7b9b-3cbc-a3cb-ba15aa2f254f",
+          "recording": {
+            "length": 172000,
+            "title": "You\u2019re My Best Friend",
+            "first-release-date": "1975-11-21",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "Queen",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "name": "Queen",
+                  "type": "Group",
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen"
+                }
+              }
+            ],
+            "id": "471dc436-80be-4f06-bc8f-7e2685876cfc",
+            "video": false
+          },
+          "artist-credit": [
+            {
+              "name": "Queen",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "country": "GB",
+                "name": "Queen",
+                "disambiguation": "UK rock group",
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+              }
+            }
+          ],
+          "title": "You\u2019re My Best Friend",
+          "length": 172066,
+          "number": "12"
+        },
+        {
+          "position": 13,
+          "id": "b189cd73-7972-335a-b00f-455cd6ea5c40",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Queen",
+                  "country": "GB",
+                  "disambiguation": "UK rock group",
+                  "type": "Group"
+                },
+                "joinphrase": "",
+                "name": "Queen"
+              }
+            ],
+            "disambiguation": "mono single",
+            "video": false,
+            "id": "1231a0c3-7090-4216-baf9-44cb9b05ebe7",
+            "title": "Keep Yourself Alive",
+            "length": 212000,
+            "first-release-date": "1981-11-03"
+          },
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Queen",
+              "artist": {
+                "country": "GB",
+                "name": "Queen",
+                "disambiguation": "UK rock group",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                "sort-name": "Queen"
+              }
+            }
+          ],
+          "length": 212000,
+          "title": "Keep Yourself Alive",
+          "number": "13"
+        },
+        {
+          "recording": {
+            "length": 212066,
+            "title": "Play the Game",
+            "first-release-date": "1980-05",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3",
+                  "sort-name": "Queen",
+                  "disambiguation": "UK rock group",
+                  "country": "GB",
+                  "name": "Queen",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Queen",
+                "joinphrase": ""
+              }
+            ],
+            "id": "fd69655e-91e3-42d5-8cb5-27e3a3784067",
+            "video": false
+          },
+          "id": "7087c93c-5267-3a05-a870-8e53d5855293",
+          "position": 14,
+          "number": "14",
+          "artist-credit": [
+            {
+              "artist": {
+                "type": "Group",
+                "name": "Queen",
+                "country": "GB",
+                "disambiguation": "UK rock group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Queen",
+                "id": "0383dadf-2a4e-4d10-a46a-e9e041da8eb3"
+              },
+              "name": "Queen",
+              "joinphrase": ""
+            }
+          ],
+          "title": "Play the Game",
+          "length": 212066
+        }
+      ],
+      "id": "d00a3c2c-0fa1-34eb-9f9f-62e296de264c"
+    }
+  ],
+  "cover-art-archive": {
+    "artwork": true,
+    "count": 6,
+    "darkened": false,
+    "front": true,
+    "back": true
+  },
+  "quality": "normal"
+}

@@ -1,0 +1,378 @@
+{
+  "quality": "normal",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "cover-art-archive": {
+    "front": true,
+    "darkened": false,
+    "back": true,
+    "count": 2,
+    "artwork": true
+  },
+  "country": "GB",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "packaging": "Cardboard/Paper Sleeve",
+  "barcode": "",
+  "status": "Official",
+  "artist-credit": [
+    {
+      "artist": {
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "name": "Ludwig van Beethoven",
+        "type": "Person",
+        "country": "DE",
+        "sort-name": "Beethoven, Ludwig van",
+        "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+        "disambiguation": "German composer"
+      },
+      "joinphrase": "; ",
+      "name": "Beethoven"
+    },
+    {
+      "name": "Berlin Philharmonic Orchestra",
+      "joinphrase": ", ",
+      "artist": {
+        "name": "Berliner Philharmoniker",
+        "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+        "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+        "disambiguation": "",
+        "sort-name": "Berliner Philharmoniker",
+        "country": "DE",
+        "type": "Orchestra"
+      }
+    },
+    {
+      "artist": {
+        "name": "Herbert von Karajan",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "sort-name": "Karajan, Herbert von",
+        "disambiguation": "conductor",
+        "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+        "type": "Person",
+        "country": "AT"
+      },
+      "joinphrase": "",
+      "name": "Herbert von Karajan"
+    }
+  ],
+  "asin": null,
+  "release-group": {
+    "title": "Symphony No 5",
+    "id": "d5cb0b10-ddeb-4879-b343-5af4e01712e3",
+    "disambiguation": "",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "first-release-date": "1978",
+    "primary-type": "Album",
+    "secondary-type-ids": [],
+    "secondary-types": [],
+    "artist-credit": [
+      {
+        "name": "Beethoven",
+        "joinphrase": "; ",
+        "artist": {
+          "country": "DE",
+          "type": "Person",
+          "disambiguation": "German composer",
+          "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+          "sort-name": "Beethoven, Ludwig van",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "name": "Ludwig van Beethoven"
+        }
+      },
+      {
+        "joinphrase": ", ",
+        "artist": {
+          "disambiguation": "",
+          "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+          "sort-name": "Berliner Philharmoniker",
+          "country": "DE",
+          "type": "Orchestra",
+          "name": "Berliner Philharmoniker",
+          "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+        },
+        "name": "Berlin Philharmonic Orchestra"
+      },
+      {
+        "name": "Herbert von Karajan",
+        "artist": {
+          "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+          "disambiguation": "conductor",
+          "sort-name": "Karajan, Herbert von",
+          "country": "AT",
+          "type": "Person",
+          "name": "Herbert von Karajan",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "joinphrase": ""
+      }
+    ]
+  },
+  "date": "1978",
+  "id": "f390ab14-095d-42aa-ade3-fbbafe093f9d",
+  "release-events": [
+    {
+      "area": {
+        "type": null,
+        "disambiguation": "",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "sort-name": "United Kingdom",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "type-id": null,
+        "name": "United Kingdom"
+      },
+      "date": "1978"
+    }
+  ],
+  "disambiguation": "",
+  "media": [
+    {
+      "track-count": 4,
+      "tracks": [
+        {
+          "title": "Symphony no. 5 in C minor, op. 67: I. Allegro con brio",
+          "position": 1,
+          "recording": {
+            "first-release-date": "1962",
+            "video": false,
+            "length": 438000,
+            "title": "Symphony no. 5 in C minor, op. 67: I. Allegro con brio",
+            "disambiguation": "",
+            "id": "ff3ad1c2-38c5-4fb3-b3ce-f24295f2ed89",
+            "artist-credit": [
+              {
+                "name": "Berliner Philharmoniker",
+                "artist": {
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "name": "Berliner Philharmoniker",
+                  "type": "Orchestra",
+                  "country": "DE",
+                  "sort-name": "Berliner Philharmoniker",
+                  "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+                  "disambiguation": ""
+                },
+                "joinphrase": ", "
+              },
+              {
+                "name": "Herbert von Karajan",
+                "artist": {
+                  "name": "Herbert von Karajan",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Karajan, Herbert von",
+                  "disambiguation": "conductor",
+                  "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+                  "type": "Person",
+                  "country": "AT"
+                },
+                "joinphrase": ""
+              }
+            ]
+          },
+          "id": "baa14410-7cd1-4fa4-8d3a-98d80b829181",
+          "length": 427000,
+          "number": "A1",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type": "Person",
+                "country": "DE",
+                "sort-name": "Beethoven, Ludwig van",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Ludwig van Beethoven"
+              },
+              "name": "Ludwig van Beethoven"
+            }
+          ]
+        },
+        {
+          "number": "A2",
+          "artist-credit": [
+            {
+              "name": "Ludwig van Beethoven",
+              "joinphrase": "",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Ludwig van Beethoven",
+                "country": "DE",
+                "type": "Person",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "sort-name": "Beethoven, Ludwig van"
+              }
+            }
+          ],
+          "id": "25a47559-bdf0-416a-aa66-af6440e99a9f",
+          "recording": {
+            "first-release-date": "1962",
+            "video": false,
+            "length": 604000,
+            "title": "Symphony no. 5 in C minor, op. 67: II. Andante con moto",
+            "id": "ad2d76cb-54e2-4b52-ac93-822d71e7d39e",
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "joinphrase": ", ",
+                "artist": {
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "name": "Berliner Philharmoniker",
+                  "country": "DE",
+                  "type": "Orchestra",
+                  "disambiguation": "",
+                  "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+                  "sort-name": "Berliner Philharmoniker"
+                },
+                "name": "Berliner Philharmoniker"
+              },
+              {
+                "name": "Herbert von Karajan",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Herbert von Karajan",
+                  "type": "Person",
+                  "country": "AT",
+                  "sort-name": "Karajan, Herbert von",
+                  "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+                  "disambiguation": "conductor"
+                }
+              }
+            ]
+          },
+          "position": 2,
+          "title": "Symphony no. 5 in C minor, op. 67: II. Andante con moto",
+          "length": 592000
+        },
+        {
+          "length": 282000,
+          "title": "Symphony no. 5 in C minor, op. 67: III. Scherzo. Allegro",
+          "position": 3,
+          "recording": {
+            "title": "Symphony no. 5 in C minor, op. 67: III. Scherzo. Allegro",
+            "disambiguation": "",
+            "id": "f008e4a0-8472-4afd-9bd7-a264d98d7611",
+            "video": false,
+            "first-release-date": "1962",
+            "length": 294000,
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Berliner Philharmoniker",
+                  "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+                  "disambiguation": "",
+                  "type": "Orchestra",
+                  "country": "DE",
+                  "name": "Berliner Philharmoniker",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5"
+                },
+                "joinphrase": ", ",
+                "name": "Berliner Philharmoniker"
+              },
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Herbert von Karajan",
+                  "country": "AT",
+                  "type": "Person",
+                  "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+                  "disambiguation": "conductor",
+                  "sort-name": "Karajan, Herbert von"
+                },
+                "joinphrase": "",
+                "name": "Herbert von Karajan"
+              }
+            ]
+          },
+          "id": "7040122d-37dc-4d3d-86b7-678c40f6f538",
+          "artist-credit": [
+            {
+              "name": "Ludwig van Beethoven",
+              "joinphrase": "",
+              "artist": {
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "disambiguation": "German composer",
+                "sort-name": "Beethoven, Ludwig van",
+                "country": "DE",
+                "type": "Person",
+                "name": "Ludwig van Beethoven",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            }
+          ],
+          "number": "B1"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "German composer",
+                "id": "1f9df192-a621-4f54-8850-2c5373b7eac9",
+                "sort-name": "Beethoven, Ludwig van",
+                "country": "DE",
+                "type": "Person",
+                "name": "Ludwig van Beethoven",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Ludwig van Beethoven"
+            }
+          ],
+          "number": "B2",
+          "length": 537000,
+          "title": "Symphony no. 5 in C minor, op. 67: IV. Allegro",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Berliner Philharmoniker",
+                "artist": {
+                  "type": "Orchestra",
+                  "country": "DE",
+                  "sort-name": "Berliner Philharmoniker",
+                  "id": "dea28aa9-1086-4ffa-8739-0ccc759de1ce",
+                  "disambiguation": "",
+                  "type-id": "a0b36c92-3eb1-3839-a4f9-4799823f54a5",
+                  "name": "Berliner Philharmoniker"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "artist": {
+                  "id": "d2ced2f1-6b58-47cf-ae87-5943e2ab6d99",
+                  "disambiguation": "conductor",
+                  "sort-name": "Karajan, Herbert von",
+                  "country": "AT",
+                  "type": "Person",
+                  "name": "Herbert von Karajan",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Herbert von Karajan"
+              }
+            ],
+            "video": false,
+            "first-release-date": "1962",
+            "length": 545400,
+            "title": "Symphony no. 5 in C minor, op. 67: IV. Allegro",
+            "disambiguation": "",
+            "id": "8e67c3a2-76aa-47b8-a78a-13887156bdd5"
+          },
+          "id": "4155ac10-e01f-49df-a0b7-4349d4108626"
+        }
+      ],
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "track-offset": 0,
+      "format": "12\" Vinyl",
+      "id": "a7d0790f-29cf-3d0a-8e10-62d493f041f2",
+      "title": "",
+      "position": 1
+    }
+  ],
+  "title": "Symphony no. 5"
+}
