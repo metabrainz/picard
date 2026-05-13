@@ -625,6 +625,58 @@ class CommonTests:
                 parts = metadata.compare_to_release_parts(release, weights)
                 self.assertIn((sim, 30), parts)
 
+        def test_compare_to_release_parts_barcode_match(self):
+            release = load_test_json('release.json')
+            metadata = Metadata()
+            weights = {"barcode": 6}
+            metadata['barcode'] = '123'
+            parts = metadata.compare_to_release_parts(release, weights)
+            self.assertIn((1.0, 6), parts)
+
+        def test_compare_to_release_parts_barcode_mismatch(self):
+            release = load_test_json('release.json')
+            metadata = Metadata()
+            weights = {"barcode": 6}
+            metadata['barcode'] = '999'
+            parts = metadata.compare_to_release_parts(release, weights)
+            self.assertIn((0.0, 6), parts)
+
+        def test_compare_to_release_parts_barcode_no_release_barcode(self):
+            release = load_test_json('release.json')
+            release['barcode'] = ''
+            metadata = Metadata()
+            weights = {"barcode": 6}
+            metadata['barcode'] = '123'
+            parts = metadata.compare_to_release_parts(release, weights)
+            self.assertIn((0.5, 6), parts)
+
+        def test_compare_to_release_parts_barcode_no_file_barcode(self):
+            release = load_test_json('release.json')
+            metadata = Metadata()
+            weights = {"barcode": 6}
+            parts = metadata.compare_to_release_parts(release, weights)
+            self.assertFalse(parts)
+
+        def test_compare_to_release_parts_barcode_upc_ean_normalization(self):
+            release = load_test_json('release.json')
+            release['barcode'] = '0727361379704'
+            metadata = Metadata()
+            weights = {"barcode": 6}
+            metadata['barcode'] = '727361379704'
+            parts = metadata.compare_to_release_parts(release, weights)
+            self.assertIn((1.0, 6), parts)
+
+        def test_barcode_breaks_tie_between_identical_releases(self):
+            release_with_barcode = load_test_json('release.json')
+            release_without_barcode = load_test_json('release.json')
+            release_without_barcode['barcode'] = ''
+            release_without_barcode['id'] = 'different-id'
+            metadata = Metadata()
+            release_to_metadata(release_with_barcode, metadata)
+            match_with = metadata.compare_to_release(release_with_barcode, CLUSTER_COMPARISON_WEIGHTS)
+            match_without = metadata.compare_to_release(release_without_barcode, CLUSTER_COMPARISON_WEIGHTS)
+            self.assertGreater(match_with.similarity, match_without.similarity)
+
         def test_trackcount_score(self):
             self.assertEqual(1.0, trackcount_score(5, 5))
             self.assertEqual(0.0, trackcount_score(6, 5))

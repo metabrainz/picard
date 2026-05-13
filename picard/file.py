@@ -128,6 +128,7 @@ if TYPE_CHECKING:
 FILE_COMPARISON_WEIGHTS = {
     'album': 5,
     'artist': 4,
+    'barcode': 6,
     'date': 4,
     'format': 2,
     'isvideo': 2,
