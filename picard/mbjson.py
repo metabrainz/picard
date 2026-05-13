@@ -611,6 +611,12 @@ def _translate_artist_node(node: Node, config: Config | None = None) -> Alias:
 
 
 def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None = None) -> str:
+    """Find a sort name matching the given credited name in the artist's aliases.
+
+    If translation is enabled, prefers an alias whose locale matches the
+    configured translation locales.  Falls back to the artist's default
+    sort-name, or the credited name itself if sort-name is empty.
+    """
     if 'aliases' in node:
         config = config or get_config()
         candidates = [alias for alias in node['aliases'] if alias['name'] == name and alias['sort-name']]
@@ -624,6 +630,7 @@ def _select_sort_name_from_aliases(node: Node, name: str, config: Config | None 
         if candidates:
             return candidates[0]['sort-name']
 
+    # Fallback: use the artist's own sort-name, or the credited name if empty
     return node['sort-name'] or name
 
 
