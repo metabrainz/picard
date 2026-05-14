@@ -666,6 +666,8 @@ class Album(MetadataItem):
         # Generate a list of unique media, but keep order of first appearance
         self._new_metadata['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
         self._new_metadata['~musicbrainz_discids'] = all_discids
+        if va:
+            self._new_metadata['compilation'] = '1'
 
         # Update track level metadata with cumulated values
         multiartists = len(artists) > 1
