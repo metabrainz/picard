@@ -615,6 +615,7 @@ class Album(MetadataItem):
     def _load_tracks(self):
         artists = set()
         all_media = []
+        all_discids = []
         absolutetracknumber = 0
 
         def _load_track(node, mm, artists, extra_metadata):
@@ -644,6 +645,7 @@ class Album(MetadataItem):
 
             if 'discs' in medium_node:
                 discids = [disc.get('id') for disc in medium_node['discs']]
+                all_discids += discids
                 mm['~musicbrainz_discids'] = discids
                 mm['musicbrainz_discid'] = list(self._discids.intersection(discids))
 
@@ -658,16 +660,20 @@ class Album(MetadataItem):
             for track_node in medium_node.get('data-tracks', []):
                 _load_track(track_node, mm, artists, {'~datatrack': '1'})
 
+        # Update album level metadata
         totalalbumtracks = absolutetracknumber
         self._new_metadata['~totalalbumtracks'] = totalalbumtracks
         # Generate a list of unique media, but keep order of first appearance
         self._new_metadata['media'] = " / ".join(list(OrderedDict.fromkeys(all_media)))
+        self._new_metadata['~musicbrainz_discids'] = all_discids
 
+        # Update track level metadata with cumulated values
         multiartists = len(artists) > 1
         for track in self._new_tracks:
             track.metadata['~totalalbumtracks'] = totalalbumtracks
             if multiartists:
                 track.metadata['~multiartist'] = '1'
+
         # Preserve release JSON for session export after load finished
         self._release_node_cache = self._release_node
         del self._release_node
