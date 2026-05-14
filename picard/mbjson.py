@@ -833,6 +833,8 @@ def work_to_metadata(work: Node, m: 'Metadata', instrumental: bool = False) -> N
         m.add_unique('~workcomment', work['disambiguation'])
     if 'relations' in work:
         _relations_to_metadata(work['relations'], m, instrumental, entity='work')
+    if 'iswcs' in work:
+        add_iswcs_to_metadata(work['iswcs'], m)
 
 
 def medium_to_metadata(node: Node, m: 'Metadata') -> None:
@@ -973,6 +975,11 @@ def add_user_tags(node: list[Node], obj: 'MetadataItem') -> None:
 def add_isrcs_to_metadata(node: list[str], metadata: 'Metadata') -> None:
     for isrc in node:
         metadata.add('isrc', isrc)
+
+
+def add_iswcs_to_metadata(node: list[str], metadata: 'Metadata') -> None:
+    for iswc in node:
+        metadata.add('~iswc', iswc)
 
 
 def get_score(node: Node) -> float:

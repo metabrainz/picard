@@ -569,6 +569,7 @@ class RecordingInstrumentalTest(MBJSONTest):
         self.assertIn('instrumental', m.getall('~performance_attributes'))
         self.assertEqual(m['language'], 'zxx')
         self.assertNotIn('lyricist', m)
+        self.assertEqual(m['~iswc'], 'T-070.178.113-6')
 
 
 class MultiWorkRecordingTest(MBJSONTest):
