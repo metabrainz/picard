@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         setup:
-        - macos-deployment-target: '11.0'
+        - macos-deployment-target: '13.0'
           runner: 'macos-15-intel'
-        - macos-deployment-target: '11.0'
+        - macos-deployment-target: '13.0'
           runner: 'macos-15'
       fail-fast: false
     env:
