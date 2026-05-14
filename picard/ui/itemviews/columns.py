@@ -176,6 +176,8 @@ def create_common_columns() -> tuple[Column, ...]:
     )
     barcode = make_field_column(N_("Barcode"), 'barcode', column_group=ColumnGroup.ALBUM)
     media = make_field_column(N_("Media"), 'media', column_group=ColumnGroup.ALBUM)
+    isrc = make_field_column(N_("ISRC"), 'isrc', column_group=ColumnGroup.TRACK)
+    iswc = make_field_column(N_("ISWC"), '~iswc', column_group=ColumnGroup.TRACK)
 
     # Size with numeric sort key
     size_col = make_numeric_field_column(
@@ -244,6 +246,8 @@ def create_common_columns() -> tuple[Column, ...]:
         file_name,
         file_extension,
         file_created,
+        isrc,
+        iswc,
     )
 
 
