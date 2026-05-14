@@ -8,6 +8,7 @@
 !define PRODUCT_DESCRIPTION "%(description)s"
 !define PRODUCT_URL "%(url)s"
 !define PRODUCT_HELP_URL "https://picard-docs.musicbrainz.org/"
+!define PRODUCT_CUSTOM_PROTOCOL "%(protocol)s"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
@@ -142,6 +143,11 @@ Section "!$(SectionRequired)" required
     ; Write the installation path into the registry
     WriteRegStr HKLM "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}" "InstallDir" "$INSTDIR"
 
+    ; Register a custom protocol handler
+    WriteRegStr HKCR "${PRODUCT_CUSTOM_PROTOCOL}" "URL Protocol" ""
+    WriteRegStr HKCR "${PRODUCT_CUSTOM_PROTOCOL}\DefaultIcon" "" "$INSTDIR\picard.exe,1"
+    WriteRegStr HKCR "${PRODUCT_CUSTOM_PROTOCOL}\shell\open\command" "" "$INSTDIR\picard.exe %%1"
+
     ; Create uninstaller
     WriteUninstaller "$INSTDIR\uninst.exe"
     WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "${PRODUCT_NAME}"
@@ -199,6 +205,7 @@ Section Uninstall
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "Software\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}"
+  DeleteRegKey HKCR "${PRODUCT_CUSTOM_PROTOCOL}"
 
   !insertmacro INSTALLOPTIONS_READ $R0 "removeSettings.ini" "Field 1" "State"
   StrCmp $R0 "1" 0 +2

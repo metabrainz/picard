@@ -48,6 +48,7 @@ import time
 from urllib.parse import urlparse
 
 from picard import (
+    PICARD_PROTOCOL_SCHEME,
     log,
     tagger_instance,
 )
@@ -71,6 +72,7 @@ class ParseItemsToLoad:
         self.files = set()
         self.mbids = set()
         self.urls = set()
+        self.custom_urls = set()
 
         for item in items:
             parsed = urlparse(item)
@@ -85,6 +87,8 @@ class ParseItemsToLoad:
             elif parsed.scheme in {'http', 'https'}:
                 # .path returns / before actual link
                 self.urls.add(parsed.path[1:])
+            elif parsed.scheme == PICARD_PROTOCOL_SCHEME:
+                self.custom_urls.add(item)
             elif IS_WIN and self.WINDOWS_DRIVE_TEST.match(item):
                 # Treat all single-character schemes as part of the file spec to allow
                 # specifying a drive identifier on Windows systems.

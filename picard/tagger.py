@@ -77,6 +77,7 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
+    PICARD_PROTOCOL_SCHEME,
     acoustid,
     config as _cfg,
     log,
@@ -847,7 +848,7 @@ class Tagger(QtWidgets.QApplication):
         if config.setting['browser_integration']:
             self.browser_integration.start()
         else:
-            self.browser_integration.stop()
+            self.browser_integration.stop(stop_url_handler=False)
 
     _BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
     _callback_queue: ClassVar[list] = []
@@ -887,14 +888,19 @@ class Tagger(QtWidgets.QApplication):
                 self._callback_timer_running = True
                 QtCore.QTimer.singleShot(0, self._process_callback_batch)
         elif event.type() == QtCore.QEvent.Type.FileOpen:
-            file = event.file()
-            self.add_paths([file])
-            if IS_HAIKU:
-                self.bring_tagger_front()
-            # We should just return True here, except that seems to
-            # cause the event's sender to get a -9874 error, so
-            # apparently there's some magic inside QFileOpenEvent...
-            return 1
+            url = event.url()
+            log.debug('Received file open event: %r', url)
+            if url.isLocalFile():
+                self.add_paths([url.toLocalFile()])
+                if IS_HAIKU:
+                    self.bring_tagger_front()
+                # We should just return True here, except that seems to
+                # cause the event's sender to get a -9874 error, so
+                # apparently there's some magic inside QFileOpenEvent...
+                return 1
+            elif url.scheme() == PICARD_PROTOCOL_SCHEME:
+                self.browser_integration.url_handler(url)
+                return 1
         return super().event(event)
 
     def _process_callback_batch(self) -> None:
@@ -1720,7 +1726,7 @@ def process_cmdline_args():
 
     args.processable = []
     for path in args.FILE_OR_URL:
-        if not urlparse(path).netloc:
+        if not urlparse(path).scheme:
             try:
                 path = os.path.abspath(path)
             except FileNotFoundError:
