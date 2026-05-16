@@ -309,6 +309,9 @@ def write_plugin_project(
         )
         (locale_dir / locale_filename).write_text(locale_toml_content, encoding='utf-8')
         filenames.append('locale/')
+    for filename, file_content in project.additional_files:
+        (target / filename).write_text(file_content, encoding='utf-8')
+        filenames.append(filename)
     return filenames
 
 
