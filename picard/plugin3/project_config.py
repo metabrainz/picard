@@ -26,6 +26,7 @@ from dataclasses import (
     dataclass,
     field,
 )
+from pathlib import Path
 
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 
@@ -36,6 +37,9 @@ class PluginProjectConfig:
 
     Groups all plugin metadata fields that flow through write_plugin_project,
     generate_manifest, and _create_plugin_project.
+
+    Additional files to write are provided through a list of tuples of file name
+    and file content. This could include, for example, GUI definition files.
     """
 
     name: str
@@ -52,3 +56,5 @@ class PluginProjectConfig:
     min_python_version: str = ''
     init_py_content: str | None = None
     locale_toml_content: str | None = None
+    additional_files: list[tuple[str | Path, str]] = field(default_factory=list)
+    commit_message: str = ''

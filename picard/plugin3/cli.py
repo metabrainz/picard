@@ -1791,7 +1791,7 @@ class PluginCLI:
                 return ExitCode.ERROR
             return self._cmd_init_interactive()
 
-        return self._create_plugin_project(PluginProjectConfig(name=name))
+        return self.create_plugin_project(PluginProjectConfig(name=name))
 
     def _cmd_init_interactive(self):
         """Run interactive plugin project creation."""
@@ -1899,7 +1899,7 @@ class PluginCLI:
             if locale_input:
                 source_locale = locale_input
 
-        return self._create_plugin_project(
+        return self.create_plugin_project(
             PluginProjectConfig(
                 name=name,
                 description=description,
@@ -1916,7 +1916,7 @@ class PluginCLI:
             and self._out.yesno('Create initial git commit?', default='Y'),
         )
 
-    def _create_plugin_project(
+    def create_plugin_project(
         self,
         project: PluginProjectConfig,
         *,
@@ -1992,7 +1992,7 @@ class PluginCLI:
             self._out.error(f'Failed to create plugin project: {e}')
             return ExitCode.ERROR
 
-        self._out.success(f'Created plugin {self._out.d_name(project.name)} in {self._out.d_path(target)}')
+        self._out.success(f'Created plugin "{self._out.d_name(project.name)}" in {self._out.d_path(target)}')
         for filename in filenames:
             self._out.info(filename)
 
@@ -2002,10 +2002,11 @@ class PluginCLI:
             repo = backend.init_repository(target)
             try:
                 if git_commit:
+                    commit_message = project.commit_message.strip() or 'Initial plugin scaffold'
                     author_name, commit_email = get_git_author(project.authors or None, author_email)
                     backend.add_and_commit_files(
                         repo,
-                        'Initial plugin scaffold',
+                        commit_message,
                         author_name=author_name,
                         author_email=commit_email,
                     )
