@@ -850,8 +850,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             else:
                 button.setMenu(None)
 
-    def lookup_cd(self, action):
+    def lookup_cd(self, action=None):
         device = None
+        if not isinstance(action, QtGui.QAction):
+            action = self.sender()
         if isinstance(action, QtGui.QAction):
             device = action.data()
         self.tagger.lookup_cd(device)
