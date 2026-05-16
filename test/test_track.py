@@ -20,18 +20,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import Counter
-from unittest.mock import Mock
+from unittest.mock import (
+    MagicMock,
+    Mock,
+)
 
 from test.picardtestcase import PicardTestCase
 
 from picard.album import (
     Album,
     AlbumArtist,
+    NatAlbum,
 )
 from picard.const import VARIOUS_ARTISTS_ID
 from picard.file import File
 from picard.releasegroup import ReleaseGroup
+from picard.tagger import Tagger
 from picard.track import (
+    NonAlbumTrack,
     Track,
     TrackArtist,
 )
@@ -215,3 +221,39 @@ class TrackGenresToMetadataTest(PicardTestCase):
         ret1 = Track._genres_to_metadata(genres_order1, limit=1)
         ret2 = Track._genres_to_metadata(genres_order2, limit=1)
         self.assertEqual(ret1, ret2)
+
+
+class TestRemoveNat(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.set_config_values(setting={'nat_name': 'Standalone Recordings'})
+        self.nats = NatAlbum()
+        self.tagger.nats = self.nats
+        self.tagger.albums = {'NATS': self.nats}
+        self.tagger.album_removed = MagicMock()
+        self.tagger.remove_files = MagicMock()
+        self.tagger.remove_album = MagicMock()
+
+    def _make_nat(self, nat_id):
+        nat = NonAlbumTrack(nat_id)
+        self.nats.tracks.append(nat)
+        return nat
+
+    def test_remove_nat_track_not_in_list(self):
+        """Removing a NAT track not in self.nats.tracks should not raise ValueError."""
+        nat = NonAlbumTrack('fake-recording-id')
+        # Track is NOT in self.nats.tracks — this must not crash
+        Tagger.remove_nat(self.tagger, nat)
+
+    def test_remove_nat_last_track_removes_album(self):
+        """Removing the last NAT track should remove the NAT album."""
+        nat = self._make_nat('recording-1')
+        Tagger.remove_nat(self.tagger, nat)
+        self.tagger.remove_album.assert_called_once_with(self.nats)
+
+    def test_remove_nat_not_last_track_updates(self):
+        """Removing a NAT track when others remain should update the album."""
+        nat1 = self._make_nat('recording-1')
+        self._make_nat('recording-2')
+        Tagger.remove_nat(self.tagger, nat1)
+        self.assertNotIn(nat1, self.nats.tracks)
