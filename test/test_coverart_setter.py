@@ -40,6 +40,7 @@ from unittest.mock import (
     patch,
 )
 
+from picard.coverart.image import CoverArtImage
 from picard.coverart.setters import (
     CoverArtSetter,
     CoverArtSetterMode,
@@ -179,10 +180,11 @@ class TestCoverArtSetter:
         assert result is expected_result
 
     @pytest.mark.parametrize(
-        ('mode', 'should_strip'),
+        ('mode', 'should_strip', 'mock_image'),
         [
-            (CoverArtSetterMode.REPLACE, True),
-            (CoverArtSetterMode.APPEND, False),
+            (CoverArtSetterMode.REPLACE, True, CoverArtImage(types=['front'])),
+            (CoverArtSetterMode.APPEND, False, CoverArtImage(types=['front'])),
+            (CoverArtSetterMode.REPLACE, False, CoverArtImage(types=['medium'], support_types=True)),
         ],
     )
     def test_set_image_modes(
