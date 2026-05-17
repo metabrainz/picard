@@ -397,7 +397,15 @@ class CoverArtImage:
             raise CoverArtImageIOError(e) from e
 
     def set_external_file_data(self, data: bytes):
-        self.external_file_coverart = CoverArtImage(data=data, url=self.url)
+        self.external_file_coverart = CoverArtImage(
+            data=data,
+            url=self.url,
+            comment=self.comment,
+            types=self.types,
+            support_types=self.support_types,
+            support_multi_types=self.support_multi_types,
+            id3_type=self.id3_type,
+        )
 
     @property
     def maintype(self):

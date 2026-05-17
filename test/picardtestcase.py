@@ -143,7 +143,7 @@ def get_test_data_path(*paths):
     return os.path.join('test', 'data', *paths)
 
 
-def create_fake_png(extra):
+def create_fake_png(extra: bytes = b''):
     """Creates fake PNG data that satisfies Picard's internal image type detection"""
     return b'\x89PNG\x0d\x0a\x1a\x0a' + (b'a' * 4) + b'IHDR' + struct.pack('>LL', 100, 100) + extra
 
