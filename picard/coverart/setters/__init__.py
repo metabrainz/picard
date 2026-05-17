@@ -91,7 +91,7 @@ class CoverArtSetter:
         obj
             The object to set the image on
         """
-        if self.mode == CoverArtSetterMode.REPLACE:
+        if self.mode == CoverArtSetterMode.REPLACE and self.coverartimage.is_front_image():
             obj.metadata.images.strip_front_images()
             log.debug("Replacing images with %r in %r", self.coverartimage, obj)
         else:
