@@ -38,6 +38,8 @@
 from enum import IntEnum
 
 from picard import log
+from picard.coverart.image import CoverArtImage
+from picard.item import MetadataItem
 
 from .handlers import _set_coverart_dispatch
 
@@ -52,7 +54,7 @@ class CoverArtSetterMode(IntEnum):
 class CoverArtSetter:
     """Handles setting cover art on different types of objects using single dispatch pattern."""
 
-    def __init__(self, mode: CoverArtSetterMode, coverartimage, source_obj) -> None:
+    def __init__(self, mode: CoverArtSetterMode, coverartimage: CoverArtImage, source_obj: MetadataItem) -> None:
         """
         Initialize the CoverArtSetter.
 
@@ -80,7 +82,7 @@ class CoverArtSetter:
         """
         return _set_coverart_dispatch(self.source_obj, self)
 
-    def _set_image(self, obj) -> None:
+    def _set_image(self, obj: MetadataItem) -> None:
         """
         Set the cover art image on an object based on the current mode.
 
