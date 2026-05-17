@@ -1159,7 +1159,10 @@ class Tagger(QtWidgets.QApplication):
         self.remove_files(list(track.iterfiles()))
         if not self.nats:
             return
-        self.nats.tracks.remove(track)
+        try:
+            self.nats.tracks.remove(track)
+        except ValueError:
+            return
         if not self.nats.tracks:
             self.remove_album(self.nats)
         else:
