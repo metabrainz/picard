@@ -49,7 +49,7 @@ from picard.util import encode_filename
 from picard.util.filenaming import WinPathTooLong
 
 
-def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment=None, id3_type=None):
+def create_image(extra_data, types=None, support_types=False, support_multi_types=False, comment='', id3_type=None):
     return CoverArtImage(
         data=create_fake_png(extra_data),
         types=types,
@@ -335,6 +335,16 @@ class CoverArtImageTest(PicardTestCase):
             self.assertTrue(os.path.exists(expected_filename_2))
             self.assertEqual(len(image2.data), os.path.getsize(expected_filename_2))
             self.assertEqual(2, counters[counter_filename])
+
+    def test_set_external_file_data(self):
+        image = CoverArtImage(comment='Foo', types=['back', 'spine'], support_types=True, support_multi_types=True)
+        self.assertIsNone(image.external_file_coverart)
+        image.set_external_file_data(create_fake_png())
+        self.assertIsNotNone(image.external_file_coverart)
+        self.assertEqual(image.external_file_coverart.comment, image.comment)
+        self.assertEqual(image.external_file_coverart.types, image.types)
+        self.assertEqual(image.external_file_coverart.support_types, image.support_types)
+        self.assertEqual(image.external_file_coverart.support_multi_types, image.support_multi_types)
 
 
 class DataHashTest(PicardTestCase):
