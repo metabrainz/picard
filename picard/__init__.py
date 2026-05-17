@@ -44,7 +44,6 @@ PICARD_APP_ID = "org.musicbrainz.Picard"
 PICARD_DESKTOP_NAME = PICARD_APP_ID + ".desktop"
 PICARD_VERSION = Version(3, 0, 0, 'beta', 2)
 
-
 PICARD_VERSION_STR = str(PICARD_VERSION)
 __version__ = PICARD_VERSION.short_str()
 PICARD_FANCY_VERSION_STR = __version__
@@ -56,6 +55,9 @@ PICARD_BUILD_VERSION_STR = ""
 if PICARD_BUILD_VERSION_STR:
     __version__ = f"{__version__}+{PICARD_BUILD_VERSION_STR}"
     PICARD_FANCY_VERSION_STR = f"{PICARD_FANCY_VERSION_STR} ({PICARD_BUILD_VERSION_STR})"
+
+# Custom protocol for browser integration
+PICARD_PROTOCOL_SCHEME = 'org.musicbrainz.picard'
 
 # Keep those ordered
 api_versions = [

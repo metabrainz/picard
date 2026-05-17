@@ -81,6 +81,7 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
+    PICARD_PROTOCOL_SCHEME,
     acoustid,
     config as _cfg,
     log,
@@ -820,20 +821,25 @@ class Tagger(QtWidgets.QApplication):
         if config.setting['browser_integration']:
             self.browser_integration.start()
         else:
-            self.browser_integration.stop()
+            self.browser_integration.stop(stop_url_handler=False)
 
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
             event.run()
         elif event.type() == QtCore.QEvent.Type.FileOpen:
-            file = event.file()
-            self.add_paths([file])
-            if IS_HAIKU:
-                self.bring_tagger_front()
-            # We should just return True here, except that seems to
-            # cause the event's sender to get a -9874 error, so
-            # apparently there's some magic inside QFileOpenEvent...
-            return 1
+            url = event.url()
+            log.debug('Received file open event: %r', url)
+            if url.isLocalFile():
+                self.add_paths([url.toLocalFile()])
+                if IS_HAIKU:
+                    self.bring_tagger_front()
+                # We should just return True here, except that seems to
+                # cause the event's sender to get a -9874 error, so
+                # apparently there's some magic inside QFileOpenEvent...
+                return 1
+            elif url.scheme() == PICARD_PROTOCOL_SCHEME:
+                self.browser_integration.url_handler(url)
+                return 1
         return super().event(event)
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
@@ -1621,7 +1627,7 @@ If a new instance will not be spawned files/directories will be passed to the ex
 
     args.processable = []
     for path in args.FILE_OR_URL:
-        if not urlparse(path).netloc:
+        if not urlparse(path).scheme:
             try:
                 path = os.path.abspath(path)
             except FileNotFoundError:
