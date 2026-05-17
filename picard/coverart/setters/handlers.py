@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Generator
 from contextlib import ExitStack
 from functools import singledispatch
 
@@ -26,13 +27,16 @@ from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
 from picard.file import File
-from picard.item import FileListItem
+from picard.item import (
+    FileListItem,
+    MetadataItem,
+)
 from picard.track import Track
 
 
 # Single dispatch function - this is the heart of the pattern
 @singledispatch
-def _set_coverart_dispatch(source_obj, setter):
+def _set_coverart_dispatch(source_obj: MetadataItem, setter) -> bool:
     """
     Handle unknown types in the single dispatch pattern.
 
@@ -53,7 +57,7 @@ def _set_coverart_dispatch(source_obj, setter):
 
 
 @_set_coverart_dispatch.register
-def _handle_album(album: Album, setter):
+def _handle_album(album: Album, setter) -> bool:
     """
     Handle Album objects in the single dispatch pattern.
 
@@ -90,7 +94,7 @@ def _handle_album(album: Album, setter):
 
 
 @_set_coverart_dispatch.register
-def _handle_filelist(filelist: FileListItem, setter):
+def _handle_filelist(filelist: FileListItem, setter) -> bool:
     """
     Handle FileListItem objects in the single dispatch pattern.
 
@@ -134,7 +138,7 @@ def _handle_filelist(filelist: FileListItem, setter):
 
 
 @_set_coverart_dispatch.register
-def _handle_file(file: File, setter):
+def _handle_file(file: File, setter) -> bool:
     """
     Handle File objects in the single dispatch pattern.
 
@@ -159,7 +163,7 @@ def _handle_file(file: File, setter):
     return True
 
 
-def _iter_file_parents(file: File):
+def _iter_file_parents(file: File) -> Generator[MetadataItem, None, None]:
     """
     Iterate over the parent objects of a file.
 
