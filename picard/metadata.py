@@ -86,6 +86,37 @@ SimMatchTrack = namedtuple('SimMatchTrack', 'similarity releasegroup release tra
 SimMatchRelease = namedtuple('SimMatchRelease', 'similarity release')
 
 
+def _catno_label_score(file_catno, file_label, release_label_info):
+    """Score catalog number + label match against release label-info.
+
+    Returns 1.0 for exact catno match (with matching or absent label),
+    0.0 for catno mismatch when release has catalog numbers.
+    """
+    release_catnos = []
+    for li in release_label_info:
+        cat = li.get('catalog-number', '')
+        if cat:
+            label_name = ''
+            if 'label' in li and li['label']:
+                label_name = li['label'].get('name', '')
+            release_catnos.append((cat, label_name))
+
+    if not release_catnos:
+        return 0.5  # release has no catalog numbers, neutral
+
+    for release_catno, release_label in release_catnos:
+        if file_catno.strip().lower() == release_catno.strip().lower():
+            # Catno matches; if file also has label, check it too
+            if not file_label or not release_label:
+                return 1.0
+            if file_label.strip().lower() == release_label.strip().lower():
+                return 1.0
+            # Catno matches but label differs — still a good signal
+            return 0.8
+    # File has a catno but it doesn't match any on this release
+    return 0.0
+
+
 def weights_from_release_type_scores(parts, release, release_type_scores, weight_release_type=1):
     # This function generates a score that determines how likely this release will be selected in a lookup.
     # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
@@ -152,7 +183,25 @@ def weights_from_preferred_formats(parts, release, preferred_formats, weight):
 
 
 def trackcount_score(actual, expected):
-    return 0.0 if actual > expected else 0.3 if actual < expected else 1.0
+    """Score how well a file's track count matches a release's track count.
+
+    Returns 1.0 for exact match, degrades based on the ratio of difference
+    to expected count. Files with more tracks than the release are penalized
+    more heavily (impossible without bonus tracks), but not zeroed out.
+    """
+    if actual == expected:
+        return 1.0
+    if expected == 0:
+        return 0.0
+    diff = abs(actual - expected)
+    ratio = diff / expected
+    if actual > expected:
+        # File claims more tracks than release has — unlikely but possible
+        # (bonus track edition, tagging error)
+        return max(0.0, 1.0 - ratio * 3)
+    else:
+        # File has fewer tracks — could be single disc of multi-disc release
+        return max(0.0, 1.0 - ratio * 2)
 
 
 class Metadata(MutableMapping[str, str | list[str] | None]):
@@ -303,7 +352,10 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if 'totalalbumtracks' in weights:
                 try:
                     a = int(self['~totalalbumtracks'] or self['totaltracks'])
-                    b = release['track-count']
+                    if 'track-count' in release:
+                        b = release['track-count']
+                    else:
+                        b = sum(m.get('track-count', 0) for m in release.get('media', []))
                     score = trackcount_score(a, b)
                     parts.append((score, weights['totalalbumtracks']))
                 except (ValueError, KeyError):
@@ -378,9 +430,22 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 if compare_barcodes(file_barcode, release_barcode):
                     parts.append((1.0, weights['barcode']))
                 elif release_barcode:
+                    # Both have barcodes but they differ — likely not this release,
+                    # but could be a tagging error
                     parts.append((0.0, weights['barcode']))
                 else:
-                    parts.append((0.5, weights['barcode']))
+                    # Release has no barcode — can't confirm or deny, but the file
+                    # clearly came from a release with a barcode
+                    parts.append((0.0, weights['barcode']))
+
+        if 'catno' in weights:
+            file_catno = self.get('catalognumber', '')
+            if file_catno:
+                release_label_info = release.get('label-info', [])
+                if release_label_info:
+                    file_label = self.get('label', '')
+                    score = _catno_label_score(file_catno, file_label, release_label_info)
+                    parts.append((score, weights['catno']))
 
         if 'release-group' in release:
             tagger = QtCore.QCoreApplication.instance()

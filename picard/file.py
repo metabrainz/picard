@@ -126,17 +126,22 @@ if TYPE_CHECKING:
 
 
 FILE_COMPARISON_WEIGHTS = {
-    'album': 5,
+    # Tier 1: Exact identifiers
+    'barcode': 28,
+    'catno': 22,
+    # Tier 2: Fuzzy similarity (track-level)
+    'title': 13,
     'artist': 4,
-    'barcode': 6,
+    'length': 10,
+    # Tier 2: Fuzzy similarity (release-level)
+    'album': 5,
     'date': 4,
+    'totaltracks': 4,
+    # Tier 3: Preferences / discriminators
     'format': 2,
     'isvideo': 2,
-    'length': 10,
     'releasecountry': 2,
     'releasetype': 14,
-    'title': 13,
-    'totaltracks': 4,
 }
 
 

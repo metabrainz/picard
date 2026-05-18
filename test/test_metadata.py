@@ -600,30 +600,34 @@ class CommonTests:
             metadata = Metadata()
             weights = {"totaltracks": 30}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 0.3), (5, 0.0)):
+            # Release has media with track counts [4, 3]
+            for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 1 / 3), (5, 0.25)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts[0][0], sim, places=5)
+                self.assertEqual(parts[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
             weights = {"totalalbumtracks": 30}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((7, 1.0), (6, 0.3), (8, 0.0)):
+            for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['~totalalbumtracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts[0][0], sim, places=5)
+                self.assertEqual(parts[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks_totaltracks_fallback(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
             weights = {"totalalbumtracks": 30}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((7, 1.0), (6, 0.3), (8, 0.0)):
+            for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts[0][0], sim, places=5)
+                self.assertEqual(parts[0][1], 30)
 
         def test_compare_to_release_parts_barcode_match(self):
             release = load_test_json('release.json')
@@ -648,7 +652,7 @@ class CommonTests:
             weights = {"barcode": 6}
             metadata['barcode'] = '123'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((0.5, 6), parts)
+            self.assertIn((0.0, 6), parts)
 
         def test_compare_to_release_parts_barcode_no_file_barcode(self):
             release = load_test_json('release.json')
@@ -679,8 +683,8 @@ class CommonTests:
 
         def test_trackcount_score(self):
             self.assertEqual(1.0, trackcount_score(5, 5))
-            self.assertEqual(0.0, trackcount_score(6, 5))
-            self.assertEqual(0.3, trackcount_score(4, 5))
+            self.assertAlmostEqual(0.4, trackcount_score(6, 5))  # 1 - (1/5)*3
+            self.assertAlmostEqual(0.6, trackcount_score(4, 5))  # 1 - (1/5)*2
 
         def test_weights_from_release_type_scores(self):
             release = load_test_json('release.json')

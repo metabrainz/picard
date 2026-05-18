@@ -83,7 +83,7 @@ SCENARIOS = [
         "distractors": [
             "eval_release_6a76904c.json",  # kranky US
             "eval_release_f77eeaef.json",  # 2017 reissue
-            "eval_release_748e3e26.json",  # 2018 vinyl
+            "eval_release_748e3e26.json",  # 2018 vinyl (same barcode as AU)
         ],
         "scenario": "same_album_variant_titles",
     },
@@ -153,9 +153,8 @@ SCENARIOS = [
         ],
         "scenario": "non_latin_editions",
         "expectations": {
-            "*": "ambiguous",
-            "prefer_jp_digital": "correct",
-            "prefer_us_cd": "wrong",
+            "*": "correct",  # different barcodes make these distinguishable
+            "missing_barcode": "ambiguous",
         },
     },
     {
@@ -165,19 +164,22 @@ SCENARIOS = [
         ],
         "scenario": "non_latin_editions",
         "expectations": {
-            "*": "ambiguous",
-            "prefer_us_cd": "correct",
-            "prefer_jp_digital": "wrong",
+            "*": "correct",  # different barcodes make these distinguishable
+            "missing_barcode": "ambiguous",
         },
     },
     # --- Live vs studio: same artist, different albums ---
     {
-        "target": "eval_release_eccae410.json",  # Nirvana Nevermind
+        "target": "eval_release_eccae410.json",  # Nirvana Nevermind AU
         "distractors": [
             "eval_release_f4469159.json",  # Nirvana MTV Unplugged
-            "eval_release_8e061dc4.json",  # Nevermind alt edition (leading-0 barcode)
+            "eval_release_8e061dc4.json",  # Nevermind US edition (leading-0 barcode)
         ],
         "scenario": "live_vs_studio",
+        "expectations": {
+            "*": "ambiguous",  # AU and US editions are identical except country
+            "prefer_us_cd": "wrong",  # US preference picks the US edition
+        },
     },
     {
         "target": "eval_release_f4469159.json",  # Nirvana MTV Unplugged
