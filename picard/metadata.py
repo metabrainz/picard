@@ -368,11 +368,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         Compare metadata to a MusicBrainz release. Produces a probability as a
         linear combination of weights that the metadata matches a certain album.
         """
-        parts = self.compare_to_release_parts(release, weights)
+        config = get_config()
+        parts = self.compare_to_release_parts(release, weights, config)
         sim = linear_combination_of_weights(parts.all_parts) * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
-    def compare_to_release_parts(self, release: dict, weights: 'TieredWeights'):
+    def compare_to_release_parts(self, release: dict, weights: 'TieredWeights', config=None):
         result = ReleaseMatchParts()
         id_w = weights.get('identifiers', {})
         sim_w = weights.get('similarity', {})
@@ -449,7 +450,8 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 result.similarity.append((self._date_score(release), sim_w['date']))
 
         # Tier 3: Preferences — tie-breaking discriminators
-        config = get_config()
+        if config is None:
+            config = get_config()
         if 'releasecountry' in pref_w:
             weights_from_preferred_countries(
                 result.preferences,
@@ -518,8 +520,9 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
+        config = get_config()
         for release in releases:
-            release_parts = self.compare_to_release_parts(release, weights)
+            release_parts = self.compare_to_release_parts(release, weights, config)
             sim = linear_combination_of_weights(chain(parts, release_parts.all_parts)) * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
