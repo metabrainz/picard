@@ -598,77 +598,77 @@ class CommonTests:
         def test_compare_to_release_parts_totaltracks(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totaltracks": 30}
+            weights = {"similarity": {"totaltracks": 30}}
             release_to_metadata(release, metadata)
             # Release has media with track counts [4, 3]
             for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 1 / 3), (5, 0.25)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertAlmostEqual(parts[0][0], sim, places=5)
-                self.assertEqual(parts[0][1], 30)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totalalbumtracks": 30}
+            weights = {"similarity": {"totalalbumtracks": 30}}
             release_to_metadata(release, metadata)
             for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['~totalalbumtracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertAlmostEqual(parts[0][0], sim, places=5)
-                self.assertEqual(parts[0][1], 30)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks_totaltracks_fallback(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totalalbumtracks": 30}
+            weights = {"similarity": {"totalalbumtracks": 30}}
             release_to_metadata(release, metadata)
             for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertAlmostEqual(parts[0][0], sim, places=5)
-                self.assertEqual(parts[0][1], 30)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_barcode_match(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '123'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((1.0, 6), parts)
+            self.assertIn((1.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_mismatch(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '999'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((0.0, 6), parts)
+            self.assertIn((0.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_no_release_barcode(self):
             release = load_test_json('release.json')
             release['barcode'] = ''
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '123'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((0.0, 6), parts)
+            self.assertIn((0.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_no_file_barcode(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertFalse(parts)
+            self.assertFalse(parts.identifiers)
 
         def test_compare_to_release_parts_barcode_upc_ean_normalization(self):
             release = load_test_json('release.json')
             release['barcode'] = '0727361379704'
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '727361379704'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((1.0, 6), parts)
+            self.assertIn((1.0, 6), parts.identifiers)
 
         def test_barcode_breaks_tie_between_identical_releases(self):
             release_with_barcode = load_test_json('release.json')
@@ -742,13 +742,13 @@ class CommonTests:
         def test_compare_to_track_is_video(self):
             recording = load_test_json('recording_video_null.json')
             m = Metadata()
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(1.0, match_.similarity)
             m['~video'] = '1'
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(0.0, match_.similarity)
             recording['video'] = True
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(1.0, match_.similarity)
 
         def test_compare_to_track_full(self):

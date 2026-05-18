@@ -77,18 +77,21 @@ if TYPE_CHECKING:
 #   Tier 2 (similarity): moderate weights — fuzzy matching core
 #   Tier 3 (preferences): low weights — tie-breaking discriminators
 CLUSTER_COMPARISON_WEIGHTS = {
-    # Tier 1: Exact identifiers
-    'barcode': 28,
-    'catno': 22,
-    # Tier 2: Fuzzy similarity
-    'album': 17,
-    'albumartist': 6,
-    'date': 4,
-    'totalalbumtracks': 5,
-    # Tier 3: Preferences / discriminators
-    'format': 2,
-    'releasecountry': 2,
-    'releasetype': 10,
+    'identifiers': {
+        'barcode': 28,
+        'catno': 22,
+    },
+    'similarity': {
+        'album': 17,
+        'albumartist': 6,
+        'date': 4,
+        'totalalbumtracks': 5,
+    },
+    'preferences': {
+        'format': 2,
+        'releasecountry': 2,
+        'releasetype': 10,
+    },
 }
 
 
