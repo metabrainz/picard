@@ -21,7 +21,7 @@ import urllib.request
 CORPUS_DIR = Path(__file__).parent / "corpus"
 RELEASES_TSV = CORPUS_DIR / "releases.tsv"
 MB_API = "https://musicbrainz.org/ws/2/release"
-MB_INC = "artist-credits+media+recordings+release-groups"
+MB_INC = "artist-credits+labels+media+recordings+release-groups"
 USER_AGENT = "PicardEvalMatching/1.0 (https://github.com/metabrainz/picard)"
 REQUEST_DELAY = 1.1  # seconds between requests (MB rate limit)
 

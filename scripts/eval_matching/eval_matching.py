@@ -170,16 +170,12 @@ SCENARIOS = [
     },
     # --- Live vs studio: same artist, different albums ---
     {
-        "target": "eval_release_eccae410.json",  # Nirvana Nevermind AU
+        "target": "eval_release_eccae410.json",  # Nirvana Nevermind AU (DGC)
         "distractors": [
             "eval_release_f4469159.json",  # Nirvana MTV Unplugged
-            "eval_release_8e061dc4.json",  # Nevermind US edition (leading-0 barcode)
+            "eval_release_8e061dc4.json",  # Nevermind US (Geffen, different catno)
         ],
         "scenario": "live_vs_studio",
-        "expectations": {
-            "*": "ambiguous",  # AU and US editions are identical except country
-            "prefer_us_cd": "wrong",  # US preference picks the US edition
-        },
     },
     {
         "target": "eval_release_f4469159.json",  # Nirvana MTV Unplugged
