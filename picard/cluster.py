@@ -57,7 +57,10 @@ from picard.item import (
     FileListItem,
     Item,
 )
-from picard.metadata import SimMatchRelease
+from picard.metadata import (
+    MULTI_VALUED_JOINER,
+    SimMatchRelease,
+)
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -316,11 +319,17 @@ class Cluster(FileList):
             {'album': self.metadata['album']},
         )
         config = get_config()
+        catno = self.metadata.get('catalognumber', '')
+        if catno:
+            catno = catno.split(MULTI_VALUED_JOINER)[0]
         self._lookup_task = self.tagger.mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
+            barcode=self.metadata.get('barcode', ''),
+            catno=catno,
+            date=self.metadata.get('date', ''),
             limit=config.setting['query_limit'],
         )
 
