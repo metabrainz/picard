@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-03-12 11:11+0000\n"
+"PO-Revision-Date: 2026-05-18 17:12+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/2/"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 2026.5\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -261,23 +261,23 @@ msgstr "Poort"
 
 #: picard/profile.py:50 picard/ui/ui_options_general.py:208
 msgid "Automatically scan all new files"
-msgstr "Alle nieuwe bestanden automatisch analyseren"
+msgstr "Analyseer automatisch alle nieuwe bestanden"
 
 #: picard/profile.py:51 picard/ui/ui_options_general.py:209
 msgid "Automatically cluster all new files"
-msgstr "Alle nieuwe bestanden automatisch clusteren"
+msgstr "Cluster automatisch alle nieuwe bestanden"
 
 #: picard/profile.py:52 picard/ui/ui_options_general.py:210
 msgid "Ignore MBIDs when loading new files"
-msgstr "MBID’s bij het laden van nieuwe bestanden negeren"
+msgstr "Negeer MBID’s bij het laden van nieuwe bestanden"
 
 #: picard/profile.py:53 picard/ui/ui_options_general.py:212
 msgid "Check for plugin updates during startup"
-msgstr "Zoek tijdens het opstarten naar nieuwe plug-inversies"
+msgstr "Kijk tijdens het opstarten of er nieuwe versies van plug-ins zijn"
 
 #: picard/profile.py:54 picard/ui/ui_options_general.py:213
 msgid "Check for program updates during startup"
-msgstr "Zoek tijdens het opstarten naar nieuwe programmaversies"
+msgstr "Kijk tijdens het opstarten of er een nieuwe versie van Picard is"
 
 #: picard/profile.py:55
 msgid "Days between update checks"
@@ -310,7 +310,7 @@ msgstr "Uitzonderingen voor het vertalen van schriften"
 
 #: picard/profile.py:68 picard/ui/ui_options_metadata.py:134
 msgid "Use standardized artist names"
-msgstr "Gestandaardiseerde artiestennamen gebruiken"
+msgstr "Gebruik gestandaardiseerde artiestennamen"
 
 #: picard/profile.py:69 picard/ui/ui_options_metadata.py:135
 msgid "Use standardized instrument and vocal credits"
@@ -318,7 +318,7 @@ msgstr "Gestandaardiseerde instrumentnamen en stemsoorten gebruiken"
 
 #: picard/profile.py:70 picard/ui/ui_options_metadata.py:136
 msgid "Convert Unicode punctuation characters to ASCII"
-msgstr "Unicode-tekens naar ASCII omzetten"
+msgstr "Zet Unicode-tekens om naar ASCII"
 
 #: picard/profile.py:71 picard/ui/ui_options_metadata.py:137
 msgid "Use release relationships"
@@ -326,13 +326,13 @@ msgstr "Uitgaverelaties gebruiken"
 
 #: picard/profile.py:72
 msgid "Use track and release relationships"
-msgstr "Nummer- en uitgaverelaties gebruiken"
+msgstr "Gebruik relaties van nummers en uitgaven"
 
 #: picard/profile.py:73 picard/ui/ui_options_metadata.py:139
 msgid "Guess track number and title from filename if empty"
 msgstr ""
-"Nummerpositie en titel (als die onbekend zijn) aan de hand van de "
-"bestandsnaam gokken"
+"Gok de positie en de titel van het nummer (als die onbekend zijn) aan de "
+"hand van de bestandsnaam"
 
 #: picard/profile.py:74
 msgid "Various Artists name"
@@ -344,23 +344,23 @@ msgstr "Naam voor losse opnamen"
 
 #: picard/profile.py:78 picard/ui/ui_options_releases.py:110
 msgid "Preferred release types"
-msgstr "Uitgaven van dit type voorrang geven"
+msgstr "Geef uitgaven van dit type voorrang"
 
 #: picard/profile.py:79 picard/ui/ui_options_releases.py:111
 msgid "Preferred release countries"
-msgstr "Uitgaven uit deze landen voorrang geven"
+msgstr "Geef uitgaven uit deze landen voorrang"
 
 #: picard/profile.py:80 picard/ui/ui_options_releases.py:116
 msgid "Preferred medium formats"
-msgstr "Uitgaven met deze media voorrang geven"
+msgstr "Geef uitgaven met deze media voorrang"
 
 #: picard/profile.py:83 picard/ui/ui_options_genres.py:119
 msgid "Use genres from MusicBrainz"
-msgstr "Genres van MusicBrainz gebruiken"
+msgstr "Gebruik genres van MusicBrainz"
 
 #: picard/profile.py:86 picard/ui/ui_options_genres.py:120
 msgid "Use only my genres"
-msgstr "Alleen mijn genres gebruiken"
+msgstr "Gebruik alleen mijn genres"
 
 #: picard/profile.py:87
 msgid "Use album artist genres"
@@ -368,7 +368,7 @@ msgstr "Genre van de uitgaveartiest gebruiken"
 
 #: picard/profile.py:88 picard/ui/ui_options_genres.py:122
 msgid "Use folksonomy tags as genre"
-msgstr "Folksonomietags als genre gebruiken"
+msgstr "Gebruik folksonomietags als genre"
 
 #: picard/profile.py:89
 msgid "Minimal genre usage"
@@ -388,7 +388,7 @@ msgstr "Bepaalde genres wel of niet gebruiken"
 
 #: picard/profile.py:95 picard/ui/ui_options_ratings.py:47
 msgid "Enable track ratings"
-msgstr "Nummerwaarderingen inschakelen"
+msgstr "Schakel nummerwaarderingen in"
 
 #: picard/profile.py:98
 msgid "Email to use when saving ratings"
@@ -408,15 +408,15 @@ msgstr "Geen tags opslaan"
 
 #: picard/profile.py:108 picard/ui/ui_options_tags.py:72
 msgid "Preserve timestamps of tagged files"
-msgstr "De tijdstempel van getagde bestanden behouden"
+msgstr "Behoud de tijdstempels van getagde bestanden"
 
 #: picard/profile.py:109 picard/ui/ui_options_tags.py:74
 msgid "Clear existing tags"
-msgstr "Bestaande tags verwijderen"
+msgstr "Verwijder bestaande tags"
 
 #: picard/profile.py:110 picard/ui/ui_options_tags.py:75
 msgid "Keep embedded images when clearing tags"
-msgstr "Ingebedde afbeeldingen bij het verwijderen van tags behouden"
+msgstr "Behoud ingebedde afbeeldingen bij het verwijderen van tags"
 
 #: picard/profile.py:111 picard/ui/ui_options_tags.py:76
 msgid "Remove ID3 tags from FLAC files"
@@ -424,11 +424,11 @@ msgstr "ID3-tags uit FLAC-bestanden verwijderen"
 
 #: picard/profile.py:112 picard/ui/ui_options_tags.py:77
 msgid "Remove APEv2 tags from MP3 files"
-msgstr "APEv2-tags uit MP3-bestanden verwijderen"
+msgstr "Verwijder APEv2-tags uit MP3-bestanden"
 
 #: picard/profile.py:113 picard/ui/ui_options_tags.py:78
 msgid "Fix missing seekpoints for FLAC files"
-msgstr "Ontbrekende zoekpunten in FLAC-bestanden oplossen"
+msgstr "Voeg ontbrekende zoekpunten in FLAC-bestanden op"
 
 #: picard/profile.py:114
 msgid "Preserved tags list"
@@ -448,7 +448,7 @@ msgstr "Scheidingsteken voor ID3v2.3"
 
 #: picard/profile.py:120 picard/ui/ui_options_tags_compatibility_id3.py:125
 msgid "Save iTunes compatible grouping and work"
-msgstr "iTunes-groeperingen en -composities opslaan"
+msgstr "Sla iTunes-groeperingen en -composities op"
 
 #: picard/profile.py:121
 msgid "Write ID3v1 tags"
@@ -456,19 +456,19 @@ msgstr "ID3v1-tags opslaan"
 
 #: picard/profile.py:124
 msgid "Save APEv2 tags to AAC"
-msgstr "APEv2-tags in AAC-bestanden opslaan"
+msgstr "Sla APEv2-tags op in AAC-bestanden"
 
 #: picard/profile.py:125 picard/ui/ui_options_tags_compatibility_aac.py:49
 msgid "Remove APEv2 tags from AAC files"
-msgstr "APEv2-tags uit AAC-bestanden verwijderen"
+msgstr "Verwijder APEv2-tags uit AAC-bestanden"
 
 #: picard/profile.py:128
 msgid "Save APEv2 tags to AC3"
-msgstr "APEv2-tags in AC3-bestanden opslaan"
+msgstr "Sla APEv2-tags op in AC3-bestanden"
 
 #: picard/profile.py:129 picard/ui/ui_options_tags_compatibility_ac3.py:49
 msgid "Remove APEv2 tags from AC3 files"
-msgstr "APEv2-tags uit AC3-bestanden verwijderen"
+msgstr "Verwijder APEv2-tags uit AC3-bestanden"
 
 #: picard/profile.py:132
 msgid "Write RIFF INFO tags to WAVE files"
@@ -476,7 +476,7 @@ msgstr "RIFF INFO-tags in WAVE-bestanden opslaan"
 
 #: picard/profile.py:133 picard/ui/ui_options_tags_compatibility_wave.py:59
 msgid "Remove existing RIFF INFO tags from WAVE files"
-msgstr "Bestaande RIFF INFO-tags uit WAVE-bestanden verwijderen"
+msgstr "Verwijder bestaande RIFF INFO-tags uit WAVE-bestanden"
 
 #: picard/profile.py:134 picard/ui/ui_options_tags_compatibility_wave.py:60
 msgid "RIFF INFO text encoding"
@@ -488,7 +488,7 @@ msgstr "Hoesafbeeldingen"
 
 #: picard/profile.py:141 picard/ui/ui_options_cover.py:95
 msgid "Embed cover images into tags"
-msgstr "Hoesafbeeldingen in tags opslaan"
+msgstr "Sla hoesafbeeldingen op in tags"
 
 #: picard/profile.py:142 picard/ui/ui_options_cover.py:96
 msgid "Embed only a single front image"
@@ -508,7 +508,7 @@ msgstr "Bestaande afbeeldingsbestanden overschrijven"
 
 #: picard/profile.py:146 picard/ui/ui_options_cover.py:100
 msgid "Save only a single front image as separate file"
-msgstr "Slechts één afbeelding van de voorkant als los bestand opslaan"
+msgstr "Sla slechts één afbeelding van de voorkant op als los bestand"
 
 #: picard/profile.py:147 picard/ui/ui_options_cover.py:101
 msgid "Always use the primary image type as the file name for non-front images"
@@ -542,7 +542,7 @@ msgstr "Extra bestandspatronen"
 
 #: picard/profile.py:160 picard/ui/ui_options_renaming.py:154
 msgid "Delete empty directories"
-msgstr "Lege mappen verwijderen"
+msgstr "Verwijder lege mappen"
 
 #: picard/profile.py:161
 msgid "Rename files"
@@ -554,7 +554,7 @@ msgstr "Geselecteerd bestandsnamenscript"
 
 #: picard/profile.py:165 picard/ui/ui_options_renaming_compat.py:89
 msgid "Replace non-ASCII characters"
-msgstr "Niet-ASCII-tekens vervangen"
+msgstr "Vervang niet-ASCII-tekens"
 
 #: picard/profile.py:166 picard/ui/ui_options_renaming_compat.py:90
 #: picard/ui/ui_win_compat_dialog.py:191
@@ -571,7 +571,7 @@ msgstr "Windows-ondersteuning voor lange bestandspaden"
 
 #: picard/profile.py:169 picard/ui/ui_options_renaming_compat.py:93
 msgid "Replace spaces with underscores"
-msgstr "Spaties door lage streepjes vervangen"
+msgstr "Vervang spaties door lage streepjes"
 
 #: picard/profile.py:170
 msgid "Replacement character to use for directory separators"
@@ -595,11 +595,11 @@ msgstr "Gebruikersinterface"
 
 #: picard/profile.py:186 picard/ui/ui_options_interface.py:119
 msgid "Show text labels under icons"
-msgstr "Tekst onder pictogrammen tonen"
+msgstr "Toon tekst onder pictogrammen"
 
 #: picard/profile.py:187 picard/ui/ui_options_interface.py:120
 msgid "Show icons in menus"
-msgstr "Pictogrammen in menu’s tonen"
+msgstr "Toon pictogrammen in menu’s"
 
 #: picard/profile.py:188
 msgid "User interface language"
@@ -619,7 +619,7 @@ msgstr "De ingebouwde zoekfunctie in plaats van de browser gebruiken"
 
 #: picard/profile.py:192
 msgid "Use advanced search syntax"
-msgstr "Geavanceerde zoeksyntaxis gebruiken"
+msgstr "Gebruik de geavanceerde zoeksyntaxis"
 
 #: picard/profile.py:193
 msgid "Show a usage warning dialog when Picard starts"
@@ -637,7 +637,7 @@ msgstr "Bij het opslaan van bestanden een bevestigingsvenster tonen"
 
 #: picard/profile.py:196 picard/ui/ui_options_interface.py:130
 msgid "Adjust horizontal position in file browser automatically"
-msgstr "De horizontale positie in de verkenner automatisch aanpassen"
+msgstr "Pas de horizontale positie in de verkenner automatisch aan"
 
 #: picard/profile.py:197
 msgid "Begin browsing in a specific directory"
@@ -677,7 +677,7 @@ msgstr "Verborgen bestanden negeren"
 
 #: picard/profile.py:218 picard/ui/ui_options_advanced.py:142
 msgid "Include sub-folders when adding files from folder"
-msgstr "Ook submappen toevoegen als je bestanden uit een map toevoegt"
+msgstr "Voeg ook submappen toe als je bestanden uit een map toevoegt"
 
 #: picard/profile.py:221
 msgid "Ignore track duration difference under x seconds"
@@ -686,7 +686,7 @@ msgstr "Verschillen in nummerduur van minder dan x seconden negeren"
 #: picard/profile.py:226 picard/ui/ui_options_advanced.py:140
 msgid "Maximum number of entities to return per MusicBrainz query"
 msgstr ""
-"Maximaal aantal objecten dat per MusicBrainz-zoekopdracht wordt geretourneerd"
+"Maximumaantal objecten dat per MusicBrainz-zoekopdracht wordt geretourneerd:"
 
 #: picard/profile.py:229
 msgid "Completeness check ignore: Video tracks"
@@ -746,7 +746,7 @@ msgstr "Standaard luisterpoort"
 
 #: picard/profile.py:249 picard/ui/ui_options_network.py:141
 msgid "Listen only on localhost"
-msgstr "Alleen op localhost luisteren"
+msgstr "Luister alleen op localhost"
 
 #: picard/profile.py:252
 msgid "Minimal similarity for file lookups"
@@ -3508,7 +3508,7 @@ msgstr "Ctrl+E"
 
 #: picard/ui/mainwindow.py:582
 msgid "Close Window"
-msgstr "Vester sluiten"
+msgstr "Venster sluiten"
 
 #: picard/ui/mainwindow.py:583
 msgid "Ctrl+W"
@@ -3648,7 +3648,7 @@ msgstr "&Hoesafbeelding"
 
 #: picard/ui/mainwindow.py:738
 msgid "&Actions"
-msgstr "&Acties"
+msgstr "&Werkbalk"
 
 #: picard/ui/mainwindow.py:747 picard/ui/mainwindow.py:1142
 #: picard/ui/searchdialog/__init__.py:48
@@ -3745,7 +3745,7 @@ msgstr "Ctrl+I"
 
 #: picard/ui/mainwindow.py:827
 msgid "&Refresh"
-msgstr "&Herladen"
+msgstr "Ver&nieuwen"
 
 #: picard/ui/mainwindow.py:828
 msgid "Ctrl+R"
@@ -3821,7 +3821,7 @@ msgstr "De bijbehorende map in je verkenner openen"
 
 #: picard/ui/mainwindow.py:913
 msgid "&Check for Update…"
-msgstr "&Zoek naar nieuwe versies …"
+msgstr "&Kijk of er een nieuwe versie is …"
 
 #: picard/ui/mainwindow.py:952
 msgid "From CD ripper &log file…"
@@ -3862,7 +3862,7 @@ msgstr "&Hulp"
 
 #: picard/ui/mainwindow.py:1103 picard/ui/ui_options_plugins.py:134
 msgid "Actions"
-msgstr "Acties"
+msgstr "Handelingen"
 
 #: picard/ui/mainwindow.py:1155
 msgid "Track"
@@ -4631,19 +4631,17 @@ msgstr "Uitgebreide opties"
 #: picard/ui/ui_options_advanced.py:139
 msgid "Ignore file paths matching the following regular expression:"
 msgstr ""
-"Bestandspaden negeren als ze met de volgende reguliere expressie "
-"overeenkomen:"
+"Negeer bestandspaden als ze met de volgende reguliere expressie overeenkomen:"
 
 #: picard/ui/ui_options_advanced.py:141
 msgid "Ignore track duration difference under this number of seconds"
 msgstr ""
-"Verschillen korter dan dit aantal seconden bij het vergelijken van nummers "
-"negeren:"
+"Negeer verschillen in de nummerduur die kleiner zijn dan dit aantal seconden:"
 
 #: picard/ui/ui_options_advanced.py:144
 msgid ""
 "Ignore the following tracks when determining whether a release is complete"
-msgstr "Deze nummers negeren bij het bepalen of een uitgave compleet is:"
+msgstr "Negeer bij het bepalen of een uitgave compleet is deze soorten nummers:"
 
 #: picard/ui/ui_options_advanced.py:145
 msgid "Video tracks"
@@ -4679,11 +4677,11 @@ msgstr "Standaard cd-station voor het opzoeken van cd’s:"
 
 #: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
-msgstr "De volgende bestandsnaam voor afbeeldingen gebruiken:"
+msgstr "Gebruik de volgende bestandsnaam voor afbeeldingen:"
 
 #: picard/ui/ui_options_cover.py:99
 msgid "Overwrite the file if it already exists"
-msgstr "Bestaande bestanden overschrijven"
+msgstr "Overschrijf bestaande bestanden"
 
 #: picard/ui/ui_options_cover.py:102
 msgid "Cover Art Providers"
@@ -4709,11 +4707,11 @@ msgstr "Audiovingerafdrukken"
 
 #: picard/ui/ui_options_fingerprinting.py:98
 msgid "Do not use audio fingerprinting"
-msgstr "Geen vingerafdrukken gebruiken"
+msgstr "Gebruik geen vingerafdrukken"
 
 #: picard/ui/ui_options_fingerprinting.py:99
 msgid "Use AcoustID"
-msgstr "AcoustID gebruiken"
+msgstr "Gebruik AcoustID’s"
 
 #: picard/ui/ui_options_fingerprinting.py:100
 msgid "AcoustID Settings"
@@ -4721,11 +4719,11 @@ msgstr "AcoustID-instellingen"
 
 #: picard/ui/ui_options_fingerprinting.py:101
 msgid "Ignore existing AcoustID fingerprints"
-msgstr "Bestaande AcoustID’s negeren"
+msgstr "Negeer bestaande AcoustID’s"
 
 #: picard/ui/ui_options_fingerprinting.py:102
 msgid "Save AcoustID fingerprints to file tags"
-msgstr "AcoustID-vingerafdrukken in bestandstags opslaan"
+msgstr "Sla AcoustID-vingerafdrukken op in bestandstags"
 
 #: picard/ui/ui_options_fingerprinting.py:103
 msgid "Maximum threads to use for calculator:"
@@ -4821,7 +4819,7 @@ msgstr "Maximumaantal genres:"
 
 #: picard/ui/ui_options_genres.py:126
 msgid "Join multiple genres with:"
-msgstr "Meerdere genres samenvoegen met:"
+msgstr "Voeg meerdere genres samen met:"
 
 #: picard/ui/ui_options_genres.py:127
 msgid " / "
@@ -4840,8 +4838,8 @@ msgstr ""
 #: picard/ui/ui_options_genres.py:130
 msgid "Playground for genres or folksonomy tags filters (cleared on exit):"
 msgstr ""
-"Speelplein voor filters met genres en folksonomietags (wordt bij het "
-"afsluiten gewist):"
+"Zandbak voor filters met genres en folksonomietags (wordt bij het afsluiten "
+"gewist):"
 
 #: picard/ui/ui_options_interface.py:118
 msgid "Appearance"
@@ -4865,11 +4863,11 @@ msgstr "Geavanceerde zoeksyntaxis gebruiken"
 
 #: picard/ui/ui_options_interface.py:127
 msgid "Show the new user dialog when starting Picard"
-msgstr "Bij het opstarten van Picard de melding voor nieuwe gebruikers tonen"
+msgstr "Toon bij het opstarten de melding voor nieuwe gebruikers"
 
 #: picard/ui/ui_options_interface.py:131
 msgid "Begin browsing in the following directory:"
-msgstr "Met bladeren in de volgende map beginnen:"
+msgstr "Begin met bladeren in de volgende map:"
 
 #: picard/ui/options/interface_colors.py:92
 #: picard/ui/ui_options_interface_colors.py:49
@@ -4878,7 +4876,7 @@ msgstr "Kleuren"
 
 #: picard/ui/ui_options_interface_toolbar.py:72
 msgid "Customize Action Toolbar"
-msgstr "Actiewerkbalk aanpassen"
+msgstr "De werkbalk aanpassen"
 
 #: picard/ui/ui_options_interface_toolbar.py:73
 msgid "Add a new button to Toolbar"
@@ -4902,7 +4900,7 @@ msgstr "Verwijdert een element uit de werkbalk"
 
 #: picard/ui/ui_options_interface_top_tags.py:37
 msgid "Show the below tags above all other tags in the metadata view"
-msgstr "De volgende tags bovenin het overzicht van metadata tonen"
+msgstr "Toon de volgende tags bovenin het overzicht van metadata"
 
 #: picard/ui/ui_options_maintenance.py:86
 msgid "Configuration File:"
@@ -4958,7 +4956,7 @@ msgstr "Het vertalen van artiestennamen voor deze schriften uitschakelen:"
 
 #: picard/ui/ui_options_metadata.py:138
 msgid "Use track relationships"
-msgstr "Nummerrelaties gebruiken"
+msgstr "Gebruik relaties van nummers"
 
 #: picard/ui/ui_options_metadata.py:140
 msgid "Custom Fields"
@@ -5086,7 +5084,7 @@ msgstr "Van media met voorrang verwijderen"
 
 #: picard/ui/ui_options_renaming.py:150
 msgid "Move files when saving"
-msgstr "Bestanden bij het opslaan verplaatsen"
+msgstr "Verplaats bestanden bij het opslaan"
 
 #: picard/ui/ui_options_renaming.py:151
 msgid "Destination directory:"
@@ -5094,11 +5092,11 @@ msgstr "Doelmap:"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
-msgstr "Ook deze bestanden verplaatsen (niet hoofdlettergevoelig):"
+msgstr "Verplaats ook deze bestanden (niet hoofdlettergevoelig):"
 
 #: picard/ui/ui_options_renaming.py:155
 msgid "Rename files when saving"
-msgstr "Bestanden bij het opslaan een andere naam geven"
+msgstr "Hernoem bestanden bij het opslaan"
 
 #: picard/ui/ui_options_renaming.py:156 picard/ui/ui_scripteditor.py:208
 msgid "Selected file naming script:"
@@ -5122,7 +5120,7 @@ msgstr "Na"
 
 #: picard/ui/ui_options_renaming.py:161
 msgid "Reload examples"
-msgstr "Voorbeelden herladen"
+msgstr "Voorbeelden opnieuw laden"
 
 #: picard/ui/ui_options_renaming_compat.py:91
 msgid "Customize…"
@@ -5130,11 +5128,11 @@ msgstr "Aanpassen …"
 
 #: picard/ui/ui_options_renaming_compat.py:92
 msgid "Allow paths longer than 259 characters"
-msgstr "Bestandspaden langer dan 259 tekens toestaan"
+msgstr "Sta bestandspaden langer dan 259 tekens toe"
 
 #: picard/ui/ui_options_renaming_compat.py:94
 msgid "Replace directory separators with:"
-msgstr "Scheidingstekens voor mappen vervangen door:"
+msgstr "Vervang scheidingstekens voor mappen door:"
 
 #: picard/ui/ui_options_script.py:119
 msgid "Enable Tagger Script(s)"
@@ -5162,7 +5160,7 @@ msgstr "Tagscript omlaag"
 
 #: picard/ui/ui_options_script.py:124 picard/ui/ui_options_script.py:125
 msgid "Add new tagger script"
-msgstr "Nieuw tagscript toevoegen"
+msgstr "Nieuw tagscript"
 
 #: picard/ui/ui_options_script.py:126
 msgid "Remove the selected tagger script"
@@ -5186,7 +5184,7 @@ msgstr "Documentatie"
 
 #: picard/ui/ui_options_tags.py:71
 msgid "Write tags to files"
-msgstr "Tags naar bestanden schrijven"
+msgstr "Schrijf tags naar bestanden"
 
 #: picard/ui/ui_options_tags.py:73
 msgid "Before Tagging"
@@ -5196,8 +5194,8 @@ msgstr "Vóór het taggen"
 msgid ""
 "Preserve these tags from being cleared or overwritten with MusicBrainz data:"
 msgstr ""
-"Deze tags behouden in plaats van ze te wissen of met gegevens van "
-"MusicBrainz te overschrijven:"
+"Behoud deze tags in plaats van ze te wissen of met gegevens van MusicBrainz "
+"te overschrijven:"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:45
 msgid "AAC files"
@@ -5220,12 +5218,12 @@ msgstr ""
 #: picard/ui/ui_options_tags_compatibility_aac.py:47
 #: picard/ui/ui_options_tags_compatibility_ac3.py:47
 msgid "Save APEv2 tags"
-msgstr "APEv2-tags opslaan"
+msgstr "Sla APEv2-tags op"
 
 #: picard/ui/ui_options_tags_compatibility_aac.py:48
 #: picard/ui/ui_options_tags_compatibility_ac3.py:48
 msgid "Do not save tags"
-msgstr "Geen tags opslaan"
+msgstr "Sla geen tags op"
 
 #: picard/ui/ui_options_tags_compatibility_ac3.py:45
 msgid "AC3 files"
@@ -5277,7 +5275,7 @@ msgstr "ISO-8859-1"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:123
 msgid "Join multiple ID3v2.3 tags with:"
-msgstr "Meerdere ID3v2.3-tags samenvoegen met:"
+msgstr "Voeg meerdere ID3v2.3-tags samen met:"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:124
 msgid ""
@@ -5286,12 +5284,12 @@ msgid ""
 "</p></body></html>"
 msgstr ""
 "<html><head/><body><p>Standaard is ‘/’ om compatibiliteit te behouden met "
-"eerdere versies van Picard</p><p>Nieuwe alternatieven zijn ‘;_’ of ‘_/_’ of "
+"eerdere versies van Picard.</p><p>Nieuwe alternatieven zijn ‘;_’, ‘_/_’ of "
 "je eigen voorkeur. </p></body></html>"
 
 #: picard/ui/ui_options_tags_compatibility_id3.py:126
 msgid "Also include ID3v1 tags in the files"
-msgstr "Ook ID3v1-tags aan de bestanden toevoegen"
+msgstr "Voeg ook ID3v1-tags aan de bestanden toe"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:56
 msgid "WAVE files"
@@ -5311,7 +5309,7 @@ msgstr ""
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:58
 msgid "Also include RIFF INFO tags in the files"
-msgstr "Ook RIFF INFO-tags aan bestanden toevoegen"
+msgstr "Voeg ook RIFF INFO-tags aan bestanden toe"
 
 #: picard/ui/ui_options_tags_compatibility_wave.py:61
 msgid "Windows-1252"
@@ -5335,7 +5333,7 @@ msgstr "Alleen afbeeldingen van de volgende grootte gebruiken:"
 
 #: picard/ui/ui_provider_options_caa.py:72
 msgid "Download only approved images"
-msgstr "Alleen goedgekeurde afbeeldingen downloaden"
+msgstr "Download alleen goedgekeurde afbeeldingen"
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid "Local cover art files match the following regular expression:"
@@ -5421,7 +5419,7 @@ msgstr "Bestandsnamen naar tags converteren"
 
 #: picard/ui/ui_tagsfromfilenames.py:54
 msgid "Replace underscores with spaces"
-msgstr "Lage streepjes door spaties vervangen"
+msgstr "Vervang lage streepjes door spaties"
 
 #: picard/ui/ui_tagsfromfilenames.py:55
 msgid "&Preview"
@@ -5489,7 +5487,7 @@ msgstr "Gekoppelde profielen"
 
 #: picard/ui/options/dialog.py:149
 msgid "Show which profiles are attached to the options on this page"
-msgstr "Tonen welke profielen opties op deze pagina bevatten"
+msgstr "Toon welke profielen opties op deze pagina bevatten"
 
 #: picard/ui/options/dialog.py:224
 msgid ""
@@ -5660,7 +5658,7 @@ msgid ""
 msgstr ""
 "<html><head/><body>\n"
 "<p>Je kan genres toevoegen om filters te testen, één per regel.<br/>\n"
-"Het speelplein wordt niet opgeslagen als de instellingen worden verlaten.\n"
+"De zandbak wordt niet opgeslagen als de instellingen worden verlaten.\n"
 "</p>\n"
 "<p>\n"
 "Een rode achtergrond betekent dat de tag wordt overgeslagen.<br/>\n"
@@ -5759,7 +5757,7 @@ msgstr ""
 
 #: picard/ui/options/interface_toolbar.py:60
 msgid "Action Toolbar"
-msgstr "Actiewerkbalk"
+msgstr "Werkbalk"
 
 #: picard/ui/options/interface_toolbar.py:68
 msgid "Add Folder"
@@ -6306,7 +6304,7 @@ msgstr "Weet je zeker dat je dit profiel wil verwijderen?"
 
 #: picard/ui/widgets/scriptdocumentation.py:109
 msgid "Open Scripting Documentation in your browser"
-msgstr "Documentatie over scripts in je browser openen"
+msgstr "Open de documentatie over scripts in je browser"
 
 #: picard/ui/widgets/scriptlistwidget.py:54
 msgid "Rename script"
@@ -6466,11 +6464,11 @@ msgstr "AcoustID"
 
 #: picard/util/tags.py:39
 msgid "Album Artist Sort Order"
-msgstr "Sorteervolgorde van albumartiest"
+msgstr "Sorteernaam van de uitgaveartiest"
 
 #: picard/util/tags.py:41
 msgid "Album Sort Order"
-msgstr "Sorteervolgorde van album"
+msgstr "Sorteervolgorde van uitgave"
 
 #: picard/util/tags.py:42
 msgid "Arranger"
@@ -6482,7 +6480,7 @@ msgstr "Artiesten"
 
 #: picard/util/tags.py:45
 msgid "Artist Sort Order"
-msgstr "Sorteervolgorde van artiest"
+msgstr "Sorteervolgorde van de artiest"
 
 #: picard/util/tags.py:46
 msgid "ASIN"
@@ -6550,7 +6548,7 @@ msgstr "Naadloos afspelen"
 
 #: picard/util/tags.py:67
 msgid "Grouping"
-msgstr "Groeperen"
+msgstr "Genregroep"
 
 #: picard/util/tags.py:68
 msgid "ISRC"
@@ -6642,7 +6640,7 @@ msgstr "MusicIP-PUID"
 
 #: picard/util/tags.py:94
 msgid "Original Album"
-msgstr "Oorspronkelijke album"
+msgstr "Origineel album"
 
 #: picard/util/tags.py:95
 msgid "Original Artist"
@@ -6674,7 +6672,7 @@ msgstr "Producent"
 
 #: picard/util/tags.py:103
 msgid "R128 Album Gain"
-msgstr "R218-albumcorrectie"
+msgstr "R128-uitgavecorrectie"
 
 #: picard/util/tags.py:104
 msgid "R128 Track Gain"
@@ -6702,15 +6700,15 @@ msgstr "Remixer"
 
 #: picard/util/tags.py:111
 msgid "ReplayGain Album Gain"
-msgstr "ReplayGain-albumcorrectie"
+msgstr "ReplayGain-uitgavecorrectie"
 
 #: picard/util/tags.py:112
 msgid "ReplayGain Album Peak"
-msgstr "ReplayGain-albumpiek"
+msgstr "ReplayGain-uitgavepiek"
 
 #: picard/util/tags.py:113
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain-albumbereik"
+msgstr "ReplayGain-uitgavebereik"
 
 #: picard/util/tags.py:114
 msgid "ReplayGain Reference Loudness"
@@ -6738,7 +6736,7 @@ msgstr "Shownaam"
 
 #: picard/util/tags.py:120
 msgid "Show Name Sort Order"
-msgstr "Sorteervolgorde shownaam"
+msgstr "Sorteervolgorde van de shownaam"
 
 #: picard/util/tags.py:121
 msgid "Show Work & Movement"
@@ -6774,7 +6772,7 @@ msgstr "Compositie"
 
 #: picard/util/tags.py:130
 msgid "Writer"
-msgstr "Auteur"
+msgstr "Schrijver"
 
 #: picard/util/time.py:48
 #, python-format
