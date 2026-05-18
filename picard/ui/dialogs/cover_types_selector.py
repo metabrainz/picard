@@ -24,6 +24,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard.const.defaults import DEFAULT_CA_NEVER_REPLACE_TYPES
 from picard.coverart.utils import (
     CAA_TYPES,
     translate_caa_type,
@@ -44,17 +45,13 @@ class CoverTypesSelectorDialog(PicardDialog):
 
         self._types_list = QtWidgets.QListWidget(self)
 
-        # Ensure selected_types is a set
-        selected_types = set(selected_types or ())
-
         for type in CAA_TYPES:
             name = type['name']
             item = QtWidgets.QListWidgetItem(translate_caa_type(name))
             item.setData(QtCore.Qt.ItemDataRole.UserRole, name)
-            item.setCheckState(
-                QtCore.Qt.CheckState.Checked if name in selected_types else QtCore.Qt.CheckState.Unchecked
-            )
             self._types_list.addItem(item)
+
+        self._update_checked_items(selected_types)
 
         self._layout.addWidget(self._types_list)
 
@@ -63,7 +60,24 @@ class CoverTypesSelectorDialog(PicardDialog):
         buttonbox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Cancel)
         buttonbox.accepted.connect(self.accept)
         buttonbox.rejected.connect(self.reject)
+        reset_button = QtWidgets.QPushButton(_("Restore &Defaults"))
+        buttonbox.addButton(reset_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
+        reset_button.clicked.connect(self.reset_to_defaults)
         self._layout.addWidget(buttonbox)
+
+    def _update_checked_items(self, selected_types: Iterable[str] | None):
+        # Ensure selected_types is a set
+        selected_types = set(selected_types or ())
+        for i in range(self._types_list.count()):
+            item = self._types_list.item(i)
+            if item:
+                type_name = item.data(QtCore.Qt.ItemDataRole.UserRole)
+                item.setCheckState(
+                    QtCore.Qt.CheckState.Checked if type_name in selected_types else QtCore.Qt.CheckState.Unchecked
+                )
+
+    def reset_to_defaults(self):
+        self._update_checked_items(DEFAULT_CA_NEVER_REPLACE_TYPES)
 
     def selected_types(self) -> Generator[str, None, None]:
         for i in range(self._types_list.count()):
