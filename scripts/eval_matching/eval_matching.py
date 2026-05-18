@@ -210,6 +210,31 @@ SCENARIOS = [
         ],
         "scenario": "remaster_vs_original",
     },
+    # --- Same title, different artists (Greatest Hits by various bands) ---
+    {
+        "target": "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+        "distractors": [
+            "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+            "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        ],
+        "scenario": "same_title_different_artist",
+    },
+    {
+        "target": "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+        "distractors": [
+            "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+            "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        ],
+        "scenario": "same_title_different_artist",
+    },
+    {
+        "target": "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        "distractors": [
+            "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+            "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+        ],
+        "scenario": "same_title_different_artist",
+    },
 ]
 
 

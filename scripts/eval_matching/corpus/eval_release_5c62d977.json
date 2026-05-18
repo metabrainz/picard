@@ -1,0 +1,742 @@
+{
+  "id": "5c62d977-f527-42c0-80db-c1a6ff17841e",
+  "quality": "normal",
+  "label-info": [
+    {
+      "catalog-number": "19114-2",
+      "label": {
+        "sort-name": "Atlantic",
+        "id": "50c384a2-0b44-401b-b893-8181173339c7",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
+        "name": "Atlantic",
+        "label-code": 121,
+        "disambiguation": "Warner Music imprint",
+        "type": "Imprint"
+      }
+    }
+  ],
+  "date": "",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "disambiguation": "Swedish pop group",
+        "type": "Group",
+        "country": "SE",
+        "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+        "sort-name": "ABBA",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "ABBA"
+      },
+      "name": "ABBA"
+    }
+  ],
+  "release-group": {
+    "id": "763dbe66-d5fb-332e-8b2d-599f8b272edc",
+    "title": "Greatest Hits",
+    "secondary-types": [
+      "Compilation"
+    ],
+    "primary-type": "Album",
+    "disambiguation": "",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "first-release-date": "1975-11-17",
+    "artist-credit": [
+      {
+        "artist": {
+          "name": "ABBA",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+          "sort-name": "ABBA",
+          "country": "SE",
+          "type": "Group",
+          "disambiguation": "Swedish pop group"
+        },
+        "name": "ABBA",
+        "joinphrase": ""
+      }
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "disambiguation": "silver faced",
+  "status": "Official",
+  "release-events": [
+    {
+      "area": {
+        "type-id": null,
+        "name": "United States",
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "disambiguation": "",
+        "sort-name": "United States",
+        "type": null
+      },
+      "date": ""
+    }
+  ],
+  "cover-art-archive": {
+    "count": 4,
+    "back": true,
+    "artwork": true,
+    "front": false,
+    "darkened": false
+  },
+  "title": "Greatest Hits",
+  "packaging": "Jewel Case",
+  "country": "US",
+  "media": [
+    {
+      "track-count": 14,
+      "format": "CD",
+      "tracks": [
+        {
+          "length": 200333,
+          "id": "56249bf6-22d5-4dad-89fb-651fa37694c4",
+          "title": "SOS",
+          "position": 1,
+          "recording": {
+            "first-release-date": "1975-04-21",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "Swedish pop group",
+                  "country": "SE",
+                  "type": "Group"
+                },
+                "name": "ABBA"
+              }
+            ],
+            "video": false,
+            "title": "SOS",
+            "id": "f2ada1c9-fa39-4d15-aa11-9bd798a885a9",
+            "length": 202000,
+            "disambiguation": "album version"
+          },
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "ABBA",
+              "artist": {
+                "disambiguation": "Swedish pop group",
+                "type": "Group",
+                "country": "SE",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "sort-name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA"
+              }
+            }
+          ],
+          "number": "1"
+        },
+        {
+          "position": 2,
+          "title": "He Is Your Brother",
+          "length": 198333,
+          "id": "ff5403c7-a4d1-44fd-81d8-887fdad3a2c3",
+          "recording": {
+            "disambiguation": "",
+            "id": "37ceefad-4163-4932-9de3-c82e9876eff0",
+            "length": 199373,
+            "video": false,
+            "title": "He Is Your Brother",
+            "artist-credit": [
+              {
+                "name": "ABBA",
+                "artist": {
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "country": "SE",
+                  "type": "Group",
+                  "disambiguation": "Swedish pop group"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1972-11-01"
+          },
+          "number": "2",
+          "artist-credit": [
+            {
+              "artist": {
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group"
+              },
+              "name": "ABBA",
+              "joinphrase": ""
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "type": "Group",
+                "country": "SE",
+                "disambiguation": "Swedish pop group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "sort-name": "ABBA"
+              },
+              "name": "ABBA",
+              "joinphrase": ""
+            }
+          ],
+          "number": "3",
+          "recording": {
+            "title": "Ring Ring",
+            "video": false,
+            "length": 185000,
+            "id": "692a0e1e-0b76-47f1-b3f9-f70c15451979",
+            "disambiguation": "English version",
+            "first-release-date": "1973-03-26",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "Swedish pop group",
+                  "country": "SE",
+                  "type": "Group"
+                },
+                "name": "ABBA"
+              }
+            ]
+          },
+          "length": 186333,
+          "id": "be9e619e-f62b-41ed-8ad8-3e6db80b7610",
+          "title": "Ring Ring",
+          "position": 3
+        },
+        {
+          "number": "4",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group"
+              },
+              "name": "ABBA"
+            }
+          ],
+          "position": 4,
+          "title": "Another Town, Another Train",
+          "id": "5d086efa-8323-483f-998c-aff5fe4a0549",
+          "length": 192133,
+          "recording": {
+            "disambiguation": "",
+            "length": 193066,
+            "id": "49fa64ab-c150-403f-a7c7-e6cd013dc006",
+            "title": "Another Town, Another Train",
+            "video": false,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "Swedish pop group",
+                  "type": "Group",
+                  "country": "SE",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "ABBA"
+                },
+                "name": "ABBA"
+              }
+            ],
+            "first-release-date": "1973-03-26"
+          }
+        },
+        {
+          "title": "Honey Honey",
+          "position": 5,
+          "length": 175000,
+          "id": "5d385878-7269-486d-9f38-df8846c0943a",
+          "recording": {
+            "first-release-date": "1974-03-04",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
+                  "country": "SE",
+                  "disambiguation": "Swedish pop group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "ABBA",
+                  "sort-name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8"
+                },
+                "name": "ABBA"
+              }
+            ],
+            "title": "Honey, Honey",
+            "video": false,
+            "length": 176773,
+            "id": "41ddb95e-2c40-4098-a900-753b5e51ed56",
+            "disambiguation": ""
+          },
+          "number": "5",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "ABBA",
+              "artist": {
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group",
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8"
+              }
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group",
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8"
+              },
+              "name": "ABBA",
+              "joinphrase": ""
+            }
+          ],
+          "number": "6",
+          "id": "3345c9cf-a4d9-4ff2-900e-1bfb6f652312",
+          "length": 186466,
+          "position": 6,
+          "title": "So Long",
+          "recording": {
+            "first-release-date": "1974-11-18",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "ABBA",
+                "artist": {
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "country": "SE",
+                  "type": "Group",
+                  "disambiguation": "Swedish pop group"
+                }
+              }
+            ],
+            "video": false,
+            "title": "So Long",
+            "id": "3eb4c364-5a4a-4a4b-9bf3-cf1100ff534f",
+            "length": 186426,
+            "disambiguation": ""
+          }
+        },
+        {
+          "length": 212000,
+          "id": "4c3df460-abdb-4966-b961-16103305aa44",
+          "position": 7,
+          "title": "Mamma Mia",
+          "recording": {
+            "first-release-date": "1975-04-21",
+            "artist-credit": [
+              {
+                "name": "ABBA",
+                "artist": {
+                  "sort-name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "ABBA",
+                  "disambiguation": "Swedish pop group",
+                  "type": "Group",
+                  "country": "SE"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Mamma Mia",
+            "video": false,
+            "length": 213000,
+            "id": "5e0aa7e4-01cb-441c-9fc2-d89e890cb981",
+            "disambiguation": ""
+          },
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group",
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "sort-name": "ABBA"
+              },
+              "name": "ABBA",
+              "joinphrase": ""
+            }
+          ],
+          "number": "7"
+        },
+        {
+          "position": 8,
+          "title": "I Do, I Do, I Do, I Do, I Do",
+          "id": "bea6e013-0ba3-4652-a24a-34217b32992b",
+          "length": 197000,
+          "recording": {
+            "disambiguation": "",
+            "title": "I Do, I Do, I Do, I Do, I Do",
+            "video": false,
+            "length": 197226,
+            "id": "945e970d-6658-4d3b-ab89-7332057e1638",
+            "artist-credit": [
+              {
+                "name": "ABBA",
+                "artist": {
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "Swedish pop group",
+                  "country": "SE",
+                  "type": "Group"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1975-04-21"
+          },
+          "number": "8",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA",
+                "disambiguation": "Swedish pop group",
+                "type": "Group",
+                "country": "SE"
+              },
+              "name": "ABBA"
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "ABBA",
+              "artist": {
+                "country": "SE",
+                "type": "Group",
+                "disambiguation": "Swedish pop group",
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "9",
+          "id": "59c49c9b-b3a9-4960-861d-0f3c7ec11e00",
+          "length": 163200,
+          "position": 9,
+          "title": "People Need Love",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "country": "SE",
+                  "type": "Group",
+                  "disambiguation": "Swedish pop group"
+                },
+                "name": "ABBA",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1972-05",
+            "disambiguation": "",
+            "title": "People Need Love",
+            "video": false,
+            "length": 165640,
+            "id": "5edf5416-9766-4ad7-9aa5-b8119f55da20"
+          }
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "ABBA",
+              "artist": {
+                "disambiguation": "Swedish pop group",
+                "country": "SE",
+                "type": "Group",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "sort-name": "ABBA",
+                "name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "10",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "disambiguation": "Swedish pop group",
+                  "country": "SE",
+                  "type": "Group",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "ABBA",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1974-03-04",
+            "disambiguation": "English version",
+            "length": 166000,
+            "id": "bfdcfb41-167c-4f5b-b163-bde83bbf69ac",
+            "title": "Waterloo",
+            "video": false
+          },
+          "id": "dafd7b26-2bdb-44d9-aa8e-412315b5336a",
+          "length": 162000,
+          "position": 10,
+          "title": "Waterloo"
+        },
+        {
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "type": "Group",
+                  "country": "SE",
+                  "disambiguation": "Swedish pop group"
+                },
+                "name": "ABBA",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "1973-03-26",
+            "disambiguation": "",
+            "id": "0942bd0c-c430-493c-bb80-8f366e5c99cd",
+            "length": 173000,
+            "video": false,
+            "title": "Nina, Pretty Ballerina"
+          },
+          "id": "02b071a7-2b05-4c10-8d61-32381817d1a5",
+          "length": 171466,
+          "position": 11,
+          "title": "Nina Pretty Ballerina",
+          "artist-credit": [
+            {
+              "name": "ABBA",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "type": "Group",
+                "country": "SE",
+                "disambiguation": "Swedish pop group"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "11"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "sort-name": "ABBA",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA",
+                "disambiguation": "Swedish pop group",
+                "type": "Group",
+                "country": "SE"
+              },
+              "name": "ABBA"
+            }
+          ],
+          "number": "12",
+          "id": "408fae48-f8ec-4870-b3d0-c788d1efe45b",
+          "length": 184400,
+          "position": 12,
+          "title": "Bang-a-Boomerang",
+          "recording": {
+            "length": 184880,
+            "id": "80ae37e0-667d-48ba-9121-492acb447610",
+            "title": "Bang\u2010a\u2010Boomerang",
+            "video": false,
+            "disambiguation": "",
+            "first-release-date": "1975-04-21",
+            "artist-credit": [
+              {
+                "name": "ABBA",
+                "artist": {
+                  "disambiguation": "Swedish pop group",
+                  "country": "SE",
+                  "type": "Group",
+                  "sort-name": "ABBA",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
+              }
+            ]
+          }
+        },
+        {
+          "recording": {
+            "disambiguation": "",
+            "length": 192933,
+            "id": "23662e92-e9c0-4300-8285-873f38a35010",
+            "title": "Dance (While the Music Still Goes On)",
+            "video": false,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA",
+                  "country": "SE",
+                  "type": "Group",
+                  "disambiguation": "Swedish pop group"
+                },
+                "name": "ABBA"
+              }
+            ],
+            "first-release-date": "1974-03-04"
+          },
+          "position": 13,
+          "title": "Dance (While the Music Still Goes On)",
+          "id": "c1317b62-32e2-467c-a6eb-72352a568a41",
+          "length": 193493,
+          "number": "13",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "ABBA",
+              "artist": {
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA",
+                "disambiguation": "Swedish pop group",
+                "type": "Group",
+                "country": "SE"
+              }
+            }
+          ]
+        },
+        {
+          "position": 14,
+          "title": "Fernando",
+          "length": 248840,
+          "id": "9cea40fe-0164-4db7-a272-2a5dff3a1e82",
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "country": "SE",
+                  "type": "Group",
+                  "disambiguation": "Swedish pop group",
+                  "name": "ABBA",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                  "sort-name": "ABBA"
+                },
+                "name": "ABBA"
+              }
+            ],
+            "first-release-date": "1976-03-16",
+            "disambiguation": "",
+            "length": 254000,
+            "id": "f9a74bed-c572-43da-8eb5-babc4aee8ffa",
+            "title": "Fernando",
+            "video": false
+          },
+          "number": "14",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "Swedish pop group",
+                "type": "Group",
+                "country": "SE",
+                "sort-name": "ABBA",
+                "id": "d87e52c5-bb8d-4da8-b941-9f4928627dc8",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "ABBA"
+              },
+              "name": "ABBA"
+            }
+          ]
+        }
+      ],
+      "track-offset": 0,
+      "id": "a2e02101-4b57-3026-82e0-96f5afd236f9",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "title": "",
+      "position": 1
+    }
+  ],
+  "barcode": "075678151323",
+  "asin": null,
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a"
+}
