@@ -235,6 +235,31 @@ SCENARIOS = [
         ],
         "scenario": "same_title_different_artist",
     },
+    # --- Multi-disc vs single-disc: same album, different editions ---
+    {
+        "target": "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks, 1 disc)
+        "distractors": [
+            "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks, 4 media)
+            "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks, 1 disc)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
+    {
+        "target": "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks, 4 media)
+        "distractors": [
+            "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks)
+            "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
+    {
+        "target": "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks, 1 disc)
+        "distractors": [
+            "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks)
+            "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
 ]
 
 
