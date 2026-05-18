@@ -129,6 +129,7 @@ FILE_COMPARISON_WEIGHTS = {
     'identifiers': {
         'barcode': 28,
         'catno': 22,
+        'isrc': 28,
     },
     'similarity': {
         'album': 5,

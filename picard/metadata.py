@@ -486,10 +486,21 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
     def compare_to_track(self, track: dict, weights: 'TieredWeights'):
         track_parts = ReleaseMatchParts()
         releases = []
+        id_w = weights.get('identifiers', {})
         sim_w = weights.get('similarity', {})
         pref_w = weights.get('preferences', {})
 
         with self._lock.lock_for_read():
+            # Tier 1: ISRC — recording-level identifier
+            if 'isrc' in id_w:
+                file_isrc = self.get('isrc', '')
+                if file_isrc:
+                    recording = track.get('recording', track)
+                    track_isrcs = recording.get('isrcs', [])
+                    if track_isrcs:
+                        score = 1.0 if file_isrc in track_isrcs else 0.0
+                        track_parts.identifiers.append((score, id_w['isrc']))
+
             # Track-level similarity signals (see _TRACK_SIMILARITY_KEYS)
             if 'title' in self and 'title' in sim_w:
                 a = self['title']
