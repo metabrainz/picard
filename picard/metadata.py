@@ -48,7 +48,10 @@ from dataclasses import (
     field,
 )
 from functools import partial
-from typing import TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING,
+    TypeAlias,
+)
 
 from PyQt6 import QtCore
 
@@ -157,7 +160,7 @@ class ReleaseMatchParts:
 
 
 # Type for the tiered weights dict structure
-TieredWeights = dict[str, dict[str, int]]
+TieredWeights: TypeAlias = dict[str, dict[str, int]]
 
 # Similarity keys that are track-level (scored in compare_to_track, not in
 # compare_to_release_parts). Keep in sync with compare_to_track.
@@ -411,7 +414,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         return linear_combination_of_weights(parts)
 
-    def compare_to_release(self, release: dict, weights: 'TieredWeights'):
+    def compare_to_release(self, release: dict, weights: TieredWeights):
         """
         Compare metadata to a MusicBrainz release. Produces a probability as a
         linear combination of weights that the metadata matches a certain album.
@@ -421,7 +424,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         sim = parts.combine_tiers() * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
-    def compare_to_release_parts(self, release: dict, weights: 'TieredWeights', config=None):
+    def compare_to_release_parts(self, release: dict, weights: TieredWeights, config=None):
         result = ReleaseMatchParts()
         id_w = weights.get('identifiers', {})
         sim_w = weights.get('similarity', {})
@@ -526,7 +529,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         return result
 
-    def compare_to_track(self, track: dict, weights: 'TieredWeights'):
+    def compare_to_track(self, track: dict, weights: TieredWeights):
         track_parts = ReleaseMatchParts()
         releases = []
         id_w = weights.get('identifiers', {})
