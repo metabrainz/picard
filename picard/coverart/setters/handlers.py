@@ -89,7 +89,7 @@ def _handle_album(album: Album, setter) -> bool:
             setter._set_image(file)
             file.update(signal=False)
 
-    album.update(update_tracks=False)
+    album.update(update_tracks=True)
     return True
 
 
