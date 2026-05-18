@@ -522,9 +522,10 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         config = get_config()
+        track_parts_flat = track_parts.all_parts
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights, config)
-            sim = linear_combination_of_weights(chain(track_parts.all_parts, release_parts.all_parts)) * search_score
+            sim = linear_combination_of_weights(chain(track_parts_flat, release_parts.all_parts)) * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
