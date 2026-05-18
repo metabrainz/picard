@@ -5,7 +5,7 @@
 # Copyright (C) 2013-2015, 2020-2021, 2023-2024 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
 # Copyright (C) 2018 Wieland Hoffmann
-# Copyright (C) 2019-2021 Philipp Wolfer
+# Copyright (C) 2019-2021, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,7 +22,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Iterable
 from enum import IntEnum
+from typing import TypedDict
 
 from picard.const import MB_ATTRIBUTES
 from picard.i18n import (
@@ -32,22 +34,27 @@ from picard.i18n import (
 )
 
 
+class CAAType(TypedDict):
+    name: str
+    title: str
+
+
 # list of types from http://musicbrainz.org/doc/Cover_Art/Types
 # order of declaration is preserved in selection box
-CAA_TYPES = []
+CAA_TYPES: list[CAAType] = []
 for k, v in sorted(MB_ATTRIBUTES.items(), key=lambda k_v: k_v[0]):
     if k.startswith('DB:cover_art_archive.art_type/name:'):
-        CAA_TYPES.append({'name': v.lower(), 'title': v})
+        CAA_TYPES.append(CAAType(name=v.lower(), title=v))
 
 # pseudo type, used for the no type case
 CAA_TYPES.append({'name': 'unknown', 'title': N_("Unknown")})
 
-CAA_TYPES_TR = {}
+CAA_TYPES_TR: dict[str, str] = {}
 for t in CAA_TYPES:
     CAA_TYPES_TR[t['name']] = t['title']
 
 
-def translate_caa_type(name):
+def translate_caa_type(name: str) -> str:
     if name == 'unknown':
         return _(CAA_TYPES_TR[name])
     else:
@@ -96,20 +103,20 @@ __ID3_IMAGE_TYPE_MAP = {
 __ID3_REVERSE_IMAGE_TYPE_MAP = {v: k for k, v in __ID3_IMAGE_TYPE_MAP.items()}
 
 
-def image_type_from_id3_num(id3type):
+def image_type_from_id3_num(id3type: Id3ImageType) -> str:
     return __ID3_REVERSE_IMAGE_TYPE_MAP.get(id3type, 'other')
 
 
-def image_type_as_id3_num(texttype):
+def image_type_as_id3_num(texttype: str) -> Id3ImageType:
     return __ID3_IMAGE_TYPE_MAP.get(texttype, Id3ImageType.OTHER)
 
 
-def types_from_id3(id3type):
+def types_from_id3(id3type: Id3ImageType) -> list[str]:
     return [image_type_from_id3_num(id3type)]
 
 
 TYPES_SEPARATOR = ", "
 
 
-def translated_types_as_string(types, separator=TYPES_SEPARATOR):
+def translated_types_as_string(types: Iterable[str], separator: str = TYPES_SEPARATOR) -> str:
     return separator.join(translate_caa_type(t) for t in types)
