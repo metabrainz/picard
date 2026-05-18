@@ -44,6 +44,7 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
     MultiMetadataProxy,
+    ReleaseMatchParts,
     trackcount_score,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
@@ -685,6 +686,60 @@ class CommonTests:
             self.assertEqual(1.0, trackcount_score(5, 5))
             self.assertAlmostEqual(0.4, trackcount_score(6, 5))  # 1 - (1/5)*3
             self.assertAlmostEqual(0.6, trackcount_score(4, 5))  # 1 - (1/5)*2
+
+        def test_combine_tiers_no_identifiers(self):
+            """Without identifiers, similarity drives the score."""
+            parts = ReleaseMatchParts(
+                similarity=[(1.0, 10), (1.0, 5)],
+                preferences=[(1.0, 2)],
+            )
+            # sim=1.0, pref=1.0 → 1.0*0.9 + 1.0*0.1 = 1.0
+            self.assertAlmostEqual(1.0, parts.combine_tiers())
+
+        def test_combine_tiers_strong_identifier_match(self):
+            """Strong identifier match → high score regardless of similarity."""
+            parts = ReleaseMatchParts(
+                identifiers=[(1.0, 28)],
+                similarity=[(0.5, 10)],  # mediocre similarity
+                preferences=[(0.0, 2)],  # worst preference
+            )
+            # id≥0.9 → 0.95 + 0.0*0.05 = 0.95
+            self.assertAlmostEqual(0.95, parts.combine_tiers())
+
+        def test_combine_tiers_strong_identifier_mismatch(self):
+            """Strong identifier mismatch → score capped low."""
+            parts = ReleaseMatchParts(
+                identifiers=[(0.0, 28)],
+                similarity=[(1.0, 10), (1.0, 5)],  # perfect similarity
+                preferences=[(1.0, 2)],
+            )
+            # id≤0.1 → min(0.3, 1.0*0.3) = 0.3
+            self.assertAlmostEqual(0.3, parts.combine_tiers())
+
+        def test_combine_tiers_partial_identifier(self):
+            """Partial identifier signal → blend all tiers."""
+            parts = ReleaseMatchParts(
+                identifiers=[(0.5, 28)],
+                similarity=[(1.0, 10)],
+                preferences=[(1.0, 2)],
+            )
+            # 0.5*0.4 + 1.0*0.5 + 1.0*0.1 = 0.8
+            self.assertAlmostEqual(0.8, parts.combine_tiers())
+
+        def test_combine_tiers_identifier_overrides_preference(self):
+            """Barcode match wins over format preference mismatch."""
+            # Release A: barcode matches, bad preference
+            parts_a = ReleaseMatchParts(
+                identifiers=[(1.0, 28)],
+                similarity=[(0.8, 10)],
+                preferences=[(0.0, 2)],
+            )
+            # Release B: no barcode, good preference
+            parts_b = ReleaseMatchParts(
+                similarity=[(0.8, 10)],
+                preferences=[(1.0, 2)],
+            )
+            self.assertGreater(parts_a.combine_tiers(), parts_b.combine_tiers())
 
         def test_weights_from_release_type_scores(self):
             release = load_test_json('release.json')

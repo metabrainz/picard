@@ -112,6 +112,34 @@ class ReleaseMatchParts:
         """Flat list of all (score, weight) tuples for linear combination."""
         return self.identifiers + self.similarity + self.preferences
 
+    def combine_tiers(self) -> float:
+        """Combine tiers with tier-aware logic instead of a flat average.
+
+        - If identifiers strongly match (≥0.9): score is high, preferences
+          only fine-tune (identifiers confirm this IS the release).
+        - If identifiers strongly mismatch (≤0.1): score is capped low
+          (identifiers say this is NOT the release, regardless of similarity).
+        - Otherwise: similarity drives the score, preferences act as tiebreaker.
+        """
+        sim_score = linear_combination_of_weights(self.similarity) if self.similarity else 0.0
+        pref_score = linear_combination_of_weights(self.preferences) if self.preferences else 0.5
+
+        if not self.identifiers:
+            # No identifiers available — similarity + small preference bonus
+            return sim_score * 0.9 + pref_score * 0.1
+
+        id_score = linear_combination_of_weights(self.identifiers)
+
+        if id_score >= 0.9:
+            # Strong identifier match — this IS the release
+            return 0.95 + pref_score * 0.05
+        if id_score <= 0.1:
+            # Strong identifier mismatch — cap the score
+            return min(0.3, sim_score * 0.3)
+
+        # Partial identifier signal — blend all tiers
+        return id_score * 0.4 + sim_score * 0.5 + pref_score * 0.1
+
 
 # Type for the tiered weights dict structure
 TieredWeights = dict[str, dict[str, int]]
