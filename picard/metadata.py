@@ -48,6 +48,7 @@ from dataclasses import (
     field,
 )
 from functools import partial
+from itertools import chain
 from typing import TYPE_CHECKING
 
 from PyQt6 import QtCore
@@ -520,7 +521,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights)
-            sim = linear_combination_of_weights(parts + release_parts.all_parts) * search_score
+            sim = linear_combination_of_weights(chain(parts, release_parts.all_parts)) * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
