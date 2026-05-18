@@ -399,11 +399,10 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         if 'release-group' in release:
             tagger = QtCore.QCoreApplication.instance()
-            if tagger is None:
-                return result
-            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
-            if release['id'] in rg.loaded_albums:
-                result.identifiers.append((1.0, 6))
+            if tagger is not None:
+                rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
+                if release['id'] in rg.loaded_albums:
+                    result.identifiers.append((1.0, 6))
 
         # Tier 2: Similarity — fuzzy matching core
         with self._lock.lock_for_read():
