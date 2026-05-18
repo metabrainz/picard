@@ -120,6 +120,7 @@ TieredWeights = dict[str, dict[str, int]]
 def _catno_label_score(file_catno, file_label, release_label_info):
     """Score catalog number + label match against release label-info.
 
+    file_catno and file_label should be pre-normalized (stripped, lowercased).
     Returns 1.0 for exact catno match (with matching or absent label),
     0.0 for catno mismatch when release has catalog numbers.
     """
@@ -136,11 +137,11 @@ def _catno_label_score(file_catno, file_label, release_label_info):
         return 0.5  # release has no catalog numbers, neutral
 
     for release_catno, release_label in release_catnos:
-        if file_catno.strip().lower() == release_catno.strip().lower():
+        if file_catno == release_catno.strip().lower():
             # Catno matches; if file also has label, check it too
             if not file_label or not release_label:
                 return 1.0
-            if file_label.strip().lower() == release_label.strip().lower():
+            if file_label == release_label.strip().lower():
                 return 1.0
             # Catno matches but label differs — still a good signal
             return 0.8
@@ -390,11 +391,11 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                     result.identifiers.append((0.0, id_w['barcode']))
 
         if 'catno' in id_w:
-            file_catno = self.get('catalognumber', '')
+            file_catno = self.get('catalognumber', '').strip().lower()
             if file_catno:
                 release_label_info = release.get('label-info', [])
                 if release_label_info:
-                    file_label = self.get('label', '')
+                    file_label = self.get('label', '').strip().lower()
                     score = _catno_label_score(file_catno, file_label, release_label_info)
                     result.identifiers.append((score, id_w['catno']))
 
