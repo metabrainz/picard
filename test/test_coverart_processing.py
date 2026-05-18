@@ -86,7 +86,6 @@ class ImageFiltersTest(PicardTestCase):
             'dont_replace_with_smaller_cover': True,
             'dont_replace_cover_of_types': True,
             'dont_replace_included_types': ['front', 'booklet'],
-            'dont_replace_excluded_types': ['back'],
             'save_images_to_tags': True,
         }
         self.set_config_values(settings)
@@ -135,7 +134,7 @@ class ImageFiltersTest(PicardTestCase):
         coverartimage5 = CoverArtImage(types=['booklet', 'spine'], support_types=True)
         self.assertFalse(image_types_filter(image, info, album, coverartimage1))
         self.assertTrue(image_types_filter(image, info, album, coverartimage2))
-        self.assertTrue(image_types_filter(image, info, album, coverartimage3))
+        self.assertFalse(image_types_filter(image, info, album, coverartimage3))
         self.assertTrue(image_types_filter(image, info, album, coverartimage4))
         self.assertTrue(image_types_filter(image, info, album, coverartimage5))
 

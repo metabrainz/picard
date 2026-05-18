@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2007 Lukáš Lalinský
-# Copyright (C) 2010, 2018-2021, 2024-2025 Philipp Wolfer
+# Copyright (C) 2010, 2018-2021, 2024-2026 Philipp Wolfer
 # Copyright (C) 2012, 2014 Wieland Hoffmann
 # Copyright (C) 2012-2014 Michael Wiencek
 # Copyright (C) 2013-2015, 2018-2021, 2023-2024 Laurent Monin
@@ -33,10 +33,7 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.const.defaults import (
-    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
-    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
-)
+from picard.const.defaults import DEFAULT_CA_NEVER_REPLACE_TYPES
 from picard.coverart.providers import cover_art_providers
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -44,7 +41,7 @@ from picard.i18n import (
     gettext as _,
 )
 
-from picard.ui.caa_types_selector import CAATypesSelectorDialog
+from picard.ui.dialogs.cover_types_selector import CoverTypesSelectorDialog
 from picard.ui.forms.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
@@ -66,7 +63,6 @@ class CoverOptionsPage(OptionsPage):
         ('dont_replace_with_smaller_cover', ['cb_dont_replace_with_smaller']),
         ('dont_replace_cover_of_types', ['cb_never_replace_types']),
         ('dont_replace_included_types', ['dont_replace_included_types']),
-        ('dont_replace_excluded_types', ['dont_replace_excluded_types']),
         ('save_images_to_files', ['save_images_to_files']),
         ('cover_image_filename', ['cover_image_filename']),
         ('save_images_overwrite', ['save_images_overwrite']),
@@ -90,8 +86,7 @@ class CoverOptionsPage(OptionsPage):
     def restore_defaults(self):
         # Remove previous entries
         self.ui.ca_providers_list.clear()
-        self.dont_replace_included_types = DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE
-        self.dont_replace_excluded_types = DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE
+        self.dont_replace_included_types = DEFAULT_CA_NEVER_REPLACE_TYPES
         super().restore_defaults()
 
     def _load_cover_art_providers(self):
@@ -110,7 +105,6 @@ class CoverOptionsPage(OptionsPage):
         self.ui.cb_never_replace_types.setChecked(config.setting['dont_replace_cover_of_types'])
         self.ui.select_types_button.setEnabled(config.setting['dont_replace_cover_of_types'])
         self.dont_replace_included_types = config.setting['dont_replace_included_types']
-        self.dont_replace_excluded_types = config.setting['dont_replace_excluded_types']
         self.ui.save_images_to_files.setChecked(config.setting['save_images_to_files'])
         self.ui.cover_image_filename.setText(config.setting['cover_image_filename'])
         self.ui.save_images_overwrite.setChecked(config.setting['save_images_overwrite'])
@@ -131,7 +125,6 @@ class CoverOptionsPage(OptionsPage):
         config.setting['dont_replace_with_smaller_cover'] = self.ui.cb_dont_replace_with_smaller.isChecked()
         config.setting['dont_replace_cover_of_types'] = self.ui.cb_never_replace_types.isChecked()
         config.setting['dont_replace_included_types'] = self.dont_replace_included_types
-        config.setting['dont_replace_excluded_types'] = self.dont_replace_excluded_types
         config.setting['save_images_to_files'] = self.ui.save_images_to_files.isChecked()
         config.setting['cover_image_filename'] = self.ui.cover_image_filename.text()
         config.setting['save_images_overwrite'] = self.ui.save_images_overwrite.isChecked()
@@ -145,22 +138,12 @@ class CoverOptionsPage(OptionsPage):
         self.ui.ca_providers_groupbox.setEnabled(files_enabled or tags_enabled)
 
     def select_never_replace_image_types(self):
-        instructions_bottom = N_(
-            'Embedded cover art images with a type found in the "Include" list will never be replaced '
-            'by a newly downloaded image UNLESS they also have an image type in the "Exclude" list. '
-            'Images with types found in the "Exclude" list will always be replaced by downloaded images '
-            'of the same type. Images types not appearing in the "Include" or "Exclude" list will '
-            'not be considered when determining whether or not to replace an embedded cover art image.\n'
-        )
-        (included_types, excluded_types, ok) = CAATypesSelectorDialog.display(
-            types_include=self.dont_replace_included_types,
-            types_exclude=self.dont_replace_excluded_types,
+        (included_types, ok) = CoverTypesSelectorDialog.display(
+            selected_types=self.dont_replace_included_types,
             parent=self,
-            instructions_bottom=instructions_bottom,
         )
         if ok:
             self.dont_replace_included_types = included_types
-            self.dont_replace_excluded_types = excluded_types
 
 
 register_options_page(CoverOptionsPage)
