@@ -453,8 +453,6 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 release_barcode = release.get('barcode', '')
                 if compare_barcodes(file_barcode, release_barcode):
                     result.identifiers.append((1.0, id_w['barcode']))
-                elif release_barcode:
-                    result.identifiers.append((0.0, id_w['barcode']))
                 else:
                     result.identifiers.append((0.0, id_w['barcode']))
 
