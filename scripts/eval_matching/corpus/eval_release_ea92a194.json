@@ -1,1425 +1,1509 @@
 {
+  "cover-art-archive": {
+    "artwork": true,
+    "count": 23,
+    "darkened": false,
+    "back": true,
+    "front": true
+  },
+  "release-events": [
+    {
+      "date": "2007-12-03",
+      "area": {
+        "type-id": null,
+        "type": null,
+        "name": "United Kingdom",
+        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+        "iso-3166-1-codes": [
+          "GB"
+        ],
+        "sort-name": "United Kingdom",
+        "disambiguation": ""
+      }
+    }
+  ],
+  "country": "GB",
+  "date": "2007-12-03",
+  "packaging-id": "d60b6157-79fe-3913-ab8b-23b32de8690d",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
   "asin": null,
-  "disambiguation": "discbox",
+  "title": "In Rainbows",
+  "artist-credit": [
+    {
+      "artist": {
+        "sort-name": "Radiohead",
+        "disambiguation": "",
+        "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+        "name": "Radiohead",
+        "type": "Group",
+        "country": "GB",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+      },
+      "name": "Radiohead",
+      "joinphrase": ""
+    }
+  ],
+  "packaging": "Book",
+  "barcode": null,
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "media": [
     {
-      "track-count": 6,
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
       "tracks": [
         {
-          "position": 1,
-          "length": 238000,
-          "number": "A1",
           "recording": {
-            "length": 238000,
             "artist-credit": [
               {
+                "joinphrase": "",
+                "name": "Radiohead",
                 "artist": {
                   "name": "Radiohead",
                   "type": "Group",
-                  "disambiguation": "",
-                  "country": "GB",
                   "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "disambiguation": "",
                   "sort-name": "Radiohead"
-                },
-                "name": "Radiohead",
-                "joinphrase": ""
+                }
               }
             ],
-            "first-release-date": "2007-10-10",
-            "id": "faea2aa0-80a9-41be-9b1e-3b994f4f76ac",
-            "title": "15 Step",
+            "length": 238000,
             "disambiguation": "",
-            "video": false
+            "title": "15 Step",
+            "first-release-date": "2007-10-10",
+            "isrcs": [
+              "GBSTK0700001"
+            ],
+            "video": false,
+            "id": "faea2aa0-80a9-41be-9b1e-3b994f4f76ac"
           },
-          "title": "15 Step",
           "id": "137e9dc2-139a-34a0-bf60-3bc6f5155718",
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "name": "Radiohead",
                 "type": "Group",
+                "name": "Radiohead",
                 "country": "GB",
-                "disambiguation": "",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                "disambiguation": ""
               },
-              "joinphrase": "",
               "name": "Radiohead"
+            }
+          ],
+          "length": 238000,
+          "number": "A1",
+          "title": "15 Step",
+          "position": 1
+        },
+        {
+          "id": "1f3aeced-e98b-3c96-b1de-f58d2c9d8fbc",
+          "recording": {
+            "disambiguation": "",
+            "title": "Bodysnatchers",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Radiohead",
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
+            "length": 242293,
+            "isrcs": [
+              "GBSTK0700002"
+            ],
+            "video": false,
+            "id": "94a1d84a-66ce-4fc9-88a5-c46263c54d9a",
+            "first-release-date": "2007-10-10"
+          },
+          "title": "Bodysnatchers",
+          "position": 2,
+          "number": "A2",
+          "length": 242000,
+          "artist-credit": [
+            {
+              "name": "Radiohead",
+              "artist": {
+                "sort-name": "Radiohead",
+                "disambiguation": "",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "name": "Radiohead",
+                "type": "Group"
+              },
+              "joinphrase": ""
             }
           ]
         },
         {
-          "recording": {
-            "title": "Bodysnatchers",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "name": "Radiohead",
-                  "type": "Group"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "id": "94a1d84a-66ce-4fc9-88a5-c46263c54d9a",
-            "video": false,
-            "disambiguation": "",
-            "length": 242293
-          },
-          "number": "A2",
-          "length": 242000,
-          "position": 2,
           "artist-credit": [
             {
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                 "type": "Group",
                 "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
                 "disambiguation": "",
-                "country": "GB"
+                "sort-name": "Radiohead"
               },
-              "joinphrase": "",
-              "name": "Radiohead"
+              "name": "Radiohead",
+              "joinphrase": ""
             }
           ],
-          "id": "1f3aeced-e98b-3c96-b1de-f58d2c9d8fbc",
-          "title": "Bodysnatchers"
-        },
-        {
+          "length": 255000,
+          "number": "A3",
+          "position": 3,
+          "title": "Nude",
           "recording": {
-            "title": "Nude",
+            "length": 255386,
             "artist-credit": [
               {
+                "name": "Radiohead",
                 "artist": {
-                  "country": "GB",
-                  "disambiguation": "",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "type": "Group",
                   "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
+                  "sort-name": "Radiohead"
                 },
-                "name": "Radiohead",
                 "joinphrase": ""
               }
             ],
+            "title": "Nude",
+            "disambiguation": "",
             "first-release-date": "2007-10-10",
             "id": "f3bea96c-5ebf-4d37-990d-14f1bc281459",
-            "video": false,
-            "disambiguation": "",
-            "length": 255386
+            "isrcs": [
+              "GBSTK0700003"
+            ],
+            "video": false
           },
-          "position": 3,
-          "number": "A3",
-          "length": 255000,
-          "title": "Nude",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Radiohead",
-              "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "disambiguation": "",
-                "country": "GB",
-                "type": "Group",
-                "name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-              }
-            }
-          ],
           "id": "8edbf633-a7a6-3d93-bfce-191169b76a62"
         },
         {
-          "position": 4,
-          "length": 318000,
-          "number": "B1",
-          "recording": {
-            "length": 318186,
-            "title": "Weird Fishes/Arpeggi",
-            "id": "f74b48a6-5a60-4b5a-864d-3ecb7e983c31",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Radiohead",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                }
-              }
-            ],
-            "video": false,
-            "disambiguation": ""
-          },
-          "title": "Weird Fishes/Arpeggi",
-          "id": "55b81d64-243f-3ade-b873-a7d4eca84da6",
           "artist-credit": [
             {
-              "name": "Radiohead",
               "joinphrase": "",
               "artist": {
-                "country": "GB",
+                "sort-name": "Radiohead",
                 "disambiguation": "",
-                "name": "Radiohead",
-                "type": "Group",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              }
+                "country": "GB",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+              },
+              "name": "Radiohead"
             }
-          ]
-        },
-        {
+          ],
+          "length": 318000,
+          "number": "B1",
+          "position": 4,
+          "title": "Weird Fishes/Arpeggi",
           "recording": {
-            "title": "All I Need",
-            "first-release-date": "2007-10-10",
+            "disambiguation": "",
+            "title": "Weird Fishes/Arpeggi",
             "artist-credit": [
               {
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
                   "sort-name": "Radiohead",
                   "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "name": "Radiohead",
                   "type": "Group",
-                  "country": "GB",
-                  "disambiguation": ""
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB"
                 },
                 "name": "Radiohead",
                 "joinphrase": ""
               }
             ],
-            "id": "72c6b4d3-71a8-4c70-bf50-da11c0149089",
+            "length": 318186,
+            "isrcs": [
+              "GBSTK0700004"
+            ],
             "video": false,
-            "disambiguation": "",
-            "length": 228746
+            "id": "f74b48a6-5a60-4b5a-864d-3ecb7e983c31",
+            "first-release-date": "2007-10-10"
           },
-          "position": 5,
+          "id": "55b81d64-243f-3ade-b873-a7d4eca84da6"
+        },
+        {
+          "recording": {
+            "id": "72c6b4d3-71a8-4c70-bf50-da11c0149089",
+            "isrcs": [
+              "GBSTK0700005"
+            ],
+            "video": false,
+            "first-release-date": "2007-10-10",
+            "title": "All I Need",
+            "disambiguation": "",
+            "length": 228746,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB"
+                },
+                "name": "Radiohead"
+              }
+            ]
+          },
+          "id": "e2e5eccb-a9ad-3fef-8687-16e8a35d7cd7",
           "number": "B2",
-          "length": 229000,
+          "position": 5,
           "title": "All I Need",
           "artist-credit": [
             {
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": ""
-              },
               "name": "Radiohead",
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
               "joinphrase": ""
             }
           ],
-          "id": "e2e5eccb-a9ad-3fef-8687-16e8a35d7cd7"
+          "length": 229000
         },
         {
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "disambiguation": "",
-                "country": "GB",
-                "type": "Group",
-                "name": "Radiohead"
-              },
-              "name": "Radiohead",
-              "joinphrase": ""
-            }
-          ],
           "id": "5f360045-b0d2-331c-8d83-87ec0c88862b",
-          "title": "Faust Arp",
-          "number": "B3",
-          "length": 130000,
-          "position": 6,
           "recording": {
             "length": 129680,
-            "disambiguation": "",
-            "video": false,
             "artist-credit": [
               {
-                "joinphrase": "",
                 "name": "Radiohead",
                 "artist": {
+                  "sort-name": "Radiohead",
                   "disambiguation": "",
-                  "country": "GB",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                }
+                  "country": "GB",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+                },
+                "joinphrase": ""
               }
             ],
+            "title": "Faust Arp",
+            "disambiguation": "",
             "first-release-date": "2007-10-10",
             "id": "ffac3cb1-a5e9-4f31-952d-45323f3640d5",
-            "title": "Faust Arp"
-          }
-        }
-      ],
-      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
-      "title": "",
-      "position": 1,
-      "format": "12\" Vinyl",
-      "id": "9a116a07-fe15-3090-8003-6b509e8b1eb0",
-      "track-offset": 0
-    },
-    {
-      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
-      "track-count": 4,
-      "tracks": [
-        {
-          "id": "d84d7c3e-5f95-3d3f-93f5-304a3f48d3d0",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700006"
+            ]
+          },
+          "length": 130000,
           "artist-credit": [
             {
               "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "country": "GB",
-                "disambiguation": "",
                 "name": "Radiohead",
-                "type": "Group"
+                "type": "Group",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "disambiguation": "",
+                "sort-name": "Radiohead"
               },
               "name": "Radiohead",
               "joinphrase": ""
             }
           ],
-          "title": "Reckoner",
-          "length": 290000,
-          "number": "C1",
+          "position": 6,
+          "title": "Faust Arp",
+          "number": "B3"
+        }
+      ],
+      "track-offset": 0,
+      "position": 1,
+      "format": "12\" Vinyl",
+      "title": "",
+      "track-count": 6,
+      "id": "9a116a07-fe15-3090-8003-6b509e8b1eb0"
+    },
+    {
+      "tracks": [
+        {
           "position": 1,
-          "recording": {
-            "length": 290213,
-            "title": "Reckoner",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "joinphrase": "",
+          "title": "Reckoner",
+          "number": "C1",
+          "length": 290000,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
                 "name": "Radiohead",
-                "artist": {
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                }
-              }
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "disambiguation": "",
+                "sort-name": "Radiohead"
+              },
+              "name": "Radiohead"
+            }
+          ],
+          "id": "d84d7c3e-5f95-3d3f-93f5-304a3f48d3d0",
+          "recording": {
+            "video": false,
+            "isrcs": [
+              "GBSTK0700007"
             ],
             "id": "d9b46ecb-5472-4dcd-8fa4-dd6723189e27",
-            "video": false,
-            "disambiguation": ""
-          }
-        },
-        {
-          "recording": {
             "first-release-date": "2007-10-10",
+            "disambiguation": "",
+            "title": "Reckoner",
             "artist-credit": [
               {
                 "artist": {
                   "sort-name": "Radiohead",
+                  "disambiguation": "",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type": "Group",
-                  "name": "Radiohead",
                   "country": "GB",
-                  "disambiguation": ""
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group"
                 },
-                "joinphrase": "",
-                "name": "Radiohead"
+                "name": "Radiohead",
+                "joinphrase": ""
               }
             ],
-            "id": "29a9d792-151b-4dd4-99ae-25bc853d8895",
-            "title": "House of Cards",
-            "disambiguation": "",
-            "video": false,
-            "length": 328293
-          },
-          "length": 328000,
+            "length": 290213
+          }
+        },
+        {
           "number": "C2",
           "position": 2,
-          "id": "3574a15d-7c3d-3c3f-a03c-57cde0f2507a",
+          "title": "House of Cards",
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
                 "sort-name": "Radiohead",
+                "disambiguation": "",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                 "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": ""
+                "type": "Group"
               },
-              "joinphrase": "",
               "name": "Radiohead"
             }
           ],
-          "title": "House of Cards"
-        },
-        {
+          "length": 328000,
           "recording": {
-            "video": false,
-            "disambiguation": "",
-            "title": "Jigsaw Falling Into Place",
-            "id": "31600df4-e6dd-48ca-9f6b-8804027d8d6e",
             "artist-credit": [
               {
                 "joinphrase": "",
                 "name": "Radiohead",
                 "artist": {
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "type": "Group",
                   "name": "Radiohead",
-                  "country": "GB",
-                  "disambiguation": "",
                   "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
                   "sort-name": "Radiohead"
                 }
               }
             ],
+            "length": 328293,
+            "disambiguation": "",
+            "title": "House of Cards",
             "first-release-date": "2007-10-10",
-            "length": 248893
+            "isrcs": [
+              "GBSTK0700008"
+            ],
+            "video": false,
+            "id": "29a9d792-151b-4dd4-99ae-25bc853d8895"
           },
-          "position": 3,
+          "id": "3574a15d-7c3d-3c3f-a03c-57cde0f2507a"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Radiohead",
+              "artist": {
+                "sort-name": "Radiohead",
+                "disambiguation": "",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type": "Group",
+                "name": "Radiohead"
+              }
+            }
+          ],
           "length": 249000,
           "number": "D1",
           "title": "Jigsaw Falling Into Place",
-          "id": "44bbe905-7926-3afa-bdfc-e4e55be03b24",
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "country": "GB",
-                "disambiguation": "",
-                "type": "Group",
-                "name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ]
+          "position": 3,
+          "recording": {
+            "id": "31600df4-e6dd-48ca-9f6b-8804027d8d6e",
+            "isrcs": [
+              "GBSTK0700009"
+            ],
+            "video": false,
+            "first-release-date": "2007-10-10",
+            "title": "Jigsaw Falling Into Place",
+            "disambiguation": "",
+            "length": 248893,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
+                  "sort-name": "Radiohead"
+                },
+                "name": "Radiohead"
+              }
+            ]
+          },
+          "id": "44bbe905-7926-3afa-bdfc-e4e55be03b24"
         },
         {
-          "id": "d8fc6797-32ba-38e0-8533-0af616f5fe92",
           "artist-credit": [
             {
               "joinphrase": "",
               "name": "Radiohead",
               "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "disambiguation": "",
                 "country": "GB",
-                "name": "Radiohead",
-                "type": "Group"
-              }
-            }
-          ],
-          "title": "Videotape",
-          "recording": {
-            "title": "Videotape",
-            "id": "8648fe94-bbdc-44a1-9de8-c4ced7913dc2",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Radiohead",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Radiohead"
-                }
-              }
-            ],
-            "first-release-date": "2007-10-10",
-            "video": false,
-            "disambiguation": "",
-            "length": 281800
-          },
-          "length": 282000,
-          "number": "D2",
-          "position": 4
-        }
-      ],
-      "id": "d4804188-ad8d-3f2d-9ac9-76e4613e3330",
-      "track-offset": 0,
-      "title": "",
-      "position": 2,
-      "format": "12\" Vinyl"
-    },
-    {
-      "track-count": 10,
-      "tracks": [
-        {
-          "id": "863cdc4d-a6db-3348-a998-1a4f1dd7805c",
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Radiohead",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "name": "Radiohead",
                 "type": "Group",
-                "disambiguation": "",
-                "country": "GB",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-              },
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "sort-name": "Radiohead",
+                "disambiguation": ""
+              }
+            }
+          ],
+          "length": 282000,
+          "number": "D2",
+          "position": 4,
+          "title": "Videotape",
+          "recording": {
+            "length": 281800,
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "sort-name": "Radiohead",
+                  "disambiguation": ""
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Videotape",
+            "disambiguation": "",
+            "first-release-date": "2007-10-10",
+            "id": "8648fe94-bbdc-44a1-9de8-c4ced7913dc2",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700010"
+            ]
+          },
+          "id": "d8fc6797-32ba-38e0-8533-0af616f5fe92"
+        }
+      ],
+      "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
+      "format": "12\" Vinyl",
+      "title": "",
+      "position": 2,
+      "track-offset": 0,
+      "track-count": 4,
+      "id": "d4804188-ad8d-3f2d-9ac9-76e4613e3330"
+    },
+    {
+      "track-count": 10,
+      "id": "5b59757e-f5a2-3c66-8bea-0968f8288315",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "tracks": [
+        {
+          "artist-credit": [
+            {
               "joinphrase": "",
+              "artist": {
+                "sort-name": "Radiohead",
+                "disambiguation": "",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "name": "Radiohead",
+                "type": "Group"
+              },
               "name": "Radiohead"
             }
           ],
-          "title": "15 Step",
           "length": 238120,
           "number": "1",
+          "title": "15 Step",
           "position": 1,
           "recording": {
-            "length": 238000,
+            "first-release-date": "2007-10-10",
             "video": false,
-            "disambiguation": "",
-            "title": "15 Step",
+            "isrcs": [
+              "GBSTK0700001"
+            ],
             "id": "faea2aa0-80a9-41be-9b1e-3b994f4f76ac",
             "artist-credit": [
               {
                 "artist": {
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "name": "Radiohead",
                   "type": "Group",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "country": "GB",
-                  "disambiguation": "",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
                   "sort-name": "Radiohead"
                 },
                 "name": "Radiohead",
                 "joinphrase": ""
               }
             ],
-            "first-release-date": "2007-10-10"
-          }
+            "length": 238000,
+            "disambiguation": "",
+            "title": "15 Step"
+          },
+          "id": "863cdc4d-a6db-3348-a998-1a4f1dd7805c"
         },
         {
-          "length": 242293,
-          "number": "2",
-          "position": 2,
+          "id": "caf3008f-931e-3ade-8c06-cd8175b52f78",
           "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Radiohead",
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
             "length": 242293,
-            "video": false,
             "disambiguation": "",
             "title": "Bodysnatchers",
             "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                },
-                "name": "Radiohead",
-                "joinphrase": ""
-              }
+            "isrcs": [
+              "GBSTK0700002"
             ],
+            "video": false,
             "id": "94a1d84a-66ce-4fc9-88a5-c46263c54d9a"
           },
-          "id": "caf3008f-931e-3ade-8c06-cd8175b52f78",
+          "length": 242293,
           "artist-credit": [
             {
               "artist": {
                 "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "country": "GB",
                 "disambiguation": "",
-                "name": "Radiohead",
-                "type": "Group"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ],
-          "title": "Bodysnatchers"
-        },
-        {
-          "id": "5bf91792-6f09-33e2-97f5-ceac92522a4d",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Radiohead",
-              "artist": {
-                "sort-name": "Radiohead",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Radiohead",
+                "country": "GB",
                 "type": "Group",
-                "disambiguation": "",
-                "country": "GB",
+                "name": "Radiohead",
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-              }
-            }
-          ],
-          "title": "Nude",
-          "length": 255386,
-          "number": "3",
-          "position": 3,
-          "recording": {
-            "length": 255386,
-            "disambiguation": "",
-            "video": false,
-            "id": "f3bea96c-5ebf-4d37-990d-14f1bc281459",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "name": "Radiohead",
-                "joinphrase": "",
-                "artist": {
-                  "country": "GB",
-                  "disambiguation": "",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                }
-              }
-            ],
-            "title": "Nude"
-          }
-        },
-        {
-          "length": 318186,
-          "number": "4",
-          "position": 4,
-          "recording": {
-            "title": "Weird Fishes/Arpeggi",
-            "id": "f74b48a6-5a60-4b5a-864d-3ecb7e983c31",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "video": false,
-            "disambiguation": "",
-            "length": 318186
-          },
-          "id": "0fea63bc-cf8e-3ede-b3f9-3a93ddaf00f3",
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "country": "GB",
-                "disambiguation": "",
-                "type": "Group",
-                "name": "Radiohead"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ],
-          "title": "Weird Fishes/Arpeggi"
-        },
-        {
-          "title": "All I Need",
-          "id": "dd615567-4ecb-30df-a6f5-06d9c40e0c94",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Radiohead",
-              "artist": {
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              }
-            }
-          ],
-          "recording": {
-            "length": 228746,
-            "disambiguation": "",
-            "video": false,
-            "id": "72c6b4d3-71a8-4c70-bf50-da11c0149089",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "first-release-date": "2007-10-10",
-            "title": "All I Need"
-          },
-          "position": 5,
-          "length": 228746,
-          "number": "5"
-        },
-        {
-          "title": "Faust Arp",
-          "id": "6fbecb8a-bbbc-3d50-a2a7-62dcad2c5090",
-          "artist-credit": [
-            {
-              "name": "Radiohead",
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": ""
-              }
-            }
-          ],
-          "position": 6,
-          "length": 129680,
-          "number": "6",
-          "recording": {
-            "length": 129680,
-            "disambiguation": "",
-            "video": false,
-            "id": "ffac3cb1-a5e9-4f31-952d-45323f3640d5",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                },
-                "name": "Radiohead",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2007-10-10",
-            "title": "Faust Arp"
-          }
-        },
-        {
-          "title": "Reckoner",
-          "id": "ebab42c4-8fa0-36f7-8a59-d367eab30b49",
-          "artist-credit": [
-            {
-              "name": "Radiohead",
-              "joinphrase": "",
-              "artist": {
-                "name": "Radiohead",
-                "type": "Group",
-                "disambiguation": "",
-                "country": "GB",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              }
-            }
-          ],
-          "position": 7,
-          "length": 290213,
-          "number": "7",
-          "recording": {
-            "length": 290213,
-            "video": false,
-            "disambiguation": "",
-            "title": "Reckoner",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "id": "d9b46ecb-5472-4dcd-8fa4-dd6723189e27"
-          }
-        },
-        {
-          "id": "7f4faf2e-abde-364c-9757-9c7119ce6121",
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "disambiguation": "",
-                "name": "Radiohead",
-                "type": "Group",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ],
-          "title": "House of Cards",
-          "length": 328293,
-          "number": "8",
-          "position": 8,
-          "recording": {
-            "video": false,
-            "disambiguation": "",
-            "title": "House of Cards",
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-                },
-                "name": "Radiohead",
-                "joinphrase": ""
-              }
-            ],
-            "id": "29a9d792-151b-4dd4-99ae-25bc853d8895",
-            "length": 328293
-          }
-        },
-        {
-          "title": "Jigsaw Falling Into Place",
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "disambiguation": "",
-                "country": "GB",
-                "type": "Group",
-                "name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ],
-          "id": "20ae2491-4f17-3924-a8fe-61ae87506792",
-          "recording": {
-            "disambiguation": "",
-            "video": false,
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "id": "31600df4-e6dd-48ca-9f6b-8804027d8d6e",
-            "title": "Jigsaw Falling Into Place",
-            "length": 248893
-          },
-          "position": 9,
-          "number": "9",
-          "length": 248893
-        },
-        {
-          "length": 281800,
-          "number": "10",
-          "position": 10,
-          "recording": {
-            "length": 281800,
-            "first-release-date": "2007-10-10",
-            "artist-credit": [
-              {
-                "artist": {
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "country": "GB",
-                  "disambiguation": ""
-                },
-                "name": "Radiohead",
-                "joinphrase": ""
-              }
-            ],
-            "id": "8648fe94-bbdc-44a1-9de8-c4ced7913dc2",
-            "title": "Videotape",
-            "disambiguation": "",
-            "video": false
-          },
-          "id": "1fa24edb-eb63-3788-a75a-d52efca0ce7b",
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "type": "Group",
-                "name": "Radiohead",
-                "country": "GB",
-                "disambiguation": ""
-              },
-              "name": "Radiohead",
-              "joinphrase": ""
-            }
-          ],
-          "title": "Videotape"
-        }
-      ],
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "title": "",
-      "position": 3,
-      "format": "CD",
-      "id": "5b59757e-f5a2-3c66-8bea-0968f8288315",
-      "track-offset": 0
-    },
-    {
-      "track-offset": 0,
-      "id": "14dea14c-5c50-3b33-87d6-1fe71cde783a",
-      "format": "Enhanced CD",
-      "position": 4,
-      "title": "Disk 2",
-      "format-id": "8a08dc62-1aa2-34de-a904-fa467c53052c",
-      "tracks": [
-        {
-          "artist-credit": [
-            {
-              "name": "Radiohead",
-              "joinphrase": "",
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "type": "Group",
-                "name": "Radiohead",
-                "disambiguation": "",
-                "country": "GB"
-              }
-            }
-          ],
-          "id": "7c83a748-e1a0-3ef7-bfec-c2d5479a40fe",
-          "title": "MK 1",
-          "recording": {
-            "length": 64000,
-            "disambiguation": "",
-            "video": false,
-            "id": "e8d91bc2-9f74-487b-8b6b-a1ddfce55d28",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Radiohead",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "name": "Radiohead",
-                  "type": "Group"
-                }
-              }
-            ],
-            "first-release-date": "2007-12-03",
-            "title": "MK 1"
-          },
-          "number": "1",
-          "length": 63960,
-          "position": 1
-        },
-        {
-          "title": "Down Is the New Up",
-          "id": "7b820ed9-2a83-3fa1-af44-cca64c347c8c",
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": "",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
               "name": "Radiohead",
               "joinphrase": ""
             }
           ],
           "position": 2,
-          "length": 299120,
-          "number": "2",
+          "title": "Bodysnatchers",
+          "number": "2"
+        },
+        {
+          "number": "3",
+          "title": "Nude",
+          "position": 3,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type": "Group",
+                "name": "Radiohead"
+              },
+              "name": "Radiohead"
+            }
+          ],
+          "length": 255386,
           "recording": {
-            "length": 299000,
-            "title": "Down Is the New Up",
-            "id": "7b9e1b47-b1bd-4d82-951e-cb98692a7467",
+            "title": "Nude",
+            "disambiguation": "",
+            "length": 255386,
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "sort-name": "Radiohead",
+                  "disambiguation": ""
+                },
+                "joinphrase": ""
+              }
+            ],
+            "id": "f3bea96c-5ebf-4d37-990d-14f1bc281459",
+            "isrcs": [
+              "GBSTK0700003"
+            ],
+            "video": false,
+            "first-release-date": "2007-10-10"
+          },
+          "id": "5bf91792-6f09-33e2-97f5-ceac92522a4d"
+        },
+        {
+          "id": "0fea63bc-cf8e-3ede-b3f9-3a93ddaf00f3",
+          "recording": {
+            "disambiguation": "",
+            "title": "Weird Fishes/Arpeggi",
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 318186,
+            "isrcs": [
+              "GBSTK0700004"
+            ],
+            "video": false,
+            "id": "f74b48a6-5a60-4b5a-864d-3ecb7e983c31",
+            "first-release-date": "2007-10-10"
+          },
+          "length": 318186,
+          "artist-credit": [
+            {
+              "name": "Radiohead",
+              "artist": {
+                "sort-name": "Radiohead",
+                "disambiguation": "",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type": "Group",
+                "name": "Radiohead",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "title": "Weird Fishes/Arpeggi",
+          "position": 4,
+          "number": "4"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Radiohead",
+              "artist": {
+                "sort-name": "Radiohead",
+                "disambiguation": "",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+              }
+            }
+          ],
+          "length": 228746,
+          "number": "5",
+          "title": "All I Need",
+          "position": 5,
+          "recording": {
+            "disambiguation": "",
+            "title": "All I Need",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Radiohead",
+                  "disambiguation": ""
+                },
+                "name": "Radiohead"
+              }
+            ],
+            "length": 228746,
+            "isrcs": [
+              "GBSTK0700005"
+            ],
+            "video": false,
+            "id": "72c6b4d3-71a8-4c70-bf50-da11c0149089",
+            "first-release-date": "2007-10-10"
+          },
+          "id": "dd615567-4ecb-30df-a6f5-06d9c40e0c94"
+        },
+        {
+          "recording": {
+            "id": "ffac3cb1-a5e9-4f31-952d-45323f3640d5",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700006"
+            ],
+            "first-release-date": "2007-10-10",
+            "title": "Faust Arp",
+            "disambiguation": "",
+            "length": 129680,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "sort-name": "Radiohead",
+                  "disambiguation": ""
+                },
+                "name": "Radiohead"
+              }
+            ]
+          },
+          "id": "6fbecb8a-bbbc-3d50-a2a7-62dcad2c5090",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "disambiguation": "",
+                "sort-name": "Radiohead"
+              },
+              "name": "Radiohead"
+            }
+          ],
+          "length": 129680,
+          "number": "6",
+          "position": 6,
+          "title": "Faust Arp"
+        },
+        {
+          "number": "7",
+          "title": "Reckoner",
+          "position": 7,
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+              },
+              "name": "Radiohead",
+              "joinphrase": ""
+            }
+          ],
+          "length": 290213,
+          "recording": {
+            "length": 290213,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Radiohead",
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+                }
+              }
+            ],
+            "title": "Reckoner",
+            "disambiguation": "",
+            "first-release-date": "2007-10-10",
+            "id": "d9b46ecb-5472-4dcd-8fa4-dd6723189e27",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700007"
+            ]
+          },
+          "id": "ebab42c4-8fa0-36f7-8a59-d367eab30b49"
+        },
+        {
+          "recording": {
+            "id": "29a9d792-151b-4dd4-99ae-25bc853d8895",
+            "isrcs": [
+              "GBSTK0700008"
+            ],
+            "video": false,
+            "first-release-date": "2007-10-10",
+            "title": "House of Cards",
+            "disambiguation": "",
+            "length": 328293,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "disambiguation": "",
+                  "sort-name": "Radiohead"
+                },
+                "name": "Radiohead"
+              }
+            ]
+          },
+          "id": "7f4faf2e-abde-364c-9757-9c7119ce6121",
+          "number": "8",
+          "title": "House of Cards",
+          "position": 8,
+          "artist-credit": [
+            {
+              "name": "Radiohead",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "name": "Radiohead",
+                "type": "Group",
+                "sort-name": "Radiohead",
+                "disambiguation": ""
+              },
+              "joinphrase": ""
+            }
+          ],
+          "length": 328293
+        },
+        {
+          "number": "9",
+          "title": "Jigsaw Falling Into Place",
+          "position": 9,
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type": "Group",
+                "name": "Radiohead",
+                "sort-name": "Radiohead",
+                "disambiguation": ""
+              },
+              "name": "Radiohead",
+              "joinphrase": ""
+            }
+          ],
+          "length": 248893,
+          "recording": {
+            "first-release-date": "2007-10-10",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700009"
+            ],
+            "id": "31600df4-e6dd-48ca-9f6b-8804027d8d6e",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Radiohead",
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Radiohead",
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB"
+                }
+              }
+            ],
+            "length": 248893,
+            "disambiguation": "",
+            "title": "Jigsaw Falling Into Place"
+          },
+          "id": "20ae2491-4f17-3924-a8fe-61ae87506792"
+        },
+        {
+          "title": "Videotape",
+          "position": 10,
+          "number": "10",
+          "length": 281800,
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "sort-name": "Radiohead",
+                "disambiguation": ""
+              },
+              "name": "Radiohead",
+              "joinphrase": ""
+            }
+          ],
+          "id": "1fa24edb-eb63-3788-a75a-d52efca0ce7b",
+          "recording": {
+            "first-release-date": "2007-10-10",
+            "isrcs": [
+              "GBSTK0700010"
+            ],
+            "video": false,
+            "id": "8648fe94-bbdc-44a1-9de8-c4ced7913dc2",
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 281800,
+            "disambiguation": "",
+            "title": "Videotape"
+          }
+        }
+      ],
+      "track-offset": 0,
+      "title": "",
+      "format": "CD",
+      "position": 3
+    },
+    {
+      "track-count": 8,
+      "id": "14dea14c-5c50-3b33-87d6-1fe71cde783a",
+      "format-id": "8a08dc62-1aa2-34de-a904-fa467c53052c",
+      "tracks": [
+        {
+          "position": 1,
+          "title": "MK 1",
+          "number": "1",
+          "length": 63960,
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Radiohead",
+              "joinphrase": ""
+            }
+          ],
+          "id": "7c83a748-e1a0-3ef7-bfec-c2d5479a40fe",
+          "recording": {
+            "length": 64000,
             "artist-credit": [
               {
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "sort-name": "Radiohead",
-                  "name": "Radiohead",
-                  "type": "Group",
                   "disambiguation": "",
-                  "country": "GB",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+                  "type": "Group",
+                  "name": "Radiohead",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB"
                 },
                 "name": "Radiohead",
                 "joinphrase": ""
               }
             ],
+            "title": "MK 1",
+            "disambiguation": "",
             "first-release-date": "2007-12-03",
-            "video": false,
-            "disambiguation": ""
+            "id": "e8d91bc2-9f74-487b-8b6b-a1ddfce55d28",
+            "isrcs": [
+              "GBSTK0700011"
+            ],
+            "video": false
           }
+        },
+        {
+          "id": "7b820ed9-2a83-3fa1-af44-cca64c347c8c",
+          "recording": {
+            "length": 299000,
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "sort-name": "Radiohead",
+                  "disambiguation": ""
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Down Is the New Up",
+            "disambiguation": "",
+            "first-release-date": "2007-12-03",
+            "id": "7b9e1b47-b1bd-4d82-951e-cb98692a7467",
+            "isrcs": [
+              "GBSTK0700012"
+            ],
+            "video": false
+          },
+          "title": "Down Is the New Up",
+          "position": 2,
+          "number": "2",
+          "length": 299120,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+              },
+              "name": "Radiohead"
+            }
+          ]
         },
         {
           "recording": {
             "id": "dd11af7e-46b0-4f53-996b-b00945d8f9a2",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
+            "isrcs": [
+              "GBSTK0700013"
             ],
+            "video": false,
             "first-release-date": "2007-12-03",
             "title": "Go Slowly",
             "disambiguation": "",
-            "video": false,
-            "length": 228000
-          },
-          "number": "3",
-          "length": 228200,
-          "position": 3,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Radiohead",
-              "artist": {
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+            "length": 228000,
+            "artist-credit": [
+              {
+                "joinphrase": "",
                 "name": "Radiohead",
-                "type": "Group",
-                "country": "GB",
-                "disambiguation": "",
-                "sort-name": "Radiohead",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "GB",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group"
+                }
               }
-            }
-          ],
+            ]
+          },
           "id": "8a6e5eb3-0abc-36fc-b669-f73b545e6137",
-          "title": "Go Slowly"
-        },
-        {
           "artist-credit": [
             {
               "joinphrase": "",
-              "name": "Radiohead",
               "artist": {
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "name": "Radiohead",
+                "type": "Group",
+                "country": "GB",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "sort-name": "Radiohead",
-                "type": "Group",
-                "name": "Radiohead",
-                "country": "GB",
-                "disambiguation": "",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-              }
+                "disambiguation": ""
+              },
+              "name": "Radiohead"
             }
           ],
-          "id": "8bf13adf-dd14-37bf-ace0-a920d3ee287e",
-          "title": "MK 2",
+          "length": 228200,
+          "number": "3",
+          "title": "Go Slowly",
+          "position": 3
+        },
+        {
           "recording": {
-            "video": false,
-            "disambiguation": "",
             "title": "MK 2",
-            "id": "caaa855a-1b2f-4458-b441-151ff0e9f741",
-            "first-release-date": "2007-12-03",
+            "disambiguation": "",
+            "length": 53000,
             "artist-credit": [
               {
-                "name": "Radiohead",
                 "joinphrase": "",
+                "name": "Radiohead",
                 "artist": {
+                  "sort-name": "Radiohead",
                   "disambiguation": "",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
                   "name": "Radiohead",
                   "type": "Group",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
                 }
               }
             ],
-            "length": 53000
-          },
-          "number": "4",
-          "length": 53026,
-          "position": 4
-        },
-        {
-          "position": 5,
-          "number": "5",
-          "length": 266480,
-          "recording": {
-            "disambiguation": "",
-            "video": false,
-            "id": "dbab4de5-7f70-44c6-8047-b4c03e4a8d7e",
-            "first-release-date": "2007-12-03",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
+            "id": "caaa855a-1b2f-4458-b441-151ff0e9f741",
+            "isrcs": [
+              "GBSTK0700014"
             ],
-            "title": "Last Flowers",
-            "length": 267000
+            "video": false,
+            "first-release-date": "2007-12-03"
           },
-          "title": "Last Flowers",
+          "id": "8bf13adf-dd14-37bf-ace0-a920d3ee287e",
+          "number": "4",
+          "position": 4,
+          "title": "MK 2",
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead",
-                "type": "Group",
-                "name": "Radiohead",
-                "country": "GB",
                 "disambiguation": "",
+                "sort-name": "Radiohead",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "name": "Radiohead",
+                "type": "Group",
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
               },
-              "name": "Radiohead",
-              "joinphrase": ""
-            }
-          ],
-          "id": "6b976eb3-bd54-3470-ac26-e011850806ef"
-        },
-        {
-          "title": "Up on the Ladder",
-          "id": "1984442e-ce2f-37d1-b533-7d1d5cbe289c",
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "type": "Group",
-                "name": "Radiohead",
-                "disambiguation": "",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              },
-              "joinphrase": "",
               "name": "Radiohead"
             }
           ],
+          "length": 53026
+        },
+        {
+          "id": "6b976eb3-bd54-3470-ac26-e011850806ef",
           "recording": {
-            "disambiguation": "",
-            "video": false,
-            "first-release-date": "2007-12-03",
+            "length": 267000,
             "artist-credit": [
               {
                 "artist": {
                   "disambiguation": "",
-                  "country": "GB",
-                  "name": "Radiohead",
-                  "type": "Group",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                   "sort-name": "Radiohead",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "joinphrase": "",
-                "name": "Radiohead"
-              }
-            ],
-            "id": "1bb739a3-5004-4f18-bb39-4d2053f66256",
-            "title": "Up on the Ladder",
-            "length": 257000
-          },
-          "position": 6,
-          "length": 257146,
-          "number": "6"
-        },
-        {
-          "length": 199693,
-          "number": "7",
-          "position": 7,
-          "recording": {
-            "id": "873d9d72-6d19-4dc4-bd91-695d6ebed037",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Radiohead",
-                "artist": {
                   "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "disambiguation": "",
-                  "country": "GB",
                   "type": "Group",
                   "name": "Radiohead",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
-                }
-              }
-            ],
-            "first-release-date": "2007-12-03",
-            "title": "Bangers + Mash",
-            "disambiguation": "",
-            "video": false,
-            "length": 200000
-          },
-          "id": "f73dd6d3-9853-318f-809b-9ae979a4cdf3",
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "",
-                "country": "GB",
-                "type": "Group",
-                "name": "Radiohead",
-                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              },
-              "joinphrase": "",
-              "name": "Radiohead"
-            }
-          ],
-          "title": "Bangers + Mash"
-        },
-        {
-          "recording": {
-            "id": "9dd6fffb-14cc-43f3-993a-d83a39608ce8",
-            "first-release-date": "2007-12-03",
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Radiohead",
-                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Radiohead"
+                  "country": "GB"
                 },
                 "name": "Radiohead",
                 "joinphrase": ""
               }
             ],
-            "title": "4 Minute Warning",
+            "title": "Last Flowers",
             "disambiguation": "",
-            "video": false,
-            "length": 246000
+            "first-release-date": "2007-12-03",
+            "id": "dbab4de5-7f70-44c6-8047-b4c03e4a8d7e",
+            "isrcs": [
+              "GBSTK0700015"
+            ],
+            "video": false
           },
-          "position": 8,
-          "number": "8",
-          "length": 246266,
-          "title": "4 Minute Warning",
+          "position": 5,
+          "title": "Last Flowers",
+          "number": "5",
+          "length": 266480,
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
-                "country": "GB",
                 "disambiguation": "",
+                "sort-name": "Radiohead",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Radiohead",
+                "type": "Group",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
+              },
+              "name": "Radiohead"
+            }
+          ]
+        },
+        {
+          "position": 6,
+          "title": "Up on the Ladder",
+          "number": "6",
+          "length": 257146,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Radiohead",
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Radiohead",
                 "type": "Group",
                 "name": "Radiohead",
                 "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Radiohead"
-              },
+                "country": "GB"
+              }
+            }
+          ],
+          "id": "1984442e-ce2f-37d1-b533-7d1d5cbe289c",
+          "recording": {
+            "disambiguation": "",
+            "title": "Up on the Ladder",
+            "artist-credit": [
+              {
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Radiohead",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Radiohead",
+                "joinphrase": ""
+              }
+            ],
+            "length": 257000,
+            "isrcs": [
+              "GBSTK0700016"
+            ],
+            "video": false,
+            "id": "1bb739a3-5004-4f18-bb39-4d2053f66256",
+            "first-release-date": "2007-12-03"
+          }
+        },
+        {
+          "recording": {
+            "length": 200000,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "name": "Radiohead",
+                  "type": "Group"
+                },
+                "name": "Radiohead"
+              }
+            ],
+            "title": "Bangers + Mash",
+            "disambiguation": "",
+            "first-release-date": "2007-12-03",
+            "id": "873d9d72-6d19-4dc4-bd91-695d6ebed037",
+            "video": false,
+            "isrcs": [
+              "GBSTK0700017"
+            ]
+          },
+          "id": "f73dd6d3-9853-318f-809b-9ae979a4cdf3",
+          "number": "7",
+          "position": 7,
+          "title": "Bangers + Mash",
+          "artist-credit": [
+            {
               "name": "Radiohead",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "GB",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "type": "Group",
+                "name": "Radiohead",
+                "sort-name": "Radiohead",
+                "disambiguation": ""
+              },
               "joinphrase": ""
             }
           ],
-          "id": "0c983ee3-79e4-36a0-b2ee-8181159d36c6"
+          "length": 199693
+        },
+        {
+          "position": 8,
+          "title": "4 Minute Warning",
+          "number": "8",
+          "length": 246266,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Radiohead",
+              "artist": {
+                "type": "Group",
+                "name": "Radiohead",
+                "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                "country": "GB",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "disambiguation": "",
+                "sort-name": "Radiohead"
+              }
+            }
+          ],
+          "id": "0c983ee3-79e4-36a0-b2ee-8181159d36c6",
+          "recording": {
+            "disambiguation": "",
+            "title": "4 Minute Warning",
+            "artist-credit": [
+              {
+                "name": "Radiohead",
+                "artist": {
+                  "sort-name": "Radiohead",
+                  "disambiguation": "",
+                  "name": "Radiohead",
+                  "type": "Group",
+                  "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
+                  "country": "GB",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 246000,
+            "isrcs": [
+              "GBSTK0700018"
+            ],
+            "video": false,
+            "id": "9dd6fffb-14cc-43f3-993a-d83a39608ce8",
+            "first-release-date": "2007-12-03"
+          }
         }
       ],
-      "track-count": 8
+      "track-offset": 0,
+      "position": 4,
+      "format": "Enhanced CD",
+      "title": "Disk 2"
     }
   ],
-  "quality": "normal",
-  "id": "ea92a194-2d60-35c7-9d56-0e1dba20cd45",
-  "artist-credit": [
-    {
-      "artist": {
-        "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
-        "name": "Radiohead",
-        "type": "Group",
-        "disambiguation": "",
-        "country": "GB",
-        "sort-name": "Radiohead",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-      },
-      "joinphrase": "",
-      "name": "Radiohead"
-    }
-  ],
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-  "barcode": null,
-  "date": "2007-12-03",
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
-  },
   "release-group": {
     "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "primary-type": "Album",
-    "secondary-type-ids": [],
-    "id": "6e335887-60ba-38f0-95af-fae7774336bf",
     "artist-credit": [
       {
-        "name": "Radiohead",
-        "joinphrase": "",
         "artist": {
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "disambiguation": "",
           "sort-name": "Radiohead",
+          "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711",
           "type": "Group",
           "name": "Radiohead",
-          "disambiguation": "",
           "country": "GB",
-          "id": "a74b1b7f-71a5-4011-9441-d0b5e4122711"
-        }
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        },
+        "name": "Radiohead",
+        "joinphrase": ""
       }
     ],
-    "first-release-date": "2007-10-10",
+    "secondary-type-ids": [],
+    "disambiguation": "",
     "title": "In Rainbows",
+    "primary-type": "Album",
     "secondary-types": [],
-    "disambiguation": ""
+    "first-release-date": "2007-10-10",
+    "id": "6e335887-60ba-38f0-95af-fae7774336bf"
   },
   "label-info": [
     {
       "label": {
-        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
-        "label-code": null,
-        "type": null,
-        "name": "_Xurbia_Xendless Limited",
         "disambiguation": "",
         "sort-name": "_Xurbia_Xendless Limited",
+        "name": "_Xurbia_Xendless Limited",
+        "type": null,
+        "label-code": null,
+        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
         "type-id": null
       },
       "catalog-number": "CDS_X_X001"
     },
     {
+      "catalog-number": "CD_X_X001",
       "label": {
-        "type": null,
-        "name": "_Xurbia_Xendless Limited",
-        "disambiguation": "",
-        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
-        "label-code": null,
-        "sort-name": "_Xurbia_Xendless Limited",
-        "type-id": null
-      },
-      "catalog-number": "CD_X_X001"
-    },
-    {
-      "catalog-number": "_X_X001",
-      "label": {
-        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
-        "label-code": null,
-        "type": null,
-        "name": "_Xurbia_Xendless Limited",
         "disambiguation": "",
         "sort-name": "_Xurbia_Xendless Limited",
+        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
+        "type": null,
+        "name": "_Xurbia_Xendless Limited",
+        "label-code": null,
         "type-id": null
       }
-    }
-  ],
-  "country": "GB",
-  "status": "Official",
-  "packaging": "Book",
-  "title": "In Rainbows",
-  "release-events": [
+    },
     {
-      "area": {
-        "disambiguation": "",
-        "iso-3166-1-codes": [
-          "GB"
-        ],
-        "name": "United Kingdom",
+      "label": {
         "type": null,
-        "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-        "sort-name": "United Kingdom",
-        "type-id": null
+        "label-code": null,
+        "name": "_Xurbia_Xendless Limited",
+        "id": "22434a7f-88eb-4e30-b33a-6920aad57525",
+        "type-id": null,
+        "disambiguation": "",
+        "sort-name": "_Xurbia_Xendless Limited"
       },
-      "date": "2007-12-03"
+      "catalog-number": "_X_X001"
     }
   ],
-  "cover-art-archive": {
-    "front": true,
-    "artwork": true,
-    "back": true,
-    "darkened": false,
-    "count": 23
-  },
-  "packaging-id": "d60b6157-79fe-3913-ab8b-23b32de8690d"
+  "id": "ea92a194-2d60-35c7-9d56-0e1dba20cd45",
+  "disambiguation": "discbox",
+  "quality": "normal",
+  "status": "Official"
 }

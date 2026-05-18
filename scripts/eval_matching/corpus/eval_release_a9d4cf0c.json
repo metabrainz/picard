@@ -1,210 +1,186 @@
 {
-  "quality": "normal",
-  "cover-art-archive": {
-    "back": true,
-    "darkened": false,
-    "front": false,
-    "count": 1,
-    "artwork": true
-  },
+  "release-events": [
+    {
+      "date": "1984",
+      "area": {
+        "type": null,
+        "disambiguation": "",
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "sort-name": "Canada",
+        "iso-3166-1-codes": [
+          "CA"
+        ],
+        "type-id": null,
+        "name": "Canada"
+      }
+    }
+  ],
+  "id": "a9d4cf0c-750c-4de6-b811-db3cc9431149",
+  "disambiguation": "",
+  "title": "Greatest Hits",
   "media": [
     {
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "title": "",
       "track-offset": 0,
-      "position": 1,
       "track-count": 10,
-      "id": "d9627f6a-1ae5-3cc5-8196-dd87e3c90a1c",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
       "tracks": [
         {
-          "number": "1",
-          "artist-credit": [
-            {
-              "name": "Elton John",
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "John, Elton",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "type": "Person",
-                "country": "GB",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "name": "Elton John",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              }
-            }
-          ],
-          "title": "Your Song",
           "length": 241000,
           "recording": {
-            "video": false,
-            "id": "1bd4ae30-8643-4431-a503-65e8363a8c94",
             "artist-credit": [
               {
                 "name": "Elton John",
-                "joinphrase": "",
                 "artist": {
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "sort-name": "John, Elton",
-                  "country": "GB",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "name": "Elton John",
                   "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                }
+                  "country": "GB",
+                  "sort-name": "John, Elton",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Elton John"
+                },
+                "joinphrase": ""
               }
             ],
-            "disambiguation": "Superior Sound remix",
-            "first-release-date": "1974-11-04",
             "title": "Your Song",
+            "id": "1bd4ae30-8643-4431-a503-65e8363a8c94",
+            "disambiguation": "Superior Sound remix",
+            "isrcs": [
+              "GBAMB9500072"
+            ],
+            "video": false,
+            "first-release-date": "1974-11-04",
             "length": 241000
           },
+          "title": "Your Song",
+          "position": 1,
           "id": "e7b34fb1-dd09-4f07-b1a9-2b9290ee6562",
-          "position": 1
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "sort-name": "John, Elton",
+                "country": "GB",
+                "type": "Person",
+                "name": "Elton John",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Elton John"
+            }
+          ],
+          "number": "1"
         },
         {
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Elton John",
-                "artist": {
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "sort-name": "John, Elton",
-                  "name": "Elton John",
-                  "country": "GB",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                }
-              }
-            ],
-            "disambiguation": "",
-            "video": false,
-            "id": "d373ce6a-d746-4516-9950-7ed3835982f1",
-            "title": "Daniel",
-            "length": 233880,
-            "first-release-date": "1973-01-26"
-          },
-          "position": 2,
-          "id": "d17cdb85-5cef-4252-8ac0-b3abdd6d0869",
           "number": "2",
           "artist-credit": [
             {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "GB",
-                "name": "Elton John",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "type": "Person",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "sort-name": "John, Elton"
-              },
               "name": "Elton John",
+              "artist": {
+                "type": "Person",
+                "country": "GB",
+                "sort-name": "John, Elton",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Elton John"
+              },
               "joinphrase": ""
             }
           ],
           "title": "Daniel",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Elton John",
+                "joinphrase": "",
+                "artist": {
+                  "name": "Elton John",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "sort-name": "John, Elton",
+                  "country": "GB",
+                  "type": "Person"
+                }
+              }
+            ],
+            "isrcs": [
+              "GBAMB9500001",
+              "GBUM71700212"
+            ],
+            "id": "d373ce6a-d746-4516-9950-7ed3835982f1",
+            "disambiguation": "",
+            "title": "Daniel",
+            "first-release-date": "1973-01-26",
+            "video": false,
+            "length": 233880
+          },
+          "id": "d17cdb85-5cef-4252-8ac0-b3abdd6d0869",
           "length": 233106
         },
         {
+          "position": 3,
+          "title": "Honky Cat",
+          "recording": {
+            "length": 313200,
+            "first-release-date": "1972-05-19",
+            "video": false,
+            "id": "aefaa021-b6f9-4ac3-b0ec-b99cc27acb63",
+            "disambiguation": "",
+            "isrcs": [
+              "GBAMB7200002",
+              "GBAMB9200002",
+              "GBUM71700180"
+            ],
+            "title": "Honky Cat",
+            "artist-credit": [
+              {
+                "name": "Elton John",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Elton John",
+                  "country": "GB",
+                  "type": "Person",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "sort-name": "John, Elton"
+                }
+              }
+            ]
+          },
+          "id": "f7ebe9ae-6355-455b-b6d6-47c2cfd536ad",
+          "length": 313200,
           "number": "3",
           "artist-credit": [
             {
+              "name": "Elton John",
               "artist": {
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "sort-name": "John, Elton",
+                "name": "Elton John",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "disambiguation": "English singer, songwriter, pianist, and composer",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "sort-name": "John, Elton",
                 "country": "GB",
-                "name": "Elton John",
                 "type": "Person"
               },
-              "name": "Elton John",
               "joinphrase": ""
             }
-          ],
-          "length": 313200,
-          "title": "Honky Cat",
-          "recording": {
-            "id": "aefaa021-b6f9-4ac3-b0ec-b99cc27acb63",
-            "video": false,
-            "disambiguation": "",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "sort-name": "John, Elton",
-                  "country": "GB",
-                  "name": "Elton John",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "name": "Elton John",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "1972-05-19",
-            "title": "Honky Cat",
-            "length": 313200
-          },
-          "id": "f7ebe9ae-6355-455b-b6d6-47c2cfd536ad",
-          "position": 3
+          ]
         },
         {
-          "artist-credit": [
-            {
-              "name": "Elton John",
-              "joinphrase": "",
-              "artist": {
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "sort-name": "John, Elton",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "country": "GB",
-                "name": "Elton John",
-                "type": "Person",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              }
-            }
-          ],
-          "length": 194733,
-          "title": "Goodbye Yellow Brick Road",
           "number": "4",
-          "id": "368dce5a-9342-4145-82b0-003afcdc162c",
-          "position": 4,
-          "recording": {
-            "title": "Goodbye Yellow Brick Road",
-            "length": 194773,
-            "first-release-date": "1973-10-05",
-            "disambiguation": "",
-            "artist-credit": [
-              {
-                "artist": {
-                  "sort-name": "John, Elton",
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "type": "Person",
-                  "country": "GB",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "name": "Elton John",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "name": "Elton John",
-                "joinphrase": ""
-              }
-            ],
-            "id": "e492bc5b-469e-497b-903d-64a9713deee0",
-            "video": false
-          }
-        },
-        {
           "artist-credit": [
             {
               "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "Elton John",
                 "country": "GB",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
                 "type": "Person",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
                 "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
                 "sort-name": "John, Elton"
               },
@@ -212,90 +188,180 @@
               "name": "Elton John"
             }
           ],
-          "length": 293000,
-          "title": "Saturday Night\u2019s Alright for Fighting",
-          "number": "5",
-          "position": 5,
-          "id": "90a3ea4a-0ec8-4d5a-a500-1349dffba0fe",
+          "position": 4,
+          "title": "Goodbye Yellow Brick Road",
           "recording": {
-            "length": 294973,
-            "title": "Saturday Night\u2019s Alright for Fighting",
-            "first-release-date": "1973-06-29",
-            "disambiguation": "",
             "artist-credit": [
               {
+                "artist": {
+                  "type": "Person",
+                  "country": "GB",
+                  "sort-name": "John, Elton",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Elton John"
+                },
                 "joinphrase": "",
+                "name": "Elton John"
+              }
+            ],
+            "length": 194773,
+            "video": false,
+            "first-release-date": "1973-10-05",
+            "title": "Goodbye Yellow Brick Road",
+            "id": "e492bc5b-469e-497b-903d-64a9713deee0",
+            "isrcs": [
+              "GBAMB9500058",
+              "GBF080300779",
+              "GBUM71304956"
+            ],
+            "disambiguation": ""
+          },
+          "id": "368dce5a-9342-4145-82b0-003afcdc162c",
+          "length": 194733
+        },
+        {
+          "position": 5,
+          "title": "Saturday Night\u2019s Alright for Fighting",
+          "recording": {
+            "video": false,
+            "first-release-date": "1973-06-29",
+            "length": 294973,
+            "title": "Saturday Night\u2019s Alright for Fighting",
+            "id": "f8f27c10-47d7-40dc-a0a1-49eaba96d8ca",
+            "disambiguation": "",
+            "isrcs": [
+              "GBAMB9500068",
+              "GBF080300786",
+              "GBUM71304966"
+            ],
+            "artist-credit": [
+              {
+                "name": "Elton John",
+                "joinphrase": "",
+                "artist": {
+                  "name": "Elton John",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "sort-name": "John, Elton",
+                  "country": "GB",
+                  "type": "Person"
+                }
+              }
+            ]
+          },
+          "id": "90a3ea4a-0ec8-4d5a-a500-1349dffba0fe",
+          "length": 293000,
+          "number": "5",
+          "artist-credit": [
+            {
+              "name": "Elton John",
+              "joinphrase": "",
+              "artist": {
+                "type": "Person",
+                "country": "GB",
+                "sort-name": "John, Elton",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Elton John"
+              }
+            }
+          ]
+        },
+        {
+          "recording": {
+            "artist-credit": [
+              {
                 "name": "Elton John",
                 "artist": {
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "country": "GB",
                   "name": "Elton John",
-                  "type": "Person",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "John, Elton",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "type": "Person",
+                  "country": "GB"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 282000,
+            "video": false,
+            "first-release-date": "1972-05-19",
+            "title": "Rocket Man (I Think It\u2019s Going to Be a Long, Long Time)",
+            "id": "4c2a08bd-26df-4e68-835a-5bc8ff9bcf8a",
+            "isrcs": [
+              "GBAMB7200006",
+              "GBAMB9200006",
+              "GBUM71700184"
+            ],
+            "disambiguation": ""
+          },
+          "position": 6,
+          "title": "Rocket Man",
+          "id": "d498cac2-9e34-4981-9995-c6589bf54444",
+          "length": 282000,
+          "number": "6",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "John, Elton",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "type": "Person",
+                "country": "GB",
+                "name": "Elton John",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Elton John"
+            }
+          ]
+        },
+        {
+          "length": 322000,
+          "id": "27160d6a-36b4-4bed-9967-f2b984468257",
+          "position": 7,
+          "title": "Bennie and the Jets",
+          "recording": {
+            "first-release-date": "1973-10-05",
+            "video": false,
+            "length": 322826,
+            "disambiguation": "",
+            "id": "5df9640d-217a-4480-bdc8-8173d137dd54",
+            "isrcs": [
+              "GBAMB9500057",
+              "GBF080300775",
+              "GBUM71304955"
+            ],
+            "title": "Bennie and the Jets",
+            "artist-credit": [
+              {
+                "name": "Elton John",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Elton John",
+                  "country": "GB",
+                  "type": "Person",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
                   "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
                   "sort-name": "John, Elton"
                 }
               }
-            ],
-            "id": "f8f27c10-47d7-40dc-a0a1-49eaba96d8ca",
-            "video": false
-          }
-        },
-        {
-          "recording": {
-            "length": 282000,
-            "title": "Rocket Man (I Think It\u2019s Going to Be a Long, Long Time)",
-            "first-release-date": "1972-05-19",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Elton John",
-                "artist": {
-                  "sort-name": "John, Elton",
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "type": "Person",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "country": "GB",
-                  "name": "Elton John"
-                }
-              }
-            ],
-            "disambiguation": "",
-            "video": false,
-            "id": "4c2a08bd-26df-4e68-835a-5bc8ff9bcf8a"
+            ]
           },
-          "id": "d498cac2-9e34-4981-9995-c6589bf54444",
-          "position": 6,
-          "number": "6",
           "artist-credit": [
             {
               "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "GB",
                 "disambiguation": "English singer, songwriter, pianist, and composer",
-                "name": "Elton John",
-                "type": "Person",
                 "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "sort-name": "John, Elton"
-              },
-              "name": "Elton John",
-              "joinphrase": ""
-            }
-          ],
-          "length": 282000,
-          "title": "Rocket Man"
-        },
-        {
-          "number": "7",
-          "artist-credit": [
-            {
-              "artist": {
                 "sort-name": "John, Elton",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                "type": "Person",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
                 "country": "GB",
+                "type": "Person",
                 "name": "Elton John",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
@@ -303,268 +369,247 @@
               "name": "Elton John"
             }
           ],
-          "title": "Bennie and the Jets",
-          "length": 322000,
-          "recording": {
-            "length": 322826,
-            "title": "Bennie and the Jets",
-            "first-release-date": "1973-10-05",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type": "Person",
-                  "name": "Elton John",
-                  "country": "GB",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "John, Elton",
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
-                },
-                "joinphrase": "",
-                "name": "Elton John"
-              }
-            ],
-            "disambiguation": "",
-            "video": false,
-            "id": "5df9640d-217a-4480-bdc8-8173d137dd54"
-          },
-          "position": 7,
-          "id": "27160d6a-36b4-4bed-9967-f2b984468257"
+          "number": "7"
         },
         {
-          "number": "8",
           "artist-credit": [
             {
-              "artist": {
-                "type": "Person",
-                "name": "Elton John",
-                "country": "GB",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "John, Elton",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
-              },
+              "name": "Elton John",
               "joinphrase": "",
-              "name": "Elton John"
+              "artist": {
+                "name": "Elton John",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "sort-name": "John, Elton",
+                "country": "GB",
+                "type": "Person"
+              }
             }
           ],
-          "title": "Don\u2019t Let the Sun Go Down on Me",
+          "number": "8",
           "length": 337933,
-          "recording": {
-            "disambiguation": "",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type": "Person",
-                  "country": "GB",
-                  "name": "Elton John",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "John, Elton",
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
-                },
-                "name": "Elton John",
-                "joinphrase": ""
-              }
-            ],
-            "id": "e3710ecc-2578-4a03-9a0e-11d3843abd9a",
-            "video": false,
-            "title": "Don\u2019t Let the Sun Go Down on Me",
-            "length": 337280,
-            "first-release-date": "1974-06-24"
-          },
           "id": "80f4090d-cda3-4b76-9838-f76314ec70bc",
-          "position": 8
-        },
-        {
+          "title": "Don\u2019t Let the Sun Go Down on Me",
+          "position": 8,
           "recording": {
-            "title": "Border Song",
-            "length": 202066,
-            "first-release-date": "1970-07-22",
+            "video": false,
+            "first-release-date": "1974-06-24",
+            "length": 337280,
+            "id": "e3710ecc-2578-4a03-9a0e-11d3843abd9a",
+            "disambiguation": "",
+            "isrcs": [
+              "GBAMB9500047"
+            ],
+            "title": "Don\u2019t Let the Sun Go Down on Me",
             "artist-credit": [
               {
-                "joinphrase": "",
                 "name": "Elton John",
+                "joinphrase": "",
                 "artist": {
-                  "type": "Person",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
                   "country": "GB",
-                  "name": "Elton John",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
                   "sort-name": "John, Elton",
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Elton John"
                 }
               }
-            ],
-            "disambiguation": "",
-            "video": false,
-            "id": "9bb24681-db91-45dc-ae75-fe37965480a3"
-          },
-          "id": "149cda11-5879-4428-9840-3e6d209c9bd2",
-          "position": 9,
+            ]
+          }
+        },
+        {
           "number": "9",
           "artist-credit": [
             {
-              "artist": {
-                "type": "Person",
-                "country": "GB",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "name": "Elton John",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "John, Elton",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
-              },
               "name": "Elton John",
-              "joinphrase": ""
+              "joinphrase": "",
+              "artist": {
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
+                "sort-name": "John, Elton",
+                "country": "GB",
+                "type": "Person",
+                "name": "Elton John",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
             }
           ],
-          "length": 202066,
-          "title": "Border Song"
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "John, Elton",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                  "type": "Person",
+                  "country": "GB",
+                  "name": "Elton John",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Elton John"
+              }
+            ],
+            "title": "Border Song",
+            "id": "9bb24681-db91-45dc-ae75-fe37965480a3",
+            "isrcs": [
+              "GBAMB9500078",
+              "GBUM71604270"
+            ],
+            "disambiguation": "",
+            "length": 202066,
+            "first-release-date": "1970-07-22",
+            "video": false
+          },
+          "position": 9,
+          "title": "Border Song",
+          "id": "149cda11-5879-4428-9840-3e6d209c9bd2",
+          "length": 202066
         },
         {
+          "position": 10,
+          "title": "Crocodile Rock",
           "recording": {
-            "title": "Crocodile Rock",
-            "length": 235760,
-            "first-release-date": "1972-10-27",
-            "disambiguation": "",
             "artist-credit": [
               {
                 "artist": {
-                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-                  "sort-name": "John, Elton",
-                  "country": "GB",
-                  "disambiguation": "English singer, songwriter, pianist, and composer",
                   "name": "Elton John",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "John, Elton",
+                  "disambiguation": "English singer, songwriter, pianist, and composer",
+                  "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
                   "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                  "country": "GB"
                 },
                 "joinphrase": "",
                 "name": "Elton John"
               }
             ],
+            "title": "Crocodile Rock",
+            "disambiguation": "",
             "id": "8388fed5-e41f-44d1-b6b5-a5b04ffffbd5",
-            "video": false
+            "isrcs": [
+              "GBAMB7200001",
+              "GBAMB9200001",
+              "GBAMB9500009",
+              "GBUM71700220"
+            ],
+            "first-release-date": "1972-10-27",
+            "video": false,
+            "length": 235760
           },
-          "position": 10,
           "id": "6354eda5-d365-4ea5-88f5-a8d0611bb833",
-          "number": "10",
-          "title": "Crocodile Rock",
           "length": 235200,
+          "number": "10",
           "artist-credit": [
             {
               "name": "Elton John",
               "joinphrase": "",
               "artist": {
+                "sort-name": "John, Elton",
+                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+                "disambiguation": "English singer, songwriter, pianist, and composer",
                 "type": "Person",
                 "country": "GB",
                 "name": "Elton John",
-                "disambiguation": "English singer, songwriter, pianist, and composer",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "John, Elton",
-                "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822"
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               }
             }
           ]
         }
       ],
-      "format": "CD"
+      "format": "CD",
+      "position": 1,
+      "title": "",
+      "id": "d9627f6a-1ae5-3cc5-8196-dd87e3c90a1c"
     }
   ],
-  "status": "Official",
+  "date": "1984",
+  "label-info": [
+    {
+      "catalog-number": "DIDX 189",
+      "label": null
+    },
+    {
+      "catalog-number": "DIDX 52",
+      "label": null
+    },
+    {
+      "label": {
+        "name": "MCA Records",
+        "label-code": 1056,
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
+        "disambiguation": "1967\u20132003; name as in imprint during 1972\u20131990",
+        "id": "46a3941a-c810-47a1-974f-955effec4d09",
+        "sort-name": "MCA Records",
+        "type": "Imprint"
+      },
+      "catalog-number": "MCAD-37215"
+    }
+  ],
   "asin": null,
-  "title": "Greatest Hits",
-  "id": "a9d4cf0c-750c-4de6-b811-db3cc9431149",
-  "packaging": "Jewel Case",
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "release-group": {
+    "title": "Greatest Hits",
+    "disambiguation": "",
+    "id": "6619f357-4115-3d8a-bd52-238641c23c28",
     "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
     "first-release-date": "1974-11-04",
-    "title": "Greatest Hits",
-    "id": "6619f357-4115-3d8a-bd52-238641c23c28",
-    "disambiguation": "",
     "secondary-types": [
       "Compilation"
     ],
+    "primary-type": "Album",
     "secondary-type-ids": [
       "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
     ],
     "artist-credit": [
       {
         "joinphrase": "",
-        "name": "Elton John",
         "artist": {
-          "country": "GB",
-          "name": "Elton John",
-          "disambiguation": "English singer, songwriter, pianist, and composer",
-          "type": "Person",
           "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+          "name": "Elton John",
+          "country": "GB",
+          "type": "Person",
           "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+          "disambiguation": "English singer, songwriter, pianist, and composer",
           "sort-name": "John, Elton"
-        }
+        },
+        "name": "Elton John"
       }
-    ],
-    "primary-type": "Album"
+    ]
   },
-  "release-events": [
+  "status": "Official",
+  "artist-credit": [
     {
-      "date": "1984",
-      "area": {
-        "iso-3166-1-codes": [
-          "CA"
-        ],
-        "type-id": null,
-        "name": "Canada",
-        "disambiguation": "",
-        "type": null,
-        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-        "sort-name": "Canada"
+      "name": "Elton John",
+      "joinphrase": "",
+      "artist": {
+        "type": "Person",
+        "country": "GB",
+        "sort-name": "John, Elton",
+        "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
+        "disambiguation": "English singer, songwriter, pianist, and composer",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "name": "Elton John"
       }
     }
   ],
-  "disambiguation": "",
-  "country": "CA",
-  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
   "barcode": "",
-  "label-info": [
-    {
-      "label": null,
-      "catalog-number": "DIDX 189"
-    },
-    {
-      "label": null,
-      "catalog-number": "DIDX 52"
-    },
-    {
-      "catalog-number": "MCAD-37215",
-      "label": {
-        "type": "Imprint",
-        "disambiguation": "1967\u20132003; name as in imprint during 1972\u20131990",
-        "name": "MCA Records",
-        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
-        "label-code": 1056,
-        "sort-name": "MCA Records",
-        "id": "46a3941a-c810-47a1-974f-955effec4d09"
-      }
-    }
-  ],
   "text-representation": {
     "script": "Latn",
     "language": "eng"
   },
-  "date": "1984",
-  "artist-credit": [
-    {
-      "joinphrase": "",
-      "name": "Elton John",
-      "artist": {
-        "sort-name": "John, Elton",
-        "id": "b83bc61f-8451-4a5d-8b8e-7e9ed295e822",
-        "type": "Person",
-        "name": "Elton John",
-        "country": "GB",
-        "disambiguation": "English singer, songwriter, pianist, and composer",
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-      }
-    }
-  ]
+  "packaging": "Jewel Case",
+  "cover-art-archive": {
+    "front": false,
+    "darkened": false,
+    "back": true,
+    "count": 1,
+    "artwork": true
+  },
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "country": "CA",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "quality": "normal"
 }

@@ -356,6 +356,26 @@ def wrong_barcode(metadata, release):
     metadata["barcode"] = "9999999999999"
 
 
+def wrong_isrc(metadata, release):
+    """Replace ISRC with one from an adjacent track on the same release.
+
+    Simulates a common ripping error where ISRCs shift by one track.
+    Falls back to a completely wrong ISRC if no adjacent track has one.
+    """
+    if "isrc" not in metadata:
+        return
+    # Find an ISRC from a different track on the same release
+    for media in release.get("media", []):
+        for track in media.get("tracks", []):
+            recording = track.get("recording", {})
+            for isrc in recording.get("isrcs", []):
+                if isrc != metadata["isrc"]:
+                    metadata["isrc"] = isrc
+                    return
+    # Fallback: completely wrong ISRC
+    metadata["isrc"] = "XXYYY0000001"
+
+
 def missing_most(metadata, release):
     """Strip everything except album and artist (minimal metadata)."""
     keep = {"album", "albumartist"}
@@ -413,6 +433,7 @@ DEGRADATIONS = [
     ("extra_artist_suffix", extra_artist_suffix),
     ("wrong_track_count", wrong_track_count),
     ("wrong_barcode", wrong_barcode),
+    ("wrong_isrc", wrong_isrc),
     ("length_small_diff", length_small_diff),
     ("length_large_diff", length_large_diff),
     ("title_remaster_suffix", title_remaster_suffix),
@@ -497,6 +518,10 @@ def metadata_from_track(track, release):
         m["artist"] = "".join(c.get("name", "") + c.get("joinphrase", "") for c in ac)
     m.length = track.get("length", 0) or 0
     m["tracknumber"] = track.get("number", "1")
+    recording = track.get("recording", {})
+    isrcs = recording.get("isrcs", [])
+    if isrcs:
+        m["isrc"] = isrcs[0]
     return m
 
 

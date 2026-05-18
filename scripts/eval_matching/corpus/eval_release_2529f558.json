@@ -1,95 +1,246 @@
 {
-  "title": "Metallica",
+  "disambiguation": "",
+  "quality": "high",
+  "status": "Official",
+  "release-group": {
+    "primary-type": "Album",
+    "secondary-types": [],
+    "first-release-date": "1991-08-12",
+    "id": "e8f70201-8899-3f0c-9e07-5d6495bc8046",
+    "artist-credit": [
+      {
+        "joinphrase": "",
+        "name": "Metallica",
+        "artist": {
+          "disambiguation": "",
+          "sort-name": "Metallica",
+          "type": "Group",
+          "name": "Metallica",
+          "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+          "country": "US",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        }
+      }
+    ],
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "disambiguation": "\u201cThe Black Album\u201d",
+    "title": "Metallica"
+  },
+  "label-info": [
+    {
+      "catalog-number": "CD 61113",
+      "label": {
+        "disambiguation": "all releases with \u201cElektra\u201d or \u201cElektra Entertainment\u201d logo, 1950 to present",
+        "sort-name": "Elektra",
+        "name": "Elektra",
+        "type": "Imprint",
+        "label-code": 192,
+        "id": "873f9f75-af68-4872-98e2-431058e4c9a9",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded"
+      }
+    }
+  ],
+  "id": "2529f558-970b-33d2-a42c-41ab15a970c6",
   "text-representation": {
-    "script": "Latn",
-    "language": "eng"
+    "language": "eng",
+    "script": "Latn"
   },
   "asin": "B000002H97",
+  "title": "Metallica",
+  "artist-credit": [
+    {
+      "name": "Metallica",
+      "artist": {
+        "country": "US",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+        "name": "Metallica",
+        "type": "Group",
+        "sort-name": "Metallica",
+        "disambiguation": ""
+      },
+      "joinphrase": ""
+    }
+  ],
+  "packaging": null,
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "barcode": "075596111324",
   "media": [
     {
-      "id": "199080de-4dff-315d-8d7d-5647e43ec595",
-      "track-count": 12,
-      "track-offset": 0,
-      "position": 1,
-      "title": "",
-      "format": "CD",
       "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
       "tracks": [
         {
           "recording": {
-            "title": "Enter Sandman",
-            "disambiguation": "",
-            "length": 331560,
             "artist-credit": [
               {
                 "artist": {
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "type": "Group",
-                  "name": "Metallica",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "US",
-                  "sort-name": "Metallica",
-                  "disambiguation": ""
+                  "name": "Metallica",
+                  "type": "Group",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "disambiguation": "",
+                  "sort-name": "Metallica"
                 },
                 "name": "Metallica",
                 "joinphrase": ""
               }
             ],
-            "id": "fe4a0608-cf7f-444a-a932-a1b77c766673",
+            "length": 331560,
+            "disambiguation": "",
+            "title": "Enter Sandman",
+            "first-release-date": "1990",
+            "isrcs": [
+              "GBF089190013",
+              "QMKHM1900001",
+              "QMKHM1900218",
+              "USEE10001992"
+            ],
             "video": false,
-            "first-release-date": "1990"
+            "id": "fe4a0608-cf7f-444a-a932-a1b77c766673"
           },
           "id": "6922eea8-b448-3e99-b889-0ebf920f0ce9",
-          "number": "1",
-          "position": 1,
-          "title": "Enter Sandman",
           "artist-credit": [
             {
-              "name": "Metallica",
               "artist": {
+                "disambiguation": "",
+                "sort-name": "Metallica",
                 "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
                 "name": "Metallica",
                 "type": "Group",
-                "country": "US",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Metallica",
-                "disambiguation": ""
+                "country": "US"
               },
+              "name": "Metallica",
               "joinphrase": ""
             }
           ],
-          "length": 331600
+          "length": 331600,
+          "number": "1",
+          "title": "Enter Sandman",
+          "position": 1
         },
         {
-          "number": "2",
-          "position": 2,
-          "title": "Sad but True",
+          "length": 324600,
           "artist-credit": [
             {
-              "name": "Metallica",
+              "joinphrase": "",
               "artist": {
                 "disambiguation": "",
                 "sort-name": "Metallica",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "US",
-                "name": "Metallica",
                 "type": "Group",
+                "name": "Metallica",
                 "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
+              },
+              "name": "Metallica"
+            }
+          ],
+          "title": "Sad but True",
+          "position": 2,
+          "number": "2",
+          "id": "bcf3f888-3a23-33d7-a2d6-84ade2fbd55e",
+          "recording": {
+            "disambiguation": "",
+            "title": "Sad but True",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Metallica",
+                "artist": {
+                  "country": "US",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "type": "Group",
+                  "name": "Metallica",
+                  "disambiguation": "",
+                  "sort-name": "Metallica"
+                }
+              }
+            ],
+            "length": 324666,
+            "isrcs": [
+              "GBF089190014",
+              "QMKHM1900002",
+              "QMKHM1900219",
+              "USEE10001993"
+            ],
+            "video": false,
+            "id": "a105dba3-a35b-464f-8f46-b18c21c13809",
+            "first-release-date": "1990"
+          }
+        },
+        {
+          "number": "3",
+          "title": "Holier Than Thou",
+          "position": 3,
+          "artist-credit": [
+            {
+              "name": "Metallica",
+              "artist": {
+                "type": "Group",
+                "name": "Metallica",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Metallica",
+                "disambiguation": ""
               },
               "joinphrase": ""
             }
           ],
-          "length": 324600,
+          "length": 227533,
           "recording": {
-            "id": "a105dba3-a35b-464f-8f46-b18c21c13809",
+            "length": 227640,
+            "artist-credit": [
+              {
+                "name": "Metallica",
+                "artist": {
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "name": "Metallica",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US",
+                  "sort-name": "Metallica",
+                  "disambiguation": ""
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "Holier Than Thou",
+            "disambiguation": "",
+            "first-release-date": "1990",
+            "id": "51bd242e-0a50-4e0b-8472-13399f7d98e6",
+            "isrcs": [
+              "GBF089190015",
+              "QMKHM1900003",
+              "QMKHM1900220",
+              "USEE10001994"
+            ],
+            "video": false
+          },
+          "id": "5f999a4c-e11c-32e4-921e-0af2f4285c8e"
+        },
+        {
+          "recording": {
+            "id": "51d82245-53de-4f1a-864b-ca1960692ac3",
+            "isrcs": [
+              "GBF089190016",
+              "QMKHM1900004",
+              "QMKHM1900221",
+              "USEE10001995"
+            ],
             "video": false,
             "first-release-date": "1990",
-            "title": "Sad but True",
+            "title": "The Unforgiven",
             "disambiguation": "",
-            "length": 324666,
+            "length": 387093,
             "artist-credit": [
               {
                 "joinphrase": "",
+                "name": "Metallica",
                 "artist": {
                   "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
                   "type": "Group",
@@ -98,108 +249,412 @@
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "sort-name": "Metallica",
                   "disambiguation": ""
-                },
-                "name": "Metallica"
+                }
               }
             ]
           },
-          "id": "bcf3f888-3a23-33d7-a2d6-84ade2fbd55e"
+          "id": "746511f7-d602-357d-814e-e81b735e9e43",
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "type": "Group",
+                "name": "Metallica",
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Metallica",
+                "disambiguation": ""
+              },
+              "name": "Metallica",
+              "joinphrase": ""
+            }
+          ],
+          "length": 387266,
+          "number": "4",
+          "position": 4,
+          "title": "The Unforgiven"
         },
         {
-          "position": 3,
-          "title": "Holier Than Thou",
-          "number": "3",
-          "length": 227533,
+          "title": "Wherever I May Roam",
+          "position": 5,
+          "number": "5",
+          "length": 404266,
+          "artist-credit": [
+            {
+              "name": "Metallica",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "US",
+                "type": "Group",
+                "name": "Metallica",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "disambiguation": "",
+                "sort-name": "Metallica"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "id": "63f38a59-46e9-3445-ba86-4d5d52af8e6a",
+          "recording": {
+            "disambiguation": "",
+            "title": "Wherever I May Roam",
+            "artist-credit": [
+              {
+                "name": "Metallica",
+                "artist": {
+                  "sort-name": "Metallica",
+                  "disambiguation": "",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "name": "Metallica",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 404200,
+            "video": false,
+            "isrcs": [
+              "GBF089190017",
+              "QMKHM1900005",
+              "QMKHM1900222",
+              "USEE10001996"
+            ],
+            "id": "8889c63e-dc63-479b-91dc-209bb15995df",
+            "first-release-date": "1990"
+          }
+        },
+        {
+          "length": 240160,
           "artist-credit": [
             {
               "joinphrase": "",
               "name": "Metallica",
               "artist": {
-                "name": "Metallica",
-                "type": "Group",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
                 "sort-name": "Metallica",
-                "disambiguation": ""
+                "disambiguation": "",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "type": "Group",
+                "name": "Metallica",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "US"
               }
             }
           ],
-          "id": "5f999a4c-e11c-32e4-921e-0af2f4285c8e",
+          "position": 6,
+          "title": "Don\u2019t Tread on Me",
+          "number": "6",
+          "id": "8167cdc4-b6c5-330a-b3cc-3bc3195062cf",
           "recording": {
-            "first-release-date": "1990",
-            "id": "51bd242e-0a50-4e0b-8472-13399f7d98e6",
-            "video": false,
-            "length": 227640,
+            "disambiguation": "",
+            "title": "Don\u2019t Tread on Me",
             "artist-credit": [
               {
-                "joinphrase": "",
                 "name": "Metallica",
                 "artist": {
+                  "sort-name": "Metallica",
+                  "disambiguation": "",
                   "country": "US",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "name": "Metallica",
                   "type": "Group",
-                  "sort-name": "Metallica",
-                  "disambiguation": ""
-                }
+                  "name": "Metallica"
+                },
+                "joinphrase": ""
               }
             ],
-            "title": "Holier Than Thou",
-            "disambiguation": ""
+            "length": 240293,
+            "isrcs": [
+              "GBF089190018",
+              "QMKHM1900006",
+              "QMKHM1900223",
+              "USEE10001997"
+            ],
+            "video": false,
+            "id": "a130f313-bb4c-49dd-812e-976c88afa28c",
+            "first-release-date": "1990"
           }
         },
         {
+          "position": 7,
+          "title": "Through the Never",
+          "number": "7",
+          "length": 244506,
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Metallica",
+                "type": "Group",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "disambiguation": "",
+                "sort-name": "Metallica"
+              },
+              "name": "Metallica",
+              "joinphrase": ""
+            }
+          ],
+          "id": "ea6b54d1-3a61-3636-bd6e-f8bac894fe8e",
           "recording": {
             "first-release-date": "1990",
+            "id": "d225a408-8c00-4aa2-84ef-c3aa03f4158e",
+            "isrcs": [
+              "GBF089190019",
+              "QMKHM1900007",
+              "QMKHM1900224",
+              "USEE10001998"
+            ],
             "video": false,
-            "id": "51d82245-53de-4f1a-864b-ca1960692ac3",
+            "length": 244373,
             "artist-credit": [
               {
                 "artist": {
                   "disambiguation": "",
                   "sort-name": "Metallica",
-                  "country": "US",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US",
                   "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "name": "Metallica",
-                  "type": "Group"
+                  "type": "Group",
+                  "name": "Metallica"
                 },
                 "name": "Metallica",
                 "joinphrase": ""
               }
             ],
-            "length": 387093,
+            "title": "Through the Never",
+            "disambiguation": ""
+          }
+        },
+        {
+          "id": "d5005602-fafc-366b-84fc-c09d633f4bfe",
+          "recording": {
+            "isrcs": [
+              "GBF089190020",
+              "QMKHM1900008",
+              "QMKHM1900225",
+              "USEE10001999"
+            ],
+            "video": false,
+            "id": "83ed6eb7-f421-4ddd-83f2-f8be52bdee6e",
+            "first-release-date": "1990",
             "disambiguation": "",
-            "title": "The Unforgiven"
+            "title": "Nothing Else Matters",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "",
+                  "sort-name": "Metallica",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US",
+                  "type": "Group",
+                  "name": "Metallica",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
+                },
+                "name": "Metallica"
+              }
+            ],
+            "length": 388760
           },
-          "id": "746511f7-d602-357d-814e-e81b735e9e43",
+          "length": 388760,
+          "artist-credit": [
+            {
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Metallica",
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "name": "Metallica",
+                "type": "Group"
+              },
+              "name": "Metallica",
+              "joinphrase": ""
+            }
+          ],
+          "title": "Nothing Else Matters",
+          "position": 8,
+          "number": "8"
+        },
+        {
+          "length": 256640,
           "artist-credit": [
             {
               "joinphrase": "",
-              "name": "Metallica",
               "artist": {
-                "sort-name": "Metallica",
-                "disambiguation": "",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "US",
                 "name": "Metallica",
                 "type": "Group",
                 "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              }
+                "sort-name": "Metallica",
+                "disambiguation": ""
+              },
+              "name": "Metallica"
             }
           ],
-          "length": 387266,
-          "number": "4",
-          "title": "The Unforgiven",
-          "position": 4
+          "title": "Of Wolf and Man",
+          "position": 9,
+          "number": "9",
+          "id": "6ce57c0d-2b39-3142-9c91-b443a4e2293e",
+          "recording": {
+            "title": "Of Wolf and Man",
+            "disambiguation": "",
+            "length": 256573,
+            "artist-credit": [
+              {
+                "name": "Metallica",
+                "artist": {
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "name": "Metallica",
+                  "type": "Group",
+                  "country": "US",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Metallica",
+                  "disambiguation": ""
+                },
+                "joinphrase": ""
+              }
+            ],
+            "id": "188abe05-15ee-4323-b2b2-ab3b3b946683",
+            "isrcs": [
+              "GBF089190021",
+              "QMKHM1900009",
+              "QMKHM1900226",
+              "USEE10002000"
+            ],
+            "video": false,
+            "first-release-date": "1990"
+          }
         },
         {
+          "length": 308466,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "US",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "name": "Metallica",
+                "type": "Group",
+                "disambiguation": "",
+                "sort-name": "Metallica"
+              },
+              "name": "Metallica"
+            }
+          ],
+          "title": "The God That Failed",
+          "position": 10,
+          "number": "10",
+          "id": "4cd99961-e6f2-3afa-956c-d94a98c2f3ce",
           "recording": {
-            "first-release-date": "1990",
+            "title": "The God That Failed",
+            "disambiguation": "",
+            "length": 308533,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Metallica",
+                "artist": {
+                  "type": "Group",
+                  "name": "Metallica",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "country": "US",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "sort-name": "Metallica",
+                  "disambiguation": ""
+                }
+              }
+            ],
+            "id": "9c8ec683-c755-4f1b-a919-7618c657ea05",
             "video": false,
-            "id": "8889c63e-dc63-479b-91dc-209bb15995df",
+            "isrcs": [
+              "GBF089190022",
+              "QMKHM1900010",
+              "QMKHM1900227",
+              "USEE10002001"
+            ],
+            "first-release-date": "1990"
+          }
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "US",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "type": "Group",
+                "name": "Metallica",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                "sort-name": "Metallica",
+                "disambiguation": ""
+              },
+              "name": "Metallica"
+            }
+          ],
+          "length": 409626,
+          "number": "11",
+          "position": 11,
+          "title": "My Friend of Misery",
+          "recording": {
+            "length": 409666,
+            "artist-credit": [
+              {
+                "name": "Metallica",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US",
+                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
+                  "type": "Group",
+                  "name": "Metallica",
+                  "disambiguation": "",
+                  "sort-name": "Metallica"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "title": "My Friend of Misery",
+            "disambiguation": "",
+            "first-release-date": "1990",
+            "id": "25670127-8733-44db-b956-66b36ee8c3e2",
+            "isrcs": [
+              "GBF089190023",
+              "QMKHM1900011",
+              "QMKHM1900228",
+              "USEE10002002"
+            ],
+            "video": false
+          },
+          "id": "4625552d-a790-345f-b067-49815518a1cb"
+        },
+        {
+          "length": 233906,
+          "artist-credit": [
+            {
+              "name": "Metallica",
+              "artist": {
+                "disambiguation": "",
+                "sort-name": "Metallica",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "country": "US",
+                "type": "Group",
+                "name": "Metallica",
+                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "title": "The Struggle Within",
+          "position": 12,
+          "number": "12",
+          "id": "362369a1-be03-3c1a-b525-6ad97d3c0724",
+          "recording": {
+            "disambiguation": "",
+            "title": "The Struggle Within",
             "artist-credit": [
               {
                 "joinphrase": "",
@@ -215,381 +670,25 @@
                 "name": "Metallica"
               }
             ],
-            "length": 404200,
-            "disambiguation": "",
-            "title": "Wherever I May Roam"
-          },
-          "id": "63f38a59-46e9-3445-ba86-4d5d52af8e6a",
-          "number": "5",
-          "title": "Wherever I May Roam",
-          "position": 5,
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Metallica",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "type": "Group",
-                "name": "Metallica",
-                "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 404266
-        },
-        {
-          "position": 6,
-          "title": "Don\u2019t Tread on Me",
-          "number": "6",
-          "length": 240160,
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Metallica",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "name": "Metallica",
-                "type": "Group",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
-              },
-              "name": "Metallica",
-              "joinphrase": ""
-            }
-          ],
-          "id": "8167cdc4-b6c5-330a-b3cc-3bc3195062cf",
-          "recording": {
-            "title": "Don\u2019t Tread on Me",
-            "disambiguation": "",
-            "length": 240293,
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Metallica",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Metallica",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
-                },
-                "name": "Metallica",
-                "joinphrase": ""
-              }
+            "length": 233906,
+            "isrcs": [
+              "GBF089190024",
+              "QMKHM1900012",
+              "QMKHM1900229",
+              "USEE10002003"
             ],
-            "id": "a130f313-bb4c-49dd-812e-976c88afa28c",
             "video": false,
+            "id": "b7cc2172-6de7-4072-9eee-09b0f393db31",
             "first-release-date": "1990"
           }
-        },
-        {
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "sort-name": "Metallica",
-                "disambiguation": "",
-                "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "name": "Metallica",
-                "type": "Group"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 244506,
-          "number": "7",
-          "title": "Through the Never",
-          "position": 7,
-          "recording": {
-            "length": 244373,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Metallica",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "sort-name": "Metallica",
-                  "disambiguation": ""
-                },
-                "name": "Metallica"
-              }
-            ],
-            "title": "Through the Never",
-            "disambiguation": "",
-            "first-release-date": "1990",
-            "id": "d225a408-8c00-4aa2-84ef-c3aa03f4158e",
-            "video": false
-          },
-          "id": "ea6b54d1-3a61-3636-bd6e-f8bac894fe8e"
-        },
-        {
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Metallica",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "type": "Group",
-                "name": "Metallica",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 388760,
-          "number": "8",
-          "title": "Nothing Else Matters",
-          "position": 8,
-          "recording": {
-            "first-release-date": "1990",
-            "id": "83ed6eb7-f421-4ddd-83f2-f8be52bdee6e",
-            "video": false,
-            "length": 388760,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Metallica",
-                "artist": {
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "name": "Metallica",
-                  "type": "Group",
-                  "sort-name": "Metallica",
-                  "disambiguation": ""
-                }
-              }
-            ],
-            "title": "Nothing Else Matters",
-            "disambiguation": ""
-          },
-          "id": "d5005602-fafc-366b-84fc-c09d633f4bfe"
-        },
-        {
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Metallica",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Metallica",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "name": "Metallica",
-                "type": "Group",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US"
-              }
-            }
-          ],
-          "length": 256640,
-          "number": "9",
-          "title": "Of Wolf and Man",
-          "position": 9,
-          "recording": {
-            "title": "Of Wolf and Man",
-            "disambiguation": "",
-            "length": 256573,
-            "artist-credit": [
-              {
-                "name": "Metallica",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Metallica",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "US",
-                  "type": "Group",
-                  "name": "Metallica",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "id": "188abe05-15ee-4323-b2b2-ab3b3b946683",
-            "video": false,
-            "first-release-date": "1990"
-          },
-          "id": "6ce57c0d-2b39-3142-9c91-b443a4e2293e"
-        },
-        {
-          "id": "4cd99961-e6f2-3afa-956c-d94a98c2f3ce",
-          "recording": {
-            "length": 308533,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Metallica",
-                "artist": {
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "name": "Metallica",
-                  "type": "Group",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "disambiguation": "",
-                  "sort-name": "Metallica"
-                }
-              }
-            ],
-            "title": "The God That Failed",
-            "disambiguation": "",
-            "first-release-date": "1990",
-            "id": "9c8ec683-c755-4f1b-a919-7618c657ea05",
-            "video": false
-          },
-          "length": 308466,
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "sort-name": "Metallica",
-                "disambiguation": "",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "name": "Metallica",
-                "type": "Group",
-                "country": "US",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "title": "The God That Failed",
-          "position": 10,
-          "number": "10"
-        },
-        {
-          "id": "4625552d-a790-345f-b067-49815518a1cb",
-          "recording": {
-            "title": "My Friend of Misery",
-            "disambiguation": "",
-            "length": 409666,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "name": "Metallica",
-                  "type": "Group",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Metallica",
-                  "disambiguation": ""
-                },
-                "name": "Metallica"
-              }
-            ],
-            "id": "25670127-8733-44db-b956-66b36ee8c3e2",
-            "video": false,
-            "first-release-date": "1990"
-          },
-          "length": 409626,
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "sort-name": "Metallica",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                "name": "Metallica",
-                "type": "Group"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "title": "My Friend of Misery",
-          "position": 11,
-          "number": "11"
-        },
-        {
-          "recording": {
-            "length": 233906,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Metallica",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Metallica",
-                  "country": "US",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-                  "type": "Group",
-                  "name": "Metallica"
-                }
-              }
-            ],
-            "title": "The Struggle Within",
-            "disambiguation": "",
-            "first-release-date": "1990",
-            "id": "b7cc2172-6de7-4072-9eee-09b0f393db31",
-            "video": false
-          },
-          "id": "362369a1-be03-3c1a-b525-6ad97d3c0724",
-          "number": "12",
-          "position": 12,
-          "title": "The Struggle Within",
-          "artist-credit": [
-            {
-              "name": "Metallica",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Metallica",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "US",
-                "name": "Metallica",
-                "type": "Group",
-                "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 233906
         }
-      ]
-    }
-  ],
-  "artist-credit": [
-    {
-      "joinphrase": "",
-      "artist": {
-        "country": "US",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-        "type": "Group",
-        "name": "Metallica",
-        "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-        "sort-name": "Metallica",
-        "disambiguation": ""
-      },
-      "name": "Metallica"
-    }
-  ],
-  "packaging": null,
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-  "barcode": "075596111324",
-  "release-events": [
-    {
-      "date": "1991-08-12",
-      "area": {
-        "type-id": null,
-        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-        "type": null,
-        "name": "Canada",
-        "iso-3166-1-codes": [
-          "CA"
-        ],
-        "sort-name": "Canada",
-        "disambiguation": ""
-      }
+      ],
+      "track-offset": 0,
+      "position": 1,
+      "title": "",
+      "format": "CD",
+      "track-count": 12,
+      "id": "199080de-4dff-315d-8d7d-5647e43ec595"
     }
   ],
   "cover-art-archive": {
@@ -599,50 +698,23 @@
     "darkened": false,
     "back": true
   },
-  "date": "1991-08-12",
-  "packaging-id": null,
-  "country": "CA",
-  "status": "Official",
-  "disambiguation": "",
-  "quality": "high",
-  "label-info": [
+  "release-events": [
     {
-      "label": {
-        "id": "873f9f75-af68-4872-98e2-431058e4c9a9",
-        "type": "Imprint",
-        "name": "Elektra",
-        "label-code": 192,
-        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
-        "disambiguation": "all releases with \u201cElektra\u201d or \u201cElektra Entertainment\u201d logo, 1950 to present",
-        "sort-name": "Elektra"
+      "area": {
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "name": "Canada",
+        "type": null,
+        "type-id": null,
+        "sort-name": "Canada",
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "CA"
+        ]
       },
-      "catalog-number": "CD 61113"
+      "date": "1991-08-12"
     }
   ],
-  "id": "2529f558-970b-33d2-a42c-41ab15a970c6",
-  "release-group": {
-    "secondary-type-ids": [],
-    "artist-credit": [
-      {
-        "joinphrase": "",
-        "artist": {
-          "id": "65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab",
-          "type": "Group",
-          "name": "Metallica",
-          "country": "US",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-          "sort-name": "Metallica",
-          "disambiguation": ""
-        },
-        "name": "Metallica"
-      }
-    ],
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "title": "Metallica",
-    "disambiguation": "\u201cThe Black Album\u201d",
-    "first-release-date": "1991-08-12",
-    "secondary-types": [],
-    "primary-type": "Album",
-    "id": "e8f70201-8899-3f0c-9e07-5d6495bc8046"
-  }
+  "country": "CA",
+  "date": "1991-08-12",
+  "packaging-id": null
 }

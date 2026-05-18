@@ -1,122 +1,387 @@
 {
-  "packaging": null,
-  "country": "US",
-  "barcode": "044006338026",
+  "label-info": [
+    {
+      "catalog-number": "440 063 380-2",
+      "label": {
+        "sort-name": "Roc\u2010A\u2010Fella Records",
+        "disambiguation": "",
+        "id": "4cccc72a-0bd0-433a-905e-dad87871397d",
+        "type": "Original Production",
+        "label-code": null,
+        "name": "Roc\u2010A\u2010Fella Records",
+        "type-id": "7aaa37fe-2def-3476-b359-80245850062d"
+      }
+    }
+  ],
+  "date": "2002-11-12",
   "media": [
     {
       "position": 1,
       "title": "The Gift",
       "id": "43ad3795-a9d6-3daf-8c59-610c30281d58",
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
       "track-offset": 0,
+      "track-count": 11,
       "tracks": [
         {
-          "number": "1",
-          "artist-credit": [
-            {
-              "joinphrase": " feat. ",
-              "name": "Jay\u2010Z",
-              "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
-                "type": "Person",
-                "country": "US"
-              }
-            },
-            {
-              "name": "Faith Evans",
-              "artist": {
-                "disambiguation": "",
-                "country": "US",
-                "type": "Person",
-                "sort-name": "Evans, Faith",
-                "id": "ebcd0bad-75ef-4203-b7b3-7af38a9ef198",
-                "name": "Faith Evans",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "joinphrase": " & "
-            },
-            {
-              "artist": {
-                "disambiguation": "",
-                "type": "Person",
-                "country": "US",
-                "sort-name": "Notorious B.I.G., The",
-                "id": "d5d97b2b-b83b-4976-814a-056d9076c8c3",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "The Notorious B.I.G."
-              },
-              "name": "Notorious B.I.G.",
-              "joinphrase": ""
-            }
-          ],
+          "title": "A Dream",
           "recording": {
-            "disambiguation": "clean",
-            "video": false,
-            "title": "A Dream",
-            "id": "71e2504d-dbe4-45e7-84ce-a2545dec9686",
             "length": 252027,
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "disambiguation": "clean",
+            "id": "71e2504d-dbe4-45e7-84ce-a2545dec9686",
+            "isrcs": [
+              "USDJ20201185"
+            ],
+            "title": "A Dream",
             "artist-credit": [
               {
                 "name": "Jay\u2010Z",
                 "artist": {
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z",
                   "country": "US",
                   "type": "Person",
-                  "disambiguation": "US rapper",
                   "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
                 },
                 "joinphrase": " feat. "
               },
               {
-                "artist": {
-                  "sort-name": "Evans, Faith",
-                  "id": "ebcd0bad-75ef-4203-b7b3-7af38a9ef198",
-                  "name": "Faith Evans",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "",
-                  "country": "US",
-                  "type": "Person"
-                },
                 "name": "Faith Evans",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Faith Evans",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Evans, Faith",
+                  "disambiguation": "",
+                  "id": "ebcd0bad-75ef-4203-b7b3-7af38a9ef198"
+                },
                 "joinphrase": " & "
+              },
+              {
+                "name": "Notorious B.I.G.",
+                "joinphrase": "",
+                "artist": {
+                  "country": "US",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "id": "d5d97b2b-b83b-4976-814a-056d9076c8c3",
+                  "sort-name": "Notorious B.I.G., The",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "The Notorious B.I.G."
+                }
+              }
+            ]
+          },
+          "position": 1,
+          "id": "925e6d02-fb7a-3a12-9fba-65b427432527",
+          "length": 252093,
+          "number": "1",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " feat. ",
+              "artist": {
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z"
+              }
+            },
+            {
+              "joinphrase": " & ",
+              "artist": {
+                "name": "Faith Evans",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Evans, Faith",
+                "id": "ebcd0bad-75ef-4203-b7b3-7af38a9ef198",
+                "disambiguation": "",
+                "type": "Person",
+                "country": "US"
+              },
+              "name": "Faith Evans"
+            },
+            {
+              "artist": {
+                "sort-name": "Notorious B.I.G., The",
+                "id": "d5d97b2b-b83b-4976-814a-056d9076c8c3",
+                "disambiguation": "",
+                "type": "Person",
+                "country": "US",
+                "name": "The Notorious B.I.G.",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Notorious B.I.G."
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "country": "US",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "2",
+          "length": 261000,
+          "position": 2,
+          "title": "Hovi Baby",
+          "recording": {
+            "video": false,
+            "first-release-date": "2002-11-12",
+            "length": 260853,
+            "title": "Hovi Baby",
+            "id": "0bace7a1-0d0a-4c5e-95a6-248ffbf10265",
+            "isrcs": [
+              "USDJ20201182"
+            ],
+            "disambiguation": "clean",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "sort-name": "JAY\u2010Z",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              }
+            ]
+          },
+          "id": "773e1142-cc95-32b3-8c46-a1036656be6e"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z"
+              },
+              "joinphrase": " feat. ",
+              "name": "Jay\u2010Z"
+            },
+            {
+              "artist": {
+                "name": "Dr. Dre",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "5f6ab597-f57a-40da-be9e-adad48708203",
+                "disambiguation": "Andre Young, rap producer",
+                "sort-name": "Dre, Dr.",
+                "country": "US",
+                "type": "Person"
+              },
+              "joinphrase": ", ",
+              "name": "Dr. Dre"
+            },
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Rakim",
+                "type": "Person",
+                "country": "US",
+                "sort-name": "Rakim",
+                "disambiguation": "William Michael Griffin Jr., American rapper",
+                "id": "2792b097-0b1d-4c50-97f6-f7f097f86438"
+              },
+              "joinphrase": " & ",
+              "name": "Rakim"
+            },
+            {
+              "name": "Truth Hurts",
+              "artist": {
+                "disambiguation": "US R&B singer",
+                "id": "c42d7b98-e57f-4ff2-86f2-bc77b51d3c1e",
+                "sort-name": "Truth Hurts",
+                "country": "US",
+                "type": "Person",
+                "name": "Truth Hurts",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "3",
+          "length": 357240,
+          "position": 3,
+          "recording": {
+            "id": "5c6f0678-fdc9-4e5c-b342-5986c1df4f97",
+            "disambiguation": "clean",
+            "isrcs": [
+              "USDJ20201187"
+            ],
+            "title": "The Watcher 2",
+            "length": 357240,
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "artist-credit": [
+              {
+                "joinphrase": " feat. ",
+                "artist": {
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "name": "Dr. Dre",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Dr. Dre",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Dre, Dr.",
+                  "disambiguation": "Andre Young, rap producer",
+                  "id": "5f6ab597-f57a-40da-be9e-adad48708203"
+                },
+                "joinphrase": ", "
+              },
+              {
+                "name": "Rakim",
+                "joinphrase": " & ",
+                "artist": {
+                  "name": "Rakim",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Rakim",
+                  "id": "2792b097-0b1d-4c50-97f6-f7f097f86438",
+                  "disambiguation": "William Michael Griffin Jr., American rapper",
+                  "type": "Person",
+                  "country": "US"
+                }
               },
               {
                 "joinphrase": "",
                 "artist": {
-                  "sort-name": "Notorious B.I.G., The",
-                  "id": "d5d97b2b-b83b-4976-814a-056d9076c8c3",
-                  "name": "The Notorious B.I.G.",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "",
+                  "type": "Person",
                   "country": "US",
-                  "type": "Person"
+                  "sort-name": "Truth Hurts",
+                  "disambiguation": "US R&B singer",
+                  "id": "c42d7b98-e57f-4ff2-86f2-bc77b51d3c1e",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Truth Hurts"
                 },
-                "name": "Notorious B.I.G."
+                "name": "Truth Hurts"
               }
-            ],
-            "first-release-date": "2002-11-12"
+            ]
           },
-          "position": 1,
-          "title": "A Dream",
-          "length": 252093,
-          "id": "925e6d02-fb7a-3a12-9fba-65b427432527"
+          "title": "The Watcher 2",
+          "id": "324aac4f-710a-39ad-9970-1d4aea04a6f5"
         },
         {
+          "artist-credit": [
+            {
+              "joinphrase": " feat. ",
+              "artist": {
+                "sort-name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "type": "Person",
+                "country": "US",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            },
+            {
+              "name": "Beyonc\u00e9 Knowles",
+              "artist": {
+                "type": "Person",
+                "country": "US",
+                "sort-name": "Beyonc\u00e9",
+                "disambiguation": "",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Beyonc\u00e9"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "4",
+          "length": 205560,
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
+                  "country": "US",
+                  "type": "Person",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "sort-name": "JAY\u2010Z"
+                },
+                "joinphrase": " feat. "
+              },
+              {
+                "name": "Beyonc\u00e9 Knowles",
+                "artist": {
+                  "name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "disambiguation": "",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "type": "Person",
+                  "country": "US"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "video": false,
+            "first-release-date": "2002-11-12",
+            "length": 205520,
+            "title": "\u201903 Bonnie & Clyde",
+            "isrcs": [
+              "USDJ20201109"
+            ],
+            "id": "5d49a6b8-779b-4fbc-96dd-809c26b9c69c",
+            "disambiguation": "clean"
+          },
+          "title": "\u201903 Bonnie & Clyde",
+          "id": "23516243-87ad-34de-aa9b-13962b6c623b"
+        },
+        {
+          "position": 5,
+          "title": "Excuse Me Miss",
           "recording": {
             "artist-credit": [
               {
                 "joinphrase": "",
                 "artist": {
-                  "disambiguation": "US rapper",
                   "type": "Person",
                   "country": "US",
                   "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "name": "JAY\u2010Z"
@@ -124,723 +389,302 @@
                 "name": "Jay\u2010Z"
               }
             ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "id": "0bace7a1-0d0a-4c5e-95a6-248ffbf10265",
-            "length": 260853,
-            "video": false,
-            "title": "Hovi Baby"
-          },
-          "id": "773e1142-cc95-32b3-8c46-a1036656be6e",
-          "length": 261000,
-          "position": 2,
-          "title": "Hovi Baby",
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person",
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "name": "Jay\u2010Z",
-              "joinphrase": ""
-            }
-          ],
-          "number": "2"
-        },
-        {
-          "id": "324aac4f-710a-39ad-9970-1d4aea04a6f5",
-          "length": 357240,
-          "title": "The Watcher 2",
-          "position": 3,
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": " feat. ",
-                "name": "Jay\u2010Z",
-                "artist": {
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z"
-                }
-              },
-              {
-                "name": "Dr. Dre",
-                "artist": {
-                  "disambiguation": "Andre Young, rap producer",
-                  "type": "Person",
-                  "country": "US",
-                  "sort-name": "Dre, Dr.",
-                  "id": "5f6ab597-f57a-40da-be9e-adad48708203",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Dr. Dre"
-                },
-                "joinphrase": ", "
-              },
-              {
-                "artist": {
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": "William Michael Griffin Jr., American rapper",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Rakim",
-                  "id": "2792b097-0b1d-4c50-97f6-f7f097f86438",
-                  "sort-name": "Rakim"
-                },
-                "name": "Rakim",
-                "joinphrase": " & "
-              },
-              {
-                "name": "Truth Hurts",
-                "artist": {
-                  "disambiguation": "US R&B singer",
-                  "country": "US",
-                  "type": "Person",
-                  "id": "c42d7b98-e57f-4ff2-86f2-bc77b51d3c1e",
-                  "sort-name": "Truth Hurts",
-                  "name": "Truth Hurts",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "joinphrase": ""
-              }
+            "title": "Excuse Me Miss",
+            "isrcs": [
+              "USDJ20201203"
             ],
-            "first-release-date": "2002-11-12",
+            "id": "865d7866-8aa1-42d0-b838-fcb2e8198520",
             "disambiguation": "clean",
-            "id": "5c6f0678-fdc9-4e5c-b342-5986c1df4f97",
-            "length": 357240,
-            "video": false,
-            "title": "The Watcher 2"
+            "length": 281000,
+            "first-release-date": "2002-11-12",
+            "video": false
           },
+          "id": "7bbb2407-479c-33c0-a8e2-1f191aa70a25",
+          "length": 281266,
+          "number": "5",
           "artist-credit": [
             {
-              "joinphrase": " feat. ",
               "name": "Jay\u2010Z",
+              "joinphrase": "",
               "artist": {
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person",
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                "country": "US",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z"
               }
-            },
-            {
-              "artist": {
-                "disambiguation": "Andre Young, rap producer",
-                "type": "Person",
-                "country": "US",
-                "sort-name": "Dre, Dr.",
-                "id": "5f6ab597-f57a-40da-be9e-adad48708203",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Dr. Dre"
-              },
-              "name": "Dr. Dre",
-              "joinphrase": ", "
-            },
-            {
-              "name": "Rakim",
-              "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "William Michael Griffin Jr., American rapper",
-                "name": "Rakim",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "2792b097-0b1d-4c50-97f6-f7f097f86438",
-                "sort-name": "Rakim"
-              },
-              "joinphrase": " & "
-            },
-            {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Truth Hurts",
-                "sort-name": "Truth Hurts",
-                "id": "c42d7b98-e57f-4ff2-86f2-bc77b51d3c1e",
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "US R&B singer"
-              },
-              "name": "Truth Hurts",
-              "joinphrase": ""
             }
-          ],
-          "number": "3"
+          ]
         },
         {
+          "number": "6",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person"
+              },
+              "joinphrase": " feat. "
+            },
+            {
+              "artist": {
+                "name": "Sean Paul",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Sean Paul",
+                "disambiguation": "Jamaican reggae/dancehall",
+                "id": "c3da3346-2643-48a7-93cd-011f6834b3d7",
+                "type": "Person",
+                "country": "JM"
+              },
+              "joinphrase": "",
+              "name": "Sean Paul"
+            }
+          ],
           "recording": {
+            "disambiguation": "clean",
+            "id": "4c03db1b-6ed1-403a-8267-6eef98829d64",
+            "isrcs": [
+              "USDJ20201205"
+            ],
+            "title": "What They Gonna Do",
+            "length": 294000,
+            "first-release-date": "2002-11-12",
+            "video": false,
             "artist-credit": [
               {
+                "name": "Jay\u2010Z",
                 "artist": {
-                  "disambiguation": "US rapper",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
                   "country": "US",
                   "type": "Person",
-                  "sort-name": "JAY\u2010Z",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z"
                 },
-                "name": "Jay\u2010Z",
                 "joinphrase": " feat. "
               },
               {
                 "artist": {
-                  "sort-name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "country": "JM",
+                  "type": "Person",
+                  "disambiguation": "Jamaican reggae/dancehall",
+                  "id": "c3da3346-2643-48a7-93cd-011f6834b3d7",
+                  "sort-name": "Sean Paul",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Beyonc\u00e9",
+                  "name": "Sean Paul"
+                },
+                "joinphrase": "",
+                "name": "Sean Paul"
+              }
+            ]
+          },
+          "title": "What They Gonna Do",
+          "position": 6,
+          "id": "814d5392-4798-3e3b-9e20-525f72593153",
+          "length": 293973
+        },
+        {
+          "title": "All Around the World",
+          "position": 7,
+          "recording": {
+            "title": "All Around the World",
+            "id": "fedb0e4d-ee4e-482e-b4c4-afb38ddcaf72",
+            "isrcs": [
+              "USDJ20201207"
+            ],
+            "disambiguation": "clean",
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 232680,
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "country": "US",
+                  "type": "Person",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
+                },
+                "joinphrase": " feat. "
+              },
+              {
+                "joinphrase": "",
+                "artist": {
+                  "name": "LaToiya Williams",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Williams, LaToiya",
+                  "id": "ea5103ad-44ee-486b-a90e-b052beb5e87b",
                   "disambiguation": "",
                   "type": "Person",
                   "country": "US"
                 },
-                "name": "Beyonc\u00e9 Knowles",
-                "joinphrase": ""
+                "name": "LaToiya Williams"
               }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "title": "\u201903 Bonnie & Clyde",
-            "video": false,
-            "length": 205520,
-            "id": "5d49a6b8-779b-4fbc-96dd-809c26b9c69c"
+            ]
           },
-          "id": "23516243-87ad-34de-aa9b-13962b6c623b",
-          "length": 205560,
-          "title": "\u201903 Bonnie & Clyde",
-          "position": 4,
-          "artist-credit": [
-            {
-              "joinphrase": " feat. ",
-              "name": "Jay\u2010Z",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              }
-            },
-            {
-              "joinphrase": "",
-              "artist": {
-                "disambiguation": "",
-                "country": "US",
-                "type": "Person",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "sort-name": "Beyonc\u00e9",
-                "name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "name": "Beyonc\u00e9 Knowles"
-            }
-          ],
-          "number": "4"
-        },
-        {
-          "title": "Excuse Me Miss",
-          "position": 5,
-          "id": "7bbb2407-479c-33c0-a8e2-1f191aa70a25",
-          "length": 281266,
-          "recording": {
-            "artist-credit": [
-              {
-                "artist": {
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper"
-                },
-                "name": "Jay\u2010Z",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "video": false,
-            "title": "Excuse Me Miss",
-            "id": "865d7866-8aa1-42d0-b838-fcb2e8198520",
-            "length": 281000
-          },
-          "number": "5",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "US rapper",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z"
-              },
-              "name": "Jay\u2010Z"
-            }
-          ]
-        },
-        {
-          "title": "What They Gonna Do",
-          "position": 6,
-          "length": 293973,
-          "id": "814d5392-4798-3e3b-9e20-525f72593153",
-          "recording": {
-            "first-release-date": "2002-11-12",
-            "artist-credit": [
-              {
-                "joinphrase": " feat. ",
-                "artist": {
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US"
-                },
-                "name": "Jay\u2010Z"
-              },
-              {
-                "joinphrase": "",
-                "name": "Sean Paul",
-                "artist": {
-                  "sort-name": "Sean Paul",
-                  "id": "c3da3346-2643-48a7-93cd-011f6834b3d7",
-                  "name": "Sean Paul",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "Jamaican reggae/dancehall",
-                  "country": "JM",
-                  "type": "Person"
-                }
-              }
-            ],
-            "video": false,
-            "title": "What They Gonna Do",
-            "id": "4c03db1b-6ed1-403a-8267-6eef98829d64",
-            "length": 294000,
-            "disambiguation": "clean"
-          },
-          "number": "6",
-          "artist-credit": [
-            {
-              "joinphrase": " feat. ",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              },
-              "name": "Jay\u2010Z"
-            },
-            {
-              "joinphrase": "",
-              "name": "Sean Paul",
-              "artist": {
-                "disambiguation": "Jamaican reggae/dancehall",
-                "country": "JM",
-                "type": "Person",
-                "sort-name": "Sean Paul",
-                "id": "c3da3346-2643-48a7-93cd-011f6834b3d7",
-                "name": "Sean Paul",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              }
-            }
-          ]
-        },
-        {
+          "id": "ae0aca8c-4a70-3ad7-b455-e39279dd6c70",
+          "length": 232666,
           "number": "7",
           "artist-credit": [
             {
               "joinphrase": " feat. ",
               "artist": {
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                 "type": "Person",
                 "country": "US",
-                "disambiguation": "US rapper",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z"
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
               "name": "Jay\u2010Z"
             },
             {
+              "joinphrase": "",
               "artist": {
-                "sort-name": "Williams, LaToiya",
                 "id": "ea5103ad-44ee-486b-a90e-b052beb5e87b",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "LaToiya Williams",
                 "disambiguation": "",
-                "type": "Person",
-                "country": "US"
-              },
-              "name": "LaToiya Williams",
-              "joinphrase": ""
-            }
-          ],
-          "position": 7,
-          "title": "All Around the World",
-          "id": "ae0aca8c-4a70-3ad7-b455-e39279dd6c70",
-          "length": 232666,
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": " feat. ",
-                "name": "Jay\u2010Z",
-                "artist": {
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US"
-                }
-              },
-              {
-                "name": "LaToiya Williams",
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "LaToiya Williams",
-                  "id": "ea5103ad-44ee-486b-a90e-b052beb5e87b",
-                  "sort-name": "Williams, LaToiya",
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": ""
-                },
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "length": 232680,
-            "id": "fedb0e4d-ee4e-482e-b4c4-afb38ddcaf72",
-            "title": "All Around the World",
-            "video": false
-          }
-        },
-        {
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "Williams, LaToiya",
                 "country": "US",
                 "type": "Person",
-                "disambiguation": "US rapper"
+                "name": "LaToiya Williams",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
+              "name": "LaToiya Williams"
+            }
+          ]
+        },
+        {
+          "id": "30b7d7b7-2b7b-32d4-86b7-3a5c9c411fcd",
+          "recording": {
+            "title": "Poppin\u2019 Tags",
+            "disambiguation": "clean",
+            "id": "95866eac-fcf3-46dd-81e2-407b148066ac",
+            "isrcs": [
+              "USDJ20201209"
+            ],
+            "length": 360333,
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "artist-credit": [
+              {
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z",
+                  "country": "US",
+                  "type": "Person"
+                },
+                "joinphrase": " feat. ",
+                "name": "Jay\u2010Z"
+              },
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Big Boi",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Big Boi",
+                  "disambiguation": "",
+                  "id": "9724aa19-fdf9-49d0-9f9d-944e462e2a5c"
+                },
+                "joinphrase": ", ",
+                "name": "Big Boi"
+              },
+              {
+                "joinphrase": " & ",
+                "artist": {
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Killer Mike",
+                  "disambiguation": "",
+                  "id": "47864525-aea7-439a-800f-17c57e51cbcc",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Killer Mike"
+                },
+                "name": "Killer Mike"
+              },
+              {
+                "artist": {
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Twista",
+                  "id": "0bc858a1-3573-4216-9423-c96dd8c72919",
+                  "disambiguation": "US rapper",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Twista"
+                },
+                "joinphrase": "",
+                "name": "Twista"
+              }
+            ]
+          },
+          "position": 8,
+          "title": "Poppin\u2019 Tags",
+          "length": 360333,
+          "number": "8",
+          "artist-credit": [
+            {
               "name": "Jay\u2010Z",
-              "joinphrase": " feat. "
+              "joinphrase": " feat. ",
+              "artist": {
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
             },
             {
-              "joinphrase": ", ",
+              "name": "Big Boi",
               "artist": {
-                "name": "Big Boi",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "",
                 "id": "9724aa19-fdf9-49d0-9f9d-944e462e2a5c",
                 "sort-name": "Big Boi",
                 "country": "US",
                 "type": "Person",
-                "disambiguation": ""
-              },
-              "name": "Big Boi"
-            },
-            {
-              "artist": {
-                "disambiguation": "",
-                "country": "US",
-                "type": "Person",
-                "sort-name": "Killer Mike",
-                "id": "47864525-aea7-439a-800f-17c57e51cbcc",
-                "name": "Killer Mike",
+                "name": "Big Boi",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
+              "joinphrase": ", "
+            },
+            {
               "name": "Killer Mike",
-              "joinphrase": " & "
+              "joinphrase": " & ",
+              "artist": {
+                "sort-name": "Killer Mike",
+                "disambiguation": "",
+                "id": "47864525-aea7-439a-800f-17c57e51cbcc",
+                "type": "Person",
+                "country": "US",
+                "name": "Killer Mike",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
             },
             {
               "name": "Twista",
+              "joinphrase": "",
               "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper",
                 "name": "Twista",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Twista",
-                "id": "0bc858a1-3573-4216-9423-c96dd8c72919"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "number": "8",
-          "length": 360333,
-          "id": "30b7d7b7-2b7b-32d4-86b7-3a5c9c411fcd",
-          "title": "Poppin\u2019 Tags",
-          "position": 8,
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": " feat. ",
-                "name": "Jay\u2010Z",
-                "artist": {
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z"
-                }
-              },
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "type": "Person",
-                  "country": "US",
-                  "id": "9724aa19-fdf9-49d0-9f9d-944e462e2a5c",
-                  "sort-name": "Big Boi",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Big Boi"
-                },
-                "name": "Big Boi",
-                "joinphrase": ", "
-              },
-              {
-                "name": "Killer Mike",
-                "artist": {
-                  "disambiguation": "",
-                  "type": "Person",
-                  "country": "US",
-                  "id": "47864525-aea7-439a-800f-17c57e51cbcc",
-                  "sort-name": "Killer Mike",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Killer Mike"
-                },
-                "joinphrase": " & "
-              },
-              {
-                "joinphrase": "",
-                "artist": {
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper",
-                  "name": "Twista",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Twista",
-                  "id": "0bc858a1-3573-4216-9423-c96dd8c72919"
-                },
-                "name": "Twista"
-              }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "length": 360333,
-            "id": "95866eac-fcf3-46dd-81e2-407b148066ac",
-            "title": "Poppin\u2019 Tags",
-            "video": false
-          }
-        },
-        {
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
-              },
-              "name": "Jay\u2010Z"
-            }
-          ],
-          "number": "9",
-          "id": "cc4cb29b-d269-3d42-bd86-44350e8fc7db",
-          "length": 259200,
-          "position": 9,
-          "title": "F**k All Nite",
-          "recording": {
-            "id": "98e3df7e-bba2-4fe4-8fa7-c8efb7703987",
-            "length": 259027,
-            "video": false,
-            "title": "F**k All Nite",
-            "disambiguation": "clean",
-            "first-release-date": "2002-11-12",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z"
-                },
-                "name": "Jay\u2010Z"
-              }
-            ]
-          }
-        },
-        {
-          "number": "10",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
-                "type": "Person",
-                "country": "US"
-              },
-              "name": "Jay\u2010Z"
-            }
-          ],
-          "position": 10,
-          "title": "The Bounce",
-          "length": 258533,
-          "id": "c17bf1b3-2b0b-3ddc-a1e4-4dff09f3f4b3",
-          "recording": {
-            "artist-credit": [
-              {
-                "name": "Jay\u2010Z",
-                "artist": {
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "title": "The Bounce",
-            "video": false,
-            "length": 258717,
-            "id": "688f5492-66e2-4ed5-a0f5-7a45c2ebb89a"
-          }
-        },
-        {
-          "artist-credit": [
-            {
-              "name": "Jay\u2010Z",
-              "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "number": "11",
-          "length": 222266,
-          "id": "ff0b7481-9c18-34df-af27-3a824cb8aab0",
-          "title": "I Did It My Way",
-          "position": 11,
-          "recording": {
-            "disambiguation": "clean",
-            "video": false,
-            "title": "I Did It My Way",
-            "id": "76f9d52b-ba0b-42d8-a7e8-0c9c1eb6adcf",
-            "length": 222853,
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z",
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": "US rapper"
-                },
-                "name": "Jay\u2010Z",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12"
-          }
-        }
-      ],
-      "track-count": 11,
-      "format": "CD"
-    },
-    {
-      "id": "412c27aa-3365-3a72-bf4b-d7312390da8f",
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "position": 2,
-      "title": "The Curse",
-      "track-count": 14,
-      "format": "CD",
-      "tracks": [
-        {
-          "recording": {
-            "disambiguation": "clean",
-            "video": false,
-            "title": "Diamond Is Forever",
-            "id": "5395d51e-ee03-44f3-9c5b-514c19aeaecd",
-            "length": 235600,
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z"
-                },
-                "name": "Jay\u2010Z",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12"
-          },
-          "position": 1,
-          "title": "Diamond Is Forever",
-          "length": 235600,
-          "id": "1dd8baa4-d355-34f9-b8b8-ccd888776f71",
-          "number": "1",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Jay\u2010Z",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
+                "id": "0bc858a1-3573-4216-9423-c96dd8c72919",
                 "disambiguation": "US rapper",
                 "type": "Person",
                 "country": "US"
@@ -849,968 +693,1199 @@
           ]
         },
         {
+          "position": 9,
           "recording": {
-            "id": "d3d66222-8c2e-48f4-83cf-b11bed73d126",
-            "length": 265493,
-            "video": false,
-            "title": "Guns & Roses",
+            "title": "F**k All Nite",
+            "isrcs": [
+              "USDJ20201211"
+            ],
+            "id": "98e3df7e-bba2-4fe4-8fa7-c8efb7703987",
             "disambiguation": "clean",
             "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 259027,
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": "",
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z",
+                  "country": "US",
+                  "type": "Person"
+                }
+              }
+            ]
+          },
+          "title": "F**k All Nite",
+          "id": "cc4cb29b-d269-3d42-bd86-44350e8fc7db",
+          "length": 259200,
+          "number": "9",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "type": "Person",
+                "country": "US",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "number": "10",
+          "length": 258533,
+          "recording": {
+            "length": 258717,
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "isrcs": [
+              "USDJ20201213"
+            ],
+            "id": "688f5492-66e2-4ed5-a0f5-7a45c2ebb89a",
+            "disambiguation": "clean",
+            "title": "The Bounce",
             "artist-credit": [
               {
                 "name": "Jay\u2010Z",
                 "artist": {
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US",
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "JAY\u2010Z",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z"
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "country": "US"
                 },
-                "joinphrase": " feat. "
+                "joinphrase": ""
+              }
+            ]
+          },
+          "title": "The Bounce",
+          "position": 10,
+          "id": "c17bf1b3-2b0b-3ddc-a1e4-4dff09f3f4b3"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z"
               },
+              "name": "Jay\u2010Z"
+            }
+          ],
+          "number": "11",
+          "length": 222266,
+          "recording": {
+            "title": "I Did It My Way",
+            "id": "76f9d52b-ba0b-42d8-a7e8-0c9c1eb6adcf",
+            "isrcs": [
+              "USDJ20201215"
+            ],
+            "disambiguation": "clean",
+            "length": 222853,
+            "video": false,
+            "first-release-date": "2002-11-12",
+            "artist-credit": [
               {
+                "name": "Jay\u2010Z",
+                "joinphrase": "",
+                "artist": {
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "type": "Person",
+                  "country": "US"
+                }
+              }
+            ]
+          },
+          "position": 11,
+          "title": "I Did It My Way",
+          "id": "ff0b7481-9c18-34df-af27-3a824cb8aab0"
+        }
+      ],
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD"
+    },
+    {
+      "position": 2,
+      "title": "The Curse",
+      "id": "412c27aa-3365-3a72-bf4b-d7312390da8f",
+      "track-offset": 0,
+      "track-count": 14,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "tracks": [
+        {
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
                 "joinphrase": "",
                 "artist": {
                   "country": "US",
                   "type": "Person",
-                  "disambiguation": "",
-                  "name": "Lenny Kravitz",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "0ef3f425-9bd2-4216-9dd2-219d2fe90f1f",
-                  "sort-name": "Kravitz, Lenny"
-                },
-                "name": "Lenny Kravitz"
+                  "name": "JAY\u2010Z"
+                }
               }
-            ]
+            ],
+            "disambiguation": "clean",
+            "id": "5395d51e-ee03-44f3-9c5b-514c19aeaecd",
+            "isrcs": [
+              "USDJ20201217"
+            ],
+            "title": "Diamond Is Forever",
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 235600
           },
-          "length": 265493,
-          "id": "0051093e-802f-37aa-8e50-284f4b239241",
-          "title": "Guns & Roses",
-          "position": 2,
+          "title": "Diamond Is Forever",
+          "id": "1dd8baa4-d355-34f9-b8b8-ccd888776f71",
+          "length": 235600,
+          "number": "1",
           "artist-credit": [
             {
-              "joinphrase": " feat. ",
-              "name": "Jay\u2010Z",
+              "joinphrase": "",
               "artist": {
                 "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
                 "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type": "Person",
+                "country": "US",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            }
+          ]
+        },
+        {
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "artist": {
                 "name": "JAY\u2010Z",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
                 "country": "US",
                 "type": "Person"
-              }
+              },
+              "joinphrase": " feat. "
             },
             {
+              "joinphrase": "",
               "artist": {
-                "name": "Lenny Kravitz",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "0ef3f425-9bd2-4216-9dd2-219d2fe90f1f",
-                "sort-name": "Kravitz, Lenny",
                 "country": "US",
                 "type": "Person",
-                "disambiguation": ""
+                "id": "0ef3f425-9bd2-4216-9dd2-219d2fe90f1f",
+                "disambiguation": "",
+                "sort-name": "Kravitz, Lenny",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Lenny Kravitz"
               },
-              "name": "Lenny Kravitz",
-              "joinphrase": ""
+              "name": "Lenny Kravitz"
             }
           ],
-          "number": "2"
+          "number": "2",
+          "length": 265493,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper"
+                },
+                "joinphrase": " feat. "
+              },
+              {
+                "name": "Lenny Kravitz",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Lenny Kravitz",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Kravitz, Lenny",
+                  "id": "0ef3f425-9bd2-4216-9dd2-219d2fe90f1f",
+                  "disambiguation": ""
+                }
+              }
+            ],
+            "disambiguation": "clean",
+            "id": "d3d66222-8c2e-48f4-83cf-b11bed73d126",
+            "isrcs": [
+              "USDJ20201241"
+            ],
+            "title": "Guns & Roses",
+            "length": 265493,
+            "first-release-date": "2002-11-12",
+            "video": false
+          },
+          "position": 2,
+          "title": "Guns & Roses",
+          "id": "0051093e-802f-37aa-8e50-284f4b239241"
         },
         {
           "number": "3",
           "artist-credit": [
             {
-              "name": "Jay\u2010Z",
               "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
+                "country": "US",
                 "type": "Person",
-                "country": "US"
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z"
               },
-              "joinphrase": " feat. "
+              "joinphrase": " feat. ",
+              "name": "Jay\u2010Z"
             },
             {
               "joinphrase": "",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "M.O.P.",
-                "id": "dbe35fab-1b3a-469b-87f0-6a54ef8de3c4",
-                "sort-name": "M.O.P.",
                 "type": "Group",
                 "country": "US",
-                "disambiguation": "New York hip hop duo Billy Danze and Lil\u2019 Fame"
+                "sort-name": "M.O.P.",
+                "id": "dbe35fab-1b3a-469b-87f0-6a54ef8de3c4",
+                "disambiguation": "New York hip hop duo Billy Danze and Lil\u2019 Fame",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "M.O.P."
               },
               "name": "M.O.P."
             }
           ],
           "position": 3,
-          "title": "U Don\u2019t Know (remix)",
-          "id": "73768e33-6dd6-373c-9288-513147df6f21",
-          "length": 267240,
           "recording": {
             "artist-credit": [
               {
-                "joinphrase": " feat. ",
                 "name": "Jay\u2010Z",
+                "joinphrase": " feat. ",
                 "artist": {
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "US rapper",
+                  "type": "Person",
                   "country": "US",
-                  "type": "Person"
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
                 }
               },
               {
+                "name": "M.O.P.",
+                "joinphrase": "",
                 "artist": {
-                  "sort-name": "M.O.P.",
-                  "id": "dbe35fab-1b3a-469b-87f0-6a54ef8de3c4",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "name": "M.O.P.",
-                  "disambiguation": "New York hip hop duo Billy Danze and Lil\u2019 Fame",
-                  "type": "Group",
-                  "country": "US"
-                },
-                "name": "M.O.P.",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "length": 267240,
-            "id": "c2e5f363-c446-48b4-843b-85aeea144cc3",
-            "title": "U Don\u2019t Know (remix)",
-            "video": false
-          }
-        },
-        {
-          "title": "Meet the Parents",
-          "position": 4,
-          "id": "4456503e-9b12-30d2-8682-0537280a14c9",
-          "length": 298826,
-          "recording": {
-            "title": "Meet the Parents",
-            "video": false,
-            "length": 298867,
-            "id": "9a997c31-8d0e-454e-9441-fe587d496c8d",
-            "disambiguation": "clean",
-            "first-release-date": "2002-11-12",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Jay\u2010Z",
-                "artist": {
                   "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+                  "type": "Group",
+                  "disambiguation": "New York hip hop duo Billy Danze and Lil\u2019 Fame",
+                  "id": "dbe35fab-1b3a-469b-87f0-6a54ef8de3c4",
+                  "sort-name": "M.O.P."
                 }
               }
-            ]
+            ],
+            "title": "U Don\u2019t Know (remix)",
+            "disambiguation": "clean",
+            "id": "c2e5f363-c446-48b4-843b-85aeea144cc3",
+            "isrcs": [
+              "USDJ20201178"
+            ],
+            "length": 267240,
+            "video": false,
+            "first-release-date": "2002-11-12"
           },
+          "title": "U Don\u2019t Know (remix)",
+          "id": "73768e33-6dd6-373c-9288-513147df6f21",
+          "length": 267240
+        },
+        {
           "number": "4",
           "artist-credit": [
             {
-              "joinphrase": "",
+              "name": "Jay\u2010Z",
               "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper",
-                "name": "JAY\u2010Z",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
                 "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z"
+                "disambiguation": "US rapper"
               },
-              "name": "Jay\u2010Z"
+              "joinphrase": ""
             }
-          ]
-        },
-        {
+          ],
+          "id": "4456503e-9b12-30d2-8682-0537280a14c9",
+          "position": 4,
+          "title": "Meet the Parents",
           "recording": {
+            "title": "Meet the Parents",
             "disambiguation": "clean",
-            "length": 337600,
-            "id": "0307f2a0-5654-4bc0-a201-2ceb092d2f91",
-            "title": "Some How Some Way",
+            "id": "9a997c31-8d0e-454e-9441-fe587d496c8d",
+            "isrcs": [
+              "USDJ20201240"
+            ],
+            "first-release-date": "2002-11-12",
             "video": false,
+            "length": 298867,
             "artist-credit": [
               {
-                "artist": {
-                  "disambiguation": "US rapper",
-                  "country": "US",
-                  "type": "Person",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
                 "name": "Jay\u2010Z",
-                "joinphrase": " feat. "
-              },
-              {
-                "joinphrase": " & ",
-                "name": "Beanie Sigel",
                 "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Beanie Sigel",
-                  "sort-name": "Sigel, Beanie",
-                  "id": "b544133a-b262-451e-84b6-7bea2e61ce60",
                   "type": "Person",
                   "country": "US",
-                  "disambiguation": ""
-                }
-              },
-              {
-                "artist": {
-                  "sort-name": "Scarface",
-                  "id": "7d0b6027-8132-4417-8c4c-ef0bbf9161c0",
-                  "name": "Scarface",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "US rapper Brad Jordan",
-                  "country": "US",
-                  "type": "Person"
+                  "name": "JAY\u2010Z"
                 },
-                "name": "Scarface",
                 "joinphrase": ""
               }
-            ],
-            "first-release-date": "2002-11-12"
+            ]
           },
-          "title": "Some How Some Way",
-          "position": 5,
-          "id": "bc24ea03-901d-39e9-8b65-ba685dc4d935",
-          "length": 337640,
+          "length": 298826
+        },
+        {
           "number": "5",
           "artist-credit": [
             {
               "name": "Jay\u2010Z",
               "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
+                "name": "JAY\u2010Z",
                 "country": "US",
-                "type": "Person"
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z"
               },
               "joinphrase": " feat. "
             },
             {
-              "joinphrase": " & ",
               "artist": {
+                "name": "Beanie Sigel",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "disambiguation": "",
-                "type": "Person",
-                "country": "US",
                 "id": "b544133a-b262-451e-84b6-7bea2e61ce60",
                 "sort-name": "Sigel, Beanie",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Beanie Sigel"
+                "country": "US",
+                "type": "Person"
               },
+              "joinphrase": " & ",
               "name": "Beanie Sigel"
             },
             {
-              "name": "Scarface",
+              "joinphrase": "",
               "artist": {
                 "name": "Scarface",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "id": "7d0b6027-8132-4417-8c4c-ef0bbf9161c0",
+                "disambiguation": "US rapper Brad Jordan",
                 "sort-name": "Scarface",
                 "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper Brad Jordan"
+                "type": "Person"
               },
-              "joinphrase": ""
+              "name": "Scarface"
+            }
+          ],
+          "id": "bc24ea03-901d-39e9-8b65-ba685dc4d935",
+          "recording": {
+            "video": false,
+            "first-release-date": "2002-11-12",
+            "length": 337600,
+            "title": "Some How Some Way",
+            "isrcs": [
+              "USDJ20201242"
+            ],
+            "id": "0307f2a0-5654-4bc0-a201-2ceb092d2f91",
+            "disambiguation": "clean",
+            "artist-credit": [
+              {
+                "joinphrase": " feat. ",
+                "artist": {
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
+                },
+                "name": "Jay\u2010Z"
+              },
+              {
+                "artist": {
+                  "sort-name": "Sigel, Beanie",
+                  "disambiguation": "",
+                  "id": "b544133a-b262-451e-84b6-7bea2e61ce60",
+                  "type": "Person",
+                  "country": "US",
+                  "name": "Beanie Sigel",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " & ",
+                "name": "Beanie Sigel"
+              },
+              {
+                "artist": {
+                  "name": "Scarface",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Scarface",
+                  "disambiguation": "US rapper Brad Jordan",
+                  "id": "7d0b6027-8132-4417-8c4c-ef0bbf9161c0",
+                  "type": "Person",
+                  "country": "US"
+                },
+                "joinphrase": "",
+                "name": "Scarface"
+              }
+            ]
+          },
+          "title": "Some How Some Way",
+          "position": 5,
+          "length": 337640
+        },
+        {
+          "id": "f790dd78-da03-3b7e-a462-d0f5304368aa",
+          "recording": {
+            "length": 271867,
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "id": "9789c144-f0a4-48a8-9c12-4205601b014d",
+            "disambiguation": "clean",
+            "isrcs": [
+              "USDJ20201234"
+            ],
+            "title": "Some People Hate",
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "artist": {
+                  "country": "US",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
+                },
+                "joinphrase": ""
+              }
+            ]
+          },
+          "position": 6,
+          "title": "Some People Hate",
+          "length": 271866,
+          "number": "6",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": "",
+              "artist": {
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person"
+              }
             }
           ]
         },
         {
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Jay\u2010Z",
-              "artist": {
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper"
-              }
-            }
-          ],
-          "number": "6",
-          "length": 271866,
-          "id": "f790dd78-da03-3b7e-a462-d0f5304368aa",
-          "title": "Some People Hate",
-          "position": 6,
-          "recording": {
-            "disambiguation": "clean",
-            "title": "Some People Hate",
-            "video": false,
-            "length": 271867,
-            "id": "9789c144-f0a4-48a8-9c12-4205601b014d",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "country": "US"
-                },
-                "name": "Jay\u2010Z"
-              }
-            ],
-            "first-release-date": "2002-11-12"
-          }
-        },
-        {
-          "number": "7",
-          "artist-credit": [
-            {
               "name": "Jay\u2010Z",
               "artist": {
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
                 "type": "Person",
                 "country": "US",
-                "disambiguation": "US rapper"
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
               },
               "joinphrase": ""
             }
           ],
+          "number": "7",
+          "length": 289373,
+          "id": "0c3c6415-82e3-3eac-876d-82cee5a7b837",
+          "title": "Blueprint\u00b2",
+          "position": 7,
           "recording": {
-            "disambiguation": "clean",
-            "video": false,
             "title": "Blueprint\u00b2",
+            "disambiguation": "clean",
             "id": "7718e4e9-bb02-408f-821a-f3adbc2a5b26",
+            "isrcs": [
+              "USDJ20201232"
+            ],
+            "video": false,
+            "first-release-date": "2002-11-12",
             "length": 289360,
             "artist-credit": [
               {
                 "name": "Jay\u2010Z",
                 "artist": {
-                  "country": "US",
                   "type": "Person",
-                  "disambiguation": "US rapper",
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z"
+                  "disambiguation": "US rapper",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
                 },
                 "joinphrase": ""
               }
-            ],
-            "first-release-date": "2002-11-12"
-          },
-          "position": 7,
-          "title": "Blueprint\u00b2",
-          "id": "0c3c6415-82e3-3eac-876d-82cee5a7b837",
-          "length": 289373
+            ]
+          }
         },
         {
+          "number": "8",
+          "artist-credit": [
+            {
+              "name": "Jay\u2010Z",
+              "joinphrase": " feat. ",
+              "artist": {
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z"
+              }
+            },
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Young Chris",
+                "type": "Person",
+                "country": "US",
+                "sort-name": "Young Chris",
+                "disambiguation": "US rapper Chris Ries",
+                "id": "b9692402-8b5e-4d30-807f-1fda7db397b3"
+              },
+              "joinphrase": "",
+              "name": "Young Chris"
+            }
+          ],
+          "id": "ef7fc5ea-3bf3-30b3-80f9-f8ce4fa96b95",
+          "title": "N***a Please",
+          "position": 8,
           "recording": {
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 278000,
+            "title": "N***a Please",
+            "id": "ef08a74c-a60b-44d3-a0a5-c2670dd80d3e",
+            "disambiguation": "clean",
+            "isrcs": [
+              "USDJ20201230"
+            ],
             "artist-credit": [
               {
-                "joinphrase": " feat. ",
                 "name": "Jay\u2010Z",
+                "joinphrase": " feat. ",
                 "artist": {
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "name": "JAY\u2010Z",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "disambiguation": "US rapper",
-                  "country": "US",
-                  "type": "Person"
+                  "type": "Person",
+                  "country": "US"
                 }
               },
               {
                 "joinphrase": "",
                 "artist": {
-                  "disambiguation": "US rapper Chris Ries",
-                  "country": "US",
-                  "type": "Person",
-                  "id": "b9692402-8b5e-4d30-807f-1fda7db397b3",
-                  "sort-name": "Young Chris",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "name": "Young Chris",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "Young Chris",
+                  "disambiguation": "US rapper Chris Ries",
+                  "id": "b9692402-8b5e-4d30-807f-1fda7db397b3"
                 },
                 "name": "Young Chris"
               }
-            ],
-            "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
-            "id": "ef08a74c-a60b-44d3-a0a5-c2670dd80d3e",
-            "length": 278000,
-            "video": false,
-            "title": "N***a Please"
+            ]
           },
-          "length": 277986,
-          "id": "ef7fc5ea-3bf3-30b3-80f9-f8ce4fa96b95",
-          "position": 8,
-          "title": "N***a Please",
-          "artist-credit": [
-            {
-              "name": "Jay\u2010Z",
-              "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              },
-              "joinphrase": " feat. "
-            },
-            {
-              "name": "Young Chris",
-              "artist": {
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "US rapper Chris Ries",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Young Chris",
-                "id": "b9692402-8b5e-4d30-807f-1fda7db397b3",
-                "sort-name": "Young Chris"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "number": "8"
+          "length": 277986
         },
         {
-          "number": "9",
-          "artist-credit": [
-            {
-              "name": "Jay\u2010Z",
-              "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
-                "type": "Person",
-                "country": "US"
-              },
-              "joinphrase": ""
-            }
-          ],
+          "length": 214373,
+          "id": "01221efa-eab1-3405-9a9b-ae773d9429d5",
+          "position": 9,
+          "title": "2 Many Hoes",
           "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": "US rapper"
-                },
-                "name": "Jay\u2010Z"
-              }
-            ],
             "first-release-date": "2002-11-12",
-            "disambiguation": "clean",
+            "video": false,
             "length": 214373,
             "id": "c5b0bb16-0907-4d60-bfc7-c9c58769895d",
+            "disambiguation": "clean",
+            "isrcs": [
+              "USDJ20201221"
+            ],
             "title": "2 Many Hoes",
-            "video": false
-          },
-          "title": "2 Many Hoes",
-          "position": 9,
-          "id": "01221efa-eab1-3405-9a9b-ae773d9429d5",
-          "length": 214373
-        },
-        {
-          "number": "10",
-          "artist-credit": [
-            {
-              "joinphrase": " feat. ",
-              "name": "Jay\u2010Z",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              }
-            },
-            {
-              "joinphrase": ", ",
-              "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "",
-                "name": "Memphis Bleek",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Bleek, Memphis",
-                "id": "48db8d53-98c7-4ec8-8d49-00a89ebad8d4"
-              },
-              "name": "Memphis Bleek"
-            },
-            {
-              "joinphrase": ", ",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Freeway",
-                "sort-name": "Freeway",
-                "id": "5d008bf9-2958-4640-a5de-dcdcebe711a4",
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "US rapper Leslie Pridgen"
-              },
-              "name": "Freeway"
-            },
-            {
-              "name": "Young Gunz",
-              "artist": {
-                "country": "US",
-                "type": "Group",
-                "disambiguation": "US rap duo",
-                "name": "Young Gunz",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "41762041-1e55-48c8-8f77-45e342e52ba9",
-                "sort-name": "Young Gunz"
-              },
-              "joinphrase": ", "
-            },
-            {
-              "joinphrase": ", ",
-              "name": "Peedi Crakk",
-              "artist": {
-                "sort-name": "Peedi Crakk",
-                "id": "412e1375-4ff4-4026-9be1-d9307a7dfa0e",
-                "name": "Peedi Crakk",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "a.k.a. Peedi Peedi",
-                "country": "US",
-                "type": "Person"
-              }
-            },
-            {
-              "joinphrase": " & ",
-              "name": "Sparks",
-              "artist": {
-                "country": "US",
-                "type": "Person",
-                "disambiguation": "US rapper Kenneth Johnson, previously \"Sparks\"",
-                "name": "Omillio Sparks",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Omillio Sparks",
-                "id": "d93f0584-b950-4a24-b45a-129d410fc417"
-              }
-            },
-            {
-              "joinphrase": "",
-              "name": "Rell",
-              "artist": {
-                "disambiguation": "US R&B singer on Roc-a-Fella",
-                "type": "Person",
-                "country": "US",
-                "id": "e99e2d8a-4516-4b22-ab93-65ded3b58297",
-                "sort-name": "Rell",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "Rell"
-              }
-            }
-          ],
-          "recording": {
-            "first-release-date": "2002-11-12",
             "artist-credit": [
               {
-                "joinphrase": " feat. ",
                 "name": "Jay\u2010Z",
+                "joinphrase": "",
                 "artist": {
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "name": "JAY\u2010Z",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "disambiguation": "US rapper",
+                  "type": "Person",
+                  "country": "US"
+                }
+              }
+            ]
+          },
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            }
+          ],
+          "number": "9"
+        },
+        {
+          "length": 228800,
+          "id": "1ea47394-0a26-3fc3-a8d1-575da5a488fe",
+          "title": "As One",
+          "recording": {
+            "id": "c843d501-139f-45c8-83f6-2040856f5900",
+            "isrcs": [
+              "USDJ20201226"
+            ],
+            "disambiguation": "clean",
+            "title": "As One",
+            "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 227400,
+            "artist-credit": [
+              {
+                "name": "Jay\u2010Z",
+                "joinphrase": " feat. ",
+                "artist": {
+                  "type": "Person",
                   "country": "US",
-                  "type": "Person"
+                  "sort-name": "JAY\u2010Z",
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z"
                 }
               },
               {
-                "joinphrase": ", ",
+                "name": "Memphis Bleek",
                 "artist": {
-                  "sort-name": "Bleek, Memphis",
-                  "id": "48db8d53-98c7-4ec8-8d49-00a89ebad8d4",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "name": "Memphis Bleek",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "disambiguation": "",
                   "country": "US",
-                  "type": "Person"
-                },
-                "name": "Memphis Bleek"
-              },
-              {
-                "joinphrase": ", ",
-                "artist": {
-                  "disambiguation": "US rapper Leslie Pridgen",
                   "type": "Person",
-                  "country": "US",
-                  "sort-name": "Freeway",
-                  "id": "5d008bf9-2958-4640-a5de-dcdcebe711a4",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Freeway"
-                },
-                "name": "Freeway"
-              },
-              {
-                "name": "Young Gunz",
-                "artist": {
-                  "disambiguation": "US rap duo",
-                  "type": "Group",
-                  "country": "US",
-                  "id": "41762041-1e55-48c8-8f77-45e342e52ba9",
-                  "sort-name": "Young Gunz",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "name": "Young Gunz"
+                  "id": "48db8d53-98c7-4ec8-8d49-00a89ebad8d4",
+                  "disambiguation": "",
+                  "sort-name": "Bleek, Memphis"
                 },
                 "joinphrase": ", "
               },
               {
                 "joinphrase": ", ",
                 "artist": {
+                  "disambiguation": "US rapper Leslie Pridgen",
+                  "id": "5d008bf9-2958-4640-a5de-dcdcebe711a4",
+                  "sort-name": "Freeway",
                   "country": "US",
                   "type": "Person",
-                  "disambiguation": "a.k.a. Peedi Peedi",
-                  "name": "Peedi Crakk",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "412e1375-4ff4-4026-9be1-d9307a7dfa0e",
-                  "sort-name": "Peedi Crakk"
+                  "name": "Freeway",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
                 },
-                "name": "Peedi Crakk"
+                "name": "Freeway"
               },
               {
-                "joinphrase": " & ",
                 "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Omillio Sparks",
-                  "sort-name": "Omillio Sparks",
-                  "id": "d93f0584-b950-4a24-b45a-129d410fc417",
-                  "type": "Person",
+                  "sort-name": "Young Gunz",
+                  "disambiguation": "US rap duo",
+                  "id": "41762041-1e55-48c8-8f77-45e342e52ba9",
+                  "type": "Group",
                   "country": "US",
-                  "disambiguation": "US rapper Kenneth Johnson, previously \"Sparks\""
+                  "name": "Young Gunz",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": ", ",
+                "name": "Young Gunz"
+              },
+              {
+                "name": "Peedi Crakk",
+                "joinphrase": ", ",
+                "artist": {
+                  "country": "US",
+                  "type": "Person",
+                  "id": "412e1375-4ff4-4026-9be1-d9307a7dfa0e",
+                  "disambiguation": "a.k.a. Peedi Peedi",
+                  "sort-name": "Peedi Crakk",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Peedi Crakk"
+                }
+              },
+              {
+                "artist": {
+                  "country": "US",
+                  "type": "Person",
+                  "id": "d93f0584-b950-4a24-b45a-129d410fc417",
+                  "disambiguation": "US rapper Kenneth Johnson, previously \"Sparks\"",
+                  "sort-name": "Omillio Sparks",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Omillio Sparks"
+                },
+                "joinphrase": " & ",
                 "name": "Sparks"
               },
               {
-                "joinphrase": "",
-                "name": "Rell",
                 "artist": {
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US R&B singer on Roc-a-Fella",
                   "name": "Rell",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Rell",
                   "id": "e99e2d8a-4516-4b22-ab93-65ded3b58297",
-                  "sort-name": "Rell"
-                }
+                  "disambiguation": "US R&B singer on Roc-a-Fella",
+                  "type": "Person",
+                  "country": "US"
+                },
+                "joinphrase": "",
+                "name": "Rell"
               }
-            ],
-            "length": 227400,
-            "id": "c843d501-139f-45c8-83f6-2040856f5900",
-            "title": "As One",
-            "video": false,
-            "disambiguation": "clean"
+            ]
           },
-          "title": "As One",
           "position": 10,
-          "length": 228800,
-          "id": "1ea47394-0a26-3fc3-a8d1-575da5a488fe"
-        },
-        {
           "artist-credit": [
             {
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "US rapper",
-                "country": "US",
-                "type": "Person"
-              },
               "name": "Jay\u2010Z",
+              "artist": {
+                "country": "US",
+                "type": "Person",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z"
+              },
+              "joinphrase": " feat. "
+            },
+            {
+              "name": "Memphis Bleek",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Memphis Bleek",
+                "country": "US",
+                "type": "Person",
+                "id": "48db8d53-98c7-4ec8-8d49-00a89ebad8d4",
+                "disambiguation": "",
+                "sort-name": "Bleek, Memphis"
+              },
+              "joinphrase": ", "
+            },
+            {
+              "name": "Freeway",
+              "artist": {
+                "country": "US",
+                "type": "Person",
+                "disambiguation": "US rapper Leslie Pridgen",
+                "id": "5d008bf9-2958-4640-a5de-dcdcebe711a4",
+                "sort-name": "Freeway",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Freeway"
+              },
+              "joinphrase": ", "
+            },
+            {
+              "artist": {
+                "country": "US",
+                "type": "Group",
+                "disambiguation": "US rap duo",
+                "id": "41762041-1e55-48c8-8f77-45e342e52ba9",
+                "sort-name": "Young Gunz",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Young Gunz"
+              },
+              "joinphrase": ", ",
+              "name": "Young Gunz"
+            },
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Peedi Crakk",
+                "type": "Person",
+                "country": "US",
+                "sort-name": "Peedi Crakk",
+                "id": "412e1375-4ff4-4026-9be1-d9307a7dfa0e",
+                "disambiguation": "a.k.a. Peedi Peedi"
+              },
+              "joinphrase": ", ",
+              "name": "Peedi Crakk"
+            },
+            {
+              "name": "Sparks",
+              "joinphrase": " & ",
+              "artist": {
+                "country": "US",
+                "type": "Person",
+                "id": "d93f0584-b950-4a24-b45a-129d410fc417",
+                "disambiguation": "US rapper Kenneth Johnson, previously \"Sparks\"",
+                "sort-name": "Omillio Sparks",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Omillio Sparks"
+              }
+            },
+            {
+              "name": "Rell",
+              "artist": {
+                "country": "US",
+                "type": "Person",
+                "disambiguation": "US R&B singer on Roc-a-Fella",
+                "id": "e99e2d8a-4516-4b22-ab93-65ded3b58297",
+                "sort-name": "Rell",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Rell"
+              },
               "joinphrase": ""
             }
           ],
-          "number": "11",
-          "id": "82ad6eb9-d47c-35b2-813d-725fcad0f4ea",
+          "number": "10"
+        },
+        {
           "length": 281991,
           "position": 11,
           "title": "A Ballad for the Fallen Soldier",
           "recording": {
-            "disambiguation": "clean",
-            "length": 282000,
-            "id": "0226adf7-1181-45ef-a307-9d83a261d5f6",
-            "title": "A Ballad for the Fallen Soldier",
-            "video": false,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Jay\u2010Z",
-                "artist": {
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "country": "US",
-                  "type": "Person",
-                  "disambiguation": "US rapper"
-                }
-              }
-            ],
-            "first-release-date": "2002-11-12"
-          }
-        },
-        {
-          "artist-credit": [
-            {
-              "name": "Jay\u2010Z",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
-                "type": "Person",
-                "country": "US"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "number": "12",
-          "recording": {
             "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 282000,
+            "title": "A Ballad for the Fallen Soldier",
+            "id": "0226adf7-1181-45ef-a307-9d83a261d5f6",
+            "disambiguation": "clean",
+            "isrcs": [
+              "USDJ20201224"
+            ],
             "artist-credit": [
               {
                 "name": "Jay\u2010Z",
                 "artist": {
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": "US rapper",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "name": "JAY\u2010Z",
-                  "sort-name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+                  "country": "US",
+                  "type": "Person",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
+                  "sort-name": "JAY\u2010Z"
                 },
                 "joinphrase": ""
               }
-            ],
-            "title": "Show You How",
-            "video": false,
-            "length": 176427,
-            "id": "a7f368f6-ed1b-4c0c-b3c7-9f2006810b8d",
-            "disambiguation": "clean"
+            ]
           },
-          "length": 178702,
-          "id": "3cbd6220-d7c6-3332-bcfe-274037e31494",
-          "title": "Show You How",
-          "position": 12
-        },
-        {
-          "number": "13",
+          "id": "82ad6eb9-d47c-35b2-813d-725fcad0f4ea",
           "artist-credit": [
             {
+              "name": "Jay\u2010Z",
+              "joinphrase": "",
               "artist": {
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
-                "type": "Person",
                 "country": "US",
-                "disambiguation": "US rapper"
-              },
-              "name": "Jay\u2010Z",
-              "joinphrase": ""
+                "type": "Person",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z"
+              }
             }
           ],
+          "number": "11"
+        },
+        {
+          "number": "12",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type": "Person",
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "disambiguation": "US rapper",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "JAY\u2010Z"
+              },
+              "name": "Jay\u2010Z"
+            }
+          ],
+          "id": "3cbd6220-d7c6-3332-bcfe-274037e31494",
+          "title": "Show You How",
           "recording": {
-            "video": false,
-            "title": "B*****s & Sisters",
-            "id": "1975dad9-3919-4ddf-b750-9ba8cdd06583",
-            "length": 157533,
+            "title": "Show You How",
+            "id": "a7f368f6-ed1b-4c0c-b3c7-9f2006810b8d",
+            "isrcs": [
+              "USDJ20201243"
+            ],
             "disambiguation": "clean",
             "first-release-date": "2002-11-12",
+            "video": false,
+            "length": 176427,
             "artist-credit": [
               {
+                "name": "Jay\u2010Z",
                 "joinphrase": "",
                 "artist": {
-                  "disambiguation": "US rapper",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
                   "type": "Person",
                   "country": "US",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                   "sort-name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "JAY\u2010Z"
-                },
-                "name": "Jay\u2010Z"
+                  "disambiguation": "US rapper",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
+                }
               }
             ]
           },
-          "position": 13,
-          "title": "B*****s & Sisters",
-          "length": 158840,
-          "id": "78df5ec3-3958-3057-855b-ed3818827543"
+          "position": 12,
+          "length": 178702
         },
         {
-          "id": "f55dca32-083d-39ce-822d-11806c0540ce",
-          "length": 226995,
-          "title": "What They Gonna Do, Part II",
-          "position": 14,
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
+                "country": "US",
+                "type": "Person",
+                "name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Jay\u2010Z"
+            }
+          ],
+          "number": "13",
+          "length": 158840,
+          "id": "78df5ec3-3958-3057-855b-ed3818827543",
+          "title": "B*****s & Sisters",
           "recording": {
             "artist-credit": [
               {
                 "joinphrase": "",
-                "name": "Jay\u2010Z",
                 "artist": {
-                  "name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper",
                   "sort-name": "JAY\u2010Z",
                   "country": "US",
                   "type": "Person",
-                  "disambiguation": "US rapper"
-                }
+                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Jay\u2010Z"
               }
             ],
-            "first-release-date": "2002-11-12",
             "disambiguation": "clean",
-            "length": 227000,
-            "id": "ecb38083-5776-45de-9fa5-8136bdbade99",
-            "title": "What They Gonna Do, Part II",
-            "video": false
+            "id": "1975dad9-3919-4ddf-b750-9ba8cdd06583",
+            "isrcs": [
+              "USDJ20201228"
+            ],
+            "title": "B*****s & Sisters",
+            "length": 157533,
+            "video": false,
+            "first-release-date": "2002-11-12"
           },
+          "position": 13
+        },
+        {
+          "position": 14,
+          "title": "What They Gonna Do, Part II",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "country": "US",
+                  "sort-name": "JAY\u2010Z",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "disambiguation": "US rapper"
+                },
+                "joinphrase": "",
+                "name": "Jay\u2010Z"
+              }
+            ],
+            "length": 227000,
+            "video": false,
+            "first-release-date": "2002-11-12",
+            "title": "What They Gonna Do, Part II",
+            "disambiguation": "clean",
+            "id": "ecb38083-5776-45de-9fa5-8136bdbade99",
+            "isrcs": [
+              "USDJ20201244"
+            ]
+          },
+          "id": "f55dca32-083d-39ce-822d-11806c0540ce",
+          "length": 226995,
+          "number": "14",
           "artist-credit": [
             {
               "name": "Jay\u2010Z",
               "artist": {
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                "sort-name": "JAY\u2010Z",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "name": "JAY\u2010Z",
-                "disambiguation": "US rapper",
                 "type": "Person",
-                "country": "US"
+                "country": "US",
+                "sort-name": "JAY\u2010Z",
+                "disambiguation": "US rapper",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
               },
               "joinphrase": ""
             }
-          ],
-          "number": "14"
+          ]
         }
       ],
-      "track-offset": 0
-    }
-  ],
-  "asin": "B000078JKX",
-  "packaging-id": null,
-  "disambiguation": "clean/edited",
-  "status": "Official",
-  "release-events": [
-    {
-      "area": {
-        "name": "United States",
-        "type-id": null,
-        "id": "489ce91b-6658-3307-9877-795b68554c98",
-        "iso-3166-1-codes": [
-          "US"
-        ],
-        "disambiguation": "",
-        "sort-name": "United States",
-        "type": null
-      },
-      "date": "2002-11-12"
+      "format": "CD"
     }
   ],
   "title": "The Blueprint\u00b2: The Gift & The Curse",
-  "cover-art-archive": {
-    "darkened": false,
-    "front": true,
-    "back": true,
-    "count": 4,
-    "artwork": true
-  },
-  "artist-credit": [
+  "disambiguation": "clean/edited",
+  "id": "2c5e4198-24cf-3c95-a16e-83be8e877dfa",
+  "release-events": [
     {
-      "joinphrase": "",
-      "name": "Jay\u2010Z",
-      "artist": {
-        "sort-name": "JAY\u2010Z",
-        "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "name": "JAY\u2010Z",
-        "disambiguation": "US rapper",
-        "type": "Person",
-        "country": "US"
+      "date": "2002-11-12",
+      "area": {
+        "type": null,
+        "sort-name": "United States",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "disambiguation": "",
+        "type-id": null,
+        "name": "United States"
       }
     }
   ],
+  "artist-credit": [
+    {
+      "artist": {
+        "name": "JAY\u2010Z",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "sort-name": "JAY\u2010Z",
+        "disambiguation": "US rapper",
+        "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+        "type": "Person",
+        "country": "US"
+      },
+      "joinphrase": "",
+      "name": "Jay\u2010Z"
+    }
+  ],
+  "status": "Official",
   "release-group": {
     "first-release-date": "2002-11-12",
     "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "disambiguation": "",
+    "id": "c0cdbbdd-006d-3f4a-90bb-31e259d839e4",
+    "title": "The Blueprint\u00b2: The Gift & The Curse",
     "artist-credit": [
       {
+        "name": "Jay\u2010Z",
         "joinphrase": "",
         "artist": {
-          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
           "sort-name": "JAY\u2010Z",
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-          "name": "JAY\u2010Z",
+          "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
           "disambiguation": "US rapper",
           "type": "Person",
-          "country": "US"
-        },
-        "name": "Jay\u2010Z"
+          "country": "US",
+          "name": "JAY\u2010Z",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        }
       }
     ],
-    "id": "c0cdbbdd-006d-3f4a-90bb-31e259d839e4",
     "primary-type": "Album",
-    "secondary-types": [],
-    "title": "The Blueprint\u00b2: The Gift & The Curse",
-    "disambiguation": "",
-    "secondary-type-ids": []
+    "secondary-type-ids": [],
+    "secondary-types": []
   },
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "asin": "B000078JKX",
+  "packaging": null,
   "text-representation": {
-    "language": "eng",
-    "script": "Latn"
+    "script": "Latn",
+    "language": "eng"
   },
+  "barcode": "044006338026",
   "quality": "high",
-  "id": "2c5e4198-24cf-3c95-a16e-83be8e877dfa",
-  "label-info": [
-    {
-      "label": {
-        "label-code": null,
-        "disambiguation": "",
-        "type": "Original Production",
-        "id": "4cccc72a-0bd0-433a-905e-dad87871397d",
-        "sort-name": "Roc\u2010A\u2010Fella Records",
-        "name": "Roc\u2010A\u2010Fella Records",
-        "type-id": "7aaa37fe-2def-3476-b359-80245850062d"
-      },
-      "catalog-number": "440 063 380-2"
-    }
-  ],
-  "date": "2002-11-12"
+  "country": "US",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging-id": null,
+  "cover-art-archive": {
+    "darkened": false,
+    "back": true,
+    "front": true,
+    "count": 4,
+    "artwork": true
+  }
 }

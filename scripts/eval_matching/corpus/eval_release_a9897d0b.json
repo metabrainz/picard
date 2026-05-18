@@ -1,558 +1,588 @@
 {
-  "packaging": "Jewel Case",
   "status": "Official",
-  "title": "Weezer",
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "sort-name": "Weezer",
+        "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+        "disambiguation": "American rock band",
+        "type": "Group",
+        "country": "US",
+        "name": "Weezer",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+      },
+      "name": "Weezer"
+    }
+  ],
+  "asin": null,
   "release-group": {
-    "first-release-date": "2001-05-07",
     "artist-credit": [
       {
-        "artist": {
-          "sort-name": "Weezer",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-          "disambiguation": "American rock band",
-          "country": "US",
-          "type": "Group",
-          "name": "Weezer",
-          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-        },
         "name": "Weezer",
+        "artist": {
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Weezer",
+          "type": "Group",
+          "country": "US",
+          "sort-name": "Weezer",
+          "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+          "disambiguation": "American rock band"
+        },
         "joinphrase": ""
       }
     ],
-    "id": "923d5ba6-7eee-3bce-bcb2-c913b2bd69d4",
-    "secondary-types": [],
-    "title": "Weezer",
-    "disambiguation": "Green Album",
     "primary-type": "Album",
+    "secondary-type-ids": [],
+    "secondary-types": [],
     "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "secondary-type-ids": []
-  },
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
+    "first-release-date": "2001-05-07",
+    "title": "Weezer",
+    "id": "923d5ba6-7eee-3bce-bcb2-c913b2bd69d4",
+    "disambiguation": "Green Album"
   },
   "label-info": [
     {
       "label": {
+        "label-code": 7266,
+        "name": "Geffen Records",
         "type-id": "a2426aab-2dd4-339c-b47d-b4923a241678",
         "sort-name": "Geffen Records",
-        "label-code": 7266,
-        "id": "0fadc2ce-f7de-4e27-bbe6-612b317e716b",
         "disambiguation": "",
-        "type": "Production",
-        "name": "Geffen Records"
+        "id": "0fadc2ce-f7de-4e27-bbe6-612b317e716b",
+        "type": "Production"
       },
       "catalog-number": "0694930452"
     }
   ],
-  "country": "CA",
-  "cover-art-archive": {
-    "count": 5,
-    "darkened": false,
-    "back": true,
-    "artwork": true,
-    "front": true
-  },
-  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "date": "2001-05-15",
+  "id": "a9897d0b-b05a-41d9-baa5-68a754e917c3",
+  "disambiguation": "green album",
   "release-events": [
     {
+      "date": "2001-05-15",
       "area": {
-        "sort-name": "Canada",
         "type-id": null,
-        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "name": "Canada",
+        "type": null,
         "disambiguation": "",
+        "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+        "sort-name": "Canada",
         "iso-3166-1-codes": [
           "CA"
-        ],
-        "name": "Canada",
-        "type": null
-      },
-      "date": "2001-05-15"
-    }
-  ],
-  "quality": "normal",
-  "artist-credit": [
-    {
-      "name": "Weezer",
-      "joinphrase": "",
-      "artist": {
-        "country": "US",
-        "disambiguation": "American rock band",
-        "name": "Weezer",
-        "type": "Group",
-        "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-        "sort-name": "Weezer"
+        ]
       }
     }
   ],
-  "id": "a9897d0b-b05a-41d9-baa5-68a754e917c3",
-  "asin": null,
   "media": [
     {
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "format": "CD",
+      "track-offset": 0,
       "track-count": 10,
       "tracks": [
         {
           "length": 179533,
-          "number": "1",
+          "title": "Don\u2019t Let Go",
           "position": 1,
           "recording": {
-            "first-release-date": "2001-05-07",
             "artist-credit": [
               {
                 "joinphrase": "",
-                "name": "Weezer",
                 "artist": {
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "disambiguation": "American rock band",
-                  "country": "US",
                   "name": "Weezer",
-                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "sort-name": "Weezer",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                }
+                  "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "type": "Group",
+                  "country": "US"
+                },
+                "name": "Weezer"
               }
             ],
-            "id": "129d60a4-6d2a-4728-aac6-4a61f150aef1",
             "title": "Don\u2019t Let Go",
             "disambiguation": "",
+            "id": "129d60a4-6d2a-4728-aac6-4a61f150aef1",
+            "isrcs": [
+              "USIR10110357"
+            ],
+            "first-release-date": "2001-05-07",
             "video": false,
             "length": 179533
           },
           "id": "493d62bc-6ef5-4e60-ba15-9c0411db558f",
           "artist-credit": [
             {
+              "name": "Weezer",
               "artist": {
-                "country": "US",
-                "disambiguation": "American rock band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "name": "Weezer",
+                "country": "US",
                 "type": "Group",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                "disambiguation": "American rock band",
+                "sort-name": "Weezer"
               },
-              "name": "Weezer",
               "joinphrase": ""
             }
           ],
-          "title": "Don\u2019t Let Go"
+          "number": "1"
         },
         {
-          "recording": {
-            "disambiguation": "",
-            "video": false,
-            "artist-credit": [
-              {
-                "joinphrase": "",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Weezer",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "disambiguation": "American rock band",
+                "type": "Group",
+                "country": "US",
                 "name": "Weezer",
-                "artist": {
-                  "sort-name": "Weezer",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "name": "Weezer",
-                  "type": "Group",
-                  "disambiguation": "American rock band",
-                  "country": "US"
-                }
-              }
-            ],
-            "first-release-date": "2001-05-07",
-            "id": "a22d4155-cbc4-40a9-972a-b71bcb7503ef",
-            "title": "Photograph",
-            "length": 139093
-          },
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Weezer"
+            }
+          ],
           "number": "2",
           "length": 139093,
-          "position": 2,
-          "artist-credit": [
-            {
-              "name": "Weezer",
-              "joinphrase": "",
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Weezer",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "name": "Weezer",
-                "type": "Group",
-                "country": "US",
-                "disambiguation": "American rock band"
-              }
-            }
-          ],
           "id": "81089776-5842-46e2-aa88-6be55f7441bd",
-          "title": "Photograph"
-        },
-        {
+          "title": "Photograph",
+          "position": 2,
           "recording": {
-            "length": 186533,
             "artist-credit": [
               {
-                "name": "Weezer",
                 "joinphrase": "",
                 "artist": {
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Weezer",
+                  "type": "Group",
+                  "country": "US",
                   "sort-name": "Weezer",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "disambiguation": "American rock band",
-                  "country": "US",
-                  "name": "Weezer",
-                  "type": "Group"
-                }
-              }
-            ],
-            "first-release-date": "2001-04",
-            "id": "b465ee62-8189-4aac-a294-43f4958dffae",
-            "title": "Hash Pipe",
-            "disambiguation": "",
-            "video": false
-          },
-          "number": "3",
-          "length": 186533,
-          "position": 3,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Weezer",
-              "artist": {
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "country": "US",
-                "disambiguation": "American rock band",
-                "type": "Group",
+                  "disambiguation": "American rock band"
+                },
                 "name": "Weezer"
               }
-            }
-          ],
-          "id": "998c482c-3683-41ed-b991-a282d475c8d2",
-          "title": "Hash Pipe"
-        },
-        {
-          "title": "Island in the Sun",
-          "artist-credit": [
-            {
-              "name": "Weezer",
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type": "Group",
-                "name": "Weezer",
-                "disambiguation": "American rock band",
-                "country": "US"
-              }
-            }
-          ],
-          "id": "6eb94557-9a23-4eeb-b178-acd8cc6f8b96",
-          "position": 4,
-          "number": "4",
-          "length": 200306,
-          "recording": {
-            "video": false,
-            "disambiguation": "",
-            "title": "Island in the Sun",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Weezer",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type": "Group",
-                  "name": "Weezer",
-                  "disambiguation": "American rock band",
-                  "country": "US"
-                },
-                "name": "Weezer",
-                "joinphrase": ""
-              }
             ],
+            "title": "Photograph",
+            "isrcs": [
+              "USIR10110364"
+            ],
+            "id": "a22d4155-cbc4-40a9-972a-b71bcb7503ef",
+            "disambiguation": "",
             "first-release-date": "2001-05-07",
-            "id": "58044028-9a7e-4da6-9ca8-e5322a25d9a2",
-            "length": 200053
+            "video": false,
+            "length": 139093
           }
         },
         {
-          "number": "5",
-          "length": 154560,
-          "position": 5,
+          "number": "3",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer",
+                "country": "US",
+                "type": "Group",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "disambiguation": "American rock band",
+                "sort-name": "Weezer"
+              },
+              "name": "Weezer"
+            }
+          ],
+          "position": 3,
+          "title": "Hash Pipe",
           "recording": {
-            "length": 154560,
-            "title": "Crab",
-            "id": "92969b64-efd9-4f7d-bea5-c9154e56d8e2",
+            "artist-credit": [
+              {
+                "name": "Weezer",
+                "artist": {
+                  "country": "US",
+                  "type": "Group",
+                  "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "sort-name": "Weezer",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Weezer"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "video": false,
+            "first-release-date": "2001-04",
+            "length": 186533,
+            "title": "Hash Pipe",
+            "isrcs": [
+              "USIR10110319"
+            ],
+            "id": "b465ee62-8189-4aac-a294-43f4958dffae",
+            "disambiguation": ""
+          },
+          "id": "998c482c-3683-41ed-b991-a282d475c8d2",
+          "length": 186533
+        },
+        {
+          "number": "4",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer",
+                "type": "Group",
+                "country": "US",
+                "sort-name": "Weezer",
+                "disambiguation": "American rock band",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+              },
+              "name": "Weezer"
+            }
+          ],
+          "recording": {
+            "title": "Island in the Sun",
+            "disambiguation": "",
+            "id": "58044028-9a7e-4da6-9ca8-e5322a25d9a2",
+            "isrcs": [
+              "USIR10110358"
+            ],
+            "video": false,
+            "first-release-date": "2001-05-07",
+            "length": 200053,
             "artist-credit": [
               {
                 "artist": {
-                  "sort-name": "Weezer",
+                  "name": "Weezer",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "type": "Group",
-                  "name": "Weezer",
                   "disambiguation": "American rock band",
-                  "country": "US"
+                  "sort-name": "Weezer",
+                  "country": "US",
+                  "type": "Group"
                 },
                 "joinphrase": "",
                 "name": "Weezer"
               }
-            ],
-            "first-release-date": "1998-11",
-            "video": false,
-            "disambiguation": ""
+            ]
           },
+          "title": "Island in the Sun",
+          "position": 4,
+          "id": "6eb94557-9a23-4eeb-b178-acd8cc6f8b96",
+          "length": 200306
+        },
+        {
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Weezer",
+                  "country": "US",
+                  "type": "Group",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "disambiguation": "American rock band",
+                  "sort-name": "Weezer"
+                },
+                "name": "Weezer"
+              }
+            ],
+            "disambiguation": "",
+            "id": "92969b64-efd9-4f7d-bea5-c9154e56d8e2",
+            "isrcs": [
+              "USIR10110356"
+            ],
+            "title": "Crab",
+            "length": 154560,
+            "video": false,
+            "first-release-date": "1998-11"
+          },
+          "title": "Crab",
+          "id": "70479f74-fbf7-49e0-94a0-c745877255e4",
+          "length": 154560,
+          "number": "5",
           "artist-credit": [
             {
               "joinphrase": "",
-              "name": "Weezer",
               "artist": {
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer",
+                "type": "Group",
+                "country": "US",
                 "sort-name": "Weezer",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "type": "Group",
-                "name": "Weezer",
-                "disambiguation": "American rock band",
-                "country": "US"
-              }
+                "disambiguation": "American rock band"
+              },
+              "name": "Weezer"
             }
-          ],
-          "id": "70479f74-fbf7-49e0-94a0-c745877255e4",
-          "title": "Crab"
+          ]
         },
         {
           "number": "6",
-          "length": 128333,
-          "position": 6,
-          "recording": {
-            "length": 128333,
-            "video": false,
-            "disambiguation": "",
-            "title": "Knock\u2010Down Drag\u2010Out",
-            "artist-credit": [
-              {
-                "name": "Weezer",
-                "joinphrase": "",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Weezer",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "name": "Weezer",
-                  "type": "Group",
-                  "disambiguation": "American rock band",
-                  "country": "US"
-                }
-              }
-            ],
-            "first-release-date": "2001-05-07",
-            "id": "4ca0da9c-bd6d-4071-9614-c8684e4978f1"
-          },
           "artist-credit": [
             {
               "name": "Weezer",
-              "joinphrase": "",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "sort-name": "Weezer",
-                "type": "Group",
-                "name": "Weezer",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                 "disambiguation": "American rock band",
+                "type": "Group",
                 "country": "US",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-              }
+                "name": "Weezer",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": ""
             }
           ],
           "id": "edb2eff1-679d-4282-8cd8-13513235a551",
-          "title": "Knock\u2010Down Drag\u2010Out"
+          "title": "Knock\u2010Down Drag\u2010Out",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Weezer",
+                "joinphrase": "",
+                "artist": {
+                  "country": "US",
+                  "type": "Group",
+                  "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "sort-name": "Weezer",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Weezer"
+                }
+              }
+            ],
+            "title": "Knock\u2010Down Drag\u2010Out",
+            "disambiguation": "",
+            "id": "4ca0da9c-bd6d-4071-9614-c8684e4978f1",
+            "isrcs": [
+              "USIR10110359"
+            ],
+            "video": false,
+            "first-release-date": "2001-05-07",
+            "length": 128333
+          },
+          "length": 128333
         },
         {
-          "length": 158666,
           "number": "7",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "US",
+                "type": "Group",
+                "disambiguation": "American rock band",
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "sort-name": "Weezer",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer"
+              },
+              "name": "Weezer"
+            }
+          ],
+          "id": "07540b24-8c51-4eb1-bd1f-e5ae3b34c24d",
+          "title": "Smile",
           "position": 7,
           "recording": {
-            "title": "Smile",
             "artist-credit": [
               {
+                "name": "Weezer",
+                "joinphrase": "",
                 "artist": {
+                  "sort-name": "Weezer",
+                  "disambiguation": "American rock band",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                   "type": "Group",
-                  "name": "Weezer",
                   "country": "US",
-                  "disambiguation": "American rock band",
-                  "sort-name": "Weezer",
+                  "name": "Weezer",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "joinphrase": "",
-                "name": "Weezer"
+                }
               }
             ],
-            "first-release-date": "2001-05-07",
+            "isrcs": [
+              "USIR10110360"
+            ],
             "id": "e8e01316-8be1-4028-85e7-9d28a2f35945",
-            "video": false,
             "disambiguation": "",
-            "length": 158626
+            "title": "Smile",
+            "length": 158626,
+            "first-release-date": "2001-05-07",
+            "video": false
           },
-          "id": "07540b24-8c51-4eb1-bd1f-e5ae3b34c24d",
-          "artist-credit": [
-            {
-              "artist": {
-                "type": "Group",
-                "name": "Weezer",
-                "country": "US",
-                "disambiguation": "American rock band",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              },
-              "name": "Weezer",
-              "joinphrase": ""
-            }
-          ],
-          "title": "Smile"
+          "length": 158666
         },
         {
+          "id": "4fad0cd1-1d91-4591-be40-91e09712eebb",
+          "recording": {
+            "id": "2c623d93-4e45-4886-86af-a153db6da6b5",
+            "isrcs": [
+              "USIR10110362"
+            ],
+            "disambiguation": "",
+            "title": "Simple Pages",
+            "length": 176706,
+            "video": false,
+            "first-release-date": "2001-05-07",
+            "artist-credit": [
+              {
+                "name": "Weezer",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Weezer",
+                  "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "type": "Group",
+                  "country": "US",
+                  "name": "Weezer",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ]
+          },
+          "title": "Simple Pages",
+          "position": 8,
           "length": 176706,
           "number": "8",
-          "position": 8,
-          "recording": {
-            "length": 176706,
-            "disambiguation": "",
-            "video": false,
-            "id": "2c623d93-4e45-4886-86af-a153db6da6b5",
-            "first-release-date": "2001-05-07",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                  "disambiguation": "American rock band",
-                  "country": "US",
-                  "type": "Group",
-                  "name": "Weezer",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Weezer"
-                },
-                "joinphrase": "",
-                "name": "Weezer"
-              }
-            ],
-            "title": "Simple Pages"
-          },
-          "id": "4fad0cd1-1d91-4591-be40-91e09712eebb",
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "type": "Group",
-                "name": "Weezer",
                 "country": "US",
+                "sort-name": "Weezer",
                 "disambiguation": "American rock band",
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer"
               },
-              "name": "Weezer",
-              "joinphrase": ""
+              "name": "Weezer"
             }
-          ],
-          "title": "Simple Pages"
+          ]
         },
         {
-          "title": "Glorious Day",
+          "number": "9",
           "artist-credit": [
             {
+              "joinphrase": "",
               "artist": {
                 "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "country": "US",
                 "disambiguation": "American rock band",
+                "type": "Group",
+                "country": "US",
                 "name": "Weezer",
-                "type": "Group"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": "",
               "name": "Weezer"
             }
           ],
           "id": "4a49de21-61d2-4e3a-8ffe-be580ed4c7d1",
           "recording": {
-            "disambiguation": "",
-            "video": false,
-            "id": "b855eea9-ca26-43e2-8304-0e83e3f9b46a",
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Weezer",
                 "artist": {
+                  "disambiguation": "American rock band",
                   "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                  "sort-name": "Weezer",
+                  "country": "US",
                   "type": "Group",
                   "name": "Weezer",
-                  "country": "US",
-                  "disambiguation": "American rock band",
-                  "sort-name": "Weezer",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                }
+                },
+                "joinphrase": "",
+                "name": "Weezer"
               }
             ],
-            "first-release-date": "2001-05-07",
+            "id": "b855eea9-ca26-43e2-8304-0e83e3f9b46a",
+            "disambiguation": "",
+            "isrcs": [
+              "USIR10110363"
+            ],
             "title": "Glorious Day",
-            "length": 160826
+            "length": 160826,
+            "video": false,
+            "first-release-date": "2001-05-07"
           },
           "position": 9,
-          "number": "9",
+          "title": "Glorious Day",
           "length": 160826
         },
         {
+          "id": "b830844a-fda2-4c77-ae3f-c760928ebe12",
+          "position": 10,
+          "title": "O Girlfriend",
           "recording": {
             "title": "O Girlfriend",
+            "isrcs": [
+              "USIR10110361"
+            ],
+            "id": "f1db7477-f8f1-4624-9d70-2df7753a3124",
+            "disambiguation": "",
+            "length": 229733,
+            "first-release-date": "2001-05-07",
+            "video": false,
             "artist-credit": [
               {
-                "joinphrase": "",
                 "name": "Weezer",
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "sort-name": "Weezer",
-                  "country": "US",
                   "disambiguation": "American rock band",
+                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
                   "type": "Group",
+                  "country": "US",
                   "name": "Weezer",
-                  "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04"
-                }
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
               }
-            ],
-            "first-release-date": "2001-05-07",
-            "id": "f1db7477-f8f1-4624-9d70-2df7753a3124",
-            "video": false,
-            "disambiguation": "",
-            "length": 229733
+            ]
           },
-          "number": "10",
           "length": 229733,
-          "position": 10,
+          "number": "10",
           "artist-credit": [
             {
               "artist": {
-                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
-                "disambiguation": "American rock band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Weezer",
                 "country": "US",
                 "type": "Group",
-                "name": "Weezer",
-                "sort-name": "Weezer",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                "id": "6fe07aa5-fec0-4eca-a456-f29bff451b04",
+                "disambiguation": "American rock band",
+                "sort-name": "Weezer"
               },
               "joinphrase": "",
               "name": "Weezer"
             }
-          ],
-          "id": "b830844a-fda2-4c77-ae3f-c760928ebe12",
-          "title": "O Girlfriend"
+          ]
         }
       ],
-      "id": "1f982571-137d-39fa-b6a7-558ff1b77588",
-      "track-offset": 0,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
       "position": 1,
       "title": "",
-      "format": "CD"
+      "id": "1f982571-137d-39fa-b6a7-558ff1b77588"
     }
   ],
-  "disambiguation": "green album",
-  "date": "2001-05-15",
-  "barcode": "606949304522",
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+  "title": "Weezer",
+  "quality": "normal",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "cover-art-archive": {
+    "front": true,
+    "back": true,
+    "darkened": false,
+    "count": 5,
+    "artwork": true
+  },
+  "country": "CA",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "packaging": "Jewel Case",
+  "barcode": "606949304522"
 }

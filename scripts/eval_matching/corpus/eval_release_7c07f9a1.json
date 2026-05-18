@@ -1,148 +1,33 @@
 {
-  "release-events": [
+  "quality": "normal",
+  "id": "7c07f9a1-381f-4c00-8d17-2acc537597f8",
+  "artist-credit": [
     {
-      "date": "2013-12-20",
-      "area": {
-        "type": null,
-        "name": "United States",
-        "disambiguation": "",
-        "iso-3166-1-codes": [
-          "US"
-        ],
-        "id": "489ce91b-6658-3307-9877-795b68554c98",
-        "type-id": null,
-        "sort-name": "United States"
-      }
-    }
-  ],
-  "cover-art-archive": {
-    "back": true,
-    "front": true,
-    "artwork": true,
-    "count": 5,
-    "darkened": false
-  },
-  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
-  "release-group": {
-    "primary-type": "Album",
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-    "secondary-type-ids": [],
-    "artist-credit": [
-      {
+      "artist": {
+        "sort-name": "Beyonc\u00e9",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
         "name": "Beyonc\u00e9",
-        "joinphrase": "",
-        "artist": {
-          "sort-name": "Beyonc\u00e9",
-          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-          "disambiguation": "",
-          "country": "US",
-          "type": "Person",
-          "name": "Beyonc\u00e9",
-          "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-        }
-      }
-    ],
-    "first-release-date": "2013-12-13",
-    "id": "8596171e-23b2-4bdd-8f1c-11960df0ecbe",
-    "secondary-types": [],
-    "title": "BEYONC\u00c9",
-    "disambiguation": ""
-  },
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
-  },
-  "label-info": [
-    {
-      "label": {
-        "sort-name": "Columbia",
-        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
-        "id": "011d1192-6f65-45bd-85c4-0400dd45693e",
-        "label-code": 162,
-        "disambiguation": "owned by Sony Music Entertainment, worldwide except JP; formerly owned by CBS between 1938\u20131990 within US/CA/MX",
-        "type": "Imprint",
-        "name": "Columbia"
+        "type": "Person",
+        "country": "US",
+        "disambiguation": ""
       },
-      "catalog-number": "88843032512"
-    },
-    {
-      "catalog-number": "88843032512",
-      "label": {
-        "type-id": "7aaa37fe-2def-3476-b359-80245850062d",
-        "sort-name": "Parkwood Entertainment",
-        "disambiguation": "",
-        "name": "Parkwood Entertainment",
-        "type": "Original Production",
-        "label-code": null,
-        "id": "31eb6796-abba-4a02-b650-a556aa65f9ae"
-      }
+      "name": "Beyonc\u00e9",
+      "joinphrase": ""
     }
   ],
-  "country": "US",
-  "packaging": "Jewel Case",
-  "title": "BEYONC\u00c9",
-  "status": "Official",
-  "barcode": "888430325128",
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-  "date": "2013-12-20",
   "asin": "B00HAA8URS",
-  "disambiguation": "explicit",
   "media": [
     {
-      "track-offset": 0,
       "id": "5c792d15-bb3a-3a5d-b8b6-6568c06deaf6",
-      "format": "CD",
+      "track-offset": 0,
       "title": "AUDIO",
       "position": 1,
+      "format": "CD",
       "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "track-count": 14,
       "tracks": [
         {
-          "title": "Pretty Hurts",
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "country": "US",
-                "disambiguation": "",
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "name": "Beyonc\u00e9",
-              "joinphrase": ""
-            }
-          ],
-          "id": "d6249a01-209a-4840-b5e4-fdf2b8e934ad",
-          "position": 1,
-          "number": "1",
-          "length": 257659,
-          "recording": {
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person"
-                },
-                "joinphrase": "",
-                "name": "Beyonc\u00e9"
-              }
-            ],
-            "id": "c036f796-95e4-474f-998e-8bd7955636bf",
-            "title": "Pretty Hurts",
-            "disambiguation": "",
-            "video": false,
-            "length": 257653
-          }
-        },
-        {
-          "title": "Haunted",
           "artist-credit": [
             {
               "name": "Beyonc\u00e9",
@@ -151,46 +36,132 @@
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "disambiguation": "",
-                "country": "US",
                 "name": "Beyonc\u00e9",
-                "type": "Person"
+                "type": "Person",
+                "disambiguation": "",
+                "country": "US"
               }
             }
           ],
-          "id": "2e6e4ec5-63ad-4785-b9e7-ba75dd7a27d4",
-          "position": 2,
-          "number": "2",
+          "id": "d6249a01-209a-4840-b5e4-fdf2b8e934ad",
+          "title": "Pretty Hurts",
+          "recording": {
+            "video": false,
+            "disambiguation": "",
+            "title": "Pretty Hurts",
+            "id": "c036f796-95e4-474f-998e-8bd7955636bf",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "disambiguation": "",
+                  "country": "US",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9"
+                },
+                "joinphrase": "",
+                "name": "Beyonc\u00e9"
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "length": 257653,
+            "isrcs": [
+              "USSM11307798"
+            ]
+          },
+          "number": "1",
+          "length": 257659,
+          "position": 1
+        },
+        {
           "length": 369033,
+          "number": "2",
+          "position": 2,
           "recording": {
             "length": 369033,
-            "video": false,
+            "isrcs": [
+              "USSM11307799"
+            ],
             "disambiguation": "explicit",
-            "title": "Haunted",
+            "video": false,
             "id": "8a545575-898b-45d0-98f3-8f0f1929fa8f",
+            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
                 "name": "Beyonc\u00e9",
                 "joinphrase": "",
                 "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
                   "name": "Beyonc\u00e9",
                   "type": "Person",
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                  "disambiguation": "",
+                  "country": "US"
                 }
               }
             ],
-            "first-release-date": "2013-12-13"
-          }
+            "title": "Haunted"
+          },
+          "id": "2e6e4ec5-63ad-4785-b9e7-ba75dd7a27d4",
+          "artist-credit": [
+            {
+              "name": "Beyonc\u00e9",
+              "joinphrase": "",
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "disambiguation": "",
+                "country": "US",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9"
+              }
+            }
+          ],
+          "title": "Haunted"
         },
         {
+          "title": "Drunk in Love",
+          "id": "b9a2b54c-03c5-4a0d-8f20-3fec77b31b16",
+          "artist-credit": [
+            {
+              "name": "Beyonc\u00e9",
+              "joinphrase": " featuring ",
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            },
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US rapper",
+                "name": "JAY\u2010Z",
+                "type": "Person",
+                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                "sort-name": "JAY\u2010Z",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "JAY Z",
+              "joinphrase": ""
+            }
+          ],
+          "position": 3,
+          "length": 323486,
+          "number": "3",
           "recording": {
+            "isrcs": [
+              "USSM11307800"
+            ],
             "length": 323486,
-            "disambiguation": "explicit",
-            "video": false,
             "artist-credit": [
               {
                 "artist": {
@@ -207,90 +178,207 @@
               },
               {
                 "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "JAY\u2010Z",
-                  "type": "Person",
-                  "name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "country": "US",
                   "disambiguation": "US rapper",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
                   "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac"
                 },
-                "name": "JAY Z",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "JAY Z"
               }
             ],
             "first-release-date": "2013-12-13",
             "id": "82418990-d1c2-4556-a826-9bccf5e9cd03",
-            "title": "Drunk in Love"
+            "title": "Drunk in Love",
+            "disambiguation": "explicit",
+            "video": false
+          }
+        },
+        {
+          "recording": {
+            "length": 309720,
+            "isrcs": [
+              "USSM11307801"
+            ],
+            "id": "2c502dbd-abe9-4cdb-a950-2083a19623e7",
+            "artist-credit": [
+              {
+                "artist": {
+                  "disambiguation": "",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "title": "Blow",
+            "disambiguation": "",
+            "video": false
           },
-          "position": 3,
-          "length": 323486,
-          "number": "3",
-          "title": "Drunk in Love",
-          "id": "b9a2b54c-03c5-4a0d-8f20-3fec77b31b16",
+          "position": 4,
+          "number": "4",
+          "length": 309727,
+          "title": "Blow",
           "artist-credit": [
             {
+              "joinphrase": "",
+              "name": "Beyonc\u00e9",
               "artist": {
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type": "Person",
                 "name": "Beyonc\u00e9",
-                "type": "Person",
-                "disambiguation": "",
-                "country": "US"
-              },
-              "joinphrase": " featuring ",
-              "name": "Beyonc\u00e9"
-            },
-            {
-              "joinphrase": "",
-              "name": "JAY Z",
-              "artist": {
-                "sort-name": "JAY\u2010Z",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
                 "country": "US",
-                "disambiguation": "US rapper",
-                "type": "Person",
-                "name": "JAY\u2010Z"
+                "disambiguation": "",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
               }
             }
-          ]
+          ],
+          "id": "ebcd62c1-eace-420d-86b9-178511e87694"
         },
         {
-          "number": "4",
-          "length": 309727,
-          "position": 4,
           "recording": {
-            "video": false,
             "disambiguation": "",
-            "title": "Blow",
-            "id": "2c502dbd-abe9-4cdb-a950-2083a19623e7",
+            "video": false,
+            "id": "ee446a97-635b-499d-ad35-bd729337cc83",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "country": "US",
+                  "disambiguation": "",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Beyonc\u00e9"
+              }
+            ],
+            "title": "No Angel",
+            "length": 228687,
+            "isrcs": [
+              "USSM11307802"
+            ]
+          },
+          "number": "5",
+          "length": 228687,
+          "position": 5,
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "country": "US",
+                "disambiguation": "",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9"
+              },
+              "joinphrase": "",
+              "name": "Beyonc\u00e9"
+            }
+          ],
+          "id": "774951e6-5c90-4dab-98f5-1a6ce959fd6c",
+          "title": "No Angel"
+        },
+        {
+          "title": "Partition",
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "country": "US",
+                "disambiguation": "",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              },
+              "joinphrase": "",
+              "name": "Beyonc\u00e9"
+            }
+          ],
+          "id": "2bb9cf5a-ac34-4f91-8cba-bfc6135bd7d8",
+          "position": 6,
+          "number": "6",
+          "length": 319466,
+          "recording": {
+            "title": "Partition",
+            "id": "db5082ae-a55d-4b91-9e22-130101a5becb",
             "artist-credit": [
               {
                 "joinphrase": "",
                 "name": "Beyonc\u00e9",
                 "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
                   "country": "US",
                   "disambiguation": "",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
                 }
               }
             ],
             "first-release-date": "2013-12-13",
-            "length": 309720
+            "video": false,
+            "disambiguation": "explicit",
+            "length": 319466,
+            "isrcs": [
+              "USSM11307803"
+            ]
+          }
+        },
+        {
+          "position": 7,
+          "number": "7",
+          "length": 184008,
+          "recording": {
+            "video": false,
+            "disambiguation": "",
+            "title": "Jealous",
+            "id": "a8601c16-b111-42d3-b041-eaaea31f2191",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "country": "US",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": ""
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "length": 184008,
+            "isrcs": [
+              "USSM11307804"
+            ]
           },
+          "title": "Jealous",
           "artist-credit": [
             {
               "artist": {
-                "country": "US",
                 "disambiguation": "",
-                "type": "Person",
+                "country": "US",
                 "name": "Beyonc\u00e9",
+                "type": "Person",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
@@ -299,407 +387,253 @@
               "joinphrase": ""
             }
           ],
-          "id": "ebcd62c1-eace-420d-86b9-178511e87694",
-          "title": "Blow"
+          "id": "933df9cc-fae0-4b15-a1fb-821031e34be3"
         },
         {
-          "position": 5,
-          "length": 228687,
-          "number": "5",
-          "recording": {
-            "disambiguation": "",
-            "video": false,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Beyonc\u00e9",
-                "artist": {
-                  "country": "US",
-                  "disambiguation": "",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                }
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "id": "ee446a97-635b-499d-ad35-bd729337cc83",
-            "title": "No Angel",
-            "length": 228687
-          },
-          "title": "No Angel",
-          "id": "774951e6-5c90-4dab-98f5-1a6ce959fd6c",
-          "artist-credit": [
-            {
-              "name": "Beyonc\u00e9",
-              "joinphrase": "",
-              "artist": {
-                "country": "US",
-                "disambiguation": "",
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9"
-              }
-            }
-          ]
-        },
-        {
-          "recording": {
-            "video": false,
-            "disambiguation": "explicit",
-            "title": "Partition",
-            "id": "db5082ae-a55d-4b91-9e22-130101a5becb",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "disambiguation": "",
-                  "country": "US",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "length": 319466
-          },
-          "position": 6,
-          "length": 319466,
-          "number": "6",
-          "title": "Partition",
-          "id": "2bb9cf5a-ac34-4f91-8cba-bfc6135bd7d8",
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "disambiguation": "",
-                "country": "US"
-              },
-              "joinphrase": "",
-              "name": "Beyonc\u00e9"
-            }
-          ]
-        },
-        {
-          "length": 184008,
-          "number": "7",
-          "position": 7,
-          "recording": {
-            "length": 184008,
-            "disambiguation": "",
-            "video": false,
-            "id": "a8601c16-b111-42d3-b041-eaaea31f2191",
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "disambiguation": "",
-                  "country": "US",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9"
-                },
-                "joinphrase": "",
-                "name": "Beyonc\u00e9"
-              }
-            ],
-            "title": "Jealous"
-          },
-          "id": "933df9cc-fae0-4b15-a1fb-821031e34be3",
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "disambiguation": "",
-                "country": "US"
-              },
-              "joinphrase": "",
-              "name": "Beyonc\u00e9"
-            }
-          ],
-          "title": "Jealous"
-        },
-        {
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Beyonc\u00e9",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "country": "US",
-                "disambiguation": "",
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-              }
-            }
-          ],
           "id": "2fc9c6c9-8159-4c91-bffa-b7d51d131c6d",
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "disambiguation": "",
+                "country": "US",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "name": "Beyonc\u00e9",
+              "joinphrase": ""
+            }
+          ],
           "title": "Rocket",
           "recording": {
+            "length": 391907,
+            "isrcs": [
+              "USSM11307805"
+            ],
+            "disambiguation": "explicit",
+            "video": false,
             "id": "45288395-e9a0-43e9-a783-a4627bd33740",
             "artist-credit": [
               {
                 "artist": {
                   "sort-name": "Beyonc\u00e9",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9"
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "title": "Rocket",
-            "disambiguation": "explicit",
-            "video": false,
-            "length": 391907
-          },
-          "number": "8",
-          "length": 391909,
-          "position": 8
-        },
-        {
-          "title": "Mine",
-          "id": "9f71df43-b987-462a-80a7-d032a8ddab00",
-          "artist-credit": [
-            {
-              "artist": {
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "disambiguation": "",
-                "country": "US",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "joinphrase": " featuring ",
-              "name": "Beyonc\u00e9"
-            },
-            {
-              "name": "Drake",
-              "joinphrase": "",
-              "artist": {
-                "disambiguation": "Canadian rapper",
-                "country": "CA",
-                "type": "Person",
-                "name": "Drake",
-                "id": "9fff2f8a-21e6-47de-a2b8-7f449929d43f",
-                "sort-name": "Drake",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              }
-            }
-          ],
-          "recording": {
-            "disambiguation": "explicit",
-            "video": false,
-            "artist-credit": [
-              {
-                "name": "Beyonc\u00e9",
-                "joinphrase": " featuring ",
-                "artist": {
-                  "disambiguation": "",
-                  "country": "US",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                }
-              },
-              {
-                "joinphrase": "",
-                "name": "Drake",
-                "artist": {
-                  "sort-name": "Drake",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "name": "Drake",
-                  "type": "Person",
-                  "country": "CA",
-                  "disambiguation": "Canadian rapper",
-                  "id": "9fff2f8a-21e6-47de-a2b8-7f449929d43f"
-                }
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "id": "09a438dd-fd68-4cf4-b4e6-9cf51fc23e8f",
-            "title": "Mine",
-            "length": 378600
-          },
-          "position": 9,
-          "length": 378609,
-          "number": "9"
-        },
-        {
-          "recording": {
-            "video": false,
-            "disambiguation": "",
-            "title": "XO",
-            "id": "d6aba709-74bd-43ae-b01c-3169c3668acd",
-            "artist-credit": [
-              {
-                "artist": {
                   "name": "Beyonc\u00e9",
                   "type": "Person",
                   "disambiguation": "",
                   "country": "US",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
                 },
                 "joinphrase": "",
                 "name": "Beyonc\u00e9"
               }
             ],
             "first-release-date": "2013-12-13",
-            "length": 215947
+            "title": "Rocket"
           },
-          "number": "10",
+          "length": 391909,
+          "number": "8",
+          "position": 8
+        },
+        {
+          "recording": {
+            "isrcs": [
+              "USSM11307806"
+            ],
+            "length": 378600,
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": " featuring "
+              },
+              {
+                "joinphrase": "",
+                "name": "Drake",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Drake",
+                  "id": "9fff2f8a-21e6-47de-a2b8-7f449929d43f",
+                  "name": "Drake",
+                  "type": "Person",
+                  "country": "CA",
+                  "disambiguation": "Canadian rapper"
+                }
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "id": "09a438dd-fd68-4cf4-b4e6-9cf51fc23e8f",
+            "title": "Mine",
+            "disambiguation": "explicit",
+            "video": false
+          },
+          "length": 378609,
+          "number": "9",
+          "position": 9,
+          "id": "9f71df43-b987-462a-80a7-d032a8ddab00",
+          "artist-credit": [
+            {
+              "name": "Beyonc\u00e9",
+              "joinphrase": " featuring ",
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "disambiguation": "",
+                "country": "US",
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              }
+            },
+            {
+              "joinphrase": "",
+              "name": "Drake",
+              "artist": {
+                "sort-name": "Drake",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "9fff2f8a-21e6-47de-a2b8-7f449929d43f",
+                "disambiguation": "Canadian rapper",
+                "country": "CA",
+                "name": "Drake",
+                "type": "Person"
+              }
+            }
+          ],
+          "title": "Mine"
+        },
+        {
           "length": 215947,
+          "number": "10",
           "position": 10,
+          "recording": {
+            "length": 215947,
+            "isrcs": [
+              "USSM11307807"
+            ],
+            "id": "d6aba709-74bd-43ae-b01c-3169c3668acd",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                },
+                "joinphrase": "",
+                "name": "Beyonc\u00e9"
+              }
+            ],
+            "title": "XO",
+            "disambiguation": "",
+            "video": false
+          },
+          "id": "cc07cae1-57f2-4a1b-a5a1-617a6b960b77",
           "artist-credit": [
             {
               "name": "Beyonc\u00e9",
               "joinphrase": "",
               "artist": {
-                "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "disambiguation": "",
-                "country": "US",
                 "name": "Beyonc\u00e9",
-                "type": "Person"
+                "type": "Person",
+                "disambiguation": "",
+                "country": "US"
               }
             }
           ],
-          "id": "cc07cae1-57f2-4a1b-a5a1-617a6b960b77",
           "title": "XO"
         },
         {
+          "artist-credit": [
+            {
+              "joinphrase": " featuring ",
+              "name": "Beyonc\u00e9",
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "disambiguation": "",
+                "country": "US",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9"
+              }
+            },
+            {
+              "joinphrase": "",
+              "name": "Chimamanda Ngozi Adichie",
+              "artist": {
+                "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
+                "name": "Chimamanda Ngozi Adichie",
+                "type": "Person",
+                "disambiguation": "",
+                "country": "NG",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Adichie, Chimamanda Ngozi"
+              }
+            }
+          ],
+          "id": "d67e0fb9-1884-4f74-8cda-d0ab44a02e17",
+          "title": "***Flawless",
           "number": "11",
           "length": 250951,
           "position": 11,
           "recording": {
-            "disambiguation": "explicit",
             "video": false,
+            "disambiguation": "explicit",
+            "title": "***Flawless",
+            "id": "22d404f8-3229-41d3-bbd8-fd0661332fb9",
+            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
                 "artist": {
                   "sort-name": "Beyonc\u00e9",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
                   "disambiguation": "",
-                  "country": "US"
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9"
                 },
                 "name": "Beyonc\u00e9",
                 "joinphrase": " featuring "
               },
               {
                 "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Adichie, Chimamanda Ngozi",
+                  "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
                   "type": "Person",
                   "name": "Chimamanda Ngozi Adichie",
                   "disambiguation": "",
-                  "country": "NG",
-                  "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
-                  "sort-name": "Adichie, Chimamanda Ngozi",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                  "country": "NG"
                 },
-                "joinphrase": "",
-                "name": "Chimamanda Ngozi Adichie"
+                "name": "Chimamanda Ngozi Adichie",
+                "joinphrase": ""
               }
             ],
-            "first-release-date": "2013-12-13",
-            "id": "22d404f8-3229-41d3-bbd8-fd0661332fb9",
-            "title": "***Flawless",
-            "length": 250951
-          },
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "country": "US",
-                "disambiguation": "",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9"
-              },
-              "joinphrase": " featuring ",
-              "name": "Beyonc\u00e9"
-            },
-            {
-              "artist": {
-                "name": "Chimamanda Ngozi Adichie",
-                "type": "Person",
-                "disambiguation": "",
-                "country": "NG",
-                "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
-                "sort-name": "Adichie, Chimamanda Ngozi",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "name": "Chimamanda Ngozi Adichie",
-              "joinphrase": ""
-            }
-          ],
-          "id": "d67e0fb9-1884-4f74-8cda-d0ab44a02e17",
-          "title": "***Flawless"
+            "length": 250951,
+            "isrcs": [
+              "USSM11307808"
+            ]
+          }
         },
         {
-          "title": "Superpower",
-          "artist-credit": [
-            {
-              "name": "Beyonc\u00e9",
-              "joinphrase": " featuring ",
-              "artist": {
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "country": "US",
-                "disambiguation": "",
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-              }
-            },
-            {
-              "joinphrase": "",
-              "name": "Frank Ocean",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Ocean, Frank",
-                "country": "US",
-                "disambiguation": "",
-                "type": "Person",
-                "name": "Frank Ocean",
-                "id": "e520459c-dff4-491d-a6e4-c97be35e0044"
-              }
-            }
-          ],
-          "id": "abbad310-6de4-4e36-a47e-8b0b7d2afa36",
           "position": 12,
           "number": "12",
           "length": 276569,
@@ -712,339 +646,75 @@
                 "name": "Beyonc\u00e9",
                 "joinphrase": " featuring ",
                 "artist": {
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "disambiguation": "",
+                  "country": "US",
                   "type": "Person",
                   "name": "Beyonc\u00e9",
-                  "disambiguation": "",
-                  "country": "US"
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9"
                 }
               },
               {
-                "name": "Frank Ocean",
-                "joinphrase": "",
                 "artist": {
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Ocean, Frank",
-                  "disambiguation": "",
                   "country": "US",
-                  "name": "Frank Ocean",
+                  "disambiguation": "",
                   "type": "Person",
+                  "name": "Frank Ocean",
                   "id": "e520459c-dff4-491d-a6e4-c97be35e0044"
-                }
+                },
+                "name": "Frank Ocean",
+                "joinphrase": ""
               }
             ],
             "first-release-date": "2013-12-13",
             "title": "Superpower",
-            "length": 276560
-          }
-        },
-        {
-          "recording": {
-            "length": 230881,
-            "video": false,
-            "disambiguation": "",
-            "title": "Heaven",
-            "id": "176ac145-619b-4f00-a726-558dc126e396",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Beyonc\u00e9",
-                "artist": {
-                  "disambiguation": "",
-                  "country": "US",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                }
-              }
-            ],
-            "first-release-date": "2013-12-13"
+            "length": 276560,
+            "isrcs": [
+              "USSM11307809"
+            ]
           },
-          "position": 13,
-          "number": "13",
-          "length": 230881,
-          "title": "Heaven",
+          "title": "Superpower",
           "artist-credit": [
             {
-              "artist": {
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "disambiguation": "",
-                "country": "US"
-              },
-              "joinphrase": "",
-              "name": "Beyonc\u00e9"
-            }
-          ],
-          "id": "0b369d80-f620-4338-b2f9-14e318cf54bf"
-        },
-        {
-          "id": "5814565b-b08d-4cde-bbdc-d6cb1c03d757",
-          "artist-credit": [
-            {
-              "name": "Beyonc\u00e9",
               "joinphrase": " featuring ",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "disambiguation": "",
-                "country": "US",
-                "name": "Beyonc\u00e9",
-                "type": "Person"
-              }
-            },
-            {
-              "name": "Blue Ivy",
-              "joinphrase": "",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Carter, Blue Ivy",
-                "type": "Person",
-                "name": "Blue Ivy Carter",
-                "disambiguation": "Beyonc\u00e9 & Jay-Z\u2019s daughter",
-                "country": "US",
-                "id": "159ed9dd-c41a-4552-9197-296eae04c6d7"
-              }
-            }
-          ],
-          "title": "Blue",
-          "recording": {
-            "length": 266920,
-            "id": "94673629-547d-4e20-90e5-87ed5c699e81",
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "disambiguation": "",
-                  "country": "US",
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "joinphrase": " featuring ",
-                "name": "Beyonc\u00e9"
-              },
-              {
-                "artist": {
-                  "sort-name": "Carter, Blue Ivy",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "159ed9dd-c41a-4552-9197-296eae04c6d7",
-                  "disambiguation": "Beyonc\u00e9 & Jay-Z\u2019s daughter",
-                  "country": "US",
-                  "name": "Blue Ivy Carter",
-                  "type": "Person"
-                },
-                "joinphrase": "",
-                "name": "Blue Ivy"
-              }
-            ],
-            "title": "Blue",
-            "disambiguation": "",
-            "video": false
-          },
-          "length": 266920,
-          "number": "14",
-          "position": 14
-        }
-      ],
-      "track-count": 14
-    },
-    {
-      "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
-      "tracks": [
-        {
-          "number": "1",
-          "length": 425000,
-          "position": 1,
-          "recording": {
-            "length": 424809,
-            "disambiguation": "",
-            "video": true,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Beyonc\u00e9",
-                "artist": {
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "disambiguation": "",
-                  "country": "US",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                }
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "id": "f8e24a0e-8d2a-4b08-acbe-696c9a17056f",
-            "title": "Pretty Hurts"
-          },
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "disambiguation": "",
-                "country": "US",
-                "name": "Beyonc\u00e9",
-                "type": "Person"
-              },
-              "name": "Beyonc\u00e9",
-              "joinphrase": ""
-            }
-          ],
-          "id": "dba99248-1261-4e69-998c-c98197061268",
-          "title": "Pretty Hurts"
-        },
-        {
-          "title": "Ghost",
-          "artist-credit": [
-            {
-              "joinphrase": "",
               "name": "Beyonc\u00e9",
               "artist": {
-                "type": "Person",
-                "name": "Beyonc\u00e9",
                 "disambiguation": "",
                 "country": "US",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Beyonc\u00e9"
               }
-            }
-          ],
-          "id": "e619643e-8d84-489f-b0ac-2040add30b41",
-          "recording": {
-            "length": 151818,
-            "video": true,
-            "disambiguation": "explicit",
-            "title": "Ghost",
-            "id": "c8e87dc3-05cf-48bb-b40f-97c32d8cb0ad",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "disambiguation": "",
-                  "country": "US",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2013-12-13"
-          },
-          "position": 2,
-          "number": "2",
-          "length": 152000
-        },
-        {
-          "recording": {
-            "length": 321000,
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9"
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": ""
-              }
-            ],
-            "id": "158fe696-8515-4732-9729-0b65f4e4a445",
-            "title": "Haunted",
-            "disambiguation": "",
-            "video": true
-          },
-          "number": "3",
-          "length": 321000,
-          "position": 3,
-          "artist-credit": [
+            },
             {
+              "name": "Frank Ocean",
               "joinphrase": "",
-              "name": "Beyonc\u00e9",
               "artist": {
-                "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "name": "Beyonc\u00e9",
-                "type": "Person",
+                "sort-name": "Ocean, Frank",
+                "id": "e520459c-dff4-491d-a6e4-c97be35e0044",
+                "country": "US",
                 "disambiguation": "",
-                "country": "US"
+                "type": "Person",
+                "name": "Frank Ocean"
               }
             }
           ],
-          "id": "96cfe0e6-a83d-40a3-b69d-05abca2bbb0d",
-          "title": "Haunted"
+          "id": "abbad310-6de4-4e36-a47e-8b0b7d2afa36"
         },
         {
-          "recording": {
-            "title": "Drunk in Love",
-            "id": "afafdd5f-a07b-4566-b9b6-13eae651e66c",
-            "artist-credit": [
-              {
-                "name": "Beyonc\u00e9",
-                "joinphrase": " featuring ",
-                "artist": {
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
-                  "disambiguation": "",
-                  "country": "US",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                }
-              },
-              {
-                "artist": {
-                  "country": "US",
-                  "disambiguation": "US rapper",
-                  "type": "Person",
-                  "name": "JAY\u2010Z",
-                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
-                  "sort-name": "JAY\u2010Z",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "name": "JAY Z",
-                "joinphrase": ""
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "video": true,
-            "disambiguation": "explicit",
-            "length": 381000
-          },
-          "position": 4,
-          "number": "4",
-          "length": 381000,
-          "title": "Drunk in Love",
           "artist-credit": [
             {
               "artist": {
-                "name": "Beyonc\u00e9",
-                "type": "Person",
                 "disambiguation": "",
                 "country": "US",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
@@ -1053,30 +723,348 @@
               "joinphrase": ""
             }
           ],
-          "id": "24e986ab-2f0d-4e69-a195-defae2f5014a"
+          "id": "0b369d80-f620-4338-b2f9-14e318cf54bf",
+          "title": "Heaven",
+          "recording": {
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": ""
+              }
+            ],
+            "id": "176ac145-619b-4f00-a726-558dc126e396",
+            "title": "Heaven",
+            "disambiguation": "",
+            "video": false,
+            "isrcs": [
+              "USSM11307810"
+            ],
+            "length": 230881
+          },
+          "number": "13",
+          "length": 230881,
+          "position": 13
         },
         {
+          "title": "Blue",
+          "id": "5814565b-b08d-4cde-bbdc-d6cb1c03d757",
+          "artist-credit": [
+            {
+              "name": "Beyonc\u00e9",
+              "joinphrase": " featuring ",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9",
+                "country": "US",
+                "disambiguation": "",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              }
+            },
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Carter, Blue Ivy",
+                "type": "Person",
+                "name": "Blue Ivy Carter",
+                "country": "US",
+                "disambiguation": "Beyonc\u00e9 & Jay-Z\u2019s daughter",
+                "id": "159ed9dd-c41a-4552-9197-296eae04c6d7"
+              },
+              "joinphrase": "",
+              "name": "Blue Ivy"
+            }
+          ],
           "recording": {
-            "video": true,
+            "isrcs": [
+              "USSM11307811"
+            ],
+            "length": 266920,
+            "video": false,
             "disambiguation": "",
-            "title": "Blow",
-            "id": "7e37367b-7c05-4209-95fd-bf993e4e7567",
+            "title": "Blue",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "joinphrase": " featuring ",
+                "name": "Beyonc\u00e9",
+                "artist": {
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              },
+              {
+                "name": "Blue Ivy",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Carter, Blue Ivy",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "159ed9dd-c41a-4552-9197-296eae04c6d7",
+                  "country": "US",
+                  "disambiguation": "Beyonc\u00e9 & Jay-Z\u2019s daughter",
+                  "name": "Blue Ivy Carter",
+                  "type": "Person"
+                }
+              }
+            ],
+            "id": "94673629-547d-4e20-90e5-87ed5c699e81"
+          },
+          "position": 14,
+          "length": 266920,
+          "number": "14"
+        }
+      ]
+    },
+    {
+      "format-id": "bb71fd58-ff93-32b4-a201-4ad1b2a80e5f",
+      "track-count": 18,
+      "tracks": [
+        {
+          "recording": {
+            "length": 424809,
+            "isrcs": [
+              "USSM21302425"
+            ],
+            "id": "f8e24a0e-8d2a-4b08-acbe-696c9a17056f",
+            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
                 "name": "Beyonc\u00e9",
                 "joinphrase": "",
                 "artist": {
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
                   "disambiguation": "",
                   "country": "US",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              }
+            ],
+            "title": "Pretty Hurts",
+            "disambiguation": "",
+            "video": true
+          },
+          "position": 1,
+          "number": "1",
+          "length": 425000,
+          "title": "Pretty Hurts",
+          "artist-credit": [
+            {
+              "name": "Beyonc\u00e9",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "country": "US",
+                "disambiguation": "",
+                "name": "Beyonc\u00e9",
+                "type": "Person"
+              }
+            }
+          ],
+          "id": "dba99248-1261-4e69-998c-c98197061268"
+        },
+        {
+          "recording": {
+            "title": "Ghost",
+            "id": "c8e87dc3-05cf-48bb-b40f-97c32d8cb0ad",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "country": "US",
+                  "disambiguation": ""
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": ""
+              }
+            ],
+            "video": true,
+            "disambiguation": "explicit",
+            "length": 151818,
+            "isrcs": [
+              "USSM21302426"
+            ]
+          },
+          "number": "2",
+          "length": 152000,
+          "position": 2,
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "disambiguation": "",
+                "country": "US",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              },
+              "name": "Beyonc\u00e9",
+              "joinphrase": ""
+            }
+          ],
+          "id": "e619643e-8d84-489f-b0ac-2040add30b41",
+          "title": "Ghost"
+        },
+        {
+          "title": "Haunted",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Beyonc\u00e9",
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "country": "US",
+                "disambiguation": ""
+              }
+            }
+          ],
+          "id": "96cfe0e6-a83d-40a3-b69d-05abca2bbb0d",
+          "recording": {
+            "title": "Haunted",
+            "id": "158fe696-8515-4732-9729-0b65f4e4a445",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Beyonc\u00e9",
+                "artist": {
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "disambiguation": "",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                }
+              }
+            ],
+            "video": true,
+            "disambiguation": "",
+            "length": 321000,
+            "isrcs": [
+              "USSM21302427"
+            ]
+          },
+          "position": 3,
+          "number": "3",
+          "length": 321000
+        },
+        {
+          "title": "Drunk in Love",
+          "id": "24e986ab-2f0d-4e69-a195-defae2f5014a",
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "country": "US",
+                "disambiguation": ""
+              },
+              "name": "Beyonc\u00e9",
+              "joinphrase": ""
+            }
+          ],
+          "position": 4,
+          "length": 381000,
+          "number": "4",
+          "recording": {
+            "title": "Drunk in Love",
+            "id": "afafdd5f-a07b-4566-b9b6-13eae651e66c",
+            "artist-credit": [
+              {
+                "artist": {
                   "name": "Beyonc\u00e9",
                   "type": "Person",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Beyonc\u00e9"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": " featuring "
+              },
+              {
+                "joinphrase": "",
+                "name": "JAY Z",
+                "artist": {
+                  "sort-name": "JAY\u2010Z",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "f82bcf78-5b69-4622-a5ef-73800768d9ac",
+                  "name": "JAY\u2010Z",
+                  "type": "Person",
+                  "country": "US",
+                  "disambiguation": "US rapper"
                 }
               }
             ],
             "first-release-date": "2013-12-13",
+            "video": true,
+            "disambiguation": "explicit",
+            "length": 381000,
+            "isrcs": [
+              "USSM21302428"
+            ]
+          }
+        },
+        {
+          "recording": {
+            "video": true,
+            "disambiguation": "",
+            "title": "Blow",
+            "artist-credit": [
+              {
+                "name": "Beyonc\u00e9",
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "disambiguation": "",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9"
+                }
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "id": "7e37367b-7c05-4209-95fd-bf993e4e7567",
+            "isrcs": [
+              "USSM21302429"
+            ],
             "length": 325706
           },
           "length": 326000,
@@ -1086,13 +1074,13 @@
           "artist-credit": [
             {
               "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "country": "US",
                 "disambiguation": "",
                 "type": "Person",
-                "name": "Beyonc\u00e9"
+                "name": "Beyonc\u00e9",
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
               "joinphrase": "",
               "name": "Beyonc\u00e9"
@@ -1101,19 +1089,117 @@
           "title": "Blow"
         },
         {
+          "title": "No Angel",
+          "id": "4b37d796-52d4-4fdd-abd5-92cb2ab70cb1",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Beyonc\u00e9",
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "country": "US",
+                "disambiguation": "",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              }
+            }
+          ],
+          "position": 6,
           "length": 233000,
           "number": "6",
-          "position": 6,
           "recording": {
-            "disambiguation": "",
+            "title": "No Angel",
+            "id": "a4c318b8-991b-4ff4-96dd-107c7bdfdce2",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Beyonc\u00e9",
+                "artist": {
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9"
+                }
+              }
+            ],
             "video": true,
+            "disambiguation": "",
+            "length": 233000,
+            "isrcs": [
+              "USSM21302430"
+            ]
+          }
+        },
+        {
+          "title": "Yonc\u00e9",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Beyonc\u00e9",
+              "artist": {
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "disambiguation": "",
+                "country": "US",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9"
+              }
+            }
+          ],
+          "id": "c453356e-83d4-449e-95fd-3463ea39d5e1",
+          "position": 7,
+          "number": "7",
+          "length": 123000,
+          "recording": {
+            "length": 122793,
+            "isrcs": [
+              "USSM21302431"
+            ],
+            "title": "Yonc\u00e9",
+            "id": "1fe10699-5b39-40d6-915a-0663a6c959c8",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "name": "Beyonc\u00e9",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                }
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "video": true,
+            "disambiguation": ""
+          }
+        },
+        {
+          "number": "8",
+          "length": 229000,
+          "position": 8,
+          "recording": {
+            "isrcs": [
+              "USSM21302432"
+            ],
+            "length": 229000,
             "artist-credit": [
               {
                 "artist": {
                   "name": "Beyonc\u00e9",
                   "type": "Person",
-                  "disambiguation": "",
                   "country": "US",
+                  "disambiguation": "",
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                   "sort-name": "Beyonc\u00e9",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
@@ -1123,108 +1209,19 @@
               }
             ],
             "first-release-date": "2013-12-13",
-            "id": "a4c318b8-991b-4ff4-96dd-107c7bdfdce2",
-            "title": "No Angel",
-            "length": 233000
-          },
-          "id": "4b37d796-52d4-4fdd-abd5-92cb2ab70cb1",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Beyonc\u00e9",
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "country": "US",
-                "disambiguation": "",
-                "name": "Beyonc\u00e9",
-                "type": "Person"
-              }
-            }
-          ],
-          "title": "No Angel"
-        },
-        {
-          "recording": {
-            "length": 122793,
-            "id": "1fe10699-5b39-40d6-915a-0663a6c959c8",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "country": "US",
-                  "disambiguation": "",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                },
-                "joinphrase": "",
-                "name": "Beyonc\u00e9"
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "title": "Yonc\u00e9",
-            "disambiguation": "",
+            "id": "c80a3cde-a26a-409a-841b-33df099df0d8",
+            "title": "Partition",
+            "disambiguation": "explicit",
             "video": true
           },
-          "position": 7,
-          "number": "7",
-          "length": 123000,
-          "title": "Yonc\u00e9",
           "artist-credit": [
             {
               "artist": {
                 "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "country": "US",
-                "disambiguation": "",
                 "type": "Person",
                 "name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9"
-              },
-              "joinphrase": "",
-              "name": "Beyonc\u00e9"
-            }
-          ],
-          "id": "c453356e-83d4-449e-95fd-3463ea39d5e1"
-        },
-        {
-          "recording": {
-            "disambiguation": "explicit",
-            "video": true,
-            "id": "c80a3cde-a26a-409a-841b-33df099df0d8",
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "country": "US",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                },
-                "joinphrase": "",
-                "name": "Beyonc\u00e9"
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "title": "Partition",
-            "length": 229000
-          },
-          "number": "8",
-          "length": 229000,
-          "position": 8,
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "disambiguation": "",
                 "country": "US",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "disambiguation": "",
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
@@ -1236,98 +1233,107 @@
           "title": "Partition"
         },
         {
-          "length": 206000,
-          "number": "9",
           "position": 9,
+          "number": "9",
+          "length": 206000,
           "recording": {
+            "isrcs": [
+              "USSM21302433"
+            ],
+            "length": 206000,
             "title": "Jealous",
-            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
+                "joinphrase": "",
+                "name": "Beyonc\u00e9",
                 "artist": {
-                  "sort-name": "Beyonc\u00e9",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "sort-name": "Beyonc\u00e9",
                   "name": "Beyonc\u00e9",
                   "type": "Person",
                   "country": "US",
-                  "disambiguation": ""
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": ""
+                  "disambiguation": "",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                }
               }
             ],
+            "first-release-date": "2013-12-13",
             "id": "c5646d63-21e9-41fc-839d-114493fb2457",
             "video": true,
-            "disambiguation": "",
-            "length": 206000
+            "disambiguation": ""
           },
-          "id": "69cded20-a036-4590-a45a-3d95319498f3",
+          "title": "Jealous",
           "artist-credit": [
             {
               "artist": {
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "type": "Person",
                 "name": "Beyonc\u00e9",
                 "country": "US",
-                "disambiguation": "",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                "disambiguation": ""
               },
               "name": "Beyonc\u00e9",
               "joinphrase": ""
             }
           ],
-          "title": "Jealous"
+          "id": "69cded20-a036-4590-a45a-3d95319498f3"
         },
         {
-          "recording": {
-            "video": true,
-            "disambiguation": "explicit",
-            "title": "Rocket",
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "name": "Beyonc\u00e9",
-                "joinphrase": "",
-                "artist": {
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
-                  "disambiguation": "",
-                  "country": "US",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                }
-              }
-            ],
-            "id": "9e386d1f-ae72-4ac0-9e79-0dff581531cc",
-            "length": 270000
-          },
-          "position": 10,
-          "length": 271000,
-          "number": "10",
-          "title": "Rocket",
           "id": "3cf6d716-f79c-4a2c-a544-147bd105e8e7",
           "artist-credit": [
             {
               "joinphrase": "",
               "name": "Beyonc\u00e9",
               "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "disambiguation": "",
                 "country": "US",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               }
             }
-          ]
+          ],
+          "title": "Rocket",
+          "length": 271000,
+          "number": "10",
+          "position": 10,
+          "recording": {
+            "disambiguation": "explicit",
+            "video": true,
+            "id": "9e386d1f-ae72-4ac0-9e79-0dff581531cc",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "disambiguation": "",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                },
+                "joinphrase": "",
+                "name": "Beyonc\u00e9"
+              }
+            ],
+            "first-release-date": "2013-12-13",
+            "title": "Rocket",
+            "length": 270000,
+            "isrcs": [
+              "USSM21302434"
+            ]
+          }
         },
         {
           "recording": {
             "length": 299000,
+            "isrcs": [
+              "USSM21302435"
+            ],
             "disambiguation": "explicit",
             "video": true,
             "id": "a1ac846d-bb44-49f2-b497-98d1ec27bce9",
@@ -1335,25 +1341,25 @@
               {
                 "artist": {
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
                   "country": "US",
                   "disambiguation": "",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Beyonc\u00e9"
                 },
-                "name": "Beyonc\u00e9",
-                "joinphrase": " featuring "
+                "joinphrase": " featuring ",
+                "name": "Beyonc\u00e9"
               },
               {
                 "artist": {
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Drake",
                   "id": "9fff2f8a-21e6-47de-a2b8-7f449929d43f",
-                  "name": "Drake",
-                  "type": "Person",
+                  "disambiguation": "Canadian rapper",
                   "country": "CA",
-                  "disambiguation": "Canadian rapper"
+                  "type": "Person",
+                  "name": "Drake"
                 },
                 "joinphrase": "",
                 "name": "Drake"
@@ -1362,61 +1368,46 @@
             "first-release-date": "2013-12-13",
             "title": "Mine"
           },
-          "position": 11,
-          "length": 299000,
           "number": "11",
-          "title": "Mine",
-          "id": "6c36c2e6-af38-4e1d-bc72-fc71049474c2",
+          "length": 299000,
+          "position": 11,
           "artist-credit": [
             {
               "artist": {
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "country": "US",
                 "disambiguation": "",
-                "name": "Beyonc\u00e9",
+                "country": "US",
                 "type": "Person",
+                "name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
               },
               "name": "Beyonc\u00e9",
               "joinphrase": ""
             }
-          ]
+          ],
+          "id": "6c36c2e6-af38-4e1d-bc72-fc71049474c2",
+          "title": "Mine"
         },
         {
-          "id": "088fbff7-cb81-489a-b9d5-9774afec6009",
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "disambiguation": "",
-                "country": "US",
-                "type": "Person",
-                "name": "Beyonc\u00e9"
-              },
-              "joinphrase": "",
-              "name": "Beyonc\u00e9"
-            }
-          ],
-          "title": "XO",
+          "position": 12,
           "length": 216000,
           "number": "12",
-          "position": 12,
           "recording": {
+            "isrcs": [
+              "USSM21302436"
+            ],
             "length": 215966,
-            "title": "XO",
             "artist-credit": [
               {
                 "artist": {
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "disambiguation": "",
                   "country": "US",
+                  "disambiguation": "",
                   "name": "Beyonc\u00e9",
-                  "type": "Person"
+                  "type": "Person",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
                 },
                 "name": "Beyonc\u00e9",
                 "joinphrase": ""
@@ -1424,12 +1415,133 @@
             ],
             "first-release-date": "2013-12-13",
             "id": "f1545cec-ec89-47de-bf51-9e4bbfa30e9b",
-            "video": true,
-            "disambiguation": ""
-          }
+            "title": "XO",
+            "disambiguation": "",
+            "video": true
+          },
+          "title": "XO",
+          "id": "088fbff7-cb81-489a-b9d5-9774afec6009",
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "disambiguation": "",
+                "country": "US",
+                "name": "Beyonc\u00e9",
+                "type": "Person"
+              },
+              "name": "Beyonc\u00e9",
+              "joinphrase": ""
+            }
+          ]
         },
         {
+          "title": "***Flawless",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "name": "Beyonc\u00e9",
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "disambiguation": "",
+                "country": "US",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              }
+            }
+          ],
           "id": "dd3f7da0-4366-48b2-9cf1-02bbbb71c1fa",
+          "recording": {
+            "video": true,
+            "disambiguation": "explicit",
+            "title": "***Flawless",
+            "id": "547967f0-f99d-448b-93cb-710fcba631a7",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "disambiguation": "",
+                  "country": "US",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": " featuring "
+              },
+              {
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Adichie, Chimamanda Ngozi",
+                  "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
+                  "name": "Chimamanda Ngozi Adichie",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "country": "NG"
+                },
+                "joinphrase": "",
+                "name": "Chimamanda Ngozi Adichie"
+              }
+            ],
+            "length": 252000,
+            "isrcs": [
+              "USSM21302437"
+            ]
+          },
+          "position": 13,
+          "number": "13",
+          "length": 252000
+        },
+        {
+          "recording": {
+            "isrcs": [
+              "USSM21302438"
+            ],
+            "length": 324448,
+            "title": "Superpower",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "name": "Beyonc\u00e9",
+                "joinphrase": " featuring ",
+                "artist": {
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "country": "US",
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                }
+              },
+              {
+                "name": "Frank Ocean",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Ocean, Frank",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "e520459c-dff4-491d-a6e4-c97be35e0044",
+                  "name": "Frank Ocean",
+                  "type": "Person",
+                  "disambiguation": "",
+                  "country": "US"
+                }
+              }
+            ],
+            "id": "60166819-82f2-4018-90ca-598ff6680ad3",
+            "video": true,
+            "disambiguation": ""
+          },
+          "position": 14,
+          "number": "14",
+          "length": 324000,
+          "title": "Superpower",
           "artist-credit": [
             {
               "joinphrase": "",
@@ -1437,61 +1549,42 @@
               "artist": {
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "country": "US",
-                "disambiguation": "",
+                "type": "Person",
                 "name": "Beyonc\u00e9",
-                "type": "Person"
+                "disambiguation": "",
+                "country": "US",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
               }
             }
           ],
-          "title": "***Flawless",
-          "recording": {
-            "disambiguation": "explicit",
-            "video": true,
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "disambiguation": "",
-                  "country": "US",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-                },
-                "name": "Beyonc\u00e9",
-                "joinphrase": " featuring "
-              },
-              {
-                "artist": {
-                  "type": "Person",
-                  "name": "Chimamanda Ngozi Adichie",
-                  "country": "NG",
-                  "disambiguation": "",
-                  "id": "012fd9c9-1e34-4dc2-a8b8-da1136786771",
-                  "sort-name": "Adichie, Chimamanda Ngozi",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-                },
-                "joinphrase": "",
-                "name": "Chimamanda Ngozi Adichie"
-              }
-            ],
-            "id": "547967f0-f99d-448b-93cb-710fcba631a7",
-            "title": "***Flawless",
-            "length": 252000
-          },
-          "length": 252000,
-          "number": "13",
-          "position": 13
+          "id": "1e911ba3-49d8-4402-9dc1-a1fbee59b72d"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "sort-name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "country": "US",
+                "disambiguation": "",
+                "type": "Person",
+                "name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+              },
+              "joinphrase": "",
+              "name": "Beyonc\u00e9"
+            }
+          ],
+          "id": "716abf8a-054d-4cfe-9b0c-5efadc455cd8",
+          "title": "Heaven",
+          "number": "15",
+          "length": 235000,
+          "position": 15,
           "recording": {
-            "length": 324448,
-            "disambiguation": "",
-            "video": true,
-            "id": "60166819-82f2-4018-90ca-598ff6680ad3",
+            "isrcs": [
+              "USSM21302439"
+            ],
+            "length": 235000,
             "artist-credit": [
               {
                 "artist": {
@@ -1504,129 +1597,54 @@
                   "name": "Beyonc\u00e9"
                 },
                 "name": "Beyonc\u00e9",
-                "joinphrase": " featuring "
-              },
-              {
-                "joinphrase": "",
-                "name": "Frank Ocean",
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Ocean, Frank",
-                  "name": "Frank Ocean",
-                  "type": "Person",
-                  "disambiguation": "",
-                  "country": "US",
-                  "id": "e520459c-dff4-491d-a6e4-c97be35e0044"
-                }
-              }
-            ],
-            "first-release-date": "2013-12-13",
-            "title": "Superpower"
-          },
-          "number": "14",
-          "length": 324000,
-          "position": 14,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Beyonc\u00e9",
-              "artist": {
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "sort-name": "Beyonc\u00e9"
-              }
-            }
-          ],
-          "id": "1e911ba3-49d8-4402-9dc1-a1fbee59b72d",
-          "title": "Superpower"
-        },
-        {
-          "artist-credit": [
-            {
-              "name": "Beyonc\u00e9",
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "disambiguation": "",
-                "country": "US",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-              }
-            }
-          ],
-          "id": "716abf8a-054d-4cfe-9b0c-5efadc455cd8",
-          "title": "Heaven",
-          "number": "15",
-          "length": 235000,
-          "position": 15,
-          "recording": {
-            "title": "Heaven",
-            "id": "915b8d4b-924e-473f-b0d7-85ba0edf64d3",
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
-                  "name": "Beyonc\u00e9",
-                  "type": "Person",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9"
-                },
-                "name": "Beyonc\u00e9",
                 "joinphrase": ""
               }
             ],
             "first-release-date": "2013-12-13",
-            "video": true,
+            "id": "915b8d4b-924e-473f-b0d7-85ba0edf64d3",
+            "title": "Heaven",
             "disambiguation": "",
-            "length": 235000
+            "video": true
           }
         },
         {
+          "title": "Blue",
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Beyonc\u00e9",
               "artist": {
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Beyonc\u00e9",
-                "disambiguation": "",
-                "country": "US",
-                "name": "Beyonc\u00e9",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "type": "Person",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
-              }
+                "name": "Beyonc\u00e9",
+                "disambiguation": "",
+                "country": "US"
+              },
+              "name": "Beyonc\u00e9",
+              "joinphrase": ""
             }
           ],
           "id": "ccd64da1-353e-4ec3-ba89-7654790df50e",
-          "title": "Blue",
+          "position": 16,
+          "number": "16",
+          "length": 275000,
           "recording": {
-            "length": 275000,
             "video": true,
             "disambiguation": "",
             "title": "Blue",
-            "id": "71c61b56-12ea-4c91-aec9-871a1a527bf8",
-            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
-                "artist": {
-                  "sort-name": "Beyonc\u00e9",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9",
-                  "country": "US",
-                  "disambiguation": ""
-                },
                 "name": "Beyonc\u00e9",
-                "joinphrase": " featuring "
+                "joinphrase": " featuring ",
+                "artist": {
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Beyonc\u00e9",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                  "country": "US",
+                  "disambiguation": "",
+                  "name": "Beyonc\u00e9",
+                  "type": "Person"
+                }
               },
               {
                 "artist": {
@@ -1638,129 +1656,207 @@
                   "country": "US",
                   "disambiguation": "Beyonc\u00e9 & Jay-Z\u2019s daughter"
                 },
-                "name": "Blue Ivy",
-                "joinphrase": ""
-              }
-            ]
-          },
-          "number": "16",
-          "length": 275000,
-          "position": 16
-        },
-        {
-          "recording": {
-            "length": 154000,
-            "disambiguation": "",
-            "video": true,
-            "first-release-date": "2013-12-13",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "sort-name": "Beyonc\u00e9",
-                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                  "country": "US",
-                  "disambiguation": "",
-                  "type": "Person",
-                  "name": "Beyonc\u00e9"
-                },
                 "joinphrase": "",
-                "name": "Beyonc\u00e9"
+                "name": "Blue Ivy"
               }
             ],
-            "id": "4fcdff65-e8b9-4538-b3f6-15f9623b15f7",
-            "title": "Credits"
-          },
-          "number": "17",
-          "length": 154000,
-          "position": 17,
+            "first-release-date": "2013-12-13",
+            "id": "71c61b56-12ea-4c91-aec9-871a1a527bf8",
+            "isrcs": [
+              "USSM21302440"
+            ],
+            "length": 275000
+          }
+        },
+        {
+          "title": "Credits",
           "artist-credit": [
             {
-              "name": "Beyonc\u00e9",
               "joinphrase": "",
+              "name": "Beyonc\u00e9",
               "artist": {
-                "sort-name": "Beyonc\u00e9",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "type": "Person",
-                "name": "Beyonc\u00e9",
+                "sort-name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                 "disambiguation": "",
                 "country": "US",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                "name": "Beyonc\u00e9",
+                "type": "Person"
               }
             }
           ],
           "id": "85105138-cb87-4248-ba88-7289cc6beacf",
-          "title": "Credits"
-        },
-        {
-          "number": "18",
-          "length": 264000,
-          "position": 18,
           "recording": {
             "disambiguation": "",
             "video": true,
+            "id": "4fcdff65-e8b9-4538-b3f6-15f9623b15f7",
+            "first-release-date": "2013-12-13",
+            "artist-credit": [
+              {
+                "artist": {
+                  "sort-name": "Beyonc\u00e9",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "name": "Beyonc\u00e9",
+                  "disambiguation": "",
+                  "country": "US",
+                  "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+                },
+                "name": "Beyonc\u00e9",
+                "joinphrase": ""
+              }
+            ],
+            "title": "Credits",
+            "length": 154000,
+            "isrcs": [
+              "USSM21302460"
+            ]
+          },
+          "position": 17,
+          "number": "17",
+          "length": 154000
+        },
+        {
+          "title": "Grown Woman",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Beyonc\u00e9",
+                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+                "name": "Beyonc\u00e9",
+                "type": "Person",
+                "disambiguation": "",
+                "country": "US"
+              },
+              "joinphrase": "",
+              "name": "Beyonc\u00e9"
+            }
+          ],
+          "id": "f43f52a3-0260-429a-bba5-3a44af3d2d0f",
+          "position": 18,
+          "number": "18",
+          "length": 264000,
+          "recording": {
+            "length": 264000,
+            "isrcs": [
+              "USSM21302441"
+            ],
+            "title": "Grown Woman",
             "id": "f9549acb-c874-4ea2-9dde-55b8e500db5e",
+            "first-release-date": "2013-12-13",
             "artist-credit": [
               {
                 "joinphrase": "",
                 "name": "Beyonc\u00e9",
                 "artist": {
-                  "country": "US",
-                  "disambiguation": "",
                   "name": "Beyonc\u00e9",
                   "type": "Person",
+                  "disambiguation": "",
+                  "country": "US",
                   "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
                   "sort-name": "Beyonc\u00e9",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
                 }
               }
             ],
-            "first-release-date": "2013-12-13",
-            "title": "Grown Woman",
-            "length": 264000
-          },
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "Beyonc\u00e9",
-                "type": "Person",
-                "disambiguation": "",
-                "country": "US",
-                "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
-                "sort-name": "Beyonc\u00e9",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-              },
-              "name": "Beyonc\u00e9",
-              "joinphrase": ""
-            }
-          ],
-          "id": "f43f52a3-0260-429a-bba5-3a44af3d2d0f",
-          "title": "Grown Woman"
+            "video": true,
+            "disambiguation": ""
+          }
         }
       ],
-      "track-count": 18,
-      "track-offset": 0,
       "id": "853b7204-f1c4-35c4-803d-e128c651abfe",
-      "format": "DVD-Video",
+      "track-offset": 0,
+      "title": "VISUAL",
       "position": 2,
-      "title": "VISUAL"
+      "format": "DVD-Video"
     }
   ],
-  "quality": "normal",
-  "artist-credit": [
-    {
-      "artist": {
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "sort-name": "Beyonc\u00e9",
+  "disambiguation": "explicit",
+  "date": "2013-12-20",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "barcode": "888430325128",
+  "title": "BEYONC\u00c9",
+  "packaging": "Jewel Case",
+  "status": "Official",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "release-group": {
+    "disambiguation": "",
+    "first-release-date": "2013-12-13",
+    "artist-credit": [
+      {
+        "joinphrase": "",
         "name": "Beyonc\u00e9",
-        "type": "Person",
-        "disambiguation": "",
-        "country": "US",
-        "id": "859d0860-d480-4efd-970c-c05d5f1776b8"
+        "artist": {
+          "id": "859d0860-d480-4efd-970c-c05d5f1776b8",
+          "country": "US",
+          "disambiguation": "",
+          "name": "Beyonc\u00e9",
+          "type": "Person",
+          "sort-name": "Beyonc\u00e9",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        }
+      }
+    ],
+    "id": "8596171e-23b2-4bdd-8f1c-11960df0ecbe",
+    "secondary-types": [],
+    "title": "BEYONC\u00c9",
+    "secondary-type-ids": [],
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "country": "US",
+  "label-info": [
+    {
+      "label": {
+        "name": "Columbia",
+        "type": "Imprint",
+        "disambiguation": "owned by Sony Music Entertainment, worldwide except JP; formerly owned by CBS between 1938\u20131990 within US/CA/MX",
+        "label-code": 162,
+        "id": "011d1192-6f65-45bd-85c4-0400dd45693e",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
+        "sort-name": "Columbia"
       },
-      "joinphrase": "",
-      "name": "Beyonc\u00e9"
+      "catalog-number": "88843032512"
+    },
+    {
+      "catalog-number": "88843032512",
+      "label": {
+        "type-id": "7aaa37fe-2def-3476-b359-80245850062d",
+        "sort-name": "Parkwood Entertainment",
+        "type": "Original Production",
+        "name": "Parkwood Entertainment",
+        "disambiguation": "",
+        "label-code": null,
+        "id": "31eb6796-abba-4a02-b650-a556aa65f9ae"
+      }
     }
   ],
-  "id": "7c07f9a1-381f-4c00-8d17-2acc537597f8"
+  "cover-art-archive": {
+    "darkened": false,
+    "count": 5,
+    "front": true,
+    "artwork": true,
+    "back": true
+  },
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "release-events": [
+    {
+      "area": {
+        "sort-name": "United States",
+        "type-id": null,
+        "name": "United States",
+        "type": null,
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "id": "489ce91b-6658-3307-9877-795b68554c98"
+      },
+      "date": "2013-12-20"
+    }
+  ]
 }
