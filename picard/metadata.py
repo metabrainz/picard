@@ -48,7 +48,6 @@ from dataclasses import (
     field,
 )
 from functools import partial
-from itertools import chain
 from typing import TYPE_CHECKING
 
 from PyQt6 import QtCore
@@ -112,6 +111,14 @@ class ReleaseMatchParts:
         """Flat list of all (score, weight) tuples for linear combination."""
         return self.identifiers + self.similarity + self.preferences
 
+    def merged_with(self, other: 'ReleaseMatchParts') -> 'ReleaseMatchParts':
+        """Return a new ReleaseMatchParts combining self and other."""
+        return ReleaseMatchParts(
+            identifiers=self.identifiers + other.identifiers,
+            similarity=self.similarity + other.similarity,
+            preferences=self.preferences + other.preferences,
+        )
+
     def combine_tiers(self) -> float:
         """Combine tiers with tier-aware logic instead of a flat average.
 
@@ -121,24 +128,32 @@ class ReleaseMatchParts:
           (identifiers say this is NOT the release, regardless of similarity).
         - Otherwise: similarity drives the score, preferences act as tiebreaker.
         """
-        sim_score = linear_combination_of_weights(self.similarity) if self.similarity else 0.0
+        sim_score = linear_combination_of_weights(self.similarity) if self.similarity else None
         pref_score = linear_combination_of_weights(self.preferences) if self.preferences else 0.5
 
         if not self.identifiers:
-            # No identifiers available — similarity + small preference bonus
+            if sim_score is None:
+                # Only preferences available (e.g., isvideo-only comparison)
+                return pref_score
+            # No identifiers — similarity drives, preferences tiebreak
             return sim_score * 0.9 + pref_score * 0.1
 
         id_score = linear_combination_of_weights(self.identifiers)
 
         if id_score >= 0.9:
-            # Strong identifier match — this IS the release
-            return 0.95 + pref_score * 0.05
+            # Strong identifier match — this IS the release.
+            # Include small similarity component to break ties between
+            # candidates that both have matching identifiers.
+            base = sim_score if sim_score is not None else 1.0
+            return 0.85 + base * 0.1 + pref_score * 0.05
         if id_score <= 0.1:
             # Strong identifier mismatch — cap the score
-            return min(0.3, sim_score * 0.3)
+            base = sim_score if sim_score is not None else 0.0
+            return min(0.3, base * 0.3)
 
         # Partial identifier signal — blend all tiers
-        return id_score * 0.4 + sim_score * 0.5 + pref_score * 0.1
+        base = sim_score if sim_score is not None else 0.5
+        return id_score * 0.4 + base * 0.5 + pref_score * 0.1
 
 
 # Type for the tiered weights dict structure
@@ -403,7 +418,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         """
         config = get_config()
         parts = self.compare_to_release_parts(release, weights, config)
-        sim = linear_combination_of_weights(parts.all_parts) * get_score(release)
+        sim = parts.combine_tiers() * get_score(release)
         return SimMatchRelease(similarity=sim, release=release)
 
     def compare_to_release_parts(self, release: dict, weights: 'TieredWeights', config=None):
@@ -566,10 +581,10 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         config = get_config()
-        track_parts_flat = track_parts.all_parts
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights, config)
-            sim = linear_combination_of_weights(chain(track_parts_flat, release_parts.all_parts)) * search_score
+            combined = track_parts.merged_with(release_parts)
+            sim = combined.combine_tiers() * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)

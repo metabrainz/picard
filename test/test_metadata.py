@@ -697,14 +697,14 @@ class CommonTests:
             self.assertAlmostEqual(1.0, parts.combine_tiers())
 
         def test_combine_tiers_strong_identifier_match(self):
-            """Strong identifier match → high score regardless of similarity."""
+            """Strong identifier match → high score, similarity still contributes."""
             parts = ReleaseMatchParts(
                 identifiers=[(1.0, 28)],
                 similarity=[(0.5, 10)],  # mediocre similarity
                 preferences=[(0.0, 2)],  # worst preference
             )
-            # id≥0.9 → 0.95 + 0.0*0.05 = 0.95
-            self.assertAlmostEqual(0.95, parts.combine_tiers())
+            # id≥0.9 → 0.85 + 0.5*0.1 + 0.0*0.05 = 0.9
+            self.assertAlmostEqual(0.9, parts.combine_tiers())
 
         def test_combine_tiers_strong_identifier_mismatch(self):
             """Strong identifier mismatch → score capped low."""
