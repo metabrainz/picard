@@ -308,6 +308,28 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             return 0.0
         return 1.0 - min(abs(a - b), LENGTH_SCORE_THRES_MS) / float(LENGTH_SCORE_THRES_MS)
 
+    def _date_score(self, release: dict) -> float:
+        """Score how well the file's date matches the release date."""
+        if not release.get('date'):
+            return self.__date_match_factors['no_release_date']
+        release_date = release['date']
+        if 'date' not in self:
+            return self.__date_match_factors['exists_vs_null']
+        metadata_date = self['date']
+        if release_date == metadata_date:
+            return self.__date_match_factors['exact']
+        release_year = extract_year_from_date(release_date)
+        if release_year is None:
+            return 0.0
+        metadata_year = extract_year_from_date(metadata_date)
+        if metadata_year is None:
+            return 0.0
+        if release_year == metadata_year:
+            return self.__date_match_factors['year']
+        if abs(release_year - metadata_year) <= 2:
+            return self.__date_match_factors['close_year']
+        return self.__date_match_factors['differed']
+
     def compare(self, other: 'Metadata', ignored: Iterable[str] | None = None):
         parts = []
         if ignored is None:
@@ -394,32 +416,9 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 except (ValueError, KeyError):
                     pass
 
-            # Date Logic
-            date_match_factor = 0.0
+            # Date matching
             if 'date' in sim_w:
-                if 'date' in release and release['date'] != '':
-                    release_date = release['date']
-                    if 'date' in self:
-                        metadata_date = self['date']
-                        if release_date == metadata_date:
-                            date_match_factor = self.__date_match_factors['exact']
-                        else:
-                            release_year = extract_year_from_date(release_date)
-                            if release_year is not None:
-                                metadata_year = extract_year_from_date(metadata_date)
-                                if metadata_year is not None:
-                                    if release_year == metadata_year:
-                                        date_match_factor = self.__date_match_factors['year']
-                                    elif abs(release_year - metadata_year) <= 2:
-                                        date_match_factor = self.__date_match_factors['close_year']
-                                    else:
-                                        date_match_factor = self.__date_match_factors['differed']
-                    else:
-                        date_match_factor = self.__date_match_factors['exists_vs_null']
-                else:
-                    date_match_factor = self.__date_match_factors['no_release_date']
-
-                result.similarity.append((date_match_factor, sim_w['date']))
+                result.similarity.append((self._date_score(release), sim_w['date']))
 
         # Tier 3: Preferences
         config = get_config()
