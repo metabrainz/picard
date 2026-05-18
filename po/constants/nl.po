@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-01-30 00:11+0000\n"
+"PO-Revision-Date: 2026-05-18 17:12+0000\n"
 "Last-Translator: mfmeulenbelt "
 "<mfmeulenbelt@users.noreply.translations.metabrainz.org>\n"
 "Language-Team: Dutch <https://translations.metabrainz.org/projects/picard/3/"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 2026.5\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -36,7 +36,7 @@ msgstr "stabiele, bèta- en ontwikkelversies"
 
 #: picard/const/cover_processing.py:46
 msgid "Maintain aspect ratio"
-msgstr ""
+msgstr "Beeldverhouding behouden"
 
 #: picard/const/cover_processing.py:48
 msgid ""
@@ -46,10 +46,17 @@ msgid ""
 "p><p>For example, a 2000x1000 image resized to target dimensions of "
 "1000x1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Schaalt de bronafbeelding zo, dat ze binnen de gewenste afmetingen past.</"
+"p><p>Als de verhouding tussen de afmetingen van de bronafbeelding afwijkt "
+"van de verhouding tussen de gewenste afmetingen, zal de hoogte of breedte "
+"van de doelafbeelding kleiner zijn dan de gewenste afmeting.</p><p>Als de "
+"bronafbeelding bijvoorbeeld 1000 bij 1000 pixels groot moet zijn en de "
+"bronafbeelding 2000 bij 1000 pixels groot is, zal de uiteindelijke "
+"afbeelding 1000 bij 500 pixels groot zijn.</p>"
 
 #: picard/const/cover_processing.py:61
 msgid "Scale to width"
-msgstr ""
+msgstr "Naar de breedte schalen"
 
 #: picard/const/cover_processing.py:63
 msgid ""
@@ -57,10 +64,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 2000x1000 image resized to a target width "
 "of 1000 would result in a final image size of 1000x500.</p>"
 msgstr ""
+"<p>Schaalt de breedte van de bronafbeelding naar de gewenste breedte, "
+"terwijl de beeldverhouding hetzelfde blijft.</p><p>Een afbeelding van 2000 "
+"bij 1000 pixels die wordt geschaald naar een doelbreedte van 1000 pixels zal "
+"dan 1000 bij 500 pixels groot worden.</p>"
 
 #: picard/const/cover_processing.py:73
 msgid "Scale to height"
-msgstr ""
+msgstr "Naar de hoogte schalen"
 
 #: picard/const/cover_processing.py:75
 msgid ""
@@ -68,10 +79,14 @@ msgid ""
 "aspect ratio.</p><p>For example, a 1000x2000 image resized to a target "
 "height of 1000 would result in a final image size of 500x1000.</p>"
 msgstr ""
+"<p>Schaalt de hoogte van de bronafbeelding naar de gewenste hoogte, terwijl "
+"de beeldverhouding hetzelfde blijft.</p><p>Een afbeelding van 1000 bij 2000 "
+"pixels die wordt geschaald naar een doelhoogte van 1000 pixels zal dan 500 "
+"bij 1000 pixels groot worden.</p>"
 
 #: picard/const/cover_processing.py:85
 msgid "Crop to fit"
-msgstr ""
+msgstr "Bijsnijden om te passen"
 
 #: picard/const/cover_processing.py:87
 msgid ""
@@ -83,10 +98,18 @@ msgid ""
 "excess height would be center cropped resulting in the final image size of "
 "1000x1000.</p>"
 msgstr ""
+"<p>Schaalt de bronafbeelding zo, dat ze de gewenste hoogte en breedte "
+"volledig vult.</p><p>Als de verhouding tussen de afmetingen van de "
+"bronafbeelding afwijkt van de verhouding tussen de gewenste afmetingen, zal "
+"er een deel worden afgeknipt.</p><p>Een afbeelding van 500 bij 1000 pixels "
+"die wordt geschaald naar een afbeelding van 1000 bij 1000 pixels, wordt "
+"bijvoorbeeld eerst opgeschaald naar 1000 bij 2000 pixels, waarna er aan de "
+"boven- en onderkant 500 pixels worden afgeknipt om op 1000 bij 1000 pixels "
+"uit te komen.</p>"
 
 #: picard/const/cover_processing.py:102
 msgid "Stretch to fit"
-msgstr ""
+msgstr "Uitrekken om te passen"
 
 #: picard/const/cover_processing.py:104
 msgid ""
@@ -95,6 +118,11 @@ msgid ""
 "1000x1000 would be stretched horizontally resulting in the final image size "
 "of 1000x1000.</p>"
 msgstr ""
+"<p>Trekt de afbeelding zo uit, dat ze precies in de gewenste afmetingen "
+"past, ook al wordt ze daardoor vervormd.</p><p>Een afbeelding van 500 bij "
+"1000 pixels zal met een gewenste grootte van 1000 bij 1000 pixels "
+"bijvoorbeeld horizontaal worden uitgerekt om op 1000 bij 1000 pixels uit te "
+"komen.</p>"
 
 #: picard/const/defaults.py:157
 msgid "My script"
@@ -530,7 +558,7 @@ msgstr "Azerbeidzjaans (cyrillisch)"
 
 #: picard/const/locales.py:94
 msgid "Azerbaijani (Cyrillic) (Azerbaijan)"
-msgstr "Azerbeidzjaans (Cyrillisch, Azerbeidzjan)"
+msgstr "Azerbeidzjaans (cyrillisch, Azerbeidzjan)"
 
 #: picard/const/locales.py:95
 msgid "Azerbaijani (Latin)"
@@ -722,11 +750,11 @@ msgstr "Bosnisch"
 
 #: picard/const/locales.py:142
 msgid "Bosnian (Cyrillic)"
-msgstr "Bosnisch (Cyrillisch)"
+msgstr "Bosnisch (cyrillisch)"
 
 #: picard/const/locales.py:143
 msgid "Bosnian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr "Bosnisch (Cyrillisch, Bosnië en Herzegovina)"
+msgstr "Bosnisch (cyrillisch, Bosnië en Herzegovina)"
 
 #: picard/const/locales.py:144
 msgid "Bosnian (Latin)"
@@ -2374,11 +2402,11 @@ msgstr "Kazachs"
 
 #: picard/const/locales.py:575
 msgid "Kazakh (Cyrillic)"
-msgstr "Kazachs (Cyrillisch)"
+msgstr "Kazachs (cyrillisch)"
 
 #: picard/const/locales.py:576
 msgid "Kazakh (Cyrillic) (Kazakhstan)"
-msgstr "Kazachs (Cyrillisch, Kazachstan)"
+msgstr "Kazachs (cyrillisch, Kazachstan)"
 
 #: picard/const/locales.py:577
 msgid "Kazakh (Kazakhstan)"
@@ -2750,11 +2778,11 @@ msgstr "Mongools"
 
 #: picard/const/locales.py:671
 msgid "Mongolian (Cyrillic)"
-msgstr "Mongools (Cyrillisch)"
+msgstr "Mongools (cyrillisch)"
 
 #: picard/const/locales.py:672
 msgid "Mongolian (Cyrillic) (Mongolia)"
-msgstr "Mongools (Cyrillisch, Mongolië)"
+msgstr "Mongools (cyrillisch, Mongolië)"
 
 #: picard/const/locales.py:673
 msgid "Mongolian (Mongolia)"
@@ -3626,23 +3654,23 @@ msgstr "Servisch"
 
 #: picard/const/locales.py:902
 msgid "Serbian (Cyrillic)"
-msgstr "Servisch (Cyrillisch)"
+msgstr "Servisch (cyrillisch)"
 
 #: picard/const/locales.py:903
 msgid "Serbian (Cyrillic) (Bosnia & Herzegovina)"
-msgstr "Servisch (Cyrillisch, Bosnië en Herzegovina)"
+msgstr "Servisch (cyrillisch, Bosnië en Herzegovina)"
 
 #: picard/const/locales.py:904
 msgid "Serbian (Cyrillic) (Montenegro)"
-msgstr "Servisch (Cyrillisch) (Montenegro)"
+msgstr "Servisch (cyrillisch) (Montenegro)"
 
 #: picard/const/locales.py:905
 msgid "Serbian (Cyrillic) (Serbia)"
-msgstr "Servisch (Cyrillisch, Servië)"
+msgstr "Servisch (cyrillisch, Servië)"
 
 #: picard/const/locales.py:906
 msgid "Serbian (Cyrillic) (Kosovo)"
-msgstr "Servisch (Cyrillisch, Kosovo)"
+msgstr "Servisch (cyrillisch, Kosovo)"
 
 #: picard/const/locales.py:907
 msgid "Serbian (Latin)"
@@ -3810,7 +3838,7 @@ msgstr "Tadzjieks (cyrillisch)"
 
 #: picard/const/locales.py:949
 msgid "Tajik (Cyrillic) (Tajikistan)"
-msgstr "Tadzjieks (Cyrillisch, Tadzjikistan)"
+msgstr "Tadzjieks (cyrillisch, Tadzjikistan)"
 
 #: picard/const/locales.py:950
 msgid "Tajik (Tajikistan)"
@@ -3986,11 +4014,11 @@ msgstr "Oezbeeks (Arabisch, Afghanistan)"
 
 #: picard/const/locales.py:995
 msgid "Uzbek (Cyrillic)"
-msgstr "Oezbeeks (Cyrillisch)"
+msgstr "Oezbeeks (cyrillisch)"
 
 #: picard/const/locales.py:996
 msgid "Uzbek (Cyrillic) (Uzbekistan)"
-msgstr "Oezbeeks (Cyrillisch, Oezbekistan)"
+msgstr "Oezbeeks (cyrillisch, Oezbekistan)"
 
 #: picard/const/locales.py:997
 msgid "Uzbek (Latin)"
@@ -4254,7 +4282,7 @@ msgstr "Katakana"
 
 #: picard/const/tags.py:34
 msgid "Absolute Track No."
-msgstr ""
+msgstr "Absolute nummerpositie"
 
 #: picard/const/tags.py:36
 msgid ""
@@ -4262,6 +4290,9 @@ msgid ""
 "this value would be 11 for the second track on disc 2 where disc 1 has 9 "
 "tracks."
 msgstr ""
+"De absolute positie van dit nummer, ongeacht het medium. Als het eerste "
+"medium bijvoorbeeld negen nummers heeft, is deze waarde voor het tweede "
+"nummer op het tweede medium elf."
 
 #: picard/const/tags.py:44
 msgid "AcoustID Fingerprint"
@@ -4273,6 +4304,9 @@ msgid ""
 "audio information found in a file, and is calculated using the Chromaprint "
 "software."
 msgstr ""
+"De akoestische vingerafdruk van de opname. De vingerafdruk is gebaseerd op "
+"de geluidsinformatie uit het bestand en wordt berekend met de software "
+"Chromaprint."
 
 #: picard/const/tags.py:55
 msgid "AcoustID"
@@ -4285,6 +4319,10 @@ msgid ""
 "fingerprints may be assigned the same AcoustID if the fingerprints are "
 "similar enough."
 msgstr ""
+"De AcoustID die aan het nummer is gekoppeld. De AcoustID is een "
+"identificatiecode die op basis van de akoestische vingerafdruk aan een "
+"audiobestand wordt gekoppeld. Als vingerafdrukken van twee verschillende "
+"opnamen echter genoeg op elkaar lijken, kunnen ze dezelfde AcoustID hebben."
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
@@ -4297,10 +4335,14 @@ msgid ""
 "depending on whether the \"Use standardized artist names\" metadata option "
 "is enabled."
 msgstr ""
+"De hoofdartiesten die op de uitgave worden vermeld, gescheiden door de "
+"opgegeven ‘koppelzinnen’. Deze namen kunnen ‘gestandaardiseerd’ of ‘zoals "
+"vermeld’ zijn, afhankelijk van de instelling van ‘Gestandaardiseerde "
+"artiestennamen gebruiken’."
 
 #: picard/const/tags.py:77
 msgid "Album Artists"
-msgstr ""
+msgstr "Albumartiesten"
 
 #: picard/const/tags.py:79
 msgid ""
@@ -4308,10 +4350,13 @@ msgid ""
 "\"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"De hoofdartiesten die op de uitgave worden vermeld. Deze namen kunnen ‘"
+"gestandaardiseerd’ of ‘zoals vermeld’ zijn, afhankelijk van de instelling "
+"van ‘Gestandaardiseerde artiestennamen gebruiken’."
 
 #: picard/const/tags.py:88
 msgid "Album Artists Countries"
-msgstr ""
+msgstr "Landen van de albumartiesten"
 
 #: picard/const/tags.py:90
 msgid ""
@@ -4320,24 +4365,30 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"De landcodes van alle albumartiesten, in dezelfde volgorde als de artiesten. "
+"Als er meerdere artiesten uit hetzelfde land zijn, worden de landcodes "
+"dubbel weergegeven. Als de webservice geen landcode retourneert, wordt ‘XX’ "
+"gebruikt (onbekend land)."
 
 #: picard/const/tags.py:101
 msgid "Album Artist Sort Order"
-msgstr "Sorteervolgorde van albumartiest"
+msgstr "Sorteernaam van de uitgaveartiest"
 
 #: picard/const/tags.py:102
 msgid ""
 "The release artists sort names, separated by the specified join phrases. "
 "(e.g.: \"Beatles, The\")"
 msgstr ""
+"De sorteernamen van de artiesten van de uitgave, gescheiden door de "
+"opgegeven ‘koppelzinnen’.(bijv: ‘Beatles, The)"
 
 #: picard/const/tags.py:106
 msgid "Album Artists Sort Names"
-msgstr ""
+msgstr "Sorteernamen van de uitgaveartiesten"
 
 #: picard/const/tags.py:107
 msgid "The sort names of the album's artists."
-msgstr ""
+msgstr "De sorteernamen van de uitgaveartiesten."
 
 #: picard/const/tags.py:114
 msgid "Album"
@@ -4345,15 +4396,15 @@ msgstr "Uitgave"
 
 #: picard/const/tags.py:115
 msgid "The title of the release."
-msgstr ""
+msgstr "De naam van de uitgave."
 
 #: picard/const/tags.py:120
 msgid "Album Sort Order"
-msgstr "Sorteervolgorde van album"
+msgstr "Sorteervolgorde van uitgave"
 
 #: picard/const/tags.py:121
 msgid "The sort name of the title of the release."
-msgstr ""
+msgstr "De sorteernaam van de titel van de uitgave."
 
 #: picard/const/tags.py:126
 msgid "Arranger"
@@ -4365,6 +4416,9 @@ msgid ""
 "instrument and orchestra arrangers, and could be associated with the "
 "release, recording or work."
 msgstr ""
+"De namen van de arrangeurs van het nummer. Dit kunnen de arrangeurs van een "
+"instrument of orkest zijn, en ze kunnen zijn gekoppeld aan de uitgave, "
+"opname of compositie."
 
 #: picard/const/tags.py:135
 msgid "Artist"
@@ -4376,6 +4430,9 @@ msgid ""
 "be either \"standardized\" or \"as credited\" depending on whether the \"Use "
 "standardized artist names\" metadata option is enabled."
 msgstr ""
+"De artiesten van het nummer, gescheiden door de opgegeven koppelzinnen. Deze "
+"namen kunnen ‘gestandaardiseerd’ of ‘zoals vermeld’ zijn, afhankelijk van de "
+"instelling van ‘Gestandaardiseerde artiestennamen gebruiken’."
 
 #: picard/const/tags.py:145
 msgid "Artists"
@@ -4387,10 +4444,13 @@ msgid ""
 "credited\" depending on whether the \"Use standardized artist names\" "
 "metadata option is enabled."
 msgstr ""
+"De artiesten van het nummer. De namen kunnen ‘gestandaardiseerd’ of ‘zoals "
+"vermeld’ zijn, afhankelijk van de instelling van ‘Gestandaardiseerde "
+"artiestennamen gebruiken’."
 
 #: picard/const/tags.py:154
 msgid "Artists Countries"
-msgstr ""
+msgstr "Landen van de artiesten"
 
 #: picard/const/tags.py:156
 msgid ""
@@ -4399,24 +4459,30 @@ msgid ""
 "one artist from the same country. If a country code is not provided by the "
 "webservice the code \"XX\" will be used to indicate an unknown country."
 msgstr ""
+"De landcodes van alle artiesten, in dezelfde volgorde als de artiesten. Als "
+"er meerdere artiesten uit hetzelfde land zijn, worden de landcodes dubbel "
+"weergegeven. Als de webservice geen landcode retourneert, wordt ‘XX’ "
+"gebruikt (onbekend land)."
 
 #: picard/const/tags.py:167
 msgid "Artist Sort Order"
-msgstr "Sorteervolgorde van artiest"
+msgstr "Sorteervolgorde van de artiest"
 
 #: picard/const/tags.py:168
 msgid ""
 "The sort names of the track's artists, separated by the specified join "
 "phrases."
 msgstr ""
+"De sorteernamen van de artiesten van het nummer, gescheiden door de "
+"opgegeven koppelzinnen."
 
 #: picard/const/tags.py:172
 msgid "Artists Sort Names"
-msgstr ""
+msgstr "Sorteernamen van de artiesten"
 
 #: picard/const/tags.py:173
 msgid "The sort names of the track's artists."
-msgstr ""
+msgstr "De sorteernamen van de artiesten van het nummer."
 
 #: picard/const/tags.py:180
 msgid "ASIN"
@@ -4427,6 +4493,8 @@ msgid ""
 "The Amazon Standard Identification Number, which is the number identifying "
 "the item on Amazon."
 msgstr ""
+"Het Amazon Standard Identification Number, een identificatiecode die Amazon "
+"voor uitgaven gebruikt."
 
 #: picard/const/tags.py:186
 msgid "Barcode"
@@ -4434,15 +4502,15 @@ msgstr "Streepjescode"
 
 #: picard/const/tags.py:187
 msgid "The barcode assigned to the release."
-msgstr ""
+msgstr "De streepjescode van de uitgave."
 
 #: picard/const/tags.py:189
 msgid "Barcode in MusicBrainz documentation"
-msgstr ""
+msgstr "Streepjescode in de documentatie van MusicBrainz"
 
 #: picard/const/tags.py:191
 msgid "Barcode mapping in Picard documentation"
-msgstr ""
+msgstr "Streepjescode in de documentatie van Picard"
 
 #: picard/const/tags.py:199
 msgid "BPM"
@@ -4450,23 +4518,23 @@ msgstr "BPM"
 
 #: picard/const/tags.py:200
 msgid "Beats per minute of the track."
-msgstr ""
+msgstr "Het aantal beats per minuut van de opname."
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Bitsnelheid"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
-msgstr ""
+msgstr "De geschatte bitsnelheid in kbps."
 
 #: picard/const/tags.py:215
 msgid "Bits per sample"
-msgstr ""
+msgstr "Bits per monster"
 
 #: picard/const/tags.py:216
 msgid "Bits of data per sample."
-msgstr ""
+msgstr "Het aantal bits aan data per monster."
 
 #: picard/const/tags.py:225
 msgid "Catalog Number"
@@ -4478,14 +4546,18 @@ msgid ""
 "be found on the spine or near the barcode. There may be more than one, "
 "especially when multiple labels are involved."
 msgstr ""
+"Het catalogusnummer dat de platenmaatschappijen aan de uitgave hebben "
+"toegewezen, vaak te vinden op de rug of in de buurt van de streepjescode. "
+"Een uitgave kan meerdere catalogusnummers hebben, vooral als er meerdere "
+"platenmaatschappijen bij zijn betrokken."
 
 #: picard/const/tags.py:235
 msgid "Channels"
-msgstr ""
+msgstr "Kanalen"
 
 #: picard/const/tags.py:236
 msgid "Number of audio channels in the file."
-msgstr ""
+msgstr "Het aantal audiokanalen in het bestand."
 
 #: picard/const/tags.py:245
 msgid "Comment"
@@ -4496,6 +4568,8 @@ msgid ""
 "The disambiguation comment entered to help distinguish one release from "
 "another (e.g.: Deluxe version with 2 bonus tracks)."
 msgstr ""
+"De verduidelijking die is toegevoegd om een uitgave van een andere te "
+"onderscheiden (bijv. een luxe uitgave met twee bonusnummers)."
 
 #: picard/const/tags.py:255
 msgid "Compilation (iTunes)"
@@ -4504,6 +4578,8 @@ msgstr "Compilatie (iTunes)"
 #: picard/const/tags.py:256
 msgid "1 for Various Artist albums, otherwise empty."
 msgstr ""
+"Bij uitgaven van diverse artiesten wordt dit ingesteld op ‘1’, anders blijft "
+"dit leeg."
 
 #: picard/const/tags.py:260
 msgid "Composer"
@@ -4511,7 +4587,7 @@ msgstr "Componist"
 
 #: picard/const/tags.py:261
 msgid "The names of the composers for the associated work."
-msgstr ""
+msgstr "De namen van de componisten van de gekoppelde compositie."
 
 #: picard/const/tags.py:267
 msgid "Composer Sort Order"
@@ -4519,7 +4595,7 @@ msgstr "Sorteervolgorde van componist"
 
 #: picard/const/tags.py:268
 msgid "The sort names of the composers for the associated work."
-msgstr ""
+msgstr "De sorteernamen van de componisten van de gekoppelde compositie."
 
 #: picard/const/tags.py:273
 msgid "Conductor"
@@ -4531,6 +4607,8 @@ msgid ""
 "conductor and chorus master, and could be associated with the release or "
 "recording."
 msgstr ""
+"De namen van de dirigenten van het nummer. Dit kunnen de dirigenten en de "
+"koorleiders zijn, en ze kunnen zijn gekoppeld aan de uitgave of opname."
 
 #: picard/const/tags.py:283
 msgid "Copyright"
@@ -4541,14 +4619,18 @@ msgid ""
 "The copyright message for the copyright holder of the original sound, "
 "beginning with a year and a space character."
 msgstr ""
+"De auteursrechtmededeling van de houder van het auteursrecht op het "
+"oorspronkelijke geluid, beginnend met een jaar en een spatie."
 
 #: picard/const/tags.py:292
 msgid "Data Track"
-msgstr ""
+msgstr "Datanummer"
 
 #: picard/const/tags.py:293
 msgid "Set to 1 if the track is a \"data track\", otherwise empty."
 msgstr ""
+"Dit wordt ingesteld op ‘1’ als het nummer een ‘datanummer’ is, anders blijft "
+"dit leeg."
 
 #: picard/const/tags.py:299
 msgid "Date"
@@ -4557,7 +4639,7 @@ msgstr "Datum"
 #: picard/const/tags.py:300 picard/const/tags.py:889
 msgid ""
 "The date that the release (album) was issued, in the format `YYYY-MM-DD`."
-msgstr ""
+msgstr "De datum waarop de uitgave is uitgegeven, in de indeling `JJJJ-MM-DD`."
 
 #: picard/const/tags.py:305
 msgid "Director"
@@ -4568,36 +4650,40 @@ msgid ""
 "The director of a track as provided by the \"*Video Director*\" or \"*Audio "
 "Director*\" relationship in MusicBrainz."
 msgstr ""
+"De regisseur van de opname, afkomstig van de relaties ‘*videoregisseur*’ en "
+"‘*audioregisseur*’ in MusicBrainz."
 
 #: picard/const/tags.py:315
 msgid "Directory name"
-msgstr ""
+msgstr "Naam van de map"
 
 #: picard/const/tags.py:316
 msgid ""
 "The name of the directory containing the file at the point of being loaded "
 "into Picard."
 msgstr ""
+"De naam van de map waarin het bestand zich bevond toen het in Picard werd "
+"geladen."
 
 #: picard/const/tags.py:324
 msgid "FreeDB Disc ID"
-msgstr ""
+msgstr "Disc-ID van FreeDB"
 
 #: picard/const/tags.py:325
 msgid "The identification number of the disc in the FreeDB database."
-msgstr ""
+msgstr "De identificatiecode van de cd in de FreeDB-databank."
 
 #: picard/const/tags.py:328
 msgid "FreeDB"
-msgstr ""
+msgstr "FreeDB"
 
 #: picard/const/tags.py:330
 msgid "FreeDB DiscID Calculation"
-msgstr ""
+msgstr "Berekening van FreeDB-disc-ID"
 
 #: picard/const/tags.py:334
 msgid "FreeDB DiscID including Calculation Example (French)"
-msgstr ""
+msgstr "Disc-ID van FreeDB, inclusief rekenvoorbeeld (Frans)"
 
 #: picard/const/tags.py:341
 msgid "Disc Number"
@@ -4605,16 +4691,18 @@ msgstr "Mediumnummer"
 
 #: picard/const/tags.py:342
 msgid "The number of the disc in the release that contains this track."
-msgstr ""
+msgstr "Het nummer van het medium waarop dit nummer staat."
 
 #: picard/const/tags.py:347
 msgid "Disc Has Pregap"
-msgstr ""
+msgstr "Medium heeft pregapnummer"
 
 #: picard/const/tags.py:348
 msgid ""
 "Set to 1 if the disc the track is on has a \"pregap track\", otherwise empty."
 msgstr ""
+"Dit wordt ingesteld op ‘1’ als het medium waarop het nummer staat een ‘"
+"pregapnummer’ heeft, anders blijft dit leeg."
 
 #: picard/const/tags.py:355
 msgid "Disc Subtitle"
@@ -4622,7 +4710,7 @@ msgstr "Mediumondertitel"
 
 #: picard/const/tags.py:356
 msgid "The media title given to a specific disc in the release."
-msgstr ""
+msgstr "De titel van een specifiek medium van de uitgave."
 
 #: picard/const/tags.py:361
 msgid "DJ-Mixer"
@@ -4630,7 +4718,7 @@ msgstr "Dj-mixer"
 
 #: picard/const/tags.py:362
 msgid "The names of the DJ mixers for the track."
-msgstr ""
+msgstr "De namen van de dj-mixers van de opname."
 
 #: picard/const/tags.py:368
 msgid "Encoded By"
@@ -4638,7 +4726,7 @@ msgstr "Gecodeerd door"
 
 #: picard/const/tags.py:369
 msgid "The person or organization that encoded the track."
-msgstr ""
+msgstr "De persoon of organisatie die de opname heeft gecodeerd."
 
 #: picard/const/tags.py:374
 msgid "Encoder Settings"
@@ -4646,7 +4734,7 @@ msgstr "Encoderinstellingen"
 
 #: picard/const/tags.py:375
 msgid "The settings used when encoding the track."
-msgstr ""
+msgstr "De instellingen die voor het coderen van de opname zijn gebruikt."
 
 #: picard/const/tags.py:380
 msgid "Engineer"
@@ -4654,35 +4742,39 @@ msgstr "Technicus"
 
 #: picard/const/tags.py:381
 msgid "The names of the engineers associated with the track."
-msgstr ""
+msgstr "De namen van de technici die bij de opname betrokken waren."
 
 #: picard/const/tags.py:387
 msgid "File Extension"
-msgstr ""
+msgstr "Bestandsextensie"
 
 #: picard/const/tags.py:388
 msgid "The file's extension."
-msgstr ""
+msgstr "De bestandsextensie."
 
 #: picard/const/tags.py:396
 msgid "File Created Timestamp"
-msgstr ""
+msgstr "Tijdstempel van aanmaken"
 
 #: picard/const/tags.py:397
 msgid ""
 "The file creation timestamp in the form `YYYY-MM-DD HH:MM:SS` as reported by "
 "the file system."
 msgstr ""
+"Het tijdstempel van het aanmaken van het bestand, zoals aangegeven door het "
+"bestandssysteem, in de indeling ‘JJJJ-MM-DD UU:MM:SS’."
 
 #: picard/const/tags.py:405
 msgid "File Modified Timestamp"
-msgstr ""
+msgstr "Tijdstempel van bewerken"
 
 #: picard/const/tags.py:407
 msgid ""
 "The file modification timestamp in the form `YYYY-MM-DD HH:MM:SS` as "
 "reported by the file system."
 msgstr ""
+"Het tijdstempel van het bewerken van het bestand, zoals aangegeven door het "
+"bestandssysteem, in de indeling ‘JJJJ-MM-DD UU:MM:SS’."
 
 #: picard/const/tags.py:416
 msgid "File Name"
@@ -4690,31 +4782,31 @@ msgstr "Bestandsnaam"
 
 #: picard/const/tags.py:417
 msgid "The name of the file without extension."
-msgstr ""
+msgstr "De naam van het bestand, zonder de extensie."
 
 #: picard/const/tags.py:426
 msgid "File Path"
-msgstr ""
+msgstr "Bestandspad"
 
 #: picard/const/tags.py:427
 msgid "Full path and name of the file."
-msgstr ""
+msgstr "Het volledige pad van het bestand, inclusief bestandsnaam."
 
 #: picard/const/tags.py:435
 msgid "File Size"
-msgstr ""
+msgstr "Bestandsgrootte"
 
 #: picard/const/tags.py:436
 msgid "Size of the file in bytes."
-msgstr ""
+msgstr "De grootte van het bestand in bytes."
 
 #: picard/const/tags.py:444
 msgid "File Format"
-msgstr ""
+msgstr "Bestandsindeling"
 
 #: picard/const/tags.py:445
 msgid "Media format of the file (e.g.: MPEG-1 Audio)."
-msgstr ""
+msgstr "De indeling van het bestand (bijv. MPEG-1-audio)."
 
 #: picard/const/tags.py:454
 msgid "Gapless Playback"
@@ -4724,7 +4816,7 @@ msgstr "Naadloos afspelen"
 msgid ""
 "Indicates whether or not there are gaps between the recordings on the "
 "release."
-msgstr ""
+msgstr "Geeft aan of er pauzes tussen de opnamen op deze uitgave zitten."
 
 #: picard/const/tags.py:460
 msgid "Genre"
@@ -4732,15 +4824,15 @@ msgstr "Genre"
 
 #: picard/const/tags.py:461
 msgid "The specified genre information from MusicBrainz."
-msgstr ""
+msgstr "Het genre volgens de informatie in MusicBrainz."
 
 #: picard/const/tags.py:469
 msgid "Grouping"
-msgstr "Groeperen"
+msgstr "Genregroep"
 
 #: picard/const/tags.py:470
 msgid "Genre grouping associated with the track"
-msgstr ""
+msgstr "De genregroep die aan de opname is gekoppeld."
 
 #: picard/const/tags.py:475
 msgid "ISRC"
@@ -4752,16 +4844,16 @@ msgid ""
 "standard code for uniquely identifying sound recordings and music video "
 "recordings."
 msgstr ""
+"De International Standard Recording Code, een internationale standaardcode "
+"waarmee audio- en video-opnamen eenduidig kunnen worden geïdentificeerd."
 
 #: picard/const/tags.py:485
-#, fuzzy
-#| msgid "Kenyang"
 msgid "Key"
-msgstr "Kenyang"
+msgstr "Toonsoort"
 
 #: picard/const/tags.py:486
 msgid "The key of the music."
-msgstr ""
+msgstr "De toonsoort van de muziek."
 
 #: picard/const/tags.py:491
 msgid "Record Label"
@@ -4769,17 +4861,17 @@ msgstr "Platenmaatschappij"
 
 #: picard/const/tags.py:492
 msgid "The names of the labels associated with the release."
-msgstr ""
+msgstr "De namen van de platenmaatschappijen van de uitgave."
 
 #: picard/const/tags.py:498
-#, fuzzy
-#| msgid "Langi"
 msgid "Language"
-msgstr "Langi"
+msgstr "Taal"
 
 #: picard/const/tags.py:499
 msgid "Work lyric language as per ISO 639-3 if a related work exists."
 msgstr ""
+"De taal van de compositie (gebaseerd op ISO 639-3), mits er een compositie "
+"aan de opname is gekoppeld."
 
 #: picard/const/tags.py:504
 msgid "Length"
@@ -4787,7 +4879,7 @@ msgstr "Lengte"
 
 #: picard/const/tags.py:505
 msgid "The length of the track in format mins:secs."
-msgstr ""
+msgstr "De duur van het nummer, in de indeling min:s."
 
 #: picard/const/tags.py:511
 msgid "License"
@@ -4797,7 +4889,7 @@ msgstr "Licentie"
 msgid ""
 "The license associated with the track, either through the release or "
 "recording relationships."
-msgstr ""
+msgstr "De licentie van de opname, afkomstig van uitgave- en opnamerelaties."
 
 #: picard/const/tags.py:516
 msgid "Lyricist"
@@ -4805,15 +4897,15 @@ msgstr "Tekstschrijver"
 
 #: picard/const/tags.py:517
 msgid "The names of the lyricists for the associated work."
-msgstr ""
+msgstr "De namen van de tekstschrijvers van de gekoppelde compositie."
 
 #: picard/const/tags.py:523
 msgid "Lyricist Sort"
-msgstr ""
+msgstr "Sorteernamen van de tekstschrijvers"
 
 #: picard/const/tags.py:524
 msgid "The sort names of the lyricists for the associated work."
-msgstr ""
+msgstr "De sorteernamen van de tekstschrijvers van de gekoppelde compositie."
 
 #: picard/const/tags.py:530
 msgid "Lyrics"
@@ -4821,7 +4913,7 @@ msgstr "Tekst"
 
 #: picard/const/tags.py:531
 msgid "The lyrics for the track."
-msgstr ""
+msgstr "De teksten van de opname."
 
 #: picard/const/tags.py:537
 msgid "Media"
@@ -4829,7 +4921,7 @@ msgstr "Medium"
 
 #: picard/const/tags.py:538
 msgid "The media on which the release was distributed (e.g.: CD)."
-msgstr ""
+msgstr "Het soort medium dat de uitgave bevat (bijv. cd)."
 
 #: picard/const/tags.py:543
 msgid "Mixer"
@@ -4837,7 +4929,7 @@ msgstr "Mixer"
 
 #: picard/const/tags.py:544
 msgid "The names of the \"*Mixed By*\" engineers associated with the track."
-msgstr ""
+msgstr "De namen van de technici die de opname hebben gemixt."
 
 #: picard/const/tags.py:550
 msgid "Mood"
@@ -4845,7 +4937,7 @@ msgstr "Stemming"
 
 #: picard/const/tags.py:551
 msgid "The mood associated with the track."
-msgstr ""
+msgstr "De stemming die aan de opname is gekoppeld."
 
 #: picard/const/tags.py:556
 msgid "Movement"
@@ -4853,7 +4945,7 @@ msgstr "Deel"
 
 #: picard/const/tags.py:557
 msgid "Name of the movement (e.g.: \"Andante con moto\")."
-msgstr ""
+msgstr "De naam van het deel (van een klassiek stuk, zoals ‘Andante con moto’)."
 
 #: picard/const/tags.py:562
 msgid "Movement Number"
@@ -4864,6 +4956,9 @@ msgid ""
 "Movement number in Arabic numerals (e.g.: \"2\"). Players explicitly "
 "supporting this tag will often display it in Roman numerals (e.g.: \"II\")."
 msgstr ""
+"Het nummer van het deel, in Arabische cijfers (bijv. ‘2’). Spelers die deze "
+"tag expliciet ondersteunen, geven het nummer vaak in Romeinse cijfers weer "
+"(bijv. ‘II’)."
 
 #: picard/const/tags.py:571
 msgid "Movement Count"
@@ -4871,45 +4966,47 @@ msgstr "Aantal delen"
 
 #: picard/const/tags.py:572
 msgid "Total number of movements in the work (e.g.: \"4\")."
-msgstr ""
+msgstr "Het totaal aantal delen van de compositie (bijv. ‘4’)."
 
 #: picard/const/tags.py:577
 msgid "Multiple Artists"
-msgstr ""
+msgstr "Meerdere artiesten"
 
 #: picard/const/tags.py:578
 msgid ""
 "Set to 1 if not all of the tracks on the album have the same primary artist, "
 "otherwise empty."
 msgstr ""
+"Dit is ingesteld op ‘1’ als niet alle nummers op de uitgave dezelfde "
+"primaire artiest hebben, anders blijft dit leeg."
 
 #: picard/const/tags.py:584
 msgid "Release Artist MBID"
-msgstr ""
+msgstr "MBID van de uitgaveartiesten"
 
 #: picard/const/tags.py:585
 msgid "The MusicBrainz Identifiers (MBIDs) for the release artists."
-msgstr ""
+msgstr "De MusicBrainz-ID’s (MBID’s) van de artiesten van de uitgave."
 
 #: picard/const/tags.py:590
 msgid "Release MBID"
-msgstr ""
+msgstr "MBID van de uitgave"
 
 #: picard/const/tags.py:591
 msgid "The MusicBrainz Identifier (MBID) for the release."
-msgstr ""
+msgstr "De MusicBrainz-ID (MBID) van de uitgave."
 
 #: picard/const/tags.py:595
 msgid "Artist MBID"
-msgstr ""
+msgstr "MBID van de artiesten"
 
 #: picard/const/tags.py:596
 msgid "The MusicBrainz Identifiers (MBIDs) for the track artists."
-msgstr ""
+msgstr "De MusicBrainz-ID’s (MBID’s) van de artiesten van het nummer."
 
 #: picard/const/tags.py:601
 msgid "MusicBrainz DiscID"
-msgstr ""
+msgstr "MusicBrainz-disc-ID"
 
 #: picard/const/tags.py:603
 msgid ""
@@ -4918,40 +5015,50 @@ msgid ""
 "information read from the disc. This tag contains the Disc ID if the album "
 "information was retrieved using `Tools > Lookup CD` from the menu."
 msgstr ""
+"De disc-ID is een code waarmee MusicBrainz fysieke cd’s aan een uitgave "
+"koppelt. De ID is gebaseerd op de inhoudsopgave (ToC) die van de cd wordt "
+"gelezen. Deze tag bevat de disc-ID als de informatie is opgevraagd met `‘"
+"Hulpmiddelen --> Cd opzoeken’` in het menu."
 
 #: picard/const/tags.py:609
 msgid "Disc ID Calculation"
-msgstr ""
+msgstr "De disc-ID berekenen"
 
 #: picard/const/tags.py:613
 msgid "Disc IDs"
-msgstr ""
+msgstr "Disc-id’s"
 
 #: picard/const/tags.py:615
 msgid ""
 "A list of all of the disc ids attached to the selected release. The list "
 "provided for each medium only includes the disc ids attached to that medium."
 msgstr ""
+"Een lijst met alle disc-ID’s van de geselecteerde uitgave. De lijst per "
+"medium bevat alleen disc-ID’s die aan dat medium zijn gekoppeld."
 
 #: picard/const/tags.py:619
 msgid ""
 "For example, the list provided for Disc 1 of a three CD set will not include "
 "the disc ids attached to discs 2 and 3 of the set."
 msgstr ""
+"De lijst met disc-ID’s voor cd 1 van een cd-set met drie cd’s bevat dus niet "
+"de disc-ID’s die aan cd 2 en cd 3 van de set zijn gekoppeld."
 
 #: picard/const/tags.py:628
 msgid "Original Release MBID"
-msgstr ""
+msgstr "MBID van de originele uitgave"
 
 #: picard/const/tags.py:630
 msgid ""
 "The MusicBrainz Identifier (MBID) for the original release. This is only "
 "available if the release has been merged with another release."
 msgstr ""
+"De MusicBrainz-ID (MBID) van de originele uitgave. Dit is alleen beschikbaar "
+"als de uitgave ooit met een andere uitgave is samengevoegd."
 
 #: picard/const/tags.py:636
 msgid "Original Artist MBID"
-msgstr ""
+msgstr "MBID van de originele artiest"
 
 #: picard/const/tags.py:638
 msgid ""
@@ -4959,49 +5066,55 @@ msgid ""
 "recording. This is only available if the recording has been merged with "
 "another recording."
 msgstr ""
+"De MusicBrainz-ID (MBID’s) van de artiesten van de originele opname. Dit is "
+"alleen beschikbaar als de opname ooit met een andere uitgave is samengevoegd."
 
 #: picard/const/tags.py:645
 msgid "Recording MBID"
-msgstr ""
+msgstr "MBID van de opname"
 
 #: picard/const/tags.py:646
 msgid "The MusicBrainz Identifier (MBID) for the recording."
-msgstr ""
+msgstr "De MusicBrainz-ID (MBID) van de opname."
 
 #: picard/const/tags.py:650
 msgid "Release Group MBID"
-msgstr ""
+msgstr "MBID van de uitgavegroep"
 
 #: picard/const/tags.py:651
 msgid "The MusicBrainz Identifier (MBID) for the release group."
-msgstr ""
+msgstr "De MusicBrainz-ID (MBID) van de uitgavegroep."
 
 #: picard/const/tags.py:655
 msgid "Track MBID"
-msgstr ""
+msgstr "MBID van het nummer"
 
 #: picard/const/tags.py:656
 msgid "The MusicBrainz Identifier (MBID) for the track."
-msgstr ""
+msgstr "De MusicBrainz-ID (MBID) van het nummer."
 
 #: picard/const/tags.py:660
 msgid "Track Number Shown"
-msgstr ""
+msgstr "Nummerpositie zoals vermeld"
 
 #: picard/const/tags.py:661
 msgid ""
 "The track number written as on the MusicBrainz release, such as vinyl "
 "numbering (A1, A2, etc.)"
 msgstr ""
+"De nummerpositie zoals vermeld op de uitgave in MusicBrainz, zoals A1, A2 "
+"enz. bij veel vinyluitgaven."
 
 #: picard/const/tags.py:667
 msgid "Work MBID"
-msgstr ""
+msgstr "MBID van de compositie"
 
 #: picard/const/tags.py:668
 msgid ""
 "The MusicBrainz Identifier (MBID) for the Work if a related work exists."
 msgstr ""
+"De MusicBrainz-ID (MBID) van de compositie, als er een compositie is "
+"gekoppeld."
 
 #: picard/const/tags.py:673
 msgid "MusicIP Fingerprint"
@@ -5009,7 +5122,7 @@ msgstr "MusicIP-vingerafdruk"
 
 #: picard/const/tags.py:674
 msgid "The MusicIP Fingerprint for the track."
-msgstr ""
+msgstr "De MusicIP-vingerafdruk van het nummer."
 
 #: picard/const/tags.py:679
 msgid "MusicIP PUID"
@@ -5017,17 +5130,17 @@ msgstr "MusicIP-PUID"
 
 #: picard/const/tags.py:680
 msgid "The MusicIP PUIDs associated with the track."
-msgstr ""
+msgstr "De MusicIP-PUID’s van het nummer."
 
 #: picard/const/tags.py:685
 msgid "Original Album"
-msgstr "Oorspronkelijke album"
+msgstr "Origineel album"
 
 #: picard/const/tags.py:687
 msgid ""
 "The release title of the earliest release in the release group intended for "
 "the title of the original recording."
-msgstr ""
+msgstr "De titel van de eerste uitgave in de uitgavegroep."
 
 #: picard/const/tags.py:694
 msgid "Original Artist"
@@ -5037,7 +5150,7 @@ msgstr "Originele artiest"
 msgid ""
 "The track artist of the earliest release in the release group intended for "
 "the performers of the original recording."
-msgstr ""
+msgstr "De artiest van het nummer op de eerste uitgave in de uitgavegroep."
 
 #: picard/const/tags.py:703
 msgid "Original Release Date"
@@ -5052,6 +5165,12 @@ msgid ""
 "**Note:** If you are storing tags in MP3 files as ID3v2.3 then the original "
 "date can only be stored as a year."
 msgstr ""
+"De originele uitgavedatum in de indeling `JJJJ-MM-DD`. Standaard is dit "
+"ingesteld op de vroegste uitgave in de uitgavegroep. Zo krijg je "
+"bijvoorbeeld de uitgavedatum van de vinylversie van de cd die je hebt.\n"
+"\n"
+"**Let op:** als je de tags in mp3-bestanden als ID3v2.3-tags opslaat, wordt "
+"alleen het jaartal opgeslagen."
 
 #: picard/const/tags.py:713
 msgid "Original Filename"
@@ -5059,7 +5178,7 @@ msgstr "Originele bestandsnaam"
 
 #: picard/const/tags.py:714
 msgid "The original name of the audio file."
-msgstr ""
+msgstr "De oorspronkelijke bestandsnaam van het audiobestand."
 
 #: picard/const/tags.py:719
 msgid "Original Year"
@@ -5071,22 +5190,29 @@ msgid ""
 "is set to the earliest release in the release group. This can provide, for "
 "example, the release year of the vinyl version of what you have on CD."
 msgstr ""
+"Het jaar van de originele uitgavedatum in de indeling `JJJJ`. Standaard is "
+"dit ingesteld op de vroegste uitgave in de uitgavegroep. Zo krijg je "
+"bijvoorbeeld het uitgavejaar van de vinylversie van de cd die je hebt."
 
 #: picard/const/tags.py:728
 msgid "Performance Attributes"
-msgstr ""
+msgstr "Uitvoeringseigenschappen"
 
 #: picard/const/tags.py:729
 msgid ""
 "List of performance attributes for the work (e.g.: \"*live*\", \"*cover*\", "
 "\"*medley*\")."
 msgstr ""
+"Een lijst met eigenschappen van de compositie (zoals ‘*live*’, ‘*cover*’ of "
+"‘*medley*’)."
 
 #: picard/const/tags.py:731
 msgid ""
 "Use `$inmulti()` to check for a specific type (e.g.: "
 "`$if($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 msgstr ""
+"Gebruik `$inmulti()` om op een specifiek type te controleren (bijv. `$if"
+"($inmulti(%_performance_attributes%,medley), (Medley),)`)."
 
 #: picard/const/tags.py:740
 msgid "Performer"
@@ -5103,6 +5229,15 @@ msgid ""
 "- the concert master for the associated release or recording, where \"type\" "
 "is \"*concertmaster*\""
 msgstr ""
+"De namen van de uitvoerende artiesten voor de opgegeven rol. Deze rollen "
+"zijn:\n"
+"\n"
+"-vocalen of instrumenten voor de relevante uitgave of opname, waarbij "
+"bijvoorbeeld ‘type’ ‘*vocal*’, ‘*guest guitar*’, ‘*solo violin*’ is.\n"
+"- het orkest van de relevante uitgave of opname, als het ‘type’ "
+"‘*orchestra*’ is.\n"
+"- de concertmeester van de relevante uitgave of opname, als het ‘type’ "
+"‘*concertmaster*’ is."
 
 #: picard/const/tags.py:753
 msgid "Podcast"
@@ -5110,7 +5245,7 @@ msgstr "Podcast"
 
 #: picard/const/tags.py:754
 msgid "Indicates whether or not the recording is a podcast."
-msgstr ""
+msgstr "Geeft aan of de opname een podcast is."
 
 #: picard/const/tags.py:759
 msgid "Podcast URL"
@@ -5118,29 +5253,33 @@ msgstr "Podcast-URL"
 
 #: picard/const/tags.py:760
 msgid "The associated URL if the recording is a podcast."
-msgstr ""
+msgstr "De URL van de podcast (als de opname een podcast is)."
 
 #: picard/const/tags.py:765
 msgid "Pregap Track"
-msgstr ""
+msgstr "Pregapnummer"
 
 #: picard/const/tags.py:766
 msgid "Set to 1 if the track is a \"pregap track\", otherwise empty."
 msgstr ""
+"Dit wordt ingesteld op ‘1’ als het nummer een ‘pregapnummer” is, anders "
+"blijft dit leeg."
 
 #: picard/const/tags.py:772
 msgid "Primary Release Type"
-msgstr ""
+msgstr "Primaire uitgavetype"
 
 #: picard/const/tags.py:773
 msgid ""
 "The primary type of the release group (i.e.: *album*, *single*, *ep*, "
 "*broadcast*, or *other*)."
 msgstr ""
+"Het primaire type van de uitgavegroep (zoals *album*, *single*, *EP*, "
+"*uitzending* of *overig*)."
 
 #: picard/const/tags.py:777 picard/const/tags.py:1002 picard/const/tags.py:1091
 msgid "Release group types"
-msgstr ""
+msgstr "Types uitgavegroepen"
 
 #: picard/const/tags.py:781
 msgid "Producer"
@@ -5148,16 +5287,18 @@ msgstr "Producent"
 
 #: picard/const/tags.py:782
 msgid "The names of the producers for the associated release or recording."
-msgstr ""
+msgstr "De namen van de producenten van de relevante uitgave of opname."
 
 #: picard/const/tags.py:788
 msgid "R128 Album Gain"
-msgstr "R218-albumcorrectie"
+msgstr "R128-uitgavecorrectie"
 
 #: picard/const/tags.py:789
 msgid ""
 "Album gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"De volumecorrectie voor de uitgave, berekend volgens de methode van de "
+"European Broadcasting Union (R128)."
 
 #: picard/const/tags.py:795
 msgid "R128 Track Gain"
@@ -5167,99 +5308,111 @@ msgstr "R128-nummercorrectie"
 msgid ""
 "Track gain as determined by European Broadcasting Union \"R 128\" analysis."
 msgstr ""
+"De volumecorrectie voor het nummer, berekend volgens de methode van de "
+"European Broadcasting Union (R128)."
 
 #: picard/const/tags.py:802
-#, fuzzy
-#| msgid "Latin"
 msgid "Rating"
-msgstr "Latijn"
+msgstr "Waardering"
 
 #: picard/const/tags.py:803
 msgid "The rating of the track from 0-5 by MusicBrainz users."
-msgstr ""
+msgstr "De waardering van het nummer door MusicBrainz-gebruikers (van 0 tot 5)."
 
 #: picard/const/tags.py:808
 msgid "Recording First Released"
-msgstr ""
+msgstr "Eerste uitgave van de opname"
 
 #: picard/const/tags.py:809
 msgid ""
 "The date of the earliest recording for a track in the format `YYYY-MM-DD`."
 msgstr ""
+"De datum van de eerste opname van een nummer, in de indeling `JJJJ-MM-DD`."
 
 #: picard/const/tags.py:815
 msgid "Recording Series"
-msgstr ""
+msgstr "Serie opnamen"
 
 #: picard/const/tags.py:816
 msgid "The series titles associated with the recording."
-msgstr ""
+msgstr "De naam van de serie die aan de opname is gekoppeld."
 
 #: picard/const/tags.py:822
 msgid "Recording Series Comment"
-msgstr ""
+msgstr "Verduidelijking van de serie opnamen"
 
 #: picard/const/tags.py:823
 msgid "The series disambiguation comments associated with the recording."
 msgstr ""
+"De verduidelijking van de serie die aan de opname is gekoppeld. Met de "
+"verduidelijking kan onderscheid worden gemaakt tussen series die dezelfde of "
+"op elkaar lijkende namen hebben."
 
 #: picard/const/tags.py:829
 msgid "Recording Series MBID"
-msgstr ""
+msgstr "MBID van de serie opnamen"
 
 #: picard/const/tags.py:830
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the recording."
 msgstr ""
+"De MusicBrainz-ID’s (MBID’s) van de serie die aan de opname is gekoppeld."
 
 #: picard/const/tags.py:836
 msgid "Recording Series Number"
-msgstr ""
+msgstr "Positie van opname in serie"
 
 #: picard/const/tags.py:837
 msgid "The series numbers associated with the recording."
-msgstr ""
+msgstr "De positie die de opname in de serie opnames inneemt."
 
 #: picard/const/tags.py:843
 msgid "Recording Comment"
-msgstr ""
+msgstr "Verduidelijking van de opname"
 
 #: picard/const/tags.py:844
 msgid "The disambiguation comment for the recording associated with a track."
 msgstr ""
+"De verduidelijking van de opname die aan het nummer is gekoppeld. Met de "
+"verduidelijking kan onderscheid worden gemaakt tussen opnamen die dezelfde "
+"of op elkaar lijkende namen hebben."
 
 #: picard/const/tags.py:850
 msgid "Recording Title"
-msgstr ""
+msgstr "Titel van de opname"
 
 #: picard/const/tags.py:851
 msgid ""
 "Recording title - normally the same as the track title, but can be different."
 msgstr ""
+"De titel van de opname. Meestal is dit hetzelfde als de titel van het nummer."
 
 #: picard/const/tags.py:857
 msgid "Release Annotation"
-msgstr ""
+msgstr "Uitgave-aantekening"
 
 #: picard/const/tags.py:858
 msgid "The annotation comment for the release."
-msgstr ""
+msgstr "De aantekening van de uitgave."
 
 #: picard/const/tags.py:864
 msgid "Release Comment"
-msgstr ""
+msgstr "Verduidelijking van de uitgave"
 
 #: picard/const/tags.py:865
 msgid "The disambiguation comment for the release."
 msgstr ""
+"De verduidelijking van de uitgave. Met de verduidelijking kan onderscheid "
+"worden gemaakt tussen uitgaven die dezelfde of op elkaar lijkende namen "
+"hebben."
 
 #: picard/const/tags.py:871
 msgid "Release Countries"
-msgstr ""
+msgstr "Landen van uitgave"
 
 #: picard/const/tags.py:872
 msgid "The complete list of release countries for the release."
-msgstr ""
+msgstr "Een volledige lijst van de landen waar de uitgave is uitgegeven."
 
 #: picard/const/tags.py:879
 msgid "Release Country"
@@ -5271,6 +5424,9 @@ msgid ""
 "more than one release country was specified, this tag will contain the first "
 "one in the list."
 msgstr ""
+"De landcode van twee tekens van het land waarin de uitgave is uitgebracht. "
+"Als er meer dan één land van uitgave is, wordt alleen het eerste land in de "
+"lijst gebruikt."
 
 #: picard/const/tags.py:888
 msgid "Release Date"
@@ -5283,20 +5439,25 @@ msgid ""
 "by default. In most cases it is recommended to use the `%date%` tag instead "
 "for compatibility with existing software."
 msgstr ""
+"Deze tag is bedoeld voor gebruik in scripts en plug-ins, en wordt standaard "
+"niet ingevuld. Voor compatibiliteit met bestaande software kan je in de "
+"meeste gevallen beter de tag `%date%` gebruiken."
 
 #: picard/const/tags.py:899
 msgid "Release Group"
-msgstr ""
+msgstr "Uitgavegroep"
 
 #: picard/const/tags.py:901
 msgid ""
 "The title of the release group. This is typically the same as the album "
 "title, but can be different."
 msgstr ""
+"De naam van de uitgavegroep. Meestal is dit hetzelfde als de naam van de "
+"uitgave, maar niet altijd."
 
 #: picard/const/tags.py:908
 msgid "RG First Released"
-msgstr ""
+msgstr "Eerste uitgave van de uitgavegroep"
 
 #: picard/const/tags.py:910
 msgid ""
@@ -5304,87 +5465,102 @@ msgid ""
 "DD`. This is intended to provide, for example, the release date of the vinyl "
 "version of what you have on CD."
 msgstr ""
+"De datum van de vroegste uitgave in de uitgavegroep, in de indeling `JJJJ-MM-"
+"DD`. Je kan dit bijvoorbeeld gebruiken om aan te geven wanneer de "
+"vinylversie van de cd die je hebt is uitgegeven."
 
 #: picard/const/tags.py:919
 msgid "RG Series"
-msgstr ""
+msgstr "Serie uitgavegroepen"
 
 #: picard/const/tags.py:920
 msgid "The series titles associated with the release group."
-msgstr ""
+msgstr "De naam van de serie die aan de uitgavegroep is gekoppeld."
 
 #: picard/const/tags.py:926
 msgid "RG Series Comment"
-msgstr ""
+msgstr "Verduidelijking van de serie uitgavegroepen"
 
 #: picard/const/tags.py:927
 msgid "The series disambiguation comments associated with the release group."
 msgstr ""
+"De verduidelijking van de serie die aan de uitgavegroep is gekoppeld. Met de "
+"verduidelijking kan onderscheid worden gemaakt tussen series die dezelfde of "
+"op elkaar lijkende namen hebben."
 
 #: picard/const/tags.py:933
 msgid "RG Series MBID"
-msgstr ""
+msgstr "MBID van de serie uitgaven"
 
 #: picard/const/tags.py:934
 msgid ""
 "The series MusicBrainz Identifiers (MBIDs) associated with the release group."
 msgstr ""
+"De MusicBrainz-ID’s (MBID’s) van de serie die aan de uitgavegroep is "
+"gekoppeld."
 
 #: picard/const/tags.py:940
 msgid "RG Series Number"
-msgstr ""
+msgstr "Positie van uitgavegroep in serie"
 
 #: picard/const/tags.py:941
 msgid "The series numbers associated with the release group."
-msgstr ""
+msgstr "De positie die de uitgavegroep in de serie uitgavegroepen inneemt."
 
 #: picard/const/tags.py:947
 msgid "RG Comment"
-msgstr ""
+msgstr "Verduidelijking van de uitgavegroep"
 
 #: picard/const/tags.py:948
 msgid "The disambiguation comment for the release group."
 msgstr ""
+"De verduidelijking van de uitgavegroep. Met de verduidelijking kan "
+"onderscheid worden gemaakt tussen uitgavegroepen die dezelfde of op elkaar "
+"lijkende namen hebben."
 
 #: picard/const/tags.py:954
 msgid "Release Language"
-msgstr ""
+msgstr "Taal van de uitgave"
 
 #: picard/const/tags.py:955
 msgid "The language of the release as per ISO 639-3."
-msgstr ""
+msgstr "De taal van de uitgave (gebaseerd op ISO 639-3)."
 
 #: picard/const/tags.py:961
 msgid "Release Series"
-msgstr ""
+msgstr "Serie uitgaven"
 
 #: picard/const/tags.py:962
 msgid "The series titles associated with the release."
-msgstr ""
+msgstr "De naam van de serie die aan de uitgave is gekoppeld."
 
 #: picard/const/tags.py:968
 msgid "Release Series Comment"
-msgstr ""
+msgstr "Verduidelijking van de serie uitgaven"
 
 #: picard/const/tags.py:969
 msgid "The series disambiguation comments associated with the release."
 msgstr ""
+"De verduidelijking van de serie die aan de uitgave is gekoppeld. Met de "
+"verduidelijking kan onderscheid worden gemaakt tussen series die dezelfde of "
+"op elkaar lijkende namen hebben."
 
 #: picard/const/tags.py:975
 msgid "Release Series MBID"
-msgstr ""
+msgstr "MBID van de serie uitgaven"
 
 #: picard/const/tags.py:976
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the release."
 msgstr ""
+"De MusicBrainz-ID’s (MBID’s) van de serie die aan de uitgave is gekoppeld."
 
 #: picard/const/tags.py:982
 msgid "Release Series Number"
-msgstr ""
+msgstr "Positie van uitgave in serie"
 
 #: picard/const/tags.py:983
 msgid "The series numbers associated with the release."
-msgstr ""
+msgstr "De positie die de uitgave in de serie uitgaven inneemt."
 
 #: picard/const/tags.py:989
 msgid "Release Status"
@@ -5396,6 +5572,8 @@ msgid ""
 "include \"*official*\", \"*promotional*\", \"*bootleg*\", and \"*pseudo-"
 "release*\"."
 msgstr ""
+"Dit geeft aan hoe ‘officieel’ de uitgave is. Mogelijke waarden zijn "
+"‘*officieel*’, ‘*promotie*’, ‘*bootleg*’ en ‘*pseudo-uitgave*’."
 
 #: picard/const/tags.py:998
 msgid "Release Type"
@@ -5403,7 +5581,7 @@ msgstr "Uitgavetype"
 
 #: picard/const/tags.py:999
 msgid "The types of release assigned to the release group."
-msgstr ""
+msgstr "De typen uitgave die aan de uitgavegroep zijn gekoppeld."
 
 #: picard/const/tags.py:1007
 msgid "Remixer"
@@ -5411,31 +5589,37 @@ msgstr "Remixer"
 
 #: picard/const/tags.py:1008
 msgid "The names of the remixer engineers associated with the track."
-msgstr ""
+msgstr "De namen van de technici die de opname geremixt hebben."
 
 #: picard/const/tags.py:1014
 msgid "ReplayGain Album Gain"
-msgstr "ReplayGain-albumcorrectie"
+msgstr "ReplayGain-uitgavecorrectie"
 
 #: picard/const/tags.py:1015
 msgid "Album gain setting resulting from ReplayGain analysis of the album."
 msgstr ""
+"De volumecorrectie op uitgaveniveau, berekend door de ReplayGain-analyse van "
+"de uitgave."
 
 #: picard/const/tags.py:1021
 msgid "ReplayGain Album Peak"
-msgstr "ReplayGain-albumpiek"
+msgstr "ReplayGain-uitgavepiek"
 
 #: picard/const/tags.py:1022
 msgid "Album peak setting resulting from ReplayGain analysis of the album."
 msgstr ""
+"De volumepiek op uitgaveniveau, berekend door de ReplayGain-analyse van de "
+"uitgave."
 
 #: picard/const/tags.py:1028
 msgid "ReplayGain Album Range"
-msgstr "ReplayGain-albumbereik"
+msgstr "ReplayGain-uitgavebereik"
 
 #: picard/const/tags.py:1029
 msgid "Album range setting resulting from ReplayGain analysis of the album."
 msgstr ""
+"Het volumebereik op uitgaveniveau, berekend door de ReplayGain-analyse van "
+"de uitgave."
 
 #: picard/const/tags.py:1035
 msgid "ReplayGain Reference Loudness"
@@ -5446,6 +5630,8 @@ msgid ""
 "Album reference loudness setting resulting from ReplayGain analysis of the "
 "album."
 msgstr ""
+"De referentieluidheid van de uitgave, berekend door de ReplayGain-analyse "
+"van het nummer."
 
 #: picard/const/tags.py:1042
 msgid "ReplayGain Track Gain"
@@ -5454,6 +5640,8 @@ msgstr "ReplayGain-nummercorrectie"
 #: picard/const/tags.py:1043
 msgid "Track gain setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"De volumecorrectie op nummerniveau, berekend door de ReplayGain-analyse van "
+"het nummer."
 
 #: picard/const/tags.py:1049
 msgid "ReplayGain Track Peak"
@@ -5462,6 +5650,8 @@ msgstr "ReplayGain-nummerpiek"
 #: picard/const/tags.py:1050
 msgid "Track peak setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"De volumepiek op nummerniveau, berekend door de ReplayGain-analyse van het "
+"nummer."
 
 #: picard/const/tags.py:1056
 msgid "ReplayGain Track Range"
@@ -5470,30 +5660,33 @@ msgstr "ReplayGain-nummerbereik"
 #: picard/const/tags.py:1057
 msgid "Track range setting resulting from ReplayGain analysis of the track."
 msgstr ""
+"Het volumebereik op nummerniveau, berekend door de ReplayGain-analyse van "
+"het nummer."
 
 #: picard/const/tags.py:1063
 msgid "Sample Rate"
-msgstr ""
+msgstr "Bemonsteringsfrequentie"
 
 #: picard/const/tags.py:1064
 msgid "The sample rate of the audio file."
-msgstr ""
+msgstr "De bemonsteringsfrequentie van het audiobestand."
 
 #: picard/const/tags.py:1073
-#, fuzzy
-#| msgid "My script"
 msgid "Script"
-msgstr "Mijn script"
+msgstr "Schrift"
 
 #: picard/const/tags.py:1075
 msgid ""
 "The script used to write the release's track list. The possible values are "
 "taken from the ISO 15924 standard."
 msgstr ""
+"Het schrift waarin de nummerlijst van de uitgave is geschreven (Latijns, "
+"Arabisch enz.) De mogelijke waarden zijn afkomstig uit de standaard ISO "
+"15924."
 
 #: picard/const/tags.py:1082
 msgid "Secondary Release Type"
-msgstr ""
+msgstr "Secundair uitgavetype"
 
 #: picard/const/tags.py:1084
 msgid ""
@@ -5501,16 +5694,17 @@ msgid ""
 "*interview*, *live*, *mixtape/street*, *remix*, *soundtrack*, or "
 "*spokenword*) for the release group."
 msgstr ""
+"Nul of meer secundaire types van de uitgavegroep (zoals *luisterboek*, "
+"*compilatie*, *dj-mix*, *interview*, *live*, *mixtape/straat*, *remix*, "
+"*soundtrack* of *spokenword*)."
 
 #: picard/const/tags.py:1095
-#, fuzzy
-#| msgid "Silesian"
 msgid "Silence"
-msgstr "Silezisch"
+msgstr "Stilte"
 
 #: picard/const/tags.py:1096
 msgid "1 if the track title is \"[silence]\""
-msgstr ""
+msgstr "Dit wordt ingesteld op ‘1’ als de titel van het nummer ‘[silence]’ is."
 
 #: picard/const/tags.py:1102
 msgid "Show Name"
@@ -5521,6 +5715,8 @@ msgid ""
 "The name of the show if the recording is associated with a television "
 "program."
 msgstr ""
+"De naam van het tv-programma waaraan de opname is gerelateerd (als er zo’n "
+"relatie bestaat)."
 
 #: picard/const/tags.py:1108
 msgid "Show Work & Movement"
@@ -5532,22 +5728,30 @@ msgid ""
 "tag, such as iTunes and MusicBee, will display the work, movement number and "
 "movement name instead of the track title."
 msgstr ""
+"Als deze tag is ingesteld op ‘1’, geven spelers die deze tag ondersteunen, "
+"zoals iTunes en MusicBee, in plaats van de nummertitel de naam van de "
+"compositie, het nummer van het deel en de naam van het deel weer."
 
 #: picard/const/tags.py:1114
 msgid ""
 "For example, the track will be displayed as \"Symphony no. 5 in C minor, op. "
 "67: II. Andante con moto\" regardless of the value of the title tag."
 msgstr ""
+"Het nummer wordt dan bijvoorbeeld weergegeven als ‘Symfonie nr. 5 in C "
+"kleine terts, op. 67: II. Andante con moto’ ongeacht de waarde van de tag "
+"titel."
 
 #: picard/const/tags.py:1121
 msgid "Show Name Sort Order"
-msgstr "Sorteervolgorde shownaam"
+msgstr "Sorteervolgorde van de shownaam"
 
 #: picard/const/tags.py:1122
 msgid ""
 "The sort name of the show if the recording is associated with a television "
 "program."
 msgstr ""
+"De sorteernaam van het tv-programma waaraan de opname is gerelateerd (als er "
+"zo’n relatie bestaat)."
 
 #: picard/const/tags.py:1127
 msgid "Subtitle"
@@ -5556,14 +5760,16 @@ msgstr "Ondertitel"
 #: picard/const/tags.py:1128
 msgid "This is used for information directly related to the contents title."
 msgstr ""
+"Dit wordt gebruikt voor informatie die rechtstreeks aan de titel van de "
+"inhoud is gerelateerd."
 
 #: picard/const/tags.py:1133
 msgid "Synced Lyrics"
-msgstr ""
+msgstr "Gesynchroniseerde tekst"
 
 #: picard/const/tags.py:1134
 msgid "Synchronized lyrics for the track."
-msgstr ""
+msgstr "De teksten van de opname, gesynchroniseerd met de muziek."
 
 #: picard/const/tags.py:1139
 msgid "Title"
@@ -5571,7 +5777,7 @@ msgstr "Titel"
 
 #: picard/const/tags.py:1140
 msgid "The title of the track."
-msgstr ""
+msgstr "De titel van het nummer."
 
 #: picard/const/tags.py:1145
 msgid "Title Sort Order"
@@ -5579,15 +5785,15 @@ msgstr "Sorteervolgorde van titel"
 
 #: picard/const/tags.py:1146
 msgid "The sort name of the track title."
-msgstr ""
+msgstr "De sorteernaam van de nummertitel."
 
 #: picard/const/tags.py:1151
 msgid "Total Album Tracks"
-msgstr ""
+msgstr "Totaal aantal nummers uitgave"
 
 #: picard/const/tags.py:1152
 msgid "The total number of tracks across all discs of this release."
-msgstr ""
+msgstr "Het totale aantal nummers op alle media van deze uitgave."
 
 #: picard/const/tags.py:1158
 msgid "Total Discs"
@@ -5595,7 +5801,7 @@ msgstr "Totaal aantal media"
 
 #: picard/const/tags.py:1159
 msgid "The total number of discs in this release."
-msgstr ""
+msgstr "Het totale aantal media van de uitgave."
 
 #: picard/const/tags.py:1163
 msgid "Total Tracks"
@@ -5603,7 +5809,7 @@ msgstr "Totaal aantal nummers"
 
 #: picard/const/tags.py:1164
 msgid "The total number of tracks on this disc."
-msgstr ""
+msgstr "Het totale aantal nummers op dit medium."
 
 #: picard/const/tags.py:1168
 msgid "Track Number"
@@ -5611,15 +5817,15 @@ msgstr "Tracknummer"
 
 #: picard/const/tags.py:1169
 msgid "The number of the track on the disc."
-msgstr ""
+msgstr "De positie van het nummer op het medium."
 
 #: picard/const/tags.py:1173
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 #: picard/const/tags.py:1174
 msgid "Set to \"1\" if the track is a video."
-msgstr ""
+msgstr "Dit wordt ingesteld op ‘1’ als de opname een video is."
 
 #: picard/const/tags.py:1181
 msgid "Artist Website"
@@ -5627,7 +5833,7 @@ msgstr "Website van de artiest"
 
 #: picard/const/tags.py:1182
 msgid "The official website for the artist."
-msgstr ""
+msgstr "De officiële website van de artiest."
 
 #: picard/const/tags.py:1187
 msgid "Work"
@@ -5638,6 +5844,8 @@ msgid ""
 "The name of the work associated with the track (e.g.: \"Symphony no. 5 in C "
 "minor, op. 67\")."
 msgstr ""
+"De naam van de compositie die aan de opname is gekoppeld (bijv. ‘Symfonie "
+"nr. 5 in C kleine terts, op. 67’)."
 
 #: picard/const/tags.py:1190
 msgid ""
@@ -5645,67 +5853,81 @@ msgid ""
 "the \"Save iTunes compatible grouping and work\" option in order for the "
 "work to be displayed correctly."
 msgstr ""
+"Let op: als je mp3-bestanden met iTunes gebruikt, moet je de optie ‘iTunes-"
+"groeperingen en -composities opslaan’ instellen om te zorgen dat de "
+"compositie goed wordt weergegeven."
 
 #: picard/const/tags.py:1198
 msgid "Work Series"
-msgstr ""
+msgstr "Serie composities"
 
 #: picard/const/tags.py:1199
 msgid "The series titles associated with the work."
-msgstr ""
+msgstr "De naam van de serie die aan de compositie is gekoppeld."
 
 #: picard/const/tags.py:1205
 msgid "Work Series Comment"
-msgstr ""
+msgstr "Verduidelijking van de serie composities"
 
 #: picard/const/tags.py:1206
 msgid "The series disambiguation comments associated with the work."
 msgstr ""
+"De verduidelijking van de serie die aan de compositie is gekoppeld. Met de "
+"verduidelijking kan onderscheid worden gemaakt tussen series die dezelfde of "
+"op elkaar lijkende namen hebben."
 
 #: picard/const/tags.py:1212
 msgid "Work Series MBID"
-msgstr ""
+msgstr "MBID van de serie composities"
 
 #: picard/const/tags.py:1213
 msgid "The series MusicBrainz Identifiers (MBIDs) associated with the work."
 msgstr ""
+"De MusicBrainz-ID’s (MBID’s) van de serie die aan de compositie is gekoppeld."
 
 #: picard/const/tags.py:1219
 msgid "Work Series Number"
-msgstr ""
+msgstr "Positie van compositie in serie"
 
 #: picard/const/tags.py:1220
 msgid "The series numbers associated with the work."
-msgstr ""
+msgstr "De positie die de compositie in de serie composities inneemt."
 
 #: picard/const/tags.py:1226
 msgid "Work Comment"
-msgstr ""
+msgstr "Verduidelijking van de compositie"
 
 #: picard/const/tags.py:1227
 msgid "The disambiguation comment associated with the work."
 msgstr ""
+"De verduidelijking van een compositie. Met de verduidelijking kan "
+"onderscheid worden gemaakt tussen composities die dezelfde of op elkaar "
+"lijkende namen hebben."
 
 #: picard/const/tags.py:1232
 msgid "Writer"
-msgstr "Auteur"
+msgstr "Schrijver"
 
 #: picard/const/tags.py:1234
 msgid ""
 "The names of the writers associated with the related work. This is not "
 "written to most file formats automatically."
 msgstr ""
+"De namen van de schrijvers die aan de compositie zijn gekoppeld. Bij de "
+"meeste bestandsindelingen wordt dit niet automatisch geschreven."
 
 #: picard/const/tags.py:1237
 msgid ""
 "You can merge this with composers with a script like "
 "`$copymerge(composer,writer)`."
 msgstr ""
+"Je kan deze tag met een script als `$copymerge(composer,writer)` samenvoegen "
+"met de componisten."
 
 #: picard/const/tags.py:1243
 msgid "Writer Sort"
-msgstr ""
+msgstr "Sorteernamen van de schrijvers"
 
 #: picard/const/tags.py:1244
 msgid "The sort names of the writers for the work."
-msgstr ""
+msgstr "De sorteernamen van de schrijvers van de compositie."
