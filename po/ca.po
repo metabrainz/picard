@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-05-13 07:04+0200\n"
-"PO-Revision-Date: 2026-04-25 09:11+0000\n"
+"PO-Revision-Date: 2026-05-18 17:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 2026.5\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:202
@@ -709,7 +709,7 @@ msgstr "Tradueix els títols de les pistes"
 
 #: picard/options.py:387 picard/ui/forms/ui_options_metadata.py:194
 msgid "Use artist sort name for translation"
-msgstr ""
+msgstr "Utilitza el nom d'ordenació de l'artista per a la traducció"
 
 #: picard/options.py:388
 msgid "Translate artist names exception"
@@ -5144,10 +5144,8 @@ msgstr ""
 "buits"
 
 #: picard/ui/forms/ui_options_metadata.py:185
-#, fuzzy
-#| msgid "Plugin Translations"
 msgid "Translations"
-msgstr "Traduccions dels connectors"
+msgstr "Traduccions"
 
 #: picard/ui/forms/ui_options_metadata.py:186
 msgid "Translate names when available:"
