@@ -480,7 +480,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         return result
 
     def compare_to_track(self, track: dict, weights: 'TieredWeights'):
-        parts = []
+        track_parts = ReleaseMatchParts()
         releases = []
         sim_w = weights.get('similarity', {})
         pref_w = weights.get('preferences', {})
@@ -489,25 +489,25 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if 'title' in self and 'title' in sim_w:
                 a = self['title']
                 b = track.get('title', '')
-                parts.append((similarity2(a, b), sim_w["title"]))
+                track_parts.similarity.append((similarity2(a, b), sim_w["title"]))
 
             if 'artist' in self and 'artist' in sim_w:
                 a = self['artist']
                 artist_credits = track.get('artist-credit', [])
                 b = artist_credit_from_node(artist_credits).name
-                parts.append((similarity2(a, b), sim_w["artist"]))
+                track_parts.similarity.append((similarity2(a, b), sim_w["artist"]))
 
             a = self.length
             if a > 0 and 'length' in track and 'length' in sim_w:
                 b = track['length']
                 score = self.length_score(a, b)
-                parts.append((score, sim_w["length"]))
+                track_parts.similarity.append((score, sim_w["length"]))
 
             if 'isvideo' in pref_w:
                 metadata_is_video = self['~video'] == '1'
                 track_is_video = bool(track.get('video'))
                 score = 1 if metadata_is_video == track_is_video else 0
-                parts.append((score, pref_w['isvideo']))
+                track_parts.preferences.append((score, pref_w['isvideo']))
 
             if "releases" in track:
                 releases = track['releases']
@@ -516,15 +516,15 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if not releases:
                 config = get_config()
                 score = dict(config.setting['release_type_scores']).get('Other', 0.5)
-                parts.append((score, _get_total_release_weight(weights)))
-                sim = linear_combination_of_weights(parts) * search_score
+                track_parts.preferences.append((score, _get_total_release_weight(weights)))
+                sim = linear_combination_of_weights(track_parts.all_parts) * search_score
                 return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         config = get_config()
         for release in releases:
             release_parts = self.compare_to_release_parts(release, weights, config)
-            sim = linear_combination_of_weights(chain(parts, release_parts.all_parts)) * search_score
+            sim = linear_combination_of_weights(chain(track_parts.all_parts, release_parts.all_parts)) * search_score
             if sim > result.similarity:
                 rg = release['release-group'] if "release-group" in release else None
                 result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
