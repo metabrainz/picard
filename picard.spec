@@ -13,6 +13,7 @@ from picard import (
     PICARD_APP_NAME,
     PICARD_DISPLAY_NAME,
     PICARD_ORG_NAME,
+    PICARD_PROTOCOL_SCHEME,
     PICARD_VERSION,
     __version__,
 )
@@ -228,6 +229,13 @@ else:
                         'public.mpeg-4-audio',
                     ],
                     'CFBundleTypeRole': 'Editor',
+                }
+            ],
+            'CFBundleURLTypes': [
+                {
+                    'CFBundleURLName': PICARD_APP_ID,
+                    'CFBundleURLSchemes': [PICARD_PROTOCOL_SCHEME],
+                    'CFBundleURLIconFile': 'picard',
                 }
             ],
         }

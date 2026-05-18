@@ -39,10 +39,12 @@ from urllib.parse import (
 )
 
 from PyQt6 import QtCore
+from PyQt6.QtGui import QDesktopServices
 
 from picard import (
     PICARD_APP_NAME,
     PICARD_ORG_NAME,
+    PICARD_PROTOCOL_SCHEME,
     PICARD_VERSION_STR,
     log,
 )
@@ -79,6 +81,8 @@ class BrowserIntegration(QtCore.QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.server = None
+        self._action_handler = RequestActionHandler()
+        QDesktopServices.setUrlHandler(PICARD_PROTOCOL_SCHEME, self.url_handler)
 
     @property
     def host_address(self):
@@ -98,7 +102,7 @@ class BrowserIntegration(QtCore.QObject):
 
     def start(self):
         if self.server:
-            self.stop()
+            self.stop(stop_url_handler=False)
 
         config = get_config()
 
@@ -133,7 +137,7 @@ class BrowserIntegration(QtCore.QObject):
         except Exception:
             log.error("%s: Failed to start listening on %s", LOG_PREFIX, host_address, exc_info=True)
 
-    def stop(self):
+    def stop(self, stop_url_handler=True):
         if self.server:
             try:
                 log.info("%s: Stopping", LOG_PREFIX)
@@ -145,6 +149,19 @@ class BrowserIntegration(QtCore.QObject):
                 log.error("%s: Failed to stop", LOG_PREFIX, exc_info=True)
         else:
             log.debug("%s: inactive, no need to stop", LOG_PREFIX)
+
+        if stop_url_handler:
+            QDesktopServices.unsetUrlHandler(PICARD_PROTOCOL_SCHEME)
+
+    def url_handler(self, url: QtCore.QUrl):
+        """URL handler used for custom protocol handling."""
+        log.debug("Received custom URL: %s", url.toString())
+
+        if url.scheme() != PICARD_PROTOCOL_SCHEME:
+            log.error("Invalid URL scheme: %s", url.scheme())
+            return
+
+        self._action_handler.handle_get(url.toString())
 
 
 # From https://github.com/python/cpython/blob/f474264b1e3cd225b45cf2c0a91226d2a9d3ee9b/Lib/http/server.py#L570C1-L573C43
@@ -158,6 +175,10 @@ def safe_message(message):
 
 
 class RequestHandler(BaseHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        self._action_handler = RequestActionHandler(self._response)
+        super().__init__(*args, **kwargs)
+
     def do_OPTIONS(self):
         origin = self.headers['origin']
         if _is_valid_origin(origin):
@@ -183,7 +204,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             return
 
         try:
-            self._handle_get()
+            self._action_handler.handle_get(self.path)
         except Exception:
             log.error('%s: failed handling request', LOG_PREFIX, exc_info=True)
             self._response(500, 'Unexpected request error')
@@ -202,10 +223,33 @@ class RequestHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         self._log(log.info, format, args)
 
-    def _handle_get(self):
-        parsed = urlparse(self.path)
+    def _response(self, code, content='', content_type='text/plain'):
+        self.server_version = SERVER_VERSION
+        self.send_response(code)
+        self.send_header('Content-Type', content_type)
+        self.send_header('Cache-Control', 'max-age=0')
+        origin = self.headers['origin']
+        if _is_valid_origin(origin):
+            self.send_header('Access-Control-Allow-Origin', clean_header(origin))
+            self.send_header('Vary', 'Origin')
+        self.end_headers()
+        self.wfile.write(content.encode())
+
+
+class RequestActionHandler:
+    """
+    Handles URL requests by executing the appropriate action based on URL path.
+    """
+
+    def __init__(self, response_handler=None):
+        self._response_handler = response_handler
+
+    def handle_get(self, path):
+        parsed = urlparse(path)
         args = parse_qs(parsed.query)
         action = parsed.path
+        if not action.startswith('/'):
+            action = '/' + action
 
         if action == '/':
             self._response(200, SERVER_VERSION)
@@ -218,6 +262,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif action == '/auth':
             self._auth(args)
         else:
+            log.error('Unknown browser action: %s', action)
             self._response(404, 'Unknown action.')
 
     def _load_mbid(self, type, args):
@@ -265,16 +310,11 @@ class RequestHandler(BaseHTTPRequestHandler):
             self._response(400, 'Missing parameter "code".')
 
     def _response(self, code, content='', content_type='text/plain'):
-        self.server_version = SERVER_VERSION
-        self.send_response(code)
-        self.send_header('Content-Type', content_type)
-        self.send_header('Cache-Control', 'max-age=0')
-        origin = self.headers['origin']
-        if _is_valid_origin(origin):
-            self.send_header('Access-Control-Allow-Origin', clean_header(origin))
-            self.send_header('Vary', 'Origin')
-        self.end_headers()
-        self.wfile.write(content.encode())
+        if not self._response_handler:
+            log.debug(f'Finished custom request with code {code}')
+            return
+
+        self._response_handler(code, content, content_type)
 
 
 def clean_header(header):
