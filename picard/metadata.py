@@ -377,6 +377,34 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         sim_w = weights.get('similarity', {})
         pref_w = weights.get('preferences', {})
 
+        # Tier 1: Identifiers — exact matches, cheap to compute
+        if 'barcode' in id_w:
+            file_barcode = self.get('barcode', '')
+            if file_barcode:
+                release_barcode = release.get('barcode', '')
+                if compare_barcodes(file_barcode, release_barcode):
+                    result.identifiers.append((1.0, id_w['barcode']))
+                else:
+                    result.identifiers.append((0.0, id_w['barcode']))
+
+        if 'catno' in id_w:
+            file_catno = self.get('catalognumber', '')
+            if file_catno:
+                release_label_info = release.get('label-info', [])
+                if release_label_info:
+                    file_label = self.get('label', '')
+                    score = _catno_label_score(file_catno, file_label, release_label_info)
+                    result.identifiers.append((score, id_w['catno']))
+
+        if 'release-group' in release:
+            tagger = QtCore.QCoreApplication.instance()
+            if tagger is None:
+                return result
+            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
+            if release['id'] in rg.loaded_albums:
+                result.identifiers.append((1.0, 6))
+
+        # Tier 2: Similarity — fuzzy matching core
         with self._lock.lock_for_read():
             if 'album' in self and 'album' in sim_w:
                 b = release['title']
@@ -420,7 +448,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if 'date' in sim_w:
                 result.similarity.append((self._date_score(release), sim_w['date']))
 
-        # Tier 3: Preferences
+        # Tier 3: Preferences — tie-breaking discriminators
         config = get_config()
         if 'releasecountry' in pref_w:
             weights_from_preferred_countries(
@@ -445,33 +473,6 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 config.setting['release_type_scores'],
                 pref_w['releasetype'],
             )
-
-        # Tier 1: Identifiers
-        if 'barcode' in id_w:
-            file_barcode = self.get('barcode', '')
-            if file_barcode:
-                release_barcode = release.get('barcode', '')
-                if compare_barcodes(file_barcode, release_barcode):
-                    result.identifiers.append((1.0, id_w['barcode']))
-                else:
-                    result.identifiers.append((0.0, id_w['barcode']))
-
-        if 'catno' in id_w:
-            file_catno = self.get('catalognumber', '')
-            if file_catno:
-                release_label_info = release.get('label-info', [])
-                if release_label_info:
-                    file_label = self.get('label', '')
-                    score = _catno_label_score(file_catno, file_label, release_label_info)
-                    result.identifiers.append((score, id_w['catno']))
-
-        if 'release-group' in release:
-            tagger = QtCore.QCoreApplication.instance()
-            if tagger is None:
-                return result
-            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
-            if release['id'] in rg.loaded_albums:
-                result.identifiers.append((1.0, 6))
 
         return result
 
