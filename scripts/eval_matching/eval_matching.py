@@ -185,6 +185,31 @@ SCENARIOS = [
         ],
         "scenario": "live_vs_studio",
     },
+    # --- Remaster vs original: same album, different editions ---
+    {
+        "target": "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+        "distractors": [
+            "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+            "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
+    {
+        "target": "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+        "distractors": [
+            "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+            "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
+    {
+        "target": "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        "distractors": [
+            "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+            "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
 ]
 
 
