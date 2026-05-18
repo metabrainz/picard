@@ -116,6 +116,10 @@ class ReleaseMatchParts:
 # Type for the tiered weights dict structure
 TieredWeights = dict[str, dict[str, int]]
 
+# Similarity keys that are track-level (scored in compare_to_track, not in
+# compare_to_release_parts). Keep in sync with compare_to_track.
+_TRACK_SIMILARITY_KEYS = frozenset({'title', 'artist', 'length'})
+
 
 def _catno_label_score(file_catno, file_label, release_label_info):
     """Score catalog number + label match against release label-info.
@@ -486,6 +490,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         pref_w = weights.get('preferences', {})
 
         with self._lock.lock_for_read():
+            # Track-level similarity signals (see _TRACK_SIMILARITY_KEYS)
             if 'title' in self and 'title' in sim_w:
                 a = self['title']
                 b = track.get('title', '')
@@ -869,23 +874,15 @@ class MultiMetadataProxy:
 
 
 def _get_total_release_weight(weights):
-    """Sum of all release-level weights (used as fallback when no releases are available)."""
+    """Sum of all release-level weights (used as fallback when no releases are available).
+
+    Excludes track-level similarity keys (see _TRACK_SIMILARITY_KEYS).
+    """
     total = 0
-    for tier in ('identifiers', 'similarity', 'preferences'):
-        tier_weights = weights.get(tier, {})
-        for key in (
-            'album',
-            'totaltracks',
-            'totalalbumtracks',
-            'releasetype',
-            'releasecountry',
-            'format',
-            'date',
-            'barcode',
-            'catno',
-        ):
-            if key in tier_weights:
-                total += tier_weights[key]
+    for tier_weights in weights.values():
+        for key, weight in tier_weights.items():
+            if key not in _TRACK_SIMILARITY_KEYS:
+                total += weight
     return total
 
 
