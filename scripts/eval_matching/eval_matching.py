@@ -260,6 +260,31 @@ SCENARIOS = [
         ],
         "scenario": "multi_disc_vs_single",
     },
+    # --- Self-titled albums: artist name = album name, different artists ---
+    {
+        "target": "eval_release_2529f558.json",  # Metallica - Metallica (Black Album)
+        "distractors": [
+            "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+            "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        ],
+        "scenario": "self_titled_albums",
+    },
+    {
+        "target": "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+        "distractors": [
+            "eval_release_2529f558.json",  # Metallica - Metallica
+            "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        ],
+        "scenario": "self_titled_albums",
+    },
+    {
+        "target": "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        "distractors": [
+            "eval_release_2529f558.json",  # Metallica - Metallica
+            "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+        ],
+        "scenario": "self_titled_albums",
+    },
 ]
 
 
