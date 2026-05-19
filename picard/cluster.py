@@ -48,6 +48,7 @@ import weakref
 
 from picard import log
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.file import File
 from picard.i18n import (
     N_,
@@ -64,7 +65,7 @@ from picard.metadata import (
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
-    find_best_match,
+    find_best_match_with_margin,
     format_time,
 )
 
@@ -288,27 +289,61 @@ class Cluster(FileList):
             )
 
         best_match_release = None
+        match_reason = None
         if releases:
             config = get_config()
-            best_match_release = self._match_to_release(releases, threshold=config.setting['cluster_lookup_threshold'])
+            best_match_release, match_reason = self._match_to_release(
+                releases,
+                min_similarity=config.setting['match_min_similarity'],
+                min_margin=config.setting['match_min_margin'],
+            )
 
         if best_match_release:
             statusbar(N_("Cluster %(album)s identified!"))
             self.tagger.move_files_to_album(self.files, best_match_release['id'])
+        elif match_reason == 'ambiguous':
+            statusbar(N_("Match for cluster %(album)s is ambiguous"))
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 
-    def _match_to_release(self, releases, threshold=0):
+    def _match_to_release(self, releases, min_similarity=0, min_margin=0):
+        """Match cluster to best release candidate.
+
+        Returns:
+            (release_dict, None) on success,
+            (None, reason) on rejection.
+        """
         # multiple matches -- calculate similarities to each of them
-        def candidates():
-            for release in releases:
-                match_ = self.metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
-                if match_.similarity >= threshold:
-                    yield match_
+        all_matches = [self.metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
+        all_matches.sort(key=lambda m: m.similarity, reverse=True)
+
+        log.debug_if(
+            DebugOpt.MATCHING,
+            "match_to_release: cluster=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
+            self.metadata.get('album', '?'),
+            len(all_matches),
+            min_similarity,
+            min_margin,
+        )
+        if DebugOpt.MATCHING.enabled:
+            for i, m in enumerate(all_matches[:5]):
+                title = m.release.get('title', '?') if m.release else '?'
+                log.debug("  #%d sim=%.4f  %r", i + 1, m.similarity, title)
 
         no_match = SimMatchRelease(similarity=-1, release=None)
-        best_match = find_best_match(candidates(), no_match)
-        return best_match.result.release
+        best_match = find_best_match_with_margin(
+            iter(all_matches), no_match, min_similarity=min_similarity, min_margin=min_margin
+        )
+
+        if best_match.result is no_match:
+            log.debug_if(
+                DebugOpt.MATCHING,
+                "  REJECTED (%s): best=%.4f",
+                best_match.reason,
+                best_match.similarity,
+            )
+            return None, best_match.reason
+        return best_match.result.release, None
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""

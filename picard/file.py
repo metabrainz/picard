@@ -78,6 +78,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.debug_opts import DebugOpt
 from picard.i18n import (
     N_,
     gettext as _,
@@ -102,7 +103,7 @@ from picard.util import (
     decode_filename,
     emptydir,
     encode_filename,
-    find_best_match,
+    find_best_match_with_margin,
     format_time,
     is_absolute_path,
     normpath,
@@ -1033,14 +1034,19 @@ class File(MetadataItem):
 
         if tracks:
             if lookuptype == File.LookupType.ACOUSTID:
-                threshold = 0
+                min_similarity = 0
+                min_margin = 0
             else:
                 config = get_config()
-                threshold = config.setting['file_lookup_threshold']
+                min_similarity = config.setting['match_min_similarity']
+                min_margin = config.setting['match_min_margin']
 
-            trackmatch = self._match_to_track(tracks, threshold=threshold)
+            trackmatch, reason = self._match_to_track(tracks, min_similarity=min_similarity, min_margin=min_margin)
             if trackmatch is None:
-                statusbar(N_('No matching tracks above the threshold for file "%(filename)s"'))
+                if reason == 'ambiguous':
+                    statusbar(N_('Match for file "%(filename)s" is ambiguous'))
+                else:
+                    statusbar(N_('No matching tracks for file "%(filename)s"'))
             else:
                 statusbar(N_('File "%(filename)s" identified!'))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
@@ -1058,14 +1064,43 @@ class File(MetadataItem):
 
         self.clear_pending()
 
-    def _match_to_track(self, tracks, threshold=0):
-        # multiple matches -- calculate similarities to each of them
-        candidates = (self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks)
-        no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
-        best_match = find_best_match(candidates, no_match)
+    def _match_to_track(self, tracks, min_similarity=0, min_margin=0):
+        """Match file to best track candidate.
 
-        if best_match.similarity < threshold:
-            return None
+        Returns:
+            (trackmatch_tuple, None) on success,
+            (None, reason) on rejection where reason is 'below_floor' or 'ambiguous'.
+        """
+        # multiple matches -- calculate similarities to each of them
+        all_matches = [self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks]
+        all_matches.sort(key=lambda m: m.similarity, reverse=True)
+
+        log.debug_if(
+            DebugOpt.MATCHING,
+            "match_to_track: file=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
+            self.filename,
+            len(all_matches),
+            min_similarity,
+            min_margin,
+        )
+        if DebugOpt.MATCHING.enabled:
+            for i, m in enumerate(all_matches[:5]):
+                title = m.track.get('title', '?') if m.track else '?'
+                log.debug("  #%d sim=%.4f  %r", i + 1, m.similarity, title)
+
+        no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
+        best_match = find_best_match_with_margin(
+            iter(all_matches), no_match, min_similarity=min_similarity, min_margin=min_margin
+        )
+
+        if best_match.result is no_match:
+            log.debug_if(
+                DebugOpt.MATCHING,
+                "  REJECTED (%s): best=%.4f",
+                best_match.reason,
+                best_match.similarity,
+            )
+            return None, best_match.reason
         else:
             track_id = best_match.result.track['id']
             release_group_id, release_id, node = None, None, None
@@ -1076,7 +1111,7 @@ class File(MetadataItem):
                 release_id = best_match.result.release['id']
             elif 'title' in best_match.result.track:
                 node = best_match.result.track
-            return (track_id, release_group_id, release_id, acoustid, node)
+            return (track_id, release_group_id, release_id, acoustid, node), None
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""

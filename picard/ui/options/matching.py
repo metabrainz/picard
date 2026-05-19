@@ -39,8 +39,8 @@ class MatchingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_matching.html"
 
     OPTIONS = (
-        ('file_lookup_threshold', ['file_lookup_threshold']),
-        ('cluster_lookup_threshold', ['cluster_lookup_threshold']),
+        ('match_min_similarity', ['match_min_similarity']),
+        ('match_min_margin', ['match_min_margin']),
         ('track_matching_threshold', ['track_matching_threshold']),
     )
 
@@ -53,14 +53,14 @@ class MatchingOptionsPage(OptionsPage):
 
     def load(self):
         config = get_config()
-        self.ui.file_lookup_threshold.setValue(int(config.setting['file_lookup_threshold'] * 100))
-        self.ui.cluster_lookup_threshold.setValue(int(config.setting['cluster_lookup_threshold'] * 100))
+        self.ui.match_min_similarity.setValue(int(config.setting['match_min_similarity'] * 100))
+        self.ui.match_min_margin.setValue(int(config.setting['match_min_margin'] * 100))
         self.ui.track_matching_threshold.setValue(int(config.setting['track_matching_threshold'] * 100))
 
     def save(self):
         config = get_config()
-        config.setting['file_lookup_threshold'] = float(self.ui.file_lookup_threshold.value()) / 100.0
-        config.setting['cluster_lookup_threshold'] = float(self.ui.cluster_lookup_threshold.value()) / 100.0
+        config.setting['match_min_similarity'] = float(self.ui.match_min_similarity.value()) / 100.0
+        config.setting['match_min_margin'] = float(self.ui.match_min_margin.value()) / 100.0
         config.setting['track_matching_threshold'] = float(self.ui.track_matching_threshold.value()) / 100.0
 
 

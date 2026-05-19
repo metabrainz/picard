@@ -991,6 +991,41 @@ def find_best_match(candidates, no_match):
     return BestMatch(similarity=best_match.similarity, result=best_match)
 
 
+MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
+
+
+def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
+    """Find best match, rejecting if below floor or margin is too small.
+
+    Args:
+        candidates: Iterable with objects having a `similarity` attribute
+        no_match: Match to return if no candidate passes
+        min_similarity: Reject if best score is below this floor
+        min_margin: Reject if best - second_best < this value
+            (skipped when there's only one candidate)
+
+    Returns: `MatchResult` with similarity, result, and reason.
+        reason is None on success, 'below_floor' or 'ambiguous' on rejection.
+    """
+    best = no_match
+    second_best_sim = -1.0
+    for candidate in candidates:
+        sim = candidate.similarity
+        if sim > best.similarity:
+            second_best_sim = best.similarity
+            best = candidate
+        elif sim > second_best_sim:
+            second_best_sim = sim
+
+    if best.similarity < min_similarity:
+        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
+
+    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
+        return MatchResult(similarity=best.similarity, result=no_match, reason='ambiguous')
+
+    return MatchResult(similarity=best.similarity, result=best, reason=None)
+
+
 def limited_join(a_list, limit, join_string='+', middle_string='…'):
     """Join elements of a list with `join_string`
     If list is longer than `limit`, middle elements will be dropped,
