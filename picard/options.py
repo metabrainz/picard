@@ -38,8 +38,7 @@ from picard.config import (
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.const.defaults import (
     DEFAULT_AUTOBACKUP_DIRECTORY,
-    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
-    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
+    DEFAULT_CA_NEVER_REPLACE_TYPES,
     DEFAULT_CA_PROVIDERS,
     DEFAULT_CAA_IMAGE_SIZE,
     DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
@@ -197,14 +196,8 @@ BoolOption('setting', 'dont_replace_cover_of_types', False, title=N_("Never repl
 ListOption(
     'setting',
     'dont_replace_included_types',
-    DEFAULT_CA_NEVER_REPLACE_TYPE_INCLUDE,
+    DEFAULT_CA_NEVER_REPLACE_TYPES,
     title=N_("Never replace images of these types"),
-)
-ListOption(
-    'setting',
-    'dont_replace_excluded_types',
-    DEFAULT_CA_NEVER_REPLACE_TYPE_EXCLUDE,
-    title=N_("Always replace images of these types"),
 )
 BoolOption(
     'setting',
