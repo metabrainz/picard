@@ -878,6 +878,14 @@ class Album(MetadataItem):
             self.tagger.webservice.abort_task(self._load_request)
             self._load_request = None
 
+    def abort_loading(self, reason: str = ""):
+        """Abort loading and transition to error state."""
+        self.stop_loading()
+        self.cancel_tasks()
+        if reason:
+            self.error_append(reason)
+        self._finalize_loading(error=True)
+
     def update(self, update_tracks=True, update_selection=True):
         if self.ui_item:
             self.ui_item.update(update_tracks, update_selection=update_selection)
