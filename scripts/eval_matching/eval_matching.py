@@ -634,7 +634,7 @@ def evaluate(corpus, weights, config_profile="neutral"):
     scores for diagnostic purposes. When a test case has expectations defined,
     the result is scored against the expected outcome for the given config_profile.
     """
-    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "has_scores": True, "details": []}
 
     for entry in corpus:
         scores = [(entry["metadata"].compare_to_release(c, weights).similarity, c["id"]) for c in entry["candidates"]]
@@ -681,7 +681,7 @@ def evaluate_file_corpus(corpus, weights, config_profile="neutral"):
     Each entry has candidates as (track_dict, release_id) tuples.
     compare_to_track returns SimMatchTrack with the best release match.
     """
-    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "has_scores": True, "details": []}
 
     for entry in corpus:
         scores = []
@@ -809,6 +809,19 @@ def print_report(results, weights_name, verbose=False):
         f"  (actual breakdown: correct={results['correct']}, ambiguous={results['ambiguous']}, wrong={results['wrong']})"
     )
 
+    # Score distribution (file-level)
+    if results.get("has_scores"):
+        sims = sorted(d["best_sim"] for d in results["details"])
+        n = len(sims)
+        mean = sum(sims) / n
+        p5 = sims[int(n * 0.05)]
+        p25 = sims[int(n * 0.25)]
+        p50 = sims[n // 2]
+        print(
+            f"  Scores: min={sims[0]:.4f}  p5={p5:.4f}  p25={p25:.4f}"
+            f"  median={p50:.4f}  mean={mean:.4f}  max={sims[-1]:.4f}"
+        )
+
     # Problems summary (always shown)
     problems = [d for d in results["details"] if not d.get("met_expectation", d["status"] == "correct")]
     if not verbose and problems:
@@ -846,13 +859,23 @@ def print_report(results, weights_name, verbose=False):
     # Per-degradation
     deg_names = [name for name, _ in DEGRADATIONS]
     rows = _grouped_breakdown(results["details"], "degradation", deg_names)
-    print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
-    print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
+    has_scores = results.get("has_scores")
+    if has_scores:
+        print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9} {'AvgSim':>7}")
+        print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9} {'-' * 7}")
+    else:
+        print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
+        print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
     for name, ok, fail, n, margins in rows:
         rate = ok / n if n else 0
         avg_m = sum(margins) / len(margins) if margins else 0
         flag = " ✗" if rate < 1.0 else ""
-        print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
+        if has_scores:
+            deg_sims = [d["best_sim"] for d in results["details"] if d["degradation"] == name]
+            avg_sim = sum(deg_sims) / len(deg_sims) if deg_sims else 0
+            print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f} {avg_sim:>7.4f}{flag}")
+        else:
+            print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
 
     # Per-scenario
     rows = _grouped_breakdown(results["details"], "scenario")
@@ -988,12 +1011,15 @@ def _filter_results(results, scenario=None, degradation=None):
         details = [d for d in details if scenario in d["scenario"]]
     if degradation:
         details = [d for d in details if degradation in d["degradation"]]
-    return {
+    filtered = {
         "correct": sum(1 for d in details if d["status"] == "correct"),
         "ambiguous": sum(1 for d in details if d["status"] == "ambiguous"),
         "wrong": sum(1 for d in details if d["status"] == "wrong"),
         "details": details,
     }
+    if results.get("has_scores"):
+        filtered["has_scores"] = True
+    return filtered
 
 
 def _snapshot_key(detail):
@@ -1024,7 +1050,13 @@ def _save_snapshot(results, path):
 def _compare_snapshot(current_results, snapshot_path):
     """Compare current results against a saved snapshot and show changes."""
     with open(snapshot_path, encoding="utf-8") as f:
-        previous = json.load(f)
+        data = json.load(f)
+
+    # Support both old (dict with meta) and plain list snapshot formats
+    if isinstance(data, dict) and "entries" in data:
+        previous = data["entries"]
+    else:
+        previous = data
 
     prev_by_key = {(e["scenario"], e["release"], e["degradation"], e.get("correct_id", "")): e for e in previous}
     curr_by_key = {_snapshot_key(d): d for d in current_results["details"]}
@@ -1047,12 +1079,21 @@ def _compare_snapshot(current_results, snapshot_path):
     prev_correct = sum(1 for e in previous if e["status"] == "correct")
     curr_correct = current_results["correct"]
 
+    # Score distribution comparison
+    prev_sims = sorted(e["best_sim"] for e in previous)
+    curr_sims = sorted(d["best_sim"] for d in current_results["details"])
+    prev_mean = sum(prev_sims) / len(prev_sims) if prev_sims else 0
+    curr_mean = sum(curr_sims) / len(curr_sims) if curr_sims else 0
+
     print(f"\n{'=' * 70}")
     print("  SCORE DELTA")
     print(f"{'=' * 70}")
     print(f"  Previous: {prev_correct}/{len(previous)} correct")
     print(f"  Current:  {curr_correct}/{len(curr_by_key)} correct")
     print(f"  Improved: {len(improved)}  Regressed: {len(regressed)}")
+    delta = curr_mean - prev_mean
+    sign = "+" if delta >= 0 else ""
+    print(f"  Mean score: {prev_mean:.4f} → {curr_mean:.4f} ({sign}{delta:.4f})")
 
     if improved:
         print(f"\n  IMPROVED ({len(improved)}):")
