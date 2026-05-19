@@ -299,10 +299,11 @@ class Cluster(FileList):
             )
 
         if best_match_release:
-            statusbar(N_("Cluster %(album)s identified!"))
+            if match_reason == 'ambiguous':
+                statusbar(N_("Best match for cluster %(album)s is ambiguous"))
+            else:
+                statusbar(N_("Cluster %(album)s identified!"))
             self.tagger.move_files_to_album(self.files, best_match_release['id'])
-        elif match_reason == 'ambiguous':
-            statusbar(N_("Match for cluster %(album)s is ambiguous"))
         else:
             statusbar(N_("No matching releases for cluster %(album)s"))
 
@@ -343,7 +344,13 @@ class Cluster(FileList):
                 best_match.similarity,
             )
             return None, best_match.reason
-        return best_match.result.release, None
+        if best_match.reason == 'ambiguous':
+            log.debug_if(
+                DebugOpt.MATCHING,
+                "  AMBIGUOUS: best=%.4f",
+                best_match.similarity,
+            )
+        return best_match.result.release, best_match.reason
 
     def lookup_metadata(self):
         """Try to identify the cluster using the existing metadata."""

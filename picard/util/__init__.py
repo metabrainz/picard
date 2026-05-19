@@ -995,17 +995,18 @@ MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
 
 
 def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
-    """Find best match, rejecting if below floor or margin is too small.
+    """Find best match, flagging if below floor or margin is too small.
 
     Args:
         candidates: Iterable with objects having a `similarity` attribute
-        no_match: Match to return if no candidate passes
+        no_match: Match to return if no candidate passes the floor
         min_similarity: Reject if best score is below this floor
-        min_margin: Reject if best - second_best < this value
+        min_margin: Flag as ambiguous if best - second_best < this value
             (skipped when there's only one candidate)
 
     Returns: `MatchResult` with similarity, result, and reason.
-        reason is None on success, 'below_floor' or 'ambiguous' on rejection.
+        reason is None (confident), 'ambiguous' (margin too small,
+        best match still returned), or 'below_floor' (no_match returned).
     """
     best = no_match
     second_best_sim = -1.0
@@ -1021,7 +1022,7 @@ def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_ma
         return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
 
     if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
-        return MatchResult(similarity=best.similarity, result=no_match, reason='ambiguous')
+        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
 
     return MatchResult(similarity=best.similarity, result=best, reason=None)
 

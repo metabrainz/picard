@@ -1043,12 +1043,12 @@ class File(MetadataItem):
 
             trackmatch, reason = self._match_to_track(tracks, min_similarity=min_similarity, min_margin=min_margin)
             if trackmatch is None:
-                if reason == 'ambiguous':
-                    statusbar(N_('Match for file "%(filename)s" is ambiguous'))
-                else:
-                    statusbar(N_('No matching tracks for file "%(filename)s"'))
+                statusbar(N_('No matching tracks for file "%(filename)s"'))
             else:
-                statusbar(N_('File "%(filename)s" identified!'))
+                if reason == 'ambiguous':
+                    statusbar(N_('Best match for file "%(filename)s" is ambiguous'))
+                else:
+                    statusbar(N_('File "%(filename)s" identified!'))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
@@ -1102,6 +1102,12 @@ class File(MetadataItem):
             )
             return None, best_match.reason
         else:
+            if best_match.reason == 'ambiguous':
+                log.debug_if(
+                    DebugOpt.MATCHING,
+                    "  AMBIGUOUS: best=%.4f",
+                    best_match.similarity,
+                )
             track_id = best_match.result.track['id']
             release_group_id, release_id, node = None, None, None
             acoustid = best_match.result.track.get('acoustid', None)
@@ -1111,7 +1117,7 @@ class File(MetadataItem):
                 release_id = best_match.result.release['id']
             elif 'title' in best_match.result.track:
                 node = best_match.result.track
-            return (track_id, release_group_id, release_id, acoustid, node), None
+            return (track_id, release_group_id, release_id, acoustid, node), best_match.reason
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""
