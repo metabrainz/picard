@@ -1,0 +1,266 @@
+{
+  "description": "Tests where candidates are different recordings of the same song",
+  "releases": {
+    "release_studio": {
+      "id": "rel-studio",
+      "title": "Greatest Hits",
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "date": "2005",
+      "country": "US",
+      "release-group": {
+        "id": "rg-studio",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "release_live": {
+      "id": "rel-live",
+      "title": "Live at Wembley",
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "date": "2008",
+      "country": "US",
+      "release-group": {
+        "id": "rg-live",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "release_remaster": {
+      "id": "rel-remaster",
+      "title": "Greatest Hits (Remastered)",
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "date": "2015",
+      "country": "US",
+      "release-group": {
+        "id": "rg-remaster",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "release_cover": {
+      "id": "rel-cover",
+      "title": "Tribute Album",
+      "artist-credit": [
+        {
+          "name": "Cover Band",
+          "artist": {
+            "id": "artist-cover",
+            "name": "Cover Band",
+            "sort-name": "Cover Band"
+          }
+        }
+      ],
+      "date": "2019",
+      "country": "US",
+      "release-group": {
+        "id": "rg-cover",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-studio",
+      "title": "Bohemian Rhapsody",
+      "length": 354000,
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "isrcs": [
+        "GBISRC0000001"
+      ],
+      "release": "release_studio",
+      "score": 100
+    },
+    {
+      "id": "rec-live",
+      "title": "Bohemian Rhapsody",
+      "length": 412000,
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "isrcs": [
+        "GBISRC0000002"
+      ],
+      "release": "release_live",
+      "score": 100
+    },
+    {
+      "id": "rec-remaster",
+      "title": "Bohemian Rhapsody",
+      "length": 355000,
+      "artist-credit": [
+        {
+          "name": "The Band",
+          "artist": {
+            "id": "artist-band",
+            "name": "The Band",
+            "sort-name": "Band, The"
+          }
+        }
+      ],
+      "isrcs": [
+        "GBISRC0000003"
+      ],
+      "release": "release_remaster",
+      "score": 100
+    },
+    {
+      "id": "rec-cover",
+      "title": "Bohemian Rhapsody",
+      "length": 348000,
+      "artist-credit": [
+        {
+          "name": "Cover Band",
+          "artist": {
+            "id": "artist-cover",
+            "name": "Cover Band",
+            "sort-name": "Cover Band"
+          }
+        }
+      ],
+      "isrcs": [
+        "GBISRC0000004"
+      ],
+      "release": "release_cover",
+      "score": 100
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "same_song_studio_with_isrc",
+      "description": "Studio recording, correct ISRC, multiple similar candidates",
+      "correct_id": "rec-studio",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "The Band",
+        "length": 354000,
+        "isrcs": [
+          "GBISRC0000001"
+        ]
+      }
+    },
+    {
+      "name": "same_song_studio_no_isrc",
+      "description": "Studio recording, no ISRC, similar lengths among candidates",
+      "correct_id": "rec-studio",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "The Band",
+        "length": 354000,
+        "album": "Greatest Hits",
+        "date": "2005"
+      }
+    },
+    {
+      "name": "same_song_live_by_length",
+      "description": "Live recording, no ISRC, distinguished by longer duration",
+      "correct_id": "rec-live",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "The Band",
+        "length": 412000,
+        "album": "Live at Wembley",
+        "date": "2008"
+      }
+    },
+    {
+      "name": "same_song_remaster_with_isrc",
+      "description": "Remaster, correct ISRC distinguishes from studio",
+      "correct_id": "rec-remaster",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "The Band",
+        "length": 355000,
+        "isrcs": [
+          "GBISRC0000003"
+        ]
+      }
+    },
+    {
+      "name": "same_song_remaster_no_isrc",
+      "description": "Remaster, no ISRC, nearly same length as studio \u2014 needs release info",
+      "correct_id": "rec-remaster",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "The Band",
+        "length": 355000,
+        "album": "Greatest Hits (Remastered)",
+        "date": "2015"
+      }
+    },
+    {
+      "name": "same_song_cover_different_artist",
+      "description": "Cover by different artist, easy to distinguish",
+      "correct_id": "rec-cover",
+      "file": {
+        "title": "Bohemian Rhapsody",
+        "artist": "Cover Band",
+        "length": 348000,
+        "album": "Tribute Album"
+      }
+    }
+  ]
+}

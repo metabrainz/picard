@@ -38,6 +38,7 @@ from picard.util import find_best_match_with_margin
 
 # Reuse corpus and degradations from the release eval
 from eval_matching import (
+    CORPUS_DIR,
     DEGRADATIONS,
     SCENARIOS,
     load_release,
@@ -153,341 +154,61 @@ def generate_corpus():
 
 
 # =============================================================================
-# Synthetic scenarios — edge cases not covered by the release corpus
+# Synthetic scenarios — loaded from JSON fixtures
 # =============================================================================
 
-# Helpers to build synthetic candidates
+
+def _load_synthetic_fixture(filename):
+    """Load a synthetic recording scenario fixture from the corpus directory."""
+    with open(CORPUS_DIR / filename, encoding="utf-8") as f:
+        return json.load(f)
 
 
-def _make_candidate(recording_id, title, artist, length, isrcs=None, release=None):
-    """Build a synthetic recording search result."""
-    candidate = {
-        "id": recording_id,
-        "title": title,
-        "length": length,
-        "artist-credit": [
-            {"name": artist, "artist": {"id": "artist-" + recording_id, "name": artist, "sort-name": artist}}
-        ],
-        "isrcs": isrcs or [],
-        "score": 100,
-    }
-    if release:
-        candidate["releases"] = [release]
-    return candidate
-
-
-def _make_release(release_id, title, artist, date="2020", country="US"):
-    """Build a minimal synthetic release."""
-    return {
-        "id": release_id,
-        "title": title,
-        "artist-credit": [
-            {"name": artist, "artist": {"id": "artist-" + release_id, "name": artist, "sort-name": artist}}
-        ],
-        "date": date,
-        "country": country,
-        "release-group": {"id": "rg-" + release_id, "primary-type": "Album"},
-        "media": [{"format": "CD", "track-count": 10}],
-    }
-
-
-def _make_file_metadata(title, artist, length, isrcs=None, album="", date=""):
-    """Build synthetic file metadata."""
-    m = Metadata()
-    m["title"] = title
-    m["artist"] = artist
-    m.length = length
-    if album:
-        m["album"] = album
-    if date:
-        m["date"] = date
-    if isrcs:
-        for isrc in isrcs:
-            m.add("isrc", isrc)
-    return m
-
-
-SYNTHETIC_SCENARIOS = []
-
-
-def _build_multi_isrc_scenarios():
-    """Test cases for files with multiple ISRCs."""
-    release_a = _make_release("aaaa-1111", "Album A", "Artist X", "2020")
-    release_b = _make_release("bbbb-2222", "Album B", "Artist X", "2021")
-
-    # Correct recording has ISRC1 + ISRC2
-    correct = _make_candidate(
-        "rec-correct-1",
-        "My Song",
-        "Artist X",
-        240000,
-        isrcs=["ISRC00000001", "ISRC00000002"],
-        release=release_a,
-    )
-    # Distractor shares ISRC1 only (different recording of same song)
-    partial_match = _make_candidate(
-        "rec-partial-1",
-        "My Song",
-        "Artist X",
-        242000,
-        isrcs=["ISRC00000001", "ISRC00000099"],
-        release=release_b,
-    )
-    # Distractor has no matching ISRCs
-    no_match = _make_candidate(
-        "rec-nomatch-1",
-        "My Song",
-        "Artist X",
-        238000,
-        isrcs=["ISRC00000088"],
-        release=release_b,
-    )
-    # Distractor has no ISRCs at all
-    no_isrc = _make_candidate(
-        "rec-noisrc-1",
-        "My Song",
-        "Artist X",
-        241000,
-        isrcs=[],
-        release=release_b,
-    )
-
-    candidates = [correct, partial_match, no_match, no_isrc]
-
-    # File has both ISRCs → should pick correct (subset match = 1.0)
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "multi_isrc_full_subset",
-            "description": "File has 2 ISRCs, both match correct recording",
-            "metadata": _make_file_metadata(
-                "My Song",
-                "Artist X",
-                240000,
-                isrcs=["ISRC00000001", "ISRC00000002"],
-            ),
-            "correct_id": "rec-correct-1",
-            "candidates": candidates,
-        }
-    )
-
-    # File has 1 matching + 1 non-matching ISRC → partial (0.8)
-    # Should still beat the no-match candidates
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "multi_isrc_partial_overlap",
-            "description": "File has 2 ISRCs, only 1 matches correct recording",
-            "metadata": _make_file_metadata(
-                "My Song",
-                "Artist X",
-                240000,
-                isrcs=["ISRC00000001", "ISRC00000777"],
-            ),
-            "correct_id": "rec-correct-1",
-            "candidates": candidates,
-        }
-    )
-
-    # File has only ISRC2 (not shared with partial_match) → subset of correct
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "multi_isrc_unique_isrc",
-            "description": "File has 1 ISRC that only the correct recording has",
-            "metadata": _make_file_metadata(
-                "My Song",
-                "Artist X",
-                240000,
-                isrcs=["ISRC00000002"],
-            ),
-            "correct_id": "rec-correct-1",
-            "candidates": candidates,
-        }
-    )
-
-    # File has wrong ISRC entirely but good metadata → should still match on similarity
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "multi_isrc_all_wrong",
-            "description": "File ISRCs don't match any candidate, rely on similarity",
-            "metadata": _make_file_metadata(
-                "My Song",
-                "Artist X",
-                240000,
-                isrcs=["ISRC00000999"],
-            ),
-            "correct_id": "rec-correct-1",
-            "candidates": candidates,
-        }
-    )
-
-
-def _build_same_song_different_recording_scenarios():
-    """Test cases where candidates are different recordings of the same song."""
-    release_studio = _make_release("rel-studio", "Greatest Hits", "The Band", "2005")
-    release_live = _make_release("rel-live", "Live at Wembley", "The Band", "2008")
-    release_remaster = _make_release("rel-remaster", "Greatest Hits (Remastered)", "The Band", "2015")
-    release_cover = _make_release("rel-cover", "Tribute Album", "Cover Band", "2019")
-
-    # Studio version (original)
-    studio = _make_candidate(
-        "rec-studio",
-        "Bohemian Rhapsody",
-        "The Band",
-        354000,
-        isrcs=["GBISRC0000001"],
-        release=release_studio,
-    )
-    # Live version (longer, same artist)
-    live = _make_candidate(
-        "rec-live",
-        "Bohemian Rhapsody",
-        "The Band",
-        412000,
-        isrcs=["GBISRC0000002"],
-        release=release_live,
-    )
-    # Remaster (same length, different ISRC)
-    remaster = _make_candidate(
-        "rec-remaster",
-        "Bohemian Rhapsody",
-        "The Band",
-        355000,
-        isrcs=["GBISRC0000003"],
-        release=release_remaster,
-    )
-    # Cover by different artist
-    cover = _make_candidate(
-        "rec-cover",
-        "Bohemian Rhapsody",
-        "Cover Band",
-        348000,
-        isrcs=["GBISRC0000004"],
-        release=release_cover,
-    )
-
-    candidates = [studio, live, remaster, cover]
-
-    # File tagged from studio version with correct ISRC
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_studio_with_isrc",
-            "description": "Studio recording, correct ISRC, multiple similar candidates",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "The Band",
-                354000,
-                isrcs=["GBISRC0000001"],
-            ),
-            "correct_id": "rec-studio",
-            "candidates": candidates,
-        }
-    )
-
-    # File tagged from studio but no ISRC — must rely on length + release info
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_studio_no_isrc",
-            "description": "Studio recording, no ISRC, similar lengths among candidates",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "The Band",
-                354000,
-                album="Greatest Hits",
-                date="2005",
-            ),
-            "correct_id": "rec-studio",
-            "candidates": candidates,
-        }
-    )
-
-    # File from live version — longer duration should distinguish
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_live_by_length",
-            "description": "Live recording, no ISRC, distinguished by longer duration",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "The Band",
-                412000,
-                album="Live at Wembley",
-                date="2008",
-            ),
-            "correct_id": "rec-live",
-            "candidates": candidates,
-        }
-    )
-
-    # File from remaster — nearly same length as studio, different ISRC
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_remaster_with_isrc",
-            "description": "Remaster, correct ISRC distinguishes from studio",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "The Band",
-                355000,
-                isrcs=["GBISRC0000003"],
-            ),
-            "correct_id": "rec-remaster",
-            "candidates": candidates,
-        }
-    )
-
-    # File from remaster — no ISRC, nearly same length as studio
-    # This is inherently ambiguous without release info
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_remaster_no_isrc",
-            "description": "Remaster, no ISRC, nearly same length as studio — needs release info",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "The Band",
-                355000,
-                album="Greatest Hits (Remastered)",
-                date="2015",
-            ),
-            "correct_id": "rec-remaster",
-            "candidates": candidates,
-        }
-    )
-
-    # Cover version — different artist should make it easy
-    SYNTHETIC_SCENARIOS.append(
-        {
-            "name": "same_song_cover_different_artist",
-            "description": "Cover by different artist, easy to distinguish",
-            "metadata": _make_file_metadata(
-                "Bohemian Rhapsody",
-                "Cover Band",
-                348000,
-                album="Tribute Album",
-            ),
-            "correct_id": "rec-cover",
-            "candidates": candidates,
-        }
-    )
-
-
-# Build all synthetic scenarios
-_build_multi_isrc_scenarios()
-_build_same_song_different_recording_scenarios()
+def _resolve_candidates(fixture):
+    """Resolve recording entries into candidate dicts with embedded releases."""
+    releases = fixture["releases"]
+    candidates = []
+    for rec in fixture["recordings"]:
+        candidate = dict(rec)
+        release_key = candidate.pop("release", None)
+        if release_key and release_key in releases:
+            candidate["releases"] = [releases[release_key]]
+        candidates.append(candidate)
+    return candidates
 
 
 def generate_synthetic_corpus():
-    """Build corpus from synthetic scenarios (no degradations applied)."""
+    """Build corpus from synthetic JSON fixtures in corpus/eval_recording_*.json."""
     corpus = []
-    for scenario in SYNTHETIC_SCENARIOS:
-        corpus.append(
-            {
-                "degradation": "synthetic",
-                "scenario": scenario["name"],
-                "release_title": scenario.get("description", ""),
-                "track_title": scenario["metadata"].get("title", ""),
-                "metadata": scenario["metadata"],
-                "correct_id": scenario["correct_id"],
-                "candidates": scenario["candidates"],
-                "expectations": None,
-            }
-        )
+    for path in sorted(CORPUS_DIR.glob("eval_recording_*.json")):
+        fixture = _load_synthetic_fixture(path.name)
+        candidates = _resolve_candidates(fixture)
+
+        for scenario in fixture["scenarios"]:
+            file_data = scenario["file"]
+            m = Metadata()
+            m["title"] = file_data["title"]
+            m["artist"] = file_data["artist"]
+            m.length = file_data["length"]
+            if "album" in file_data:
+                m["album"] = file_data["album"]
+            if "date" in file_data:
+                m["date"] = file_data["date"]
+            for isrc in file_data.get("isrcs", []):
+                m.add("isrc", isrc)
+
+            corpus.append(
+                {
+                    "degradation": "synthetic",
+                    "scenario": scenario["name"],
+                    "release_title": scenario.get("description", ""),
+                    "track_title": file_data["title"],
+                    "metadata": m,
+                    "correct_id": scenario["correct_id"],
+                    "candidates": candidates,
+                    "expectations": None,
+                }
+            )
     return corpus
 
 
