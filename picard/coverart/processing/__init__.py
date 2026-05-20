@@ -36,6 +36,7 @@ from picard.coverart.processing import (  # noqa: F401 # pylint: disable=unused-
     filters,
     processors,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_filters import (
     ext_point_cover_art_filters,
     ext_point_cover_art_metadata_filters,
@@ -129,6 +130,25 @@ class CoverArtImageProcessing:
             image = ProcessingImage(initial_data, image_info)
             save_images_to_tags = config.setting['save_images_to_tags']
             save_images_to_files = config.setting['save_images_to_files']
+
+            log.debug_if(
+                DebugOpt.COVERART,
+                "Processing %s: %d bytes, %d x %d, %s;"
+                " save_to_tags=%r, save_to_files=%r,"
+                " tags_resize=%r, file_resize=%r,"
+                " tags_convert=%r, file_convert=%r",
+                coverartimage,
+                len(initial_data),
+                image_info.width,
+                image_info.height,
+                image_info.mime,
+                save_images_to_tags,
+                save_images_to_files,
+                config.setting['cover_tags_resize'],
+                config.setting['cover_file_resize'],
+                config.setting['cover_tags_convert_images'],
+                config.setting['cover_file_convert_images'],
+            )
 
             run_queue_common = partial(
                 self._run_processors_queue,
