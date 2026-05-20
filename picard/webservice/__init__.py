@@ -420,6 +420,7 @@ class WebService(QtCore.QObject):
         self._task_to_reply: dict[PendingRequest, QNetworkReply] = {}
         self._queue = RequestPriorityQueue()
         self.num_pending_web_requests = 0
+        self._notify_on_cancel = False
 
     def _init_timers(self):
         self._timer_run_next_task = QtCore.QTimer(self)
@@ -562,7 +563,12 @@ class WebService(QtCore.QObject):
 
         # Silently ignore canceled operations (user-initiated abort)
         if error == QNetworkReply.NetworkError.OperationCanceledError:
-            log.debug("Request canceled for %s", self.display_url(reply.request().url()))
+            if self._notify_on_cancel:
+                handler = request.handler
+                if handler is not None:
+                    handler(b'', reply, error)
+            else:
+                log.debug("Request canceled for %s", self.display_url(reply.request().url()))
             return
 
         handler = request.handler
@@ -679,6 +685,18 @@ class WebService(QtCore.QObject):
     def stop(self):
         for reply in list(self._active_requests):
             reply.abort()
+        self._init_queues()
+
+    def stop_and_notify(self):
+        """Stop all requests, calling handlers with the cancellation error.
+
+        Unlike stop(), this passes the error to handlers so they can
+        transition to a proper error state (e.g. albums mark as ERROR).
+        """
+        self._notify_on_cancel = True
+        for reply in list(self._active_requests):
+            reply.abort()
+        self._notify_on_cancel = False
         self._init_queues()
 
     def _count_pending_requests(self):

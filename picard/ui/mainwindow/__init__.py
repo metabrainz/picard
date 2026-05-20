@@ -604,6 +604,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.statusBar().addPermanentWidget(infostatus)
         self.statusBar().addPermanentWidget(self.listening_label)
         self.statusBar().addPermanentWidget(self.plugin_updates_button)
+        infostatus.stop_requested.connect(self.stop_network_requests)
         self.tagger.tagger_stats_changed.connect(self._update_statusbar_stats)
         self.tagger.listen_port_changed.connect(self._update_statusbar_listen_port)
         self._register_status_indicator(infostatus)
@@ -628,6 +629,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.listening_label.setText(_("Listening on port %(port)d") % {"port": listen_port})
         else:
             self.listening_label.setVisible(False)
+
+    def stop_network_requests(self):
+        self.tagger.webservice.stop_and_notify()
+        # Finalize albums still loading (queued requests that never
+        # started won't have their handlers called by stop_and_notify).
+        for album in list(self.tagger.albums.values()):
+            if not album.loaded:
+                album.abort_loading(reason=_("Stopped by user"))
+        self.tagger.webservice.pending_requests_changed.emit()
 
     def _update_statusbar_plugin_updates_available(self):
         if not self.plugin_manager:

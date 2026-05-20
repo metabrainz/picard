@@ -38,6 +38,8 @@ from picard.ui.forms.ui_infostatus import Ui_InfoStatus
 
 
 class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
+    stop_requested = QtCore.pyqtSignal()
+
     def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self, parent=parent)
         Ui_InfoStatus.__init__(self)
@@ -46,18 +48,27 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         self._size = QtCore.QSize(16, 16)
         self._create_icons()
         self._init_labels()
+        self._init_stop_button()
 
         self.reset_counters()
 
     def _init_labels(self):
         size = self._size
-        self.label1.setPixmap(self.icon_eta.pixmap(size))
-        self.label1.hide()
-        self.label2.setPixmap(self.icon_file.pixmap(size))
-        self.label3.setPixmap(self.icon_cd.pixmap(size))
-        self.label4.setPixmap(self.icon_file_pending.pixmap(size))
-        self.label5.setPixmap(self.icon_download.pixmap(size, QtGui.QIcon.Mode.Disabled))
+        self.eta_icon.setPixmap(self.icon_eta.pixmap(size))
+        self.eta_icon.hide()
+        self.files_icon.setPixmap(self.icon_file.pixmap(size))
+        self.albums_icon.setPixmap(self.icon_cd.pixmap(size))
+        self.pending_files_icon.setPixmap(self.icon_file_pending.pixmap(size))
+        self.pending_requests_icon.setPixmap(self.icon_download.pixmap(size, QtGui.QIcon.Mode.Disabled))
         self._init_tooltips()
+
+    def _init_stop_button(self):
+        self.stop_button.setFixedSize(16, 16)
+        self.stop_button.setIconSize(self._size)
+        self.stop_button.setIcon(self.stop_button.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_BrowserStop))
+        self.stop_button.setEnabled(False)
+        self.stop_button.setToolTip(_("Stop all pending network requests"))
+        self.stop_button.clicked.connect(self.stop_requested.emit)
 
     def _create_icons(self):
         self.icon_eta = QtGui.QIcon(":/images/22x22/hourglass.png")
@@ -72,16 +83,16 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
         t3 = _("Albums")
         t4 = _("Pending files")
         t5 = _("Pending requests")
-        self.val1.setToolTip(t1)
-        self.label1.setToolTip(t1)
-        self.val2.setToolTip(t2)
-        self.label2.setToolTip(t2)
-        self.val3.setToolTip(t3)
-        self.label3.setToolTip(t3)
-        self.val4.setToolTip(t4)
-        self.label4.setToolTip(t4)
-        self.val5.setToolTip(t5)
-        self.label5.setToolTip(t5)
+        self.eta_value.setToolTip(t1)
+        self.eta_icon.setToolTip(t1)
+        self.files_value.setToolTip(t2)
+        self.files_icon.setToolTip(t2)
+        self.albums_value.setToolTip(t3)
+        self.albums_icon.setToolTip(t3)
+        self.pending_files_value.setToolTip(t4)
+        self.pending_files_icon.setToolTip(t4)
+        self.pending_requests_value.setToolTip(t5)
+        self.pending_requests_icon.setToolTip(t5)
 
     def update(self, progress_status):
         self.set_files(progress_status.files)
@@ -151,29 +162,31 @@ class InfoStatus(QtWidgets.QWidget, Ui_InfoStatus):
 
     def set_eta(self, eta_seconds):
         if eta_seconds > 0:
-            self.val1.setText(get_timestamp(eta_seconds))
-            self.val1.show()
-            self.label1.show()
+            self.eta_value.setText(get_timestamp(eta_seconds))
+            self.eta_value.show()
+            self.eta_icon.show()
         else:
             self.hide_eta()
 
     def hide_eta(self):
-        self.val1.hide()
-        self.label1.hide()
+        self.eta_value.hide()
+        self.eta_icon.hide()
 
     def set_files(self, num):
-        self.val2.setText(str(num))
+        self.files_value.setText(str(num))
 
     def set_albums(self, num):
-        self.val3.setText(str(num))
+        self.albums_value.setText(str(num))
 
     def set_pending_files(self, num):
-        self.val4.setText(str(num))
+        self.pending_files_value.setText(str(num))
 
     def set_pending_requests(self, num):
-        if num <= 0:
-            enabled = QtGui.QIcon.Mode.Disabled
+        has_requests = num > 0
+        if has_requests:
+            mode = QtGui.QIcon.Mode.Normal
         else:
-            enabled = QtGui.QIcon.Mode.Normal
-        self.label5.setPixmap(self.icon_download.pixmap(self._size, enabled))
-        self.val5.setText(str(num))
+            mode = QtGui.QIcon.Mode.Disabled
+        self.pending_requests_icon.setPixmap(self.icon_download.pixmap(self._size, mode))
+        self.stop_button.setEnabled(has_requests)
+        self.pending_requests_value.setText(str(num))

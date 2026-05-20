@@ -42,7 +42,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLabel" name="val1">
+    <widget class="QLabel" name="eta_value">
      <property name="minimumSize">
       <size>
        <width>40</width>
@@ -58,7 +58,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label1">
+    <widget class="QLabel" name="eta_icon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -86,7 +86,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="val2">
+    <widget class="QLabel" name="files_value">
      <property name="minimumSize">
       <size>
        <width>40</width>
@@ -102,7 +102,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label2">
+    <widget class="QLabel" name="files_icon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -115,7 +115,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="val3">
+    <widget class="QLabel" name="albums_value">
      <property name="minimumSize">
       <size>
        <width>40</width>
@@ -131,7 +131,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label3">
+    <widget class="QLabel" name="albums_icon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -144,7 +144,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="val4">
+    <widget class="QLabel" name="pending_files_value">
      <property name="minimumSize">
       <size>
        <width>40</width>
@@ -160,7 +160,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label4">
+    <widget class="QLabel" name="pending_files_icon">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -176,7 +176,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="val5">
+    <widget class="QLabel" name="pending_requests_value">
      <property name="minimumSize">
       <size>
        <width>40</width>
@@ -192,7 +192,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="label5">
+    <widget class="QLabel" name="pending_requests_icon">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -207,6 +207,25 @@
      </property>
      <property name="margin">
       <number>0</number>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QToolButton" name="stop_button">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="toolButtonStyle">
+      <enum>Qt::ToolButtonIconOnly</enum>
+     </property>
+     <property name="autoRaise">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
