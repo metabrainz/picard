@@ -75,52 +75,41 @@ class CoverArt:
     def __repr__(self):
         return "%s for %r" % (self.__class__.__name__, self.album)
 
+    _COVERART_SELECTION_SETTINGS = (
+        'ca_providers',
+        'embed_only_one_front_image',
+        'save_only_one_front_image',
+        'save_images_to_tags',
+        'save_images_to_files',
+        'save_images_overwrite',
+        'cover_image_filename',
+        'image_type_as_filename',
+        'filter_cover_by_size',
+        'cover_minimum_width',
+        'cover_minimum_height',
+        'dont_replace_with_smaller_cover',
+        'dont_replace_cover_of_types',
+        'dont_replace_included_types',
+        'caa_approved_only',
+        'caa_image_size',
+        'caa_restrict_image_types',
+        'caa_image_types',
+        'caa_image_types_to_omit',
+    )
+
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         config = get_config()
         if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
             log.debug_if(
                 DebugOpt.COVERART,
-                "Cover art selection settings for %s:"
-                " ca_providers=%r,"
-                " embed_only_one_front_image=%r,"
-                " save_only_one_front_image=%r,"
-                " save_images_to_tags=%r,"
-                " save_images_to_files=%r,"
-                " save_images_overwrite=%r,"
-                " cover_image_filename=%r,"
-                " image_type_as_filename=%r,"
-                " filter_cover_by_size=%r,"
-                " cover_minimum_width=%r,"
-                " cover_minimum_height=%r,"
-                " dont_replace_with_smaller_cover=%r,"
-                " dont_replace_cover_of_types=%r,"
-                " dont_replace_included_types=%r,"
-                " caa_approved_only=%r,"
-                " caa_image_size=%r,"
-                " caa_restrict_image_types=%r,"
-                " caa_image_types=%r,"
-                " caa_image_types_to_omit=%r",
-                self.album,
-                config.setting['ca_providers'],
-                config.setting['embed_only_one_front_image'],
-                config.setting['save_only_one_front_image'],
-                config.setting['save_images_to_tags'],
-                config.setting['save_images_to_files'],
-                config.setting['save_images_overwrite'],
-                config.setting['cover_image_filename'],
-                config.setting['image_type_as_filename'],
-                config.setting['filter_cover_by_size'],
-                config.setting['cover_minimum_width'],
-                config.setting['cover_minimum_height'],
-                config.setting['dont_replace_with_smaller_cover'],
-                config.setting['dont_replace_cover_of_types'],
-                config.setting['dont_replace_included_types'],
-                config.setting['caa_approved_only'],
-                config.setting['caa_image_size'],
-                config.setting['caa_restrict_image_types'],
-                config.setting['caa_image_types'],
-                config.setting['caa_image_types_to_omit'],
+                msg_func=lambda: (
+                    "Cover art selection settings for %s: %s"
+                    % (
+                        self.album,
+                        ', '.join(f"{k}={config.setting[k]!r}" for k in self._COVERART_SELECTION_SETTINGS),
+                    )
+                ),
             )
             self.providers = cover_art_providers()
             self._queue_generator = self._start_queue()

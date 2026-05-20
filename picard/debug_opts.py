@@ -89,8 +89,6 @@ class DebugOptEnum(int, Enum):
                 o.enabled = o.optname in opts
             unknown = opts - valid_names
             if unknown:
-                import sys
-
                 print(f"Warning: unknown debug option(s): {', '.join(sorted(unknown))}", file=sys.stderr)
                 print(f"Available: {cls.opt_names()}", file=sys.stderr)
 

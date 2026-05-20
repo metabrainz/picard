@@ -234,19 +234,24 @@ exception = main_logger.exception
 log = main_logger.log
 
 
-def debug_if(debug_opt, msg, *args, **kwargs):
+def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
     """Log a debug message only if the specified debug option is enabled.
 
     Args:
         debug_opt: A DebugOpt enum value to check
         msg: The message format string
         *args: Arguments for the message format string
+        msg_func: A callable returning the message string. Called only if the
+            debug option is enabled. Mutually exclusive with msg/args.
         **kwargs: Additional keyword arguments passed to logger.debug()
 
-    Example:
+    Examples:
         log.debug_if(DebugOpt.PLUGIN_UPDATES, "Plugin %s: checking version", plugin_name)
+        log.debug_if(DebugOpt.COVERART, msg_func=lambda: "Settings: %s" % expensive_format())
     """
     if debug_opt.enabled:
+        if msg_func is not None:
+            msg = msg_func()
         main_logger.debug(f"[{debug_opt.optname}] {msg}", *args, stacklevel=2, **kwargs)
 
 
