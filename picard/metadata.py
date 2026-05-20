@@ -562,7 +562,10 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                     track_isrcs = recording.get('isrcs', [])
                     if track_isrcs:
                         score = isrcs_score(file_isrcs, track_isrcs)
-                        track_parts.identifiers.append((score, id_w['isrc']))
+                    else:
+                        # Candidate has no ISRCs — neutral (neither confirms nor denies)
+                        score = 0.5
+                    track_parts.identifiers.append((score, id_w['isrc']))
 
             # Track-level similarity signals
             if 'title' in self and 'title' in sim_w:
