@@ -1085,8 +1085,12 @@ class File(MetadataItem):
         )
         if DebugOpt.MATCHING.enabled:
             for i, m in enumerate(all_matches[:5]):
-                title = m.track.get('title', '?') if m.track else '?'
-                log.debug("  #%d sim=%.4f  %r", i + 1, m.similarity, title)
+                title = '?'
+                mbid = '?'
+                if m.track:
+                    title = m.track.get('title', '?')
+                    mbid = m.track.get('id', '?')
+                log.debug("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
 
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
         best_match = find_best_match_with_margin(
