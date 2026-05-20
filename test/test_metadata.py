@@ -46,6 +46,7 @@ from picard.metadata import (
     MultiMetadataProxy,
     ReleaseMatchParts,
     _get_weighted_release_parts,
+    isrcs_score,
     trackcount_score,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
@@ -687,6 +688,16 @@ class CommonTests:
             self.assertEqual(1.0, trackcount_score(5, 5))
             self.assertAlmostEqual(0.4, trackcount_score(6, 5))  # 1 - (1/5)*3
             self.assertAlmostEqual(0.6, trackcount_score(4, 5))  # 1 - (1/5)*2
+
+        def test_isrcs_score(self):
+            self.assertEqual(1.0, isrcs_score(['ISRC1', 'ISRC2'], ['ISRC1', 'ISRC2']))
+            self.assertEqual(1.0, isrcs_score(['ISRC1'], ['ISRC1']))
+            self.assertEqual(1.0, isrcs_score(['ISRC1'], ['ISRC1', 'ISRC2']))
+            self.assertEqual(0.8, isrcs_score(['ISRC1', 'ISRC2'], ['ISRC2', 'ISRC3']))
+            self.assertEqual(0.0, isrcs_score(['ISRC1'], ['ISRC2', 'ISRC3']))
+            self.assertEqual(0.0, isrcs_score(['ISRC1'], []))
+            self.assertEqual(0.5, isrcs_score([], []))
+            self.assertEqual(0.5, isrcs_score([], ['ISRC1', 'ISRC2']))
 
         def test_combine_tiers_no_identifiers(self):
             """Without identifiers, similarity drives the score."""

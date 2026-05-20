@@ -288,6 +288,21 @@ def trackcount_score(actual, expected):
         return max(0.0, 1.0 - ratio * 2)
 
 
+def isrcs_score(file_isrcs: Iterable[str], track_isrcs: Iterable[str]) -> float:
+    file_isrcs = set(isrc.upper() for isrc in file_isrcs)
+    track_isrcs = set(isrc.upper() for isrc in track_isrcs)
+    # No file ISRCs, undefined match
+    if not file_isrcs:
+        return 0.5
+    # All file ISRCs are present in the track ISRCs — perfect match
+    elif file_isrcs.issubset(track_isrcs):
+        return 1.0
+    # Some file ISRCs are present in the track ISRCs — partial match
+    elif file_isrcs.intersection(track_isrcs):
+        return 0.8
+    return 0.0
+
+
 class Metadata(MutableMapping[str, str | list[str] | None]):
     """List of metadata items with dict-like access."""
 
@@ -541,12 +556,12 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         with self._lock.lock_for_read():
             # Tier 1: ISRC — recording-level identifier
             if 'isrc' in id_w:
-                file_isrc = self.get('isrc', '')
-                if file_isrc:
+                file_isrcs = self.getall('isrc')
+                if file_isrcs:
                     recording = track.get('recording', track)
                     track_isrcs = recording.get('isrcs', [])
                     if track_isrcs:
-                        score = 1.0 if file_isrc in track_isrcs else 0.0
+                        score = isrcs_score(file_isrcs, track_isrcs)
                         track_parts.identifiers.append((score, id_w['isrc']))
 
             # Track-level similarity signals
