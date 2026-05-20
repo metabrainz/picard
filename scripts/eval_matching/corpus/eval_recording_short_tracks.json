@@ -1,0 +1,136 @@
+{
+  "description": "Tests with very short tracks where length differences are proportionally large",
+  "releases": {
+    "rel_short": {
+      "id": "rel-short-a",
+      "title": "Ambient Album",
+      "artist-credit": [
+        {
+          "name": "Ambient Artist",
+          "artist": {
+            "id": "a-ambientartist",
+            "name": "Ambient Artist",
+            "sort-name": "Ambient Artist"
+          }
+        }
+      ],
+      "date": "2022",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-short-a",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_short2": {
+      "id": "rel-short-b",
+      "title": "Ambient Album Deluxe",
+      "artist-credit": [
+        {
+          "name": "Ambient Artist",
+          "artist": {
+            "id": "a-ambientartist",
+            "name": "Ambient Artist",
+            "sort-name": "Ambient Artist"
+          }
+        }
+      ],
+      "date": "2023",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-short-b",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-short-correct",
+      "title": "Intro",
+      "length": 15000,
+      "artist-credit": [
+        {
+          "name": "Ambient Artist",
+          "artist": {
+            "id": "a-ambientartist",
+            "name": "Ambient Artist",
+            "sort-name": "Ambient Artist"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "rel_short",
+      "score": 100
+    },
+    {
+      "id": "rec-short-other",
+      "title": "Intro",
+      "length": 22000,
+      "artist-credit": [
+        {
+          "name": "Ambient Artist",
+          "artist": {
+            "id": "a-ambientartist",
+            "name": "Ambient Artist",
+            "sort-name": "Ambient Artist"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "rel_short2",
+      "score": 100
+    },
+    {
+      "id": "rec-short-outro",
+      "title": "Outro",
+      "length": 14000,
+      "artist-credit": [
+        {
+          "name": "Ambient Artist",
+          "artist": {
+            "id": "a-ambientartist",
+            "name": "Ambient Artist",
+            "sort-name": "Ambient Artist"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "rel_short",
+      "score": 90
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "short_track_same_title",
+      "description": "15s vs 22s intro — proportionally huge difference",
+      "correct_id": "rec-short-correct",
+      "file": {
+        "title": "Intro",
+        "artist": "Ambient Artist",
+        "length": 15000,
+        "album": "Ambient Album"
+      }
+    },
+    {
+      "name": "short_track_slight_length_diff",
+      "description": "15s file, 14s outro candidate with different title",
+      "correct_id": "rec-short-correct",
+      "file": {
+        "title": "Intro",
+        "artist": "Ambient Artist",
+        "length": 15000
+      }
+    }
+  ]
+}

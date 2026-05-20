@@ -1,0 +1,126 @@
+{
+  "description": "Tests with non-ASCII characters, fullwidth, combining marks",
+  "releases": {
+    "rel_jp": {
+      "id": "rel-unicode-jp",
+      "title": "東京事変",
+      "artist-credit": [
+        {
+          "name": "椒名林檎",
+          "artist": {
+            "id": "a-椒名林檎",
+            "name": "椒名林檎",
+            "sort-name": "椒名林檎"
+          }
+        }
+      ],
+      "date": "2019",
+      "country": "JP",
+      "release-group": {
+        "id": "rg-rel-unicode-jp",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_jp2": {
+      "id": "rel-unicode-jp2",
+      "title": "東京事變",
+      "artist-credit": [
+        {
+          "name": "椒名林檎",
+          "artist": {
+            "id": "a-椒名林檎",
+            "name": "椒名林檎",
+            "sort-name": "椒名林檎"
+          }
+        }
+      ],
+      "date": "2019",
+      "country": "JP",
+      "release-group": {
+        "id": "rg-rel-unicode-jp2",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-uni-correct",
+      "title": "長く短い祭",
+      "length": 312000,
+      "artist-credit": [
+        {
+          "name": "椒名林檎",
+          "artist": {
+            "id": "a-椒名林檎",
+            "name": "椒名林檎",
+            "sort-name": "椒名林檎"
+          }
+        }
+      ],
+      "isrcs": [
+        "JPPC00000001"
+      ],
+      "release": "rel_jp",
+      "score": 100
+    },
+    {
+      "id": "rec-uni-variant",
+      "title": "長く短い祭",
+      "length": 312000,
+      "artist-credit": [
+        {
+          "name": "椒名林檎",
+          "artist": {
+            "id": "a-椒名林檎",
+            "name": "椒名林檎",
+            "sort-name": "椒名林檎"
+          }
+        }
+      ],
+      "isrcs": [
+        "JPPC00000002"
+      ],
+      "release": "rel_jp2",
+      "score": 100
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "unicode_identical_title_different_release",
+      "description": "Same title in kanji, different releases (variant kanji in album)",
+      "correct_id": "rec-uni-correct",
+      "file": {
+        "title": "長く短い祭",
+        "artist": "椒名林檎",
+        "length": 312000,
+        "isrcs": [
+          "JPPC00000001"
+        ],
+        "album": "東京事変"
+      }
+    },
+    {
+      "name": "unicode_no_isrc_same_length",
+      "description": "Same title, same length, no ISRC — needs album to distinguish",
+      "correct_id": "rec-uni-correct",
+      "file": {
+        "title": "長く短い祭",
+        "artist": "椒名林檎",
+        "length": 312000,
+        "album": "東京事変"
+      }
+    }
+  ]
+}

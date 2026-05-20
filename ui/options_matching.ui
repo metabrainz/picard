@@ -12,16 +12,68 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QGroupBox" name="rename_files">
+    <widget class="QGroupBox" name="matching_group">
      <property name="title">
-      <string>Thresholds</string>
+      <string>Matching</string>
      </property>
      <layout class="QGridLayout">
       <property name="spacing">
        <number>2</number>
       </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_min_similarity">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Minimum similarity:</string>
+        </property>
+        <property name="buddy">
+         <cstring>match_min_similarity</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="match_min_similarity">
+        <property name="suffix">
+         <string> %</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_min_margin">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Minimum margin between best and second-best match:</string>
+        </property>
+        <property name="buddy">
+         <cstring>match_min_margin</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="match_min_margin">
+        <property name="suffix">
+         <string> %</string>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="label_track_matching">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -32,7 +84,7 @@
          <string>Minimal similarity for matching files to tracks:</string>
         </property>
         <property name="buddy">
-         <cstring>file_lookup_threshold</cstring>
+         <cstring>track_matching_threshold</cstring>
         </property>
        </widget>
       </item>
@@ -43,58 +95,6 @@
         </property>
         <property name="maximum">
          <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="cluster_lookup_threshold">
-        <property name="suffix">
-         <string> %</string>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="file_lookup_threshold">
-        <property name="suffix">
-         <string> %</string>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Minimal similarity for file lookups:</string>
-        </property>
-        <property name="buddy">
-         <cstring>file_lookup_threshold</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Minimal similarity for cluster lookups:</string>
-        </property>
-        <property name="buddy">
-         <cstring>file_lookup_threshold</cstring>
         </property>
        </widget>
       </item>
@@ -117,8 +117,8 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>file_lookup_threshold</tabstop>
-  <tabstop>cluster_lookup_threshold</tabstop>
+  <tabstop>match_min_similarity</tabstop>
+  <tabstop>match_min_margin</tabstop>
   <tabstop>track_matching_threshold</tabstop>
  </tabstops>
  <resources/>

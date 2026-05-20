@@ -669,3 +669,14 @@ def upgrade_to_v3_0_0b2(config):
     old_opt = 'artist_locales'
     new_opt = 'translation_locales'
     rename_option(config, old_opt, new_opt, ListOption, ['en'])
+
+
+def upgrade_to_v3_0_0b3(config):
+    """Replace absolute similarity thresholds with floor + margin.
+
+    Old thresholds were tuned to a specific score distribution and are
+    meaningless under the new tiered matching algorithm. Remove them so
+    the new defaults (match_min_similarity, match_min_margin) take effect.
+    """
+    config.setting.remove('file_lookup_threshold')
+    config.setting.remove('cluster_lookup_threshold')

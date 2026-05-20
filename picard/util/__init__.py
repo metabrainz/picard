@@ -738,12 +738,8 @@ def linear_combination_of_weights(parts):
     total = 0.0
     sum_of_products = 0.0
     for value, weight in parts:
-        if value < 0.0:
-            raise ValueError("Value must be greater than or equal to 0.0")
-        if value > 1.0:
-            raise ValueError("Value must be lesser than or equal to 1.0")
-        if weight < 0:
-            raise ValueError("Weight must be greater than or equal to 0.0")
+        assert 0.0 <= value <= 1.0, f"Value {value} out of range [0.0, 1.0]"
+        assert weight >= 0, f"Weight {weight} must be >= 0"
         total += weight
         sum_of_products += value * weight
     if total == 0.0:
@@ -993,6 +989,42 @@ def find_best_match(candidates, no_match):
     """
     best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
     return BestMatch(similarity=best_match.similarity, result=best_match)
+
+
+MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
+
+
+def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
+    """Find best match, flagging if below floor or margin is too small.
+
+    Args:
+        candidates: Iterable with objects having a `similarity` attribute
+        no_match: Match to return if no candidate passes the floor
+        min_similarity: Reject if best score is below this floor
+        min_margin: Flag as ambiguous if best - second_best < this value
+            (skipped when there's only one candidate)
+
+    Returns: `MatchResult` with similarity, result, and reason.
+        reason is None (confident), 'ambiguous' (margin too small,
+        best match still returned), or 'below_floor' (no_match returned).
+    """
+    best = no_match
+    second_best_sim = -1.0
+    for candidate in candidates:
+        sim = candidate.similarity
+        if sim > best.similarity:
+            second_best_sim = best.similarity
+            best = candidate
+        elif sim > second_best_sim:
+            second_best_sim = sim
+
+    if best.similarity < min_similarity:
+        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
+
+    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
+        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
+
+    return MatchResult(similarity=best.similarity, result=best, reason=None)
 
 
 def limited_join(a_list, limit, join_string='+', middle_string='…'):

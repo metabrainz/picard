@@ -29,6 +29,7 @@ from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
     BoolOption,
+    FloatOption,
     IntOption,
     ListOption,
     Option,
@@ -620,3 +621,13 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0b2(self.config)
         self.assertNotIn('artist_locales', self.config.setting)
         self.assertEqual(self.config.setting['translation_locales'], ['fr', 'de'])
+
+    def test_upgrade_to_v3_0_0b3(self):
+        FloatOption('setting', 'file_lookup_threshold', 0.7)
+        FloatOption('setting', 'cluster_lookup_threshold', 0.7)
+
+        self.config.setting['file_lookup_threshold'] = 0.8
+        self.config.setting['cluster_lookup_threshold'] = 0.6
+        hooks.upgrade_to_v3_0_0b3(self.config)
+        self.assertNotIn('file_lookup_threshold', self.config.setting)
+        self.assertNotIn('cluster_lookup_threshold', self.config.setting)

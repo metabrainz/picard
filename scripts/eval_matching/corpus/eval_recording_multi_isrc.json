@@ -1,0 +1,195 @@
+{
+  "description": "Tests for files with multiple ISRCs",
+  "releases": {
+    "release_a": {
+      "id": "aaaa-1111",
+      "title": "Album A",
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "US",
+      "release-group": {
+        "id": "rg-aaaa-1111",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "release_b": {
+      "id": "bbbb-2222",
+      "title": "Album B",
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "date": "2021",
+      "country": "US",
+      "release-group": {
+        "id": "rg-bbbb-2222",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-correct-1",
+      "title": "My Song",
+      "length": 240000,
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRC00000001",
+        "ISRC00000002"
+      ],
+      "release": "release_a",
+      "score": 100
+    },
+    {
+      "id": "rec-partial-1",
+      "title": "My Song",
+      "length": 242000,
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRC00000001",
+        "ISRC00000099"
+      ],
+      "release": "release_b",
+      "score": 100
+    },
+    {
+      "id": "rec-nomatch-1",
+      "title": "My Song",
+      "length": 238000,
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRC00000088"
+      ],
+      "release": "release_b",
+      "score": 100
+    },
+    {
+      "id": "rec-noisrc-1",
+      "title": "My Song",
+      "length": 241000,
+      "artist-credit": [
+        {
+          "name": "Artist X",
+          "artist": {
+            "id": "artist-x",
+            "name": "Artist X",
+            "sort-name": "Artist X"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "release_b",
+      "score": 100
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "multi_isrc_full_subset",
+      "description": "File has 2 ISRCs, both match correct recording",
+      "correct_id": "rec-correct-1",
+      "file": {
+        "title": "My Song",
+        "artist": "Artist X",
+        "length": 240000,
+        "isrcs": [
+          "ISRC00000001",
+          "ISRC00000002"
+        ]
+      }
+    },
+    {
+      "name": "multi_isrc_partial_overlap",
+      "description": "File has 2 ISRCs, only 1 matches correct recording",
+      "correct_id": "rec-correct-1",
+      "file": {
+        "title": "My Song",
+        "artist": "Artist X",
+        "length": 240000,
+        "isrcs": [
+          "ISRC00000001",
+          "ISRC00000777"
+        ]
+      }
+    },
+    {
+      "name": "multi_isrc_unique_isrc",
+      "description": "File has 1 ISRC that only the correct recording has",
+      "correct_id": "rec-correct-1",
+      "file": {
+        "title": "My Song",
+        "artist": "Artist X",
+        "length": 240000,
+        "isrcs": [
+          "ISRC00000002"
+        ]
+      }
+    },
+    {
+      "name": "multi_isrc_all_wrong",
+      "description": "File ISRCs dont match any candidate, rely on similarity",
+      "correct_id": "rec-correct-1",
+      "file": {
+        "title": "My Song",
+        "artist": "Artist X",
+        "length": 240000,
+        "isrcs": [
+          "ISRC00000999"
+        ]
+      }
+    }
+  ]
+}

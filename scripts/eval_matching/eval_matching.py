@@ -83,7 +83,7 @@ SCENARIOS = [
         "distractors": [
             "eval_release_6a76904c.json",  # kranky US
             "eval_release_f77eeaef.json",  # 2017 reissue
-            "eval_release_748e3e26.json",  # 2018 vinyl
+            "eval_release_748e3e26.json",  # 2018 vinyl (same barcode as AU)
         ],
         "scenario": "same_album_variant_titles",
     },
@@ -153,9 +153,8 @@ SCENARIOS = [
         ],
         "scenario": "non_latin_editions",
         "expectations": {
-            "*": "ambiguous",
-            "prefer_jp_digital": "correct",
-            "prefer_us_cd": "wrong",
+            "*": "correct",  # different barcodes make these distinguishable
+            "missing_barcode": "ambiguous",
         },
     },
     {
@@ -165,17 +164,16 @@ SCENARIOS = [
         ],
         "scenario": "non_latin_editions",
         "expectations": {
-            "*": "ambiguous",
-            "prefer_us_cd": "correct",
-            "prefer_jp_digital": "wrong",
+            "*": "correct",  # different barcodes make these distinguishable
+            "missing_barcode": "ambiguous",
         },
     },
     # --- Live vs studio: same artist, different albums ---
     {
-        "target": "eval_release_eccae410.json",  # Nirvana Nevermind
+        "target": "eval_release_eccae410.json",  # Nirvana Nevermind AU (DGC)
         "distractors": [
             "eval_release_f4469159.json",  # Nirvana MTV Unplugged
-            "eval_release_8e061dc4.json",  # Nevermind alt edition (leading-0 barcode)
+            "eval_release_8e061dc4.json",  # Nevermind US (Geffen, different catno)
         ],
         "scenario": "live_vs_studio",
     },
@@ -186,6 +184,106 @@ SCENARIOS = [
             "eval_release_8e061dc4.json",  # Nevermind alt edition
         ],
         "scenario": "live_vs_studio",
+    },
+    # --- Remaster vs original: same album, different editions ---
+    {
+        "target": "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+        "distractors": [
+            "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+            "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
+    {
+        "target": "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+        "distractors": [
+            "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+            "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
+    {
+        "target": "eval_release_5c976ee2.json",  # Rumours 2013 US deluxe (40 tracks)
+        "distractors": [
+            "eval_release_1a8c4ac3.json",  # Rumours 1984 GB CD (11 tracks)
+            "eval_release_3c297f7a.json",  # Rumours 2013 XE remaster (11 tracks)
+        ],
+        "scenario": "remaster_vs_original",
+    },
+    # --- Same title, different artists (Greatest Hits by various bands) ---
+    {
+        "target": "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+        "distractors": [
+            "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+            "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        ],
+        "scenario": "same_title_different_artist",
+    },
+    {
+        "target": "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+        "distractors": [
+            "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+            "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        ],
+        "scenario": "same_title_different_artist",
+    },
+    {
+        "target": "eval_release_bab57bb1.json",  # Queen - Greatest Hits 1981
+        "distractors": [
+            "eval_release_a9d4cf0c.json",  # Elton John - Greatest Hits 1984
+            "eval_release_5c62d977.json",  # ABBA - Greatest Hits
+        ],
+        "scenario": "same_title_different_artist",
+    },
+    # --- Multi-disc vs single-disc: same album, different editions ---
+    {
+        "target": "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks, 1 disc)
+        "distractors": [
+            "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks, 4 media)
+            "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks, 1 disc)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
+    {
+        "target": "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks, 4 media)
+        "distractors": [
+            "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks)
+            "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
+    {
+        "target": "eval_release_cba282c5.json",  # In Rainbows US CD (10 tracks, 1 disc)
+        "distractors": [
+            "eval_release_e9b0f69e.json",  # In Rainbows XE CD (10 tracks)
+            "eval_release_ea92a194.json",  # In Rainbows discbox (28 tracks)
+        ],
+        "scenario": "multi_disc_vs_single",
+    },
+    # --- Self-titled albums: artist name = album name, different artists ---
+    {
+        "target": "eval_release_2529f558.json",  # Metallica - Metallica (Black Album)
+        "distractors": [
+            "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+            "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        ],
+        "scenario": "self_titled_albums",
+    },
+    {
+        "target": "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+        "distractors": [
+            "eval_release_2529f558.json",  # Metallica - Metallica
+            "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        ],
+        "scenario": "self_titled_albums",
+    },
+    {
+        "target": "eval_release_3a8a6113.json",  # Weezer - Weezer (Blue Album)
+        "distractors": [
+            "eval_release_2529f558.json",  # Metallica - Metallica
+            "eval_release_7c07f9a1.json",  # Beyoncé - BEYONCÉ
+        ],
+        "scenario": "self_titled_albums",
     },
 ]
 
@@ -258,6 +356,32 @@ def wrong_barcode(metadata, release):
     metadata["barcode"] = "9999999999999"
 
 
+def wrong_isrc(metadata, release):
+    """Replace ISRC with one from an adjacent track on the same release.
+
+    Simulates a common ripping error where ISRCs shift by one track.
+    Falls back to a completely wrong ISRC if no adjacent track has one.
+    """
+    if "isrc" not in metadata:
+        return
+    # Find an ISRC from a different track on the same release
+    for media in release.get("media", []):
+        for track in media.get("tracks", []):
+            recording = track.get("recording", {})
+            for isrc in recording.get("isrcs", []):
+                if isrc != metadata["isrc"]:
+                    metadata["isrc"] = isrc
+                    return
+    # Fallback: completely wrong ISRC
+    metadata["isrc"] = "XXYYY0000001"
+
+
+def less_isrcs(metadata, release):
+    isrcs = metadata.getall('isrc')
+    if len(isrcs) > 1:
+        metadata['isrc'] = isrcs[0:-1]
+
+
 def missing_most(metadata, release):
     """Strip everything except album and artist (minimal metadata)."""
     keep = {"album", "albumartist"}
@@ -315,6 +439,8 @@ DEGRADATIONS = [
     ("extra_artist_suffix", extra_artist_suffix),
     ("wrong_track_count", wrong_track_count),
     ("wrong_barcode", wrong_barcode),
+    ("wrong_isrc", wrong_isrc),
+    ("less_isrcs", less_isrcs),
     ("length_small_diff", length_small_diff),
     ("length_large_diff", length_large_diff),
     ("title_remaster_suffix", title_remaster_suffix),
@@ -399,6 +525,10 @@ def metadata_from_track(track, release):
         m["artist"] = "".join(c.get("name", "") + c.get("joinphrase", "") for c in ac)
     m.length = track.get("length", 0) or 0
     m["tracknumber"] = track.get("number", "1")
+    recording = track.get("recording", {})
+    isrcs = recording.get("isrcs", [])
+    if isrcs:
+        m["isrc"] = isrcs
     return m
 
 
@@ -511,7 +641,7 @@ def evaluate(corpus, weights, config_profile="neutral"):
     scores for diagnostic purposes. When a test case has expectations defined,
     the result is scored against the expected outcome for the given config_profile.
     """
-    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "has_scores": True, "details": []}
 
     for entry in corpus:
         scores = [(entry["metadata"].compare_to_release(c, weights).similarity, c["id"]) for c in entry["candidates"]]
@@ -558,7 +688,7 @@ def evaluate_file_corpus(corpus, weights, config_profile="neutral"):
     Each entry has candidates as (track_dict, release_id) tuples.
     compare_to_track returns SimMatchTrack with the best release match.
     """
-    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "details": []}
+    results = {"correct": 0, "wrong": 0, "ambiguous": 0, "has_scores": True, "details": []}
 
     for entry in corpus:
         scores = []
@@ -686,6 +816,19 @@ def print_report(results, weights_name, verbose=False):
         f"  (actual breakdown: correct={results['correct']}, ambiguous={results['ambiguous']}, wrong={results['wrong']})"
     )
 
+    # Score distribution (file-level)
+    if results.get("has_scores"):
+        sims = sorted(d["best_sim"] for d in results["details"])
+        n = len(sims)
+        mean = sum(sims) / n
+        p5 = sims[int(n * 0.05)]
+        p25 = sims[int(n * 0.25)]
+        p50 = sims[n // 2]
+        print(
+            f"  Scores: min={sims[0]:.4f}  p5={p5:.4f}  p25={p25:.4f}"
+            f"  median={p50:.4f}  mean={mean:.4f}  max={sims[-1]:.4f}"
+        )
+
     # Problems summary (always shown)
     problems = [d for d in results["details"] if not d.get("met_expectation", d["status"] == "correct")]
     if not verbose and problems:
@@ -723,13 +866,23 @@ def print_report(results, weights_name, verbose=False):
     # Per-degradation
     deg_names = [name for name, _ in DEGRADATIONS]
     rows = _grouped_breakdown(results["details"], "degradation", deg_names)
-    print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
-    print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
+    has_scores = results.get("has_scores")
+    if has_scores:
+        print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9} {'AvgSim':>7}")
+        print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9} {'-' * 7}")
+    else:
+        print(f"\n  {'Degradation':<25} {'Pass':>4} {'Fail':>4} {'N':>3} {'Rate':>6} {'AvgMargin':>9}")
+        print(f"  {'-' * 25} {'-' * 4} {'-' * 4} {'-' * 3} {'-' * 6} {'-' * 9}")
     for name, ok, fail, n, margins in rows:
         rate = ok / n if n else 0
         avg_m = sum(margins) / len(margins) if margins else 0
         flag = " ✗" if rate < 1.0 else ""
-        print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
+        if has_scores:
+            deg_sims = [d["best_sim"] for d in results["details"] if d["degradation"] == name]
+            avg_sim = sum(deg_sims) / len(deg_sims) if deg_sims else 0
+            print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f} {avg_sim:>7.4f}{flag}")
+        else:
+            print(f"  {name:<25} {ok:>4} {fail:>4} {n:>3} {rate:>5.0%} {avg_m:>9.4f}{flag}")
 
     # Per-scenario
     rows = _grouped_breakdown(results["details"], "scenario")
@@ -865,12 +1018,15 @@ def _filter_results(results, scenario=None, degradation=None):
         details = [d for d in details if scenario in d["scenario"]]
     if degradation:
         details = [d for d in details if degradation in d["degradation"]]
-    return {
+    filtered = {
         "correct": sum(1 for d in details if d["status"] == "correct"),
         "ambiguous": sum(1 for d in details if d["status"] == "ambiguous"),
         "wrong": sum(1 for d in details if d["status"] == "wrong"),
         "details": details,
     }
+    if results.get("has_scores"):
+        filtered["has_scores"] = True
+    return filtered
 
 
 def _snapshot_key(detail):
@@ -901,7 +1057,13 @@ def _save_snapshot(results, path):
 def _compare_snapshot(current_results, snapshot_path):
     """Compare current results against a saved snapshot and show changes."""
     with open(snapshot_path, encoding="utf-8") as f:
-        previous = json.load(f)
+        data = json.load(f)
+
+    # Support both old (dict with meta) and plain list snapshot formats
+    if isinstance(data, dict) and "entries" in data:
+        previous = data["entries"]
+    else:
+        previous = data
 
     prev_by_key = {(e["scenario"], e["release"], e["degradation"], e.get("correct_id", "")): e for e in previous}
     curr_by_key = {_snapshot_key(d): d for d in current_results["details"]}
@@ -924,12 +1086,21 @@ def _compare_snapshot(current_results, snapshot_path):
     prev_correct = sum(1 for e in previous if e["status"] == "correct")
     curr_correct = current_results["correct"]
 
+    # Score distribution comparison
+    prev_sims = sorted(e["best_sim"] for e in previous)
+    curr_sims = sorted(d["best_sim"] for d in current_results["details"])
+    prev_mean = sum(prev_sims) / len(prev_sims) if prev_sims else 0
+    curr_mean = sum(curr_sims) / len(curr_sims) if curr_sims else 0
+
     print(f"\n{'=' * 70}")
     print("  SCORE DELTA")
     print(f"{'=' * 70}")
     print(f"  Previous: {prev_correct}/{len(previous)} correct")
     print(f"  Current:  {curr_correct}/{len(curr_by_key)} correct")
     print(f"  Improved: {len(improved)}  Regressed: {len(regressed)}")
+    delta = curr_mean - prev_mean
+    sign = "+" if delta >= 0 else ""
+    print(f"  Mean score: {prev_mean:.4f} → {curr_mean:.4f} ({sign}{delta:.4f})")
 
     if improved:
         print(f"\n  IMPROVED ({len(improved)}):")

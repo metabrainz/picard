@@ -44,6 +44,9 @@ from picard.metadata import (
     MULTI_VALUED_JOINER,
     Metadata,
     MultiMetadataProxy,
+    ReleaseMatchParts,
+    _get_weighted_release_parts,
+    isrcs_score,
     trackcount_score,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
@@ -598,73 +601,77 @@ class CommonTests:
         def test_compare_to_release_parts_totaltracks(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totaltracks": 30}
+            weights = {"similarity": {"totaltracks": 30}}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 0.3), (5, 0.0)):
+            # Release has media with track counts [4, 3]
+            for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 1 / 3), (5, 0.25)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totalalbumtracks": 30}
+            weights = {"similarity": {"totalalbumtracks": 30}}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((7, 1.0), (6, 0.3), (8, 0.0)):
+            for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['~totalalbumtracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_totalalbumtracks_totaltracks_fallback(self):
             release = load_test_json('release_multidisc.json')
             metadata = Metadata()
-            weights = {"totalalbumtracks": 30}
+            weights = {"similarity": {"totalalbumtracks": 30}}
             release_to_metadata(release, metadata)
-            for totaltracks, sim in ((7, 1.0), (6, 0.3), (8, 0.0)):
+            for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
                 metadata['totaltracks'] = totaltracks
                 parts = metadata.compare_to_release_parts(release, weights)
-                self.assertIn((sim, 30), parts)
+                self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
+                self.assertEqual(parts.similarity[0][1], 30)
 
         def test_compare_to_release_parts_barcode_match(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '123'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((1.0, 6), parts)
+            self.assertIn((1.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_mismatch(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '999'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((0.0, 6), parts)
+            self.assertIn((0.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_no_release_barcode(self):
             release = load_test_json('release.json')
             release['barcode'] = ''
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '123'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((0.5, 6), parts)
+            self.assertIn((0.0, 6), parts.identifiers)
 
         def test_compare_to_release_parts_barcode_no_file_barcode(self):
             release = load_test_json('release.json')
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertFalse(parts)
+            self.assertFalse(parts.identifiers)
 
         def test_compare_to_release_parts_barcode_upc_ean_normalization(self):
             release = load_test_json('release.json')
             release['barcode'] = '0727361379704'
             metadata = Metadata()
-            weights = {"barcode": 6}
+            weights = {"identifiers": {"barcode": 6}}
             metadata['barcode'] = '727361379704'
             parts = metadata.compare_to_release_parts(release, weights)
-            self.assertIn((1.0, 6), parts)
+            self.assertIn((1.0, 6), parts.identifiers)
 
         def test_barcode_breaks_tie_between_identical_releases(self):
             release_with_barcode = load_test_json('release.json')
@@ -679,8 +686,72 @@ class CommonTests:
 
         def test_trackcount_score(self):
             self.assertEqual(1.0, trackcount_score(5, 5))
-            self.assertEqual(0.0, trackcount_score(6, 5))
-            self.assertEqual(0.3, trackcount_score(4, 5))
+            self.assertAlmostEqual(0.4, trackcount_score(6, 5))  # 1 - (1/5)*3
+            self.assertAlmostEqual(0.6, trackcount_score(4, 5))  # 1 - (1/5)*2
+
+        def test_isrcs_score(self):
+            self.assertEqual(1.0, isrcs_score(['ISRC1', 'ISRC2'], ['ISRC1', 'ISRC2']))
+            self.assertEqual(1.0, isrcs_score(['ISRC1'], ['ISRC1']))
+            self.assertEqual(1.0, isrcs_score(['ISRC1'], ['ISRC1', 'ISRC2']))
+            self.assertEqual(0.8, isrcs_score(['ISRC1', 'ISRC2'], ['ISRC2', 'ISRC3']))
+            self.assertEqual(0.0, isrcs_score(['ISRC1'], ['ISRC2', 'ISRC3']))
+            self.assertEqual(0.5, isrcs_score(['ISRC1'], []))
+            self.assertEqual(0.5, isrcs_score([], []))
+            self.assertEqual(0.5, isrcs_score([], ['ISRC1', 'ISRC2']))
+
+        def test_combine_tiers_no_identifiers(self):
+            """Without identifiers, similarity drives the score."""
+            parts = ReleaseMatchParts(
+                similarity=[(1.0, 10), (1.0, 5)],
+                preferences=[(1.0, 2)],
+            )
+            # sim=1.0, pref=1.0 → 1.0*0.9 + 1.0*0.1 = 1.0
+            self.assertAlmostEqual(1.0, parts.combine_tiers())
+
+        def test_combine_tiers_strong_identifier_match(self):
+            """Strong identifier match → high score, similarity still contributes."""
+            parts = ReleaseMatchParts(
+                identifiers=[(1.0, 28)],
+                similarity=[(0.5, 10)],  # mediocre similarity
+                preferences=[(0.0, 2)],  # worst preference
+            )
+            # id≥0.9 → 0.85 + 0.5*0.1 + 0.0*0.05 = 0.9
+            self.assertAlmostEqual(0.9, parts.combine_tiers())
+
+        def test_combine_tiers_strong_identifier_mismatch(self):
+            """Strong identifier mismatch → score capped low."""
+            parts = ReleaseMatchParts(
+                identifiers=[(0.0, 28)],
+                similarity=[(1.0, 10), (1.0, 5)],  # perfect similarity
+                preferences=[(1.0, 2)],
+            )
+            # id≤0.1 → min(0.3, 1.0*0.3) = 0.3
+            self.assertAlmostEqual(0.3, parts.combine_tiers())
+
+        def test_combine_tiers_partial_identifier(self):
+            """Partial identifier signal → blend all tiers."""
+            parts = ReleaseMatchParts(
+                identifiers=[(0.5, 28)],
+                similarity=[(1.0, 10)],
+                preferences=[(1.0, 2)],
+            )
+            # 0.5*0.4 + 1.0*0.5 + 1.0*0.1 = 0.8
+            self.assertAlmostEqual(0.8, parts.combine_tiers())
+
+        def test_combine_tiers_identifier_overrides_preference(self):
+            """Barcode match wins over format preference mismatch."""
+            # Release A: barcode matches, bad preference
+            parts_a = ReleaseMatchParts(
+                identifiers=[(1.0, 28)],
+                similarity=[(0.8, 10)],
+                preferences=[(0.0, 2)],
+            )
+            # Release B: no barcode, good preference
+            parts_b = ReleaseMatchParts(
+                similarity=[(0.8, 10)],
+                preferences=[(1.0, 2)],
+            )
+            self.assertGreater(parts_a.combine_tiers(), parts_b.combine_tiers())
 
         def test_weights_from_release_type_scores(self):
             release = load_test_json('release.json')
@@ -697,6 +768,17 @@ class CommonTests:
             self.assertEqual(parts[0], (0.75, 123))
             weights_from_release_type_scores(parts, release, {}, 123)
             self.assertEqual(parts[1], (0.5, 123))
+
+        def test_get_weighted_release_parts(self):
+            weights = {
+                'similarity': {'album': 10, 'totaltracks': 5, 'title': 12},
+                'preferences': {'releasecountry': 5, 'isvideo': 2},
+            }
+            parts = _get_weighted_release_parts(weights, 0.5)
+            self.assertIsInstance(parts, ReleaseMatchParts)
+            self.assertEqual(parts.identifiers, [])
+            self.assertEqual(parts.similarity, [(0.5, 15)])
+            self.assertEqual(parts.preferences, [(0.5, 5)])
 
         def test_preferred_countries(self):
             release = load_test_json('release.json')
@@ -738,13 +820,13 @@ class CommonTests:
         def test_compare_to_track_is_video(self):
             recording = load_test_json('recording_video_null.json')
             m = Metadata()
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(1.0, match_.similarity)
             m['~video'] = '1'
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(0.0, match_.similarity)
             recording['video'] = True
-            match_ = m.compare_to_track(recording, {'isvideo': 1})
+            match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
             self.assertEqual(1.0, match_.similarity)
 
         def test_compare_to_track_full(self):

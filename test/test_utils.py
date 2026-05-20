@@ -352,15 +352,15 @@ class LinearCombinationTest(PicardTestCase):
 
     def test_6(self):
         parts = [(-0.5, 4)]
-        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
 
     def test_7(self):
         parts = [(0.5, -4)]
-        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
 
     def test_8(self):
         parts = [(1.5, 4)]
-        self.assertRaises(ValueError, util.linear_combination_of_weights, parts)
+        self.assertRaises(AssertionError, util.linear_combination_of_weights, parts)
 
     def test_9(self):
         parts = (1.5, 4)

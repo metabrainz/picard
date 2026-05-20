@@ -116,3 +116,4 @@ class DebugOpt(DebugOptEnum):
     PLUGIN_TRANSLATIONS = 5, N_('Plugin Translations'), N_('Log plugin translation lookups and fallbacks')
     PLUGIN_UPDATES = 6, N_('Plugin Updates'), N_('Log detailed plugin version checking and update detection')
     COVERART = 7, N_('Cover Art'), N_('Log cover art filter, resize and convert operations')
+    MATCHING = 8, N_('Matching'), N_('Log similarity scores and match decisions')

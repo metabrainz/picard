@@ -78,6 +78,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.debug_opts import DebugOpt
 from picard.i18n import (
     N_,
     gettext as _,
@@ -102,7 +103,7 @@ from picard.util import (
     decode_filename,
     emptydir,
     encode_filename,
-    find_best_match,
+    find_best_match_with_margin,
     format_time,
     is_absolute_path,
     normpath,
@@ -126,17 +127,25 @@ if TYPE_CHECKING:
 
 
 FILE_COMPARISON_WEIGHTS = {
-    'album': 5,
-    'artist': 4,
-    'barcode': 6,
-    'date': 4,
-    'format': 2,
-    'isvideo': 2,
-    'length': 10,
-    'releasecountry': 2,
-    'releasetype': 14,
-    'title': 13,
-    'totaltracks': 4,
+    'identifiers': {
+        'barcode': 28,
+        'catno': 22,
+        'isrc': 28,
+    },
+    'similarity': {
+        'album': 5,
+        'artist': 4,
+        'date': 4,
+        'length': 10,
+        'title': 13,
+        'totaltracks': 4,
+    },
+    'preferences': {
+        'format': 2,
+        'isvideo': 2,
+        'releasecountry': 2,
+        'releasetype': 14,
+    },
 }
 
 
@@ -1025,16 +1034,21 @@ class File(MetadataItem):
 
         if tracks:
             if lookuptype == File.LookupType.ACOUSTID:
-                threshold = 0
+                min_similarity = 0
+                min_margin = 0
             else:
                 config = get_config()
-                threshold = config.setting['file_lookup_threshold']
+                min_similarity = config.setting['match_min_similarity']
+                min_margin = config.setting['match_min_margin']
 
-            trackmatch = self._match_to_track(tracks, threshold=threshold)
+            trackmatch, reason = self._match_to_track(tracks, min_similarity=min_similarity, min_margin=min_margin)
             if trackmatch is None:
-                statusbar(N_('No matching tracks above the threshold for file "%(filename)s"'))
+                statusbar(N_('No matching tracks for file "%(filename)s"'))
             else:
-                statusbar(N_('File "%(filename)s" identified!'))
+                if reason == 'ambiguous':
+                    statusbar(N_('Best match for file "%(filename)s" is ambiguous'))
+                else:
+                    statusbar(N_('File "%(filename)s" identified!'))
                 (recording_id, release_group_id, release_id, acoustid, node) = trackmatch
                 if lookuptype == File.LookupType.ACOUSTID:
                     self.metadata['acoustid_id'] = acoustid
@@ -1050,15 +1064,54 @@ class File(MetadataItem):
 
         self.clear_pending()
 
-    def _match_to_track(self, tracks, threshold=0):
-        # multiple matches -- calculate similarities to each of them
-        candidates = (self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks)
-        no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
-        best_match = find_best_match(candidates, no_match)
+    def _match_to_track(self, tracks, min_similarity=0, min_margin=0):
+        """Match file to best track candidate.
 
-        if best_match.similarity < threshold:
-            return None
+        Returns:
+            (trackmatch_tuple, None) on success,
+            (None, reason) on rejection where reason is 'below_floor' or 'ambiguous'.
+        """
+        # multiple matches -- calculate similarities to each of them
+        all_matches = [self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks]
+        all_matches.sort(key=lambda m: m.similarity, reverse=True)
+
+        log.debug_if(
+            DebugOpt.MATCHING,
+            "match_to_track: file=%r, %d candidates, min_sim=%.3f, min_margin=%.3f",
+            self.filename,
+            len(all_matches),
+            min_similarity,
+            min_margin,
+        )
+        if dbg := log.debug_if(DebugOpt.MATCHING):
+            for i, m in enumerate(all_matches[:5]):
+                title = '?'
+                mbid = '?'
+                if m.track:
+                    title = m.track.get('title', '?')
+                    mbid = m.track.get('id', '?')
+                dbg("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
+
+        no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
+        best_match = find_best_match_with_margin(
+            iter(all_matches), no_match, min_similarity=min_similarity, min_margin=min_margin
+        )
+
+        if best_match.result is no_match:
+            log.debug_if(
+                DebugOpt.MATCHING,
+                "  REJECTED (%s): best=%.4f",
+                best_match.reason,
+                best_match.similarity,
+            )
+            return None, best_match.reason
         else:
+            if best_match.reason == 'ambiguous':
+                log.debug_if(
+                    DebugOpt.MATCHING,
+                    "  AMBIGUOUS: best=%.4f",
+                    best_match.similarity,
+                )
             track_id = best_match.result.track['id']
             release_group_id, release_id, node = None, None, None
             acoustid = best_match.result.track.get('acoustid', None)
@@ -1068,7 +1121,7 @@ class File(MetadataItem):
                 release_id = best_match.result.release['id']
             elif 'title' in best_match.result.track:
                 node = best_match.result.track
-            return (track_id, release_group_id, release_id, acoustid, node)
+            return (track_id, release_group_id, release_id, acoustid, node), best_match.reason
 
     def lookup_metadata(self):
         """Try to identify the file using the existing metadata."""

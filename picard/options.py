@@ -357,8 +357,8 @@ TextOption('setting', 'autobackup_directory', DEFAULT_AUTOBACKUP_DIRECTORY, titl
 
 # picard/ui/options/matching.py
 # Matching
-FloatOption('setting', 'cluster_lookup_threshold', 0.7, title=N_("Similarity for cluster lookups"))
-FloatOption('setting', 'file_lookup_threshold', 0.7, title=N_("Similarity for file lookups"))
+FloatOption('setting', 'match_min_similarity', 0.25, title=N_("Minimum similarity"))
+FloatOption('setting', 'match_min_margin', 0.02, title=N_("Minimum margin"))
 FloatOption('setting', 'track_matching_threshold', 0.4, title=N_("Similarity for matching files to tracks"))
 
 # picard/ui/options/metadata.py
