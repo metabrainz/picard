@@ -136,7 +136,8 @@ class CoverArtImageProcessing:
                 "Processing %s: %d bytes, %d x %d, %s;"
                 " save_to_tags=%r, save_to_files=%r,"
                 " tags_resize=%r, file_resize=%r,"
-                " tags_convert=%r, file_convert=%r",
+                " tags_convert=%r, file_convert=%r,"
+                " cover_image_quality=%r",
                 coverartimage,
                 len(initial_data),
                 image_info.width,
@@ -148,6 +149,7 @@ class CoverArtImageProcessing:
                 config.setting['cover_file_resize'],
                 config.setting['cover_tags_convert_images'],
                 config.setting['cover_file_convert_images'],
+                config.setting['cover_image_quality'],
             )
 
             run_queue_common = partial(
