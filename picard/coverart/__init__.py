@@ -52,6 +52,7 @@ from picard.coverart.setters import (
     CoverArtSetter,
     CoverArtSetterMode,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
@@ -74,10 +75,42 @@ class CoverArt:
     def __repr__(self):
         return "%s for %r" % (self.__class__.__name__, self.album)
 
+    _COVERART_SELECTION_SETTINGS = (
+        'ca_providers',
+        'embed_only_one_front_image',
+        'save_only_one_front_image',
+        'save_images_to_tags',
+        'save_images_to_files',
+        'save_images_overwrite',
+        'cover_image_filename',
+        'image_type_as_filename',
+        'filter_cover_by_size',
+        'cover_minimum_width',
+        'cover_minimum_height',
+        'dont_replace_with_smaller_cover',
+        'dont_replace_cover_of_types',
+        'dont_replace_included_types',
+        'caa_approved_only',
+        'caa_image_size',
+        'caa_restrict_image_types',
+        'caa_image_types',
+        'caa_image_types_to_omit',
+    )
+
     def retrieve(self):
         """Retrieve available cover art images for the release"""
         config = get_config()
         if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
+            log.debug_if(
+                DebugOpt.COVERART,
+                msg_func=lambda: (
+                    "Cover art selection settings for %s: %s"
+                    % (
+                        self.album,
+                        ', '.join(f"{k}={config.setting[k]!r}" for k in self._COVERART_SELECTION_SETTINGS),
+                    )
+                ),
+            )
             self.providers = cover_art_providers()
             self._queue_generator = self._start_queue()
             self.next_in_queue()
@@ -230,6 +263,7 @@ class CoverArt:
     def _process_image_data(self, image: CoverArtImage, data, image_info):
         # Skip image if it gets filtered
         if image.can_be_filtered and not run_image_filters(data, image_info, self.album, image):
+            log.debug_if(DebugOpt.COVERART, "Image filtered out: %r", image)
             thread.to_main(self.next_in_queue)
             return
 

@@ -58,6 +58,7 @@ from picard.coverart.providers.provider import (
     CoverArtProvider,
     ProviderOptions,
 )
+from picard.debug_opts import DebugOpt
 from picard.i18n import (
     N_,
     gettext as _,
@@ -327,6 +328,12 @@ class CoverArtProviderCaa(CoverArtProvider):
                             image_data = {'width': thumbnail_list[0].width, 'height': -1}
                             filters_result = run_image_metadata_filters(image_data)
                             if not filters_result:
+                                log.debug_if(
+                                    DebugOpt.COVERART,
+                                    "CAA image skipped by metadata filter: %s (width=%d)",
+                                    image['image'],
+                                    thumbnail_list[0].width,
+                                )
                                 continue
                             # FIXME: try other urls in case of 404
                             url = thumbnail_list[0].url

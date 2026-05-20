@@ -26,6 +26,7 @@ from PyQt6.QtCore import Qt
 from picard import log
 from picard.config import get_config
 from picard.const.cover_processing import ResizeModes
+from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_processors import (
     ImageProcessor,
     ProcessingImage,
@@ -67,6 +68,18 @@ class ResizeImage(ImageProcessor):
             target_width = config.setting['cover_file_resize_target_width']
             target_height = config.setting['cover_file_resize_target_height']
             resize_mode = config.setting['cover_file_resize_mode']
+
+        log.debug_if(
+            DebugOpt.COVERART,
+            "Resize %s: image %d x %d, target %d x %d, mode %r, enlarge %r",
+            target.name,
+            image.info.width,
+            image.info.height,
+            target_width,
+            target_height,
+            resize_mode,
+            scale_up,
+        )
 
         width_scale_factor = target_width / image.info.width
         height_scale_factor = target_height / image.info.height
@@ -134,6 +147,13 @@ class ConvertImage(ImageProcessor):
             new_format = config.setting['cover_file_convert_to_format']
 
         previous_format = image.info.format_info
+        log.debug_if(
+            DebugOpt.COVERART,
+            "Convert %s: current format %s, target format %s",
+            target.name,
+            previous_format.title,
+            new_format.title,
+        )
         if previous_format == new_format:
             return
         image.info.format_info = new_format

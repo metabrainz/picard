@@ -21,6 +21,7 @@
 
 from picard import log
 from picard.config import get_config
+from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
@@ -34,6 +35,14 @@ def _check_threshold_size(width, height):
     # If the given width or height is -1, that dimension is not considered
     min_width = config.setting['cover_minimum_width'] if width != -1 else -1
     min_height = config.setting['cover_minimum_height'] if height != -1 else -1
+    log.debug_if(
+        DebugOpt.COVERART,
+        "Size filter: image %d x %d, minimum %d x %d",
+        width,
+        height,
+        min_width,
+        min_height,
+    )
     if width < min_width or height < min_height:
         log.debug(
             "Discarding cover art due to size. Image size: %d x %d. Minimum: %d x %d",
@@ -63,6 +72,14 @@ def bigger_previous_image_filter(data, image_info, album, coverartimage):
         previous_images = album.orig_metadata.images.get_types_dict()
         if downloaded_types in previous_images:
             previous_image = previous_images[downloaded_types]
+            log.debug_if(
+                DebugOpt.COVERART,
+                "Bigger image filter: new %d x %d vs existing %d x %d",
+                image_info.width,
+                image_info.height,
+                previous_image.width,
+                previous_image.height,
+            )
             if image_info.width < previous_image.width or image_info.height < previous_image.height:
                 log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
                 return False
@@ -74,6 +91,12 @@ def image_types_filter(data, image_info, album, coverartimage):
     if config.setting['dont_replace_cover_of_types'] and config.setting['save_images_to_tags']:
         downloaded_types = set(coverartimage.normalized_types())
         never_replace_types = config.setting['dont_replace_included_types']
+        log.debug_if(
+            DebugOpt.COVERART,
+            "Image types filter: downloaded types %r, never replace types %r",
+            downloaded_types,
+            never_replace_types,
+        )
         previous_image_types = album.orig_metadata.images.get_types_dict()
         for previous_image_type in previous_image_types:
             type_already_embedded = downloaded_types.intersection(previous_image_type)
