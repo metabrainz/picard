@@ -247,7 +247,7 @@ def debug_if(debug_opt, msg, *args, **kwargs):
         log.debug_if(DebugOpt.PLUGIN_UPDATES, "Plugin %s: checking version", plugin_name)
     """
     if debug_opt.enabled:
-        main_logger.debug(f"[{debug_opt.optname}] {msg}", *args, **kwargs)
+        main_logger.debug(f"[{debug_opt.optname}] {msg}", *args, stacklevel=2, **kwargs)
 
 
 # HISTORY LOGGING
