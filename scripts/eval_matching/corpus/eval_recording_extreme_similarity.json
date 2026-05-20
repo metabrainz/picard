@@ -1,0 +1,162 @@
+{
+  "description": "Nearly identical candidates differing only in release-level details",
+  "releases": {
+    "rel_us": {
+      "id": "rel-extsim-us",
+      "title": "The Album",
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-extsim-us",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_eu": {
+      "id": "rel-extsim-eu",
+      "title": "The Album",
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "GB",
+      "release-group": {
+        "id": "rg-rel-extsim-eu",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_jp": {
+      "id": "rel-extsim-jp",
+      "title": "The Album",
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "JP",
+      "release-group": {
+        "id": "rg-rel-extsim-jp",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 11
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-extsim-us",
+      "title": "Opening Track",
+      "length": 267000,
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCEXT00001"
+      ],
+      "release": "rel_us",
+      "score": 100
+    },
+    {
+      "id": "rec-extsim-eu",
+      "title": "Opening Track",
+      "length": 267000,
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCEXT00001"
+      ],
+      "release": "rel_eu",
+      "score": 100
+    },
+    {
+      "id": "rec-extsim-jp",
+      "title": "Opening Track",
+      "length": 267000,
+      "artist-credit": [
+        {
+          "name": "The Artist",
+          "artist": {
+            "id": "a-theartist",
+            "name": "The Artist",
+            "sort-name": "The Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCEXT00001"
+      ],
+      "release": "rel_jp",
+      "score": 100
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "extreme_sim_same_isrc_all",
+      "description": "Same ISRC on all candidates, same length — only release differs",
+      "correct_id": "rec-extsim-us",
+      "file": {
+        "title": "Opening Track",
+        "artist": "The Artist",
+        "length": 267000,
+        "isrcs": [
+          "ISRCEXT00001"
+        ],
+        "album": "The Album",
+        "date": "2020"
+      }
+    }
+  ]
+}

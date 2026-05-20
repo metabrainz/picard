@@ -1,0 +1,161 @@
+{
+  "description": "Titles with parenthetical suffixes (Radio Edit, Acoustic, etc.)",
+  "releases": {
+    "rel_par": {
+      "id": "rel-paren-a",
+      "title": "Singles Collection",
+      "artist-credit": [
+        {
+          "name": "Pop Star",
+          "artist": {
+            "id": "a-popstar",
+            "name": "Pop Star",
+            "sort-name": "Pop Star"
+          }
+        }
+      ],
+      "date": "2022",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-paren-a",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-par-original",
+      "title": "Love Song",
+      "length": 240000,
+      "artist-credit": [
+        {
+          "name": "Pop Star",
+          "artist": {
+            "id": "a-popstar",
+            "name": "Pop Star",
+            "sort-name": "Pop Star"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCPAR00001"
+      ],
+      "release": "rel_par",
+      "score": 100
+    },
+    {
+      "id": "rec-par-radio",
+      "title": "Love Song (Radio Edit)",
+      "length": 210000,
+      "artist-credit": [
+        {
+          "name": "Pop Star",
+          "artist": {
+            "id": "a-popstar",
+            "name": "Pop Star",
+            "sort-name": "Pop Star"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCPAR00002"
+      ],
+      "release": "rel_par",
+      "score": 100
+    },
+    {
+      "id": "rec-par-acoustic",
+      "title": "Love Song (Acoustic)",
+      "length": 255000,
+      "artist-credit": [
+        {
+          "name": "Pop Star",
+          "artist": {
+            "id": "a-popstar",
+            "name": "Pop Star",
+            "sort-name": "Pop Star"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCPAR00003"
+      ],
+      "release": "rel_par",
+      "score": 95
+    },
+    {
+      "id": "rec-par-live",
+      "title": "Love Song (Live)",
+      "length": 290000,
+      "artist-credit": [
+        {
+          "name": "Pop Star",
+          "artist": {
+            "id": "a-popstar",
+            "name": "Pop Star",
+            "sort-name": "Pop Star"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCPAR00004"
+      ],
+      "release": "rel_par",
+      "score": 90
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "paren_original_vs_radio_edit",
+      "description": "File is original, radio edit is shorter",
+      "correct_id": "rec-par-original",
+      "file": {
+        "title": "Love Song",
+        "artist": "Pop Star",
+        "length": 240000
+      }
+    },
+    {
+      "name": "paren_radio_edit_tagged",
+      "description": "File tagged as Radio Edit",
+      "correct_id": "rec-par-radio",
+      "file": {
+        "title": "Love Song (Radio Edit)",
+        "artist": "Pop Star",
+        "length": 210000
+      }
+    },
+    {
+      "name": "paren_original_no_length",
+      "description": "File is original but has no length — title must distinguish",
+      "correct_id": "rec-par-original",
+      "file": {
+        "title": "Love Song",
+        "artist": "Pop Star",
+        "length": 0,
+        "isrcs": [
+          "ISRCPAR00001"
+        ]
+      }
+    },
+    {
+      "name": "paren_file_missing_suffix",
+      "description": "File is acoustic version but title lacks (Acoustic)",
+      "correct_id": "rec-par-acoustic",
+      "file": {
+        "title": "Love Song",
+        "artist": "Pop Star",
+        "length": 255000,
+        "isrcs": [
+          "ISRCPAR00003"
+        ]
+      }
+    }
+  ]
+}

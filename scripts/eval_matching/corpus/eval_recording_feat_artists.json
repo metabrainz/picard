@@ -1,0 +1,192 @@
+{
+  "description": "Tests with featuring artists and joint credits",
+  "releases": {
+    "rel_feat": {
+      "id": "rel-feat-a",
+      "title": "Collab Album",
+      "artist-credit": [
+        {
+          "name": "Main Artist",
+          "artist": {
+            "id": "a-mainartist",
+            "name": "Main Artist",
+            "sort-name": "Main Artist"
+          }
+        }
+      ],
+      "date": "2021",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-feat-a",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_solo": {
+      "id": "rel-feat-b",
+      "title": "Solo Album",
+      "artist-credit": [
+        {
+          "name": "Main Artist",
+          "artist": {
+            "id": "a-mainartist",
+            "name": "Main Artist",
+            "sort-name": "Main Artist"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-feat-b",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_other": {
+      "id": "rel-feat-c",
+      "title": "Their Album",
+      "artist-credit": [
+        {
+          "name": "Featured Artist",
+          "artist": {
+            "id": "a-featuredartist",
+            "name": "Featured Artist",
+            "sort-name": "Featured Artist"
+          }
+        }
+      ],
+      "date": "2021",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-feat-c",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-feat-collab",
+      "title": "Big Hit",
+      "length": 230000,
+      "artist-credit": [
+        {
+          "name": "Main Artist",
+          "joinphrase": " feat. ",
+          "artist": {
+            "id": "a-main",
+            "name": "Main Artist",
+            "sort-name": "Main Artist"
+          }
+        },
+        {
+          "name": "Featured Artist",
+          "artist": {
+            "id": "a-feat",
+            "name": "Featured Artist",
+            "sort-name": "Featured Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCFEAT0001"
+      ],
+      "release": "rel_feat",
+      "score": 100
+    },
+    {
+      "id": "rec-feat-solo",
+      "title": "Big Hit",
+      "length": 228000,
+      "artist-credit": [
+        {
+          "name": "Main Artist",
+          "artist": {
+            "id": "a-mainartist",
+            "name": "Main Artist",
+            "sort-name": "Main Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCFEAT0002"
+      ],
+      "release": "rel_solo",
+      "score": 100
+    },
+    {
+      "id": "rec-feat-other",
+      "title": "Big Hit",
+      "length": 231000,
+      "artist-credit": [
+        {
+          "name": "Featured Artist",
+          "artist": {
+            "id": "a-featuredartist",
+            "name": "Featured Artist",
+            "sort-name": "Featured Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCFEAT0003"
+      ],
+      "release": "rel_other",
+      "score": 95
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "feat_artist_full_credit",
+      "description": "File has \"Main Artist feat. Featured Artist\" — should match collab",
+      "correct_id": "rec-feat-collab",
+      "file": {
+        "title": "Big Hit",
+        "artist": "Main Artist feat. Featured Artist",
+        "length": 230000
+      }
+    },
+    {
+      "name": "feat_artist_main_only",
+      "description": "File only has main artist — could match solo or collab",
+      "correct_id": "rec-feat-collab",
+      "file": {
+        "title": "Big Hit",
+        "artist": "Main Artist",
+        "length": 230000,
+        "isrcs": [
+          "ISRCFEAT0001"
+        ]
+      }
+    },
+    {
+      "name": "feat_artist_solo_version",
+      "description": "File is the solo version, no feat credit",
+      "correct_id": "rec-feat-solo",
+      "file": {
+        "title": "Big Hit",
+        "artist": "Main Artist",
+        "length": 228000,
+        "isrcs": [
+          "ISRCFEAT0002"
+        ]
+      }
+    }
+  ]
+}

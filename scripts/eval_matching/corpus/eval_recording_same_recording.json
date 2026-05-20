@@ -1,0 +1,202 @@
+{
+  "description": "Same recording appearing on multiple releases (compilations, singles)",
+  "releases": {
+    "rel_original": {
+      "id": "rel-same-orig",
+      "title": "Original Album",
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "date": "2000",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-same-orig",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 12
+        }
+      ]
+    },
+    "rel_compilation": {
+      "id": "rel-same-comp",
+      "title": "Greatest Hits",
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "date": "2010",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-same-comp",
+        "primary-type": "Compilation"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 20
+        }
+      ]
+    },
+    "rel_single": {
+      "id": "rel-same-single",
+      "title": "Hit Song",
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "date": "2000",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-same-single",
+        "primary-type": "Single"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 3
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-same-1",
+      "title": "Hit Song",
+      "length": 245000,
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCSAME0001"
+      ],
+      "release": "rel_original",
+      "score": 100
+    },
+    {
+      "id": "rec-same-1",
+      "title": "Hit Song",
+      "length": 245000,
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCSAME0001"
+      ],
+      "release": "rel_compilation",
+      "score": 98
+    },
+    {
+      "id": "rec-same-1",
+      "title": "Hit Song",
+      "length": 245000,
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCSAME0001"
+      ],
+      "release": "rel_single",
+      "score": 95
+    },
+    {
+      "id": "rec-same-remix",
+      "title": "Hit Song (Remix)",
+      "length": 310000,
+      "artist-credit": [
+        {
+          "name": "Band",
+          "artist": {
+            "id": "a-band",
+            "name": "Band",
+            "sort-name": "Band"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRCSAME0002"
+      ],
+      "release": "rel_single",
+      "score": 90
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "same_recording_prefer_album",
+      "description": "Same recording on album/compilation/single — file from album",
+      "correct_id": "rec-same-1",
+      "file": {
+        "title": "Hit Song",
+        "artist": "Band",
+        "length": 245000,
+        "album": "Original Album",
+        "date": "2000"
+      }
+    },
+    {
+      "name": "same_recording_with_isrc",
+      "description": "Same recording everywhere, ISRC matches all — any is correct",
+      "correct_id": "rec-same-1",
+      "file": {
+        "title": "Hit Song",
+        "artist": "Band",
+        "length": 245000,
+        "isrcs": [
+          "ISRCSAME0001"
+        ]
+      }
+    },
+    {
+      "name": "same_recording_not_remix",
+      "description": "File is original, not the remix on the single",
+      "correct_id": "rec-same-1",
+      "file": {
+        "title": "Hit Song",
+        "artist": "Band",
+        "length": 245000
+      }
+    }
+  ]
+}

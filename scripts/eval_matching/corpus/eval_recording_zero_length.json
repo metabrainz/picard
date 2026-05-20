@@ -1,0 +1,143 @@
+{
+  "description": "Tests when file or candidates have zero/missing duration",
+  "releases": {
+    "rel_a": {
+      "id": "rel-zero-a",
+      "title": "Album",
+      "artist-credit": [
+        {
+          "name": "Artist",
+          "artist": {
+            "id": "a-artist",
+            "name": "Artist",
+            "sort-name": "Artist"
+          }
+        }
+      ],
+      "date": "2020",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-zero-a",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    },
+    "rel_b": {
+      "id": "rel-zero-b",
+      "title": "Album B",
+      "artist-credit": [
+        {
+          "name": "Artist",
+          "artist": {
+            "id": "a-artist",
+            "name": "Artist",
+            "sort-name": "Artist"
+          }
+        }
+      ],
+      "date": "2021",
+      "country": "US",
+      "release-group": {
+        "id": "rg-rel-zero-b",
+        "primary-type": "Album"
+      },
+      "media": [
+        {
+          "format": "CD",
+          "track-count": 10
+        }
+      ]
+    }
+  },
+  "recordings": [
+    {
+      "id": "rec-zl-correct",
+      "title": "Track One",
+      "length": 200000,
+      "artist-credit": [
+        {
+          "name": "Artist",
+          "artist": {
+            "id": "a-artist",
+            "name": "Artist",
+            "sort-name": "Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRC0000ZL01"
+      ],
+      "release": "rel_a",
+      "score": 100
+    },
+    {
+      "id": "rec-zl-similar",
+      "title": "Track One",
+      "length": 201000,
+      "artist-credit": [
+        {
+          "name": "Artist",
+          "artist": {
+            "id": "a-artist",
+            "name": "Artist",
+            "sort-name": "Artist"
+          }
+        }
+      ],
+      "isrcs": [
+        "ISRC0000ZL02"
+      ],
+      "release": "rel_b",
+      "score": 100
+    },
+    {
+      "id": "rec-zl-nolen",
+      "title": "Track One",
+      "length": 0,
+      "artist-credit": [
+        {
+          "name": "Artist",
+          "artist": {
+            "id": "a-artist",
+            "name": "Artist",
+            "sort-name": "Artist"
+          }
+        }
+      ],
+      "isrcs": [],
+      "release": "rel_b",
+      "score": 95
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "zero_length_file",
+      "description": "File has no duration info, must match on other signals",
+      "correct_id": "rec-zl-correct",
+      "file": {
+        "title": "Track One",
+        "artist": "Artist",
+        "length": 0,
+        "isrcs": [
+          "ISRC0000ZL01"
+        ]
+      }
+    },
+    {
+      "name": "zero_length_candidate",
+      "description": "One candidate has no duration, file does",
+      "correct_id": "rec-zl-correct",
+      "file": {
+        "title": "Track One",
+        "artist": "Artist",
+        "length": 200000,
+        "isrcs": []
+      }
+    }
+  ]
+}
