@@ -84,8 +84,15 @@ class DebugOptEnum(int, Enum):
             for o in cls:
                 o.enabled = True
         else:
+            valid_names = {o.optname for o in cls}
             for o in cls:
                 o.enabled = o.optname in opts
+            unknown = opts - valid_names
+            if unknown:
+                import sys
+
+                print(f"Warning: unknown debug option(s): {', '.join(sorted(unknown))}", file=sys.stderr)
+                print(f"Available: {cls.opt_names()}", file=sys.stderr)
 
     @classmethod
     def to_string(cls):
