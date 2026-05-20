@@ -52,6 +52,7 @@ from picard.coverart.setters import (
     CoverArtSetter,
     CoverArtSetterMode,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.metadata import register_album_metadata_processor
 from picard.i18n import N_
 from picard.metadata import Metadata
@@ -78,6 +79,49 @@ class CoverArt:
         """Retrieve available cover art images for the release"""
         config = get_config()
         if config.setting['save_images_to_tags'] or config.setting['save_images_to_files']:
+            log.debug_if(
+                DebugOpt.COVERART,
+                "Cover art selection settings for %s:"
+                " ca_providers=%r,"
+                " embed_only_one_front_image=%r,"
+                " save_only_one_front_image=%r,"
+                " save_images_to_tags=%r,"
+                " save_images_to_files=%r,"
+                " save_images_overwrite=%r,"
+                " cover_image_filename=%r,"
+                " image_type_as_filename=%r,"
+                " filter_cover_by_size=%r,"
+                " cover_minimum_width=%r,"
+                " cover_minimum_height=%r,"
+                " dont_replace_with_smaller_cover=%r,"
+                " dont_replace_cover_of_types=%r,"
+                " dont_replace_included_types=%r,"
+                " caa_approved_only=%r,"
+                " caa_image_size=%r,"
+                " caa_restrict_image_types=%r,"
+                " caa_image_types=%r,"
+                " caa_image_types_to_omit=%r",
+                self.album,
+                config.setting['ca_providers'],
+                config.setting['embed_only_one_front_image'],
+                config.setting['save_only_one_front_image'],
+                config.setting['save_images_to_tags'],
+                config.setting['save_images_to_files'],
+                config.setting['save_images_overwrite'],
+                config.setting['cover_image_filename'],
+                config.setting['image_type_as_filename'],
+                config.setting['filter_cover_by_size'],
+                config.setting['cover_minimum_width'],
+                config.setting['cover_minimum_height'],
+                config.setting['dont_replace_with_smaller_cover'],
+                config.setting['dont_replace_cover_of_types'],
+                config.setting['dont_replace_included_types'],
+                config.setting['caa_approved_only'],
+                config.setting['caa_image_size'],
+                config.setting['caa_restrict_image_types'],
+                config.setting['caa_image_types'],
+                config.setting['caa_image_types_to_omit'],
+            )
             self.providers = cover_art_providers()
             self._queue_generator = self._start_queue()
             self.next_in_queue()
