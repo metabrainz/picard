@@ -196,21 +196,19 @@ class LogItemDelegate(QtWidgets.QStyledItemDelegate):
         # Draw text
         painter.setPen(text_color)
         painter.setFont(option.font)
-        painter.drawText(rect, Qt.AlignmentFlag.AlignLeft | Qt.TextFlag.TextWordWrap, text)
+        painter.drawText(rect, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, text)
 
         painter.restore()
 
     def sizeHint(self, option, index):
         text = index.data(Qt.ItemDataRole.DisplayRole) or ''
-        fm = option.fontMetrics
-        # When word wrap is enabled, calculate height based on available width
         widget = option.widget
         if widget:
             available_width = widget.viewport().width() - 4
-            rect = fm.boundingRect(
-                QtCore.QRect(0, 0, available_width, 0),
-                Qt.TextFlag.TextWordWrap | Qt.AlignmentFlag.AlignLeft,
-                text,
-            )
-            return QtCore.QSize(available_width, max(rect.height(), fm.height()))
-        return QtCore.QSize(fm.horizontalAdvance(text) + 4, fm.height())
+        else:
+            available_width = option.rect.width() - 4
+        layout = self._create_layout(text, option.font, available_width)
+        return QtCore.QSize(
+            int(layout.boundingRect().width()) + 4,
+            max(int(layout.boundingRect().height()), option.fontMetrics.height()),
+        )
