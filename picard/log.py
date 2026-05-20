@@ -234,8 +234,41 @@ exception = main_logger.exception
 log = main_logger.log
 
 
+class _DebugLogger:
+    """Callable returned by debug_if when the debug option is enabled."""
+
+    __slots__ = ('_optname',)
+
+    def __init__(self, optname):
+        self._optname = optname
+
+    def __bool__(self):
+        return True
+
+    def __call__(self, msg, *args, stacklevel=2, **kwargs):
+        main_logger.debug(f"[{self._optname}] {msg}", *args, stacklevel=stacklevel, **kwargs)
+
+
+class _NoOpLogger:
+    """Falsy no-op returned by debug_if when the debug option is disabled."""
+
+    __slots__ = ()
+
+    def __bool__(self):
+        return False
+
+    def __call__(self, msg, *args, **kwargs):
+        pass
+
+
+_NOOP_LOGGER = _NoOpLogger()
+
+
 def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
     """Log a debug message only if the specified debug option is enabled.
+
+    Can also be used as a guard that returns a callable logger for blocks
+    of debug statements.
 
     Args:
         debug_opt: A DebugOpt enum value to check
@@ -245,14 +278,30 @@ def debug_if(debug_opt, msg=None, *args, msg_func=None, **kwargs):
             debug option is enabled. Mutually exclusive with msg/args.
         **kwargs: Additional keyword arguments passed to logger.debug()
 
+    Returns:
+        A truthy callable logger if the debug option is enabled,
+        a falsy no-op otherwise.
+
     Examples:
-        log.debug_if(DebugOpt.PLUGIN_UPDATES, "Plugin %s: checking version", plugin_name)
-        log.debug_if(DebugOpt.COVERART, msg_func=lambda: "Settings: %s" % expensive_format())
+        # Single message
+        log.debug_if(DebugOpt.COVERART, "Resize: %d x %d", width, height)
+
+        # Lazy formatting with msg_func
+        log.debug_if(DebugOpt.COVERART, msg_func=lambda: "Settings: %s" % expensive())
+
+        # Block guard to skip expensive code entirely when disabled
+        if dbg := log.debug_if(DebugOpt.MATCHING):
+            for item in items:
+                dbg("item: %r", item)
     """
     if debug_opt.enabled:
-        if msg_func is not None:
-            msg = msg_func()
-        main_logger.debug(f"[{debug_opt.optname}] {msg}", *args, stacklevel=2, **kwargs)
+        logger = _DebugLogger(debug_opt.optname)
+        if msg is not None or msg_func is not None:
+            if msg_func is not None:
+                msg = msg_func()
+            logger(msg, *args, stacklevel=3, **kwargs)
+        return logger
+    return _NOOP_LOGGER
 
 
 # HISTORY LOGGING
