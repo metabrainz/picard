@@ -301,59 +301,12 @@ For each test case:
 
 ### Synthetic Scenario Fixtures
 
-Synthetic scenarios live in `corpus/eval_recording_*.json`. Each file has this
-structure:
+Synthetic scenarios live in `corpus/eval_recording_*.json`. New fixtures are
+auto-discovered by glob — no Python code changes needed.
 
-```json
-{
-  "description": "Human-readable description of what this fixture tests",
-  "releases": {
-    "release_key": {
-      "id": "release-mbid",
-      "title": "Album Title",
-      "artist-credit": [{"name": "Artist", "artist": {"id": "...", "name": "Artist", "sort-name": "Artist"}}],
-      "date": "2020",
-      "country": "US",
-      "release-group": {"id": "rg-...", "primary-type": "Album"},
-      "media": [{"format": "CD", "track-count": 10}]
-    }
-  },
-  "recordings": [
-    {
-      "id": "recording-mbid",
-      "title": "Track Title",
-      "length": 240000,
-      "artist-credit": [{"name": "Artist", "artist": {"id": "...", "name": "Artist", "sort-name": "Artist"}}],
-      "isrcs": ["ISRC00000001"],
-      "release": "release_key",
-      "score": 100
-    }
-  ],
-  "scenarios": [
-    {
-      "name": "scenario_identifier",
-      "description": "What this scenario tests",
-      "correct_id": "recording-mbid",
-      "file": {
-        "title": "Track Title",
-        "artist": "Artist",
-        "length": 240000,
-        "album": "Optional album",
-        "date": "Optional date",
-        "isrcs": ["Optional", "ISRCs"]
-      }
-    }
-  ]
-}
-```
-
-### Key rules
-
-- `releases` is a dict of release objects keyed by a local reference name.
-- Each recording's `"release"` field references a key in `releases`.
-- `artist-credit` must include the nested `artist` object with `id`, `name`, and `sort-name`.
-- `file.length` is in milliseconds (0 means no duration info).
-- `file.isrcs` is optional; omit or use `[]` for no ISRCs.
+For a complete guide on writing fixtures from scratch, including field
+reference, how to convert real MusicBrainz data, and design tips, see
+[SYNTHETIC_SCENARIOS.md](SYNTHETIC_SCENARIOS.md).
 
 ### Current Fixtures
 
