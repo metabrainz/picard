@@ -376,6 +376,12 @@ def wrong_isrc(metadata, release):
     metadata["isrc"] = "XXYYY0000001"
 
 
+def less_isrcs(metadata, release):
+    isrcs = metadata.getall('isrc')
+    if len(isrcs) > 1:
+        metadata['isrc'] = isrcs[0:-1]
+
+
 def missing_most(metadata, release):
     """Strip everything except album and artist (minimal metadata)."""
     keep = {"album", "albumartist"}
@@ -434,6 +440,7 @@ DEGRADATIONS = [
     ("wrong_track_count", wrong_track_count),
     ("wrong_barcode", wrong_barcode),
     ("wrong_isrc", wrong_isrc),
+    ("less_isrcs", less_isrcs),
     ("length_small_diff", length_small_diff),
     ("length_large_diff", length_large_diff),
     ("title_remaster_suffix", title_remaster_suffix),
@@ -521,7 +528,7 @@ def metadata_from_track(track, release):
     recording = track.get("recording", {})
     isrcs = recording.get("isrcs", [])
     if isrcs:
-        m["isrc"] = isrcs[0]
+        m["isrc"] = isrcs
     return m
 
 

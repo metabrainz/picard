@@ -83,8 +83,7 @@ def metadata_from_track(track, release):
     recording = track.get("recording", {})
     isrcs = recording.get("isrcs", [])
     if isrcs:
-        for isrc in isrcs:
-            m.add("isrc", isrc)
+        m["isrc"] = isrcs
     return m
 
 
