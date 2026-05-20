@@ -433,8 +433,8 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         # Tier 1: Identifiers — exact matches, cheap to compute
         if 'barcode' in id_w:
             file_barcode = self.get('barcode', '')
-            if file_barcode:
-                release_barcode = release.get('barcode', '')
+            if file_barcode and 'barcode' in release:
+                release_barcode = release['barcode']
                 if compare_barcodes(file_barcode, release_barcode):
                     result.identifiers.append((1.0, id_w['barcode']))
                 else:
@@ -442,8 +442,8 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         if 'catno' in id_w:
             file_catno = self.get('catalognumber', '').strip().lower()
-            if file_catno:
-                release_label_info = release.get('label-info', [])
+            if file_catno and 'label-info' in release:
+                release_label_info = release['label-info']
                 if release_label_info:
                     file_label = self.get('label', '').strip().lower()
                     score = _catno_label_score(file_catno, file_label, release_label_info)
