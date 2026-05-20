@@ -71,6 +71,12 @@ def dummy_handler(*args, **kwargs):
 class WebServiceTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        # Isolate the network cache folder to a temporary directory to avoid
+        # modifying the user's actual network cache during WebService initialization
+        self.tmpdir = self.mktmpdir()
+        self.patcher = patch('picard.webservice.appdirs.cache_folder', return_value=self.tmpdir)
+        self.patcher.start()
+        self.addCleanup(self.patcher.stop)
         self.set_config_values(
             {
                 'use_proxy': False,
@@ -104,6 +110,27 @@ class WebServiceTest(PicardTestCase):
         self.ws.download_url(url=url, handler=handler)
         self.assertIn("GET", get_wsreq(mock_add_request).method)
         self.assertEqual(5, mock_add_request.call_count)
+
+    def test_clear_cache(self):
+        from PyQt6 import QtNetwork
+
+        class MockDiskCache(QtNetwork.QNetworkDiskCache):
+            def __init__(self):
+                super().__init__()
+                self._size = 1234
+
+            def cacheSize(self):
+                return self._size
+
+            def clear(self):
+                self._size = 0
+
+        mock_cache = MockDiskCache()
+        self.ws.manager.setCache(mock_cache)
+
+        self.assertEqual(self.ws.get_cache_size(), 1234)
+        self.ws.clear_cache()
+        self.assertEqual(self.ws.get_cache_size(), 0)
 
 
 class WebServiceTaskTest(PicardTestCase):
