@@ -291,8 +291,8 @@ def trackcount_score(actual, expected):
 def isrcs_score(file_isrcs: Iterable[str], track_isrcs: Iterable[str]) -> float:
     file_isrcs = set(isrc.upper() for isrc in file_isrcs)
     track_isrcs = set(isrc.upper() for isrc in track_isrcs)
-    # No file ISRCs, undefined match
-    if not file_isrcs:
+    # Candidate has no ISRCs — neutral (neither confirms nor denies)
+    if not file_isrcs or not track_isrcs:
         return 0.5
     # All file ISRCs are present in the track ISRCs — perfect match
     elif file_isrcs.issubset(track_isrcs):
@@ -560,11 +560,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 if file_isrcs:
                     recording = track.get('recording', track)
                     track_isrcs = recording.get('isrcs', [])
-                    if track_isrcs:
-                        score = isrcs_score(file_isrcs, track_isrcs)
-                    else:
-                        # Candidate has no ISRCs — neutral (neither confirms nor denies)
-                        score = 0.5
+                    score = isrcs_score(file_isrcs, track_isrcs)
                     track_parts.identifiers.append((score, id_w['isrc']))
 
             # Track-level similarity signals

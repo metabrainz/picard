@@ -695,7 +695,7 @@ class CommonTests:
             self.assertEqual(1.0, isrcs_score(['ISRC1'], ['ISRC1', 'ISRC2']))
             self.assertEqual(0.8, isrcs_score(['ISRC1', 'ISRC2'], ['ISRC2', 'ISRC3']))
             self.assertEqual(0.0, isrcs_score(['ISRC1'], ['ISRC2', 'ISRC3']))
-            self.assertEqual(0.0, isrcs_score(['ISRC1'], []))
+            self.assertEqual(0.5, isrcs_score(['ISRC1'], []))
             self.assertEqual(0.5, isrcs_score([], []))
             self.assertEqual(0.5, isrcs_score([], ['ISRC1', 'ISRC2']))
 
