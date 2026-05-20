@@ -274,6 +274,7 @@ class CoverArt:
     def _process_image_data(self, image: CoverArtImage, data, image_info):
         # Skip image if it gets filtered
         if image.can_be_filtered and not run_image_filters(data, image_info, self.album, image):
+            log.debug_if(DebugOpt.COVERART, "Image filtered out: %r", image)
             thread.to_main(self.next_in_queue)
             return
 
