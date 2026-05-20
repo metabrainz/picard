@@ -1048,7 +1048,7 @@ def enable(api):
    is making changes to metadata and such, but extensive debug logging such as
    that required for troubleshooting a specific plugin can be overwhelming. If
    detailed debug logging is included, it should be used with a blocking guard
-   so that it is only logged when the `PLUGIN_DEVELOPMENT` debug option is
+   so that it is only logged when the `plugin_development` debug option is
    specified on the command line. For example:
    ```python
    # Block guard to avoid extensive debug logging when disabled
