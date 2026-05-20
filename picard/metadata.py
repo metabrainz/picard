@@ -162,9 +162,11 @@ class ReleaseMatchParts:
 # Type for the tiered weights dict structure
 TieredWeights: TypeAlias = dict[str, dict[str, int]]
 
-# Similarity keys that are track-level (scored in compare_to_track, not in
-# compare_to_release_parts). Keep in sync with compare_to_track.
-_TRACK_SIMILARITY_KEYS = frozenset({'title', 'artist', 'length'})
+# Similarity keys that are on release-level. Keep in sync with compare_to_release_parts.
+_RELEASE_WEIGHT_KEYS = {
+    'similarity': frozenset({'album', 'albumartist', 'date', 'totaltracks', 'totalalbumtracks'}),
+    'preferences': frozenset({'format', 'releasecountry', 'releasetype'}),
+}
 
 
 def _catno_label_score(file_catno, file_label, release_label_info):
@@ -547,7 +549,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                         score = 1.0 if file_isrc in track_isrcs else 0.0
                         track_parts.identifiers.append((score, id_w['isrc']))
 
-            # Track-level similarity signals (see _TRACK_SIMILARITY_KEYS)
+            # Track-level similarity signals
             if 'title' in self and 'title' in sim_w:
                 a = self['title']
                 b = track.get('title', '')
@@ -578,8 +580,9 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             if not releases:
                 config = get_config()
                 score = dict(config.setting['release_type_scores']).get('Other', 0.5)
-                track_parts.preferences.append((score, _get_total_release_weight(weights)))
-                sim = linear_combination_of_weights(track_parts.all_parts) * search_score
+                release_parts = _get_weighted_release_parts(weights, score)
+                track_parts = track_parts.merged_with(release_parts)
+                sim = track_parts.combine_tiers() * search_score
                 return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
 
         result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
@@ -930,17 +933,18 @@ class MultiMetadataProxy:
         return self.__read('__repr__')
 
 
-def _get_total_release_weight(weights):
+def _get_weighted_release_parts(weights: dict[str, dict[str, int]], score: float) -> ReleaseMatchParts:
     """Sum of all release-level weights (used as fallback when no releases are available).
 
-    Excludes track-level similarity keys (see _TRACK_SIMILARITY_KEYS).
+    Consider only release-level similarity keys (see _RELEASE_WEIGHT_KEYS).
     """
-    total = 0
-    for tier_weights in weights.values():
-        for key, weight in tier_weights.items():
-            if key not in _TRACK_SIMILARITY_KEYS:
-                total += weight
-    return total
+    result = ReleaseMatchParts()
+    for tier in {'similarity', 'preferences'}:
+        if tier in weights:
+            keys = _RELEASE_WEIGHT_KEYS.get(tier, [])
+            total_weight = sum(value for key, value in weights[tier].items() if key in keys)
+            getattr(result, tier).append((score, total_weight))
+    return result
 
 
 album_metadata_processors = PluginFunctions(label='album_metadata_processors')

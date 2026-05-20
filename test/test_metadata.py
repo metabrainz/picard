@@ -45,6 +45,7 @@ from picard.metadata import (
     Metadata,
     MultiMetadataProxy,
     ReleaseMatchParts,
+    _get_weighted_release_parts,
     trackcount_score,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
@@ -756,6 +757,17 @@ class CommonTests:
             self.assertEqual(parts[0], (0.75, 123))
             weights_from_release_type_scores(parts, release, {}, 123)
             self.assertEqual(parts[1], (0.5, 123))
+
+        def test_get_weighted_release_parts(self):
+            weights = {
+                'similarity': {'album': 10, 'totaltracks': 5, 'title': 12},
+                'preferences': {'releasecountry': 5, 'isvideo': 2},
+            }
+            parts = _get_weighted_release_parts(weights, 0.5)
+            self.assertIsInstance(parts, ReleaseMatchParts)
+            self.assertEqual(parts.identifiers, [])
+            self.assertEqual(parts.similarity, [(0.5, 15)])
+            self.assertEqual(parts.preferences, [(0.5, 5)])
 
         def test_preferred_countries(self):
             release = load_test_json('release.json')
