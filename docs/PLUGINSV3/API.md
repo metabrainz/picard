@@ -1049,12 +1049,11 @@ def enable(api):
    that required for troubleshooting a specific plugin can be overwhelming. If
    detailed debug logging is included, it should be used with a blocking guard
    so that it is only logged when the `PLUGIN_DEVELOPMENT` debug option is
-   specified on the command line, such as:
-
+   specified on the command line. For example:
    ```python
    # Block guard to avoid extensive debug logging when disabled
-   if dbg := log.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
-       dbg("Extensive debug logging output only required for plugin development or troubleshooting")
+   if dbg := self.api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
+       dbg("Extensive debug output only required for plugin development or troubleshooting")
    ```
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
