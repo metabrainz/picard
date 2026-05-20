@@ -1061,6 +1061,7 @@ def enable(api):
    if dbg := log.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
        dbg("Extensive debug logging output only required for plugin development or troubleshooting")
    ```
+
 ---
 
 ## See Also
