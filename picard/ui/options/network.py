@@ -24,8 +24,15 @@
 
 from picard.config import get_config
 from picard.const import CACHE_SIZE_DISPLAY_UNIT
+from picard.const.defaults import (
+    DEFAULT_CACHE_SIZE_IN_BYTES,
+)
 from picard.extension_points.options_pages import register_options_page
-from picard.i18n import N_
+from picard.i18n import (
+    N_,
+    gettext as _,
+)
+from picard.util import bytes2human
 
 from picard.ui.forms.ui_options_network import Ui_NetworkOptionsPage
 from picard.ui.options import OptionsPage
@@ -59,6 +66,18 @@ class NetworkOptionsPage(OptionsPage):
         self.ui = Ui_NetworkOptionsPage()
         self.ui.setupUi(self)
         set_widget_fixed_width_for_text(self.ui.network_cache_size, "99999", padding=12)
+        self.ui.clear_network_cache.clicked.connect(self.clear_cache)
+        self.ui.clear_network_cache.setToolTip(_("Remove all locally cached network requests"))
+        self.ui.current_cache_size.setToolTip(_("Current size of the local network disk cache"))
+        default_size_mb = int(DEFAULT_CACHE_SIZE_IN_BYTES / CACHE_SIZE_DISPLAY_UNIT)
+        max_cache_tooltip = (
+            _("Maximum size of the network cache. A negative value resets to the default size (%d MB).")
+            % default_size_mb
+        )
+        self.ui.network_cache_size.setToolTip(max_cache_tooltip)
+        self.ui.label_cache_size.setToolTip(max_cache_tooltip)
+        self.ui.label_cache_max_unit.setToolTip(max_cache_tooltip)
+        self.update_cache_size()
 
     def load(self):
         config = get_config()
@@ -110,6 +129,15 @@ class NetworkOptionsPage(OptionsPage):
         cache_size = self.tagger.webservice.get_valid_cache_size()
         value = int(cache_size / CACHE_SIZE_DISPLAY_UNIT)
         self.ui.network_cache_size.setText(str(value))
+
+    def update_cache_size(self):
+        size = self.tagger.webservice.get_cache_size()
+        self.ui.current_cache_size.setText(bytes2human.decimal(size))
+        self.ui.clear_network_cache.setEnabled(size > 0)
+
+    def clear_cache(self):
+        self.tagger.webservice.clear_cache()
+        self.update_cache_size()
 
 
 register_options_page(NetworkOptionsPage)

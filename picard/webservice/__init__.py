@@ -456,6 +456,18 @@ class WebService(QtCore.QObject):
                 bytes2human.decimal(cache.maximumCacheSize(), l10n=False),
             )
 
+    def clear_cache(self):
+        cache = self.manager.cache()
+        if isinstance(cache, QtNetwork.QNetworkDiskCache):
+            cache.clear()
+            log.info("Network cache cleared")
+
+    def get_cache_size(self):
+        cache = self.manager.cache()
+        if isinstance(cache, QtNetwork.QNetworkDiskCache):
+            return cache.cacheSize()
+        return 0
+
     def setup_proxy(self):
         proxy = QtNetwork.QNetworkProxy()
         config = get_config()
