@@ -1,4 +1,13 @@
-# Release Matching Evaluation
+# Matching Evaluation Tools
+
+Two evaluation harnesses for Picard's matching algorithms:
+
+- **`eval_matching.py`** — Release matching (cluster → release, file → track within a release)
+- **`eval_recording_lookup.py`** — Recording lookup (file → best recording from search results)
+
+---
+
+## Release Matching Evaluation
 
 Measures how accurately Picard's release matcher identifies the correct release
 from a set of confusable candidates when file metadata is degraded.
@@ -228,3 +237,178 @@ Rules:
 - A specific profile key takes priority over the `"*"` wildcard.
 - Valid expected values: `"correct"`, `"ambiguous"`, `"wrong"`.
 - A test **passes** when the actual outcome matches the expected outcome.
+
+---
+
+## Recording Lookup Evaluation
+
+Measures how accurately Picard's recording matcher identifies the correct
+recording from a set of candidates, simulating the file lookup flow
+(`compare_to_track` + `find_best_match_with_margin`).
+
+### Quick Start
+
+```bash
+# Run full evaluation
+python scripts/eval_matching/eval_recording_lookup.py
+
+# Synthetic scenarios only (edge cases)
+python scripts/eval_matching/eval_recording_lookup.py -d synthetic
+
+# Verbose output with failure details
+python scripts/eval_matching/eval_recording_lookup.py -v
+
+# Filter by scenario name
+python scripts/eval_matching/eval_recording_lookup.py -s multi_isrc
+
+# Test with similarity threshold and margin (like real Picard settings)
+python scripts/eval_matching/eval_recording_lookup.py --min-similarity 0.5 --min-margin 0.05
+
+# Save baseline, make changes, compare
+python scripts/eval_matching/eval_recording_lookup.py --save baseline.json
+# ... edit matching code ...
+python scripts/eval_matching/eval_recording_lookup.py --compare baseline.json
+```
+
+### How It Works
+
+Two types of test cases are combined:
+
+1. **Release-derived cases**: Tracks from the existing release corpus are used as
+   candidates (same as `eval_matching.py` file-level tests). All degradation
+   patterns are applied.
+
+2. **Synthetic cases**: Hand-crafted JSON fixtures in `corpus/eval_recording_*.json`
+   that test specific edge cases not covered by the release corpus.
+
+For each test case:
+1. File metadata is built (from a target track or synthetic definition)
+2. `compare_to_track()` scores all candidates
+3. `find_best_match_with_margin()` picks the winner (or rejects)
+4. Result is classified as correct/wrong/ambiguous/below_floor
+
+### CLI Options
+
+| Flag | Description |
+|------|-------------|
+| `-v`, `--verbose` | Show per-candidate scores for failures |
+| `-s`, `--scenario` | Filter to scenarios matching a substring |
+| `-d`, `--degradation` | Filter to degradations matching a substring |
+| `--min-similarity` | Minimum similarity threshold (default: 0.0) |
+| `--min-margin` | Minimum margin between best and second (default: 0.0) |
+| `--save FILE` | Save results snapshot for later comparison |
+| `--compare FILE` | Compare current results against a previous snapshot |
+
+### Synthetic Scenario Fixtures
+
+Synthetic scenarios live in `corpus/eval_recording_*.json`. Each file has this
+structure:
+
+```json
+{
+  "description": "Human-readable description of what this fixture tests",
+  "releases": {
+    "release_key": {
+      "id": "release-mbid",
+      "title": "Album Title",
+      "artist-credit": [{"name": "Artist", "artist": {"id": "...", "name": "Artist", "sort-name": "Artist"}}],
+      "date": "2020",
+      "country": "US",
+      "release-group": {"id": "rg-...", "primary-type": "Album"},
+      "media": [{"format": "CD", "track-count": 10}]
+    }
+  },
+  "recordings": [
+    {
+      "id": "recording-mbid",
+      "title": "Track Title",
+      "length": 240000,
+      "artist-credit": [{"name": "Artist", "artist": {"id": "...", "name": "Artist", "sort-name": "Artist"}}],
+      "isrcs": ["ISRC00000001"],
+      "release": "release_key",
+      "score": 100
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "scenario_identifier",
+      "description": "What this scenario tests",
+      "correct_id": "recording-mbid",
+      "file": {
+        "title": "Track Title",
+        "artist": "Artist",
+        "length": 240000,
+        "album": "Optional album",
+        "date": "Optional date",
+        "isrcs": ["Optional", "ISRCs"]
+      }
+    }
+  ]
+}
+```
+
+### Key rules
+
+- `releases` is a dict of release objects keyed by a local reference name.
+- Each recording's `"release"` field references a key in `releases`.
+- `artist-credit` must include the nested `artist` object with `id`, `name`, and `sort-name`.
+- `file.length` is in milliseconds (0 means no duration info).
+- `file.isrcs` is optional; omit or use `[]` for no ISRCs.
+
+### Current Fixtures
+
+| Fixture | Scenarios | Tests |
+|---------|-----------|-------|
+| `eval_recording_multi_isrc.json` | 4 | Multiple ISRCs: full subset, partial overlap, unique, all wrong |
+| `eval_recording_same_song.json` | 6 | Studio/live/remaster/cover of same song |
+| `eval_recording_zero_length.json` | 2 | Missing duration on file or candidate |
+| `eval_recording_unicode.json` | 2 | Non-ASCII titles (kanji), variant album characters |
+| `eval_recording_short_tracks.json` | 2 | Very short tracks (15-22s), proportional length diffs |
+| `eval_recording_feat_artists.json` | 3 | Featuring/joint artist credits |
+| `eval_recording_same_recording.json` | 3 | Same recording on album/compilation/single |
+| `eval_recording_extreme_similarity.json` | 1 | Same ISRC/length/title, only release country differs |
+| `eval_recording_parenthetical.json` | 4 | Title variants: Radio Edit, Acoustic, Live, missing suffix |
+
+### Adding New Scenarios
+
+1. Create a new `corpus/eval_recording_<name>.json` file following the structure above.
+2. Run the eval to verify: `python scripts/eval_matching/eval_recording_lookup.py -d synthetic -v`
+3. No Python code changes needed — fixtures are auto-discovered by glob.
+
+### Score Delta Workflow
+
+```bash
+# 1. Save baseline
+python scripts/eval_matching/eval_recording_lookup.py --save baseline.json
+
+# 2. Edit picard/metadata.py (e.g., fix ISRC scoring)
+
+# 3. Compare
+python scripts/eval_matching/eval_recording_lookup.py --compare baseline.json
+```
+
+Output shows improved/regressed cases:
+
+```text
+  SCORE DELTA
+======================================================================
+  Previous: 1266/1269 correct
+  Current:  1268/1269 correct
+  Improved: 2  Regressed: 0
+
+  IMPROVED (2):
+    File has 2 ISRCs...          synthetic    wrong → correct
+    File ISRCs dont match...     synthetic    wrong → correct
+```
+
+### Known Issues Found
+
+The eval has identified a scoring gap in `compare_to_track`:
+
+**When a file has ISRCs but a candidate recording has none**, the ISRC comparison
+is skipped entirely for that candidate. This means the no-ISRC candidate gets
+scored purely on similarity without any ISRC penalty, while candidates with
+partially matching ISRCs get a lower score (0.8) that can drag them below the
+no-ISRC candidate.
+
+This affects the `multi_isrc_partial_overlap` and `multi_isrc_all_wrong` scenarios.
