@@ -373,15 +373,16 @@ def main():
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("-v", "--verbose", action="store_true", help="Show failure details")
-    parser.add_argument("-s", "--scenario", help="Filter scenarios by substring")
-    parser.add_argument("-d", "--degradation", help="Filter degradations by substring")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show per-candidate scores for failures")
+    parser.add_argument("-l", "--list", action="store_true", help="List available scenarios and degradations")
+    parser.add_argument("-s", "--scenario", help="Run only scenarios matching this substring")
+    parser.add_argument("-d", "--degradation", help="Run only degradations matching this substring")
     parser.add_argument("--min-similarity", type=float, default=0.0, help="Minimum similarity threshold (default: 0.0)")
     parser.add_argument(
         "--min-margin", type=float, default=0.0, help="Minimum margin between best and second (default: 0.0)"
     )
-    parser.add_argument("--save", metavar="FILE", help="Save results snapshot")
-    parser.add_argument("--compare", metavar="FILE", help="Compare against previous snapshot")
+    parser.add_argument("--save", metavar="FILE", help="Save results snapshot to FILE for later comparison")
+    parser.add_argument("--compare", metavar="FILE", help="Compare current results against a previous snapshot")
     args = parser.parse_args()
 
     # Mock config — defaultdict(False) handles any missing key
@@ -401,6 +402,17 @@ def main():
         patch("picard.metadata.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus() + generate_synthetic_corpus()
+
+        if args.list:
+            scenarios = sorted(set(e["scenario"] for e in corpus))
+            degradations = sorted(set(e["degradation"] for e in corpus))
+            print("Scenarios:")
+            for s in scenarios:
+                print(f"  {s}")
+            print("\nDegradations:")
+            for d in degradations:
+                print(f"  {d}")
+            sys.exit(0)
 
         # Apply filters
         if args.scenario:
