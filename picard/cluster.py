@@ -326,14 +326,14 @@ class Cluster(FileList):
             min_similarity,
             min_margin,
         )
-        if DebugOpt.MATCHING.enabled:
+        if dbg := log.debug_if(DebugOpt.MATCHING):
             for i, m in enumerate(all_matches[:5]):
                 title = '?'
                 mbid = '?'
                 if m.release:
                     title = m.release.get('title', '?')
                     mbid = m.release.get('id', '?')
-                log.debug("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
+                dbg("  #%d sim=%.4f  %r (%s)", i + 1, m.similarity, title, mbid)
 
         no_match = SimMatchRelease(similarity=-1, release=None)
         best_match = find_best_match_with_margin(
