@@ -256,6 +256,11 @@ class LogView(LogViewCommon):
         clear_log_action.triggered.connect(self._clear_log_do)
         self.list_view.addAction(clear_log_action)
 
+        self._regex_action = QtGui.QAction(_("&Regex Filter"), self.list_view)
+        self._regex_action.setCheckable(True)
+        self._regex_action.toggled.connect(self._on_regex_toggled)
+        self.list_view.addAction(self._regex_action)
+
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
@@ -329,11 +334,18 @@ class LogView(LogViewCommon):
     def _on_filter_toggled(self, checked):
         self._apply_filter()
 
+    def _on_regex_toggled(self, checked):
+        if self.filter_button.isChecked():
+            self._apply_filter()
+
     def _apply_filter(self):
         text = self.filter_input.text()
         if self.filter_button.isChecked() and text:
             try:
-                hl_re = re.compile(re.escape(text), re.IGNORECASE)
+                if self._regex_action.isChecked():
+                    hl_re = re.compile(text, re.IGNORECASE)
+                else:
+                    hl_re = re.compile(re.escape(text), re.IGNORECASE)
             except re.error:
                 hl_re = None
         else:
