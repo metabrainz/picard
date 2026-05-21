@@ -41,16 +41,18 @@ from PyQt6 import (
 from picard import log
 from picard.debug_opts import DebugOpt
 from picard.i18n import gettext as _
-from picard.util import (
-    reconnect,
-    wildcards_to_regex_pattern,
-)
+from picard.util import reconnect
 
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     PicardDialog,
 )
-from picard.ui.colors import interface_colors
+from picard.ui.logviewmodel import (
+    FullTextRole,
+    LogFilterProxyModel,
+    LogItemDelegate,
+    LogItemModel,
+)
 from picard.ui.util import FileDialog
 
 
@@ -61,80 +63,140 @@ class LogViewDialog(PicardDialog):
         super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
         self.setWindowTitle(title)
-        self.doc = QtGui.QTextDocument()
-        self.textCursor = QtGui.QTextCursor(self.doc)
-        self.browser = QtWidgets.QTextBrowser()
-        self.browser.setDocument(self.doc)
         self.vbox = QtWidgets.QVBoxLayout()
         self.setLayout(self.vbox)
-        self.vbox.addWidget(self.browser)
+        self.list_view = QtWidgets.QListView()
+        self.list_view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.list_view.setFont(QtGui.QFont(FONT_FAMILY_MONOSPACE))
+        self.list_view.setWordWrap(False)
+        self.list_view.setUniformItemSizes(True)
+        self.list_view.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.list_view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.list_view.customContextMenuRequested.connect(self._show_context_menu)
+        self.vbox.addWidget(self.list_view)
+
+        view_detail_action = QtGui.QAction(
+            QtGui.QIcon.fromTheme("document-properties"), _("&View detail…"), self.list_view
+        )
+        view_detail_action.triggered.connect(self._show_detail)
+        self.list_view.addAction(view_detail_action)
+
+        copy_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-copy"), _("&Copy"), self.list_view)
+        copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
+        copy_action.triggered.connect(self._copy_selection)
+        self.list_view.addAction(copy_action)
+
+        select_all_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-select-all"), _("Select &all"), self.list_view)
+        select_all_action.setShortcut(QtGui.QKeySequence.StandardKey.SelectAll)
+        select_all_action.triggered.connect(self._select_all)
+        self.list_view.addAction(select_all_action)
+
+    def _show_context_menu(self, pos):
+        menu = QtWidgets.QMenu(self.list_view)
+        for action in self.list_view.actions():
+            menu.addAction(action)
+        menu.exec(self.list_view.viewport().mapToGlobal(pos))
+
+    def _get_selected_text(self):
+        indexes = self.list_view.selectionModel().selectedIndexes()
+        if not indexes:
+            return None
+        indexes.sort(key=lambda idx: idx.row())
+        return '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
+
+    def _copy_selection(self):
+        text = self._get_selected_text()
+        if text:
+            QtWidgets.QApplication.clipboard().setText(text)
+
+    def _select_all(self):
+        self.list_view.selectAll()
+
+    def _show_detail(self):
+        text = self._get_selected_text()
+        if not text:
+            return
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle(_("Log Detail"))
+        dlg.resize(600, 400)
+        layout = QtWidgets.QVBoxLayout(dlg)
+        text_edit = QtWidgets.QPlainTextEdit(dlg)
+        text_edit.setReadOnly(True)
+        text_edit.setLineWrapMode(QtWidgets.QPlainTextEdit.LineWrapMode.WidgetWidth)
+        text_edit.setFont(self.list_view.font())
+        text_edit.setPlainText(text)
+        layout.addWidget(text_edit)
+        dlg.show()
 
 
 class LogViewCommon(LogViewDialog):
+    _UPDATE_INTERVAL_MS = 100
+
     def __init__(self, log_tail, title, parent=None):
         super().__init__(title, parent=parent)
-        self.displaying = False
         self.log_tail = log_tail
-        self._init_doc()
+        self._model = LogItemModel(log_tail, parent=self)
+        self.list_view.setModel(self._model)
+        self._following_tail = True
+        self._inhibit_scroll_tracking = False
+        self.list_view.verticalScrollBar().valueChanged.connect(self._on_scroll)
+        self._update_timer = QtCore.QTimer(self)
+        self._update_timer.setInterval(self._UPDATE_INTERVAL_MS)
+        self._update_timer.timeout.connect(self._flush_updates)
 
-    def _init_doc(self):
-        self.prev = -1
-        self.doc.clear()
-        self.textCursor.movePosition(QtGui.QTextCursor.MoveOperation.Start)
+    def _on_scroll(self):
+        if self._inhibit_scroll_tracking:
+            return
+        sb = self.list_view.verticalScrollBar()
+        self._following_tail = sb.value() >= sb.maximum() - 1
 
     def closeEvent(self, event):
         self.save_geometry()
         event.ignore()
         self.hide()
 
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if self._following_tail:
+            self._scroll_to_bottom()
+
     def hideEvent(self, event):
         reconnect(self.log_tail.updated, None)
+        self._update_timer.stop()
         super().hideEvent(event)
 
     def showEvent(self, event):
-        self.display()
-        reconnect(self.log_tail.updated, self._updated)
+        self._model.append_from_tail()
+        self._scroll_to_bottom()
+        # Disconnect any previous handler, then reconnect with an explicit
+        # QueuedConnection: the signal is emitted from background logging
+        # threads and the slot updates the UI, so it must be queued.
+        reconnect(self.log_tail.updated, None)
+        self.log_tail.updated.connect(self._updated, QtCore.Qt.ConnectionType.QueuedConnection)
         super().showEvent(event)
 
     def _updated(self):
-        if self.displaying:
-            return
-        self.display()
+        if not self._update_timer.isActive():
+            self._update_timer.start()
 
-    def display(self, clear=False):
-        self.displaying = True
-        if clear:
-            self._init_doc()
-        for logitem in self.log_tail.contents(self.prev):
-            self._add_entry(logitem)
-            self.prev = logitem.pos
-        self.displaying = False
+    def _flush_updates(self):
+        self._update_timer.stop()
+        self._model.append_from_tail()
+        if self._following_tail:
+            self._scroll_to_bottom()
 
-    def _add_entry(self, logitem):
-        self.textCursor.movePosition(QtGui.QTextCursor.MoveOperation.End)
-        self.textCursor.insertText(logitem.message)
-        self.textCursor.insertBlock()
-        sb = self.browser.verticalScrollBar()
-        sb.setValue(sb.maximum())
+    def _scroll_to_bottom(self):
+        self._inhibit_scroll_tracking = True
+        self.list_view.scrollToBottom()
+        self._inhibit_scroll_tracking = False
 
     def clear(self):
         self.log_tail.clear()
-        self.display(clear=True)
+        self._model.clear_entries()
 
-
-class Highlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, string, parent):
-        super().__init__(parent)
-
-        self.fmt = QtGui.QTextCharFormat()
-        self.fmt.setBackground(QtCore.Qt.GlobalColor.lightGray)
-        self.reg = re.compile(wildcards_to_regex_pattern(string), re.IGNORECASE)
-
-    def highlightBlock(self, text):
-        for match in self.reg.finditer(text):
-            index = match.start()
-            length = match.end() - match.start()
-            self.setFormat(index, length, self.fmt)
+    def get_all_text(self):
+        """Return all log messages as plain text."""
+        return self._model.get_all_text()
 
 
 class VerbosityMenu(QtWidgets.QMenu):
@@ -172,20 +234,49 @@ class DebugOptsMenu(QtWidgets.QMenu):
     def debug_opt_changed(self, debug_opt, checked):
         debug_opt.enabled = checked
 
+    def mouseReleaseEvent(self, event):
+        action = self.activeAction()
+        if action and action.isCheckable():
+            action.trigger()
+            return
+        super().mouseReleaseEvent(event)
+
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = log.get_effective_level()
+        self._status_label = None
 
-        self._setup_formats()
-        self.hl_text = ''
-        self.hl = None
+        # Set up proxy model for level filtering
+        self._proxy_model = LogFilterProxyModel(parent=self)
+        self._proxy_model.setSourceModel(self._model)
+        self._proxy_model.set_min_level(self.verbosity)
+        self.list_view.setModel(self._proxy_model)
+
+        self._delegate = LogItemDelegate(parent=self.list_view)
+        self.list_view.setItemDelegate(self._delegate)
+
+        clear_log_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-clear"), _("Clear &log…"), self.list_view)
+        clear_log_action.triggered.connect(self._clear_log_do)
+        self.list_view.addAction(clear_log_action)
+
+        self._regex_action = QtGui.QAction(_("&Regex filter"), self.list_view)
+        self._regex_action.setCheckable(True)
+        self._regex_action.toggled.connect(self._on_regex_toggled)
+        self.list_view.addAction(self._regex_action)
+
+        self._compact_view_action = QtGui.QAction(_("&Compact view"), self.list_view)
+        self._compact_view_action.setCheckable(True)
+        self._compact_view_action.setChecked(False)
+        self._compact_view_action.toggled.connect(self._on_compact_view_toggled)
+        self.list_view.addAction(self._compact_view_action)
 
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
         self.verbosity_menu_button = QtWidgets.QPushButton()
+        self.verbosity_menu_button.setAutoDefault(False)
         self.verbosity_menu_button.setAccessibleName(_("Verbosity"))
         self.hbox.addWidget(self.verbosity_menu_button)
 
@@ -194,6 +285,7 @@ class LogView(LogViewCommon):
         self.verbosity_menu_button.setMenu(self.verbosity_menu)
 
         self.debug_opts_menu_button = QtWidgets.QPushButton(_("Debug Options"))
+        self.debug_opts_menu_button.setAutoDefault(False)
         self.debug_opts_menu_button.setAccessibleName(_("Debug Options"))
         self.hbox.addWidget(self.debug_opts_menu_button)
 
@@ -202,79 +294,91 @@ class LogView(LogViewCommon):
 
         self._set_verbosity(self.verbosity)
 
-        # highlight input
-        self.highlight_text = QtWidgets.QLineEdit()
-        self.highlight_text.setPlaceholderText(_("String to highlight"))
-        self.highlight_text.textEdited.connect(self._highlight_text_edited)
-        self.hbox.addWidget(self.highlight_text)
+        # filter input with embedded clear button
+        self.filter_input = QtWidgets.QLineEdit()
+        self.filter_input.setPlaceholderText(_("Filter"))
+        self.filter_input.setClearButtonEnabled(True)
+        self.filter_input.textChanged.connect(self._on_filter_changed)
+        self.filter_input.returnPressed.connect(self._on_filter_return)
+        self.hbox.addWidget(self.filter_input)
 
-        # highlight button
-        self.highlight_button = QtWidgets.QPushButton(_("Highlight"))
-        self.hbox.addWidget(self.highlight_button)
-        self.highlight_button.setDefault(True)
-        self.highlight_button.setEnabled(False)
-        self.highlight_button.clicked.connect(self._highlight_do)
-
-        self.highlight_text.returnPressed.connect(self.highlight_button.click)
-
-        # clear highlight button
-        self.clear_highlight_button = QtWidgets.QPushButton(_("Clear Highlight"))
-        self.hbox.addWidget(self.clear_highlight_button)
-        self.clear_highlight_button.setEnabled(False)
-        self.clear_highlight_button.clicked.connect(self._clear_highlight_do)
-
-        # clear log
-        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log…"))
-        self.hbox.addWidget(self.clear_log_button)
-        self.clear_log_button.clicked.connect(self._clear_log_do)
+        # filter toggle button
+        self.filter_button = QtWidgets.QToolButton()
+        self.filter_button.setText(_("Filter"))
+        self.filter_button.setCheckable(True)
+        self.filter_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
+        self.filter_button.toggled.connect(self._on_filter_toggled)
+        self.hbox.addWidget(self.filter_button)
 
         # save as
         self.save_log_as_button = QtWidgets.QPushButton(_("Save As…"))
+        self.save_log_as_button.setAutoDefault(False)
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
-        self._prev_logitem_level = logging.NOTSET
+        # line count status
+        self.hbox.addStretch()
+        self._status_label = QtWidgets.QLabel()
+        self.hbox.addWidget(self._status_label)
+        self._model.rowsInserted.connect(self._update_status)
+        self._model.modelReset.connect(self._update_status)
+        self._update_status()
 
-    def _clear_highlight_do(self):
-        self.highlight_text.setText('')
-        self.highlight_button.setEnabled(False)
-        self._highlight_do()
-
-    def _highlight_text_edited(self, text):
-        if text and self.hl_text != text:
-            self.highlight_button.setEnabled(True)
+    def _update_status(self):
+        if self._status_label is None:
+            return
+        visible = self._proxy_model.rowCount()
+        total = self._model.rowCount()
+        if visible == total:
+            self._status_label.setText(str(total))
         else:
-            self.highlight_button.setEnabled(False)
-        if not text:
-            self.clear_highlight_button.setEnabled(bool(self.hl))
+            self._status_label.setText(f"{visible}/{total}")
 
-    def _highlight_do(self):
-        new_hl_text = self.highlight_text.text()
-        if new_hl_text != self.hl_text:
-            self.hl_text = new_hl_text
-            if self.hl is not None:
-                self.hl.setDocument(None)
-                self.hl = None
-            if self.hl_text:
-                self.hl = Highlighter(self.hl_text, self.doc)
-            self.clear_highlight_button.setEnabled(bool(self.hl))
+    def _on_filter_changed(self, text):
+        if self.filter_button.isChecked():
+            self._apply_filter()
 
-    def _setup_formats(self):
-        interface_colors.load_from_config()
-        self.formats = {}
-        for level, feat in log.levels_features.items():
-            text_fmt = QtGui.QTextCharFormat()
-            text_fmt.setFontFamilies([FONT_FAMILY_MONOSPACE])
-            text_fmt.setForeground(interface_colors.get_qcolor(feat.color_key))
-            self.formats[level] = text_fmt
+    def _on_filter_return(self):
+        if self.filter_input.text():
+            self.filter_button.setChecked(not self.filter_button.isChecked())
 
-    def _format(self, level):
-        return self.formats[level]
+    def _on_filter_toggled(self, checked):
+        self._apply_filter()
+
+    def _on_regex_toggled(self, checked):
+        if self.filter_button.isChecked():
+            self._apply_filter()
+
+    def _on_compact_view_toggled(self, checked):
+        self._model.compact_view = checked
+
+    def _apply_filter(self):
+        text = self.filter_input.text()
+        if self.filter_button.isChecked() and text:
+            try:
+                if self._regex_action.isChecked():
+                    hl_re = re.compile(text, re.IGNORECASE)
+                else:
+                    hl_re = re.compile(re.escape(text), re.IGNORECASE)
+            except re.error:
+                hl_re = None
+        else:
+            hl_re = None
+        self._delegate.set_highlight(hl_re)
+        self._inhibit_scroll_tracking = True
+        self._proxy_model.set_text_filter(hl_re)
+        if self._following_tail:
+            QtCore.QTimer.singleShot(0, self._deferred_scroll_to_bottom)
+        else:
+            self._inhibit_scroll_tracking = False
+        self.list_view.viewport().update()
+        self._update_status()
 
     def _save_log_as_do(self):
         path, ok = FileDialog.getSaveFileName(
             parent=self,
             caption=_("Save Log View to File"),
+            filter=_("Text files (*.txt);;All files (*)"),
             options=QtWidgets.QFileDialog.Option.DontConfirmOverwrite,
         )
         if ok and path:
@@ -288,24 +392,19 @@ class LogView(LogViewCommon):
                 if reply != QtWidgets.QMessageBox.StandardButton.Yes:
                     return
 
-            writer = QtGui.QTextDocumentWriter(path)
-            writer.setFormat(b'plaintext')
-            success = writer.write(self.doc)
-            if not success:
+            try:
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(self.get_all_text())
+            except OSError:
                 QtWidgets.QMessageBox.critical(
                     self,
                     _("Failed to save Log View to file"),
-                    _('Something prevented data to be written to "%s".') % writer.fileName(),
+                    _('Something prevented data to be written to "%s".') % path,
                 )
 
     def show(self):
-        self.highlight_text.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
+        self.filter_input.setFocus(QtCore.Qt.FocusReason.OtherFocusReason)
         super().show()
-
-    def display(self, clear=False):
-        if clear:
-            self._prev_logitem_level = logging.NOTSET
-        super().display(clear=clear)
 
     def _clear_log_do(self):
         reply = QtWidgets.QMessageBox.question(
@@ -316,31 +415,28 @@ class LogView(LogViewCommon):
         )
         if reply != QtWidgets.QMessageBox.StandardButton.Yes:
             return
-        self.log_tail.clear()
-        self.display(clear=True)
+        self.clear()
 
-    def is_shown(self, logitem):
-        return logitem.level >= self.verbosity
-
-    def _add_entry(self, logitem):
-        if not self.is_shown(logitem):
-            return
-        if self._prev_logitem_level != logitem.level:
-            self.textCursor.setBlockCharFormat(self._format(logitem.level))
-            self._prev_logitem_level = logitem.level
-        super()._add_entry(logitem)
+    def _deferred_scroll_to_bottom(self):
+        self._scroll_to_bottom()
+        self._inhibit_scroll_tracking = False
 
     def _set_verbosity(self, level):
         self.verbosity = level
+        self._inhibit_scroll_tracking = True
+        self._proxy_model.set_min_level(level)
+        if self._following_tail:
+            QtCore.QTimer.singleShot(0, self._deferred_scroll_to_bottom)
+        else:
+            self._inhibit_scroll_tracking = False
         self.verbosity_menu.set_verbosity(self.verbosity)
         self._update_verbosity_label()
+        self._update_status()
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
             log.set_verbosity(level, save_to_config=True)
-            self.verbosity = level
-            self._update_verbosity_label()
-            self.display(clear=True)
+            self._set_verbosity(level)
 
     def _update_verbosity_label(self):
         feat = log.levels_features.get(self.verbosity)
