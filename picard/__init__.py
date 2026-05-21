@@ -58,11 +58,9 @@ if PICARD_BUILD_VERSION_STR:
     PICARD_FANCY_VERSION_STR = f"{PICARD_FANCY_VERSION_STR} ({PICARD_BUILD_VERSION_STR})"
 
 # Keep those ordered
-api_versions = [
-    "3.0",
-]
+api_versions = ("3.0",)
 
-api_versions_tuple = [Version.from_string(v) for v in api_versions]
+api_versions_tuple = tuple(Version.from_string(v) for v in api_versions)
 
 
 def crash_handler(exc: Exception):
