@@ -36,10 +36,13 @@ from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.matching import (
     ReleaseMatchParts,
     _catno_label_score,
+    _compare_to_release_parts,
     _date_score,
     _get_weighted_release_parts,
     _isrcs_score,
     _trackcount_score,
+    compare_to_release,
+    compare_to_track,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
     weights_from_release_type_scores,
@@ -78,7 +81,7 @@ class CompareToReleaseTest(PicardTestCase):
         release = load_test_json('release.json')
         metadata = Metadata()
         release_to_metadata(release, metadata)
-        match_ = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
+        match_ = compare_to_release(metadata, release, CLUSTER_COMPARISON_WEIGHTS)
         self.assertEqual(1.0, match_.similarity)
         self.assertEqual(release, match_.release)
 
@@ -88,7 +91,7 @@ class CompareToReleaseTest(PicardTestCase):
         release_to_metadata(release, metadata)
         for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
             release['score'] = score
-            match_ = metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS)
+            match_ = compare_to_release(metadata, release, CLUSTER_COMPARISON_WEIGHTS)
             self.assertEqual(sim, match_.similarity)
 
     def test_compare_to_release_parts_totaltracks(self):
@@ -99,7 +102,7 @@ class CompareToReleaseTest(PicardTestCase):
         # Release has media with track counts [4, 3]
         for totaltracks, sim in ((4, 1.0), (3, 1.0), (2, 1 / 3), (5, 0.25)):
             metadata['totaltracks'] = totaltracks
-            parts = metadata.compare_to_release_parts(release, weights)
+            parts = _compare_to_release_parts(metadata, release, weights)
             self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
             self.assertEqual(parts.similarity[0][1], 30)
 
@@ -110,7 +113,7 @@ class CompareToReleaseTest(PicardTestCase):
         release_to_metadata(release, metadata)
         for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
             metadata['~totalalbumtracks'] = totaltracks
-            parts = metadata.compare_to_release_parts(release, weights)
+            parts = _compare_to_release_parts(metadata, release, weights)
             self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
             self.assertEqual(parts.similarity[0][1], 30)
 
@@ -121,7 +124,7 @@ class CompareToReleaseTest(PicardTestCase):
         release_to_metadata(release, metadata)
         for totaltracks, sim in ((7, 1.0), (6, 5 / 7), (8, 4 / 7)):
             metadata['totaltracks'] = totaltracks
-            parts = metadata.compare_to_release_parts(release, weights)
+            parts = _compare_to_release_parts(metadata, release, weights)
             self.assertAlmostEqual(parts.similarity[0][0], sim, places=5)
             self.assertEqual(parts.similarity[0][1], 30)
 
@@ -130,7 +133,7 @@ class CompareToReleaseTest(PicardTestCase):
         metadata = Metadata()
         weights = {"identifiers": {"barcode": 6}}
         metadata['barcode'] = '123'
-        parts = metadata.compare_to_release_parts(release, weights)
+        parts = _compare_to_release_parts(metadata, release, weights)
         self.assertIn((1.0, 6), parts.identifiers)
 
     def test_compare_to_release_parts_barcode_mismatch(self):
@@ -138,7 +141,7 @@ class CompareToReleaseTest(PicardTestCase):
         metadata = Metadata()
         weights = {"identifiers": {"barcode": 6}}
         metadata['barcode'] = '999'
-        parts = metadata.compare_to_release_parts(release, weights)
+        parts = _compare_to_release_parts(metadata, release, weights)
         self.assertIn((0.0, 6), parts.identifiers)
 
     def test_compare_to_release_parts_barcode_no_release_barcode(self):
@@ -147,14 +150,14 @@ class CompareToReleaseTest(PicardTestCase):
         metadata = Metadata()
         weights = {"identifiers": {"barcode": 6}}
         metadata['barcode'] = '123'
-        parts = metadata.compare_to_release_parts(release, weights)
+        parts = _compare_to_release_parts(metadata, release, weights)
         self.assertIn((0.0, 6), parts.identifiers)
 
     def test_compare_to_release_parts_barcode_no_file_barcode(self):
         release = load_test_json('release.json')
         metadata = Metadata()
         weights = {"identifiers": {"barcode": 6}}
-        parts = metadata.compare_to_release_parts(release, weights)
+        parts = _compare_to_release_parts(metadata, release, weights)
         self.assertFalse(parts.identifiers)
 
     def test_compare_to_release_parts_barcode_upc_ean_normalization(self):
@@ -163,7 +166,7 @@ class CompareToReleaseTest(PicardTestCase):
         metadata = Metadata()
         weights = {"identifiers": {"barcode": 6}}
         metadata['barcode'] = '727361379704'
-        parts = metadata.compare_to_release_parts(release, weights)
+        parts = _compare_to_release_parts(metadata, release, weights)
         self.assertIn((1.0, 6), parts.identifiers)
 
     def test_barcode_breaks_tie_between_identical_releases(self):
@@ -173,8 +176,8 @@ class CompareToReleaseTest(PicardTestCase):
         release_without_barcode['id'] = 'different-id'
         metadata = Metadata()
         release_to_metadata(release_with_barcode, metadata)
-        match_with = metadata.compare_to_release(release_with_barcode, CLUSTER_COMPARISON_WEIGHTS)
-        match_without = metadata.compare_to_release(release_without_barcode, CLUSTER_COMPARISON_WEIGHTS)
+        match_with = compare_to_release(metadata, release_with_barcode, CLUSTER_COMPARISON_WEIGHTS)
+        match_without = compare_to_release(metadata, release_without_barcode, CLUSTER_COMPARISON_WEIGHTS)
         self.assertGreater(match_with.similarity, match_without.similarity)
 
 
@@ -187,7 +190,7 @@ class CompareToTrackTest(PicardTestCase):
         track_json = load_test_json('track.json')
         track = Track(track_json['id'])
         track_to_metadata(track_json, track)
-        match_ = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+        match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
         self.assertEqual(1.0, match_.similarity)
         self.assertEqual(track_json, match_.track)
 
@@ -197,19 +200,19 @@ class CompareToTrackTest(PicardTestCase):
         track_to_metadata(track_json, track)
         for score, sim in ((42, 0.42), ('42', 0.42), ('foo', 1.0), (None, 1.0)):
             track_json['score'] = score
-            match_ = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+            match_ = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
             self.assertEqual(sim, match_.similarity)
 
     def test_compare_to_track_is_video(self):
         recording = load_test_json('recording_video_null.json')
         m = Metadata()
-        match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
+        match_ = compare_to_track(m, recording, {'preferences': {'isvideo': 1}})
         self.assertEqual(1.0, match_.similarity)
         m['~video'] = '1'
-        match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
+        match_ = compare_to_track(m, recording, {'preferences': {'isvideo': 1}})
         self.assertEqual(0.0, match_.similarity)
         recording['video'] = True
-        match_ = m.compare_to_track(recording, {'preferences': {'isvideo': 1}})
+        match_ = compare_to_track(m, recording, {'preferences': {'isvideo': 1}})
         self.assertEqual(1.0, match_.similarity)
 
     def test_compare_to_track_full(self):
@@ -225,7 +228,7 @@ class CompareToTrackTest(PicardTestCase):
                 'tracknumber': '4',
             }
         )
-        match_ = m.compare_to_track(recording, FILE_COMPARISON_WEIGHTS)
+        match_ = compare_to_track(m, recording, FILE_COMPARISON_WEIGHTS)
         self.assertGreaterEqual(match_.similarity, 0.8)
         self.assertEqual(recording, match_.track)
         self.assertEqual(recording['releases'][0], match_.release)
@@ -249,9 +252,9 @@ class CompareToTrackTest(PicardTestCase):
             }
         )
         track.metadata.length = 225000
-        m1 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+        m1 = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
         del track_json['releases']
-        m2 = track.metadata.compare_to_track(track_json, FILE_COMPARISON_WEIGHTS)
+        m2 = compare_to_track(track.metadata, track_json, FILE_COMPARISON_WEIGHTS)
         self.assertGreater(
             m1.similarity,
             m2.similarity,

@@ -44,7 +44,13 @@ from typing import (
     TypeAlias,
 )
 
+import PyQt6.QtCore
+
+from picard.config import Config, get_config
+from picard.mbjson import artist_credit_from_node, get_score
+from picard.similarity import similarity2
 from picard.util import (
+    compare_barcodes,
     extract_year_from_date,
     linear_combination_of_weights,
 )
@@ -153,6 +159,190 @@ class ReleaseMatchParts:
 
 # Type for the tiered weights dict structure
 TieredWeights: TypeAlias = dict[str, dict[str, int]]
+
+
+def compare_to_release(metadata: 'Metadata', release: dict, weights: TieredWeights) -> SimMatchRelease:
+    """
+    Compare metadata to a MusicBrainz release. Produces a probability as a
+    linear combination of weights that the metadata matches a certain album.
+    """
+    config = get_config()
+    parts = _compare_to_release_parts(metadata, release, weights, config)
+    sim = parts.combine_tiers() * get_score(release)
+    return SimMatchRelease(similarity=sim, release=release)
+
+
+def _compare_to_release_parts(
+    metadata: 'Metadata', release: dict, weights: TieredWeights, config: Config | None = None
+) -> ReleaseMatchParts:
+    result = ReleaseMatchParts()
+    id_w = weights.get('identifiers', {})
+    sim_w = weights.get('similarity', {})
+    pref_w = weights.get('preferences', {})
+
+    # Tier 1: Identifiers — exact matches, cheap to compute
+    if 'barcode' in id_w:
+        file_barcode = metadata.get('barcode', '')
+        if file_barcode and 'barcode' in release:
+            release_barcode = release['barcode']
+            if compare_barcodes(file_barcode, release_barcode):
+                result.identifiers.append((1.0, id_w['barcode']))
+            else:
+                result.identifiers.append((0.0, id_w['barcode']))
+
+    if 'catno' in id_w:
+        file_catno = metadata.get('catalognumber', '')
+        if file_catno and 'label-info' in release:
+            release_label_info = release['label-info']
+            if release_label_info:
+                file_label = metadata.get('label', '') or ''
+                score = _catno_label_score(file_catno, file_label, release_label_info)
+                result.identifiers.append((score, id_w['catno']))
+
+    if 'release-group' in release:
+        tagger = PyQt6.QtCore.QCoreApplication.instance()
+        if tagger is not None:
+            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
+            if release['id'] in rg.loaded_albums:
+                result.identifiers.append((1.0, 6))
+
+    # Tier 2: Similarity — fuzzy matching core
+    with metadata._lock.lock_for_read():
+        if 'album' in metadata and 'album' in sim_w:
+            b = release['title']
+            result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
+
+        if 'albumartist' in metadata and 'albumartist' in sim_w:
+            a = metadata['albumartist']
+            b = artist_credit_from_node(release['artist-credit']).name
+            result.similarity.append((similarity2(a, b), sim_w['albumartist']))
+
+        if 'totaltracks' in sim_w:
+            try:
+                a = int(metadata['totaltracks'])
+                if 'media' in release:
+                    score = 0.0
+                    for media in release['media']:
+                        b = media.get('track-count', 0)
+                        score = max(score, _trackcount_score(a, b))
+                        if score == 1.0:
+                            break
+                else:
+                    b = release['track-count']
+                    score = _trackcount_score(a, b)
+                result.similarity.append((score, sim_w['totaltracks']))
+            except (ValueError, KeyError):
+                pass
+
+        if 'totalalbumtracks' in sim_w:
+            try:
+                a = int(metadata['~totalalbumtracks'] or metadata['totaltracks'])
+                if 'track-count' in release:
+                    b = release['track-count']
+                else:
+                    b = sum(m.get('track-count', 0) for m in release.get('media', []))
+                score = _trackcount_score(a, b)
+                result.similarity.append((score, sim_w['totalalbumtracks']))
+            except (ValueError, KeyError):
+                pass
+
+        # Date matching
+        if 'date' in sim_w:
+            result.similarity.append((_date_score(release, metadata), sim_w['date']))
+
+    # Tier 3: Preferences — tie-breaking discriminators
+    if config is None:
+        config = get_config()
+    if 'releasecountry' in pref_w:
+        weights_from_preferred_countries(
+            result.preferences,
+            release,
+            config.setting['preferred_release_countries'],
+            pref_w['releasecountry'],
+        )
+
+    if 'format' in pref_w:
+        weights_from_preferred_formats(
+            result.preferences,
+            release,
+            config.setting['preferred_release_formats'],
+            pref_w['format'],
+        )
+
+    if 'releasetype' in pref_w:
+        weights_from_release_type_scores(
+            result.preferences,
+            release,
+            config.setting['release_type_scores'],
+            pref_w['releasetype'],
+        )
+
+    return result
+
+
+def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) -> SimMatchTrack:
+    track_parts = ReleaseMatchParts()
+    releases = []
+    id_w = weights.get('identifiers', {})
+    sim_w = weights.get('similarity', {})
+    pref_w = weights.get('preferences', {})
+
+    with metadata._lock.lock_for_read():
+        # Tier 1: ISRC — recording-level identifier
+        if 'isrc' in id_w:
+            file_isrcs = metadata.getall('isrc')
+            if file_isrcs:
+                recording = track.get('recording', track)
+                track_isrcs = recording.get('isrcs', [])
+                score = _isrcs_score(file_isrcs, track_isrcs)
+                track_parts.identifiers.append((score, id_w['isrc']))
+
+        # Track-level similarity signals
+        if 'title' in metadata and 'title' in sim_w:
+            a = metadata['title']
+            b = track.get('title', '')
+            track_parts.similarity.append((similarity2(a, b), sim_w["title"]))
+
+        if 'artist' in metadata and 'artist' in sim_w:
+            a = metadata['artist']
+            artist_credits = track.get('artist-credit', [])
+            b = artist_credit_from_node(artist_credits).name
+            track_parts.similarity.append((similarity2(a, b), sim_w["artist"]))
+
+        a = metadata.length
+        if a > 0 and 'length' in track and 'length' in sim_w:
+            b = track['length']
+            score = metadata.length_score(a, b)
+            track_parts.similarity.append((score, sim_w["length"]))
+
+        if 'isvideo' in pref_w:
+            metadata_is_video = metadata['~video'] == '1'
+            track_is_video = bool(track.get('video'))
+            score = 1 if metadata_is_video == track_is_video else 0
+            track_parts.preferences.append((score, pref_w['isvideo']))
+
+        if "releases" in track:
+            releases = track['releases']
+
+        search_score = get_score(track)
+        if not releases:
+            config = get_config()
+            score = dict(config.setting['release_type_scores']).get('Other', 0.5)
+            release_parts = _get_weighted_release_parts(weights, score)
+            track_parts = track_parts.merged_with(release_parts)
+            sim = track_parts.combine_tiers() * search_score
+            return SimMatchTrack(similarity=sim, releasegroup=None, release=None, track=track)
+
+    result = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
+    config = get_config()
+    for release in releases:
+        release_parts = _compare_to_release_parts(metadata, release, weights, config)
+        combined = track_parts.merged_with(release_parts)
+        sim = combined.combine_tiers() * search_score
+        if sim > result.similarity:
+            rg = release['release-group'] if "release-group" in release else None
+            result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
+    return result
 
 
 def weights_from_release_type_scores(parts, release, release_type_scores, weight_release_type=1):

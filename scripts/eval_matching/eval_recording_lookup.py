@@ -29,11 +29,13 @@ from unittest.mock import (
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
+
 from picard.file import FILE_COMPARISON_WEIGHTS
-from picard.metadata import (
-    Metadata,
+from picard.matching import (
     SimMatchTrack,
+    compare_to_track,
 )
+from picard.metadata import Metadata
 from picard.util import find_best_match_with_margin
 
 # Reuse corpus and degradations from the release eval
@@ -224,7 +226,7 @@ def evaluate(corpus, weights, min_similarity=0.0, min_margin=0.0, config_profile
     results = {"correct": 0, "wrong": 0, "ambiguous": 0, "below_floor": 0, "details": []}
 
     for entry in corpus:
-        all_matches = [entry["metadata"].compare_to_track(candidate, weights) for candidate in entry["candidates"]]
+        all_matches = [compare_to_track(entry["metadata"], candidate, weights) for candidate in entry["candidates"]]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
         no_match = SimMatchTrack(similarity=-1, releasegroup=None, release=None, track=None)
@@ -398,7 +400,7 @@ def main():
     with (
         patch("picard.config.get_config", return_value=mock_config),
         patch("picard.mbjson.get_config", return_value=mock_config),
-        patch("picard.metadata.get_config", return_value=mock_config),
+        patch("picard.matching.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus() + generate_synthetic_corpus()
 
