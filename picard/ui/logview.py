@@ -76,7 +76,7 @@ class LogViewDialog(PicardDialog):
         self.vbox.addWidget(self.list_view)
 
         view_detail_action = QtGui.QAction(
-            QtGui.QIcon.fromTheme("document-properties"), _("&View Detail…"), self.list_view
+            QtGui.QIcon.fromTheme("document-properties"), _("&View detail…"), self.list_view
         )
         view_detail_action.triggered.connect(self._show_detail)
         self.list_view.addAction(view_detail_action)
@@ -86,7 +86,7 @@ class LogViewDialog(PicardDialog):
         copy_action.triggered.connect(self._copy_selection)
         self.list_view.addAction(copy_action)
 
-        select_all_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-select-all"), _("Select &All"), self.list_view)
+        select_all_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-select-all"), _("Select &all"), self.list_view)
         select_all_action.setShortcut(QtGui.QKeySequence.StandardKey.SelectAll)
         select_all_action.triggered.connect(self._select_all)
         self.list_view.addAction(select_all_action)
@@ -257,16 +257,16 @@ class LogView(LogViewCommon):
         self._delegate = LogItemDelegate(parent=self.list_view)
         self.list_view.setItemDelegate(self._delegate)
 
-        clear_log_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-clear"), _("Clear &Log…"), self.list_view)
+        clear_log_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-clear"), _("Clear &log…"), self.list_view)
         clear_log_action.triggered.connect(self._clear_log_do)
         self.list_view.addAction(clear_log_action)
 
-        self._regex_action = QtGui.QAction(_("&Regex Filter"), self.list_view)
+        self._regex_action = QtGui.QAction(_("&Regex filter"), self.list_view)
         self._regex_action.setCheckable(True)
         self._regex_action.toggled.connect(self._on_regex_toggled)
         self.list_view.addAction(self._regex_action)
 
-        self._compact_view_action = QtGui.QAction(_("&Compact View"), self.list_view)
+        self._compact_view_action = QtGui.QAction(_("&Compact view"), self.list_view)
         self._compact_view_action.setCheckable(True)
         self._compact_view_action.setChecked(False)
         self._compact_view_action.toggled.connect(self._on_compact_view_toggled)
