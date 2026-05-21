@@ -33,7 +33,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import PICARD_DISPLAY_NAME
+from picard import (
+    PICARD_DISPLAY_NAME,
+    log,
+)
 from picard.config import get_config
 from picard.const.sys import IS_LINUX
 from picard.i18n import gettext as _
@@ -294,5 +297,7 @@ def menu_builder(menu, main_actions, *args):
             menu.addMenu(arg)
         elif isinstance(arg, MainAction) and main_actions[arg]:
             menu.addAction(main_actions[arg])
-        elif isinstance(arg, QtWidgets.QWidgetAction):
+        elif isinstance(arg, QtGui.QAction):
             menu.addAction(arg)
+        else:
+            log.error('Invalid menu action: %r', arg)
