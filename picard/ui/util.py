@@ -291,6 +291,8 @@ def show_session_not_found_dialog(parent, path: str) -> None:
 def menu_builder(menu, main_actions, *args):
     """Adds each argument to menu, depending on their type"""
     for arg in args:
+        if arg is None:
+            continue
         if arg == '-':
             menu.addSeparator()
         elif isinstance(arg, QtWidgets.QMenu):
