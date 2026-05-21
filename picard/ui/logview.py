@@ -97,22 +97,25 @@ class LogViewDialog(PicardDialog):
             menu.addAction(action)
         menu.exec(self.list_view.viewport().mapToGlobal(pos))
 
-    def _copy_selection(self):
+    def _get_selected_text(self):
         indexes = self.list_view.selectionModel().selectedIndexes()
-        if indexes:
-            indexes.sort(key=lambda idx: idx.row())
-            text = '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
+        if not indexes:
+            return None
+        indexes.sort(key=lambda idx: idx.row())
+        return '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
+
+    def _copy_selection(self):
+        text = self._get_selected_text()
+        if text:
             QtWidgets.QApplication.clipboard().setText(text)
 
     def _select_all(self):
         self.list_view.selectAll()
 
     def _show_detail(self):
-        indexes = self.list_view.selectionModel().selectedIndexes()
-        if not indexes:
+        text = self._get_selected_text()
+        if not text:
             return
-        indexes.sort(key=lambda idx: idx.row())
-        text = '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
         dlg = QtWidgets.QDialog(self)
         dlg.setWindowTitle(_("Log Detail"))
         dlg.resize(600, 400)
@@ -243,6 +246,7 @@ class LogView(LogViewCommon):
     def __init__(self, parent=None):
         super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = log.get_effective_level()
+        self._status_label = None
 
         # Set up proxy model for level filtering
         self._proxy_model = LogFilterProxyModel(parent=self)
@@ -315,7 +319,7 @@ class LogView(LogViewCommon):
         self._update_status()
 
     def _update_status(self):
-        if not hasattr(self, '_status_label'):
+        if self._status_label is None:
             return
         visible = self._proxy_model.rowCount()
         total = self._model.rowCount()

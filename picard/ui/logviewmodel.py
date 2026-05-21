@@ -39,6 +39,8 @@ FullTextRole = Qt.ItemDataRole.UserRole + 2
 class LogItemModel(QtCore.QAbstractListModel):
     """Model storing log entries with level-based foreground colors."""
 
+    _MAX_DISPLAY_CHARS = 500
+
     def __init__(self, log_tail, parent=None):
         super().__init__(parent)
         self._items = []
@@ -46,8 +48,6 @@ class LogItemModel(QtCore.QAbstractListModel):
         self._prev_pos = -1
         self._color_cache = {}
         self.refresh_colors()
-
-    _MAX_DISPLAY_CHARS = 500
 
     def rowCount(self, parent=None):
         return len(self._items)
