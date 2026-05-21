@@ -40,7 +40,10 @@ from PyQt6.QtCore import (
     QRunnable,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 
 
 class ProxyToMainEvent(QEvent):
@@ -122,7 +125,7 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=No
         task_counter.increment()
 
     if not thread_pool:
-        thread_pool = QCoreApplication.instance().thread_pool
+        thread_pool = tagger_instance().thread_pool
     thread_pool.start(Runnable(func, next_func, task_counter, traceback), priority)
 
 

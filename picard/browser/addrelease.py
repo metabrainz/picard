@@ -28,9 +28,10 @@ import re
 from secrets import token_bytes
 from types import ModuleType
 
-from PyQt6.QtCore import QCoreApplication
-
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const import BROWSER_INTEGRATION_LOCALHOST
 from picard.i18n import gettext as _
 from picard.util import format_time
@@ -79,7 +80,7 @@ def is_available():
 
 
 def is_enabled():
-    tagger = QCoreApplication.instance()
+    tagger = tagger_instance()
     return tagger.browser_integration.is_running
 
 
@@ -95,7 +96,7 @@ def serve_form(token):
     try:
         payload = jwt.decode(token, __key, algorithms=__algorithm)
         log.debug("received JWT token %r", payload)
-        tagger = QCoreApplication.instance()
+        tagger = tagger_instance()
         tport = tagger.browser_integration.port
         if 'cluster' in payload:
             cluster = _find_cluster(tagger, payload['cluster'])
@@ -125,7 +126,7 @@ def _generate_token(payload):
 
 def _open_url_with_token(payload):
     token = _generate_token(payload)
-    browser_integration = QCoreApplication.instance().browser_integration
+    browser_integration = tagger_instance().browser_integration
     url = f'http://{BROWSER_INTEGRATION_LOCALHOST}:{browser_integration.port}/add?token={token}'
     open(url)
 

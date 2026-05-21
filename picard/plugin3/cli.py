@@ -34,13 +34,13 @@ import traceback
 from types import SimpleNamespace
 
 from PyQt6 import QtCore
-from PyQt6.QtCore import QCoreApplication
 
 from picard import (
     PICARD_APP_NAME,
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     log,
+    tagger_instance,
 )
 from picard.config import (
     Option,
@@ -185,7 +185,7 @@ class PluginCLI:
 
         self._manager._registry.fetch_registry(callback=callback)
 
-        app = QCoreApplication.instance()
+        app = tagger_instance()
         while not result['done']:
             app.processEvents()
 
@@ -1746,7 +1746,7 @@ class PluginCLI:
             self._manager.refresh_registry_and_caches(callback=callback)
 
             # Process events until callback is called
-            app = QCoreApplication.instance()
+            app = tagger_instance()
             while not result['done']:
                 app.processEvents()
 
