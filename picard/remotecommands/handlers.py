@@ -50,12 +50,13 @@ import re
 import time
 from urllib.parse import urlparse
 
-from PyQt6 import QtCore
-
 from picard import log
 from picard.const.sys import IS_WIN
 from picard.file import File
-from picard.util import thread
+from picard.util import (
+    tagger_instance,
+    thread,
+)
 from picard.util.cdrom import (
     DISCID_NOT_LOADED_MESSAGE,
     discid as _discid,
@@ -124,7 +125,7 @@ def remote_command(help_text, help_args=None):
 
 class RemoteCommandHandlers:
     def __init__(self, remotecommands_class):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.remotecommands_class = remotecommands_class
 
     @remote_command("Clear the Picard logs")

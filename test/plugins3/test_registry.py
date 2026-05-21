@@ -70,9 +70,7 @@ def mock_webservice_fetch(response_data, error=None):
 class TestPluginRegistry(PicardTestCase):
     def _fetch_registry(self, registry, response_data, error=None):
         """Fetch registry with mocked webservice, return (success, error) result."""
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
+        self.tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
 
         result = {}
 
@@ -80,7 +78,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = err
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
         return result
@@ -499,16 +497,14 @@ class TestPluginRegistry(PicardTestCase):
 
             mock_response_data = b'[[blacklist]]\nurl = "test"'
 
-            mock_tagger = Mock()
-            mock_tagger.webservice = Mock()
-            mock_tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
+            self.tagger.webservice.get_url = mock_webservice_fetch(mock_response_data)
 
             result = {}
 
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
                 # Fetch and save to cache
                 registry.fetch_registry(use_cache=False, callback=callback)
 
@@ -549,9 +545,6 @@ class TestPluginRegistry(PicardTestCase):
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-
         calls = []
 
         def get_url_mock(url, handler, **kwargs):
@@ -562,7 +555,7 @@ class TestPluginRegistry(PicardTestCase):
             else:
                 handler(b'plugins = []\nblacklist = []', Mock(), None)
 
-        mock_tagger.webservice.get_url = get_url_mock
+        self.tagger.webservice.get_url = get_url_mock
 
         result = {}
 
@@ -570,7 +563,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertTrue(result['success'])
@@ -585,16 +578,13 @@ class TestPluginRegistry(PicardTestCase):
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-
         calls = []
 
         def get_url_mock(url, handler, **kwargs):
             calls.append(url.toString())
             handler(b'', Mock(), Exception('Network error'))
 
-        mock_tagger.webservice.get_url = get_url_mock
+        self.tagger.webservice.get_url = get_url_mock
 
         result = {}
 
@@ -602,7 +592,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])
@@ -616,9 +606,6 @@ class TestPluginRegistry(PicardTestCase):
         url2 = 'https://second.example.com/registry.toml'
         registry = PluginRegistry(registry_url=[url1, url2])
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-
         calls = []
 
         def get_url_mock(url, handler, **kwargs):
@@ -626,7 +613,7 @@ class TestPluginRegistry(PicardTestCase):
             # First URL returns invalid TOML
             handler(b'invalid toml [', Mock(), None)
 
-        mock_tagger.webservice.get_url = get_url_mock
+        self.tagger.webservice.get_url = get_url_mock
 
         result = {}
 
@@ -634,7 +621,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])

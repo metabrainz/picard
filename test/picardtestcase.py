@@ -47,6 +47,7 @@ from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
 from picard.i18n import setup_gettext
 from picard.releasegroup import ReleaseGroup
+from picard.tagger import Tagger
 
 
 class FakeThreadPool(QtCore.QObject):
@@ -54,32 +55,19 @@ class FakeThreadPool(QtCore.QObject):
         runnable.run()
 
 
-class FakeTagger(QtCore.QObject):
-    tagger_stats_changed = QtCore.pyqtSignal()
+cleanup_tasks = []
 
-    def __init__(self):
-        super().__init__()
-        self.tagger_stats_changed.connect(self.emit)
-        self.exit_cleanup = []
-        self.files = {}
-        self.stopping = False
-        self.thread_pool = FakeThreadPool()
-        self.priority_thread_pool = FakeThreadPool()
-        self.window = MagicMock()
-        self.webservice = MagicMock()
 
-    def register_cleanup(self, func):
-        self.exit_cleanup.append(func)
-
-    def run_cleanup(self):
-        for f in self.exit_cleanup:
-            f()
-
-    def emit(self, *args):
-        pass
-
-    def get_release_group_by_id(self, rg_id):  # pylint: disable=no-self-use
-        return ReleaseGroup(rg_id)
+def MockTagger():
+    tagger = MagicMock(spec=Tagger)
+    tagger.thread_pool = FakeThreadPool()
+    tagger.priority_thread_pool = FakeThreadPool()
+    tagger.get_release_group_by_id = MagicMock(side_effect=lambda rg_id: ReleaseGroup(rg_id))
+    tagger.stopping = False
+    tagger.files = {}
+    tagger.window = MagicMock()
+    tagger.webservice = MagicMock()
+    return tagger
 
 
 class PicardTestCase(unittest.TestCase):
@@ -87,7 +75,7 @@ class PicardTestCase(unittest.TestCase):
         super().setUp()
         log.set_verbosity(logging.DEBUG)
         setup_gettext(None, 'C')
-        self.tagger = FakeTagger()
+        self.tagger = MockTagger()
         QtCore.QCoreApplication.instance = lambda: self.tagger
         self.addCleanup(self.tagger.run_cleanup)
         self.init_config()

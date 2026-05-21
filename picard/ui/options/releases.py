@@ -55,6 +55,7 @@ from picard.i18n import (
     pgettext_attributes,
     sort_key,
 )
+from picard.util import tagger_instance
 
 from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import OptionsPage
@@ -80,7 +81,7 @@ class TipSlider(ClickableSlider):
         self.setSingleStep(self._step)
         self.setTickInterval(self._step)
         self.setPageStep(self._pagestep)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
 
     def showEvent(self, event):
         super().showEvent(event)

@@ -37,7 +37,10 @@ from picard.metadata import (
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
 from picard.plugin3.ref_item import RefItem
-from picard.util import temporary_disconnect
+from picard.util import (
+    tagger_instance,
+    temporary_disconnect,
+)
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
@@ -158,7 +161,7 @@ class PluginListWidget(QtWidgets.QWidget):
         self.tree_widget.customContextMenuRequested.connect(self._show_context_menu)
 
         # Cache tagger instance for performance
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
@@ -874,7 +877,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         self.plugin = plugin
         self.selected_ref = None
         # Cache tagger instance for performance
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")

@@ -29,8 +29,6 @@ from collections.abc import Generator
 from functools import partial
 import traceback
 
-from PyQt6 import QtCore
-
 from picard import log
 from picard.album import Album
 from picard.album_requests import TaskType
@@ -58,6 +56,7 @@ from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
     imageinfo,
+    tagger_instance,
     thread,
 )
 
@@ -346,7 +345,7 @@ class CoverArt:
 
     def _message(self, *args, **kwargs):
         """Display message to status bar"""
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         tagger.window.set_statusbar_message(*args, **kwargs)
 
 

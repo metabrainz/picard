@@ -43,8 +43,6 @@ from typing import (
     TypeAlias,
 )
 
-from PyQt6 import QtCore
-
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
@@ -52,6 +50,7 @@ from picard.util import (
     compare_barcodes,
     extract_year_from_date,
     linear_combination_of_weights,
+    tagger_instance,
 )
 
 
@@ -211,7 +210,7 @@ def _compare_to_release_parts(
                 result.identifiers.append((score, id_w['catno']))
 
     if 'release-group' in release:
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         if tagger is not None:
             rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
             if release['id'] in rg.loaded_albums:

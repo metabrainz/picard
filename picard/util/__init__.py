@@ -42,7 +42,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import Any
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
 
 from PyQt6.QtCore import QByteArray
 from PyQt6.QtNetwork import QNetworkReply
@@ -103,12 +106,14 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.util.readthedocs import ReadTheDocs
 
 
 winreg = None
 if IS_WIN:
     import winreg  # type: ignore[assignment]
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 # Windows path length constraints
 # See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
@@ -791,6 +796,8 @@ def get_url(url_key: str) -> str:
     Returns:
         str: Updated URL, or provided URL key if not matched.
     """
+    from picard.util.readthedocs import ReadTheDocs  # Local import to avoid circular import
+
     if url_key.startswith('/'):
         return (
             PICARD_DOCS_URLS['documentation'].format(
@@ -908,7 +915,7 @@ def parse_json(reply: QNetworkReply) -> Any:
 
 def restore_method(func):
     def func_wrapper(*args, **kwargs):
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         if not tagger._no_restore:
             return func(*args, **kwargs)
 
@@ -1498,3 +1505,11 @@ def atomic_write(path, data):
             with suppress(OSError, PermissionError):
                 temp_path.unlink()
         raise
+
+
+def tagger_instance() -> 'Tagger':
+    instance = QtCore.QCoreApplication.instance()
+    from picard.tagger import Tagger
+
+    assert isinstance(instance, Tagger), 'Expected an instance of Tagger'
+    return instance

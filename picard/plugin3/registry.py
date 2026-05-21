@@ -33,7 +33,10 @@ from picard.git.utils import normalize_git_url
 from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
-from picard.util import atomic_write
+from picard.util import (
+    atomic_write,
+    tagger_instance,
+)
 
 
 try:
@@ -254,7 +257,7 @@ class PluginRegistry:
             url: URL to fetch from
             callback: callback(success, error) called when complete
         """
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         if not tagger or not hasattr(tagger, 'webservice'):
             error = RegistryFetchError(url, Exception('WebService not available'))
             if callback:

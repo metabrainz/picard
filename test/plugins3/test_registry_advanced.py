@@ -85,16 +85,14 @@ class TestRegistryAdvanced(PicardTestCase):
             cache_file.write_text('invalid toml{{{')
 
             # Mock WebService to return valid TOML data
-            mock_tagger = Mock()
-            mock_tagger.webservice = Mock()
-            mock_tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
+            self.tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
 
             result = {}
 
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
                 registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
                 registry.fetch_registry(callback=callback)
                 # Should have fetched and created data
@@ -132,9 +130,7 @@ class TestRegistryAdvanced(PicardTestCase):
             # Make cache dir read-only after registry init
             cache_dir.chmod(0o444)
 
-            mock_tagger = Mock()
-            mock_tagger.webservice = Mock()
-            mock_tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
+            self.tagger.webservice.get_url = mock_webservice_fetch(b'plugins = []\nblacklist = []')
 
             result = {}
 
@@ -142,7 +138,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 result['success'] = success
 
             try:
-                with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+                with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
                     registry.fetch_registry(use_cache=False, callback=callback)
                     # Should not raise, just log warning
                     self.assertTrue(result['success'])

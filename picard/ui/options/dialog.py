@@ -57,6 +57,7 @@ from picard.profile import (
 from picard.util import (
     get_url,
     restore_method,
+    tagger_instance,
 )
 
 from picard.ui import (
@@ -311,7 +312,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.ui.pages_tree.itemSelectionChanged.connect(self.switch_page)
 
         # Connect to plugin manager signals for dynamic updates
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         self.plugin_manager = tagger.get_plugin_manager()
         try:
             self.plugin_manager.plugin_ref_switched.connect(self.refresh_plugin_pages)

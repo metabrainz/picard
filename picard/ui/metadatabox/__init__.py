@@ -61,6 +61,7 @@ from picard.util import (
     IgnoreUpdatesContext,
     icontheme,
     restore_method,
+    tagger_instance,
     thread,
     throttle,
 )
@@ -164,7 +165,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         config = get_config()
         config.setting.setting_changed.connect(self._on_setting_changed)
 

@@ -50,7 +50,10 @@ from picard.browser import addrelease
 from picard.config import get_config
 from picard.const import BROWSER_INTEGRATION_LOCALIP
 from picard.oauth import OAuthInvalidStateError
-from picard.util import mbid_validate
+from picard.util import (
+    mbid_validate,
+    tagger_instance,
+)
 from picard.util.thread import to_main
 
 
@@ -226,7 +229,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             if not mbid_validate(mbid):
                 self._response(400, '"id" is not a valid MBID.')
             else:
-                tagger = QtCore.QCoreApplication.instance()
+                tagger = tagger_instance()
                 to_main(tagger.load_mbid, type, mbid)
                 self._response(200, 'MBID "%s" loaded' % mbid)
         else:
@@ -246,7 +249,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def _auth(self, args):
         if 'code' in args and args['code']:
-            tagger = QtCore.QCoreApplication.instance()
+            tagger = tagger_instance()
             oauth_manager = tagger.webservice.oauth_manager
             try:
                 state = args.get('state', [''])[0]

@@ -26,14 +26,13 @@
 
 from functools import partial
 
-from PyQt6 import QtCore
-
 from picard import log
 from picard.config import get_config
 from picard.i18n import (
     N_,
     ngettext,
 )
+from picard.util import tagger_instance
 from picard.webservice.api_helpers import MBAPIHelper
 
 
@@ -42,7 +41,7 @@ user_collections: dict[str, 'Collection'] = {}
 
 class Collection:
     def __init__(self, collection_id: str, mb_api: MBAPIHelper):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.id = collection_id
         self.name = ''
         self.size = 0
@@ -132,13 +131,13 @@ class Collection:
 def get_user_collection(collection_id):
     collection = user_collections.get(collection_id)
     if collection is None:
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         collection = user_collections[collection_id] = Collection(collection_id, tagger.mb_api)
     return collection
 
 
 def load_user_collections(callback=None):
-    tagger = QtCore.QCoreApplication.instance()
+    tagger = tagger_instance()
 
     def request_finished(document, reply, error):
         if error:

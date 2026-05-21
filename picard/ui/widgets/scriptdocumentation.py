@@ -37,7 +37,10 @@ from picard.tags.docs import (
     display_plugin_tag_full_description,
     display_tag_full_description,
 )
-from picard.util import get_url
+from picard.util import (
+    get_url,
+    tagger_instance,
+)
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
@@ -118,7 +121,7 @@ class DocumentationPage(QtWidgets.QWidget):
 
 class FunctionsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         manager = self.tagger.get_plugin_manager()
 
         def process_html(html, function):

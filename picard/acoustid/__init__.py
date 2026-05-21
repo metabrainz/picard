@@ -44,6 +44,7 @@ from picard.file import File
 from picard.i18n import N_
 from picard.util import (
     find_executable,
+    tagger_instance,
     win_prefix_longpath,
 )
 from picard.webservice.api_helpers import AcoustIdAPIHelper
@@ -82,7 +83,7 @@ AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
 class AcoustIDClient(QtCore.QObject):
     def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self._queue: deque = deque()
         self._running = 0
         self._acoustid_api = acoustid_api

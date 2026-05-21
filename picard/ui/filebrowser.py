@@ -40,7 +40,10 @@ from PyQt6 import (
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
-from picard.util import find_existing_path
+from picard.util import (
+    find_existing_path,
+    tagger_instance,
+)
 from picard.util.macos import (
     extend_root_volume_path,
     strip_root_volume_path,
@@ -50,7 +53,7 @@ from picard.util.macos import (
 class FileBrowser(QtWidgets.QTreeView):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setDragEnabled(True)
         self.load_selected_files_action = QtGui.QAction(_("&Load selected files"), self)

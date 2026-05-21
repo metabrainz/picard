@@ -116,6 +116,7 @@ from picard.util import (
     reconnect,
     restore_method,
     sanitize_filename,
+    tagger_instance,
     thread,
     throttle,
     webbrowser2,
@@ -192,7 +193,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(on_exit=self.update_selection)

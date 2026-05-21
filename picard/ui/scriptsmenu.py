@@ -24,10 +24,7 @@
 
 from functools import partial
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard import log
 from picard.album import Album
@@ -41,13 +38,16 @@ from picard.script import (
     ScriptParser,
 )
 from picard.track import Track
-from picard.util import iter_unique
+from picard.util import (
+    iter_unique,
+    tagger_instance,
+)
 
 
 class ScriptsMenu(QtWidgets.QMenu):
     def __init__(self, scripts, title, parent=None):
         super().__init__(title, parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
 
         for script in scripts:
             action = self.addAction(script.name)

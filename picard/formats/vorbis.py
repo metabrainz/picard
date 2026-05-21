@@ -40,8 +40,6 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 
-from PyQt6 import QtCore
-
 from picard import log
 from picard.config import get_config
 from picard.coverart.image import (
@@ -55,6 +53,7 @@ from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
     sanitize_date,
+    tagger_instance,
 )
 
 
@@ -524,5 +523,5 @@ OggContainerFile.supports_tag = VCommentFile.supports_tag
 
 
 def _guess_format(filename, options):
-    tagger = QtCore.QCoreApplication.instance()
+    tagger = tagger_instance()
     return tagger.format_registry.guess_format(filename, options)

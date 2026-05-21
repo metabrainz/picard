@@ -86,6 +86,7 @@ from picard.util import (
     iter_files_from_objects,
     normpath,
     restore_method,
+    tagger_instance,
 )
 
 from picard.ui.collectionmenu import CollectionMenu
@@ -180,7 +181,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.columns = columns
         self.setAccessibleName(_(self.NAME))
         self.setAccessibleDescription(_(self.DESCRIPTION))
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.window = window
 
         # Subscribe to header update events
@@ -602,7 +603,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
             if url.scheme() == 'file' or not url.scheme():

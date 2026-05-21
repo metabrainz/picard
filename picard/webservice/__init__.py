@@ -73,6 +73,7 @@ from picard.util import (
     bytes2human,
     encoded_queryargs,
     parse_json,
+    tagger_instance,
 )
 from picard.util.xml import parse_xml
 from picard.webservice import ratecontrol
@@ -367,7 +368,7 @@ class WebService(QtCore.QObject):
 
     def __init__(self, parent: QObject | None = None):
         super().__init__(parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.manager = QtNetwork.QNetworkAccessManager()
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)

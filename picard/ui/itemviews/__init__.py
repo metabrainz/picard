@@ -66,7 +66,10 @@ from picard.i18n import (
     sort_key,
 )
 from picard.track import Track
-from picard.util import icontheme
+from picard.util import (
+    icontheme,
+    tagger_instance,
+)
 
 from picard.ui.colors import interface_colors
 from picard.ui.columns import (
@@ -95,7 +98,7 @@ def get_match_color(similarity, basecolor):
 class MainPanel(QtWidgets.QSplitter):
     def __init__(self, window, parent=None):
         super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.setChildrenCollapsible(False)
         self.window = window
         self.create_icons()
@@ -714,7 +717,7 @@ class FileItem(TreeItem):
     @staticmethod
     def decide_fingerprint_icon_info(file):
         if getattr(file, 'acoustid_fingerprint', None):
-            tagger = QtCore.QCoreApplication.instance()
+            tagger = tagger_instance()
             if tagger.acoustidmanager.is_submitted(file):
                 icon = FileItem.icon_fingerprint_gray
                 tooltip = _("Fingerprint has already been submitted")

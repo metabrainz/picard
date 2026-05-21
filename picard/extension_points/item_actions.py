@@ -43,12 +43,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
-    QtCore,
-    QtGui,
-)
+from PyQt6 import QtGui
 
 from picard.plugin import ExtensionPoint
+from picard.util import tagger_instance
 from picard.util.display_title_base import HasDisplayTitle
 
 
@@ -58,7 +56,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
 
     def __init__(self, api=None, parent=None):
         super().__init__(self.display_title(), parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.triggered.connect(self.__callback)
 
     def __callback(self):

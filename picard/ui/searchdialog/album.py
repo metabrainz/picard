@@ -41,7 +41,10 @@ from picard.mbjson import (
     release_to_metadata,
 )
 from picard.metadata import Metadata
-from picard.util import countries_shortlist
+from picard.util import (
+    countries_shortlist,
+    tagger_instance,
+)
 from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.columns import (
@@ -188,7 +191,7 @@ class AlbumSearchDialog(SearchDialog):
 
     @staticmethod
     def show_releasegroup_search(releasegroup_id, existing_album=None):
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         dialog = AlbumSearchDialog(
             tagger.window,
             force_advanced_search=True,
