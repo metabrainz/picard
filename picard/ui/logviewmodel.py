@@ -19,6 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 import logging
+import re
 
 from PyQt6 import (
     QtCore,
@@ -40,6 +41,7 @@ class LogItemModel(QtCore.QAbstractListModel):
     """Model storing log entries with level-based foreground colors."""
 
     _MAX_DISPLAY_CHARS = 500
+    _SOURCE_RE = re.compile(r'^[DWIE]: (\d{2}:\d{2}:\d{2},\d{3}) \S+:\d+: ')
 
     def __init__(self, log_tail, parent=None):
         super().__init__(parent)
@@ -47,7 +49,23 @@ class LogItemModel(QtCore.QAbstractListModel):
         self._log_tail = log_tail
         self._prev_pos = -1
         self._color_cache = {}
+        self._compact_view = False
         self.refresh_colors()
+
+    @property
+    def compact_view(self):
+        return self._compact_view
+
+    @compact_view.setter
+    def compact_view(self, value):
+        if value != self._compact_view:
+            self._compact_view = value
+            if self._items:
+                self.dataChanged.emit(
+                    self.index(0),
+                    self.index(len(self._items) - 1),
+                    [Qt.ItemDataRole.DisplayRole],
+                )
 
     def rowCount(self, parent=None):
         return len(self._items)
@@ -58,6 +76,8 @@ class LogItemModel(QtCore.QAbstractListModel):
         item = self._items[index.row()]
         if role == Qt.ItemDataRole.DisplayRole:
             msg = item.message
+            if self._compact_view:
+                msg = self._SOURCE_RE.sub(r'\1 ', msg)
             if len(msg) > self._MAX_DISPLAY_CHARS:
                 return msg[: self._MAX_DISPLAY_CHARS] + '…'
             return msg

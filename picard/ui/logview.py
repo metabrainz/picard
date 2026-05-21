@@ -266,6 +266,12 @@ class LogView(LogViewCommon):
         self._regex_action.toggled.connect(self._on_regex_toggled)
         self.list_view.addAction(self._regex_action)
 
+        self._compact_view_action = QtGui.QAction(_("&Compact View"), self.list_view)
+        self._compact_view_action.setCheckable(True)
+        self._compact_view_action.setChecked(False)
+        self._compact_view_action.toggled.connect(self._on_compact_view_toggled)
+        self.list_view.addAction(self._compact_view_action)
+
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
@@ -342,6 +348,9 @@ class LogView(LogViewCommon):
     def _on_regex_toggled(self, checked):
         if self.filter_button.isChecked():
             self._apply_filter()
+
+    def _on_compact_view_toggled(self, checked):
+        self._model.compact_view = checked
 
     def _apply_filter(self):
         text = self.filter_input.text()
