@@ -40,7 +40,10 @@ import mutagen.oggspeex
 import mutagen.oggtheora
 import mutagen.oggvorbis
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImageError,
@@ -53,7 +56,6 @@ from picard.metadata import Metadata
 from picard.util import (
     encode_filename,
     sanitize_date,
-    tagger_instance,
 )
 
 

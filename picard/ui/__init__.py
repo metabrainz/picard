@@ -33,7 +33,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import (
     Option,
     get_config,
@@ -46,7 +49,6 @@ from picard.const.sys import (
 from picard.util import (
     get_url,
     restore_method,
-    tagger_instance,
     webbrowser2,
 )
 

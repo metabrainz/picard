@@ -43,6 +43,7 @@ from typing import (
     TypeAlias,
 )
 
+from picard import tagger_instance
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
@@ -50,7 +51,6 @@ from picard.util import (
     compare_barcodes,
     extract_year_from_date,
     linear_combination_of_weights,
-    tagger_instance,
 )
 
 

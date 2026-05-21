@@ -65,6 +65,7 @@ from PyQt6 import (
 from picard import (
     PICARD_APP_ID,
     log,
+    tagger_instance,
 )
 from picard.album import Album
 from picard.browser import addrelease
@@ -116,7 +117,6 @@ from picard.util import (
     reconnect,
     restore_method,
     sanitize_filename,
-    tagger_instance,
     thread,
     throttle,
     webbrowser2,

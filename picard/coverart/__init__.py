@@ -29,7 +29,10 @@ from collections.abc import Generator
 from functools import partial
 import traceback
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import get_config
@@ -56,7 +59,6 @@ from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
     imageinfo,
-    tagger_instance,
     thread,
 )
 

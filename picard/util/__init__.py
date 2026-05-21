@@ -42,22 +42,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import (
-    TYPE_CHECKING,
-    Any,
-)
-
-from PyQt6.QtCore import QByteArray
-from PyQt6.QtNetwork import QNetworkReply
-
-
-try:
-    from charset_normalizer import detect  # type: ignore[unresolved-import]
-except ImportError:
-    try:
-        from chardet import detect  # type: ignore[unresolved-import,no-redef]
-    except ImportError:
-        detect = None  # type: ignore[assignment]
 from collections import (
     defaultdict,
     namedtuple,
@@ -85,12 +69,18 @@ import subprocess  # nosec: B404
 import sys
 import tempfile
 from time import monotonic
+from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
+from PyQt6.QtCore import QByteArray
 from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const import (
     MUSICBRAINZ_SERVERS,
     PICARD_DOCS_URLS,
@@ -108,12 +98,18 @@ from picard.i18n import (
 )
 
 
+try:
+    from charset_normalizer import detect  # type: ignore[unresolved-import]
+except ImportError:
+    try:
+        from chardet import detect  # type: ignore[unresolved-import,no-redef]
+    except ImportError:
+        detect = None  # type: ignore[assignment]
+
+
 winreg = None
 if IS_WIN:
     import winreg  # type: ignore[assignment]
-
-if TYPE_CHECKING:
-    from picard.tagger import Tagger
 
 # Windows path length constraints
 # See https://docs.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation
@@ -1505,11 +1501,3 @@ def atomic_write(path, data):
             with suppress(OSError, PermissionError):
                 temp_path.unlink()
         raise
-
-
-def tagger_instance() -> 'Tagger':
-    instance = QtCore.QCoreApplication.instance()
-    from picard.tagger import Tagger
-
-    assert isinstance(instance, Tagger), 'Expected an instance of Tagger'
-    return instance

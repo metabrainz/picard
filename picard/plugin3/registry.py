@@ -26,17 +26,17 @@ from PyQt6 import QtCore
 from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkRequest
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
 from picard.git.utils import normalize_git_url
 from picard.i18n import sort_key
 from picard.plugin3.installable import InstallablePlugin
 from picard.plugin3.plugin import hash_string
-from picard.util import (
-    atomic_write,
-    tagger_instance,
-)
+from picard.util import atomic_write
 
 
 try:

@@ -34,7 +34,10 @@ import json
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.acoustid.recordings import RecordingResolver
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
@@ -44,7 +47,6 @@ from picard.file import File
 from picard.i18n import N_
 from picard.util import (
     find_executable,
-    tagger_instance,
     win_prefix_longpath,
 )
 from picard.webservice.api_helpers import AcoustIdAPIHelper

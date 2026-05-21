@@ -52,7 +52,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import NatAlbum
 from picard.cluster import (
     Cluster,
@@ -66,10 +69,7 @@ from picard.i18n import (
     sort_key,
 )
 from picard.track import Track
-from picard.util import (
-    icontheme,
-    tagger_instance,
-)
+from picard.util import icontheme
 
 from picard.ui.colors import interface_colors
 from picard.ui.columns import (

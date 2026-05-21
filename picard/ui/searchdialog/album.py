@@ -30,7 +30,10 @@ from PyQt6 import (
 )
 from PyQt6.QtCore import pyqtSignal
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import CAA_URL
 from picard.i18n import N_
@@ -41,10 +44,7 @@ from picard.mbjson import (
     release_to_metadata,
 )
 from picard.metadata import Metadata
-from picard.util import (
-    countries_shortlist,
-    tagger_instance,
-)
+from picard.util import countries_shortlist
 from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.columns import (

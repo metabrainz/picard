@@ -63,6 +63,7 @@ from picard import (
     PICARD_ORG_NAME,
     PICARD_VERSION_STR,
     log,
+    tagger_instance,
 )
 from picard.config import get_config
 from picard.const import appdirs
@@ -73,7 +74,6 @@ from picard.util import (
     bytes2human,
     encoded_queryargs,
     parse_json,
-    tagger_instance,
 )
 from picard.util.xml import parse_xml
 from picard.webservice import ratecontrol

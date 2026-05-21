@@ -41,7 +41,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
@@ -61,7 +64,6 @@ from picard.util import (
     IgnoreUpdatesContext,
     icontheme,
     restore_method,
-    tagger_instance,
     thread,
     throttle,
 )

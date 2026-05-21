@@ -50,13 +50,13 @@ import re
 import time
 from urllib.parse import urlparse
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const.sys import IS_WIN
 from picard.file import File
-from picard.util import (
-    tagger_instance,
-    thread,
-)
+from picard.util import thread
 from picard.util.cdrom import (
     DISCID_NOT_LOADED_MESSAGE,
     discid as _discid,

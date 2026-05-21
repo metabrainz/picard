@@ -29,12 +29,10 @@
 
 from PyQt6 import QtCore
 
+from picard import tagger_instance
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
-from picard.util import (
-    tagger_instance,
-    versions,
-)
+from picard.util import versions
 
 from picard.ui import (
     PicardDialog,

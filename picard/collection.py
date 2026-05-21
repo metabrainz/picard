@@ -26,13 +26,15 @@
 
 from functools import partial
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import (
     N_,
     ngettext,
 )
-from picard.util import tagger_instance
 from picard.webservice.api_helpers import MBAPIHelper
 
 

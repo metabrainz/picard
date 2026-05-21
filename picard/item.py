@@ -39,14 +39,14 @@ import weakref
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import ngettext
 from picard.metadata import Metadata
-from picard.util import (
-    IgnoreUpdatesContext,
-    tagger_instance,
-)
+from picard.util import IgnoreUpdatesContext
 from picard.util.imagelist import ImageList
 
 

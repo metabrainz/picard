@@ -32,13 +32,15 @@
 import os.path
 import re
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.disc import Disc
 from picard.util import (
     build_qurl,
-    tagger_instance,
     webbrowser2,
 )
 

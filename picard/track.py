@@ -53,7 +53,10 @@ import traceback
 from typing import TYPE_CHECKING
 import weakref
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import (
     DATA_TRACK_TITLE,
@@ -82,7 +85,6 @@ from picard.script import (
 )
 from picard.util import (
     pattern_as_regex,
-    tagger_instance,
     titlecase,
 )
 from picard.util.imagelist import ImageList

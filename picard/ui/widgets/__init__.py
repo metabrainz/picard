@@ -27,7 +27,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard.util import tagger_instance
+from picard import tagger_instance
 
 
 class ElidedLabel(QtWidgets.QLabel):

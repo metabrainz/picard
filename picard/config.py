@@ -51,9 +51,9 @@ from picard import (
     PICARD_ORG_NAME,
     PICARD_VERSION,
     log,
+    tagger_instance,
 )
 from picard.profile import profile_groups_all_settings
-from picard.util import tagger_instance
 from picard.version import Version
 
 

@@ -33,8 +33,10 @@ from functools import partial
 import traceback
 from types import ModuleType
 
-from picard import log
-from picard.util import tagger_instance
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog

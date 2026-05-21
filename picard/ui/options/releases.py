@@ -38,6 +38,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.config import get_config
 from picard.const import (
     RELEASE_FORMATS,
@@ -55,7 +56,6 @@ from picard.i18n import (
     pgettext_attributes,
     sort_key,
 )
-from picard.util import tagger_instance
 
 from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
 from picard.ui.options import OptionsPage

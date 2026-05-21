@@ -55,7 +55,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import (
     Album,
     NatAlbum,
@@ -86,7 +89,6 @@ from picard.util import (
     iter_files_from_objects,
     normpath,
     restore_method,
-    tagger_instance,
 )
 
 from picard.ui.collectionmenu import CollectionMenu

@@ -37,13 +37,11 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.config import get_config
 from picard.const.sys import IS_MACOS
 from picard.i18n import gettext as _
-from picard.util import (
-    find_existing_path,
-    tagger_instance,
-)
+from picard.util import find_existing_path
 from picard.util.macos import (
     extend_root_volume_path,
     strip_root_volume_path,

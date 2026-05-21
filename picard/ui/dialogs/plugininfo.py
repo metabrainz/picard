@@ -26,10 +26,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.i18n import gettext as _
 from picard.plugin3.categories import PluginCategorySet
 from picard.plugin3.installable import InstallablePlugin
-from picard.util import tagger_instance
 
 from picard.ui import PreserveGeometry
 from picard.ui.util import font_scaled_size

@@ -27,7 +27,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.metadata import (
@@ -37,10 +40,7 @@ from picard.metadata import (
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
 from picard.plugin3.ref_item import RefItem
-from picard.util import (
-    tagger_instance,
-    temporary_disconnect,
-)
+from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector

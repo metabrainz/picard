@@ -47,7 +47,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
@@ -62,7 +65,6 @@ from picard.util import (
     bytes2human,
     imageinfo,
     normpath,
-    tagger_instance,
 )
 from picard.util.lrucache import LRUCache
 

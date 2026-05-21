@@ -29,7 +29,10 @@ import re
 
 from PyQt6 import QtWidgets
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import (
     Option,
     get_config,
@@ -37,7 +40,6 @@ from picard.config import (
 )
 from picard.i18n import gettext as _
 from picard.profile import profile_groups_add_setting
-from picard.util import tagger_instance
 from picard.util.display_title_base import HasDisplayTitle
 
 

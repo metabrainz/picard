@@ -45,8 +45,8 @@
 
 from PyQt6 import QtGui
 
+from picard import tagger_instance
 from picard.plugin import ExtensionPoint
-from picard.util import tagger_instance
 from picard.util.display_title_base import HasDisplayTitle
 
 

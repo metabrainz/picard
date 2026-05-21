@@ -40,11 +40,13 @@ from PyQt6 import (
     QtGui,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import CoverArtImageIOError
 from picard.i18n import gettext as _
-from picard.util import tagger_instance
 
 from picard.ui.colors import interface_colors
 from picard.ui.widgets import ActiveLabel

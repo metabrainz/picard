@@ -29,6 +29,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
@@ -37,10 +38,7 @@ from picard.tags.docs import (
     display_plugin_tag_full_description,
     display_tag_full_description,
 )
-from picard.util import (
-    get_url,
-    tagger_instance,
-)
+from picard.util import get_url
 
 from picard.ui import FONT_FAMILY_MONOSPACE
 from picard.ui.colors import interface_colors
