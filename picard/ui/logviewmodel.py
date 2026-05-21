@@ -33,6 +33,7 @@ from picard.ui.colors import interface_colors
 
 
 LevelRole = Qt.ItemDataRole.UserRole + 1
+FullTextRole = Qt.ItemDataRole.UserRole + 2
 
 
 class LogItemModel(QtCore.QAbstractListModel):
@@ -46,6 +47,8 @@ class LogItemModel(QtCore.QAbstractListModel):
         self._color_cache = {}
         self.refresh_colors()
 
+    _MAX_DISPLAY_CHARS = 500
+
     def rowCount(self, parent=None):
         return len(self._items)
 
@@ -54,11 +57,16 @@ class LogItemModel(QtCore.QAbstractListModel):
             return None
         item = self._items[index.row()]
         if role == Qt.ItemDataRole.DisplayRole:
-            return item.message
+            msg = item.message
+            if len(msg) > self._MAX_DISPLAY_CHARS:
+                return msg[: self._MAX_DISPLAY_CHARS] + '…'
+            return msg
         if role == Qt.ItemDataRole.ForegroundRole:
             return self._get_color(item.level)
         if role == LevelRole:
             return item.level
+        if role == FullTextRole:
+            return item.message
         return None
 
     def _get_color(self, level):
@@ -142,7 +150,7 @@ class LogFilterProxyModel(QtCore.QSortFilterProxyModel):
         if level < self._min_level:
             return False
         if self._text_re:
-            text = index.data(Qt.ItemDataRole.DisplayRole) or ''
+            text = index.data(FullTextRole) or ''
             if not self._text_re.search(text):
                 return False
         return True
@@ -199,3 +207,9 @@ class LogItemDelegate(QtWidgets.QStyledItemDelegate):
         painter.drawText(rect, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, text)
 
         painter.restore()
+
+    def sizeHint(self, option, index):
+        fm = option.fontMetrics
+        # Width based on max truncated length; height is single line
+        width = fm.horizontalAdvance('x') * LogItemModel._MAX_DISPLAY_CHARS + 4
+        return QtCore.QSize(width, fm.height())

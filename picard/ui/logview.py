@@ -51,6 +51,7 @@ from picard.ui import (
     PicardDialog,
 )
 from picard.ui.logviewmodel import (
+    FullTextRole,
     LogFilterProxyModel,
     LogItemDelegate,
     LogItemModel,
@@ -91,6 +92,10 @@ class LogViewDialog(PicardDialog):
         deselect_all_action.triggered.connect(self._deselect_all)
         self.list_view.addAction(deselect_all_action)
 
+        view_detail_action = QtGui.QAction(_("&View Detail…"), self.list_view)
+        view_detail_action.triggered.connect(self._show_detail)
+        self.list_view.addAction(view_detail_action)
+
     def _show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self.list_view)
         for action in self.list_view.actions():
@@ -101,7 +106,7 @@ class LogViewDialog(PicardDialog):
         indexes = self.list_view.selectionModel().selectedIndexes()
         if indexes:
             indexes.sort(key=lambda idx: idx.row())
-            text = '\n'.join(idx.data(QtCore.Qt.ItemDataRole.DisplayRole) or '' for idx in indexes)
+            text = '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
             QtWidgets.QApplication.clipboard().setText(text)
 
     def _select_all(self):
@@ -109,6 +114,24 @@ class LogViewDialog(PicardDialog):
 
     def _deselect_all(self):
         self.list_view.clearSelection()
+
+    def _show_detail(self):
+        indexes = self.list_view.selectionModel().selectedIndexes()
+        if not indexes:
+            return
+        indexes.sort(key=lambda idx: idx.row())
+        text = '\n'.join(idx.data(FullTextRole) or '' for idx in indexes)
+        dlg = QtWidgets.QDialog(self)
+        dlg.setWindowTitle(_("Log Detail"))
+        dlg.resize(600, 400)
+        layout = QtWidgets.QVBoxLayout(dlg)
+        text_edit = QtWidgets.QPlainTextEdit(dlg)
+        text_edit.setReadOnly(True)
+        text_edit.setLineWrapMode(QtWidgets.QPlainTextEdit.LineWrapMode.WidgetWidth)
+        text_edit.setFont(self.list_view.font())
+        text_edit.setPlainText(text)
+        layout.addWidget(text_edit)
+        dlg.show()
 
 
 class LogViewCommon(LogViewDialog):
