@@ -70,7 +70,7 @@ if TYPE_CHECKING:
 # 20000 50000 0.0
 LENGTH_SCORE_THRESHOLD_MS = 30000
 
-DATE_MATCH_FACTORS = {
+_DATE_MATCH_FACTORS = {
     'exact': 1.00,
     'year': 0.95,
     'close_year': 0.85,
@@ -267,7 +267,7 @@ def _compare_to_release_parts(
     if config is None:
         config = get_config()
     if 'releasecountry' in pref_w:
-        weights_from_preferred_countries(
+        _weights_from_preferred_countries(
             result.preferences,
             release,
             config.setting['preferred_release_countries'],
@@ -275,7 +275,7 @@ def _compare_to_release_parts(
         )
 
     if 'format' in pref_w:
-        weights_from_preferred_formats(
+        _weights_from_preferred_formats(
             result.preferences,
             release,
             config.setting['preferred_release_formats'],
@@ -283,7 +283,7 @@ def _compare_to_release_parts(
         )
 
     if 'releasetype' in pref_w:
-        weights_from_release_type_scores(
+        _weights_from_release_type_scores(
             result.preferences,
             release,
             config.setting['release_type_scores'],
@@ -358,71 +358,6 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
     return result
 
 
-def weights_from_release_type_scores(parts, release, release_type_scores, weight_release_type=1):
-    # This function generates a score that determines how likely this release will be selected in a lookup.
-    # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
-    # This score is based on the preferences of release-types found in this release
-    # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
-    # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
-    # It appends (score, weight_release_type) to passed parts list
-
-    # if our preference is zero for the release_type, force to never return this recording
-    # by using a large zero weight. This means it only gets picked if there are no others at all.
-    skip_release = False
-
-    type_scores = dict(release_type_scores)
-    score = 0.0
-    other_score = type_scores.get('Other', 0.5)
-    if 'release-group' in release and 'primary-type' in release['release-group']:
-        types_found = [release['release-group']['primary-type']]
-        if 'secondary-types' in release['release-group']:
-            types_found += release['release-group']['secondary-types']
-        for release_type in types_found:
-            type_score = type_scores.get(release_type, other_score)
-            if type_score == 0:
-                skip_release = True
-            score += type_score
-        score /= len(types_found)
-    else:
-        score = other_score
-
-    if skip_release:
-        parts.append((0, 9999))
-    else:
-        parts.append((score, weight_release_type))
-
-
-def weights_from_preferred_countries(parts, release, preferred_countries, weight):
-    total_countries = len(preferred_countries)
-    if total_countries:
-        score = 0.0
-        if "country" in release:
-            try:
-                i = preferred_countries.index(release['country'])
-                score = float(total_countries - i) / float(total_countries)
-            except ValueError:
-                pass
-        parts.append((score, weight))
-
-
-def weights_from_preferred_formats(parts, release, preferred_formats, weight):
-    total_formats = len(preferred_formats)
-    if total_formats and 'media' in release:
-        score = 0.0
-        subtotal = 0
-        for medium in release['media']:
-            if "format" in medium:
-                try:
-                    i = preferred_formats.index(medium['format'])
-                    score += float(total_formats - i) / float(total_formats)
-                except ValueError:
-                    pass
-                subtotal += 1
-        if subtotal > 0:
-            score /= subtotal
-        parts.append((score, weight))
-
-
 def length_score(a: int | None, b: int | None) -> float:
     """Compare two track lengths and calculate a similarity score.
     The similarity is based on the absolute difference between the lengths,
@@ -437,13 +372,13 @@ def length_score(a: int | None, b: int | None) -> float:
 def _date_score(release: dict, metadata: 'Metadata') -> float:
     """Score how well the file's date matches the release date."""
     if not release.get('date'):
-        return DATE_MATCH_FACTORS['no_release_date']
+        return _DATE_MATCH_FACTORS['no_release_date']
     release_date = release['date']
     if 'date' not in metadata:
-        return DATE_MATCH_FACTORS['exists_vs_null']
+        return _DATE_MATCH_FACTORS['exists_vs_null']
     metadata_date = metadata['date']
     if release_date == metadata_date:
-        return DATE_MATCH_FACTORS['exact']
+        return _DATE_MATCH_FACTORS['exact']
     release_year = extract_year_from_date(release_date)
     if release_year is None:
         return 0.0
@@ -451,10 +386,10 @@ def _date_score(release: dict, metadata: 'Metadata') -> float:
     if metadata_year is None:
         return 0.0
     if release_year == metadata_year:
-        return DATE_MATCH_FACTORS['year']
+        return _DATE_MATCH_FACTORS['year']
     if abs(release_year - metadata_year) <= 2:
-        return DATE_MATCH_FACTORS['close_year']
-    return DATE_MATCH_FACTORS['differed']
+        return _DATE_MATCH_FACTORS['close_year']
+    return _DATE_MATCH_FACTORS['differed']
 
 
 def _catno_label_score(file_catno: str, file_label: str, release_label_info: list[dict]) -> float:
@@ -540,3 +475,68 @@ def _get_weighted_release_parts(weights: dict[str, dict[str, int]], score: float
             total_weight = sum(value for key, value in weights[tier].items() if key in keys)
             getattr(result, tier).append((score, total_weight))
     return result
+
+
+def _weights_from_release_type_scores(parts, release, release_type_scores, weight_release_type=1):
+    # This function generates a score that determines how likely this release will be selected in a lookup.
+    # The score goes from 0 to 1 with 1 being the most likely to be chosen and 0 the least likely
+    # This score is based on the preferences of release-types found in this release
+    # This algorithm works by taking the scores of the primary type (and secondary if found) and averages them
+    # If no types are found, it is set to the score of the 'Other' type or 0.5 if 'Other' doesnt exist
+    # It appends (score, weight_release_type) to passed parts list
+
+    # if our preference is zero for the release_type, force to never return this recording
+    # by using a large zero weight. This means it only gets picked if there are no others at all.
+    skip_release = False
+
+    type_scores = dict(release_type_scores)
+    score = 0.0
+    other_score = type_scores.get('Other', 0.5)
+    if 'release-group' in release and 'primary-type' in release['release-group']:
+        types_found = [release['release-group']['primary-type']]
+        if 'secondary-types' in release['release-group']:
+            types_found += release['release-group']['secondary-types']
+        for release_type in types_found:
+            type_score = type_scores.get(release_type, other_score)
+            if type_score == 0:
+                skip_release = True
+            score += type_score
+        score /= len(types_found)
+    else:
+        score = other_score
+
+    if skip_release:
+        parts.append((0, 9999))
+    else:
+        parts.append((score, weight_release_type))
+
+
+def _weights_from_preferred_countries(parts, release, preferred_countries, weight):
+    total_countries = len(preferred_countries)
+    if total_countries:
+        score = 0.0
+        if "country" in release:
+            try:
+                i = preferred_countries.index(release['country'])
+                score = float(total_countries - i) / float(total_countries)
+            except ValueError:
+                pass
+        parts.append((score, weight))
+
+
+def _weights_from_preferred_formats(parts, release, preferred_formats, weight):
+    total_formats = len(preferred_formats)
+    if total_formats and 'media' in release:
+        score = 0.0
+        subtotal = 0
+        for medium in release['media']:
+            if "format" in medium:
+                try:
+                    i = preferred_formats.index(medium['format'])
+                    score += float(total_formats - i) / float(total_formats)
+                except ValueError:
+                    pass
+                subtotal += 1
+        if subtotal > 0:
+            score /= subtotal
+        parts.append((score, weight))

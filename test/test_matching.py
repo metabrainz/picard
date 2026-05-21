@@ -41,12 +41,12 @@ from picard.matching import (
     _get_weighted_release_parts,
     _isrcs_score,
     _trackcount_score,
+    _weights_from_preferred_countries,
+    _weights_from_preferred_formats,
+    _weights_from_release_type_scores,
     compare_to_release,
     compare_to_track,
     length_score,
-    weights_from_preferred_countries,
-    weights_from_preferred_formats,
-    weights_from_release_type_scores,
 )
 from picard.mbjson import (
     release_to_metadata,
@@ -388,17 +388,17 @@ class PreferredWeightsTest(PicardTestCase):
     def test_weights_from_release_type_scores(self):
         release = load_test_json('release.json')
         parts = []
-        weights_from_release_type_scores(parts, release, {'Album': 0.75}, 666)
+        _weights_from_release_type_scores(parts, release, {'Album': 0.75}, 666)
         self.assertEqual(parts[0], (0.75, 666))
-        weights_from_release_type_scores(parts, release, {}, 666)
+        _weights_from_release_type_scores(parts, release, {}, 666)
         self.assertEqual(parts[1], (0.5, 666))
 
     def test_weights_from_release_type_scores_no_type(self):
         release = load_test_json('release_no_type.json')
         parts = []
-        weights_from_release_type_scores(parts, release, {'Other': 0.75}, 123)
+        _weights_from_release_type_scores(parts, release, {'Other': 0.75}, 123)
         self.assertEqual(parts[0], (0.75, 123))
-        weights_from_release_type_scores(parts, release, {}, 123)
+        _weights_from_release_type_scores(parts, release, {}, 123)
         self.assertEqual(parts[1], (0.5, 123))
 
     def test_get_weighted_release_parts(self):
@@ -415,19 +415,19 @@ class PreferredWeightsTest(PicardTestCase):
     def test_preferred_countries(self):
         release = load_test_json('release.json')
         parts = []
-        weights_from_preferred_countries(parts, release, [], 666)
+        _weights_from_preferred_countries(parts, release, [], 666)
         self.assertFalse(parts)
-        weights_from_preferred_countries(parts, release, ['FR'], 666)
+        _weights_from_preferred_countries(parts, release, ['FR'], 666)
         self.assertEqual(parts[0], (0.0, 666))
-        weights_from_preferred_countries(parts, release, ['GB'], 666)
+        _weights_from_preferred_countries(parts, release, ['GB'], 666)
         self.assertEqual(parts[1], (1.0, 666))
 
     def test_preferred_formats(self):
         release = load_test_json('release.json')
         parts = []
-        weights_from_preferred_formats(parts, release, [], 777)
+        _weights_from_preferred_formats(parts, release, [], 777)
         self.assertFalse(parts)
-        weights_from_preferred_formats(parts, release, ['Digital Media'], 777)
+        _weights_from_preferred_formats(parts, release, ['Digital Media'], 777)
         self.assertEqual(parts[0], (0.0, 777))
-        weights_from_preferred_formats(parts, release, ['12" Vinyl'], 777)
+        _weights_from_preferred_formats(parts, release, ['12" Vinyl'], 777)
         self.assertEqual(parts[1], (1.0, 777))
