@@ -294,5 +294,5 @@ def menu_builder(menu, main_actions, *args):
             menu.addMenu(arg)
         elif isinstance(arg, MainAction) and main_actions[arg]:
             menu.addAction(main_actions[arg])
-        elif isinstance(arg, QtWidgets.QWidgetAction):
+        elif isinstance(arg, QtGui.QAction):
             menu.addAction(arg)
