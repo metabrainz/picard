@@ -269,6 +269,24 @@ class LogView(LogViewCommon):
         self.hbox.addWidget(self.save_log_as_button)
         self.save_log_as_button.clicked.connect(self._save_log_as_do)
 
+        # line count status
+        self.hbox.addStretch()
+        self._status_label = QtWidgets.QLabel()
+        self.hbox.addWidget(self._status_label)
+        self._model.rowsInserted.connect(self._update_status)
+        self._model.modelReset.connect(self._update_status)
+        self._update_status()
+
+    def _update_status(self):
+        if not hasattr(self, '_status_label'):
+            return
+        visible = self._proxy_model.rowCount()
+        total = self._model.rowCount()
+        if visible == total:
+            self._status_label.setText(str(total))
+        else:
+            self._status_label.setText(f"{visible}/{total}")
+
     def _on_filter_changed(self, text):
         if self.filter_button.isChecked():
             self._apply_filter()
@@ -297,6 +315,7 @@ class LogView(LogViewCommon):
         else:
             self._inhibit_scroll_tracking = False
         self.list_view.viewport().update()
+        self._update_status()
 
     def _save_log_as_do(self):
         path, ok = FileDialog.getSaveFileName(
@@ -355,6 +374,7 @@ class LogView(LogViewCommon):
             self._inhibit_scroll_tracking = False
         self.verbosity_menu.set_verbosity(self.verbosity)
         self._update_verbosity_label()
+        self._update_status()
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
