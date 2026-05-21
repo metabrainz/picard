@@ -113,12 +113,6 @@ class LogItemModel(QtCore.QAbstractListModel):
         """Return all log messages as plain text for saving."""
         return '\n'.join(item.message for item in self._items)
 
-    def level_at(self, row):
-        """Return the log level for a given row."""
-        if 0 <= row < len(self._items):
-            return self._items[row].level
-        return logging.NOTSET
-
 
 class LogFilterProxyModel(QtCore.QSortFilterProxyModel):
     """Proxy model that filters log entries by minimum level and text pattern."""
@@ -137,10 +131,6 @@ class LogFilterProxyModel(QtCore.QSortFilterProxyModel):
         """Set compiled regex for text filtering, or None to show all."""
         self._text_re = pattern_re
         self.invalidateFilter()
-
-    @property
-    def min_level(self):
-        return self._min_level
 
     def filterAcceptsRow(self, source_row, source_parent):
         index = self.sourceModel().index(source_row, 0, source_parent)
