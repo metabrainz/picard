@@ -70,8 +70,9 @@ class LogViewDialog(PicardDialog):
         self.list_view = QtWidgets.QListView()
         self.list_view.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.ExtendedSelection)
         self.list_view.setFont(QtGui.QFont(FONT_FAMILY_MONOSPACE))
-        self.list_view.setWordWrap(True)
-        self.list_view.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.list_view.setWordWrap(False)
+        self.list_view.setUniformItemSizes(True)
+        self.list_view.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.list_view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.list_view.customContextMenuRequested.connect(self._show_context_menu)
         self.vbox.addWidget(self.list_view)
@@ -111,6 +112,8 @@ class LogViewDialog(PicardDialog):
 
 
 class LogViewCommon(LogViewDialog):
+    _UPDATE_INTERVAL_MS = 100
+
     def __init__(self, log_tail, title, parent=None):
         super().__init__(title, parent=parent)
         self.log_tail = log_tail
@@ -119,6 +122,9 @@ class LogViewCommon(LogViewDialog):
         self._following_tail = True
         self._inhibit_scroll_tracking = False
         self.list_view.verticalScrollBar().valueChanged.connect(self._on_scroll)
+        self._update_timer = QtCore.QTimer(self)
+        self._update_timer.setInterval(self._UPDATE_INTERVAL_MS)
+        self._update_timer.timeout.connect(self._flush_updates)
 
     def _on_scroll(self):
         if self._inhibit_scroll_tracking:
@@ -138,6 +144,7 @@ class LogViewCommon(LogViewDialog):
 
     def hideEvent(self, event):
         reconnect(self.log_tail.updated, None)
+        self._update_timer.stop()
         super().hideEvent(event)
 
     def showEvent(self, event):
@@ -151,6 +158,10 @@ class LogViewCommon(LogViewDialog):
         super().showEvent(event)
 
     def _updated(self):
+        if not self._update_timer.isActive():
+            self._update_timer.start()
+
+    def _flush_updates(self):
         self._model.append_from_tail()
         if self._following_tail:
             self._scroll_to_bottom()
