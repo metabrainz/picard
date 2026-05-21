@@ -177,6 +177,7 @@ class LogViewCommon(LogViewDialog):
             self._update_timer.start()
 
     def _flush_updates(self):
+        self._update_timer.stop()
         self._model.append_from_tail()
         if self._following_tail:
             self._scroll_to_bottom()
