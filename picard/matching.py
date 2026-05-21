@@ -127,11 +127,6 @@ class ReleaseMatchParts:
     similarity: list[ScoreWeightPair] = field(default_factory=list)
     preferences: list[ScoreWeightPair] = field(default_factory=list)
 
-    @property
-    def all_parts(self) -> list[ScoreWeightPair]:
-        """Flat list of all (score, weight) tuples for linear combination."""
-        return self.identifiers + self.similarity + self.preferences
-
     def merged_with(self, other: 'ReleaseMatchParts') -> 'ReleaseMatchParts':
         """Return a new ReleaseMatchParts combining self and other."""
         return ReleaseMatchParts(
