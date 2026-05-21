@@ -36,7 +36,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from collections import namedtuple
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from typing import (
@@ -87,8 +86,22 @@ _RELEASE_WEIGHT_KEYS = {
 }
 
 
-SimMatchTrack = namedtuple('SimMatchTrack', 'similarity releasegroup release track')
-SimMatchRelease = namedtuple('SimMatchRelease', 'similarity release')
+@dataclass
+class SimMatchTrack:
+    """Holds the similarity score and release/track data for a matched track."""
+
+    similarity: float
+    releasegroup: dict | None
+    release: dict | None
+    track: dict | None
+
+
+@dataclass
+class SimMatchRelease:
+    """Holds the similarity score and release data for a matched release."""
+
+    similarity: float
+    release: dict | None
 
 
 @dataclass
