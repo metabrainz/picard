@@ -117,3 +117,4 @@ class DebugOpt(DebugOptEnum):
     PLUGIN_UPDATES = 6, N_('Plugin Updates'), N_('Log detailed plugin version checking and update detection')
     COVERART = 7, N_('Cover Art'), N_('Log cover art filter, resize and convert operations')
     MATCHING = 8, N_('Matching'), N_('Log similarity scores and match decisions')
+    PLUGIN_DEVELOPMENT = 9, N_('Plugin Development'), N_('Log plugin details typically only used during development')

@@ -1043,7 +1043,26 @@ def enable(api):
 
 1. **Always use the api parameter**: Don't import Picard internals directly
 2. **Use plugin_config for plugin settings**: Keeps your config isolated
-3. **Log appropriately**: Use `debug` for verbose, `info` for important events
+3. **Log appropriately**: Use `debug` for verbose, `info` for important events.
+   Debug log entries are useful when a user is trying to understand which plugin
+   is making changes to metadata and such, but extensive debug logging such as
+   that required for troubleshooting a specific plugin can be overwhelming. If
+   detailed debug logging is included, it should be used with the
+   `api.logger.debug_if()` method so that it is only logged when the
+   `plugin_development` debug option is specified on the command line. For example:
+   ```python
+   # Single message
+   self.api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, "Detailed debug message with no parameters")
+   self.api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, "Resize: %d x %d", width, height)
+
+   # Lazy formatting with msg_func
+   self.api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT, msg_func=lambda: "Settings: %s" % expensive())
+
+   # Block guard to skip expensive code entirely when disabled
+   if dbg := self.api.logger.debug_if(DebugOpt.PLUGIN_DEVELOPMENT):
+       for item in items:
+           dbg("item: %r", item)
+   ```
 4. **Handle errors gracefully**: Wrap risky operations in try/except
 5. **Set priorities wisely**: Only use non-zero priorities when order matters
 6. **Pass api to parent classes**: You can use `self.api` in classes inherited from
