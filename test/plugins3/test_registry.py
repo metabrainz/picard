@@ -78,7 +78,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = err
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+        with patch('picard.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
         return result
@@ -504,7 +504,7 @@ class TestPluginRegistry(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+            with patch('picard.tagger_instance', return_value=self.tagger):
                 # Fetch and save to cache
                 registry.fetch_registry(use_cache=False, callback=callback)
 
@@ -563,7 +563,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+        with patch('picard.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertTrue(result['success'])
@@ -592,7 +592,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+        with patch('picard.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])
@@ -621,7 +621,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+        with patch('picard.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])
@@ -655,11 +655,9 @@ class TestPluginRegistry(PicardTestCase):
         """Test that blacklist check doesn't fail if registry fetch fails."""
         registry = PluginRegistry()
 
-        mock_tagger = Mock()
-        mock_tagger.webservice = Mock()
-        mock_tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
+        self.tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
 
-        with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=mock_tagger):
+        with patch('picard.tagger_instance', return_value=self.tagger):
             # Should not raise, just return False (not blacklisted)
             is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
 

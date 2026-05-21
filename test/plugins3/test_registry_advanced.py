@@ -92,7 +92,7 @@ class TestRegistryAdvanced(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+            with patch('picard.tagger_instance', return_value=self.tagger):
                 registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
                 registry.fetch_registry(callback=callback)
                 # Should have fetched and created data
@@ -138,7 +138,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 result['success'] = success
 
             try:
-                with patch('picard.plugin3.registry.QtCore.QCoreApplication.instance', return_value=self.tagger):
+                with patch('picard.tagger_instance', return_value=self.tagger):
                     registry.fetch_registry(use_cache=False, callback=callback)
                     # Should not raise, just log warning
                     self.assertTrue(result['success'])

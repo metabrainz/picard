@@ -30,10 +30,7 @@ from unittest.mock import (
 from PyQt6.QtCore import QSettings
 
 from test.picardtestcase import PicardTestCase
-from test.plugins3.helpers import (
-    MockTagger,
-    load_plugin_manifest,
-)
+from test.plugins3.helpers import load_plugin_manifest
 
 from picard import log
 from picard.config import (
@@ -90,18 +87,17 @@ class TestPluginApiMethods(PicardTestCase):
     def test_register_format(self):
         """Test file format registration."""
         manifest = load_plugin_manifest('example')
-        mock_tagger = Mock()
-        api = PluginApi(manifest, mock_tagger)
+        api = PluginApi(manifest, self.tagger)
 
         mock_format = Mock()
+        self.tagger.format_registry = Mock()
 
         api.register_format(mock_format)
-        mock_tagger.format_registry.register.assert_called_once_with(mock_format)
+        self.tagger.format_registry.register.assert_called_once_with(mock_format)
 
     def test_manifest(self):
         manifest = load_plugin_manifest('example')
-        mock_tagger = Mock()
-        api = PluginApi(manifest, mock_tagger)
+        api = PluginApi(manifest, self.tagger)
 
         self.assertEqual(api.manifest, manifest)
         with self.assertRaises(AttributeError):
@@ -175,11 +171,10 @@ class TestPluginApiMethods(PicardTestCase):
     def test_get_plugin_version(self):
         """Test get_plugin_version method."""
         manifest = load_plugin_manifest('example')
-        mock_tagger = Mock()
         mock_plugin_manager = Mock()
-        mock_tagger.get_plugin_manager.return_value = mock_plugin_manager
+        self.tagger.get_plugin_manager.return_value = mock_plugin_manager
 
-        api = PluginApi(manifest, mock_tagger)
+        api = PluginApi(manifest, self.tagger)
 
         # Test with git metadata
         mock_metadata = Mock()
@@ -196,7 +191,7 @@ class TestPluginApiMethods(PicardTestCase):
         self.assertEqual(result, str(manifest.version))
 
         # Test no plugin manager
-        mock_tagger.get_plugin_manager.return_value = None
+        self.tagger.get_plugin_manager.return_value = None
         result = api.get_plugin_version()
         self.assertEqual(result, "Unknown")
 
@@ -215,11 +210,8 @@ class TestPluginApi(PicardTestCase):
     def test_init(self):
         manifest = load_plugin_manifest('example')
 
-        mock_tagger = MockTagger()
-        mock_ws = mock_tagger.webservice = Mock()
-
-        api = PluginApi(manifest, mock_tagger)
-        self.assertEqual(api.web_service, mock_ws)
+        api = PluginApi(manifest, self.tagger)
+        self.assertEqual(api.web_service, self.tagger.webservice)
         self.assertEqual(api.logger.name, 'main.plugin.example')
         self.assertEqual(api.global_config, get_config())
         self.assertIsInstance(api.plugin_config, ConfigSection)
@@ -228,13 +220,10 @@ class TestPluginApi(PicardTestCase):
         """Test PluginApi property accessors."""
         manifest = load_plugin_manifest('example')
 
-        mock_tagger = MockTagger()
-        mock_ws = mock_tagger.webservice = Mock()
-
-        api = PluginApi(manifest, mock_tagger)
+        api = PluginApi(manifest, self.tagger)
 
         # Test property accessors
-        self.assertEqual(api.web_service, mock_ws)
+        self.assertEqual(api.web_service, self.tagger.webservice)
         self.assertIsNotNone(api.mb_api)
         self.assertIsNotNone(api.logger)
         self.assertEqual(api.plugin_id, 'example')
@@ -248,7 +237,7 @@ class TestPluginApi(PicardTestCase):
         logging.disable(logging.NOTSET)
 
         manifest = load_plugin_manifest('example')
-        api = PluginApi(manifest, MockTagger())
+        api = PluginApi(manifest, self.tagger)
 
         # Verify logger name is correct
         self.assertEqual(api.logger.name, 'main.plugin.example')
@@ -299,11 +288,8 @@ class TestPluginApi(PicardTestCase):
             # Create a real QSettings instance
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
 
-            # Create mock tagger with real config
-            mock_tagger = MockTagger()
-
             # Create API with the test config
-            api = PluginApi(manifest, mock_tagger)
+            api = PluginApi(manifest, self.tagger)
             api._api_config._ConfigSection__qt_config = settings
 
             # Set some config values
@@ -328,7 +314,7 @@ class TestPluginApi(PicardTestCase):
             self.assertEqual(settings2.value(f'plugin.{test_uuid}/test_bool'), True)
 
             # Verify raw_value can read them back
-            api2 = PluginApi(manifest, mock_tagger)
+            api2 = PluginApi(manifest, self.tagger)
             api2._api_config._ConfigSection__qt_config = settings2
             self.assertEqual(api2.plugin_config.raw_value('test_string'), 'hello')
             self.assertEqual(api2.plugin_config.raw_value('test_int'), 42)
@@ -346,8 +332,7 @@ class TestPluginApi(PicardTestCase):
 
         try:
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
-            mock_tagger = MockTagger()
-            api = PluginApi(manifest, mock_tagger)
+            api = PluginApi(manifest, self.tagger)
             api._api_config._ConfigSection__qt_config = settings
 
             # Test registering options
@@ -395,7 +380,7 @@ class TestPluginApi(PicardTestCase):
             # Verify persistence of complex types
             settings.sync()
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
-            api2 = PluginApi(manifest, mock_tagger)
+            api2 = PluginApi(manifest, self.tagger)
             api2._api_config._ConfigSection__qt_config = settings2
 
             self.assertEqual(api2.plugin_config['list'], [1, 2, 3])
@@ -413,8 +398,7 @@ class TestPluginApi(PicardTestCase):
 
         try:
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
-            mock_tagger = MockTagger()
-            api = PluginApi(manifest, mock_tagger)
+            api = PluginApi(manifest, self.tagger)
             api._api_config._ConfigSection__qt_config = settings
 
             # Register options
@@ -438,7 +422,7 @@ class TestPluginApi(PicardTestCase):
 
             # Load in new QSettings instance (same process)
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
-            api2 = PluginApi(manifest, mock_tagger)
+            api2 = PluginApi(manifest, self.tagger)
             api2._api_config._ConfigSection__qt_config = settings2
 
             # Types are preserved due to QSettings in-memory cache
@@ -471,11 +455,8 @@ class TestPluginApi(PicardTestCase):
             # Create a real QSettings instance
             settings = QSettings(str(config_file), QSettings.Format.IniFormat)
 
-            # Create mock tagger
-            mock_tagger = MockTagger()
-
             # Create API
-            api = PluginApi(manifest, mock_tagger)
+            api = PluginApi(manifest, self.tagger)
             api._api_config._ConfigSection__qt_config = settings
 
             # Register options for the plugin
@@ -496,7 +477,7 @@ class TestPluginApi(PicardTestCase):
             # Verify persistence
             settings.sync()
             settings2 = QSettings(str(config_file), QSettings.Format.IniFormat)
-            api2 = PluginApi(manifest, mock_tagger)
+            api2 = PluginApi(manifest, self.tagger)
             api2._api_config._ConfigSection__qt_config = settings2
 
             # Values should persist and be properly typed

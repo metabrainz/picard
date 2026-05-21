@@ -55,9 +55,6 @@ class FakeThreadPool(QtCore.QObject):
         runnable.run()
 
 
-cleanup_tasks = []
-
-
 def MockTagger():
     tagger = MagicMock(spec=Tagger)
     tagger.thread_pool = FakeThreadPool()
@@ -77,7 +74,6 @@ class PicardTestCase(unittest.TestCase):
         setup_gettext(None, 'C')
         self.tagger = MockTagger()
         QtCore.QCoreApplication.instance = lambda: self.tagger
-        self.addCleanup(self.tagger.run_cleanup)
         self.init_config()
 
     @staticmethod
