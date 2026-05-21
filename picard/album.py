@@ -71,6 +71,7 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.item import MetadataItem
+from picard.matching import length_score
 from picard.mbjson import (
     medium_to_metadata,
     release_group_to_metadata,
@@ -930,7 +931,7 @@ class Album(MetadataItem):
                     if mbid and mbid_validate(mbid):
                         track = tracks_cache.get_track(mbid, tracknumber, discnumber)
                         if track:
-                            similarity = track.metadata.length_score(track.metadata.length, metadata.length)
+                            similarity = length_score(track.metadata.length, metadata.length)
                             yield SimMatchAlbum(similarity=similarity, track=track)
 
             best_match = find_best_match(mbid_candidates(), no_match)

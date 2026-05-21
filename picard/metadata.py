@@ -45,7 +45,7 @@ from collections.abc import (
 from functools import partial
 from typing import TYPE_CHECKING
 
-from picard.matching import LENGTH_SCORE_THRESHOLD_MS
+from picard.matching import length_score
 from picard.plugin import PluginFunctions
 from picard.similarity import similarity2
 from picard.tags import preserved_tag_names
@@ -121,12 +121,6 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
             raise ValueError("negative value: %d" % length)
         self._length = length
 
-    @staticmethod
-    def length_score(a: int, b: int):
-        if a is None or b is None:
-            return 0.0
-        return 1.0 - min(abs(a - b), LENGTH_SCORE_THRESHOLD_MS) / float(LENGTH_SCORE_THRESHOLD_MS)
-
     def compare(self, other: 'Metadata', ignored: Iterable[str] | None = None):
         parts = []
         if ignored is None:
@@ -134,7 +128,7 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
 
         with self._lock.lock_for_read():
             if self.length and other.length and '~length' not in ignored:
-                score = self.length_score(self.length, other.length)
+                score = length_score(self.length, other.length)
                 parts.append((score, 8))
 
             for name, weight in self.__weights:

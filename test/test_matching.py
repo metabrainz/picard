@@ -43,6 +43,7 @@ from picard.matching import (
     _trackcount_score,
     compare_to_release,
     compare_to_track,
+    length_score,
     weights_from_preferred_countries,
     weights_from_preferred_formats,
     weights_from_release_type_scores,
@@ -319,6 +320,26 @@ class ReleaseMatchPartsTest(PicardTestCase):
 
 
 class ScoreHelpersTest(PicardTestCase):
+    def test_length_score(self):
+        results = (
+            (20000, 0, 0.333333333333),
+            (20000, 10000, 0.666666666667),
+            (20000, 20000, 1.0),
+            (20000, 30000, 0.666666666667),
+            (20000, 40000, 0.333333333333),
+            (20000, 50000, 0.0),
+            (20000, None, 0.0),
+            (None, 2000, 0.0),
+            (None, None, 0.0),
+        )
+        for a, b, expected in results:
+            actual = length_score(a, b)
+            self.assertAlmostEqual(
+                expected,
+                actual,
+                msg="a={a}, b={b}".format(a=a, b=b),
+            )
+
     def test_date_score(self):
         self.assertEqual(0.25, _date_score({}, Metadata()))
         self.assertEqual(0.65, _date_score({'date': '2026'}, Metadata()))

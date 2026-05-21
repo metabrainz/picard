@@ -312,7 +312,7 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
         a = metadata.length
         if a > 0 and 'length' in track and 'length' in sim_w:
             b = track['length']
-            score = metadata.length_score(a, b)
+            score = length_score(a, b)
             track_parts.similarity.append((score, sim_w["length"]))
 
         if 'isvideo' in pref_w:
@@ -408,6 +408,17 @@ def weights_from_preferred_formats(parts, release, preferred_formats, weight):
         if subtotal > 0:
             score /= subtotal
         parts.append((score, weight))
+
+
+def length_score(a: int | None, b: int | None) -> float:
+    """Compare two track lengths and calculate a similarity score.
+    The similarity is based on the absolute difference between the lengths,
+    with a threshold of LENGTH_SCORE_THRESHOLD_MS. The score will degrade linearly
+    up to a difference of LENGTH_SCORE_THRESHOLD_MS.
+    """
+    if a is None or b is None:
+        return 0.0
+    return 1.0 - min(abs(a - b), LENGTH_SCORE_THRESHOLD_MS) / float(LENGTH_SCORE_THRESHOLD_MS)
 
 
 def _date_score(release: dict, metadata: 'Metadata') -> float:
