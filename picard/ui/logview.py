@@ -41,10 +41,7 @@ from PyQt6 import (
 from picard import log
 from picard.debug_opts import DebugOpt
 from picard.i18n import gettext as _
-from picard.util import (
-    reconnect,
-    wildcards_to_regex_pattern,
-)
+from picard.util import reconnect
 
 from picard.ui import (
     FONT_FAMILY_MONOSPACE,
@@ -331,7 +328,7 @@ class LogView(LogViewCommon):
         text = self.filter_input.text()
         if self.filter_button.isChecked() and text:
             try:
-                hl_re = re.compile(wildcards_to_regex_pattern(text), re.IGNORECASE)
+                hl_re = re.compile(re.escape(text), re.IGNORECASE)
             except re.error:
                 hl_re = None
         else:
