@@ -154,6 +154,8 @@ class FormatRegistry(QObject):
                 # Score each format
                 results = []
                 for file_format in options:
+                    if not hasattr(file_format, 'score'):
+                        continue
                     try:
                         score = file_format.score(str(path), fileobj, header)
                         results.append((score, file_format.__name__, file_format))
