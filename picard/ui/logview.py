@@ -252,6 +252,10 @@ class LogView(LogViewCommon):
         self._delegate = LogItemDelegate(parent=self.list_view)
         self.list_view.setItemDelegate(self._delegate)
 
+        clear_log_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-clear"), _("Clear &Log…"), self.list_view)
+        clear_log_action.triggered.connect(self._clear_log_do)
+        self.list_view.addAction(clear_log_action)
+
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
 
@@ -289,12 +293,6 @@ class LogView(LogViewCommon):
         self.filter_button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextOnly)
         self.filter_button.toggled.connect(self._on_filter_toggled)
         self.hbox.addWidget(self.filter_button)
-
-        # clear log
-        self.clear_log_button = QtWidgets.QPushButton(_("Clear Log…"))
-        self.clear_log_button.setAutoDefault(False)
-        self.hbox.addWidget(self.clear_log_button)
-        self.clear_log_button.clicked.connect(self._clear_log_do)
 
         # save as
         self.save_log_as_button = QtWidgets.QPushButton(_("Save As…"))
