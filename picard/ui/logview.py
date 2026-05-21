@@ -78,23 +78,21 @@ class LogViewDialog(PicardDialog):
         self.list_view.customContextMenuRequested.connect(self._show_context_menu)
         self.vbox.addWidget(self.list_view)
 
-        copy_action = QtGui.QAction(_("&Copy"), self.list_view)
+        view_detail_action = QtGui.QAction(
+            QtGui.QIcon.fromTheme("document-properties"), _("&View Detail…"), self.list_view
+        )
+        view_detail_action.triggered.connect(self._show_detail)
+        self.list_view.addAction(view_detail_action)
+
+        copy_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-copy"), _("&Copy"), self.list_view)
         copy_action.setShortcut(QtGui.QKeySequence.StandardKey.Copy)
         copy_action.triggered.connect(self._copy_selection)
         self.list_view.addAction(copy_action)
 
-        select_all_action = QtGui.QAction(_("Select &All"), self.list_view)
+        select_all_action = QtGui.QAction(QtGui.QIcon.fromTheme("edit-select-all"), _("Select &All"), self.list_view)
         select_all_action.setShortcut(QtGui.QKeySequence.StandardKey.SelectAll)
         select_all_action.triggered.connect(self._select_all)
         self.list_view.addAction(select_all_action)
-
-        deselect_all_action = QtGui.QAction(_("&Deselect All"), self.list_view)
-        deselect_all_action.triggered.connect(self._deselect_all)
-        self.list_view.addAction(deselect_all_action)
-
-        view_detail_action = QtGui.QAction(_("&View Detail…"), self.list_view)
-        view_detail_action.triggered.connect(self._show_detail)
-        self.list_view.addAction(view_detail_action)
 
     def _show_context_menu(self, pos):
         menu = QtWidgets.QMenu(self.list_view)
@@ -111,9 +109,6 @@ class LogViewDialog(PicardDialog):
 
     def _select_all(self):
         self.list_view.selectAll()
-
-    def _deselect_all(self):
-        self.list_view.clearSelection()
 
     def _show_detail(self):
         indexes = self.list_view.selectionModel().selectedIndexes()
