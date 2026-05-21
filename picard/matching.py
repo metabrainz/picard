@@ -43,7 +43,7 @@ from typing import (
     TypeAlias,
 )
 
-import PyQt6.QtCore
+from PyQt6 import QtCore
 
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
@@ -104,6 +104,13 @@ class SimMatchRelease:
     release: dict | None
 
 
+# Type for a pair of score and weight (e.g. (0.8, 12))
+ScoreWeightPair: TypeAlias = tuple[float, int]
+
+# Type for the tiered weights dict structure
+TieredWeights: TypeAlias = dict[str, dict[str, int]]
+
+
 @dataclass
 class ReleaseMatchParts:
     """Structured matching result organized by tier.
@@ -116,12 +123,12 @@ class ReleaseMatchParts:
         Low weight — tie-breaking discriminators.
     """
 
-    identifiers: list[tuple[float, int]] = field(default_factory=list)
-    similarity: list[tuple[float, int]] = field(default_factory=list)
-    preferences: list[tuple[float, int]] = field(default_factory=list)
+    identifiers: list[ScoreWeightPair] = field(default_factory=list)
+    similarity: list[ScoreWeightPair] = field(default_factory=list)
+    preferences: list[ScoreWeightPair] = field(default_factory=list)
 
     @property
-    def all_parts(self) -> list[tuple[float, int]]:
+    def all_parts(self) -> list[ScoreWeightPair]:
         """Flat list of all (score, weight) tuples for linear combination."""
         return self.identifiers + self.similarity + self.preferences
 
@@ -170,10 +177,6 @@ class ReleaseMatchParts:
         return id_score * 0.4 + base * 0.5 + pref_score * 0.1
 
 
-# Type for the tiered weights dict structure
-TieredWeights: TypeAlias = dict[str, dict[str, int]]
-
-
 def compare_to_release(metadata: 'Metadata', release: dict, weights: TieredWeights) -> SimMatchRelease:
     """
     Compare metadata to a MusicBrainz release. Produces a probability as a
@@ -213,55 +216,54 @@ def _compare_to_release_parts(
                 result.identifiers.append((score, id_w['catno']))
 
     if 'release-group' in release:
-        tagger = PyQt6.QtCore.QCoreApplication.instance()
+        tagger = QtCore.QCoreApplication.instance()
         if tagger is not None:
             rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
             if release['id'] in rg.loaded_albums:
                 result.identifiers.append((1.0, 6))
 
     # Tier 2: Similarity — fuzzy matching core
-    with metadata._lock.lock_for_read():
-        if 'album' in metadata and 'album' in sim_w:
-            b = release['title']
-            result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
+    if 'album' in metadata and 'album' in sim_w:
+        b = release['title']
+        result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
 
-        if 'albumartist' in metadata and 'albumartist' in sim_w:
-            a = metadata['albumartist']
-            b = artist_credit_from_node(release['artist-credit']).name
-            result.similarity.append((similarity2(a, b), sim_w['albumartist']))
+    if 'albumartist' in metadata and 'albumartist' in sim_w:
+        a = metadata['albumartist']
+        b = artist_credit_from_node(release['artist-credit']).name
+        result.similarity.append((similarity2(a, b), sim_w['albumartist']))
 
-        if 'totaltracks' in sim_w:
-            try:
-                a = int(metadata['totaltracks'])
-                if 'media' in release:
-                    score = 0.0
-                    for media in release['media']:
-                        b = media.get('track-count', 0)
-                        score = max(score, _trackcount_score(a, b))
-                        if score == 1.0:
-                            break
-                else:
-                    b = release['track-count']
-                    score = _trackcount_score(a, b)
-                result.similarity.append((score, sim_w['totaltracks']))
-            except (ValueError, KeyError):
-                pass
-
-        if 'totalalbumtracks' in sim_w:
-            try:
-                a = int(metadata['~totalalbumtracks'] or metadata['totaltracks'])
-                if 'track-count' in release:
-                    b = release['track-count']
-                else:
-                    b = sum(m.get('track-count', 0) for m in release.get('media', []))
+    if 'totaltracks' in sim_w:
+        try:
+            a = int(metadata['totaltracks'])
+            if 'media' in release:
+                score = 0.0
+                for media in release['media']:
+                    b = media.get('track-count', 0)
+                    score = max(score, _trackcount_score(a, b))
+                    if score == 1.0:
+                        break
+            else:
+                b = release['track-count']
                 score = _trackcount_score(a, b)
-                result.similarity.append((score, sim_w['totalalbumtracks']))
-            except (ValueError, KeyError):
-                pass
+            result.similarity.append((score, sim_w['totaltracks']))
+        except (ValueError, KeyError):
+            pass
 
-        # Date matching
-        if 'date' in sim_w:
-            result.similarity.append((_date_score(release, metadata), sim_w['date']))
+    if 'totalalbumtracks' in sim_w:
+        try:
+            a = int(metadata['~totalalbumtracks'] or metadata['totaltracks'])
+            if 'track-count' in release:
+                b = release['track-count']
+            else:
+                b = sum(m.get('track-count', 0) for m in release.get('media', []))
+            score = _trackcount_score(a, b)
+            result.similarity.append((score, sim_w['totalalbumtracks']))
+        except (ValueError, KeyError):
+            pass
+
+    # Date matching
+    if 'date' in sim_w:
+        result.similarity.append((_date_score(release, metadata), sim_w['date']))
 
     # Tier 3: Preferences — tie-breaking discriminators
     if config is None:
@@ -395,7 +397,6 @@ def _date_score(release: dict, metadata: 'Metadata') -> float:
 def _catno_label_score(file_catno: str, file_label: str, release_label_info: list[dict]) -> float:
     """Score catalog number + label match against release label-info.
 
-    file_catno and file_label should be pre-normalized (stripped, lowercased).
     Returns 1.0 for exact catno match (with matching or absent label),
     0.0 for catno mismatch when release has catalog numbers.
     """
@@ -404,8 +405,8 @@ def _catno_label_score(file_catno: str, file_label: str, release_label_info: lis
         cat = li.get('catalog-number', '')
         if cat:
             label_name = ''
-            if 'label' in li and li['label']:
-                label_name = li['label'].get('name', '')
+            if label := li.get('label', None):
+                label_name = label.get('name', '')
             release_catnos.append((cat, label_name))
 
     if not release_catnos:
