@@ -40,7 +40,10 @@ from PyQt6 import (
 
 from picard import log
 from picard.debug_opts import DebugOpt
-from picard.i18n import gettext as _
+from picard.i18n import (
+    gettext as _,
+    ngettext,
+)
 from picard.util import reconnect
 
 from picard.ui import (
@@ -329,10 +332,11 @@ class LogView(LogViewCommon):
             return
         visible = self._proxy_model.rowCount()
         total = self._model.rowCount()
+        total_str = ngettext("{count} line", "{count:,} lines", total).format(count=total)
         if visible == total:
-            self._status_label.setText(str(total))
+            self._status_label.setText(total_str)
         else:
-            self._status_label.setText(f"{visible}/{total}")
+            self._status_label.setText(f"{visible:,}/{total_str}")
 
     def _on_filter_changed(self, text):
         if self.filter_button.isChecked():
