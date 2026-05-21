@@ -223,47 +223,48 @@ def _compare_to_release_parts(
                 result.identifiers.append((1.0, 6))
 
     # Tier 2: Similarity — fuzzy matching core
-    if 'album' in metadata and 'album' in sim_w:
-        b = release['title']
-        result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
+    with metadata._lock.lock_for_read():
+        if 'album' in metadata and 'album' in sim_w:
+            b = release['title']
+            result.similarity.append((similarity2(metadata['album'], b), sim_w['album']))
 
-    if 'albumartist' in metadata and 'albumartist' in sim_w:
-        a = metadata['albumartist']
-        b = artist_credit_from_node(release['artist-credit']).name
-        result.similarity.append((similarity2(a, b), sim_w['albumartist']))
+        if 'albumartist' in metadata and 'albumartist' in sim_w:
+            a = metadata['albumartist']
+            b = artist_credit_from_node(release['artist-credit']).name
+            result.similarity.append((similarity2(a, b), sim_w['albumartist']))
 
-    if 'totaltracks' in sim_w:
-        try:
-            a = int(metadata['totaltracks'])
-            if 'media' in release:
-                score = 0.0
-                for media in release['media']:
-                    b = media.get('track-count', 0)
-                    score = max(score, _trackcount_score(a, b))
-                    if score == 1.0:
-                        break
-            else:
-                b = release['track-count']
+        if 'totaltracks' in sim_w:
+            try:
+                a = int(metadata['totaltracks'])
+                if 'media' in release:
+                    score = 0.0
+                    for media in release['media']:
+                        b = media.get('track-count', 0)
+                        score = max(score, _trackcount_score(a, b))
+                        if score == 1.0:
+                            break
+                else:
+                    b = release['track-count']
+                    score = _trackcount_score(a, b)
+                result.similarity.append((score, sim_w['totaltracks']))
+            except (ValueError, KeyError):
+                pass
+
+        if 'totalalbumtracks' in sim_w:
+            try:
+                a = int(metadata['~totalalbumtracks'] or metadata['totaltracks'])
+                if 'track-count' in release:
+                    b = release['track-count']
+                else:
+                    b = sum(m.get('track-count', 0) for m in release.get('media', []))
                 score = _trackcount_score(a, b)
-            result.similarity.append((score, sim_w['totaltracks']))
-        except (ValueError, KeyError):
-            pass
+                result.similarity.append((score, sim_w['totalalbumtracks']))
+            except (ValueError, KeyError):
+                pass
 
-    if 'totalalbumtracks' in sim_w:
-        try:
-            a = int(metadata['~totalalbumtracks'] or metadata['totaltracks'])
-            if 'track-count' in release:
-                b = release['track-count']
-            else:
-                b = sum(m.get('track-count', 0) for m in release.get('media', []))
-            score = _trackcount_score(a, b)
-            result.similarity.append((score, sim_w['totalalbumtracks']))
-        except (ValueError, KeyError):
-            pass
-
-    # Date matching
-    if 'date' in sim_w:
-        result.similarity.append((_date_score(release, metadata), sim_w['date']))
+        # Date matching
+        if 'date' in sim_w:
+            result.similarity.append((_date_score(release, metadata), sim_w['date']))
 
     # Tier 3: Preferences — tie-breaking discriminators
     if config is None:
