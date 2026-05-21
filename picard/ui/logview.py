@@ -230,6 +230,13 @@ class DebugOptsMenu(QtWidgets.QMenu):
     def debug_opt_changed(self, debug_opt, checked):
         debug_opt.enabled = checked
 
+    def mouseReleaseEvent(self, event):
+        action = self.activeAction()
+        if action and action.isCheckable():
+            action.trigger()
+            return
+        super().mouseReleaseEvent(event)
+
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
