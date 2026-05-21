@@ -58,10 +58,11 @@ from picard.item import (
     FileListItem,
     Item,
 )
-from picard.metadata import (
-    MULTI_VALUED_JOINER,
+from picard.matching import (
     SimMatchRelease,
+    compare_to_release,
 )
+from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -315,7 +316,7 @@ class Cluster(FileList):
             (None, reason) on rejection.
         """
         # multiple matches -- calculate similarities to each of them
-        all_matches = [self.metadata.compare_to_release(release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
+        all_matches = [compare_to_release(self.metadata, release, CLUSTER_COMPARISON_WEIGHTS) for release in releases]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
         log.debug_if(

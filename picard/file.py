@@ -84,10 +84,11 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.item import MetadataItem
-from picard.metadata import (
-    Metadata,
+from picard.matching import (
     SimMatchTrack,
+    compare_to_track,
 )
+from picard.metadata import Metadata
 from picard.plugin import PluginFunctions
 from picard.script import get_file_naming_script
 from picard.tags import (
@@ -1072,7 +1073,7 @@ class File(MetadataItem):
             (None, reason) on rejection where reason is 'below_floor' or 'ambiguous'.
         """
         # multiple matches -- calculate similarities to each of them
-        all_matches = [self.metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks]
+        all_matches = [compare_to_track(self.metadata, track, FILE_COMPARISON_WEIGHTS) for track in tracks]
         all_matches.sort(key=lambda m: m.similarity, reverse=True)
 
         log.debug_if(

@@ -31,6 +31,11 @@ from unittest.mock import (
     patch,
 )
 
+from picard.matching import (
+    compare_to_release,
+    compare_to_track,
+)
+
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -644,7 +649,7 @@ def evaluate(corpus, weights, config_profile="neutral"):
     results = {"correct": 0, "wrong": 0, "ambiguous": 0, "has_scores": True, "details": []}
 
     for entry in corpus:
-        scores = [(entry["metadata"].compare_to_release(c, weights).similarity, c["id"]) for c in entry["candidates"]]
+        scores = [(compare_to_release(entry["metadata"], c, weights).similarity, c["id"]) for c in entry["candidates"]]
         scores.sort(key=lambda x: x[0], reverse=True)
         best_sim, best_id = scores[0]
         margin = best_sim - scores[1][0] if len(scores) > 1 else 0
@@ -693,7 +698,7 @@ def evaluate_file_corpus(corpus, weights, config_profile="neutral"):
     for entry in corpus:
         scores = []
         for track_dict, release_id in entry["candidates"]:
-            match = entry["metadata"].compare_to_track(track_dict, weights)
+            match = compare_to_track(entry["metadata"], track_dict, weights)
             scores.append((match.similarity, release_id))
 
         scores.sort(key=lambda x: x[0], reverse=True)
@@ -976,7 +981,7 @@ def _run_with_config(profile_name, weights):
     with (
         patch("picard.config.get_config", return_value=mock_config),
         patch("picard.mbjson.get_config", return_value=mock_config),
-        patch("picard.metadata.get_config", return_value=mock_config),
+        patch("picard.matching.get_config", return_value=mock_config),
     ):
         corpus = generate_corpus()
         return evaluate(corpus, weights, config_profile=profile_name)
@@ -1194,7 +1199,7 @@ def main():
         with (
             patch("picard.config.get_config", return_value=mock_config),
             patch("picard.mbjson.get_config", return_value=mock_config),
-            patch("picard.metadata.get_config", return_value=mock_config),
+            patch("picard.matching.get_config", return_value=mock_config),
         ):
             file_corpus = generate_file_corpus()
             file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS, config_profile=file_profile)

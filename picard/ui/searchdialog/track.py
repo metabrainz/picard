@@ -29,6 +29,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.matching import compare_to_track
 from picard.mbjson import (
     countries_from_node,
     recording_to_metadata,
@@ -142,7 +143,7 @@ class TrackSearchDialog(SearchDialog):
 
         if self.file_:
             metadata = self.file_.orig_metadata
-            candidates = (metadata.compare_to_track(track, FILE_COMPARISON_WEIGHTS) for track in tracks)
+            candidates = (compare_to_track(metadata, track, FILE_COMPARISON_WEIGHTS) for track in tracks)
             tracks = (result.track for result in sort_by_similarity(candidates))
 
         del self.search_results[:]  # Clear existing data
