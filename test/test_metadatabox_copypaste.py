@@ -110,6 +110,7 @@ class FakeMetadataBox:
 class MetadataBoxCopyPasteTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
         self._clipboard_data = QtCore.QMimeData()
         clipboard = MagicMock()
         clipboard.mimeData.return_value = self._clipboard_data
