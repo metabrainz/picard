@@ -28,6 +28,7 @@ import unittest
 from unittest.mock import (
     MagicMock,
     Mock,
+    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -49,6 +50,10 @@ from picard.tags import (
 class FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.tagger.acoustidmanager = MagicMock()
         self.file = File('somepath/somefile.mp3')
         self.set_config_values(
@@ -177,6 +182,10 @@ class FileTest(PicardTestCase):
 class TestPreserveTimes(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.tmp_directory = self.mktmpdir()
         filepath = os.path.join(self.tmp_directory, 'a.mp3')
         self.file = File(filepath)
@@ -256,6 +265,10 @@ class FakeMp3File(File):
 class FileNamingTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.file = File('/somepath/somefile.mp3')
         self.set_config_values(
             {
@@ -382,6 +395,10 @@ class FileNamingTest(PicardTestCase):
 class FileGuessTracknumberAndTitleTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.set_config_values(
             {
                 'guess_tracknumber_and_title': True,
@@ -437,6 +454,10 @@ class FileGuessTracknumberAndTitleTest(PicardTestCase):
 
 
 class FileAdditionalFilesPatternsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_empty_patterns(self):
         self.assertEqual(File._compile_move_additional_files_pattern('   '), set())
 
@@ -487,6 +508,10 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
 class FileUpdateTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.file = File('/somepath/somefile.mp3')
         self.INVALIDSIMVAL = 666
         self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
@@ -709,6 +734,10 @@ class FileUpdateTest(PicardTestCase):
 class FileCopyMetadataTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         metadata = Metadata(
             {
                 'album': 'somealbum',
