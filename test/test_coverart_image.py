@@ -25,7 +25,6 @@ from collections import Counter
 import os.path
 from tempfile import TemporaryDirectory
 import unittest
-from unittest.mock import patch
 
 from test.picardtestcase import (
     PicardTestCase,
@@ -64,9 +63,7 @@ def create_image(extra_data, types=None, support_types=False, support_multi_type
 class TagCoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_repr_str_1(self):
         image_type = Id3ImageType.COVER_FRONT
@@ -89,9 +86,7 @@ class TagCoverArtImageTest(PicardTestCase):
 class CoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_repr_str_1(self):
         image = CoverArtImage(
@@ -363,9 +358,7 @@ class CoverArtImageTest(PicardTestCase):
 class DataHashTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_data_must_be_bytes(self):
         with self.assertRaises(TypeError):
@@ -407,9 +400,7 @@ class DataHashTest(PicardTestCase):
 class CoverArtImageMakeFilenameTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
         self.image = create_image(b'a', types=['back'], support_types=True)
         self.metadata = Metadata()
         self.set_config_values(
@@ -531,9 +522,7 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
 class LocalFileCoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_set_file_url(self):
         path = '/some/path/image.jpeg'

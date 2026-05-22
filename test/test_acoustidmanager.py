@@ -23,7 +23,6 @@
 from unittest.mock import (
     MagicMock,
     Mock,
-    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -63,12 +62,7 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        item_patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        item_patcher.start()
-        self.addCleanup(item_patcher.stop)
-        manager_patcher = patch('picard.acoustid.manager.tagger_instance', return_value=self.tagger)
-        manager_patcher.start()
-        self.addCleanup(manager_patcher.stop)
+        self.patch_tagger_instance('picard.item', 'picard.acoustid.manager')
         self.set_config_values(
             {
                 "clear_existing_tags": False,

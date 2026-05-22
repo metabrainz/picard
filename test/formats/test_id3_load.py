@@ -20,7 +20,6 @@
 
 from unittest.mock import (
     MagicMock,
-    patch,
 )
 
 from mutagen.id3 import (
@@ -50,9 +49,7 @@ class TestID3Load(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
         self.id3_file = ID3File(get_test_data_path("test.mp3"))
 
     def test_load_tit1_frame(self):

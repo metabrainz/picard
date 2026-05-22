@@ -46,9 +46,7 @@ from picard.metadata import Metadata
 class AddReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.browser.addrelease.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.browser.addrelease')
         self.tagger.browser_integration = MagicMock()
 
     def test_is_available(self):
@@ -82,9 +80,7 @@ class AddReleaseTest(PicardTestCase):
 class ServeFormTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.browser.addrelease.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.browser.addrelease')
         self.tagger.browser_integration = MagicMock()
         self.tagger.clusters = []
         self.set_config_values(

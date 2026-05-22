@@ -22,7 +22,6 @@
 from unittest.mock import (
     ANY,
     MagicMock,
-    patch,
 )
 
 from test.picardtestcase import (
@@ -58,9 +57,7 @@ mb_api.get_collection_list.side_effect = fake_get_collection_list
 class CollectionTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.collection.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.collection')
         self.tagger.mb_api = mb_api
         picard.collection.user_collections = {}
 

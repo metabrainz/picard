@@ -23,7 +23,6 @@ from collections import Counter
 from unittest.mock import (
     MagicMock,
     Mock,
-    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -47,9 +46,7 @@ from picard.track import (
 class TrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_can_link_fingerprint(self):
         track = Track('123')
@@ -233,9 +230,7 @@ class TrackGenresToMetadataTest(PicardTestCase):
 class TestRemoveNat(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.track.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.track')
         self.set_config_values(setting={'nat_name': 'Standalone Recordings'})
         self.nats = NatAlbum()
         self.tagger.nats = self.nats

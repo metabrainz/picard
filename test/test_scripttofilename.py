@@ -21,7 +21,6 @@
 
 
 import unittest
-from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
@@ -56,9 +55,7 @@ register_script_function(lambda p: '1' if p.file else '', 'has_file')
 class ScriptToFilenameTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(settings)
 
     def test_plain_filename(self):

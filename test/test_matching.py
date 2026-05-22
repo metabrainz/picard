@@ -23,8 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from unittest.mock import patch
-
 from test.picardtestcase import (
     PicardTestCase,
     load_test_json,
@@ -78,12 +76,7 @@ settings = {
 class CompareToReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
-        matching_patcher = patch('picard.matching.tagger_instance', return_value=self.tagger)
-        matching_patcher.start()
-        self.addCleanup(matching_patcher.stop)
+        self.patch_tagger_instance('picard.item', 'picard.matching')
         self.set_config_values(settings)
 
     def test_compare_to_release(self):
@@ -193,12 +186,7 @@ class CompareToReleaseTest(PicardTestCase):
 class CompareToTrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
-        matching_patcher = patch('picard.matching.tagger_instance', return_value=self.tagger)
-        matching_patcher.start()
-        self.addCleanup(matching_patcher.stop)
+        self.patch_tagger_instance('picard.item', 'picard.matching')
         self.set_config_values(settings)
 
     def test_compare_to_track(self):
@@ -280,9 +268,7 @@ class CompareToTrackTest(PicardTestCase):
 class ReleaseMatchPartsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_combine_tiers_no_identifiers(self):
         """Without identifiers, similarity drives the score."""
@@ -342,9 +328,7 @@ class ReleaseMatchPartsTest(PicardTestCase):
 class ScoreHelpersTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_length_score(self):
         results = (
@@ -413,9 +397,7 @@ class ScoreHelpersTest(PicardTestCase):
 class PreferredWeightsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
 
     def test_weights_from_release_type_scores(self):
         release = load_test_json('release.json')

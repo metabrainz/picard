@@ -25,7 +25,6 @@
 from contextlib import suppress
 import os.path
 import shutil
-from unittest.mock import patch
 
 from test.picardtestcase import PicardTestCase
 
@@ -99,9 +98,7 @@ class SampleFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.patch_tagger_instance('picard.item')
         self.src_directory = self.mktmpdir()
         self.dst_directory = self.mktmpdir()
         self.set_config_values(self.settings)
