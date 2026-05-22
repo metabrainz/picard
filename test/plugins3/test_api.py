@@ -45,6 +45,10 @@ from picard.plugin3.api import PluginApi
 
 
 class TestPluginApiMethods(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def _create_api(self):
         return PluginApi(load_plugin_manifest('example'), Mock())
 
@@ -197,6 +201,10 @@ class TestPluginApiMethods(PicardTestCase):
 
 
 class TestPluginApi(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def _create_api(self):
         return PluginApi(load_plugin_manifest('example'), Mock())
 
