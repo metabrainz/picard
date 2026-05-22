@@ -34,7 +34,10 @@ import json
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.acoustid.recordings import RecordingResolver
 from picard.config import get_config
 from picard.const import FPCALC_NAMES
@@ -82,7 +85,7 @@ AcoustIDTask = namedtuple('AcoustIDTask', ('file', 'next_func'))
 class AcoustIDClient(QtCore.QObject):
     def __init__(self, acoustid_api: AcoustIdAPIHelper):
         super().__init__()
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self._queue: deque = deque()
         self._running = 0
         self._acoustid_api = acoustid_api

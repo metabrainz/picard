@@ -36,9 +36,7 @@ from picard.i18n import (
     gettext as _,
 )
 
-from picard.ui.forms.ui_options_interface_quick_menu import (
-    Ui_InterfaceQuickMenuOptionsPage,
-)
+from picard.ui.forms.ui_options_interface_quick_menu import Ui_InterfaceQuickMenuOptionsPage
 from picard.ui.options import OptionsPage
 
 

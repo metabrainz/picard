@@ -55,7 +55,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import (
     Album,
     NatAlbum,
@@ -101,9 +104,7 @@ from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
-from picard.ui.widgets.configurablecolumnsheader import (
-    ConfigurableColumnsHeader,
-)
+from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
 
 
 FILE_FILTERS = {'~filename', '~filepath'}
@@ -180,7 +181,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         self.columns = columns
         self.setAccessibleName(_(self.NAME))
         self.setAccessibleDescription(_(self.DESCRIPTION))
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.window = window
 
         # Subscribe to header update events
@@ -602,7 +603,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
     def drop_urls(urls, target, move_to_multi_tracks=True):
         files = []
         new_paths = []
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         for url in urls:
             log.debug("Dropped the URL: %r", url.toString(QtCore.QUrl.UrlFormattingOption.RemoveUserInfo))
             if url.scheme() == 'file' or not url.scheme():

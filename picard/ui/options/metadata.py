@@ -49,9 +49,7 @@ from picard.i18n import (
 )
 
 from picard.ui import PicardDialog
-from picard.ui.forms.ui_exception_script_selector import (
-    Ui_ExceptionScriptSelector,
-)
+from picard.ui.forms.ui_exception_script_selector import Ui_ExceptionScriptSelector
 from picard.ui.forms.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.forms.ui_options_metadata import Ui_MetadataOptionsPage
 from picard.ui.moveable_list_view import MoveableListView

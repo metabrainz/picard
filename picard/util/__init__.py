@@ -42,19 +42,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from typing import Any
-
-from PyQt6.QtCore import QByteArray
-from PyQt6.QtNetwork import QNetworkReply
-
-
-try:
-    from charset_normalizer import detect  # type: ignore[unresolved-import]
-except ImportError:
-    try:
-        from chardet import detect  # type: ignore[unresolved-import,no-redef]
-    except ImportError:
-        detect = None  # type: ignore[assignment]
 from collections import (
     defaultdict,
     namedtuple,
@@ -82,12 +69,18 @@ import subprocess  # nosec: B404
 import sys
 import tempfile
 from time import monotonic
+from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
+from PyQt6.QtCore import QByteArray
 from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QNetworkReply
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const import (
     MUSICBRAINZ_SERVERS,
     PICARD_DOCS_URLS,
@@ -103,7 +96,15 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.util.readthedocs import ReadTheDocs
+
+
+try:
+    from charset_normalizer import detect  # type: ignore[unresolved-import]
+except ImportError:
+    try:
+        from chardet import detect  # type: ignore[unresolved-import,no-redef]
+    except ImportError:
+        detect = None  # type: ignore[assignment]
 
 
 winreg = None
@@ -791,6 +792,8 @@ def get_url(url_key: str) -> str:
     Returns:
         str: Updated URL, or provided URL key if not matched.
     """
+    from picard.util.readthedocs import ReadTheDocs  # Local import to avoid circular import
+
     if url_key.startswith('/'):
         return (
             PICARD_DOCS_URLS['documentation'].format(
@@ -908,7 +911,7 @@ def parse_json(reply: QNetworkReply) -> Any:
 
 def restore_method(func):
     def func_wrapper(*args, **kwargs):
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         if not tagger._no_restore:
             return func(*args, **kwargs)
 

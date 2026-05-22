@@ -26,9 +26,10 @@
 
 from functools import partial
 
-from PyQt6 import QtCore
-
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.i18n import N_
 from picard.util import load_json
 
@@ -113,7 +114,7 @@ class AcoustIDManager:
     BATCH_SIZE_REDUCTION_FACTOR = 0.7
 
     def __init__(self, acoustid_api):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self._submissions = {}
         self._acoustid_api = acoustid_api
 

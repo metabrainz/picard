@@ -41,7 +41,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.album import Album
 from picard.browser.filelookup import FileLookup
 from picard.cluster import Cluster
@@ -164,7 +167,7 @@ class MetadataBox(QtWidgets.QTableWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         config = get_config()
         config.setting.setting_changed.connect(self._on_setting_changed)
 

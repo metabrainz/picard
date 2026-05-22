@@ -63,6 +63,7 @@ from picard import (
     PICARD_ORG_NAME,
     PICARD_VERSION_STR,
     log,
+    tagger_instance,
 )
 from picard.config import get_config
 from picard.const import appdirs
@@ -367,7 +368,7 @@ class WebService(QtCore.QObject):
 
     def __init__(self, parent: QObject | None = None):
         super().__init__(parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.manager = QtNetwork.QNetworkAccessManager()
         self.manager.sslErrors.connect(self.ssl_errors)
         self.oauth_manager = OAuthManager(self)

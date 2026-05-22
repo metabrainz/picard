@@ -27,7 +27,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.metadata import (
@@ -158,7 +161,7 @@ class PluginListWidget(QtWidgets.QWidget):
         self.tree_widget.customContextMenuRequested.connect(self._show_context_menu)
 
         # Cache tagger instance for performance
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
@@ -874,7 +877,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         self.plugin = plugin
         self.selected_ref = None
         # Cache tagger instance for performance
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.plugin_manager = self.tagger.get_plugin_manager()
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")

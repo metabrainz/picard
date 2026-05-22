@@ -51,6 +51,7 @@ from picard import (
     PICARD_ORG_NAME,
     PICARD_VERSION,
     log,
+    tagger_instance,
 )
 from picard.profile import profile_groups_all_settings
 from picard.version import Version
@@ -556,7 +557,7 @@ profiles = None
 
 def setup_config(app=None, filename=None):
     if app is None:
-        app = QtCore.QCoreApplication.instance()
+        app = tagger_instance()
     global config, setting, persist, profiles
     if filename is None:
         config = Config.from_app(app)

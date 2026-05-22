@@ -20,7 +20,6 @@
 from enum import Enum
 
 from PyQt6.QtCore import (
-    QCoreApplication,
     QMetaType,
     QObject,
     QUrl,
@@ -40,6 +39,7 @@ from PyQt6.QtDBus import (
 from picard import (
     PICARD_APP_ID,
     PICARD_DISPLAY_NAME,
+    tagger_instance,
 )
 from picard.file import File
 
@@ -250,7 +250,7 @@ class MediaPlayer2Adaptor(QDBusAbstractAdaptor):
 
     @pyqtSlot()
     def Raise(self):
-        tagger = QCoreApplication.instance()
+        tagger = tagger_instance()
         tagger.bring_tagger_front()
 
     @pyqtSlot()

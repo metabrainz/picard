@@ -25,7 +25,10 @@ from collections import (
     deque,
     namedtuple,
 )
-from collections.abc import Callable, Iterable
+from collections.abc import (
+    Callable,
+    Iterable,
+)
 from functools import partial
 
 from PyQt6.QtNetwork import QNetworkReply

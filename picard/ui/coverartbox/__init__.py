@@ -47,7 +47,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.coverart.image import (
     CoverArtImage,
@@ -79,7 +82,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         super().__init__("", parent=parent)
         self.layout = QtWidgets.QVBoxLayout()
         self.layout.setSpacing(6)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         # Kills off any borders
         self.setStyleSheet('''QGroupBox{background-color:none;border:1px;}''')
         self.setFlat(True)

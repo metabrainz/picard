@@ -53,9 +53,10 @@ import traceback
 from typing import TYPE_CHECKING
 import weakref
 
-from PyQt6 import QtCore
-
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import (
     DATA_TRACK_TITLE,
@@ -421,7 +422,7 @@ class Track(FileListItem):
 
 class NonAlbumTrack(Track):
     def __init__(self, nat_id):
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         super().__init__(nat_id, tagger.nats)
         self.callback = None
         self.loaded = False

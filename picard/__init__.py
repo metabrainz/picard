@@ -31,10 +31,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
 import sys
+from typing import TYPE_CHECKING
 
 from picard.version import Version
+
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 
 PICARD_ORG_NAME = "MusicBrainz"
@@ -61,6 +65,20 @@ if PICARD_BUILD_VERSION_STR:
 api_versions = ("3.0",)
 
 api_versions_tuple = tuple(Version.from_string(v) for v in api_versions)
+
+
+def tagger_instance() -> 'Tagger':
+    """Returns an instance of Tagger.
+
+    Tagger is the main application instance and a subclass of QApplication.
+    """
+    from PyQt6.QtCore import QCoreApplication  # avoid top level Qt import
+
+    from picard.tagger import Tagger  # avoid circular imports
+
+    instance = QCoreApplication.instance()
+    assert isinstance(instance, Tagger), 'Expected an instance of Tagger'
+    return instance
 
 
 def crash_handler(exc: Exception):

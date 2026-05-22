@@ -33,9 +33,10 @@ from functools import partial
 import traceback
 from types import ModuleType
 
-from PyQt6 import QtCore
-
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.util.mbserver import build_submission_url
 
 from picard.ui.cdlookup import CDLookupDialog
@@ -55,7 +56,7 @@ except ImportError:
 
 class Disc:
     def __init__(self, id=None):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.id = id
         self.mcn = None
         self.tracks = 0

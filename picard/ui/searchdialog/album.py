@@ -30,7 +30,10 @@ from PyQt6 import (
 )
 from PyQt6.QtCore import pyqtSignal
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import CAA_URL
 from picard.i18n import N_
@@ -188,7 +191,7 @@ class AlbumSearchDialog(SearchDialog):
 
     @staticmethod
     def show_releasegroup_search(releasegroup_id, existing_album=None):
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         dialog = AlbumSearchDialog(
             tagger.window,
             force_advanced_search=True,

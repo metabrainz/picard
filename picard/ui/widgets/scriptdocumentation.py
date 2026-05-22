@@ -29,6 +29,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.const.tags import ALL_TAGS
 from picard.extension_points.script_variables import ext_point_script_variables
 from picard.i18n import gettext as _
@@ -118,7 +119,7 @@ class DocumentationPage(QtWidgets.QWidget):
 
 class FunctionsDocumentationPage(DocumentationPage):
     def generate_html(self):
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         manager = self.tagger.get_plugin_manager()
 
         def process_html(html, function):

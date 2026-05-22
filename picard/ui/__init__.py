@@ -33,7 +33,10 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import (
     Option,
     get_config,
@@ -181,7 +184,7 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent, f=self.flags)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
 

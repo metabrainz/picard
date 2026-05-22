@@ -27,6 +27,8 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
+
 
 class ElidedLabel(QtWidgets.QLabel):
     """A QLabel that elides the displayed text with ellipsis when resized."""
@@ -101,9 +103,9 @@ class Popover(QtWidgets.QFrame):
         super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Popup | QtCore.Qt.WindowType.FramelessWindowHint)
         self.position = position
-        app = QtCore.QCoreApplication.instance()
-        self._is_wayland = app.is_wayland
-        self._main_window = app.window
+        tagger = tagger_instance()
+        self._is_wayland = tagger.is_wayland
+        self._main_window = tagger.window
 
     def show(self):
         super().show()  # show so that the geometry gets known

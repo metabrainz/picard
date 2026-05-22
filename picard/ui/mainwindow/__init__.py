@@ -65,6 +65,7 @@ from PyQt6 import (
 from picard import (
     PICARD_APP_ID,
     log,
+    tagger_instance,
 )
 from picard.album import Album
 from picard.browser import addrelease
@@ -192,7 +193,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
         self.ignore_selection_changes = IgnoreUpdatesContext(on_exit=self.update_selection)

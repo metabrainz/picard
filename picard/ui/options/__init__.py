@@ -27,12 +27,12 @@
 from collections import defaultdict
 import re
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import (
     Option,
     get_config,
@@ -66,7 +66,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         self.setStyleSheet(self.STYLESHEET)
 
         # Keep track whether the options page has been destroyed to avoid

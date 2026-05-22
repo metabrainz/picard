@@ -38,6 +38,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.config import get_config
 from picard.const import (
     RELEASE_FORMATS,
@@ -80,7 +81,7 @@ class TipSlider(ClickableSlider):
         self.setSingleStep(self._step)
         self.setTickInterval(self._step)
         self.setPageStep(self._pagestep)
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
 
     def showEvent(self, event):
         super().showEvent(event)

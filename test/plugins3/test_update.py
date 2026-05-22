@@ -27,9 +27,7 @@ from picard.plugin3.manager.update import (
     PluginUpdater,
     UpdateCheck,
 )
-from picard.plugin3.plugin import (
-    Plugin,
-)
+from picard.plugin3.plugin import Plugin
 from picard.plugin3.plugin_metadata import PluginMetadata
 from picard.plugin3.ref_item import RefItem
 

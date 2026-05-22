@@ -32,9 +32,10 @@
 import os.path
 import re
 
-from PyQt6 import QtCore
-
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.const import PICARD_URLS
 from picard.disc import Disc
@@ -67,7 +68,7 @@ class FileLookup:
         self.server = server
         self.local_port = int(local_port)
         self.port = port
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
 
     def _url(self, path, params=None):
         if params is None:

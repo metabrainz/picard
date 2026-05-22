@@ -40,7 +40,10 @@ from PyQt6 import (
     QtGui,
 )
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.const import MAX_COVERS_TO_STACK
 from picard.coverart.image import CoverArtImageIOError
 from picard.i18n import gettext as _
@@ -61,7 +64,7 @@ class CoverArtThumbnail(ActiveLabel):
         self.data = None
         self.has_common_images = None
         self.release = None
-        self.tagger = QtCore.QCoreApplication.instance()
+        self.tagger = tagger_instance()
         window_handle = self.window().windowHandle()
         if window_handle:
             self.pixel_ratio = window_handle.screen().devicePixelRatio()

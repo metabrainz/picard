@@ -37,14 +37,16 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections.abc import Iterable
-from dataclasses import dataclass, field
+from dataclasses import (
+    dataclass,
+    field,
+)
 from typing import (
     TYPE_CHECKING,
     TypeAlias,
 )
 
-from PyQt6 import QtCore
-
+from picard import tagger_instance
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
@@ -211,7 +213,7 @@ def _compare_to_release_parts(
                 result.identifiers.append((score, id_w['catno']))
 
     if 'release-group' in release:
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         if tagger is not None:
             rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
             if release['id'] in rg.loaded_albums:

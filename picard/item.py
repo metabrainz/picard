@@ -39,7 +39,10 @@ import weakref
 
 from PyQt6 import QtCore
 
-from picard import log
+from picard import (
+    log,
+    tagger_instance,
+)
 from picard.config import get_config
 from picard.i18n import ngettext
 from picard.metadata import Metadata
@@ -184,12 +187,12 @@ class MetadataItem(QtCore.QObject, Item):
 
     @property
     def tagger(self):
-        return QtCore.QCoreApplication.instance()
+        return tagger_instance()
 
     @tagger.setter
     def tagger(self, value):
         # We used to set tagger property in subclasses, but that's not needed anymore
-        assert value == QtCore.QCoreApplication.instance()
+        assert value == tagger_instance()
         stack = inspect.stack()
         f = stack[1]
         log.warning("MetadataItem.tagger property set at %s:%d in %s", f.filename, f.lineno, f.function)

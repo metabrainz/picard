@@ -26,6 +26,7 @@ from PyQt6 import (
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.i18n import gettext as _
 from picard.plugin3.categories import PluginCategorySet
 from picard.plugin3.installable import InstallablePlugin
@@ -44,7 +45,7 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
         self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         self.plugin_manager = tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))

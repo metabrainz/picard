@@ -29,6 +29,7 @@
 
 from PyQt6 import QtCore
 
+from picard import tagger_instance
 from picard.const import PICARD_URLS
 from picard.i18n import gettext as _
 from picard.util import versions
@@ -61,7 +62,7 @@ class AboutDialog(PicardDialog, SingletonDialog):
             ]
         )
 
-        tagger = QtCore.QCoreApplication.instance()
+        tagger = tagger_instance()
         args['formats'] = ", ".join(map(lambda x: x[1:], tagger.format_registry.supported_extensions()))
         args['copyright_years'] = '2004-2024'
         args['authors_credits'] = ", ".join(
