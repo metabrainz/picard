@@ -25,9 +25,7 @@ from __future__ import annotations
 from PyQt6 import QtWidgets
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
-from picard.ui.itemviews.custom_columns.shared import (
-    get_recognized_view_columns,
-)
+from picard.ui.itemviews.custom_columns.shared import get_recognized_view_columns
 
 
 class CustomColumnsRegistry:

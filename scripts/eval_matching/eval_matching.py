@@ -21,7 +21,10 @@ Extending:
     - Add degradations: define a function(metadata, release) and add to DEGRADATIONS
 """
 
-from collections import Counter, defaultdict
+from collections import (
+    Counter,
+    defaultdict,
+)
 import json
 from pathlib import Path
 import random

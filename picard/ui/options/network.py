@@ -24,9 +24,7 @@
 
 from picard.config import get_config
 from picard.const import CACHE_SIZE_DISPLAY_UNIT
-from picard.const.defaults import (
-    DEFAULT_CACHE_SIZE_IN_BYTES,
-)
+from picard.const.defaults import DEFAULT_CACHE_SIZE_IN_BYTES
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,

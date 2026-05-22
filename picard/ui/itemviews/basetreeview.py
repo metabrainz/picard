@@ -104,9 +104,7 @@ from picard.ui.itemviews.events import header_events
 from picard.ui.ratingwidget import RatingWidget
 from picard.ui.scriptsmenu import ScriptsMenu
 from picard.ui.util import menu_builder
-from picard.ui.widgets.configurablecolumnsheader import (
-    ConfigurableColumnsHeader,
-)
+from picard.ui.widgets.configurablecolumnsheader import ConfigurableColumnsHeader
 
 
 FILE_FILTERS = {'~filename', '~filepath'}

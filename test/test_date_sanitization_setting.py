@@ -33,9 +33,7 @@ from picard.formats.apev2 import APEv2File
 from picard.formats.registry import FormatRegistry
 from picard.formats.util import date_sanitization_format_entries
 from picard.formats.vorbis import OggVorbisFile
-from picard.util import (
-    sanitize_date,
-)
+from picard.util import sanitize_date
 
 import pytest
 

@@ -25,7 +25,10 @@ import enum
 import json
 from typing import Any
 
-from picard import PICARD_DISPLAY_NAME, PICARD_VERSION_STR
+from picard import (
+    PICARD_DISPLAY_NAME,
+    PICARD_VERSION_STR,
+)
 from picard.const import LISTENBRAINZ_API_URL
 from picard.metadata import Metadata
 from picard.webservice import (
