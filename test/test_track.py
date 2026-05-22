@@ -47,7 +47,6 @@ from picard.track import (
 class TrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -154,10 +153,6 @@ class TrackTest(PicardTestCase):
 
 
 class TrackGenresToMetadataTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_empty(self):
         genres = Counter()
         ret = Track._genres_to_metadata(genres)
@@ -238,7 +233,6 @@ class TrackGenresToMetadataTest(PicardTestCase):
 class TestRemoveNat(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.track.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

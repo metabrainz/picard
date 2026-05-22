@@ -64,7 +64,6 @@ def create_image(extra_data, types=None, support_types=False, support_multi_type
 class TagCoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -90,7 +89,6 @@ class TagCoverArtImageTest(PicardTestCase):
 class CoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -365,7 +363,6 @@ class CoverArtImageTest(PicardTestCase):
 class DataHashTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -410,7 +407,6 @@ class DataHashTest(PicardTestCase):
 class CoverArtImageMakeFilenameTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -535,7 +531,6 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
 class LocalFileCoverArtImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

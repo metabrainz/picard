@@ -69,21 +69,12 @@ def MockTagger():
     return tagger
 
 
-class _NullPatcher:
-    """No-op patcher stub. Accepts stop() calls silently."""
-
-    @staticmethod
-    def stop():
-        pass
-
-
 class PicardTestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
         log.set_verbosity(logging.DEBUG)
         setup_gettext(None, 'C')
         self.tagger = MockTagger()
-        self._tagger_patcher = _NullPatcher
         self.init_config()
 
     @staticmethod

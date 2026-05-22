@@ -79,7 +79,6 @@ def mock_to_main(func, *args, **kwargs):
 class ImageFiltersTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         settings = {
             'filter_cover_by_size': True,
             'cover_minimum_width': 500,
@@ -143,7 +142,6 @@ class ImageFiltersTest(PicardTestCase):
 class ImageProcessorsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.util.thread.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -350,7 +348,6 @@ class ImageProcessorsTest(PicardTestCase):
 class ProcessingImageTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.util.thread.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

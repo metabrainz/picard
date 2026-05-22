@@ -63,7 +63,6 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         item_patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         item_patcher.start()
         self.addCleanup(item_patcher.stop)
@@ -153,10 +152,6 @@ class AcoustIDManagerTest(PicardTestCase):
 
 
 class SubmissionTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_init(self):
         fingerprint = 'abc'
         duration = 42

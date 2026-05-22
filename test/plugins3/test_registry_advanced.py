@@ -53,10 +53,6 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestRegistryAdvanced(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_get_local_path_remote_url(self):
         """Test get_local_path returns None for remote URLs."""
         self.assertIsNone(get_local_path('https://github.com/user/repo.git'))

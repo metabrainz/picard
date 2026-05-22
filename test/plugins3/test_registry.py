@@ -68,10 +68,6 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestPluginRegistry(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def _fetch_registry(self, registry, response_data, error=None):
         """Fetch registry with mocked webservice, return (success, error) result."""
         self.tagger.webservice.get_url = mock_webservice_fetch(response_data, error)

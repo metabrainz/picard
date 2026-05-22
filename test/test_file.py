@@ -50,7 +50,6 @@ from picard.tags import (
 class FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -182,7 +181,6 @@ class FileTest(PicardTestCase):
 class TestPreserveTimes(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -265,7 +263,6 @@ class FakeMp3File(File):
 class FileNamingTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -395,7 +392,6 @@ class FileNamingTest(PicardTestCase):
 class FileGuessTracknumberAndTitleTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -454,10 +450,6 @@ class FileGuessTracknumberAndTitleTest(PicardTestCase):
 
 
 class FileAdditionalFilesPatternsTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_empty_patterns(self):
         self.assertEqual(File._compile_move_additional_files_pattern('   '), set())
 
@@ -508,7 +500,6 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
 class FileUpdateTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -734,7 +725,6 @@ class FileUpdateTest(PicardTestCase):
 class FileCopyMetadataTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

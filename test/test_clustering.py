@@ -35,10 +35,6 @@ from picard.file import File
 
 
 class TokenizeTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_tokenize(self):
         token = tokenize("")
         self.assertEqual(token, "")
@@ -53,7 +49,6 @@ class TokenizeTest(PicardTestCase):
 class ClusterTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -146,7 +141,6 @@ class ClusterTest(PicardTestCase):
 class ClusteringTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -244,7 +238,6 @@ class ClusteringTest(PicardTestCase):
 class FileClusterTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

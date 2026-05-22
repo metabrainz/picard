@@ -64,7 +64,6 @@ class ThreadTest(PicardTestCase):
 
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         self.tagger = self.app
         self.tagger.installEventFilter(self.event_interceptor)
         self.result_queue = Queue()

@@ -49,7 +49,6 @@ def mock_disc_submission_url():
 class DiscTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.disc.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

@@ -71,7 +71,6 @@ def dummy_handler(*args, **kwargs):
 class WebServiceTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.webservice.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -140,7 +139,6 @@ class WebServiceTest(PicardTestCase):
 class WebServiceTaskTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.webservice.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -255,10 +253,6 @@ class WebServiceTaskTest(PicardTestCase):
 
 
 class WebserviceRequestTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_from_request(self):
         request = WSRequest(
             method='GET',
@@ -275,10 +269,6 @@ class WebserviceRequestTest(PicardTestCase):
 
 
 class RequestPriorityQueueTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_add_task(self):
         queue = RequestPriorityQueue()
         key = ("abc.xyz", 80)
@@ -398,7 +388,6 @@ class RequestPriorityQueueTest(PicardTestCase):
 class WebServiceProxyTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.webservice.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -421,10 +410,6 @@ class WebServiceProxyTest(PicardTestCase):
 
 
 class ParserHookTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_parser_hook(self):
         WebService.add_parser('A', 'mime', 'parser')
 
@@ -441,10 +426,6 @@ class ParserHookTest(PicardTestCase):
 
 
 class WSRequestTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_init_minimal(self):
         request = WSRequest(url='https://example.org/path', method='GET', handler=dummy_handler)
         self.assertEqual(request.host, 'example.org')
@@ -621,10 +602,6 @@ class WSRequestTest(PicardTestCase):
 
 
 class WebServiceUtilsTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_port_from_qurl_http(self):
         self.assertEqual(port_from_qurl(QUrl('http://example.org')), 80)
 

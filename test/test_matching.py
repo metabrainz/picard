@@ -78,7 +78,6 @@ settings = {
 class CompareToReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -194,7 +193,6 @@ class CompareToReleaseTest(PicardTestCase):
 class CompareToTrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -282,7 +280,6 @@ class CompareToTrackTest(PicardTestCase):
 class ReleaseMatchPartsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -345,7 +342,6 @@ class ReleaseMatchPartsTest(PicardTestCase):
 class ScoreHelpersTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -417,7 +413,6 @@ class ScoreHelpersTest(PicardTestCase):
 class PreferredWeightsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

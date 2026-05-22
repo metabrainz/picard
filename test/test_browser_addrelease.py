@@ -46,7 +46,6 @@ from picard.metadata import Metadata
 class AddReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.browser.addrelease.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -83,7 +82,6 @@ class AddReleaseTest(PicardTestCase):
 class ServeFormTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.browser.addrelease.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

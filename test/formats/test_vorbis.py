@@ -480,7 +480,6 @@ class FlacCoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 class OggAudioVideoFileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)

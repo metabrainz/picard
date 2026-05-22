@@ -47,7 +47,6 @@ LOCAL_PORT = "8000"
 class BrowserLookupTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self._tagger_patcher.stop()
         patcher = patch('picard.browser.filelookup.tagger_instance', return_value=self.tagger)
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -259,10 +258,6 @@ class BrowserLookupTest(PicardTestCase):
 
 
 class BrowserIntegrationTest(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self._tagger_patcher.stop()
-
     def test_clean_header(self):
         bad_header = "foo\nSome-Header: bar"
         self.assertEqual("fooSome-Header bar", clean_header(bad_header))
