@@ -33,6 +33,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import logging
 import os
 
 from PyQt6.QtCore import QStandardPaths
@@ -57,6 +58,8 @@ from picard.util.cdrom import get_default_cdrom_drives
 from picard.ui.enums import MainAction
 from picard.ui.theme import UiTheme
 
+
+DEFAULT_LOG_LEVEL = logging.INFO
 
 DEFAULT_REPLACEMENT = '_'
 DEFAULT_WIN_COMPAT_REPLACEMENTS = {

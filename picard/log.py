@@ -74,19 +74,12 @@ def get_effective_level():
     return main_logger.getEffectiveLevel()
 
 
-def set_verbosity(level, save_to_config=False):
+def set_verbosity(level):
     try:
         main_logger.setLevel(level)
     except ValueError as e:
         main_logger.error(e)
         main_logger.setLevel(_DEFAULT_LOG_LEVEL)
-
-    if save_to_config:
-        # import here to avoid circular imports
-        from picard.config import get_config
-
-        config = get_config()
-        config.setting['log_verbosity'] = get_effective_level()
 
 
 def is_debug():

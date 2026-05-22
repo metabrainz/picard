@@ -28,22 +28,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import (
-    QtCore,
-    QtWidgets,
-)
+from PyQt6 import QtWidgets
 
 from picard.config import get_config
-from picard.const import (
-    MUSICBRAINZ_SERVERS,
-    PROGRAM_UPDATE_LEVELS,
-)
-from picard.const.defaults import DEFAULT_PROGRAM_UPDATE_LEVEL
+from picard.const import MUSICBRAINZ_SERVERS
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
     N_,
     gettext as _,
-    gettext_constants,
 )
 from picard.util.mbserver import is_official_server
 
@@ -65,11 +57,6 @@ class GeneralOptionsPage(OptionsPage):
         ('analyze_new_files', ['analyze_new_files']),
         ('cluster_new_files', ['cluster_new_files']),
         ('ignore_file_mbids', ['ignore_file_mbids']),
-        ('check_rtd_updates', ['check_rtd_updates']),
-        ('check_for_plugin_updates', ['check_plugin_updates']),
-        ('check_for_updates', ['check_for_updates']),
-        ('update_check_days', ['update_check_days']),
-        ('update_level', ['update_level']),
         ('use_server_for_submission', ['use_server_for_submission']),
     )
 
@@ -96,26 +83,6 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
-        self.ui.check_rtd_updates.setChecked(config.setting['check_rtd_updates'])
-        self.ui.check_plugin_updates.setChecked(config.setting['check_for_plugin_updates'])
-        self.ui.check_for_updates.setChecked(config.setting['check_for_updates'])
-        self.set_update_level(config.setting['update_level'])
-        self.ui.update_check_days.setValue(config.setting['update_check_days'])
-        if not self.tagger.autoupdate_enabled:
-            self.ui.program_update_check_group.hide()
-
-    def set_update_level(self, value):
-        if value not in PROGRAM_UPDATE_LEVELS:
-            value = DEFAULT_PROGRAM_UPDATE_LEVEL
-        self.ui.update_level.clear()
-        for level, description in PROGRAM_UPDATE_LEVELS.items():
-            # TODO: Remove temporary workaround once https://github.com/python-babel/babel/issues/415 has been resolved.
-            babel_415_workaround = description['title']
-            self.ui.update_level.addItem(gettext_constants(babel_415_workaround), level)
-        idx = self.ui.update_level.findData(value)
-        if idx == -1:
-            idx = self.ui.update_level.findData(DEFAULT_PROGRAM_UPDATE_LEVEL)
-        self.ui.update_level.setCurrentIndex(idx)
 
     def save(self):
         config = get_config()
@@ -125,11 +92,6 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
-        config.setting['check_rtd_updates'] = self.ui.check_rtd_updates.isChecked()
-        config.setting['check_for_plugin_updates'] = self.ui.check_plugin_updates.isChecked()
-        config.setting['check_for_updates'] = self.ui.check_for_updates.isChecked()
-        config.setting['update_level'] = self.ui.update_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
-        config.setting['update_check_days'] = self.ui.update_check_days.value()
 
     def update_server_host(self):
         host = self.ui.server_host.currentText().strip()

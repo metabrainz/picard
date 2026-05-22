@@ -435,7 +435,7 @@ class LogView(LogViewCommon):
 
     def _verbosity_changed(self, level):
         if level != self.verbosity:
-            log.set_verbosity(level, save_to_config=True)
+            log.set_verbosity(level)
             self._set_verbosity(level)
 
     def _update_verbosity_label(self):
