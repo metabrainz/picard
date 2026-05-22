@@ -68,6 +68,10 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestPluginRegistry(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def _fetch_registry(self, registry, response_data, error=None):
         """Fetch registry with mocked webservice, return (success, error) result."""
         self.tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
@@ -78,7 +82,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = err
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
+        with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
         return result
@@ -504,7 +508,7 @@ class TestPluginRegistry(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.tagger_instance', return_value=self.tagger):
+            with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
                 # Fetch and save to cache
                 registry.fetch_registry(use_cache=False, callback=callback)
 
@@ -563,7 +567,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
+        with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertTrue(result['success'])
@@ -592,7 +596,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
+        with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])
@@ -621,7 +625,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
+        with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
             registry.fetch_registry(use_cache=False, callback=callback)
 
             self.assertFalse(result['success'])
@@ -657,7 +661,7 @@ class TestPluginRegistry(PicardTestCase):
 
         self.tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
+        with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
             # Should not raise, just return False (not blacklisted)
             is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
 
