@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from unittest.mock import MagicMock
+from unittest.mock import (
+    MagicMock,
+    patch,
+)
 
 from mutagen.id3 import (
     APIC,
@@ -47,8 +50,11 @@ class TestID3Load(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.id3_file = ID3File(get_test_data_path("test.mp3"))
-        self.id3_file.tagger = self.tagger
 
     def test_load_tit1_frame(self):
         frame = MagicMock(spec=TIT1)
