@@ -26,7 +26,9 @@ import json
 import logging
 import os
 import shutil
+import stat
 import struct
+import sys
 from tempfile import (
     mkdtemp,
     mkstemp,
@@ -102,8 +104,19 @@ class PicardTestCase(unittest.TestCase):
 
     def mktmpdir(self, ignore_errors=False):
         tmpdir = mkdtemp(suffix=self.__class__.__name__)
-        self.addCleanup(shutil.rmtree, tmpdir, ignore_errors=ignore_errors)
+        self.addCleanup(self._rmtmpdir, tmpdir, ignore_errors=ignore_errors)
         return tmpdir
+
+    @staticmethod
+    def _rmtmpdir(tmpdir, ignore_errors=False):
+        def _remove_readonly(func, path, _exc_info):
+            os.chmod(path, stat.S_IWRITE)
+            func(path)
+
+        if sys.version_info >= (3, 12):
+            shutil.rmtree(tmpdir, ignore_errors=ignore_errors, onexc=_remove_readonly)
+        else:
+            shutil.rmtree(tmpdir, ignore_errors=ignore_errors, onerror=_remove_readonly)
 
     def copy_file_tmp(self, filepath, ext):
         fd, copy = mkstemp(suffix=ext)

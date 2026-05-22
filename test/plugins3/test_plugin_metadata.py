@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
-import tempfile
 from unittest.mock import (
     Mock,
     patch,
@@ -156,7 +155,7 @@ class TestGetCurrentRefInfo(PicardTestCase):
     def setUp(self):
         super().setUp()
         skip_if_no_git_backend()
-        self.tmpdir = tempfile.mkdtemp()
+        self.tmpdir = self.mktmpdir()
         self.registry = Mock()
         self.manager = PluginMetadataManager(self.registry)
 

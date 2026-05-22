@@ -208,7 +208,7 @@ class TestPluginGetCurrentCommitId(PicardTestCase):
     def setUp(self):
         super().setUp()
         skip_if_no_git_backend()
-        self.tmpdir = tempfile.mkdtemp()
+        self.tmpdir = self.mktmpdir()
 
     def test_returns_full_commit_id(self):
         repo_path = Path(self.tmpdir) / 'test-plugin'
@@ -329,7 +329,7 @@ class TestPluginSourceGitSync(PicardTestCase):
     def setUp(self):
         super().setUp()
         skip_if_no_git_backend()
-        self.tmpdir = tempfile.mkdtemp()
+        self.tmpdir = self.mktmpdir()
 
     def test_sync_existing_repo_fetches(self):
         """Sync into existing repo directory triggers fetch path."""
@@ -379,7 +379,7 @@ class TestPluginSourceGitFindLatestTag(PicardTestCase):
     def setUp(self):
         super().setUp()
         skip_if_no_git_backend()
-        self.tmpdir = tempfile.mkdtemp()
+        self.tmpdir = self.mktmpdir()
 
     def _create_tagged_repo(self, tags):
         """Create a repo with multiple tagged commits."""
