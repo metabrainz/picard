@@ -56,6 +56,7 @@ def create_test_files():
 class UpdateMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
@@ -133,6 +134,7 @@ class UpdateMetadataImagesTest(PicardTestCase):
 class RemoveMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
@@ -223,6 +225,7 @@ class RemoveMetadataImagesTest(PicardTestCase):
 class AddMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         (self.test_images, self.test_files) = create_test_files()
 
     def test_add_to_cluster(self):
@@ -251,6 +254,7 @@ class AddMetadataImagesTest(PicardTestCase):
 class ImageListTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.imagelist = ImageList()
 
         def create_image(name, types):

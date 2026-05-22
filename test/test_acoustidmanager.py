@@ -62,6 +62,7 @@ def dummy_file(i):
 class AcoustIDManagerTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item', 'picard.acoustid.manager')
         self.set_config_values(
             {
                 "clear_existing_tags": False,

@@ -57,6 +57,7 @@ mb_api.get_collection_list.side_effect = fake_get_collection_list
 class CollectionTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.collection')
         self.tagger.mb_api = mb_api
         picard.collection.user_collections = {}
 

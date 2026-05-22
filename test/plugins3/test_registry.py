@@ -68,6 +68,10 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestPluginRegistry(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.plugin3.registry')
+
     def _fetch_registry(self, registry, response_data, error=None):
         """Fetch registry with mocked webservice, return (success, error) result."""
         self.tagger.webservice.get_url = mock_webservice_fetch(response_data, error)
@@ -78,8 +82,7 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = err
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
+        registry.fetch_registry(use_cache=False, callback=callback)
 
         return result
 
@@ -504,13 +507,13 @@ class TestPluginRegistry(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.tagger_instance', return_value=self.tagger):
-                # Fetch and save to cache
-                registry.fetch_registry(use_cache=False, callback=callback)
+            self.patch_tagger_instance('picard.plugin3.registry')
+            # Fetch and save to cache
+            registry.fetch_registry(use_cache=False, callback=callback)
 
-                self.assertTrue(result['success'])
-                # Verify cache file was created (with URL-specific hash)
-                self.assertTrue(registry.cache_path.exists())
+            self.assertTrue(result['success'])
+            # Verify cache file was created (with URL-specific hash)
+            self.assertTrue(registry.cache_path.exists())
 
             # Create new registry instance and load from cache
             registry2 = PluginRegistry(registry_url='https://test.example.com/registry.toml', cache_dir=tmpdir)
@@ -563,14 +566,13 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
+        registry.fetch_registry(use_cache=False, callback=callback)
 
-            self.assertTrue(result['success'])
-            self.assertEqual(len(calls), 2)
-            self.assertEqual(calls[0], url1)
-            self.assertEqual(calls[1], url2)
-            self.assertTrue(registry.is_registry_loaded())
+        self.assertTrue(result['success'])
+        self.assertEqual(len(calls), 2)
+        self.assertEqual(calls[0], url1)
+        self.assertEqual(calls[1], url2)
+        self.assertTrue(registry.is_registry_loaded())
 
     def test_registry_all_urls_fail(self):
         """Test registry returns error when all URLs fail."""
@@ -592,13 +594,12 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
+        registry.fetch_registry(use_cache=False, callback=callback)
 
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryFetchError)
-            self.assertEqual(len(calls), 2)  # Both URLs should be tried
-            self.assertFalse(registry.is_registry_loaded())
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryFetchError)
+        self.assertEqual(len(calls), 2)  # Both URLs should be tried
+        self.assertFalse(registry.is_registry_loaded())
 
     def test_registry_parse_error_stops_fallback(self):
         """Test that parse errors don't trigger fallback to next URL."""
@@ -621,13 +622,12 @@ class TestPluginRegistry(PicardTestCase):
             result['success'] = success
             result['error'] = error
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
-            registry.fetch_registry(use_cache=False, callback=callback)
+        registry.fetch_registry(use_cache=False, callback=callback)
 
-            self.assertFalse(result['success'])
-            self.assertIsInstance(result['error'], RegistryParseError)
-            self.assertEqual(len(calls), 1)  # Only first URL should be tried
-            self.assertFalse(registry.is_registry_loaded())
+        self.assertFalse(result['success'])
+        self.assertIsInstance(result['error'], RegistryParseError)
+        self.assertEqual(len(calls), 1)  # Only first URL should be tried
+        self.assertFalse(registry.is_registry_loaded())
 
     def test_ui_dialog_blacklist_check_passes_uuid(self):
         """Test that blacklist check detects UUID-only blacklist entries.
@@ -657,12 +657,11 @@ class TestPluginRegistry(PicardTestCase):
 
         self.tagger.webservice.get_url = mock_webservice_fetch(b'', error=Exception('Network error'))
 
-        with patch('picard.tagger_instance', return_value=self.tagger):
-            # Should not raise, just return False (not blacklisted)
-            is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
+        # Should not raise, just return False (not blacklisted)
+        is_blacklisted, reason = registry.is_blacklisted('https://example.com/plugin')
 
-            self.assertFalse(is_blacklisted)
-            self.assertIsNone(reason)
+        self.assertFalse(is_blacklisted)
+        self.assertIsNone(reason)
 
     def test_registry_get_registry_info(self):
         """Test getting registry metadata."""

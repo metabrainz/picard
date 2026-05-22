@@ -17,7 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
-from unittest.mock import Mock
+from unittest.mock import (
+    Mock,
+)
 
 from test.picardtestcase import PicardTestCase
 
@@ -32,6 +34,7 @@ from picard.track import Track
 class TrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.album = Album('123')
 
     def test_column(self):

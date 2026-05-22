@@ -47,6 +47,10 @@ def mock_disc_submission_url():
 
 
 class DiscTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.disc')
+
     def test_static_submission_url_no_config(self):
         with patch.object(
             picard.util.mbserver, 'get_submission_server', return_value=ServerTuple('example.com', 443)

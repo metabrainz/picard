@@ -208,6 +208,7 @@ class CommonTests:
 
         def setUp(self):
             super().setUp()
+            self.patch_tagger_instance('picard.item')
             self.set_config_values(settings)
             self.setup_test_format_registry()
             if self.testfile:

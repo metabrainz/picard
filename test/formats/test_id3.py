@@ -779,6 +779,7 @@ class Mp3CoverArtTest(CommonCoverArtTests.CoverArtTestCase):
 class ID3FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         # Ensure setting exists and mock get_config to return our test config
         config.setting['disable_date_sanitization_formats'] = []
         self._get_config_patcher = patch('picard.config.get_config', return_value=config.config)

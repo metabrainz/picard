@@ -37,6 +37,7 @@ import unittest
 from unittest.mock import (
     MagicMock,
     Mock,
+    patch,
 )
 
 from PyQt6 import QtCore
@@ -75,7 +76,6 @@ class PicardTestCase(unittest.TestCase):
         log.set_verbosity(logging.DEBUG)
         setup_gettext(None, 'C')
         self.tagger = MockTagger()
-        QtCore.QCoreApplication.instance = lambda: self.tagger
         self.init_config()
 
     @staticmethod
@@ -101,6 +101,17 @@ class PicardTestCase(unittest.TestCase):
         if profiles:
             for key, value in profiles.items():
                 config.config.profiles[key] = value
+
+    def patch_tagger_instance(self, *modules):
+        """Patch tagger_instance in the given module(s) to return self.tagger.
+
+        Usage:
+            self.patch_tagger_instance('picard.item', 'picard.matching')
+        """
+        for module in modules:
+            patcher = patch(f'{module}.tagger_instance', return_value=self.tagger)
+            patcher.start()
+            self.addCleanup(patcher.stop)
 
     def mktmpdir(self, ignore_errors=False):
         tmpdir = mkdtemp(suffix=self.__class__.__name__)

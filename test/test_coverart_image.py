@@ -61,6 +61,10 @@ def create_image(extra_data, types=None, support_types=False, support_multi_type
 
 
 class TagCoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_repr_str_1(self):
         image_type = Id3ImageType.COVER_FRONT
         image = TagCoverArtImage(
@@ -80,6 +84,10 @@ class TagCoverArtImageTest(PicardTestCase):
 
 
 class CoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_repr_str_1(self):
         image = CoverArtImage(
             url='url',
@@ -348,6 +356,10 @@ class CoverArtImageTest(PicardTestCase):
 
 
 class DataHashTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_data_must_be_bytes(self):
         with self.assertRaises(TypeError):
             DataHash('foo')
@@ -388,6 +400,7 @@ class DataHashTest(PicardTestCase):
 class CoverArtImageMakeFilenameTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.image = create_image(b'a', types=['back'], support_types=True)
         self.metadata = Metadata()
         self.set_config_values(
@@ -507,6 +520,10 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
 
 
 class LocalFileCoverArtImageTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_set_file_url(self):
         path = '/some/path/image.jpeg'
         image = LocalFileCoverArtImage(path)

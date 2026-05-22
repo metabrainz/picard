@@ -253,8 +253,10 @@ class TestSetupColorScheme:
         with (
             patch.object(theme_mod, "get_config", return_value=config_mock),
             patch("picard.ui.theme.get_style_hints", return_value=mock_style_hints),
+            patch.object(theme_mod.BaseTheme, "_detect_linux_dark_mode", return_value=False),
             patch.object(theme_mod, "MacOverrideStyle") as _,
         ):
+            mock_style_hints.setColorScheme.reset_mock()
             base_theme.setup(mock_app)
             mock_style_hints.setColorScheme.assert_called_once_with(expected_color_scheme)
 

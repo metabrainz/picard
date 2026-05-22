@@ -49,6 +49,7 @@ from picard.tags import (
 class FileTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.tagger.acoustidmanager = MagicMock()
         self.file = File('somepath/somefile.mp3')
         self.set_config_values(
@@ -177,6 +178,7 @@ class FileTest(PicardTestCase):
 class TestPreserveTimes(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.tmp_directory = self.mktmpdir()
         filepath = os.path.join(self.tmp_directory, 'a.mp3')
         self.file = File(filepath)
@@ -256,6 +258,7 @@ class FakeMp3File(File):
 class FileNamingTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.file = File('/somepath/somefile.mp3')
         self.set_config_values(
             {
@@ -382,6 +385,7 @@ class FileNamingTest(PicardTestCase):
 class FileGuessTracknumberAndTitleTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(
             {
                 'guess_tracknumber_and_title': True,
@@ -487,6 +491,7 @@ class FileAdditionalFilesPatternsTest(PicardTestCase):
 class FileUpdateTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.file = File('/somepath/somefile.mp3')
         self.INVALIDSIMVAL = 666
         self.file.similarity = self.INVALIDSIMVAL  # to check if changed or not
@@ -709,6 +714,7 @@ class FileUpdateTest(PicardTestCase):
 class FileCopyMetadataTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         metadata = Metadata(
             {
                 'album': 'somealbum',

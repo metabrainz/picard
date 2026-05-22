@@ -98,6 +98,7 @@ class SampleFileSystem(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.src_directory = self.mktmpdir()
         self.dst_directory = self.mktmpdir()
         self.set_config_values(self.settings)

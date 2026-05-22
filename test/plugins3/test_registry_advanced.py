@@ -23,7 +23,6 @@ from pathlib import Path
 import tempfile
 from unittest.mock import (
     Mock,
-    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -53,6 +52,10 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestRegistryAdvanced(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.plugin3.registry')
+
     def test_get_local_path_remote_url(self):
         """Test get_local_path returns None for remote URLs."""
         self.assertIsNone(get_local_path('https://github.com/user/repo.git'))
@@ -92,12 +95,11 @@ class TestRegistryAdvanced(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.tagger_instance', return_value=self.tagger):
-                registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
-                registry.fetch_registry(callback=callback)
-                # Should have fetched and created data
-                self.assertTrue(result['success'])
-                self.assertTrue(registry.is_registry_loaded())
+            registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
+            registry.fetch_registry(callback=callback)
+            # Should have fetched and created data
+            self.assertTrue(result['success'])
+            self.assertTrue(registry.is_registry_loaded())
 
     def test_registry_fetch_local_file(self):
         """Test registry can load from local file path."""
@@ -138,11 +140,10 @@ class TestRegistryAdvanced(PicardTestCase):
                 result['success'] = success
 
             try:
-                with patch('picard.tagger_instance', return_value=self.tagger):
-                    registry.fetch_registry(use_cache=False, callback=callback)
-                    # Should not raise, just log warning
-                    self.assertTrue(result['success'])
-                    self.assertTrue(registry.is_registry_loaded())
+                registry.fetch_registry(use_cache=False, callback=callback)
+                # Should not raise, just log warning
+                self.assertTrue(result['success'])
+                self.assertTrue(registry.is_registry_loaded())
             finally:
                 cache_dir.chmod(0o755)
 

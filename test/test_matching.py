@@ -76,6 +76,7 @@ settings = {
 class CompareToReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item', 'picard.matching')
         self.set_config_values(settings)
 
     def test_compare_to_release(self):
@@ -185,6 +186,7 @@ class CompareToReleaseTest(PicardTestCase):
 class CompareToTrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item', 'picard.matching')
         self.set_config_values(settings)
 
     def test_compare_to_track(self):
@@ -264,6 +266,10 @@ class CompareToTrackTest(PicardTestCase):
 
 
 class ReleaseMatchPartsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_combine_tiers_no_identifiers(self):
         """Without identifiers, similarity drives the score."""
         parts = ReleaseMatchParts(
@@ -320,6 +326,10 @@ class ReleaseMatchPartsTest(PicardTestCase):
 
 
 class ScoreHelpersTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_length_score(self):
         results = (
             (20000, 0, 0.333333333333),
@@ -385,6 +395,10 @@ class ScoreHelpersTest(PicardTestCase):
 
 
 class PreferredWeightsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_weights_from_release_type_scores(self):
         release = load_test_json('release.json')
         parts = []

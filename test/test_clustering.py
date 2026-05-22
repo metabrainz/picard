@@ -49,6 +49,7 @@ class TokenizeTest(PicardTestCase):
 class ClusterTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.cluster = Cluster("Test")
 
     def test_cluster_is_truthy(self):
@@ -138,6 +139,7 @@ class ClusterTest(PicardTestCase):
 class ClusteringTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(
             {
                 'windows_compatibility': False,
@@ -230,6 +232,10 @@ class ClusteringTest(PicardTestCase):
 
 
 class FileClusterTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     def test_single(self):
         file = File('foo')
         fc = FileCluster()

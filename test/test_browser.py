@@ -47,6 +47,7 @@ LOCAL_PORT = "8000"
 class BrowserLookupTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.browser.filelookup')
         self.lookup = FileLookup(None, SERVER, PORT, LOCAL_PORT)
 
     def assert_mb_url_matches(self, url, path, query_args=None):

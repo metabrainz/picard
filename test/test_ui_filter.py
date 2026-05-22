@@ -86,6 +86,10 @@ TEST_TAGS = TagVars(
 
 
 class FilterTestTags(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     """Test the Filter widget tags processing"""
 
     @patch('picard.tags.ALL_TAGS', TEST_TAGS)
@@ -123,6 +127,10 @@ class FilterTestTags(PicardTestCase):
 
 
 class FilterTestFiltering(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+
     """Test filtering of basetreeview items"""
 
     TestConditions = namedtuple('TestConditions', 'text filters has_tags matches')

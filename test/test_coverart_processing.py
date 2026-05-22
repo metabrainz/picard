@@ -142,6 +142,7 @@ class ImageFiltersTest(PicardTestCase):
 class ImageProcessorsTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self.patch_tagger_instance('picard.util.thread')
         self.settings = {
             'enabled_plugins': [],
             'cover_tags_resize': True,
@@ -343,6 +344,10 @@ class ImageProcessorsTest(PicardTestCase):
 
 
 class ProcessingImageTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.util.thread')
+
     def test_image_from_binary(self):
         data, info = create_fake_image(500, 500, "jpg")
         image = ProcessingImage(data, info)
