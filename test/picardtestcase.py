@@ -37,6 +37,7 @@ import unittest
 from unittest.mock import (
     MagicMock,
     Mock,
+    patch,
 )
 
 from PyQt6 import QtCore
@@ -75,7 +76,9 @@ class PicardTestCase(unittest.TestCase):
         log.set_verbosity(logging.DEBUG)
         setup_gettext(None, 'C')
         self.tagger = MockTagger()
-        QtCore.QCoreApplication.instance = lambda: self.tagger
+        self._tagger_patcher = patch.object(QtCore.QCoreApplication, 'instance', return_value=self.tagger)
+        self._tagger_patcher.start()
+        self.addCleanup(self._tagger_patcher.stop)
         self.init_config()
 
     @staticmethod
