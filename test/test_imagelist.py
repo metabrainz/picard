@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from unittest.mock import patch
+
 from test.picardtestcase import (
     PicardTestCase,
     create_fake_png,
@@ -56,6 +58,10 @@ def create_test_files():
 class UpdateMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         (self.test_images, self.test_files) = create_test_files()
 
     def test_update_cluster_images(self):
@@ -133,6 +139,10 @@ class UpdateMetadataImagesTest(PicardTestCase):
 class RemoveMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         (self.test_images, self.test_files) = create_test_files()
 
     def test_remove_from_cluster(self):
@@ -223,6 +233,10 @@ class RemoveMetadataImagesTest(PicardTestCase):
 class AddMetadataImagesTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         (self.test_images, self.test_files) = create_test_files()
 
     def test_add_to_cluster(self):
@@ -251,6 +265,10 @@ class AddMetadataImagesTest(PicardTestCase):
 class ImageListTest(PicardTestCase):
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.item.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
         self.imagelist = ImageList()
 
         def create_image(name, types):

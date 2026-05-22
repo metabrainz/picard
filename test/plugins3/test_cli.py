@@ -100,6 +100,13 @@ def _make_cli(manager, args, **kwargs):
 
 
 class TestPluginCLI(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+        patcher = patch('picard.plugin3.cli.tagger_instance', return_value=self.tagger)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
         manager = MockPluginManager(plugins=[])
@@ -615,6 +622,10 @@ class TestPluginCLI(PicardTestCase):
 
 
 class TestPluginCLIErrors(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_ref_without_install_or_validate(self):
         """Test --ref without --install or --validate returns error."""
         manager = MockPluginManager()
@@ -730,6 +741,10 @@ class TestPluginCLIErrors(PicardTestCase):
 
 
 class TestPluginCLIHelpers(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_format_git_info_no_metadata(self):
         """Test _format_git_info with no metadata."""
         manager = MockPluginManager()
@@ -785,6 +800,10 @@ class TestPluginCLIHelpers(PicardTestCase):
 
 
 class TestPluginCLIFindPlugin(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_find_plugin_or_error_multiple_matches(self):
         """Test _find_plugin_or_error with multiple matches."""
         manager = MockPluginManager()
@@ -850,6 +869,10 @@ class TestPluginCLIFindPlugin(PicardTestCase):
 
 
 class TestPluginCLICommands(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_enable_plugin_error(self):
         """Test _enable_plugins with error."""
         manager = MockPluginManager()
@@ -932,6 +955,10 @@ class TestPluginCLICommands(PicardTestCase):
 
 
 class TestPluginCLIValidate(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_validate_local_no_manifest(self):
         """Test validate with local directory without MANIFEST.toml."""
         manager = create_mock_manager_with_manifest_validation()
@@ -1032,6 +1059,10 @@ class TestPluginCLIValidate(PicardTestCase):
 
 
 class TestPluginCLIManifest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_show_manifest_template(self):
         """Test _show_manifest with no argument shows template."""
         manager = MockPluginManager()
@@ -1148,6 +1179,10 @@ class TestPluginCLIManifest(PicardTestCase):
 
 
 class TestPluginCLIColorOption(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_no_color_option_disables_color(self):
         """Test --no-color option disables colored output."""
         args = MockCliArgs()
@@ -1195,6 +1230,7 @@ class TestPluginCLIInit(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
         self.tmpdir = Path(tempfile.mkdtemp())
 
     def tearDown(self):
@@ -1451,6 +1487,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
         self.tmpdir = Path(tempfile.mkdtemp())
         patcher = patch('picard.plugin3.cli.get_git_config_author', return_value=('', ''))
         self._mock_git_config = patcher.start()
@@ -1584,6 +1621,7 @@ class TestPluginCLIInitGit(PicardTestCase):
 
     def setUp(self):
         super().setUp()
+        self._tagger_patcher.stop()
         skip_if_no_git_backend()
         self.tmpdir = Path(tempfile.mkdtemp())
 
