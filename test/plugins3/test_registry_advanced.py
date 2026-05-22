@@ -53,6 +53,10 @@ def mock_webservice_fetch(response_data, error=None):
 
 
 class TestRegistryAdvanced(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self._tagger_patcher.stop()
+
     def test_get_local_path_remote_url(self):
         """Test get_local_path returns None for remote URLs."""
         self.assertIsNone(get_local_path('https://github.com/user/repo.git'))
@@ -92,7 +96,7 @@ class TestRegistryAdvanced(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            with patch('picard.tagger_instance', return_value=self.tagger):
+            with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
                 registry = PluginRegistry(registry_url=test_url, cache_dir=tmpdir)
                 registry.fetch_registry(callback=callback)
                 # Should have fetched and created data
@@ -138,7 +142,7 @@ class TestRegistryAdvanced(PicardTestCase):
                 result['success'] = success
 
             try:
-                with patch('picard.tagger_instance', return_value=self.tagger):
+                with patch('picard.plugin3.registry.tagger_instance', return_value=self.tagger):
                     registry.fetch_registry(use_cache=False, callback=callback)
                     # Should not raise, just log warning
                     self.assertTrue(result['success'])
