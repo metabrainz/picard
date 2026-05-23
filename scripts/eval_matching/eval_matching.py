@@ -293,6 +293,21 @@ SCENARIOS = [
         ],
         "scenario": "self_titled_albums",
     },
+    # --- Same compilation, different country: identical tracks/recordings, only barcode differs ---
+    {
+        "target": "eval_release_9764a202.json",  # Black Sabbath - The Dio Years DE (barcode 081227999247)
+        "distractors": [
+            "eval_release_c5192d47.json",  # Black Sabbath - The Dio Years AU (barcode 9325583042089)
+        ],
+        "scenario": "same_compilation_different_country",
+    },
+    {
+        "target": "eval_release_c5192d47.json",  # Black Sabbath - The Dio Years AU (barcode 9325583042089)
+        "distractors": [
+            "eval_release_9764a202.json",  # Black Sabbath - The Dio Years DE (barcode 081227999247)
+        ],
+        "scenario": "same_compilation_different_country",
+    },
 ]
 
 
