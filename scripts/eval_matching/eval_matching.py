@@ -536,6 +536,85 @@ def generate_corpus():
     return corpus
 
 
+def _aggregate_file_metadata(file_metadata_list):
+    """Simulate Cluster._compute_aggregate_tags on a list of Metadata objects.
+
+    Replicates the cluster aggregation logic: majority threshold,
+    single-value consensus, multi-valued intersection.
+    """
+    from picard.cluster import Cluster
+
+    # Create a minimal cluster with mock files
+    cluster = Cluster.__new__(Cluster)
+    cluster.files = []
+    for m in file_metadata_list:
+        mock_file = MagicMock()
+        mock_file.metadata = m
+        cluster.files.append(mock_file)
+    return cluster._compute_aggregate_tags()
+
+
+def generate_cluster_corpus():
+    """Build cluster-level corpus that exercises the aggregation path.
+
+    Simulates the real Picard flow:
+      1. Each file in the cluster has per-file metadata (with barcode, etc.)
+      2. Degradation is applied to each file's metadata
+      3. _compute_aggregate_tags() aggregates across files → cluster metadata
+      4. compare_to_release scores against the aggregated metadata
+
+    This tests whether the aggregation + scoring pipeline correctly
+    identifies the target release when file metadata is degraded.
+    """
+    corpus = []
+    for scenario in SCENARIOS:
+        target = load_release(scenario["target"])
+        distractors = [load_release(f) for f in scenario["distractors"]]
+        candidates = [target] + distractors
+
+        # Get track count to simulate N files in the cluster
+        all_tracks = []
+        for media in target.get("media", []):
+            all_tracks.extend(media.get("tracks", []))
+        if not all_tracks:
+            continue
+
+        for deg_name, deg_fn in DEGRADATIONS:
+            # Create per-file metadata for each track, then degrade each
+            file_metadata_list = []
+            for track in all_tracks:
+                m = metadata_from_track(track, target)
+                deg_fn(m, target)
+                file_metadata_list.append(m)
+
+            # Aggregate across files (like Cluster._compute_aggregate_tags)
+            aggregated = _aggregate_file_metadata(file_metadata_list)
+
+            # Build cluster-level metadata from first file as base,
+            # then override with aggregated values
+            cluster_meta = metadata_from_release(target)
+            deg_fn(cluster_meta, target)
+            for tag, value in aggregated.items():
+                cluster_meta[tag] = value
+            # Clear tags that didn't survive aggregation
+            for tag in ('barcode', 'catalognumber', 'date', 'label'):
+                if tag not in aggregated and tag in cluster_meta:
+                    del cluster_meta[tag]
+
+            corpus.append(
+                {
+                    "degradation": deg_name,
+                    "scenario": scenario["scenario"],
+                    "release_title": target["title"],
+                    "metadata": cluster_meta,
+                    "correct_id": target["id"],
+                    "candidates": candidates,
+                    "expectations": scenario.get("expectations"),
+                }
+            )
+    return corpus
+
+
 def metadata_from_track(track, release):
     """Convert a track + its release to Metadata, simulating a tagged file.
 
@@ -1006,6 +1085,23 @@ def _run_with_config(profile_name, weights):
         return evaluate(corpus, weights, config_profile=profile_name)
 
 
+def _run_cluster_aggregated_with_config(profile_name, weights):
+    """Generate cluster-aggregated corpus and evaluate.
+
+    Unlike _run_with_config which feeds metadata directly to scoring,
+    this simulates the real flow: per-file metadata → aggregation → scoring.
+    """
+    mock_config = _make_config(profile_name)
+    with (
+        patch("picard.config.get_config", return_value=mock_config),
+        patch("picard.mbjson.get_config", return_value=mock_config),
+        patch("picard.matching.get_config", return_value=mock_config),
+        patch("picard.matching.tagger_instance", return_value=None),
+    ):
+        corpus = generate_cluster_corpus()
+        return evaluate(corpus, weights, config_profile=profile_name)
+
+
 def print_comparison(all_results):
     """Print a side-by-side comparison of all config profiles."""
     print(f"\n{'=' * 70}")
@@ -1174,6 +1270,11 @@ def main():
         help="Run only cluster-level evaluation",
     )
     parser.add_argument(
+        "--cluster-aggregated",
+        action="store_true",
+        help="Include cluster-aggregated evaluation (tests aggregation + scoring pipeline)",
+    )
+    parser.add_argument(
         "--save",
         metavar="FILE",
         help="Save results snapshot to FILE for later comparison",
@@ -1210,6 +1311,13 @@ def main():
 
         if len(profiles) > 1:
             print_comparison(all_results)
+
+        if args.cluster_aggregated:
+            for profile_name in profiles:
+                random.seed(42)
+                agg_results = _run_cluster_aggregated_with_config(profile_name, CLUSTER_COMPARISON_WEIGHTS)
+                agg_results = _filter_results(agg_results, args.scenario, args.degradation)
+                print_report(agg_results, f"CLUSTER_AGGREGATED [{profile_name}]", verbose=args.verbose)
 
     if not args.cluster_only:
         random.seed(42)
