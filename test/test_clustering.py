@@ -261,3 +261,79 @@ class FileClusterTest(PicardTestCase):
         self.assertEqual('Album 1', fc.title)
         self.assertEqual('Artist 1', fc.artist)
         self.assertEqual(files, list(fc.files))
+
+
+class ComputeAggregateTagsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.cluster = Cluster("Test")
+
+    def _add_files(self, tag, values):
+        for v in values:
+            f = File('test.flac')
+            if v:
+                f.metadata[tag] = v
+            self.cluster.files.append(f)
+
+    def test_all_agree(self):
+        self._add_files('barcode', ['123', '123', '123'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['barcode'], '123')
+
+    def test_majority_agree(self):
+        self._add_files('barcode', ['123', '123', '123', '', ''])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['barcode'], '123')
+
+    def test_below_majority(self):
+        self._add_files('barcode', ['123', '', '', '', ''])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('barcode', result)
+
+    def test_disagreement(self):
+        self._add_files('barcode', ['123', '456', '123', '456', '123'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('barcode', result)
+
+    def test_no_files(self):
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result, {})
+
+    def test_multi_valued_identical(self):
+        self._add_files('label', ['Rhino; Warner', 'Rhino; Warner', 'Rhino; Warner'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['label'], 'Rhino; Warner')
+
+    def test_multi_valued_intersection(self):
+        self._add_files('label', ['Rhino; Warner', 'Rhino; Warner', 'Rhino'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['label'], 'Rhino')
+
+    def test_multi_valued_no_common(self):
+        self._add_files('label', ['Rhino', 'Rhino', 'Warner'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('label', result)
+
+    def test_multi_valued_different_order(self):
+        self._add_files('label', ['Rhino; Warner', 'Warner; Rhino', 'Rhino; Warner'])
+        result = self.cluster._compute_aggregate_tags()
+        # All have same components, fast path catches identical strings for 2/3,
+        # slow path finds intersection {Rhino, Warner}
+        self.assertIn('Rhino', result['label'])
+        self.assertIn('Warner', result['label'])
+
+    def test_date_all_agree(self):
+        self._add_files('date', ['2007-03-30', '2007-03-30', '2007-03-30'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['date'], '2007-03-30')
+
+    def test_date_disagree(self):
+        self._add_files('date', ['2007-03-30', '2007-03-30', '2007'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('date', result)
+
+    def test_catno_intersection(self):
+        self._add_files('catalognumber', ['ABC-123; DEF-456', 'ABC-123; DEF-456', 'ABC-123'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['catalognumber'], 'ABC-123')

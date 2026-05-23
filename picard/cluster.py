@@ -207,6 +207,68 @@ class Cluster(FileList):
         if signal and self.ui_item:
             self.ui_item.update()
 
+    _AGGREGATE_TAGS = ('barcode', 'catalognumber', 'date', 'label')
+    _MULTI_VALUED_TAGS = ('catalognumber', 'label')
+
+    def _aggregate_metadata(self):
+        """Populate cluster metadata with album-level tags from files.
+
+        Called once before lookup to provide barcode, catalognumber, date,
+        and label for the search query and release scoring.
+
+        A tag is set on the cluster only when:
+          1. More than half the files carry a non-empty value for it.
+          2. All those values agree.
+
+        For single-valued tags (barcode, date), agreement means all
+        raw strings are identical.
+
+        For multi-valued tags (catalognumber, label), agreement is
+        based on the intersection of values across files. For example,
+        if 5 files have "L1; L2" and 5 have "L1", the common value
+        "L1" is used. If the intersection is empty, the tag is not set.
+
+        Tags that don't meet the conditions are removed from cluster
+        metadata, ensuring stale values from a previous aggregation
+        are not reused.
+        """
+        result = self._compute_aggregate_tags()
+        for tag in self._AGGREGATE_TAGS:
+            if tag in result:
+                self.metadata[tag] = result[tag]
+            elif tag in self.metadata:
+                del self.metadata[tag]
+
+    def _compute_aggregate_tags(self):
+        """Compute aggregated tag values from files.
+
+        Returns a dict of tag -> value for tags that meet the
+        consensus criteria.
+        """
+        result = {}
+        threshold = len(self.files) / 2
+        for tag in self._AGGREGATE_TAGS:
+            values = []
+            for f in self.files:
+                v = f.metadata.get(tag, '')
+                if v:
+                    values.append(v)
+            if not values or len(values) <= threshold:
+                continue
+            # Fast path: all raw strings identical (common case).
+            unique = set(values)
+            if len(unique) == 1:
+                result[tag] = values[0]
+                continue
+            # For multi-valued tags, find the intersection of values
+            # across all files that have the tag.
+            if tag in self._MULTI_VALUED_TAGS:
+                sets = [set(v.split(MULTI_VALUED_JOINER)) for v in unique]
+                common = sets[0].intersection(*sets[1:])
+                if common:
+                    result[tag] = MULTI_VALUED_JOINER.join(sorted(common))
+        return result
+
     def get_num_files(self):
         return len(self.files)
 
@@ -361,6 +423,7 @@ class Cluster(FileList):
         """Try to identify the cluster using the existing metadata."""
         if self._lookup_task:
             return
+        self._aggregate_metadata()
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
