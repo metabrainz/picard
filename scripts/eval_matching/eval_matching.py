@@ -985,6 +985,7 @@ def _run_with_config(profile_name, weights):
         patch("picard.config.get_config", return_value=mock_config),
         patch("picard.mbjson.get_config", return_value=mock_config),
         patch("picard.matching.get_config", return_value=mock_config),
+        patch("picard.matching.tagger_instance", return_value=None),
     ):
         corpus = generate_corpus()
         return evaluate(corpus, weights, config_profile=profile_name)
@@ -1203,6 +1204,7 @@ def main():
             patch("picard.config.get_config", return_value=mock_config),
             patch("picard.mbjson.get_config", return_value=mock_config),
             patch("picard.matching.get_config", return_value=mock_config),
+            patch("picard.matching.tagger_instance", return_value=None),
         ):
             file_corpus = generate_file_corpus()
             file_results = evaluate_file_corpus(file_corpus, FILE_COMPARISON_WEIGHTS, config_profile=file_profile)
