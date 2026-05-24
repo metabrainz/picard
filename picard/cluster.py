@@ -247,12 +247,18 @@ class Cluster(FileList):
         """
         result = {}
         threshold = len(self.files) / 2
-        for tag in self._AGGREGATE_TAGS:
-            values = []
-            for f in self.files:
+        if not threshold:
+            return result
+
+        # Single pass over files: collect non-empty values for all tags
+        tag_values: dict[str, list[str]] = {tag: [] for tag in self._AGGREGATE_TAGS}
+        for f in self.files:
+            for tag, values in tag_values.items():
                 v = f.metadata.get(tag, '')
                 if v:
                     values.append(v)
+
+        for tag, values in tag_values.items():
             if not values or len(values) <= threshold:
                 continue
             # Fast path: all raw strings identical (common case).
