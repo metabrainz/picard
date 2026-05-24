@@ -28,6 +28,7 @@ import unittest
 from unittest.mock import (
     MagicMock,
     Mock,
+    patch,
 )
 
 from test.picardtestcase import PicardTestCase
@@ -847,3 +848,80 @@ class FileCopyMetadataTest(PicardTestCase):
 
         score = MyFormat.score('/somepath/somefile.ogg', Mock(), b"abc")
         self.assertEqual(score, 0)
+
+
+class RetryOnPermissionErrorTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.file = File('somepath/somefile.mp3')
+
+    @patch('picard.file.IS_WIN', False)
+    def test_no_retry_on_non_windows(self):
+        """On non-Windows, PermissionError propagates immediately."""
+        func = Mock(side_effect=PermissionError("locked"))
+        with self.assertRaises(PermissionError):
+            self.file._retry_on_permission_error(func)
+        func.assert_called_once()
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    def test_succeeds_first_try(self, mock_sleep):
+        func = Mock(return_value='result')
+        result = self.file._retry_on_permission_error(func)
+        self.assertEqual('result', result)
+        func.assert_called_once()
+        mock_sleep.assert_not_called()
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    def test_succeeds_after_retry(self, mock_sleep):
+        """Succeeds on second attempt after one PermissionError."""
+        func = Mock(side_effect=[PermissionError("locked"), 'result'])
+        result = self.file._retry_on_permission_error(func)
+        self.assertEqual('result', result)
+        self.assertEqual(2, func.call_count)
+        mock_sleep.assert_called_once_with(self.file._PERMISSION_ERROR_RETRY_DELAY)
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    def test_raises_after_max_retries(self, mock_sleep):
+        """Raises PermissionError after exhausting all retries."""
+        func = Mock(side_effect=PermissionError("locked"))
+        with self.assertRaises(PermissionError):
+            self.file._retry_on_permission_error(func)
+        self.assertEqual(self.file._PERMISSION_ERROR_RETRIES, func.call_count)
+        self.assertEqual(self.file._PERMISSION_ERROR_RETRIES - 1, mock_sleep.call_count)
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    def test_non_permission_error_not_retried(self, mock_sleep):
+        """Other exceptions propagate immediately without retry."""
+        func = Mock(side_effect=OSError("other error"))
+        with self.assertRaises(OSError):
+            self.file._retry_on_permission_error(func)
+        func.assert_called_once()
+        mock_sleep.assert_not_called()
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    @patch('picard.file.move_ensure_casing')
+    def test_move_with_retry_cleans_partial_copy(self, mock_move, mock_sleep):
+        """On failed cross-drive move, partial copy at destination is removed before retry."""
+        # First call: simulate cross-drive failure (copy exists at dest, source still there)
+        # Second call: succeeds
+        mock_move.side_effect = [PermissionError("locked"), None]
+        with patch('os.path.exists', return_value=True), patch('os.remove') as mock_remove:
+            self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
+        mock_remove.assert_called_once_with('/dst/file.mp3')
+        self.assertEqual(2, mock_move.call_count)
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    @patch('picard.file.move_ensure_casing')
+    def test_move_with_retry_no_cleanup_if_no_partial_copy(self, mock_move, mock_sleep):
+        """No cleanup if destination doesn't exist (same-drive move failure)."""
+        mock_move.side_effect = [PermissionError("locked"), None]
+        with patch('os.path.exists', return_value=False), patch('os.remove') as mock_remove:
+            self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
+        mock_remove.assert_not_called()
