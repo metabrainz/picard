@@ -822,9 +822,16 @@ class Tagger(QtWidgets.QApplication):
         else:
             self.browser_integration.stop()
 
+    _CALLBACK_BATCH_SIZE = 25
+    _callback_queue: list = []
+    _callback_timer_running: bool = False
+
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
-            event.run()
+            self._callback_queue.append(event)
+            if not self._callback_timer_running:
+                self._callback_timer_running = True
+                QtCore.QTimer.singleShot(0, self._process_callback_batch)
         elif event.type() == QtCore.QEvent.Type.FileOpen:
             file = event.file()
             self.add_paths([file])
@@ -835,6 +842,16 @@ class Tagger(QtWidgets.QApplication):
             # apparently there's some magic inside QFileOpenEvent...
             return 1
         return super().event(event)
+
+    def _process_callback_batch(self) -> None:
+        """Process a batch of queued callbacks, then yield to the event loop."""
+        count = min(self._CALLBACK_BATCH_SIZE, len(self._callback_queue))
+        for _i in range(count):
+            self._callback_queue.pop(0).run()
+        if self._callback_queue:
+            QtCore.QTimer.singleShot(0, self._process_callback_batch)
+        else:
+            self._callback_timer_running = False
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
@@ -984,7 +1001,7 @@ class Tagger(QtWidgets.QApplication):
 
     _FILE_LOAD_BATCH_SIZE = 25
 
-    def _load_files_batch(self, files, offset, target, unmatched_files):
+    def _load_files_batch(self, files: list, offset: int, target: object, unmatched_files: list) -> None:
         """Dispatch a batch of file loads, then yield to the event loop."""
         end = min(offset + self._FILE_LOAD_BATCH_SIZE, len(files))
         for i in range(offset, end):
