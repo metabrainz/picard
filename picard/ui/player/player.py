@@ -223,7 +223,19 @@ class Player(QtCore.QObject):
         # hard stop, not just end of track
         self._playback_state = Player.PlaybackState.STOPPED
         self._player.stop()
+        self._player.setSource(QtCore.QUrl())
         self.playback_state_changed.emit(self._playback_state)
+
+    @QtCore.pyqtSlot(str)
+    def release_file(self, filename: str):
+        """Release the file handle if the player is currently holding the given file.
+
+        This stops playback and clears the media source so the file can be
+        written to or moved.  Must be called from the main thread.
+        """
+        if self._current_file and self._current_file.filename == filename:
+            log.debug("Internal player: releasing file %r for save/move", filename)
+            self.stop()
 
     def play_next(self):
         if self.is_playing:

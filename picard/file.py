@@ -463,6 +463,10 @@ class File(MetadataItem):
     def save(self):
         self.set_pending()
         run_file_pre_save_processors(self)
+        # On Windows, ask the internal player to release this file before
+        # writing or moving it (PICARD-3290).
+        if IS_WIN:
+            self._release_file_from_player(self.filename)
         metadata = Metadata()
         metadata.copy(self.metadata)
         thread.run_task(
@@ -490,6 +494,16 @@ class File(MetadataItem):
             errmsg = "Couldn't preserve timestamps for %r: %s" % (filename, why)
             raise self.PreserveTimesUtimeError(errmsg) from None
         return (st.st_atime_ns, st.st_mtime_ns)
+
+    def _release_file_from_player(self, filename):
+        """Ask the internal player to release the file handle if it holds it.
+
+        Must be called from the main thread (e.g. from save()).
+        """
+        window = getattr(self.tagger, 'window', None)
+        player = getattr(window, 'player', None) if window else None
+        if player and hasattr(player, 'release_file'):
+            player.release_file(filename)
 
     def _save_and_rename(self, old_filename, metadata):
         """Save the metadata."""
