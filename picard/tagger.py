@@ -980,15 +980,17 @@ class Tagger(QtWidgets.QApplication):
             self.window.suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
-            for i, file in enumerate(new_files):
-                file.load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
-                # Calling processEvents helps processing the _file_loaded
-                # callbacks in between, which keeps the UI more responsive.
-                # Avoid calling it to often to not slow down the loading to much
-                # Using an uneven number to have the unclustered file counter
-                # not look stuck in certain digits.
-                if i % 17 == 0:
-                    QtCore.QCoreApplication.processEvents()
+            self._load_files_batch(new_files, 0, target, unmatched_files)
+
+    _FILE_LOAD_BATCH_SIZE = 25
+
+    def _load_files_batch(self, files, offset, target, unmatched_files):
+        """Dispatch a batch of file loads, then yield to the event loop."""
+        end = min(offset + self._FILE_LOAD_BATCH_SIZE, len(files))
+        for i in range(offset, end):
+            files[i].load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
+        if end < len(files):
+            QtCore.QTimer.singleShot(0, partial(self._load_files_batch, files, end, target, unmatched_files))
 
     @staticmethod
     def _scan_paths_recursive(paths, recursive, ignore_hidden):
