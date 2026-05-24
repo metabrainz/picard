@@ -200,6 +200,9 @@ When making code changes:
 4. **Run `ruff check` to catch issues** - fix any linting errors before committing
 5. **Never commit editor or agent-specific files** - Do not `git add` files from AI tool directories (`.kiro/`, `.cursor/`, `.aider*`, etc.) or any files not part of the project. Review `git diff --cached` before committing to verify only intended files are staged. When in doubt, ask the user before committing.
 6. **Don't push to remote** - without explicit user approval
+7. **Never use `git commit --no-verify`** - pre-commit hooks run `ruff format` and `ruff check` automatically; skipping them leads to CI failures. If using fixup/rebase workflows, always run `ruff format` and `ruff check` manually before the final push.
+8. **Run `ty check` on modified files** - verify no new type errors are introduced (pre-existing errors in the codebase can be ignored).
+9. **`gh pr edit` may fail with a GraphQL Projects deprecation error** - use `gh api repos/OWNER/REPO/pulls/NUMBER -X PATCH -F "body=@file.md"` as a workaround to update PR descriptions.
 
 ### Contributing
 1. **Create ticket first:** <https://tickets.metabrainz.org/projects/PICARD>
@@ -207,8 +210,9 @@ When making code changes:
 3. Make changes
 4. Run pre-commit checks (above)
 5. **PR title must start with:** `PICARD-XXXX:` (ticket number)
-6. **Don't auto-create tickets/PRs** - let humans handle this
-7. **Don't push to remote** - without explicit user approval
+6. **Use the PR template** - fill in `.github/PULL_REQUEST_TEMPLATE.md` (Summary, Problem, Solution, AI Usage, Action sections)
+7. **Don't auto-create tickets/PRs** - let humans handle this
+8. **Don't push to remote** - without explicit user approval
 
 ---
 
