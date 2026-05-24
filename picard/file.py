@@ -123,6 +123,8 @@ from picard.ui.filter import Filter
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from picard.cluster import Cluster
     from picard.track import Track
 
@@ -495,7 +497,32 @@ class File(MetadataItem):
             raise self.PreserveTimesUtimeError(errmsg) from None
         return (st.st_atime_ns, st.st_mtime_ns)
 
-    def _release_file_from_player(self, filename):
+    _PERMISSION_ERROR_RETRIES = 3
+    _PERMISSION_ERROR_RETRY_DELAY = 1.0  # seconds
+
+    def _retry_on_permission_error(self, func: 'Callable') -> None:
+        """Call func, retrying on PermissionError (Windows file locking).
+
+        This is safe to call from a worker thread.  On non-Windows platforms
+        or when retries are exhausted, the exception propagates normally.
+        """
+        if not IS_WIN:
+            return func()
+        for attempt in range(1, self._PERMISSION_ERROR_RETRIES + 1):
+            try:
+                return func()
+            except PermissionError:
+                if attempt >= self._PERMISSION_ERROR_RETRIES:
+                    raise
+                log.warning(
+                    "Permission denied on %r, retrying (%d/%d)…",
+                    self.filename,
+                    attempt,
+                    self._PERMISSION_ERROR_RETRIES,
+                )
+                time.sleep(self._PERMISSION_ERROR_RETRY_DELAY)
+
+    def _release_file_from_player(self, filename: str) -> None:
         """Ask the internal player to release the file handle if it holds it.
 
         Must be called from the main thread (e.g. from save()).
@@ -527,11 +554,11 @@ class File(MetadataItem):
             save = partial(self._save, old_filename, metadata)
             if config.setting['preserve_timestamps']:
                 try:
-                    self._preserve_times(old_filename, save)
+                    self._retry_on_permission_error(partial(self._preserve_times, old_filename, save))
                 except self.PreserveTimesUtimeError as why:
                     log.warning(why)
             else:
-                save()
+                self._retry_on_permission_error(save)
         # Rename files
         if config.setting['rename_files'] or config.setting['move_files']:
             new_filename = self._rename(old_filename, metadata, config.setting)
@@ -703,8 +730,36 @@ class File(MetadataItem):
         if not settings['move_overwrite_existing_files']:
             new_filename = get_available_filename(new_filename, old_filename)
         log.debug("Moving file %r => %r", old_filename, new_filename)
-        move_ensure_casing(old_filename, new_filename)
+        self._move_with_retry(old_filename, new_filename)
         return new_filename
+
+    def _move_with_retry(self, old_filename: str, new_filename: str) -> None:
+        """Move a file, retrying on PermissionError (Windows).
+
+        On cross-drive moves, shutil.move copies then deletes. If the delete
+        fails (source locked), a copy is left at the destination. Clean it up
+        before retrying.
+        """
+        if not IS_WIN:
+            move_ensure_casing(old_filename, new_filename)
+            return
+        for attempt in range(1, self._PERMISSION_ERROR_RETRIES + 1):
+            try:
+                move_ensure_casing(old_filename, new_filename)
+                return
+            except PermissionError:
+                if attempt >= self._PERMISSION_ERROR_RETRIES:
+                    raise
+                # Clean up partial copy at destination from failed cross-drive move
+                if os.path.exists(new_filename) and os.path.exists(old_filename):
+                    os.remove(new_filename)
+                log.warning(
+                    "Permission denied on %r, retrying (%d/%d)…",
+                    old_filename,
+                    attempt,
+                    self._PERMISSION_ERROR_RETRIES,
+                )
+                time.sleep(self._PERMISSION_ERROR_RETRY_DELAY)
 
     def _save_images(self, dirname, metadata):
         """Save the cover images to disk."""
