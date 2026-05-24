@@ -1663,23 +1663,47 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if obj and obj.release_group:
             AlbumSearchDialog.show_releasegroup_search(obj.release_group.id, obj)
 
-    def view_info(self, default_tab=0):
-        try:
-            selected = self.selected_objects[0]
-        except IndexError:
-            return
-        if isinstance(selected, Album):
-            dialog_class = AlbumInfoDialog
-        elif isinstance(selected, Cluster):
-            dialog_class = ClusterInfoDialog
-        elif isinstance(selected, Track):
-            dialog_class = TrackInfoDialog
+    @staticmethod
+    def _get_info_dialog(item: object) -> tuple[type, object] | None:
+        """Resolve an item to the appropriate info dialog class and target object.
+
+        Returns a (dialog_class, item) tuple, or None if no dialog can be shown.
+        """
+        if isinstance(item, Album):
+            return (AlbumInfoDialog, item)
+        elif isinstance(item, Cluster):
+            return (ClusterInfoDialog, item)
+        elif isinstance(item, Track):
+            return (TrackInfoDialog, item)
         else:
             try:
-                selected = next(iter_files_from_objects(self.selected_objects))
+                file = next(iter_files_from_objects([item]))
             except StopIteration:
+                return None
+            return (FileInfoDialog, file)
+
+    def view_info(self, default_tab: int = 0, item: object | None = None) -> None:
+        """Open the info dialog for the given item or the current selection.
+
+        Args:
+            default_tab: Index of the tab to show initially.
+            item: Item to show info for.  If None, uses the first item
+                from selected_objects.
+        """
+        if item:
+            if not getattr(item, 'can_view_info', True):
                 return
-            dialog_class = FileInfoDialog
+            selected = item
+        else:
+            try:
+                selected = self.selected_objects[0]
+            except IndexError:
+                log.debug("view_info: no item selected")
+                return
+        result = self._get_info_dialog(selected)
+        if not result:
+            return
+        dialog_class, selected = result
         dialog = dialog_class(selected, self)
         dialog.ui.tabWidget.setCurrentIndex(default_tab)
         dialog.exec()
