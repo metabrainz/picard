@@ -1692,7 +1692,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 from selected_objects.
         """
         if item:
-            if not getattr(item, 'can_view_info', True):
+            if not item.can_view_info:
                 return
             selected = item
         else:
