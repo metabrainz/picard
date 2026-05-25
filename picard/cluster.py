@@ -204,6 +204,7 @@ class Cluster(FileList):
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
+        self._aggregate_metadata()
         if signal and self.ui_item:
             self.ui_item.update()
 
@@ -213,7 +214,7 @@ class Cluster(FileList):
     def _aggregate_metadata(self):
         """Populate cluster metadata with album-level tags from files.
 
-        Called once before lookup to provide barcode, catalognumber, date,
+        Called on cluster update to provide barcode, catalognumber, date,
         and label for the search query and release scoring.
 
         A tag is set on the cluster only when:
@@ -429,7 +430,6 @@ class Cluster(FileList):
         """Try to identify the cluster using the existing metadata."""
         if self._lookup_task:
             return
-        self._aggregate_metadata()
         self.tagger.window.set_statusbar_message(
             N_("Looking up the metadata for cluster %(album)s…"),
             {'album': self.metadata['album']},
