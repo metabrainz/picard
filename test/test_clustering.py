@@ -335,3 +335,27 @@ class ComputeAggregateTagsTest(PicardTestCase):
         self._add_files('catalognumber', ['ABC-123; DEF-456', 'ABC-123; DEF-456', 'ABC-123'])
         result = self.cluster._compute_aggregate_tags()
         self.assertEqual(result['catalognumber'], ['ABC-123'])
+
+    def test_most_frequent_values_single(self):
+        self._add_files('label', ['Rhino', 'Rhino', 'Rhino'])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {'label': 'Rhino'})
+
+    def test_most_frequent_values_multi(self):
+        self._add_files('label', ['Rhino; Warner', 'Rhino; Warner', 'Rhino'])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {'label': 'Rhino'})
+
+    def test_most_frequent_values_below_quorum(self):
+        self._add_files('label', ['Rhino', 'Warner', 'Atlantic'])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {})
+
+    def test_most_frequent_values_multiple_tags(self):
+        for _ in range(3):
+            f = File('test.flac')
+            f.metadata['label'] = 'Rhino'
+            f.metadata['catalognumber'] = 'ABC'
+            self.cluster.files.append(f)
+        result = self.cluster._most_frequent_values(('label', 'catalognumber'))
+        self.assertEqual(result, {'label': 'Rhino', 'catalognumber': 'ABC'})

@@ -240,7 +240,7 @@ class Cluster(FileList):
             elif tag in self.metadata:
                 del self.metadata[tag]
 
-    def _compute_aggregate_tags(self):
+    def _compute_aggregate_tags(self) -> dict[str, str | list[str]]:
         """Compute aggregated tag values from files.
 
         Returns a dict of tag -> value for tags that meet the
@@ -277,6 +277,28 @@ class Cluster(FileList):
                 common = sets[0].intersection(*sets[1:])
                 if common:
                     result[tag] = sorted(common)
+        return result
+
+    def _most_frequent_values(self, tags: Iterable[str]) -> dict[str, str]:
+        """Return the most frequent individual value for each given tag.
+
+        Single pass over all files. Only returns a value for a tag if it
+        meets the quorum (more than half the files).
+        """
+        threshold = len(self.files) / 2
+        counts: dict[str, Counter[str]] = {tag: Counter() for tag in tags}
+        for f in self.files:
+            for tag in tags:
+                v = f.metadata.get(tag, '')
+                if v:
+                    for part in set(v.split(MULTI_VALUED_JOINER)):
+                        counts[tag][part] += 1
+        result = {}
+        for tag, counter in counts.items():
+            if counter:
+                value, count = counter.most_common(1)[0]
+                if count > threshold:
+                    result[tag] = value
         return result
 
     def get_num_files(self):
@@ -438,17 +460,16 @@ class Cluster(FileList):
             {'album': self.metadata['album']},
         )
         config = get_config()
-        catno = self.metadata.get('catalognumber', '')
-        if catno:
-            catno = catno.split(MULTI_VALUED_JOINER)[0]
+        freq = self._most_frequent_values(('catalognumber', 'label'))
         self._lookup_task = self.tagger.mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
             barcode=self.metadata.get('barcode', ''),
-            catno=catno,
+            catno=freq.get('catalognumber', ''),
             date=self.metadata.get('date', ''),
+            label=freq.get('label', ''),
             limit=config.setting['query_limit'],
         )
 
