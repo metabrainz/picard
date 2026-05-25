@@ -223,7 +223,6 @@ class Player(QtCore.QObject):
         # hard stop, not just end of track
         self._playback_state = Player.PlaybackState.STOPPED
         self._player.stop()
-        self._player.setSource(QtCore.QUrl())
         self.playback_state_changed.emit(self._playback_state)
 
     @QtCore.pyqtSlot(str)
@@ -267,6 +266,7 @@ class Player(QtCore.QObject):
             self._play_next()
         else:
             if state == QMediaPlayer.PlaybackState.StoppedState:
+                self._player.setSource(QtCore.QUrl())
                 new_state = Player.PlaybackState.STOPPED
             elif state == QMediaPlayer.PlaybackState.PlayingState:
                 new_state = Player.PlaybackState.PLAYING
