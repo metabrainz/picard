@@ -96,6 +96,7 @@ from picard.i18n import (
     gettext as _,
     ngettext,
 )
+from picard.item import Item
 from picard.options import (
     Option,
     get_option_title,
@@ -1682,7 +1683,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 return None
             return (FileInfoDialog, file)
 
-    def view_info(self, default_tab: int = 0, item: object | None = None) -> None:
+    def view_info(self, default_tab: int = 0, item: Item | None = None) -> None:
         """Open the info dialog for the given item or the current selection.
 
         Args:
