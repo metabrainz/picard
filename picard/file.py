@@ -528,9 +528,8 @@ class File(MetadataItem):
 
         Must be called from the main thread (e.g. from save()).
         """
-        window = getattr(self.tagger, 'window', None)
-        player = getattr(window, 'player', None) if window else None
-        if player and hasattr(player, 'release_file'):
+        player = self.tagger.window.player
+        if player:
             player.release_file(filename)
 
     def _save_and_rename(self, old_filename, metadata):
