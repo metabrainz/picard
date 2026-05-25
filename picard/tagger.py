@@ -822,9 +822,16 @@ class Tagger(QtWidgets.QApplication):
         else:
             self.browser_integration.stop()
 
+    _CALLBACK_BATCH_SIZE = 25
+    _callback_queue: list = []
+    _callback_timer_running: bool = False
+
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
-            event.run()
+            self._callback_queue.append(event)
+            if not self._callback_timer_running:
+                self._callback_timer_running = True
+                QtCore.QTimer.singleShot(0, self._process_callback_batch)
         elif event.type() == QtCore.QEvent.Type.FileOpen:
             file = event.file()
             self.add_paths([file])
@@ -835,6 +842,16 @@ class Tagger(QtWidgets.QApplication):
             # apparently there's some magic inside QFileOpenEvent...
             return 1
         return super().event(event)
+
+    def _process_callback_batch(self) -> None:
+        """Process a batch of queued callbacks, then yield to the event loop."""
+        count = min(self._CALLBACK_BATCH_SIZE, len(self._callback_queue))
+        for _i in range(count):
+            self._callback_queue.pop(0).run()
+        if self._callback_queue:
+            QtCore.QTimer.singleShot(0, self._process_callback_batch)
+        else:
+            self._callback_timer_running = False
 
     def _file_loaded(self, file, target=None, remove_file=False, unmatched_files=None):
         config = get_config()
@@ -980,15 +997,17 @@ class Tagger(QtWidgets.QApplication):
             self.window.suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
-            for i, file in enumerate(new_files):
-                file.load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
-                # Calling processEvents helps processing the _file_loaded
-                # callbacks in between, which keeps the UI more responsive.
-                # Avoid calling it to often to not slow down the loading to much
-                # Using an uneven number to have the unclustered file counter
-                # not look stuck in certain digits.
-                if i % 17 == 0:
-                    QtCore.QCoreApplication.processEvents()
+            self._load_files_batch(new_files, 0, target, unmatched_files)
+
+    _FILE_LOAD_BATCH_SIZE = 25
+
+    def _load_files_batch(self, files: list, offset: int, target: object, unmatched_files: list) -> None:
+        """Dispatch a batch of file loads, then yield to the event loop."""
+        end = min(offset + self._FILE_LOAD_BATCH_SIZE, len(files))
+        for i in range(offset, end):
+            files[i].load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
+        if end < len(files):
+            QtCore.QTimer.singleShot(0, partial(self._load_files_batch, files, end, target, unmatched_files))
 
     @staticmethod
     def _scan_paths_recursive(paths, recursive, ignore_hidden):
