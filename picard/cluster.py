@@ -251,12 +251,12 @@ class Cluster(FileList):
             return result
 
         # Single pass over files: collect non-empty values for all tags
-        tag_values: dict[str, list[str]] = {tag: [] for tag in self._AGGREGATE_TAGS}
+        tag_values: defaultdict[str, list[str]] = defaultdict(list)
         for f in self.files:
-            for tag, values in tag_values.items():
+            for tag in self._AGGREGATE_TAGS:
                 v = f.metadata.get(tag, '')
                 if v:
-                    values.append(v)
+                    tag_values[tag].append(v)
 
         for tag, values in tag_values.items():
             if not values or len(values) <= threshold:
