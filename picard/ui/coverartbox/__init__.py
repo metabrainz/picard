@@ -126,7 +126,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
         self.show_details_button.clicked.connect(self.show_cover_art_info)
 
     def show_cover_art_info(self):
-        self.tagger.window.view_info(default_tab=1)
+        self.tagger.window.view_info(default_tab=1, item=self.item)
 
     def update_display(self, force=False):
         if self.isHidden():
