@@ -911,7 +911,11 @@ class RetryOnPermissionErrorTest(PicardTestCase):
         # First call: simulate cross-drive failure (copy exists at dest, source still there)
         # Second call: succeeds
         mock_move.side_effect = [PermissionError("locked"), None]
-        with patch('os.path.exists', return_value=True), patch('os.remove') as mock_remove:
+        with (
+            patch('os.path.exists', return_value=True),
+            patch('picard.file.samefile', return_value=False),
+            patch('os.remove') as mock_remove,
+        ):
             self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
         mock_remove.assert_called_once_with('/dst/file.mp3')
         self.assertEqual(2, mock_move.call_count)
@@ -923,5 +927,19 @@ class RetryOnPermissionErrorTest(PicardTestCase):
         """No cleanup if destination doesn't exist (same-drive move failure)."""
         mock_move.side_effect = [PermissionError("locked"), None]
         with patch('os.path.exists', return_value=False), patch('os.remove') as mock_remove:
+            self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
+        mock_remove.assert_not_called()
+
+    @patch('picard.file.IS_WIN', True)
+    @patch('picard.file.time.sleep')
+    @patch('picard.file.move_ensure_casing')
+    def test_move_with_retry_no_cleanup_if_samefile(self, mock_move, mock_sleep):
+        """No cleanup if source and destination resolve to the same file."""
+        mock_move.side_effect = [PermissionError("locked"), None]
+        with (
+            patch('os.path.exists', return_value=True),
+            patch('picard.file.samefile', return_value=True),
+            patch('os.remove') as mock_remove,
+        ):
             self.file._move_with_retry('/src/file.mp3', '/dst/file.mp3')
         mock_remove.assert_not_called()

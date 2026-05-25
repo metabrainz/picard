@@ -108,6 +108,7 @@ from picard.util import (
     format_time,
     is_absolute_path,
     normpath,
+    samefile,
     thread,
     tracknum_and_title_from_filename,
 )
@@ -751,7 +752,11 @@ class File(MetadataItem):
                 if attempt >= self._PERMISSION_ERROR_RETRIES:
                     raise
                 # Clean up partial copy at destination from failed cross-drive move
-                if os.path.exists(new_filename) and os.path.exists(old_filename):
+                if (
+                    os.path.exists(new_filename)
+                    and os.path.exists(old_filename)
+                    and not samefile(old_filename, new_filename)
+                ):
                     os.remove(new_filename)
                 log.warning(
                     "Permission denied on %r, retrying (%d/%d)…",
