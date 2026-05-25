@@ -265,7 +265,10 @@ class Cluster(FileList):
             # Fast path: all raw strings identical (common case).
             unique = set(values)
             if len(unique) == 1:
-                result[tag] = values[0]
+                if tag in self._MULTI_VALUED_TAGS:
+                    result[tag] = sorted(values[0].split(MULTI_VALUED_JOINER))
+                else:
+                    result[tag] = values[0]
                 continue
             # For multi-valued tags, find the intersection of values
             # across all files that have the tag.
@@ -273,7 +276,7 @@ class Cluster(FileList):
                 sets = [set(v.split(MULTI_VALUED_JOINER)) for v in unique]
                 common = sets[0].intersection(*sets[1:])
                 if common:
-                    result[tag] = MULTI_VALUED_JOINER.join(sorted(common))
+                    result[tag] = sorted(common)
         return result
 
     def get_num_files(self):

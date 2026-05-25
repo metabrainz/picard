@@ -303,12 +303,12 @@ class ComputeAggregateTagsTest(PicardTestCase):
     def test_multi_valued_identical(self):
         self._add_files('label', ['Rhino; Warner', 'Rhino; Warner', 'Rhino; Warner'])
         result = self.cluster._compute_aggregate_tags()
-        self.assertEqual(result['label'], 'Rhino; Warner')
+        self.assertEqual(result['label'], ['Rhino', 'Warner'])
 
     def test_multi_valued_intersection(self):
         self._add_files('label', ['Rhino; Warner', 'Rhino; Warner', 'Rhino'])
         result = self.cluster._compute_aggregate_tags()
-        self.assertEqual(result['label'], 'Rhino')
+        self.assertEqual(result['label'], ['Rhino'])
 
     def test_multi_valued_no_common(self):
         self._add_files('label', ['Rhino', 'Rhino', 'Warner'])
@@ -318,10 +318,8 @@ class ComputeAggregateTagsTest(PicardTestCase):
     def test_multi_valued_different_order(self):
         self._add_files('label', ['Rhino; Warner', 'Warner; Rhino', 'Rhino; Warner'])
         result = self.cluster._compute_aggregate_tags()
-        # All have same components, fast path catches identical strings for 2/3,
-        # slow path finds intersection {Rhino, Warner}
-        self.assertIn('Rhino', result['label'])
-        self.assertIn('Warner', result['label'])
+        # All have same components, intersection is {Rhino, Warner}
+        self.assertEqual(result['label'], ['Rhino', 'Warner'])
 
     def test_date_all_agree(self):
         self._add_files('date', ['2007-03-30', '2007-03-30', '2007-03-30'])
@@ -336,4 +334,4 @@ class ComputeAggregateTagsTest(PicardTestCase):
     def test_catno_intersection(self):
         self._add_files('catalognumber', ['ABC-123; DEF-456', 'ABC-123; DEF-456', 'ABC-123'])
         result = self.cluster._compute_aggregate_tags()
-        self.assertEqual(result['catalognumber'], 'ABC-123')
+        self.assertEqual(result['catalognumber'], ['ABC-123'])
