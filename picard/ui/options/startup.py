@@ -50,7 +50,7 @@ from picard.ui.options import OptionsPage
 class StartupOptionsPage(OptionsPage):
     NAME = 'startup'
     TITLE = N_("Startup")
-    PARENT = None
+    PARENT = 'general'
     SORT_ORDER = 5
     ACTIVE = True
     HELP_URL = "/config/options_startup.html"

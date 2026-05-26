@@ -278,6 +278,12 @@ class LogView(LogViewCommon):
         self.verbosity_menu_button = QtWidgets.QPushButton()
         self.verbosity_menu_button.setAutoDefault(False)
         self.verbosity_menu_button.setAccessibleName(_("Verbosity"))
+        self.verbosity_menu_button.setToolTip(
+            _(
+                "Changes the logging verbosity level for the current session. "
+                "The default level configured in Options will be restored on next startup."
+            )
+        )
         self.hbox.addWidget(self.verbosity_menu_button)
 
         self.verbosity_menu = VerbosityMenu()

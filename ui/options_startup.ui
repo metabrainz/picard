@@ -158,7 +158,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Start Picard at log level:</string>
+         <string>Default log level:</string>
         </property>
        </widget>
       </item>
