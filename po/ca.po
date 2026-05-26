@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-05-21 06:50+0200\n"
-"PO-Revision-Date: 2026-05-18 17:12+0000\n"
+"PO-Revision-Date: 2026-05-26 08:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -51,10 +51,9 @@ msgid "[could not load album %s]"
 msgstr "[no s'ha pogut carregar l'àlbum %s]"
 
 #: picard/cluster.py:303
-#, fuzzy, python-format
-#| msgid "No matching releases for cluster %(album)s"
+#, python-format
 msgid "Best match for cluster %(album)s is ambiguous"
-msgstr "No s'ha trobat cap publicació coincident per a l'agrupació %(album)s"
+msgstr "La millor coincidència per a l'agrupació %(album)s és ambigua"
 
 #: picard/cluster.py:305
 #, python-format
@@ -210,6 +209,7 @@ msgstr "Caràtules"
 #: picard/debug_opts.py:118
 msgid "Log cover art filter, resize and convert operations"
 msgstr ""
+"Registra les operacions de filtre, canvi de mida i conversió de les caràtules"
 
 #: picard/debug_opts.py:119 picard/ui/forms/ui_options_matching.py:77
 #: picard/ui/options/matching.py:35
@@ -218,7 +218,7 @@ msgstr "Coincidència"
 
 #: picard/debug_opts.py:119
 msgid "Log similarity scores and match decisions"
-msgstr ""
+msgstr "Registra les puntuacions de similitud i les decisions de coincidència"
 
 #: picard/file.py:325
 msgid "Cannot save file: the file no longer exists."
@@ -242,10 +242,9 @@ msgid "No matching tracks for file \"%(filename)s\""
 msgstr "No s'ha trobat cap pista coincident amb el fitxer «%(filename)s»"
 
 #: picard/file.py:1049
-#, fuzzy, python-format
-#| msgid "No matching tracks for file \"%(filename)s\""
+#, python-format
 msgid "Best match for file \"%(filename)s\" is ambiguous"
-msgstr "No s'ha trobat cap pista coincident amb el fitxer «%(filename)s»"
+msgstr "La millor coincidència per al fitxer «%(filename)s» és ambigua"
 
 #: picard/file.py:1051
 #, python-format
@@ -663,16 +662,12 @@ msgid "Configuration backup directory"
 msgstr "Directori de les còpies de seguretat de la configuració"
 
 #: picard/options.py:360
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum similarity"
-msgstr "Amplada mínima de la imatge"
+msgstr "Similitud mínima"
 
 #: picard/options.py:361
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum margin"
-msgstr "Amplada mínima de la imatge"
+msgstr "Marge de similitud"
 
 #: picard/options.py:362
 msgid "Similarity for matching files to tracks"
@@ -3558,10 +3553,8 @@ msgid "Select / clear all filters"
 msgstr "Selecciona/esborra tots els filtres"
 
 #: picard/ui/infostatus.py:70
-#, fuzzy
-#| msgid "Pending requests"
 msgid "Stop all pending network requests"
-msgstr "Peticions pendents"
+msgstr "Atura totes les sol·licituds de xarxa pendents"
 
 #: picard/ui/infostatus.py:81
 msgid "Estimated Time"
@@ -5141,14 +5134,12 @@ msgid "Remove selected options"
 msgstr "Suprimeix les opcions seleccionades"
 
 #: picard/ui/forms/ui_options_matching.py:78
-#, fuzzy
-#| msgid "Minimum image width"
 msgid "Minimum similarity:"
-msgstr "Amplada mínima de la imatge"
+msgstr "Similitud mínima:"
 
 #: picard/ui/forms/ui_options_matching.py:80
 msgid "Minimum margin between best and second-best match:"
-msgstr ""
+msgstr "Marge mínim entre la millor i la segona millor coincidència:"
 
 #: picard/ui/forms/ui_options_matching.py:82
 msgid "Minimal similarity for matching files to tracks:"
@@ -5251,20 +5242,16 @@ msgid "Request timeout in seconds:"
 msgstr "Temps d'espera de les sol·licituds en segons:"
 
 #: picard/ui/forms/ui_options_network.py:181
-#, fuzzy
-#| msgid "Cache size (MB):"
 msgid "Cache usage:"
-msgstr "Mida de la memòria cau (MB):"
+msgstr "Ús de la memòria cau:"
 
 #: picard/ui/forms/ui_options_network.py:183
 msgid " MB"
-msgstr ""
+msgstr " MB"
 
 #: picard/ui/forms/ui_options_network.py:184
-#, fuzzy
-#| msgid "C&lear all"
 msgid "Clear cache"
-msgstr "Esb&orra-ho tot"
+msgstr "Esborra la memòria cau"
 
 #: picard/ui/forms/ui_options_network.py:185
 msgid "Browser Integration"
@@ -6568,7 +6555,7 @@ msgstr "S'està escoltant al port %(port)d"
 
 #: picard/ui/mainwindow/__init__.py:639
 msgid "Stopped by user"
-msgstr ""
+msgstr "Aturat per l'usuari"
 
 #: picard/ui/mainwindow/__init__.py:704
 msgid "AcoustID submission not configured"
@@ -7929,10 +7916,12 @@ msgstr "Xarxa"
 #: picard/ui/options/network.py:70
 msgid "Remove all locally cached network requests"
 msgstr ""
+"Suprimeix totes les sol·licituds de xarxa emmagatzemades a la memòria cau "
+"local"
 
 #: picard/ui/options/network.py:71
 msgid "Current size of the local network disk cache"
-msgstr ""
+msgstr "Mida actual de la memòria cau del disc de xarxa local"
 
 #: picard/ui/options/network.py:74
 #, python-format
@@ -7940,6 +7929,8 @@ msgid ""
 "Maximum size of the network cache. A negative value resets to the default "
 "size (%d MB)."
 msgstr ""
+"Mida màxima de la memòria cau de xarxa. Un valor negatiu reinicialitza la "
+"mida per defecte (%d MB)."
 
 #: picard/ui/options/player.py:33
 msgid "Audio Player"
