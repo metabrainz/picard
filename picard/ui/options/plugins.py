@@ -87,15 +87,18 @@ class Plugins3OptionsPage(OptionsPage):
         # Check whether plugins are available
         available, unavailable_reason = self.tagger.get_plugins_available()
         if not available:
-            no_plugins_box = QtWidgets.QFrame(self)
-            no_plugins_box.setStyleSheet("QFrame { background-color: #ffc107; color: black }")
-            no_plugins_box.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-            no_plugins_box_layout = QtWidgets.QVBoxLayout(no_plugins_box)
+            no_plugins_box = QtWidgets.QHBoxLayout()
+            icon_label = QtWidgets.QLabel()
+            icon = self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_MessageBoxWarning)
+            icon_label.setPixmap(icon.pixmap(24, 24))
+            icon_label.setFixedSize(28, 28)
+            no_plugins_box.addWidget(icon_label)
             no_plugins_label = QtWidgets.QLabel(
-                _("Plugins unavailable: {reason}.").format(reason=unavailable_reason), parent=no_plugins_box
+                "<b>" + _("Plugins unavailable: {reason}.").format(reason=unavailable_reason) + "</b>"
             )
-            no_plugins_box_layout.addWidget(no_plugins_label)
-            layout.addWidget(no_plugins_box)
+            no_plugins_label.setWordWrap(True)
+            no_plugins_box.addWidget(no_plugins_label)
+            layout.addLayout(no_plugins_box)
             layout.addStretch()
             return
 
