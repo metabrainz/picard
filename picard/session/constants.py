@@ -62,11 +62,8 @@ class SessionConstants:
     FAST_RETRY_DELAY_MS : int
         Lower-latency delay (milliseconds) for local readiness checks where
         objects stabilize quickly (e.g., file/album becomes ready) and we want
-        prompt feedback. Used for:
-        - Moving files to tracks once file/album are ready
-          (see `TrackMover.move_files_to_tracks`).
-        - Specialized helpers like `RetryHelper.retry_until_file_ready` and
-          `RetryHelper.retry_until_album_ready`.
+        prompt feedback. Used for e.g. moving files to tracks once file/album
+        are ready (see `TrackMover.move_files_to_tracks`).
 
         Trade-offs
         ----------
