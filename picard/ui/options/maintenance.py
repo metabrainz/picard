@@ -54,7 +54,6 @@ OPTIONS_NOT_IN_PAGES = {
     # Include options that are required but are not entered directly from the options pages.
     'file_renaming_scripts',
     'selected_file_naming_script_id',
-    'log_verbosity',
     # Items missed if TagsCompatibilityWaveOptionsPage does not register.
     'remove_wave_riff_info',
     'wave_riff_info_encoding',

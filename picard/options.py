@@ -23,8 +23,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-import logging
-
 from PyQt6 import QtCore
 
 from picard.config import (
@@ -55,6 +53,7 @@ from picard.const.defaults import (
     DEFAULT_FILTER_COLUMNS,
     DEFAULT_FPCALC_THREADS,
     DEFAULT_LOCAL_COVER_ART_REGEX,
+    DEFAULT_LOG_LEVEL,
     DEFAULT_LONG_PATHS,
     DEFAULT_MUSIC_DIR,
     DEFAULT_PROGRAM_UPDATE_LEVEL,
@@ -133,10 +132,6 @@ BoolOption('persist', 'album_view_header_locked', False)
 #
 Option('persist', 'file_view_header_columns', {})
 BoolOption('persist', 'file_view_header_locked', False)
-
-# picard/ui/logview.py
-#
-IntOption('setting', 'log_verbosity', logging.WARNING)
 
 # picard/ui/mainwindow.py
 #
@@ -252,22 +247,16 @@ BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save Acoust
 
 # picard/ui/options/general.py
 # General
-IntOption('persist', 'last_update_check', 0)
 TextOption('persist', 'oauth_access_token', '')
 IntOption('persist', 'oauth_access_token_expires', 0)
 TextOption('persist', 'oauth_refresh_token', '')
 TextOption('persist', 'oauth_refresh_token_scopes', '')
 TextOption('persist', 'oauth_username', '')
 BoolOption('setting', 'analyze_new_files', False, title=N_("Automatically scan all new files"))
-BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"))
-BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"))
-BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates"))
 BoolOption('setting', 'cluster_new_files', False, title=N_("Automatically cluster all new files"))
 BoolOption('setting', 'ignore_file_mbids', False, title=N_("Ignore MBIDs when loading new files"))
 TextOption('setting', 'server_host', MUSICBRAINZ_SERVERS[0], title=N_("Server address"))
 IntOption('setting', 'server_port', 443, title=N_("Port"))
-IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"))
-IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"))
 BoolOption('setting', 'use_server_for_submission', False, title=N_("Submit to configured server"))
 
 # picard/ui/options/genres.py
@@ -457,6 +446,17 @@ BoolOption('setting', 'windows_long_paths', DEFAULT_LONG_PATHS, title=N_("Window
 IntOption('persist', 'last_selected_script_pos', 0)
 BoolOption('setting', 'enable_tagger_scripts', False, title=N_("Enable tagger scripts"))
 ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts"))
+
+# picard/ui/options/startup.py
+# Startup
+IntOption('persist', 'last_update_check', 0)
+BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"))
+BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"))
+BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates"))
+IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"))
+IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"))
+IntOption('setting', 'log_verbosity', DEFAULT_LOG_LEVEL, title=N_("Log verbosity level"))
+
 
 # picard/ui/options/tags.py
 # Tags
