@@ -1,0 +1,919 @@
+{
+  "packaging": "Jewel Case",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "barcode": "9325583042089",
+  "quality": "normal",
+  "country": "AU",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+  "cover-art-archive": {
+    "front": true,
+    "darkened": false,
+    "back": false,
+    "count": 1,
+    "artwork": true
+  },
+  "label-info": [
+    {
+      "catalog-number": "8122799924",
+      "label": {
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
+        "label-code": 392,
+        "name": "Warner Bros. Records",
+        "type": "Imprint",
+        "sort-name": "Warner Bros. Records",
+        "disambiguation": "1958\u20132019; \u201cWB\u201d logo, with or without \u201crecords\u201d beneath or on banner across",
+        "id": "c595c289-47ce-4fba-b999-b87503e8cb71"
+      }
+    },
+    {
+      "label": {
+        "type": "Imprint",
+        "disambiguation": "reissue label",
+        "id": "c4f2cf49-b57c-4cc1-8061-f54400704ac4",
+        "sort-name": "Rhino",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded",
+        "name": "Rhino",
+        "label-code": 2982
+      },
+      "catalog-number": null
+    }
+  ],
+  "date": "2007",
+  "title": "The Dio Years",
+  "media": [
+    {
+      "title": "",
+      "position": 1,
+      "id": "996b1b68-b483-381c-bee0-94d268b8c613",
+      "format": "CD",
+      "track-offset": 0,
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "tracks": [
+        {
+          "title": "Neon Knights",
+          "position": 1,
+          "recording": {
+            "length": 232293,
+            "video": false,
+            "first-release-date": "1980-04-25",
+            "isrcs": [
+              "GBUM70900395",
+              "USRH12003566",
+              "USWB10700217",
+              "USWB10800510"
+            ],
+            "id": "0e8c9144-bd63-4cd6-9ed8-2d39690c0f87",
+            "disambiguation": "",
+            "title": "Neon Knights",
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "artist": {
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": ""
+              }
+            ]
+          },
+          "id": "d92d6f10-5462-4395-9f57-67d0fc3f36b5",
+          "length": 232293,
+          "number": "1",
+          "artist-credit": [
+            {
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath",
+                "type": "Group",
+                "country": "GB",
+                "sort-name": "Black Sabbath",
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8"
+              },
+              "joinphrase": "",
+              "name": "Black Sabbath"
+            }
+          ]
+        },
+        {
+          "length": 264493,
+          "id": "0612d2f6-f0e8-4277-8ca0-c95767d02acb",
+          "title": "Lady Evil",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Black Sabbath"
+              }
+            ],
+            "length": 264493,
+            "first-release-date": "1980-04-25",
+            "video": false,
+            "id": "4325e6d2-8231-4ceb-ba22-3ff8bb5f5fa0",
+            "isrcs": [
+              "GBUM70900393",
+              "USRH12003568",
+              "USWB10700218",
+              "USWB10800512"
+            ],
+            "disambiguation": "",
+            "title": "Lady Evil"
+          },
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "sort-name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "number": "2"
+        },
+        {
+          "number": "3",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "country": "GB",
+                "type": "Group",
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "sort-name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              }
+            }
+          ],
+          "title": "Heaven and Hell",
+          "position": 3,
+          "recording": {
+            "length": 417240,
+            "video": false,
+            "first-release-date": "1980-04-25",
+            "disambiguation": "",
+            "id": "9ea011c9-d2ba-4e2a-adee-5ad2331f57e9",
+            "isrcs": [
+              "GBUM70900392",
+              "USRH12003569",
+              "USWB10700219",
+              "USWB10800513"
+            ],
+            "title": "Heaven and Hell",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "sort-name": "Black Sabbath"
+                },
+                "name": "Black Sabbath"
+              }
+            ]
+          },
+          "id": "737d876d-98e5-4733-a600-a696bb225150",
+          "length": 418973
+        },
+        {
+          "number": "4",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "artist": {
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": ""
+            }
+          ],
+          "position": 4,
+          "recording": {
+            "id": "cbe61838-9184-4b59-bbde-862ca30682c5",
+            "isrcs": [
+              "GBUM70900391",
+              "USRH12003571",
+              "USWB10700220",
+              "USWB10800515"
+            ],
+            "disambiguation": "",
+            "title": "Die Young",
+            "length": 284866,
+            "video": false,
+            "first-release-date": "1980-04-25",
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "joinphrase": "",
+                "artist": {
+                  "country": "GB",
+                  "type": "Group",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath"
+                }
+              }
+            ]
+          },
+          "title": "Die Young",
+          "id": "69cb9ba3-5de0-491e-a982-b601cbbe58b5",
+          "length": 284866
+        },
+        {
+          "id": "cd7fbbf0-1fab-4956-8700-5827d81bc931",
+          "position": 5,
+          "title": "Lonely Is the Word",
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "type": "Group",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "sort-name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath"
+                },
+                "joinphrase": "",
+                "name": "Black Sabbath"
+              }
+            ],
+            "title": "Lonely Is the Word",
+            "disambiguation": "",
+            "id": "fdcfcf7e-97ee-4262-8995-d439acc23cd8",
+            "isrcs": [
+              "GBUM70900394",
+              "USRH12003573",
+              "USWB10700221",
+              "USWB10800517"
+            ],
+            "length": 350000,
+            "video": false,
+            "first-release-date": "1980-04-25"
+          },
+          "length": 351106,
+          "number": "5",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "artist": {
+                "country": "GB",
+                "type": "Group",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              },
+              "joinphrase": ""
+            }
+          ]
+        },
+        {
+          "number": "6",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "type": "Group",
+                "country": "GB",
+                "sort-name": "Black Sabbath",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              }
+            }
+          ],
+          "id": "e319fc3e-5ae0-4258-ad88-3c5dd0def9b3",
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "sort-name": "Black Sabbath"
+                },
+                "name": "Black Sabbath"
+              }
+            ],
+            "first-release-date": "1981-11-04",
+            "video": false,
+            "length": 195346,
+            "isrcs": [
+              "GBUM70900389",
+              "USRH12003578",
+              "USWB10000515",
+              "USWB10700222"
+            ],
+            "id": "9e2f0f8f-fc91-438e-9f1b-4a9dc3319d4e",
+            "disambiguation": "",
+            "title": "The Mob Rules"
+          },
+          "title": "The Mob Rules",
+          "position": 6,
+          "length": 195986
+        },
+        {
+          "id": "b3d4b94c-722c-483f-b992-fde821846de3",
+          "position": 7,
+          "title": "Turn Up the Night",
+          "recording": {
+            "length": 222360,
+            "video": false,
+            "first-release-date": "1981-11-04",
+            "title": "Turn Up the Night",
+            "id": "2249f42f-b4a9-4fac-b1bd-0d1edcd9c886",
+            "isrcs": [
+              "GBUM70900381",
+              "USRH12003574",
+              "USWB10700223"
+            ],
+            "disambiguation": "",
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath",
+                  "type": "Group",
+                  "country": "GB",
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8"
+                },
+                "joinphrase": ""
+              }
+            ]
+          },
+          "length": 222360,
+          "number": "7",
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "type": "Group",
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "sort-name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              },
+              "joinphrase": "",
+              "name": "Black Sabbath"
+            }
+          ]
+        },
+        {
+          "length": 274653,
+          "position": 8,
+          "title": "Voodoo",
+          "recording": {
+            "id": "9f34b1a2-e449-4cf4-a3b6-6c15bdfce548",
+            "isrcs": [
+              "GBUM70900382",
+              "USRH12003575",
+              "USWB10700224"
+            ],
+            "disambiguation": "",
+            "title": "Voodoo",
+            "video": false,
+            "first-release-date": "1981-11-04",
+            "length": 273000,
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath",
+                  "type": "Group",
+                  "country": "GB",
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8"
+                },
+                "name": "Black Sabbath"
+              }
+            ]
+          },
+          "id": "9ac4bea6-2a9a-48f3-9a01-0785287b0471",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group"
+              }
+            }
+          ],
+          "number": "8"
+        },
+        {
+          "recording": {
+            "first-release-date": "1981-11-04",
+            "video": false,
+            "length": 303853,
+            "isrcs": [
+              "GBUM70900388",
+              "USRH12003581",
+              "USWB10700225"
+            ],
+            "id": "d38cea8d-1ce6-46a4-abdf-779dc5da8539",
+            "disambiguation": "",
+            "title": "Falling off the Edge of the World",
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Black Sabbath"
+              }
+            ]
+          },
+          "title": "Falling off the Edge of the World",
+          "position": 9,
+          "id": "5a4f05e2-5a80-45a1-a629-de3a076bcc36",
+          "length": 304960,
+          "number": "9",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "type": "Group",
+                "country": "GB",
+                "sort-name": "Black Sabbath",
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              }
+            }
+          ]
+        },
+        {
+          "length": 342253,
+          "id": "266decef-da96-43a5-86ad-251e6fc90a77",
+          "position": 10,
+          "title": "After All (The Dead)",
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "sort-name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
+            "disambiguation": "",
+            "id": "e46093fb-a8e4-4d05-831d-2953a06f8523",
+            "isrcs": [
+              "USCA21003160",
+              "USRE10700051"
+            ],
+            "title": "After All (The Dead)",
+            "length": 341626,
+            "first-release-date": "1992-06-22",
+            "video": false
+          },
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Black Sabbath",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "type": "Group",
+                "country": "GB",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "number": "10"
+        },
+        {
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath"
+              },
+              "name": "Black Sabbath"
+            }
+          ],
+          "number": "11",
+          "length": 242160,
+          "id": "1acc5ce5-1aeb-4019-a4fe-9ce36195afac",
+          "position": 11,
+          "title": "TV Crimes",
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ],
+            "first-release-date": "1992-06-01",
+            "video": false,
+            "length": 242000,
+            "title": "TV Crimes",
+            "isrcs": [
+              "USCA21003161",
+              "USRE10700052"
+            ],
+            "id": "fe2763b1-332f-4281-b785-c2fb032a9d5b",
+            "disambiguation": ""
+          }
+        },
+        {
+          "id": "107b4f1b-ba32-4b02-a9b2-383f87e10f59",
+          "recording": {
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "name": "Black Sabbath"
+              }
+            ],
+            "title": "I",
+            "id": "31ef8b7a-e849-49c5-bb6c-778d71497e3b",
+            "disambiguation": "",
+            "isrcs": [
+              "USCA21003167",
+              "USRE10700053"
+            ],
+            "length": 313000,
+            "first-release-date": "1992-06-22",
+            "video": false
+          },
+          "title": "I",
+          "position": 12,
+          "length": 313506,
+          "number": "12",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "country": "GB",
+                "type": "Group",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "name": "Black Sabbath"
+              },
+              "name": "Black Sabbath"
+            }
+          ]
+        },
+        {
+          "id": "38471643-b220-4ad4-868d-0893ed2497e1",
+          "title": "Children of the Sea (live)",
+          "position": 13,
+          "recording": {
+            "first-release-date": "2007-03-30",
+            "video": false,
+            "length": 374013,
+            "isrcs": [
+              "USWB10700226"
+            ],
+            "id": "56c21ffe-3f9c-470f-852c-754070075d7b",
+            "disambiguation": "",
+            "title": "Children of the Sea (live)",
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "joinphrase": "",
+                "artist": {
+                  "sort-name": "Black Sabbath",
+                  "disambiguation": "English heavy metal band",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "type": "Group",
+                  "country": "GB",
+                  "name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                }
+              }
+            ]
+          },
+          "length": 374013,
+          "number": "13",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "sort-name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "name": "Black Sabbath"
+            }
+          ]
+        },
+        {
+          "length": 361066,
+          "recording": {
+            "title": "The Devil Cried",
+            "id": "94deece5-cc53-415f-a5ea-7ace353b1331",
+            "isrcs": [
+              "USRH10720699"
+            ],
+            "disambiguation": "",
+            "length": 361066,
+            "first-release-date": "2007-03-13",
+            "video": false,
+            "artist-credit": [
+              {
+                "artist": {
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath",
+                  "country": "GB",
+                  "type": "Group",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath"
+                },
+                "joinphrase": "",
+                "name": "Black Sabbath"
+              }
+            ]
+          },
+          "position": 14,
+          "title": "The Devil Cried",
+          "id": "7eefbe3a-cae0-4cb0-8446-ca9776a9fdbf",
+          "artist-credit": [
+            {
+              "artist": {
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "sort-name": "Black Sabbath",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "disambiguation": "English heavy metal band",
+                "type": "Group",
+                "country": "GB"
+              },
+              "joinphrase": "",
+              "name": "Black Sabbath"
+            }
+          ],
+          "number": "14"
+        },
+        {
+          "id": "d5aee5fc-9a65-4152-8867-6d2e96f81ee8",
+          "title": "Shadow of the Wind",
+          "position": 15,
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "joinphrase": "",
+                "artist": {
+                  "country": "GB",
+                  "type": "Group",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath"
+                }
+              }
+            ],
+            "video": false,
+            "first-release-date": "2007-03-27",
+            "length": 340360,
+            "id": "6659a234-056a-436f-93bd-8d7f9eb74277",
+            "isrcs": [
+              "USRH10720700"
+            ],
+            "disambiguation": "",
+            "title": "Shadow of the Wind"
+          },
+          "length": 340360,
+          "number": "15",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "sort-name": "Black Sabbath",
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "type": "Group",
+                "country": "GB",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ]
+        },
+        {
+          "number": "16",
+          "artist-credit": [
+            {
+              "name": "Black Sabbath",
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "English heavy metal band",
+                "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                "sort-name": "Black Sabbath",
+                "country": "GB",
+                "type": "Group",
+                "name": "Black Sabbath",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              }
+            }
+          ],
+          "position": 16,
+          "title": "Ear in the Wall",
+          "recording": {
+            "artist-credit": [
+              {
+                "name": "Black Sabbath",
+                "artist": {
+                  "country": "GB",
+                  "type": "Group",
+                  "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+                  "disambiguation": "English heavy metal band",
+                  "sort-name": "Black Sabbath",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "name": "Black Sabbath"
+                },
+                "joinphrase": ""
+              }
+            ],
+            "length": 244853,
+            "video": false,
+            "first-release-date": "2007-03-30",
+            "title": "Ear in the Wall",
+            "id": "dc8d14c0-51ae-4409-85c0-05ae27e60363",
+            "isrcs": [
+              "USRH10720701"
+            ],
+            "disambiguation": ""
+          },
+          "id": "8e12b275-e5dc-412a-b069-c35d3ea7d4c1",
+          "length": 244853
+        }
+      ],
+      "track-count": 16
+    }
+  ],
+  "id": "c5192d47-f0e2-4f1b-81dc-fc61549d20e2",
+  "release-events": [
+    {
+      "area": {
+        "type-id": null,
+        "name": "Australia",
+        "type": null,
+        "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+        "disambiguation": "",
+        "iso-3166-1-codes": [
+          "AU"
+        ],
+        "sort-name": "Australia"
+      },
+      "date": "2007"
+    }
+  ],
+  "disambiguation": "",
+  "artist-credit": [
+    {
+      "name": "Black Sabbath",
+      "artist": {
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+        "name": "Black Sabbath",
+        "type": "Group",
+        "country": "GB",
+        "sort-name": "Black Sabbath",
+        "disambiguation": "English heavy metal band",
+        "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8"
+      },
+      "joinphrase": ""
+    }
+  ],
+  "status": "Official",
+  "release-group": {
+    "secondary-types": [
+      "Compilation"
+    ],
+    "primary-type": "Album",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "artist-credit": [
+      {
+        "name": "Black Sabbath",
+        "artist": {
+          "country": "GB",
+          "type": "Group",
+          "id": "5182c1d9-c7d2-4dad-afa0-ccfeada921a8",
+          "disambiguation": "English heavy metal band",
+          "sort-name": "Black Sabbath",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+          "name": "Black Sabbath"
+        },
+        "joinphrase": ""
+      }
+    ],
+    "disambiguation": "",
+    "id": "ebe9bc5e-d5da-31c4-8e8a-8c5c54700b48",
+    "title": "The Dio Years",
+    "first-release-date": "2007-03-30",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+  },
+  "asin": null
+}

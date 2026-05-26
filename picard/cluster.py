@@ -62,7 +62,6 @@ from picard.matching import (
     SimMatchRelease,
     compare_to_release,
 )
-from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -204,8 +203,98 @@ class Cluster(FileList):
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
+        self._aggregate_metadata()
         if signal and self.ui_item:
             self.ui_item.update()
+
+    _AGGREGATE_TAGS = ('barcode', 'catalognumber', 'date', 'label')
+    _MULTI_VALUED_TAGS = ('catalognumber', 'label')
+
+    def _aggregate_metadata(self):
+        """Populate cluster metadata with album-level tags from files.
+
+        Called on cluster update to provide barcode, catalognumber, date,
+        and label for the search query and release scoring.
+
+        A tag is set on the cluster only when:
+          1. More than half the files carry a non-empty value for it.
+          2. All those values agree.
+
+        For single-valued tags (barcode, date), agreement means all
+        raw strings are identical.
+
+        For multi-valued tags (catalognumber, label), agreement is
+        based on the intersection of values across files. For example,
+        if 5 files have "L1; L2" and 5 have "L1", the common value
+        "L1" is used. If the intersection is empty, the tag is not set.
+
+        Tags that don't meet the conditions are removed from cluster
+        metadata, ensuring stale values from a previous aggregation
+        are not reused.
+        """
+        result = self._compute_aggregate_tags()
+        for tag in self._AGGREGATE_TAGS:
+            if tag in result:
+                self.metadata[tag] = result[tag]
+            elif tag in self.metadata:
+                del self.metadata[tag]
+
+    def _compute_aggregate_tags(self) -> dict[str, str | list[str]]:
+        """Compute aggregated tag values from files.
+
+        Returns a dict of tag -> value for tags that meet the
+        consensus criteria.
+        """
+        result = {}
+        threshold = len(self.files) / 2
+        if not threshold:
+            return result
+
+        # Single pass over files: collect non-empty values for all tags
+        tag_values: defaultdict[str, list[list[str]]] = defaultdict(list)
+        for f in self.files:
+            for tag in self._AGGREGATE_TAGS:
+                values = f.metadata.getall(tag)
+                if values:
+                    tag_values[tag].append(values)
+
+        for tag, all_values in tag_values.items():
+            if not all_values or len(all_values) <= threshold:
+                continue
+            if tag in self._MULTI_VALUED_TAGS:
+                # Find the intersection of values across all files
+                sets = [set(v) for v in all_values]
+                common = sets[0].intersection(*sets[1:])
+                if common:
+                    result[tag] = sorted(common)
+            else:
+                # For single-valued tags, use the value if all agree
+                unique = set(v[0] for v in all_values)
+                if len(unique) == 1:
+                    result[tag] = all_values[0][0]
+        return result
+
+    def _most_frequent_values(self, tags: Iterable[str]) -> dict[str, str]:
+        """Return the most frequent individual value for each given tag.
+
+        Single pass over all files. Only returns a value for a tag if it
+        meets the quorum (more than half the files).
+        """
+        threshold = len(self.files) / 2
+        counts: dict[str, Counter[str]] = {tag: Counter() for tag in tags}
+        for f in self.files:
+            for tag in tags:
+                values = f.metadata.getall(tag)
+                if values:
+                    for part in set(values):
+                        counts[tag][part] += 1
+        result = {}
+        for tag, counter in counts.items():
+            if counter:
+                value, count = counter.most_common(1)[0]
+                if count > threshold:
+                    result[tag] = value
+        return result
 
     def get_num_files(self):
         return len(self.files)
@@ -366,17 +455,16 @@ class Cluster(FileList):
             {'album': self.metadata['album']},
         )
         config = get_config()
-        catno = self.metadata.get('catalognumber', '')
-        if catno:
-            catno = catno.split(MULTI_VALUED_JOINER)[0]
+        freq = self._most_frequent_values(('catalognumber', 'label'))
         self._lookup_task = self.tagger.mb_api.find_releases(
             self._lookup_finished,
             artist=self.metadata['albumartist'],
             release=self.metadata['album'],
             tracks=str(len(self.files)),
             barcode=self.metadata.get('barcode', ''),
-            catno=catno,
+            catno=freq.get('catalognumber', ''),
             date=self.metadata.get('date', ''),
+            label=freq.get('label', ''),
             limit=config.setting['query_limit'],
         )
 

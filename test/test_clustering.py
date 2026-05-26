@@ -261,3 +261,107 @@ class FileClusterTest(PicardTestCase):
         self.assertEqual('Album 1', fc.title)
         self.assertEqual('Artist 1', fc.artist)
         self.assertEqual(files, list(fc.files))
+
+
+class ComputeAggregateTagsTest(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.patch_tagger_instance('picard.item')
+        self.cluster = Cluster("Test")
+
+    def _add_files(self, tag, values):
+        for v in values:
+            f = File('test.flac')
+            if v:
+                f.metadata[tag] = v
+            self.cluster.files.append(f)
+
+    def test_all_agree(self):
+        self._add_files('barcode', ['123', '123', '123'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['barcode'], '123')
+
+    def test_majority_agree(self):
+        self._add_files('barcode', ['123', '123', '123', '', ''])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['barcode'], '123')
+
+    def test_below_majority(self):
+        self._add_files('barcode', ['123', '', '', '', ''])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('barcode', result)
+
+    def test_disagreement(self):
+        self._add_files('barcode', ['123', '456', '123', '456', '123'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('barcode', result)
+
+    def test_no_files(self):
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result, {})
+
+    def test_multi_valued_identical(self):
+        rhino_warner = ['Rhino', 'Warner']
+        self._add_files('label', [rhino_warner, rhino_warner, rhino_warner])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['label'], ['Rhino', 'Warner'])
+
+    def test_multi_valued_intersection(self):
+        rhino_warner = ['Rhino', 'Warner']
+        self._add_files('label', [rhino_warner, rhino_warner, ['Rhino']])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['label'], ['Rhino'])
+
+    def test_multi_valued_no_common(self):
+        self._add_files('label', ['Rhino', 'Rhino', 'Warner'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('label', result)
+
+    def test_multi_valued_different_order(self):
+        rhino_warner = ['Rhino', 'Warner']
+        warner_rhino = ['Warner', 'Rhino']
+        self._add_files('label', [rhino_warner, warner_rhino, rhino_warner])
+        result = self.cluster._compute_aggregate_tags()
+        # All have same components, intersection is {Rhino, Warner}
+        self.assertEqual(result['label'], ['Rhino', 'Warner'])
+
+    def test_date_all_agree(self):
+        self._add_files('date', ['2007-03-30', '2007-03-30', '2007-03-30'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['date'], '2007-03-30')
+
+    def test_date_disagree(self):
+        self._add_files('date', ['2007-03-30', '2007-03-30', '2007'])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertNotIn('date', result)
+
+    def test_catno_intersection(self):
+        abc_def = ['ABC-123', 'DEF-456']
+        self._add_files('catalognumber', [abc_def, abc_def, ['ABC-123']])
+        result = self.cluster._compute_aggregate_tags()
+        self.assertEqual(result['catalognumber'], ['ABC-123'])
+
+    def test_most_frequent_values_single(self):
+        self._add_files('label', ['Rhino', 'Rhino', 'Rhino'])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {'label': 'Rhino'})
+
+    def test_most_frequent_values_multi(self):
+        rhino_warner = ['Rhino', 'Warner']
+        self._add_files('label', [rhino_warner, rhino_warner, ['Rhino']])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {'label': 'Rhino'})
+
+    def test_most_frequent_values_below_quorum(self):
+        self._add_files('label', ['Rhino', 'Warner', 'Atlantic'])
+        result = self.cluster._most_frequent_values(('label',))
+        self.assertEqual(result, {})
+
+    def test_most_frequent_values_multiple_tags(self):
+        for _ in range(3):
+            f = File('test.flac')
+            f.metadata['label'] = 'Rhino'
+            f.metadata['catalognumber'] = 'ABC'
+            self.cluster.files.append(f)
+        result = self.cluster._most_frequent_values(('label', 'catalognumber'))
+        self.assertEqual(result, {'label': 'Rhino', 'catalognumber': 'ABC'})

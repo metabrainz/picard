@@ -48,6 +48,10 @@ Two matching levels are tested:
 
 - **Cluster-level** (`compare_to_release`): uses album, artist, date, barcode,
   track count — what Picard uses when matching a cluster of files to a release.
+- **Cluster-aggregated** (`--cluster-aggregated`): simulates the full pipeline —
+  per-file metadata is degraded, then aggregated via `_compute_aggregate_tags()`
+  (majority consensus), then scored. Tests that the aggregation preserves enough
+  signal for correct matching.
 - **File-level** (`compare_to_track`): adds track title, artist, and duration —
   what Picard uses when matching individual files to tracks.
 
@@ -60,6 +64,7 @@ Two matching levels are tested:
 | `-d`, `--degradation` | Filter to degradations matching a substring |
 | `-p`, `--profile` | Run only one config profile (neutral, prefer_us_cd, etc.) |
 | `--cluster-only` | Skip file-level evaluation |
+| `--cluster-aggregated` | Include cluster-aggregated evaluation (aggregation + scoring pipeline) |
 | `--file-only` | Skip cluster-level evaluation |
 | `--save FILE` | Save results snapshot for later comparison |
 | `--compare FILE` | Compare current results against a previous snapshot |
@@ -124,6 +129,7 @@ tied candidates:
 | `classical_same_composition` | Beethoven 5th — Karajan vs Szell |
 | `non_latin_editions` | 椎名林檎 三毒史 — digital vs CD, identical metadata |
 | `live_vs_studio` | Nirvana Nevermind vs MTV Unplugged |
+| `same_compilation_different_country` | Black Sabbath Dio Years — DE vs AU, only barcode differs |
 
 ## Degradation Patterns
 
