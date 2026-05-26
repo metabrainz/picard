@@ -550,8 +550,6 @@ class PluginListWidget(QtWidgets.QWidget):
 
         menu.addSeparator()
 
-        menu.addSeparator()
-
         # Information action
         info_action = menu.addAction(_("Information"))
         info_action.triggered.connect(lambda: self._show_plugin_info(plugin))
