@@ -91,12 +91,19 @@ class InstallConfirmDialog(PicardDialog):
             self._dont_show_checkbox = None
 
         # Plugin name and URL
-        info_label = QtWidgets.QLabel(_("Install plugin: {name}").format(name=self.plugin_name))
+        info_label = QtWidgets.QLabel(_("Install plugin: {name}").format(name=f"<b>{self.plugin_name}</b>"))
         info_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         layout.addWidget(info_label)
 
-        url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=self.url))
-        url_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
+        if self.url.startswith(('http://', 'https://')):
+            url_display = f'<a href="{self.url}">{self.url}</a>'
+        else:
+            url_display = self.url
+        url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=url_display))
+        url_label.setTextInteractionFlags(
+            QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
+        )
+        url_label.setOpenExternalLinks(True)
         url_label.setWordWrap(True)
         layout.addWidget(url_label)
 
