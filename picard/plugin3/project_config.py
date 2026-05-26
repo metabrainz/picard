@@ -20,8 +20,6 @@
 
 """Configuration dataclass for plugin project scaffolding."""
 
-from __future__ import annotations
-
 from dataclasses import (
     dataclass,
     field,

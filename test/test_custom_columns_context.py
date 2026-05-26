@@ -20,8 +20,6 @@
 
 """Test context extraction strategies for custom columns."""
 
-from __future__ import annotations
-
 from typing import Any
 
 import pytest

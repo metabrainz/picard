@@ -20,8 +20,6 @@
 
 """Sorting adapters that add `sort_key` support to value providers."""
 
-from __future__ import annotations
-
 from collections.abc import Callable
 from weakref import WeakKeyDictionary
 

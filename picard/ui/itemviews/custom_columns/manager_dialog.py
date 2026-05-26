@@ -29,8 +29,6 @@ The UI does not expose a column "type"; all user-created columns are Script
 columns. Internally, storage still supports multiple kinds.
 """
 
-from __future__ import annotations
-
 from contextlib import contextmanager
 from dataclasses import (
     dataclass,

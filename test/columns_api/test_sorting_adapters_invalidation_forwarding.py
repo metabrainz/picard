@@ -20,8 +20,6 @@
 
 """Tests for sorting adapters' invalidation forwarding."""
 
-from __future__ import annotations
-
 from typing import Protocol
 
 import pytest

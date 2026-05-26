@@ -20,8 +20,6 @@
 
 """Templates and helpers for `picard-plugins --init` plugin scaffolding."""
 
-from __future__ import annotations
-
 from pathlib import Path
 import re
 import unicodedata

@@ -20,8 +20,6 @@
 
 """Registry for adding, removing and fetching custom columns."""
 
-from __future__ import annotations
-
 from PyQt6 import QtWidgets
 
 from picard.ui.itemviews.custom_columns.column import CustomColumn
