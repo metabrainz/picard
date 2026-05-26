@@ -112,9 +112,5 @@ class StartupOptionsPage(OptionsPage):
         config.setting['log_verbosity'] = self.ui.starting_log_level.currentData(QtCore.Qt.ItemDataRole.UserRole)
         log.set_verbosity(config.setting['log_verbosity'])
 
-    def restore_defaults(self):
-        super().restore_defaults()
-        self.logout()
-
 
 register_options_page(StartupOptionsPage)
