@@ -662,7 +662,7 @@ class PluginManager(QObject):
 
     def _create_ref_item_from_source(self, source, commit):
         """Create RefItem from PluginSourceGit with accurate ref type information."""
-        return self._updater._create_ref_item(source.ref, commit, getattr(source, 'resolved_ref_type', None))
+        return self._updater._create_ref_item(source.ref, commit, source.resolved_ref_type)
 
     def update_all_plugins(self):
         """Update all installed plugins."""
@@ -734,7 +734,7 @@ class PluginManager(QObject):
 
         try:
             metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if metadata and hasattr(metadata, 'url'):
+            if metadata:
                 return metadata.url
         except Exception:
             pass
@@ -757,7 +757,7 @@ class PluginManager(QObject):
 
         # Fallback to manifest version if no git metadata
         if not version_text:
-            if plugin.manifest and hasattr(plugin.manifest, '_data'):
+            if plugin.manifest:
                 version = plugin.manifest._data.get('version')
                 if version:
                     version_text = version
@@ -776,7 +776,7 @@ class PluginManager(QObject):
 
     def get_plugin_homepage(self, plugin):
         """Get plugin homepage URL from manifest."""
-        if not plugin.manifest or not hasattr(plugin.manifest, '_data'):
+        if not plugin.manifest:
             return None
         return plugin.manifest._data.get('homepage')
 
@@ -800,7 +800,7 @@ class PluginManager(QObject):
 
         try:
             metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-            if metadata and hasattr(metadata, 'url'):
+            if metadata:
                 registry_plugin = self._registry.find_plugin(uuid=plugin.uuid)
                 if registry_plugin:
                     return registry_plugin.versioning_scheme or ''

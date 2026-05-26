@@ -209,7 +209,7 @@ class PluginUpdater:
                 old_commit,
                 new_commit,
                 self._create_ref_item(old_ref, old_commit, ref_type),
-                self._create_ref_item(source.ref, new_commit, getattr(source, 'resolved_ref_type', None)),
+                self._create_ref_item(source.ref, new_commit, source.resolved_ref_type),
                 commit_date,
             )
 
