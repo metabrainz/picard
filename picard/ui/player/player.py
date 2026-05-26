@@ -225,6 +225,17 @@ class Player(QtCore.QObject):
         self._player.stop()
         self.playback_state_changed.emit(self._playback_state)
 
+    @QtCore.pyqtSlot(str)
+    def release_file(self, filename: str):
+        """Release the file handle if the player is currently holding the given file.
+
+        This stops playback and clears the media source so the file can be
+        written to or moved.  Must be called from the main thread.
+        """
+        if self._current_file and self._current_file.filename == filename:
+            log.debug("Internal player: releasing file %r for save/move", filename)
+            self.stop()
+
     def play_next(self):
         if self.is_playing:
             # Stop will automatically play the next track if queue is not empty
@@ -255,6 +266,7 @@ class Player(QtCore.QObject):
             self._play_next()
         else:
             if state == QMediaPlayer.PlaybackState.StoppedState:
+                self._player.setSource(QtCore.QUrl())
                 new_state = Player.PlaybackState.STOPPED
             elif state == QMediaPlayer.PlaybackState.PlayingState:
                 new_state = Player.PlaybackState.PLAYING
