@@ -45,7 +45,9 @@ class RefSelectorWidget(QtWidgets.QWidget):
         if self.include_default:
             default_widget = QtWidgets.QWidget()
             default_layout = QtWidgets.QVBoxLayout(default_widget)
-            self.default_label = QtWidgets.QLabel(_("Use the default ref (usually main/master branch)"))
+            self.default_label = QtWidgets.QLabel()
+            self.default_label.setWordWrap(True)
+            self._set_default_label_text(None, None)
             default_layout.addWidget(self.default_label)
             default_layout.addStretch()
             self.tab_widget.addTab(default_widget, _("Default"))
@@ -106,12 +108,19 @@ class RefSelectorWidget(QtWidgets.QWidget):
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.branches_list.addItem(list_item)
 
+    def _set_default_label_text(self, ref_name, description):
+        """Update the default tab label text."""
+        if ref_name:
+            self.default_label.setText(
+                _("Recommended: <b>{ref}</b> ({description})").format(ref=ref_name, description=description)
+            )
+        else:
+            self.default_label.setText(_("Use the default ref (usually main/master branch)"))
+
     def set_default_ref_info(self, default_ref_name, description):
         """Update the default tab with specific ref information."""
         if self.include_default and hasattr(self, 'default_label') and default_ref_name:
-            self.default_label.setText(
-                _("Use default ref: {ref} ({description})").format(ref=default_ref_name, description=description)
-            )
+            self._set_default_label_text(default_ref_name, description)
 
     def get_selected_ref(self):
         """Get the currently selected ref."""
