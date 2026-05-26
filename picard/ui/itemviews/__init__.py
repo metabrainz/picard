@@ -450,7 +450,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     # - Special Cluster instances (e.g. "Unclustered Files"): Should show their Title
                     #   but no other per-entity values in custom columns.
                     is_group_row = isinstance(self.obj, ClusterList) or (
-                        isinstance(self.obj, Cluster) and getattr(self.obj, 'special', False)
+                        isinstance(self.obj, Cluster) and self.obj.special
                     )
                     if is_group_row and (column.key != 'title' and not column.status_icon):
                         self.setText(i, "")
