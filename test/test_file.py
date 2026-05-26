@@ -175,6 +175,77 @@ class FileTest(PicardTestCase):
         self.assertEqual(self.file.column('covercount'), '1')
         self.assertEqual(self.file.column('coverdimensions'), '100x100')
 
+    def test_info(self):
+        class MockInfo:
+            length = 4.2
+            bitrate = 2000
+            sample_rate = 44100
+            channels = 2
+            bits_per_sample = 160
+
+        metadata = Metadata(length=100)
+        mock_file_type = Mock()
+        mock_file_type.info = MockInfo()
+        self.file._info(metadata, mock_file_type)
+        self.assertEqual(4200, metadata.length)
+        self.assertEqual('2.0', metadata['~bitrate'])
+        self.assertEqual('44100', metadata['~sample_rate'])
+        self.assertEqual('2', metadata['~channels'])
+        self.assertEqual('160', metadata['~bits_per_sample'])
+        self.assertEqual('', metadata['~format'])
+        self.assertEqual('somepath/somefile.mp3', metadata['~filepath'])
+        self.assertEqual('somepath', metadata['~dirname'])
+        self.assertEqual('somefile', metadata['~filename'])
+        self.assertEqual('mp3', metadata['~extension'])
+
+    def test_info_name(self):
+        class MockInfo:
+            pass
+
+        metadata = Metadata()
+        mock_file_type = Mock()
+        mock_file_type.info = MockInfo()
+        self.file.NAME = 'Foo'
+        self.file._info(metadata, mock_file_type)
+        self.assertEqual('Foo', metadata['~format'])
+
+    def test_info_name_from_class(self):
+        class FooFile(File):
+            pass
+
+        class MockInfo:
+            pass
+
+        metadata = Metadata()
+        mock_file_type = Mock()
+        mock_file_type.info = MockInfo()
+        file_ = FooFile('')
+        file_._info(metadata, mock_file_type)
+        self.assertEqual('Foo', metadata['~format'])
+
+    def test_info_no_length(self):
+        class MockInfo:
+            pass
+
+        metadata = Metadata(length=100)
+        mock_file_type = Mock()
+        mock_file_type.info = MockInfo()
+        self.file._info(metadata, mock_file_type)
+        self.assertEqual(100, metadata.length)
+        mock_file_type.info.length = None
+        self.file._info(metadata, mock_file_type)
+        self.assertEqual(100, metadata.length)
+
+    def test_info_zero_length(self):
+        class MockInfo:
+            length = 0
+
+        metadata = Metadata(length=100)
+        mock_file_type = Mock()
+        mock_file_type.info = MockInfo()
+        self.file._info(metadata, mock_file_type)
+        self.assertEqual(0, metadata.length)
+
 
 class TestPreserveTimes(PicardTestCase):
     def setUp(self):

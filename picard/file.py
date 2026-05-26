@@ -965,16 +965,16 @@ class File(MetadataItem):
         return True
 
     def _info(self, metadata: Metadata, file: FileType):
-        if hasattr(file.info, 'length'):
-            metadata.length = int(file.info.length * 1000)
-        if getattr(file.info, 'bitrate', None):
-            metadata['~bitrate'] = file.info.bitrate / 1000.0
-        if getattr(file.info, 'sample_rate', None):
-            metadata['~sample_rate'] = file.info.sample_rate
-        if getattr(file.info, 'channels', None):
-            metadata['~channels'] = file.info.channels
-        if getattr(file.info, 'bits_per_sample', None):
-            metadata['~bits_per_sample'] = file.info.bits_per_sample
+        if (length := getattr(file.info, 'length', None)) is not None:
+            metadata.length = int(length * 1000)
+        if bitrate := getattr(file.info, 'bitrate', None):
+            metadata['~bitrate'] = bitrate / 1000.0
+        if sample_rate := getattr(file.info, 'sample_rate', None):
+            metadata['~sample_rate'] = sample_rate
+        if channels := getattr(file.info, 'channels', None):
+            metadata['~channels'] = channels
+        if bits_per_sample := getattr(file.info, 'bits_per_sample', None):
+            metadata['~bits_per_sample'] = bits_per_sample
         if self.NAME:
             metadata['~format'] = self.NAME
         else:
