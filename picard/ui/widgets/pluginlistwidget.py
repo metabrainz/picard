@@ -39,7 +39,6 @@ from picard.metadata import (
 )
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
-from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
@@ -297,29 +296,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
     def _format_update_version(self, update):
         """Format update version info for display (matching git info format)."""
-        # Use the new RefItem directly from UpdateResult
-        new_ref_item = getattr(update, 'new_ref_item', None)
-        if new_ref_item:
-            return new_ref_item.format() or _("Available")
-
-        # Fallback for old UpdateResult format (backward compatibility)
-        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
-        commit = getattr(update, 'new_commit', None)
-
-        # Create RefItem object for formatting - we need to guess the ref type
-        if ref:
-            # Try to determine ref type from name pattern
-            if ref.startswith('v') or '.' in ref:
-                ref_type = RefItem.Type.TAG
-            else:
-                ref_type = RefItem.Type.BRANCH
-        else:
-            # Just a commit hash
-            ref = commit
-            ref_type = RefItem.Type.COMMIT
-
-        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=commit)
-        return ref_item.format() or _("Available")
+        return update.new_ref_item.format() or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
@@ -695,7 +672,7 @@ class PluginListWidget(QtWidgets.QWidget):
             # Get plugin URL from metadata
             uuid = self.plugin_manager._get_plugin_uuid(plugin)
             metadata = self.plugin_manager._get_plugin_metadata(uuid)
-            if not (metadata and hasattr(metadata, 'url')):
+            if not metadata:
                 self._reinstall_error_dialog(plugin, _("Could not find plugin repository URL"))
                 return
             plugin_url = metadata.url
