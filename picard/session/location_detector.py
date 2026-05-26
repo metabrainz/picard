@@ -24,8 +24,6 @@ This module handles detecting where files should be placed within a session,
 separating the complex location detection logic from other concerns.
 """
 
-from __future__ import annotations
-
 from picard.album import (
     Album,
     NatAlbum,

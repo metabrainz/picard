@@ -24,8 +24,6 @@ This module provides utilities for serializing and deserializing metadata
 for session files, with proper error handling and validation.
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 

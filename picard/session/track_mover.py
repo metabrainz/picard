@@ -24,8 +24,6 @@ This module handles moving files to their designated tracks when loading session
 separating the complex file-to-track movement logic from other concerns.
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 

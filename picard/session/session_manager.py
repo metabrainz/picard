@@ -42,8 +42,6 @@ Session files use the .mbps.gz extension and contain gzip-compressed YAML data
 with version information, options, file locations, and metadata overrides.
 """
 
-from __future__ import annotations
-
 import gzip
 from pathlib import Path
 from typing import Any
