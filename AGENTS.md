@@ -47,6 +47,23 @@ metadata['artist'] = 'New Artist'
 file.metadata_updated.emit()
 ```
 
+### Metadata Access
+```python
+# Metadata is always stored internally as a list of strings.
+
+# ❌ Don't use get() + split on MULTI_VALUED_JOINER to get individual values
+values = metadata.get('artist', '').split(MULTI_VALUED_JOINER)
+
+# ✅ Use getall() to get individual values as a list
+values = metadata.getall('artist')  # Returns: ['Artist 1', 'Artist 2']
+
+# ✅ Use get() or [] only for display (returns joined string)
+display = metadata['artist']  # Returns: 'Artist 1; Artist 2'
+
+# ✅ Set multiple values by passing a list (don't join them)
+metadata['artist'] = ['Artist 1', 'Artist 2']
+```
+
 ### Configuration Access
 ```python
 # ✅ Always use config.setting

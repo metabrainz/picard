@@ -213,14 +213,27 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
         return name.rstrip(':')
 
     def getall(self, name: str) -> list[str]:
+        """Return all values for a tag as a list.
+
+        Metadata is always stored internally as a list of strings.
+        Use this method when you need the individual values (e.g., multiple
+        artists or labels). Returns an empty list if the tag is not set.
+        """
         with self._lock.lock_for_read():
             return self._store.get(self.normalize_tag(name), [])
 
     def getraw(self, name: str):
+        """Return the raw stored list for a tag, raising KeyError if missing."""
         with self._lock.lock_for_read():
             return self._store[self.normalize_tag(name)]
 
     def get(self, name: str, default=None) -> str | None:
+        """Return all values joined into a single string.
+
+        Multiple values are joined with `multi_valued_joiner` (default: "; ").
+        Use `getall()` instead when you need the individual values as a list.
+        Returns `default` if the tag is not set.
+        """
         with self._lock.lock_for_read():
             values = self._store.get(self.normalize_tag(name), None)
             if values:
@@ -229,9 +242,20 @@ class Metadata(MutableMapping[str, str | list[str] | None]):
                 return default
 
     def __getitem__(self, name: str) -> str:
+        """Return all values joined as a string, or empty string if unset.
+
+        Equivalent to `self.get(name) or ''`. Use `getall()` when you need
+        individual values as a list.
+        """
         return self.get(name) or ''
 
     def _set(self, name, values):
+        """Store values for a tag.
+
+        Values are always stored as a list internally. A single string is
+        wrapped in a list. To store multiple values, pass a list of strings
+        (do NOT join them with MULTI_VALUED_JOINER).
+        """
         name = self.normalize_tag(name)
         if isinstance(values, str) or not isinstance(values, Iterable):
             values = [values]
