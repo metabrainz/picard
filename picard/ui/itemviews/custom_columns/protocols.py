@@ -20,8 +20,6 @@
 
 """Protocols for custom column value providers and optional sort capability."""
 
-from __future__ import annotations
-
 from typing import (
     Protocol,
     runtime_checkable,

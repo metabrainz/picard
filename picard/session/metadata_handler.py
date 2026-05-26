@@ -24,8 +24,6 @@ This module provides utilities for serializing and deserializing metadata
 for session files, with proper error handling and validation.
 """
 
-from __future__ import annotations
-
 from pathlib import Path
 from typing import Any
 
@@ -37,7 +35,7 @@ from picard.const.defaults import (
 from picard.file import File
 from picard.metadata import Metadata
 from picard.session.constants import SessionConstants
-from picard.session.retry_helper import RetryHelper
+from picard.session.retry_helper import retry_until
 
 
 class MetadataHandler:
@@ -172,7 +170,7 @@ class MetadataHandler:
                 pending.append(fpath)
 
         if pending:
-            RetryHelper.retry_until(
+            retry_until(
                 condition_fn=lambda: len(pending) == 0,
                 action_fn=lambda: MetadataHandler.apply_saved_metadata_if_any(
                     tagger, {p: file_path_to_md[p] for p in pending}
@@ -211,7 +209,7 @@ class MetadataHandler:
                 pending.append(fpath)
 
         if pending:
-            RetryHelper.retry_until(
+            retry_until(
                 condition_fn=lambda: len(pending) == 0,
                 action_fn=lambda: MetadataHandler.apply_tag_deltas_if_any(
                     tagger, {p: file_path_to_tags[p] for p in pending}

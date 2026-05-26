@@ -54,7 +54,7 @@ def test_track_mover_move_files_to_tracks(track_mover: TrackMover, mock_album: M
     """Test moving files to tracks."""
     track_specs = [(Path("/test/file1.mp3"), "recording-123"), (Path("/test/file2.mp3"), "recording-456")]
 
-    with patch("picard.session.track_mover.RetryHelper"):
+    with patch("picard.session.track_mover.retry_until"):
         track_mover.move_files_to_tracks(mock_album, track_specs)
 
         mock_album.run_when_loaded.assert_called_once()
@@ -71,10 +71,10 @@ def test_track_mover_schedule_move(track_mover: TrackMover, mock_album: Mock) ->
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
-        mock_retry_helper.retry_until.assert_called_once()
+        mock_retry_until.assert_called_once()
 
 
 def test_track_mover_move_file_to_nat(track_mover: TrackMover) -> None:
@@ -82,10 +82,10 @@ def test_track_mover_move_file_to_nat(track_mover: TrackMover) -> None:
     fpath = Path("/test/file.mp3")
     recording_id = "recording-123"
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_file_to_nat(fpath, recording_id)
 
-        mock_retry_helper.retry_until.assert_called_once()
+        mock_retry_until.assert_called_once()
 
 
 def test_track_mover_schedule_move_file_pending(track_mover: TrackMover, mock_album: Mock) -> None:
@@ -104,7 +104,7 @@ def test_track_mover_schedule_move_file_pending(track_mover: TrackMover, mock_al
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper"):
+    with patch("picard.session.track_mover.retry_until"):
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
         # Should not attempt move when file is pending
@@ -125,11 +125,11 @@ def test_track_mover_schedule_move_file_not_found(track_mover: TrackMover, mock_
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
         # Should not attempt move when file is not found
-        mock_retry_helper.retry_until.assert_called_once()
+        mock_retry_until.assert_called_once()
 
 
 def test_track_mover_schedule_move_track_not_found(track_mover: TrackMover, mock_album: Mock) -> None:
@@ -151,7 +151,7 @@ def test_track_mover_schedule_move_track_not_found(track_mover: TrackMover, mock
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper"):
+    with patch("picard.session.track_mover.retry_until"):
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
         # Should not attempt move when track is not found
@@ -179,13 +179,13 @@ def test_track_mover_schedule_move_success(track_mover: TrackMover, mock_album: 
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         # Mock retry_until to call the action function immediately if condition is met
-        def mock_retry_until(condition_fn, action_fn, delay_ms):
+        def mock_retry_until_impl(condition_fn, action_fn, delay_ms):
             if condition_fn():
                 action_fn()
 
-        mock_retry_helper.retry_until.side_effect = mock_retry_until
+        mock_retry_until.side_effect = mock_retry_until_impl
 
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
@@ -203,7 +203,7 @@ def test_track_mover_move_file_to_nat_file_pending(track_mover: TrackMover) -> N
     file_mock.state = File.State.PENDING
     track_mover.tagger.files.get.return_value = file_mock
 
-    with patch("picard.session.track_mover.RetryHelper"):
+    with patch("picard.session.track_mover.retry_until"):
         track_mover.move_file_to_nat(fpath, recording_id)
 
         # Should not attempt NAT move when file is pending
@@ -218,7 +218,7 @@ def test_track_mover_move_file_to_nat_file_not_found(track_mover: TrackMover) ->
     # Mock file not found
     track_mover.tagger.files.get.return_value = None
 
-    with patch("picard.session.track_mover.RetryHelper"):
+    with patch("picard.session.track_mover.retry_until"):
         track_mover.move_file_to_nat(fpath, recording_id)
 
         # Should not attempt NAT move when file is not found
@@ -235,13 +235,13 @@ def test_track_mover_move_file_to_nat_success(track_mover: TrackMover) -> None:
     file_mock.state = 1  # Not PENDING (PENDING = 0)
     track_mover.tagger.files.get.return_value = file_mock
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         # Mock retry_until to call the action function immediately if condition is met
-        def mock_retry_until(condition_fn, action_fn, delay_ms):
+        def mock_retry_until_impl(condition_fn, action_fn, delay_ms):
             if condition_fn():
                 action_fn()
 
-        mock_retry_helper.retry_until.side_effect = mock_retry_until
+        mock_retry_until.side_effect = mock_retry_until_impl
 
         track_mover.move_file_to_nat(fpath, recording_id)
 
@@ -270,11 +270,11 @@ def test_track_mover_move_files_to_tracks_multiple_files(track_mover: TrackMover
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_files_to_tracks(mock_album, track_specs)
 
         # Should schedule moves for all files
-        assert mock_retry_helper.retry_until.call_count == 3
+        assert mock_retry_until.call_count == 3
 
 
 def test_track_mover_initialization() -> None:
@@ -306,12 +306,12 @@ def test_track_mover_retry_until_condition_check(track_mover: TrackMover, mock_a
 
     mock_album.run_when_loaded.side_effect = run_callback
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_files_to_tracks(mock_album, [(fpath, recording_id)])
 
         # Verify retry_until was called with correct parameters
-        mock_retry_helper.retry_until.assert_called_once()
-        call_args = mock_retry_helper.retry_until.call_args
+        mock_retry_until.assert_called_once()
+        call_args = mock_retry_until.call_args
 
         # Check that condition function returns True when file and track are ready
         condition_fn = call_args[1]['condition_fn']
@@ -335,12 +335,12 @@ def test_track_mover_retry_until_condition_check_nat(track_mover: TrackMover) ->
     file_mock.state = 1  # Not PENDING (PENDING = 0)
     track_mover.tagger.files.get.return_value = file_mock
 
-    with patch("picard.session.track_mover.RetryHelper") as mock_retry_helper:
+    with patch("picard.session.track_mover.retry_until") as mock_retry_until:
         track_mover.move_file_to_nat(fpath, recording_id)
 
         # Verify retry_until was called with correct parameters
-        mock_retry_helper.retry_until.assert_called_once()
-        call_args = mock_retry_helper.retry_until.call_args
+        mock_retry_until.assert_called_once()
+        call_args = mock_retry_until.call_args
 
         # Check that condition function returns True when file is ready
         condition_fn = call_args[1]['condition_fn']

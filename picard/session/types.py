@@ -4,8 +4,6 @@ These aliases centralize nested mapping structures used across session
 export/import to improve readability and maintainability.
 """
 
-from __future__ import annotations
-
 from typing import (
     Any,
     TypeAlias,

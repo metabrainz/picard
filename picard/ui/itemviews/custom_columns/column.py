@@ -20,8 +20,6 @@
 
 """Custom column type that delegates value and optional sort to a provider."""
 
-from __future__ import annotations
-
 from PyQt6 import (
     QtCore,
     QtGui,

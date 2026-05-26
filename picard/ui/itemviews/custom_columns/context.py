@@ -20,8 +20,6 @@
 
 """Context extraction strategies for different Picard item types."""
 
-from __future__ import annotations
-
 from abc import (
     ABC,
     abstractmethod,

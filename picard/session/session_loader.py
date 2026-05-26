@@ -24,8 +24,6 @@ This module handles loading and restoring Picard sessions from files,
 breaking down the complex loading logic into focused, manageable components.
 """
 
-from __future__ import annotations
-
 from contextlib import suppress
 from dataclasses import dataclass
 import gzip

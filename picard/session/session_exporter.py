@@ -24,8 +24,6 @@ This module handles exporting current session data to a dictionary format,
 separating the export logic from other session management concerns.
 """
 
-from __future__ import annotations
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any

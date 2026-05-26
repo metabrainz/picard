@@ -20,8 +20,6 @@
 
 """Utility functions for custom column parsing and formatting."""
 
-from __future__ import annotations
-
 import re
 
 

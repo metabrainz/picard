@@ -25,7 +25,7 @@ from unittest.mock import (
     patch,
 )
 
-from picard.session.retry_helper import RetryHelper
+from picard.session.retry_helper import retry_until
 
 import pytest
 
@@ -45,7 +45,7 @@ def test_retry_until_condition_met_immediately(mock_single_shot: Mock) -> None:
         nonlocal action_called
         action_called = True
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     assert condition_called
     assert action_called
@@ -62,7 +62,7 @@ def test_retry_until_condition_not_met(mock_single_shot: Mock) -> None:
     def action_fn() -> None:
         pass
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     mock_single_shot.assert_called_once()
 
@@ -77,7 +77,7 @@ def test_retry_until_with_custom_delay(mock_single_shot: Mock) -> None:
     def action_fn() -> None:
         pass
 
-    RetryHelper.retry_until(condition_fn, action_fn, delay_ms=500)
+    retry_until(condition_fn, action_fn, delay_ms=500)
 
     mock_single_shot.assert_called_once_with(500, mock_single_shot.call_args[0][1])
 
@@ -101,7 +101,7 @@ def test_retry_until_with_max_attempts(mock_single_shot: Mock) -> None:
 
     mock_single_shot.side_effect = mock_callback
 
-    RetryHelper.retry_until(condition_fn, action_fn, max_attempts=3)
+    retry_until(condition_fn, action_fn, max_attempts=3)
 
     # Should schedule retry for max_attempts times
     assert mock_single_shot.call_count == 3
@@ -127,182 +127,10 @@ def test_retry_until_condition_becomes_true_after_retries(mock_single_shot: Mock
 
     mock_single_shot.side_effect = mock_callback
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     # Should have scheduled retries
     assert mock_single_shot.call_count > 0
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_file_ready_file_not_ready(mock_single_shot: Mock) -> None:
-    """Test retry_until_file_ready with file not ready."""
-    file_mock = Mock()
-    file_mock.state = 0  # PENDING state
-    file_mock.PENDING = 0  # Add PENDING attribute
-
-    def file_getter() -> Mock:
-        return file_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_file_ready(file_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_file_ready_file_ready(mock_single_shot: Mock) -> None:
-    """Test retry_until_file_ready when file is ready."""
-    file_mock = Mock()
-    file_mock.state = 1  # Not PENDING
-    file_mock.PENDING = 0  # Add PENDING attribute
-
-    def file_getter() -> Mock:
-        return file_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_file_ready(file_getter, action_fn)
-
-    mock_single_shot.assert_not_called()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_file_ready_no_file(mock_single_shot: Mock) -> None:
-    """Test retry_until_file_ready when file is None."""
-
-    def file_getter() -> None:
-        return None
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_file_ready(file_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_file_ready_file_without_state(mock_single_shot: Mock) -> None:
-    """Test retry_until_file_ready when file has no state attribute."""
-    file_mock = Mock()
-    # No state attribute
-    del file_mock.state
-    file_mock.PENDING = 0  # Add PENDING attribute
-
-    def file_getter() -> Mock:
-        return file_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_file_ready(file_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_file_ready_with_custom_delay(mock_single_shot: Mock) -> None:
-    """Test retry_until_file_ready with custom delay."""
-    file_mock = Mock()
-    file_mock.state = 0  # PENDING state
-    file_mock.PENDING = 0  # Add PENDING attribute
-
-    def file_getter() -> Mock:
-        return file_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_file_ready(file_getter, action_fn, delay_ms=300)
-
-    mock_single_shot.assert_called_once_with(300, mock_single_shot.call_args[0][1])
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_album_ready_album_not_ready(mock_single_shot: Mock) -> None:
-    """Test retry_until_album_ready with album not ready."""
-    album_mock = Mock()
-    album_mock.tracks = []  # No tracks
-
-    def album_getter() -> Mock:
-        return album_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_album_ready(album_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_album_ready_album_ready(mock_single_shot: Mock) -> None:
-    """Test retry_until_album_ready when album is ready."""
-    album_mock = Mock()
-    album_mock.tracks = [Mock()]  # Has tracks
-
-    def album_getter() -> Mock:
-        return album_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_album_ready(album_getter, action_fn)
-
-    mock_single_shot.assert_not_called()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_album_ready_no_album(mock_single_shot: Mock) -> None:
-    """Test retry_until_album_ready when album is None."""
-
-    def album_getter() -> None:
-        return None
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_album_ready(album_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_album_ready_album_without_tracks_attribute(mock_single_shot: Mock) -> None:
-    """Test retry_until_album_ready when album has no tracks attribute."""
-    album_mock = Mock()
-    # Remove tracks attribute to simulate album without tracks
-    del album_mock.tracks
-
-    def album_getter() -> Mock:
-        return album_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_album_ready(album_getter, action_fn)
-
-    mock_single_shot.assert_called_once()
-
-
-@patch("PyQt6.QtCore.QTimer.singleShot")
-def test_retry_until_album_ready_with_custom_delay(mock_single_shot: Mock) -> None:
-    """Test retry_until_album_ready with custom delay."""
-    album_mock = Mock()
-    album_mock.tracks = []  # No tracks
-
-    def album_getter() -> Mock:
-        return album_mock
-
-    def action_fn() -> None:
-        pass
-
-    RetryHelper.retry_until_album_ready(album_getter, action_fn, delay_ms=400)
-
-    mock_single_shot.assert_called_once_with(400, mock_single_shot.call_args[0][1])
 
 
 def test_retry_until_condition_function_exception() -> None:
@@ -315,7 +143,7 @@ def test_retry_until_condition_function_exception() -> None:
         pass
 
     with pytest.raises(RuntimeError, match="Condition error"):
-        RetryHelper.retry_until(condition_fn, action_fn)
+        retry_until(condition_fn, action_fn)
 
 
 def test_retry_until_action_function_exception() -> None:
@@ -328,30 +156,4 @@ def test_retry_until_action_function_exception() -> None:
         raise RuntimeError("Action error")
 
     with pytest.raises(RuntimeError, match="Action error"):
-        RetryHelper.retry_until(condition_fn, action_fn)
-
-
-def test_retry_until_file_ready_file_getter_exception() -> None:
-    """Test retry_until_file_ready when file getter raises exception."""
-
-    def file_getter() -> None:
-        raise RuntimeError("File getter error")
-
-    def action_fn() -> None:
-        pass
-
-    with pytest.raises(RuntimeError, match="File getter error"):
-        RetryHelper.retry_until_file_ready(file_getter, action_fn)
-
-
-def test_retry_until_album_ready_album_getter_exception() -> None:
-    """Test retry_until_album_ready when album getter raises exception."""
-
-    def album_getter() -> None:
-        raise RuntimeError("Album getter error")
-
-    def action_fn() -> None:
-        pass
-
-    with pytest.raises(RuntimeError, match="Album getter error"):
-        RetryHelper.retry_until_album_ready(album_getter, action_fn)
+        retry_until(condition_fn, action_fn)

@@ -20,8 +20,6 @@
 
 """Factory helpers to create common custom column types."""
 
-from __future__ import annotations
-
 from collections.abc import Callable
 
 from PyQt6 import QtCore

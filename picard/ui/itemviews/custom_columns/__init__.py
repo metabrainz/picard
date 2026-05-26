@@ -20,8 +20,6 @@
 
 """Public API for custom columns: types, factories and registry."""
 
-from __future__ import annotations
-
 from picard.ui.itemviews.custom_columns.column import (
     CustomColumn,
     DelegateColumn,
