@@ -24,8 +24,6 @@ This module provides utilities for retrying operations until conditions are met,
 replacing the scattered timer patterns throughout the session management code.
 """
 
-from __future__ import annotations
-
 from collections.abc import Callable
 
 from PyQt6 import QtCore
@@ -33,45 +31,41 @@ from PyQt6 import QtCore
 from picard.session.constants import SessionConstants
 
 
-class RetryHelper:
-    """Utility for retrying operations until conditions are met."""
+def retry_until(
+    condition_fn: Callable[[], bool],
+    action_fn: Callable[[], None],
+    delay_ms: int = SessionConstants.DEFAULT_RETRY_DELAY_MS,
+    max_attempts: int | None = None,
+) -> None:
+    """Retry an action until a condition is met.
 
-    @staticmethod
-    def retry_until(
-        condition_fn: Callable[[], bool],
-        action_fn: Callable[[], None],
-        delay_ms: int = SessionConstants.DEFAULT_RETRY_DELAY_MS,
-        max_attempts: int | None = None,
-    ) -> None:
-        """Retry an action until a condition is met.
+    Parameters
+    ----------
+    condition_fn : Callable[[], bool]
+        Function that returns True when the condition is met.
+    action_fn : Callable[[], None]
+        Function to execute when the condition is met.
+    delay_ms : int, optional
+        Delay between retry attempts in milliseconds. Defaults to DEFAULT_RETRY_DELAY_MS.
+    max_attempts : int | None, optional
+        Maximum number of retry attempts. If None, retry indefinitely.
 
-        Parameters
-        ----------
-        condition_fn : Callable[[], bool]
-            Function that returns True when the condition is met.
-        action_fn : Callable[[], None]
-            Function to execute when the condition is met.
-        delay_ms : int, optional
-            Delay between retry attempts in milliseconds. Defaults to DEFAULT_RETRY_DELAY_MS.
-        max_attempts : int | None, optional
-            Maximum number of retry attempts. If None, retry indefinitely.
+    Notes
+    -----
+    This replaces the scattered QtCore.QTimer.singleShot patterns throughout
+    the session management code with a centralized retry mechanism.
+    """
+    attempts = 0
 
-        Notes
-        -----
-        This replaces the scattered QtCore.QTimer.singleShot patterns throughout
-        the session management code with a centralized retry mechanism.
-        """
-        attempts = 0
+    def attempt() -> None:
+        nonlocal attempts
+        attempts += 1
+        if max_attempts and attempts > max_attempts:
+            return
 
-        def attempt() -> None:
-            nonlocal attempts
-            attempts += 1
-            if max_attempts and attempts > max_attempts:
-                return
+        if condition_fn():
+            action_fn()
+        else:
+            QtCore.QTimer.singleShot(delay_ms, attempt)
 
-            if condition_fn():
-                action_fn()
-            else:
-                QtCore.QTimer.singleShot(delay_ms, attempt)
-
-        attempt()
+    attempt()

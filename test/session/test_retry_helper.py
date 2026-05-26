@@ -25,7 +25,7 @@ from unittest.mock import (
     patch,
 )
 
-from picard.session.retry_helper import RetryHelper
+from picard.session.retry_helper import retry_until
 
 import pytest
 
@@ -45,7 +45,7 @@ def test_retry_until_condition_met_immediately(mock_single_shot: Mock) -> None:
         nonlocal action_called
         action_called = True
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     assert condition_called
     assert action_called
@@ -62,7 +62,7 @@ def test_retry_until_condition_not_met(mock_single_shot: Mock) -> None:
     def action_fn() -> None:
         pass
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     mock_single_shot.assert_called_once()
 
@@ -77,7 +77,7 @@ def test_retry_until_with_custom_delay(mock_single_shot: Mock) -> None:
     def action_fn() -> None:
         pass
 
-    RetryHelper.retry_until(condition_fn, action_fn, delay_ms=500)
+    retry_until(condition_fn, action_fn, delay_ms=500)
 
     mock_single_shot.assert_called_once_with(500, mock_single_shot.call_args[0][1])
 
@@ -101,7 +101,7 @@ def test_retry_until_with_max_attempts(mock_single_shot: Mock) -> None:
 
     mock_single_shot.side_effect = mock_callback
 
-    RetryHelper.retry_until(condition_fn, action_fn, max_attempts=3)
+    retry_until(condition_fn, action_fn, max_attempts=3)
 
     # Should schedule retry for max_attempts times
     assert mock_single_shot.call_count == 3
@@ -127,7 +127,7 @@ def test_retry_until_condition_becomes_true_after_retries(mock_single_shot: Mock
 
     mock_single_shot.side_effect = mock_callback
 
-    RetryHelper.retry_until(condition_fn, action_fn)
+    retry_until(condition_fn, action_fn)
 
     # Should have scheduled retries
     assert mock_single_shot.call_count > 0
@@ -143,7 +143,7 @@ def test_retry_until_condition_function_exception() -> None:
         pass
 
     with pytest.raises(RuntimeError, match="Condition error"):
-        RetryHelper.retry_until(condition_fn, action_fn)
+        retry_until(condition_fn, action_fn)
 
 
 def test_retry_until_action_function_exception() -> None:
@@ -156,4 +156,4 @@ def test_retry_until_action_function_exception() -> None:
         raise RuntimeError("Action error")
 
     with pytest.raises(RuntimeError, match="Action error"):
-        RetryHelper.retry_until(condition_fn, action_fn)
+        retry_until(condition_fn, action_fn)

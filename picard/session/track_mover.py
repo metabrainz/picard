@@ -32,7 +32,7 @@ from typing import Any
 from picard.album import Album
 from picard.file import File
 from picard.session.constants import SessionConstants
-from picard.session.retry_helper import RetryHelper
+from picard.session.retry_helper import retry_until
 
 
 class TrackMover:
@@ -102,9 +102,7 @@ class TrackMover:
             file, track = _get_file_and_track()
             return file is not None and track is not None
 
-        RetryHelper.retry_until(
-            condition_fn=_is_ready, action_fn=_attempt_move, delay_ms=SessionConstants.FAST_RETRY_DELAY_MS
-        )
+        retry_until(condition_fn=_is_ready, action_fn=_attempt_move, delay_ms=SessionConstants.FAST_RETRY_DELAY_MS)
 
     def move_file_to_nat(self, fpath: Path, recording_id: str) -> None:
         """Move a file to NAT (Non-Album Track) when ready.
@@ -127,6 +125,6 @@ class TrackMover:
             file = self.tagger.files.get(str(fpath))
             return file is not None and file.state != File.State.PENDING
 
-        RetryHelper.retry_until(
+        retry_until(
             condition_fn=is_file_ready, action_fn=attempt_nat_move, delay_ms=SessionConstants.DEFAULT_RETRY_DELAY_MS
         )

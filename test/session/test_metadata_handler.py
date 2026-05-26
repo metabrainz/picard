@@ -230,8 +230,8 @@ def test_safe_apply_metadata_unexpected_error(mock_log: Mock) -> None:
     assert "File system error" in str(mock_log.error.call_args)
 
 
-@patch("picard.session.metadata_handler.RetryHelper")
-def test_apply_saved_metadata_if_any_file_pending(mock_retry_helper: Mock) -> None:
+@patch("picard.session.metadata_handler.retry_until")
+def test_apply_saved_metadata_if_any_file_pending(mock_retry_until: Mock) -> None:
     """Test applying saved metadata with file in PENDING state."""
     tagger_mock = Mock()
     file_mock = Mock(spec=File)
@@ -243,11 +243,11 @@ def test_apply_saved_metadata_if_any_file_pending(mock_retry_helper: Mock) -> No
 
     MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
-    mock_retry_helper.retry_until.assert_called_once()
+    mock_retry_until.assert_called_once()
 
 
-@patch("picard.session.metadata_handler.RetryHelper")
-def test_apply_saved_metadata_if_any_file_not_found(mock_retry_helper: Mock) -> None:
+@patch("picard.session.metadata_handler.retry_until")
+def test_apply_saved_metadata_if_any_file_not_found(mock_retry_until: Mock) -> None:
     """Test applying saved metadata when file is not found."""
     tagger_mock = Mock()
     tagger_mock.files.get.return_value = None
@@ -256,11 +256,11 @@ def test_apply_saved_metadata_if_any_file_not_found(mock_retry_helper: Mock) -> 
 
     MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
-    mock_retry_helper.retry_until.assert_called_once()
+    mock_retry_until.assert_called_once()
 
 
-@patch("picard.session.metadata_handler.RetryHelper")
-def test_apply_saved_metadata_if_any_file_ready_success(mock_retry_helper: Mock) -> None:
+@patch("picard.session.metadata_handler.retry_until")
+def test_apply_saved_metadata_if_any_file_ready_success(mock_retry_until: Mock) -> None:
     """Test applying saved metadata when file is ready and application succeeds."""
     tagger_mock = Mock()
     file_mock = Mock(spec=File)
@@ -275,11 +275,11 @@ def test_apply_saved_metadata_if_any_file_ready_success(mock_retry_helper: Mock)
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should not retry if file is ready and metadata applied successfully
-    mock_retry_helper.retry_until.assert_not_called()
+    mock_retry_until.assert_not_called()
 
 
-@patch("picard.session.metadata_handler.RetryHelper")
-def test_apply_saved_metadata_if_any_file_ready_failure(mock_retry_helper: Mock) -> None:
+@patch("picard.session.metadata_handler.retry_until")
+def test_apply_saved_metadata_if_any_file_ready_failure(mock_retry_until: Mock) -> None:
     """Test applying saved metadata when file is ready but application fails."""
     tagger_mock = Mock()
     file_mock = Mock(spec=File)
@@ -294,11 +294,11 @@ def test_apply_saved_metadata_if_any_file_ready_failure(mock_retry_helper: Mock)
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should retry if metadata application failed
-    mock_retry_helper.retry_until.assert_called_once()
+    mock_retry_until.assert_called_once()
 
 
-@patch("picard.session.metadata_handler.RetryHelper")
-def test_apply_saved_metadata_if_any_mixed_states(mock_retry_helper: Mock) -> None:
+@patch("picard.session.metadata_handler.retry_until")
+def test_apply_saved_metadata_if_any_mixed_states(mock_retry_until: Mock) -> None:
     """Test applying saved metadata with files in different states."""
     tagger_mock = Mock()
 
@@ -335,4 +335,4 @@ def test_apply_saved_metadata_if_any_mixed_states(mock_retry_helper: Mock) -> No
         MetadataHandler.apply_saved_metadata_if_any(tagger_mock, metadata_map)
 
     # Should retry for file2 (pending) and file3 (failed)
-    mock_retry_helper.retry_until.assert_called_once()
+    mock_retry_until.assert_called_once()
