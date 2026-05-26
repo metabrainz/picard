@@ -220,13 +220,13 @@ class FileIdentity:
 
 
 class File(MetadataItem):
-    NAME = None
+    NAME: str | None = None
     # Logical tag format key and description for the family of this handler.
     # Subclasses should override for format families (e.g. ID3, Vorbis, APEv2).
-    FORMAT_KEY = None
-    FORMAT_DESCRIPTION = None
+    FORMAT_KEY: str | None = None
+    FORMAT_DESCRIPTION: str | None = None
     # Whether date sanitization can be toggled for this format family via settings
-    DATE_SANITIZATION_TOGGLEABLE = False
+    DATE_SANITIZATION_TOGGLEABLE: bool = False
 
     EXTENSIONS: list[str] = []
 
@@ -263,11 +263,11 @@ class File(MetadataItem):
         self.filename: str = filename
         self.base_filename: str = os.path.basename(filename)
         self._state = File.State.UNDEFINED
-        self.state: File.State = File.State.PENDING
+        self.state = File.State.PENDING
         self.error_type: File.ErrorType = File.ErrorType.UNKNOWN
 
         self.similarity = 1.0
-        self.parent_item: 'Cluster | Track | None' = None
+        self.parent_item = None
 
         self._lookup_task = None
 
@@ -965,16 +965,16 @@ class File(MetadataItem):
         return True
 
     def _info(self, metadata: Metadata, file: FileType):
-        if hasattr(file.info, 'length'):
-            metadata.length = int(file.info.length * 1000)
-        if getattr(file.info, 'bitrate', None):
-            metadata['~bitrate'] = file.info.bitrate / 1000.0
-        if getattr(file.info, 'sample_rate', None):
-            metadata['~sample_rate'] = file.info.sample_rate
-        if getattr(file.info, 'channels', None):
-            metadata['~channels'] = file.info.channels
-        if getattr(file.info, 'bits_per_sample', None):
-            metadata['~bits_per_sample'] = file.info.bits_per_sample
+        if (length := getattr(file.info, 'length', None)) is not None:
+            metadata.length = int(length * 1000)
+        if bitrate := getattr(file.info, 'bitrate', None):
+            metadata['~bitrate'] = bitrate / 1000.0
+        if sample_rate := getattr(file.info, 'sample_rate', None):
+            metadata['~sample_rate'] = sample_rate
+        if channels := getattr(file.info, 'channels', None):
+            metadata['~channels'] = channels
+        if bits_per_sample := getattr(file.info, 'bits_per_sample', None):
+            metadata['~bits_per_sample'] = bits_per_sample
         if self.NAME:
             metadata['~format'] = self.NAME
         else:
@@ -1045,12 +1045,12 @@ class File(MetadataItem):
             log.error(f"File access error: {ex}")
 
     @property
-    def state(self):
+    def state(self) -> 'File.State':
         """Current state of the File object"""
         return self._state
 
     @state.setter
-    def state(self, state):
+    def state(self, state: 'File.State') -> None:
         if state == self._state:
             return
         if state == File.State.PENDING:
