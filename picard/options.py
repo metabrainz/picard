@@ -158,6 +158,7 @@ TextOption('persist', 'session_autosave_path', '')
 ListOption('persist', 'tutorial_steps_shown', [])
 BoolOption('persist', 'tutorial_disabled', False)
 BoolOption('persist', 'setup_wizard_completed', False)
+BoolOption('persist', 'show_plugin_install_warning', True)
 
 # picard/ui/metadatabox.py
 #
