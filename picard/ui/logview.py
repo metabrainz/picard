@@ -247,6 +247,7 @@ class LogView(LogViewCommon):
         super().__init__(log.main_tail, _("Log"), parent=parent)
         self.verbosity = log.get_effective_level()
         self._status_label = None
+        self.help_url = '/appendices/log_viewer.html'
 
         # Set up proxy model for level filtering
         self._proxy_model = LogFilterProxyModel(parent=self)
@@ -274,6 +275,11 @@ class LogView(LogViewCommon):
 
         self.hbox = QtWidgets.QHBoxLayout()
         self.vbox.addLayout(self.hbox)
+
+        self.help_button = QtWidgets.QPushButton(QtGui.QIcon.fromTheme("help-contents"), _("Help"))
+        self.help_button.setAutoDefault(False)
+        self.help_button.clicked.connect(self.show_help)
+        self.hbox.addWidget(self.help_button)
 
         self.verbosity_menu_button = QtWidgets.QPushButton()
         self.verbosity_menu_button.setAutoDefault(False)
