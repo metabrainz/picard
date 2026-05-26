@@ -871,7 +871,7 @@ class Tagger(QtWidgets.QApplication):
             return
 
         file_moved = False
-        if not config.setting['ignore_file_mbids'] and not getattr(self, '_restoring_session', False):
+        if not config.setting['ignore_file_mbids'] and not self._restoring_session:
             recordingid = file.metadata.getall('musicbrainz_recordingid')
             recordingid = recordingid[0] if recordingid else ''
             is_valid_recordingid = mbid_validate(recordingid)
@@ -902,12 +902,7 @@ class Tagger(QtWidgets.QApplication):
             unmatched_files.append(file)
 
         # fallback on analyze if nothing else worked
-        if (
-            not file_moved
-            and not getattr(self, '_restoring_session', False)
-            and config.setting['analyze_new_files']
-            and file.can_analyze
-        ):
+        if not file_moved and not self._restoring_session and config.setting['analyze_new_files'] and file.can_analyze:
             log.debug("Trying to analyze %r …", file)
             self.analyze([file])
 
@@ -922,7 +917,7 @@ class Tagger(QtWidgets.QApplication):
         """
         if isinstance(target, Album):
             # During restore place into album's unmatched bucket without matching
-            if getattr(self, '_restoring_session', False):
+            if self._restoring_session:
                 file.move(target.unmatched_files)
             else:
                 self.move_files_to_album([file], album=target)
