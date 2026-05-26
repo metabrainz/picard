@@ -58,6 +58,7 @@ class Plugins3OptionsPage(OptionsPage):
 
         # Cache plugin manager for performance
         self.plugin_manager = self.tagger.get_plugin_manager()
+        self._last_plugin_count = 0
 
         self.setup_ui()
         if self.plugin_manager:
@@ -160,27 +161,28 @@ class Plugins3OptionsPage(OptionsPage):
         layout.addWidget(self.splitter, 1)  # Give most space to splitter
 
         # Status mini-log (shows last 3 messages)
-        self.status_log = QtWidgets.QTextEdit()
-        self.status_log.setMaximumHeight(60)  # About 3 lines
+        self.status_log = QtWidgets.QPlainTextEdit()
         self.status_log.setReadOnly(True)
         self.status_log.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
-        self.status_messages = []  # Keep track of last 3 messages
-        layout.addWidget(self.status_log, 0)  # Minimal space for status
+        # Show ~3 lines based on actual font metrics
+        line_height = self.status_log.fontMetrics().lineSpacing()
+        margins = self.status_log.contentsMargins()
+        self.status_log.setFixedHeight(line_height * 3 + margins.top() + margins.bottom() + 8)
+        self.status_messages = []
+        layout.addWidget(self.status_log, 0)
 
     def _show_status(self, message, clear_after_ms=None):
-        """Add message to status log (keeps last 3 messages)."""
+        """Add message to status log."""
         timestamp = datetime.now().strftime("%H:%M:%S")
         formatted_message = f"[{timestamp}] {message}"
 
-        # Add to messages list and keep only last 3
         self.status_messages.append(formatted_message)
-        if len(self.status_messages) > 3:
-            self.status_messages.pop(0)
 
         # Update display
         self.status_log.setPlainText("\n".join(self.status_messages))
         # Scroll to bottom to show latest message
-        self.status_log.verticalScrollBar().setValue(self.status_log.verticalScrollBar().maximum())
+        sb = self.status_log.verticalScrollBar()
+        sb.setValue(sb.maximum())
         QtWidgets.QApplication.processEvents()
 
     def load(self):
@@ -188,8 +190,6 @@ class Plugins3OptionsPage(OptionsPage):
             return
 
         # Load plugins from plugin manager.
-        self._show_status(_("Loading plugins…"))
-        # Load plugins immediately when page is loaded
         try:
             # Validate persisted updates against current plugin state
             config = get_config()
@@ -208,13 +208,15 @@ class Plugins3OptionsPage(OptionsPage):
             self.plugin_list.set_updates(valid_updates)
             self._filter_plugins()
             plugin_count = len(self.plugin_manager.plugins)
-            self._show_status(
-                ngettext(
-                    "Loaded {plugin_count:,d} plugin",
-                    "Loaded {plugin_count:,d} plugins",
-                    plugin_count,
-                ).format(plugin_count=plugin_count)
-            )
+            if plugin_count != self._last_plugin_count:
+                self._last_plugin_count = plugin_count
+                self._show_status(
+                    ngettext(
+                        "{plugin_count:,d} plugin installed",
+                        "{plugin_count:,d} plugins installed",
+                        plugin_count,
+                    ).format(plugin_count=plugin_count)
+                )
             self._show_enabled_state()
             self._update_details_button_text()  # Update button state based on plugin availability
         except Exception as e:
