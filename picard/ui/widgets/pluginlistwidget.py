@@ -158,6 +158,7 @@ class PluginListWidget(QtWidgets.QWidget):
         self.tree_widget.itemSelectionChanged.connect(self._on_selection_changed)
         self.tree_widget.itemClicked.connect(self._on_item_clicked)
         self.tree_widget.customContextMenuRequested.connect(self._show_context_menu)
+        self.tree_widget.installEventFilter(self)
 
         # Cache tagger instance for performance
         self.tagger = tagger_instance()
@@ -486,6 +487,16 @@ class PluginListWidget(QtWidgets.QWidget):
 
             # Update panel when update checkboxes change
             self._update_panel_state()
+
+    def eventFilter(self, obj, event):
+        """Handle Space key to toggle plugin enabled state."""
+        if obj is self.tree_widget and event.type() == QtCore.QEvent.Type.KeyPress:
+            if event.key() == QtCore.Qt.Key.Key_Space:
+                item = self.tree_widget.currentItem()
+                if item:
+                    self._on_item_clicked(item, COLUMN_ENABLED)
+                    return True
+        return super().eventFilter(obj, event)
 
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
