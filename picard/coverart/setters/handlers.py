@@ -26,6 +26,8 @@ from functools import singledispatch
 from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
+from picard.config import get_config
+from picard.coverart.processing.filters import filter_image_for_file
 from picard.file import File
 from picard.item import (
     FileListItem,
@@ -86,6 +88,9 @@ def _handle_album(album: Album, setter) -> bool:
             setter._set_image(track)
 
         for file in album.iterfiles():
+            if get_config().setting['save_images_to_tags']:
+                if not filter_image_for_file(setter.coverartimage, file.orig_metadata.images):
+                    continue
             setter._set_image(file)
             file.update(signal=False)
 
