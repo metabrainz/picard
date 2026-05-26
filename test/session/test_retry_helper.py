@@ -25,6 +25,7 @@ from unittest.mock import (
     patch,
 )
 
+from picard.file import File
 from picard.session.retry_helper import RetryHelper
 
 import pytest
@@ -137,8 +138,7 @@ def test_retry_until_condition_becomes_true_after_retries(mock_single_shot: Mock
 def test_retry_until_file_ready_file_not_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready with file not ready."""
     file_mock = Mock()
-    file_mock.state = 0  # PENDING state
-    file_mock.PENDING = 0  # Add PENDING attribute
+    file_mock.state = File.State.PENDING
 
     def file_getter() -> Mock:
         return file_mock
@@ -155,8 +155,7 @@ def test_retry_until_file_ready_file_not_ready(mock_single_shot: Mock) -> None:
 def test_retry_until_file_ready_file_ready(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready when file is ready."""
     file_mock = Mock()
-    file_mock.state = 1  # Not PENDING
-    file_mock.PENDING = 0  # Add PENDING attribute
+    file_mock.state = File.State.NORMAL  # Not PENDING
 
     def file_getter() -> Mock:
         return file_mock
@@ -190,7 +189,6 @@ def test_retry_until_file_ready_file_without_state(mock_single_shot: Mock) -> No
     file_mock = Mock()
     # No state attribute
     del file_mock.state
-    file_mock.PENDING = 0  # Add PENDING attribute
 
     def file_getter() -> Mock:
         return file_mock
@@ -207,8 +205,7 @@ def test_retry_until_file_ready_file_without_state(mock_single_shot: Mock) -> No
 def test_retry_until_file_ready_with_custom_delay(mock_single_shot: Mock) -> None:
     """Test retry_until_file_ready with custom delay."""
     file_mock = Mock()
-    file_mock.state = 0  # PENDING state
-    file_mock.PENDING = 0  # Add PENDING attribute
+    file_mock.state = File.State.PENDING  # PENDING state
 
     def file_getter() -> Mock:
         return file_mock

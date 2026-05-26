@@ -30,6 +30,8 @@ from collections.abc import Callable
 
 from PyQt6 import QtCore
 
+from picard.album import Album
+from picard.file import File
 from picard.session.constants import SessionConstants
 
 
@@ -78,7 +80,7 @@ class RetryHelper:
 
     @staticmethod
     def retry_until_file_ready(
-        file_getter: Callable[[], object | None],
+        file_getter: Callable[[], File | None],
         action_fn: Callable[[], None],
         delay_ms: int = SessionConstants.FAST_RETRY_DELAY_MS,
     ) -> None:
@@ -104,13 +106,13 @@ class RetryHelper:
             if not file_obj:
                 return False
             # Check if file has a state attribute and it's not PENDING
-            return hasattr(file_obj, 'state') and file_obj.state != getattr(file_obj, 'PENDING', 0)
+            return hasattr(file_obj, 'state') and file_obj.state != File.State.PENDING
 
         RetryHelper.retry_until(is_file_ready, action_fn, delay_ms)
 
     @staticmethod
     def retry_until_album_ready(
-        album_getter: Callable[[], object | None],
+        album_getter: Callable[[], Album | None],
         action_fn: Callable[[], None],
         delay_ms: int = SessionConstants.FAST_RETRY_DELAY_MS,
     ) -> None:
