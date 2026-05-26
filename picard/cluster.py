@@ -62,7 +62,6 @@ from picard.matching import (
     SimMatchRelease,
     compare_to_release,
 )
-from picard.metadata import MULTI_VALUED_JOINER
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
@@ -252,31 +251,27 @@ class Cluster(FileList):
             return result
 
         # Single pass over files: collect non-empty values for all tags
-        tag_values: defaultdict[str, list[str]] = defaultdict(list)
+        tag_values: defaultdict[str, list[list[str]]] = defaultdict(list)
         for f in self.files:
             for tag in self._AGGREGATE_TAGS:
-                v = f.metadata.get(tag, '')
-                if v:
-                    tag_values[tag].append(v)
+                values = f.metadata.getall(tag)
+                if values:
+                    tag_values[tag].append(values)
 
-        for tag, values in tag_values.items():
-            if not values or len(values) <= threshold:
+        for tag, all_values in tag_values.items():
+            if not all_values or len(all_values) <= threshold:
                 continue
-            # Fast path: all raw strings identical (common case).
-            unique = set(values)
-            if len(unique) == 1:
-                if tag in self._MULTI_VALUED_TAGS:
-                    result[tag] = sorted(values[0].split(MULTI_VALUED_JOINER))
-                else:
-                    result[tag] = values[0]
-                continue
-            # For multi-valued tags, find the intersection of values
-            # across all files that have the tag.
             if tag in self._MULTI_VALUED_TAGS:
-                sets = [set(v.split(MULTI_VALUED_JOINER)) for v in unique]
+                # Find the intersection of values across all files
+                sets = [set(v) for v in all_values]
                 common = sets[0].intersection(*sets[1:])
                 if common:
                     result[tag] = sorted(common)
+            else:
+                # For single-valued tags, use the value if all agree
+                unique = set(v[0] for v in all_values)
+                if len(unique) == 1:
+                    result[tag] = all_values[0][0]
         return result
 
     def _most_frequent_values(self, tags: Iterable[str]) -> dict[str, str]:
@@ -289,9 +284,9 @@ class Cluster(FileList):
         counts: dict[str, Counter[str]] = {tag: Counter() for tag in tags}
         for f in self.files:
             for tag in tags:
-                v = f.metadata.get(tag, '')
-                if v:
-                    for part in set(v.split(MULTI_VALUED_JOINER)):
+                values = f.metadata.getall(tag)
+                if values:
+                    for part in set(values):
                         counts[tag][part] += 1
         result = {}
         for tag, counter in counts.items():
