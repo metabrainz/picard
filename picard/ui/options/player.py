@@ -46,7 +46,7 @@ class PlayerOptionsPage(OptionsPage):
         self.ui = Ui_PlayerOptionsPage()
         self.ui.setupUi(self)
 
-        if not getattr(self.tagger.window, 'player', None):
+        if not self.tagger.window.player:
             self.ACTIVE = False
 
         if not OS_SUPPORTS_NOW_PLAYING:

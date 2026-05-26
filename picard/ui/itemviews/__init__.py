@@ -450,7 +450,7 @@ class TreeItem(QtWidgets.QTreeWidgetItem):
                     # - Special Cluster instances (e.g. "Unclustered Files"): Should show their Title
                     #   but no other per-entity values in custom columns.
                     is_group_row = isinstance(self.obj, ClusterList) or (
-                        isinstance(self.obj, Cluster) and getattr(self.obj, 'special', False)
+                        isinstance(self.obj, Cluster) and self.obj.special
                     )
                     if is_group_row and (column.key != 'title' and not column.status_icon):
                         self.setText(i, "")
@@ -716,7 +716,7 @@ class FileItem(TreeItem):
 
     @staticmethod
     def decide_fingerprint_icon_info(file):
-        if getattr(file, 'acoustid_fingerprint', None):
+        if file.acoustid_fingerprint:
             tagger = tagger_instance()
             if tagger.acoustidmanager.is_submitted(file):
                 icon = FileItem.icon_fingerprint_gray

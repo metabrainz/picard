@@ -142,7 +142,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
         # Get description from manifest
         description = _("No description available")
-        if plugin.manifest and hasattr(plugin.manifest, 'description_i18n'):
+        if plugin.manifest:
             try:
                 description = plugin.manifest.description_i18n() or description
             except Exception:
@@ -217,7 +217,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _get_authors_display(self, plugin):
         """Get authors display text."""
-        if plugin.manifest and hasattr(plugin.manifest, 'authors'):
+        if plugin.manifest:
             authors = plugin.manifest.authors
             if authors:
                 return ", ".join(authors)
@@ -225,7 +225,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
 
     def _get_maintainers_display(self, plugin):
         """Get maintainers display text."""
-        if plugin.manifest and hasattr(plugin.manifest, 'maintainers'):
+        if plugin.manifest:
             maintainers = plugin.manifest.maintainers
             if maintainers:
                 return ", ".join(maintainers)

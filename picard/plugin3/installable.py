@@ -60,7 +60,7 @@ class InstallablePlugin(ABC):
 
     def get_description(self):
         """Get description of this plugin."""
-        return getattr(self, 'description', '')
+        return self.description
 
     def is_blacklisted(self):
         """Check if this plugin is blacklisted.
