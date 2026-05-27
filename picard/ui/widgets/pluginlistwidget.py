@@ -46,6 +46,7 @@ from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.util import font_scaled_size
+from picard.ui.widgets.pluginformat import commit_date_display
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -254,12 +255,19 @@ class PluginListWidget(QtWidgets.QWidget):
         """Get display text for plugin version without update suffix."""
         return self.plugin_manager.get_plugin_version_display(plugin)
 
-    def _set_update_checkbox_tooltip(self, item, is_checked):
+    def _set_update_checkbox_tooltip(self, item, is_checked, plugin):
         """Set tooltip for update checkbox based on its state."""
+        parts = []
         if is_checked:
-            item.setToolTip(COLUMN_NEW_VERSION, _("This plugin is included in updates"))
+            parts.append(_("This plugin is included in updates"))
         else:
-            item.setToolTip(COLUMN_NEW_VERSION, _("This plugin is excluded from updates"))
+            parts.append(_("This plugin is excluded from updates"))
+
+        update = self._updates.get(plugin.plugin_id)
+        if update and update.commit_date:
+            parts.append(commit_date_display(update.commit_date))
+
+        item.setToolTip(COLUMN_NEW_VERSION, '\n'.join(parts))
 
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version. Returns True if plugin has updates."""
@@ -285,10 +293,10 @@ class PluginListWidget(QtWidgets.QWidget):
 
             if plugin.plugin_id in do_not_update:
                 item.setCheckState(COLUMN_NEW_VERSION, QtCore.Qt.CheckState.Unchecked)
-                self._set_update_checkbox_tooltip(item, False)
+                self._set_update_checkbox_tooltip(item, False, plugin)
             else:
                 item.setCheckState(COLUMN_NEW_VERSION, QtCore.Qt.CheckState.Checked)
-                self._set_update_checkbox_tooltip(item, True)
+                self._set_update_checkbox_tooltip(item, True, plugin)
             return True
         else:
             # No update available - no text, no checkbox
@@ -487,7 +495,7 @@ class PluginListWidget(QtWidgets.QWidget):
                 is_checked = item.checkState(COLUMN_NEW_VERSION) == QtCore.Qt.CheckState.Checked
 
                 # Update tooltip based on new state
-                self._set_update_checkbox_tooltip(item, is_checked)
+                self._set_update_checkbox_tooltip(item, is_checked, plugin)
 
                 if not is_checked and plugin.plugin_id not in do_not_update:
                     # User unchecked - add to do not update list
