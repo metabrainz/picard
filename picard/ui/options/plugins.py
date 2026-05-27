@@ -182,7 +182,7 @@ class Plugins3OptionsPage(OptionsPage):
         self.status_log.setPlainText("\n".join(self.status_messages))
         # Scroll to bottom to show latest message
         sb = self.status_log.verticalScrollBar()
-        sb.setValue(sb.maximum())
+        sb.setValue(sb.maximum() - 1)
         QtWidgets.QApplication.processEvents()
 
     def load(self):
