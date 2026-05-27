@@ -26,8 +26,6 @@ from functools import singledispatch
 from picard import log
 from picard.album import Album
 from picard.cluster import Cluster
-from picard.config import get_config
-from picard.coverart.processing.filters import filter_image_for_file
 from picard.file import File
 from picard.item import (
     FileListItem,
@@ -88,11 +86,8 @@ def _handle_album(album: Album, setter) -> bool:
             setter._set_image(track)
 
         for file in album.iterfiles():
-            if get_config().setting['save_images_to_tags']:
-                if not filter_image_for_file(setter.coverartimage, file.orig_metadata.images):
-                    continue
-            setter._set_image(file)
-            file.update(signal=False)
+            if setter._set_image(file):
+                file.update(signal=False)
 
     album.update(update_tracks=True)
     return True
@@ -129,8 +124,8 @@ def _handle_filelist(filelist: FileListItem, setter) -> bool:
                 stack.enter_context(parent.suspend_metadata_images_update)
                 parents.add(parent)
 
-            setter._set_image(file)
-            file.update(signal=False)
+            if setter._set_image(file):
+                file.update(signal=False)
 
         for parent in parents:
             if isinstance(parent, Album):
@@ -163,8 +158,8 @@ def _handle_file(file: File, setter) -> bool:
     """
     log.debug("set_coverart_file %r", file)
 
-    setter._set_image(file)
-    file.update()
+    if setter._set_image(file):
+        file.update()
     return True
 
 

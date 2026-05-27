@@ -103,6 +103,8 @@ def mock_file() -> Mock:
     file.metadata = Mock()
     file.metadata.images = Mock()
     file.metadata_images_changed = Mock()
+    file.orig_metadata = Mock()
+    file.orig_metadata.images = []
     file.update = Mock()
     return file
 

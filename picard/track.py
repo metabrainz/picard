@@ -63,6 +63,7 @@ from picard.const import (
     SILENCE_TRACK_TITLE,
     VARIOUS_ARTISTS_ID,
 )
+from picard.debug_opts import DebugOpt
 from picard.file import (
     run_file_post_addition_to_track_processors,
     run_file_post_removal_from_track_processors,
@@ -219,6 +220,12 @@ class Track(FileListItem):
             metadata.images = self.metadata.images.copy()
             for image in list(metadata.images):
                 if not filter_image_for_file(image, file.orig_metadata.images):
+                    log.debug_if(
+                        DebugOpt.COVERART,
+                        "update_file_metadata: filtered out %r for %r",
+                        image,
+                        file,
+                    )
                     metadata.images.remove(image)
         else:
             metadata.images = self.metadata.images
