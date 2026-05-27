@@ -39,6 +39,7 @@ from picard.metadata import (
 )
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
+from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
 
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
@@ -158,6 +159,7 @@ class PluginListWidget(QtWidgets.QWidget):
         self.tree_widget.itemSelectionChanged.connect(self._on_selection_changed)
         self.tree_widget.itemClicked.connect(self._on_item_clicked)
         self.tree_widget.customContextMenuRequested.connect(self._show_context_menu)
+        self.tree_widget.installEventFilter(self)
 
         # Cache tagger instance for performance
         self.tagger = tagger_instance()
@@ -295,8 +297,31 @@ class PluginListWidget(QtWidgets.QWidget):
             return False
 
     def _format_update_version(self, update):
-        """Format update version info for display (matching git info format)."""
-        return update.new_ref_item.format() or _("Available")
+        """Format update version info for display.
+
+        Handles both UpdateCheck (from update checking, has new_ref/new_commit)
+        and UpdateResult (from actual updates, has new_ref_item).
+        """
+        # UpdateResult has new_ref_item
+        new_ref_item = getattr(update, 'new_ref_item', None)
+        if new_ref_item:
+            return new_ref_item.format() or _("Available")
+
+        # UpdateCheck has new_ref and new_commit
+        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
+        commit = getattr(update, 'new_commit', None)
+
+        if ref:
+            if ref.startswith('v') or '.' in ref:
+                ref_type = RefItem.Type.TAG
+            else:
+                ref_type = RefItem.Type.BRANCH
+        else:
+            ref = commit
+            ref_type = RefItem.Type.COMMIT
+
+        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=commit)
+        return ref_item.format() or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
@@ -487,6 +512,16 @@ class PluginListWidget(QtWidgets.QWidget):
             # Update panel when update checkboxes change
             self._update_panel_state()
 
+    def eventFilter(self, obj, event):
+        """Handle Space key to toggle plugin enabled state."""
+        if obj is self.tree_widget and event.type() == QtCore.QEvent.Type.KeyPress:
+            if event.key() == QtCore.Qt.Key.Key_Space:
+                item = self.tree_widget.currentItem()
+                if item:
+                    self._on_item_clicked(item, COLUMN_ENABLED)
+                    return True
+        return super().eventFilter(obj, event)
+
     def _refresh_plugin_list(self):
         """Refresh the plugin list to reflect current state."""
         if self._refreshing:
@@ -547,8 +582,6 @@ class PluginListWidget(QtWidgets.QWidget):
         # Switch ref action
         switch_ref_action = menu.addAction(_("Switch Ref"))
         switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
-
-        menu.addSeparator()
 
         menu.addSeparator()
 
