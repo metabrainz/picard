@@ -311,7 +311,8 @@ class PluginListWidget(QtWidgets.QWidget):
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             return False
 
-    def _format_update_version(self, update):
+    @staticmethod
+    def _format_update_version(update):
         """Format update version info for display."""
         if update.new_ref_type == 'tag':
             ref_type = RefItem.Type.TAG

@@ -537,7 +537,7 @@ class TestFormatUpdateVersion(PicardTestCase):
         """Call the formatting logic directly without instantiating the widget."""
         from picard.ui.widgets.pluginlistwidget import PluginListWidget
 
-        return PluginListWidget._format_update_version(None, update)
+        return PluginListWidget._format_update_version(update)
 
     def test_tag_update(self):
         update = UpdateCheck(

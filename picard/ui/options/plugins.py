@@ -350,12 +350,13 @@ class Plugins3OptionsPage(OptionsPage):
     def _on_plugin_selected(self, plugin):
         """Handle plugin selection."""
         # Get cached update status to avoid network call
-        has_update = None
+        update = None
         if plugin:
             config = get_config()
-            has_update = plugin.plugin_id in config.persist['plugins3_updates']
+            updates = config.persist['plugins3_updates']
+            update = updates.get(plugin.plugin_id) if updates else None
 
-        self.plugin_details.show_plugin(plugin, has_update)
+        self.plugin_details.show_plugin(plugin, update)
         # Update button text since details are now shown
         self._update_details_button_text()
 
