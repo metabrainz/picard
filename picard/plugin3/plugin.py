@@ -673,6 +673,18 @@ class Plugin:
         except Exception:
             return None
 
+    def get_current_commit_date(self):
+        """Get the commit date of the current HEAD as a unix timestamp."""
+        if not self.local_path or not (self.local_path / '.git').exists():
+            return None
+        try:
+            backend = git_backend()
+            with backend.create_repository(self.local_path) as repo:
+                commit_id = repo.get_head_target()
+                return repo.get_commit_date(commit_id)
+        except Exception:
+            return None
+
     def load_module(self):
         """Load corresponding module from source path"""
         if self.state == PluginState.LOADED:
