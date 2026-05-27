@@ -33,6 +33,7 @@ from PyQt6.QtGui import (
     QTextOption,
 )
 from PyQt6.QtWidgets import (
+    QApplication,
     QStyle,
     QStyledItemDelegate,
     QStyleOptionViewItem,
@@ -64,20 +65,45 @@ class FormattedTextDelegate(QStyledItemDelegate):
             fill_brush = option.backgroundBrush
             text_color_role = QPalette.ColorRole.Text
 
+        painter.save()
+        painter.setClipRect(option.rect)
+        painter.fillRect(option.rect, fill_brush)
+
+        # Draw checkbox if the item has one
+        text_rect = option.rect
+        if option.features & QStyleOptionViewItem.ViewItemFeature.HasCheckIndicator:
+            style = option.widget.style() if option.widget else QApplication.style()
+            check_rect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemCheckIndicator, option, option.widget)
+            if option.checkState == Qt.CheckState.Checked:
+                state = QStyle.StateFlag.State_On
+            elif option.checkState == Qt.CheckState.PartiallyChecked:
+                state = QStyle.StateFlag.State_NoChange
+            else:
+                state = QStyle.StateFlag.State_Off
+            opt = QStyleOptionViewItem(option)
+            opt.rect = check_rect
+            opt.state = opt.state | state
+            style.drawPrimitive(QStyle.PrimitiveElement.PE_IndicatorItemViewItemCheck, opt, painter, option.widget)
+            # Offset text rect past the checkbox
+            text_rect = option.rect.adjusted(check_rect.width() + 4, 0, 0, 0)
+
         # Get the formatted text from the model
         text = index.data(Qt.ItemDataRole.DisplayRole)
         if not text:
+            painter.restore()
             return
 
         # Create a QTextDocument to render the formatted text
         doc = self._create_doc(text, option)
+        doc.setTextWidth(text_rect.width())
         layout = doc.documentLayout()
         if not layout:
+            painter.restore()
             return
 
         # A layout context for rendering the text
         context = QAbstractTextDocumentLayout.PaintContext()
-        context.clip = QRectF(0, 0, float(option.rect.width()), float(option.rect.height()))
+        context.clip = QRectF(0, 0, float(text_rect.width()), float(text_rect.height()))
 
         # Set the text color based on the current palette
         text_color = option.palette.color(text_color_role)
@@ -85,18 +111,16 @@ class FormattedTextDelegate(QStyledItemDelegate):
 
         # Calculate top margin to center the text vertically
         text_size = layout.documentSize()
-        top_margin = option.rect.top() + (option.rect.height() - text_size.height()) / 2
+        top_margin = text_rect.top() + (text_rect.height() - text_size.height()) / 2
 
         # Draw the text
-        painter.save()
-        painter.setClipRect(option.rect)
-        painter.fillRect(option.rect, fill_brush)
-        painter.translate(option.rect.left(), top_margin)
+        painter.translate(text_rect.left(), top_margin)
         layout.draw(painter, context)
         painter.restore()
 
     def sizeHint(self, option, index):
         # Provide a size hint based on the QTextDocument's size
+        self.initStyleOption(option, index)
         text = index.data(Qt.ItemDataRole.DisplayRole)
         if not text:
             return super().sizeHint(option, index)
@@ -104,7 +128,13 @@ class FormattedTextDelegate(QStyledItemDelegate):
         # Create a QTextDocument to render the formatted text
         doc = self._create_doc(text, option)
 
-        return QSize(math.ceil(doc.idealWidth()), math.ceil(doc.size().height()))
+        width = math.ceil(doc.idealWidth())
+        if option.features & QStyleOptionViewItem.ViewItemFeature.HasCheckIndicator:
+            style = option.widget.style() if option.widget else QApplication.style()
+            check_rect = style.subElementRect(QStyle.SubElement.SE_ItemViewItemCheckIndicator, option, option.widget)
+            width += check_rect.width() + 4
+
+        return QSize(width, math.ceil(doc.size().height()))
 
     def _create_doc(self, text, option) -> QTextDocument:
         doc = QTextDocument()

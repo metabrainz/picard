@@ -29,14 +29,18 @@ from PyQt6 import (
 from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
+from picard.plugin3.ref_item import RefItem
 
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.util import font_scaled_size
+from picard.ui.widgets.pluginformat import (
+    commit_date_display,
+    html_ref_format,
+)
 from picard.ui.widgets.pluginlistwidget import (
     PluginListWidget,
     UninstallPluginDialog,
 )
-from picard.ui.widgets.pluginformat import commit_date_display
 
 
 class PluginDetailsWidget(QtWidgets.QWidget):
@@ -83,6 +87,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.details_layout = QtWidgets.QFormLayout(details_widget)
 
         self.git_ref_label = QtWidgets.QLabel()
+        self.git_ref_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
         self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.details_layout.addRow(_("Version:"), self.git_ref_label)
 
@@ -247,19 +252,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         """Get plugin remote URL from metadata."""
         return self.plugin_manager.get_plugin_remote_url(plugin)
 
-    def _format_git_info(self, metadata):
-        """Format git information for display."""
-        return self.plugin_manager.get_plugin_git_info(metadata)
-
     def _get_git_ref_display(self, plugin):
-        """Get git ref display text."""
+        """Get git ref display text (HTML)."""
         try:
             if plugin.uuid:
                 metadata = self.plugin_manager._get_plugin_metadata(plugin.uuid)
                 if metadata:
-                    git_info = self._format_git_info(metadata)
-                    if git_info:
-                        return git_info
+                    git_ref = metadata.get_git_ref()
+                    ref_item = RefItem.from_git_ref(git_ref)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
         except Exception:
             pass
         return _("N/A")

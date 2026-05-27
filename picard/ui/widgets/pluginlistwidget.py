@@ -45,8 +45,12 @@ from picard.util import temporary_disconnect
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.formattedtextdelegate import FormattedTextDelegate
 from picard.ui.util import font_scaled_size
-from picard.ui.widgets.pluginformat import commit_date_display
+from picard.ui.widgets.pluginformat import (
+    commit_date_display,
+    html_ref_format,
+)
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -148,6 +152,11 @@ class PluginListWidget(QtWidgets.QWidget):
         header.setSectionResizeMode(COLUMN_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         header.setSectionResizeMode(COLUMN_NEW_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         header.setStretchLastSection(False)
+
+        # Use rich text delegate for version columns
+        version_delegate = FormattedTextDelegate(self.tree_widget)
+        self.tree_widget.setItemDelegateForColumn(COLUMN_VERSION, version_delegate)
+        self.tree_widget.setItemDelegateForColumn(COLUMN_NEW_VERSION, version_delegate)
 
         # Create update panel
         self.update_panel = UpdatePanel()
@@ -253,8 +262,23 @@ class PluginListWidget(QtWidgets.QWidget):
         return self.plugin_manager.get_plugin_remote_url(plugin)
 
     def _get_clean_version_display(self, plugin):
-        """Get display text for plugin version without update suffix."""
-        return self.plugin_manager.get_plugin_version_display(plugin)
+        """Get HTML display text for plugin version."""
+        try:
+            if plugin.uuid:
+                metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.uuid)
+                if metadata:
+                    git_ref = metadata.get_git_ref()
+                    ref_item = RefItem.from_git_ref(git_ref)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
+        except Exception:
+            pass
+        if plugin.manifest:
+            version = plugin.manifest._data.get('version')
+            if version:
+                return version
+        return _("Unknown")
 
     def _set_version_tooltip(self, item, plugin):
         """Set tooltip on Version column with commit date if available."""
@@ -313,7 +337,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
     @staticmethod
     def _format_update_version(update):
-        """Format update version info for display."""
+        """Format update version info for display (HTML)."""
         if update.new_ref_type == 'tag':
             ref_type = RefItem.Type.TAG
         elif update.new_ref_type == 'commit':
@@ -326,7 +350,7 @@ class PluginListWidget(QtWidgets.QWidget):
             return _("Available")
 
         ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=update.new_commit)
-        return ref_item.format() or _("Available")
+        return html_ref_format(ref_item) or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""

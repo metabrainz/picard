@@ -24,6 +24,9 @@ from PyQt6 import QtWidgets
 from picard.i18n import gettext as _
 from picard.plugin3.ref_item import RefItem
 
+from picard.ui.formattedtextdelegate import FormattedTextDelegate
+from picard.ui.widgets.pluginformat import html_ref_format
+
 
 class RefSelectorWidget(QtWidgets.QWidget):
     """Widget for selecting git refs (tags, branches, or custom input)."""
@@ -56,12 +59,14 @@ class RefSelectorWidget(QtWidgets.QWidget):
 
         # Tags tab
         self.tags_list = QtWidgets.QListWidget()
+        self.tags_list.setItemDelegate(FormattedTextDelegate(self.tags_list))
         self.tab_widget.addTab(self.tags_list, _("Tags"))
         self.tags_tab_index = tab_index
         tab_index += 1
 
         # Branches tab
         self.branches_list = QtWidgets.QListWidget()
+        self.branches_list.setItemDelegate(FormattedTextDelegate(self.branches_list))
         self.tab_widget.addTab(self.branches_list, _("Branches"))
         self.branches_tab_index = tab_index
         tab_index += 1
@@ -91,7 +96,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
                 commit=ref.get('commit', ''),
             )
             is_current = current_ref and ref['name'] == current_ref
-            list_item = QtWidgets.QListWidgetItem(ref_item.format(is_current=is_current))
+            list_item = QtWidgets.QListWidgetItem(html_ref_format(ref_item, is_current=is_current))
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.tags_list.addItem(list_item)
 
@@ -104,7 +109,7 @@ class RefSelectorWidget(QtWidgets.QWidget):
                 commit=ref.get('commit', ''),
             )
             is_current = current_ref and ref['name'] == current_ref
-            list_item = QtWidgets.QListWidgetItem(ref_item.format(is_current=is_current))
+            list_item = QtWidgets.QListWidgetItem(html_ref_format(ref_item, is_current=is_current))
             list_item.setData(QtWidgets.QListWidgetItem.ItemType.UserType, ref_item)
             self.branches_list.addItem(list_item)
 
