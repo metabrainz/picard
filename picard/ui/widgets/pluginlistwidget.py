@@ -215,6 +215,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
             # Column 2: Version (without update suffix)
             item.setText(COLUMN_VERSION, self._get_clean_version_display(plugin))
+            self._set_version_tooltip(item, plugin)
 
             # Column 3: Update checkbox and new version
             if self._setup_update_column(item, plugin):
@@ -254,6 +255,12 @@ class PluginListWidget(QtWidgets.QWidget):
     def _get_clean_version_display(self, plugin):
         """Get display text for plugin version without update suffix."""
         return self.plugin_manager.get_plugin_version_display(plugin)
+
+    def _set_version_tooltip(self, item, plugin):
+        """Set tooltip on Version column with commit date if available."""
+        commit_date = plugin.get_current_commit_date()
+        if commit_date:
+            item.setToolTip(COLUMN_VERSION, commit_date_display(commit_date))
 
     def _set_update_checkbox_tooltip(self, item, is_checked, plugin):
         """Set tooltip for update checkbox based on its state."""
