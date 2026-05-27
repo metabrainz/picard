@@ -663,17 +663,12 @@ class Plugin:
 
     def get_current_commit_id(self, short=False):
         """Get the current commit ID of the plugin if it's a git repository."""
-        if not self.local_path:
+        if not self.local_path or not (self.local_path / '.git').exists():
             return None
-        git_dir = self.local_path / '.git'
-        if not git_dir.exists():
-            return None
-
         try:
             backend = git_backend()
-            repo = backend.create_repository(self.local_path)
-            commit_id = repo.get_head_target()
-            repo.free()
+            with backend.create_repository(self.local_path) as repo:
+                commit_id = repo.get_head_target()
             return short_commit_id(commit_id) if short else commit_id
         except Exception:
             return None
