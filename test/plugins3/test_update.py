@@ -485,6 +485,7 @@ class TestCreateUpdateCheck(PicardTestCase):
         self.assertIsInstance(result, UpdateCheck)
         self.assertEqual(result.old_ref, 'v1.0')
         self.assertEqual(result.new_ref, 'v2.0')
+        self.assertEqual(result.new_ref_type, 'tag')
         self.assertEqual(result.old_commit, 'aaa')
         self.assertEqual(result.new_commit, 'bbb')
 
@@ -506,6 +507,7 @@ class TestCreateUpdateCheck(PicardTestCase):
 
         # Detached head should show short commit IDs
         self.assertEqual(result.old_ref, 'aabbccd')
+        self.assertEqual(result.new_ref_type, 'commit')
 
     def test_branch_based_update(self):
         plugin = Mock()
@@ -525,6 +527,85 @@ class TestCreateUpdateCheck(PicardTestCase):
 
         self.assertEqual(result.old_ref, 'main')
         self.assertIsNone(result.new_ref)
+        self.assertEqual(result.new_ref_type, 'branch')
+
+
+class TestFormatUpdateVersion(PicardTestCase):
+    """Test PluginListWidget._format_update_version() logic."""
+
+    def _format(self, update):
+        """Call the formatting logic directly without instantiating the widget."""
+        from picard.ui.widgets.pluginlistwidget import PluginListWidget
+
+        return PluginListWidget._format_update_version(None, update)
+
+    def test_tag_update(self):
+        update = UpdateCheck(
+            plugin_id='test',
+            old_commit='aaa',
+            new_commit='bbb1234',
+            commit_date=0,
+            old_ref='v1.0',
+            new_ref='v2.0',
+            new_ref_type='tag',
+        )
+        result = self._format(update)
+        self.assertIn('v2.0', result)
+
+    def test_commit_update(self):
+        update = UpdateCheck(
+            plugin_id='test',
+            old_commit='aaa1234',
+            new_commit='bbb1234',
+            commit_date=0,
+            old_ref='aaa1234',
+            new_ref='bbb1234',
+            new_ref_type='commit',
+        )
+        result = self._format(update)
+        self.assertIn('bbb1234', result)
+
+    def test_branch_update_no_new_ref(self):
+        update = UpdateCheck(
+            plugin_id='test',
+            old_commit='aaa',
+            new_commit='bbb1234',
+            commit_date=0,
+            old_ref='main',
+            new_ref=None,
+            new_ref_type='branch',
+        )
+        result = self._format(update)
+        # Falls back to new_commit
+        self.assertIn('bbb1234', result)
+
+    def test_no_ref_no_commit(self):
+        update = UpdateCheck(
+            plugin_id='test',
+            old_commit='aaa',
+            new_commit='',
+            commit_date=0,
+            old_ref='main',
+            new_ref=None,
+            new_ref_type='branch',
+        )
+        result = self._format(update)
+        self.assertEqual(result, 'Available')
+
+    def test_legacy_update_check_without_new_ref_type(self):
+        """Test backward compat with persisted UpdateCheck missing new_ref_type."""
+        update = UpdateCheck(
+            plugin_id='test',
+            old_commit='aaa',
+            new_commit='bbb1234',
+            commit_date=0,
+            old_ref='main',
+            new_ref='v2.0',
+        )
+        self.assertIsNone(update.new_ref_type)
+        result = self._format(update)
+        # Falls through to BRANCH type since new_ref_type is None
+        self.assertIn('v2.0', result)
 
 
 class TestCheckSinglePluginUpdate(PicardTestCase):

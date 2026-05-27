@@ -297,30 +297,19 @@ class PluginListWidget(QtWidgets.QWidget):
             return False
 
     def _format_update_version(self, update):
-        """Format update version info for display.
-
-        Handles both UpdateCheck (from update checking, has new_ref/new_commit)
-        and UpdateResult (from actual updates, has new_ref_item).
-        """
-        # UpdateResult has new_ref_item
-        new_ref_item = getattr(update, 'new_ref_item', None)
-        if new_ref_item:
-            return new_ref_item.format() or _("Available")
-
-        # UpdateCheck has new_ref and new_commit
-        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
-        commit = getattr(update, 'new_commit', None)
-
-        if ref:
-            if ref.startswith('v') or '.' in ref:
-                ref_type = RefItem.Type.TAG
-            else:
-                ref_type = RefItem.Type.BRANCH
-        else:
-            ref = commit
+        """Format update version info for display."""
+        if update.new_ref_type == 'tag':
+            ref_type = RefItem.Type.TAG
+        elif update.new_ref_type == 'commit':
             ref_type = RefItem.Type.COMMIT
+        else:
+            ref_type = RefItem.Type.BRANCH
 
-        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=commit)
+        ref = update.new_ref or update.new_commit
+        if not ref:
+            return _("Available")
+
+        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=update.new_commit)
         return ref_item.format() or _("Available")
 
     def _get_new_version(self, plugin):
