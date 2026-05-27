@@ -202,6 +202,34 @@ class TestCoverArtSetter:
             mock_obj.metadata.images.strip_front_images.assert_not_called()
 
         mock_obj.metadata.images.append.assert_called_once_with(mock_image)
+        mock_obj.orig_metadata.images.append.assert_not_called()
+        mock_obj.orig_metadata.images.strip_front_images.assert_not_called()
+        mock_obj.metadata_images_changed.emit.assert_called_once()
+
+    @pytest.mark.parametrize(
+        ('mode', 'should_strip', 'mock_image'),
+        [
+            (CoverArtSetterMode.REPLACE, True, CoverArtImage(types=['front'])),
+            (CoverArtSetterMode.APPEND, False, CoverArtImage(types=['front'])),
+            (CoverArtSetterMode.REPLACE, False, CoverArtImage(types=['medium'], support_types=True)),
+        ],
+    )
+    def test_set_orig_metadata(
+        self, mode: CoverArtSetterMode, should_strip: bool, mock_image: Mock, mock_obj: Mock
+    ) -> None:
+        """Test _set_image method in different modes."""
+        setter = CoverArtSetter(mode, mock_image, mock_obj, update_orig=True)
+        setter._set_image(mock_obj)
+
+        if should_strip:
+            mock_obj.metadata.images.strip_front_images.assert_called_once()
+            mock_obj.orig_metadata.images.strip_front_images.assert_called_once()
+        else:
+            mock_obj.metadata.images.strip_front_images.assert_not_called()
+            mock_obj.orig_metadata.images.strip_front_images.assert_not_called()
+
+        mock_obj.metadata.images.append.assert_called_once_with(mock_image)
+        mock_obj.orig_metadata.images.append.assert_called_once_with(mock_image)
         mock_obj.metadata_images_changed.emit.assert_called_once()
 
     @pytest.mark.parametrize(
