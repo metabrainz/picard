@@ -728,9 +728,15 @@ class Tagger(QtWidgets.QApplication):
                     save_session_to_path(self, path)
 
         log.debug("Picard stopping")
-        self.run_cleanup()
-        DataHash.remove_all_files()
+        with DebugOpt.TIMINGS.timing("run_cleanup"):
+            self.run_cleanup()
+        with DebugOpt.TIMINGS.timing("DataHash.remove_all_files"):
+            DataHash.remove_all_files()
         QtCore.QCoreApplication.processEvents()
+        if sys.stdout:
+            sys.stdout.flush()
+        if sys.stderr:
+            sys.stderr.flush()
 
     def _run_init(self):
         config = get_config()
@@ -822,9 +828,36 @@ class Tagger(QtWidgets.QApplication):
         else:
             self.browser_integration.stop()
 
-    _CALLBACK_BATCH_SIZE = 25
+    _BATCH_TIME_BUDGET = 0.050  # 50ms per batch (~20 yields/sec)
     _callback_queue: list = []
     _callback_timer_running: bool = False
+
+    def _process_in_batches(
+        self, items: list, process_func, label: str, time_budget: float | None = None, on_complete=None
+    ) -> None:
+        """Process items with a time budget, yielding to the event loop between batches.
+
+        Args:
+            items: List of items to process. Items are popped from the front.
+            process_func: Callable that processes a single item.
+            label: Label for debug timing output.
+            time_budget: Max seconds per batch. Defaults to _BATCH_TIME_BUDGET.
+            on_complete: Optional callable invoked when all items are processed.
+        """
+        if time_budget is None:
+            time_budget = self._BATCH_TIME_BUDGET
+        deadline = time.perf_counter() + time_budget
+        count = 0
+        while items and time.perf_counter() < deadline:
+            process_func(items.pop(0))
+            count += 1
+        log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
+        if items:
+            QtCore.QTimer.singleShot(
+                0, partial(self._process_in_batches, items, process_func, label, time_budget, on_complete)
+            )
+        elif on_complete:
+            on_complete()
 
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
@@ -844,10 +877,13 @@ class Tagger(QtWidgets.QApplication):
         return super().event(event)
 
     def _process_callback_batch(self) -> None:
-        """Process a batch of queued callbacks, then yield to the event loop."""
-        count = min(self._CALLBACK_BATCH_SIZE, len(self._callback_queue))
-        for _i in range(count):
+        """Process queued callbacks until the time budget is exhausted, then yield."""
+        deadline = time.perf_counter() + self._BATCH_TIME_BUDGET
+        count = 0
+        while self._callback_queue and time.perf_counter() < deadline:
             self._callback_queue.pop(0).run()
+            count += 1
+        log.debug_if(DebugOpt.TIMINGS, "Callback batch: %d items, %d queued", count, len(self._callback_queue))
         if self._callback_queue:
             QtCore.QTimer.singleShot(0, self._process_callback_batch)
         else:
@@ -857,7 +893,8 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
-            self.window.suspend_while_loading_exit()
+            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
+                self.window.suspend_while_loading_exit()
 
         if remove_file:
             file.remove()
@@ -992,17 +1029,12 @@ class Tagger(QtWidgets.QApplication):
             self.window.suspend_while_loading_enter()
             self._pending_files_count += len(new_files)
             unmatched_files = []
-            self._load_files_batch(new_files, 0, target, unmatched_files)
+            self._load_files_batch(new_files, target, unmatched_files)
 
-    _FILE_LOAD_BATCH_SIZE = 25
-
-    def _load_files_batch(self, files: list, offset: int, target: object, unmatched_files: list) -> None:
-        """Dispatch a batch of file loads, then yield to the event loop."""
-        end = min(offset + self._FILE_LOAD_BATCH_SIZE, len(files))
-        for i in range(offset, end):
-            files[i].load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
-        if end < len(files):
-            QtCore.QTimer.singleShot(0, partial(self._load_files_batch, files, end, target, unmatched_files))
+    def _load_files_batch(self, files: list, target: object, unmatched_files: list) -> None:
+        """Dispatch file loads using time-budgeted batching."""
+        callback = partial(self._file_loaded, target=target, unmatched_files=unmatched_files)
+        self._process_in_batches(files, lambda f: f.load(callback), "File load dispatch")
 
     @staticmethod
     def _scan_paths_recursive(paths, recursive, ignore_hidden):
@@ -1448,17 +1480,23 @@ class Tagger(QtWidgets.QApplication):
             log.error("Error while clustering: %r", error)
             return
 
-        with self.window.suspend_while_loading:
-            for file_cluster in process_events_iter(result):
-                files = set(file_cluster.files)
-                if len(files) > 1:
-                    cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                else:
-                    cluster = self.unclustered_files
-                cluster.add_files(files)
+        clusters = list(result)
+        self.window.suspend_while_loading_enter()
 
-        if callback:
-            callback()
+        def on_complete():
+            self.window.suspend_while_loading_exit()
+            if callback:
+                callback()
+
+        self._process_in_batches(clusters, self._apply_cluster, "Clustering", on_complete=on_complete)
+
+    def _apply_cluster(self, file_cluster):
+        files = set(file_cluster.files)
+        if len(files) > 1:
+            cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+        else:
+            cluster = self.unclustered_files
+        cluster.add_files(files)
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:

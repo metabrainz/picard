@@ -174,7 +174,8 @@ class Cluster(FileList):
         if self.can_show_coverart:
             self.add_metadata_images_from_children(added_files)
         if self.ui_item:
-            self.ui_item.add_files(added_files)
+            with DebugOpt.TIMINGS.timing("Cluster.add_files: %d items to tree", len(added_files)):
+                self.ui_item.add_files(added_files)
         if new_album:
             self._update_related_album(added_files=added_files)
 
