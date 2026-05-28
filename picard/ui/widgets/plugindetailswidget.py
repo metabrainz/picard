@@ -29,10 +29,18 @@ from PyQt6 import (
 from picard.config import get_config
 from picard.i18n import gettext as _
 from picard.plugin3.asyncops.manager import AsyncPluginManager
+from picard.plugin3.ref_item import RefItem
 
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.util import font_scaled_size
-from picard.ui.widgets.pluginlistwidget import UninstallPluginDialog
+from picard.ui.widgets.pluginformat import (
+    commit_date_display,
+    html_ref_format,
+)
+from picard.ui.widgets.pluginlistwidget import (
+    PluginListWidget,
+    UninstallPluginDialog,
+)
 
 
 class PluginDetailsWidget(QtWidgets.QWidget):
@@ -79,6 +87,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         self.details_layout = QtWidgets.QFormLayout(details_widget)
 
         self.git_ref_label = QtWidgets.QLabel()
+        self.git_ref_label.setTextFormat(QtCore.Qt.TextFormat.RichText)
         self.git_ref_label.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.TextSelectableByMouse)
         self.details_layout.addRow(_("Version:"), self.git_ref_label)
 
@@ -125,12 +134,12 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         # Initially hide everything
         self.setVisible(False)
 
-    def show_plugin(self, plugin, has_update=None):
+    def show_plugin(self, plugin, update=None):
         """Show details for the given plugin.
 
         Args:
             plugin: Plugin to show
-            has_update: Optional cached update status to avoid network call
+            update: Optional UpdateCheck object with update info
         """
         self.current_plugin = plugin
 
@@ -155,6 +164,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if git_ref:
             self.git_ref_label.setText(git_ref)
 
+        # Set version tooltip with commit date
+        commit_date = plugin.get_current_commit_date()
+        if commit_date:
+            self.git_ref_label.setToolTip(commit_date_display(commit_date))
+        else:
+            self.git_ref_label.setToolTip("")
+
         authors = self._get_authors_display(plugin)
         self.details_layout.setRowVisible(self.authors_label, bool(authors))
         if authors:
@@ -170,12 +186,13 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if git_url:
             self.git_url_label.setText(git_url)
 
-        # Check if update is available - use cached value if provided, otherwise disable button
-        if has_update is not None:
-            self.update_button.setEnabled(has_update)
+        # Update button state and tooltip
+        if update:
+            self.update_button.setEnabled(True)
+            self._set_update_button_tooltip(update)
         else:
-            # Don't check for updates during normal display to avoid network calls
             self.update_button.setEnabled(False)
+            self.update_button.setToolTip("")
 
         # Always enable description button since PluginInfoDialog shows comprehensive info
         self.description_button.setEnabled(True)
@@ -235,19 +252,17 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         """Get plugin remote URL from metadata."""
         return self.plugin_manager.get_plugin_remote_url(plugin)
 
-    def _format_git_info(self, metadata):
-        """Format git information for display."""
-        return self.plugin_manager.get_plugin_git_info(metadata)
-
     def _get_git_ref_display(self, plugin):
-        """Get git ref display text."""
+        """Get git ref display text (HTML)."""
         try:
             if plugin.uuid:
                 metadata = self.plugin_manager._get_plugin_metadata(plugin.uuid)
                 if metadata:
-                    git_info = self._format_git_info(metadata)
-                    if git_info:
-                        return git_info
+                    git_ref = metadata.get_git_ref()
+                    ref_item = RefItem.from_git_ref(git_ref)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
         except Exception:
             pass
         return _("N/A")
@@ -260,6 +275,14 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         elif remote_url:
             return remote_url
         return ""
+
+    def _set_update_button_tooltip(self, update):
+        """Set tooltip on update button with target version and date."""
+        version = PluginListWidget._format_update_version(update)
+        parts = [_("Update to {version}").format(version=version)]
+        if update.commit_date:
+            parts.append(commit_date_display(update.commit_date))
+        self.update_button.setToolTip('\n'.join(parts))
 
     def _update_plugin(self):
         """Update the current plugin."""
@@ -352,7 +375,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             if hasattr(self.parent(), 'plugin_state_changed'):
                 self.parent().plugin_state_changed.emit(plugin, "updated")
             # Refresh the display - plugin should no longer have update available
-            self.show_plugin(plugin, False)
+            self.show_plugin(plugin)
         else:
             self.update_button.setEnabled(True)
             error_msg = str(result.error) if result.error else _("Unknown error")

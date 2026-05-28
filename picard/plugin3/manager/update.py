@@ -65,6 +65,7 @@ class UpdateCheck(NamedTuple):
     commit_date: int
     old_ref: str
     new_ref: str
+    new_ref_type: str | None = None
 
 
 class UpdateAllResult(NamedTuple):
@@ -471,7 +472,15 @@ class PluginUpdater:
         else:
             display_old_ref = old_ref
 
-        display_new_ref = new_ref if new_ref else (short_commit_id(latest_commit) if is_detached else None)
+        if new_ref:
+            display_new_ref = new_ref
+            new_ref_type = 'tag'
+        elif is_detached:
+            display_new_ref = short_commit_id(latest_commit)
+            new_ref_type = 'commit'
+        else:
+            display_new_ref = None
+            new_ref_type = 'branch'
 
         return UpdateCheck(
             plugin_id=plugin.plugin_id,
@@ -480,6 +489,7 @@ class PluginUpdater:
             commit_date=latest_commit_date,
             old_ref=display_old_ref,
             new_ref=display_new_ref,
+            new_ref_type=new_ref_type,
         )
 
     def _check_single_plugin_update(self, plugin, metadata, skip_fetch):

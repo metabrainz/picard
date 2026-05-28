@@ -45,7 +45,12 @@ from picard.util import temporary_disconnect
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugin_order_selector import display_plugin_order_selector
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
+from picard.ui.formattedtextdelegate import FormattedTextDelegate
 from picard.ui.util import font_scaled_size
+from picard.ui.widgets.pluginformat import (
+    commit_date_display,
+    html_ref_format,
+)
 from picard.ui.widgets.refselector import RefSelectorWidget
 
 
@@ -148,6 +153,11 @@ class PluginListWidget(QtWidgets.QWidget):
         header.setSectionResizeMode(COLUMN_NEW_VERSION, QtWidgets.QHeaderView.ResizeMode.ResizeToContents)
         header.setStretchLastSection(False)
 
+        # Use rich text delegate for version columns
+        version_delegate = FormattedTextDelegate(self.tree_widget)
+        self.tree_widget.setItemDelegateForColumn(COLUMN_VERSION, version_delegate)
+        self.tree_widget.setItemDelegateForColumn(COLUMN_NEW_VERSION, version_delegate)
+
         # Create update panel
         self.update_panel = UpdatePanel()
         self.update_panel.update_selected_plugins.connect(self._update_selected_plugins)
@@ -214,6 +224,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
             # Column 2: Version (without update suffix)
             item.setText(COLUMN_VERSION, self._get_clean_version_display(plugin))
+            self._set_version_tooltip(item, plugin)
 
             # Column 3: Update checkbox and new version
             if self._setup_update_column(item, plugin):
@@ -251,15 +262,43 @@ class PluginListWidget(QtWidgets.QWidget):
         return self.plugin_manager.get_plugin_remote_url(plugin)
 
     def _get_clean_version_display(self, plugin):
-        """Get display text for plugin version without update suffix."""
-        return self.plugin_manager.get_plugin_version_display(plugin)
+        """Get HTML display text for plugin version."""
+        try:
+            if plugin.uuid:
+                metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.uuid)
+                if metadata:
+                    git_ref = metadata.get_git_ref()
+                    ref_item = RefItem.from_git_ref(git_ref)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
+        except Exception:
+            pass
+        if plugin.manifest:
+            version = plugin.manifest._data.get('version')
+            if version:
+                return version
+        return _("Unknown")
 
-    def _set_update_checkbox_tooltip(self, item, is_checked):
+    def _set_version_tooltip(self, item, plugin):
+        """Set tooltip on Version column with commit date if available."""
+        commit_date = plugin.get_current_commit_date()
+        if commit_date:
+            item.setToolTip(COLUMN_VERSION, commit_date_display(commit_date))
+
+    def _set_update_checkbox_tooltip(self, item, is_checked, plugin):
         """Set tooltip for update checkbox based on its state."""
+        parts = []
         if is_checked:
-            item.setToolTip(COLUMN_NEW_VERSION, _("This plugin is included in updates"))
+            parts.append(_("This plugin is included in updates"))
         else:
-            item.setToolTip(COLUMN_NEW_VERSION, _("This plugin is excluded from updates"))
+            parts.append(_("This plugin is excluded from updates"))
+
+        update = self._updates.get(plugin.plugin_id)
+        if update and update.commit_date:
+            parts.append(commit_date_display(update.commit_date))
+
+        item.setToolTip(COLUMN_NEW_VERSION, '\n'.join(parts))
 
     def _setup_update_column(self, item, plugin):
         """Setup update column with checkbox and new version. Returns True if plugin has updates."""
@@ -285,10 +324,10 @@ class PluginListWidget(QtWidgets.QWidget):
 
             if plugin.plugin_id in do_not_update:
                 item.setCheckState(COLUMN_NEW_VERSION, QtCore.Qt.CheckState.Unchecked)
-                self._set_update_checkbox_tooltip(item, False)
+                self._set_update_checkbox_tooltip(item, False, plugin)
             else:
                 item.setCheckState(COLUMN_NEW_VERSION, QtCore.Qt.CheckState.Checked)
-                self._set_update_checkbox_tooltip(item, True)
+                self._set_update_checkbox_tooltip(item, True, plugin)
             return True
         else:
             # No update available - no text, no checkbox
@@ -296,32 +335,22 @@ class PluginListWidget(QtWidgets.QWidget):
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             return False
 
-    def _format_update_version(self, update):
-        """Format update version info for display.
-
-        Handles both UpdateCheck (from update checking, has new_ref/new_commit)
-        and UpdateResult (from actual updates, has new_ref_item).
-        """
-        # UpdateResult has new_ref_item
-        new_ref_item = getattr(update, 'new_ref_item', None)
-        if new_ref_item:
-            return new_ref_item.format() or _("Available")
-
-        # UpdateCheck has new_ref and new_commit
-        ref = getattr(update, 'new_ref', None) or getattr(update, 'old_ref', 'main')
-        commit = getattr(update, 'new_commit', None)
-
-        if ref:
-            if ref.startswith('v') or '.' in ref:
-                ref_type = RefItem.Type.TAG
-            else:
-                ref_type = RefItem.Type.BRANCH
-        else:
-            ref = commit
+    @staticmethod
+    def _format_update_version(update):
+        """Format update version info for display (HTML)."""
+        if update.new_ref_type == 'tag':
+            ref_type = RefItem.Type.TAG
+        elif update.new_ref_type == 'commit':
             ref_type = RefItem.Type.COMMIT
+        else:
+            ref_type = RefItem.Type.BRANCH
 
-        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=commit)
-        return ref_item.format() or _("Available")
+        ref = update.new_ref or update.new_commit
+        if not ref:
+            return _("Available")
+
+        ref_item = RefItem(shortname=ref, ref_type=ref_type, commit=update.new_commit)
+        return html_ref_format(ref_item) or _("Available")
 
     def _get_new_version(self, plugin):
         """Get the new version available for update."""
@@ -498,7 +527,7 @@ class PluginListWidget(QtWidgets.QWidget):
                 is_checked = item.checkState(COLUMN_NEW_VERSION) == QtCore.Qt.CheckState.Checked
 
                 # Update tooltip based on new state
-                self._set_update_checkbox_tooltip(item, is_checked)
+                self._set_update_checkbox_tooltip(item, is_checked, plugin)
 
                 if not is_checked and plugin.plugin_id not in do_not_update:
                     # User unchecked - add to do not update list

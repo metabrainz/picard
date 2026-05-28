@@ -242,6 +242,32 @@ class TestPluginGetCurrentCommitId(PicardTestCase):
         self.assertIsNone(plugin.get_current_commit_id())
 
 
+class TestPluginGetCurrentCommitDate(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        skip_if_no_git_backend()
+        self.tmpdir = self.mktmpdir()
+
+    def test_returns_timestamp(self):
+        repo_path = Path(self.tmpdir) / 'test-plugin'
+        create_git_repo_with_backend(repo_path, {'__init__.py': ''})
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        result = plugin.get_current_commit_date()
+        self.assertIsInstance(result, int)
+        self.assertGreater(result, 0)
+
+    def test_returns_none_no_local_path(self):
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        plugin.local_path = None
+        self.assertIsNone(plugin.get_current_commit_date())
+
+    def test_returns_none_no_git_dir(self):
+        repo_path = Path(self.tmpdir) / 'test-plugin'
+        repo_path.mkdir()
+        plugin = Plugin(Path(self.tmpdir), 'test-plugin')
+        self.assertIsNone(plugin.get_current_commit_date())
+
+
 class TestPluginNameAndStr(PicardTestCase):
     def test_str_returns_plugin_id(self):
         plugin = Plugin(Path('/tmp'), 'my-plugin')

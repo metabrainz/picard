@@ -740,30 +740,6 @@ class PluginManager(QObject):
             pass
         return None
 
-    def get_plugin_version_display(self, plugin):
-        """Get version display text for plugin."""
-        version_text = ""
-
-        try:
-            # Try to get version from git metadata first (prioritize git ref)
-            if plugin.uuid:
-                metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-                if metadata:
-                    git_info = self.get_plugin_git_info(metadata)
-                    if git_info:
-                        version_text = git_info
-        except Exception:
-            pass
-
-        # Fallback to manifest version if no git metadata
-        if not version_text:
-            if plugin.manifest:
-                version = plugin.manifest._data.get('version')
-                if version:
-                    version_text = version
-
-        return version_text or "Unknown"
-
     def get_plugin_git_info(self, metadata):
         """Format git information for display."""
         if not metadata:
