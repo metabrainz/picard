@@ -108,3 +108,66 @@ class TestDebugOpt(PicardTestCase):
 
             class BuggyOpt(DebugOptEnum):
                 C = 1, "x"
+
+
+class TestDebugOptTiming(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        DebugOptTestCase.set_registry(set())
+
+    def test_timing_disabled_no_logging(self):
+        """When disabled, timing should not log anything."""
+        self.assertFalse(DebugOptTestCase.A.enabled)
+        with DebugOptTestCase.A.timing("should not appear"):
+            pass
+        # No exception means it worked as a no-op
+
+    def test_timing_disabled_body_executes(self):
+        """The wrapped code must still execute when timing is disabled."""
+        result = []
+        with DebugOptTestCase.A.timing("test"):
+            result.append(1)
+        self.assertEqual(result, [1])
+
+    def test_timing_enabled_body_executes(self):
+        """The wrapped code must execute when timing is enabled."""
+        DebugOptTestCase.A.enabled = True
+        result = []
+        with DebugOptTestCase.A.timing("test"):
+            result.append(1)
+        self.assertEqual(result, [1])
+
+    def test_timing_enabled_logs_message(self):
+        """When enabled, timing should log the formatted message with elapsed time."""
+        from unittest.mock import patch
+
+        DebugOptTestCase.A.enabled = True
+        with patch('picard.log.debug') as mock_debug:
+            with DebugOptTestCase.A.timing("Batch: %d items", 25):
+                pass
+            mock_debug.assert_called_once()
+            fmt, msg, elapsed = mock_debug.call_args[0]
+            self.assertEqual(fmt, "%s in %.1f ms")
+            self.assertEqual(msg, "Batch: 25 items")
+            self.assertIsInstance(elapsed, float)
+            self.assertGreaterEqual(elapsed, 0.0)
+
+    def test_timing_msg_func(self):
+        """msg_func should be called lazily only when enabled."""
+        from unittest.mock import patch
+
+        DebugOptTestCase.A.enabled = True
+        called = []
+        with patch('picard.log.debug') as mock_debug:
+            with DebugOptTestCase.A.timing(msg_func=lambda: (called.append(1), "Lazy msg")[1]):
+                pass
+            self.assertEqual(called, [1])
+            fmt, msg, _elapsed = mock_debug.call_args[0]
+            self.assertEqual(msg, "Lazy msg")
+
+    def test_timing_msg_func_not_called_when_disabled(self):
+        """msg_func must not be called when the option is disabled."""
+        called = []
+        with DebugOptTestCase.A.timing(msg_func=lambda: (called.append(1), "nope")[1]):
+            pass
+        self.assertEqual(called, [])

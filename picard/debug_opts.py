@@ -19,8 +19,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import (
+    Callable,
+    Generator,
+)
+from contextlib import contextmanager
 from enum import Enum
 import sys
+import time
 
 from picard.i18n import N_
 
@@ -57,6 +63,50 @@ class DebugOptEnum(int, Enum):
     def opt_names(cls):
         """Returns a comma-separated list of all possible debug options"""
         return ','.join(sorted(o.optname for o in cls))
+
+    @contextmanager
+    def timing(
+        self,
+        msg: str = '',
+        *args: object,
+        msg_func: Callable[[], str] | None = None,
+    ) -> Generator[None]:
+        """Context manager that logs elapsed time if this debug option is enabled.
+
+        When disabled, this is effectively a no-op with minimal overhead
+        (just a boolean check).
+
+        Args:
+            msg: Format string for the log message.
+            *args: Arguments for the format string.
+            msg_func: A callable returning the message string. Called only
+                after the timed block completes and only if the option is
+                enabled. Use for expensive message construction.
+                Mutually exclusive with msg/args.
+
+        Usage:
+            with DebugOpt.TIMINGS.timing("Batch: %d items", count):
+                do_work()
+            # logs: "Batch: 25 items in 12.3 ms"
+
+            with DebugOpt.TIMINGS.timing(msg_func=lambda: f"Heavy {obj!r}"):
+                do_work()
+        """
+        if not self.enabled:
+            yield
+            return
+        from picard import log
+
+        t0 = time.perf_counter_ns()
+        yield
+        elapsed_ms = (time.perf_counter_ns() - t0) / 1_000_000
+        if msg_func is not None:
+            formatted = msg_func()
+        elif args:
+            formatted = msg % args
+        else:
+            formatted = msg
+        log.debug("%s in %.1f ms", formatted, elapsed_ms)
 
     @classmethod
     def help_text(cls):
@@ -118,3 +168,4 @@ class DebugOpt(DebugOptEnum):
     COVERART = 7, N_('Cover Art'), N_('Log cover art filter, resize and convert operations')
     MATCHING = 8, N_('Matching'), N_('Log similarity scores and match decisions')
     PLUGIN_DEVELOPMENT = 9, N_('Plugin Development'), N_('Log plugin details typically only used during development')
+    TIMINGS = 10, N_('Timings'), N_('Log timing information for operations affecting UI responsiveness')

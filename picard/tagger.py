@@ -728,9 +728,15 @@ class Tagger(QtWidgets.QApplication):
                     save_session_to_path(self, path)
 
         log.debug("Picard stopping")
-        self.run_cleanup()
-        DataHash.remove_all_files()
+        with DebugOpt.TIMINGS.timing("run_cleanup"):
+            self.run_cleanup()
+        with DebugOpt.TIMINGS.timing("DataHash.remove_all_files"):
+            DataHash.remove_all_files()
         QtCore.QCoreApplication.processEvents()
+        if sys.stdout:
+            sys.stdout.flush()
+        if sys.stderr:
+            sys.stderr.flush()
 
     def _run_init(self):
         config = get_config()
@@ -846,8 +852,9 @@ class Tagger(QtWidgets.QApplication):
     def _process_callback_batch(self) -> None:
         """Process a batch of queued callbacks, then yield to the event loop."""
         count = min(self._CALLBACK_BATCH_SIZE, len(self._callback_queue))
-        for _i in range(count):
-            self._callback_queue.pop(0).run()
+        with DebugOpt.TIMINGS.timing("Callback batch: %d items, %d queued", count, len(self._callback_queue) - count):
+            for _i in range(count):
+                self._callback_queue.pop(0).run()
         if self._callback_queue:
             QtCore.QTimer.singleShot(0, self._process_callback_batch)
         else:
@@ -857,7 +864,8 @@ class Tagger(QtWidgets.QApplication):
         config = get_config()
         self._pending_files_count -= 1
         if self._pending_files_count == 0:
-            self.window.suspend_while_loading_exit()
+            with DebugOpt.TIMINGS.timing("suspend_while_loading_exit"):
+                self.window.suspend_while_loading_exit()
 
         if remove_file:
             file.remove()
@@ -999,8 +1007,9 @@ class Tagger(QtWidgets.QApplication):
     def _load_files_batch(self, files: list, offset: int, target: object, unmatched_files: list) -> None:
         """Dispatch a batch of file loads, then yield to the event loop."""
         end = min(offset + self._FILE_LOAD_BATCH_SIZE, len(files))
-        for i in range(offset, end):
-            files[i].load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
+        with DebugOpt.TIMINGS.timing("File load dispatch: %d files (offset %d/%d)", end - offset, offset, len(files)):
+            for i in range(offset, end):
+                files[i].load(partial(self._file_loaded, target=target, unmatched_files=unmatched_files))
         if end < len(files):
             QtCore.QTimer.singleShot(0, partial(self._load_files_batch, files, end, target, unmatched_files))
 
