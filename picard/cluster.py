@@ -204,7 +204,8 @@ class Cluster(FileList):
 
     def update(self, signal=True):
         self.metadata['~totalalbumtracks'] = self.metadata['totaltracks'] = len(self.files)
-        self._aggregate_metadata()
+        if not self.special:
+            self._aggregate_metadata()
         if signal and self.ui_item:
             self.ui_item.update()
 
