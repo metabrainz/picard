@@ -116,27 +116,33 @@ class ImageFiltersTest(PicardTestCase):
 
     def test_filter_by_previous_image_size(self):
         album = self._create_fake_album()
-        image1, info1 = create_fake_image(500, 500, 'jpg')
-        image2, info2 = create_fake_image(2000, 2000, 'jpg')
+        previous_images = album.orig_metadata.images
         coverartimage = CoverArtImage(types=['front'], support_types=True)
-        self.assertFalse(bigger_previous_image_filter(image1, info1, album, coverartimage))
-        self.assertTrue(bigger_previous_image_filter(image2, info2, album, coverartimage))
+        coverartimage.width = 500
+        coverartimage.height = 500
+        self.assertFalse(bigger_previous_image_filter(coverartimage, previous_images))
+        coverartimage = CoverArtImage(types=['front'], support_types=True)
+        coverartimage.width = 2000
+        coverartimage.height = 2000
+        self.assertTrue(bigger_previous_image_filter(coverartimage, previous_images))
         coverartimage = CoverArtImage(types=['back'], support_types=True)
-        self.assertTrue(bigger_previous_image_filter(image1, info1, album, coverartimage))
+        coverartimage.width = 500
+        coverartimage.height = 500
+        self.assertTrue(bigger_previous_image_filter(coverartimage, previous_images))
 
     def test_filter_by_image_type(self):
         album = self._create_fake_album()
-        image, info = create_fake_image(1000, 1000, 'jpg')
+        previous_images = album.orig_metadata.images
         coverartimage1 = CoverArtImage(types=['front'], support_types=True)
         coverartimage2 = CoverArtImage(types=['back'], support_types=True)
         coverartimage3 = CoverArtImage(types=['front', 'back'], support_types=True)
         coverartimage4 = CoverArtImage(types=['spine'], support_types=True)
         coverartimage5 = CoverArtImage(types=['booklet', 'spine'], support_types=True)
-        self.assertFalse(image_types_filter(image, info, album, coverartimage1))
-        self.assertTrue(image_types_filter(image, info, album, coverartimage2))
-        self.assertFalse(image_types_filter(image, info, album, coverartimage3))
-        self.assertTrue(image_types_filter(image, info, album, coverartimage4))
-        self.assertTrue(image_types_filter(image, info, album, coverartimage5))
+        self.assertFalse(image_types_filter(coverartimage1, previous_images))
+        self.assertTrue(image_types_filter(coverartimage2, previous_images))
+        self.assertFalse(image_types_filter(coverartimage3, previous_images))
+        self.assertTrue(image_types_filter(coverartimage4, previous_images))
+        self.assertTrue(image_types_filter(coverartimage5, previous_images))
 
 
 class ImageProcessorsTest(PicardTestCase):

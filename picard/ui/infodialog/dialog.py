@@ -42,7 +42,9 @@ from picard import log
 from picard.album import Album
 from picard.config import get_config
 from picard.coverart.image import CoverArtImageIOError
+from picard.coverart.processing.filters import filter_image_for_file
 from picard.coverart.utils import translated_types_as_string
+from picard.debug_opts import DebugOpt
 from picard.file import File
 from picard.i18n import gettext as _
 from picard.track import Track
@@ -91,8 +93,13 @@ class InfoDialog(PicardDialog):
         self.has_new_external_images = any(image.external_file_coverart for image in self.new_images)
         has_orig_images = hasattr(obj, 'orig_metadata') and obj.orig_metadata.images
         if has_orig_images:
+            # Apply per-file "never replace" filters to show what will actually be saved
+            if get_config().setting['save_images_to_tags']:
+                self.new_images = [
+                    image for image in self.new_images if filter_image_for_file(image, obj.orig_metadata.images)
+                ]
             artworktable_class = ArtworkTableOriginal
-            has_new_different_images = obj.orig_metadata.images != obj.metadata.images
+            has_new_different_images = sorted(obj.orig_metadata.images) != self.new_images
             if has_new_different_images or self.has_new_external_images:
                 is_track = isinstance(obj, Track)
                 is_linked_file = isinstance(obj, File) and isinstance(obj.parent_item, Track)
@@ -104,6 +111,15 @@ class InfoDialog(PicardDialog):
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.ui.buttonBox.rejected.connect(self.close)
+
+        log.debug_if(
+            DebugOpt.COVERART,
+            "Cover art info dialog for %r: orig_images=%r, new_images=%r, table=%s",
+            obj,
+            self.orig_images,
+            self.new_images,
+            artworktable_class.__name__,
+        )
 
         # Add the ArtworkTable to the ui
         self.ui.artwork_table = artworktable_class(parent=self)

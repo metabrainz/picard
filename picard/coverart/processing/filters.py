@@ -65,49 +65,70 @@ def size_metadata_filter(metadata):
     return _check_threshold_size(metadata['width'], metadata['height'])
 
 
-def bigger_previous_image_filter(data, image_info, album, coverartimage):
+def bigger_previous_image_filter(coverartimage, previous_images):
+    """Return False if previous_images contains a bigger image of the same type.
+
+    Used to prevent replacing embedded images with smaller downloaded ones.
+    """
     config = get_config()
-    if config.setting['dont_replace_with_smaller_cover'] and config.setting['save_images_to_tags']:
-        downloaded_types = coverartimage.normalized_types()
-        previous_images = album.orig_metadata.images.get_types_dict()
-        if downloaded_types in previous_images:
-            previous_image = previous_images[downloaded_types]
-            log.debug_if(
-                DebugOpt.COVERART,
-                "Bigger image filter: new %d x %d vs existing %d x %d",
-                image_info.width,
-                image_info.height,
-                previous_image.width,
-                previous_image.height,
-            )
-            if image_info.width < previous_image.width or image_info.height < previous_image.height:
-                log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
-                return False
+    if not config.setting['dont_replace_with_smaller_cover']:
+        return True
+    downloaded_types = coverartimage.normalized_types()
+    previous_images_dict = previous_images.get_types_dict()
+    if downloaded_types in previous_images_dict:
+        previous_image = previous_images_dict[downloaded_types]
+        log.debug_if(
+            DebugOpt.COVERART,
+            "Bigger image filter: new %d x %d vs existing %d x %d",
+            coverartimage.width,
+            coverartimage.height,
+            previous_image.width,
+            previous_image.height,
+        )
+        if coverartimage.width < previous_image.width or coverartimage.height < previous_image.height:
+            log.debug("Discarding cover art. A bigger image with the same types is already embedded.")
+            return False
     return True
 
 
-def image_types_filter(data, image_info, album, coverartimage):
+def image_types_filter(coverartimage, previous_images):
+    """Return False if previous_images contains an image of a "never replace" type.
+
+    Used to prevent replacing embedded images of specific types (e.g. front, back).
+    """
     config = get_config()
-    if config.setting['dont_replace_cover_of_types'] and config.setting['save_images_to_tags']:
-        downloaded_types = set(coverartimage.normalized_types())
-        never_replace_types = config.setting['dont_replace_included_types']
-        log.debug_if(
-            DebugOpt.COVERART,
-            "Image types filter: downloaded types %r, never replace types %r",
-            downloaded_types,
-            never_replace_types,
-        )
-        previous_image_types = album.orig_metadata.images.get_types_dict()
-        for previous_image_type in previous_image_types:
-            type_already_embedded = downloaded_types.intersection(previous_image_type)
-            should_not_replace = downloaded_types.intersection(never_replace_types)
-            if type_already_embedded and should_not_replace:
-                log.debug("Discarding cover art. An image with the same type is already embedded.")
-                return False
+    if not config.setting['dont_replace_cover_of_types']:
+        return True
+    downloaded_types = set(coverartimage.normalized_types())
+    never_replace_types = config.setting['dont_replace_included_types']
+    log.debug_if(
+        DebugOpt.COVERART,
+        "Image types filter: downloaded types %r, never replace types %r",
+        downloaded_types,
+        never_replace_types,
+    )
+    previous_image_types = previous_images.get_types_dict()
+    for previous_image_type in previous_image_types:
+        type_already_embedded = downloaded_types.intersection(previous_image_type)
+        should_not_replace = downloaded_types.intersection(never_replace_types)
+        if type_already_embedded and should_not_replace:
+            log.debug("Discarding cover art. An image with the same type is already embedded.")
+            return False
+    return True
+
+
+def filter_image_for_file(coverartimage, previous_images):
+    """Run per-file "never replace" filters on a single image.
+
+    Returns True if the image should be assigned to the file,
+    False if it should be skipped.
+    """
+    if not bigger_previous_image_filter(coverartimage, previous_images):
+        return False
+    if not image_types_filter(coverartimage, previous_images):
+        return False
     return True
 
 
 register_cover_art_filter(size_filter)
 register_cover_art_metadata_filter(size_metadata_filter)
-register_cover_art_filter(bigger_previous_image_filter)
-register_cover_art_filter(image_types_filter)

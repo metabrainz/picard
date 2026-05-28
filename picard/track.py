@@ -63,6 +63,7 @@ from picard.const import (
     SILENCE_TRACK_TITLE,
     VARIOUS_ARTISTS_ID,
 )
+from picard.debug_opts import DebugOpt
 from picard.file import (
     run_file_post_addition_to_track_processors,
     run_file_post_removal_from_track_processors,
@@ -211,7 +212,23 @@ class Track(FileListItem):
         meta_diff = self.metadata.diff(self.scripted_metadata)
         metadata.update(meta_diff)
         # Images are not affected by scripting, always use the tracks current images
-        metadata.images = self.metadata.images
+        # Apply per-file "never replace" filters against the file's original embedded images
+        if config.setting['save_images_to_tags']:
+            # import here to avoid circular imports
+            from picard.coverart.processing.filters import filter_image_for_file
+
+            metadata.images = self.metadata.images.copy()
+            for image in list(metadata.images):
+                if not filter_image_for_file(image, file.orig_metadata.images):
+                    log.debug_if(
+                        DebugOpt.COVERART,
+                        "update_file_metadata: filtered out %r for %r",
+                        image,
+                        file,
+                    )
+                    metadata.images.remove(image)
+        else:
+            metadata.images = self.metadata.images
         file.copy_metadata(metadata)
         file.update(signal=False)
         self.update()

@@ -38,7 +38,11 @@
 from enum import IntEnum
 
 from picard import log
+from picard.config import get_config
 from picard.coverart.image import CoverArtImage
+from picard.coverart.processing.filters import filter_image_for_file
+from picard.debug_opts import DebugOpt
+from picard.file import File
 from picard.item import MetadataItem
 
 from .handlers import _set_coverart_dispatch
@@ -82,15 +86,39 @@ class CoverArtSetter:
         """
         return _set_coverart_dispatch(self.source_obj, self)
 
-    def _set_image(self, obj: MetadataItem) -> None:
+    def _set_image(self, obj: MetadataItem) -> bool:
         """
         Set the cover art image on an object based on the current mode.
+
+        For File objects, applies per-file "never replace" filters when
+        save_images_to_tags is enabled.
 
         Parameters
         ----------
         obj
             The object to set the image on
+
+        Returns
+        -------
+        bool
+            True if the image was set, False if filtered out
         """
+        if isinstance(obj, File) and get_config().setting['save_images_to_tags']:
+            if not filter_image_for_file(self.coverartimage, obj.orig_metadata.images):
+                log.debug_if(
+                    DebugOpt.COVERART,
+                    "Per-file filter rejected %r for %r",
+                    self.coverartimage,
+                    obj,
+                )
+                return False
+            log.debug_if(
+                DebugOpt.COVERART,
+                "Per-file filter accepted %r for %r",
+                self.coverartimage,
+                obj,
+            )
+
         if self.mode == CoverArtSetterMode.REPLACE and self.coverartimage.is_front_image():
             obj.metadata.images.strip_front_images()
             log.debug("Replacing images with %r in %r", self.coverartimage, obj)
@@ -99,3 +127,4 @@ class CoverArtSetter:
 
         obj.metadata.images.append(self.coverartimage)
         obj.metadata_images_changed.emit()
+        return True
