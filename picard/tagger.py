@@ -832,7 +832,9 @@ class Tagger(QtWidgets.QApplication):
     _callback_queue: list = []
     _callback_timer_running: bool = False
 
-    def _process_in_batches(self, items: list, process_func, label: str, time_budget: float | None = None) -> None:
+    def _process_in_batches(
+        self, items: list, process_func, label: str, time_budget: float | None = None, on_complete=None
+    ) -> None:
         """Process items with a time budget, yielding to the event loop between batches.
 
         Args:
@@ -840,6 +842,7 @@ class Tagger(QtWidgets.QApplication):
             process_func: Callable that processes a single item.
             label: Label for debug timing output.
             time_budget: Max seconds per batch. Defaults to _BATCH_TIME_BUDGET.
+            on_complete: Optional callable invoked when all items are processed.
         """
         if time_budget is None:
             time_budget = self._BATCH_TIME_BUDGET
@@ -850,7 +853,11 @@ class Tagger(QtWidgets.QApplication):
             count += 1
         log.debug_if(DebugOpt.TIMINGS, "%s: %d items, %d remaining", label, count, len(items))
         if items:
-            QtCore.QTimer.singleShot(0, partial(self._process_in_batches, items, process_func, label, time_budget))
+            QtCore.QTimer.singleShot(
+                0, partial(self._process_in_batches, items, process_func, label, time_budget, on_complete)
+            )
+        elif on_complete:
+            on_complete()
 
     def event(self, event):
         if isinstance(event, thread.ProxyToMainEvent):
@@ -1473,17 +1480,23 @@ class Tagger(QtWidgets.QApplication):
             log.error("Error while clustering: %r", error)
             return
 
-        with self.window.suspend_while_loading:
-            for file_cluster in process_events_iter(result):
-                files = set(file_cluster.files)
-                if len(files) > 1:
-                    cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
-                else:
-                    cluster = self.unclustered_files
-                cluster.add_files(files)
+        clusters = list(result)
+        self.window.suspend_while_loading_enter()
 
-        if callback:
-            callback()
+        def on_complete():
+            self.window.suspend_while_loading_exit()
+            if callback:
+                callback()
+
+        self._process_in_batches(clusters, self._apply_cluster, "Clustering", on_complete=on_complete)
+
+    def _apply_cluster(self, file_cluster):
+        files = set(file_cluster.files)
+        if len(files) > 1:
+            cluster = self.load_cluster(file_cluster.title, file_cluster.artist)
+        else:
+            cluster = self.unclustered_files
+        cluster.add_files(files)
 
     def load_cluster(self, name, artist):
         for cluster in self.clusters:
