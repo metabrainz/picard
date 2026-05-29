@@ -1,5 +1,43 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b3 - 2026-05-29
+
+### Bugfixes
+- [PICARD-2376](https://tickets.metabrainz.org/browse/PICARD-2376) - Log view becomes unresponsive on long list
+- [PICARD-3194](https://tickets.metabrainz.org/browse/PICARD-3194) - Custom column `%_musicbrainz_discids%` or `%compilation%` only displays value on track level
+- [PICARD-3256](https://tickets.metabrainz.org/browse/PICARD-3256) - Preferred Releases always saved in alphabetic order
+- [PICARD-3265](https://tickets.metabrainz.org/browse/PICARD-3265) - Translation locale selection does not sort locales by UI language
+- [PICARD-3267](https://tickets.metabrainz.org/browse/PICARD-3267) - macOS app claims to support macOS 11.0, but minimum supported version for Qt 6.11 is macOS 13.0
+- [PICARD-3272](https://tickets.metabrainz.org/browse/PICARD-3272) - "Never replace selected cover image types" ignored
+- [PICARD-3274](https://tickets.metabrainz.org/browse/PICARD-3274) - Crash after removing last item in standalone recordings
+- [PICARD-3275](https://tickets.metabrainz.org/browse/PICARD-3275) - Default optical drive always used regardless of which drive is selected in Lookup CD drop down
+- [PICARD-3277](https://tickets.metabrainz.org/browse/PICARD-3277) - Cover art to be saved as external files has no types and comments set
+- [PICARD-3278](https://tickets.metabrainz.org/browse/PICARD-3278) - Non-front CAA cover art images replace front cover
+- [PICARD-3279](https://tickets.metabrainz.org/browse/PICARD-3279) - Cover art column does not update for tracks
+- [PICARD-3281](https://tickets.metabrainz.org/browse/PICARD-3281) - Improve UI responsiveness during scan of many files
+- [PICARD-3287](https://tickets.metabrainz.org/browse/PICARD-3287) - Context menu is missing "Expand all", "Collapse all" and "Select all" entries
+- [PICARD-3290](https://tickets.metabrainz.org/browse/PICARD-3290) - Built-in player prevents file write access
+- [PICARD-3294](https://tickets.metabrainz.org/browse/PICARD-3294) - "Never replace cover image" options only run on image loading
+- [PICARD-3295](https://tickets.metabrainz.org/browse/PICARD-3295) - Track loses original cover art when file gets removed
+
+### New Features
+- [PICARD-2197](https://tickets.metabrainz.org/browse/PICARD-2197) - Use artist aliases to find a more appropriate artist sort name for the artist credit
+
+### Improvements
+- [PICARD-2867](https://tickets.metabrainz.org/browse/PICARD-2867) - Improve matching and lookup by utilizing barcode
+- [PICARD-3163](https://tickets.metabrainz.org/browse/PICARD-3163) - Make using artist sortname for translation optional, disabled by default
+- [PICARD-3261](https://tickets.metabrainz.org/browse/PICARD-3261) - Simplify Unicode characters when saving tags with non-Unicode character set
+- [PICARD-3262](https://tickets.metabrainz.org/browse/PICARD-3262) - New `picard-plugins --init` command to initialize a new plugin directory
+- [PICARD-3264](https://tickets.metabrainz.org/browse/PICARD-3264) - Improved alias selection for artist, album and track translations
+- [PICARD-3269](https://tickets.metabrainz.org/browse/PICARD-3269) - Make ISWCs available as `%_iswc%` variable
+- [PICARD-3283](https://tickets.metabrainz.org/browse/PICARD-3283) - Add stop button for pending network requests
+- [PICARD-3284](https://tickets.metabrainz.org/browse/PICARD-3284) - Improve release matching with tiered scoring and identifier support
+- [PICARD-3285](https://tickets.metabrainz.org/browse/PICARD-3285) - Add a button to clear the network cache
+- [PICARD-3286](https://tickets.metabrainz.org/browse/PICARD-3286) - Log View dialog: performance issues, limited filtering, and UX improvements
+- [PICARD-3289](https://tickets.metabrainz.org/browse/PICARD-3289) - Allow user to set the default log level used when Picard is started
+- [PICARD-3291](https://tickets.metabrainz.org/browse/PICARD-3291) - Utilize barcode/catno/date from file tags for better release matching
+
+
 ## Version 3.0.0b1 - 2026-04-23
 
 ### Bugfixes
