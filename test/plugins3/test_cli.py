@@ -102,7 +102,6 @@ def _make_cli(manager, args, **kwargs):
 class TestPluginCLI(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.plugin3.cli')
 
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""

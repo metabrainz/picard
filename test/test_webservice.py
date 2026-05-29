@@ -71,7 +71,6 @@ def dummy_handler(*args, **kwargs):
 class WebServiceTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.webservice')
         # Isolate the network cache folder to a temporary directory to avoid
         # modifying the user's actual network cache during WebService initialization
         self.tmpdir = self.mktmpdir()
@@ -137,7 +136,6 @@ class WebServiceTest(PicardTestCase):
 class WebServiceTaskTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.webservice')
         self.set_config_values(
             {
                 'use_proxy': False,
@@ -384,7 +382,6 @@ class RequestPriorityQueueTest(PicardTestCase):
 class WebServiceProxyTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.webservice')
         self.set_config_values(PROXY_SETTINGS)
 
     def test_proxy_setup(self):
