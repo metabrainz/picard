@@ -242,7 +242,10 @@ class Track(FileListItem):
         if self.album:
             self.album.remove_file(self, file, new_album=new_album)
         self.remove_metadata_images_from_children([file])
-        if not self.files and self._orig_images:
+        if not self.files and self.album:
+            self.orig_metadata.images = self.album.orig_metadata.images.copy()
+            self.metadata.images = self.album.metadata.images.copy()
+        elif not self.files and self._orig_images:
             self.orig_metadata.images = self._orig_images
             self.metadata.images = self._orig_images.copy()
         run_file_post_removal_from_track_processors(self, file)

@@ -58,7 +58,13 @@ class CoverArtSetterMode(IntEnum):
 class CoverArtSetter:
     """Handles setting cover art on different types of objects using single dispatch pattern."""
 
-    def __init__(self, mode: CoverArtSetterMode, coverartimage: CoverArtImage, source_obj: MetadataItem) -> None:
+    def __init__(
+        self,
+        mode: CoverArtSetterMode,
+        coverartimage: CoverArtImage,
+        source_obj: MetadataItem,
+        update_orig: bool = False,
+    ) -> None:
         """
         Initialize the CoverArtSetter.
 
@@ -74,6 +80,7 @@ class CoverArtSetter:
         self.mode = mode
         self.coverartimage = coverartimage
         self.source_obj = source_obj
+        self.update_orig = update_orig
 
     def set_coverart(self) -> bool:
         """
@@ -119,12 +126,24 @@ class CoverArtSetter:
                 obj,
             )
 
-        if self.mode == CoverArtSetterMode.REPLACE and self.coverartimage.is_front_image():
-            obj.metadata.images.strip_front_images()
-            log.debug("Replacing images with %r in %r", self.coverartimage, obj)
-        else:
-            log.debug("Appending image %r to %r", self.coverartimage, obj)
+        attrs_to_update = ['metadata']
+        # Update original metadata, if requested, but not for files unless they
+        # are the source object.
+        if self.update_orig and (obj == self.source_obj or not isinstance(obj, File)):
+            attrs_to_update.append('orig_metadata')
 
-        obj.metadata.images.append(self.coverartimage)
+        for attr in attrs_to_update:
+            metadata = getattr(obj, attr, None)
+            if not metadata:
+                continue
+
+            if self.mode == CoverArtSetterMode.REPLACE and self.coverartimage.is_front_image():
+                metadata.images.strip_front_images()
+                log.debug("Replacing images with %r in %r", self.coverartimage, obj)
+            else:
+                log.debug("Appending image %r to %r", self.coverartimage, obj)
+
+            metadata.images.append(self.coverartimage)
+
         obj.metadata_images_changed.emit()
         return True

@@ -288,7 +288,7 @@ class CoverArt:
     def _set_metadata(self, image: CoverArtImage):
         if image.can_be_saved_to_metadata:
             log.debug("Storing to metadata: %r", image)
-            setter = CoverArtSetter(CoverArtSetterMode.REPLACE, image, self.album)
+            setter = CoverArtSetter(CoverArtSetterMode.REPLACE, image, self.album, update_orig=True)
             setter.set_coverart()
             # If the image already was a front image,
             # there might still be some other non-CAA front
