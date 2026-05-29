@@ -6,6 +6,7 @@
 - [PICARD-2376](https://tickets.metabrainz.org/browse/PICARD-2376) - Log view becomes unresponsive on long list
 - [PICARD-3194](https://tickets.metabrainz.org/browse/PICARD-3194) - Custom column `%_musicbrainz_discids%` or `%compilation%` only displays value on track level
 - [PICARD-3256](https://tickets.metabrainz.org/browse/PICARD-3256) - Preferred Releases always saved in alphabetic order
+- [PICARD-3258](https://tickets.metabrainz.org/browse/PICARD-3258) - `tagger.remove_album` crashes inside `register_album_metadata_processor` handler
 - [PICARD-3265](https://tickets.metabrainz.org/browse/PICARD-3265) - Translation locale selection does not sort locales by UI language
 - [PICARD-3267](https://tickets.metabrainz.org/browse/PICARD-3267) - macOS app claims to support macOS 11.0, but minimum supported version for Qt 6.11 is macOS 13.0
 - [PICARD-3272](https://tickets.metabrainz.org/browse/PICARD-3272) - "Never replace selected cover image types" ignored
@@ -19,6 +20,7 @@
 - [PICARD-3290](https://tickets.metabrainz.org/browse/PICARD-3290) - Built-in player prevents file write access
 - [PICARD-3294](https://tickets.metabrainz.org/browse/PICARD-3294) - "Never replace cover image" options only run on image loading
 - [PICARD-3295](https://tickets.metabrainz.org/browse/PICARD-3295) - Track loses original cover art when file gets removed
+- [PICARD-3297](https://tickets.metabrainz.org/browse/PICARD-3297) - Cover art "Show more details" failing after clustering
 
 ### New Features
 - [PICARD-2197](https://tickets.metabrainz.org/browse/PICARD-2197) - Use artist aliases to find a more appropriate artist sort name for the artist credit
@@ -36,6 +38,9 @@
 - [PICARD-3286](https://tickets.metabrainz.org/browse/PICARD-3286) - Log View dialog: performance issues, limited filtering, and UX improvements
 - [PICARD-3289](https://tickets.metabrainz.org/browse/PICARD-3289) - Allow user to set the default log level used when Picard is started
 - [PICARD-3291](https://tickets.metabrainz.org/browse/PICARD-3291) - Utilize barcode/catno/date from file tags for better release matching
+- [PICARD-3296](https://tickets.metabrainz.org/browse/PICARD-3296) - Adjust Haiku platform detection to changes in Haiku's latest Python versions
+- [PICARD-3298](https://tickets.metabrainz.org/browse/PICARD-3298) - Plugin options UI improvements
+- [PICARD-3299](https://tickets.metabrainz.org/browse/PICARD-3299) - New debug options "plugin_development" and "coverart"
 
 
 ## Version 3.0.0b1 - 2026-04-23
