@@ -5,13 +5,14 @@
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
 # KenParker_CN <peekabookenny@gmail.com>, 2025.
 # imgradeone <imgradeone@outlook.com>, 2026.
+# Nebulain <2689960483@qq.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-01-08 15:11+0000\n"
-"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
+"PO-Revision-Date: 2026-05-30 22:12+0000\n"
+"Last-Translator: Nebulain <2689960483@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/constants/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -19,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.5\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4454,15 +4455,15 @@ msgstr ""
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "比特率"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
-msgstr ""
+msgstr "近似比特率（以 kbps 为单位）。"
 
 #: picard/const/tags.py:215
 msgid "Bits per sample"
-msgstr ""
+msgstr "位深度"
 
 #: picard/const/tags.py:216
 msgid "Bits of data per sample."

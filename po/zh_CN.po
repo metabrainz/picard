@@ -46,13 +46,14 @@
 # 郭云鹤(Guo Yunhe)🇨🇳 <guoyunhebrave@gmail.com>, 2018
 # KenParker_CN <peekabookenny@gmail.com>, 2024, 2025.
 # imgradeone <imgradeone@outlook.com>, 2026.
+# Nebulain <2689960483@qq.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-05-28 08:19+0200\n"
-"PO-Revision-Date: 2026-01-08 15:11+0000\n"
-"Last-Translator: imgradeone <imgradeone@outlook.com>\n"
+"PO-Revision-Date: 2026-05-30 22:12+0000\n"
+"Last-Translator: Nebulain <2689960483@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/app/zh_Hans/>\n"
 "Language: zh_CN\n"
@@ -60,7 +61,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 2026.5\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:203
@@ -7266,10 +7267,8 @@ msgid "File Creation Time"
 msgstr ""
 
 #: picard/ui/itemviews/columns.py:202
-#, fuzzy
-#| msgid "Bitrate:"
 msgid "Bitrate"
-msgstr "比特率:"
+msgstr "比特率"
 
 #: picard/ui/itemviews/columns.py:210
 msgid "Genre"
