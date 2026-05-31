@@ -42,6 +42,7 @@ class LogItemModel(QtCore.QAbstractListModel):
 
     _MAX_DISPLAY_CHARS = 500
     _SOURCE_RE = re.compile(r'^[DWIE]: (\d{2}:\d{2}:\d{2},\d{3}) \S+:\d+: ')
+    _CONTROL_CHAR_MAP = str.maketrans({chr(c): chr(0x2400 + c) for c in range(32)} | {'\x7f': '\u2421'})
 
     def __init__(self, log_tail, parent=None):
         super().__init__(parent)
@@ -79,8 +80,9 @@ class LogItemModel(QtCore.QAbstractListModel):
             if self._compact_view:
                 msg = self._SOURCE_RE.sub(r'\1 ', msg)
             if len(msg) > self._MAX_DISPLAY_CHARS:
-                return msg[: self._MAX_DISPLAY_CHARS] + '…'
-            return msg
+                remaining = len(msg) - self._MAX_DISPLAY_CHARS
+                msg = f"{msg[: self._MAX_DISPLAY_CHARS]}… (+{remaining} chars)"
+            return msg.translate(self._CONTROL_CHAR_MAP)
         if role == Qt.ItemDataRole.ForegroundRole:
             return self._get_color(item.level)
         if role == LevelRole:

@@ -73,6 +73,7 @@ class LogViewDialog(PicardDialog):
         self.list_view.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.list_view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.list_view.customContextMenuRequested.connect(self._show_context_menu)
+        self.list_view.activated.connect(self._show_detail)
         self.vbox.addWidget(self.list_view)
 
         view_detail_action = QtGui.QAction(
