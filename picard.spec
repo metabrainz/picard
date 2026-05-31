@@ -6,6 +6,14 @@ import os
 import platform
 import sys
 
+from PyInstaller.building.api import (
+    COLLECT,
+    EXE,
+    PYZ,
+)
+from PyInstaller.building.build_main import Analysis
+from PyInstaller.building.osx import BUNDLE
+
 
 sys.path.insert(0, '.')
 from picard import (
@@ -134,7 +142,6 @@ else:
         pyz,
         a.scripts,
         exclude_binaries=True,
-        target_arch=os.environ.get('TARGET_ARCH', None),
         # Avoid name clash between picard executable and picard module folder
         name='picard' if os_name == 'Windows' else 'picard-run',
         debug=False,
@@ -143,7 +150,8 @@ else:
         icon='picard.ico',
         version='win-version-info.txt',
         console=False,
-        # macOS code signing
+        # macOS specific
+        target_arch=os.environ.get('TARGET_ARCH', None),
         codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
         entitlements_file='./scripts/package/entitlements.plist',
     )
@@ -164,7 +172,6 @@ else:
         pyz_plugins,
         a_plugins.scripts,
         exclude_binaries=True,
-        target_arch=os.environ.get('TARGET_ARCH', None),
         name='picard-plugins',
         debug=False,
         strip=False,
@@ -172,7 +179,8 @@ else:
         icon='picard.ico',
         version='win-version-info.txt',
         console=False if os_name == 'Darwin' else True,
-        # macOS code signing
+        # macOS specific
+        target_arch=os.environ.get('TARGET_ARCH', None),
         codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
         entitlements_file='./scripts/package/entitlements.plist',
     )
