@@ -47,6 +47,7 @@ from picard.ui import (
     FONT_FAMILY_MONOSPACE,
     PicardDialog,
 )
+from picard.ui.colors import interface_colors
 from picard.ui.logviewmodel import (
     FullTextRole,
     LogFilterProxyModel,
@@ -54,6 +55,89 @@ from picard.ui.logviewmodel import (
     LogItemModel,
 )
 from picard.ui.util import FileDialog
+
+
+class LogHighlighter(QtGui.QSyntaxHighlighter):
+    """Syntax highlighter for Picard log output in the detail view."""
+
+    _PATTERNS = None
+
+    @classmethod
+    def _build_patterns(cls):
+        opt_names = '|'.join(re.escape(opt.optname) for opt in DebugOpt)
+        cls._PATTERNS = [
+            (re.compile(r'^E: '), 'error'),
+            (re.compile(r'^W: '), 'warning'),
+            (re.compile(r'^I: '), 'info'),
+            (re.compile(r'^D: '), 'debug'),
+            (re.compile(r'^[DWIE]: \d{2}:\d{2}:\d{2},\d{3} (\S+:\d+:)'), 'source'),
+            (re.compile(rf'\[({opt_names})\]'), 'debug_opt'),
+            (re.compile(r'^Traceback \(most recent call last\):$'), 'traceback'),
+            (re.compile(r'^\s+File ".+", line \d+'), 'path'),
+            (re.compile(r'^(?:\w+\.)*\w*(?:Error|Exception|Warning|Exit): .+$'), 'error'),
+            (re.compile(r'^\s+\^+\s*$'), 'error'),
+        ]
+
+    def __init__(self, document):
+        super().__init__(document)
+        self._formats = self._build_formats()
+
+    def _build_formats(self):
+        error_color = interface_colors.get_qcolor('log_error')
+        warning_color = interface_colors.get_qcolor('log_warning')
+        debug_color = interface_colors.get_qcolor('log_debug')
+        info_color = interface_colors.get_qcolor('log_info')
+
+        bold = QtGui.QTextCharFormat()
+        bold.setFontWeight(QtGui.QFont.Weight.Bold)
+
+        error_fmt = QtGui.QTextCharFormat()
+        error_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        error_fmt.setForeground(error_color)
+
+        warning_fmt = QtGui.QTextCharFormat()
+        warning_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        warning_fmt.setForeground(warning_color)
+
+        info_fmt = QtGui.QTextCharFormat()
+        info_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        info_fmt.setForeground(info_color)
+
+        debug_fmt = QtGui.QTextCharFormat()
+        debug_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        debug_fmt.setForeground(debug_color)
+
+        source_fmt = QtGui.QTextCharFormat()
+        source_fmt.setForeground(debug_color)
+
+        debug_opt_fmt = QtGui.QTextCharFormat()
+        debug_opt_fmt.setFontWeight(QtGui.QFont.Weight.Bold)
+        debug_opt_fmt.setForeground(debug_color)
+
+        path_fmt = QtGui.QTextCharFormat()
+        path_fmt.setForeground(debug_color)
+
+        return {
+            'error': error_fmt,
+            'warning': warning_fmt,
+            'info': info_fmt,
+            'debug': debug_fmt,
+            'source': source_fmt,
+            'debug_opt': debug_opt_fmt,
+            'traceback': bold,
+            'path': path_fmt,
+        }
+
+    def highlightBlock(self, text):
+        if self._PATTERNS is None:
+            self._build_patterns()
+        for pattern, key in self._PATTERNS:
+            fmt = self._formats[key]
+            for match in pattern.finditer(text):
+                if match.lastindex:
+                    self.setFormat(match.start(1), match.end(1) - match.start(1), fmt)
+                else:
+                    self.setFormat(match.start(), match.end() - match.start(), fmt)
 
 
 class LogViewDialog(PicardDialog):
@@ -126,6 +210,7 @@ class LogViewDialog(PicardDialog):
         text_edit.setLineWrapMode(QtWidgets.QPlainTextEdit.LineWrapMode.WidgetWidth)
         text_edit.setFont(self.list_view.font())
         text_edit.setPlainText(text)
+        dlg._highlighter = LogHighlighter(text_edit.document())
         layout.addWidget(text_edit)
         dlg.show()
 
