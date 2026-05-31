@@ -1,5 +1,16 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b4 - 2026-05-31
+
+### Bugfixes
+- [PICARD-3300](https://tickets.metabrainz.org/browse/PICARD-3300) - Fails to launch on macOS: "Expected an instance of Tagger"
+- [PICARD-3301](https://tickets.metabrainz.org/browse/PICARD-3301) - Visual glitch in log viewer for multi line output
+- [PICARD-3304](https://tickets.metabrainz.org/browse/PICARD-3304) - picard-plugins fails to launch with "Expected an instance of Tagger"
+
+### Improvements
+- [PICARD-3303](https://tickets.metabrainz.org/browse/PICARD-3303) - Add syntax highlighting to Log Detail dialog
+
+
 ## Version 3.0.0b3 - 2026-05-29
 
 ### Bugfixes
