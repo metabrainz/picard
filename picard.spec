@@ -148,56 +148,48 @@ else:
         strip=False,
         upx=False,
         icon='picard.ico',
-        version='win-version-info.txt',
         console=False,
-        # macOS specific
-        target_arch=os.environ.get('TARGET_ARCH', None),
-        codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
-        entitlements_file='./scripts/package/entitlements.plist',
-    )
-
-    # The picard-plugins CLI tool
-    a_plugins = Analysis(
-        ['picard/plugin3/cli.py'],
-        pathex=['picard'],
-        binaries=[],
-        datas=[],
-        hiddenimports=['cffi'],
-        hookspath=None,
-        runtime_hooks=[],
-        excludes=excludes,
-    )
-    pyz_plugins = PYZ(a_plugins.pure, a_plugins.zipped_data)
-    exe_plugins = EXE(
-        pyz_plugins,
-        a_plugins.scripts,
-        exclude_binaries=True,
-        name='picard-plugins',
-        debug=False,
-        strip=False,
-        upx=False,
-        icon='picard.ico',
+        # Windows specific
         version='win-version-info.txt',
-        console=False if os_name == 'Darwin' else True,
         # macOS specific
         target_arch=os.environ.get('TARGET_ARCH', None),
         codesign_identity=os.environ.get('CODESIGN_IDENTITY', None),
         entitlements_file='./scripts/package/entitlements.plist',
     )
 
-    coll = COLLECT(
-        exe,
-        a.binaries,
-        a.zipfiles,
-        a.datas,
-        exe_plugins,
-        a_plugins.binaries,
-        a_plugins.zipfiles,
-        a_plugins.datas,
-        strip=False,
-        upx=False,
-        name='picard',
-    )
+    collect_items = [exe, a.binaries, a.zipfiles, a.datas]
+
+    # The picard-plugins CLI tool.
+    # Do not include on macOS, since macOS does not support multiple targets
+    # in the app bundle and mixing windowed and console executables.
+    if os_name != 'Darwin':
+        a_plugins = Analysis(
+            ['picard/plugin3/cli.py'],
+            pathex=['picard'],
+            binaries=[],
+            datas=[],
+            hiddenimports=['cffi'],
+            hookspath=None,
+            runtime_hooks=[],
+            excludes=excludes,
+        )
+        pyz_plugins = PYZ(a_plugins.pure, a_plugins.zipped_data)
+        exe_plugins = EXE(
+            pyz_plugins,
+            a_plugins.scripts,
+            exclude_binaries=True,
+            name='picard-plugins',
+            debug=False,
+            strip=False,
+            upx=False,
+            icon='picard.ico',
+            console=True,
+            # Windows specific
+            version='win-version-info.txt',
+        )
+        collect_items.extend([exe_plugins, a_plugins.binaries, a_plugins.zipfiles, a_plugins.datas])
+
+    coll = COLLECT(*collect_items, strip=False, upx=False, name='picard')
 
     if os_name == 'Darwin':
         info_plist = {
