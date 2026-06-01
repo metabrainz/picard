@@ -1038,7 +1038,6 @@ class ScriptDetailsEditor(PicardDialog, HasDisplayTitle):
 
         self.ui.buttonBox.setFocus()
 
-        self.setModal(True)
         self.setWindowTitle(_(self.display_title()))
         self.skip_change_check = False
 
