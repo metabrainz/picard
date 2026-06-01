@@ -49,7 +49,6 @@ class ImageURLDialog(PicardDialog):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setWindowTitle(_("Enter URL"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.label = QtWidgets.QLabel(_("Cover art URL:"))
         self.url = QtWidgets.QLineEdit(self)
