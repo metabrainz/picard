@@ -53,7 +53,7 @@ class NewUserDialog:
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("New User Warning"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)
         self.cb.setChecked(self.show_again)

@@ -50,7 +50,7 @@ class AllowRtdUpdatesDialog:
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(dialog_text)
         self.msg.setWindowTitle(_("ReadTheDocs Updates"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         self.cb = QtWidgets.QCheckBox(show_again_text)
         self.cb.setChecked(self.show_again)
