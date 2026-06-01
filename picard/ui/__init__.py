@@ -163,7 +163,9 @@ class SingletonDialog:
         # Update parent if changed
         if 'parent' in kwargs and parent != kwargs['parent']:
             instance.setParent(kwargs['parent'])
-        instance.show_nonmodal()
+        instance.show()
+        instance.raise_()
+        instance.activateWindow()
         return instance
 
     @classmethod
