@@ -1329,9 +1329,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         webbrowser2.open('documentation')
 
     def _show_log_dialog(self, dialog):
-        dialog.show()
-        dialog.raise_()
-        dialog.activateWindow()
+        dialog.show_nonmodal()
 
     def show_log(self):
         self._show_log_dialog(self.log_dialog)

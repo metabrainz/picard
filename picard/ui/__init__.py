@@ -163,9 +163,7 @@ class SingletonDialog:
         # Update parent if changed
         if 'parent' in kwargs and parent != kwargs['parent']:
             instance.setParent(kwargs['parent'])
-        instance.show()
-        instance.raise_()
-        instance.activateWindow()
+        instance.show_nonmodal()
         return instance
 
     @classmethod
@@ -212,6 +210,32 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.ready_for_display.emit()
             self.__shown = True
         return super().showEvent(event)
+
+    def _show_with_modality(self, modality):
+        self.setWindowModality(modality)
+        self.show()
+        self.raise_()
+        self.activateWindow()
+
+    def show_modal(self):
+        """Show this dialog as window-modal and bring it to the front.
+
+        Sets WindowModal modality (blocking only the parent window), then
+        shows, raises, and activates the dialog. Use this instead of exec()
+        when you want non-blocking modal behaviour, or instead of a bare
+        show() when the dialog must block its parent.
+        """
+        self._show_with_modality(QtCore.Qt.WindowModality.WindowModal)
+
+    def show_nonmodal(self):
+        """Show this dialog as non-modal and bring it to the front.
+
+        Clears any modality so the dialog does not block any window, then
+        shows, raises, and activates it. Use this for persistent utility
+        windows (log viewer, documentation, etc.) that should stay open
+        alongside the rest of the UI.
+        """
+        self._show_with_modality(QtCore.Qt.WindowModality.NonModal)
 
     def show_help(self, help_url=None):
         url = help_url or self.help_url

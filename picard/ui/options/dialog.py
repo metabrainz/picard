@@ -388,9 +388,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             override_profiles=override_profiles,
             override_settings=override_settings,
         )
-        profile_dialog.show()
-        profile_dialog.raise_()
-        profile_dialog.activateWindow()
+        profile_dialog.show_modal()
 
     def update_from_profile_changes(self):
         if not self.suspend_signals:
