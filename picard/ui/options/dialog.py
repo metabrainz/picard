@@ -48,6 +48,7 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
+from picard.const.sys import IS_MACOS
 from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
@@ -213,7 +214,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
-        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        if IS_MACOS:
+            # Prevent macOS from rendering this as a sheet attached to the
+            # parent's title bar. On Linux/Windows, the Window flag would break
+            # WindowModal enforcement, so it is only set on macOS.
+            self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.Window)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         self.ui = Ui_OptionsDialog()
