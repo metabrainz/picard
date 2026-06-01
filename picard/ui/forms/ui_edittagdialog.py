@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/edittagdialog.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -17,10 +17,9 @@ from picard.i18n import gettext as _
 class Ui_EditTagDialog(object):
     def setupUi(self, EditTagDialog):
         EditTagDialog.setObjectName("EditTagDialog")
-        EditTagDialog.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        EditTagDialog.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         EditTagDialog.resize(400, 250)
         EditTagDialog.setFocusPolicy(QtCore.Qt.FocusPolicy.StrongFocus)
-        EditTagDialog.setModal(True)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(EditTagDialog)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.tag_names = QtWidgets.QComboBox(parent=EditTagDialog)
@@ -68,7 +67,9 @@ class Ui_EditTagDialog(object):
         self.remove_value.setAutoDefault(False)
         self.remove_value.setObjectName("remove_value")
         self.verticalLayout.addWidget(self.remove_value)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Maximum)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Maximum
+        )
         self.verticalLayout.addItem(spacerItem)
         self.move_value_up = QtWidgets.QPushButton(parent=EditTagDialog)
         self.move_value_up.setText("")
@@ -82,7 +83,9 @@ class Ui_EditTagDialog(object):
         self.move_value_down.setIcon(icon)
         self.move_value_down.setObjectName("move_value_down")
         self.verticalLayout.addWidget(self.move_value_down)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
@@ -94,22 +97,24 @@ class Ui_EditTagDialog(object):
         self.buttonbox.setSizePolicy(sizePolicy)
         self.buttonbox.setMinimumSize(QtCore.QSize(150, 0))
         self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Cancel|QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.buttonbox.setStandardButtons(
+            QtWidgets.QDialogButtonBox.StandardButton.Cancel | QtWidgets.QDialogButtonBox.StandardButton.Ok
+        )
         self.buttonbox.setObjectName("buttonbox")
         self.verticalLayout_2.addWidget(self.buttonbox)
 
         self.retranslateUi(EditTagDialog)
-        self.buttonbox.accepted.connect(EditTagDialog.accept)
-        self.buttonbox.rejected.connect(EditTagDialog.reject)
-        self.move_value_up.clicked.connect(EditTagDialog.move_row_up)
-        self.move_value_down.clicked.connect(EditTagDialog.move_row_down)
-        self.edit_value.clicked.connect(EditTagDialog.edit_value)
-        self.add_value.clicked.connect(EditTagDialog.add_value)
-        self.value_list.itemChanged['QListWidgetItem*'].connect(EditTagDialog.value_edited)
-        self.remove_value.clicked.connect(EditTagDialog.remove_value)
-        self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed)
-        self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed)
-        self.tag_names.activated['int'].connect(EditTagDialog.tag_selected)
+        self.buttonbox.accepted.connect(EditTagDialog.accept)  # type: ignore
+        self.buttonbox.rejected.connect(EditTagDialog.reject)  # type: ignore
+        self.move_value_up.clicked.connect(EditTagDialog.move_row_up)  # type: ignore
+        self.move_value_down.clicked.connect(EditTagDialog.move_row_down)  # type: ignore
+        self.edit_value.clicked.connect(EditTagDialog.edit_value)  # type: ignore
+        self.add_value.clicked.connect(EditTagDialog.add_value)  # type: ignore
+        self.value_list.itemChanged['QListWidgetItem*'].connect(EditTagDialog.value_edited)  # type: ignore
+        self.remove_value.clicked.connect(EditTagDialog.remove_value)  # type: ignore
+        self.value_list.itemSelectionChanged.connect(EditTagDialog.value_selection_changed)  # type: ignore
+        self.tag_names.editTextChanged['QString'].connect(EditTagDialog.tag_changed)  # type: ignore
+        self.tag_names.activated['int'].connect(EditTagDialog.tag_selected)  # type: ignore
         QtCore.QMetaObject.connectSlotsByName(EditTagDialog)
         EditTagDialog.setTabOrder(self.tag_names, self.value_list)
         EditTagDialog.setTabOrder(self.value_list, self.edit_value)
