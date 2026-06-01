@@ -180,6 +180,13 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         | QtCore.Qt.WindowType.WindowTitleHint
         | QtCore.Qt.WindowType.WindowCloseButtonHint
     )
+    # Default modality: WindowModal when a parent is given, NonModal otherwise.
+    # Subclasses can override this with an explicit Qt.WindowModality value to
+    # opt out of the automatic behaviour, e.g.:
+    #   modality = QtCore.Qt.WindowModality.NonModal   # keep non-modal despite having a parent
+    #   modality = QtCore.Qt.WindowModality.ApplicationModal  # force app-modal (rare)
+    # Set to None to use the automatic parent-based logic (the default).
+    modality = None
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -187,6 +194,10 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         self.tagger = tagger_instance()
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
+        if self.modality is not None:
+            self.setWindowModality(self.modality)
+        elif parent is not None:
+            self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Close):

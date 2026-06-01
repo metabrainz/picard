@@ -104,6 +104,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
 
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
+    modality = QtCore.Qt.WindowModality.NonModal
 
     help_url = 'doc_naming_script_edit'
 

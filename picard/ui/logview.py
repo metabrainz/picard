@@ -142,6 +142,7 @@ class LogHighlighter(QtGui.QSyntaxHighlighter):
 
 class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
+    modality = QtCore.Qt.WindowModality.NonModal
 
     def __init__(self, title, parent=None):
         super().__init__(parent=parent)
