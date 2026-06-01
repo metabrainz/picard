@@ -773,7 +773,6 @@ class AttachedProfilesDialog(PicardDialog):
         self.populate_table()
 
         self.ui.buttonBox.setFocus()
-        self.setModal(True)
 
     def populate_table(self):
         model = QtGui.QStandardItemModel()
