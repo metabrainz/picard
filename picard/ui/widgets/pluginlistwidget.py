@@ -753,13 +753,17 @@ class PluginListWidget(QtWidgets.QWidget):
 
             # Show confirmation dialog
             confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                return
+            confirm_dialog.finished.connect(
+                lambda result: self._on_reinstall_confirm_finished(result, confirm_dialog, plugin, plugin_url)
+            )
+            confirm_dialog.open()
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             self._reinstall_error_dialog(plugin, str(e))
-            return
 
+    def _on_reinstall_confirm_finished(self, result, confirm_dialog, plugin, plugin_url):
+        if result != QtWidgets.QDialog.DialogCode.Accepted:
+            return
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(
             url=plugin_url,
