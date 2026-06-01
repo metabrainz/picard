@@ -704,7 +704,10 @@ class PluginListWidget(QtWidgets.QWidget):
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
         dialog = UninstallPluginDialog(plugin, self)
-        dialog.exec()
+        dialog.finished.connect(lambda: self._on_uninstall_dialog_finished(dialog, plugin))
+        dialog.open()
+
+    def _on_uninstall_dialog_finished(self, dialog, plugin):
         if dialog.uninstall_confirmed:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.uninstall_plugin(
