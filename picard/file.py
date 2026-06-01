@@ -143,6 +143,7 @@ FILE_COMPARISON_WEIGHTS = {
         'length': 10,
         'title': 13,
         'totaltracks': 4,
+        'tracknumber': 4,
     },
     'preferences': {
         'format': 2,
