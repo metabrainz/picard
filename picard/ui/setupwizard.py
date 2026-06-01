@@ -18,7 +18,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-from PyQt6 import QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.config import (
     Config,
@@ -190,6 +193,7 @@ class SetupWizard(QtWidgets.QWizard):
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setMinimumSize(500, 350)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         if IS_WIN:
