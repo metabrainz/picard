@@ -264,6 +264,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 ":/images/{size}x{size}/{app_id}.png".format(size=size, app_id=PICARD_APP_ID), QtCore.QSize(size, size)
             )
         self.setWindowIcon(icon)
+        QtWidgets.QApplication.instance().setWindowIcon(icon)
 
         self.show_close_window = IS_MACOS
 
@@ -287,8 +288,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
 
-        self.log_dialog = LogView(self)
-        self.history_dialog = HistoryView(self)
+        self.log_dialog = LogView()
+        self.history_dialog = HistoryView()
 
         self.metadata_box = MetadataBox(parent=self)
         self.cover_art_box = CoverArtBox(parent=self)
@@ -432,6 +433,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 # Silently close the script editor without displaying the confirmation a second time.
                 self.script_editor_dialog.loading = True
         event.accept()
+        self.log_dialog.close()
+        self.history_dialog.close()
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:

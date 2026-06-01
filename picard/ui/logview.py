@@ -331,7 +331,7 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.main_tail, _("Log"), parent=parent)
+        super().__init__(log.main_tail, _("Log View — MusicBrainz Picard"), parent=parent)
         self.verbosity = log.get_effective_level()
         self._status_label = None
         self.help_url = '/appendices/log_viewer.html'
@@ -546,4 +546,4 @@ class LogView(LogViewCommon):
 
 class HistoryView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.history_tail, _("Activity History"), parent=parent)
+        super().__init__(log.history_tail, _("Activity History — MusicBrainz Picard"), parent=parent)
