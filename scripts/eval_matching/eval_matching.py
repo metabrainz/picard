@@ -28,6 +28,7 @@ from collections import (
 import json
 from pathlib import Path
 import random
+import re
 import sys
 from unittest.mock import (
     MagicMock,
@@ -308,6 +309,11 @@ SCENARIOS = [
         ],
         "scenario": "same_compilation_different_country",
     },
+    {
+        "target": "eval_release_97c0a036.json",  # Explosive Drum & Bass
+        "distractors": [],
+        "scenario": "similar_track_titles_on_medium",
+    },
 ]
 
 
@@ -451,6 +457,20 @@ def swapped_artist_album(metadata, release):
         metadata["albumartist"] = album
 
 
+def missing_eti(metadata, release):
+    """Remove extra title information from album / track titles."""
+    re_eti = re.compile(r"\s+\(.*?\)$")
+    if "title" in release:
+        release["title"] = re_eti.sub("", release["title"])
+    for media in release.get("media", []):
+        for track in media.get("tracks", []):
+            if "title" in track:
+                track["title"] = re_eti.sub("", track["title"])
+            recording = track.get("recording", {})
+            if "title" in recording:
+                recording["title"] = re_eti.sub("", recording["title"])
+
+
 DEGRADATIONS = [
     ("perfect", perfect),
     ("missing_barcode", missing_barcode),
@@ -471,6 +491,7 @@ DEGRADATIONS = [
     ("wrong_date_year", wrong_date_year),
     ("missing_most", missing_most),
     ("swapped_artist_album", swapped_artist_album),
+    ("missing_eti", missing_eti),
     # Combined degradations (realistic multi-issue files)
     ("combo_no_barcode_year_only", lambda m, r: (missing_barcode(m, r), year_only(m, r))),
     ("combo_no_barcode_typo", lambda m, r: (missing_barcode(m, r), typo_album(m, r))),
@@ -1169,7 +1190,7 @@ def _save_snapshot(results, path):
             }
         )
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(snapshot, f, indent=2)
+        json.dump(snapshot, f, indent=2, sort_keys=True)
         f.write("\n")
     print(f"\n  Snapshot saved to {path} ({len(snapshot)} entries)")
 

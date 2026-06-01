@@ -1,56 +1,87 @@
 {
-  "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
-  "date": "2013-01-29",
-  "country": "US",
-  "release-events": [
+  "artist-credit": [
     {
-      "area": {
-        "sort-name": "United States",
+      "artist": {
+        "country": "GB",
         "disambiguation": "",
-        "iso-3166-1-codes": [
-          "US"
-        ],
-        "id": "489ce91b-6658-3307-9877-795b68554c98",
-        "type": null,
-        "name": "United States",
-        "type-id": null
+        "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+        "name": "Fleetwood Mac",
+        "sort-name": "Fleetwood Mac",
+        "type": "Group",
+        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
       },
-      "date": "2013-01-29"
+      "joinphrase": "",
+      "name": "Fleetwood Mac"
     }
   ],
+  "asin": "B00AGKHEUI",
+  "barcode": "081227970949",
+  "country": "US",
   "cover-art-archive": {
-    "front": true,
+    "artwork": true,
     "back": false,
-    "darkened": false,
     "count": 19,
-    "artwork": true
+    "darkened": false,
+    "front": true
   },
+  "date": "2013-01-29",
+  "disambiguation": "2013 deluxe edition",
+  "id": "5c976ee2-d4d4-4932-8f16-54f2b50f8ac5",
+  "label-info": [
+    {
+      "catalog-number": "R2-532752",
+      "label": null
+    }
+  ],
   "media": [
     {
+      "format": "CD",
       "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "ffa5a7d5-b7b8-3341-a8c1-ed3fbb3c0edf",
+      "position": 1,
+      "title": "",
+      "track-count": 12,
+      "track-offset": 0,
       "tracks": [
         {
-          "number": "1",
-          "title": "Second Hand News",
-          "position": 1,
           "artist-credit": [
             {
-              "joinphrase": "",
               "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
+              "joinphrase": "",
               "name": "Fleetwood Mac"
             }
           ],
+          "id": "9817b5ec-1202-4cab-b21c-0d561d52a52e",
           "length": 176306,
+          "number": "1",
+          "position": 1,
           "recording": {
-            "video": false,
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "extra \u201cyeah yeah\u201d at end",
+            "first-release-date": "1977",
+            "id": "b25f351b-206f-4297-95bd-78459b704144",
             "isrcs": [
               "USWB10101367",
               "USWB10202616",
@@ -58,71 +89,51 @@
               "USWB11301110",
               "USWB19900177"
             ],
-            "id": "b25f351b-206f-4297-95bd-78459b704144",
-            "first-release-date": "1977",
-            "disambiguation": "extra \u201cyeah yeah\u201d at end",
+            "length": 173666,
             "title": "Second Hand News",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "name": "Fleetwood Mac"
-              }
-            ],
-            "length": 173666
+            "video": false
           },
-          "id": "9817b5ec-1202-4cab-b21c-0d561d52a52e"
+          "title": "Second Hand News"
         },
         {
-          "position": 2,
-          "title": "Dreams",
-          "number": "2",
-          "length": 257800,
           "artist-credit": [
             {
               "artist": {
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
           "id": "0fdb7d8f-9f35-453e-b4ef-4b5cf8f68c77",
+          "length": 257800,
+          "number": "2",
+          "position": 2,
           "recording": {
-            "title": "Dreams",
-            "disambiguation": "",
-            "length": 257000,
             "artist-credit": [
               {
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
+            "disambiguation": "",
+            "first-release-date": "1977-02-04",
             "id": "248cc9d1-97ea-493e-84d4-4c5ec718683b",
-            "video": false,
             "isrcs": [
               "USRH11802580",
               "USWB10101368",
@@ -131,12 +142,51 @@
               "USWB11301111",
               "USWB19900178"
             ],
-            "first-release-date": "1977-02-04"
-          }
+            "length": 257000,
+            "title": "Dreams",
+            "video": false
+          },
+          "title": "Dreams"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "f52328dc-ed60-467d-b2ec-4149e86bc2fb",
+          "length": 134400,
+          "number": "3",
+          "position": 3,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "1977",
+            "id": "0b304971-9f84-485b-9f34-50f12004cf0d",
             "isrcs": [
               "USWB10101369",
               "USWB10202610",
@@ -144,52 +194,51 @@
               "USWB11301112",
               "USWB19900179"
             ],
-            "video": false,
-            "id": "0b304971-9f84-485b-9f34-50f12004cf0d",
-            "artist-credit": [
-              {
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": "",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "name": "Fleetwood Mac",
-                  "type": "Group"
-                },
-                "joinphrase": ""
-              }
-            ],
             "length": 134426,
-            "disambiguation": "",
-            "title": "Never Going Back Again"
+            "title": "Never Going Back Again",
+            "video": false
           },
-          "id": "f52328dc-ed60-467d-b2ec-4149e86bc2fb",
-          "artist-credit": [
-            {
-              "name": "Fleetwood Mac",
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 134400,
-          "number": "3",
-          "title": "Never Going Back Again",
-          "position": 3
+          "title": "Never Going Back Again"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
           "id": "8e347ba0-69bb-4e73-b585-0f8e0a997b72",
+          "length": 193346,
+          "number": "4",
+          "position": 4,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "1977-02-04",
+            "id": "1c0a78be-b883-4c5d-93f2-4f48405dbcb2",
             "isrcs": [
               "USRH11802582",
               "USWB10101370",
@@ -198,85 +247,48 @@
               "USWB11301113",
               "USWB19900180"
             ],
-            "video": false,
-            "id": "1c0a78be-b883-4c5d-93f2-4f48405dbcb2",
-            "artist-credit": [
-              {
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
-                },
-                "joinphrase": ""
-              }
-            ],
             "length": 192666,
-            "disambiguation": "",
-            "title": "Don\u2019t Stop"
+            "title": "Don\u2019t Stop",
+            "video": false
           },
-          "length": 193346,
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "position": 4,
-          "title": "Don\u2019t Stop",
-          "number": "4"
+          "title": "Don\u2019t Stop"
         },
         {
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
-              }
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "8803d469-1a0d-4244-9b62-3f328908d828",
           "length": 223613,
           "number": "5",
-          "title": "Go Your Own Way",
           "position": 5,
           "recording": {
-            "length": 219373,
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
                   "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                }
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "title": "Go Your Own Way",
             "disambiguation": "",
             "first-release-date": "1976-12-20",
             "id": "66908b7f-050f-4e8d-82b0-a768a3d80c63",
@@ -290,34 +302,51 @@
               "USWB11301114",
               "USWB19900181"
             ],
+            "length": 219373,
+            "title": "Go Your Own Way",
             "video": false
           },
-          "id": "8803d469-1a0d-4244-9b62-3f328908d828"
+          "title": "Go Your Own Way"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
           "id": "3294d126-b507-4439-86cc-0f6d719ef1fc",
+          "length": 200813,
+          "number": "6",
+          "position": 6,
           "recording": {
-            "length": 200813,
             "artist-credit": [
               {
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "title": "Songbird",
             "disambiguation": "",
             "first-release-date": "1977-02-04",
             "id": "70b64435-e956-4141-9149-789b19ebcf9f",
-            "video": false,
             "isrcs": [
               "USWB10101378",
               "USWB10202615",
@@ -325,68 +354,52 @@
               "USWB11300057",
               "USWB11301115",
               "USWB19900182"
-            ]
+            ],
+            "length": 200813,
+            "title": "Songbird",
+            "video": false
           },
-          "length": 200813,
-          "artist-credit": [
-            {
-              "artist": {
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "position": 6,
-          "title": "Songbird",
-          "number": "6"
+          "title": "Songbird"
         },
         {
-          "length": 270213,
           "artist-credit": [
             {
               "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
                 "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "title": "The Chain",
-          "position": 7,
-          "number": "7",
           "id": "5da1b8e0-7d29-4479-a5c0-a4312877c83f",
+          "length": 270213,
+          "number": "7",
+          "position": 7,
           "recording": {
-            "disambiguation": "",
-            "title": "The Chain",
             "artist-credit": [
               {
                 "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
                   "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
                   "type": "Group",
-                  "name": "Fleetwood Mac"
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 269400,
+            "disambiguation": "",
+            "first-release-date": "1977-02-04",
+            "id": "cd06c484-9319-4376-a104-504871e19756",
             "isrcs": [
               "USRH11802583",
               "USWB10101373",
@@ -395,31 +408,51 @@
               "USWB11301116",
               "USWB19900183"
             ],
-            "video": false,
-            "id": "cd06c484-9319-4376-a104-504871e19756",
-            "first-release-date": "1977-02-04"
-          }
+            "length": 269400,
+            "title": "The Chain",
+            "video": false
+          },
+          "title": "The Chain"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "7bc106d5-f4a5-478a-8c0e-f9b3620c0fb5",
+          "length": 216626,
+          "number": "8",
+          "position": 8,
           "recording": {
-            "disambiguation": "",
-            "title": "You Make Loving Fun",
             "artist-credit": [
               {
-                "joinphrase": "",
                 "artist": {
-                  "sort-name": "Fleetwood Mac",
+                  "country": "GB",
                   "disambiguation": "",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": "",
                 "name": "Fleetwood Mac"
               }
             ],
-            "length": 213106,
+            "disambiguation": "",
+            "first-release-date": "1977-02-04",
+            "id": "cce551a1-5a6c-494b-89fe-6dfac5e8aed1",
             "isrcs": [
               "USWB10101374",
               "USWB10202604",
@@ -427,53 +460,50 @@
               "USWB11301117",
               "USWB19900184"
             ],
-            "video": false,
-            "id": "cce551a1-5a6c-494b-89fe-6dfac5e8aed1",
-            "first-release-date": "1977-02-04"
+            "length": 213106,
+            "title": "You Make Loving Fun",
+            "video": false
           },
-          "id": "7bc106d5-f4a5-478a-8c0e-f9b3620c0fb5",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
-              }
-            }
-          ],
-          "length": 216626,
-          "number": "8",
-          "position": 8,
           "title": "You Make Loving Fun"
         },
         {
-          "position": 9,
-          "title": "I Don\u2019t Want to Know",
-          "number": "9",
-          "length": 196853,
           "artist-credit": [
             {
-              "name": "Fleetwood Mac",
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
           "id": "1b18589a-0f9e-4878-9650-4c7474c0af24",
+          "length": 196853,
+          "number": "9",
+          "position": 9,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1977-02-04",
             "id": "fc53705e-f3d6-4246-b0e3-23d1acc8f1d1",
             "isrcs": [
               "USWB10101375",
@@ -481,100 +511,100 @@
               "USWB11301118",
               "USWB19900185"
             ],
-            "video": false,
-            "first-release-date": "1977-02-04",
-            "title": "I Don\u2019t Want to Know",
-            "disambiguation": "",
             "length": 195493,
+            "title": "I Don\u2019t Want to Know",
+            "video": false
+          },
+          "title": "I Don\u2019t Want to Know"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "0be61387-5db1-44f3-ae46-e54a1b661470",
+          "length": 236240,
+          "number": "10",
+          "position": 10,
+          "recording": {
             "artist-credit": [
               {
                 "artist": {
+                  "country": "GB",
                   "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
-            ]
-          }
-        },
-        {
-          "recording": {
+            ],
+            "disambiguation": "",
+            "first-release-date": "1977-02-04",
             "id": "0c9684a3-1109-44cb-ac8c-808168ae8715",
-            "video": false,
             "isrcs": [
               "USWB10101376",
               "USWB10400056",
               "USWB11301119",
               "USWB19900186"
             ],
-            "first-release-date": "1977-02-04",
-            "title": "Oh Daddy",
-            "disambiguation": "",
             "length": 236226,
-            "artist-credit": [
-              {
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
-                },
-                "joinphrase": ""
-              }
-            ]
+            "title": "Oh Daddy",
+            "video": false
           },
-          "id": "0be61387-5db1-44f3-ae46-e54a1b661470",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "name": "Fleetwood Mac",
-                "type": "Group"
-              },
-              "name": "Fleetwood Mac"
-            }
-          ],
-          "length": 236240,
-          "number": "10",
-          "title": "Oh Daddy",
-          "position": 10
+          "title": "Oh Daddy"
         },
         {
           "artist-credit": [
             {
-              "name": "Fleetwood Mac",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
-                "type": "Group",
-                "name": "Fleetwood Mac",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "b1477367-90b7-44f5-9f04-e25cfaf948ef",
           "length": 295626,
           "number": "11",
-          "title": "Gold Dust Woman",
           "position": 11,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "hard start, glass break, soft howling",
             "first-release-date": "1977",
             "id": "6eda00db-318c-495b-96a1-494d249b04f5",
             "isrcs": [
@@ -583,1510 +613,1480 @@
               "USWB11301120",
               "USWB19900187"
             ],
-            "video": false,
             "length": 302000,
-            "artist-credit": [
-              {
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
-                },
-                "joinphrase": ""
-              }
-            ],
             "title": "Gold Dust Woman",
-            "disambiguation": "hard start, glass break, soft howling"
+            "video": false
           },
-          "id": "b1477367-90b7-44f5-9f04-e25cfaf948ef"
+          "title": "Gold Dust Woman"
         },
         {
-          "number": "12",
-          "title": "Silver Springs",
-          "position": 12,
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
-                "type": "Group",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              }
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "ea6efd4c-11da-49cb-bccc-9aa71ddc95c0",
           "length": 288786,
+          "number": "12",
+          "position": 12,
           "recording": {
-            "disambiguation": "long version",
-            "title": "Silver Springs",
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
                 "artist": {
                   "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
+                  "disambiguation": "",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
-                }
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 288786,
+            "disambiguation": "long version",
+            "first-release-date": "1997",
+            "id": "055423fb-f8e4-4d99-9e96-5bbfb061c1fe",
             "isrcs": [
               "USWB10101372",
               "USWB10400052",
               "USWB11301121"
             ],
-            "video": false,
-            "id": "055423fb-f8e4-4d99-9e96-5bbfb061c1fe",
-            "first-release-date": "2004-03-22"
+            "length": 288786,
+            "title": "Silver Springs",
+            "video": false
           },
-          "id": "ea6efd4c-11da-49cb-bccc-9aa71ddc95c0"
+          "title": "Silver Springs"
         }
-      ],
-      "track-offset": 0,
-      "title": "",
-      "format": "CD",
-      "position": 1,
-      "track-count": 12,
-      "id": "ffa5a7d5-b7b8-3341-a8c1-ed3fbb3c0edf"
+      ]
     },
     {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "f73c672e-c709-337a-bc87-6edf53f7ea61",
+      "position": 2,
+      "title": "Live, 1977 \u201cRumours\u201d World Tour",
+      "track-count": 12,
+      "track-offset": 0,
       "tracks": [
         {
-          "position": 1,
-          "title": "Intro",
-          "number": "1",
-          "length": 48000,
           "artist-credit": [
             {
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "id": "3ccbf02e-ddb8-43ed-b0c8-171c2e59ae53",
-          "recording": {
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "Intro",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
-                }
-              }
-            ],
-            "length": 48373,
-            "isrcs": [
-              "USRE11000845"
-            ],
-            "video": false,
-            "id": "5c969fd7-4bc5-4cd1-b705-ab426121bb72",
-            "first-release-date": "2013-01-25"
-          }
-        },
-        {
-          "number": "2",
-          "title": "Monday Morning",
-          "position": 2,
-          "artist-credit": [
-            {
-              "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "length": 158000,
-          "recording": {
-            "isrcs": [
-              "USRE11000846"
-            ],
-            "video": false,
-            "id": "ef365742-09ff-4b9f-8a45-95ed850cc3b0",
-            "first-release-date": "2013-01-25",
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "Monday Morning",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": "",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
-                }
-              }
-            ],
-            "length": 158893
-          },
-          "id": "a76f5da9-f931-4ada-9e0c-ec7e99c7f0ec"
-        },
-        {
-          "id": "01057dac-f2dc-4cd3-8bd2-4df646a8a4f4",
-          "recording": {
-            "first-release-date": "2013-01-25",
-            "video": false,
-            "isrcs": [
-              "USRE11000847"
-            ],
-            "id": "ed3bb905-8dff-4168-97fe-8219790c4c37",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
-                },
-                "name": "Fleetwood Mac"
-              }
-            ],
-            "length": 247213,
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "Dreams"
-          },
-          "length": 247000,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "type": "Group",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
+              "joinphrase": "",
               "name": "Fleetwood Mac"
             }
           ],
-          "title": "Dreams",
-          "position": 3,
-          "number": "3"
-        },
-        {
-          "length": 231000,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
-              "artist": {
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              }
-            }
-          ],
-          "position": 4,
-          "title": "Don\u2019t Stop",
-          "number": "4",
-          "id": "17fcdb8f-cf7f-4b27-95b6-bf031864f08c",
+          "id": "3ccbf02e-ddb8-43ed-b0c8-171c2e59ae53",
+          "length": 48000,
+          "number": "1",
+          "position": 1,
           "recording": {
-            "length": 231653,
             "artist-credit": [
               {
                 "artist": {
                   "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "name": "Fleetwood Mac",
-                  "type": "Group",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "title": "Don\u2019t Stop",
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "5c969fd7-4bc5-4cd1-b705-ab426121bb72",
+            "isrcs": [
+              "USRE11000845"
+            ],
+            "length": 48373,
+            "title": "Intro",
+            "video": false
+          },
+          "title": "Intro"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "a76f5da9-f931-4ada-9e0c-ec7e99c7f0ec",
+          "length": 158000,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "ef365742-09ff-4b9f-8a45-95ed850cc3b0",
+            "isrcs": [
+              "USRE11000846"
+            ],
+            "length": 158893,
+            "title": "Monday Morning",
+            "video": false
+          },
+          "title": "Monday Morning"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "01057dac-f2dc-4cd3-8bd2-4df646a8a4f4",
+          "length": 247000,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "ed3bb905-8dff-4168-97fe-8219790c4c37",
+            "isrcs": [
+              "USRE11000847"
+            ],
+            "length": 247213,
+            "title": "Dreams",
+            "video": false
+          },
+          "title": "Dreams"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "17fcdb8f-cf7f-4b27-95b6-bf031864f08c",
+          "length": 231000,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
             "disambiguation": "live, 1977 Rumours World Tour",
             "first-release-date": "2013-01-25",
             "id": "dcc9a547-0e4a-447c-99cb-ab62345a01d8",
-            "video": false,
             "isrcs": [
               "USRE11000848"
-            ]
-          }
+            ],
+            "length": 231653,
+            "title": "Don\u2019t Stop",
+            "video": false
+          },
+          "title": "Don\u2019t Stop"
         },
         {
-          "number": "5",
-          "position": 5,
-          "title": "The Chain",
           "artist-credit": [
             {
               "artist": {
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "fe4b0d43-6e89-4621-bd47-6f19595bac3e",
           "length": 340000,
+          "number": "5",
+          "position": 5,
           "recording": {
             "artist-credit": [
               {
                 "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
-                  "type": "Group",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 340533,
             "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "The Chain",
             "first-release-date": "2013-01-25",
-            "video": false,
+            "id": "128d15bc-d2ff-4b43-b063-c32091d043ca",
             "isrcs": [
               "USRE11000849"
             ],
-            "id": "128d15bc-d2ff-4b43-b063-c32091d043ca"
+            "length": 340533,
+            "title": "The Chain",
+            "video": false
           },
-          "id": "fe4b0d43-6e89-4621-bd47-6f19595bac3e"
+          "title": "The Chain"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "14dab676-6c32-4066-8936-9dea9d37e81b",
+          "length": 287000,
+          "number": "6",
+          "position": 6,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
             "id": "15a6dd88-6284-41d5-8eb7-f9fc350d18a1",
             "isrcs": [
               "USRE11000850"
             ],
-            "video": false,
-            "first-release-date": "2013-01-25",
-            "title": "Oh Daddy",
-            "disambiguation": "live, 1977 Rumours World Tour",
             "length": 287866,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": "",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-                },
-                "name": "Fleetwood Mac"
-              }
-            ]
+            "title": "Oh Daddy",
+            "video": false
           },
-          "id": "14dab676-6c32-4066-8936-9dea9d37e81b",
-          "artist-credit": [
-            {
-              "name": "Fleetwood Mac",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac"
-              },
-              "joinphrase": ""
-            }
-          ],
-          "length": 287000,
-          "number": "6",
-          "title": "Oh Daddy",
-          "position": 6
+          "title": "Oh Daddy"
         },
         {
-          "length": 475000,
           "artist-credit": [
             {
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "position": 7,
-          "title": "Rhiannon",
-          "number": "7",
           "id": "cf14ae79-c65c-402a-b09b-cd70453cf889",
+          "length": 475000,
+          "number": "7",
+          "position": 7,
           "recording": {
-            "title": "Rhiannon",
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "length": 475306,
             "artist-credit": [
               {
-                "joinphrase": "",
                 "artist": {
+                  "country": "GB",
                   "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
                   "type": "Group",
-                  "country": "GB",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": "",
                 "name": "Fleetwood Mac"
               }
             ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
             "id": "f527b625-82b1-4b95-a43e-fbab598ba26e",
             "isrcs": [
               "USRE11000851"
             ],
-            "video": false,
-            "first-release-date": "2013-01-25"
-          }
+            "length": 475306,
+            "title": "Rhiannon",
+            "video": false
+          },
+          "title": "Rhiannon"
         },
         {
-          "position": 8,
-          "title": "Never Going Back Again",
-          "number": "8",
-          "length": 139000,
           "artist-credit": [
             {
               "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "name": "Fleetwood Mac"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
           "id": "69e00a38-668f-41f6-b8c1-c4e0a8481f0d",
+          "length": 139000,
+          "number": "8",
+          "position": 8,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
             "id": "a527daa4-43e4-4a64-8d31-55228cab20dd",
             "isrcs": [
               "USRE11000852"
             ],
-            "video": false,
-            "first-release-date": "2013-01-25",
-            "title": "Never Going Back Again",
-            "disambiguation": "live, 1977 Rumours World Tour",
             "length": 139960,
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ]
-          }
+            "title": "Never Going Back Again",
+            "video": false
+          },
+          "title": "Never Going Back Again"
         },
         {
-          "title": "Gold Dust Woman",
-          "position": 9,
-          "number": "9",
-          "length": 423000,
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
-                "type": "Group",
-                "name": "Fleetwood Mac",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              }
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
           "id": "e8ba5982-87f3-40f0-8823-c20f50acdeb8",
+          "length": 423000,
+          "number": "9",
+          "position": 9,
           "recording": {
-            "first-release-date": "2013-01-25",
-            "video": false,
-            "isrcs": [
-              "USRE11000853"
-            ],
-            "id": "03204c88-b56c-40aa-b0d5-eff471059d8c",
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "sort-name": "Fleetwood Mac",
+                  "country": "GB",
                   "disambiguation": "",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-                }
-              }
-            ],
-            "length": 423053,
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "Gold Dust Woman"
-          }
-        },
-        {
-          "length": 451000,
-          "artist-credit": [
-            {
-              "artist": {
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "title": "World Turning",
-          "position": 10,
-          "number": "10",
-          "id": "11bd43ed-1fd0-4bb3-80f0-654ed8aa9f2c",
-          "recording": {
-            "first-release-date": "2013-01-25",
-            "isrcs": [
-              "USRE11000854"
-            ],
-            "video": false,
-            "id": "af0ff4af-f7db-4d91-91f4-8edc50e2642d",
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ],
-            "length": 451493,
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "World Turning"
-          }
-        },
-        {
-          "id": "b3f2d3dc-9b01-43c8-a9e5-6fc85de580a1",
-          "recording": {
-            "isrcs": [
-              "USRE11000855"
-            ],
-            "video": false,
-            "id": "2fe30d0c-5a66-4350-8825-1d3178854c9f",
-            "first-release-date": "2013-01-25",
-            "disambiguation": "live, 1977 Rumours World Tour",
-            "title": "Go Your Own Way",
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": "",
                 "name": "Fleetwood Mac"
               }
             ],
-            "length": 294466
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "03204c88-b56c-40aa-b0d5-eff471059d8c",
+            "isrcs": [
+              "USRE11000853"
+            ],
+            "length": 423053,
+            "title": "Gold Dust Woman",
+            "video": false
           },
-          "title": "Go Your Own Way",
-          "position": 11,
-          "number": "11",
-          "length": 294000,
+          "title": "Gold Dust Woman"
+        },
+        {
           "artist-credit": [
             {
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
-          ]
-        },
-        {
-          "id": "181c158e-5bb8-4817-87ed-15725331add6",
+          ],
+          "id": "11bd43ed-1fd0-4bb3-80f0-654ed8aa9f2c",
+          "length": 451000,
+          "number": "10",
+          "position": 10,
           "recording": {
-            "length": 240440,
             "artist-credit": [
               {
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "title": "Songbird",
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "af0ff4af-f7db-4d91-91f4-8edc50e2642d",
+            "isrcs": [
+              "USRE11000854"
+            ],
+            "length": 451493,
+            "title": "World Turning",
+            "video": false
+          },
+          "title": "World Turning"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "b3f2d3dc-9b01-43c8-a9e5-6fc85de580a1",
+          "length": 294000,
+          "number": "11",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "live, 1977 Rumours World Tour",
+            "first-release-date": "2013-01-25",
+            "id": "2fe30d0c-5a66-4350-8825-1d3178854c9f",
+            "isrcs": [
+              "USRE11000855"
+            ],
+            "length": 294466,
+            "title": "Go Your Own Way",
+            "video": false
+          },
+          "title": "Go Your Own Way"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "181c158e-5bb8-4817-87ed-15725331add6",
+          "length": 240000,
+          "number": "12",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
             "disambiguation": "live, 1977 Rumours World Tour",
             "first-release-date": "2013-01-25",
             "id": "a125c00e-b643-42a4-b28d-336f944d2d99",
             "isrcs": [
               "USRE11000856"
             ],
+            "length": 240440,
+            "title": "Songbird",
             "video": false
           },
-          "length": 240000,
+          "title": "Songbird"
+        }
+      ]
+    },
+    {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "2a621e69-18c5-3436-ae9c-7d036b82f6ba",
+      "position": 3,
+      "title": "More from the Recording Sessions",
+      "track-count": 16,
+      "track-offset": 0,
+      "tracks": [
+        {
           "artist-credit": [
             {
               "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "title": "Songbird",
-          "position": 12,
-          "number": "12"
-        }
-      ],
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "title": "Live, 1977 \u201cRumours\u201d World Tour",
-      "format": "CD",
-      "position": 2,
-      "track-offset": 0,
-      "track-count": 12,
-      "id": "f73c672e-c709-337a-bc87-6edf53f7ea61"
-    },
-    {
-      "track-offset": 0,
-      "position": 3,
-      "format": "CD",
-      "title": "More from the Recording Sessions",
-      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
-      "tracks": [
-        {
           "id": "9b33490d-bc89-418a-b66d-7ba6ab5cf4a9",
+          "length": 146000,
+          "number": "1",
+          "position": 1,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "2013-01-25",
-            "video": false,
+            "id": "4e3ecc28-b60c-4247-ad59-1839242d5d88",
             "isrcs": [
               "USWB11203111"
             ],
-            "id": "4e3ecc28-b60c-4247-ad59-1839242d5d88",
-            "artist-credit": [
-              {
-                "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ],
             "length": 146746,
-            "disambiguation": "",
-            "title": "Second Hand News (early take)"
+            "title": "Second Hand News (early take)",
+            "video": false
           },
-          "position": 1,
-          "title": "Second Hand News (early take)",
-          "number": "1",
-          "length": 146000,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              }
-            }
-          ]
+          "title": "Second Hand News (early take)"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "badc457b-9821-4825-8209-27c78057cc32",
+          "length": 335000,
+          "number": "2",
+          "position": 2,
           "recording": {
-            "title": "Dreams (take 2)",
-            "disambiguation": "",
-            "length": 335133,
             "artist-credit": [
               {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
                 "artist": {
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
-                }
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
             "id": "3020399a-74aa-473b-b508-33ab3119c0a2",
-            "video": false,
             "isrcs": [
               "USWB11203112"
             ],
-            "first-release-date": "2013-01-25"
+            "length": 335133,
+            "title": "Dreams (take 2)",
+            "video": false
           },
-          "id": "badc457b-9821-4825-8209-27c78057cc32",
-          "number": "2",
-          "title": "Dreams (take 2)",
-          "position": 2,
+          "title": "Dreams (take 2)"
+        },
+        {
           "artist-credit": [
             {
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
-                "name": "Fleetwood Mac",
-                "type": "Group",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "length": 335000
-        },
-        {
           "id": "259e0ced-ebf3-4925-acce-2dff8a3d183f",
+          "length": 139000,
+          "number": "3",
+          "position": 3,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "2013-01-25",
             "id": "3028087a-e64a-4f6c-88c3-2b9fb271764b",
             "isrcs": [
               "USWB11203113"
             ],
-            "video": false,
             "length": 139546,
-            "artist-credit": [
-              {
-                "artist": {
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ],
             "title": "Never Going Back Again (acoustic duet)",
-            "disambiguation": ""
+            "video": false
           },
-          "title": "Never Going Back Again (acoustic duet)",
-          "position": 3,
-          "number": "3",
-          "length": 139000,
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ]
+          "title": "Never Going Back Again (acoustic duet)"
         },
         {
-          "id": "5e0fb6f8-c9c4-4a0b-b857-1496fdd6d064",
-          "recording": {
-            "disambiguation": "",
-            "title": "Go Your Own Way (early take)",
-            "artist-credit": [
-              {
-                "artist": {
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": "",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ],
-            "length": 244573,
-            "isrcs": [
-              "USWB11203114"
-            ],
-            "video": false,
-            "id": "121f3c05-ed8b-4ffa-bdff-876f76c9e5b3",
-            "first-release-date": "2013-01-25"
-          },
-          "length": 244000,
           "artist-credit": [
             {
               "artist": {
-                "sort-name": "Fleetwood Mac",
+                "country": "GB",
                 "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "5e0fb6f8-c9c4-4a0b-b857-1496fdd6d064",
+          "length": 244000,
+          "number": "4",
           "position": 4,
-          "title": "Go Your Own Way (early take)",
-          "number": "4"
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
+            "id": "121f3c05-ed8b-4ffa-bdff-876f76c9e5b3",
+            "isrcs": [
+              "USWB11203114"
+            ],
+            "length": 244573,
+            "title": "Go Your Own Way (early take)",
+            "video": false
+          },
+          "title": "Go Your Own Way (early take)"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
           "id": "28919ef0-ab65-4a8f-9b3b-7305e7e5cc7f",
+          "length": 273000,
+          "number": "5",
+          "position": 5,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "2013-01-25",
             "id": "6d2d0efb-ef82-4e73-be11-6634fdefdce8",
             "isrcs": [
               "USWB11203115"
             ],
-            "video": false,
             "length": 273266,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "artist": {
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
-                },
-                "name": "Fleetwood Mac"
-              }
-            ],
             "title": "Songbird (demo)",
-            "disambiguation": ""
+            "video": false
           },
-          "length": 273000,
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "position": 5,
-          "title": "Songbird (demo)",
-          "number": "5"
+          "title": "Songbird (demo)"
         },
         {
-          "recording": {
-            "artist-credit": [
-              {
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB",
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "length": 263906,
-            "disambiguation": "",
-            "title": "Songbird (instrumental, take 10)",
-            "first-release-date": "2013-01-25",
-            "isrcs": [
-              "USWB11203116"
-            ],
-            "video": false,
-            "id": "b7f69feb-a832-4015-8c9c-c0633d5e80c9"
-          },
-          "id": "3a379b8a-15cf-4c25-8f0d-fcbc8128c4e6",
           "artist-credit": [
             {
               "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "name": "Fleetwood Mac"
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "3a379b8a-15cf-4c25-8f0d-fcbc8128c4e6",
           "length": 263000,
           "number": "6",
           "position": 6,
-          "title": "Songbird (instrumental, take 10)"
-        },
-        {
-          "id": "c72ff76a-d25a-45e1-9aae-0c675d015cb6",
           "recording": {
-            "first-release-date": "2013-01-25",
-            "video": false,
-            "isrcs": [
-              "USWB11203117"
-            ],
-            "id": "b82356f6-2dc5-4159-ad39-b666c3755058",
             "artist-credit": [
               {
                 "artist": {
-                  "sort-name": "Fleetwood Mac",
-                  "disambiguation": "",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 222173,
             "disambiguation": "",
-            "title": "I Don\u2019t Want to Know (early take)"
+            "first-release-date": "2013-01-25",
+            "id": "b7f69feb-a832-4015-8c9c-c0633d5e80c9",
+            "isrcs": [
+              "USWB11203116"
+            ],
+            "length": 263906,
+            "title": "Songbird (instrumental, take 10)",
+            "video": false
           },
-          "length": 222000,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
-              "artist": {
-                "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
-              }
-            }
-          ],
-          "position": 7,
-          "title": "I Don\u2019t Want to Know (early take)",
-          "number": "7"
+          "title": "Songbird (instrumental, take 10)"
         },
         {
-          "number": "8",
-          "title": "Keep Me There (instrumental)",
-          "position": 8,
           "artist-credit": [
             {
-              "name": "Fleetwood Mac",
               "artist": {
+                "country": "GB",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
-                "type": "Group",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "length": 314000,
+          "id": "c72ff76a-d25a-45e1-9aae-0c675d015cb6",
+          "length": 222000,
+          "number": "7",
+          "position": 7,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
+            "id": "b82356f6-2dc5-4159-ad39-b666c3755058",
+            "isrcs": [
+              "USWB11203117"
+            ],
+            "length": 222173,
+            "title": "I Don\u2019t Want to Know (early take)",
+            "video": false
+          },
+          "title": "I Don\u2019t Want to Know (early take)"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "76f46290-dcc5-4323-b576-1a8b8f175fc3",
+          "length": 314000,
+          "number": "8",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
             "id": "fe5f6503-a9a4-49f8-8d95-d265efeaf914",
             "isrcs": [
               "USWB11203118"
             ],
-            "video": false,
-            "first-release-date": "2013-01-25",
-            "title": "Keep Me There (instrumental)",
-            "disambiguation": "",
             "length": 314026,
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "name": "Fleetwood Mac",
-                  "type": "Group"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ]
+            "title": "Keep Me There (instrumental)",
+            "video": false
           },
-          "id": "76f46290-dcc5-4323-b576-1a8b8f175fc3"
+          "title": "Keep Me There (instrumental)"
         },
         {
-          "title": "The Chain (demo)",
-          "position": 9,
-          "number": "9",
-          "length": 329000,
           "artist-credit": [
             {
-              "joinphrase": "",
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
+              "joinphrase": "",
               "name": "Fleetwood Mac"
             }
           ],
           "id": "ba479e24-708c-48e1-a4aa-c8a5a98fe2ee",
+          "length": 329000,
+          "number": "9",
+          "position": 9,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "2013-01-25",
             "id": "a24937ba-1f16-4aaa-b815-f3fc76591010",
             "isrcs": [
               "USWB11203119"
             ],
-            "video": false,
             "length": 329133,
+            "title": "The Chain (demo)",
+            "video": false
+          },
+          "title": "The Chain (demo)"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "bb0b2280-1ece-4091-b403-e7b2dbddf579",
+          "length": 258000,
+          "number": "10",
+          "position": 10,
+          "recording": {
             "artist-credit": [
               {
-                "joinphrase": "",
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
+                  "disambiguation": "",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": "",
                 "name": "Fleetwood Mac"
               }
             ],
-            "title": "The Chain (demo)",
-            "disambiguation": ""
-          }
-        },
-        {
-          "id": "bb0b2280-1ece-4091-b403-e7b2dbddf579",
-          "recording": {
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "country": "GB"
-                }
-              }
-            ],
-            "length": 258920,
             "disambiguation": "",
-            "title": "Keep Me There (with vocal)",
             "first-release-date": "2013-01-25",
+            "id": "db54cde3-8522-4562-9e66-b9ccdeafc581",
             "isrcs": [
               "USWB11203120"
             ],
-            "video": false,
-            "id": "db54cde3-8522-4562-9e66-b9ccdeafc581"
+            "length": 258920,
+            "title": "Keep Me There (with vocal)",
+            "video": false
           },
-          "title": "Keep Me There (with vocal)",
-          "position": 10,
-          "number": "10",
-          "length": 258000,
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              }
-            }
-          ]
+          "title": "Keep Me There (with vocal)"
         },
         {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "7548cf3d-0b2b-4415-a98d-d64670f6d0be",
+          "length": 325000,
+          "number": "11",
+          "position": 11,
           "recording": {
-            "disambiguation": "",
-            "title": "Gold Dust Woman (early take)",
             "artist-credit": [
               {
                 "artist": {
+                  "country": "GB",
                   "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
                   "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "country": "GB",
                   "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 325226,
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
+            "id": "dd4e90a3-b9a7-45d1-b946-5813581e500f",
             "isrcs": [
               "USWB11203121"
             ],
-            "video": false,
-            "id": "dd4e90a3-b9a7-45d1-b946-5813581e500f",
-            "first-release-date": "2013-01-25"
+            "length": 325226,
+            "title": "Gold Dust Woman (early take)",
+            "video": false
           },
-          "id": "7548cf3d-0b2b-4415-a98d-d64670f6d0be",
-          "number": "11",
-          "position": 11,
-          "title": "Gold Dust Woman (early take)",
-          "artist-credit": [
-            {
-              "artist": {
-                "sort-name": "Fleetwood Mac",
-                "disambiguation": "",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB"
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "length": 325000
+          "title": "Gold Dust Woman (early take)"
         },
         {
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
-                "type": "Group"
-              }
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "bc2645cd-363c-4cf3-95ee-24841c939614",
           "length": 228000,
           "number": "12",
           "position": 12,
-          "title": "Oh Daddy (early take)",
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
             "first-release-date": "2013-01-25",
             "id": "636431af-26f4-4f65-b58f-010700fee6bf",
-            "video": false,
             "isrcs": [
               "USWB11203122"
             ],
             "length": 228413,
+            "title": "Oh Daddy (early take)",
+            "video": false
+          },
+          "title": "Oh Daddy (early take)"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "GB",
+                "disambiguation": "",
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
+            }
+          ],
+          "id": "686d130b-a833-4f98-8a05-322f224578fd",
+          "length": 331000,
+          "number": "13",
+          "position": 13,
+          "recording": {
             "artist-credit": [
               {
-                "joinphrase": "",
                 "artist": {
-                  "name": "Fleetwood Mac",
-                  "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
                   "disambiguation": "",
-                  "sort-name": "Fleetwood Mac"
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
+                "joinphrase": "",
                 "name": "Fleetwood Mac"
               }
             ],
-            "title": "Oh Daddy (early take)",
-            "disambiguation": ""
-          },
-          "id": "bc2645cd-363c-4cf3-95ee-24841c939614"
-        },
-        {
-          "recording": {
             "disambiguation": "",
-            "title": "Silver Springs (early take)",
-            "artist-credit": [
-              {
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-                  "type": "Group",
-                  "name": "Fleetwood Mac"
-                },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
-              }
-            ],
-            "length": 331720,
-            "video": false,
+            "first-release-date": "2013-01-25",
+            "id": "7966eb16-08ab-47ce-903b-d603a58763de",
             "isrcs": [
               "USWB11203123"
             ],
-            "id": "7966eb16-08ab-47ce-903b-d603a58763de",
-            "first-release-date": "2013-01-25"
+            "length": 331720,
+            "title": "Silver Springs (early take)",
+            "video": false
           },
-          "id": "686d130b-a833-4f98-8a05-322f224578fd",
-          "number": "13",
-          "title": "Silver Springs (early take)",
-          "position": 13,
-          "artist-credit": [
-            {
-              "artist": {
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "country": "GB",
-                "type": "Group",
-                "name": "Fleetwood Mac",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-              },
-              "name": "Fleetwood Mac",
-              "joinphrase": ""
-            }
-          ],
-          "length": 331000
+          "title": "Silver Springs (early take)"
         },
         {
-          "number": "14",
-          "title": "Planets of the Universe (demo)",
-          "position": 14,
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
                 "type": "Group",
-                "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
-              }
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
+          "id": "a63b72ab-aedc-4a0a-ab06-0514a41df191",
           "length": 267000,
+          "number": "14",
+          "position": 14,
           "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
             "id": "dcd3dd6d-2fef-405e-9dad-dd1afd755ed7",
             "isrcs": [
               "USWB11203124"
             ],
-            "video": false,
-            "first-release-date": "2013-01-25",
-            "title": "Planets of the Universe (demo)",
-            "disambiguation": "",
             "length": 267946,
-            "artist-credit": [
-              {
-                "joinphrase": "",
-                "name": "Fleetwood Mac",
-                "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "country": "GB",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
-                }
-              }
-            ]
+            "title": "Planets of the Universe (demo)",
+            "video": false
           },
-          "id": "a63b72ab-aedc-4a0a-ab06-0514a41df191"
+          "title": "Planets of the Universe (demo)"
         },
         {
-          "title": "Doesn\u2019t Anything Last (acoustic duet)",
-          "position": 15,
-          "number": "15",
-          "length": 63000,
           "artist-credit": [
             {
-              "joinphrase": "",
-              "name": "Fleetwood Mac",
               "artist": {
                 "country": "GB",
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                "name": "Fleetwood Mac",
-                "type": "Group",
-                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                 "disambiguation": "",
-                "sort-name": "Fleetwood Mac"
-              }
+                "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
+                "sort-name": "Fleetwood Mac",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
           "id": "9727f58d-ae9a-4f3a-ac6e-b2cf8f6db30e",
+          "length": 63000,
+          "number": "15",
+          "position": 15,
           "recording": {
-            "disambiguation": "",
-            "title": "Doesn\u2019t Anything Last (acoustic duet)",
             "artist-credit": [
               {
                 "artist": {
-                  "disambiguation": "",
-                  "sort-name": "Fleetwood Mac",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
+                  "disambiguation": "",
+                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
                   "name": "Fleetwood Mac",
+                  "sort-name": "Fleetwood Mac",
                   "type": "Group",
-                  "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a"
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "length": 63146,
+            "disambiguation": "",
+            "first-release-date": "2013-01-25",
+            "id": "de91a419-9ff7-4678-b94b-db4e14f7f738",
             "isrcs": [
               "USWB11203125"
             ],
-            "video": false,
-            "id": "de91a419-9ff7-4678-b94b-db4e14f7f738",
-            "first-release-date": "2013-01-25"
-          }
+            "length": 63146,
+            "title": "Doesn\u2019t Anything Last (acoustic duet)",
+            "video": false
+          },
+          "title": "Doesn\u2019t Anything Last (acoustic duet)"
         },
         {
-          "length": 156000,
           "artist-credit": [
             {
-              "name": "Fleetwood Mac",
               "artist": {
-                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                 "country": "GB",
-                "type": "Group",
-                "name": "Fleetwood Mac",
+                "disambiguation": "",
                 "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                "name": "Fleetwood Mac",
                 "sort-name": "Fleetwood Mac",
-                "disambiguation": ""
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
               },
-              "joinphrase": ""
+              "joinphrase": "",
+              "name": "Fleetwood Mac"
             }
           ],
-          "title": "Never Going Back Again (instrumental)",
-          "position": 16,
-          "number": "16",
           "id": "f4876e66-a4b8-4153-b383-e69157d2261a",
+          "length": 156000,
+          "number": "16",
+          "position": 16,
           "recording": {
-            "length": 156893,
             "artist-credit": [
               {
                 "artist": {
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
                   "country": "GB",
-                  "type": "Group",
-                  "name": "Fleetwood Mac",
+                  "disambiguation": "",
                   "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
+                  "name": "Fleetwood Mac",
                   "sort-name": "Fleetwood Mac",
-                  "disambiguation": ""
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
                 },
-                "name": "Fleetwood Mac",
-                "joinphrase": ""
+                "joinphrase": "",
+                "name": "Fleetwood Mac"
               }
             ],
-            "title": "Never Going Back Again (instrumental)",
             "disambiguation": "",
             "first-release-date": "2013-01-25",
             "id": "a4cd0f2a-95ba-49bb-ae37-5bfbc6434ed8",
             "isrcs": [
               "USWB11203126"
             ],
+            "length": 156893,
+            "title": "Never Going Back Again (instrumental)",
             "video": false
-          }
+          },
+          "title": "Never Going Back Again (instrumental)"
         }
-      ],
-      "id": "2a621e69-18c5-3436-ae9c-7d036b82f6ba",
-      "track-count": 16
+      ]
     }
   ],
-  "barcode": "081227970949",
-  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "packaging": "Gatefold Cover",
-  "artist-credit": [
+  "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+  "quality": "normal",
+  "release-events": [
     {
-      "joinphrase": "",
-      "artist": {
-        "sort-name": "Fleetwood Mac",
+      "area": {
         "disambiguation": "",
-        "name": "Fleetwood Mac",
-        "type": "Group",
-        "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-        "country": "GB",
-        "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "name": "United States",
+        "sort-name": "United States",
+        "type": null,
+        "type-id": null
       },
-      "name": "Fleetwood Mac"
-    }
-  ],
-  "title": "Rumours",
-  "text-representation": {
-    "script": "Latn",
-    "language": "eng"
-  },
-  "asin": "B00AGKHEUI",
-  "id": "5c976ee2-d4d4-4932-8f16-54f2b50f8ac5",
-  "label-info": [
-    {
-      "label": null,
-      "catalog-number": "R2-532752"
+      "date": "2013-01-29"
     }
   ],
   "release-group": {
-    "id": "416bb5e5-c7d1-3977-8fd7-7c9daf6c2be6",
-    "first-release-date": "1977-02-04",
-    "secondary-types": [],
-    "primary-type": "Album",
-    "title": "Rumours",
-    "disambiguation": "",
-    "secondary-type-ids": [],
     "artist-credit": [
       {
-        "joinphrase": "",
         "artist": {
+          "country": "GB",
           "disambiguation": "",
-          "sort-name": "Fleetwood Mac",
-          "name": "Fleetwood Mac",
-          "type": "Group",
           "id": "bd13909f-1c29-4c27-a874-d4aaf27c5b1a",
-          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-          "country": "GB"
+          "name": "Fleetwood Mac",
+          "sort-name": "Fleetwood Mac",
+          "type": "Group",
+          "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
         },
+        "joinphrase": "",
         "name": "Fleetwood Mac"
       }
     ],
-    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+    "disambiguation": "",
+    "first-release-date": "1977-02-04",
+    "id": "416bb5e5-c7d1-3977-8fd7-7c9daf6c2be6",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "secondary-types": [],
+    "title": "Rumours"
   },
   "status": "Official",
-  "quality": "normal",
-  "disambiguation": "2013 deluxe edition"
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "Rumours"
 }
