@@ -69,7 +69,6 @@ class InstallPluginDialog(PicardDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(_("Install Plugin"))
-        self.setModal(True)
         self.setMinimumSize(font_scaled_size(self, 60, 20))
 
         # Cache frequently accessed objects
