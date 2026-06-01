@@ -792,7 +792,11 @@ class PluginListWidget(QtWidgets.QWidget):
     def _switch_ref_from_menu(self, plugin):
         """Switch plugin ref from context menu."""
         dialog = SwitchRefDialog(plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        dialog.finished.connect(lambda result: self._on_switch_ref_dialog_finished(result, dialog, plugin))
+        dialog.open()
+
+    def _on_switch_ref_dialog_finished(self, result, dialog, plugin):
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.switch_ref(
                 plugin=plugin,
