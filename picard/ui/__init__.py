@@ -46,6 +46,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import gettext as _
 from picard.util import (
     get_url,
     restore_method,
@@ -238,6 +239,17 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         alongside the rest of the UI.
         """
         self._show_with_modality(QtCore.Qt.WindowModality.NonModal)
+
+    def set_window_title(self, title: str) -> None:
+        """Set window title, appending the app name for parentless windows.
+
+        Parentless windows appear as separate entries in the taskbar, so the
+        app name suffix helps identify them. Parented dialogs are already
+        visually associated with their parent and don't need it.
+        """
+        if not self.parent():
+            title = _("%s — MusicBrainz Picard") % title
+        self.setWindowTitle(title)
 
     def show_help(self, help_url=None):
         url = help_url or self.help_url

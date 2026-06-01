@@ -147,7 +147,7 @@ class LogViewDialog(PicardDialog):
     def __init__(self, title, parent=None):
         super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
-        self.setWindowTitle(title)
+        self.set_window_title(title)
         self.vbox = QtWidgets.QVBoxLayout()
         self.setLayout(self.vbox)
         self.list_view = QtWidgets.QListView()
@@ -331,7 +331,7 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.main_tail, _("Log View — MusicBrainz Picard"), parent=parent)
+        super().__init__(log.main_tail, _("Log View"), parent=parent)
         self.verbosity = log.get_effective_level()
         self._status_label = None
         self.help_url = '/appendices/log_viewer.html'
@@ -546,4 +546,4 @@ class LogView(LogViewCommon):
 
 class HistoryView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.history_tail, _("Activity History — MusicBrainz Picard"), parent=parent)
+        super().__init__(log.history_tail, _("Activity History"), parent=parent)

@@ -149,7 +149,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         super().__init__(parent=parent)
         self.examples = examples
 
-        self.setWindowTitle(self.display_title())
+        self.set_window_title(self.display_title())
         self.loading = True
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
