@@ -861,7 +861,7 @@ class PluginListWidget(QtWidgets.QWidget):
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setText(_("There were no installed metadata processing plugins found."))
             msg.setWindowTitle(_("No Data"))
-            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.show()
@@ -921,7 +921,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
-        self.setModal(True)
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.resize(font_scaled_size(self, 50, 20))
         self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()
