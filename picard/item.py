@@ -51,6 +51,8 @@ from picard.util.imagelist import ImageList
 
 
 if TYPE_CHECKING:
+    from picard import Tagger
+
     from picard.ui.itemviews import TreeItem
 
 
@@ -186,11 +188,11 @@ class MetadataItem(QtCore.QObject, Item):
         self._folksonomy_tags = Counter()
 
     @property
-    def tagger(self):
+    def tagger(self) -> 'Tagger':
         return tagger_instance()
 
     @tagger.setter
-    def tagger(self, value):
+    def tagger(self, value: 'Tagger'):
         # We used to set tagger property in subclasses, but that's not needed anymore
         assert value == tagger_instance()
         stack = inspect.stack()

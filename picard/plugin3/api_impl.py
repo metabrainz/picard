@@ -32,29 +32,14 @@ from pathlib import Path
 import re
 import sys
 import types
-
-from PyQt6.QtCore import QLocale
-
-from picard import log
-from picard.debug_opts import DebugOpt
-from picard.util.display_title_base import HasDisplayTitle
-from picard.util.imageinfo import ImageInfo
-
-
-try:
-    import tomllib  # type: ignore[unresolved-import]
-except (ImportError, ModuleNotFoundError):
-    import tomli as tomllib  # type: ignore[no-redef]
 from typing import (
     TYPE_CHECKING,
     Any,
 )
 
+from PyQt6.QtCore import QLocale
 
-if TYPE_CHECKING:
-    from picard.tagger import Tagger
-
-
+from picard import log
 from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import (
@@ -67,6 +52,7 @@ from picard.coverart.providers import (
     CoverArtProvider as _CoverArtProvider,
     ProviderOptions as _ProviderOptions,
 )
+from picard.debug_opts import DebugOpt
 from picard.extension_points.cover_art_filters import (
     register_cover_art_filter,
     register_cover_art_metadata_filter,
@@ -110,6 +96,8 @@ from picard.plugin3.i18n import (
 )
 from picard.plugin3.manifest import PluginManifest
 from picard.track import Track
+from picard.util.display_title_base import HasDisplayTitle
+from picard.util.imageinfo import ImageInfo
 from picard.webservice import (
     PendingRequest,
     WebService,
@@ -117,6 +105,16 @@ from picard.webservice import (
 from picard.webservice.api_helpers import MBAPIHelper
 
 from picard.ui.options import OptionsPage as _OptionsPage
+
+
+try:
+    import tomllib  # type: ignore[unresolved-import]
+except (ImportError, ModuleNotFoundError):
+    import tomli as tomllib  # type: ignore[no-redef]
+
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 
 def t_(key: str, text: str | None = None, plural: str | None = None) -> str | tuple[str, str, str]:
@@ -420,7 +418,7 @@ class PluginApi:
         return False
 
     @property
-    def tagger(self):
+    def tagger(self) -> 'Tagger':
         """Access to the main Tagger instance."""
         return self._tagger
 
