@@ -177,12 +177,16 @@ class RenamingOptionsPage(OptionsPage):
             self.ui.example_filename_before,
         )
 
-    def show_script_editing_page(self):
-        self.script_editor_dialog = ScriptEditorDialog.get_instance(examples=self.examples)
-        if not self.script_editor_dialog.isVisible():
-            self.script_editor_dialog.show()
-            self.script_editor_dialog.raise_()
-            self.script_editor_dialog.activateWindow()
+    def show_script_editing_page(self, raise_window=True):
+        if raise_window:
+            # Opening from button click: use show_instance which handles
+            # parenting (allows WM to show it above the Options dialog)
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+        else:
+            # Reconnecting from Options __init__: don't raise or re-parent
+            self.script_editor_dialog = ScriptEditorDialog.get_instance(examples=self.examples)
+        self.script_editor_dialog.examples = self.examples
+        self.script_editor_dialog.update_examples()
 
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
         self.script_editor_dialog.signal_update.connect(self.display_examples)

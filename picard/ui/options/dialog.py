@@ -341,7 +341,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # If the script editor is already open (opened from main window),
         # reconnect it to the file renaming options page without raising it.
         if self.tagger and self.tagger.window.script_editor_dialog is not None:
-            self.get_page('filerenaming').show_script_editing_page()
+            self.get_page('filerenaming').show_script_editing_page(raise_window=False)
 
     @property
     def initialized_pages(self):

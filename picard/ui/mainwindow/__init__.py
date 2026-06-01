@@ -1303,12 +1303,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
-        options_dialog = OptionsDialog.show_instance(page, self)
-        options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
             # Disable signal processing to avoid saving changes not processed with "Make It So!"
             for signal in self.script_editor_signals:
                 signal.disconnect()
+        options_dialog = OptionsDialog.show_instance(page, self)
+        options_dialog.finished.connect(self._options_closed)
 
         return options_dialog
 
