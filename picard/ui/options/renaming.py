@@ -178,7 +178,11 @@ class RenamingOptionsPage(OptionsPage):
         )
 
     def show_script_editing_page(self):
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+        self.script_editor_dialog = ScriptEditorDialog.get_instance(examples=self.examples)
+        if not self.script_editor_dialog.isVisible():
+            self.script_editor_dialog.show()
+            self.script_editor_dialog.raise_()
+            self.script_editor_dialog.activateWindow()
 
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
         self.script_editor_dialog.signal_update.connect(self.display_examples)

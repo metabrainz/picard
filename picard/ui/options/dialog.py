@@ -305,8 +305,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.finished.connect(self.saveWindowState)
 
         self.load_all_pages()
-        self.first_enter = True
-        self.installEventFilter(self)
 
         maintenance_page = self.get_page('maintenance')
         if maintenance_page.loaded:
@@ -339,6 +337,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Set initial selection after plugin refresh
         if self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+        # If the script editor is already open (opened from main window),
+        # reconnect it to the file renaming options page without raising it.
+        if self.tagger and self.tagger.window.script_editor_dialog is not None:
+            self.get_page('filerenaming').show_script_editing_page()
 
     @property
     def initialized_pages(self):
@@ -448,17 +451,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     except AttributeError:
                         pass
                     break
-
-    def eventFilter(self, object, event):
-        """Process selected events."""
-        evtype = event.type()
-        if evtype == QtCore.QEvent.Type.Enter:
-            if self.first_enter:
-                self.first_enter = False
-                if self.tagger and self.tagger.window.script_editor_dialog is not None:
-                    self.get_page('filerenaming').show_script_editing_page()
-                    self.activateWindow()
-        return False
 
     def get_page(self, pagename):
         return self.item_to_page[self.pagename_to_item[pagename]]

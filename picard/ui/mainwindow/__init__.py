@@ -435,6 +435,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         event.accept()
         self.log_dialog.close()
         self.history_dialog.close()
+        if self.script_editor_dialog:
+            ScriptEditorDialog.get_instance().close()
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:
@@ -2165,7 +2167,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Open the file naming script editor / manager in a new window."""
         ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
         self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
         self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)
