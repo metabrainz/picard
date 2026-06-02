@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-05-28 08:19+0200\n"
-"PO-Revision-Date: 2026-05-26 08:12+0000\n"
+"PO-Revision-Date: 2026-06-02 02:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:203
@@ -221,14 +221,14 @@ msgid "Log similarity scores and match decisions"
 msgstr "Registra les puntuacions de similitud i les decisions de coincidència"
 
 #: picard/debug_opts.py:120
-#, fuzzy
-#| msgid "Plugin Name"
 msgid "Plugin Development"
-msgstr "Nom del connector"
+msgstr "Desenvolupament del connector"
 
 #: picard/debug_opts.py:120
 msgid "Log plugin details typically only used during development"
 msgstr ""
+"Registra detalls del connector utilitzats normalment només durant el "
+"desenvolupament"
 
 #: picard/file.py:329
 msgid "Cannot save file: the file no longer exists."
@@ -886,7 +886,7 @@ msgstr "Tipus d'actualitzacions a comprovar"
 
 #: picard/options.py:459
 msgid "Log verbosity level"
-msgstr ""
+msgstr "Nivel de detall del registre"
 
 #: picard/options.py:464 picard/ui/forms/ui_options_tags.py:80
 msgid "Clear existing tags"
@@ -3591,10 +3591,8 @@ msgid "Pending requests"
 msgstr "Peticions pendents"
 
 #: picard/ui/logview.py:79
-#, fuzzy
-#| msgid "Show &more details…"
 msgid "&View detail…"
-msgstr "&Mostra més detalls…"
+msgstr "&Visualitza els detalls…"
 
 #: picard/ui/logview.py:84 picard/ui/metadatabox/__init__.py:552
 msgid "&Copy"
@@ -3605,38 +3603,28 @@ msgid "Select &all"
 msgstr "Seleccion&a-ho tot"
 
 #: picard/ui/logview.py:120
-#, fuzzy
-#| msgid "Show Details"
 msgid "Log Detail"
-msgstr "Mostra els detalls"
+msgstr "Detalls del registre"
 
 #: picard/ui/logview.py:247
 msgid "Log"
 msgstr "Registre"
 
 #: picard/ui/logview.py:261
-#, fuzzy
-#| msgid "Clear Log…"
 msgid "Clear &log…"
-msgstr "Esborra el registre…"
+msgstr "Esborra e&l registre…"
 
 #: picard/ui/logview.py:265
-#, fuzzy
-#| msgid "Rename files"
 msgid "&Regex filter"
-msgstr "Canvia el nom dels fitxers"
+msgstr "Filtre d'expressions &regulars"
 
 #: picard/ui/logview.py:270
-#, fuzzy
-#| msgid "metadata view"
 msgid "&Compact view"
-msgstr "visualització de metadades"
+msgstr "Visualització &compacta"
 
 #: picard/ui/logview.py:279
-#, fuzzy
-#| msgid "&Help"
 msgid "Help"
-msgstr "&Ajuda"
+msgstr "Ajuda"
 
 #: picard/ui/logview.py:286 picard/ui/logview.py:455
 msgid "Verbosity"
@@ -3647,16 +3635,16 @@ msgid ""
 "Changes the logging verbosity level for the current session. The default "
 "level configured in Options will be restored on next startup."
 msgstr ""
+"Canvia el nivell de detall del registre de la sessió actual. Es restaurarà "
+"el nivell per defecte configurat a les opcions al pròxim inici."
 
 #: picard/ui/logview.py:299 picard/ui/logview.py:301
 msgid "Debug Options"
 msgstr "Opcions de depuració"
 
 #: picard/ui/logview.py:311 picard/ui/logview.py:319
-#, fuzzy
-#| msgid "Filters"
 msgid "Filter"
-msgstr "Filtres"
+msgstr "Filtre"
 
 #: picard/ui/logview.py:326
 msgid "Save As…"
@@ -3668,7 +3656,7 @@ msgstr "Desa la visualització del registre en un fitxer"
 
 #: picard/ui/logview.py:393
 msgid "Text files (*.txt);;All files (*)"
-msgstr ""
+msgstr "Fitxers de text (*.txt);;Tots els fitxers (*)"
 
 #: picard/ui/logview.py:401
 msgid "File already exists, do you really want to save to this file?"
@@ -4110,23 +4098,16 @@ msgid "Confirm Plugin Installation"
 msgstr "Confirmació d'instal·lació del connector"
 
 #: picard/ui/dialogs/installconfirm.py:75
-#, fuzzy
-#| msgid ""
-#| "Warning: This is a community plugin. Community plugins are not reviewed "
-#| "by the Picard team. Only install plugins from sources you trust."
 msgid ""
 "Plugins run with full access to your system. Only install plugins from "
 "sources you trust."
 msgstr ""
-"Avís: Aquest és un connector de la comunitat. L'equip de Picard no revisa "
-"els connectors de la comunitat. Instal·leu connectors només de fonts en què "
-"confieu."
+"Els connectors s'executen amb accés complet al sistema. Instal·leu "
+"connectors només de fonts en què confieu."
 
 #: picard/ui/dialogs/installconfirm.py:84
-#, fuzzy
-#| msgid "Don't show this warning again."
 msgid "Don't show this warning again"
-msgstr "No tornis a mostrar aquest avís."
+msgstr "No tornis a mostrar aquest avís"
 
 #: picard/ui/dialogs/installconfirm.py:94
 #, python-brace-format
@@ -4147,37 +4128,25 @@ msgid "Yes, Install!"
 msgstr "Sí, instal·la"
 
 #: picard/ui/dialogs/installconfirm.py:149
-#, fuzzy, python-brace-format
-#| msgid "ERROR: This plugin is blacklisted: {reason}"
+#, python-brace-format
 msgid "This plugin is blacklisted: {reason}"
-msgstr "ERROR: Aquest connector és a la llista de no permesos: {reason}"
+msgstr "Aquest connector és a la llista de no permesos: {reason}"
 
 #: picard/ui/dialogs/installconfirm.py:160
-#, fuzzy
-#| msgid ""
-#| "Warning: This is a community plugin. Community plugins are not reviewed "
-#| "by the Picard team. Only install plugins from sources you trust."
 msgid ""
 "This is a community plugin. Community plugins are not reviewed by the Picard "
 "team."
 msgstr ""
-"Avís: Aquest és un connector de la comunitat. L'equip de Picard no revisa "
-"els connectors de la comunitat. Instal·leu connectors només de fonts en què "
-"confieu."
+"Aquest és un connector de la comunitat. L'equip de Picard no revisa els "
+"connectors de la comunitat."
 
 #: picard/ui/dialogs/installconfirm.py:164
-#, fuzzy
-#| msgid ""
-#| "Warning: This plugin is not in the official registry. Installing "
-#| "unregistered plugins may pose security risks. Only install plugins from "
-#| "sources you trust."
 msgid ""
 "This plugin is not in the official registry. Installing unregistered plugins "
 "may pose security risks."
 msgstr ""
-"Avís: Aquest connector no forma part del registre oficial. La instal·lació "
-"de connectors no registrats pot suposar riscos de seguretat. Instal·leu "
-"connectors només de fonts en què confieu."
+"Aquest connector no forma part del registre oficial. La instal·lació de "
+"connectors no registrats pot suposar riscos de seguretat."
 
 #: picard/ui/dialogs/installplugin.py:71
 msgid "Install Plugin"
@@ -5552,7 +5521,7 @@ msgstr "Actualitzacions que es comprovaran:"
 
 #: picard/ui/forms/ui_options_startup.py:148
 msgid "Default log level:"
-msgstr ""
+msgstr "Nivell de registre per defecte:"
 
 #: picard/ui/forms/ui_options_tags.py:77
 msgid "Write tags to files"
@@ -8071,13 +8040,11 @@ msgid "Show/hide plugin details panel"
 msgstr "Mostra/oculta el tauler de detalls del connector"
 
 #: picard/ui/options/plugins.py:215
-#, fuzzy, python-brace-format
-#| msgid "{plugin_count:,d} plugin"
-#| msgid_plural "{plugin_count:,d} plugins"
+#, python-brace-format
 msgid "{plugin_count:,d} plugin installed"
 msgid_plural "{plugin_count:,d} plugins installed"
-msgstr[0] "{plugin_count:,d} connector"
-msgstr[1] "{plugin_count:,d} connectors"
+msgstr[0] "{plugin_count:,d} connector instal·lat"
+msgstr[1] "{plugin_count:,d} connectors instal·lats"
 
 #: picard/ui/options/plugins.py:224
 #, python-brace-format
@@ -8322,7 +8289,7 @@ msgstr "Selecció de la carpeta de sessions"
 
 #: picard/ui/options/startup.py:52
 msgid "Startup"
-msgstr ""
+msgstr "Inici"
 
 #: picard/ui/options/tags.py:105
 msgid "Do not sanitize dates for these tag formats:"
@@ -9064,10 +9031,9 @@ msgid "Custom"
 msgstr "Personalitzada"
 
 #: picard/ui/widgets/refselector.py:115
-#, fuzzy, python-brace-format
-#| msgid "Use default ref: {ref} ({description})"
+#, python-brace-format
 msgid "Recommended: <b>{ref}</b> ({description})"
-msgstr "Fes servir la referència per defecte: {ref} ({description})"
+msgstr "Recomanació: <b>{ref}</b> ({description})"
 
 #: picard/ui/widgets/refselector.py:118
 msgid "Use the default ref (usually main/master branch)"
