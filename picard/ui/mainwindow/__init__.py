@@ -1300,7 +1300,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.activeWindow().close()
 
     def show_about(self):
-        return AboutDialog.show_instance()
+        return AboutDialog.show_instance(self)
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
