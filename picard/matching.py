@@ -463,20 +463,21 @@ def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list
         for release in releases:
             for medium in release.get('media', []):
                 track_offset = medium.get('track-offset', None)
-                tracks = medium.get('tracks', [])
-                # For recording lookups the web service returns only the track
-                # corresponding to the recording and sets the track-offset to
-                # indicate the number of skipped tracks before it. The track has
-                # no position field, so we use the track-offset to compare.
-                if track_offset is not None and len(tracks) == 1 and not tracks[0].get('position'):
-                    if tracknumber == track_offset + 1:
+
+                # For recording lookups the web service returns only a "track" field
+                # containing the the track corresponding to the recording and sets
+                # the track-offset to indicate the number of skipped tracks before it.
+                # The track has no position field, so we use the track-offset to compare.
+                if track_offset is not None and 'track' in medium:
+                    if medium.get('track', None) and tracknumber == track_offset + 1:
                         sim = 1.0
                     else:
                         sim = 0.0
                     return sim
-                # Else we search for the track with matching recording and
-                # compare its position.
+                # Else if the data contains a "tracks" field with full track listing
+                # search for the track with matching recording and compare its position.
                 else:
+                    tracks = medium.get('tracks', [])
                     matching_tracks = filter(
                         lambda t: t.get('recording', {}).get('id') == recording_id,
                         tracks,

@@ -78,10 +78,9 @@ def _track_to_search_result(track, release):
             if track.get("recording", {}).get("id", "") == recording_id:
                 medium["track-offset"] = pos
                 del track["recording"]
-                medium["tracks"] = [track]
+                medium["track"] = [track]
                 break
-            else:
-                medium["tracks"] = []
+        del medium["tracks"]
 
     result["releases"] = [recording_release]
 
