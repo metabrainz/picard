@@ -157,6 +157,10 @@ class ErrorOptionsPage(OptionsPage):
 
 class OptionsDialog(PicardDialog, SingletonDialog):
     modality = QtCore.Qt.WindowModality.NonModal
+    # Stay above MainWindow since it is disabled while Options is open.
+    # Without this, the user could click MainWindow and hide Options behind it
+    # (especially problematic on macOS where there's no taskbar entry to recover).
+    flags = PicardDialog.flags | QtCore.Qt.WindowType.WindowStaysOnTopHint
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
