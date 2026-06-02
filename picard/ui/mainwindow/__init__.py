@@ -130,6 +130,7 @@ from picard.util.readthedocs import ReadTheDocs
 from picard.ui import (
     PicardDialog,
     PreserveGeometry,
+    modal_options,
 )
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
@@ -1309,13 +1310,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 signal.disconnect()
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
-        self.setEnabled(False)
-        options_dialog.setEnabled(True)
+        if not modal_options():
+            self.setEnabled(False)
+            options_dialog.setEnabled(True)
 
         return options_dialog
 
     def _options_closed(self):
-        self.setEnabled(True)
+        if not modal_options():
+            self.setEnabled(True)
         if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
@@ -2162,7 +2165,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Open the file naming script editor / manager in a new window."""
         ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=examples)
+        if modal_options():
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
+        else:
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
         self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
         self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)

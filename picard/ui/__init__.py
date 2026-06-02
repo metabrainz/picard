@@ -25,6 +25,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import os
 import uuid
 
 from PyQt6 import (
@@ -62,6 +63,25 @@ elif IS_HAIKU:
     FONT_FAMILY_MONOSPACE = 'Noto Sans Mono'
 else:
     FONT_FAMILY_MONOSPACE = 'Monospace'
+
+
+def modal_options():
+    """Whether the Options dialog should use modal behavior.
+
+    On macOS, Options must be WindowModal because NonModal dialogs can get
+    lost behind the main window with no way to recover. On other platforms,
+    Options uses NonModal + disabled MainWindow, which allows utility windows
+    (LogView, Script Editor) to remain interactive.
+
+    Can be overridden with the PICARD_MODAL_OPTIONS environment variable
+    (set to '1' to force modal, '0' to force non-modal).
+
+    Returns True for modal behavior, False for non-modal + disabled parent.
+    """
+    override = os.environ.get('PICARD_MODAL_OPTIONS')
+    if override is not None:
+        return override == '1'
+    return IS_MACOS
 
 
 class PreserveGeometry:

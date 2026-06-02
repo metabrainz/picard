@@ -48,7 +48,6 @@ from picard.config import (
     SettingConfigSection,
     get_config,
 )
-from picard.const.sys import IS_MACOS
 from picard.extension_points.options_pages import ext_point_options_pages
 from picard.i18n import (
     N_,
@@ -67,6 +66,7 @@ from picard.ui import (
     HashableTreeWidgetItem,
     PicardDialog,
     SingletonDialog,
+    modal_options,
 )
 from picard.ui.colors import interface_colors as _interface_colors
 from picard.ui.forms.ui_options import Ui_OptionsDialog
@@ -156,11 +156,6 @@ class ErrorOptionsPage(OptionsPage):
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
-    modality = QtCore.Qt.WindowModality.NonModal
-    # Stay above MainWindow since it is disabled while Options is open.
-    # Without this, the user could click MainWindow and hide Options behind it
-    # (especially problematic on macOS where there's no taskbar entry to recover).
-    flags = PicardDialog.flags | QtCore.Qt.WindowType.WindowStaysOnTopHint
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
@@ -219,11 +214,17 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
-        if IS_MACOS:
-            # Prevent macOS from rendering this as a sheet attached to the
-            # parent's title bar. On Linux/Windows, the Window flag would break
-            # WindowModal enforcement, so it is only set on macOS.
+        if modal_options():
+            # On macOS: use WindowModal (blocks MainWindow, allows child windows
+            # like Script Editor to be shown above). Add Window flag to prevent
+            # sheet rendering.
             self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.Window)
+        else:
+            # On Linux/Windows: use NonModal + disabled MainWindow (set in
+            # show_options). Add WindowStaysOnTopHint to prevent Options from
+            # being hidden behind the disabled MainWindow.
+            self.setWindowModality(QtCore.Qt.WindowModality.NonModal)
+            self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.WindowStaysOnTopHint)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         self.ui = Ui_OptionsDialog()
