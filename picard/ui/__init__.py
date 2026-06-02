@@ -199,6 +199,21 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.setWindowModality(self.modality)
         elif parent is not None:
             self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        if parent is None:
+            self._register_parentless()
+
+    _parentless_instances: list['PicardDialog'] = []
+
+    def _register_parentless(self):
+        self._parentless_instances.append(self)
+
+    @classmethod
+    def close_all_parentless(cls):
+        """Close all parentless dialogs. Called on application quit."""
+        for dialog in cls._parentless_instances:
+            log.debug("Closing parentless dialog %s on quit", type(dialog).__name__)
+            dialog.close()
+        cls._parentless_instances.clear()
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Close):

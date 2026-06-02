@@ -127,7 +127,10 @@ from picard.util.cdrom import (
 )
 from picard.util.readthedocs import ReadTheDocs
 
-from picard.ui import PreserveGeometry
+from picard.ui import (
+    PicardDialog,
+    PreserveGeometry,
+)
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
 from picard.ui.coverartbox import CoverArtBox
@@ -425,12 +428,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 # Silently close the script editor without displaying the confirmation a second time.
                 self.script_editor_dialog.loading = True
         event.accept()
-        self.log_dialog.close()
-        self.history_dialog.close()
-        if self.script_editor_dialog:
-            ScriptEditorDialog.get_instance().close()
-        if AboutDialog._instance:
-            AboutDialog._instance.close()
+        PicardDialog.close_all_parentless()
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:
