@@ -6,13 +6,15 @@
 # KenParker_CN <peekabookenny@gmail.com>, 2025.
 # imgradeone <imgradeone@outlook.com>, 2026.
 # Nebulain <2689960483@qq.com>, 2026.
+# Automatic translation add-on <noreply-addon-autotranslate@weblate.org>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2026-05-30 22:12+0000\n"
-"Last-Translator: Nebulain <2689960483@qq.com>\n"
+"PO-Revision-Date: 2026-06-02 02:12+0000\n"
+"Last-Translator: Automatic translation add-on <noreply-addon-"
+"autotranslate@weblate.org>\n"
 "Language-Team: Chinese (Simplified Han script) <https://"
 "translations.metabrainz.org/projects/picard/3/constants/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -20,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -2691,7 +2693,7 @@ msgstr ""
 
 #: picard/const/locales.py:656
 msgid "Morisyen"
-msgstr ""
+msgstr "毛里求斯克里奥尔语"
 
 #: picard/const/locales.py:657
 msgid "Morisyen (Mauritius)"
