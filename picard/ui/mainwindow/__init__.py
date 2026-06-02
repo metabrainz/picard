@@ -429,6 +429,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.history_dialog.close()
         if self.script_editor_dialog:
             ScriptEditorDialog.get_instance().close()
+        if AboutDialog._instance:
+            AboutDialog._instance.close()
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:
@@ -1299,7 +1301,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.tagger.activeWindow().close()
 
     def show_about(self):
-        return AboutDialog.show_instance(self)
+        return AboutDialog.show_instance()
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
