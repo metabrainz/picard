@@ -90,6 +90,7 @@ class PreserveGeometry:
     def __init__(self, *args, **kwargs):
         Option.add_if_missing('persist', self.opt_name(), QtCore.QByteArray())
         Option.add_if_missing('persist', self.splitters_name(), {})
+        self._geometry_initialized = False
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
@@ -136,6 +137,7 @@ class PreserveGeometry:
 
     @restore_method
     def restore_geometry(self):
+        self._geometry_initialized = True
         config = get_config()
         geometry = config.persist[self.opt_name()]
         if not geometry.isNull():
@@ -153,8 +155,13 @@ class PreserveGeometry:
             del config.persist[self.splitters_name()][name]
 
     def save_geometry(self):
+        if not self._geometry_initialized:
+            return
+        geometry = self.saveGeometry()
+        if not geometry:
+            return
         config = get_config()
-        config.persist[self.opt_name()] = self.saveGeometry()
+        config.persist[self.opt_name()] = geometry
         config.persist[self.splitters_name()] = {
             name: bytearray(splitter.saveState()) for name, splitter in self._get_splitters.items()
         }
