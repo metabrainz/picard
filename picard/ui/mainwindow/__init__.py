@@ -1309,10 +1309,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 signal.disconnect()
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
+        self.setEnabled(False)
+        options_dialog.setEnabled(True)
 
         return options_dialog
 
     def _options_closed(self):
+        self.setEnabled(True)
         if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()

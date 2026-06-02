@@ -156,6 +156,7 @@ class ErrorOptionsPage(OptionsPage):
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
+    modality = QtCore.Qt.WindowModality.NonModal
     suspend_signals = False
 
     def add_pages(self, parent_pagename, default_pagename, parent_item):
@@ -341,7 +342,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # If the script editor is already open (opened from main window),
         # reconnect it to the file renaming options page without raising it.
         if self.tagger and self.tagger.window.script_editor_dialog is not None:
-            self.get_page('filerenaming').show_script_editing_page(raise_window=False)
+            self.get_page('filerenaming').show_script_editing_page()
 
     @property
     def initialized_pages(self):
