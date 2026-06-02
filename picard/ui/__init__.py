@@ -233,6 +233,11 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
 
     def _register_parentless(self):
         self._parentless_instances.append(self)
+        self.destroyed.connect(self._unregister_parentless)
+
+    def _unregister_parentless(self):
+        if self in self._parentless_instances:
+            self._parentless_instances.remove(self)
 
     @classmethod
     def close_all_parentless(cls):
