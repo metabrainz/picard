@@ -221,10 +221,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.Window)
         else:
             # On Linux/Windows: use NonModal + disabled MainWindow (set in
-            # show_options). Add WindowStaysOnTopHint to prevent Options from
-            # being hidden behind the disabled MainWindow.
+            # show_options). Use Tool type to stay above parent (MainWindow)
+            # without staying on top of other applications.
             self.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-            self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.WindowStaysOnTopHint)
+            self.setWindowFlags(
+                QtCore.Qt.WindowType.Tool
+                | QtCore.Qt.WindowType.WindowTitleHint
+                | QtCore.Qt.WindowType.WindowSystemMenuHint
+                | QtCore.Qt.WindowType.WindowCloseButtonHint
+            )
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         self.ui = Ui_OptionsDialog()
