@@ -1311,14 +1311,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         options_dialog = OptionsDialog.show_instance(page, self)
         options_dialog.finished.connect(self._options_closed)
         if not modal_options():
-            self.setEnabled(False)
-            options_dialog.setEnabled(True)
+            self._disable_while_dialog_shown(options_dialog)
 
         return options_dialog
 
     def _options_closed(self):
-        if not modal_options():
-            self.setEnabled(True)
         if self.script_editor_dialog is not None:
             self.open_file_naming_script_editor()
             self.script_editor_dialog.show()
@@ -1327,6 +1324,24 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._make_profile_selector_menu()
         self._make_script_selector_menu()
         self._make_settings_selector_menu()
+
+    def _disable_while_dialog_shown(self, dialog):
+        """Disable MainWindow while dialog is shown, re-enable when it closes.
+
+        Connects to both `finished` (normal close path) and `destroyed`
+        (safety net if the dialog is destroyed without emitting `finished`,
+        e.g. via deleteLater or parent destruction). The isEnabled() guard
+        prevents double-action when both signals fire in sequence.
+        """
+
+        def re_enable():
+            if not self.isEnabled():
+                self.setEnabled(True)
+
+        dialog.destroyed.connect(re_enable)
+        dialog.finished.connect(re_enable)
+        self.setEnabled(False)
+        dialog.setEnabled(True)
 
     def show_help(self):
         webbrowser2.open('documentation')
