@@ -36,17 +36,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
+
 from picard.metadata import (
     album_metadata_processors,
     track_metadata_processors,
 )
 
 
-def register_album_metadata_processor(function, priority=0):
+def register_album_metadata_processor(function: Callable, priority: int = 0) -> None:
     """Registers new album-level metadata processor."""
     album_metadata_processors.register(function.__module__, function, priority)
 
 
-def register_track_metadata_processor(function, priority=0):
+def register_track_metadata_processor(function: Callable, priority: int = 0) -> None:
     """Registers new track-level metadata processor."""
     track_metadata_processors.register(function.__module__, function, priority)
