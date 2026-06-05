@@ -31,7 +31,7 @@ from picard.plugin import ExtensionPoint
 ext_point_cover_art_providers = ExtensionPoint(label='cover_art_providers')
 
 
-def register_cover_art_provider(provider):
+def register_cover_art_provider(provider: type) -> None:
     ext_point_cover_art_providers.register(provider.__module__, provider)
     if getattr(provider, 'OPTIONS', None):
         if not hasattr(provider.OPTIONS, 'NAME'):
