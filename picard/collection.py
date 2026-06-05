@@ -24,7 +24,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
 from functools import partial
+from typing import Any
 
 from picard import (
     log,
@@ -42,7 +44,7 @@ user_collections: dict[str, 'Collection'] = {}
 
 
 class Collection:
-    def __init__(self, collection_id: str, mb_api: MBAPIHelper):
+    def __init__(self, collection_id: str, mb_api: MBAPIHelper) -> None:
         self.tagger = tagger_instance()
         self.id = collection_id
         self.name = ''
@@ -52,46 +54,60 @@ class Collection:
         self._mb_api = mb_api
 
     @property
-    def size(self):
+    def size(self) -> int:
         return self._size
 
     @size.setter
-    def size(self, value):
+    def size(self, value: int | str) -> None:
         self._size = int(value)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<Collection %s (%s)>' % (self.name, self.id)
 
-    def _modify(self, api_method, success_handler, releases, callback):
+    def _modify(
+        self,
+        api_method: Callable,
+        success_handler: Callable[[set[str], Callable], None],
+        releases: set[str],
+        callback: Callable,
+    ) -> None:
         releases -= self.pending_releases
         if releases:
             self.pending_releases |= releases
             when_done = partial(self._finished, success_handler, releases, callback)
             api_method(self.id, list(releases), when_done)
 
-    def add_releases(self, releases, callback):
+    def add_releases(self, releases: set[str], callback: Callable) -> None:
         api_method = self._mb_api.put_to_collection
         self._modify(api_method, self._success_add, set(releases), callback)
 
-    def remove_releases(self, releases, callback):
+    def remove_releases(self, releases: set[str], callback: Callable) -> None:
         api_method = self._mb_api.delete_from_collection
         self._modify(api_method, self._success_remove, set(releases), callback)
 
-    def _finished(self, success_handler, releases, callback, document, reply, error):
+    def _finished(
+        self,
+        success_handler: Callable[[set[str], Callable], None],
+        releases: set[str],
+        callback: Callable,
+        document: Any,
+        reply: Any,
+        error: Any,
+    ) -> None:
         self.pending_releases -= releases
         if not error:
             success_handler(releases, callback)
         else:
             self._error(reply)
 
-    def _error(self, reply):
+    def _error(self, reply: Any) -> None:
         self.tagger.window.set_statusbar_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},
             echo=log.error,
         )
 
-    def _success_add(self, releases, callback):
+    def _success_add(self, releases: set[str], callback: Callable) -> None:
         count = len(releases)
         self.releases |= releases
         self.size += count
@@ -103,7 +119,7 @@ class Collection:
         debug_msg = 'Added %(count)i release(s) to collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
-    def _success_remove(self, releases, callback):
+    def _success_remove(self, releases: set[str], callback: Callable) -> None:
         count = len(releases)
         self.releases -= releases
         self.size -= count
@@ -115,7 +131,7 @@ class Collection:
         debug_msg = 'Removed %(count)i release(s) from collection "%(name)s"'
         self._success(count, callback, status_msg, debug_msg)
 
-    def _success(self, count, callback, status_msg, debug_msg):
+    def _success(self, count: int, callback: Callable, status_msg: str, debug_msg: str) -> None:
         callback()
         mparms = {
             'count': count,
@@ -130,7 +146,7 @@ class Collection:
         )
 
 
-def get_user_collection(collection_id):
+def get_user_collection(collection_id: str) -> Collection:
     collection = user_collections.get(collection_id)
     if collection is None:
         tagger = tagger_instance()
@@ -138,10 +154,10 @@ def get_user_collection(collection_id):
     return collection
 
 
-def load_user_collections(callback=None):
+def load_user_collections(callback: Callable | None = None) -> None:
     tagger = tagger_instance()
 
-    def request_finished(document, reply, error):
+    def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
         if error:
             tagger.window.set_statusbar_message(
                 N_("Error loading collections: %(error)s"),
@@ -151,7 +167,7 @@ def load_user_collections(callback=None):
             return
         if document and 'collections' in document:
             collection_list = document['collections']
-            new_collections = set()
+            new_collections: set[str] = set()
 
             for node in collection_list:
                 if node['entity-type'] != 'release':
@@ -177,7 +193,7 @@ def load_user_collections(callback=None):
         user_collections.clear()
 
 
-def add_release_to_user_collections(release_node):
+def add_release_to_user_collections(release_node: dict[str, Any]) -> None:
     """Add album to collections"""
     # Check for empty collection list
     if 'collections' in release_node:
