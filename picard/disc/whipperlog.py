@@ -28,7 +28,7 @@ from picard.disc.utils import (
 )
 
 
-def toc_from_file(path):
+def toc_from_file(path: str) -> tuple[int, ...]:
     """Reads whipper log files, generates musicbrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong
