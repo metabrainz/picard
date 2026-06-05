@@ -42,9 +42,9 @@ from picard.i18n import (
 from picard.util.astrcmp import astrcmp_implementation
 
 
-_versions: dict | None = None
+_versions: dict[str, str | None] | None = None
 
-_names = {
+_names: dict[str, str] = {
     'version': "Picard",
     'python-version': "Python",
     'pyqt-version': "PyQt",
@@ -57,7 +57,7 @@ _names = {
 }
 
 
-def _load_versions():
+def _load_versions() -> None:
     global _versions
 
     # Get pygit2 version if available
@@ -83,7 +83,7 @@ def _load_versions():
     )
 
 
-def _value_as_text(value, i18n=False):
+def _value_as_text(value: str | None, i18n: bool = False) -> str:
     if not value:
         value = N_("is not installed")
         if i18n:
@@ -91,16 +91,18 @@ def _value_as_text(value, i18n=False):
     return value
 
 
-def version_name(key):
+def version_name(key: str) -> str:
     return _names[key]
 
 
-def as_dict(i18n=False):
+def as_dict(i18n: bool = False) -> OrderedDict[str, str]:
     if not _versions:
         _load_versions()
-    return OrderedDict((key, _value_as_text(value, i18n)) for key, value in _versions.items())
+    versions = _versions
+    assert versions is not None
+    return OrderedDict((key, _value_as_text(value, i18n)) for key, value in versions.items())
 
 
-def as_string(i18n=False, separator=", "):
+def as_string(i18n: bool = False, separator: str = ", ") -> str:
     values = as_dict(i18n)
     return separator.join(_names[key] + " " + value for key, value in values.items())
