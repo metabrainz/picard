@@ -50,6 +50,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
+
 from picard.album import album_post_removal_processors
 from picard.file import (
     file_post_addition_to_track_processors,
@@ -60,7 +62,7 @@ from picard.file import (
 )
 
 
-def register_album_post_removal_processor(function, priority=0):
+def register_album_post_removal_processor(function: Callable, priority: int = 0) -> None:
     """Registers an album-removed processor.
     Args:
         function: function to call after album removal, it will be passed the album object
@@ -71,7 +73,7 @@ def register_album_post_removal_processor(function, priority=0):
     album_post_removal_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_load_processor(function, priority=0):
+def register_file_post_load_processor(function: Callable, priority: int = 0) -> None:
     """Registers a file-loaded processor.
 
     Args:
@@ -83,7 +85,7 @@ def register_file_post_load_processor(function, priority=0):
     file_post_load_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_addition_to_track_processor(function, priority=0):
+def register_file_post_addition_to_track_processor(function: Callable, priority: int = 0) -> None:
     """Registers a file-added-to-track processor.
 
     Args:
@@ -95,7 +97,7 @@ def register_file_post_addition_to_track_processor(function, priority=0):
     file_post_addition_to_track_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_removal_from_track_processor(function, priority=0):
+def register_file_post_removal_from_track_processor(function: Callable, priority: int = 0) -> None:
     """Registers a file-removed-from-track processor.
 
     Args:
@@ -107,7 +109,7 @@ def register_file_post_removal_from_track_processor(function, priority=0):
     file_post_removal_to_track_processors.register(function.__module__, function, priority)
 
 
-def register_file_pre_save_processor(function, priority=0):
+def register_file_pre_save_processor(function: Callable, priority: int = 0) -> None:
     """Registers file pre-save processor.
 
     Called before saving tags and any rename / move operations.
@@ -123,7 +125,7 @@ def register_file_pre_save_processor(function, priority=0):
     file_pre_save_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_save_processor(function, priority=0):
+def register_file_post_save_processor(function: Callable, priority: int = 0) -> None:
     """Registers file saved processor.
 
     Args:
