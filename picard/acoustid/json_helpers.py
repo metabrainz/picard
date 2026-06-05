@@ -22,6 +22,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import Any
+
+
 """
 The idea here is to bring the data returned by the AcoustID service into the
 same format as the JSON result from the MB web service. Below methods help us
@@ -29,11 +32,11 @@ to do that conversion process.
 """
 
 
-def _make_releases_node(recording):
+def _make_releases_node(recording: dict[str, Any]) -> list[dict[str, Any]]:
     release_list = []
     for release_group in recording['releasegroups']:
         for release in release_group['releases']:
-            release_mb = {}
+            release_mb: dict[str, Any] = {}
             release_mb['id'] = release['id']
             release_mb['release-group'] = {}
             release_mb['release-group']['id'] = release_group['id']
@@ -60,7 +63,7 @@ def _make_releases_node(recording):
 
             release_mb['media'] = []
             for medium in release['mediums']:
-                media_mb = {}
+                media_mb: dict[str, Any] = {}
                 if 'format' in medium:
                     media_mb['format'] = medium['format']
 
@@ -93,7 +96,7 @@ def _make_releases_node(recording):
     return release_list
 
 
-def _make_artist_node(artist):
+def _make_artist_node(artist: dict[str, Any]) -> dict[str, str]:
     artist_node = {
         'name': artist['name'],
         'sort-name': artist['name'],
@@ -102,10 +105,10 @@ def _make_artist_node(artist):
     return artist_node
 
 
-def _make_artist_credit_node(artists):
+def _make_artist_credit_node(artists: list[dict[str, Any]]) -> list[dict[str, Any]]:
     artist_list = []
     for i, artist in enumerate(artists):
-        node = {
+        node: dict[str, Any] = {
             'artist': _make_artist_node(artist),
             'name': artist['name'],
         }
@@ -115,11 +118,11 @@ def _make_artist_credit_node(artists):
     return artist_list
 
 
-def parse_recording(recording):
+def parse_recording(recording: dict[str, Any]) -> dict[str, Any] | None:
     if 'id' not in recording:  # we have no metadata for this recording
-        return
+        return None
 
-    recording_mb = {
+    recording_mb: dict[str, Any] = {
         'id': recording['id'],
     }
 
@@ -144,5 +147,5 @@ def parse_recording(recording):
     return recording_mb
 
 
-def recording_has_metadata(recording):
+def recording_has_metadata(recording: dict[str, Any]) -> bool:
     return 'id' in recording and recording.get('title') is not None
