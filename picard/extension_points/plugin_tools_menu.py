@@ -34,6 +34,6 @@ signaler = Signaler()
 ext_point_plugin_tools_items = ExtensionPoint(label='plugin_tools_items')
 
 
-def register_tools_menu_action(action):
+def register_tools_menu_action(action: type) -> None:
     ext_point_plugin_tools_items.register(action.__module__, action)
     signaler.plugin_tools_updated.emit()
