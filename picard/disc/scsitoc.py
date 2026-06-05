@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import namedtuple
+from typing import BinaryIO
 
 from picard.disc.utils import (
     DATA_TRACK_GAP,
@@ -31,7 +32,7 @@ from picard.disc.utils import (
 ScsiTocEntry = namedtuple('ScsiTocEntry', 'number start_sector is_data')
 
 
-def parse_toc_entries(f):
+def parse_toc_entries(f: BinaryIO) -> tuple[int, ...]:
     """Parse a TOC in the format used by SCSI's READ TOC command."""
 
     data = f.read()
@@ -43,7 +44,7 @@ def parse_toc_entries(f):
     first_track = data[2]
     last_track = data[3]
 
-    entries = []
+    entries: list[ScsiTocEntry] = []
     leadout_offset = None
 
     for i, off in enumerate(range(4, 2 + datalen, 8)):
@@ -72,7 +73,7 @@ def parse_toc_entries(f):
     return (first_track, last_track, leadout_offset + PREGAP_LENGTH) + offsets
 
 
-def toc_from_file(path):
+def toc_from_file(path: str) -> tuple[int, ...]:
     """Reads a TOC in the SCSI format, generates MusicBrainz disc TOC listing for use as discid."""
 
     with open(path, 'rb') as f:
