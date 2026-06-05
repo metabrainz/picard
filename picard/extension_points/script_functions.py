@@ -66,7 +66,16 @@ Bound = namedtuple('Bound', ['lower', 'upper'])
 
 
 class FunctionRegistryItem:
-    def __init__(self, function, eval_args, argcount, documentation=None, name=None, module=None, signature=None):
+    def __init__(
+        self,
+        function: Callable,
+        eval_args: bool,
+        argcount: Bound | bool,
+        documentation: str | None = None,
+        name: str | None = None,
+        module: str | None = None,
+        signature: str | None = None,
+    ) -> None:
         self.function = function
         self.eval_args = eval_args
         self.argcount = argcount
@@ -78,19 +87,19 @@ class FunctionRegistryItem:
         if module and module.startswith(PLUGIN_MODULE_PREFIX):
             self.plugin_id = module[PLUGIN_MODULE_PREFIX_LEN:]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         doc = f'"""{self.documentation}"""' if self.documentation else None
         return (
             f'{self.__class__.__name__}({self.function}, {self.eval_args}, {self.argcount}, '
             f'{self.signature}, {doc}, {self.name}, {self.module})'
         )
 
-    def _postprocess(self, data, postprocessor):
+    def _postprocess(self, data: str, postprocessor: Callable | None) -> str:
         if postprocessor is not None:
             data = postprocessor(data, function=self)
         return data
 
-    def markdowndoc(self, postprocessor=None):
+    def markdowndoc(self, postprocessor: Callable | None = None) -> str:
         ret = ''
         if self.signature:
             ret = f'`{_(self.signature)}`\n\n'
@@ -98,7 +107,7 @@ class FunctionRegistryItem:
             ret += _(self.documentation)
         return self._postprocess(ret.strip(), postprocessor)
 
-    def htmldoc(self, postprocessor=None):
+    def htmldoc(self, postprocessor: Callable | None = None) -> str:
         if markdown is not None:
             ret = markdown(self.markdowndoc())
         else:
@@ -107,8 +116,13 @@ class FunctionRegistryItem:
 
 
 def register_script_function(
-    function, name=None, eval_args=True, check_argcount=True, documentation=None, signature=None
-):
+    function: Callable,
+    name: str | None = None,
+    eval_args: bool = True,
+    check_argcount: bool = True,
+    documentation: str | None = None,
+    signature: str | None = None,
+) -> None:
     """Registers a script function. If ``name`` is ``None``,
     ``function.__name__`` will be used.
     If ``eval_args`` is ``False``, the arguments will not be evaluated before being
@@ -157,7 +171,14 @@ def register_script_function(
     )
 
 
-def script_function(name=None, eval_args=True, check_argcount=True, prefix='func_', documentation=None, signature=None):
+def script_function(
+    name: str | None = None,
+    eval_args: bool = True,
+    check_argcount: bool = True,
+    prefix: str = 'func_',
+    documentation: str | None = None,
+    signature: str | None = None,
+) -> Callable:
     """Decorator helper to register script functions
 
     It calls ``register_script_function()`` and share same arguments
@@ -196,13 +217,13 @@ class ParamSpec:
 
         pass
 
-    def __init__(self):
-        self._params = []
+    def __init__(self) -> None:
+        self._params: list[tuple[str, object]] = []
 
-    def append(self, name, default=None):
+    def append(self, name: str, default: object = None) -> None:
         self._params.append((name, default))
 
-    def __str__(self):
+    def __str__(self) -> str:
         spec = ''
 
         default_depth = 0
