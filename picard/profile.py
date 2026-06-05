@@ -27,24 +27,31 @@ from collections import (
     defaultdict,
     namedtuple,
 )
+from collections.abc import Generator
 
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
 
-_settings_groups = {}
+_settings_groups: dict = {}
 _groups_order: dict[str, int] = defaultdict(lambda: -1)
-_groups_count = 0
-_known_settings = set()
+_groups_count: int = 0
+_known_settings: set[str] = set()
 
 
-def profile_groups_order(group):
+def profile_groups_order(group: str) -> None:
     global _groups_count
     if _groups_order[group] == -1:
         _groups_order[group] = _groups_count
         _groups_count += 1
 
 
-def profile_groups_add_setting(group, option_name, highlights, title=None, parent=None):
+def profile_groups_add_setting(
+    group: str,
+    option_name: str,
+    highlights: list[str],
+    title: str | None = None,
+    parent: str | None = None,
+) -> None:
     if group not in _settings_groups:
         _settings_groups[group] = {'title': title or group}
         _settings_groups[group]['parent'] = parent or ''
@@ -55,17 +62,17 @@ def profile_groups_add_setting(group, option_name, highlights, title=None, paren
     _known_settings.add(option_name)
 
 
-def profile_groups_all_settings():
+def profile_groups_all_settings() -> set[str]:
     return _known_settings
 
 
-def profile_groups_settings(group):
+def profile_groups_settings(group: str) -> Generator[SettingDesc, None, None]:
     if group in _settings_groups:
         if 'settings' in _settings_groups[group]:
             yield from _settings_groups[group]['settings']
 
 
-def profile_groups_keys():
+def profile_groups_keys() -> Generator[str, None, None]:
     """Iterable of all setting groups keys.
 
     Yields:
@@ -74,14 +81,14 @@ def profile_groups_keys():
     yield from _settings_groups.keys()
 
 
-def profile_groups_group_from_page(page):
+def profile_groups_group_from_page(page: object) -> dict | None:
     try:
         return _settings_groups[page.NAME]
     except (AttributeError, KeyError):
         return None
 
 
-def profile_groups_values():
+def profile_groups_values() -> Generator[dict, None, None]:
     """Returns values sorted by (groups_order, group name)"""
     # Yield top level groups first to ensure that they are created in the
     # QTreeWidget before adding their children.
@@ -89,7 +96,7 @@ def profile_groups_values():
         yield _settings_groups[k]
 
 
-def profile_groups_reset():
+def profile_groups_reset() -> None:
     """Used when testing"""
     global _settings_groups, _groups_order, _groups_count, _known_settings
     _settings_groups = {}
