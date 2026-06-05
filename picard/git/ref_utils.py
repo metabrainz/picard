@@ -20,8 +20,13 @@
 
 """Git reference utilities for robust reference type detection."""
 
+from picard.git.backend import (
+    GitRef,
+    GitRepository,
+)
 
-def find_git_ref(repo, ref_name):
+
+def find_git_ref(repo: GitRepository, ref_name: str) -> GitRef | None:
     """Find a GitRef object by shortname or full name.
 
     Args:

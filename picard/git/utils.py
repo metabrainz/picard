@@ -31,7 +31,7 @@ from picard.const.sys import IS_WIN
 
 
 @lru_cache(maxsize=256)
-def normalize_git_url(url):
+def normalize_git_url(url: str) -> str:
     """Normalize git URL for comparison (expand local paths to absolute).
 
     Args:
@@ -55,7 +55,7 @@ def normalize_git_url(url):
     return url
 
 
-def is_local_path(url):
+def is_local_path(url: str) -> bool:
     """Check if URL is a local path (not a remote git URL).
 
     Args:
@@ -107,7 +107,7 @@ def is_local_path(url):
     return True
 
 
-def get_local_path(url):
+def get_local_path(url: str) -> Path | None:
     """Get normalized local path if URL is local, None otherwise.
 
     Args:
@@ -126,7 +126,7 @@ def get_local_path(url):
     return Path(os.path.abspath(expanded))
 
 
-def get_local_repository_path(url):
+def get_local_repository_path(url: str) -> Path | None:
     """Get local repository path if URL is local git directory, None otherwise.
 
     Args:
@@ -141,7 +141,7 @@ def get_local_repository_path(url):
     return None
 
 
-def check_local_repo_dirty(url):
+def check_local_repo_dirty(url: str) -> bool:
     """Check if URL points to local git repo with uncommitted changes.
 
     Args:
