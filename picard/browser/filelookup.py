@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
 import os.path
 import re
 
@@ -64,13 +65,13 @@ class FileLookup:
         re.VERBOSE | re.IGNORECASE,
     )
 
-    def __init__(self, parent, server, port, local_port):
+    def __init__(self, parent: object, server: str, port: int, local_port: int) -> None:
         self.server = server
         self.local_port = int(local_port)
         self.port = port
         self.tagger = tagger_instance()
 
-    def _url(self, path, params=None):
+    def _url(self, path: str, params: dict[str, str | int] | None = None) -> str:
         if params is None:
             params = {}
         if self.local_port:
@@ -78,49 +79,55 @@ class FileLookup:
         url = build_qurl(self.server, self.port, path=path, queryargs=params)
         return bytes(url.toEncoded()).decode()
 
-    def _build_launch(self, path, params=None):
+    def _build_launch(self, path: str, params: dict[str, str | int] | None = None) -> bool:
         if params is None:
             params = {}
         return self.launch(self._url(path, params))
 
-    def launch(self, url):
+    def launch(self, url: str) -> bool:
         log.debug("webbrowser2: %s", url)
         webbrowser2.open(url)
         return True
 
-    def _lookup(self, type_, id_):
+    def _lookup(self, type_: str, id_: str) -> bool:
         return self._build_launch("/%s/%s" % (type_, id_))
 
-    def recording_lookup(self, recording_id):
+    def recording_lookup(self, recording_id: str) -> bool:
         return self._lookup('recording', recording_id)
 
-    def album_lookup(self, album_id):
+    def album_lookup(self, album_id: str) -> bool:
         return self._lookup('release', album_id)
 
-    def artist_lookup(self, artist_id):
+    def artist_lookup(self, artist_id: str) -> bool:
         return self._lookup('artist', artist_id)
 
-    def track_lookup(self, track_id):
+    def track_lookup(self, track_id: str) -> bool:
         return self._lookup('track', track_id)
 
-    def work_lookup(self, work_id):
+    def work_lookup(self, work_id: str) -> bool:
         return self._lookup('work', work_id)
 
-    def release_group_lookup(self, release_group_id):
+    def release_group_lookup(self, release_group_id: str) -> bool:
         return self._lookup('release-group', release_group_id)
 
-    def discid_lookup(self, discid):
+    def discid_lookup(self, discid: str) -> bool:
         return self._lookup('cdtoc', discid)
 
-    def discid_submission(self, url):
+    def discid_submission(self, url: str) -> bool:
         if self.local_port:
             url = "%s&tport=%d" % (url, self.local_port)
         return self.launch(url)
 
-    def acoust_lookup(self, acoust_id):
+    def acoust_lookup(self, acoust_id: str) -> bool:
         return self.launch(PICARD_URLS['acoustid_track'] + acoust_id)
 
-    def mbid_lookup(self, string, type_=None, mbid_matched_callback=None, browser_fallback=True):
+    def mbid_lookup(
+        self,
+        string: str,
+        type_: str | None = None,
+        mbid_matched_callback: Callable[[str, str], object] | None = None,
+        browser_fallback: bool = True,
+    ) -> bool:
         """Parses string for known entity type and mbid, open browser for it
         If entity type is 'release', it will load corresponding release if
         possible.
@@ -160,8 +167,16 @@ class FileLookup:
             return self._lookup(entity, id)
         return False
 
-    def tag_lookup(self, artist, release, track, tracknum, duration, filename):
-        params = {
+    def tag_lookup(
+        self,
+        artist: str,
+        release: str,
+        track: str,
+        tracknum: str,
+        duration: str,
+        filename: str,
+    ) -> bool:
+        params: dict[str, str | int] = {
             'artist': artist,
             'release': release,
             'track': track,
@@ -171,10 +186,17 @@ class FileLookup:
         }
         return self._build_launch("/taglookup", params)
 
-    def collection_lookup(self, userid):
+    def collection_lookup(self, userid: str) -> bool:
         return self._build_launch("/user/%s/collections" % userid)
 
-    def search_entity(self, type_, query, adv=False, mbid_matched_callback=None, force_browser=False):
+    def search_entity(
+        self,
+        type_: str,
+        query: str,
+        adv: bool = False,
+        mbid_matched_callback: Callable[[str, str], object] | None = None,
+        force_browser: bool = False,
+    ) -> bool:
         if not force_browser and self.mbid_lookup(query, type_, mbid_matched_callback=mbid_matched_callback):
             return True
         config = get_config()
