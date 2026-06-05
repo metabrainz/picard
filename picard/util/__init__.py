@@ -204,7 +204,7 @@ Translation: Picard will have problems with non-english characters
 """)
 
 
-def encode_filename(filename):
+def encode_filename(filename: str | bytes) -> str | bytes:
     """Encode unicode strings to filesystem encoding."""
     if isinstance(filename, str):
         if os.path.supports_unicode_filenames and not IS_MACOS:
@@ -215,7 +215,7 @@ def encode_filename(filename):
         return filename
 
 
-def decode_filename(filename):
+def decode_filename(filename: str | bytes) -> str:
     """Decode strings from filesystem encoding to unicode."""
     if isinstance(filename, str):
         return filename
@@ -223,7 +223,7 @@ def decode_filename(filename):
         return filename.decode(_io_encoding)
 
 
-def _check_windows_min_version(major, build):
+def _check_windows_min_version(major: int, build: int) -> bool:
     try:
         v = sys.getwindowsversion()
         return v.major >= major and v.build >= build
@@ -231,7 +231,7 @@ def _check_windows_min_version(major, build):
         return False
 
 
-def system_supports_long_paths():
+def system_supports_long_paths() -> bool:
     """Detects long path support.
 
     On Windows returns True, only if long path support is enabled in the registry (Windows 10 1607 or later).
@@ -258,7 +258,7 @@ def system_supports_long_paths():
         return False
 
 
-def normpath(path, realpath=True):
+def normpath(path: str, realpath: bool = True) -> str:
     path = os.path.normpath(path)
     if realpath:
         try:
@@ -285,7 +285,7 @@ def is_unc_path(path: str) -> bool:
     )
 
 
-def win_prefix_longpath(path):
+def win_prefix_longpath(path: str) -> str:
     """
     For paths longer then WIN_MAX_FILEPATH_LEN enable long path support by prefixing with WIN_LONGPATH_PREFIX.
 
@@ -299,7 +299,7 @@ def win_prefix_longpath(path):
     return path
 
 
-def is_absolute_path(path):
+def is_absolute_path(path: str) -> bool:
     """Similar to os.path.isabs, but properly detects Windows shares as absolute paths
     See https://bugs.python.org/issue22302
     """
@@ -314,11 +314,11 @@ def is_absolute_path(path):
     return os.path.isabs(path)
 
 
-def samepath(path1, path2):
+def samepath(path1: str, path2: str) -> bool:
     return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
 
 
-def samefile(path1, path2):
+def samefile(path1: str, path2: str) -> bool:
     """Returns True, if both `path1` and `path2` refer to the same file.
 
     Behaves similar to os.path.samefile, but first checks identical paths including
@@ -329,7 +329,7 @@ def samefile(path1, path2):
     return samepath(path1, path2) or os.path.samefile(path1, path2)
 
 
-def format_time(ms, display_zero=False):
+def format_time(ms: float | int, display_zero: bool = False) -> str:
     """Formats time in milliseconds to a string representation.
 
     Args:
@@ -354,7 +354,7 @@ def format_time(ms, display_zero=False):
         return "%d:%02d:%02d" % (hours, minutes, seconds)
 
 
-def sanitize_date(datestr):
+def sanitize_date(datestr: str) -> str:
     """Sanitize date format.
 
     e.g.: "1980-00-00" -> "1980"
@@ -377,7 +377,7 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-def replace_win32_incompat(string, repl="_", replacements=None):
+def replace_win32_incompat(string: str, repl: str = "_", replacements: dict[str, str] | None = None) -> str:
     """Replace win32 filename incompatible characters from ``string`` by
     ``repl``."""
     # Don't replace : for windows drive
@@ -397,12 +397,12 @@ def replace_win32_incompat(string, repl="_", replacements=None):
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 
 
-def strip_non_alnum(string):
+def strip_non_alnum(string: str) -> str:
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string).strip()
 
 
-def sanitize_filename(string, repl="_", win_compat=False):
+def sanitize_filename(string: str, repl: str = "_", win_compat: bool = False) -> str:
     string = string.replace(os.sep, repl)
     if os.altsep:
         string = string.replace(os.altsep, repl)
@@ -411,7 +411,7 @@ def sanitize_filename(string, repl="_", win_compat=False):
     return string
 
 
-def make_filename_from_title(title=None, default=None):
+def make_filename_from_title(title: str | None = None, default: str | None = None) -> str:
     if default is None:
         default = _("No Title")
     if not title or not title.strip():
@@ -422,7 +422,7 @@ def make_filename_from_title(title=None, default=None):
     return filename
 
 
-def _reverse_sortname(sortname):
+def _reverse_sortname(sortname: str) -> str:
     """Reverse sortnames."""
     chunks = [a.strip() for a in sortname.split(",")]
     if len(chunks) == 2:
@@ -435,7 +435,7 @@ def _reverse_sortname(sortname):
         return sortname.strip()
 
 
-def translate_from_sortname(name, sortname):
+def translate_from_sortname(name: str, sortname: str) -> str:
     """'Translate' the artist name by reversing the sortname."""
     for c in name:
         ctg = unicodedata.category(c)
@@ -451,7 +451,7 @@ def translate_from_sortname(name, sortname):
     return name
 
 
-def find_existing_path(path):
+def find_existing_path(path: str | bytes) -> str:
     path = encode_filename(path)
     while path and not os.path.isdir(path):
         head, tail = os.path.split(path)
@@ -465,7 +465,7 @@ def _add_windows_executable_extension(*executables):
     return [e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables]
 
 
-def find_executable(*executables):
+def find_executable(*executables: str) -> str | None:
     if IS_WIN:
         executables = _add_windows_executable_extension(*executables)
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
@@ -520,12 +520,12 @@ _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 
 
-def mbid_validate(string):
+def mbid_validate(string: str) -> bool:
     """Test if passed string is a valid mbid"""
     return _re_mbid_val.match(string) is not None
 
 
-def parse_amazon_url(url):
+def parse_amazon_url(url: str) -> dict[str, str] | None:
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else
     """
@@ -620,7 +620,7 @@ class IgnoreUpdatesContext:
         return self._entered > 0
 
 
-def uniqify(seq):
+def uniqify(seq: list) -> list:
     """Uniqify a list, preserving order"""
     return list(iter_unique(seq))
 
@@ -651,7 +651,7 @@ _tracknum_regexps = [
 ]
 
 
-def tracknum_from_filename(base_filename):
+def tracknum_from_filename(base_filename: str) -> int | None:
     """Guess and extract track number from filename
     Returns `None` if none found, the number as integer else
     """
@@ -670,7 +670,7 @@ def tracknum_from_filename(base_filename):
 GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
 
 
-def tracknum_and_title_from_filename(base_filename):
+def tracknum_and_title_from_filename(base_filename: str) -> GuessedFromFilename:
     """Guess tracknumber and title from filename.
     Uses `tracknum_from_filename` to guess the tracknumber. The filename is used
     as the title. If the tracknumber is at the beginning of the title it gets stripped.
@@ -693,7 +693,7 @@ def tracknum_and_title_from_filename(base_filename):
     return GuessedFromFilename(tracknumber, title)
 
 
-def is_hidden(filepath):
+def is_hidden(filepath: str) -> bool:
     """Test whether a file or directory is hidden.
     A file is considered hidden if it starts with a dot
     on non-Windows systems or if it has the "hidden" flag
@@ -729,7 +729,7 @@ else:
         return False
 
 
-def linear_combination_of_weights(parts):
+def linear_combination_of_weights(parts: list[tuple[float, float]]) -> float:
     """Produces a probability as a linear combination of weights
     Parts should be a list of tuples in the form:
         [(v0, w0), (v1, w1), ..., (vn, wn)]
@@ -748,7 +748,7 @@ def linear_combination_of_weights(parts):
     return sum_of_products / total
 
 
-def album_artist_from_path(filename, album, artist):
+def album_artist_from_path(filename: str, album: str, artist: str) -> tuple[str, str]:
     """If album is not set, try to extract album and artist from path.
 
     Args:
@@ -952,7 +952,7 @@ def temporary_disconnect(signal, *handlers):
             signal.connect(handler)
 
 
-def compare_barcodes(barcode1, barcode2):
+def compare_barcodes(barcode1: str, barcode2: str) -> bool:
     """
     Compares two barcodes. Returns True if they are the same, False otherwise.
 
@@ -1030,7 +1030,7 @@ def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_ma
     return MatchResult(similarity=best.similarity, result=best, reason=None)
 
 
-def limited_join(a_list, limit, join_string='+', middle_string='…'):
+def limited_join(a_list: list[str], limit: int, join_string: str = '+', middle_string: str = '…') -> str:
     """Join elements of a list with `join_string`
     If list is longer than `limit`, middle elements will be dropped,
     and replaced by `middle_string`.
@@ -1125,7 +1125,7 @@ def parse_date(dt: str) -> datetime | None:
     return None
 
 
-def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
+def pattern_as_regex(pattern: str, allow_wildcards: bool = False, flags: int = 0) -> re.Pattern[str]:
     """Parses a string and interprets it as a matching pattern.
 
     - If pattern is of the form /pattern/flags it is interpreted as a regular expression (e.g. `/foo.*/`).
@@ -1165,7 +1165,7 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     return re.compile(regex, flags)
 
 
-def wildcards_to_regex_pattern(pattern):
+def wildcards_to_regex_pattern(pattern: str) -> str:
     """Converts a pattern with shell like wildcards into a regular expression string.
 
     The following syntax is supported:
@@ -1255,7 +1255,7 @@ def _get_default_numbered_title_format():
     return gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
 
 
-def unique_numbered_title(default_title, existing_titles, fmt=None):
+def unique_numbered_title(default_title: str, existing_titles: set[str], fmt: str | None = None) -> str:
     """Generate a new unique and numbered title
     based on given default title and existing titles
     """
@@ -1278,7 +1278,7 @@ def unique_numbered_title(default_title, existing_titles, fmt=None):
     return fmt.format(title=default_title, count=count + 1)
 
 
-def get_base_title_with_suffix(title, suffix, fmt=None):
+def get_base_title_with_suffix(title: str, suffix: str, fmt: str | None = None) -> str:
     """Extract the base portion of a title,
     removing the suffix and number portion from the end.
     """
@@ -1293,7 +1293,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
     return match_obj['title'] if match_obj else title
 
 
-def get_base_title(title):
+def get_base_title(title: str) -> str:
     """Extract the base portion of a title, using the standard suffix."""
     # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_COPY_TEXT
@@ -1326,7 +1326,7 @@ ENCODING_BOMS = {
 }
 
 
-def detect_file_encoding(path, max_bytes_to_read=1024 * 256):
+def detect_file_encoding(path: str, max_bytes_to_read: int = 1024 * 256) -> str:
     """Attempts to guess the unicode encoding of a file based on the BOM, and
     depending on avalibility, using a charset detection method.
 
@@ -1362,7 +1362,7 @@ def detect_file_encoding(path, max_bytes_to_read=1024 * 256):
         return encoding
 
 
-def iswbound(char):
+def iswbound(char: str) -> bool:
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """Checks whether the given character is a word boundary"""
@@ -1370,7 +1370,7 @@ def iswbound(char):
     return 'Zs' == category or 'Sk' == category or 'P' == category[0]
 
 
-def titlecase(text):
+def titlecase(text: str) -> str:
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """Converts text to title case following word boundary rules.
@@ -1471,7 +1471,7 @@ def parse_versioning_scheme(versioning_scheme):
         return None
 
 
-def atomic_write(path, data):
+def atomic_write(path: str, data: bytes) -> None:
     """Write bytes atomically to the given path.
 
     Writes to a temporary file in the destination directory and replaces
