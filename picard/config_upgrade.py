@@ -26,6 +26,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from collections.abc import Callable
 from contextlib import contextmanager
 from inspect import (
     getmembers,
@@ -96,7 +97,10 @@ class UpgradeHooksAutodetectError(Exception):
     pass
 
 
-def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
+def autodetect_upgrade_hooks(
+    module_name: str | None = None,
+    prefix: str = UPGRADE_FUNCTION_PREFIX,
+) -> dict[Version, Callable[[Config], None]]:
     """Detect upgrade hooks methods"""
 
     if module_name is None:
@@ -128,7 +132,7 @@ def autodetect_upgrade_hooks(module_name=None, prefix=UPGRADE_FUNCTION_PREFIX):
     return dict(sorted(hooks.items()))
 
 
-def upgrade_config(config):
+def upgrade_config(config: Config) -> None:
     """Execute detected upgrade hooks"""
 
     config.run_upgrade_hooks(autodetect_upgrade_hooks())
