@@ -704,7 +704,10 @@ class PluginListWidget(QtWidgets.QWidget):
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
         dialog = UninstallPluginDialog(plugin, self)
-        dialog.exec()
+        dialog.finished.connect(lambda: self._on_uninstall_dialog_finished(dialog, plugin))
+        dialog.open()
+
+    def _on_uninstall_dialog_finished(self, dialog, plugin):
         if dialog.uninstall_confirmed:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.uninstall_plugin(
@@ -750,13 +753,17 @@ class PluginListWidget(QtWidgets.QWidget):
 
             # Show confirmation dialog
             confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                return
+            confirm_dialog.finished.connect(
+                lambda result: self._on_reinstall_confirm_finished(result, confirm_dialog, plugin, plugin_url)
+            )
+            confirm_dialog.open()
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             self._reinstall_error_dialog(plugin, str(e))
-            return
 
+    def _on_reinstall_confirm_finished(self, result, confirm_dialog, plugin, plugin_url):
+        if result != QtWidgets.QDialog.DialogCode.Accepted:
+            return
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(
             url=plugin_url,
@@ -785,7 +792,11 @@ class PluginListWidget(QtWidgets.QWidget):
     def _switch_ref_from_menu(self, plugin):
         """Switch plugin ref from context menu."""
         dialog = SwitchRefDialog(plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        dialog.finished.connect(lambda result: self._on_switch_ref_dialog_finished(result, dialog, plugin))
+        dialog.open()
+
+    def _on_switch_ref_dialog_finished(self, result, dialog, plugin):
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.switch_ref(
                 plugin=plugin,
@@ -861,7 +872,7 @@ class PluginListWidget(QtWidgets.QWidget):
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setText(_("There were no installed metadata processing plugins found."))
             msg.setWindowTitle(_("No Data"))
-            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.show()
@@ -921,7 +932,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
-        self.setModal(True)
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.resize(font_scaled_size(self, 50, 20))
         self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()

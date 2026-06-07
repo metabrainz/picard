@@ -48,7 +48,6 @@ class InstallConfirmDialog(PicardDialog):
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Confirm Plugin Installation"))
-        self.setModal(True)
         self.setMinimumSize(font_scaled_size(self, 60, 20))
         self.setup_ui()
         self.check_trust_and_blacklist()

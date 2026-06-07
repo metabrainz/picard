@@ -43,7 +43,6 @@ class CoverTypesSelectorDialog(PicardDialog):
     def __init__(self, selected_types: Iterable[str] | None = None, parent=None):
         super().__init__(parent)
         self.setWindowTitle(_("Cover art types"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self._layout = QtWidgets.QVBoxLayout(self)
 
         self._types_list = QtWidgets.QListWidget(self)

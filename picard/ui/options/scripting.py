@@ -79,6 +79,7 @@ class ScriptFileError(OptionsCheckError):
 
 class ScriptingDocumentationDialog(PicardDialog, SingletonDialog):
     defaultsize = QtCore.QSize(570, 400)
+    modality = QtCore.Qt.WindowModality.NonModal
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

@@ -66,6 +66,7 @@ from picard.ui import (
     HashableTreeWidgetItem,
     PicardDialog,
     SingletonDialog,
+    modal_options,
 )
 from picard.ui.colors import interface_colors as _interface_colors
 from picard.ui.forms.ui_options import Ui_OptionsDialog
@@ -213,7 +214,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
-        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        if modal_options():
+            # On macOS: use WindowModal (blocks MainWindow, allows child windows
+            # like Script Editor to be shown above). Add Window flag to prevent
+            # sheet rendering.
+            self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.Window)
+        else:
+            # On Linux/Windows: use NonModal + disabled MainWindow (set in
+            # show_options). Use Tool type to stay above parent (MainWindow)
+            # without staying on top of other applications.
+            self.setWindowModality(QtCore.Qt.WindowModality.NonModal)
+            self.setWindowFlags(
+                QtCore.Qt.WindowType.Tool
+                | QtCore.Qt.WindowType.WindowTitleHint
+                | QtCore.Qt.WindowType.WindowSystemMenuHint
+                | QtCore.Qt.WindowType.WindowCloseButtonHint
+            )
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         self.ui = Ui_OptionsDialog()
@@ -300,8 +316,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.finished.connect(self.saveWindowState)
 
         self.load_all_pages()
-        self.first_enter = True
-        self.installEventFilter(self)
 
         maintenance_page = self.get_page('maintenance')
         if maintenance_page.loaded:
@@ -334,6 +348,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         # Set initial selection after plugin refresh
         if self.default_item:
             self.ui.pages_tree.setCurrentItem(self.default_item)  # this will call switch_page
+
+        # If the script editor is already open (opened from main window),
+        # reconnect it to the file renaming options page without raising it.
+        if self.tagger and self.tagger.window.script_editor_dialog is not None:
+            self.get_page('filerenaming').show_script_editing_page()
 
     @property
     def initialized_pages(self):
@@ -388,9 +407,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             override_profiles=override_profiles,
             override_settings=override_settings,
         )
-        profile_dialog.show()
-        profile_dialog.raise_()
-        profile_dialog.activateWindow()
+        profile_dialog.show_modal()
 
     def update_from_profile_changes(self):
         if not self.suspend_signals:
@@ -445,17 +462,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     except AttributeError:
                         pass
                     break
-
-    def eventFilter(self, object, event):
-        """Process selected events."""
-        evtype = event.type()
-        if evtype == QtCore.QEvent.Type.Enter:
-            if self.first_enter:
-                self.first_enter = False
-                if self.tagger and self.tagger.window.script_editor_dialog is not None:
-                    self.get_page('filerenaming').show_script_editing_page()
-                    self.activateWindow()
-        return False
 
     def get_page(self, pagename):
         return self.item_to_page[self.pagename_to_item[pagename]]
@@ -770,7 +776,6 @@ class AttachedProfilesDialog(PicardDialog):
         self.populate_table()
 
         self.ui.buttonBox.setFocus()
-        self.setModal(True)
 
     def populate_table(self):
         model = QtGui.QStandardItemModel()

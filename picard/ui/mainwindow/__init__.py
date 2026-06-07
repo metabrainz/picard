@@ -63,7 +63,6 @@ from PyQt6 import (
 )
 
 from picard import (
-    PICARD_APP_ID,
     log,
     tagger_instance,
 )
@@ -128,7 +127,11 @@ from picard.util.cdrom import (
 )
 from picard.util.readthedocs import ReadTheDocs
 
-from picard.ui import PreserveGeometry
+from picard.ui import (
+    PicardDialog,
+    PreserveGeometry,
+    modal_options,
+)
 from picard.ui.aboutdialog import AboutDialog
 from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
 from picard.ui.coverartbox import CoverArtBox
@@ -258,12 +261,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def setupUi(self):
         self.setWindowTitle(_("MusicBrainz Picard"))
-        icon = QtGui.QIcon()
-        for size in (16, 24, 32, 48, 128, 256):
-            icon.addFile(
-                ":/images/{size}x{size}/{app_id}.png".format(size=size, app_id=PICARD_APP_ID), QtCore.QSize(size, size)
-            )
-        self.setWindowIcon(icon)
 
         self.show_close_window = IS_MACOS
 
@@ -287,8 +284,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.file_browser.hide()
         self.panel.insertWidget(0, self.file_browser)
 
-        self.log_dialog = LogView(self)
-        self.history_dialog = HistoryView(self)
+        self.log_dialog = LogView()
+        self.history_dialog = HistoryView()
 
         self.metadata_box = MetadataBox(parent=self)
         self.cover_art_box = CoverArtBox(parent=self)
@@ -432,6 +429,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 # Silently close the script editor without displaying the confirmation a second time.
                 self.script_editor_dialog.loading = True
         event.accept()
+        PicardDialog.close_all_parentless()
 
     def _setup_desktop_status_indicator(self):
         if DesktopStatusIndicator:
@@ -1306,12 +1304,14 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
-        options_dialog = OptionsDialog.show_instance(page, self)
-        options_dialog.finished.connect(self._options_closed)
         if self.script_editor_dialog is not None:
             # Disable signal processing to avoid saving changes not processed with "Make It So!"
             for signal in self.script_editor_signals:
                 signal.disconnect()
+        options_dialog = OptionsDialog.show_instance(page, self)
+        options_dialog.finished.connect(self._options_closed)
+        if not modal_options():
+            self._disable_while_dialog_shown(options_dialog)
 
         return options_dialog
 
@@ -1325,13 +1325,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._make_script_selector_menu()
         self._make_settings_selector_menu()
 
+    def _disable_while_dialog_shown(self, dialog):
+        """Disable MainWindow while dialog is shown, re-enable when it closes.
+
+        Connects to both `finished` (normal close path) and `destroyed`
+        (safety net if the dialog is destroyed without emitting `finished`,
+        e.g. via deleteLater or parent destruction). The isEnabled() guard
+        prevents double-action when both signals fire in sequence.
+        """
+
+        def re_enable():
+            if not self.isEnabled():
+                self.setEnabled(True)
+
+        dialog.destroyed.connect(re_enable)
+        dialog.finished.connect(re_enable)
+        self.setEnabled(False)
+        dialog.setEnabled(True)
+
     def show_help(self):
         webbrowser2.open('documentation')
 
     def _show_log_dialog(self, dialog):
-        dialog.show()
-        dialog.raise_()
-        dialog.activateWindow()
+        dialog.show_nonmodal()
 
     def show_log(self):
         self._show_log_dialog(self.log_dialog)
@@ -2164,7 +2180,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """Open the file naming script editor / manager in a new window."""
         ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
+        if modal_options():
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
+        else:
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=examples)
         self.script_editor_dialog.signal_save.connect(self._script_editor_save)
         self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
         self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)

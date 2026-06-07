@@ -285,7 +285,6 @@ class AddActionDialog(PicardDialog):
         super().__init__(parent=parent)
         self.display_list = display_list
 
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setWindowTitle(_("Select an action"))
 
         layout = QtWidgets.QVBoxLayout(self)

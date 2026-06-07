@@ -104,6 +104,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
 
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
+    modality = QtCore.Qt.WindowModality.NonModal
 
     help_url = 'doc_naming_script_edit'
 
@@ -148,7 +149,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         super().__init__(parent=parent)
         self.examples = examples
 
-        self.setWindowTitle(self.display_title())
+        self.set_window_title(self.display_title())
         self.loading = True
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
@@ -581,9 +582,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.current_item_dict = self.get_selected_item()
         details_page = ScriptDetailsEditor(self.current_item_dict, parent=self)
         details_page.signal_save.connect(self.update_from_details)
-        details_page.show()
-        details_page.raise_()
-        details_page.activateWindow()
+        details_page.show_modal()
 
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog."""
@@ -1039,7 +1038,6 @@ class ScriptDetailsEditor(PicardDialog, HasDisplayTitle):
 
         self.ui.buttonBox.setFocus()
 
-        self.setModal(True)
         self.setWindowTitle(_(self.display_title()))
         self.skip_change_check = False
 

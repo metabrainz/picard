@@ -46,6 +46,7 @@ from picard.i18n import (
 )
 from picard.script import ScriptParser
 
+from picard.ui import modal_options
 from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
     OptionsCheckError,
@@ -178,7 +179,12 @@ class RenamingOptionsPage(OptionsPage):
         )
 
     def show_script_editing_page(self):
-        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+        if modal_options():
+            # On macOS Options is WindowModal; parent the Script Editor to this
+            # page so it's a child of the modal dialog (exempt from blocking).
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=self.examples)
+        else:
+            self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=self.examples)
 
         self.script_editor_dialog.signal_save.connect(self.save_from_editor)
         self.script_editor_dialog.signal_update.connect(self.display_examples)

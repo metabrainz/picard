@@ -25,6 +25,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+import os
 import uuid
 
 from PyQt6 import (
@@ -46,6 +47,7 @@ from picard.const.sys import (
     IS_MACOS,
     IS_WIN,
 )
+from picard.i18n import gettext as _
 from picard.util import (
     get_url,
     restore_method,
@@ -63,12 +65,32 @@ else:
     FONT_FAMILY_MONOSPACE = 'Monospace'
 
 
+def modal_options():
+    """Whether the Options dialog should use modal behavior.
+
+    On macOS, Options must be WindowModal because NonModal dialogs can get
+    lost behind the main window with no way to recover. On other platforms,
+    Options uses NonModal + disabled MainWindow, which allows utility windows
+    (LogView, Script Editor) to remain interactive.
+
+    Can be overridden with the PICARD_MODAL_OPTIONS environment variable
+    (set to '1' to force modal, '0' to force non-modal).
+
+    Returns True for modal behavior, False for non-modal + disabled parent.
+    """
+    override = os.environ.get('PICARD_MODAL_OPTIONS')
+    if override is not None:
+        return override == '1'
+    return IS_MACOS
+
+
 class PreserveGeometry:
     defaultsize = None
 
     def __init__(self, *args, **kwargs):
         Option.add_if_missing('persist', self.opt_name(), QtCore.QByteArray())
         Option.add_if_missing('persist', self.splitters_name(), {})
+        self._geometry_initialized = False
         if getattr(self, 'finished', None):
             self.finished.connect(self.save_geometry)
 
@@ -115,6 +137,7 @@ class PreserveGeometry:
 
     @restore_method
     def restore_geometry(self):
+        self._geometry_initialized = True
         config = get_config()
         geometry = config.persist[self.opt_name()]
         if not geometry.isNull():
@@ -132,8 +155,13 @@ class PreserveGeometry:
             del config.persist[self.splitters_name()][name]
 
     def save_geometry(self):
+        if not self._geometry_initialized:
+            return
+        geometry = self.saveGeometry()
+        if not geometry:
+            return
         config = get_config()
-        config.persist[self.opt_name()] = self.saveGeometry()
+        config.persist[self.opt_name()] = geometry
         config.persist[self.splitters_name()] = {
             name: bytearray(splitter.saveState()) for name, splitter in self._get_splitters.items()
         }
@@ -180,6 +208,13 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         | QtCore.Qt.WindowType.WindowTitleHint
         | QtCore.Qt.WindowType.WindowCloseButtonHint
     )
+    # Default modality: WindowModal when a parent is given, NonModal otherwise.
+    # Subclasses can override this with an explicit Qt.WindowModality value to
+    # opt out of the automatic behaviour, e.g.:
+    #   modality = QtCore.Qt.WindowModality.NonModal   # keep non-modal despite having a parent
+    #   modality = QtCore.Qt.WindowModality.ApplicationModal  # force app-modal (rare)
+    # Set to None to use the automatic parent-based logic (the default).
+    modality = None
     ready_for_display = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -187,6 +222,30 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
         self.tagger = tagger_instance()
         self.__shown = False
         self.ready_for_display.connect(self.restore_geometry)
+        if self.modality is not None:
+            self.setWindowModality(self.modality)
+        elif parent is not None:
+            self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
+        if parent is None:
+            self._register_parentless()
+
+    _parentless_instances: list['PicardDialog'] = []
+
+    def _register_parentless(self):
+        self._parentless_instances.append(self)
+        self.destroyed.connect(self._unregister_parentless)
+
+    def _unregister_parentless(self):
+        if self in self._parentless_instances:
+            self._parentless_instances.remove(self)
+
+    @classmethod
+    def close_all_parentless(cls):
+        """Close all parentless dialogs. Called on application quit."""
+        for dialog in cls._parentless_instances:
+            log.debug("Closing parentless dialog %s on quit", type(dialog).__name__)
+            dialog.close()
+        cls._parentless_instances.clear()
 
     def keyPressEvent(self, event):
         if event.matches(QtGui.QKeySequence.StandardKey.Close):
@@ -201,6 +260,43 @@ class PicardDialog(QtWidgets.QDialog, PreserveGeometry):
             self.ready_for_display.emit()
             self.__shown = True
         return super().showEvent(event)
+
+    def _show_with_modality(self, modality):
+        self.setWindowModality(modality)
+        self.show()
+        self.raise_()
+        self.activateWindow()
+
+    def show_modal(self):
+        """Show this dialog as window-modal and bring it to the front.
+
+        Sets WindowModal modality (blocking only the parent window), then
+        shows, raises, and activates the dialog. Use this instead of exec()
+        when you want non-blocking modal behaviour, or instead of a bare
+        show() when the dialog must block its parent.
+        """
+        self._show_with_modality(QtCore.Qt.WindowModality.WindowModal)
+
+    def show_nonmodal(self):
+        """Show this dialog as non-modal and bring it to the front.
+
+        Clears any modality so the dialog does not block any window, then
+        shows, raises, and activates it. Use this for persistent utility
+        windows (log viewer, documentation, etc.) that should stay open
+        alongside the rest of the UI.
+        """
+        self._show_with_modality(QtCore.Qt.WindowModality.NonModal)
+
+    def set_window_title(self, title: str) -> None:
+        """Set window title, appending the app name for parentless windows.
+
+        Parentless windows appear as separate entries in the taskbar, so the
+        app name suffix helps identify them. Parented dialogs are already
+        visually associated with their parent and don't need it.
+        """
+        if not self.parent():
+            title = _("%s — MusicBrainz Picard") % title
+        self.setWindowTitle(title)
 
     def show_help(self, help_url=None):
         url = help_url or self.help_url

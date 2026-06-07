@@ -185,7 +185,6 @@ class CAATypesSelectorDialog(PicardDialog):
         self._known_types = {t['name']: translate_caa_type(t['name']) for t in CAA_TYPES}
 
         self.setWindowTitle(_("Cover art types"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetFixedSize)
 

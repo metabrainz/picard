@@ -69,7 +69,6 @@ class InstallPluginDialog(PicardDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(_("Install Plugin"))
-        self.setModal(True)
         self.setMinimumSize(font_scaled_size(self, 60, 20))
 
         # Cache frequently accessed objects
@@ -539,19 +538,26 @@ class InstallPluginDialog(PicardDialog):
         # Disable UI before showing confirmation dialog to prevent interaction
         self._disable_ui_for_installation()
 
-        ref = None
         if getattr(plugin, 'ref', None) is None:
             # Show confirmation dialog
             plugin_name = plugin.get_display_name()
             plugin_uuid = plugin.plugin_uuid
             confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                # Re-enable UI if user cancels
-                self._enable_ui_after_installation()
-                return
-            if confirm_dialog.selected_ref:
-                ref = confirm_dialog.selected_ref.shortname
+            confirm_dialog.finished.connect(
+                lambda result: self._on_install_confirm_finished(result, confirm_dialog, url, plugin, current_tab)
+            )
+            confirm_dialog.open()
+        else:
+            self._proceed_with_install(url, plugin.ref, plugin, current_tab)
 
+    def _on_install_confirm_finished(self, result, confirm_dialog, url, plugin, current_tab):
+        if result != QtWidgets.QDialog.DialogCode.Accepted:
+            self._enable_ui_after_installation()
+            return
+        ref = confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None
+        self._proceed_with_install(url, ref, plugin, current_tab)
+
+    def _proceed_with_install(self, url, ref, plugin, current_tab):
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:
             # Get original plugin data for versioning scheme
