@@ -52,17 +52,22 @@
 
 from collections.abc import Callable
 
-from picard.album import album_post_removal_processors
+from picard.album import (
+    Album,
+    album_post_removal_processors,
+)
 from picard.file import (
+    File,
     file_post_addition_to_track_processors,
     file_post_load_processors,
     file_post_removal_to_track_processors,
     file_post_save_processors,
     file_pre_save_processors,
 )
+from picard.track import Track
 
 
-def register_album_post_removal_processor(function: Callable, priority: int = 0) -> None:
+def register_album_post_removal_processor(function: Callable[[Album], None], priority: int = 0) -> None:
     """Registers an album-removed processor.
     Args:
         function: function to call after album removal, it will be passed the album object
@@ -73,7 +78,7 @@ def register_album_post_removal_processor(function: Callable, priority: int = 0)
     album_post_removal_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_load_processor(function: Callable, priority: int = 0) -> None:
+def register_file_post_load_processor(function: Callable[[File], None], priority: int = 0) -> None:
     """Registers a file-loaded processor.
 
     Args:
@@ -85,7 +90,7 @@ def register_file_post_load_processor(function: Callable, priority: int = 0) -> 
     file_post_load_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_addition_to_track_processor(function: Callable, priority: int = 0) -> None:
+def register_file_post_addition_to_track_processor(function: Callable[[Track, File], None], priority: int = 0) -> None:
     """Registers a file-added-to-track processor.
 
     Args:
@@ -97,7 +102,7 @@ def register_file_post_addition_to_track_processor(function: Callable, priority:
     file_post_addition_to_track_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_removal_from_track_processor(function: Callable, priority: int = 0) -> None:
+def register_file_post_removal_from_track_processor(function: Callable[[Track, File], None], priority: int = 0) -> None:
     """Registers a file-removed-from-track processor.
 
     Args:
@@ -109,7 +114,7 @@ def register_file_post_removal_from_track_processor(function: Callable, priority
     file_post_removal_to_track_processors.register(function.__module__, function, priority)
 
 
-def register_file_pre_save_processor(function: Callable, priority: int = 0) -> None:
+def register_file_pre_save_processor(function: Callable[[File], None], priority: int = 0) -> None:
     """Registers file pre-save processor.
 
     Called before saving tags and any rename / move operations.
@@ -125,7 +130,7 @@ def register_file_pre_save_processor(function: Callable, priority: int = 0) -> N
     file_pre_save_processors.register(function.__module__, function, priority)
 
 
-def register_file_post_save_processor(function: Callable, priority: int = 0) -> None:
+def register_file_post_save_processor(function: Callable[[File], None], priority: int = 0) -> None:
     """Registers file saved processor.
 
     Args:

@@ -24,6 +24,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.coverart.providers.provider import CoverArtProvider
 from picard.extension_points.options_pages import register_options_page
 from picard.plugin import ExtensionPoint
 
@@ -31,11 +32,11 @@ from picard.plugin import ExtensionPoint
 ext_point_cover_art_providers = ExtensionPoint(label='cover_art_providers')
 
 
-def register_cover_art_provider(provider: type) -> None:
+def register_cover_art_provider(provider: type[CoverArtProvider]) -> None:
     ext_point_cover_art_providers.register(provider.__module__, provider)
-    if getattr(provider, 'OPTIONS', None):
-        if not hasattr(provider.OPTIONS, 'NAME'):
-            provider.OPTIONS.NAME = provider.name.lower().replace(' ', '_')
-        if not hasattr(provider.OPTIONS, 'TITLE'):
-            provider.OPTIONS.TITLE = provider.display_title()
-        register_options_page(provider.OPTIONS)
+    if options_page := getattr(provider, 'OPTIONS', None):
+        if not hasattr(options_page, 'NAME'):
+            options_page.NAME = provider.name.lower().replace(' ', '_')
+        if not hasattr(options_page, 'TITLE'):
+            options_page.TITLE = provider.display_title()
+        register_options_page(options_page)

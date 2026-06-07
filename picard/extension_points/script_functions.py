@@ -149,7 +149,7 @@ def register_script_function(
         documentation = function.__doc__
 
     if name is None:
-        name = function.__name__
+        name = getattr(function, "__name__", str(function))
 
     if not signature:
         signature = generate_function_signature(name, argspec)

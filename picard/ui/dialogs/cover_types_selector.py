@@ -18,8 +18,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import (
-    Generator,
     Iterable,
+    Iterator,
 )
 
 from PyQt6 import (
@@ -82,7 +82,7 @@ class CoverTypesSelectorDialog(PicardDialog):
     def reset_to_defaults(self):
         self._update_checked_items(DEFAULT_CA_NEVER_REPLACE_TYPES)
 
-    def selected_types(self) -> Generator[str, None, None]:
+    def selected_types(self) -> Iterator[str]:
         for i in range(self._types_list.count()):
             item = self._types_list.item(i)
             if item and item.checkState() == QtCore.Qt.CheckState.Checked:

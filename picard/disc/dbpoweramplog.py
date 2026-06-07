@@ -21,7 +21,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import Iterator
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 import re
 
 from picard.disc.utils import (
@@ -35,7 +38,7 @@ from picard.util import detect_file_encoding
 RE_TOC_ENTRY = re.compile(r"^Track (?P<num>\d+):\s+Ripped LBA (?P<start_sector>\d+) to (?P<end_sector>\d+)")
 
 
-def filter_toc_entries(lines: Iterator[str]) -> Iterator[TocEntry]:
+def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
     """
     Take iterator of lines, return iterator of toc entries
     """

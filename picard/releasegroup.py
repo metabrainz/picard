@@ -26,9 +26,12 @@
 
 
 from collections import defaultdict
+from collections.abc import Callable
 from functools import partial
 from itertools import combinations
 import traceback
+
+from PyQt6.QtNetwork import QNetworkReply
 
 from picard import log
 from picard.i18n import (
@@ -113,7 +116,7 @@ class ReleaseGroup(MetadataItem):
         self.refcount = 0
         self.versions_count: int | None = None
 
-    def load_versions(self, callback: object) -> None:
+    def load_versions(self, callback: Callable) -> None:
         kwargs = {'release-group': self.id, 'limit': 100}
         self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
@@ -164,7 +167,13 @@ class ReleaseGroup(MetadataItem):
                 }
                 self.versions.append(version)
 
-    def _request_finished(self, callback: object, document: dict, http: object, error: object) -> None:
+    def _request_finished(
+        self,
+        callback: Callable,
+        document: dict,
+        http: QNetworkReply,
+        error: QNetworkReply.NetworkError | Exception | None,
+    ) -> None:
         try:
             if error:
                 log.error("%r", http.errorString())
@@ -172,7 +181,6 @@ class ReleaseGroup(MetadataItem):
                 try:
                     self._parse_versions(document)
                 except BaseException:
-                    error = True
                     log.error(traceback.format_exc())
         finally:
             self.loaded = True
