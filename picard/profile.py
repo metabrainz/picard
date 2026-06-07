@@ -27,7 +27,7 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Generator
+from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
 
@@ -71,13 +71,13 @@ def profile_groups_all_settings() -> set[str]:
     return _known_settings
 
 
-def profile_groups_settings(group: str) -> Generator[SettingDesc, None, None]:
+def profile_groups_settings(group: str) -> Iterator[SettingDesc]:
     if group in _settings_groups:
         if 'settings' in _settings_groups[group]:
             yield from _settings_groups[group]['settings']
 
 
-def profile_groups_keys() -> Generator[str, None, None]:
+def profile_groups_keys() -> Iterator[str]:
     """Iterable of all setting groups keys.
 
     Yields:
@@ -93,7 +93,7 @@ def profile_groups_group_from_page(page: 'OptionsPage') -> dict | None:
         return None
 
 
-def profile_groups_values() -> Generator[dict, None, None]:
+def profile_groups_values() -> Iterator[dict]:
     """Returns values sorted by (groups_order, group name)"""
     # Yield top level groups first to ensure that they are created in the
     # QTreeWidget before adding their children.

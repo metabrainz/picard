@@ -18,7 +18,7 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections import defaultdict
-from collections.abc import Generator
+from collections.abc import Iterator
 from pathlib import Path
 
 from PyQt6.QtCore import (
@@ -56,7 +56,7 @@ class FormatRegistry(QObject):
 
         self.formats_changed.emit()
 
-    def __iter__(self) -> Generator[File, None, None]:
+    def __iter__(self) -> Iterator[File]:
         yield from self._ext_point_formats
 
     def supported_formats(self) -> list[tuple[list[str], str]]:

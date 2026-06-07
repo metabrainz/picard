@@ -21,8 +21,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import (
-    Generator,
     Iterable,
+    Iterator,
     Sequence,
 )
 import re
@@ -256,9 +256,7 @@ class MBAPIHelper(APIHelper):
         return self.get_collection(None, handler)
 
     @staticmethod
-    def _collection_request(
-        collection_id: str, releases: Sequence[str], batchsize: int = 400
-    ) -> Generator[str, None, None]:
+    def _collection_request(collection_id: str, releases: Sequence[str], batchsize: int = 400) -> Iterator[str]:
         for i in range(0, len(releases), batchsize):
             ids = ';'.join(releases[i : i + batchsize])
             yield f"/collection/{collection_id}/releases/{ids}"

@@ -20,7 +20,7 @@
 
 
 from collections import defaultdict
-from collections.abc import Generator
+from collections.abc import Iterator
 import sys
 import threading
 import time
@@ -55,7 +55,7 @@ def setup_audit(prefixes_string: str) -> None:
     sys.addaudithook(audit)
 
 
-def list_from_prefixes_string(prefixes_string: str) -> Generator[tuple[str, ...], None, None]:
+def list_from_prefixes_string(prefixes_string: str) -> Iterator[tuple[str, ...]]:
     """Generate a sorted list of prefixes tuples
     A prefixes string is a comma-separated list of dot-separated keys
     "a,b.c,d.e.f,,g" would result in following sorted list:
@@ -75,7 +75,7 @@ def make_prefixes_dict(prefixes_string: str) -> dict[int, list[tuple[str, ...]]]
 def prefixes_candidates_for_length(
     length: int,
     prefixes_dict: dict[int, list[tuple[str, ...]]],
-) -> Generator[tuple[str, ...], None, None]:
+) -> Iterator[tuple[str, ...]]:
     """Generate prefixes that may match this length"""
     for prefix_len, prefixes in prefixes_dict.items():
         if length >= prefix_len:
