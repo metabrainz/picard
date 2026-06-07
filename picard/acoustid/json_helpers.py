@@ -76,7 +76,11 @@ def _make_releases_node(recording: dict[str, Any]) -> list[dict[str, Any]]:
                 if 'tracks' in medium:
                     media_mb['track'] = medium['tracks']
                     for track_mb in media_mb['track']:
-                        track_mb['number'] = track_mb['position']
+                        position = track_mb['position']
+                        if position is not None:
+                            if 'track-offset' not in media_mb:
+                                media_mb['track-offset'] = position - 1
+                            track_mb['number'] = str(position)
 
                 release_mb['media'].append(media_mb)
 
