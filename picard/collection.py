@@ -28,6 +28,8 @@ from collections.abc import Callable
 from functools import partial
 from typing import Any
 
+from PyQt6.QtNetwork import QNetworkReply
+
 from picard import (
     log,
     tagger_instance,
@@ -37,6 +39,7 @@ from picard.i18n import (
     N_,
     ngettext,
 )
+from picard.webservice import ReplyHandler
 from picard.webservice.api_helpers import MBAPIHelper
 
 
@@ -66,7 +69,7 @@ class Collection:
 
     def _modify(
         self,
-        api_method: Callable,
+        api_method: Callable[[str, list[str], ReplyHandler], None],
         success_handler: Callable[[set[str], Callable], None],
         releases: set[str],
         callback: Callable,
@@ -91,8 +94,8 @@ class Collection:
         releases: set[str],
         callback: Callable,
         document: Any,
-        reply: Any,
-        error: Any,
+        reply: QNetworkReply,
+        error: QNetworkReply.NetworkError | Exception | None,
     ) -> None:
         self.pending_releases -= releases
         if not error:
@@ -100,7 +103,7 @@ class Collection:
         else:
             self._error(reply)
 
-    def _error(self, reply: Any) -> None:
+    def _error(self, reply: QNetworkReply) -> None:
         self.tagger.window.set_statusbar_message(
             N_("Error while modifying collections: %(error)s"),
             {'error': reply.errorString()},

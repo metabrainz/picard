@@ -28,6 +28,11 @@ from collections import (
     namedtuple,
 )
 from collections.abc import Generator
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from picard.ui.options import OptionsPage
 
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
@@ -81,7 +86,7 @@ def profile_groups_keys() -> Generator[str, None, None]:
     yield from _settings_groups.keys()
 
 
-def profile_groups_group_from_page(page: object) -> dict | None:
+def profile_groups_group_from_page(page: 'OptionsPage') -> dict | None:
     try:
         return _settings_groups[page.NAME]
     except (AttributeError, KeyError):
