@@ -27,7 +27,6 @@ from typing import (
 
 from picard.album import Album
 from picard.coverart.image import CoverArtImage
-from picard.metadata import Metadata
 from picard.plugin import ExtensionPoint
 
 
@@ -48,6 +47,4 @@ def register_cover_art_filter(
 def register_cover_art_metadata_filter(
     cover_art_metadata_filter: Callable[[dict[str, Any]], bool],
 ) -> None:
-    m = Metadata()
-    cover_art_metadata_filter(m)
     ext_point_cover_art_metadata_filters.register(cover_art_metadata_filter.__module__, cover_art_metadata_filter)
