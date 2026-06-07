@@ -54,7 +54,7 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
     TITLE = "Unknown"
     MENU: list = []
 
-    def __init__(self, api=None, parent=None):
+    def __init__(self, parent=None):
         super().__init__(self.display_title(), parent=parent)
         self.tagger = tagger_instance()
         self.triggered.connect(self.__callback)
@@ -67,7 +67,10 @@ class BaseAction(QtGui.QAction, HasDisplayTitle):
             # Avoid circular import: extension_points loaded early before picard.log is fully initialized
             from picard import log
 
-            plugin_id = getattr(self.api, 'plugin_id', 'unknown')
+            if hasattr(self, 'api'):
+                plugin_id = getattr(self.api, 'plugin_id', 'unknown')
+            else:
+                plugin_id = None
             log.error("Error in action %s (plugin: %s):", self.display_title(), plugin_id, exc_info=True)
 
     def callback(self, objs):
