@@ -261,6 +261,7 @@ class MP4File(File):
         if file.tags is None:
             file.add_tags()
         tags = file.tags
+        assert tags is not None
 
         if config.setting['clear_existing_tags']:
             cover = tags.get('covr') if config.setting['preserve_images'] else None

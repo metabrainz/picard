@@ -30,6 +30,7 @@
 from os.path import isfile
 import re
 
+from mutagen import FileType
 import mutagen.apev2
 import mutagen.monkeysaudio
 import mutagen.musepack
@@ -95,7 +96,7 @@ def is_valid_key(key):
 class APEv2File(File):
     """Generic APEv2-based file."""
 
-    _File = None
+    _File: type[FileType] | None = None
     FORMAT_KEY = 'apev2'
     FORMAT_DESCRIPTION = N_("APEv2 (Monkey's Audio, WavPack)")
     DATE_SANITIZATION_TOGGLEABLE = True
@@ -136,6 +137,7 @@ class APEv2File(File):
         self.__casemap = {}
 
     def _load(self, filename):
+        assert self._File, f"_File not defined for {self.__class__.__name__}"
         log.debug("Loading file %r", filename)
         self.__casemap = {}
         file = self._File(encode_filename(filename))
