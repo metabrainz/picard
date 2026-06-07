@@ -25,10 +25,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from collections.abc import (
-    Iterable,
-    Iterator,
-)
+from collections.abc import Iterator
 import re
 
 from picard.disc.utils import (
@@ -66,7 +63,7 @@ RE_TOC_TABLE_LINE = re.compile(
 )
 
 
-def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
+def filter_toc_entries(lines: Iterator[str]) -> Iterator[TocEntry]:
     """
     Take iterator of lines, return iterator of toc entries
     """
