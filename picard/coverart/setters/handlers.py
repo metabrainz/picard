@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import Generator
+from collections.abc import Iterator
 from contextlib import ExitStack
 from functools import singledispatch
 
@@ -163,7 +163,7 @@ def _handle_file(file: File, setter) -> bool:
     return True
 
 
-def _iter_file_parents(file: File) -> Generator[MetadataItem, None, None]:
+def _iter_file_parents(file: File) -> Iterator[MetadataItem]:
     """
     Iterate over the parent objects of a file.
 

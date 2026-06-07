@@ -20,12 +20,13 @@
 
 
 from collections import defaultdict
+from collections.abc import Iterator
 import sys
 import threading
 import time
 
 
-def setup_audit(prefixes_string):
+def setup_audit(prefixes_string: str) -> None:
     """Setup audit hook according to `audit` command-line option"""
     if not prefixes_string:
         return
@@ -54,7 +55,7 @@ def setup_audit(prefixes_string):
     sys.addaudithook(audit)
 
 
-def list_from_prefixes_string(prefixes_string):
+def list_from_prefixes_string(prefixes_string: str) -> Iterator[tuple[str, ...]]:
     """Generate a sorted list of prefixes tuples
     A prefixes string is a comma-separated list of dot-separated keys
     "a,b.c,d.e.f,,g" would result in following sorted list:
@@ -63,22 +64,28 @@ def list_from_prefixes_string(prefixes_string):
     yield from sorted(set(tuple(e.split('.')) for e in prefixes_string.split(',') if e))
 
 
-def make_prefixes_dict(prefixes_string):
+def make_prefixes_dict(prefixes_string: str) -> dict[int, list[tuple[str, ...]]]:
     """Build a dict with keys = length of prefix"""
-    d = defaultdict(list)
+    d: defaultdict[int, list[tuple[str, ...]]] = defaultdict(list)
     for prefix_tuple in list_from_prefixes_string(prefixes_string):
         d[len(prefix_tuple)].append(prefix_tuple)
     return dict(d)
 
 
-def prefixes_candidates_for_length(length, prefixes_dict):
+def prefixes_candidates_for_length(
+    length: int,
+    prefixes_dict: dict[int, list[tuple[str, ...]]],
+) -> Iterator[tuple[str, ...]]:
     """Generate prefixes that may match this length"""
     for prefix_len, prefixes in prefixes_dict.items():
         if length >= prefix_len:
             yield from prefixes
 
 
-def is_matching_a_prefix(key, prefixes_dict):
+def is_matching_a_prefix(
+    key: str,
+    prefixes_dict: dict[int, list[tuple[str, ...]]],
+) -> tuple[str, ...] | bool:
     """Matches dot-separated key against prefixes
     Typical case: we want to match `os.mkdir` if prefix is `os` or `os.mkdir`
     but not the reverse: if prefix is `os.mkdir` we don't want to match a key named `os`

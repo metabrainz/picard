@@ -30,8 +30,8 @@
 from collections import defaultdict
 from collections.abc import (
     Callable,
-    Generator,
     Iterable,
+    Iterator,
 )
 from dataclasses import dataclass
 from typing import (
@@ -684,7 +684,7 @@ def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = F
         m['~artists_countries'] = credits.countries
 
 
-def _release_event_iter(node: Node) -> Generator[Node, None, None]:
+def _release_event_iter(node: Node) -> Iterator[Node]:
     if 'release-events' in node:
         yield from node['release-events']
 
@@ -753,7 +753,7 @@ def media_formats_from_node(node: list[Node]) -> str:
     return " + ".join(formats)
 
 
-def _node_skip_empty_iter(node: Node) -> Generator[tuple[str, Any], None, None]:
+def _node_skip_empty_iter(node: Node) -> Iterator[tuple[str, Any]]:
     for key, value in node.items():
         if value or value == 0:
             yield key, value

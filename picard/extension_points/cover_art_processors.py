@@ -178,7 +178,7 @@ class ImageProcessor:
         pass
 
 
-def get_cover_art_processors():
+def get_cover_art_processors() -> dict[ImageProcessor.Target, list[ImageProcessor]]:
     queues = defaultdict(list)
     for processor in ext_point_cover_art_processors:
         target = processor.target()

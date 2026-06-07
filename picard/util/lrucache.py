@@ -20,10 +20,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections.abc import MutableMapping
+from collections.abc import (
+    Iterator,
+    MutableMapping,
+)
+from typing import TypeVar
 
 
-class LRUCache(MutableMapping):
+_KT = TypeVar('_KT')
+_VT = TypeVar('_VT')
+
+
+class LRUCache(MutableMapping[_KT, _VT]):
     """
     Helper class to cache items using a Least Recently Used policy.
 
@@ -56,20 +64,20 @@ class LRUCache(MutableMapping):
     'some value'
     """
 
-    def __init__(self, max_size, *args, **kwargs):
-        self._ordered_keys = []
+    def __init__(self, max_size: int, *args, **kwargs) -> None:
+        self._ordered_keys: list[_KT] = []
         self._max_size = max_size
-        self._dict = dict()
+        self._dict: dict[_KT, _VT] = dict()
         for k, v in dict(*args, **kwargs).items():
             self[k] = v
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: _KT) -> _VT:
         value = self._dict[key]
         self._ordered_keys.remove(key)
         self._ordered_keys.insert(0, key)
         return value
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: _KT, value: _VT) -> None:
         if key in self:
             self._ordered_keys.remove(key)
         self._ordered_keys.insert(0, key)
@@ -80,15 +88,15 @@ class LRUCache(MutableMapping):
             item = self._ordered_keys.pop()
             del self._dict[item]
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: _KT) -> None:
         del self._dict[key]
         self._ordered_keys.remove(key)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._dict)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[_KT]:
         return iter(self._dict)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return repr(self._dict)

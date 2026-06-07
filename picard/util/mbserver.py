@@ -30,7 +30,7 @@ from picard.util import build_qurl
 ServerTuple = namedtuple('ServerTuple', ('host', 'port'))
 
 
-def is_official_server(host):
+def is_official_server(host: str) -> bool:
     """Returns True, if host is an official MusicBrainz server for the primary database.
 
     Args:
@@ -41,7 +41,7 @@ def is_official_server(host):
     return host in MUSICBRAINZ_SERVERS
 
 
-def get_submission_server():
+def get_submission_server() -> ServerTuple:
     """Returns the host and port used for data submission.
 
     Data submission usually should be done against the primary database. This function
@@ -61,7 +61,7 @@ def get_submission_server():
         return ServerTuple(MUSICBRAINZ_SERVERS[0], 443)
 
 
-def build_submission_url(path=None, query_args=None):
+def build_submission_url(path: str | None = None, query_args: dict[str, str] | None = None) -> str:
     """Builds a submission URL with path and query parameters.
 
     Args:

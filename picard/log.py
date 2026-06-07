@@ -70,11 +70,11 @@ _MAX_TAIL_LEN = 10**6
 _DEFAULT_LOG_LEVEL = logging.INFO
 
 
-def get_effective_level():
+def get_effective_level() -> int:
     return main_logger.getEffectiveLevel()
 
 
-def set_verbosity(level):
+def set_verbosity(level: int) -> None:
     try:
         main_logger.setLevel(level)
     except ValueError as e:
@@ -82,7 +82,7 @@ def set_verbosity(level):
         main_logger.setLevel(_DEFAULT_LOG_LEVEL)
 
 
-def is_debug():
+def is_debug() -> bool:
     return get_effective_level() == logging.DEBUG
 
 
@@ -128,7 +128,12 @@ class TailLogHandler(logging.Handler):
             pass
 
 
-def _calculate_bounds(previous_position, first_position, last_position, queue_length):
+def _calculate_bounds(
+    previous_position: int,
+    first_position: int,
+    last_position: int,
+    queue_length: int,
+) -> tuple[int, int]:
     # If first item of the queue is bigger than prev, use first item position - 1 as prev
     # e.g. queue = [8, 9, 10] , prev = 6, new_prev = 8-1 = 7
     if previous_position < first_position:
@@ -313,18 +318,18 @@ main_inapp_fmt = main_fmt
 main_inapp_time_fmt = main_time_fmt
 
 
-def history_info(message, *args):
+def history_info(message: str, *args) -> None:
     history_logger.info(message, *args)
 
 
-def enable_console_handler():
+def enable_console_handler() -> None:
     main_console_handler = logging.StreamHandler()
     main_console_formatter = logging.Formatter(main_fmt, main_time_fmt)
     main_console_handler.setFormatter(main_console_formatter)
     main_logger.addHandler(main_console_handler)
 
 
-def enable_default_handlers():
+def enable_default_handlers() -> None:
     enable_console_handler()
 
     main_handler = main_tail.log_handler

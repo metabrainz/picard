@@ -23,6 +23,7 @@ from PyQt6.QtCore import (
     pyqtSignal,
 )
 
+from picard.extension_points.item_actions import BaseAction
 from picard.plugin import ExtensionPoint
 
 
@@ -34,6 +35,6 @@ signaler = Signaler()
 ext_point_plugin_tools_items = ExtensionPoint(label='plugin_tools_items')
 
 
-def register_tools_menu_action(action):
+def register_tools_menu_action(action: type[BaseAction]) -> None:
     ext_point_plugin_tools_items.register(action.__module__, action)
     signaler.plugin_tools_updated.emit()

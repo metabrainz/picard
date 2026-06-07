@@ -11,7 +11,7 @@
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
 
 
-def astrcmp_py(a, b):
+def astrcmp_py(a: str, b: str) -> float:
     """Calculates the Levenshtein distance between a and b."""
     n, m = len(a), len(b)
     if n > m:

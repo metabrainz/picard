@@ -37,7 +37,7 @@ from picard.i18n import gettext as _
 from picard.util import get_url
 
 
-def open(url):
+def open(url: str) -> None:
     try:
         webbrowser.open(get_url(url))
     except webbrowser.Error as e:

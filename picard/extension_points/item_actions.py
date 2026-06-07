@@ -84,21 +84,21 @@ ext_point_file_actions = ExtensionPoint(label='file_actions')
 ext_point_track_actions = ExtensionPoint(label='track_actions')
 
 
-def register_album_action(action):
+def register_album_action(action: type[BaseAction]) -> None:
     ext_point_album_actions.register(action.__module__, action)
 
 
-def register_cluster_action(action):
+def register_cluster_action(action: type[BaseAction]) -> None:
     ext_point_cluster_actions.register(action.__module__, action)
 
 
-def register_clusterlist_action(action):
+def register_clusterlist_action(action: type[BaseAction]) -> None:
     ext_point_clusterlist_actions.register(action.__module__, action)
 
 
-def register_file_action(action):
+def register_file_action(action: type[BaseAction]) -> None:
     ext_point_file_actions.register(action.__module__, action)
 
 
-def register_track_action(action):
+def register_track_action(action: type[BaseAction]) -> None:
     ext_point_track_actions.register(action.__module__, action)

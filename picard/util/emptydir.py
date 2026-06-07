@@ -46,7 +46,7 @@ class SkipRemoveDir(Exception):
     pass
 
 
-def is_empty_dir(path, ignored_files=None):
+def is_empty_dir(path: str, ignored_files: set[str] | None = None) -> bool:
     """
     Checks if a directory is considered empty.
 
@@ -67,7 +67,7 @@ def is_empty_dir(path, ignored_files=None):
     return not set(os.listdir(path)) - set(ignored_files)
 
 
-def rm_empty_dir(path):
+def rm_empty_dir(path: str) -> None:
     """
     Delete a directory if it is considered empty by is_empty_dir and if it
     is not considered a special directory (e.g. the users home dir or ~/Desktop).

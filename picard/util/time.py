@@ -34,18 +34,18 @@ SECS_IN_MINUTE = 60
 Duration = namedtuple('Duration', 'days hours minutes seconds')
 
 
-def euclidian_div(a, b):
+def euclidian_div(a: int, b: int) -> tuple[int, int]:
     return a // b, a % b
 
 
-def seconds_to_dhms(seconds):
+def seconds_to_dhms(seconds: int) -> Duration:
     days, seconds = euclidian_div(seconds, SECS_IN_DAY)
     hours, seconds = euclidian_div(seconds, SECS_IN_HOUR)
     minutes, seconds = euclidian_div(seconds, SECS_IN_MINUTE)
     return Duration(days=days, hours=hours, minutes=minutes, seconds=seconds)
 
 
-def get_timestamp(seconds):
+def get_timestamp(seconds: int) -> str:
     time = seconds_to_dhms(seconds)
     if time.days > 0:
         return _("%(days).2dd %(hours).2dh") % time._asdict()

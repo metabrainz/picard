@@ -25,6 +25,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 import re
 
 from picard.disc.utils import (
@@ -62,7 +66,7 @@ RE_TOC_TABLE_LINE = re.compile(
 )
 
 
-def filter_toc_entries(lines):
+def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
     """
     Take iterator of lines, return iterator of toc entries
     """
@@ -83,7 +87,7 @@ def filter_toc_entries(lines):
         yield TocEntry(int(m['num']), int(m['start_sector']), int(m['end_sector']))
 
 
-def toc_from_file(path):
+def toc_from_file(path: str) -> tuple[int, ...]:
     """Reads EAC / XLD / fre:ac log files, generates MusicBrainz disc TOC listing for use as discid.
 
     Warning: may work wrong for discs having data tracks. May generate wrong

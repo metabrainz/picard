@@ -34,6 +34,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from collections import defaultdict
+from collections.abc import Iterator
+from typing import Any
 import uuid
 
 from picard import log
@@ -43,12 +45,12 @@ from picard.config import get_config
 PLUGIN_MODULE_PREFIX = "picard.plugins."
 PLUGIN_MODULE_PREFIX_LEN = len(PLUGIN_MODULE_PREFIX)
 
-_extension_points = []
+_extension_points: list['ExtensionPoint'] = []
 _plugin_uuid_to_module: dict[str, str] = {}  # Maps UUID -> module name for v3 plugins
 
 
 class ExtensionPoint:
-    def __init__(self, label=None):
+    def __init__(self, label: str | None = None) -> None:
         if label is None:
             self.label = uuid.uuid4()
         else:
@@ -56,7 +58,7 @@ class ExtensionPoint:
         self.__dict = defaultdict(list)
         _extension_points.append(self)
 
-    def register(self, module, item):
+    def register(self, module: str, item: Any) -> None:
         if module.startswith(PLUGIN_MODULE_PREFIX):
             name = module[PLUGIN_MODULE_PREFIX_LEN:].split('.')[0]
             log.debug("ExtensionPoint: %s register <- plugin=%r item=%r", self.label, name, item)
@@ -66,7 +68,7 @@ class ExtensionPoint:
             # print("ExtensionPoint: %s register <- item=%r" % (self.label, item))
         self.__dict[name].append(item)
 
-    def unregister_module(self, name):
+    def unregister_module(self, name: str | None) -> None:
         try:
             del self.__dict[name]
         except KeyError:
@@ -80,7 +82,7 @@ class ExtensionPoint:
             # >>> #^^ no exception, after first read
             pass
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Any]:
         config = get_config()
         if not config:
             # No config available, yield all
@@ -104,16 +106,16 @@ class ExtensionPoint:
                         yield from self.__dict[name]
                         break
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"ExtensionPoint(label='{self.label}')"
 
 
-def unregister_module_extensions(module):
+def unregister_module_extensions(module: str) -> None:
     for ep in _extension_points:
         ep.unregister_module(module)
 
 
-def set_plugin_uuid(uuid, module_name):
+def set_plugin_uuid(uuid: str, module_name: str) -> None:
     """Set UUID for a v3 plugin module.
 
     Args:
@@ -123,6 +125,6 @@ def set_plugin_uuid(uuid, module_name):
     _plugin_uuid_to_module[uuid] = module_name
 
 
-def unset_plugin_uuid(uuid):
+def unset_plugin_uuid(uuid: str) -> None:
     """Unset UUID for a v3 plugin module."""
     _plugin_uuid_to_module.pop(uuid, None)
