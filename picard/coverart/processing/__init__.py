@@ -22,6 +22,7 @@ from collections.abc import Callable
 from functools import partial
 from queue import Queue
 import time
+from typing import Any
 
 from picard import log
 from picard.album import Album
@@ -47,7 +48,6 @@ from picard.extension_points.cover_art_processors import (
     ProcessingImage,
     get_cover_art_processors,
 )
-from picard.metadata import Metadata
 from picard.util import thread
 from picard.util.imageinfo import (
     IdentificationError,
@@ -62,7 +62,7 @@ def run_image_filters(data: bytes, image_info: ImageInfo, album: Album, coverart
     return True
 
 
-def run_image_metadata_filters(metadata: Metadata) -> bool:
+def run_image_metadata_filters(metadata: dict[str, Any]) -> bool:
     for f in ext_point_cover_art_metadata_filters:
         if not f(metadata):
             return False

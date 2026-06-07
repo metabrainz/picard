@@ -20,7 +20,10 @@
 
 
 from collections.abc import Callable
-from typing import TYPE_CHECKING
+from typing import (
+    TYPE_CHECKING,
+    Any,
+)
 
 from picard.album import Album
 from picard.coverart.image import CoverArtImage
@@ -43,7 +46,7 @@ def register_cover_art_filter(
 
 
 def register_cover_art_metadata_filter(
-    cover_art_metadata_filter: Callable[[Metadata], bool],
+    cover_art_metadata_filter: Callable[[dict[str, Any]], bool],
 ) -> None:
     m = Metadata()
     cover_art_metadata_filter(m)

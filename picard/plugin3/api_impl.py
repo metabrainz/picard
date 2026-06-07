@@ -711,7 +711,7 @@ class PluginApi:
         update_wrapper(wrapped, filter)
         return register_cover_art_filter(wrapped)
 
-    def register_cover_art_metadata_filter(self, filter: Callable[['PluginApi', Metadata], bool]) -> None:
+    def register_cover_art_metadata_filter(self, filter: Callable[['PluginApi', dict[str, Any]], bool]) -> None:
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
