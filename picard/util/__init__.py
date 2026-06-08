@@ -58,7 +58,6 @@ from datetime import (
 from itertools import chain
 import json
 import ntpath
-from operator import attrgetter
 import os
 from pathlib import (
     Path,
@@ -126,7 +125,15 @@ WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
 class ReadWriteLockContext:
-    """Context for releasing a locked QReadWriteLock"""
+    """Context manager wrapping a `QReadWriteLock`.
+
+    Multiple threads can obtain a read lock, but only one can obtain a write lock.
+    Read and write locks can be explicitly entered with `lock_for_read` and `lock_for_write`:
+
+        lock = ReadWriteLockContext()
+        with lock.lock_for_read():
+            ...
+    """
 
     def __init__(self):
         self.__lock = QtCore.QReadWriteLock()
@@ -147,9 +154,6 @@ class ReadWriteLockContext:
 
     def __exit__(self, type, value, tb):
         self.__lock.unlock()
-
-    def __bool__(self):
-        return self._entered > 0
 
 
 def process_events_iter(iterable, interval=0.1):
@@ -729,7 +733,7 @@ else:
         return False
 
 
-def linear_combination_of_weights(parts: list[tuple[float, float]]) -> float:
+def linear_combination_of_weights(parts: list[tuple[float, int]]) -> float:
     """Produces a probability as a linear combination of weights
     Parts should be a list of tuples in the form:
         [(v0, w0), (v1, w1), ..., (vn, wn)]
@@ -966,68 +970,6 @@ def compare_barcodes(barcode1: str, barcode2: str) -> bool:
     if not barcode1 or not barcode2:
         return False
     return barcode1.zfill(13) == barcode2.zfill(13)
-
-
-BestMatch = namedtuple('BestMatch', ('similarity', 'result'))
-
-
-def sort_by_similarity(candidates):
-    """Sorts the objects in candidates by similarity.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-    Returns: List of candidates sorted by similarity (highest similarity first)
-    """
-    return sorted(candidates, reverse=True, key=attrgetter('similarity'))
-
-
-def find_best_match(candidates, no_match):
-    """Returns a BestMatch based on the similarity of candidates.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-        no_match: Match to return if there was no candidate
-
-    Returns: `BestMatch` with the similarity and the matched object as result.
-    """
-    best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
-    return BestMatch(similarity=best_match.similarity, result=best_match)
-
-
-MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
-
-
-def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
-    """Find best match, flagging if below floor or margin is too small.
-
-    Args:
-        candidates: Iterable with objects having a `similarity` attribute
-        no_match: Match to return if no candidate passes the floor
-        min_similarity: Reject if best score is below this floor
-        min_margin: Flag as ambiguous if best - second_best < this value
-            (skipped when there's only one candidate)
-
-    Returns: `MatchResult` with similarity, result, and reason.
-        reason is None (confident), 'ambiguous' (margin too small,
-        best match still returned), or 'below_floor' (no_match returned).
-    """
-    best = no_match
-    second_best_sim = -1.0
-    for candidate in candidates:
-        sim = candidate.similarity
-        if sim > best.similarity:
-            second_best_sim = best.similarity
-            best = candidate
-        elif sim > second_best_sim:
-            second_best_sim = sim
-
-    if best.similarity < min_similarity:
-        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
-
-    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
-        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
-
-    return MatchResult(similarity=best.similarity, result=best, reason=None)
 
 
 def limited_join(a_list: list[str], limit: int, join_string: str = '+', middle_string: str = '…') -> str:
@@ -1408,41 +1350,6 @@ def titlecase(text: str) -> str:
             capital = False
         capitalized += t
     return capitalized
-
-
-def format_ref_commit(ref, commit, ref_formatter=None, commit_formatter=None):
-    """Format ref and commit for display.
-
-    Args:
-        ref: Git reference (branch, tag, etc.)
-        commit: Git commit hash (full length)
-        ref_formatter: Optional function to format the ref part
-        commit_formatter: Optional function to format the commit part
-
-    Returns:
-        Formatted string: "ref @commit", "@commit", "ref", or empty string
-    """
-    # Import here to avoid circular imports
-    from picard.plugin3.plugin import short_commit_id
-
-    # Shorten commit for display
-    short_commit = short_commit_id(commit) if commit else ''
-
-    # Apply formatters if provided
-    formatted_ref = ref_formatter(ref) if ref_formatter and ref else ref
-    formatted_commit = commit_formatter(short_commit) if commit_formatter and short_commit else short_commit
-
-    if ref and short_commit:
-        # If ref is the same as commit (commit hash used as ref), just show @commit
-        if ref == commit or ref == short_commit:
-            return f"@{formatted_commit}"
-        return f"{formatted_ref} @{formatted_commit}"
-    elif ref:
-        return formatted_ref
-    elif short_commit:
-        return f"@{formatted_commit}"
-    else:
-        return ""
 
 
 def parse_versioning_scheme(versioning_scheme):

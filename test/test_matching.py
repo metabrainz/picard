@@ -23,6 +23,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections import namedtuple
+
 from test.picardtestcase import (
     PicardTestCase,
     load_test_json,
@@ -46,7 +48,10 @@ from picard.matching import (
     _weights_from_release_type_scores,
     compare_to_release,
     compare_to_track,
+    find_best_match,
+    find_best_match_with_margin,
     length_score,
+    sort_by_similarity,
 )
 from picard.mbjson import (
     release_to_metadata,
@@ -445,3 +450,69 @@ class PreferredWeightsTest(PicardTestCase):
         self.assertEqual(parts[0], (0.0, 777))
         _weights_from_preferred_formats(parts, release, ['12" Vinyl'], 777)
         self.assertEqual(parts[1], (1.0, 777))
+
+
+SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
+
+
+class SortBySimilarity(PicardTestCase):
+    def setUp(self):
+        super().setUp()
+        self.test_values = [
+            SimMatchTest(similarity=0.74, name='d'),
+            SimMatchTest(similarity=0.61, name='a'),
+            SimMatchTest(similarity=0.75, name='b'),
+            SimMatchTest(similarity=0.75, name='c'),
+        ]
+
+    def test_sort_by_similarity(self):
+        results = [result.name for result in sort_by_similarity(self.test_values)]
+        self.assertEqual(results, ['b', 'c', 'd', 'a'])
+
+    def test_findbestmatch(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match(self.test_values, no_match)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+
+    def test_findbestmatch_nomatch(self):
+        self.test_values = []
+
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match(self.test_values, no_match)
+
+        self.assertEqual(best_match.result.name, 'no_match')
+        self.assertEqual(best_match.similarity, -1)
+
+    def test_find_best_match_with_margin(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertIsNone(best_match.reason)
+
+    def test_find_best_match_with_margin_min_similarity(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_similarity=0.75)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertIsNone(best_match.reason)
+
+    def test_find_best_match_with_margin_ambiguous(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_margin=0.01)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertEqual(best_match.reason, 'ambiguous')
+
+    def test_find_best_match_with_margin_below_floor(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_similarity=0.76)
+
+        self.assertEqual(best_match.result, no_match)
+        self.assertEqual(best_match.similarity, -1)
+        self.assertEqual(best_match.reason, 'below_floor')

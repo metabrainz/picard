@@ -87,6 +87,7 @@ from picard.item import MetadataItem
 from picard.matching import (
     SimMatchTrack,
     compare_to_track,
+    find_best_match_with_margin,
 )
 from picard.metadata import Metadata
 from picard.plugin import PluginFunctions
@@ -104,7 +105,6 @@ from picard.util import (
     decode_filename,
     emptydir,
     encode_filename,
-    find_best_match_with_margin,
     format_time,
     is_absolute_path,
     normpath,
