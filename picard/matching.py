@@ -337,6 +337,10 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
         if "releases" in track:
             releases = track['releases']
 
+            if 'tracknumber' in metadata and 'tracknumber' in sim_w:
+                sim = _compare_tracknumber(track.get('recording', {}).get('id'), metadata, releases)
+                track_parts.similarity.append((sim, sim_w["tracknumber"]))
+
         search_score = get_score(track)
         if not releases:
             config = get_config()
@@ -445,6 +449,45 @@ def _trackcount_score(actual: int, expected: int) -> float:
     else:
         # File has fewer tracks — could be single disc of multi-disc release
         return max(0.0, 1.0 - ratio * 2)
+
+
+def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list[dict]) -> float:
+    """Compares the track number from metadata to the track number in the release."""
+    try:
+        tracknumber = int(metadata['tracknumber'])
+    except ValueError:
+        tracknumber = None
+
+    # Find the track in the media and compare track numbers
+    if tracknumber:
+        for release in releases:
+            for medium in release.get('media', []):
+                track_offset = medium.get('track-offset', None)
+
+                # For recording lookups the web service returns only a "track" field
+                # containing the the track corresponding to the recording and sets
+                # the track-offset to indicate the number of skipped tracks before it.
+                # The track has no position field, so we use the track-offset to compare.
+                if track_offset is not None and 'track' in medium:
+                    if medium['track'] and tracknumber == track_offset + 1:
+                        return 1.0
+                    continue
+                # Else if the data contains a "tracks" field with full track listing
+                # search for the track with matching recording and compare its position.
+                else:
+                    tracks = medium.get('tracks', [])
+                    matching_tracks = filter(
+                        lambda t: t.get('recording', {}).get('id') == recording_id,
+                        tracks,
+                    )
+                    for matching_track in matching_tracks:
+                        if matching_track.get('position') == tracknumber:
+                            return 1.0
+        # Track number did not match on any medium across all releases
+        return 0.0
+
+    # No valid track number in metadata — neutral (neither confirms nor denies)
+    return 0.5
 
 
 def _isrcs_score(file_isrcs: Iterable[str], track_isrcs: Iterable[str]) -> float:

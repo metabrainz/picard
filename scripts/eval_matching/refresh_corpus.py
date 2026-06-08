@@ -72,7 +72,7 @@ def save_release(data):
     """Save release JSON to corpus/, named by MBID prefix."""
     path = CORPUS_DIR / f"eval_release_{data['id'][:8]}.json"
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=2, sort_keys=True)
         f.write("\n")
     return path
 

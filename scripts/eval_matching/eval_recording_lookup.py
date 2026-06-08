@@ -18,6 +18,7 @@ Usage:
 
 import argparse
 from collections import defaultdict
+from copy import deepcopy
 import json
 from pathlib import Path
 import sys
@@ -59,15 +60,30 @@ def _track_to_search_result(track, release):
     Mimics the structure returned by /ws/2/recording?query=...
     """
     recording = track.get("recording", {})
+    recording_id = recording.get("id", "")
     result = {
-        "id": recording.get("id", track.get("id", "")),
+        "id": recording_id,
         "title": track.get("title", ""),
         "length": track.get("length", 0),
         "artist-credit": track.get("artist-credit", recording.get("artist-credit", [])),
-        "releases": [release],
         "isrcs": recording.get("isrcs", []),
         "score": 100,
     }
+
+    # On recording search results media has only the track for this recording
+    # with track-offset indicating the skipped tracks.
+    recording_release = deepcopy(release)
+    for medium in recording_release.get("media", []):
+        for pos, track in enumerate(medium.get("tracks", [])):
+            if track.get("recording", {}).get("id", "") == recording_id:
+                medium["track-offset"] = pos
+                del track["recording"]
+                medium["track"] = [track]
+                break
+        del medium["tracks"]
+
+    result["releases"] = [recording_release]
+
     if "video" in track:
         result["video"] = track["video"]
     return result
@@ -113,9 +129,12 @@ def generate_corpus():
         if len(all_tracks) > 2:
             test_tracks.append(all_tracks[len(all_tracks) // 2])
 
+        # Build candidate list (simulating MB search results)
+        # Use all tracks from the release to test for mismatches with similar tracks
+        # on the same release.
+        candidates = [_track_to_search_result(track, target) for track in all_tracks]
+
         for track in test_tracks:
-            # Build candidate list (simulating MB search results)
-            candidates = [_track_to_search_result(track, target)]
             pos = track.get("position", 1)
 
             for dist in distractors:
@@ -134,7 +153,7 @@ def generate_corpus():
                             candidates.append(_track_to_search_result(media["tracks"][0], dist))
                             break
 
-            correct_recording_id = candidates[0]["id"]
+            correct_recording_id = track["recording"]["id"]
 
             for deg_name, deg_fn in DEGRADATIONS:
                 m = metadata_from_track(track, target)
@@ -319,7 +338,7 @@ def save_results(results, path):
             }
         )
     with open(path, "w", encoding="utf-8") as f:
-        json.dump(snapshot, f, indent=2)
+        json.dump(snapshot, f, indent=2, sort_keys=True)
     print(f"Saved {len(snapshot)} results to {path}")
 
 
