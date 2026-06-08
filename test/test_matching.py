@@ -49,6 +49,7 @@ from picard.matching import (
     compare_to_release,
     compare_to_track,
     find_best_match,
+    find_best_match_with_margin,
     length_score,
     sort_by_similarity,
 )
@@ -483,3 +484,35 @@ class SortBySimilarity(PicardTestCase):
 
         self.assertEqual(best_match.result.name, 'no_match')
         self.assertEqual(best_match.similarity, -1)
+
+    def test_find_best_match_with_margin(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertIsNone(best_match.reason)
+
+    def test_find_best_match_with_margin_min_similarity(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_similarity=0.75)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertIsNone(best_match.reason)
+
+    def test_find_best_match_with_margin_ambiguous(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_margin=0.01)
+
+        self.assertEqual(best_match.result.name, 'b')
+        self.assertEqual(best_match.similarity, 0.75)
+        self.assertEqual(best_match.reason, 'ambiguous')
+
+    def test_find_best_match_with_margin_below_floor(self):
+        no_match = SimMatchTest(similarity=-1, name='no_match')
+        best_match = find_best_match_with_margin(self.test_values, no_match, min_similarity=0.76)
+
+        self.assertEqual(best_match.result, no_match)
+        self.assertEqual(best_match.similarity, -1)
+        self.assertEqual(best_match.reason, 'below_floor')

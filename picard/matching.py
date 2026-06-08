@@ -429,7 +429,7 @@ def find_best_match_with_margin(
             second_best_sim = sim
 
     if best.similarity < min_similarity:
-        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
+        return MatchResult(similarity=no_match.similarity, result=no_match, reason='below_floor')
 
     if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
         return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
