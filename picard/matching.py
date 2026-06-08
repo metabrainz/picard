@@ -469,7 +469,7 @@ def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list
                 # the track-offset to indicate the number of skipped tracks before it.
                 # The track has no position field, so we use the track-offset to compare.
                 if track_offset is not None and 'track' in medium:
-                    if medium.get('track', None) and tracknumber == track_offset + 1:
+                    if medium['track'] and tracknumber == track_offset + 1:
                         sim = 1.0
                     else:
                         sim = 0.0
