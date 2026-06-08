@@ -106,7 +106,7 @@ _ADDITIONAL_COMPATIBILITY = {
 }
 
 
-def unicode_simplify_compatibility(string, pathsave=False, win_compat=False):
+def unicode_simplify_compatibility(string: str, pathsave: bool = False, win_compat: bool = False) -> str:
     interim = ''.join(_replace_char(_ADDITIONAL_COMPATIBILITY, ch, pathsave, win_compat) for ch in string)
     return unicodedata.normalize("NFKC", interim)
 
@@ -184,7 +184,7 @@ _SIMPLIFY_PUNCTUATION = {
 }
 
 
-def unicode_simplify_punctuation(string, pathsave=False, win_compat=False):
+def unicode_simplify_punctuation(string: str, pathsave: bool = False, win_compat: bool = False) -> str:
     return ''.join(_replace_char(_SIMPLIFY_PUNCTUATION, ch, pathsave, win_compat) for ch in string)
 
 
@@ -415,7 +415,7 @@ _SIMPLIFY_COMBINATIONS = {
 }
 
 
-def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
+def _replace_unicode_simplify_combinations(char: str, pathsave: bool, win_compat: bool) -> str:
     result = _SIMPLIFY_COMBINATIONS.get(char)
     if result is None:
         return char
@@ -425,25 +425,25 @@ def _replace_unicode_simplify_combinations(char, pathsave, win_compat):
         return sanitize_filename(result, win_compat=win_compat)
 
 
-def unicode_simplify_combinations(string, pathsave=False, win_compat=False):
+def unicode_simplify_combinations(string: str, pathsave: bool = False, win_compat: bool = False) -> str:
     return ''.join(_replace_unicode_simplify_combinations(c, pathsave, win_compat) for c in string)
 
 
-def unicode_simplify_accents(string):
+def unicode_simplify_accents(string: str) -> str:
     return ''.join(c for c in unicodedata.normalize('NFKD', string) if not unicodedata.combining(c))
 
 
-def asciipunct(string):
+def asciipunct(string: str) -> str:
     interim = unicode_simplify_compatibility(string)
     return unicode_simplify_punctuation(interim)
 
 
-def unaccent(string):
+def unaccent(string: str) -> str:
     """Remove accents ``string``."""
     return unicode_simplify_accents(string)
 
 
-def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
+def replace_non_ascii(string: str, repl: str = "_", pathsave: bool = False, win_compat: bool = False) -> str:
     """Replace non-ASCII characters from ``string`` by ``repl``."""
     interim = unicode_simplify_combinations(string, pathsave, win_compat)
     interim = unicode_simplify_punctuation(interim, pathsave, win_compat)
@@ -458,7 +458,7 @@ def replace_non_ascii(string, repl="_", pathsave=False, win_compat=False):
     return interim.encode('ascii', 'repl').decode('ascii')
 
 
-def _replace_char(mapping, ch, pathsave=False, win_compat=False):
+def _replace_char(mapping: dict[str, str], ch: str, pathsave: bool = False, win_compat: bool = False) -> str:
     try:
         result = mapping[ch]
         if ch != result and pathsave:

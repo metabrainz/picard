@@ -22,7 +22,7 @@
 
 
 class ProgressCheckpoints:
-    def __init__(self, num_jobs, num_checkpoints=10):
+    def __init__(self, num_jobs: int, num_checkpoints: int = 10):
         """Create a set of unique and evenly spaced indexes of jobs, used as checkpoints for progress"""
         self.num_jobs = num_jobs
         self._checkpoints = {}
@@ -34,10 +34,10 @@ class ProgressCheckpoints:
             if num_jobs > 0:
                 self._checkpoints[num_jobs - 1] = 100
 
-    def is_checkpoint(self, index):
+    def is_checkpoint(self, index: int) -> bool:
         return index in self._checkpoints
 
-    def progress(self, index):
+    def progress(self, index: int) -> int | None:
         try:
             return self._checkpoints[index]
         except KeyError:

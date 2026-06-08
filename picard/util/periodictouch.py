@@ -33,17 +33,17 @@ _touch_timer = None
 _files_to_touch: set[str] = set()
 
 
-def register_file(filepath):
+def register_file(filepath: str) -> None:
     if _touch_timer and _touch_timer.isActive():
         _files_to_touch.add(filepath)
 
 
-def unregister_file(filepath):
+def unregister_file(filepath: str) -> None:
     if _touch_timer and _touch_timer.isActive():
         _files_to_touch.discard(filepath)
 
 
-def enable_timer():
+def enable_timer() -> None:
     log.debug("Setup timer for touching files every %i seconds", TOUCH_FILES_DELAY_SECONDS)
     global _touch_timer
     _touch_timer = QTimer()

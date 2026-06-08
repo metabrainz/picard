@@ -29,15 +29,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
 import sys
 import threading
 import time
 import traceback
+from typing import Any
 
 from PyQt6.QtCore import (
     QCoreApplication,
     QEvent,
     QRunnable,
+    QThreadPool,
 )
 
 from picard import (
@@ -47,7 +50,7 @@ from picard import (
 
 
 class ProxyToMainEvent(QEvent):
-    def __init__(self, func, *args, **kwargs):
+    def __init__(self, func: Callable, *args: Any, **kwargs: Any):
         super().__init__(QEvent.Type.User)
         self.func = func
         self.args = args
@@ -55,28 +58,6 @@ class ProxyToMainEvent(QEvent):
 
     def run(self):
         self.func(*self.args, **self.kwargs)
-
-
-class Runnable(QRunnable):
-    def __init__(self, func, next_func, task_counter=None, traceback=True):
-        super().__init__()
-        self.func = func
-        self.next_func = next_func
-        self.task_counter = task_counter
-        self.traceback = traceback
-
-    def run(self):
-        try:
-            result = self.func()
-        except BaseException:
-            if self.traceback:
-                log.error(traceback.format_exc())
-            to_main(self.next_func, error=sys.exc_info()[1])
-        else:
-            to_main(self.next_func, result=result)
-        finally:
-            if self.task_counter:
-                self.task_counter.decrement()
 
 
 class TaskCounter:
@@ -101,7 +82,38 @@ class TaskCounter:
                 self.condition.wait()
 
 
-def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=None, traceback=True):
+class Runnable(QRunnable):
+    def __init__(
+        self, func: Callable, next_func: Callable, task_counter: TaskCounter | None = None, traceback: bool = True
+    ):
+        super().__init__()
+        self.func = func
+        self.next_func = next_func
+        self.task_counter = task_counter
+        self.traceback = traceback
+
+    def run(self):
+        try:
+            result = self.func()
+        except BaseException:
+            if self.traceback:
+                log.error(traceback.format_exc())
+            to_main(self.next_func, error=sys.exc_info()[1])
+        else:
+            to_main(self.next_func, result=result)
+        finally:
+            if self.task_counter:
+                self.task_counter.decrement()
+
+
+def run_task(
+    func: Callable,
+    next_func: Callable | None = None,
+    priority: int = 0,
+    thread_pool: QThreadPool | None = None,
+    task_counter: TaskCounter | None = None,
+    traceback: bool = True,
+) -> None:
     """Schedules func to be run on a separate thread
 
     Args:
@@ -129,11 +141,11 @@ def run_task(func, next_func=None, priority=0, thread_pool=None, task_counter=No
     thread_pool.start(Runnable(func, next_func, task_counter, traceback), priority)
 
 
-def to_main(func, *args, **kwargs):
+def to_main(func: Callable, *args: Any, **kwargs: Any) -> None:
     QCoreApplication.postEvent(QCoreApplication.instance(), ProxyToMainEvent(func, *args, **kwargs))
 
 
-def to_main_with_blocking(func, *args, **kwargs):
+def to_main_with_blocking(func: Callable, *args: Any, **kwargs: Any) -> None:
     """Executes a command as a user-defined event, and waits until the event has
     closed before returning.  Note that any new threads started while processing
     the event will not be considered when releasing the blocking of the function.

@@ -52,7 +52,7 @@ ICON_SIZE_TOOLBAR = ('22x22',)
 ICON_SIZE_ALL = ('22x22', '16x16')
 
 
-def lookup(name, size=ICON_SIZE_ALL):
+def lookup(name: str, size: tuple[str, ...] = ICON_SIZE_ALL) -> QtGui.QIcon:
     icon = QtGui.QIcon()
     if _current_theme:
         for path in _search_paths:

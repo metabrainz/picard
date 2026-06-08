@@ -46,7 +46,14 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Mapping
+from collections.abc import (
+    Callable,
+    Generator,
+    Iterable,
+    Iterator,
+    Mapping,
+    Sequence,
+)
 from contextlib import (
     contextmanager,
     suppress,
@@ -72,7 +79,6 @@ from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
-from PyQt6.QtCore import QByteArray
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -156,7 +162,7 @@ class ReadWriteLockContext:
         self.__lock.unlock()
 
 
-def process_events_iter(iterable, interval=0.1):
+def process_events_iter(iterable: Iterable, interval: float = 0.1) -> Iterator:
     """
     Creates an iterator over iterable that calls QCoreApplication.processEvents()
     after certain time intervals.
@@ -180,7 +186,7 @@ def process_events_iter(iterable, interval=0.1):
     QtCore.QCoreApplication.processEvents()
 
 
-def iter_files_from_objects(objects, save=False):
+def iter_files_from_objects(objects: Iterable, save: bool = False) -> Iterator:
     """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
     return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
@@ -465,8 +471,8 @@ def find_existing_path(path: str | bytes) -> str:
     return decode_filename(path)
 
 
-def _add_windows_executable_extension(*executables):
-    return [e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables]
+def _add_windows_executable_extension(*executables: str) -> tuple[str, ...]:
+    return tuple(e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables)
 
 
 def find_executable(*executables: str) -> str | None:
@@ -486,12 +492,12 @@ def find_executable(*executables: str) -> str | None:
                 return os.path.abspath(f)
 
 
-def run_executable(executable, *args, timeout=None):
+def run_executable(executable: str, *args, timeout: int | float | None = None) -> tuple[int, str, str]:
     # Prevent new shell window from appearing
     startupinfo = None
     if IS_WIN:
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo = subprocess.STARTUPINFO()  # ty: ignore[unresolved-attribute]
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # ty: ignore[unresolved-attribute]
 
     # Include python interpreter if running a python script
     if ".py" in executable:
@@ -512,7 +518,7 @@ def run_executable(executable, *args, timeout=None):
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
 
 
-def open_local_path(path):
+def open_local_path(path: str) -> None:
     url = QtCore.QUrl.fromLocalFile(path)
     if os.environ.get('SNAP'):
         run_executable('xdg-open', url.toString())
@@ -540,7 +546,7 @@ def parse_amazon_url(url: str) -> dict[str, str] | None:
     return None
 
 
-def throttle(interval):
+def throttle(interval: float | int) -> Callable:
     """
     Throttle a function so that it will only execute once per ``interval``
     (specified in milliseconds).
@@ -598,7 +604,13 @@ class IgnoreUpdatesContext:
     updates if it is `False`.
     """
 
-    def __init__(self, on_exit=None, on_enter=None, on_first_enter=None, on_last_exit=None):
+    def __init__(
+        self,
+        on_exit: Callable | None = None,
+        on_enter: Callable | None = None,
+        on_first_enter: Callable | None = None,
+        on_last_exit: Callable | None = None,
+    ):
         self._entered = 0
         self._on_exit = on_exit
         self._on_last_exit = on_last_exit
@@ -624,12 +636,12 @@ class IgnoreUpdatesContext:
         return self._entered > 0
 
 
-def uniqify(seq: list) -> list:
+def uniqify(seq: Iterable) -> list:
     """Uniqify a list, preserving order"""
     return list(iter_unique(seq))
 
 
-def iter_unique(seq):
+def iter_unique(seq: Iterable) -> Iterator:
     """Creates an iterator only returning unique values from seq"""
     seen = set()
     return (x for x in seq if x not in seen and not seen.add(x))
@@ -781,12 +793,12 @@ def album_artist_from_path(filename: str, album: str, artist: str) -> tuple[str,
     return album, artist
 
 
-def encoded_queryargs(queryargs):
+def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
     """
     Percent-encode all values from passed dictionary
     Keys are left unmodified
     """
-    return {name: bytes(QtCore.QUrl.toPercentEncoding(str(value))).decode() for name, value in queryargs.items()}
+    return {name: QtCore.QUrl.toPercentEncoding(str(value)).data().decode() for name, value in queryargs.items()}
 
 
 def get_url(url_key: str) -> str:
@@ -818,7 +830,9 @@ def get_url(url_key: str) -> str:
     return url_key
 
 
-def build_qurl(host, port=80, path=None, queryargs=None):
+def build_qurl(
+    host: str, port: int = 80, path: str | None = None, queryargs: Mapping[str, Any] | None = None
+) -> QtCore.QUrl:
     """
     Builds and returns a QUrl object from `host`, `port` and `path` and
     automatically enables HTTPS if necessary.
@@ -847,7 +861,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     return url
 
 
-def union_sorted_lists(list1, list2):
+def union_sorted_lists(list1: Sequence, list2: Sequence) -> list:
     """
     Returns union of two sorted lists.
     >> list1 = [1, 2, 2, 2, 3]
@@ -895,7 +909,7 @@ def __convert_to_string(obj: Any) -> str:
         return str(obj)
 
 
-def load_json(data: bytes | QByteArray | str) -> Any:
+def load_json(data: bytes | QtCore.QByteArray | str) -> Any:
     """Deserializes a string or bytes like json response and converts
     it to a python object.
 
@@ -913,7 +927,7 @@ def parse_json(reply: QNetworkReply) -> Any:
     return load_json(reply.readAll())
 
 
-def restore_method(func):
+def restore_method(func: Callable) -> Callable:
     def func_wrapper(*args, **kwargs):
         tagger = tagger_instance()
         if not tagger._no_restore:
@@ -922,7 +936,9 @@ def restore_method(func):
     return func_wrapper
 
 
-def reconnect(signal, newhandler=None, oldhandler=None):
+def reconnect(
+    signal: QtCore.pyqtBoundSignal, newhandler: Callable | None = None, oldhandler: Callable | None = None
+) -> None:
     """
     Reconnect an handler to a signal
 
@@ -943,7 +959,7 @@ def reconnect(signal, newhandler=None, oldhandler=None):
 
 
 @contextmanager
-def temporary_disconnect(signal, *handlers):
+def temporary_disconnect(signal: QtCore.pyqtBoundSignal, *handlers: Callable) -> Generator[None, None, None]:
     """
     Create context to temporarly disconnect one or more signal handlers
     """
@@ -1008,7 +1024,7 @@ def limited_join(a_list: list[str], limit: int, join_string: str = '+', middle_s
     return join_string.join(start + [middle_string] + end)
 
 
-def countries_shortlist(countries):
+def countries_shortlist(countries: list[str]) -> str:
     return limited_join(countries, 6, '+', '…')
 
 
@@ -1170,7 +1186,7 @@ def wildcards_to_regex_pattern(pattern: str) -> str:
     return ''.join(regex)
 
 
-def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
+def _regex_numbered_title_fmt(fmt: str, title_repl: str, count_repl: str) -> str:
     title_marker = '{title}'
     count_marker = '{count}'
 
@@ -1190,7 +1206,7 @@ def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
     )
 
 
-def _get_default_numbered_title_format():
+def _get_default_numbered_title_format() -> str:
     # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_NUMBERED_TITLE_FORMAT
 
@@ -1244,17 +1260,17 @@ def get_base_title(title: str) -> str:
     return get_base_title_with_suffix(title, suffix)
 
 
-def iter_exception_chain(err):
+def iter_exception_chain(err: BaseException) -> Iterator[BaseException]:
     """Iterate over the exception chain.
     Yields this exception and all __context__ and __cause__ exceptions"""
     yield err
-    if hasattr(err, '__context__'):
-        yield from iter_exception_chain(err.__context__)
-    if hasattr(err, '__cause__'):
-        yield from iter_exception_chain(err.__cause__)
+    if context := getattr(err, '__context__', None):
+        yield from iter_exception_chain(context)
+    if cause := getattr(err, '__cause__', None):
+        yield from iter_exception_chain(cause)
 
 
-def any_exception_isinstance(error, type_):
+def any_exception_isinstance(error: BaseException, type_: type):
     """Returns True, if any exception in the exception chain is instance of type_."""
     return any(isinstance(err, type_) for err in iter_exception_chain(error))
 
@@ -1352,7 +1368,7 @@ def titlecase(text: str) -> str:
     return capitalized
 
 
-def parse_versioning_scheme(versioning_scheme):
+def parse_versioning_scheme(versioning_scheme: str) -> re.Pattern | None:
     """Parse versioning scheme into compiled regex pattern.
 
     Args:

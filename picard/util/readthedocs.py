@@ -33,6 +33,7 @@ from picard.const import (
     READTHEDOCS_PROJECT_API,
 )
 from picard.version import Version
+from picard.webservice import WebService
 
 
 class RtdApiItem:
@@ -68,7 +69,7 @@ class ReadTheDocs:
     """Best match to available versions"""
 
     @classmethod
-    def initialize(cls, webservice=None):
+    def initialize(cls, webservice: WebService):
         """Initializes the class variables after retrieving the available languages
         and versions information from ReadTheDocs.
         Args:
