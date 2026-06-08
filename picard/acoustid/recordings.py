@@ -30,6 +30,7 @@ from collections.abc import (
     Iterable,
 )
 from functools import partial
+from typing import Any
 
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -50,7 +51,7 @@ MAX_NO_METADATA_RECORDINGS = 3
 
 
 class Recording:
-    recording: dict
+    recording: dict[str, Any]
     result_score: float
     sources: int
 
@@ -115,7 +116,7 @@ class RecordingResolver:
 
         self._load_recordings()
 
-    def _load_recordings(self):
+    def _load_recordings(self) -> None:
         if not self._missing_metadata:
             self._send_results()
             return
@@ -162,14 +163,14 @@ class RecordingResolver:
         self._callback(list(parse_recording_map(self._recording_map)), error)
 
 
-def get_score(node):
+def get_score(node: dict) -> float:
     try:
         return float(node.get('score', 1.0))
     except (TypeError, ValueError):
         return 1.0
 
 
-def parse_recording_map(recording_map: dict[str, dict[str, Recording]]):
+def parse_recording_map(recording_map: dict[str, dict[str, Recording]]) -> Iterable[dict[str, Any]]:
     for acoustid, recordings in recording_map.items():
         recording_list = recordings.values()
         max_sources = max_source_count(recording_list)
@@ -185,7 +186,7 @@ def parse_recording_map(recording_map: dict[str, dict[str, Recording]]):
             yield parsed_recording
 
 
-def max_source_count(recordings: Iterable[Recording]):
+def max_source_count(recordings: Iterable[Recording]) -> int:
     """Given a list of recordings return the highest number of sources.
     This ignores recordings without metadata.
     """
@@ -194,7 +195,7 @@ def max_source_count(recordings: Iterable[Recording]):
     return max(sources)
 
 
-def max_source_count_raw_recording(recordings: list[dict]):
+def max_source_count_raw_recording(recordings: list[dict]) -> int:
     """Given a list of recordings return the highest number of sources.
     This ignores recordings without metadata.
     """

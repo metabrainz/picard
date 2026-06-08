@@ -77,7 +77,7 @@ class FileLookup:
         if self.local_port:
             params['tport'] = self.local_port
         url = build_qurl(self.server, self.port, path=path, queryargs=params)
-        return bytes(url.toEncoded()).decode()
+        return url.toEncoded().data().decode()
 
     def _build_launch(self, path: str, params: dict[str, str | int] | None = None) -> bool:
         if params is None:

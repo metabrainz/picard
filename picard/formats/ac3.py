@@ -21,6 +21,7 @@
 
 
 import mutagen
+import mutagen.apev2
 
 from picard import log
 from picard.config import get_config

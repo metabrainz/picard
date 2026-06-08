@@ -40,11 +40,15 @@ from enum import IntEnum
 import re
 from urllib.parse import urlparse
 
-from mutagen import id3
+from mutagen import (
+    FileType,
+    id3,
+)
 import mutagen.aiff
 import mutagen.apev2
 import mutagen.dsdiff
 import mutagen.dsf
+import mutagen.id3
 import mutagen.mp3
 import mutagen.trueaudio
 
@@ -134,6 +138,7 @@ class ID3File(File):
     _IsMP3 = False
     FORMAT_KEY = 'id3'
     FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
+    _File: type[FileType] | None = None
 
     __upgrade = {
         'XSOP': 'TSOP',
@@ -1101,6 +1106,7 @@ class NonCompatID3File(ID3File):
     """Base class for ID3 files which do not support setting `compatid3.CompatID3`."""
 
     def _get_file(self, filename):
+        assert self._File, f"_File not defined for {self.__class__.__name__}"
         return self._File(filename, known_frames=compatid3.known_frames)
 
     def _get_tags(self, filename):
