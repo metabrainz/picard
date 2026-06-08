@@ -125,7 +125,15 @@ WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
 class ReadWriteLockContext:
-    """Context for releasing a locked QReadWriteLock"""
+    """Context manager wrapping a `QReadWriteLock`.
+
+    Multiple threads can obtain a read lock, but only one can obtain a write lock.
+    Read and write locks can be explicitly entered with `lock_for_read` and `lock_for_write`:
+
+        lock = ReadWriteLockContext()
+        with lock.lock_for_read():
+            ...
+    """
 
     def __init__(self):
         self.__lock = QtCore.QReadWriteLock()
@@ -146,9 +154,6 @@ class ReadWriteLockContext:
 
     def __exit__(self, type, value, tb):
         self.__lock.unlock()
-
-    def __bool__(self):
-        return self._entered > 0
 
 
 def process_events_iter(iterable, interval=0.1):
