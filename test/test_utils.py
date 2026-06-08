@@ -32,7 +32,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 from collections.abc import Iterator
 from datetime import (
     date,
@@ -75,7 +74,6 @@ from picard.util import (
     encode_filename,
     encoded_queryargs,
     extract_year_from_date,
-    find_best_match,
     get_url,
     is_absolute_path,
     is_unc_path,
@@ -87,7 +85,6 @@ from picard.util import (
     normpath,
     parse_date,
     pattern_as_regex,
-    sort_by_similarity,
     system_supports_long_paths,
     temporary_disconnect,
     titlecase,
@@ -475,40 +472,6 @@ class MbidValidateTest(PicardTestCase):
     def test_not_ok(self):
         self.assertRaises(TypeError, util.mbid_validate, 123)
         self.assertRaises(TypeError, util.mbid_validate, None)
-
-
-SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
-
-
-class SortBySimilarity(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.test_values = [
-            SimMatchTest(similarity=0.74, name='d'),
-            SimMatchTest(similarity=0.61, name='a'),
-            SimMatchTest(similarity=0.75, name='b'),
-            SimMatchTest(similarity=0.75, name='c'),
-        ]
-
-    def test_sort_by_similarity(self):
-        results = [result.name for result in sort_by_similarity(self.test_values)]
-        self.assertEqual(results, ['b', 'c', 'd', 'a'])
-
-    def test_findbestmatch(self):
-        no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.test_values, no_match)
-
-        self.assertEqual(best_match.result.name, 'b')
-        self.assertEqual(best_match.similarity, 0.75)
-
-    def test_findbestmatch_nomatch(self):
-        self.test_values = []
-
-        no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.test_values, no_match)
-
-        self.assertEqual(best_match.result.name, 'no_match')
-        self.assertEqual(best_match.similarity, -1)
 
 
 class LimitedJoin(PicardTestCase):

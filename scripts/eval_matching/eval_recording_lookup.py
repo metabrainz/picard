@@ -34,9 +34,9 @@ from picard.file import FILE_COMPARISON_WEIGHTS
 from picard.matching import (
     SimMatchTrack,
     compare_to_track,
+    find_best_match_with_margin,
 )
 from picard.metadata import Metadata
-from picard.util import find_best_match_with_margin
 
 # Reuse corpus and degradations from the release eval
 from eval_matching import (

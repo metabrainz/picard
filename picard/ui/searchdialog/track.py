@@ -29,7 +29,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.matching import compare_to_track
+from picard.matching import (
+    compare_to_track,
+    sort_by_similarity,
+)
 from picard.mbjson import (
     countries_from_node,
     recording_to_metadata,
@@ -38,10 +41,7 @@ from picard.mbjson import (
 )
 from picard.metadata import Metadata
 from picard.track import Track
-from picard.util import (
-    countries_shortlist,
-    sort_by_similarity,
-)
+from picard.util import countries_shortlist
 from picard.webservice.api_helpers import build_lucene_query
 
 from picard.ui.columns import (

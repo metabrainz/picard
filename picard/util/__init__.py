@@ -58,7 +58,6 @@ from datetime import (
 from itertools import chain
 import json
 import ntpath
-from operator import attrgetter
 import os
 from pathlib import (
     Path,
@@ -729,7 +728,7 @@ else:
         return False
 
 
-def linear_combination_of_weights(parts: list[tuple[float, float]]) -> float:
+def linear_combination_of_weights(parts: list[tuple[float, int]]) -> float:
     """Produces a probability as a linear combination of weights
     Parts should be a list of tuples in the form:
         [(v0, w0), (v1, w1), ..., (vn, wn)]
@@ -966,68 +965,6 @@ def compare_barcodes(barcode1: str, barcode2: str) -> bool:
     if not barcode1 or not barcode2:
         return False
     return barcode1.zfill(13) == barcode2.zfill(13)
-
-
-BestMatch = namedtuple('BestMatch', ('similarity', 'result'))
-
-
-def sort_by_similarity(candidates):
-    """Sorts the objects in candidates by similarity.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-    Returns: List of candidates sorted by similarity (highest similarity first)
-    """
-    return sorted(candidates, reverse=True, key=attrgetter('similarity'))
-
-
-def find_best_match(candidates, no_match):
-    """Returns a BestMatch based on the similarity of candidates.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-        no_match: Match to return if there was no candidate
-
-    Returns: `BestMatch` with the similarity and the matched object as result.
-    """
-    best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
-    return BestMatch(similarity=best_match.similarity, result=best_match)
-
-
-MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
-
-
-def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
-    """Find best match, flagging if below floor or margin is too small.
-
-    Args:
-        candidates: Iterable with objects having a `similarity` attribute
-        no_match: Match to return if no candidate passes the floor
-        min_similarity: Reject if best score is below this floor
-        min_margin: Flag as ambiguous if best - second_best < this value
-            (skipped when there's only one candidate)
-
-    Returns: `MatchResult` with similarity, result, and reason.
-        reason is None (confident), 'ambiguous' (margin too small,
-        best match still returned), or 'below_floor' (no_match returned).
-    """
-    best = no_match
-    second_best_sim = -1.0
-    for candidate in candidates:
-        sim = candidate.similarity
-        if sim > best.similarity:
-            second_best_sim = best.similarity
-            best = candidate
-        elif sim > second_best_sim:
-            second_best_sim = sim
-
-    if best.similarity < min_similarity:
-        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
-
-    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
-        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
-
-    return MatchResult(similarity=best.similarity, result=best, reason=None)
 
 
 def limited_join(a_list: list[str], limit: int, join_string: str = '+', middle_string: str = '…') -> str:
