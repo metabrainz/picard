@@ -470,10 +470,8 @@ def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list
                 # The track has no position field, so we use the track-offset to compare.
                 if track_offset is not None and 'track' in medium:
                     if medium['track'] and tracknumber == track_offset + 1:
-                        sim = 1.0
-                    else:
-                        sim = 0.0
-                    return sim
+                        return 1.0
+                    continue
                 # Else if the data contains a "tracks" field with full track listing
                 # search for the track with matching recording and compare its position.
                 else:
@@ -485,9 +483,10 @@ def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list
                     for matching_track in matching_tracks:
                         if matching_track.get('position') == tracknumber:
                             return 1.0
-                    return 0.0
+        # Track number did not match on any medium across all releases
+        return 0.0
 
-    # Track number not found in any medium — neutral (neither confirms nor denies)
+    # No valid track number in metadata — neutral (neither confirms nor denies)
     return 0.5
 
 
