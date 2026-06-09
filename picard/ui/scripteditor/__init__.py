@@ -301,6 +301,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.delete_action.triggered.connect(self.delete_script)
         script_menu.addAction(self.delete_action)
 
+        self.reset_current_script_action = QtGui.QAction(_("Rese&t current script"), self)
+        self.reset_current_script_action.setToolTip(_("Discard changes and reset to the last saved version"))
+        self.reset_current_script_action.setIcon(icontheme.lookup('view-refresh'))
+        self.reset_current_script_action.triggered.connect(self.revert_script)
+        script_menu.addAction(self.reset_current_script_action)
+
         # Display menu settings
         display_menu = main_menu.addMenu(_("&View"))
         display_menu.setToolTipsVisible(True)
@@ -355,12 +361,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         for script_item in get_file_naming_script_presets():
             _add_menu_item(script_item['title'], script_item['script'])
 
-    def is_options_ui(self):
-        return self.parent().__class__.__name__ == 'RenamingOptionsPage'
-
-    def is_main_ui(self):
-        return self.parent().__class__.__name__ == 'MainWindow'
-
     def load(self, reload=False):
         """Load initial configuration."""
         config = get_config()
@@ -373,12 +373,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
-        if self.is_options_ui():
-            selector = self.parent().ui.naming_script_selector
-            idx = selector.currentIndex()
-            sel_id = selector.itemData(idx)['id']
-            if sel_id in self.all_scripts():
-                self.selected_script_id = sel_id
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
@@ -668,12 +662,35 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     def make_it_so(self):
         """Save the scripts and settings to configuration and exit."""
         script_item = self.get_selected_item()
-        self.selected_script_id = script_item['id']
         self.naming_scripts = self.get_scripts_dict()
         config = get_config()
         config.setting['file_renaming_scripts'] = self.naming_scripts
-        config.setting['active_file_naming_script_id'] = script_item['id']
+        # Re-read active ID after save, as it may have been repaired if the
+        # previously active script was deleted.
+        active_script_id = config.setting['active_file_naming_script_id']
+        if script_item['id'] != active_script_id:
+            if self._ask_activate_script(script_item['title']):
+                config.setting['active_file_naming_script_id'] = script_item['id']
+        self.selected_script_id = script_item['id']
         self.close()
+
+    def _ask_activate_script(self, script_title):
+        """Ask the user if they want to make the edited script the active one.
+
+        Args:
+            script_title (str): Title of the script being saved
+
+        Returns:
+            bool: True if user wants to activate the script
+        """
+        result = QtWidgets.QMessageBox.question(
+            self,
+            _("Activate script?"),
+            _("The script \"%s\" is not the active file naming script. Do you want to make it active?") % script_title,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return result == QtWidgets.QMessageBox.StandardButton.Yes
 
     def get_scripts_dict(self):
         """Get dictionary of scripts from the combo box items suitable for saving to the configuration settings.
@@ -725,7 +742,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self._set_combobox_index(idx)
         self.select_script()
 
-    def select_script(self, update_last_selected=True):
+    def select_script(self, update_last_selected=True, save=True):
         """Load the current script from the combo box into the editor."""
         self.selected_script_index, script_item = self.get_selected_index_and_item()
         self.ui.script_title.setText(script_item['title'])
@@ -733,7 +750,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.selected_script_id = script_item['id']
         if update_last_selected:
             self.last_selected_id = self.selected_script_id
-        if not self.loading:
+        if not self.loading and save:
             self.save_script()
             self.signal_save.emit()
         self.set_button_states()
@@ -763,10 +780,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             save_enabled (bool, optional): Allow selection of different script item. Defaults to True.
         """
         self.ui.preset_naming_scripts.setEnabled(save_enabled)
-        if self.is_options_ui():
-            self.parent().ui.naming_script_selector.setEnabled(save_enabled)
-        elif self.is_main_ui():
-            self.parent().script_quick_selector_menu.setEnabled(save_enabled)
 
     def set_button_states(self, save_enabled=True):
         """Set the button states based on the readonly and deletable attributes of the currently selected
@@ -792,6 +805,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.delete_action.setEnabled(save_enabled and self.ui.preset_naming_scripts.count() > 1)
         self.import_action.setEnabled(save_enabled)
         self.export_action.setEnabled(save_enabled)
+        self.reset_current_script_action.setEnabled(
+            save_enabled and self.selected_script_id in get_config().setting['file_renaming_scripts']
+        )
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list."""

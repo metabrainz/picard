@@ -20,6 +20,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from html import escape
 import os.path
 import random
 
@@ -142,6 +143,22 @@ class ScriptEditorExamples:
             [list]: List of the before and after file name example tuples
         """
         return self.example_list
+
+    def get_examples_tooltip(self, max_examples=3, width=500):
+        """Get a rich-text tooltip string showing example output filenames.
+
+        Args:
+            max_examples (int): Maximum number of examples to include.
+            width (int): Tooltip width in pixels.
+
+        Returns:
+            str: Tooltip text with bold header and escaped filenames, or empty string.
+        """
+        lines = [escape(after) for _before, after in self.example_list[:max_examples] if after]
+        if lines:
+            rows = "".join("<tr><td>" + line + "</td></tr>" for line in lines)
+            return f'<table width="{width}"><tr><td><b>' + _("Examples:") + "</b></td></tr>" + rows + "</table>"
+        return ""
 
     @staticmethod
     def synchronize_selected_example_lines(current_row, source, target):
