@@ -350,6 +350,10 @@ class ShortenFilenameTest(PicardTestCase):
         self.assertEqual(b'a' * 10, shorten_filename(b'a' * 11, 10, None))
         self.assertEqual('a' * 10, shorten_filename('a' * 10, 10, ShortenMode.BYTES))
 
+    def test_shorten_bytes_invalid_mode(self):
+        with self.assertRaises(ValueError):
+            shorten_filename('a' * 11, 10, None)
+
     @unittest.skipUnless(
         os.path.supports_unicode_filenames and not IS_MACOS,
         'for filesystem with Unicode support',
