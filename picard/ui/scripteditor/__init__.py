@@ -365,7 +365,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         """Load initial configuration."""
         config = get_config()
         self.naming_scripts = config.setting['file_renaming_scripts']
-        self.selected_script_id = config.setting['selected_file_naming_script_id']
+        self.selected_script_id = config.setting['active_file_naming_script_id']
         if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
             self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         self.last_selected_id = self.selected_script_id
@@ -394,8 +394,25 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
 
     def reload_from_config(self):
         """Reload the scripts and selected script from the configuration."""
+        if not confirmation_dialog(self, _("Reset all scripts to their last saved versions?")):
+            return
         if self.unsaved_changes_in_profile_confirmation():
             self.load(reload=True)
+
+    def revert_script(self):
+        """Revert the current script to its last saved version from config."""
+        if not confirmation_dialog(self, _("Reset the current script to its last saved version?")):
+            return
+        config = get_config()
+        saved_scripts = config.setting['file_renaming_scripts']
+        script_id = self.selected_script_id
+        if script_id in saved_scripts:
+            saved = saved_scripts[script_id]
+            idx = self.ui.preset_naming_scripts.currentIndex()
+            self.ui.preset_naming_scripts.setItemData(idx, saved)
+            self.ui.preset_naming_scripts.setItemText(idx, saved['title'])
+            self.naming_scripts[script_id] = saved
+            self.select_script(save=False)
 
     def docs_browser(self):
         """Open the scriping documentation in a browser."""
@@ -461,8 +478,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         """Reset the currently selected script if it was not saved and is no longer available."""
         config = get_config()
         unsaved = set(self.unsaved_scripts())
-        if config.setting['selected_file_naming_script_id'] in unsaved:
-            config.setting['selected_file_naming_script_id'] = self.original_script_id
+        if config.setting['active_file_naming_script_id'] in unsaved:
+            config.setting['active_file_naming_script_id'] = self.original_script_id
         self.naming_scripts = config.setting['file_renaming_scripts']
         all_scripts = self.all_scripts()
         if self.selected_script_id not in all_scripts:
@@ -482,7 +499,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id, profiles=profiles_with_scripts)
             if profile:
-                profiles_settings[profile.id]['selected_file_naming_script_id'] = self.original_script_id
+                profiles_settings[profile.id]['active_file_naming_script_id'] = self.original_script_id
 
     def unsaved_scripts(self):
         """Generate ID codes of scripts that have not been saved.
@@ -509,12 +526,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for profile in profiles:
             settings = profile_settings[profile['id']]
-            if 'selected_file_naming_script_id' in settings:
+            if 'active_file_naming_script_id' in settings:
                 profiles_list.append(
                     self.Profile(
                         profile['id'],
                         profile['title'],
-                        settings['selected_file_naming_script_id'],
+                        settings['active_file_naming_script_id'],
                     )
                 )
         return profiles_list
@@ -655,7 +672,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.naming_scripts = self.get_scripts_dict()
         config = get_config()
         config.setting['file_renaming_scripts'] = self.naming_scripts
-        config.setting['selected_file_naming_script_id'] = script_item['id']
+        config.setting['active_file_naming_script_id'] = script_item['id']
         self.close()
 
     def get_scripts_dict(self):

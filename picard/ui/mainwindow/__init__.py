@@ -358,7 +358,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             self.action_map[MainAction.ENABLE_MOVING].setChecked(new_value)
         elif name == 'enable_tag_saving':
             self.action_map[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
-        elif name in {'file_renaming_scripts', 'selected_file_naming_script_id'}:
+        elif name in {'file_renaming_scripts', 'active_file_naming_script_id'}:
             self._make_script_selector_menu()
 
         # Also update items in quick settings if needed
@@ -2094,7 +2094,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def _check_and_repair_naming_scripts(self):
         """Check the 'file_renaming_scripts' config setting to ensure that the list of scripts
-        is not empty.  Check that the 'selected_file_naming_script_id' config setting points to
+        is not empty.  Check that the 'active_file_naming_script_id' config setting points to
         a valid file naming script.
         """
         config = get_config()
@@ -2102,7 +2102,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not config.setting[script_key]:
             config.setting[script_key] = {script['id']: script.to_dict() for script in get_file_naming_script_presets()}
         naming_script_ids = list(config.setting[script_key])
-        script_id_key = 'selected_file_naming_script_id'
+        script_id_key = 'active_file_naming_script_id'
         if config.setting[script_id_key] not in naming_script_ids:
             config.setting[script_id_key] = naming_script_ids[0]
 
@@ -2111,7 +2111,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         Checks that there is a settings dictionary for each profile, and that no profiles
         reference a non-existant file naming script.
         """
-        script_id_key = 'selected_file_naming_script_id'
+        script_id_key = 'active_file_naming_script_id'
         config = get_config()
         naming_scripts = config.setting['file_renaming_scripts']
         naming_script_ids = set(naming_scripts.keys())
@@ -2143,7 +2143,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if self.script_editor_dialog is None or not isinstance(self.script_editor_dialog, ScriptEditorDialog):
             config = get_config()
             naming_scripts = config.setting['file_renaming_scripts']
-            selected_script_id = config.setting['selected_file_naming_script_id']
+            selected_script_id = config.setting['active_file_naming_script_id']
         else:
             naming_scripts = self.script_editor_dialog.naming_scripts
             selected_script_id = self.script_editor_dialog.selected_script_id
@@ -2172,7 +2172,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         """
         config = get_config()
         log.debug("Setting naming script to: %s", id)
-        config.setting['selected_file_naming_script_id'] = id
+        config.setting['active_file_naming_script_id'] = id
         if self.script_editor_dialog:
             self.script_editor_dialog.set_selected_script_id(id)
 

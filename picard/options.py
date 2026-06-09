@@ -498,7 +498,7 @@ BoolOption('setting', 'write_wave_riff_info', True, title=N_("Write RIFF INFO ta
 # File naming script editor Script Details
 BoolOption('persist', 'script_editor_show_documentation', False)
 Option('setting', 'file_renaming_scripts', {})
-TextOption('setting', 'selected_file_naming_script_id', '', title=N_("Selected file naming script"))
+TextOption('setting', 'active_file_naming_script_id', '', title=N_("Selected file naming script"))
 
 # picard/ui/options/sessions.py
 # Sessions

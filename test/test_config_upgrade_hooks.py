@@ -631,3 +631,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0b3(self.config)
         self.assertNotIn('file_lookup_threshold', self.config.setting)
         self.assertNotIn('cluster_lookup_threshold', self.config.setting)
+
+    def test_upgrade_to_v3_0_0b5(self):
+        TextOption('setting', 'selected_file_naming_script_id', '')
+        TextOption('setting', 'active_file_naming_script_id', '')
+        self.config.setting['selected_file_naming_script_id'] = 'test-script-id'
+        hooks.upgrade_to_v3_0_0b5(self.config)
+        self.assertEqual(self.config.setting['active_file_naming_script_id'], 'test-script-id')
+        self.assertNotIn('selected_file_naming_script_id', self.config.setting)
