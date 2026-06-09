@@ -178,7 +178,13 @@ DEFAULT_COVER_RESIZE_MODE = ResizeModes.MAINTAIN_ASPECT_RATIO
 DEFAULT_COVER_CONVERTING_FORMAT = ImageFormat.JPEG
 DEFAULT_COVER_IMAGE_QUALITY = 90
 
-DEFAULT_QUICK_MENU_ITEMS = ['save_images_to_tags', 'save_images_to_files']
+DEFAULT_QUICK_MENU_ITEMS = [
+    'rename_files',
+    'move_files',
+    'enable_tag_saving',
+    'save_images_to_tags',
+    'save_images_to_files',
+]
 
 # Plugin registry
 # List of registry URLs to try in order (first available wins)

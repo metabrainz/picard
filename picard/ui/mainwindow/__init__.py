@@ -197,6 +197,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.action_map = {}
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NativeWindow)
         self.__shown = False
+        self._menus_created = False
         self.tagger = tagger_instance()
         self._is_wayland = self.tagger.is_wayland
         self.selected_objects = []
@@ -352,19 +353,16 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 service.disable()
 
     def handle_settings_changed(self, name, old_value, new_value):
-        if name == 'rename_files':
-            self.action_map[MainAction.ENABLE_RENAMING].setChecked(new_value)
-        elif name == 'move_files':
-            self.action_map[MainAction.ENABLE_MOVING].setChecked(new_value)
-        elif name == 'enable_tag_saving':
-            self.action_map[MainAction.ENABLE_TAG_SAVING].setChecked(new_value)
-        elif name in {'file_renaming_scripts', 'active_file_naming_script_id'}:
+        if name in {'file_renaming_scripts', 'active_file_naming_script_id'}:
+            self._check_and_repair_naming_scripts()
             self._make_script_selector_menu()
+        if name in {'rename_files', 'move_files'}:
+            self._update_script_editor_examples()
 
-        # Also update items in quick settings if needed
+        # Update quick settings if needed
         config = get_config()
         if name in config.setting['quick_menu_items']:
-            self._make_settings_selector_menu()
+            self._make_quick_settings_menu()
 
     def handle_profiles_changed(self, name, old_value, new_value):
         if name == SettingConfigSection.PROFILES_KEY:
@@ -410,6 +408,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if not self.__shown:
             self.ready_for_display.emit()
             self.__shown = True
+            self._make_script_selector_menu()
         super().showEvent(event)
 
     def closeEvent(self, event):
@@ -874,28 +873,10 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if files:
             self.tagger.lookup_discid_from_tags(files)
 
-    def toggle_rename_files(self, checked):
-        config = get_config()
-        config.setting['rename_files'] = checked
-        self._update_script_editor_examples()
-
-    def toggle_move_files(self, checked):
-        config = get_config()
-        config.setting['move_files'] = checked
-        self._update_script_editor_examples()
-
-    def toggle_tag_saving(self, checked):
-        config = get_config()
-        config.setting['enable_tag_saving'] = checked
-
     def _reset_option_menu_state(self):
-        config = get_config()
-        self.action_map[MainAction.ENABLE_RENAMING].setChecked(config.setting['rename_files'])
-        self.action_map[MainAction.ENABLE_MOVING].setChecked(config.setting['move_files'])
-        self.action_map[MainAction.ENABLE_TAG_SAVING].setChecked(config.setting['enable_tag_saving'])
+        self._make_quick_settings_menu()
         self._make_script_selector_menu()
         self._init_cd_lookup_menu()
-        self._make_settings_selector_menu()
 
     def _get_selected_or_unmatched_files(self):
         if self.selected_objects:
@@ -963,28 +944,29 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.PLAYER_TOOLBAR_TOGGLE if self.player else None,
         )
 
-        self.script_quick_selector_menu = QtWidgets.QMenu(_("&Select file naming script"))
-        self.script_quick_selector_menu.setIcon(icontheme.lookup('document-open'))
+        self.file_naming_scripts_menu = QtWidgets.QMenu(_("File naming &scripts"))
+        self.file_naming_scripts_menu.setIcon(icontheme.lookup('document-open'))
+        self._script_actions = []
         self._make_script_selector_menu()
+        self.file_naming_scripts_menu.addSeparator()
+        self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
-        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Enable/disable profiles"))
+        self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Profiles"))
         self._make_profile_selector_menu()
 
-        self.settings_quick_selector_menu = QtWidgets.QMenu(_("&Quick settings"))
-        self._make_settings_selector_menu()
+        self.quick_settings_menu = QtWidgets.QMenu(_("&Quick settings"))
+        self._make_quick_settings_menu()
 
-        add_menu(
-            _("&Options"),
-            MainAction.ENABLE_RENAMING,
-            MainAction.ENABLE_MOVING,
-            MainAction.ENABLE_TAG_SAVING,
+        self.options_menu = self.menuBar().addMenu(_("&Options"))
+        self.options_menu.setSeparatorsCollapsible(True)
+        menu_builder(
+            self.options_menu,
+            self.action_map,
+            self.quick_settings_menu,
             '-',
-            self.script_quick_selector_menu,
-            MainAction.SHOW_SCRIPT_EDITOR,
+            self.file_naming_scripts_menu,
             '-',
             self.profile_quick_selector_menu,
-            '-',
-            self.settings_quick_selector_menu,
             '-',
             MainAction.OPTIONS,
         )
@@ -1026,6 +1008,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.DONATE,
             MainAction.ABOUT,
         )
+
+        self._menus_created = True
 
     def update_toolbar_style(self):
         config = get_config()
@@ -1304,11 +1288,9 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
 
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
-        if self.script_editor_dialog is not None:
-            # Disable signal processing to avoid saving changes not processed with "Make It So!"
-            for signal in self.script_editor_signals:
-                signal.disconnect()
         options_dialog = OptionsDialog.show_instance(page, self)
+        if page:
+            options_dialog.switch_to_page(page)
         options_dialog.finished.connect(self._options_closed)
         if not modal_options():
             self._disable_while_dialog_shown(options_dialog)
@@ -1316,14 +1298,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         return options_dialog
 
     def _options_closed(self):
-        if self.script_editor_dialog is not None:
-            self.open_file_naming_script_editor()
-            self.script_editor_dialog.show()
-        else:
-            self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, True)
         self._make_profile_selector_menu()
-        self._make_script_selector_menu()
-        self._make_settings_selector_menu()
+        self._make_quick_settings_menu()
 
     def _disable_while_dialog_shown(self, dialog):
         """Disable MainWindow while dialog is shown, re-enable when it closes.
@@ -2104,6 +2080,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         naming_script_ids = list(config.setting[script_key])
         script_id_key = 'active_file_naming_script_id'
         if config.setting[script_id_key] not in naming_script_ids:
+            if config.setting[script_id_key]:
+                log.warning(
+                    "Active file naming script '%s' not found, falling back to '%s'",
+                    config.setting[script_id_key],
+                    naming_script_ids[0],
+                )
             config.setting[script_id_key] = naming_script_ids[0]
 
     def _check_and_repair_profiles(self):
@@ -2139,30 +2121,55 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings
 
     def _make_script_selector_menu(self):
-        """Update the sub-menu of available file naming scripts."""
-        if self.script_editor_dialog is None or not isinstance(self.script_editor_dialog, ScriptEditorDialog):
-            config = get_config()
-            naming_scripts = config.setting['file_renaming_scripts']
-            selected_script_id = config.setting['active_file_naming_script_id']
-        else:
-            naming_scripts = self.script_editor_dialog.naming_scripts
-            selected_script_id = self.script_editor_dialog.selected_script_id
+        """Update the file naming scripts menu with available scripts."""
+        config = get_config()
+        naming_scripts = config.setting['file_renaming_scripts']
+        selected_script_id = config.setting['active_file_naming_script_id']
 
-        self.script_quick_selector_menu.clear()
+        # Remove only the script actions, keep the separator and editor action
+        for action in self._script_actions:
+            self.file_naming_scripts_menu.removeAction(action)
+        self._script_actions = []
+        self.file_naming_scripts_menu.setToolTipsVisible(True)
 
-        group = QtGui.QActionGroup(self.script_quick_selector_menu)
+        group = QtGui.QActionGroup(self.file_naming_scripts_menu)
         group.setExclusive(True)
 
-        def _add_menu_item(title, id):
-            script_action = QtGui.QAction(title, self.script_quick_selector_menu)
+        # Tooltips require ScriptEditorExamples which accesses tagger.window;
+        # skip on the initial build since the window isn't assigned yet.
+        examples = ScriptEditorExamples(tagger=self.tagger) if self._menus_created else None
+
+        # Insert script actions before the separator
+        insert_before = self.file_naming_scripts_menu.actions()[0] if self.file_naming_scripts_menu.actions() else None
+
+        def _add_menu_item(title, id, script_text):
+            script_action = QtGui.QAction(title, self.file_naming_scripts_menu)
             script_action.triggered.connect(partial(self._select_new_naming_script, id))
             script_action.setCheckable(True)
             script_action.setChecked(id == selected_script_id)
-            self.script_quick_selector_menu.addAction(script_action)
+            if examples:
+                tooltip = self._script_example_tooltip(examples, script_text)
+                if tooltip:
+                    script_action.setToolTip(tooltip)
+            self.file_naming_scripts_menu.insertAction(insert_before, script_action)
             group.addAction(script_action)
+            self._script_actions.append(script_action)
 
         for id, naming_script in sorted(naming_scripts.items(), key=lambda item: item[1]['title']):
-            _add_menu_item(naming_script['title'], id)
+            _add_menu_item(naming_script['title'], id, naming_script['script'])
+
+    def _script_example_tooltip(self, examples, script_text):
+        """Generate a tooltip showing example output filenames for a script.
+
+        Args:
+            examples (ScriptEditorExamples): Examples instance with sample files
+            script_text (str): The file naming script text
+
+        Returns:
+            str: Tooltip text with example filenames, or empty string
+        """
+        examples.update_examples(script_text=script_text, override={'rename_files': True})
+        return examples.get_examples_tooltip()
 
     def _select_new_naming_script(self, id):
         """Update the currently selected naming script ID in the settings.
@@ -2173,34 +2180,15 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         log.debug("Setting naming script to: %s", id)
         config.setting['active_file_naming_script_id'] = id
-        if self.script_editor_dialog:
-            self.script_editor_dialog.set_selected_script_id(id)
 
     def open_file_naming_script_editor(self):
         """Open the file naming script editor / manager in a new window."""
         ReadTheDocs.update_documentation_items()  # Retry updates if required
         examples = ScriptEditorExamples(tagger=self.tagger)
-        if modal_options():
-            self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
-        else:
-            self.script_editor_dialog = ScriptEditorDialog.show_instance(examples=examples)
-        self.script_editor_dialog.signal_save.connect(self._script_editor_save)
-        self.script_editor_dialog.signal_selection_changed.connect(self._update_selector_from_script_editor)
-        self.script_editor_dialog.signal_index_changed.connect(self._script_editor_index_changed)
+        self.script_editor_dialog = ScriptEditorDialog.show_instance(parent=self, examples=examples)
+        self.script_editor_dialog.load(reload=True)
         self.script_editor_dialog.finished.connect(self._script_editor_closed)
-        # Create list of signals to disconnect when opening Options dialog.
-        # Do not include `finished` because that is still used to clean up
-        # locally when the editor is closed from the Options dialog.
-        self.script_editor_signals = [
-            self.script_editor_dialog.signal_save,
-            self.script_editor_dialog.signal_selection_changed,
-            self.script_editor_dialog.signal_index_changed,
-        ]
         self.enable_action(MainAction.SHOW_SCRIPT_EDITOR, False)
-
-    def _script_editor_save(self):
-        """Process "signal_save" signal from the script editor."""
-        self._make_script_selector_menu()
 
     def _script_editor_closed(self):
         """Process "finished" signal from the script editor."""
@@ -2226,23 +2214,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             script_editor_dialog.examples.update_examples(override=override)
             script_editor_dialog.display_examples()
 
-    def _script_editor_index_changed(self):
-        """Process "signal_index_changed" signal from the script editor."""
-        self._script_editor_save()
-
-    def _update_selector_from_script_editor(self):
-        """Process "signal_selection_changed" signal from the script editor."""
-        self._script_editor_save()
-
     def _make_profile_selector_menu(self):
         """Update the sub-menu of available option profiles."""
         config = get_config()
         option_profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-        if not option_profiles:
-            self.profile_quick_selector_menu.setDisabled(True)
-            return
-        self.profile_quick_selector_menu.setDisabled(False)
         self.profile_quick_selector_menu.clear()
+        self.profile_quick_selector_menu.setEnabled(True)
 
         # Use QWidgetAction with a QCheckBox so toggling does not close the menu.
         def _add_menu_item(title, checked, profile_id):
@@ -2254,8 +2231,18 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             action.setDefaultWidget(checkbox)
             self.profile_quick_selector_menu.addAction(action)
 
-        for profile in option_profiles:
-            _add_menu_item(profile['title'], profile['enabled'], profile['id'])
+        if option_profiles:
+            for profile in option_profiles:
+                _add_menu_item(profile['title'], profile['enabled'], profile['id'])
+        else:
+            placeholder = QtGui.QAction(_("No profiles configured"), self.profile_quick_selector_menu)
+            placeholder.setEnabled(False)
+            self.profile_quick_selector_menu.addAction(placeholder)
+
+        self.profile_quick_selector_menu.addSeparator()
+        edit_action = QtGui.QAction(_("Configure profiles…"), self.profile_quick_selector_menu)
+        edit_action.triggered.connect(lambda: self.show_options('profiles'))
+        self.profile_quick_selector_menu.addAction(edit_action)
 
     def _set_profile_enabled(self, profile_id: str, enabled: bool) -> None:
         """Set the enabled state of a profile and refresh dependent UI.
@@ -2299,37 +2286,34 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             except Exception as ex:
                 log.error("Error adding plugin action", exc_info=ex)
 
-    def _make_settings_selector_menu(self):
-        """Update the sub-menu of selected option settings."""
+    def _make_quick_settings_menu(self):
+        """Update the quick settings submenu."""
         config = get_config()
-        quick_settings: list = deepcopy(config.setting['quick_menu_items'])
+        quick_settings = [s for s in config.setting['quick_menu_items'] if Option.exists('setting', s)]
 
-        # Don't try to display any settings that don't exist in the current context,
-        # such as settings from a plugin options page that has not been loaded.
-        for setting in config.setting['quick_menu_items']:
-            if not Option.exists('setting', setting):
-                quick_settings.remove(setting)
+        self.quick_settings_menu.clear()
+        self.quick_settings_menu.setEnabled(True)
 
-        if not quick_settings:
-            self.settings_quick_selector_menu.setDisabled(True)
-            return
+        if quick_settings:
+            # Sort by translated display title
+            for setting_id, title in sorted(
+                ((s, _(get_option_title(s))) for s in quick_settings),
+                key=lambda x: x[1],
+            ):
+                action = QtGui.QAction(title, self.quick_settings_menu)
+                action.triggered.connect(partial(self._toggle_quick_setting, setting_id))
+                action.setCheckable(True)
+                action.setChecked(config.setting[setting_id])
+                self.quick_settings_menu.addAction(action)
+        else:
+            placeholder = QtGui.QAction(_("No quick settings configured"), self.quick_settings_menu)
+            placeholder.setEnabled(False)
+            self.quick_settings_menu.addAction(placeholder)
 
-        self.settings_quick_selector_menu.setDisabled(False)
-        self.settings_quick_selector_menu.clear()
-
-        group = QtGui.QActionGroup(self.settings_quick_selector_menu)
-        group.setExclusive(False)
-
-        def _add_menu_item(setting_id, title, enabled):
-            setting_action = QtGui.QAction(title, self.settings_quick_selector_menu)
-            setting_action.triggered.connect(partial(self._toggle_quick_setting, setting_id))
-            setting_action.setCheckable(True)
-            setting_action.setChecked(enabled)
-            self.settings_quick_selector_menu.addAction(setting_action)
-            group.addAction(setting_action)
-
-        for setting_id in quick_settings:
-            _add_menu_item(setting_id, get_option_title(setting_id), config.setting[setting_id])
+        self.quick_settings_menu.addSeparator()
+        edit_action = QtGui.QAction(_("Configure quick settings…"), self.quick_settings_menu)
+        edit_action.triggered.connect(lambda: self.show_options('interface_quick_menu'))
+        self.quick_settings_menu.addAction(edit_action)
 
     def _toggle_quick_setting(self, setting_id):
         """Toggle the enabled state of the selected setting.

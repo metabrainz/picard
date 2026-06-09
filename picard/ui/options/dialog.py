@@ -527,6 +527,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
 
+    def switch_to_page(self, name):
+        """Switch to the options page with the given NAME."""
+        item = self.pagename_to_item.get(name)
+        if item:
+            self.ui.pages_tree.setCurrentItem(item)
+
     def disable_page(self, pagename):
         item = self.pagename_to_item[pagename]
         item.setDisabled(True)
