@@ -141,7 +141,7 @@ class Ui_RenamingOptionsPage(object):
         self.move_overwrite_existing_files.setText(_("Overwrite existing files"))
         self.rename_files.setText(_("Rename files when saving"))
         self.naming_script_label.setText(_("Active file naming script:"))
-        self.script_help_label.setText(_("Use the Options › File naming scripts menu to edit scripts."))
+        self.script_help_label.setText(_("To edit scripts, use the script editor from Options > File naming scripts in the main menu bar."))
         self.examples_group.setTitle(_("Files will be named like this:"))
         self.example_before_label.setText(_("Before"))
         self.example_after_label.setText(_("After"))

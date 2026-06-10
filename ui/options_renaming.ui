@@ -116,7 +116,7 @@
    <item>
     <widget class="QLabel" name="script_help_label">
      <property name="text">
-      <string>Use the Options › File naming scripts menu to edit scripts.</string>
+      <string>To edit scripts, use the script editor from Options > File naming scripts in the main menu bar.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
