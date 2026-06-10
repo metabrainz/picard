@@ -362,7 +362,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         # Update quick settings if needed
         config = get_config()
         if name in config.setting['quick_menu_items']:
-            self._make_quick_settings_menu()
+            if not self.quick_settings_menu.isVisible():
+                self._make_quick_settings_menu()
 
     def handle_profiles_changed(self, name, old_value, new_value):
         if name == SettingConfigSection.PROFILES_KEY:
@@ -2304,10 +2305,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
                 ((s, _(get_option_title(s))) for s in quick_settings),
                 key=lambda x: x[1],
             ):
-                action = QtGui.QAction(title, self.quick_settings_menu)
-                action.triggered.connect(partial(self._toggle_quick_setting, setting_id))
-                action.setCheckable(True)
+                action = QtWidgets.QWidgetAction(self.quick_settings_menu)
                 action.setChecked(config.setting[setting_id])
+                checkbox = CheckboxMenuItem(self.quick_settings_menu, action, title)
+                checkbox.toggled.connect(partial(self._toggle_quick_setting, setting_id))
+                action.setDefaultWidget(checkbox)
                 self.quick_settings_menu.addAction(action)
         else:
             placeholder = QtGui.QAction(_("No quick settings configured"), self.quick_settings_menu)
