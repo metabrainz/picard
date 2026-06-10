@@ -952,9 +952,13 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.file_naming_scripts_menu.addAction(self.action_map[MainAction.SHOW_SCRIPT_EDITOR])
 
         self.profile_quick_selector_menu = QtWidgets.QMenu(_("&Profiles"))
+        self.profile_quick_selector_menu.setIcon(
+            self.style().standardIcon(QtWidgets.QStyle.StandardPixmap.SP_FileDialogDetailedView)
+        )
         self._make_profile_selector_menu()
 
         self.quick_settings_menu = QtWidgets.QMenu(_("&Quick settings"))
+        self.quick_settings_menu.setIcon(icontheme.lookup('applications-system'))
         self._make_quick_settings_menu()
 
         self.options_menu = self.menuBar().addMenu(_("&Options"))
