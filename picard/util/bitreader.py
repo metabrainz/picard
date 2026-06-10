@@ -26,18 +26,21 @@
 # https://github.com/quodlibet/mutagen/blob/master/mutagen/tak.py
 
 
+from typing import BinaryIO
+
+
 class BitReaderError(Exception):
     pass
 
 
 class _BitReader:
-    def __init__(self, fileobj):
+    def __init__(self, fileobj: BinaryIO):
         self._fileobj = fileobj
         self._buffer = 0
         self._bits = 0
         self._pos = fileobj.tell()
 
-    def bits(self, count):
+    def bits(self, count: int) -> int:
         """Reads `count` bits and returns an uint.
 
         May raise BitReaderError if not enough data could be read or
@@ -45,7 +48,7 @@ class _BitReader:
         """
         raise NotImplementedError
 
-    def bytes(self, count):
+    def bytes(self, count: int) -> bytes:
         """Returns a bytearray of length `count`. Works unaligned."""
 
         if count < 0:
@@ -60,7 +63,7 @@ class _BitReader:
 
         return bytes(bytearray(self.bits(8) for _ in range(count)))
 
-    def skip(self, count):
+    def skip(self, count: int) -> None:
         """Skip `count` bits.
 
         Might raise BitReaderError if there wasn't enough data to skip,
@@ -79,12 +82,12 @@ class _BitReader:
             count -= n_bytes * 8
             self.bits(count)
 
-    def get_position(self):
+    def get_position(self) -> int:
         """Returns the amount of bits read or skipped so far"""
 
         return (self._fileobj.tell() - self._pos) * 8 - self._bits
 
-    def align(self):
+    def align(self) -> int:
         """Align to the next byte, returns the amount of bits skipped"""
 
         bits = self._bits
@@ -92,7 +95,7 @@ class _BitReader:
         self._bits = 0
         return bits
 
-    def is_aligned(self):
+    def is_aligned(self) -> bool:
         """If we are currently aligned to bytes and nothing is buffered"""
 
         return self._bits == 0
@@ -101,7 +104,7 @@ class _BitReader:
 class MSBBitReader(_BitReader):
     """BitReader implementation which reads bits starting at LSB in each byte."""
 
-    def bits(self, count):
+    def bits(self, count: int) -> int:
         """Reads `count` bits and returns an uint, MSB read first.
 
         May raise BitReaderError if not enough data could be read or
@@ -129,13 +132,13 @@ class MSBBitReader(_BitReader):
 class LSBBitReader(_BitReader):
     """BitReader implementation which reads bits starting at LSB in each byte."""
 
-    def _lsb(self, count):
+    def _lsb(self, count: int) -> int:
         value = self._buffer & 0xFF >> (8 - count)
         self._buffer = self._buffer >> count
         self._bits -= count
         return value
 
-    def bits(self, count):
+    def bits(self, count: int) -> int:
         """Reads `count` bits and returns an uint, LSB read first.
 
         May raise BitReaderError if not enough data could be read or

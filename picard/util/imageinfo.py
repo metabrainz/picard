@@ -22,6 +22,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from io import BytesIO
 import struct
@@ -61,13 +62,13 @@ class IdentifyImageType:
     h = -1
     format_info: ImageFormat | None = None
 
-    def __init__(self, data):
+    def __init__(self, data: bytes):
         self.data = data
         self.datalen = len(self.data)
         if self.datalen < 16:
             raise NotEnoughData("Not enough data")
 
-    def read(self):
+    def read(self) -> ImageInfo:
         self._read()
         return self._result()
 
@@ -79,7 +80,7 @@ class IdentifyImageType:
             format_info=self.format_info,
         )
 
-    def match(self):
+    def match(self) -> bool:
         raise NotImplementedError
 
     def _read(self):
@@ -89,7 +90,7 @@ class IdentifyImageType:
 class IdentifyJPEG(IdentifyImageType):
     format_info = ImageFormat.JPEG
 
-    def match(self):
+    def match(self) -> bool:
         # http://en.wikipedia.org/wiki/JPEG
         return self.data[:2] == b'\xff\xd8'  # Start Of Image (SOI) marker
 
@@ -128,7 +129,7 @@ class IdentifyJPEG(IdentifyImageType):
 class IdentifyGIF(IdentifyImageType):
     format_info = ImageFormat.GIF
 
-    def match(self):
+    def match(self) -> bool:
         # http://en.wikipedia.org/wiki/Graphics_Interchange_Format
         return self.data[:6] in {b'GIF87a', b'GIF89a'}
 
@@ -139,7 +140,7 @@ class IdentifyGIF(IdentifyImageType):
 class IdentifyPDF(IdentifyImageType):
     format_info = ImageFormat.PDF
 
-    def match(self):
+    def match(self) -> bool:
         # PDF
         return self.data[:4] == b'%PDF'
 
@@ -150,7 +151,7 @@ class IdentifyPDF(IdentifyImageType):
 class IdentifyPNG(IdentifyImageType):
     format_info = ImageFormat.PNG
 
-    def match(self):
+    def match(self) -> bool:
         # http://en.wikipedia.org/wiki/Portable_Network_Graphics
         # http://www.w3.org/TR/PNG/#11IHDR
         return self.data[:8] == b'\x89PNG\x0d\x0a\x1a\x0a' and self.data[12:16] == b'IHDR'
@@ -162,7 +163,7 @@ class IdentifyPNG(IdentifyImageType):
 class IdentifyWebP(IdentifyImageType):
     format_info = ImageFormat.WEBP
 
-    def match(self):
+    def match(self) -> bool:
         return self.data[:4] == b'RIFF' and self.data[8:12] == b'WEBP'
 
     def _read(self):
@@ -211,7 +212,7 @@ TIFF_TYPE_LONG = 4
 class IdentifyTiff(IdentifyImageType):
     format_info = ImageFormat.TIFF
 
-    def match(self):
+    def match(self) -> bool:
         return self.data[:4] == b'II*\x00' or self.data[:4] == b'MM\x00*'
 
     def _read(self):
@@ -267,9 +268,9 @@ knownimagetypes = (
 )
 
 
-def identify(data):
+def identify(data: bytes) -> ImageInfo:
     """Parse data for jpg, gif, png, webp, tiff and pdf metadata
-    If successfully recognized, it returns a tuple with:
+    If successfully recognized, it returns an instance of `ImageInfo` with:
         - width
         - height
         - data length
@@ -288,10 +289,10 @@ def identify(data):
     raise UnrecognizedFormat("Unrecognized image data")
 
 
-def supports_mime_type(mime):
+def supports_mime_type(mime: str) -> bool:
     return any(cls.format_info.mime == mime for cls in knownimagetypes)
 
 
-def get_supported_extensions():
+def get_supported_extensions() -> Iterator[str]:
     for cls in knownimagetypes:
         yield from cls.format_info.all_extensions

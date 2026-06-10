@@ -26,8 +26,15 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard import util
 from picard.const.sys import IS_WIN
+from picard.util.textencoding import (
+    asciipunct,
+    replace_non_ascii,
+    unaccent,
+    unicode_simplify_combinations,
+    unicode_simplify_compatibility,
+    unicode_simplify_punctuation,
+)
 
 
 # Set the value to true below to show the coverage of Latin characters
@@ -133,13 +140,13 @@ ascii_chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^
 class CompatibilityTest(PicardTestCase):
     def test_correct(self):
         self.maxDiff = None
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility(compatibility_from), compatibility_to)
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility(punctuation_from), punctuation_from)
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility(combinations_from), combinations_from)
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility(ascii_chars), ascii_chars)
+        self.assertEqual(unicode_simplify_compatibility(compatibility_from), compatibility_to)
+        self.assertEqual(unicode_simplify_compatibility(punctuation_from), punctuation_from)
+        self.assertEqual(unicode_simplify_compatibility(combinations_from), combinations_from)
+        self.assertEqual(unicode_simplify_compatibility(ascii_chars), ascii_chars)
 
     def test_pathsave(self):
-        self.assertEqual(util.textencoding.unicode_simplify_compatibility('\uff0f', pathsave=True), '_')
+        self.assertEqual(unicode_simplify_compatibility('\uff0f', pathsave=True), '_')
 
     def test_incorrect(self):
         pass
@@ -148,28 +155,28 @@ class CompatibilityTest(PicardTestCase):
 class PunctuationTest(PicardTestCase):
     def test_correct(self):
         self.maxDiff = None
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation(compatibility_from), compatibility_from)
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation(punctuation_from), punctuation_to)
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation(combinations_from), combinations_from)
-        self.assertEqual(util.textencoding.unicode_simplify_punctuation(ascii_chars), ascii_chars)
+        self.assertEqual(unicode_simplify_punctuation(compatibility_from), compatibility_from)
+        self.assertEqual(unicode_simplify_punctuation(punctuation_from), punctuation_to)
+        self.assertEqual(unicode_simplify_punctuation(combinations_from), combinations_from)
+        self.assertEqual(unicode_simplify_punctuation(ascii_chars), ascii_chars)
 
     def test_pathsave(self):
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True),
+            unicode_simplify_punctuation('\u2215\u2216', True),
             '__' if IS_WIN else '_\\',
         )
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True),
+            unicode_simplify_punctuation('/\\\u2215\u2216', True),
             '/\\__' if IS_WIN else '/\\_\\',
         )
 
     def test_pathsave_win_compat(self):
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('\u2215\u2216', True, True),
+            unicode_simplify_punctuation('\u2215\u2216', True, True),
             '__',
         )
         self.assertEqual(
-            util.textencoding.unicode_simplify_punctuation('/\\\u2215\u2216', True, True),
+            unicode_simplify_punctuation('/\\\u2215\u2216', True, True),
             '/\\__',
         )
 
@@ -180,14 +187,14 @@ class PunctuationTest(PicardTestCase):
 class CombinationsTest(PicardTestCase):
     def test_correct(self):
         self.maxDiff = None
-        self.assertEqual(util.textencoding.unicode_simplify_combinations(combinations_from), combinations_to)
-        self.assertEqual(util.textencoding.unicode_simplify_combinations(compatibility_from), compatibility_from)
-        self.assertEqual(util.textencoding.unicode_simplify_combinations(punctuation_from), punctuation_from)
-        self.assertEqual(util.textencoding.unicode_simplify_combinations(ascii_chars), ascii_chars)
+        self.assertEqual(unicode_simplify_combinations(combinations_from), combinations_to)
+        self.assertEqual(unicode_simplify_combinations(compatibility_from), compatibility_from)
+        self.assertEqual(unicode_simplify_combinations(punctuation_from), punctuation_from)
+        self.assertEqual(unicode_simplify_combinations(ascii_chars), ascii_chars)
 
     def test_pathsave(self):
-        self.assertEqual(util.textencoding.unicode_simplify_combinations('8½', True), '8 1_2')
-        self.assertEqual(util.textencoding.unicode_simplify_combinations('8/\\½', True), '8/\\ 1_2')
+        self.assertEqual(unicode_simplify_combinations('8½', True), '8 1_2')
+        self.assertEqual(unicode_simplify_combinations('8/\\½', True), '8/\\ 1_2')
 
     def test_incorrect(self):
         pass
@@ -195,12 +202,12 @@ class CombinationsTest(PicardTestCase):
 
 class AsciiPunctTest(PicardTestCase):
     def test_correct(self):
-        self.assertEqual(util.textencoding.asciipunct("‘Test’"), "'Test'")  # Quotations
-        self.assertEqual(util.textencoding.asciipunct("“Test”"), "\"Test\"")  # Quotations
-        self.assertEqual(util.textencoding.asciipunct("1′6″"), "1'6\"")  # Quotations
-        self.assertEqual(util.textencoding.asciipunct("…"), "...")  # Ellipses
-        self.assertEqual(util.textencoding.asciipunct("\u2024"), ".")  # ONE DOT LEADER
-        self.assertEqual(util.textencoding.asciipunct("\u2025"), "..")  # TWO DOT LEADER
+        self.assertEqual(asciipunct("‘Test’"), "'Test'")  # Quotations
+        self.assertEqual(asciipunct("“Test”"), "\"Test\"")  # Quotations
+        self.assertEqual(asciipunct("1′6″"), "1'6\"")  # Quotations
+        self.assertEqual(asciipunct("…"), "...")  # Ellipses
+        self.assertEqual(asciipunct("\u2024"), ".")  # ONE DOT LEADER
+        self.assertEqual(asciipunct("\u2025"), "..")  # TWO DOT LEADER
 
     def test_incorrect(self):
         pass
@@ -208,50 +215,50 @@ class AsciiPunctTest(PicardTestCase):
 
 class UnaccentTest(PicardTestCase):
     def test_correct(self):
-        self.assertEqual(util.textencoding.unaccent("Lukáš"), "Lukas")
-        self.assertEqual(util.textencoding.unaccent("Björk"), "Bjork")
-        self.assertEqual(util.textencoding.unaccent("小室哲哉"), "小室哲哉")
+        self.assertEqual(unaccent("Lukáš"), "Lukas")
+        self.assertEqual(unaccent("Björk"), "Bjork")
+        self.assertEqual(unaccent("小室哲哉"), "小室哲哉")
 
     def test_incorrect(self):
-        self.assertNotEqual(util.textencoding.unaccent("Björk"), "Björk")
-        self.assertNotEqual(util.textencoding.unaccent("小室哲哉"), "Tetsuya Komuro")
-        self.assertNotEqual(util.textencoding.unaccent("Trentemøller"), "Trentemoller")
-        self.assertNotEqual(util.textencoding.unaccent("Ænima"), "AEnima")
-        self.assertNotEqual(util.textencoding.unaccent("ænima"), "aenima")
+        self.assertNotEqual(unaccent("Björk"), "Björk")
+        self.assertNotEqual(unaccent("小室哲哉"), "Tetsuya Komuro")
+        self.assertNotEqual(unaccent("Trentemøller"), "Trentemoller")
+        self.assertNotEqual(unaccent("Ænima"), "AEnima")
+        self.assertNotEqual(unaccent("ænima"), "aenima")
 
 
 class ReplaceNonAsciiTest(PicardTestCase):
     def test_correct(self):
-        self.assertEqual(util.textencoding.replace_non_ascii("Lukáš"), "Lukas")
-        self.assertEqual(util.textencoding.replace_non_ascii("Björk"), "Bjork")
-        self.assertEqual(util.textencoding.replace_non_ascii("Trentemøller"), "Trentemoeller")
-        self.assertEqual(util.textencoding.replace_non_ascii("Ænima"), "AEnima")
-        self.assertEqual(util.textencoding.replace_non_ascii("ænima"), "aenima")
-        self.assertEqual(util.textencoding.replace_non_ascii("小室哲哉"), "____")
-        self.assertEqual(util.textencoding.replace_non_ascii("ᴀᴄᴇ"), "ACE")  # Latin Letter Small
-        self.assertEqual(util.textencoding.replace_non_ascii("Ａｂｃ"), "Abc")  # Fullwidth Latin
-        self.assertEqual(util.textencoding.replace_non_ascii("500㎏,2㎓"), "500kg,2GHz")  # Technical
-        self.assertEqual(util.textencoding.replace_non_ascii("⒜⒝⒞"), "(a)(b)(c)")  # Parenthesised Latin
-        self.assertEqual(util.textencoding.replace_non_ascii("ⅯⅯⅩⅣ"), "MMXIV")  # Roman numerals
-        self.assertEqual(util.textencoding.replace_non_ascii("ⅿⅿⅹⅳ"), "mmxiv")  # Roman numerals small
-        self.assertEqual(util.textencoding.replace_non_ascii("⑴⑵⑶"), "(1)(2)(3)")  # Parenthesised numbers
-        self.assertEqual(util.textencoding.replace_non_ascii("⒈ ⒉ ⒊"), "1. 2. 3.")  # Digit full stop
-        self.assertEqual(util.textencoding.replace_non_ascii("１２３"), "123")  # Fullwidth digits
-        self.assertEqual(util.textencoding.replace_non_ascii("\u2216\u2044\u2215\uff0f"), "\\///")  # Slashes
+        self.assertEqual(replace_non_ascii("Lukáš"), "Lukas")
+        self.assertEqual(replace_non_ascii("Björk"), "Bjork")
+        self.assertEqual(replace_non_ascii("Trentemøller"), "Trentemoeller")
+        self.assertEqual(replace_non_ascii("Ænima"), "AEnima")
+        self.assertEqual(replace_non_ascii("ænima"), "aenima")
+        self.assertEqual(replace_non_ascii("小室哲哉"), "____")
+        self.assertEqual(replace_non_ascii("ᴀᴄᴇ"), "ACE")  # Latin Letter Small
+        self.assertEqual(replace_non_ascii("Ａｂｃ"), "Abc")  # Fullwidth Latin
+        self.assertEqual(replace_non_ascii("500㎏,2㎓"), "500kg,2GHz")  # Technical
+        self.assertEqual(replace_non_ascii("⒜⒝⒞"), "(a)(b)(c)")  # Parenthesised Latin
+        self.assertEqual(replace_non_ascii("ⅯⅯⅩⅣ"), "MMXIV")  # Roman numerals
+        self.assertEqual(replace_non_ascii("ⅿⅿⅹⅳ"), "mmxiv")  # Roman numerals small
+        self.assertEqual(replace_non_ascii("⑴⑵⑶"), "(1)(2)(3)")  # Parenthesised numbers
+        self.assertEqual(replace_non_ascii("⒈ ⒉ ⒊"), "1. 2. 3.")  # Digit full stop
+        self.assertEqual(replace_non_ascii("１２３"), "123")  # Fullwidth digits
+        self.assertEqual(replace_non_ascii("\u2216\u2044\u2215\uff0f"), "\\///")  # Slashes
 
     def test_pathsave(self):
         expected = '____/8 1_2\\' if IS_WIN else '\\___/8 1_2\\'
-        self.assertEqual(util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True), expected)
+        self.assertEqual(replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True), expected)
 
     def test_win_compat(self):
         self.assertEqual(
-            util.textencoding.replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True, win_compat=True),
+            replace_non_ascii('\u2216\u2044\u2215\uff0f/8½\\', pathsave=True, win_compat=True),
             '____/8 1_2\\',
         )
 
     def test_incorrect(self):
-        self.assertNotEqual(util.textencoding.replace_non_ascii("Lukáš"), "Lukáš")
-        self.assertNotEqual(util.textencoding.replace_non_ascii("Lukáš"), "Luk____")
+        self.assertNotEqual(replace_non_ascii("Lukáš"), "Lukáš")
+        self.assertNotEqual(replace_non_ascii("Lukáš"), "Luk____")
 
 
 class CodecErrorHandlerSimplifyTest(PicardTestCase):
@@ -318,13 +325,13 @@ if show_latin2ascii_coverage:
     print("The following lines show the coverage of Latin characters conversion to ascii.")
     print("Underscores are characters which currently do not have an ASCII representation.")
     print()
-    print("latin-1:       ", util.textencoding.replace_non_ascii(latin_1))
-    print("latin-1:       ", util.textencoding.replace_non_ascii(latin_1))
-    print("latin-a:       ", util.textencoding.replace_non_ascii(latin_a))
-    print("latin-b:       ", util.textencoding.replace_non_ascii(latin_b))
-    print("ipa-ext:       ", util.textencoding.replace_non_ascii(ipa_ext))
-    print("phonetic:      ", util.textencoding.replace_non_ascii(phonetic))
-    print("latin-ext-add: ", util.textencoding.replace_non_ascii(latin_ext_add))
-    print("letter-like:   ", util.textencoding.replace_non_ascii(letter_like))
-    print("enclosed:      ", util.textencoding.replace_non_ascii(enclosed))
+    print("latin-1:       ", replace_non_ascii(latin_1))
+    print("latin-1:       ", replace_non_ascii(latin_1))
+    print("latin-a:       ", replace_non_ascii(latin_a))
+    print("latin-b:       ", replace_non_ascii(latin_b))
+    print("ipa-ext:       ", replace_non_ascii(ipa_ext))
+    print("phonetic:      ", replace_non_ascii(phonetic))
+    print("latin-ext-add: ", replace_non_ascii(latin_ext_add))
+    print("letter-like:   ", replace_non_ascii(letter_like))
+    print("enclosed:      ", replace_non_ascii(enclosed))
     print()

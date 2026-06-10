@@ -55,7 +55,7 @@ DISCID_NOT_LOADED_MESSAGE = "CDROM: discid library not found - Lookup CD functio
 LINUX_CDROM_INFO = '/proc/sys/dev/cdrom/info'
 
 
-def get_default_cdrom_drives():
+def get_default_cdrom_drives() -> list[str]:
     default_drives = []
     if discid is not None:
         device = discid.get_default_device()
@@ -124,7 +124,7 @@ else:
     _iter_drives = _generic_iter_drives
 
 
-def get_cdrom_drives():
+def get_cdrom_drives() -> list[str]:
     """List available disc drives on the machine"""
     # Avoid circular import: const.defaults → util.cdrom → const.defaults
     # add default drive from libdiscid to the list

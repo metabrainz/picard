@@ -53,7 +53,7 @@ SCRIPT_WEIGHTING_FACTORS = {
 }
 
 
-def detect_script_weighted(string_to_check, threshold=0.0):
+def detect_script_weighted(string_to_check: str, threshold: float = 0.0) -> dict[str, float]:
     """Provide a dictionary of the unicode scripts found in the supplied string that meet
     or exceed the specified weighting threshold based on the number of characters matching
     the script as a weighted percentage of the number of characters matching all scripts.
@@ -79,7 +79,7 @@ def detect_script_weighted(string_to_check, threshold=0.0):
     return dict(filter(lambda item: item[1] >= threshold, scripts.items()))
 
 
-def list_script_weighted(string_to_check, threshold=0.0):
+def list_script_weighted(string_to_check: str, threshold: float = 0.0) -> list[str]:
     """Provide a list of the unicode scripts found in the supplied string that meet
     or exceed the specified weighting threshold based on the number of characters
     matching the script as a weighted percentage of the number of characters matching
@@ -93,4 +93,8 @@ def list_script_weighted(string_to_check, threshold=0.0):
         list: List of the scripts represented in the string sorted in descending order of weighted values.
     """
     weighted_dict = detect_script_weighted(string_to_check, threshold)
-    return sorted(weighted_dict, key=weighted_dict.get, reverse=True)
+
+    def get_weight(foo: str) -> int | float:
+        return weighted_dict.get(foo, 0.0)
+
+    return sorted(weighted_dict, key=get_weight, reverse=True)

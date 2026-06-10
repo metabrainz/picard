@@ -63,7 +63,7 @@ else:
     win32api = None
 
 
-def _get_utf16_length(text):
+def _get_utf16_length(text: str | bytes) -> int:
     """Returns the number of code points used by a unicode object in its
     UTF-16 representation.
     """
@@ -78,7 +78,7 @@ def _get_utf16_length(text):
     return len(text.encode("utf-16%ce" % sys.byteorder[0])) // 2
 
 
-def _shorten_to_utf16_length(text, length):
+def _shorten_to_utf16_length(text: str, length: int) -> str:
     """Truncates a str object to the given number of UTF-16 code points."""
     assert isinstance(text, str), "This function only works on unicode"
     # if this is a narrow Python build, regular slicing will do exactly
@@ -104,7 +104,7 @@ def _shorten_to_utf16_length(text, length):
     return shortened.decode(enc)
 
 
-def _shorten_to_utf16_nfd_length(text, length):
+def _shorten_to_utf16_nfd_length(text: str, length: int) -> str:
     text = unicodedata.normalize('NFD', text)
     newtext = _shorten_to_utf16_length(text, length)
     # if the first cut-off character was a combining one, remove our last
@@ -119,7 +119,7 @@ def _shorten_to_utf16_nfd_length(text, length):
 _re_utf8 = re.compile(r'^utf([-_]?8)$', re.IGNORECASE)
 
 
-def _shorten_to_bytes_length(text, length):
+def _shorten_to_bytes_length(text: str, length: int) -> str:
     """Truncates a unicode object to the given number of bytes it would take
     when encoded in the "filesystem encoding".
     """
@@ -158,7 +158,7 @@ class ShortenMode(IntEnum):
     UTF16_NFD = 2
 
 
-def shorten_filename(filename, length, mode):
+def shorten_filename(filename: str | bytes, length: int, mode: ShortenMode) -> str | bytes:
     """Truncates a filename to the given number of thingies,
     as implied by `mode`.
     """
@@ -170,9 +170,10 @@ def shorten_filename(filename, length, mode):
         return _shorten_to_utf16_length(filename, length)
     if mode == ShortenMode.UTF16_NFD:
         return _shorten_to_utf16_nfd_length(filename, length)
+    raise ValueError(f"string given with unknown shorten mode {mode}")
 
 
-def shorten_path(path, length, mode):
+def shorten_path(path: str, length: int, mode: ShortenMode) -> str:
     """Reduce path nodes' length to given limit(s).
 
     path: Absolute or relative path to shorten.
@@ -191,7 +192,7 @@ def shorten_path(path, length, mode):
     )
 
 
-def _shorten_to_utf16_ratio(text, ratio):
+def _shorten_to_utf16_ratio(text: str | bytes, ratio: float) -> str | bytes:
     """Shortens the string to the given ratio (and strips it)."""
     length = _get_utf16_length(text)
     limit = max(1, int(math.floor(length / ratio)))
@@ -205,7 +206,7 @@ class WinPathTooLong(OSError):
     pass
 
 
-def _make_win_short_filename(relpath, reserved=0):
+def _make_win_short_filename(relpath: str, reserved: int = 0) -> str:
     r"""Shorten a relative file path according to WinAPI quirks.
 
     relpath: The file's path.
@@ -295,7 +296,7 @@ def _make_win_short_filename(relpath, reserved=0):
     return os.path.join(finaldirpath, filename)
 
 
-def _get_mount_point(target):
+def _get_mount_point(target: str) -> str:
     """Finds the target's mountpoint."""
     # and caches it for future lookups
     try:
@@ -315,7 +316,7 @@ def _get_mount_point(target):
 # NOTE: this could be merged with the function above, and get all needed info
 # in a single call, returning the filesystem type as well. (but python's
 # posix.statvfs_result doesn't implement f_fsid)
-def _get_filename_limit(target):
+def _get_filename_limit(target: str) -> int:
     """Finds the maximum filename length under the given directory."""
     # and caches it
     try:
@@ -345,7 +346,7 @@ def _get_filename_limit(target):
     return limit
 
 
-def make_short_filename(basedir, relpath, win_shorten_path=False, relative_to=""):
+def make_short_filename(basedir: str, relpath: str, win_shorten_path: bool = False, relative_to: str = "") -> str:
     """Shorten a filename's path to proper limits.
 
     basedir: Absolute path of the base directory where files will be moved.
@@ -408,7 +409,7 @@ def make_short_filename(basedir, relpath, win_shorten_path=False, relative_to=""
     return relpath
 
 
-def samefile_different_casing(path1, path2):
+def samefile_different_casing(path1: str, path2: str) -> bool:
     """Returns True if path1 and path2 refer to the same file, but differ in casing of the filename.
     Returns False if path1 and path2 refer to different files or there case is identical.
     """
@@ -432,7 +433,7 @@ def samefile_different_casing(path1, path2):
     return file1 != file2 and file1.lower() == file2.lower()
 
 
-def _make_unique_temp_name(target_path):
+def _make_unique_temp_name(target_path: str) -> str:
     i = 0
     target_dir = os.path.dirname(target_path)
     target_filename = os.path.basename(target_path)
@@ -446,7 +447,7 @@ def _make_unique_temp_name(target_path):
         i += 1
 
 
-def _move_force_rename(source_path, target_path):
+def _move_force_rename(source_path: str, target_path: str) -> None:
     """Moves a file by renaming it first to a temporary name.
     Ensure file casing changes on system's not natively supporting this.
     """
@@ -455,7 +456,7 @@ def _move_force_rename(source_path, target_path):
     os.rename(temp_path, target_path)
 
 
-def move_ensure_casing(source_path, target_path):
+def move_ensure_casing(source_path: str, target_path: str) -> None:
     """Moves a file from source_path to target_path.
     If the move would result just in the name changing the case apply workarounds
     for Linux and Windows to ensure the case change is applied on case-insensitive
@@ -511,7 +512,7 @@ def split_unc_path(path: str) -> tuple[str | None, str]:
     return None, path
 
 
-def make_save_path(path, win_compat=False, mac_compat=False):
+def make_save_path(path: str, win_compat: bool = False, mac_compat: bool = False) -> str:
     """Performs a couple of cleanups on a path to avoid side effects and incompatibilities.
 
     - If win_compat is True, trailing dots in file and directory names will
@@ -580,7 +581,7 @@ WINDOWS_FORBIDDEN_NAMES_RE = re.compile(
 )
 
 
-def replace_windows_forbidden_names(path):
+def replace_windows_forbidden_names(path: str) -> str:
     """Replaces Windows forbidden file names with a trailing underscore.
 
     Windows forbids the following file names:
@@ -595,7 +596,7 @@ def replace_windows_forbidden_names(path):
     return WINDOWS_FORBIDDEN_NAMES_RE.sub(r'\1\2_', path)
 
 
-def get_available_filename(new_path, old_path=None):
+def get_available_filename(new_path: str, old_path: str | None = None) -> str:
     """Returns an available file name.
 
     If new_path does already exist it appends " (N)" to the file name, where
@@ -619,7 +620,7 @@ def get_available_filename(new_path, old_path=None):
     return new_path
 
 
-def replace_extension(filename, new_ext):
+def replace_extension(filename: str, new_ext: str) -> str:
     """Replaces the extension in filename with new_ext.
 
     If the file has no extension the extension is added.

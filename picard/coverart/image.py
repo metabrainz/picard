@@ -262,13 +262,13 @@ class CoverArtImage:
             self.id3_type = Id3ImageType.OTHER
 
     @property
-    def source(self):
+    def source(self) -> str:
         if self.url is not None:
             return "%s: %s" % (self.sourceprefix, self.url.toString())
         else:
             return "%s" % self.sourceprefix
 
-    def is_front_image(self):
+    def is_front_image(self) -> bool:
         """Indicates if image is considered as a 'front' image.
         It depends on few things:
             - if `is_front` was set, it is used over anything else
@@ -285,7 +285,7 @@ class CoverArtImage:
             return True
         return self.support_types is False
 
-    def imageinfo_as_string(self):
+    def imageinfo_as_string(self) -> str:
         if self.datahash is None:
             return ""
         return "w=%d h=%d mime=%s ext=%s datalen=%d file=%s" % (
@@ -297,7 +297,7 @@ class CoverArtImage:
             self.tempfile_filename,
         )
 
-    def dimensions_as_string(self):
+    def dimensions_as_string(self) -> str:
         if self.datahash is None:
             return ""
         return f"{self.width}x{self.height}"
@@ -525,7 +525,7 @@ class CoverArtImage:
         return True
 
     @property
-    def data(self):
+    def data(self) -> bytes | None:
         """Reads the data from the temporary file created for this image.
         May raise CoverArtImageIOError
         """
@@ -542,7 +542,7 @@ class CoverArtImage:
             return self.datahash.filename
         return None
 
-    def normalized_types(self):
+    def normalized_types(self) -> tuple[str, ...]:
         if self.types and self.support_types:
             # ensure front type is first, if any
             # the rest is sorted
@@ -555,7 +555,7 @@ class CoverArtImage:
             types = ['-']
         return tuple(types)
 
-    def types_as_string(self, translate=True, separator: str = TYPES_SEPARATOR):
+    def types_as_string(self, translate: bool = True, separator: str = TYPES_SEPARATOR) -> str:
         types = self.normalized_types()
         if translate:
             return translated_types_as_string(types, separator)

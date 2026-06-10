@@ -25,7 +25,7 @@ import os
 from picard import log
 
 
-def _find_root_volume():
+def _find_root_volume() -> str | None:
     try:
         for entry in os.scandir("/Volumes/"):
             if entry.is_symlink() and os.path.realpath(entry.path) == "/":
@@ -35,7 +35,7 @@ def _find_root_volume():
     return None
 
 
-def extend_root_volume_path(path):
+def extend_root_volume_path(path: str) -> str:
     if not path.startswith("/Volumes/"):
         root_volume = _find_root_volume()
         if root_volume:
@@ -45,7 +45,7 @@ def extend_root_volume_path(path):
     return path
 
 
-def strip_root_volume_path(path):
+def strip_root_volume_path(path: str) -> str:
     if not path.startswith("/Volumes/"):
         return path
     root_volume = _find_root_volume()
