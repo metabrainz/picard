@@ -101,11 +101,6 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
-    OPTIONS = (
-        ('interface_colors', ['colors']),
-        ('interface_colors_dark', ['colors']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceColorsOptionsPage()

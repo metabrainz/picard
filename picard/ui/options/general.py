@@ -51,15 +51,6 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
-    OPTIONS = (
-        ('server_host', ['server_host']),
-        ('server_port', ['server_port']),
-        ('analyze_new_files', ['analyze_new_files']),
-        ('cluster_new_files', ['cluster_new_files']),
-        ('ignore_file_mbids', ['ignore_file_mbids']),
-        ('use_server_for_submission', ['use_server_for_submission']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_GeneralOptionsPage()

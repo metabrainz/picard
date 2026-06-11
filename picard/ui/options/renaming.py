@@ -65,17 +65,6 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
 
-    OPTIONS = (
-        ('move_files', ['move_files']),
-        ('move_files_to', ['move_files_to']),
-        ('move_overwrite_existing_files', ['move_overwrite_existing_files']),
-        ('move_additional_files', ['move_additional_files']),
-        ('move_additional_files_pattern', ['move_additional_files_pattern']),
-        ('delete_empty_dirs', ['delete_empty_dirs']),
-        ('rename_files', ['rename_files']),
-        ('active_file_naming_script_id', ['naming_script_selector']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_RenamingOptionsPage()

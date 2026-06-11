@@ -43,6 +43,7 @@ class ProviderOptionsLocal(ProviderOptions):
     """
 
     HELP_URL = '/config/options_local_files.html'
+    NAME = "provider_local"
 
     _options_ui = Ui_LocalOptions
 

@@ -45,20 +45,6 @@ class NetworkOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
-    OPTIONS = (
-        ('use_proxy', ['web_proxy']),
-        ('proxy_type', ['proxy_type_socks', 'proxy_type_http']),
-        ('proxy_server_host', ['server_host']),
-        ('proxy_server_port', ['server_port']),
-        ('proxy_username', ['username']),
-        ('proxy_password', ['password']),
-        ('network_transfer_timeout_seconds', ['transfer_timeout']),
-        ('network_cache_size_bytes', ['network_cache_size']),
-        ('browser_integration', ['browser_integration']),
-        ('browser_integration_port', ['browser_integration_port']),
-        ('browser_integration_localhost_only', ['browser_integration_localhost_only']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_NetworkOptionsPage()

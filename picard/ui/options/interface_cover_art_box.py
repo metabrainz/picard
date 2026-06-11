@@ -37,14 +37,6 @@ class InterfaceCoverArtBoxOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_cover_art_box.html"
 
-    OPTIONS = (
-        ('show_cover_art_details', ['cb_show_cover_art_details']),
-        ('show_cover_art_details_type', ['cb_show_cover_art_details_type']),
-        ('show_cover_art_details_filesize', ['cb_show_cover_art_details_filesize']),
-        ('show_cover_art_details_dimensions', ['cb_show_cover_art_details_dimensions']),
-        ('show_cover_art_details_mimetype', ['cb_show_cover_art_details_mimetype']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceCoverArtBoxOptionsPage()

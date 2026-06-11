@@ -39,11 +39,6 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_aac.html"
 
-    OPTIONS = (
-        ('aac_save_ape', ['aac_save_ape', 'aac_no_tags']),
-        ('remove_ape_from_aac', ['remove_ape_from_aac']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()

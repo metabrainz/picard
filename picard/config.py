@@ -66,12 +66,22 @@ class Option(QtCore.QObject):
     registry: dict[tuple[str, str], 'Option'] = {}
     qtype: object = None
 
-    def __init__(self, section: str, name: str, default: ConfigValueType, title: str | None = None):
+    def __init__(
+        self,
+        section: str,
+        name: str,
+        default: ConfigValueType,
+        page: str | None = None,
+        title: str | None = None,
+        highlights: list[str] | None = None,
+    ):
         super().__init__()
         self.section = section
         self.name = name
         self.default = default
+        self.page = page
         self.title = title
+        self.highlights = highlights if highlights is not None else []
         self.registry[(section, name)] = self
 
         self._check_if_valid()
@@ -111,18 +121,31 @@ class Option(QtCore.QObject):
         return cls.registry.get((section, name))
 
     @classmethod
-    def get_default(cls, section: str, name: str) -> ConfigValueType:
+    def _get_opt(cls, section: str, name: str) -> type:
         opt = cls.get(section, name)
         if opt is None:
             raise OptionError("No such option", section, name)
-        return opt.default
+        return opt
+
+    @classmethod
+    def get_default(cls, section: str, name: str) -> ConfigValueType:
+        return cls._get_opt(section, name).default
+
+    @classmethod
+    def get_page(cls, section: str, name: str) -> str | None:
+        return cls._get_opt(section, name).page
 
     @classmethod
     def get_title(cls, section: str, name: str) -> str | None:
-        opt = cls.get(section, name)
-        if opt is None:
-            raise OptionError("No such option", section, name)
-        return opt.title
+        return cls._get_opt(section, name).title
+
+    @classmethod
+    def get_highlights(cls, section: str, name: str) -> list[str] | None:
+        return cls._get_opt(section, name).highlights
+
+    @classmethod
+    def get_in_profile(cls, section: str, name: str) -> bool:
+        return bool(cls._get_opt(section, name).title)
 
     @classmethod
     def add_if_missing(cls, section: str, name: str, default: ConfigValueType, *args, **kwargs):
@@ -607,3 +630,12 @@ def register_quick_menu_item(group_order: int, group_name: str, group_parent: st
 def get_quick_menu_items():
     for group, value in sorted(_quick_menu_items.items(), key=lambda x: (x[1]['parent'], x[1]['order'], x[0])):
         yield {'name': group, 'parent': value['parent'], 'title': value['title'], 'options': value['options']}
+
+
+def get_highlights_for_page(page: str):
+    for section, name in Option.registry:
+        if section != 'setting':
+            continue
+        opt = Option.get(section, name)
+        if opt and opt.page and opt.page == page and opt.highlights:
+            yield (name, opt.highlights)

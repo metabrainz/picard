@@ -23,6 +23,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard.config import get_highlights_for_page
 from picard.plugin import ExtensionPoint
 
 from picard.ui.options import OptionsPage
@@ -33,5 +34,5 @@ ext_point_options_pages = ExtensionPoint(label='options_pages')
 
 def register_options_page(page_class: type[OptionsPage]) -> None:
     ext_point_options_pages.register(page_class.__module__, page_class)
-    for opt_name, opt_highlights in page_class.OPTIONS:
+    for opt_name, opt_highlights in get_highlights_for_page(page_class.NAME):
         page_class.register_setting(opt_name, opt_highlights)

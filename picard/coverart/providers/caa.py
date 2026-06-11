@@ -122,6 +122,7 @@ class ProviderOptionsCaa(ProviderOptions):
 
     TITLE = N_("Cover Art Archive")
     HELP_URL = "/config/options_cover_art_archive.html"
+    NAME = "provider_caa"
 
     _options_ui = Ui_CaaOptions
 

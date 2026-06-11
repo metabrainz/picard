@@ -65,15 +65,6 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_fingerprinting.html"
 
-    OPTIONS = (
-        ('fingerprinting_system', None),
-        ('acoustid_fpcalc', None),
-        ('acoustid_apikey', None),
-        ('ignore_existing_acoustid_fingerprints', None),
-        ('save_acoustid_fingerprints', None),
-        ('fpcalc_threads', None),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self._fpcalc_valid = True

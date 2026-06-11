@@ -165,12 +165,6 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_releases.html"
 
-    OPTIONS = (
-        ('release_type_scores', ['type_group']),
-        ('preferred_release_countries', ['country_group']),
-        ('preferred_release_formats', ['format_group']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_ReleasesOptionsPage()

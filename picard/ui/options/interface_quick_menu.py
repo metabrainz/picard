@@ -48,8 +48,6 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_quick_menu.html"
 
-    OPTIONS = (('quick_menu_items', ['quick_menu_items']),)
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_InterfaceQuickMenuOptionsPage()

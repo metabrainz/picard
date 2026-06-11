@@ -432,6 +432,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         try:
                             obj = getattr(page.ui, objname)
                         except AttributeError:
+                            log.warning(
+                                "Option '%s' specifies highlight object '%s' which was not found on page '%s'",
+                                opt.name,
+                                objname,
+                                page.NAME,
+                            )
                             continue
                         style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
                         style_reset = "#%s { }" % (objname)

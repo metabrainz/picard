@@ -37,11 +37,6 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_ac3.html"
 
-    OPTIONS = (
-        ('ac3_save_ape', ['ac3_save_ape', 'ac3_no_tags']),
-        ('remove_ape_from_ac3', ['remove_ape_from_ac3']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_TagsCompatibilityOptionsPage()

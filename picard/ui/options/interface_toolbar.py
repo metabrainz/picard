@@ -71,8 +71,6 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
 
-    OPTIONS = (('toolbar_layout', ['toolbar_layout_list']),)
-
     TOOLBAR_BUTTONS = {
         MainAction.ADD_DIRECTORY: ToolbarButtonDesc(
             N_("Add Folder"),

@@ -34,13 +34,6 @@ class PlayerOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_player.html"
 
-    OPTIONS = (
-        ('player_now_playing', ['player_now_playing']),
-        ('listenbrainz_enabled', ['listenbrainz_enabled']),
-        ('listenbrainz_submit_only_tagged', ['listenbrainz_submit_only_tagged']),
-        ('listenbrainz_token', ['listenbrainz_token']),
-    )
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.ui = Ui_PlayerOptionsPage()

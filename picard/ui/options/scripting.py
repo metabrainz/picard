@@ -106,11 +106,6 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
-    OPTIONS = (
-        ('enable_tagger_scripts', ['enable_tagger_scripts']),
-        ('list_of_scripts', ['script_list']),
-    )
-
     default_script_directory = os.path.normpath(
         QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
     )

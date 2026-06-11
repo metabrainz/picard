@@ -38,12 +38,6 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_matching.html"
 
-    OPTIONS = (
-        ('match_min_similarity', ['match_min_similarity']),
-        ('match_min_margin', ['match_min_margin']),
-        ('track_matching_threshold', ['track_matching_threshold']),
-    )
-
     _release_type_sliders: dict = {}
 
     def __init__(self, parent=None):
