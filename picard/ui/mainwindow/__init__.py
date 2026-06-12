@@ -963,16 +963,12 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self._make_quick_settings_menu()
 
         self.options_menu = self.menuBar().addMenu(_("&Options"))
-        self.options_menu.setSeparatorsCollapsible(True)
         menu_builder(
             self.options_menu,
             self.action_map,
             self.quick_settings_menu,
-            '-',
             self.file_naming_scripts_menu,
-            '-',
             self.profile_quick_selector_menu,
-            '-',
             MainAction.OPTIONS,
         )
 
