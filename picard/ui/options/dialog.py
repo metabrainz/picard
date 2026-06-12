@@ -301,6 +301,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.default_item = None
         if not default_page:
             default_page = config.persist['options_last_active_page']
+        self._default_page = default_page
         log.debug("OptionsDialog init: Trying to restore page '%s'", default_page)
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -527,12 +528,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             log.debug("switch_page: Saving page '%s' to options_last_active_page", page.NAME)
             config.persist['options_last_active_page'] = page.NAME
 
-    def switch_to_page(self, name):
-        """Switch to the options page with the given NAME."""
-        item = self.pagename_to_item.get(name)
-        if item:
-            self.ui.pages_tree.setCurrentItem(item)
-
     def disable_page(self, pagename):
         item = self.pagename_to_item[pagename]
         item.setDisabled(True)
@@ -625,7 +620,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.default_item = None  # Clear reference to deleted tree item
 
         # Rebuild pages tree
-        default_page = current_page or config.persist['options_last_active_page']
+        default_page = current_page or self._default_page
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # Restore tree state

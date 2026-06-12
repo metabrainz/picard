@@ -1290,8 +1290,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
     def show_options(self, page=None):
         ReadTheDocs.update_documentation_items()  # Retry updates if required
         options_dialog = OptionsDialog.show_instance(page, self)
-        if page:
-            options_dialog.switch_to_page(page)
         options_dialog.finished.connect(self._options_closed)
         if not modal_options():
             self._disable_while_dialog_shown(options_dialog)
