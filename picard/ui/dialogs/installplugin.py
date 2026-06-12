@@ -242,7 +242,9 @@ class InstallPluginDialog(PicardDialog):
             registry = self.plugin_manager._registry
             plugins = registry.list_plugins()
 
-            # Populate categories
+            # Populate categories (clear existing entries first to avoid duplicates)
+            self.category_combo.clear()
+            self.category_combo.addItem(_("All Categories"), "")
             categories = PluginCategorySet()
             for plugin in plugins:
                 categories.update(plugin.get('categories', []))

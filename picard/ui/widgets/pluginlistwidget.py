@@ -272,6 +272,13 @@ class PluginListWidget(QtWidgets.QWidget):
                     result = html_ref_format(ref_item)
                     if result:
                         return result
+                # No metadata (e.g. fresh config), fall back to local git repo
+                ref_name, commit = self.plugin_manager._metadata._get_current_ref_info(plugin)
+                if ref_name:
+                    ref_item = RefItem(shortname=ref_name, commit=commit)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
         except Exception:
             pass
         if plugin.manifest:
