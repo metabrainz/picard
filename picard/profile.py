@@ -104,7 +104,15 @@ def profile_groups_group_from_page(page: 'OptionsPage') -> dict | None:
     try:
         return _settings_groups[page.NAME]
     except (AttributeError, KeyError):
-        return None
+        pass
+    # For plugin pages, the group may be keyed by OPTION_SECTION
+    try:
+        section = getattr(page, 'OPTION_SECTION', None)
+        if section and section in _settings_groups:
+            return _settings_groups[section]
+    except (AttributeError, KeyError):
+        pass
+    return None
 
 
 def profile_groups_values() -> Iterator[dict]:
