@@ -114,6 +114,32 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <widget class="QLabel" name="do_not_sanitize_label">
+     <property name="text">
+      <string>Do not sanitize dates for these tag formats:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="do_not_sanitize_container">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="do_not_sanitize_layout">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
