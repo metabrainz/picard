@@ -494,11 +494,30 @@ class InstallPluginDialog(PicardDialog):
             QtWidgets.QMessageBox.critical(
                 self,
                 _("Invalid Plugin Directory"),
-                _(
-                    "The selected directory does not contain a MANIFEST.toml file. A valid plugin requires both a git repository and a MANIFEST.toml file."
-                ),
+                _("The selected directory does not contain a MANIFEST.toml file."),
             )
             return None
+
+        # Warn if not a git repository
+        git_path = os.path.join(url, ".git")
+        if not os.path.exists(git_path):
+            result = QtWidgets.QMessageBox.warning(
+                self,
+                _("Plugin Not Managed by Git"),
+                _(
+                    "This plugin is not managed by git.\n\n"
+                    "A git repository is required to distribute a plugin"
+                    " and to have it added to the official registry."
+                    " Without git, version management and automatic updates"
+                    " are not available.\n\n"
+                    "Do you want to continue?"
+                ),
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.No,
+            )
+            if result != QtWidgets.QMessageBox.StandardButton.Yes:
+                return None
+            ref = None  # No ref for non-git plugins
 
         return LocalInstallablePlugin(url, ref, self.plugin_manager._registry)
 

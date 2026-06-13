@@ -34,13 +34,17 @@ from picard.plugin3.manager.errors import (
     PluginBlacklistedError,
     PluginCommitPinnedError,
     PluginDirtyError,
+    PluginNoSourceError,
 )
 from picard.plugin3.plugin import (
     PluginSourceGit,
     PluginState,
     short_commit_id,
 )
-from picard.plugin3.plugin_metadata import PluginMetadata
+from picard.plugin3.plugin_metadata import (
+    PluginMetadata,
+    is_local_non_git_plugin,
+)
 from picard.plugin3.ref_item import RefItem
 
 
@@ -111,6 +115,23 @@ class PluginUpdater:
             try_reenable()
             raise
 
+    def _reload_local_plugin(self, plugin):
+        """Reload a local non-git plugin (disable → re-read manifest → enable)."""
+
+        def perform_reload():
+            plugin.read_manifest()
+            return UpdateResult(
+                old_version='',
+                new_version='',
+                old_commit='',
+                new_commit='',
+                old_ref_item=RefItem('local'),
+                new_ref_item=RefItem('local'),
+                commit_date=0,
+            )
+
+        return self._with_plugin_state_management(plugin, perform_reload)
+
     def _check_dirty_working_dir(self, plugin, discard_changes):
         """Check for uncommitted changes if not discarding."""
         if not discard_changes:
@@ -137,8 +158,13 @@ class PluginUpdater:
 
     def update_plugin(self, plugin, discard_changes=False):
         """Update a single plugin to latest version."""
-        self.manager._ensure_plugin_url(plugin, 'update')
         uuid, metadata = self.manager._get_plugin_uuid_and_metadata(plugin)
+
+        # Local non-git plugins: reload instead of git update
+        if is_local_non_git_plugin(metadata):
+            return self._reload_local_plugin(plugin)
+
+        self.manager._ensure_plugin_url(plugin, 'update')
 
         # Check for uncommitted changes and commit pinning
         self._check_dirty_working_dir(plugin, discard_changes)
@@ -252,6 +278,11 @@ class PluginUpdater:
 
     def switch_ref(self, plugin, ref, discard_changes=False):
         """Switch plugin to a different git ref."""
+        # Local non-git plugins cannot switch refs
+        metadata = self.manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+        if is_local_non_git_plugin(metadata):
+            raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
+
         self.manager._ensure_plugin_url(plugin, 'switch ref')
 
         # Convert GitRef to string for GitOperations (which still expects strings)

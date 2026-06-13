@@ -37,6 +37,7 @@ from picard import log
 if TYPE_CHECKING:
     from picard.tagger import Tagger
 
+from picard.config import get_config
 from picard.const.appdirs import cache_folder
 from picard.git.backend import GitRefType
 from picard.git.factory import git_backend
@@ -55,6 +56,7 @@ from picard.plugin3.plugin import (
 from picard.plugin3.plugin_metadata import (
     PluginMetadata,
     PluginMetadataManager,
+    is_local_non_git_plugin,
 )
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
@@ -508,6 +510,42 @@ class PluginManager(QObject):
         self._plugin_dirs.append(plugin_dir)
         if primary:
             self._primary_plugin_dir = plugin_dir
+            self._load_local_plugins()
+
+    def _load_local_plugins(self):
+        """Load non-git local plugins from metadata and auto-remove stale entries."""
+        config = get_config()
+        if config is None:
+            return
+        metadata_dict = config.setting['plugins3_metadata']
+        if not metadata_dict:
+            return
+        to_remove = []
+        loaded_uuids = {p.uuid for p in self._plugins if p.uuid}
+
+        for uuid, entry in list(metadata_dict.items()):
+            if entry.get('ref_type') != 'local':
+                continue
+            # Skip if already loaded (e.g. symlink in plugin dir)
+            if uuid in loaded_uuids:
+                continue
+            path = Path(entry.get('url', ''))
+            if not path.is_dir():
+                log.warning('Local plugin path no longer exists, removing: %s', path)
+                to_remove.append(uuid)
+                continue
+            plugin = self._load_plugin(path.parent, path.name)
+            if plugin:
+                log.debug('Loaded local plugin %s from %s', plugin.plugin_id, path)
+                self._plugins.append(plugin)
+
+        # Auto-cleanup stale entries
+        if to_remove:
+            for uuid in to_remove:
+                metadata_dict.pop(uuid, None)
+                self._enabled_plugins.discard(uuid)
+            config.setting['plugins3_metadata'] = metadata_dict
+            self._save_config()
 
     def _preserve_original_ref_if_needed(self, url_or_path, ref, reinstall):
         """Preserve original ref if reinstalling and no ref specified.
@@ -695,6 +733,8 @@ class PluginManager(QObject):
     def _should_fetch_plugin_refs(self, plugin, metadata):
         """Check if a plugin should have its refs fetched."""
         if not plugin.uuid or not metadata or not metadata.url:
+            return False
+        if is_local_non_git_plugin(metadata):
             return False
 
         # Only fetch refs for plugins with remote URLs or local git repos
