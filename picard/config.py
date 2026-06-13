@@ -230,10 +230,14 @@ class ConfigSection(QtCore.QObject):
 
     def _get_profile_override(self, name: str):
         """Check active profiles for an override of this option."""
-        try:
-            all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
-        except (AttributeError, KeyError, TypeError):
-            return _SENTINEL
+        setting_section = self.__qt_config.setting
+        if setting_section.settings_override is not None:
+            all_settings = setting_section.settings_override
+        else:
+            try:
+                all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
+            except (AttributeError, KeyError, TypeError):
+                return _SENTINEL
         if not all_settings:
             return _SENTINEL
         for profile_id in self._get_active_profile_ids():
@@ -244,10 +248,14 @@ class ConfigSection(QtCore.QObject):
 
     def _get_active_profile_ids(self):
         """Yield enabled profile IDs from the global profiles list."""
-        try:
-            profiles = self.__qt_config.profiles['user_profiles']
-        except (AttributeError, KeyError, TypeError):
-            return
+        setting_section = self.__qt_config.setting
+        if setting_section.profiles_override is not None:
+            profiles = setting_section.profiles_override
+        else:
+            try:
+                profiles = self.__qt_config.profiles['user_profiles']
+            except (AttributeError, KeyError, TypeError):
+                return
         if profiles:
             for profile in profiles:
                 if profile['enabled']:
