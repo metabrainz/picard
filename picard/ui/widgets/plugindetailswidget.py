@@ -181,7 +181,10 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if maintainers:
             self.maintainers_label.setText(maintainers)
 
-        git_url = self._get_git_url_display(plugin)
+        if self.plugin_manager.is_local_non_git(plugin):
+            git_url = _("local")
+        else:
+            git_url = self._get_git_url_display(plugin)
         self.details_layout.setRowVisible(self.git_url_label, bool(git_url))
         if git_url:
             self.git_url_label.setText(git_url)

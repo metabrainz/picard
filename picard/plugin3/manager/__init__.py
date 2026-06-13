@@ -711,6 +711,11 @@ class PluginManager(QObject):
         # Use ref_type to reliably determine if plugin was installed as a commit
         return metadata.ref_type == 'commit'
 
+    def is_local_non_git(self, plugin):
+        """Check if a plugin is a local non-git plugin."""
+        metadata = self._metadata.get_plugin_metadata(plugin.uuid)
+        return is_local_non_git_plugin(metadata)
+
     def _get_current_ref_for_updates(self, repo, metadata):
         """Get the current ref to use for update checking.
 

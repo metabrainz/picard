@@ -215,6 +215,13 @@ class PluginInstaller:
         # Validate manifest directly from source
         manifest = PluginValidation.read_and_validate_manifest(local_path, str(local_path))
 
+        # Check if already installed from this path
+        if not reinstall:
+            resolved_path = local_path.resolve()
+            for existing in self.manager._plugins:
+                if existing.local_path.resolve() == resolved_path:
+                    raise PluginAlreadyInstalledError(manifest.name(), str(local_path))
+
         # Blacklist + UUID conflict check
         if not force_blacklisted:
             self._check_blacklist(str(local_path), None, local_path, manifest.uuid)

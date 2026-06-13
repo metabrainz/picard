@@ -518,7 +518,10 @@ class PluginCLI:
 
                     # Source URL if available
                     if metadata and metadata.url:
-                        self._out.info(f'  Source: {self._out.d_url(metadata.url)}')
+                        if is_local:
+                            self._out.info('  Source: local')
+                        else:
+                            self._out.info(f'  Source: {self._out.d_url(metadata.url)}')
 
                     self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
                 self._out.print()
@@ -600,7 +603,10 @@ class PluginCLI:
 
         # Show source URL if available
         if metadata and metadata.url:
-            self._out.print(f'Source: {self._out.d_url(metadata.url)}')
+            if is_local:
+                self._out.print('Source: local')
+            else:
+                self._out.print(f'Source: {self._out.d_url(metadata.url)}')
 
         # Optional fields - only show if present
         if plugin.manifest.authors:
