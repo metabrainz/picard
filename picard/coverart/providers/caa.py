@@ -120,6 +120,7 @@ class ProviderOptionsCaa(ProviderOptions):
     Options for Cover Art Archive cover art provider
     """
 
+    NAME = "provider_caa"
     TITLE = N_("Cover Art Archive")
     HELP_URL = "/config/options_cover_art_archive.html"
 

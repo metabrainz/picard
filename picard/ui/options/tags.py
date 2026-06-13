@@ -57,7 +57,7 @@ class TagsOptionsPage(OptionsPage):
         'remove_id3_from_flac': {'widgets': ['remove_id3_from_flac']},
         'remove_ape_from_mp3': {'widgets': ['remove_ape_from_mp3']},
         'fix_missing_seekpoints_flac': {'widgets': ['fix_missing_seekpoints_flac']},
-        'preserved_tags': {'widgets': ['preserved_tags']},
+        'preserved_tags': {'widgets': ['preserved_tags_label']},
         'disable_date_sanitization_formats': {},
     }
 

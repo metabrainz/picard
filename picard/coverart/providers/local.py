@@ -42,6 +42,7 @@ class ProviderOptionsLocal(ProviderOptions):
     Options for Local Files cover art provider
     """
 
+    NAME = "provider_local"
     HELP_URL = '/config/options_local_files.html'
 
     _options_ui = Ui_LocalOptions
