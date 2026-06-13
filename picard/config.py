@@ -66,12 +66,15 @@ class Option(QtCore.QObject):
     registry: dict[tuple[str, str], 'Option'] = {}
     qtype: object = None
 
-    def __init__(self, section: str, name: str, default: ConfigValueType, title: str | None = None):
+    def __init__(
+        self, section: str, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+    ):
         super().__init__()
         self.section = section
         self.name = name
         self.default = default
         self.title = title
+        self.in_profile = in_profile
         self.registry[(section, name)] = self
 
         self._check_if_valid()
