@@ -218,8 +218,6 @@ class ConfigSection(QtCore.QObject):
     def key(self, name):
         return self.__prefix + name
 
-    _PROFILE_SETTINGS_KEY = '_profile_settings'
-
     def __getitem__(self, name: str) -> Any:
         opt = Option.get(self.__name, name)
         if opt is None:
@@ -232,11 +230,14 @@ class ConfigSection(QtCore.QObject):
 
     def _get_profile_override(self, name: str):
         """Check active profiles for an override of this option."""
-        profile_settings = self._get_raw_profile_settings()
-        if not profile_settings:
+        try:
+            all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
+        except (AttributeError, KeyError, TypeError):
+            return _SENTINEL
+        if not all_settings:
             return _SENTINEL
         for profile_id in self._get_active_profile_ids():
-            settings = profile_settings.get(profile_id)
+            settings = all_settings.get(profile_id)
             if settings and name in settings and settings[name] is not None:
                 return settings[name]
         return _SENTINEL
@@ -251,15 +252,6 @@ class ConfigSection(QtCore.QObject):
             for profile in profiles:
                 if profile['enabled']:
                     yield profile['id']
-
-    def _get_raw_profile_settings(self):
-        """Return the raw _profile_settings dict from this section, or None."""
-        key = self.key(self._PROFILE_SETTINGS_KEY)
-        if self.__qt_config.contains(key):
-            value = self.__qt_config.value(key)
-            if isinstance(value, dict):
-                return value
-        return None
 
     def __setitem__(self, name: str, value: Any):
         opt = Option.get(self.__name, name)
@@ -280,24 +272,27 @@ class ConfigSection(QtCore.QObject):
 
         Returns True if the write was intercepted, False otherwise.
         """
-        profile_settings = self._get_raw_profile_settings()
-        if not profile_settings:
+        try:
+            all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
+        except (AttributeError, KeyError, TypeError):
+            return False
+        if not all_settings:
             return False
         for profile_id in self._get_active_profile_ids():
-            settings = profile_settings.get(profile_id)
+            settings = all_settings.get(profile_id)
             if settings and name in settings:
                 old_value = settings[name]
                 settings[name] = value
-                self._save_profile_settings(profile_settings)
+                self._save_all_profile_settings(all_settings)
                 if value != old_value:
                     self.setting_changed.emit(name, old_value, value)
                 return True
         return False
 
-    def _save_profile_settings(self, profile_settings: dict):
-        """Persist the _profile_settings dict to this section."""
-        key = self.key(self._PROFILE_SETTINGS_KEY)
-        self.__qt_config.setValue(key, profile_settings)
+    def _save_all_profile_settings(self, all_settings: dict):
+        """Persist profile settings to the global profiles section."""
+        key = self.__qt_config.profiles.key(SettingConfigSection.SETTINGS_KEY)
+        self.__qt_config.setValue(key, all_settings)
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))

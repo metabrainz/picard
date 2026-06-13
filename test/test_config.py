@@ -201,7 +201,10 @@ class TestPicardConfigSection(TestPicardConfigCommon):
             self.config.setting.register_option("_reserved", "value")
 
     def test_profile_override_on_config_section(self):
-        from picard.config import ConfigSection
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
 
         section = ConfigSection(self.config, 'test_plugin')
         section.register_option('my_opt', 'default', in_profile=True)
@@ -209,45 +212,51 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         # No profiles active — should return default
         self.assertEqual(section['my_opt'], 'default')
 
-        # Set up a profile and store override in section's _profile_settings
+        # Set up a profile and store override in global profile settings
         ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        key = section.key('_profile_settings')
-        self.config.setValue(key, {'p1': {'my_opt': 'overridden'}})
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'overridden'}}
 
         self.assertEqual(section['my_opt'], 'overridden')
 
     def test_profile_override_not_applied_without_in_profile(self):
-        from picard.config import ConfigSection
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
 
         section = ConfigSection(self.config, 'test_plugin2')
         section.register_option('my_opt', 'default', in_profile=False)
 
         ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        key = section.key('_profile_settings')
-        self.config.setValue(key, {'p1': {'my_opt': 'overridden'}})
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'overridden'}}
 
         # Should NOT apply override since in_profile=False
         self.assertEqual(section['my_opt'], 'default')
 
     def test_profile_override_setitem(self):
-        from picard.config import ConfigSection
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
 
         section = ConfigSection(self.config, 'test_plugin3')
         section.register_option('my_opt', 'default', in_profile=True)
 
         ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        key = section.key('_profile_settings')
-        self.config.setValue(key, {'p1': {'my_opt': 'original'}})
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'original'}}
 
         # Write should go to profile settings, not base config
         section['my_opt'] = 'updated'
         self.assertEqual(section['my_opt'], 'updated')
 
-        # Verify it was written to profile settings, not the base key
-        stored = self.config.value(key)
+        # Verify it was written to profile settings
+        stored = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
         self.assertEqual(stored['p1']['my_opt'], 'updated')
 
 
