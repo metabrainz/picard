@@ -196,6 +196,10 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):
             self.config.setting.register_option("invalid_option", None)
 
+    def test_register_option_reserved_prefix(self):
+        with self.assertRaises(ValueError, msg="Option names starting with '_' are reserved for internal use"):
+            self.config.setting.register_option("_reserved", "value")
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption

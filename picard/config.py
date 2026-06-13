@@ -270,17 +270,23 @@ class ConfigSection(QtCore.QObject):
                 return memovar.value
         return default
 
-    def register_option(self, name: str, default: ConfigValueType) -> Option:
+    def register_option(
+        self, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+    ) -> Option:
         """Register an option.
 
         The option type is determined by the type of the default value.
         The default must not be None.
+        Option names starting with '_' are reserved for internal use.
 
         Raises:
             TypeError: If default is None.
+            ValueError: If name starts with '_'.
         """
         if default is None:
             raise TypeError('Option default value must not be None')
+        if name.startswith('_'):
+            raise ValueError("Option names starting with '_' are reserved for internal use")
 
         if isinstance(default, str):
             option_type = TextOption
@@ -297,7 +303,7 @@ class ConfigSection(QtCore.QObject):
         else:
             option_type = Option  # type: ignore[assignment]
 
-        return option_type(self.__name, name, default)
+        return option_type(self.__name, name, default, title=title, in_profile=in_profile)
 
 
 class SettingConfigSection(ConfigSection):

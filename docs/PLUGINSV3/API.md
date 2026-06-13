@@ -186,6 +186,9 @@ def my_processor(api, album, metadata, release):
 
 Plugin-private configuration section.
 
+> **Note:** Option names starting with `_` are reserved for internal use and
+> will be rejected by `register_option()`.
+
 ```python
 def enable(api):
     # Register options with default value
