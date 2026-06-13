@@ -691,11 +691,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Force the `profiles` page to always save first to avoid an error when
         # saving settings to a new profile that has been marked as enabled.
-        pages = [
-            self.get_page('profiles'),
-        ]
-        pages.extend(x for x in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)) if x.NAME != 'profiles')
-        for page in pages:
+        profile_page = self.get_page('profiles')
+        try:
+            profile_page.save()
+        except Exception as e:
+            log.exception("Failed saving options page %r", profile_page)
+            self._show_page_error(profile_page, e)
+            return
+
+        # Clear overrides so subsequent page saves write directly to config
+        config = get_config()
+        config.setting.set_profiles_override()
+        config.setting.set_settings_override()
+
+        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+            if page.NAME == 'profiles':
+                continue
             try:
                 page.save()
             except Exception as e:
