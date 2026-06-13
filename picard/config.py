@@ -190,6 +190,9 @@ class ConfigUpgradeError(Exception):
     pass
 
 
+_SENTINEL = object()
+
+
 class ConfigSection(QtCore.QObject):
     """Configuration section."""
 
@@ -206,11 +209,48 @@ class ConfigSection(QtCore.QObject):
     def key(self, name):
         return self.__prefix + name
 
+    _PROFILE_SETTINGS_KEY = '_profile_settings'
+
     def __getitem__(self, name: str) -> Any:
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
+        if opt.in_profile:
+            override = self._get_profile_override(name)
+            if override is not _SENTINEL:
+                return override
         return self.value(opt, opt.default)
+
+    def _get_profile_override(self, name: str):
+        """Check active profiles for an override of this option."""
+        profile_settings = self._get_raw_profile_settings()
+        if not profile_settings:
+            return _SENTINEL
+        for profile_id in self._get_active_profile_ids():
+            settings = profile_settings.get(profile_id)
+            if settings and name in settings and settings[name] is not None:
+                return settings[name]
+        return _SENTINEL
+
+    def _get_active_profile_ids(self):
+        """Yield enabled profile IDs from the global profiles list."""
+        try:
+            profiles = self.__qt_config.profiles['user_profiles']
+        except (AttributeError, KeyError, TypeError):
+            return
+        if profiles:
+            for profile in profiles:
+                if profile['enabled']:
+                    yield profile['id']
+
+    def _get_raw_profile_settings(self):
+        """Return the raw _profile_settings dict from this section, or None."""
+        key = self.key(self._PROFILE_SETTINGS_KEY)
+        if self.__qt_config.contains(key):
+            value = self.__qt_config.value(key)
+            if isinstance(value, dict):
+                return value
+        return None
 
     def __setitem__(self, name: str, value: Any):
         old_value = self.__getitem__(name)

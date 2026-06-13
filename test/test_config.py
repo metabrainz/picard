@@ -200,6 +200,37 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         with self.assertRaises(ValueError, msg="Option names starting with '_' are reserved for internal use"):
             self.config.setting.register_option("_reserved", "value")
 
+    def test_profile_override_on_config_section(self):
+        from picard.config import ConfigSection
+
+        section = ConfigSection(self.config, 'test_plugin')
+        section.register_option('my_opt', 'default', in_profile=True)
+
+        # No profiles active — should return default
+        self.assertEqual(section['my_opt'], 'default')
+
+        # Set up a profile and store override in section's _profile_settings
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        key = section.key('_profile_settings')
+        self.config.setValue(key, {'p1': {'my_opt': 'overridden'}})
+
+        self.assertEqual(section['my_opt'], 'overridden')
+
+    def test_profile_override_not_applied_without_in_profile(self):
+        from picard.config import ConfigSection
+
+        section = ConfigSection(self.config, 'test_plugin2')
+        section.register_option('my_opt', 'default', in_profile=False)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        key = section.key('_profile_settings')
+        self.config.setValue(key, {'p1': {'my_opt': 'overridden'}})
+
+        # Should NOT apply override since in_profile=False
+        self.assertEqual(section['my_opt'], 'default')
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption
