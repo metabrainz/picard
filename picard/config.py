@@ -280,10 +280,14 @@ class ConfigSection(QtCore.QObject):
 
         Returns True if the write was intercepted, False otherwise.
         """
-        try:
-            all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
-        except (AttributeError, KeyError, TypeError):
-            return False
+        setting_section = self.__qt_config.setting
+        if setting_section.settings_override is not None:
+            all_settings = setting_section.settings_override
+        else:
+            try:
+                all_settings = self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
+            except (AttributeError, KeyError, TypeError):
+                return False
         if not all_settings:
             return False
         for profile_id in self._get_active_profile_ids():
@@ -291,7 +295,8 @@ class ConfigSection(QtCore.QObject):
             if settings and name in settings:
                 old_value = settings[name]
                 settings[name] = value
-                self._save_all_profile_settings(all_settings)
+                if setting_section.settings_override is None:
+                    self._save_all_profile_settings(all_settings)
                 if value != old_value:
                     self.setting_changed.emit(name, old_value, value)
                 return True
