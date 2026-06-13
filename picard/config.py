@@ -306,6 +306,7 @@ class ConfigSection(QtCore.QObject):
         """Persist profile settings to the global profiles section."""
         key = self.__qt_config.profiles.key(SettingConfigSection.SETTINGS_KEY)
         self.__qt_config.setValue(key, all_settings)
+        self.__qt_config.profiles._memoization[key].dirty = True
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
@@ -480,7 +481,7 @@ class SettingConfigSection(ConfigSection):
         profile_settings[profile_id][name] = value
         key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
         self.__qt_config.setValue(key, profile_settings)
-        self._memoization[key].dirty = True
+        self.__qt_config.profiles._memoization[key].dirty = True
 
     def set_profiles_override(self, new_profiles=None):
         self.profiles_override = new_profiles
