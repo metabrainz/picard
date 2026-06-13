@@ -30,6 +30,8 @@ from collections import (
 from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
+from picard.i18n import N_
+
 
 if TYPE_CHECKING:
     from picard.ui.options import OptionsPage
@@ -50,6 +52,9 @@ def profile_groups_order(group: str) -> None:
         _groups_count += 1
 
 
+_PLUGINS_GROUP = 'plugins'
+
+
 def profile_groups_add_setting(
     group: str,
     option_name: str,
@@ -58,6 +63,14 @@ def profile_groups_add_setting(
     parent: str | None = None,
     section: str = 'setting',
 ) -> None:
+    # Auto-create the "Plugins" parent group if needed
+    if parent == _PLUGINS_GROUP and _PLUGINS_GROUP not in _settings_groups:
+        _settings_groups[_PLUGINS_GROUP] = {
+            'title': N_("Plugins"),
+            'parent': '',
+            'name': _PLUGINS_GROUP,
+            'settings': [],
+        }
     if group not in _settings_groups:
         _settings_groups[group] = {'title': title or group}
         _settings_groups[group]['parent'] = parent or ''
@@ -100,6 +113,14 @@ def profile_groups_values() -> Iterator[dict]:
     # QTreeWidget before adding their children.
     for k in sorted(_settings_groups, key=lambda k: (_settings_groups[k]['parent'], _groups_order[k], k)):
         yield _settings_groups[k]
+
+
+def profile_groups_remove_group(group: str) -> None:
+    """Remove a settings group (e.g. when a plugin is disabled)."""
+    if group in _settings_groups:
+        for setting in _settings_groups[group].get('settings', []):
+            _known_settings.discard(setting.name)
+        del _settings_groups[group]
 
 
 def profile_groups_reset() -> None:

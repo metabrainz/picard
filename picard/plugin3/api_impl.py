@@ -193,6 +193,7 @@ class PluginApi:
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
         self._api_config = ConfigSection(get_config(), full_name)
+        self._api_config.display_name = manifest.name()
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path | None = None

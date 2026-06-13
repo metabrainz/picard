@@ -53,7 +53,10 @@ from picard import (
     log,
     tagger_instance,
 )
-from picard.profile import profile_groups_all_settings
+from picard.profile import (
+    profile_groups_add_setting,
+    profile_groups_all_settings,
+)
 from picard.version import Version
 
 
@@ -205,6 +208,7 @@ class ConfigSection(QtCore.QObject):
         self.__name = name
         self.__prefix = self.__name + '/'
         self._memoization: dict[str, Memovar] = defaultdict(Memovar)
+        self.display_name: str | None = None
 
     @property
     def section_name(self) -> str:
@@ -376,7 +380,19 @@ class ConfigSection(QtCore.QObject):
         else:
             option_type = Option  # type: ignore[assignment]
 
-        return option_type(self.__name, name, default, title=title, in_profile=in_profile)
+        opt = option_type(self.__name, name, default, title=title, in_profile=in_profile)
+        if in_profile:
+            group_name = self.__name
+            group_title = self.display_name or self.__name
+            profile_groups_add_setting(
+                group_name,
+                name,
+                (),
+                title=group_title,
+                parent='plugins',
+                section=self.__name,
+            )
+        return opt
 
 
 class SettingConfigSection(ConfigSection):

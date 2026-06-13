@@ -39,7 +39,10 @@ from picard.config import (
     register_quick_menu_item,
 )
 from picard.i18n import gettext as _
-from picard.profile import profile_groups_add_setting
+from picard.profile import (
+    profile_groups_add_setting,
+    profile_groups_all_settings,
+)
 from picard.util.display_title_base import HasDisplayTitle
 
 
@@ -153,11 +156,11 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
-        if highlights is not None:
+        if option.in_profile and name not in profile_groups_all_settings():
             profile_groups_add_setting(
                 cls.NAME,
                 name,
-                tuple(highlights),
+                tuple(highlights) if highlights else (),
                 title=cls.display_title(),
                 parent=cls.PARENT,
                 section=cls.OPTION_SECTION,
