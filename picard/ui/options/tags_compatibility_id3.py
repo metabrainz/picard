@@ -39,13 +39,13 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
-    OPTIONS = (
-        ('write_id3v23', ['write_id3v23', 'write_id3v24']),
-        ('id3v2_encoding', ['enc_utf8', 'enc_utf16', 'enc_iso88591']),
-        ('id3v23_join_with', ['id3v23_join_with']),
-        ('itunes_compatible_grouping', ['itunes_compatible_grouping']),
-        ('write_id3v1', ['write_id3v1']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'write_id3v23': {'widgets': ['write_id3v23', 'write_id3v24']},
+        'id3v2_encoding': {'widgets': ['enc_utf8', 'enc_utf16', 'enc_iso88591']},
+        'id3v23_join_with': {'widgets': ['id3v23_join_with']},
+        'itunes_compatible_grouping': {'widgets': ['itunes_compatible_grouping']},
+        'write_id3v1': {'widgets': ['write_id3v1']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

@@ -85,24 +85,24 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_metadata.html"
 
-    OPTIONS = (
-        ('translate_artist_names', ['translate_artist_names']),
-        ('translate_album_titles', ['translate_album_titles']),
-        ('translate_track_titles', ['translate_track_titles']),
-        ('translation_locales', ['selected_locales']),
-        ('translate_artist_names_script_exception', ['translate_artist_names_script_exception']),
-        ('translate_from_sortname', ['translate_from_sortname']),
-        ('script_exceptions', ['selected_scripts']),
-        ('standardize_artists', ['standardize_artists']),
-        ('standardize_instruments', ['standardize_instruments']),
-        ('standardize_vocals', ['standardize_vocals']),
-        ('convert_punctuation', ['convert_punctuation']),
-        ('release_ars', ['release_ars']),
-        ('track_ars', ['track_ars']),
-        ('guess_tracknumber_and_title', ['guess_tracknumber_and_title']),
-        ('va_name', ['va_name']),
-        ('nat_name', ['nat_name']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'translate_artist_names': {'widgets': ['translate_artist_names']},
+        'translate_album_titles': {'widgets': ['translate_album_titles']},
+        'translate_track_titles': {'widgets': ['translate_track_titles']},
+        'translation_locales': {'widgets': ['selected_locales']},
+        'translate_artist_names_script_exception': {'widgets': ['translate_artist_names_script_exception']},
+        'translate_from_sortname': {'widgets': ['translate_from_sortname']},
+        'script_exceptions': {'widgets': ['selected_scripts']},
+        'standardize_artists': {'widgets': ['standardize_artists']},
+        'standardize_instruments': {'widgets': ['standardize_instruments']},
+        'standardize_vocals': {'widgets': ['standardize_vocals']},
+        'convert_punctuation': {'widgets': ['convert_punctuation']},
+        'release_ars': {'widgets': ['release_ars']},
+        'track_ars': {'widgets': ['track_ars']},
+        'guess_tracknumber_and_title': {'widgets': ['guess_tracknumber_and_title']},
+        'va_name': {'widgets': ['va_name']},
+        'nat_name': {'widgets': ['nat_name']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

@@ -58,7 +58,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
-    OPTIONS: tuple = ()
+    OPTIONS: dict[str, dict] = {}
 
     _registered_settings: dict[str, list] = defaultdict(list)
     initialized = False

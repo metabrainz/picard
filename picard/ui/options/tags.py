@@ -49,17 +49,17 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
-    OPTIONS = (
-        ('enable_tag_saving', ['write_tags']),
-        ('preserve_timestamps', ['preserve_timestamps']),
-        ('clear_existing_tags', ['clear_existing_tags']),
-        ('preserve_images', ['preserve_images']),
-        ('remove_id3_from_flac', ['remove_id3_from_flac']),
-        ('remove_ape_from_mp3', ['remove_ape_from_mp3']),
-        ('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac']),
-        ('preserved_tags', ['preserved_tags']),
-        ('disable_date_sanitization_formats', ['disable_date_sanitization_formats']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'enable_tag_saving': {'widgets': ['write_tags']},
+        'preserve_timestamps': {'widgets': ['preserve_timestamps']},
+        'clear_existing_tags': {'widgets': ['clear_existing_tags']},
+        'preserve_images': {'widgets': ['preserve_images']},
+        'remove_id3_from_flac': {'widgets': ['remove_id3_from_flac']},
+        'remove_ape_from_mp3': {'widgets': ['remove_ape_from_mp3']},
+        'fix_missing_seekpoints_flac': {'widgets': ['fix_missing_seekpoints_flac']},
+        'preserved_tags': {'widgets': ['preserved_tags']},
+        'disable_date_sanitization_formats': {'widgets': ['disable_date_sanitization_formats']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

@@ -41,15 +41,15 @@ class SessionsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_sessions.html"
 
-    OPTIONS = (
-        ('session_safe_restore', ['safe_restore_checkbox']),
-        ('session_load_last_on_startup', ['load_last_checkbox']),
-        ('session_autosave_interval_min', ['autosave_spin']),
-        ('session_backup_on_crash', ['backup_checkbox']),
-        ('session_include_mb_data', ['include_mb_data_checkbox']),
-        ('session_no_mb_requests_on_load', ['no_mb_requests_checkbox']),
-        ('session_folder_path', ['folder_path_edit']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'session_safe_restore': {'widgets': ['safe_restore_checkbox']},
+        'session_load_last_on_startup': {'widgets': ['load_last_checkbox']},
+        'session_autosave_interval_min': {'widgets': ['autosave_spin']},
+        'session_backup_on_crash': {'widgets': ['backup_checkbox']},
+        'session_include_mb_data': {'widgets': ['include_mb_data_checkbox']},
+        'session_no_mb_requests_on_load': {'widgets': ['no_mb_requests_checkbox']},
+        'session_folder_path': {'widgets': ['folder_path_edit']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent)

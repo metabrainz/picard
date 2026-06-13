@@ -36,7 +36,9 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_top_tags.html"
 
-    OPTIONS = (('metadatabox_top_tags', ['top_tags_groupBox']),)
+    OPTIONS: dict[str, dict] = {
+        'metadatabox_top_tags': {'widgets': ['top_tags_groupBox']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
