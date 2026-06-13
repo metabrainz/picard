@@ -75,6 +75,8 @@ class Option(QtCore.QObject):
         self.default = default
         self.title = title
         self.in_profile = in_profile
+        if in_profile and not title:
+            log.warning("Option '%s/%s' has in_profile=True but no title", section, name)
         self.registry[(section, name)] = self
 
         self._check_if_valid()

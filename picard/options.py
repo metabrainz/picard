@@ -712,7 +712,4 @@ def get_option_title(name):
     key = ('setting', name)
     if key not in Option.registry:
         return None
-    title = Option.registry[key].title
-    if title:
-        return title
-    return N_('No title for setting "%s"') % name
+    return Option.registry[key].title or name
