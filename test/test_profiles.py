@@ -88,10 +88,10 @@ class TestPicardProfilesCommon(PicardTestCase):
         self.test_setting_2 = option_settings[2]
         self.test_setting_3 = option_settings[3]
 
-        TextOption("setting", self.test_setting_0, "abc")
-        BoolOption("setting", self.test_setting_1, True)
-        IntOption("setting", self.test_setting_2, 42)
-        TextOption("setting", self.test_setting_3, "xyz")
+        TextOption("setting", self.test_setting_0, "abc", in_profile=True)
+        BoolOption("setting", self.test_setting_1, True, in_profile=True)
+        IntOption("setting", self.test_setting_2, 42, in_profile=True)
+        TextOption("setting", self.test_setting_3, "xyz", in_profile=True)
 
     def tearDown(self):
         Option.registry = self.old_registry

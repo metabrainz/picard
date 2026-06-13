@@ -55,7 +55,6 @@ from picard import (
 )
 from picard.profile import (
     profile_groups_add_setting,
-    profile_groups_all_settings,
     setting_profile_key,
 )
 from picard.version import Version
@@ -446,53 +445,6 @@ class SettingConfigSection(ConfigSection):
         for profile in profiles:
             if profile['enabled']:
                 yield profile['id']
-
-    def _get_active_profile_settings(self):
-        for profile_id in self._get_active_profile_ids():
-            yield profile_id, self._get_profile_settings(profile_id)
-
-    def _get_profile_settings(self, profile_id):
-        if self.settings_override is None:
-            # Set to None if profile_id not in profile settings
-            profile_settings = (
-                self.__qt_config.profiles[self.SETTINGS_KEY][profile_id]
-                if profile_id in self.__qt_config.profiles[self.SETTINGS_KEY]
-                else None
-            )
-        else:
-            # Set to None if profile_id not in settings_override
-            profile_settings = self.settings_override[profile_id] if profile_id in self.settings_override else None
-        if profile_settings is None:
-            log.error("Unable to find settings for user profile '%s'", profile_id)
-            return {}
-        return profile_settings
-
-    def __getitem__(self, name: str):
-        # Don't process settings that are not profile-specific
-        if name in profile_groups_all_settings():
-            for _profile_id, settings in self._get_active_profile_settings():
-                if name in settings and settings[name] is not None:
-                    return settings[name]
-        return super().__getitem__(name)
-
-    def __setitem__(self, name: str, value: Any):
-        # Don't process settings that are not profile-specific
-        if name in profile_groups_all_settings():
-            for profile_id, settings in self._get_active_profile_settings():
-                if name in settings:
-                    old_value = settings[name]
-                    self._save_profile_setting(profile_id, name, value)
-                    if value != old_value:
-                        self.setting_changed.emit(name, old_value, value)
-                    return
-        super().__setitem__(name, value)
-
-    def _save_profile_setting(self, profile_id, name, value):
-        profile_settings = self.__qt_config.profiles[self.SETTINGS_KEY]
-        profile_settings[profile_id][name] = value
-        key = self.__qt_config.profiles.key(self.SETTINGS_KEY)
-        self.__qt_config.setValue(key, profile_settings)
-        self.__qt_config.profiles._memoization[key].dirty = True
 
     def set_profiles_override(self, new_profiles=None):
         self.profiles_override = new_profiles
