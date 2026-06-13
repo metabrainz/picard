@@ -516,11 +516,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.profile_warning.setVisible(False)
             return
 
-        if len(profile_set) == 1:
-            text = _('profile "%s"') % profile_set.pop()[1]
+        sorted_profiles = sorted(profile_set)
+        if len(sorted_profiles) <= 3:
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles])
         else:
-            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
-        self.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles[:3]]) + ', …'
+
+        has_highlights = option_group and any(opt.highlights for opt in option_group['settings'])
+        if has_highlights:
+            msg = _('The highlighted settings on this page are overridden by %s') % names
+        else:
+            msg = _('Some settings on this page are overridden by %s') % names
+        self.profile_warning_text.setText(msg)
         self.ui.profile_warning.setVisible(True)
 
     def switch_page(self):
