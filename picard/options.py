@@ -302,7 +302,13 @@ TextOption('setting', 'acoustid_apikey', '')
 TextOption('setting', 'acoustid_fpcalc', '')
 TextOption('setting', 'fingerprinting_system', 'acoustid', title=N_('Use AcoustID fingerprinting'), in_profile=True)
 IntOption('setting', 'fpcalc_threads', DEFAULT_FPCALC_THREADS)
-BoolOption('setting', 'ignore_existing_acoustid_fingerprints', False)
+BoolOption(
+    'setting',
+    'ignore_existing_acoustid_fingerprints',
+    False,
+    title=N_('Ignore existing AcoustID fingerprints'),
+    in_profile=True,
+)
 BoolOption('setting', 'save_acoustid_fingerprints', False, title=N_('Save AcoustID fingerprints'), in_profile=True)
 
 # picard/ui/options/general.py

@@ -66,11 +66,11 @@ class FingerprintingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_fingerprinting.html"
 
     OPTIONS: dict[str, dict] = {
-        'fingerprinting_system': {},
+        'fingerprinting_system': {'widgets': ['disable_fingerprinting', 'use_acoustid']},
         'acoustid_fpcalc': {},
         'acoustid_apikey': {},
-        'ignore_existing_acoustid_fingerprints': {},
-        'save_acoustid_fingerprints': {},
+        'ignore_existing_acoustid_fingerprints': {'widgets': ['ignore_existing_acoustid_fingerprints']},
+        'save_acoustid_fingerprints': {'widgets': ['save_acoustid_fingerprints']},
         'fpcalc_threads': {},
     }
 
