@@ -253,6 +253,10 @@ class ConfigSection(QtCore.QObject):
         return None
 
     def __setitem__(self, name: str, value: Any):
+        opt = Option.get(self.__name, name)
+        if opt and opt.in_profile:
+            if self._set_profile_override(name, value):
+                return
         old_value = self.__getitem__(name)
         key = self.key(name)
         if isinstance(value, Enum):
@@ -261,6 +265,30 @@ class ConfigSection(QtCore.QObject):
         self._memoization[key].dirty = True
         if value != old_value:
             self.setting_changed.emit(name, old_value, value)
+
+    def _set_profile_override(self, name: str, value) -> bool:
+        """Write value to active profile's settings if the option is overridden there.
+
+        Returns True if the write was intercepted, False otherwise.
+        """
+        profile_settings = self._get_raw_profile_settings()
+        if not profile_settings:
+            return False
+        for profile_id in self._get_active_profile_ids():
+            settings = profile_settings.get(profile_id)
+            if settings and name in settings:
+                old_value = settings[name]
+                settings[name] = value
+                self._save_profile_settings(profile_settings)
+                if value != old_value:
+                    self.setting_changed.emit(name, old_value, value)
+                return True
+        return False
+
+    def _save_profile_settings(self, profile_settings: dict):
+        """Persist the _profile_settings dict to this section."""
+        key = self.key(self._PROFILE_SETTINGS_KEY)
+        self.__qt_config.setValue(key, profile_settings)
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
