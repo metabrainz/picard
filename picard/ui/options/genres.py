@@ -87,7 +87,7 @@ class GenresOptionsPage(OptionsPage):
     HELP_URL = "/config/options_genres.html"
 
     OPTIONS: dict[str, dict] = {
-        'use_genres': {},
+        'use_genres': {'widgets': ['use_genres']},
         'only_my_genres': {'widgets': ['only_my_genres']},
         'artists_genres': {'widgets': ['artists_genres']},
         'folksonomy_tags': {'widgets': ['folksonomy_tags']},
