@@ -38,7 +38,7 @@ def register_options_page(page_class: type[OptionsPage]) -> None:
     for opt_name, opt_info in page_class.OPTIONS.items():
         widgets = opt_info.get('widgets')
         if widgets:
-            opt = Option.get('setting', opt_name)
+            opt = Option.get(page_class.OPTION_SECTION, opt_name)
             if opt and not opt.in_profile:
                 log.warning(
                     "Option '%s' has highlight widgets on page '%s' but in_profile=False; widgets ignored",

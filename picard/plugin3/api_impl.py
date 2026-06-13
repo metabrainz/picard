@@ -1412,6 +1412,7 @@ class PluginApi:
                 api.register_options_page(MyOptionsPage)
         """
         page_class.api = self
+        page_class.OPTION_SECTION = self._api_config.section_name
         # The options page needs a unique name if no name was given
         self._set_class_name_and_title(page_class)
         return register_options_page(page_class)

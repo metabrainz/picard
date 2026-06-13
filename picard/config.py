@@ -206,6 +206,11 @@ class ConfigSection(QtCore.QObject):
         self.__prefix = self.__name + '/'
         self._memoization: dict[str, Memovar] = defaultdict(Memovar)
 
+    @property
+    def section_name(self) -> str:
+        """The name of this config section."""
+        return self.__name
+
     def key(self, name):
         return self.__prefix + name
 

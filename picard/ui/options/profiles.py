@@ -229,7 +229,7 @@ class ProfilesOptionsPage(OptionsPage):
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
                 try:
-                    opt_title = Option.get_title('setting', setting.name)
+                    opt_title = Option.get_title(setting.section, setting.name)
                 except OptionError as e:
                     log.debug(e)
                     continue

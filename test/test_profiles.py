@@ -136,8 +136,8 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
     def test_settings_have_no_blank_keys(self):
         for group in profile_groups_keys():
             settings = profile_groups_settings(group)
-            for name, _highlights in settings:
-                self.assertNotEqual(name.strip(), "")
+            for setting in settings:
+                self.assertNotEqual(setting.name.strip(), "")
 
     def test_groups_have_title(self):
         for value in profile_groups_values():

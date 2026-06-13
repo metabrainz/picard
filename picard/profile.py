@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from picard.ui.options import OptionsPage
 
 
-SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
+SettingDesc = namedtuple('SettingDesc', ('name', 'highlights', 'section'), defaults=('setting',))
 
 _settings_groups: dict = {}
 _groups_order: dict[str, int] = defaultdict(lambda: -1)
@@ -56,6 +56,7 @@ def profile_groups_add_setting(
     highlights: list[str],
     title: str | None = None,
     parent: str | None = None,
+    section: str = 'setting',
 ) -> None:
     if group not in _settings_groups:
         _settings_groups[group] = {'title': title or group}
@@ -63,7 +64,7 @@ def profile_groups_add_setting(
         _settings_groups[group]['name'] = group
     if 'settings' not in _settings_groups[group]:
         _settings_groups[group]['settings'] = []
-    _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights))
+    _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights, section))
     _known_settings.add(option_name)
 
 
