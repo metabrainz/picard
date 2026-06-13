@@ -440,9 +440,18 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                                 page.NAME,
                             )
                             continue
-                        style_override = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
-                        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
-                        style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
+                        if isinstance(obj, (QtWidgets.QPushButton, QtWidgets.QComboBox)):
+                            style_override = "#%s { border: 2px solid %s; }" % (objname, bg_color)
+                            bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+                            style_tracked = "#%s { border: 1px solid %s; }" % (objname, bg_color)
+                        else:
+                            style_override = "#%s { color: %s; background-color: %s; }" % (
+                                objname,
+                                fg_color,
+                                bg_color,
+                            )
+                            bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+                            style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
                         style_reset = "#%s { }" % (objname)
                         self._check_and_highlight_option(
                             obj,
