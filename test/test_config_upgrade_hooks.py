@@ -631,3 +631,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0b3(self.config)
         self.assertNotIn('file_lookup_threshold', self.config.setting)
         self.assertNotIn('cluster_lookup_threshold', self.config.setting)
+
+    def test_upgrade_to_v3_0_0b5(self):
+        ListOption('setting', 'quick_menu_items', [])
+        TextOption('setting', 'selected_file_naming_script_id', '')
+        TextOption('setting', 'active_file_naming_script_id', '')
+        self.config.setting['selected_file_naming_script_id'] = 'test-script-id'
+        self.config.setting['quick_menu_items'] = ['save_images_to_tags', 'save_images_to_files']
+        hooks.upgrade_to_v3_0_0b5(self.config)
+        # Verify key rename
+        self.assertEqual(self.config.setting['active_file_naming_script_id'], 'test-script-id')
+        self.assertNotIn('selected_file_naming_script_id', self.config.setting)
+        # Verify quick_menu_items
+        items = self.config.setting['quick_menu_items']
+        self.assertEqual(items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
+        self.assertIn('save_images_to_tags', items)
+        self.assertIn('save_images_to_files', items)

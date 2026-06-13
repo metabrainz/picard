@@ -680,3 +680,20 @@ def upgrade_to_v3_0_0b3(config):
     """
     config.setting.remove('file_lookup_threshold')
     config.setting.remove('cluster_lookup_threshold')
+
+
+def upgrade_to_v3_0_0b5(config):
+    """Rename active script key and add toggles to quick_menu_items.
+
+    Rename 'selected_file_naming_script_id' to 'active_file_naming_script_id'.
+    Add rename_files, move_files, enable_tag_saving to quick_menu_items
+    (previously dedicated menu actions, now in configurable quick settings).
+    """
+    rename_option(config, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
+
+    new_items = ['rename_files', 'move_files', 'enable_tag_saving']
+    quick_menu_items = config.setting['quick_menu_items']
+    for item in reversed(new_items):
+        if item not in quick_menu_items:
+            quick_menu_items.insert(0, item)
+    config.setting['quick_menu_items'] = quick_menu_items

@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/scripteditor.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -211,7 +211,7 @@ class Ui_ScriptEditor(object):
         QtCore.QMetaObject.connectSlotsByName(ScriptEditor)
 
     def retranslateUi(self, ScriptEditor):
-        self.label.setText(_("Selected file naming script:"))
+        self.label.setText(_("Edit file naming script:"))
         self.preset_naming_scripts.setToolTip(_("Select the file naming script to load into the editor"))
         self.label_2.setText(_("Title:"))
         self.groupBox.setTitle(_("Files will be named like this:"))

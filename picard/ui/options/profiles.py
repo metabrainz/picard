@@ -304,7 +304,7 @@ class ProfilesOptionsPage(OptionsPage):
         config = get_config()
         if value is None:
             return _("None")
-        if key == 'selected_file_naming_script_id':
+        if key == 'active_file_naming_script_id':
             return self._get_naming_script(config, value)
         if key == 'list_of_scripts':
             return self._get_scripts_list(config.setting[key])

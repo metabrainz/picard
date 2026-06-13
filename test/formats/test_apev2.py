@@ -195,7 +195,7 @@ class WavPackTest(CommonApeTests.ApeTestCase):
         config.setting['delete_empty_dirs'] = False
         config.setting['save_images_to_files'] = False
         config.setting['file_renaming_scripts'] = {'test_id': {'script': '%title%'}}
-        config.setting['selected_file_naming_script_id'] = 'test_id'
+        config.setting['active_file_naming_script_id'] = 'test_id'
 
     def _save_with_wavpack_correction_file(self, source_file_wvc):
         # Create dummy WavPack correction file
