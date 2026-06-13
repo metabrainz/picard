@@ -65,14 +65,14 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_fingerprinting.html"
 
-    OPTIONS = (
-        ('fingerprinting_system', None),
-        ('acoustid_fpcalc', None),
-        ('acoustid_apikey', None),
-        ('ignore_existing_acoustid_fingerprints', None),
-        ('save_acoustid_fingerprints', None),
-        ('fpcalc_threads', None),
-    )
+    OPTIONS: dict[str, dict] = {
+        'fingerprinting_system': {'widgets': ['disable_fingerprinting', 'use_acoustid']},
+        'acoustid_fpcalc': {},
+        'acoustid_apikey': {},
+        'ignore_existing_acoustid_fingerprints': {'widgets': ['ignore_existing_acoustid_fingerprints']},
+        'save_acoustid_fingerprints': {'widgets': ['save_acoustid_fingerprints']},
+        'fpcalc_threads': {},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -151,7 +151,6 @@ class FingerprintingOptionsPage(OptionsPage):
         fpcalc = self.ui.acoustid_fpcalc.text()
         if not fpcalc:
             fpcalc = find_fpcalc()
-        self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
         process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)

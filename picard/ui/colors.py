@@ -186,6 +186,11 @@ class InterfaceColors:
     def get_qcolor(self, color_key):
         return QtGui.QColor(self.get_color(color_key))
 
+    def get_color_css_rgba(self, color_key, alpha=255):
+        """Return a CSS rgba() string for the given color with alpha (0-255)."""
+        color = self.get_qcolor(color_key)
+        return f'rgba({color.red()}, {color.green()}, {color.blue()}, {alpha})'
+
     def get_color_description(self, color_key):
         return _(self.default_colors[color_key].description)
 

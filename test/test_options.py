@@ -38,9 +38,35 @@ class OptionsUtilitiesTest(PicardTestCase):
         self.assertEqual(get_option_title('invalid_option'), None)
 
         # No title assigned to the option
-        self.assertEqual(
-            get_option_title('test_option_without_title'), 'No title for setting "test_option_without_title"'
-        )
+        self.assertEqual(get_option_title('test_option_without_title'), 'test_option_without_title')
 
         # Title assigned to the option
         self.assertEqual(get_option_title('test_option_with_title'), 'Test option with title')
+
+    def test_register_options_page_warns_widgets_without_in_profile(self):
+        from unittest.mock import patch
+
+        from picard.config import BoolOption
+        from picard.extension_points.options_pages import (
+            OptionHighlightWarning,
+            register_options_page,
+        )
+
+        from picard.ui.options import OptionsPage
+
+        BoolOption('setting', 'test_no_profile_opt', False)
+
+        class TestPage(OptionsPage):
+            NAME = 'test_warn_page'
+            TITLE = 'Test'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTIONS: dict[str, dict] = {
+                'test_no_profile_opt': {'widgets': ['some_widget']},
+            }
+
+        with patch('picard.extension_points.options_pages.log') as mock_log:
+            register_options_page(TestPage)
+        mock_log.warning.assert_called_once()
+        exc = mock_log.warning.call_args[0][0]
+        self.assertIsInstance(exc, OptionHighlightWarning)

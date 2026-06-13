@@ -39,7 +39,11 @@ from picard.config import (
     register_quick_menu_item,
 )
 from picard.i18n import gettext as _
-from picard.profile import profile_groups_add_setting
+from picard.profile import (
+    profile_groups_add_setting,
+    profile_groups_all_settings,
+    profile_groups_update_highlights,
+)
 from picard.util.display_title_base import HasDisplayTitle
 
 
@@ -58,7 +62,9 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
-    OPTIONS: tuple = ()
+    OPTIONS: dict[str, dict] = {}
+
+    OPTION_SECTION = 'setting'
 
     _registered_settings: dict[str, list] = defaultdict(list)
     initialized = False
@@ -146,10 +152,19 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     def register_setting(cls, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
         and to highlight when profiles are used"""
-        option = Option.get('setting', name)
+        option = Option.get(cls.OPTION_SECTION, name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
-        if highlights is not None:
-            profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.display_title(), parent=cls.PARENT)
+        if option.in_profile and name not in profile_groups_all_settings():
+            profile_groups_add_setting(
+                cls.NAME,
+                name,
+                tuple(highlights) if highlights else (),
+                title=cls.display_title(),
+                parent=cls.PARENT,
+                section=cls.OPTION_SECTION,
+            )
+        elif option.in_profile and highlights:
+            profile_groups_update_highlights(name, tuple(highlights))

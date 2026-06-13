@@ -32,12 +32,16 @@ class TestPluginApiGetApi(PicardTestCase):
         """Helper to create and register a fake API instance."""
 
         class FakeManifest:
-            pass
+            def __init__(self, module_name):
+                self.uuid = f'{module_name}-uuid'
+                self.module_name = module_name
+                self.source_locale = 'en'
+                self._name = module_name
 
-        manifest = FakeManifest()
-        manifest.uuid = f'{module_name}-uuid'
-        manifest.module_name = module_name
-        manifest.source_locale = 'en'
+            def name(self, locale='en'):
+                return self._name
+
+        manifest = FakeManifest(module_name)
 
         api = PluginApi(manifest, None)
 

@@ -42,7 +42,12 @@ class ProviderOptionsLocal(ProviderOptions):
     Options for Local Files cover art provider
     """
 
+    NAME = "provider_local"
     HELP_URL = '/config/options_local_files.html'
+
+    OPTIONS: dict[str, dict] = {
+        'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
+    }
 
     _options_ui = Ui_LocalOptions
 

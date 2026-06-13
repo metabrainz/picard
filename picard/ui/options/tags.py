@@ -49,17 +49,17 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
-    OPTIONS = (
-        ('enable_tag_saving', ['write_tags']),
-        ('preserve_timestamps', ['preserve_timestamps']),
-        ('clear_existing_tags', ['clear_existing_tags']),
-        ('preserve_images', ['preserve_images']),
-        ('remove_id3_from_flac', ['remove_id3_from_flac']),
-        ('remove_ape_from_mp3', ['remove_ape_from_mp3']),
-        ('fix_missing_seekpoints_flac', ['fix_missing_seekpoints_flac']),
-        ('preserved_tags', ['preserved_tags']),
-        ('disable_date_sanitization_formats', ['disable_date_sanitization_formats']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'enable_tag_saving': {'widgets': ['write_tags']},
+        'preserve_timestamps': {'widgets': ['preserve_timestamps']},
+        'clear_existing_tags': {'widgets': ['clear_existing_tags']},
+        'preserve_images': {'widgets': ['preserve_images']},
+        'remove_id3_from_flac': {'widgets': ['remove_id3_from_flac']},
+        'remove_ape_from_mp3': {'widgets': ['remove_ape_from_mp3']},
+        'fix_missing_seekpoints_flac': {'widgets': ['fix_missing_seekpoints_flac']},
+        'preserved_tags': {'widgets': ['preserved_tags_label']},
+        'disable_date_sanitization_formats': {'widgets': ['do_not_sanitize_container']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -100,24 +100,12 @@ class TagsOptionsPage(OptionsPage):
 
     # --- Disable date sanitization formats control ---
     def _init_disable_date_sanitization_formats_control(self):
-        label = QtWidgets.QLabel(self)
-        label.setObjectName('disable_date_sanitization_formats_label')
-        label.setText(_("Do not sanitize dates for these tag formats:"))
-
-        self._disable_date_sanitization_container = QtWidgets.QWidget(self)
-        self._disable_date_sanitization_container.setObjectName('disable_date_sanitization_formats_container')
-        self._disable_date_sanitization_layout = QtWidgets.QVBoxLayout(self._disable_date_sanitization_container)
-        self._disable_date_sanitization_layout.setContentsMargins(0, 0, 0, 0)
-        self._disable_date_sanitization_layout.setSpacing(4)
         self._disable_date_sanitization_checkboxes: dict[str, QtWidgets.QCheckBox] = {}
-
         self._rebuild_date_sanitization_model()
-        self.ui.vboxlayout.addWidget(label)
-        self.ui.vboxlayout.addWidget(self._disable_date_sanitization_container)
 
     def _clear_disable_date_sanitization_checkboxes(self):
-        while self._disable_date_sanitization_layout.count():
-            item = self._disable_date_sanitization_layout.takeAt(0)
+        while self.ui.do_not_sanitize_layout.count():
+            item = self.ui.do_not_sanitize_layout.takeAt(0)
             widget = item.widget()
             if widget is not None:
                 widget.deleteLater()
@@ -133,16 +121,14 @@ class TagsOptionsPage(OptionsPage):
         for key, title in date_sanitization_entries:
             checkbox = QtWidgets.QCheckBox(
                 _(title),
-                self._disable_date_sanitization_container,
+                self.ui.do_not_sanitize_container,
             )
             checkbox.setObjectName(f"disable_date_sanitization_{key}")
             checkbox.setChecked(key in currently_checked)
             checkbox.setProperty("format_key", key)
 
-            self._disable_date_sanitization_layout.addWidget(checkbox)
+            self.ui.do_not_sanitize_layout.addWidget(checkbox)
             self._disable_date_sanitization_checkboxes[key] = checkbox
-
-        self._disable_date_sanitization_layout.addStretch(1)
 
     def _set_disable_date_sanitization_checked(self, keys):
         checked = set(keys)

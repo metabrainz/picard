@@ -37,13 +37,13 @@ class InterfaceCoverArtBoxOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_cover_art_box.html"
 
-    OPTIONS = (
-        ('show_cover_art_details', ['cb_show_cover_art_details']),
-        ('show_cover_art_details_type', ['cb_show_cover_art_details_type']),
-        ('show_cover_art_details_filesize', ['cb_show_cover_art_details_filesize']),
-        ('show_cover_art_details_dimensions', ['cb_show_cover_art_details_dimensions']),
-        ('show_cover_art_details_mimetype', ['cb_show_cover_art_details_mimetype']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'show_cover_art_details': {'widgets': ['cb_show_cover_art_details']},
+        'show_cover_art_details_type': {'widgets': ['cb_show_cover_art_details_type']},
+        'show_cover_art_details_filesize': {'widgets': ['cb_show_cover_art_details_filesize']},
+        'show_cover_art_details_dimensions': {'widgets': ['cb_show_cover_art_details_dimensions']},
+        'show_cover_art_details_mimetype': {'widgets': ['cb_show_cover_art_details_mimetype']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

@@ -23,6 +23,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from picard import log
+from picard.config import Option
 from picard.plugin import ExtensionPoint
 
 from picard.ui.options import OptionsPage
@@ -31,7 +33,23 @@ from picard.ui.options import OptionsPage
 ext_point_options_pages = ExtensionPoint(label='options_pages')
 
 
+class OptionHighlightWarning(Exception):
+    """Raised when widgets are declared for an option that is not in_profile."""
+
+
 def register_options_page(page_class: type[OptionsPage]) -> None:
     ext_point_options_pages.register(page_class.__module__, page_class)
-    for opt_name, opt_highlights in page_class.OPTIONS:
-        page_class.register_setting(opt_name, opt_highlights)
+    for opt_name, opt_info in page_class.OPTIONS.items():
+        widgets = opt_info.get('widgets')
+        if widgets:
+            opt = Option.get(page_class.OPTION_SECTION, opt_name)
+            if opt and not opt.in_profile:
+                try:
+                    raise OptionHighlightWarning(
+                        f"Option '{opt_name}' has highlight widgets on page "
+                        f"'{page_class.NAME}' but in_profile=False; widgets ignored"
+                    )
+                except OptionHighlightWarning as e:
+                    log.warning(e)
+                widgets = None
+        page_class.register_setting(opt_name, widgets)

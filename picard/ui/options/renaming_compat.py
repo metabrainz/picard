@@ -69,15 +69,14 @@ class RenamingCompatOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming_compat.html"
 
-    OPTIONS = (
-        ('ascii_filenames', ['ascii_filenames']),
-        ('windows_compatibility', ['windows_compatibility']),
-        ('win_compat_replacements', ['win_compat_replacements']),
-        ('windows_long_paths', ['windows_long_paths']),
-        ('replace_spaces_with_underscores', ['replace_spaces_with_underscores']),
-        ('replace_dir_separator', ['replace_dir_separator']),
-    )
-
+    OPTIONS: dict[str, dict] = {
+        'ascii_filenames': {'widgets': ['ascii_filenames']},
+        'windows_compatibility': {'widgets': ['windows_compatibility']},
+        'win_compat_replacements': {'widgets': ['windows_compatibility', 'btn_windows_compatibility_change']},
+        'windows_long_paths': {'widgets': ['windows_long_paths']},
+        'replace_spaces_with_underscores': {'widgets': ['replace_spaces_with_underscores']},
+        'replace_dir_separator': {'widgets': ['replace_dir_separator']},
+    }
     options_changed = QtCore.pyqtSignal(dict)
 
     def __init__(self, parent=None):

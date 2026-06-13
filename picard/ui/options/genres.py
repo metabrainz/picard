@@ -86,16 +86,16 @@ class GenresOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_genres.html"
 
-    OPTIONS = (
-        ('use_genres', None),
-        ('only_my_genres', ['only_my_genres']),
-        ('artists_genres', ['artists_genres']),
-        ('folksonomy_tags', ['folksonomy_tags']),
-        ('min_genre_usage', ['min_genre_usage']),
-        ('max_genres', ['max_genres']),
-        ('join_genres', ['join_genres']),
-        ('genres_filter', ['genres_filter']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'use_genres': {'widgets': ['use_genres']},
+        'only_my_genres': {'widgets': ['only_my_genres']},
+        'artists_genres': {'widgets': ['artists_genres']},
+        'folksonomy_tags': {'widgets': ['folksonomy_tags']},
+        'min_genre_usage': {'widgets': ['min_genre_usage']},
+        'max_genres': {'widgets': ['max_genres']},
+        'join_genres': {'widgets': ['join_genres']},
+        'genres_filter': {'widgets': ['genres_filter']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
