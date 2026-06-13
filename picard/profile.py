@@ -135,9 +135,15 @@ def profile_groups_values() -> Iterator[dict]:
 def profile_groups_remove_group(group: str) -> None:
     """Remove a settings group (e.g. when a plugin is disabled)."""
     if group in _settings_groups:
-        for setting in _settings_groups[group].get('settings', []):
-            _known_settings.discard(setting.name)
+        removed_names = {s.name for s in _settings_groups[group].get('settings', [])}
         del _settings_groups[group]
+        # Only discard names not still referenced by another group
+        still_used = set()
+        for other_group in _settings_groups.values():
+            for s in other_group.get('settings', []):
+                if s.name in removed_names:
+                    still_used.add(s.name)
+        _known_settings.difference_update(removed_names - still_used)
 
 
 def profile_groups_reset() -> None:
