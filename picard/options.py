@@ -73,33 +73,21 @@ from picard.i18n import N_
 from picard.ui.colors import InterfaceColors
 
 
-# Note: There are two steps to adding an option to an option page:
+# Note: When adding an option:
 #
-#   1. The option is added to the appropriate section below.
-#      If it's using a default value that may be used elsewhere,
-#      a constant starting with `DEFAULT_` can be added to `const/defaults.py`
-#      and imported here.
+#   1. Add it to the appropriate section below.
+#      If using a default value shared elsewhere, add a `DEFAULT_` constant
+#      to `const/defaults.py` and import it here.
 #
-#      The `title` parameter of `Option` is required for options that may be
-#      used in user profiles.
-#      The translated title will be displayed in Profiles option page.
+#   2. If the option can be overridden in user profiles, set:
+#      - `title=N_("...")` for display in the Profiles option page
+#      - `in_profile=True` to explicitly opt in
 #
-#   2. If the option is a 'setting' which is edited in one of the option pages,
-#      then the option must be added to the OPTIONS tuple in the class. The
-#      first parameter is the option name, the second is a list of UI elements
-#      to highlight if the option is part of an option profile. If the setting
-#      can be overridden in profiles, the `highlights` has to be a list of
-#      widget names associated with the option.
-#
-#      Registering a setting allows it to be reset to the default when the user
-#      asks for it on the corresponding option page.
+#   3. If the option is a 'setting' edited in an option page, add it to the
+#      page's OPTIONS dict. UI widget highlights for profile display are
+#      declared there (not here).
 #
 # Please, try to keep options ordered by section and name in their own group.
-#
-# Note: If the option is a 'setting' which is not edited in one of the option
-#       pages, it must be added to the `OPTIONS_NOT_IN_PAGES` set in the file
-#       `picard/ui/options/maintenance.py` so that it will not be included in
-#       the list of option settings that can be removed by the user.
 
 
 # picard/coverart/providers/caa.py
