@@ -151,7 +151,6 @@ class FingerprintingOptionsPage(OptionsPage):
         fpcalc = self.ui.acoustid_fpcalc.text()
         if not fpcalc:
             fpcalc = find_fpcalc()
-        self._fpcalc_valid = False
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
         process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)
