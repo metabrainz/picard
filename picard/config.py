@@ -662,9 +662,13 @@ QuickMenuItem = namedtuple('QuickMenuItem', ['name', 'title'])
 _quick_menu_items: dict[str, dict] = {}
 
 
-def register_quick_menu_item(group_order: int, group_name: str, group_parent: str, group_title, option: Option):
-    if option.qtype is not bool or not option.title:
+def register_quick_menu_item(group_order: int, group_name: str, group_parent: str, group_title: str, option: Option):
+    if option.qtype is not bool:
         return
+    title = option.title
+    if not title:
+        log.warning("BoolOption '%s/%s' has no title, using option name for quick menu", option.section, option.name)
+        title = option.name
     if group_name not in _quick_menu_items:
         group_parent = group_parent or ''
         _quick_menu_items[group_name] = {
@@ -673,7 +677,7 @@ def register_quick_menu_item(group_order: int, group_name: str, group_parent: st
             'parent': group_parent,
             'options': [],
         }
-    _quick_menu_items[group_name]['options'].append(QuickMenuItem(option.name, option.title))
+    _quick_menu_items[group_name]['options'].append(QuickMenuItem(option.name, title))
 
 
 def get_quick_menu_items():

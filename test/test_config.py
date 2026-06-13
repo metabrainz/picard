@@ -708,11 +708,12 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         Option('setting', 'option_set', {1, 2, 3}, title="Set")
         Option('setting', 'option_dict', {'a': 1, 'b': 2, 'c': 3}, title="Dict")
 
-        # Test that options without titles are not registered
+        # Test that options without titles are registered with name as fallback
         option = Option.get('setting', 'option_bool_no_title')
         register_quick_menu_item(0, 'test_group', None, "test group", option)
         menu_items = self._get_menu_items()
-        self.assertEqual(len(menu_items), 0)
+        self.assertEqual(len(menu_items), 1)
+        self.assertEqual(menu_items[0]['options'][0].title, 'option_bool_no_title')
 
         # Test that only boolean options are registered
         for opt_type in ['bool', 'text', 'int', 'float', 'list', 'set', 'dict']:
