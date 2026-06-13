@@ -41,8 +41,10 @@ from picard.profile import (
     profile_groups_all_settings,
     profile_groups_keys,
     profile_groups_order,
+    profile_groups_remove_group,
     profile_groups_reset,
     profile_groups_settings,
+    profile_groups_update_highlights,
     profile_groups_values,
 )
 
@@ -157,6 +159,30 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
 
         result_after = [value['title'] for value in profile_groups_values()]
         self.assertEqual(result_after, ['title_group1', 'title_group0'])
+
+    def test_remove_group(self):
+        self.assertIn('opt0', profile_groups_all_settings())
+        profile_groups_remove_group('group0')
+        # opt0 and opt2 were in group0
+        self.assertNotIn('opt0', profile_groups_all_settings())
+        self.assertNotIn('opt2', profile_groups_all_settings())
+        # opt1 and opt3 should remain (they're in group1)
+        self.assertIn('opt1', profile_groups_all_settings())
+        self.assertIn('opt3', profile_groups_all_settings())
+
+    def test_remove_group_preserves_shared_names(self):
+        # Add same option name to two groups
+        profile_groups_add_setting('extra_group', 'opt0', (), title='Extra')
+        profile_groups_remove_group('extra_group')
+        # opt0 should still be in _known_settings because group0 still has it
+        self.assertIn('opt0', profile_groups_all_settings())
+
+    def test_update_highlights(self):
+        # Update highlights for opt1
+        profile_groups_update_highlights('opt1', ('new_widget',))
+        settings = list(profile_groups_settings('group1'))
+        opt1_updated = next(s for s in settings if s.name == 'opt1')
+        self.assertEqual(opt1_updated.highlights, ('new_widget',))
 
 
 class TestUserProfiles(TestPicardProfilesCommon):

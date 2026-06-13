@@ -259,6 +259,41 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         stored = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
         self.assertEqual(stored['p1']['my_opt'], 'updated')
 
+    def test_profile_override_setitem_with_settings_override(self):
+        """When settings_override is active (dialog open), writes should go there."""
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
+
+        section = ConfigSection(self.config, 'test_plugin4')
+        section.register_option('my_opt', 'default', in_profile=True)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'persisted'}}
+
+        # Simulate dialog open — set override
+        override = {'p1': {'my_opt': 'dialog_value'}}
+        self.config.setting.set_settings_override(override)
+        self.config.setting.set_profiles_override([{'id': 'p1', 'enabled': True}])
+
+        # Read should come from override
+        self.assertEqual(section['my_opt'], 'dialog_value')
+
+        # Write should go to override, not QSettings
+        section['my_opt'] = 'new_dialog_value'
+        self.assertEqual(override['p1']['my_opt'], 'new_dialog_value')
+        self.assertEqual(section['my_opt'], 'new_dialog_value')
+
+        # Persisted value should be unchanged
+        persisted = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
+        self.assertEqual(persisted['p1']['my_opt'], 'persisted')
+
+        self.config.setting.set_settings_override(None)
+        self.config.setting.set_profiles_override(None)
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption
