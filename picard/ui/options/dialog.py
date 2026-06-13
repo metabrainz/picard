@@ -440,36 +440,65 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                                 page.NAME,
                             )
                             continue
-                        style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
+                        style_override = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
+                        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+                        style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
                         style_reset = "#%s { }" % (objname)
                         self._check_and_highlight_option(
                             obj,
                             setting_profile_key(opt.name, opt.section),
                             working_profiles,
                             working_settings,
-                            style,
+                            style_override,
+                            style_tracked,
                             style_reset,
                         )
 
-    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style, style_reset):
+    def _check_and_highlight_option(
+        self, obj, option_name, working_profiles, working_settings, style_override, style_tracked, style_reset
+    ):
         obj.setStyleSheet(style_reset)
-        obj.setToolTip(None)
+        config = get_config()
         for item in working_profiles:
-            if item['enabled']:
-                profile_id = item['id']
-                profile_title = item['title']
-                if profile_id in working_settings:
-                    profile_settings = working_settings[profile_id]
+            if not item['enabled']:
+                continue
+            profile_id = item['id']
+            profile_title = item['title']
+            profile_settings = working_settings.get(profile_id, {})
+            if option_name not in profile_settings:
+                continue
+            profile_value = profile_settings[option_name]
+            if profile_value is None:
+                # Tracked but no value set yet
+                tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                obj.setStyleSheet(style_tracked)
+            else:
+                # Check if value actually differs from base
+                if '/' in option_name:
+                    section, name = option_name.split('/', 1)
+                    opt = Option.get(section, name)
+                    base_value = opt.default if opt else None
                 else:
-                    profile_settings = {}
-                if option_name in profile_settings:
-                    tooltip = _("This option will be saved to profile: %s") % profile_title
-                    try:
-                        obj.setStyleSheet(style)
-                        obj.setToolTip(tooltip)
-                    except AttributeError:
-                        pass
-                    break
+                    with config.setting.no_profile():
+                        base_value = config.setting[option_name]
+                if profile_value != base_value:
+                    tooltip_text = _("This option is overridden by profile: %s") % profile_title
+                    obj.setStyleSheet(style_override)
+                else:
+                    tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                    obj.setStyleSheet(style_tracked)
+            # Append to existing tooltip
+            existing = obj.toolTip() or ''
+            if existing:
+                if QtCore.Qt.mightBeRichText(existing):
+                    from html import escape
+
+                    obj.setToolTip(existing + '<br>' + escape(tooltip_text))
+                else:
+                    obj.setToolTip(existing + '\n' + tooltip_text)
+            else:
+                obj.setToolTip(tooltip_text)
+            break
 
     def get_page(self, pagename):
         return self.item_to_page[self.pagename_to_item[pagename]]
