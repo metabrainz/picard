@@ -92,15 +92,25 @@ from picard.ui.colors import InterfaceColors
 
 # picard/coverart/providers/caa.py
 # Cover Art Archive Cover Art Archive: Release
-BoolOption('setting', 'caa_approved_only', False)
-IntOption('setting', 'caa_image_size', DEFAULT_CAA_IMAGE_SIZE)
-ListOption('setting', 'caa_image_types', DEFAULT_CAA_IMAGE_TYPE_INCLUDE)
-ListOption('setting', 'caa_image_types_to_omit', DEFAULT_CAA_IMAGE_TYPE_EXCLUDE)
-BoolOption('setting', 'caa_restrict_image_types', True)
+BoolOption('setting', 'caa_approved_only', False, title=N_("Download only approved images"), in_profile=True)
+IntOption('setting', 'caa_image_size', DEFAULT_CAA_IMAGE_SIZE, title=N_("Cover art image size"), in_profile=True)
+ListOption(
+    'setting', 'caa_image_types', DEFAULT_CAA_IMAGE_TYPE_INCLUDE, title=N_("Cover art image types"), in_profile=True
+)
+ListOption(
+    'setting',
+    'caa_image_types_to_omit',
+    DEFAULT_CAA_IMAGE_TYPE_EXCLUDE,
+    title=N_("Cover art image types to omit"),
+    in_profile=True,
+)
+BoolOption('setting', 'caa_restrict_image_types', True, title=N_("Restrict cover art image types"), in_profile=True)
 
 # picard/coverart/providers/local.py
 # Local Files
-TextOption('setting', 'local_cover_regex', DEFAULT_LOCAL_COVER_ART_REGEX)
+TextOption(
+    'setting', 'local_cover_regex', DEFAULT_LOCAL_COVER_ART_REGEX, title=N_("Local cover art regex"), in_profile=True
+)
 
 # picard/ui/cdlookup.py
 #

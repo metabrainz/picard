@@ -45,6 +45,10 @@ class ProviderOptionsLocal(ProviderOptions):
     NAME = "provider_local"
     HELP_URL = '/config/options_local_files.html'
 
+    OPTIONS: dict[str, dict] = {
+        'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
+    }
+
     _options_ui = Ui_LocalOptions
 
     def __init__(self, parent=None):
