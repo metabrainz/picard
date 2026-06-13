@@ -46,7 +46,10 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import profile_groups_values
+from picard.profile import (
+    profile_groups_values,
+    setting_profile_key,
+)
 from picard.script import (
     get_file_naming_script_presets,
     iter_tagging_scripts_from_tuples,
@@ -236,7 +239,8 @@ class ProfilesOptionsPage(OptionsPage):
                 if opt_title is None:
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
-                widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
+                pkey = setting_profile_key(setting.name, setting.section)
+                widget_item.addChild(self._make_child_item(settings, pkey, opt_title))
             added = False
             if parent:
                 # Find parent item

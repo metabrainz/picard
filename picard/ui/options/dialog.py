@@ -56,6 +56,7 @@ from picard.i18n import (
 from picard.profile import (
     profile_groups_group_from_page,
     profile_groups_order,
+    setting_profile_key,
 )
 from picard.util import (
     get_url,
@@ -442,7 +443,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
                         style_reset = "#%s { }" % (objname)
                         self._check_and_highlight_option(
-                            obj, opt.name, working_profiles, working_settings, style, style_reset
+                            obj,
+                            setting_profile_key(opt.name, opt.section),
+                            working_profiles,
+                            working_settings,
+                            style,
+                            style_reset,
                         )
 
     def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style, style_reset):
@@ -483,7 +489,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if enabled_profiles_only and not item['enabled']:
                     continue
                 profile_id = item['id']
-                if opt.name in working_settings[profile_id]:
+                if setting_profile_key(opt.name, opt.section) in working_settings[profile_id]:
                     return True
         return False
 
@@ -508,7 +514,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     if profile_id not in working_settings:
                         continue
                     profile_settings = working_settings[profile_id]
-                    if opt.name in profile_settings:
+                    if setting_profile_key(opt.name, opt.section) in profile_settings:
                         profile_set.add((idx, item['title']))
 
         if not profile_set:

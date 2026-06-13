@@ -39,6 +39,18 @@ if TYPE_CHECKING:
 
 SettingDesc = namedtuple('SettingDesc', ('name', 'highlights', 'section'), defaults=('setting',))
 
+
+def setting_profile_key(name: str, section: str = 'setting') -> str:
+    """Return the key used for an option in profile settings storage.
+
+    Core options use bare name. Non-core options (plugins) use 'section/name'
+    to avoid collisions.
+    """
+    if section == 'setting':
+        return name
+    return f'{section}/{name}'
+
+
 _settings_groups: dict = {}
 _groups_order: dict[str, int] = defaultdict(lambda: -1)
 _groups_count: int = 0

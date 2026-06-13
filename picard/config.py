@@ -56,6 +56,7 @@ from picard import (
 from picard.profile import (
     profile_groups_add_setting,
     profile_groups_all_settings,
+    setting_profile_key,
 )
 from picard.version import Version
 
@@ -228,6 +229,14 @@ class ConfigSection(QtCore.QObject):
                 return override
         return self.value(opt, opt.default)
 
+    def _profile_key(self, name: str) -> str:
+        """Return the key for this option in the profile settings dict.
+
+        Core options (section='setting') use bare name for backward compat.
+        Plugin options use 'section/name' (e.g. 'plugin.<uuid>/greeting').
+        """
+        return setting_profile_key(name, self.__name)
+
     def _get_profile_override(self, name: str):
         """Check active profiles for an override of this option."""
         setting_section = self.__qt_config.setting
@@ -240,10 +249,11 @@ class ConfigSection(QtCore.QObject):
                 return _SENTINEL
         if not all_settings:
             return _SENTINEL
+        pkey = self._profile_key(name)
         for profile_id in self._get_active_profile_ids():
             settings = all_settings.get(profile_id)
-            if settings and name in settings and settings[name] is not None:
-                return settings[name]
+            if settings and pkey in settings and settings[pkey] is not None:
+                return settings[pkey]
         return _SENTINEL
 
     def _get_active_profile_ids(self):
@@ -290,11 +300,12 @@ class ConfigSection(QtCore.QObject):
                 return False
         if not all_settings:
             return False
+        pkey = self._profile_key(name)
         for profile_id in self._get_active_profile_ids():
             settings = all_settings.get(profile_id)
-            if settings and name in settings:
-                old_value = settings[name]
-                settings[name] = value
+            if settings and pkey in settings:
+                old_value = settings[pkey]
+                settings[pkey] = value
                 if setting_section.settings_override is None:
                     self._save_all_profile_settings(all_settings)
                 if value != old_value:

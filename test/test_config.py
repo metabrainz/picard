@@ -216,7 +216,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'overridden'}}
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin/my_opt': 'overridden'}}
 
         self.assertEqual(section['my_opt'], 'overridden')
 
@@ -232,7 +232,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'overridden'}}
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin2/my_opt': 'overridden'}}
 
         # Should NOT apply override since in_profile=False
         self.assertEqual(section['my_opt'], 'default')
@@ -249,7 +249,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'original'}}
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin3/my_opt': 'original'}}
 
         # Write should go to profile settings, not base config
         section['my_opt'] = 'updated'
@@ -257,7 +257,7 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
         # Verify it was written to profile settings
         stored = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
-        self.assertEqual(stored['p1']['my_opt'], 'updated')
+        self.assertEqual(stored['p1']['test_plugin3/my_opt'], 'updated')
 
     def test_profile_override_setitem_with_settings_override(self):
         """When settings_override is active (dialog open), writes should go there."""
@@ -272,10 +272,10 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'my_opt': 'persisted'}}
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin4/my_opt': 'persisted'}}
 
         # Simulate dialog open — set override
-        override = {'p1': {'my_opt': 'dialog_value'}}
+        override = {'p1': {'test_plugin4/my_opt': 'dialog_value'}}
         self.config.setting.set_settings_override(override)
         self.config.setting.set_profiles_override([{'id': 'p1', 'enabled': True}])
 
@@ -284,12 +284,12 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
         # Write should go to override, not QSettings
         section['my_opt'] = 'new_dialog_value'
-        self.assertEqual(override['p1']['my_opt'], 'new_dialog_value')
+        self.assertEqual(override['p1']['test_plugin4/my_opt'], 'new_dialog_value')
         self.assertEqual(section['my_opt'], 'new_dialog_value')
 
         # Persisted value should be unchanged
         persisted = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
-        self.assertEqual(persisted['p1']['my_opt'], 'persisted')
+        self.assertEqual(persisted['p1']['test_plugin4/my_opt'], 'persisted')
 
         self.config.setting.set_settings_override(None)
         self.config.setting.set_profiles_override(None)
@@ -825,3 +825,31 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
 
         # Restore original dictionary
         config._quick_menu_items = old
+
+    def test_profile_override_no_collision_between_sections(self):
+        """Plugin and core options with the same name must not collide in profile storage."""
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+            TextOption,
+        )
+
+        # Core option 'greeting' in 'setting' section
+        TextOption('setting', 'greeting', 'core_default', title='Core Greeting', in_profile=True)
+
+        # Plugin option 'greeting' in 'plugin.test' section
+        plugin_section = ConfigSection(self.config, 'plugin.test')
+        plugin_section.register_option('greeting', 'plugin_default', title='Plugin Greeting', in_profile=True)
+
+        # Set up profile with different values for each
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {
+            'p1': {'greeting': 'core_profile_value', 'plugin.test/greeting': 'plugin_profile_value'}
+        }
+
+        # Core should get core value
+        self.assertEqual(self.config.setting['greeting'], 'core_profile_value')
+        # Plugin should get plugin value, not core's
+        self.assertEqual(plugin_section['greeting'], 'plugin_profile_value')
