@@ -42,6 +42,7 @@ from picard.i18n import gettext as _
 from picard.profile import (
     profile_groups_add_setting,
     profile_groups_all_settings,
+    profile_groups_update_highlights,
 )
 from picard.util.display_title_base import HasDisplayTitle
 
@@ -165,3 +166,5 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
                 parent=cls.PARENT,
                 section=cls.OPTION_SECTION,
             )
+        elif option.in_profile and highlights:
+            profile_groups_update_highlights(name, tuple(highlights))

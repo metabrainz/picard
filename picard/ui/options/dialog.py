@@ -510,7 +510,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     profile_settings = working_settings[profile_id]
                     if opt.name in profile_settings:
                         profile_set.add((idx, item['title']))
-                        break
 
         if not profile_set:
             self.ui.profile_warning.setVisible(False)

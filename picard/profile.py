@@ -85,6 +85,15 @@ def profile_groups_all_settings() -> set[str]:
     return _known_settings
 
 
+def profile_groups_update_highlights(option_name: str, highlights: tuple) -> None:
+    """Update highlights for an already-registered setting."""
+    for group in _settings_groups.values():
+        for i, setting in enumerate(group.get('settings', [])):
+            if setting.name == option_name:
+                group['settings'][i] = SettingDesc(setting.name, highlights, setting.section)
+                return
+
+
 def profile_groups_settings(group: str) -> Iterator[SettingDesc]:
     if group in _settings_groups:
         if 'settings' in _settings_groups[group]:
