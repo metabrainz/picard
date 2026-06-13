@@ -602,10 +602,17 @@ class PluginListWidget(QtWidgets.QWidget):
 
         menu.addSeparator()
 
-        # Update action
-        update_action = menu.addAction(_("Update"))
-        update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
-        update_action.setEnabled(self._has_update_available(plugin))
+        # Determine if this is a local non-git plugin
+        is_local = self.plugin_manager.is_local_non_git(plugin)
+
+        # Update/Reload action
+        if is_local:
+            reload_action = menu.addAction(_("Reload"))
+            reload_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+        else:
+            update_action = menu.addAction(_("Update"))
+            update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+            update_action.setEnabled(self._has_update_available(plugin))
 
         # Uninstall action
         uninstall_action = menu.addAction(_("Uninstall"))
@@ -615,9 +622,10 @@ class PluginListWidget(QtWidgets.QWidget):
         reinstall_action = menu.addAction(_("Reinstall"))
         reinstall_action.triggered.connect(lambda: self._reinstall_plugin_from_menu(plugin))
 
-        # Switch ref action
-        switch_ref_action = menu.addAction(_("Switch Ref"))
-        switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
+        # Switch ref action (disabled for local non-git plugins)
+        if not is_local:
+            switch_ref_action = menu.addAction(_("Switch Ref"))
+            switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
 
         menu.addSeparator()
 
@@ -628,7 +636,10 @@ class PluginListWidget(QtWidgets.QWidget):
         # View repository action (if available)
         remote_url = self._get_plugin_remote_url(plugin)
         if remote_url:
-            view_repo_action = menu.addAction(_("View Repository"))
+            if is_local:
+                view_repo_action = menu.addAction(_("View Directory"))
+            else:
+                view_repo_action = menu.addAction(_("View Repository"))
             view_repo_action.triggered.connect(lambda: self._view_repository(plugin))
 
         # Report bug action (if available)
@@ -759,7 +770,10 @@ class PluginListWidget(QtWidgets.QWidget):
                 pass
 
             # Show confirmation dialog
-            confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
+            show_ref_selector = not self.plugin_manager.is_local_non_git(plugin)
+            confirm_dialog = InstallConfirmDialog(
+                plugin.name(), plugin_url, self, plugin.uuid, current_ref, show_ref_selector=show_ref_selector
+            )
             confirm_dialog.finished.connect(
                 lambda result: self._on_reinstall_confirm_finished(result, confirm_dialog, plugin, plugin_url)
             )

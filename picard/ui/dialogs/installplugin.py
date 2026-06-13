@@ -41,6 +41,7 @@ from picard.plugin3.installable import (
 from picard.plugin3.registry import RegistryPlugin
 
 from picard.ui import PicardDialog
+from picard.ui.colors import interface_colors
 from picard.ui.dialogs.installconfirm import InstallConfirmDialog
 from picard.ui.dialogs.plugininfo import PluginInfoDialog
 from picard.ui.util import font_scaled_size
@@ -73,6 +74,7 @@ class InstallPluginDialog(PicardDialog):
 
         # Cache frequently accessed objects
         self.plugin_manager = self.tagger.get_plugin_manager()
+        self._local_path_valid = False
 
         self.setup_ui()
 
@@ -189,7 +191,7 @@ class InstallPluginDialog(PicardDialog):
 
         # Warning label
         self.warning_label = QtWidgets.QLabel()
-        self.warning_label.setStyleSheet("color: orange; font-weight: bold;")
+        self.warning_label.setStyleSheet("color: %s; font-weight: bold;" % interface_colors.get_color('log_warning'))
         self.warning_label.setWordWrap(True)
         self.warning_label.hide()
         layout.addWidget(self.warning_label)
@@ -212,9 +214,15 @@ class InstallPluginDialog(PicardDialog):
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
 
+        # Local tab status label (shown below the group box)
+        self.local_status_label = QtWidgets.QLabel()
+        self.local_status_label.setWordWrap(True)
+        self.local_status_label.hide()
+        local_layout.insertWidget(1, self.local_status_label)
+
         # Connect input changes to validation
         self.url_edit.textChanged.connect(self._validate_input)
-        self.path_edit.textChanged.connect(self._validate_input)
+        self.path_edit.textChanged.connect(self._validate_local_path)
         self.local_ref_edit.textChanged.connect(self._validate_input)
         self.tab_widget.currentChanged.connect(self._validate_input)
         self._load_registry_plugins()
@@ -233,8 +241,44 @@ class InstallPluginDialog(PicardDialog):
             if url:
                 self._check_trust_level(url)
         else:  # TAB_LOCAL - Local directory tab
-            path = self.path_edit.text().strip()
-            self.install_button.setEnabled(bool(path))
+            self.install_button.setEnabled(self._local_path_valid)
+
+    def _validate_local_path(self):
+        """Validate local path and update Ref/Tag field and status."""
+        path = self.path_edit.text().strip()
+        self._local_path_valid = False
+
+        if not path:
+            self.local_ref_edit.setEnabled(True)
+            self.local_status_label.hide()
+        elif not os.path.isdir(path):
+            self.local_ref_edit.setEnabled(False)
+            self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_error'))
+            self.local_status_label.setText(_("The selected path is not a directory."))
+            self.local_status_label.show()
+        elif not os.path.isfile(os.path.join(path, "MANIFEST.toml")):
+            self.local_ref_edit.setEnabled(False)
+            self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_error'))
+            self.local_status_label.setText(_("The directory does not contain a MANIFEST.toml file."))
+            self.local_status_label.show()
+        elif not os.path.exists(os.path.join(path, ".git")):
+            self.local_ref_edit.setEnabled(False)
+            self.local_ref_edit.clear()
+            self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_warning'))
+            self.local_status_label.setText(
+                _(
+                    "This plugin is not managed by git. "
+                    "It will be installed as a local non-git plugin without version management or updates."
+                )
+            )
+            self.local_status_label.show()
+            self._local_path_valid = True
+        else:
+            self.local_ref_edit.setEnabled(True)
+            self.local_status_label.hide()
+            self._local_path_valid = True
+
+        self._validate_input()
 
     def _load_registry_plugins(self):
         """Load plugins from registry."""
@@ -496,11 +540,30 @@ class InstallPluginDialog(PicardDialog):
             QtWidgets.QMessageBox.critical(
                 self,
                 _("Invalid Plugin Directory"),
-                _(
-                    "The selected directory does not contain a MANIFEST.toml file. A valid plugin requires both a git repository and a MANIFEST.toml file."
-                ),
+                _("The selected directory does not contain a MANIFEST.toml file."),
             )
             return None
+
+        # Warn if not a git repository
+        git_path = os.path.join(url, ".git")
+        if not os.path.exists(git_path):
+            result = QtWidgets.QMessageBox.warning(
+                self,
+                _("Plugin Not Managed by Git"),
+                _(
+                    "This plugin is not managed by git.\n\n"
+                    "A git repository is required to distribute a plugin"
+                    " and to have it added to the official registry."
+                    " Without git, version management and automatic updates"
+                    " are not available.\n\n"
+                    "Do you want to continue?"
+                ),
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.No,
+            )
+            if result != QtWidgets.QMessageBox.StandardButton.Yes:
+                return None
+            ref = None  # No ref for non-git plugins
 
         return LocalInstallablePlugin(url, ref, self.plugin_manager._registry)
 
@@ -544,7 +607,11 @@ class InstallPluginDialog(PicardDialog):
             # Show confirmation dialog
             plugin_name = plugin.get_display_name()
             plugin_uuid = plugin.plugin_uuid
-            confirm_dialog = InstallConfirmDialog(plugin_name, url, self, plugin_uuid, None)
+            # Hide ref selector for non-git local plugins
+            show_ref_selector = not (current_tab == TAB_LOCAL and not os.path.exists(os.path.join(url, ".git")))
+            confirm_dialog = InstallConfirmDialog(
+                plugin_name, url, self, plugin_uuid, None, show_ref_selector=show_ref_selector
+            )
             confirm_dialog.finished.connect(
                 lambda result: self._on_install_confirm_finished(result, confirm_dialog, url, plugin, current_tab)
             )
