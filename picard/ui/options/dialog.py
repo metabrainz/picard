@@ -432,6 +432,12 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         try:
                             obj = getattr(page.ui, objname)
                         except AttributeError:
+                            log.warning(
+                                "Option '%s' references widget '%s' not found on page '%s'",
+                                opt.name,
+                                objname,
+                                page.NAME,
+                            )
                             continue
                         style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
                         style_reset = "#%s { }" % (objname)
