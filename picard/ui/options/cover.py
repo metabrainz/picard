@@ -62,7 +62,7 @@ class CoverOptionsPage(OptionsPage):
         'embed_only_one_front_image': {'widgets': ['cb_embed_front_only']},
         'dont_replace_with_smaller_cover': {'widgets': ['cb_dont_replace_with_smaller']},
         'dont_replace_cover_of_types': {'widgets': ['cb_never_replace_types']},
-        'dont_replace_included_types': {'widgets': ['dont_replace_included_types']},
+        'dont_replace_included_types': {'widgets': ['cb_never_replace_types']},
         'save_images_to_files': {'widgets': ['save_images_to_files']},
         'cover_image_filename': {'widgets': ['cover_image_filename']},
         'save_images_overwrite': {'widgets': ['save_images_overwrite']},

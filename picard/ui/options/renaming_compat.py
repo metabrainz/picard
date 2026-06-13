@@ -72,7 +72,7 @@ class RenamingCompatOptionsPage(OptionsPage):
     OPTIONS: dict[str, dict] = {
         'ascii_filenames': {'widgets': ['ascii_filenames']},
         'windows_compatibility': {'widgets': ['windows_compatibility']},
-        'win_compat_replacements': {'widgets': ['win_compat_replacements']},
+        'win_compat_replacements': {'widgets': ['windows_compatibility', 'btn_windows_compatibility_change']},
         'windows_long_paths': {'widgets': ['windows_long_paths']},
         'replace_spaces_with_underscores': {'widgets': ['replace_spaces_with_underscores']},
         'replace_dir_separator': {'widgets': ['replace_dir_separator']},

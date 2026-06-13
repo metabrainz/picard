@@ -58,7 +58,7 @@ class TagsOptionsPage(OptionsPage):
         'remove_ape_from_mp3': {'widgets': ['remove_ape_from_mp3']},
         'fix_missing_seekpoints_flac': {'widgets': ['fix_missing_seekpoints_flac']},
         'preserved_tags': {'widgets': ['preserved_tags']},
-        'disable_date_sanitization_formats': {'widgets': ['disable_date_sanitization_formats']},
+        'disable_date_sanitization_formats': {},
     }
 
     def __init__(self, parent=None):
