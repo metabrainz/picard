@@ -50,16 +50,6 @@ from picard.ui.options import OptionsPage
 from picard.ui.util import FileDialog
 
 
-OPTIONS_NOT_IN_PAGES = {
-    # Include options that are required but are not entered directly from the options pages.
-    'file_renaming_scripts',
-    # Items missed if TagsCompatibilityWaveOptionsPage does not register.
-    'remove_wave_riff_info',
-    'wave_riff_info_encoding',
-    'write_wave_riff_info',
-}
-
-
 def _safe_autobackup_dir(path):
     if not path or not os.path.isdir(path):
         return DEFAULT_AUTOBACKUP_DIRECTORY
@@ -162,10 +152,7 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.config_file.setText(config.fileName())
 
         # Setting options from all option pages and loaded plugins (including plugins currently disabled).
-        key_options = set(config.setting.as_dict())
-
-        # Combine all page and plugin settings with required options not appearing in option pages.
-        current_options = OPTIONS_NOT_IN_PAGES.union(key_options)
+        current_options = set(config.setting.as_dict())
 
         # All setting options included in the INI file.
         config.beginGroup('setting')
