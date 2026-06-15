@@ -191,7 +191,7 @@ BoolOption('setting', 'recursively_add_files', True, title=N_("Include sub-folde
 
 # picard/ui/options/cdlookup.py
 # CD Lookup
-TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES))
+TextOption('setting', 'cd_lookup_device', ','.join(DEFAULT_DRIVES), title=N_("CD lookup device"), in_profile=True)
 
 # picard/ui/options/cover.py
 # Cover Art

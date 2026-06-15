@@ -50,7 +50,7 @@ class CDLookupOptionsPage(OptionsPage):
     HELP_URL = "/config/options_cdlookup.html"
 
     OPTIONS: dict[str, dict] = {
-        'cd_lookup_device': {},
+        'cd_lookup_device': {'widgets': ['cd_lookup_device']},
     }
 
     def __init__(self, parent=None):
