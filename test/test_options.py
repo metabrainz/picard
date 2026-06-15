@@ -67,34 +67,38 @@ class OptionsUtilitiesTest(PicardTestCase):
         mock_log.warning.assert_called_once()
         self.assertIn('in_profile=False', mock_log.warning.call_args[0][0])
 
-    def test_restore_defaults_uses_correct_section(self):
-        """restore_defaults should use OPTION_SECTION, not hardcode 'setting'."""
+    def test_restore_defaults_no_profile_core(self):
+        """Without profiles, restore_defaults resets to default and doesn't persist."""
         from picard.config import (
             TextOption,
+            get_config,
         )
 
         from picard.ui.options import OptionsPage, PageOptionConfigs
 
-        # A plugin option in a non-setting section
-        TextOption('plugin.test-restore', 'plugin_opt', 'plugin_default')
+        config = get_config()
+        TextOption('setting', 'test_rd_core', 'default_value', in_profile=True)
+        config.setting['test_rd_core'] = 'user_value'
 
-        class PluginPage(OptionsPage):
-            NAME = 'test_plugin_page'
-            TITLE = 'Plugin'
+        class CorePage(OptionsPage):
+            NAME = 'test_rd_core_page'
+            TITLE = 'Test'
             PARENT = None
             SORT_ORDER = 9999
-            OPTION_SECTION = 'plugin.test-restore'
-            OPTIONS: PageOptionConfigs = {'plugin_opt': {}}
+            OPTION_SECTION = 'setting'
+            OPTIONS: PageOptionConfigs = {'test_rd_core': {}}
 
         from picard.extension_points.options_pages import register_options_page
 
-        register_options_page(PluginPage)
+        register_options_page(CorePage)
 
-        # Verify the option was registered for this page
-        registered = OptionsPage._registered_settings['test_plugin_page']
-        self.assertEqual(len(registered), 1)
-        self.assertEqual(registered[0].name, 'plugin_opt')
-        self.assertEqual(registered[0].section, 'plugin.test-restore')
+        page = CorePage.__new__(CorePage)
+        page.load = lambda: None
+
+        page.restore_defaults()
+
+        # After restore_defaults (without save), value should be back to user_value
+        self.assertEqual(config.setting['test_rd_core'], 'user_value')
 
     def test_known_settings_no_collision_between_plugins(self):
         """Two plugins with same option name should not collide in profile groups."""

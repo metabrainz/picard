@@ -850,3 +850,141 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         self.assertEqual(self.config.setting['greeting'], 'core_profile_value')
         # Plugin should get plugin value, not core's
         self.assertEqual(plugin_section['greeting'], 'plugin_profile_value')
+
+
+class TestRestoreDefaults(TestPicardConfigCommon):
+    def test_restore_defaults_with_profile_core(self):
+        """With profile active, restore_defaults resets profile value, not base."""
+        from picard.config import SettingConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        TextOption('setting', 'test_rd_prof', 'default_value', in_profile=True)
+
+        # Set base value
+        with self.config.setting.no_profile():
+            self.config.setting['test_rd_prof'] = 'base_value'
+
+        # Set up profile with override
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_rd_prof': 'profile_value'}}
+
+        class CorePage(OptionsPage):
+            NAME = 'test_rd_prof_page'
+            TITLE = 'Test'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'setting'
+            OPTIONS: PageOptionConfigs = {'test_rd_prof': {}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(CorePage)
+
+        page = CorePage.__new__(CorePage)
+        page.load = lambda: None
+
+        page.restore_defaults()
+
+        # Profile value should be restored (not persisted as default)
+        self.assertEqual(self.config.setting['test_rd_prof'], 'profile_value')
+        # Base value must be untouched
+        with self.config.setting.no_profile():
+            self.assertEqual(self.config.setting['test_rd_prof'], 'base_value')
+
+    def test_restore_defaults_no_profile_plugin(self):
+        """Plugin page: without profiles, restore_defaults resets to default."""
+        from picard.config import ProfileConfigSection
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section = ProfileConfigSection(self.config, 'plugin.test-rd')
+        TextOption('plugin.test-rd', 'opt', 'plug_default', in_profile=True)
+
+        # Write a non-default base value
+        with self.config.setting.no_profile():
+            section['opt'] = 'plug_user'
+
+        class PlugPage(OptionsPage):
+            NAME = 'test_rd_plug_page'
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd'
+            OPTIONS: PageOptionConfigs = {'opt': {}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(PlugPage)
+
+        class FakeApi:
+            plugin_config = section
+
+        page = PlugPage.__new__(PlugPage)
+        page.api = FakeApi()
+        page.load = lambda: None
+
+        page.restore_defaults()
+
+        # After restore (no save), value should be back to user value
+        self.assertEqual(section['opt'], 'plug_user')
+
+    def test_restore_defaults_with_profile_plugin(self):
+        """Plugin page: with profile active, only profile value is affected."""
+        from picard.config import (
+            ProfileConfigSection,
+            SettingConfigSection,
+        )
+
+        from picard.ui.options import (
+            OptionsPage,
+            PageOptionConfigs,
+        )
+
+        section = ProfileConfigSection(self.config, 'plugin.test-rd2')
+        TextOption('plugin.test-rd2', 'opt', 'plug_default', in_profile=True)
+
+        # Set base value
+        with self.config.setting.no_profile():
+            section['opt'] = 'plug_base'
+
+        # Set up profile with override
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'plugin.test-rd2/opt': 'plug_profile'}}
+
+        class PlugPage2(OptionsPage):
+            NAME = 'test_rd_plug2_page'
+            TITLE = 'Plugin'
+            PARENT = None
+            SORT_ORDER = 9999
+            OPTION_SECTION = 'plugin.test-rd2'
+            OPTIONS: PageOptionConfigs = {'opt': {}}
+
+        from picard.extension_points.options_pages import register_options_page
+
+        register_options_page(PlugPage2)
+
+        class FakeApi:
+            plugin_config = section
+
+        page = PlugPage2.__new__(PlugPage2)
+        page.api = FakeApi()
+        page.load = lambda: None
+
+        page.restore_defaults()
+
+        # Profile value restored (not persisted as default)
+        self.assertEqual(section['opt'], 'plug_profile')
+        # Base value untouched
+        with self.config.setting.no_profile():
+            self.assertEqual(section['opt'], 'plug_base')

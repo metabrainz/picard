@@ -114,26 +114,33 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     def save(self):
         pass
 
+    def _config_section(self, config):
+        """Return the config section for this page's options."""
+        if self.OPTION_SECTION == 'setting':
+            return config.setting
+        api = getattr(self, 'api', None)
+        if api:
+            return api.plugin_config
+        return ProfileConfigSection(config, self.OPTION_SECTION)
+
     def restore_defaults(self):
         config = get_config()
-        if self.OPTION_SECTION == 'setting':
-            section = config.setting
-        else:
-            section = ProfileConfigSection(config, self.OPTION_SECTION)
-        with config.setting.no_profile():
-            old_options = {}
-            for option in self._registered_settings[self.NAME]:
-                default_value = option.default
-                name = option.name
-                current_value = section[name]
-                if current_value != default_value:
-                    log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
-                    old_options[name] = current_value
-                    section[name] = default_value
-            self.load()
-            # Restore the config values in case the user doesn't save after restoring defaults
-            for key in old_options:
-                section[key] = old_options[key]
+        section = self._config_section(config)
+        # Save current values (profile-aware), write defaults, load UI, then restore.
+        # This gives the user a preview of defaults without permanently changing anything.
+        old_options = {}
+        for option in self._registered_settings[self.NAME]:
+            default_value = option.default
+            name = option.name
+            current_value = section[name]
+            if current_value != default_value:
+                log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
+                old_options[name] = current_value
+                section[name] = default_value
+        self.load()
+        # Restore the config values in case the user doesn't save after restoring defaults
+        for name, old_value in old_options.items():
+            section[name] = old_value
 
     def display_error(self, error):
         dialog = QtWidgets.QMessageBox(
