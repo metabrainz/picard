@@ -196,6 +196,90 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         with self.assertRaises(TypeError, msg='Option default value must not be None'):
             self.config.setting.register_option("invalid_option", None)
 
+    def test_profile_override_on_config_section(self):
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
+
+        section = ConfigSection(self.config, 'test_plugin')
+        section.register_option('my_opt', 'default', in_profile=True)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin/my_opt': 'overridden'}}
+
+        self.assertEqual(section['my_opt'], 'overridden')
+
+    def test_profile_override_not_applied_without_in_profile(self):
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
+
+        section = ConfigSection(self.config, 'test_plugin2')
+        section.register_option('my_opt', 'default', in_profile=False)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin2/my_opt': 'overridden'}}
+
+        # Should NOT apply override since in_profile=False
+        self.assertEqual(section['my_opt'], 'default')
+
+    def test_profile_override_setitem(self):
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
+
+        section = ConfigSection(self.config, 'test_plugin3')
+        section.register_option('my_opt', 'default', in_profile=True)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin3/my_opt': 'original'}}
+
+        # Write should go to profile settings, not base config
+        section['my_opt'] = 'updated'
+        self.assertEqual(section['my_opt'], 'updated')
+
+        # Verify it was written to profile settings
+        stored = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
+        self.assertEqual(stored['p1']['test_plugin3/my_opt'], 'updated')
+
+    def test_profile_override_setitem_with_settings_override(self):
+        """When settings_override is active (dialog open), writes should go there."""
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+        )
+
+        section = ConfigSection(self.config, 'test_plugin4')
+        section.register_option('my_opt', 'default', in_profile=True)
+
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin4/my_opt': 'stored'}}
+
+        # Activate settings override (simulates dialog open)
+        override = {'p1': {'test_plugin4/my_opt': 'dialog_value'}}
+        self.config.setting.set_profiles_override([{'id': 'p1', 'enabled': True}])
+        self.config.setting.set_settings_override(override)
+
+        self.assertEqual(section['my_opt'], 'dialog_value')
+
+        # Write goes to override dict, not disk
+        section['my_opt'] = 'new_dialog_value'
+        self.assertEqual(override['p1']['test_plugin4/my_opt'], 'new_dialog_value')
+
+        self.config.setting.set_settings_override(None)
+        self.config.setting.set_profiles_override(None)
+
 
 class TestPicardConfigTextOption(TestPicardConfigCommon):
     # TextOption
@@ -610,11 +694,13 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         Option('setting', 'option_set', {1, 2, 3}, title="Set")
         Option('setting', 'option_dict', {'a': 1, 'b': 2, 'c': 3}, title="Dict")
 
-        # Test that options without titles are not registered
+        # Test that options without titles are registered with name as fallback
         option = Option.get('setting', 'option_bool_no_title')
         register_quick_menu_item(0, 'test_group', None, "test group", option)
         menu_items = self._get_menu_items()
-        self.assertEqual(len(menu_items), 0)
+        self.assertEqual(len(menu_items), 1)
+        self.assertEqual(menu_items[0]['options'][0].name, 'option_bool_no_title')
+        self.assertEqual(menu_items[0]['options'][0].title, 'option_bool_no_title')
 
         # Test that only boolean options are registered
         for opt_type in ['bool', 'text', 'int', 'float', 'list', 'set', 'dict']:
