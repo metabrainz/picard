@@ -72,7 +72,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     SEPARATOR = '—' * 5
 
     OPTIONS: dict[str, dict] = {
-        'toolbar_layout': {'widgets': ['toolbar_layout_list']},
+        'toolbar_layout': {'widgets': ['customize_toolbar_box']},
     }
     TOOLBAR_BUTTONS = {
         MainAction.ADD_DIRECTORY: ToolbarButtonDesc(

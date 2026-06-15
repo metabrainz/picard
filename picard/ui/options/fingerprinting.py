@@ -66,17 +66,18 @@ class FingerprintingOptionsPage(OptionsPage):
     HELP_URL = "/config/options_fingerprinting.html"
 
     OPTIONS: dict[str, dict] = {
-        'fingerprinting_system': {},
+        'fingerprinting_system': {'widgets': ['disable_fingerprinting', 'use_acoustid']},
         'acoustid_fpcalc': {},
         'acoustid_apikey': {},
-        'ignore_existing_acoustid_fingerprints': {},
-        'save_acoustid_fingerprints': {},
+        'ignore_existing_acoustid_fingerprints': {'widgets': ['ignore_existing_acoustid_fingerprints']},
+        'save_acoustid_fingerprints': {'widgets': ['save_acoustid_fingerprints']},
         'fpcalc_threads': {},
     }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self._fpcalc_valid = True
+        self._fpcalc_checking = False
         self.ui = Ui_FingerprintingOptionsPage()
         self.ui.setupUi(self)
 
@@ -152,6 +153,7 @@ class FingerprintingOptionsPage(OptionsPage):
         if not fpcalc:
             fpcalc = find_fpcalc()
         self._fpcalc_valid = False
+        self._fpcalc_checking = True
         process = QtCore.QProcess(self)
         process.finished.connect(self._on_acoustid_fpcalc_check_finished)
         process.errorOccurred.connect(self._on_acoustid_fpcalc_check_error)
@@ -174,17 +176,19 @@ class FingerprintingOptionsPage(OptionsPage):
 
     def _acoustid_fpcalc_set_success(self, version):
         self._fpcalc_valid = True
+        self._fpcalc_checking = False
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_SUCCESS)
         self.ui.acoustid_fpcalc_info.setText(version)
 
     def _acoustid_fpcalc_set_error(self, msg):
         log.warning('fpcalc error: %s', msg)
         self._fpcalc_valid = False
+        self._fpcalc_checking = False
         self.ui.acoustid_fpcalc_info.setStyleSheet(self.STYLESHEET_ERROR)
         self.ui.acoustid_fpcalc_info.setText(_("Please select a valid fpcalc executable."))
 
     def check(self):
-        if not self._fpcalc_valid:
+        if not self._fpcalc_valid and not self._fpcalc_checking:
             raise OptionsCheckError(_("Invalid fpcalc executable"), _("Please select a valid fpcalc executable."))
 
     def display_error(self, error):

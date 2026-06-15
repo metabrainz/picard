@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/options_tags.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -50,21 +50,37 @@ class Ui_TagsOptionsPage(object):
         self.vboxlayout1.addWidget(self.fix_missing_seekpoints_flac)
         spacerItem = QtWidgets.QSpacerItem(20, 6, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
         self.vboxlayout1.addItem(spacerItem)
-        self.preserved_tags_label = QtWidgets.QLabel(parent=self.before_tagging)
-        self.preserved_tags_label.setObjectName("preserved_tags_label")
-        self.vboxlayout1.addWidget(self.preserved_tags_label)
-        self.preserved_tags = TagListEditor(parent=self.before_tagging)
+        self.preserved_tags_groupbox = QtWidgets.QGroupBox(parent=self.before_tagging)
+        self.preserved_tags_groupbox.setObjectName("preserved_tags_groupbox")
+        self.preserved_tags_layout = QtWidgets.QVBoxLayout(self.preserved_tags_groupbox)
+        self.preserved_tags_layout.setObjectName("preserved_tags_layout")
+        self.preserved_tags = TagListEditor(parent=self.preserved_tags_groupbox)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.preserved_tags.sizePolicy().hasHeightForWidth())
         self.preserved_tags.setSizePolicy(sizePolicy)
         self.preserved_tags.setObjectName("preserved_tags")
-        self.vboxlayout1.addWidget(self.preserved_tags)
+        self.preserved_tags_layout.addWidget(self.preserved_tags)
+        self.vboxlayout1.addWidget(self.preserved_tags_groupbox)
         self.vboxlayout.addWidget(self.before_tagging)
+        self.do_not_sanitize_label = QtWidgets.QLabel(parent=TagsOptionsPage)
+        self.do_not_sanitize_label.setObjectName("do_not_sanitize_label")
+        self.vboxlayout.addWidget(self.do_not_sanitize_label)
+        self.do_not_sanitize_container = QtWidgets.QFrame(parent=TagsOptionsPage)
+        self.do_not_sanitize_container.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.do_not_sanitize_container.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.do_not_sanitize_container.setObjectName("do_not_sanitize_container")
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.do_not_sanitize_container)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.do_not_sanitize_layout = QtWidgets.QVBoxLayout()
+        self.do_not_sanitize_layout.setSpacing(4)
+        self.do_not_sanitize_layout.setObjectName("do_not_sanitize_layout")
+        self.verticalLayout_2.addLayout(self.do_not_sanitize_layout)
+        self.vboxlayout.addWidget(self.do_not_sanitize_container)
 
         self.retranslateUi(TagsOptionsPage)
-        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled)
+        self.clear_existing_tags.toggled['bool'].connect(self.preserve_images.setEnabled) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(TagsOptionsPage)
         TagsOptionsPage.setTabOrder(self.write_tags, self.preserve_timestamps)
         TagsOptionsPage.setTabOrder(self.preserve_timestamps, self.clear_existing_tags)
@@ -82,5 +98,6 @@ class Ui_TagsOptionsPage(object):
         self.remove_id3_from_flac.setText(_("Remove ID3 tags from FLAC files"))
         self.remove_ape_from_mp3.setText(_("Remove APEv2 tags from MP3 files"))
         self.fix_missing_seekpoints_flac.setText(_("Fix missing seekpoints for FLAC files"))
-        self.preserved_tags_label.setText(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
+        self.preserved_tags_groupbox.setTitle(_("Preserve these tags from being cleared or overwritten with MusicBrainz data:"))
+        self.do_not_sanitize_label.setText(_("Do not sanitize dates for these tag formats:"))
 from picard.ui.widgets.taglisteditor import TagListEditor

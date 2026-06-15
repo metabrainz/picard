@@ -54,8 +54,10 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.profile import (
+    is_plugin_profile_key,
     profile_groups_group_from_page,
     profile_groups_order,
+    setting_profile_key,
 )
 from picard.util import (
     get_url,
@@ -153,6 +155,11 @@ class ErrorOptionsPage(OptionsPage):
         self.ui = layout
 
         self.dialog = dialog
+
+
+def _is_simple_value(value) -> bool:
+    """Return True if the value is a simple scalar that can be reliably compared."""
+    return isinstance(value, (str, int, float, bool))
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
@@ -419,45 +426,119 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
-        fg_color = _interface_colors.get_color('profile_hl_fg')
-        bg_color = _interface_colors.get_color('profile_hl_bg')
+        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+        bg_override = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=120)
 
         for page in self.loaded_pages:
             option_group = profile_groups_group_from_page(page)
             if option_group:
                 if load_settings:
                     page.load()
+                seen_widgets = set()
                 for opt in option_group['settings']:
                     for objname in opt.highlights:
                         try:
                             obj = getattr(page.ui, objname)
                         except AttributeError:
+                            log.warning(
+                                "Option '%s' references widget '%s' not found on page '%s'",
+                                opt.name,
+                                objname,
+                                page.NAME,
+                            )
                             continue
-                        style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
+                        # Skip list/tree views - stylesheets break checkable item rendering
+                        if isinstance(obj, QtWidgets.QAbstractItemView):
+                            continue
+                        style_override = "#%s { background-color: %s; }" % (objname, bg_override)
+                        style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
                         style_reset = "#%s { }" % (objname)
                         self._check_and_highlight_option(
-                            obj, opt.name, working_profiles, working_settings, style, style_reset
+                            obj,
+                            setting_profile_key(opt.name, opt.section),
+                            working_profiles,
+                            working_settings,
+                            style_override,
+                            style_tracked,
+                            style_reset,
+                            seen_widgets,
                         )
 
-    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style, style_reset):
+    def _check_and_highlight_option(
+        self,
+        obj,
+        option_name,
+        working_profiles,
+        working_settings,
+        style_override,
+        style_tracked,
+        style_reset,
+        seen_widgets,
+    ):
         obj.setStyleSheet(style_reset)
-        obj.setToolTip(None)
+        # Save original tooltip on first encounter, restore it on each pass
+        if not hasattr(obj, '_original_tooltip'):
+            obj._original_tooltip = obj.toolTip() or ''
+        obj.setToolTip(obj._original_tooltip)
+        config = get_config()
         for item in working_profiles:
-            if item['enabled']:
-                profile_id = item['id']
-                profile_title = item['title']
-                if profile_id in working_settings:
-                    profile_settings = working_settings[profile_id]
+            if not item['enabled']:
+                continue
+            profile_id = item['id']
+            profile_title = item['title']
+            profile_settings = working_settings.get(profile_id, {})
+            if option_name not in profile_settings:
+                continue
+            profile_value = profile_settings[option_name]
+            if profile_value is None:
+                # Tracked but no value set yet
+                tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                obj.setStyleSheet(style_tracked)
+            else:
+                # Check if value actually differs from base
+                if is_plugin_profile_key(option_name):
+                    section, name = option_name.split('/', 1)
+                    opt = Option.get(section, name)
+                    base_value = opt.default if opt else None
                 else:
-                    profile_settings = {}
-                if option_name in profile_settings:
-                    tooltip = _("This option will be saved to profile: %s") % profile_title
+                    opt = Option.get('setting', option_name)
+                    with config.setting.no_profile():
+                        base_value = config.setting[option_name]
+                # Convert profile value to same type for comparison
+                if opt:
                     try:
-                        obj.setStyleSheet(style)
-                        obj.setToolTip(tooltip)
-                    except AttributeError:
+                        profile_value = opt.convert(profile_value)
+                    except (ValueError, TypeError):
                         pass
-                    break
+                if _is_simple_value(profile_value) and profile_value != base_value:
+                    tooltip_text = _("This option is overridden by profile: %s") % profile_title
+                    obj.setStyleSheet(style_override)
+                else:
+                    tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                    obj.setStyleSheet(style_tracked)
+            # Append to existing tooltip if not already present
+            if obj in seen_widgets:
+                break
+            seen_widgets.add(obj)
+            # Fix combobox dropdown text color
+            if isinstance(obj, QtWidgets.QComboBox):
+                pal = obj.view().palette()
+                pal.setColor(
+                    pal.ColorRole.HighlightedText,
+                    QtGui.QColor(_interface_colors.get_color('profile_hl_fg')),
+                )
+                obj.view().setPalette(pal)
+            existing = obj.toolTip() or ''
+            if existing:
+                if QtCore.Qt.mightBeRichText(existing):
+                    from html import escape
+
+                    obj.setToolTip(existing + '<br>' + escape(tooltip_text))
+                else:
+                    obj.setToolTip(existing + '\n' + tooltip_text)
+            else:
+                obj.setToolTip(tooltip_text)
+            break
 
     def get_page(self, pagename):
         return self.item_to_page[self.pagename_to_item[pagename]]
@@ -477,7 +558,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                 if enabled_profiles_only and not item['enabled']:
                     continue
                 profile_id = item['id']
-                if opt.name in working_settings[profile_id]:
+                if setting_profile_key(opt.name, opt.section) in working_settings[profile_id]:
                     return True
         return False
 
@@ -502,19 +583,25 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     if profile_id not in working_settings:
                         continue
                     profile_settings = working_settings[profile_id]
-                    if opt.name in profile_settings:
+                    if setting_profile_key(opt.name, opt.section) in profile_settings:
                         profile_set.add((idx, item['title']))
-                        break
 
         if not profile_set:
             self.ui.profile_warning.setVisible(False)
             return
 
-        if len(profile_set) == 1:
-            text = _('profile "%s"') % profile_set.pop()[1]
+        sorted_profiles = sorted(profile_set)
+        if len(sorted_profiles) <= 3:
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles])
         else:
-            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
-        self.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles[:3]]) + ', …'
+
+        has_highlights = option_group and any(opt.highlights for opt in option_group['settings'])
+        if has_highlights:
+            msg = _('The highlighted settings on this page are overridden by %s') % names
+        else:
+            msg = _('Some settings on this page are overridden by %s') % names
+        self.profile_warning_text.setText(msg)
         self.ui.profile_warning.setVisible(True)
 
     def switch_page(self):
@@ -636,6 +723,11 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         log.debug("refresh_plugin_pages: Refresh complete")
 
+        # Reload profiles settings tree to reflect plugin option changes
+        profile_page = self.get_page('profiles')
+        if profile_page and profile_page.loaded:
+            profile_page.load()
+
     def enable_page(self, pagename):
         """Enable a page in the options tree."""
         if pagename in self.pagename_to_item:
@@ -668,11 +760,23 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Force the `profiles` page to always save first to avoid an error when
         # saving settings to a new profile that has been marked as enabled.
-        pages = [
-            self.get_page('profiles'),
-        ]
-        pages.extend(x for x in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)) if x.NAME != 'profiles')
-        for page in pages:
+        profile_page = self.get_page('profiles')
+        try:
+            profile_page.save()
+        except Exception as e:
+            log.exception("Failed saving options page %r", profile_page)
+            self._show_page_error(profile_page, e)
+            return
+
+        # Clear overrides so subsequent page saves use persisted profile state
+        # rather than the dialog's working copy (which was already saved above)
+        config = get_config()
+        config.setting.set_profiles_override()
+        config.setting.set_settings_override()
+
+        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+            if page.NAME == 'profiles':
+                continue
             try:
                 page.save()
             except Exception as e:

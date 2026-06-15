@@ -61,7 +61,7 @@ class StartupOptionsPage(OptionsPage):
         'check_for_updates': {'widgets': ['check_for_updates']},
         'update_check_days': {'widgets': ['update_check_days']},
         'update_level': {'widgets': ['update_level']},
-        'log_verbosity': {'widgets': ['log_verbosity_label']},
+        'log_verbosity': {'widgets': ['starting_log_level']},
     }
 
     def __init__(self, parent=None):

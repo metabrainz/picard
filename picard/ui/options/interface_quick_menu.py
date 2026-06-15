@@ -49,7 +49,7 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_quick_menu.html"
 
     OPTIONS: dict[str, dict] = {
-        'quick_menu_items': {'widgets': ['quick_menu_items']},
+        'quick_menu_items': {'widgets': ['quick_menu_groupBox']},
     }
 
     def __init__(self, parent=None):

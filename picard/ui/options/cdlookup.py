@@ -49,7 +49,9 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
-    OPTIONS: dict[str, dict] = {'cd_lookup_device': {}}
+    OPTIONS: dict[str, dict] = {
+        'cd_lookup_device': {},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

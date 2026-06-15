@@ -102,8 +102,8 @@ class InterfaceColorsOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_colors.html"
 
     OPTIONS: dict[str, dict] = {
-        'interface_colors': {'widgets': ['colors']},
-        'interface_colors_dark': {'widgets': ['colors']},
+        'interface_colors': {},
+        'interface_colors_dark': {},
     }
 
     def __init__(self, parent=None):

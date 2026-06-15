@@ -54,31 +54,23 @@ class CoverProcessingOptionsPage(OptionsPage):
 
     OPTIONS: dict[str, dict] = {
         'filter_cover_by_size': {'widgets': ['filtering']},
-        'cover_minimum_width': {'widgets': ['filtering_width_label', 'filtering_width_value', 'px_label1']},
-        'cover_minimum_height': {'widgets': ['filtering_height_label', 'filtering_height_value', 'px_label2']},
+        'cover_minimum_width': {'widgets': ['filtering_width_value']},
+        'cover_minimum_height': {'widgets': ['filtering_height_value']},
         'cover_tags_enlarge': {'widgets': ['tags_scale_up']},
         'cover_tags_resize': {'widgets': ['tags_scale_down']},
-        'cover_tags_resize_target_width': {
-            'widgets': ['tags_resize_width_label', 'tags_resize_width_value', 'px_label5']
-        },
-        'cover_tags_resize_target_height': {
-            'widgets': ['tags_resize_height_label', 'tags_resize_height_value', 'px_label6']
-        },
+        'cover_tags_resize_target_width': {'widgets': ['tags_resize_width_value']},
+        'cover_tags_resize_target_height': {'widgets': ['tags_resize_height_value']},
         'cover_tags_resize_mode': {'widgets': ['tags_resize_mode']},
         'cover_tags_convert_images': {'widgets': ['convert_tags']},
-        'cover_tags_convert_to_format': {'widgets': ['convert_tags_label', 'convert_tags_format']},
+        'cover_tags_convert_to_format': {'widgets': ['convert_tags_format']},
         'cover_file_enlarge': {'widgets': ['file_scale_up']},
         'cover_file_resize': {'widgets': ['file_scale_down']},
-        'cover_file_resize_target_width': {
-            'widgets': ['file_resize_width_label', 'file_resize_width_value', 'px_label3']
-        },
-        'cover_file_resize_target_height': {
-            'widgets': ['file_resize_height_label', 'file_resize_height_value', 'px_label4']
-        },
+        'cover_file_resize_target_width': {'widgets': ['file_resize_width_value']},
+        'cover_file_resize_target_height': {'widgets': ['file_resize_height_value']},
         'cover_file_resize_mode': {'widgets': ['file_resize_mode']},
         'cover_file_convert_images': {'widgets': ['convert_file']},
-        'cover_file_convert_to_format': {'widgets': ['convert_file_label', 'convert_file_format']},
-        'cover_image_quality': {'widgets': ['cover_image_quality_label', 'cover_image_quality_value', 'percent_label']},
+        'cover_file_convert_to_format': {'widgets': ['convert_file_format']},
+        'cover_image_quality': {'widgets': ['cover_image_quality_value']},
     }
 
     def __init__(self, parent=None):

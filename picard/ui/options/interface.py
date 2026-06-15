@@ -70,8 +70,8 @@ class InterfaceOptionsPage(OptionsPage):
     OPTIONS: dict[str, dict] = {
         'toolbar_show_labels': {'widgets': ['toolbar_show_labels']},
         'show_menu_icons': {'widgets': ['show_menu_icons']},
-        'ui_language': {'widgets': ['ui_language']},
-        'ui_theme': {'widgets': ['ui_theme']},
+        'ui_language': {},
+        'ui_theme': {},
         'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
         'builtin_search': {'widgets': ['builtin_search']},
         'use_adv_search_syntax': {'widgets': ['use_adv_search_syntax']},

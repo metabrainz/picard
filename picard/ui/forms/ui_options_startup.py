@@ -18,9 +18,7 @@ class Ui_StartupOptionsPage(object):
     def setupUi(self, StartupOptionsPage):
         StartupOptionsPage.setObjectName("StartupOptionsPage")
         StartupOptionsPage.resize(403, 373)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(StartupOptionsPage.sizePolicy().hasHeightForWidth())
@@ -29,9 +27,7 @@ class Ui_StartupOptionsPage(object):
         self.vboxlayout.setObjectName("vboxlayout")
         self.update_check_group = QtWidgets.QGroupBox(parent=StartupOptionsPage)
         self.update_check_group.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.update_check_group.sizePolicy().hasHeightForWidth())
@@ -57,27 +53,21 @@ class Ui_StartupOptionsPage(object):
         self.verticalLayout.addWidget(self.check_for_updates)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.label_2 = QtWidgets.QLabel(parent=self.program_update_check_group)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        self.label_update_check_days = QtWidgets.QLabel(parent=self.program_update_check_group)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setObjectName("label_2")
-        self.horizontalLayout_2.addWidget(self.label_2)
+        sizePolicy.setHeightForWidth(self.label_update_check_days.sizePolicy().hasHeightForWidth())
+        self.label_update_check_days.setSizePolicy(sizePolicy)
+        self.label_update_check_days.setObjectName("label_update_check_days")
+        self.horizontalLayout_2.addWidget(self.label_update_check_days)
         self.update_check_days = QtWidgets.QSpinBox(parent=self.program_update_check_group)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.update_check_days.sizePolicy().hasHeightForWidth())
         self.update_check_days.setSizePolicy(sizePolicy)
-        self.update_check_days.setAlignment(
-            QtCore.Qt.AlignmentFlag.AlignLeading
-            | QtCore.Qt.AlignmentFlag.AlignLeft
-            | QtCore.Qt.AlignmentFlag.AlignVCenter
-        )
+        self.update_check_days.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.update_check_days.setMinimum(1)
         self.update_check_days.setObjectName("update_check_days")
         self.horizontalLayout_2.addWidget(self.update_check_days)
@@ -85,16 +75,14 @@ class Ui_StartupOptionsPage(object):
         self.verticalLayout_2.addWidget(self.program_update_check_group)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.label_3 = QtWidgets.QLabel(parent=self.update_check_group)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        self.label_update_level = QtWidgets.QLabel(parent=self.update_check_group)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setObjectName("label_3")
-        self.horizontalLayout_3.addWidget(self.label_3)
+        sizePolicy.setHeightForWidth(self.label_update_level.sizePolicy().hasHeightForWidth())
+        self.label_update_level.setSizePolicy(sizePolicy)
+        self.label_update_level.setObjectName("label_update_level")
+        self.horizontalLayout_3.addWidget(self.label_update_level)
         self.update_level = QtWidgets.QComboBox(parent=self.update_check_group)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -111,9 +99,7 @@ class Ui_StartupOptionsPage(object):
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.groupBox_3)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.log_verbosity_label = QtWidgets.QLabel(parent=self.groupBox_3)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred
-        )
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.log_verbosity_label.sizePolicy().hasHeightForWidth())
@@ -124,9 +110,7 @@ class Ui_StartupOptionsPage(object):
         self.starting_log_level.setObjectName("starting_log_level")
         self.horizontalLayout_4.addWidget(self.starting_log_level)
         self.vboxlayout.addWidget(self.groupBox_3)
-        spacerItem = QtWidgets.QSpacerItem(
-            181, 21, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding
-        )
+        spacerItem = QtWidgets.QSpacerItem(181, 21, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.vboxlayout.addItem(spacerItem)
 
         self.retranslateUi(StartupOptionsPage)
@@ -142,7 +126,7 @@ class Ui_StartupOptionsPage(object):
         self.check_rtd_updates.setText(_("Check for documentation updates during startup"))
         self.check_plugin_updates.setText(_("Check for plugin updates during startup"))
         self.check_for_updates.setText(_("Check for program updates during startup"))
-        self.label_2.setText(_("Days between checks:"))
-        self.label_3.setText(_("Updates to check:"))
+        self.label_update_check_days.setText(_("Days between checks:"))
+        self.label_update_level.setText(_("Updates to check:"))
         self.groupBox_3.setTitle(_("Logging"))
         self.log_verbosity_label.setText(_("Default log level:"))
