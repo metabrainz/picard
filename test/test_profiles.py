@@ -41,8 +41,10 @@ from picard.profile import (
     profile_groups_all_settings,
     profile_groups_keys,
     profile_groups_order,
+    profile_groups_remove_group,
     profile_groups_reset,
     profile_groups_settings,
+    profile_groups_update_highlights,
     profile_groups_values,
 )
 
@@ -157,6 +159,30 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
 
         result_after = [value['title'] for value in profile_groups_values()]
         self.assertEqual(result_after, ['title_group1', 'title_group0'])
+
+    def test_remove_group(self):
+        self.assertIn('opt0', profile_groups_all_settings())
+        profile_groups_remove_group('group0')
+        # opt0 and opt2 were in group0
+        self.assertNotIn('opt0', profile_groups_all_settings())
+        self.assertNotIn('opt2', profile_groups_all_settings())
+        # opt1 and opt3 should remain (they're in group1)
+        self.assertIn('opt1', profile_groups_all_settings())
+        self.assertIn('opt3', profile_groups_all_settings())
+
+    def test_remove_group_preserves_shared_names(self):
+        # Add same option name to two groups
+        profile_groups_add_setting('extra_group', 'opt0', (), title='Extra')
+        profile_groups_remove_group('extra_group')
+        # opt0 should still be in _known_settings because group0 still has it
+        self.assertIn('opt0', profile_groups_all_settings())
+
+    def test_update_highlights(self):
+        # Update highlights for opt1
+        profile_groups_update_highlights('opt1', ('new_widget',))
+        settings = list(profile_groups_settings('group1'))
+        opt1_updated = next(s for s in settings if s.name == 'opt1')
+        self.assertEqual(opt1_updated.highlights, ('new_widget',))
 
 
 class TestUserProfiles(TestPicardProfilesCommon):
@@ -416,52 +442,50 @@ class TestUserProfiles(TestPicardProfilesCommon):
         # Overrides restored even after exception
         self.assertIs(self.config.setting.profiles_override, override_profiles)
 
+    def test_clean_profile_settings(self):
+        from picard.ui.options.profiles import ProfilesOptionsPage
+
+        # test_setting_0 has in_profile=True (from setUp)
+        # Create an option without in_profile
+        TextOption('setting', 'stale_option', 'default')
+
+        # Simulate profile_settings with valid, stale, and plugin keys
+        page = ProfilesOptionsPage.__new__(ProfilesOptionsPage)
+        page.profile_settings = {
+            'p1': {
+                self.test_setting_0: 'value1',  # valid (in_profile=True)
+                'stale_option': 'stale_value',  # invalid (in_profile=False)
+                'nonexistent_option': 'gone',  # option doesn't exist
+                'plugin.some-uuid/greeting': 'hello',  # plugin key — always kept
+            }
+        }
+
+        cleaned = page._clean_profile_settings()
+        self.assertIn(self.test_setting_0, cleaned['p1'])
+        self.assertNotIn('stale_option', cleaned['p1'])
+        self.assertNotIn('nonexistent_option', cleaned['p1'])
+        self.assertIn('plugin.some-uuid/greeting', cleaned['p1'])
+
     def test_clean_plugin_profile_settings(self):
         from picard.plugin3.manager.clean import PluginCleanupManager
 
-        # Set up profile settings with plugin keys
-        settings = {
-            'profile1': {
-                'some_core_option': 'value',
-                'plugin.test-uuid/option1': 'val1',
-                'plugin.test-uuid/option2': 'val2',
-                'plugin.other-uuid/option1': 'val3',
+        # Set up profile settings with plugin and core keys
+        self.config.profiles[self.SETTINGS_KEY] = {
+            'p1': {
+                'move_files': True,
+                'plugin.test-uuid/greeting': 'hello',
+                'plugin.test-uuid/other': 'world',
+                'plugin.other-uuid/opt': 'keep',
             }
         }
-        self.config.profiles[self.SETTINGS_KEY] = settings
 
-        mgr = PluginCleanupManager(None)
-        mgr._clean_plugin_profile_settings(self.config, 'test-uuid')
+        cleanup = PluginCleanupManager(None)
+        cleanup._clean_plugin_profile_settings(self.config, 'test-uuid')
 
-        stored = self.config.profiles[self.SETTINGS_KEY]
-        self.assertIn('some_core_option', stored['profile1'])
-        self.assertNotIn('plugin.test-uuid/option1', stored['profile1'])
-        self.assertNotIn('plugin.test-uuid/option2', stored['profile1'])
-        self.assertIn('plugin.other-uuid/option1', stored['profile1'])
-
-    def test_known_settings_no_collision_between_plugins(self):
-        """Two plugins with same option name should not collide in profile groups."""
-        from picard.config import (
-            ConfigSection,
-            get_config,
-        )
-        from picard.profile import (
-            profile_groups_all_settings,
-            profile_groups_reset,
-        )
-
-        profile_groups_reset()
-        config = get_config()
-
-        section1 = ConfigSection(config, 'plugin.uuid1')
-        section1.display_name = 'Plugin 1'
-        section1.register_option('greeting', 'hello', title='Greeting', in_profile=True)
-
-        section2 = ConfigSection(config, 'plugin.uuid2')
-        section2.display_name = 'Plugin 2'
-        section2.register_option('greeting', 'hi', title='Greeting', in_profile=True)
-
-        # Both should be in _known_settings with distinct keys
-        known = profile_groups_all_settings()
-        self.assertIn('plugin.uuid1/greeting', known)
-        self.assertIn('plugin.uuid2/greeting', known)
+        settings = self.config.profiles[self.SETTINGS_KEY]
+        # Core keys and other plugin keys preserved
+        self.assertIn('move_files', settings['p1'])
+        self.assertIn('plugin.other-uuid/opt', settings['p1'])
+        # Target plugin keys removed
+        self.assertNotIn('plugin.test-uuid/greeting', settings['p1'])
+        self.assertNotIn('plugin.test-uuid/other', settings['p1'])

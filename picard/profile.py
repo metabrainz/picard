@@ -78,7 +78,7 @@ _PLUGINS_GROUP = 'plugins'
 def profile_groups_add_setting(
     group: str,
     option_name: str,
-    highlights: list[str],
+    highlights: tuple,
     title: str | None = None,
     parent: str | None = None,
     section: str = 'setting',
@@ -103,6 +103,15 @@ def profile_groups_add_setting(
 
 def profile_groups_all_settings() -> set[str]:
     return _known_settings
+
+
+def profile_groups_update_highlights(option_name: str, highlights: tuple) -> None:
+    """Update highlights for an already-registered setting."""
+    for group in _settings_groups.values():
+        for i, setting in enumerate(group.get('settings', [])):
+            if setting.name == option_name:
+                group['settings'][i] = SettingDesc(setting.name, highlights, setting.section)
+                return
 
 
 def profile_groups_settings(group: str) -> Iterator[SettingDesc]:
@@ -135,6 +144,14 @@ def profile_groups_group_from_page(page: 'OptionsPage') -> dict | None:
     return None
 
 
+def profile_groups_values() -> Iterator[dict]:
+    """Returns values sorted by (groups_order, group name)"""
+    # Yield top level groups first to ensure that they are created in the
+    # QTreeWidget before adding their children.
+    for k in sorted(_settings_groups, key=lambda k: (_settings_groups[k]['parent'], _groups_order[k], k)):
+        yield _settings_groups[k]
+
+
 def profile_groups_remove_group(group: str) -> None:
     """Remove a settings group (e.g. when a plugin is disabled)."""
     if group in _settings_groups:
@@ -148,23 +165,6 @@ def profile_groups_remove_group(group: str) -> None:
                 if key in removed_keys:
                     still_used.add(key)
         _known_settings.difference_update(removed_keys - still_used)
-
-
-def profile_groups_update_highlights(option_name: str, highlights: tuple) -> None:
-    """Update highlights for an already-registered setting."""
-    for group in _settings_groups.values():
-        for i, setting in enumerate(group.get('settings', [])):
-            if setting.name == option_name:
-                group['settings'][i] = SettingDesc(setting.name, highlights, setting.section)
-                return
-
-
-def profile_groups_values() -> Iterator[dict]:
-    """Returns values sorted by (groups_order, group name)"""
-    # Yield top level groups first to ensure that they are created in the
-    # QTreeWidget before adding their children.
-    for k in sorted(_settings_groups, key=lambda k: (_settings_groups[k]['parent'], _groups_order[k], k)):
-        yield _settings_groups[k]
 
 
 def profile_groups_reset() -> None:

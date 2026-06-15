@@ -668,7 +668,9 @@ QuickMenuItem = namedtuple('QuickMenuItem', ['name', 'title'])
 _quick_menu_items: dict[str, dict] = {}
 
 
-def register_quick_menu_item(group_order: int, group_name: str, group_parent: str, group_title: str, option: Option):
+def register_quick_menu_item(
+    group_order: int, group_name: str, group_parent: str | None, group_title: str, option: Option
+):
     """Register a BoolOption for the quick settings menu.
 
     Only BoolOptions are eligible. Non-bool options are silently skipped.
@@ -677,7 +679,7 @@ def register_quick_menu_item(group_order: int, group_name: str, group_parent: st
     Args:
         group_order: Sort order for the group in the menu.
         group_name: Identifier for the options group (usually the page NAME).
-        group_parent: Parent group name, or empty string for top-level.
+        group_parent: Parent group name, or None/empty for top-level.
         group_title: Display title for the group.
         option: The Option to register. Must have qtype=bool.
     """

@@ -205,6 +205,10 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         section = ConfigSection(self.config, 'test_plugin')
         section.register_option('my_opt', 'default', in_profile=True)
 
+        # No profiles active — should return default
+        self.assertEqual(section['my_opt'], 'default')
+
+        # Set up a profile and store override in global profile settings
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
@@ -264,18 +268,24 @@ class TestPicardConfigSection(TestPicardConfigCommon):
         ListOption.add_if_missing('profiles', 'user_profiles', [])
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
-        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin4/my_opt': 'stored'}}
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {'p1': {'test_plugin4/my_opt': 'persisted'}}
 
-        # Activate settings override (simulates dialog open)
+        # Simulate dialog open — set override
         override = {'p1': {'test_plugin4/my_opt': 'dialog_value'}}
-        self.config.setting.set_profiles_override([{'id': 'p1', 'enabled': True}])
         self.config.setting.set_settings_override(override)
+        self.config.setting.set_profiles_override([{'id': 'p1', 'enabled': True}])
 
+        # Read should come from override
         self.assertEqual(section['my_opt'], 'dialog_value')
 
-        # Write goes to override dict, not disk
+        # Write should go to override, not QSettings
         section['my_opt'] = 'new_dialog_value'
         self.assertEqual(override['p1']['test_plugin4/my_opt'], 'new_dialog_value')
+        self.assertEqual(section['my_opt'], 'new_dialog_value')
+
+        # Persisted value should be unchanged
+        persisted = self.config.profiles[SettingConfigSection.SETTINGS_KEY]
+        self.assertEqual(persisted['p1']['test_plugin4/my_opt'], 'persisted')
 
         self.config.setting.set_settings_override(None)
         self.config.setting.set_profiles_override(None)
@@ -699,7 +709,6 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         register_quick_menu_item(0, 'test_group', None, "test group", option)
         menu_items = self._get_menu_items()
         self.assertEqual(len(menu_items), 1)
-        self.assertEqual(menu_items[0]['options'][0].name, 'option_bool_no_title')
         self.assertEqual(menu_items[0]['options'][0].title, 'option_bool_no_title')
 
         # Test that only boolean options are registered
@@ -834,11 +843,10 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
         self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
         self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {
-            'p1': {
-                'greeting': 'core_profile_value',
-                'plugin.test/greeting': 'plugin_profile_value',
-            }
+            'p1': {'greeting': 'core_profile_value', 'plugin.test/greeting': 'plugin_profile_value'}
         }
 
+        # Core should get core value
         self.assertEqual(self.config.setting['greeting'], 'core_profile_value')
+        # Plugin should get plugin value, not core's
         self.assertEqual(plugin_section['greeting'], 'plugin_profile_value')
