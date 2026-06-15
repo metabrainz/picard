@@ -27,7 +27,10 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Iterator
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from typing import TYPE_CHECKING
 
 from picard.i18n import N_
@@ -78,7 +81,7 @@ _PLUGINS_GROUP = 'plugins'
 def profile_groups_add_setting(
     group: str,
     option_name: str,
-    highlights: tuple,
+    highlights: Iterable[str],
     title: str | None = None,
     parent: str | None = None,
     section: str = 'setting',
@@ -105,7 +108,7 @@ def profile_groups_all_settings() -> set[str]:
     return _known_settings
 
 
-def profile_groups_update_highlights(option_name: str, highlights: tuple) -> None:
+def profile_groups_update_highlights(option_name: str, highlights: Iterable[str]) -> None:
     """Update highlights for an already-registered setting."""
     for group in _settings_groups.values():
         for i, setting in enumerate(group.get('settings', [])):
