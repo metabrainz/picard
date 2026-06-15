@@ -198,11 +198,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
     def test_profile_override_on_config_section(self):
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             SettingConfigSection,
         )
 
-        section = ConfigSection(self.config, 'test_plugin')
+        section = ProfileConfigSection(self.config, 'test_plugin')
         section.register_option('my_opt', 'default', in_profile=True)
 
         # No profiles active — should return default
@@ -218,11 +218,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
     def test_profile_override_not_applied_without_in_profile(self):
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             SettingConfigSection,
         )
 
-        section = ConfigSection(self.config, 'test_plugin2')
+        section = ProfileConfigSection(self.config, 'test_plugin2')
         section.register_option('my_opt', 'default', in_profile=False)
 
         ListOption.add_if_missing('profiles', 'user_profiles', [])
@@ -235,11 +235,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
 
     def test_profile_override_setitem(self):
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             SettingConfigSection,
         )
 
-        section = ConfigSection(self.config, 'test_plugin3')
+        section = ProfileConfigSection(self.config, 'test_plugin3')
         section.register_option('my_opt', 'default', in_profile=True)
 
         ListOption.add_if_missing('profiles', 'user_profiles', [])
@@ -258,11 +258,11 @@ class TestPicardConfigSection(TestPicardConfigCommon):
     def test_profile_override_setitem_with_settings_override(self):
         """When settings_override is active (dialog open), writes should go there."""
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             SettingConfigSection,
         )
 
-        section = ConfigSection(self.config, 'test_plugin4')
+        section = ProfileConfigSection(self.config, 'test_plugin4')
         section.register_option('my_opt', 'default', in_profile=True)
 
         ListOption.add_if_missing('profiles', 'user_profiles', [])
@@ -826,7 +826,7 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
     def test_profile_override_no_collision_between_sections(self):
         """Plugin and core options with the same name must not collide in profile storage."""
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             SettingConfigSection,
             TextOption,
         )
@@ -835,7 +835,7 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
         TextOption('setting', 'greeting', 'core_default', title='Core Greeting', in_profile=True)
 
         # Plugin option 'greeting' in 'plugin.test' section
-        plugin_section = ConfigSection(self.config, 'plugin.test')
+        plugin_section = ProfileConfigSection(self.config, 'plugin.test')
         plugin_section.register_option('greeting', 'plugin_default', title='Plugin Greeting', in_profile=True)
 
         # Set up profile with different values for each

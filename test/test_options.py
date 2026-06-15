@@ -99,7 +99,7 @@ class OptionsUtilitiesTest(PicardTestCase):
     def test_known_settings_no_collision_between_plugins(self):
         """Two plugins with same option name should not collide in profile groups."""
         from picard.config import (
-            ConfigSection,
+            ProfileConfigSection,
             get_config,
         )
         from picard.profile import (
@@ -110,11 +110,11 @@ class OptionsUtilitiesTest(PicardTestCase):
         profile_groups_reset()
         config = get_config()
 
-        section1 = ConfigSection(config, 'plugin.uuid1')
+        section1 = ProfileConfigSection(config, 'plugin.uuid1')
         section1.display_name = 'Plugin 1'
         section1.register_option('greeting', 'hello', title='Greeting', in_profile=True)
 
-        section2 = ConfigSection(config, 'plugin.uuid2')
+        section2 = ProfileConfigSection(config, 'plugin.uuid2')
         section2.display_name = 'Plugin 2'
         section2.register_option('greeting', 'hi', title='Greeting', in_profile=True)
 

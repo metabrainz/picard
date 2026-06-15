@@ -38,8 +38,8 @@ from picard import (
     tagger_instance,
 )
 from picard.config import (
-    ConfigSection,
     Option,
+    ProfileConfigSection,
     get_config,
     register_quick_menu_item,
 )
@@ -119,7 +119,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
         if self.OPTION_SECTION == 'setting':
             section = config.setting
         else:
-            section = ConfigSection(config, self.OPTION_SECTION)
+            section = ProfileConfigSection(config, self.OPTION_SECTION)
         with config.setting.no_profile():
             old_options = {}
             for option in self._registered_settings[self.NAME]:

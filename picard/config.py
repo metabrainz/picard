@@ -197,7 +197,12 @@ _SENTINEL = object()
 
 
 class ConfigSection(QtCore.QObject):
-    """Configuration section."""
+    """Pure key-value configuration storage.
+
+    Provides typed option access with memoization. No profile awareness —
+    reads and writes go directly to/from the underlying QSettings store.
+    Used for sections that don't participate in profiles (e.g. 'persist', 'profiles').
+    """
 
     # Signal emitted when the value of a setting has changed.
     setting_changed = QtCore.pyqtSignal(str, object, object)
@@ -222,69 +227,9 @@ class ConfigSection(QtCore.QObject):
         opt = Option.get(self.__name, name)
         if opt is None:
             return None
-        if opt.in_profile:
-            override = self._get_profile_override(name)
-            if override is not _SENTINEL:
-                return override
         return self.value(opt, opt.default)
 
-    def _profile_key(self, name: str) -> str:
-        """Return the key for this option in the profile settings dict.
-
-        Core options (section='setting') use bare name for backward compat.
-        Plugin options use 'section/name' (e.g. 'plugin.<uuid>/greeting').
-        """
-        return setting_profile_key(name, self.__name)
-
-    def _get_all_profile_settings(self):
-        """Return the active profile settings dict, or None if unavailable."""
-        try:
-            setting_section = self.__qt_config.setting
-        except AttributeError:
-            return None
-        if setting_section.settings_override is not None:
-            return setting_section.settings_override
-        return self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
-
-    def _is_settings_override_active(self) -> bool:
-        """Return True if the dialog's settings override is active."""
-        try:
-            return self.__qt_config.setting.settings_override is not None
-        except AttributeError:
-            return False
-
-    def _get_profile_override(self, name: str):
-        """Check active profiles for an override of this option."""
-        all_settings = self._get_all_profile_settings()
-        if not all_settings:
-            return _SENTINEL
-        pkey = self._profile_key(name)
-        for profile_id in self._get_active_profile_ids():
-            settings = all_settings.get(profile_id)
-            if settings and pkey in settings and settings[pkey] is not None:
-                return settings[pkey]
-        return _SENTINEL
-
-    def _get_active_profile_ids(self):
-        """Yield enabled profile IDs from the global profiles list."""
-        try:
-            setting_section = self.__qt_config.setting
-        except AttributeError:
-            return
-        if setting_section.profiles_override is not None:
-            profiles = setting_section.profiles_override
-        else:
-            profiles = self.__qt_config.profiles['user_profiles']
-        if profiles:
-            for profile in profiles:
-                if profile['enabled']:
-                    yield profile['id']
-
     def __setitem__(self, name: str, value: Any):
-        opt = Option.get(self.__name, name)
-        if opt and opt.in_profile:
-            if self._set_profile_override(name, value):
-                return
         old_value = self.__getitem__(name)
         key = self.key(name)
         if isinstance(value, Enum):
@@ -293,34 +238,6 @@ class ConfigSection(QtCore.QObject):
         self._memoization[key].dirty = True
         if value != old_value:
             self.setting_changed.emit(name, old_value, value)
-
-    def _set_profile_override(self, name: str, value) -> bool:
-        """Write value to active profile's settings if the option is overridden there.
-
-        Returns True if the write was intercepted, False otherwise.
-        """
-        all_settings = self._get_all_profile_settings()
-        if not all_settings:
-            return False
-        pkey = self._profile_key(name)
-        is_override = self._is_settings_override_active()
-        for profile_id in self._get_active_profile_ids():
-            settings = all_settings.get(profile_id)
-            if settings and pkey in settings:
-                old_value = settings[pkey]
-                settings[pkey] = value
-                if not is_override:
-                    self._save_all_profile_settings(all_settings)
-                if value != old_value:
-                    self.setting_changed.emit(name, old_value, value)
-                return True
-        return False
-
-    def _save_all_profile_settings(self, all_settings: dict):
-        """Persist profile settings to the global profiles section."""
-        key = self.__qt_config.profiles.key(SettingConfigSection.SETTINGS_KEY)
-        self.__qt_config.setValue(key, all_settings)
-        self.__qt_config.profiles._memoization[key].dirty = True
 
     def __contains__(self, name):
         return self.__qt_config.contains(self.key(name))
@@ -370,6 +287,118 @@ class ConfigSection(QtCore.QObject):
                 return memovar.value
         return default
 
+
+class ProfileConfigSection(ConfigSection):
+    """Configuration section with profile override support.
+
+    Reads and writes for options marked with in_profile=True are intercepted:
+    if an active profile overrides the option, the profile value is returned
+    (or written) instead of the base config value.
+
+    Used for plugin configuration sections that participate in profiles.
+    """
+
+    def __init__(self, config: 'Config', name: str):
+        super().__init__(config, name)
+        self.__qt_config = config
+
+    def __getitem__(self, name: str) -> Any:
+        opt = Option.get(self.section_name, name)
+        if opt is None:
+            return None
+        if opt.in_profile:
+            override = self._get_profile_override(name)
+            if override is not _SENTINEL:
+                return override
+        return self.value(opt, opt.default)
+
+    def _profile_key(self, name: str) -> str:
+        """Return the key for this option in the profile settings dict.
+
+        Core options (section='setting') use bare name for backward compat.
+        Plugin options use 'section/name' (e.g. 'plugin.<uuid>/greeting').
+        """
+        return setting_profile_key(name, self.section_name)
+
+    def _get_all_profile_settings(self):
+        """Return the active profile settings dict, or None if unavailable."""
+        try:
+            setting_section = self.__qt_config.setting
+        except AttributeError:
+            return None
+        if setting_section.settings_override is not None:
+            return setting_section.settings_override
+        return self.__qt_config.profiles[SettingConfigSection.SETTINGS_KEY]
+
+    def _is_settings_override_active(self) -> bool:
+        """Return True if the dialog's settings override is active."""
+        try:
+            return self.__qt_config.setting.settings_override is not None
+        except AttributeError:
+            return False
+
+    def _get_profile_override(self, name: str):
+        """Check active profiles for an override of this option."""
+        all_settings = self._get_all_profile_settings()
+        if not all_settings:
+            return _SENTINEL
+        pkey = self._profile_key(name)
+        for profile_id in self._get_active_profile_ids():
+            settings = all_settings.get(profile_id)
+            if settings and pkey in settings and settings[pkey] is not None:
+                return settings[pkey]
+        return _SENTINEL
+
+    def _get_active_profile_ids(self):
+        """Yield enabled profile IDs from the global profiles list."""
+        try:
+            setting_section = self.__qt_config.setting
+        except AttributeError:
+            return
+        if setting_section.profiles_override is not None:
+            profiles = setting_section.profiles_override
+        else:
+            profiles = self.__qt_config.profiles['user_profiles']
+        if profiles:
+            for profile in profiles:
+                if profile['enabled']:
+                    yield profile['id']
+
+    def __setitem__(self, name: str, value: Any):
+        opt = Option.get(self.section_name, name)
+        if opt and opt.in_profile:
+            if self._set_profile_override(name, value):
+                return
+        super().__setitem__(name, value)
+
+    def _set_profile_override(self, name: str, value) -> bool:
+        """Write value to active profile's settings if the option is overridden there.
+
+        Returns True if the write was intercepted, False otherwise.
+        """
+        all_settings = self._get_all_profile_settings()
+        if not all_settings:
+            return False
+        pkey = self._profile_key(name)
+        is_override = self._is_settings_override_active()
+        for profile_id in self._get_active_profile_ids():
+            settings = all_settings.get(profile_id)
+            if settings and pkey in settings:
+                old_value = settings[pkey]
+                settings[pkey] = value
+                if not is_override:
+                    self._save_all_profile_settings(all_settings)
+                if value != old_value:
+                    self.setting_changed.emit(name, old_value, value)
+                return True
+        return False
+
+    def _save_all_profile_settings(self, all_settings: dict):
+        """Persist profile settings to the global profiles section."""
+        key = self.__qt_config.profiles.key(SettingConfigSection.SETTINGS_KEY)
+        self.__qt_config.setValue(key, all_settings)
+        self.__qt_config.profiles._memoization[key].dirty = True
+
     def register_option(
         self, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
     ) -> Option:
@@ -408,23 +437,28 @@ class ConfigSection(QtCore.QObject):
         else:
             option_type = Option  # type: ignore[assignment]
 
-        opt = option_type(self.__name, name, default, title=title, in_profile=in_profile)
+        opt = option_type(self.section_name, name, default, title=title, in_profile=in_profile)
         if in_profile:
-            group_name = self.__name
-            group_title = self.display_name or self.__name
+            group_name = self.section_name
+            group_title = self.display_name or self.section_name
             profile_groups_add_setting(
                 group_name,
                 name,
                 (),
                 title=group_title,
                 parent='plugins',
-                section=self.__name,
+                section=self.section_name,
             )
         return opt
 
 
-class SettingConfigSection(ConfigSection):
-    """Custom subclass to automatically accommodate saving and retrieving values based on user profile settings."""
+class SettingConfigSection(ProfileConfigSection):
+    """Profile-aware config section with dialog override support.
+
+    Extends ProfileConfigSection with the ability to temporarily override
+    profile data during options dialog editing (profiles_override,
+    settings_override). This is the section used for Picard's global 'setting'.
+    """
 
     PROFILES_KEY = 'user_profiles'
     SETTINGS_KEY = 'user_profile_settings'
