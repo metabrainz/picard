@@ -104,10 +104,7 @@ from picard.webservice import (
 )
 from picard.webservice.api_helpers import MBAPIHelper
 
-from picard.ui.options import (
-    OptionsPage as _OptionsPage,
-    PageOptionConfigs,  # noqa: F401 (re-exported via plugin3.api)
-)
+from picard.ui.options import OptionsPage as _OptionsPage
 
 
 try:

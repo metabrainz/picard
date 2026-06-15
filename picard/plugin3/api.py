@@ -29,13 +29,14 @@ from picard.plugin3.api_impl import (
     ImageProcessor,
     Metadata,
     OptionsPage,
-    PageOptionConfigs,
     PluginApi,
     ProviderOptions,
     Track,
     t_,
 )
 from picard.script import ScriptParser
+
+from picard.ui.options import PageOptionConfigs
 
 
 __all__ = [
