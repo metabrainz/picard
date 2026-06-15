@@ -34,12 +34,18 @@ from picard import (
     tagger_instance,
 )
 from picard.config import (
+    ConfigSection,
     Option,
     get_config,
     register_quick_menu_item,
 )
 from picard.i18n import gettext as _
-from picard.profile import profile_groups_add_setting
+from picard.profile import (
+    profile_groups_add_setting,
+    profile_groups_all_settings,
+    profile_groups_update_highlights,
+    setting_profile_key,
+)
 from picard.util.display_title_base import HasDisplayTitle
 
 
@@ -59,6 +65,11 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
     OPTIONS: dict[str, dict] = {}
+
+    # Config section where this page's options are stored.
+    # Core pages use 'setting'. Plugin pages are set to 'plugin.<uuid>'
+    # automatically by register_options_page().
+    OPTION_SECTION = 'setting'
 
     _registered_settings: dict[str, list] = defaultdict(list)
     initialized = False
@@ -94,20 +105,24 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
 
     def restore_defaults(self):
         config = get_config()
+        if self.OPTION_SECTION == 'setting':
+            section = config.setting
+        else:
+            section = ConfigSection(config, self.OPTION_SECTION)
         with config.setting.no_profile():
             old_options = {}
             for option in self._registered_settings[self.NAME]:
                 default_value = option.default
                 name = option.name
-                current_value = config.setting[name]
+                current_value = section[name]
                 if current_value != default_value:
                     log.debug("Option %s %s: %r -> %r" % (self.NAME, name, current_value, default_value))
                     old_options[name] = current_value
-                    config.setting[name] = default_value
+                    section[name] = default_value
             self.load()
             # Restore the config values in case the user doesn't save after restoring defaults
             for key in old_options:
-                config.setting[key] = old_options[key]
+                section[key] = old_options[key]
 
     def display_error(self, error):
         dialog = QtWidgets.QMessageBox(
@@ -146,10 +161,20 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     def register_setting(cls, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
         and to highlight when profiles are used"""
-        option = Option.get('setting', name)
+        option = Option.get(cls.OPTION_SECTION, name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
-        if highlights is not None:
-            profile_groups_add_setting(cls.NAME, name, tuple(highlights), title=cls.display_title(), parent=cls.PARENT)
+        pkey = setting_profile_key(name, cls.OPTION_SECTION)
+        if option.in_profile and pkey not in profile_groups_all_settings():
+            profile_groups_add_setting(
+                cls.NAME,
+                name,
+                tuple(highlights) if highlights else (),
+                title=cls.display_title(),
+                parent=cls.PARENT,
+                section=cls.OPTION_SECTION,
+            )
+        elif option.in_profile and highlights:
+            profile_groups_update_highlights(name, tuple(highlights))

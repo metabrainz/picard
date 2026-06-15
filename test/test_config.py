@@ -813,3 +813,32 @@ class TestPicardConfigQuickMenuItems(TestPicardConfigCommon):
 
         # Restore original dictionary
         config._quick_menu_items = old
+
+    def test_profile_override_no_collision_between_sections(self):
+        """Plugin and core options with the same name must not collide in profile storage."""
+        from picard.config import (
+            ConfigSection,
+            SettingConfigSection,
+            TextOption,
+        )
+
+        # Core option 'greeting' in 'setting' section
+        TextOption('setting', 'greeting', 'core_default', title='Core Greeting', in_profile=True)
+
+        # Plugin option 'greeting' in 'plugin.test' section
+        plugin_section = ConfigSection(self.config, 'plugin.test')
+        plugin_section.register_option('greeting', 'plugin_default', title='Plugin Greeting', in_profile=True)
+
+        # Set up profile with different values for each
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', SettingConfigSection.SETTINGS_KEY, {})
+        self.config.profiles['user_profiles'] = [{'id': 'p1', 'enabled': True}]
+        self.config.profiles[SettingConfigSection.SETTINGS_KEY] = {
+            'p1': {
+                'greeting': 'core_profile_value',
+                'plugin.test/greeting': 'plugin_profile_value',
+            }
+        }
+
+        self.assertEqual(self.config.setting['greeting'], 'core_profile_value')
+        self.assertEqual(plugin_section['greeting'], 'plugin_profile_value')

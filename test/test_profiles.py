@@ -415,3 +415,53 @@ class TestUserProfiles(TestPicardProfilesCommon):
 
         # Overrides restored even after exception
         self.assertIs(self.config.setting.profiles_override, override_profiles)
+
+    def test_clean_plugin_profile_settings(self):
+        from picard.plugin3.manager.clean import PluginCleanupManager
+
+        # Set up profile settings with plugin keys
+        settings = {
+            'profile1': {
+                'some_core_option': 'value',
+                'plugin.test-uuid/option1': 'val1',
+                'plugin.test-uuid/option2': 'val2',
+                'plugin.other-uuid/option1': 'val3',
+            }
+        }
+        self.config.profiles[self.SETTINGS_KEY] = settings
+
+        mgr = PluginCleanupManager(None)
+        mgr._clean_plugin_profile_settings(self.config, 'test-uuid')
+
+        stored = self.config.profiles[self.SETTINGS_KEY]
+        self.assertIn('some_core_option', stored['profile1'])
+        self.assertNotIn('plugin.test-uuid/option1', stored['profile1'])
+        self.assertNotIn('plugin.test-uuid/option2', stored['profile1'])
+        self.assertIn('plugin.other-uuid/option1', stored['profile1'])
+
+    def test_known_settings_no_collision_between_plugins(self):
+        """Two plugins with same option name should not collide in profile groups."""
+        from picard.config import (
+            ConfigSection,
+            get_config,
+        )
+        from picard.profile import (
+            profile_groups_all_settings,
+            profile_groups_reset,
+        )
+
+        profile_groups_reset()
+        config = get_config()
+
+        section1 = ConfigSection(config, 'plugin.uuid1')
+        section1.display_name = 'Plugin 1'
+        section1.register_option('greeting', 'hello', title='Greeting', in_profile=True)
+
+        section2 = ConfigSection(config, 'plugin.uuid2')
+        section2.display_name = 'Plugin 2'
+        section2.register_option('greeting', 'hi', title='Greeting', in_profile=True)
+
+        # Both should be in _known_settings with distinct keys
+        known = profile_groups_all_settings()
+        self.assertIn('plugin.uuid1/greeting', known)
+        self.assertIn('plugin.uuid2/greeting', known)
