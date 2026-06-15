@@ -37,7 +37,10 @@ from picard.i18n import (
 from picard.track import TagGenreFilter
 
 from picard.ui.forms.ui_options_genres import Ui_GenresOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 TOOLTIP_GENRES_FILTER = N_("""<html><head/><body>
@@ -86,7 +89,7 @@ class GenresOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_genres.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'use_genres': {'widgets': ['use_genres']},
         'only_my_genres': {'widgets': ['only_my_genres']},
         'artists_genres': {'widgets': ['artists_genres']},

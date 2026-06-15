@@ -33,7 +33,10 @@ from picard.i18n import (
 from picard.util import bytes2human
 
 from picard.ui.forms.ui_options_network import Ui_NetworkOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import set_widget_fixed_width_for_text
 
 
@@ -45,7 +48,7 @@ class NetworkOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_network.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'use_proxy': {'widgets': ['web_proxy']},
         'proxy_type': {'widgets': ['proxy_type_socks', 'proxy_type_http']},
         'proxy_server_host': {'widgets': ['server_host']},

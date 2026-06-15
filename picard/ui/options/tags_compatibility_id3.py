@@ -28,7 +28,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_tags_compatibility_id3 import Ui_TagsCompatibilityOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class TagsCompatibilityID3OptionsPage(OptionsPage):
@@ -39,7 +42,7 @@ class TagsCompatibilityID3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_id3.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'write_id3v23': {'widgets': ['write_id3v23', 'write_id3v24']},
         'id3v2_encoding': {'widgets': ['enc_utf8', 'enc_utf16', 'enc_iso88591']},
         'id3v23_join_with': {'widgets': ['id3v23_join_with']},

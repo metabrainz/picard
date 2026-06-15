@@ -40,7 +40,10 @@ from picard.i18n import (
 from picard.util.mbserver import is_official_server
 
 from picard.ui.forms.ui_options_general import Ui_GeneralOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class GeneralOptionsPage(OptionsPage):
@@ -51,7 +54,7 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'server_host': {'widgets': ['server_host']},
         'server_port': {'widgets': ['server_port']},
         'analyze_new_files': {'widgets': ['analyze_new_files']},

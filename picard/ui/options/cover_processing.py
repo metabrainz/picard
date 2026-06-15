@@ -42,7 +42,10 @@ from picard.i18n import (
 from picard.ui.forms.ui_options_cover_processing import (
     Ui_CoverProcessingOptionsPage,
 )
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class CoverProcessingOptionsPage(OptionsPage):
@@ -52,7 +55,7 @@ class CoverProcessingOptionsPage(OptionsPage):
     SORT_ORDER = 0
     HELP_URL = "/config/options_cover_art_processing.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'filter_cover_by_size': {'widgets': ['filtering']},
         'cover_minimum_width': {'widgets': ['filtering_width_value']},
         'cover_minimum_height': {'widgets': ['filtering_height_value']},

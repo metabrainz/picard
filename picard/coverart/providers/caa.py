@@ -67,6 +67,7 @@ from picard.webservice import ratecontrol
 
 from picard.ui.caa_types_selector import CAATypesSelectorDialog
 from picard.ui.forms.ui_provider_options_caa import Ui_CaaOptions
+from picard.ui.options import PageOptionConfigs
 
 
 CaaSizeItem = namedtuple('CaaSizeItem', ['thumbnail', 'label'])
@@ -124,7 +125,7 @@ class ProviderOptionsCaa(ProviderOptions):
     TITLE = N_("Cover Art Archive")
     HELP_URL = "/config/options_cover_art_archive.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'caa_image_size': {'widgets': ['cb_image_size']},
         'caa_approved_only': {'widgets': ['cb_approved_only']},
         'caa_restrict_image_types': {'widgets': ['restrict_images_types']},

@@ -44,7 +44,10 @@ from picard.i18n import (
 from picard.ui.dialogs.cover_types_selector import CoverTypesSelectorDialog
 from picard.ui.forms.ui_options_cover import Ui_CoverOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.checkbox_list_item import CheckboxListItem
 
@@ -57,7 +60,7 @@ class CoverOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cover.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'save_images_to_tags': {'widgets': ['save_images_to_tags']},
         'embed_only_one_front_image': {'widgets': ['cb_embed_front_only']},
         'dont_replace_with_smaller_cover': {'widgets': ['cb_dont_replace_with_smaller']},

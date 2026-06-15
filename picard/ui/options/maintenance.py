@@ -46,7 +46,10 @@ from picard.i18n import (
 from picard.util import open_local_path
 
 from picard.ui.forms.ui_options_maintenance import Ui_MaintenanceOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import FileDialog
 
 
@@ -64,7 +67,7 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'autobackup_directory': {'widgets': ['autobackup_dir']},
     }
     signal_reload = QtCore.pyqtSignal()

@@ -49,7 +49,7 @@ class OptionsUtilitiesTest(PicardTestCase):
         from picard.config import BoolOption
         from picard.extension_points.options_pages import register_options_page
 
-        from picard.ui.options import OptionsPage
+        from picard.ui.options import OptionsPage, PageOptionConfigs
 
         BoolOption('setting', 'test_no_profile_opt', False)
 
@@ -58,7 +58,7 @@ class OptionsUtilitiesTest(PicardTestCase):
             TITLE = 'Test'
             PARENT = None
             SORT_ORDER = 9999
-            OPTIONS: dict[str, dict] = {
+            OPTIONS: PageOptionConfigs = {
                 'test_no_profile_opt': {'widgets': ['some_widget']},
             }
 
@@ -73,7 +73,7 @@ class OptionsUtilitiesTest(PicardTestCase):
             TextOption,
         )
 
-        from picard.ui.options import OptionsPage
+        from picard.ui.options import OptionsPage, PageOptionConfigs
 
         # A plugin option in a non-setting section
         TextOption('plugin.test-restore', 'plugin_opt', 'plugin_default')
@@ -84,7 +84,7 @@ class OptionsUtilitiesTest(PicardTestCase):
             PARENT = None
             SORT_ORDER = 9999
             OPTION_SECTION = 'plugin.test-restore'
-            OPTIONS: dict[str, dict] = {'plugin_opt': {}}
+            OPTIONS: PageOptionConfigs = {'plugin_opt': {}}
 
         from picard.extension_points.options_pages import register_options_page
 

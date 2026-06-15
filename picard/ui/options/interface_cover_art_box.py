@@ -26,7 +26,10 @@ from picard.i18n import N_
 from picard.ui.forms.ui_options_interface_cover_art_box import (
     Ui_InterfaceCoverArtBoxOptionsPage,
 )
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class InterfaceCoverArtBoxOptionsPage(OptionsPage):
@@ -37,7 +40,7 @@ class InterfaceCoverArtBoxOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_cover_art_box.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'show_cover_art_details': {'widgets': ['cb_show_cover_art_details']},
         'show_cover_art_details_type': {'widgets': ['cb_show_cover_art_details_type']},
         'show_cover_art_details_filesize': {'widgets': ['cb_show_cover_art_details_filesize']},

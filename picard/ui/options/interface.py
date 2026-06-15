@@ -47,7 +47,10 @@ from picard.i18n import (
 from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
@@ -67,7 +70,7 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'toolbar_show_labels': {'widgets': ['toolbar_show_labels']},
         'show_menu_icons': {'widgets': ['show_menu_icons']},
         'ui_language': {},

@@ -44,7 +44,10 @@ from picard.i18n import (
 )
 
 from picard.ui.forms.ui_options_startup import Ui_StartupOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class StartupOptionsPage(OptionsPage):
@@ -55,7 +58,7 @@ class StartupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_startup.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'check_rtd_updates': {'widgets': ['check_rtd_updates']},
         'check_for_plugin_updates': {'widgets': ['check_plugin_updates']},
         'check_for_updates': {'widgets': ['check_for_updates']},

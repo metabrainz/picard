@@ -26,7 +26,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_tags_compatibility_ac3 import Ui_TagsCompatibilityOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class TagsCompatibilityAC3OptionsPage(OptionsPage):
@@ -37,7 +40,7 @@ class TagsCompatibilityAC3OptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_ac3.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'ac3_save_ape': {'widgets': ['ac3_save_ape', 'ac3_no_tags']},
         'remove_ape_from_ac3': {'widgets': ['remove_ape_from_ac3']},
     }

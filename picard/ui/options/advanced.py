@@ -27,7 +27,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_advanced import Ui_AdvancedOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class AdvancedOptionsPage(OptionsPage):
@@ -38,7 +41,7 @@ class AdvancedOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_advanced.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'ignore_regex': {'widgets': ['ignore_regex']},
         'ignore_hidden_files': {'widgets': ['ignore_hidden_files']},
         'recursively_add_files': {'widgets': ['recursively_add_files']},

@@ -32,7 +32,10 @@ from picard.util.cdrom import (
     get_cdrom_drives,
 )
 
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 if AUTO_DETECT_DRIVES:
@@ -49,7 +52,7 @@ class CDLookupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cdlookup.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'cd_lookup_device': {'widgets': ['cd_lookup_device']},
     }
 

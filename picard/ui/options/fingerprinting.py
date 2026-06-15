@@ -47,6 +47,7 @@ from picard.ui.forms.ui_options_fingerprinting import (
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
+    PageOptionConfigs,
 )
 from picard.ui.util import FileDialog
 
@@ -65,7 +66,7 @@ class FingerprintingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_fingerprinting.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'fingerprinting_system': {'widgets': ['disable_fingerprinting', 'use_acoustid']},
         'acoustid_fpcalc': {},
         'acoustid_apikey': {},

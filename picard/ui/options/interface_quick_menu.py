@@ -37,7 +37,10 @@ from picard.i18n import (
 )
 
 from picard.ui.forms.ui_options_interface_quick_menu import Ui_InterfaceQuickMenuOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class InterfaceQuickMenuOptionsPage(OptionsPage):
@@ -48,7 +51,7 @@ class InterfaceQuickMenuOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_quick_menu.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'quick_menu_items': {'widgets': ['quick_menu_groupBox']},
     }
 

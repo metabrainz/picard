@@ -53,7 +53,10 @@ from picard.ui.forms.ui_exception_script_selector import Ui_ExceptionScriptSelec
 from picard.ui.forms.ui_multi_locale_selector import Ui_MultiLocaleSelector
 from picard.ui.forms.ui_options_metadata import Ui_MetadataOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import (
     qlistwidget_items,
     set_widget_fixed_width_for_text,
@@ -85,7 +88,7 @@ class MetadataOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_metadata.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'translate_artist_names': {'widgets': ['translate_artist_names']},
         'translate_album_titles': {'widgets': ['translate_album_titles']},
         'translate_track_titles': {'widgets': ['translate_track_titles']},

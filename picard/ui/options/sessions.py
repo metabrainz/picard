@@ -29,7 +29,10 @@ from picard.i18n import (
 )
 
 from picard.ui.forms.ui_options_advanced_sessions import Ui_SessionsOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import FileDialog
 
 
@@ -41,7 +44,7 @@ class SessionsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_sessions.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'session_safe_restore': {'widgets': ['safe_restore_checkbox']},
         'session_load_last_on_startup': {'widgets': ['load_last_checkbox']},
         'session_autosave_interval_min': {'widgets': ['autosave_spin']},

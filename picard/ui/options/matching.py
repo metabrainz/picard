@@ -27,7 +27,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_matching import Ui_MatchingOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class MatchingOptionsPage(OptionsPage):
@@ -38,7 +41,7 @@ class MatchingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_matching.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'match_min_similarity': {'widgets': ['match_min_similarity']},
         'match_min_margin': {'widgets': ['match_min_margin']},
         'track_matching_threshold': {'widgets': ['track_matching_threshold']},

@@ -41,7 +41,10 @@ from picard.ui.colors import interface_colors
 from picard.ui.forms.ui_options_interface_colors import (
     Ui_InterfaceColorsOptionsPage,
 )
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import changes_require_restart_warning
 
 
@@ -101,7 +104,7 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'interface_colors': {},
         'interface_colors_dark': {},
     }

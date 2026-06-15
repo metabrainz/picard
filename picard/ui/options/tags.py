@@ -38,7 +38,10 @@ from picard.i18n import (
 )
 
 from picard.ui.forms.ui_options_tags import Ui_TagsOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class TagsOptionsPage(OptionsPage):
@@ -49,7 +52,7 @@ class TagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'enable_tag_saving': {'widgets': ['write_tags']},
         'preserve_timestamps': {'widgets': ['preserve_timestamps']},
         'clear_existing_tags': {'widgets': ['clear_existing_tags']},

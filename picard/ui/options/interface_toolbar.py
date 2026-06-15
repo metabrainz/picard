@@ -51,7 +51,10 @@ from picard.ui import PicardDialog
 from picard.ui.enums import MainAction
 from picard.ui.forms.ui_options_interface_toolbar import Ui_InterfaceToolbarOptionsPage
 from picard.ui.moveable_list_view import MoveableListView
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import (
     FileDialog,
     qlistwidget_items,
@@ -71,7 +74,7 @@ class InterfaceToolbarOptionsPage(OptionsPage):
     HELP_URL = "/config/options_interface_toolbar.html"
     SEPARATOR = '—' * 5
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'toolbar_layout': {'widgets': ['customize_toolbar_box']},
     }
     TOOLBAR_BUTTONS = {

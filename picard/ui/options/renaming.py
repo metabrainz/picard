@@ -48,6 +48,7 @@ from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
+    PageOptionConfigs,
 )
 from picard.ui.scripteditor.examples import ScriptEditorExamples
 from picard.ui.scripteditor.utils import (
@@ -65,7 +66,7 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'move_files': {'widgets': ['move_files']},
         'move_files_to': {'widgets': ['move_files_to']},
         'move_overwrite_existing_files': {'widgets': ['move_overwrite_existing_files']},

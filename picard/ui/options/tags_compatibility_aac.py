@@ -28,7 +28,10 @@ from picard.i18n import N_
 from picard.ui.forms.ui_options_tags_compatibility_aac import (
     Ui_TagsCompatibilityOptionsPage,
 )
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class TagsCompatibilityAACOptionsPage(OptionsPage):
@@ -39,7 +42,7 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_aac.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'aac_save_ape': {'widgets': ['aac_save_ape', 'aac_no_tags']},
         'remove_ape_from_aac': {'widgets': ['remove_ape_from_aac']},
     }

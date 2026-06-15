@@ -25,7 +25,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_interface_top_tags import Ui_InterfaceTopTagsOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class InterfaceTopTagsOptionsPage(OptionsPage):
@@ -36,7 +39,7 @@ class InterfaceTopTagsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_top_tags.html"
 
-    OPTIONS: dict[str, dict] = {
+    OPTIONS: PageOptionConfigs = {
         'metadatabox_top_tags': {'widgets': ['top_tags_groupBox']},
     }
 

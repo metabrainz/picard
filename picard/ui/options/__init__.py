@@ -26,6 +26,10 @@
 
 from collections import defaultdict
 import re
+from typing import (
+    TypeAlias,
+    TypedDict,
+)
 
 from PyQt6 import QtWidgets
 
@@ -55,6 +59,13 @@ class OptionsCheckError(Exception):
         self.info = info
 
 
+class OptionConfig(TypedDict, total=False):
+    widgets: list[str]
+
+
+PageOptionConfigs: TypeAlias = dict[str, OptionConfig]
+
+
 class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     NAME: str
     PARENT = None
@@ -64,7 +75,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     STYLESHEET_SUCCESS = "QWidget { background-color: #292; color: white; padding: 2px; }"
     STYLESHEET_ERROR = "QWidget { background-color: #f55; color: white; font-weight:bold; padding: 2px; }"
     STYLESHEET = "QLabel { qproperty-wordWrap: true; }"
-    OPTIONS: dict[str, dict] = {}
+    OPTIONS: PageOptionConfigs = {}
 
     # Config section where this page's options are stored.
     # Core pages use 'setting'. Plugin pages are set to 'plugin.<uuid>'
