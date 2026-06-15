@@ -700,7 +700,8 @@ class PluginListWidget(QtWidgets.QWidget):
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh and update updates dict
-            self.plugin_state_changed.emit(plugin, "updated")
+            action = "reloaded" if self.plugin_manager.is_local_non_git(plugin) else "updated"
+            self.plugin_state_changed.emit(plugin, action)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             self._update_error_dialog(plugin, error_msg)
