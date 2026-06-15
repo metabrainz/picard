@@ -66,12 +66,17 @@ class Option(QtCore.QObject):
     registry: dict[tuple[str, str], 'Option'] = {}
     qtype: object = None
 
-    def __init__(self, section: str, name: str, default: ConfigValueType, title: str | None = None):
+    def __init__(
+        self, section: str, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+    ):
         super().__init__()
         self.section = section
         self.name = name
         self.default = default
         self.title = title
+        self.in_profile = in_profile
+        if in_profile and not title:
+            log.warning("Option '%s/%s' has in_profile=True but no title", section, name)
         self.registry[(section, name)] = self
 
         self._check_if_valid()
