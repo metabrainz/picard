@@ -39,10 +39,10 @@ class TagsCompatibilityAACOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_aac.html"
 
-    OPTIONS = (
-        ('aac_save_ape', ['aac_save_ape', 'aac_no_tags']),
-        ('remove_ape_from_aac', ['remove_ape_from_aac']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'aac_save_ape': {'widgets': ['aac_save_ape', 'aac_no_tags']},
+        'remove_ape_from_aac': {'widgets': ['remove_ape_from_aac']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

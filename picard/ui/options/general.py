@@ -51,14 +51,14 @@ class GeneralOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_general.html"
 
-    OPTIONS = (
-        ('server_host', ['server_host']),
-        ('server_port', ['server_port']),
-        ('analyze_new_files', ['analyze_new_files']),
-        ('cluster_new_files', ['cluster_new_files']),
-        ('ignore_file_mbids', ['ignore_file_mbids']),
-        ('use_server_for_submission', ['use_server_for_submission']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'server_host': {'widgets': ['server_host']},
+        'server_port': {'widgets': ['server_port']},
+        'analyze_new_files': {'widgets': ['analyze_new_files']},
+        'cluster_new_files': {'widgets': ['cluster_new_files']},
+        'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
+        'use_server_for_submission': {'widgets': ['use_server_for_submission']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

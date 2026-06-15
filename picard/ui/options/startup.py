@@ -55,14 +55,14 @@ class StartupOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_startup.html"
 
-    OPTIONS = (
-        ('check_rtd_updates', ['check_rtd_updates']),
-        ('check_for_plugin_updates', ['check_plugin_updates']),
-        ('check_for_updates', ['check_for_updates']),
-        ('update_check_days', ['update_check_days']),
-        ('update_level', ['update_level']),
-        ('log_verbosity', ['log_verbosity_label']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'check_rtd_updates': {'widgets': ['check_rtd_updates']},
+        'check_for_plugin_updates': {'widgets': ['check_plugin_updates']},
+        'check_for_updates': {'widgets': ['check_for_updates']},
+        'update_check_days': {'widgets': ['update_check_days']},
+        'update_level': {'widgets': ['update_level']},
+        'log_verbosity': {'widgets': ['log_verbosity_label']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

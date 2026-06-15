@@ -101,10 +101,10 @@ class InterfaceColorsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface_colors.html"
 
-    OPTIONS = (
-        ('interface_colors', ['colors']),
-        ('interface_colors_dark', ['colors']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'interface_colors': {'widgets': ['colors']},
+        'interface_colors_dark': {'widgets': ['colors']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

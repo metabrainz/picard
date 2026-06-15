@@ -33,5 +33,5 @@ ext_point_options_pages = ExtensionPoint(label='options_pages')
 
 def register_options_page(page_class: type[OptionsPage]) -> None:
     ext_point_options_pages.register(page_class.__module__, page_class)
-    for opt_name, opt_highlights in page_class.OPTIONS:
-        page_class.register_setting(opt_name, opt_highlights)
+    for opt_name, opt_info in page_class.OPTIONS.items():
+        page_class.register_setting(opt_name, opt_info.get('widgets'))

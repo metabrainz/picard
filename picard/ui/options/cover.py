@@ -57,19 +57,19 @@ class CoverOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_cover.html"
 
-    OPTIONS = (
-        ('save_images_to_tags', ['save_images_to_tags']),
-        ('embed_only_one_front_image', ['cb_embed_front_only']),
-        ('dont_replace_with_smaller_cover', ['cb_dont_replace_with_smaller']),
-        ('dont_replace_cover_of_types', ['cb_never_replace_types']),
-        ('dont_replace_included_types', ['dont_replace_included_types']),
-        ('save_images_to_files', ['save_images_to_files']),
-        ('cover_image_filename', ['cover_image_filename']),
-        ('save_images_overwrite', ['save_images_overwrite']),
-        ('save_only_one_front_image', ['save_only_one_front_image']),
-        ('image_type_as_filename', ['image_type_as_filename']),
-        ('ca_providers', ['ca_providers_list']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'save_images_to_tags': {'widgets': ['save_images_to_tags']},
+        'embed_only_one_front_image': {'widgets': ['cb_embed_front_only']},
+        'dont_replace_with_smaller_cover': {'widgets': ['cb_dont_replace_with_smaller']},
+        'dont_replace_cover_of_types': {'widgets': ['cb_never_replace_types']},
+        'dont_replace_included_types': {'widgets': ['dont_replace_included_types']},
+        'save_images_to_files': {'widgets': ['save_images_to_files']},
+        'cover_image_filename': {'widgets': ['cover_image_filename']},
+        'save_images_overwrite': {'widgets': ['save_images_overwrite']},
+        'save_only_one_front_image': {'widgets': ['save_only_one_front_image']},
+        'image_type_as_filename': {'widgets': ['image_type_as_filename']},
+        'ca_providers': {'widgets': ['ca_providers_list']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

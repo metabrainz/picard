@@ -38,21 +38,17 @@ class AdvancedOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_advanced.html"
 
-    OPTIONS = (
-        ('ignore_regex', ['ignore_regex']),
-        ('ignore_hidden_files', ['ignore_hidden_files']),
-        ('recursively_add_files', ['recursively_add_files']),
-        (
-            'ignore_track_duration_difference_under',
-            ['ignore_track_duration_difference_under', 'label_track_duration_diff'],
-        ),
-        ('query_limit', ['query_limit', 'label_query_limit']),
-        ('completeness_ignore_videos', ['completeness_ignore_videos']),
-        ('completeness_ignore_pregap', ['completeness_ignore_pregap']),
-        ('completeness_ignore_data', ['completeness_ignore_data']),
-        ('completeness_ignore_silence', ['completeness_ignore_silence']),
-        ('compare_ignore_tags', ['groupBox_ignore_tags']),
-    )
+    OPTIONS: dict[str, dict] = {
+        'ignore_regex': {'widgets': ['ignore_regex']},
+        'ignore_hidden_files': {'widgets': ['ignore_hidden_files']},
+        'recursively_add_files': {'widgets': ['recursively_add_files']},
+        'query_limit': {'widgets': ['query_limit', 'label_query_limit']},
+        'completeness_ignore_videos': {'widgets': ['completeness_ignore_videos']},
+        'completeness_ignore_pregap': {'widgets': ['completeness_ignore_pregap']},
+        'completeness_ignore_data': {'widgets': ['completeness_ignore_data']},
+        'completeness_ignore_silence': {'widgets': ['completeness_ignore_silence']},
+        'compare_ignore_tags': {'widgets': ['groupBox_ignore_tags']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
