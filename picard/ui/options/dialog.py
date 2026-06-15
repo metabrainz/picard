@@ -440,10 +440,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                         try:
                             obj = getattr(page.ui, objname)
                         except AttributeError:
+                            try:
+                                obj = getattr(page, objname)
+                            except AttributeError:
+                                log.warning(
+                                    "Option '%s' references widget '%s' not found on page '%s'",
+                                    opt.name,
+                                    objname,
+                                    page.NAME,
+                                )
+                                continue
+                        if not isinstance(obj, QtWidgets.QWidget):
                             log.warning(
-                                "Option '%s' references widget '%s' not found on page '%s'",
+                                "Option '%s' references widget '%s', expected QWidget, found '%s' on page '%s'",
                                 opt.name,
                                 objname,
+                                obj.__class__.__name__,
                                 page.NAME,
                             )
                             continue
