@@ -92,6 +92,7 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
+from picard.plugin3.plugin_metadata import is_local_non_git_plugin
 from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
@@ -466,13 +467,18 @@ class PluginCLI:
                 # Show manifest name (human-readable) with localization
                 display_name = plugin.manifest.name(locale_str) if plugin.manifest else plugin.plugin_id
 
+                # Check if local non-git plugin
+                metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+                is_local = is_local_non_git_plugin(metadata)
+
                 # Display with semantic methods
                 if is_enabled:
                     status = self._out.d_status_enabled()
                 else:
                     status = self._out.d_status_disabled()
 
-                self._out.print(f'  {self._out.d_name(display_name)} ({status})')
+                local_marker = ' [local]' if is_local else ''
+                self._out.print(f'  {self._out.d_name(display_name)} ({status}){local_marker}')
 
                 if getattr(plugin, 'manifest', None):
                     desc = plugin.manifest.description(locale_str)
@@ -512,7 +518,10 @@ class PluginCLI:
 
                     # Source URL if available
                     if metadata and metadata.url:
-                        self._out.info(f'  Source: {self._out.d_url(metadata.url)}')
+                        if is_local:
+                            self._out.info('  Source: local')
+                        else:
+                            self._out.info(f'  Source: {self._out.d_url(metadata.url)}')
 
                     self._out.info(f'  Path: {self._out.d_path(plugin.local_path)}')
                 self._out.print()
@@ -548,8 +557,10 @@ class PluginCLI:
 
         is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
         metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
+        is_local = is_local_non_git_plugin(metadata)
 
-        self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}')
+        local_marker = ' [local]' if is_local else ''
+        self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}{local_marker}')
 
         # Show short description on one line (required field)
         desc = plugin.manifest.description()
@@ -592,7 +603,10 @@ class PluginCLI:
 
         # Show source URL if available
         if metadata and metadata.url:
-            self._out.print(f'Source: {self._out.d_url(metadata.url)}')
+            if is_local:
+                self._out.print('Source: local')
+            else:
+                self._out.print(f'Source: {self._out.d_url(metadata.url)}')
 
         # Optional fields - only show if present
         if plugin.manifest.authors:
@@ -647,6 +661,14 @@ class PluginCLI:
         if not info:
             self._out.error(f'Plugin "{identifier}" not found (not installed and not in registry)')
             return ExitCode.NOT_FOUND
+
+        # Check if this is a local non-git plugin
+        plugin = info['plugin']
+        if plugin and plugin.uuid:
+            metadata = self._manager._get_plugin_metadata(plugin.uuid)
+            if is_local_non_git_plugin(metadata):
+                self._out.error(f'Plugin "{identifier}" is a local plugin and is not managed by git')
+                return ExitCode.ERROR
 
         url = info['url']
         current_ref = info['current_ref']
@@ -894,32 +916,49 @@ class PluginCLI:
                             return ExitCode.ERROR
 
                     # Check trust level and show appropriate warnings
-                    trust_level = self._manager._registry.get_trust_level(url)
-                    trust_community = getattr(self._args, 'trust_community', False)
-
-                    if trust_level == 'community' and not trust_community:
-                        self._out.warning(self._out.d_warning('WARNING: This is a community plugin'))
+                    # For local non-git directories, skip registry/trust checks
+                    local_non_git = Path(url).is_dir() and not (Path(url) / '.git').exists()
+                    if local_non_git:
+                        self._out.warning('This plugin is not managed by git.')
                         self._out.warning(
-                            self._out.d_warning('  Community plugins are not reviewed by the Picard team')
+                            '  A git repository is required to distribute a plugin'
+                            ' and to have it added to the official registry.'
                         )
-                        self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
+                        self._out.warning('  Without git, version management and automatic updates are not available.')
 
                         if not yes:
                             if not self._out.yesno('Do you want to continue?'):
                                 self._out.print('Installation cancelled')
                                 return ExitCode.CANCELLED
+                    else:
+                        trust_level = self._manager._registry.get_trust_level(url)
+                        trust_community = getattr(self._args, 'trust_community', False)
 
-                    elif trust_level == 'unregistered':
-                        self._out.warning(self._out.d_warning('WARNING: This plugin is not in the official registry'))
-                        self._out.warning(
-                            self._out.d_warning('  Installing unregistered plugins may pose security risks')
-                        )
-                        self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
+                        if trust_level == 'community' and not trust_community:
+                            self._out.warning(self._out.d_warning('WARNING: This is a community plugin'))
+                            self._out.warning(
+                                self._out.d_warning('  Community plugins are not reviewed by the Picard team')
+                            )
+                            self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
 
-                        if not yes:
-                            if not self._out.yesno('Do you want to continue?'):
-                                self._out.print('Installation cancelled')
-                                return ExitCode.CANCELLED
+                            if not yes:
+                                if not self._out.yesno('Do you want to continue?'):
+                                    self._out.print('Installation cancelled')
+                                    return ExitCode.CANCELLED
+
+                        elif trust_level == 'unregistered':
+                            self._out.warning(
+                                self._out.d_warning('WARNING: This plugin is not in the official registry')
+                            )
+                            self._out.warning(
+                                self._out.d_warning('  Installing unregistered plugins may pose security risks')
+                            )
+                            self._out.warning(self._out.d_warning('  Only install plugins from sources you trust'))
+
+                            if not yes:
+                                if not self._out.yesno('Do you want to continue?'):
+                                    self._out.print('Installation cancelled')
+                                    return ExitCode.CANCELLED
 
                 if ref:
                     self._out.print(f'Installing plugin from {url} (ref: {ref})...')
@@ -1089,7 +1128,11 @@ class PluginCLI:
                 result = self._manager.update_plugin(plugin)
 
                 if result.old_commit == result.new_commit:
-                    if result.new_version:
+                    # Local non-git plugins: show "reloaded" instead of "up to date"
+                    metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
+                    if is_local_non_git_plugin(metadata):
+                        self._out.success(f'{self._out.d_name(plugin.plugin_id)}: Plugin reloaded')
+                    elif result.new_version:
                         self._out.info(
                             f'{self._out.d_name(plugin.plugin_id)}: Already up to date ({result.new_version})'
                         )
@@ -1151,11 +1194,19 @@ class PluginCLI:
                     self._out.info(f'{self._out.d_name(r.plugin_id)}: {r.error}')
                     unchanged += 1
                 elif r.result.old_commit == r.result.new_commit:
-                    if r.result.new_version:
+                    # Local non-git plugins: show "reloaded" instead of "up to date"
+                    plugin = self._manager.plugin_id_to_plugin(r.plugin_id)
+                    plugin_uuid = plugin.uuid if plugin else None
+                    metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
+                    if is_local_non_git_plugin(metadata):
+                        self._out.success(f'{self._out.d_name(r.plugin_id)}: Plugin reloaded')
+                        updated += 1
+                    elif r.result.new_version:
                         self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date ({r.result.new_version})')
+                        unchanged += 1
                     else:
                         self._out.info(f'{self._out.d_name(r.plugin_id)}: Already up to date')
-                    unchanged += 1
+                        unchanged += 1
                 else:
                     version_info = self._format_version_info(r.result)
                     self._out.success(f'{self._out.d_name(r.plugin_id)}: {version_info}')

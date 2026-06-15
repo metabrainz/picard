@@ -107,7 +107,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
         self.git_url_label.setOpenExternalLinks(True)
-        self.details_layout.addRow(_("Repository:"), self.git_url_label)
+        self.git_url_row_label = QtWidgets.QLabel(_("Repository:"))
+        self.details_layout.addRow(self.git_url_row_label, self.git_url_label)
 
         layout.addWidget(details_widget)
 
@@ -181,16 +182,27 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if maintainers:
             self.maintainers_label.setText(maintainers)
 
-        git_url = self._get_git_url_display(plugin)
+        if self.plugin_manager.is_local_non_git(plugin):
+            self.git_url_row_label.setText(_("Path:"))
+            git_url = str(plugin.local_path)
+        else:
+            self.git_url_row_label.setText(_("Repository:"))
+            git_url = self._get_git_url_display(plugin)
         self.details_layout.setRowVisible(self.git_url_label, bool(git_url))
         if git_url:
             self.git_url_label.setText(git_url)
 
-        # Update button state and tooltip
-        if update:
+        # Update/Reload button state and tooltip
+        if self.plugin_manager.is_local_non_git(plugin):
+            self.update_button.setText(_("Reload"))
+            self.update_button.setEnabled(True)
+            self.update_button.setToolTip("")
+        elif update:
+            self.update_button.setText(_("Update"))
             self.update_button.setEnabled(True)
             self._set_update_button_tooltip(update)
         else:
+            self.update_button.setText(_("Update"))
             self.update_button.setEnabled(False)
             self.update_button.setToolTip("")
 
@@ -376,7 +388,8 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.plugin_updated.emit()  # Signal that plugin was updated
             # Emit the same signal as context menu for status updates
             if hasattr(self.parent(), 'plugin_state_changed'):
-                self.parent().plugin_state_changed.emit(plugin, "updated")
+                action = "reloaded" if self.plugin_manager.is_local_non_git(plugin) else "updated"
+                self.parent().plugin_state_changed.emit(plugin, action)
             # Refresh the display - plugin should no longer have update available
             self.show_plugin(plugin)
         else:

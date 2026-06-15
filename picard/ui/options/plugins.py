@@ -388,7 +388,7 @@ class Plugins3OptionsPage(OptionsPage):
         config = get_config()
 
         # Update the updates dict based on the action
-        if action in ("updated", "reinstalled", "ref switched"):
+        if action in ("updated", "reloaded", "reinstalled", "ref switched"):
             self._check_plugin_update_after_action(plugin, action)
             # Update the plugin list widget with new updates dict
             self.plugin_list.set_updates(config.persist['plugins3_updates'])

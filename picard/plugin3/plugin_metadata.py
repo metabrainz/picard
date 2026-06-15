@@ -122,6 +122,11 @@ class PluginMetadata:
         return GitRef(name='', target='')
 
 
+def is_local_non_git_plugin(metadata) -> bool:
+    """Check if metadata represents a local non-git plugin. Safe with None."""
+    return metadata is not None and getattr(metadata, 'ref_type', None) == 'local'
+
+
 class PluginMetadataManager:
     """Manages plugin metadata storage and retrieval."""
 

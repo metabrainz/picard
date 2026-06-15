@@ -302,6 +302,8 @@ class PluginInfoDialog(PicardDialog):
             return getattr(self.plugin_data, 'git_url', getattr(self.plugin_data, 'source_url', '')) or ''
         else:
             try:
+                if self.plugin_manager and self.plugin_manager.is_local_non_git(self.plugin_data):
+                    return ''
                 return self.plugin_manager.get_plugin_remote_url(self.plugin_data) or '' if self.plugin_manager else ''
             except (AttributeError, Exception):
                 return ''
