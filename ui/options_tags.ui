@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>525</height>
+    <width>589</width>
+    <height>425</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -78,39 +78,23 @@
         </property>
        </widget>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="preserved_tags_groupbox">
+     <property name="title">
+      <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
+     </property>
+     <layout class="QVBoxLayout" name="preserved_tags_layout">
       <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+       <widget class="TagListEditor" name="preserved_tags" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>6</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="preserved_tags_groupbox">
-        <property name="title">
-         <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
-        </property>
-        <layout class="QVBoxLayout" name="preserved_tags_layout">
-         <item>
-          <widget class="TagListEditor" name="preserved_tags" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </widget>
       </item>
      </layout>
