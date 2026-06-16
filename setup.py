@@ -55,6 +55,7 @@ from setuptools import (
 from setuptools.command.build import build
 from setuptools.command.editable_wheel import editable_wheel
 from setuptools.command.install import install
+from setuptools.modified import newer
 
 
 # required for PEP 517
@@ -78,19 +79,6 @@ APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
 APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
 DESKTOP_FILE = PICARD_APP_ID + '.desktop'
 DESKTOP_FILE_TEMPLATE = DESKTOP_FILE + '.in'
-
-
-def newer(source, target):
-    """Return true if 'source' exists and is more recently modified than
-    'target', or if 'source' exists and 'target' doesn't.  Return false if
-    both exist and 'target' is the same age or younger than 'source'.
-    Raise FileNotFoundError if 'source' does not exist.
-    """
-    if not os.path.exists(source):
-        raise FileNotFoundError('file "%s" does not exist' % os.path.abspath(source))
-    if not os.path.exists(target):
-        return True
-    return os.path.getmtime(source) > os.path.getmtime(target)
 
 
 class picard_build_locales(Command):
