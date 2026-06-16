@@ -72,7 +72,7 @@ build = [
     "setuptools>=77.0.1",
 ]
 dev = [
-    "Babel>=2.6.0",
+    {include-group = "build"},
     "pre-commit>=4.2.0",
     "pymarkdownlnt>=0.9.33",
     "pytest-cov>=7.0.0",

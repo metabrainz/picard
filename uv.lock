@@ -614,11 +614,14 @@ build = [
 dev = [
     { name = "babel" },
     { name = "pre-commit" },
+    { name = "pyinstaller" },
     { name = "pymarkdownlnt" },
+    { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-randomly" },
     { name = "pytest-xdist" },
     { name = "ruff" },
+    { name = "setuptools" },
     { name = "tomlkit" },
     { name = "wlc" },
 ]
@@ -653,13 +656,16 @@ build = [
     { name = "setuptools", specifier = ">=77.0.1" },
 ]
 dev = [
-    { name = "babel", specifier = ">=2.6.0" },
+    { name = "babel", specifier = ">=2.10.0" },
     { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pyinstaller", specifier = "~=6.17" },
     { name = "pymarkdownlnt", specifier = ">=0.9.33" },
+    { name = "pytest", specifier = ">=8.1" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "pytest-randomly", specifier = ">=4.0.1" },
     { name = "pytest-xdist", specifier = ">=3.8.0" },
     { name = "ruff", specifier = ">=0.13.0" },
+    { name = "setuptools", specifier = ">=77.0.1" },
     { name = "tomlkit", specifier = ">=0.13.3" },
     { name = "wlc", specifier = ">=1.17.2" },
 ]
