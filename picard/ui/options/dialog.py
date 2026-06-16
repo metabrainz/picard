@@ -850,9 +850,19 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             function()
 
 
+class _NoSelectionDelegate(QtWidgets.QStyledItemDelegate):
+    """Delegate that paints items without selection highlight."""
+
+    def initStyleOption(self, option, index):
+        super().initStyleOption(option, index)
+        option.state &= ~QtWidgets.QStyle.StateFlag.State_Selected
+
+
 class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_("Attached Profiles")
+    MARKER_ACTIVE = "★"
+    MARKER_INACTIVE = "☆"
 
     def __init__(self, option_group: dict, profile_page: 'ProfilesOptionsPage', parent=None) -> None:
         super().__init__(parent=parent)
@@ -873,31 +883,54 @@ class AttachedProfilesDialog(PicardDialog):
         self._enabled_profiles = [p for p in self.profile_page._clean_and_get_all_profiles() if p['enabled']]
 
         self._populate_profile_list()
+        self.ui.profile_list.setIndentation(0)
+        self.ui.profile_list.setItemDelegateForColumn(0, _NoSelectionDelegate(self.ui.profile_list))
         self.ui.profile_list.itemSelectionChanged.connect(self._on_selection_changed)
         self.ui.settings_tree.itemChanged.connect(self._on_item_changed)
         self.ui.settings_tree.setMouseTracking(True)
+        self.ui.settings_tree.setIndentation(0)
         self.ui.settings_tree.itemEntered.connect(self._on_item_hovered)
 
         # Hide left pane if only one enabled profile
         if len(self._enabled_profiles) <= 1:
-            self.ui.left_panel.hide()
+            self.ui.profile_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
 
         self._last_selection = []
-        if self.ui.profile_list.topLevelItemCount() > 0:
+        if len(self._enabled_profiles) > 1 and self.ui.profile_list.topLevelItemCount() > 0:
             self.ui.profile_list.topLevelItem(0).setSelected(True)
+        elif len(self._enabled_profiles) == 1:
+            self._populate_settings_tree()
 
     # --- Profile list ---
 
     def _populate_profile_list(self) -> None:
         self.ui.profile_list.clear()
+        self.ui.profile_list.setToolTip(
+            _(
+                "Hover an option to see which profiles contain it.\n"
+                "%s = option is in this profile, %s = option is not in this profile"
+            )
+            % (self.MARKER_ACTIVE, self.MARKER_INACTIVE)
+        )
+        fm = self.ui.profile_list.fontMetrics()
+        marker_width = fm.horizontalAdvance(self.MARKER_ACTIVE) + 4
+        marker_height = fm.boundingRect(self.MARKER_ACTIVE).height()
+        marker_size = QtCore.QSize(marker_width, marker_height)
         for profile in self._enabled_profiles:
-            item = QtWidgets.QTreeWidgetItem(["○", profile['title']])
+            item = QtWidgets.QTreeWidgetItem([self.MARKER_INACTIVE, profile['title']])
             item.setData(0, QtCore.Qt.ItemDataRole.UserRole, profile['id'])
+            item.setSizeHint(0, marker_size)
             self.ui.profile_list.addTopLevelItem(item)
-        self.ui.profile_list.resizeColumnToContents(0)
+        self.ui.profile_list.header().setMinimumSectionSize(marker_width)
+        self.ui.profile_list.header().resizeSection(0, marker_width)
+        self.ui.profile_list.header().setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Fixed)
 
     def _selected_profile_ids(self) -> list[str]:
-        return [item.data(0, QtCore.Qt.ItemDataRole.UserRole) for item in self.ui.profile_list.selectedItems()]
+        ids = [item.data(0, QtCore.Qt.ItemDataRole.UserRole) for item in self.ui.profile_list.selectedItems()]
+        if not ids:
+            # No selection (single profile mode) — use all enabled profiles
+            ids = [p['id'] for p in self._enabled_profiles]
+        return ids
 
     def _on_selection_changed(self) -> None:
         if not self.ui.profile_list.selectedItems():
@@ -943,11 +976,12 @@ class AttachedProfilesDialog(PicardDialog):
 
     def _compute_check_state(self, pkey: str, selected_ids: list[str]) -> QtCore.Qt.CheckState:
         """Determine check state for an option given selected profiles."""
-        in_selected = selected_ids and all(
-            pkey in self.profile_page.get_settings_for_profile(pid) for pid in selected_ids
-        )
-        if in_selected:
-            return QtCore.Qt.CheckState.Checked
+        if selected_ids:
+            in_count = sum(1 for pid in selected_ids if pkey in self.profile_page.get_settings_for_profile(pid))
+            if in_count == len(selected_ids):
+                return QtCore.Qt.CheckState.Checked
+            if in_count > 0:
+                return QtCore.Qt.CheckState.PartiallyChecked
         # Check if any other enabled profile has it
         selected_set = set(selected_ids)
         for profile in self._enabled_profiles:
@@ -958,12 +992,21 @@ class AttachedProfilesDialog(PicardDialog):
         return QtCore.Qt.CheckState.Unchecked
 
     def _build_tooltip(self, pkey: str) -> str:
-        """Build tooltip explaining which profile this option will be saved to."""
-        for profile in self._enabled_profiles:
-            psettings = self.profile_page.profile_settings.get(profile['id'], {})
-            if pkey in psettings:
-                return _("This option will be saved to profile: %s") % profile['title']
-        return _("Not in any profile")
+        """Build tooltip explaining current state and what clicking will do."""
+        selected_ids = self._selected_profile_ids()
+        state = self._compute_check_state(pkey, selected_ids)
+        if state == QtCore.Qt.CheckState.Checked:
+            tooltip = _("This option is in the selected profile(s).\nClick to remove it from them.")
+        elif state == QtCore.Qt.CheckState.PartiallyChecked:
+            # Find which profile(s) have it
+            profiles_with = []
+            for profile in self._enabled_profiles:
+                if pkey in self.profile_page.profile_settings.get(profile['id'], {}):
+                    profiles_with.append(profile['title'])
+            tooltip = _("This option is in: %s\nClick to add it to the selected profile(s).") % ", ".join(profiles_with)
+        else:
+            tooltip = _("This option is not in any profile.\nClick to add it to the selected profile(s).")
+        return tooltip
 
     def _on_item_changed(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
         if self._building_tree:
@@ -1021,15 +1064,15 @@ class AttachedProfilesDialog(PicardDialog):
             list_item = self.ui.profile_list.topLevelItem(i)
             pid = list_item.data(0, QtCore.Qt.ItemDataRole.UserRole)
             psettings = self.profile_page.profile_settings.get(pid, {})
-            marker = "●" if pkey in psettings else "○"
+            marker = self.MARKER_ACTIVE if pkey in psettings else self.MARKER_INACTIVE
             if list_item.text(0) != marker:
                 list_item.setText(0, marker)
 
     def _clear_profile_highlights(self) -> None:
         for i in range(self.ui.profile_list.topLevelItemCount()):
             list_item = self.ui.profile_list.topLevelItem(i)
-            if list_item.text(0) != "○":
-                list_item.setText(0, "○")
+            if list_item.text(0) != self.MARKER_INACTIVE:
+                list_item.setText(0, self.MARKER_INACTIVE)
         self._clear_option_highlight()
 
     def _clear_option_highlight(self) -> None:
