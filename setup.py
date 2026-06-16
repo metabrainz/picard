@@ -109,6 +109,7 @@ class picard_install(install):
     user_options = install.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
     ]
+    boolean_options = ['disable-autoupdate']
 
     def initialize_options(self):
         install.initialize_options(self)
@@ -123,8 +124,9 @@ class picard_build(build):
     user_options = build.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('build-number=', None, 'build number (integer)'),
-        ('disable-locales', None, ''),
+        ('disable-locales', None, 'skip building locales'),
     ]
+    boolean_options = ['disable-autoupdate', 'disable-locales']
 
     def initialize_options(self):
         super().initialize_options()
