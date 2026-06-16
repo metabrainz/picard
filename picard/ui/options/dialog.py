@@ -32,6 +32,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import TYPE_CHECKING
+
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -110,6 +112,10 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
     tags_compatibility_id3,
     tags_compatibility_wave,
 )
+
+
+if TYPE_CHECKING:
+    from picard.ui.options.profiles import ProfilesOptionsPage
 
 
 class ErrorOptionsPage(OptionsPage):
@@ -399,7 +405,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
         message_box.exec()
 
-    def display_attached_profiles(self, option_group):
+    def display_attached_profiles(self, option_group: dict) -> None:
         profile_page = self.get_page('profiles')
         profile_dialog = AttachedProfilesDialog(
             option_group,
@@ -848,12 +854,12 @@ class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_("Attached Profiles")
 
-    def __init__(self, option_group, profile_page, parent=None):
+    def __init__(self, option_group: dict, profile_page: 'ProfilesOptionsPage', parent=None) -> None:
         super().__init__(parent=parent)
         self.option_group = option_group
         self.profile_page = profile_page
-        self._building_tree = False
-        self._highlighted_item = None
+        self._building_tree: bool = False
+        self._highlighted_item: QtWidgets.QTreeWidgetItem | None = None
 
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
@@ -882,7 +888,7 @@ class AttachedProfilesDialog(PicardDialog):
 
     # --- Profile list ---
 
-    def _populate_profile_list(self):
+    def _populate_profile_list(self) -> None:
         self.ui.profile_list.clear()
         for profile in self._enabled_profiles:
             item = QtWidgets.QTreeWidgetItem(["○", profile['title']])
@@ -890,10 +896,10 @@ class AttachedProfilesDialog(PicardDialog):
             self.ui.profile_list.addTopLevelItem(item)
         self.ui.profile_list.resizeColumnToContents(0)
 
-    def _selected_profile_ids(self):
+    def _selected_profile_ids(self) -> list[str]:
         return [item.data(0, QtCore.Qt.ItemDataRole.UserRole) for item in self.ui.profile_list.selectedItems()]
 
-    def _on_selection_changed(self):
+    def _on_selection_changed(self) -> None:
         if not self.ui.profile_list.selectedItems():
             # Never allow empty selection
             self.ui.profile_list.blockSignals(True)
@@ -910,7 +916,7 @@ class AttachedProfilesDialog(PicardDialog):
 
     # --- Settings tree ---
 
-    def _populate_settings_tree(self):
+    def _populate_settings_tree(self) -> None:
         self._building_tree = True
         self._highlighted_item = None
         self._check_states = {}
@@ -935,7 +941,7 @@ class AttachedProfilesDialog(PicardDialog):
             self.ui.settings_tree.addTopLevelItem(item)
         self._building_tree = False
 
-    def _compute_check_state(self, pkey, selected_ids):
+    def _compute_check_state(self, pkey: str, selected_ids: list[str]) -> QtCore.Qt.CheckState:
         """Determine check state for an option given selected profiles."""
         in_selected = selected_ids and all(
             pkey in self.profile_page.get_settings_for_profile(pid) for pid in selected_ids
@@ -951,7 +957,7 @@ class AttachedProfilesDialog(PicardDialog):
                 return QtCore.Qt.CheckState.PartiallyChecked
         return QtCore.Qt.CheckState.Unchecked
 
-    def _build_tooltip(self, pkey):
+    def _build_tooltip(self, pkey: str) -> str:
         """Build tooltip explaining which profile this option will be saved to."""
         for profile in self._enabled_profiles:
             psettings = self.profile_page.profile_settings.get(profile['id'], {})
@@ -959,7 +965,7 @@ class AttachedProfilesDialog(PicardDialog):
                 return _("This option will be saved to profile: %s") % profile['title']
         return _("Not in any profile")
 
-    def _on_item_changed(self, item, column):
+    def _on_item_changed(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
         if self._building_tree:
             return
         # Only react to actual check state changes
@@ -996,7 +1002,7 @@ class AttachedProfilesDialog(PicardDialog):
         self.profile_page.profile_selected(update_settings=True)
         self.profile_page.reload_all_page_settings()
 
-    def _on_item_hovered(self, item, column):
+    def _on_item_hovered(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
         """Show filled circle on profile list items that contain the hovered option."""
         if self._highlighted_item is item:
             return
@@ -1010,7 +1016,7 @@ class AttachedProfilesDialog(PicardDialog):
         pkey = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
         self._update_profile_markers(pkey)
 
-    def _update_profile_markers(self, pkey):
+    def _update_profile_markers(self, pkey: str) -> None:
         for i in range(self.ui.profile_list.topLevelItemCount()):
             list_item = self.ui.profile_list.topLevelItem(i)
             pid = list_item.data(0, QtCore.Qt.ItemDataRole.UserRole)
@@ -1019,14 +1025,14 @@ class AttachedProfilesDialog(PicardDialog):
             if list_item.text(0) != marker:
                 list_item.setText(0, marker)
 
-    def _clear_profile_highlights(self):
+    def _clear_profile_highlights(self) -> None:
         for i in range(self.ui.profile_list.topLevelItemCount()):
             list_item = self.ui.profile_list.topLevelItem(i)
             if list_item.text(0) != "○":
                 list_item.setText(0, "○")
         self._clear_option_highlight()
 
-    def _clear_option_highlight(self):
+    def _clear_option_highlight(self) -> None:
         if self._highlighted_item:
             self._highlighted_item.setBackground(0, QtGui.QBrush())
             self._highlighted_item = None
@@ -1035,5 +1041,5 @@ class AttachedProfilesDialog(PicardDialog):
         self._clear_profile_highlights()
         super().leaveEvent(event)
 
-    def close_window(self):
+    def close_window(self) -> None:
         self.close()
