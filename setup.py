@@ -110,8 +110,6 @@ class picard_install(install):
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
     ]
 
-    sub_commands = install.sub_commands
-
     def initialize_options(self):
         install.initialize_options(self)
         self.disable_autoupdate = None
@@ -119,9 +117,6 @@ class picard_install(install):
     def finalize_options(self):
         install.finalize_options(self)
         self.distribution.get_command_obj('build').disable_autoupdate = self.disable_autoupdate
-
-    def run(self):
-        install.run(self)
 
 
 class picard_build(build):
