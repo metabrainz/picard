@@ -241,11 +241,56 @@ class MyOptionsPage(OptionsPage):
 
 **Benefits**:
 - Isolated from other plugins
-- Automatically namespaced under `plugin.{module_name}`
+- Automatically namespaced under `plugin.{uuid}`
 - Persisted in Picard config
 - Supports any JSON-serializable type
 
 **Note**: Values are stored in Qt settings format. Complex types (lists, dicts) are automatically serialized.
+
+#### Profile support
+
+Plugin options can participate in Picard's user profiles system. When an option is profile-eligible, users can override its value per-profile from the Profiles options page.
+
+To make an option profile-eligible, pass `title` and `in_profile=True` to `register_option`:
+
+```python
+def enable(api):
+    api.plugin_config.register_option(
+        'greeting', 'Hello World',
+        title='Greeting message',
+        in_profile=True,
+    )
+```
+
+- `title`: Human-readable name displayed in the Profiles options page.
+- `in_profile=True`: Opts the option into the profile override system.
+
+When a profile is active and overrides the option, reads from `api.plugin_config['greeting']` automatically return the profile value. Writes go to the profile's storage. The base (non-profile) value is preserved.
+
+**Options page with profile highlighting:**
+
+Declare widgets in the page's `OPTIONS` dict to enable visual highlighting when a profile overrides the option:
+
+```python
+from picard.plugin3.api import OptionsPage, PageOptionConfigs
+
+class MyOptionsPage(OptionsPage):
+    OPTIONS: PageOptionConfigs = {
+        'greeting': {'widgets': ['greeting_input']},
+    }
+```
+
+The widget will be highlighted in the options dialog when the option is tracked or overridden by an active profile.
+
+**Behavior summary:**
+
+| Plugin state | Profile editor | Profile overrides applied |
+|---|---|---|
+| Enabled | Option visible for selection | Yes |
+| Disabled | Option hidden | No (data retained) |
+| Re-enabled | Option visible, prior data restored | Yes |
+| Uninstalled (config kept) | Option hidden | No (data retained) |
+| Uninstalled (config deleted) | Option removed from all profiles | No |
 
 ---
 

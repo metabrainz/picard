@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>525</height>
+    <width>589</width>
+    <height>425</height>
    </rect>
   </property>
   <layout class="QVBoxLayout">
@@ -78,29 +78,15 @@
         </property>
        </widget>
       </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>6</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QLabel" name="preserved_tags_label">
-        <property name="text">
-         <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
-        </property>
-       </widget>
-      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="preserved_tags_groupbox">
+     <property name="title">
+      <string>Preserve these tags from being cleared or overwritten with MusicBrainz data:</string>
+     </property>
+     <layout class="QVBoxLayout" name="preserved_tags_layout">
       <item>
        <widget class="TagListEditor" name="preserved_tags" native="true">
         <property name="sizePolicy">
@@ -110,6 +96,32 @@
          </sizepolicy>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="do_not_sanitize_label">
+     <property name="text">
+      <string>Do not sanitize dates for these tag formats:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="do_not_sanitize_container">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QVBoxLayout" name="do_not_sanitize_layout">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+       </layout>
       </item>
      </layout>
     </widget>

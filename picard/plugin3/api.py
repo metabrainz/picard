@@ -36,6 +36,8 @@ from picard.plugin3.api_impl import (
 )
 from picard.script import ScriptParser
 
+from picard.ui.options import PageOptionConfigs
+
 
 __all__ = [
     'Album',
@@ -48,6 +50,7 @@ __all__ = [
     'ImageProcessor',
     'Metadata',
     'OptionsPage',
+    'PageOptionConfigs',
     'PluginApi',
     'ProcessingImage',
     'ProviderOptions',

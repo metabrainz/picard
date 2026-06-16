@@ -46,7 +46,11 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
-from picard.profile import profile_groups_values
+from picard.profile import (
+    is_plugin_profile_key,
+    profile_groups_values,
+    setting_profile_key,
+)
 from picard.script import (
     get_file_naming_script_presets,
     iter_tagging_scripts_from_tuples,
@@ -229,14 +233,15 @@ class ProfilesOptionsPage(OptionsPage):
             widget_item.setCheckState(self.TREEWIDGETITEM_COLUMN, QtCore.Qt.CheckState.Unchecked)
             for setting in group_settings:
                 try:
-                    opt_title = Option.get_title('setting', setting.name)
+                    opt_title = Option.get_title(setting.section, setting.name)
                 except OptionError as e:
                     log.debug(e)
                     continue
                 if opt_title is None:
                     opt_title = setting.name
                     log.debug("Missing title for option: %s", setting.name)
-                widget_item.addChild(self._make_child_item(settings, setting.name, opt_title))
+                pkey = setting_profile_key(setting.name, setting.section)
+                widget_item.addChild(self._make_child_item(settings, pkey, opt_title))
             added = False
             if parent:
                 # Find parent item
@@ -511,9 +516,30 @@ class ProfilesOptionsPage(OptionsPage):
         """
         config = get_config()
         config.profiles[SettingConfigSection.PROFILES_KEY] = self._clean_and_get_all_profiles()
-        config.profiles[SettingConfigSection.SETTINGS_KEY] = self.profile_settings
+        config.profiles[SettingConfigSection.SETTINGS_KEY] = self._clean_profile_settings()
         config.persist['last_selected_profile_pos'] = self.ui.profile_list.currentRow()
         config.persist['profile_settings_tree_expanded_list'] = sorted(self.expanded_sections)
+
+    def _clean_profile_settings(self):
+        """Remove stale keys from profile settings that are no longer in_profile.
+
+        Plugin keys are preserved even if the plugin is disabled, since the
+        option won't be in the registry.
+        """
+        cleaned = {}
+        for profile_id, settings in self.profile_settings.items():
+            cleaned[profile_id] = {}
+            for key, value in settings.items():
+                if is_plugin_profile_key(key):
+                    # Plugin key — always preserve (plugin may be disabled)
+                    cleaned[profile_id][key] = value
+                else:
+                    opt = Option.get('setting', key)
+                    if opt and opt.in_profile:
+                        cleaned[profile_id][key] = value
+                    else:
+                        log.debug("Removing stale profile setting: %s", key)
+        return cleaned
 
     def set_button_states(self):
         """Set the enabled / disabled states of the buttons."""

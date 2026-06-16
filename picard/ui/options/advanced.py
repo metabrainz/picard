@@ -27,7 +27,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_advanced import Ui_AdvancedOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class AdvancedOptionsPage(OptionsPage):
@@ -38,21 +41,18 @@ class AdvancedOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_advanced.html"
 
-    OPTIONS = (
-        ('ignore_regex', ['ignore_regex']),
-        ('ignore_hidden_files', ['ignore_hidden_files']),
-        ('recursively_add_files', ['recursively_add_files']),
-        (
-            'ignore_track_duration_difference_under',
-            ['ignore_track_duration_difference_under', 'label_track_duration_diff'],
-        ),
-        ('query_limit', ['query_limit', 'label_query_limit']),
-        ('completeness_ignore_videos', ['completeness_ignore_videos']),
-        ('completeness_ignore_pregap', ['completeness_ignore_pregap']),
-        ('completeness_ignore_data', ['completeness_ignore_data']),
-        ('completeness_ignore_silence', ['completeness_ignore_silence']),
-        ('compare_ignore_tags', ['groupBox_ignore_tags']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'ignore_regex': {'widgets': ['ignore_regex']},
+        'ignore_hidden_files': {'widgets': ['ignore_hidden_files']},
+        'recursively_add_files': {'widgets': ['recursively_add_files']},
+        'ignore_track_duration_difference_under': {'widgets': ['ignore_track_duration_difference_under']},
+        'query_limit': {'widgets': ['query_limit']},
+        'completeness_ignore_videos': {'widgets': ['completeness_ignore_videos']},
+        'completeness_ignore_pregap': {'widgets': ['completeness_ignore_pregap']},
+        'completeness_ignore_data': {'widgets': ['completeness_ignore_data']},
+        'completeness_ignore_silence': {'widgets': ['completeness_ignore_silence']},
+        'compare_ignore_tags': {'widgets': ['groupBox_ignore_tags']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

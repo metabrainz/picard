@@ -44,7 +44,7 @@ from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import (
     Config,
-    ConfigSection,
+    ProfileConfigSection,
     get_config,
 )
 from picard.coverart.image import CoverArtImage
@@ -192,7 +192,8 @@ class PluginApi:
         self._plugin_id = manifest.module_name
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
-        self._api_config = ConfigSection(get_config(), full_name)
+        self._api_config = ProfileConfigSection(get_config(), full_name)
+        self._api_config.display_name = manifest.name()
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path | None = None
@@ -518,7 +519,7 @@ class PluginApi:
         return get_config()
 
     @property
-    def plugin_config(self) -> ConfigSection:
+    def plugin_config(self) -> ProfileConfigSection:
         """Configuration private to the plugin"""
         return self._api_config
 
@@ -1412,6 +1413,7 @@ class PluginApi:
                 api.register_options_page(MyOptionsPage)
         """
         page_class.api = self
+        page_class.OPTION_SECTION = self._api_config.section_name
         # The options page needs a unique name if no name was given
         self._set_class_name_and_title(page_class)
         return register_options_page(page_class)

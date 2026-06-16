@@ -63,6 +63,7 @@ from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
+    PageOptionConfigs,
 )
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.scriptdocumentation import ScriptingDocumentationWidget
@@ -106,11 +107,10 @@ class ScriptingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_scripting.html"
 
-    OPTIONS = (
-        ('enable_tagger_scripts', ['enable_tagger_scripts']),
-        ('list_of_scripts', ['script_list']),
-    )
-
+    OPTIONS: PageOptionConfigs = {
+        'enable_tagger_scripts': {'widgets': ['enable_tagger_scripts']},
+        'list_of_scripts': {'widgets': ['script_list']},
+    }
     default_script_directory = os.path.normpath(
         QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.StandardLocation.DocumentsLocation)
     )

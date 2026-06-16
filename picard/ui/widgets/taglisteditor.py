@@ -20,7 +20,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from PyQt6 import QtWidgets
+from PyQt6 import (
+    QtCore,
+    QtWidgets,
+)
 
 from picard.tags import tag_names
 
@@ -34,6 +37,7 @@ from picard.ui.widgets.editablelistview import (
 class TagListEditor(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
         self.ui = Ui_TagListEditor()
         self.ui.setupUi(self)
         list_view = self.ui.tag_list_view

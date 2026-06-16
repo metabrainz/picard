@@ -27,15 +27,40 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Iterator
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 from typing import TYPE_CHECKING
+
+from picard.i18n import N_
 
 
 if TYPE_CHECKING:
     from picard.ui.options import OptionsPage
 
 
-SettingDesc = namedtuple('SettingDesc', ('name', 'highlights'))
+SettingDesc = namedtuple('SettingDesc', ('name', 'highlights', 'section'), defaults=('setting',))
+
+
+def setting_profile_key(name: str, section: str = 'setting') -> str:
+    """Return the key used for an option in profile settings storage.
+
+    Core options use bare name. Non-core options (plugins) use 'section/name'
+    to avoid collisions.
+    """
+    if section == 'setting':
+        return name
+    return f'{section}/{name}'
+
+
+_PLUGIN_PROFILE_KEY_PREFIX = 'plugin.'
+
+
+def is_plugin_profile_key(key: str) -> bool:
+    """Return True if the key is a plugin profile setting key."""
+    return key.startswith(_PLUGIN_PROFILE_KEY_PREFIX)
+
 
 _settings_groups: dict = {}
 _groups_order: dict[str, int] = defaultdict(lambda: -1)
@@ -50,25 +75,46 @@ def profile_groups_order(group: str) -> None:
         _groups_count += 1
 
 
+_PLUGINS_GROUP = 'plugins'
+
+
 def profile_groups_add_setting(
     group: str,
     option_name: str,
-    highlights: list[str],
+    highlights: Iterable[str],
     title: str | None = None,
     parent: str | None = None,
+    section: str = 'setting',
 ) -> None:
+    # Auto-create the "Plugins" parent group if needed
+    if parent == _PLUGINS_GROUP and _PLUGINS_GROUP not in _settings_groups:
+        _settings_groups[_PLUGINS_GROUP] = {
+            'title': N_("Plugins"),
+            'parent': '',
+            'name': _PLUGINS_GROUP,
+            'settings': [],
+        }
     if group not in _settings_groups:
         _settings_groups[group] = {'title': title or group}
         _settings_groups[group]['parent'] = parent or ''
         _settings_groups[group]['name'] = group
     if 'settings' not in _settings_groups[group]:
         _settings_groups[group]['settings'] = []
-    _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights))
-    _known_settings.add(option_name)
+    _settings_groups[group]['settings'].append(SettingDesc(option_name, highlights, section))
+    _known_settings.add(setting_profile_key(option_name, section))
 
 
 def profile_groups_all_settings() -> set[str]:
     return _known_settings
+
+
+def profile_groups_update_highlights(option_name: str, highlights: Iterable[str]) -> None:
+    """Update highlights for an already-registered setting."""
+    for group in _settings_groups.values():
+        for i, setting in enumerate(group.get('settings', [])):
+            if setting.name == option_name:
+                group['settings'][i] = SettingDesc(setting.name, highlights, setting.section)
+                return
 
 
 def profile_groups_settings(group: str) -> Iterator[SettingDesc]:
@@ -90,7 +136,15 @@ def profile_groups_group_from_page(page: 'OptionsPage') -> dict | None:
     try:
         return _settings_groups[page.NAME]
     except (AttributeError, KeyError):
-        return None
+        pass
+    # For plugin pages, the group may be keyed by OPTION_SECTION
+    try:
+        section = getattr(page, 'OPTION_SECTION', None)
+        if section and section in _settings_groups:
+            return _settings_groups[section]
+    except (AttributeError, KeyError):
+        pass
+    return None
 
 
 def profile_groups_values() -> Iterator[dict]:
@@ -99,6 +153,21 @@ def profile_groups_values() -> Iterator[dict]:
     # QTreeWidget before adding their children.
     for k in sorted(_settings_groups, key=lambda k: (_settings_groups[k]['parent'], _groups_order[k], k)):
         yield _settings_groups[k]
+
+
+def profile_groups_remove_group(group: str) -> None:
+    """Remove a settings group (e.g. when a plugin is disabled)."""
+    if group in _settings_groups:
+        removed_keys = {setting_profile_key(s.name, s.section) for s in _settings_groups[group].get('settings', [])}
+        del _settings_groups[group]
+        # Only discard keys not still referenced by another group
+        still_used = set()
+        for other_group in _settings_groups.values():
+            for s in other_group.get('settings', []):
+                key = setting_profile_key(s.name, s.section)
+                if key in removed_keys:
+                    still_used.add(key)
+        _known_settings.difference_update(removed_keys - still_used)
 
 
 def profile_groups_reset() -> None:

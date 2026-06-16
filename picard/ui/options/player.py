@@ -22,7 +22,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_player import Ui_PlayerOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.player import OS_SUPPORTS_NOW_PLAYING
 
 
@@ -34,12 +37,12 @@ class PlayerOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_player.html"
 
-    OPTIONS = (
-        ('player_now_playing', ['player_now_playing']),
-        ('listenbrainz_enabled', ['listenbrainz_enabled']),
-        ('listenbrainz_submit_only_tagged', ['listenbrainz_submit_only_tagged']),
-        ('listenbrainz_token', ['listenbrainz_token']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'player_now_playing': {'widgets': ['player_now_playing']},
+        'listenbrainz_enabled': {'widgets': ['listenbrainz_enabled']},
+        'listenbrainz_submit_only_tagged': {'widgets': ['listenbrainz_submit_only_tagged']},
+        'listenbrainz_token': {'widgets': ['listenbrainz_token']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

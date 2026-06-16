@@ -19,7 +19,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from picard import log
-from picard.config import get_config
+from picard.config import (
+    SettingConfigSection,
+    get_config,
+)
 
 
 class PluginCleanupManager:
@@ -57,5 +60,21 @@ class PluginCleanupManager:
         for key in config.childKeys():
             config.remove(key)
         config.endGroup()
+        self._clean_plugin_profile_settings(config, plugin_uuid)
         config.sync()
         log.info('Deleted configuration for plugin %s', plugin_uuid)
+
+    def _clean_plugin_profile_settings(self, config, plugin_uuid):
+        """Remove profile settings entries for a plugin."""
+        try:
+            profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
+        except AttributeError:
+            return
+        if not profile_settings:
+            return
+        profile_prefix = f'plugin.{plugin_uuid}/'
+        for settings in profile_settings.values():
+            keys_to_remove = [k for k in settings if k.startswith(profile_prefix)]
+            for k in keys_to_remove:
+                del settings[k]
+        config.profiles[SettingConfigSection.SETTINGS_KEY] = profile_settings

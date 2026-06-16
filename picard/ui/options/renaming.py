@@ -48,6 +48,7 @@ from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
     OptionsCheckError,
     OptionsPage,
+    PageOptionConfigs,
 )
 from picard.ui.scripteditor.examples import ScriptEditorExamples
 from picard.ui.scripteditor.utils import (
@@ -65,16 +66,16 @@ class RenamingOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_filerenaming.html"
 
-    OPTIONS = (
-        ('move_files', ['move_files']),
-        ('move_files_to', ['move_files_to']),
-        ('move_overwrite_existing_files', ['move_overwrite_existing_files']),
-        ('move_additional_files', ['move_additional_files']),
-        ('move_additional_files_pattern', ['move_additional_files_pattern']),
-        ('delete_empty_dirs', ['delete_empty_dirs']),
-        ('rename_files', ['rename_files']),
-        ('active_file_naming_script_id', ['naming_script_selector']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'move_files': {'widgets': ['move_files']},
+        'move_files_to': {'widgets': ['move_files_to']},
+        'move_overwrite_existing_files': {'widgets': ['move_overwrite_existing_files']},
+        'move_additional_files': {'widgets': ['move_additional_files']},
+        'move_additional_files_pattern': {'widgets': ['move_additional_files_pattern']},
+        'delete_empty_dirs': {'widgets': ['delete_empty_dirs']},
+        'rename_files': {'widgets': ['rename_files']},
+        'active_file_naming_script_id': {'widgets': ['naming_script_selector']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
