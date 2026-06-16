@@ -186,7 +186,7 @@ class PluginApi:
     _deprecation_warnings_emitted: set[tuple[str, str, int]] = set()  # Track emitted deprecation warnings
 
     def __init__(self, manifest: PluginManifest, tagger: 'Tagger') -> None:
-        self._tagger: 'Tagger' = tagger
+        self._tagger: Tagger = tagger
         self._manifest = manifest
         self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
         self._plugin_id = manifest.module_name
