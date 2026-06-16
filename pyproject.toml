@@ -138,8 +138,6 @@ exclude = [
 line-length = 120
 indent-width = 4
 
-target-version = "py310"
-
 [tool.ruff.lint]
 # Enable Pyflakes (`F`), a subset of the pycodestyle (`E`) and
 # most of pyupgrade checks by default.
