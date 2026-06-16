@@ -83,11 +83,6 @@ dev = [
     "wlc>=1.17.2",
 ]
 
-[tool.setuptools]
-ext-modules = [
-    {name = "picard.util._astrcmp", sources = ["picard/util/_astrcmp.c"]},
-]
-
 [tool.setuptools.dynamic]
 version = {attr = "picard.__version__"}
 readme = {file = ["README.md"], content-type = "text/markdown"}

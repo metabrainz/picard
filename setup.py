@@ -50,6 +50,7 @@ import tempfile
 
 from setuptools import (
     Command,
+    Extension,
     setup,
 )
 from setuptools.command.build import build
@@ -691,6 +692,9 @@ args = {
         'regen_constants_pot_file': picard_regen_constants_pot_file,
         'patch_version': picard_patch_version,
     },
+    'ext_modules': [
+        Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
+    ],
     'scripts': ['scripts/' + PACKAGE_NAME],
 }
 
