@@ -900,7 +900,7 @@ class AttachedProfilesDialog(PicardDialog):
 
         for setting in self.option_group['settings']:
             try:
-                title = Option.get_title('setting', setting.name)
+                title = Option.get_title(setting.section, setting.name)
             except OptionError as e:
                 log.debug(e)
                 continue
