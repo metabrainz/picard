@@ -1,0 +1,1059 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": null,
+        "disambiguation": "add compilations to this artist",
+        "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+        "name": "Various Artists",
+        "sort-name": "Various Artists",
+        "type": "Other",
+        "type-id": "ac897045-5043-3294-969b-187360e45d86"
+      },
+      "joinphrase": "",
+      "name": "Various Artists"
+    }
+  ],
+  "asin": null,
+  "barcode": "",
+  "country": "US",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": false,
+    "count": 1,
+    "darkened": false,
+    "front": true
+  },
+  "date": "2008-04",
+  "disambiguation": "",
+  "id": "30979257-92ba-455f-8423-7b7509090165",
+  "label-info": [
+    {
+      "catalog-number": null,
+      "label": {
+        "disambiguation": "music magazine",
+        "id": "b61b1059-4409-491e-a23b-9c77ffca7ee3",
+        "label-code": null,
+        "name": "Paste",
+        "sort-name": "Paste",
+        "type": "Imprint",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "7d0867c3-985e-394d-8934-b0cb920310b8",
+      "position": 1,
+      "title": "",
+      "track-count": 20,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "d7f5305a-15fc-4af4-a61b-f6f45510cc8f",
+                "name": "Bob Mould",
+                "sort-name": "Mould, Bob",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Bob Mould"
+            }
+          ],
+          "id": "b6a8437b-72a5-3fda-9708-02941b6277a2",
+          "length": 215000,
+          "number": "1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "d7f5305a-15fc-4af4-a61b-f6f45510cc8f",
+                  "name": "Bob Mould",
+                  "sort-name": "Mould, Bob",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Bob Mould"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-01-28",
+            "id": "32d44a31-0b2c-4182-a87a-1ab57511f33d",
+            "isrcs": [
+              "GAQZD0700100",
+              "GBAZP0700100"
+            ],
+            "length": 214000,
+            "title": "The Silence Between Us",
+            "video": false
+          },
+          "title": "The Silence Between Us"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "9da7700d-5066-410f-af55-c8e1901b8577",
+                "name": "Lili Haydn",
+                "sort-name": "Haydn, Lili",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Lili Haydn"
+            }
+          ],
+          "id": "8bd01027-fadd-35c1-bb57-23680ea1ee80",
+          "length": 274080,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "9da7700d-5066-410f-af55-c8e1901b8577",
+                  "name": "Lili Haydn",
+                  "sort-name": "Haydn, Lili",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Lili Haydn"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2007",
+            "id": "033ada79-4981-4d99-b262-7ba8328b93b2",
+            "isrcs": [
+              "CAN110701890"
+            ],
+            "length": 274000,
+            "title": "Strawberry Street",
+            "video": false
+          },
+          "title": "Strawberry Street"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "59d34d63-e209-4f26-8a09-b08d12202082",
+                "name": "The Weepies",
+                "sort-name": "Weepies, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Weepies"
+            }
+          ],
+          "id": "bb63ca23-0b4c-39dc-af20-ea1688e92507",
+          "length": 167680,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "59d34d63-e209-4f26-8a09-b08d12202082",
+                  "name": "The Weepies",
+                  "sort-name": "Weepies, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Weepies"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04-22",
+            "id": "39dac161-8d10-410d-af57-c3464e4f69d8",
+            "isrcs": [
+              "CAN110701906"
+            ],
+            "length": 166000,
+            "title": "Hideaway",
+            "video": false
+          },
+          "title": "Hideaway"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "AU",
+                "disambiguation": "",
+                "id": "172e1f1a-504d-4488-b053-6344ba63e6d0",
+                "name": "Nick Cave & the Bad Seeds",
+                "sort-name": "Cave, Nick & the Bad Seeds",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Nick Cave & the Bad Seeds"
+            }
+          ],
+          "id": "fde0881f-da8b-32f1-bb8a-9ea5b7e5584d",
+          "length": 252813,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "AU",
+                  "disambiguation": "",
+                  "id": "172e1f1a-504d-4488-b053-6344ba63e6d0",
+                  "name": "Nick Cave & the Bad Seeds",
+                  "sort-name": "Cave, Nick & the Bad Seeds",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Nick Cave & the Bad Seeds"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-02-29",
+            "id": "c1823933-f6e5-4e39-a9c8-f658e3761eb0",
+            "isrcs": [
+              "GBAJH0700737"
+            ],
+            "length": 251813,
+            "title": "Dig, Lazarus, Dig!!!",
+            "video": false
+          },
+          "title": "Dig, Lazarus, Dig!!!"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "CA",
+                "disambiguation": "",
+                "id": "d4e75c13-d1e9-4c48-86a0-9c854e1d88f7",
+                "name": "Plants and Animals",
+                "sort-name": "Plants and Animals",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Plants and Animals"
+            }
+          ],
+          "id": "1c53a4c9-916f-3526-a408-f45a35204492",
+          "length": 218986,
+          "number": "5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "CA",
+                  "disambiguation": "",
+                  "id": "d4e75c13-d1e9-4c48-86a0-9c854e1d88f7",
+                  "name": "Plants and Animals",
+                  "sort-name": "Plants and Animals",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Plants and Animals"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-02-26",
+            "id": "a3bbadf0-19e1-412e-a2db-2688c0b117f1",
+            "isrcs": [
+              "CAJ220724490",
+              "CAJ220727000"
+            ],
+            "length": 217973,
+            "title": "Bye Bye Bye",
+            "video": false
+          },
+          "title": "Bye Bye Bye"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "f68ab426-08a5-4878-a915-90ad561fc81b",
+                "name": "Collin Herring",
+                "sort-name": "Herring, Collin",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Collin Herring"
+            }
+          ],
+          "id": "cfc948fc-eaa5-326e-be72-d700df7b1bf7",
+          "length": 201373,
+          "number": "6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "f68ab426-08a5-4878-a915-90ad561fc81b",
+                  "name": "Collin Herring",
+                  "sort-name": "Herring, Collin",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Collin Herring"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "dcbd662a-b53c-4441-a656-586c64cd69db",
+            "isrcs": [],
+            "length": 201373,
+            "title": "Punches",
+            "video": false
+          },
+          "title": "Punches"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "b6e526ee-e16a-44ad-91e8-16a22c9b549e",
+                "name": "China Forbes",
+                "sort-name": "Forbes, China",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "China Forbes"
+            }
+          ],
+          "id": "13fc8042-8c2d-352a-96b5-a9dd9822e625",
+          "length": 167080,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "b6e526ee-e16a-44ad-91e8-16a22c9b549e",
+                  "name": "China Forbes",
+                  "sort-name": "Forbes, China",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "China Forbes"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-02-21",
+            "id": "482bad43-db7e-4ede-99cf-a8ae923ebd5f",
+            "isrcs": [],
+            "length": 166066,
+            "title": "Everybody Needs Somebody",
+            "video": false
+          },
+          "title": "Everybody Needs Somebody"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "4a438422-be3a-4359-98de-4d1d62ae1860",
+                "name": "Matthew Ryan",
+                "sort-name": "Ryan, Matthew",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Matthew Ryan"
+            }
+          ],
+          "id": "087ff943-05d0-3147-9dd4-79c6fd4d60ac",
+          "length": 288306,
+          "number": "8",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "4a438422-be3a-4359-98de-4d1d62ae1860",
+                  "name": "Matthew Ryan",
+                  "sort-name": "Ryan, Matthew",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Matthew Ryan"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04-01",
+            "id": "a6eacb8a-7bdb-4750-83dc-65e9702e9d50",
+            "isrcs": [
+              "GBBTF0800012",
+              "USZPM0800003"
+            ],
+            "length": 287000,
+            "title": "Meet Me by the River",
+            "video": false
+          },
+          "title": "Meet Me by the River"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "a66cc38c-e6cd-4725-a8fd-7d32b998347f",
+                "name": "DeVotchKa",
+                "sort-name": "DeVotchKa",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "DeVotchKa"
+            }
+          ],
+          "id": "f8b48f72-dab7-376e-9a45-01b96bcb537d",
+          "length": 272906,
+          "number": "9",
+          "position": 9,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "a66cc38c-e6cd-4725-a8fd-7d32b998347f",
+                  "name": "DeVotchKa",
+                  "sort-name": "DeVotchKa",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "DeVotchKa"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-02-16",
+            "id": "8548a4c1-8dd5-4e98-b56e-38f252d18ea9",
+            "isrcs": [
+              "USEP40728106"
+            ],
+            "length": 271906,
+            "title": "Transliterator",
+            "video": false
+          },
+          "title": "Transliterator"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "1d0ae4e0-384f-4854-a1b4-ebb4cc81414b",
+                "name": "Victor Wooten",
+                "sort-name": "Wooten, Victor",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Victor Wooten"
+            }
+          ],
+          "id": "3bbb50e6-836e-344d-b508-c2e7c08c4d22",
+          "length": 356146,
+          "number": "10",
+          "position": 10,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "1d0ae4e0-384f-4854-a1b4-ebb4cc81414b",
+                  "name": "Victor Wooten",
+                  "sort-name": "Wooten, Victor",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Victor Wooten"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04-01",
+            "id": "8cd7cb3b-32c5-4908-97d2-eb41a91953e6",
+            "isrcs": [],
+            "length": 355133,
+            "title": "The Lesson",
+            "video": false
+          },
+          "title": "The Lesson"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "e12edc31-ffec-4051-808d-b0f8a739eaaf",
+                "name": "Birds & Batteries",
+                "sort-name": "Birds & Batteries",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Birds & Batteries"
+            }
+          ],
+          "id": "c7435e22-e47d-3c31-be2a-f203b497fdbf",
+          "length": 188946,
+          "number": "11",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "e12edc31-ffec-4051-808d-b0f8a739eaaf",
+                  "name": "Birds & Batteries",
+                  "sort-name": "Birds & Batteries",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Birds & Batteries"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "143bcb11-f60a-497b-aad6-0948fbb8aa7d",
+            "isrcs": [
+              "USHTE0700005"
+            ],
+            "length": 187933,
+            "title": "Ocarina",
+            "video": false
+          },
+          "title": "Ocarina"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US experimental rock band",
+                "id": "4e210d41-b3e3-4e34-8c3b-3b8cc2116562",
+                "name": "Man Man",
+                "sort-name": "Man Man",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Man Man"
+            }
+          ],
+          "id": "cfba5170-c40f-36ba-8f36-3a754e8a764a",
+          "length": 209360,
+          "number": "12",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "US experimental rock band",
+                  "id": "4e210d41-b3e3-4e34-8c3b-3b8cc2116562",
+                  "name": "Man Man",
+                  "sort-name": "Man Man",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Man Man"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04-08",
+            "id": "00126be1-6710-4775-b9a4-825078a10e63",
+            "isrcs": [
+              "USEP40802111"
+            ],
+            "length": 206360,
+            "title": "Top Drawer",
+            "video": false
+          },
+          "title": "Top Drawer"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "0cf9dcc6-ff7c-4aa6-a10a-39d2ab25a1db",
+                "name": "Jim Bianco",
+                "sort-name": "Bianco, Jim",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Jim Bianco"
+            }
+          ],
+          "id": "d2fcd3ce-795f-37bd-9634-e846611163f1",
+          "length": 212840,
+          "number": "13",
+          "position": 13,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "0cf9dcc6-ff7c-4aa6-a10a-39d2ab25a1db",
+                  "name": "Jim Bianco",
+                  "sort-name": "Bianco, Jim",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Jim Bianco"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "0a4e8906-93c6-43cf-9c28-43607d6a166a",
+            "isrcs": [],
+            "length": 212840,
+            "title": "I've Got a Thing for You",
+            "video": false
+          },
+          "title": "I've Got a Thing for You"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "NO",
+                "disambiguation": "",
+                "id": "13d7202f-c9d7-4f75-a376-f9f8fa867ef9",
+                "name": "Hanne Hukkelberg",
+                "sort-name": "Hukkelberg, Hanne",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Hanne Hukkelberg"
+            }
+          ],
+          "id": "b45670da-7328-39e1-8695-4fb5ef8274b7",
+          "length": 220586,
+          "number": "14",
+          "position": 14,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "NO",
+                  "disambiguation": "",
+                  "id": "13d7202f-c9d7-4f75-a376-f9f8fa867ef9",
+                  "name": "Hanne Hukkelberg",
+                  "sort-name": "Hukkelberg, Hanne",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Hanne Hukkelberg"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2006-09-04",
+            "id": "8a81d8b7-0b52-48c4-b498-3a6c7c5c31cf",
+            "isrcs": [
+              "NOPRR0602010"
+            ],
+            "length": 220000,
+            "title": "A Cheater\u2019s Armoury",
+            "video": false
+          },
+          "title": "A Cheater's Armoury"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "singer-songwriter from Austin, Texas",
+                "id": "664725d2-c2ee-46dd-8ab2-48e1a19b14d3",
+                "name": "Bob Schneider",
+                "sort-name": "Schneider, Bob",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Bob Schneider"
+            }
+          ],
+          "id": "a55af059-a98d-356d-9468-3cfcd0c868f7",
+          "length": 294706,
+          "number": "15",
+          "position": 15,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "singer-songwriter from Austin, Texas",
+                  "id": "664725d2-c2ee-46dd-8ab2-48e1a19b14d3",
+                  "name": "Bob Schneider",
+                  "sort-name": "Schneider, Bob",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Bob Schneider"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "5645b9d5-505c-4846-8a18-49c417a7f26e",
+            "isrcs": [],
+            "length": 294706,
+            "title": "Changing Your Mind",
+            "video": false
+          },
+          "title": "Changing Your Mind"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "7a798b31-2fd0-4048-bf04-c95e2df553aa",
+                "name": "Dead Rock West",
+                "sort-name": "Dead Rock West",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Dead Rock West"
+            }
+          ],
+          "id": "0d3c48d3-8386-31bc-9f5a-a40f0b5a1a85",
+          "length": 196040,
+          "number": "16",
+          "position": 16,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "7a798b31-2fd0-4048-bf04-c95e2df553aa",
+                  "name": "Dead Rock West",
+                  "sort-name": "Dead Rock West",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Dead Rock West"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "4053f2a1-5b24-47ef-af74-ef76f79ebbe6",
+            "isrcs": [],
+            "length": 196040,
+            "title": "Highway One",
+            "video": false
+          },
+          "title": "Highway One"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US indie rock band",
+                "id": "696a827b-5088-49f8-8628-341d28f9ff30",
+                "name": "Headlights",
+                "sort-name": "Headlights",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Headlights"
+            }
+          ],
+          "id": "2d273c3b-3c51-3208-a293-2d96838fc37d",
+          "length": 209746,
+          "number": "17",
+          "position": 17,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "US indie rock band",
+                  "id": "696a827b-5088-49f8-8628-341d28f9ff30",
+                  "name": "Headlights",
+                  "sort-name": "Headlights",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Headlights"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-02-19",
+            "id": "845b3c73-fea2-43fd-9bba-b84ad6a9e895",
+            "isrcs": [
+              "US3R40814902"
+            ],
+            "length": 209000,
+            "title": "Cherry Tulips",
+            "video": false
+          },
+          "title": "Cherry Tulips"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "18432abb-3a22-4377-be79-6f3f37fade76",
+                "name": "The Nadas",
+                "sort-name": "Nadas, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Nadas"
+            }
+          ],
+          "id": "4bc2da03-a5bf-30c3-9c9b-80a91e5df1f9",
+          "length": 265293,
+          "number": "18",
+          "position": 18,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "18432abb-3a22-4377-be79-6f3f37fade76",
+                  "name": "The Nadas",
+                  "sort-name": "Nadas, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Nadas"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "f9224f5f-9bbd-4218-838a-7d56ecf332b9",
+            "isrcs": [],
+            "length": 265293,
+            "title": "Good Night Girl",
+            "video": false
+          },
+          "title": "Good Night Girl"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "84c38d3a-3400-4c28-b988-90558bb6fae0",
+                "name": "BoDeans",
+                "sort-name": "BoDeans",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "BoDeans"
+            }
+          ],
+          "id": "c30eb9f9-31fb-3182-974b-b561ba99c8ee",
+          "length": 193693,
+          "number": "19",
+          "position": 19,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "84c38d3a-3400-4c28-b988-90558bb6fae0",
+                  "name": "BoDeans",
+                  "sort-name": "BoDeans",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "BoDeans"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-04",
+            "id": "f6427130-72b7-4bee-871f-733e1282204e",
+            "isrcs": [],
+            "length": 193693,
+            "title": "Willing",
+            "video": false
+          },
+          "title": "Willing"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "Los Angeles based singer/songwriter born in Tulsa",
+                "id": "73202545-d1ed-4c23-a7f9-0e2c27dc75b9",
+                "name": "AM",
+                "sort-name": "AM",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "AM"
+            }
+          ],
+          "id": "7bfb774e-97a1-336b-bfe0-7e1170821694",
+          "length": 228173,
+          "number": "20",
+          "position": 20,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "Los Angeles based singer/songwriter born in Tulsa",
+                  "id": "73202545-d1ed-4c23-a7f9-0e2c27dc75b9",
+                  "name": "AM",
+                  "sort-name": "AM",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "AM"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2007-08-21",
+            "id": "d5d19589-a274-459e-b9d4-d3590bd6a526",
+            "isrcs": [
+              "USHM20710186"
+            ],
+            "length": 228000,
+            "title": "Old Song",
+            "video": false
+          },
+          "title": "Old Song"
+        }
+      ]
+    }
+  ],
+  "packaging": "Cardboard/Paper Sleeve",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "name": "United States",
+        "sort-name": "United States",
+        "type": null,
+        "type-id": null
+      },
+      "date": "2008-04"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": null,
+          "disambiguation": "add compilations to this artist",
+          "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+          "name": "Various Artists",
+          "sort-name": "Various Artists",
+          "type": "Other",
+          "type-id": "ac897045-5043-3294-969b-187360e45d86"
+        },
+        "joinphrase": "",
+        "name": "Various Artists"
+      }
+    ],
+    "disambiguation": "",
+    "first-release-date": "2008-04",
+    "id": "14338bba-34af-3a87-9932-c2c55f96b3ee",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "title": "Paste Magazine Sampler #41: April 2008"
+  },
+  "status": "Promotion",
+  "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "Paste Magazine Sampler #41: April 2008"
+}

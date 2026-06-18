@@ -172,7 +172,8 @@
               "USWB10202603",
               "USWB10400046",
               "USWB11301111",
-              "USWB19900178"
+              "USWB19900178",
+              "USWB22600016"
             ],
             "length": 257000,
             "title": "Dreams",
@@ -277,7 +278,8 @@
               "USWB10202619",
               "USWB10400049",
               "USWB11301113",
-              "USWB19900180"
+              "USWB19900180",
+              "USWB22600009"
             ],
             "length": 192666,
             "title": "Don\u2019t Stop",
@@ -332,9 +334,10 @@
               "USWB10202605",
               "USWB10400050",
               "USWB11301114",
-              "USWB19900181"
+              "USWB19900181",
+              "USWB22600010"
             ],
-            "length": 219373,
+            "length": 219144,
             "title": "Go Your Own Way",
             "video": false
           },
@@ -486,11 +489,13 @@
             "first-release-date": "1977-02-04",
             "id": "cce551a1-5a6c-494b-89fe-6dfac5e8aed1",
             "isrcs": [
+              "USRH11802584",
               "USWB10101374",
               "USWB10202604",
               "USWB10400054",
               "USWB11301117",
-              "USWB19900184"
+              "USWB19900184",
+              "USWB22600025"
             ],
             "length": 213106,
             "title": "You Make Loving Fun",

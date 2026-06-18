@@ -314,6 +314,14 @@ SCENARIOS = [
         "distractors": [],
         "scenario": "similar_track_titles_on_medium",
     },
+    # Magazine samplers from different months
+    {
+        "target": "eval_release_90b66a30.json",  # Paste Magazine Sampler #48: November 2008
+        "distractors": [
+            "eval_release_30979257.json",  # Paste Magazine Sampler #41: April 2008
+        ],
+        "scenario": "similar_samplers",
+    },
 ]
 
 
