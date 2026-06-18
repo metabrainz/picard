@@ -282,6 +282,8 @@ class MyOptionsPage(OptionsPage):
 
 The widget will be highlighted in the options dialog when the option is tracked or overridden by an active profile.
 
+**Note:** Widget highlighting will only work if is accessed from the `OptionsPage` sub-class as `self.ui.{widget}` or `self.{widget}`. The above example would highlight the widget `self.ui.greeting_input` or `self.greeting_input`.
+
 **Behavior summary:**
 
 | Plugin state | Profile editor | Profile overrides applied |
