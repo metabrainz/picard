@@ -232,7 +232,7 @@ class Tagger(QtWidgets.QApplication):
     album_removed = QtCore.pyqtSignal(Album)
     _qt_translators_updated = QtCore.pyqtSignal()
 
-    __instance = None
+    __instance: 'Tagger'
 
     def __init__(self, cmdline_args, localedir, autoupdate, pipe_handler=None):
         self._bootstrap()
@@ -1542,9 +1542,9 @@ class Tagger(QtWidgets.QApplication):
         self.window.raise_()
         self.window.activateWindow()
 
-    @classmethod
-    def instance(cls):
-        return cls.__instance
+    @staticmethod
+    def instance() -> 'Tagger':
+        return Tagger.__instance
 
     def signal(self, signum, frame):
         log.debug("signal %i received", signum)

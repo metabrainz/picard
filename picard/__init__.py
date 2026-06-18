@@ -72,13 +72,9 @@ def tagger_instance() -> 'Tagger':
 
     Tagger is the main application instance and a subclass of QApplication.
     """
-    from PyQt6.QtCore import QCoreApplication  # avoid top level Qt import
-
     from picard.tagger import Tagger  # avoid circular imports
 
-    instance = QCoreApplication.instance()
-    assert isinstance(instance, Tagger), 'Expected an instance of Tagger'
-    return instance
+    return Tagger.instance()
 
 
 def crash_handler(exc: Exception):
