@@ -2054,7 +2054,7 @@ class PluginCLI:
         if not project.report_bugs_to and author_email:
             project.report_bugs_to = f'mailto:{author_email}'
         try:
-            filenames = write_plugin_project(target, project)
+            filenames = write_plugin_project(target, project, git_initialization)
         except OSError as e:
             self._out.error(f'Failed to create plugin project: {e}')
             return ExitCode.ERROR
