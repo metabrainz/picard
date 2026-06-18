@@ -193,6 +193,7 @@ class MockCliArgs(Mock):
             'trust': None,
             'locale': 'en',
             'with_translations': False,
+            'no_git': False,
             'no_commit': False,
             'source_locale': DEFAULT_SOURCE_LOCALE,
         }

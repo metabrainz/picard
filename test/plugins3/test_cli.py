@@ -1473,6 +1473,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         category='',
         license='',
         with_i18n='n',
+        git_initialization='y',
         git_commit='y',
     ):
         """Build input side_effect list for _cmd_init_interactive prompts.
@@ -1483,7 +1484,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         inputs = [name, target_path, author]
         if author:
             inputs.append(email)
-        inputs.extend([description, category, license, with_i18n, git_commit])
+        inputs.extend([description, category, license, with_i18n, git_initialization, git_commit])
         return inputs
 
     def test_interactive_full(self):
@@ -1513,6 +1514,16 @@ class TestPluginCLIInitInteractive(PicardTestCase):
             exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'MANIFEST.toml').exists())
+
+    def test_interactive_no_git(self):
+        """Interactive mode with only name provided and no git initialization."""
+        target = self.tmpdir / 'picard-plugin-my-plugin'
+        inputs = self._init_inputs(name='My Plugin', git_initialization='n')
+        with patch('builtins.input', side_effect=inputs):
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue((target / 'MANIFEST.toml').exists())
+        self.assertFalse((target / '.git').is_dir())
 
     def test_interactive_empty_name_fails(self):
         """Interactive mode fails if name is empty."""
@@ -1593,6 +1604,13 @@ class TestPluginCLIInitGit(PicardTestCase):
     def tearDown(self):
         super().tearDown()
         shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def test_no_git_does_not_create_git_repo(self):
+        """--no-git does not create a git repository."""
+        target = self.tmpdir / 'test-plugin'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_git=True)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertFalse((target / '.git').is_dir())
 
     def test_init_creates_git_repo(self):
         """--init creates a git repository."""
