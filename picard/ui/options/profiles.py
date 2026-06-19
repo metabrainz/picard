@@ -242,6 +242,9 @@ class ProfilesOptionsPage(OptionsPage):
                     log.debug("Missing title for option: %s", setting.name)
                 pkey = setting_profile_key(setting.name, setting.section)
                 widget_item.addChild(self._make_child_item(settings, pkey, opt_title))
+            # Skip groups that have settings defined but none are visible
+            if group_settings and widget_item.childCount() == 0:
+                continue
             added = False
             if parent:
                 # Find parent item
@@ -257,6 +260,11 @@ class ProfilesOptionsPage(OptionsPage):
                 self.ui.settings_tree.addTopLevelItem(widget_item)
             if title in self.expanded_sections:
                 widget_item.setExpanded(True)
+        # Remove top-level items that are empty parent containers
+        for i in range(self.ui.settings_tree.topLevelItemCount() - 1, -1, -1):
+            tl_item = self.ui.settings_tree.topLevelItem(i)
+            if tl_item.childCount() == 0:
+                self.ui.settings_tree.takeTopLevelItem(i)
         self.building_tree = False
 
     def _make_child_item(self, settings, name, title):
