@@ -114,9 +114,14 @@ def _strxfrm(string: str) -> str:
         return string.lower()
 
 
+def _sort_key_string(string: str, numeric: bool = False) -> Comparable:
+    return string
+
+
 AVAILABLE_COLLATORS = {
     'strxfrm': _sort_key_strxfrm,
     'qt': _sort_key_qt,
+    'string': _sort_key_string,
 }
 
 # QCollator.sortKey is broken on Windows in some Qt builds,
