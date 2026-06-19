@@ -1,0 +1,1058 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": "BR",
+        "disambiguation": "O poetinha",
+        "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+        "name": "Vinicius de Moraes",
+        "sort-name": "Moraes, Vinicius de",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+      },
+      "joinphrase": "",
+      "name": "Vinicius de Moraes"
+    }
+  ],
+  "asin": null,
+  "barcode": "888837381628",
+  "country": "BR",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": true,
+    "count": 7,
+    "darkened": false,
+    "front": true
+  },
+  "date": "2013-12-10",
+  "disambiguation": "",
+  "id": "58651b56-8e96-4935-b398-585716523ba1",
+  "label-info": [
+    {
+      "catalog-number": "88883738162",
+      "label": {
+        "disambiguation": "global brand, excluding JP, owned by Sony Music Entertainment",
+        "id": "9e6b4d7f-4958-4db7-8504-d89e315836af",
+        "label-code": 10746,
+        "name": "Sony Music",
+        "sort-name": "Sony Music",
+        "type": "Imprint",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "51400ca9-a6bc-3b59-a87b-6b62fb542648",
+      "position": 1,
+      "title": "",
+      "track-count": 17,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "b3998c06-04e6-4b1d-bd2a-d5b83572ae7b",
+                "name": "Maria Beth\u00e2nia",
+                "sort-name": "Beth\u00e2nia, Maria",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " + ",
+              "name": "Maria Beth\u00e2nia"
+            },
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "c73d651d-87c9-4c5e-8abb-4ec9c4077241",
+                "name": "Seu Jorge",
+                "sort-name": "Jorge, Seu",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " + ",
+              "name": "Seu Jorge"
+            },
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "ex-Exaltasamba",
+                "id": "9af8d356-5bd6-4789-9934-fe5916067ab8",
+                "name": "P\u00e9ricles",
+                "sort-name": "P\u00e9ricles",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "P\u00e9ricles"
+            }
+          ],
+          "id": "acdd0a74-53cd-4cfd-885c-fa44be390b12",
+          "length": 303000,
+          "number": "1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "b3998c06-04e6-4b1d-bd2a-d5b83572ae7b",
+                  "name": "Maria Beth\u00e2nia",
+                  "sort-name": "Beth\u00e2nia, Maria",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " + ",
+                "name": "Maria Beth\u00e2nia"
+              },
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "c73d651d-87c9-4c5e-8abb-4ec9c4077241",
+                  "name": "Seu Jorge",
+                  "sort-name": "Jorge, Seu",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " + ",
+                "name": "Seu Jorge"
+              },
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "ex-Exaltasamba",
+                  "id": "9af8d356-5bd6-4789-9934-fe5916067ab8",
+                  "name": "P\u00e9ricles",
+                  "sort-name": "P\u00e9ricles",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "P\u00e9ricles"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "d35e6927-de60-4330-a3c1-d601d1f8add9",
+            "isrcs": [
+              "BRSME1300779"
+            ],
+            "length": 303000,
+            "title": "A arca de No\u00e9",
+            "video": false
+          },
+          "title": "A arca de No\u00e9"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "f07dbc2f-317b-470f-bad4-5f1b0eb6faf1",
+                "name": "Caetano Veloso",
+                "sort-name": "Veloso, Caetano",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " + ",
+              "name": "Caetano Veloso"
+            },
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "b4082b3e-1e45-4544-8d5b-a5fc367648fa",
+                "name": "Moreno Veloso",
+                "sort-name": "Veloso, Moreno",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Moreno Veloso"
+            }
+          ],
+          "id": "240bcf3c-bcf6-4674-8e44-88b641b10d26",
+          "length": 147000,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "f07dbc2f-317b-470f-bad4-5f1b0eb6faf1",
+                  "name": "Caetano Veloso",
+                  "sort-name": "Veloso, Caetano",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " + ",
+                "name": "Caetano Veloso"
+              },
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "b4082b3e-1e45-4544-8d5b-a5fc367648fa",
+                  "name": "Moreno Veloso",
+                  "sort-name": "Veloso, Moreno",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Moreno Veloso"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "4968c615-3c20-470c-8f86-162b3a620018",
+            "isrcs": [
+              "BRSME1300780"
+            ],
+            "length": 147000,
+            "title": "O le\u00e3o",
+            "video": false
+          },
+          "title": "O le\u00e3o"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "7d3d9d52-a44f-4ba1-a080-cf64698912c0",
+                "name": "Zeca Pagodinho",
+                "sort-name": "Pagodinho, Zeca",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Zeca Pagodinho"
+            }
+          ],
+          "id": "68104209-3299-4eab-a629-246fe40a528a",
+          "length": 121000,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "7d3d9d52-a44f-4ba1-a080-cf64698912c0",
+                  "name": "Zeca Pagodinho",
+                  "sort-name": "Pagodinho, Zeca",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Zeca Pagodinho"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "a2c46b83-a120-4516-b577-3dff6ede8504",
+            "isrcs": [
+              "BRSME1300784"
+            ],
+            "length": 121000,
+            "title": "O pato",
+            "video": false
+          },
+          "title": "O pato"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "d3a71b82-e2e3-4dce-85c2-ce1271912426",
+                "name": "Arnaldo Antunes",
+                "sort-name": "Antunes, Arnaldo",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Arnaldo Antunes"
+            }
+          ],
+          "id": "28d1bb9b-4c26-4e96-8ece-0330c118cc09",
+          "length": 163000,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "d3a71b82-e2e3-4dce-85c2-ce1271912426",
+                  "name": "Arnaldo Antunes",
+                  "sort-name": "Antunes, Arnaldo",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Arnaldo Antunes"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "3a2e00b1-191b-49b8-85e9-770081fd6f8f",
+            "isrcs": [
+              "BRSME1300781"
+            ],
+            "length": 163000,
+            "title": "O peru",
+            "video": false
+          },
+          "title": "O peru"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "a36e4f1f-aaba-427d-bab0-0b9535c8fb7f",
+                "name": "Mart\u2019n\u00e1lia",
+                "sort-name": "Mart\u2019n\u00e1lia",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Mart\u2019n\u00e1lia"
+            }
+          ],
+          "id": "566b2305-bddd-45be-9c4e-7a0c44a6ea98",
+          "length": 138000,
+          "number": "5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "a36e4f1f-aaba-427d-bab0-0b9535c8fb7f",
+                  "name": "Mart\u2019n\u00e1lia",
+                  "sort-name": "Mart\u2019n\u00e1lia",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Mart\u2019n\u00e1lia"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "60c834bd-9e66-41e2-a67a-b80d9b0daec1",
+            "isrcs": [
+              "BRSME1300782"
+            ],
+            "length": 138000,
+            "title": "O gato",
+            "video": false
+          },
+          "title": "O gato"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "c7c9fa4d-262b-45c1-9477-237849654948",
+                "name": "Erasmo Carlos",
+                "sort-name": "Carlos, Erasmo",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Erasmo Carlos"
+            }
+          ],
+          "id": "b52a8106-3630-4164-be16-86f88af4fce5",
+          "length": 151000,
+          "number": "6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "c7c9fa4d-262b-45c1-9477-237849654948",
+                  "name": "Erasmo Carlos",
+                  "sort-name": "Carlos, Erasmo",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Erasmo Carlos"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "004709fd-3309-4012-a2d1-f5011a550d00",
+            "isrcs": [
+              "BRSME1300783"
+            ],
+            "length": 151000,
+            "title": "O pintinho",
+            "video": false
+          },
+          "title": "O pintinho"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "59378495-b82b-4def-bb34-0d7c83a58e6e",
+                "name": "Chit\u00e3ozinho & Xoror\u00f3",
+                "sort-name": "Chit\u00e3ozinho & Xoror\u00f3",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Chit\u00e3ozinho & Xoror\u00f3"
+            }
+          ],
+          "id": "1df46fd8-ba64-45d4-b00c-ef16a3c86001",
+          "length": 155000,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "59378495-b82b-4def-bb34-0d7c83a58e6e",
+                  "name": "Chit\u00e3ozinho & Xoror\u00f3",
+                  "sort-name": "Chit\u00e3ozinho & Xoror\u00f3",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Chit\u00e3ozinho & Xoror\u00f3"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "2795569b-430e-4b9c-8d6e-ffeb4dd82945",
+            "isrcs": [
+              "BRSME1300785"
+            ],
+            "length": 155000,
+            "title": "A corujinha",
+            "video": false
+          },
+          "title": "A corujinha"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "fc63a914-272d-4b95-9221-61adcce6f793",
+                "name": "Gal Costa",
+                "sort-name": "Costa, Gal",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Gal Costa"
+            }
+          ],
+          "id": "54508b4b-364e-4730-b5e4-38c3a58f495f",
+          "length": 255000,
+          "number": "8",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "fc63a914-272d-4b95-9221-61adcce6f793",
+                  "name": "Gal Costa",
+                  "sort-name": "Costa, Gal",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Gal Costa"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "415f387c-895b-46f6-8688-0a5c91aa727a",
+            "isrcs": [
+              "BRSME1300786"
+            ],
+            "length": 255000,
+            "title": "As borboletas",
+            "video": false
+          },
+          "title": "As borboletas"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "Brazilian singer and actress",
+                "id": "21fb9a49-4163-4c8b-be4c-f485f01836e0",
+                "name": "Mariana de Moraes",
+                "sort-name": "Moraes, Mariana de",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Mariana de Moraes"
+            }
+          ],
+          "id": "be0d91eb-d194-471c-a2ba-1a0d97e6a7da",
+          "length": 231000,
+          "number": "9",
+          "position": 9,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "Brazilian singer and actress",
+                  "id": "21fb9a49-4163-4c8b-be4c-f485f01836e0",
+                  "name": "Mariana de Moraes",
+                  "sort-name": "Moraes, Mariana de",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Mariana de Moraes"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "08daafe1-defd-4a94-88ab-be2f3a9afb8c",
+            "isrcs": [
+              "BRSME1300788"
+            ],
+            "length": 231000,
+            "title": "A formiga",
+            "video": false
+          },
+          "title": "A formiga"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "d553e89c-3c2a-4f10-9ce1-9eaa74de0129",
+                "name": "Ivete Sangalo",
+                "sort-name": "Sangalo, Ivete",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " + ",
+              "name": "Ivete Sangalo"
+            },
+            {
+              "artist": {
+                "country": "PT",
+                "disambiguation": "",
+                "id": "2061f628-01cd-4343-a078-900f639d67fe",
+                "name": "Buraka Som Sistema",
+                "sort-name": "Buraka Som Sistema",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Buraka Som Sistema"
+            }
+          ],
+          "id": "3f3ae230-9510-4604-abad-d6f03787ee1b",
+          "length": 165000,
+          "number": "10",
+          "position": 10,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "d553e89c-3c2a-4f10-9ce1-9eaa74de0129",
+                  "name": "Ivete Sangalo",
+                  "sort-name": "Sangalo, Ivete",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " + ",
+                "name": "Ivete Sangalo"
+              },
+              {
+                "artist": {
+                  "country": "PT",
+                  "disambiguation": "",
+                  "id": "2061f628-01cd-4343-a078-900f639d67fe",
+                  "name": "Buraka Som Sistema",
+                  "sort-name": "Buraka Som Sistema",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Buraka Som Sistema"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "1bbec02f-6200-466d-ab36-c3aab3f2e852",
+            "isrcs": [
+              "BRSME1300789"
+            ],
+            "length": 165000,
+            "title": "A galinha-d'angola",
+            "video": false
+          },
+          "title": "A galinha-d'angola"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "Brazilian singer/lyricist",
+                "id": "3a5d1cc7-627e-48ea-aba3-fdd20d782c33",
+                "name": "Chico Buarque",
+                "sort-name": "Buarque, Chico",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Chico Buarque"
+            }
+          ],
+          "id": "a284ddbc-ad61-4a12-9e31-a4a88a6ce678",
+          "length": 132000,
+          "number": "11",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "Brazilian singer/lyricist",
+                  "id": "3a5d1cc7-627e-48ea-aba3-fdd20d782c33",
+                  "name": "Chico Buarque",
+                  "sort-name": "Buarque, Chico",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Chico Buarque"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "fd0db5ac-9d76-4c75-b017-1a5706243c82",
+            "isrcs": [
+              "BRSME1300790"
+            ],
+            "length": 132000,
+            "title": "O pinguim",
+            "video": false
+          },
+          "title": "O pinguim"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "385eb71c-c509-4ba2-b69d-57814e8cc19e",
+                "name": "Maria Luiza Jobim",
+                "sort-name": "Jobim, Maria Luiza",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Maria Luiza Jobim"
+            }
+          ],
+          "id": "7f8d87a7-21ee-4890-b86e-4f586f68dfb8",
+          "length": 140000,
+          "number": "12",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "385eb71c-c509-4ba2-b69d-57814e8cc19e",
+                  "name": "Maria Luiza Jobim",
+                  "sort-name": "Jobim, Maria Luiza",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Maria Luiza Jobim"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "124f5a54-9611-435f-b2d9-f1799f984939",
+            "isrcs": [
+              "BRSME1300791"
+            ],
+            "length": 140000,
+            "title": "A cachorrinha",
+            "video": false
+          },
+          "title": "A cachorrinha"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "e22d891f-dda7-479b-affc-c836d520aaca",
+                "name": "Adriana Partimpim",
+                "sort-name": "Adriana Partimpim",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Adriana Partimpim"
+            }
+          ],
+          "id": "191e6388-fed9-42a4-916c-34f3de698d5e",
+          "length": 198000,
+          "number": "13",
+          "position": 13,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "e22d891f-dda7-479b-affc-c836d520aaca",
+                  "name": "Adriana Partimpim",
+                  "sort-name": "Adriana Partimpim",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Adriana Partimpim"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "6fc29f87-069a-45f6-8908-ff14e54bc140",
+            "isrcs": [
+              "BRSME1300792"
+            ],
+            "length": 198000,
+            "title": "O elefantinho",
+            "video": false
+          },
+          "title": "O elefantinho"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "f81f19b9-c76e-43ac-8656-bb56071785fb",
+                "name": "Marisa Monte",
+                "sort-name": "Monte, Marisa",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Marisa Monte"
+            }
+          ],
+          "id": "002ddd1f-9bbb-4ec9-8162-d3948dd53441",
+          "length": 163000,
+          "number": "14",
+          "position": 14,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "f81f19b9-c76e-43ac-8656-bb56071785fb",
+                  "name": "Marisa Monte",
+                  "sort-name": "Monte, Marisa",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Marisa Monte"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "86fd0a43-88df-423b-8154-22bbde341166",
+            "isrcs": [
+              "BRSME1300793"
+            ],
+            "length": 163000,
+            "title": "As abelhas",
+            "video": false
+          },
+          "title": "As abelhas"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "68ce4f71-fab3-429a-971d-1294d4829d33",
+                "name": "Orquestra Imperial",
+                "sort-name": "Orquestra Imperial",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Orquestra Imperial"
+            }
+          ],
+          "id": "4b0c66d1-d2d6-4c0d-ad62-e7d7bebde51f",
+          "length": 191000,
+          "number": "15",
+          "position": 15,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "68ce4f71-fab3-429a-971d-1294d4829d33",
+                  "name": "Orquestra Imperial",
+                  "sort-name": "Orquestra Imperial",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Orquestra Imperial"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "e5fbd49a-87e5-4ebc-9a12-0f414a26db49",
+            "isrcs": [
+              "BRSME1300794"
+            ],
+            "length": 191000,
+            "title": "A foca",
+            "video": false
+          },
+          "title": "A foca"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "b72a2a9b-e783-473d-9d80-403876c685cd",
+                "name": "Mi\u00facha",
+                "sort-name": "Mi\u00facha",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " + ",
+              "name": "Mi\u00facha"
+            },
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "b7062bd8-07ca-4d39-b755-98968dbe0735",
+                "name": "Paulo Jobim",
+                "sort-name": "Jobim, Paulo",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Paulo Jobim"
+            }
+          ],
+          "id": "c3807dbf-b30b-43f0-8c42-c0c3286ea0c0",
+          "length": 160000,
+          "number": "16",
+          "position": 16,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "b72a2a9b-e783-473d-9d80-403876c685cd",
+                  "name": "Mi\u00facha",
+                  "sort-name": "Mi\u00facha",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " + ",
+                "name": "Mi\u00facha"
+              },
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "b7062bd8-07ca-4d39-b755-98968dbe0735",
+                  "name": "Paulo Jobim",
+                  "sort-name": "Jobim, Paulo",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Paulo Jobim"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "f96d7a67-ae0e-4517-bcf4-5e23c9200457",
+            "isrcs": [
+              "BRSME1300787"
+            ],
+            "length": 160000,
+            "title": "S\u00e3o Francisco",
+            "video": false
+          },
+          "title": "S\u00e3o Francisco"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "O poetinha",
+                "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+                "name": "Vinicius de Moraes",
+                "sort-name": "Moraes, Vinicius de",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Vinicius de Moraes"
+            }
+          ],
+          "id": "e28c2ad7-2876-447c-a22b-e9c05464e3cd",
+          "length": 51000,
+          "number": "17",
+          "position": 17,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "O poetinha",
+                  "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+                  "name": "Vinicius de Moraes",
+                  "sort-name": "Moraes, Vinicius de",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Vinicius de Moraes"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2013-12-10",
+            "id": "97109937-8a46-4d9f-8948-27ae195e7454",
+            "isrcs": [
+              "ITD016903188"
+            ],
+            "length": 51000,
+            "title": "A casa",
+            "video": false
+          },
+          "title": "A casa"
+        }
+      ]
+    }
+  ],
+  "packaging": null,
+  "packaging-id": null,
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "f45b47f8-5796-386e-b172-6c31b009a5d8",
+        "iso-3166-1-codes": [
+          "BR"
+        ],
+        "name": "Brazil",
+        "sort-name": "Brazil",
+        "type": null,
+        "type-id": null
+      },
+      "date": "2013-12-10"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": "BR",
+          "disambiguation": "O poetinha",
+          "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+          "name": "Vinicius de Moraes",
+          "sort-name": "Moraes, Vinicius de",
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "joinphrase": "",
+        "name": "Vinicius de Moraes"
+      }
+    ],
+    "disambiguation": "",
+    "first-release-date": "2013-12-10",
+    "id": "68377b93-bd6b-4e40-a815-6fd0b6dd20d3",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "title": "A arca de No\u00e9"
+  },
+  "status": "Official",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "por",
+    "script": "Latn"
+  },
+  "title": "A arca de No\u00e9"
+}

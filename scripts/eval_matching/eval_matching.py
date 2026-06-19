@@ -314,13 +314,35 @@ SCENARIOS = [
         "distractors": [],
         "scenario": "similar_track_titles_on_medium",
     },
-    # Magazine samplers from different months
+    # Magazine samplers from different months with same track count
     {
         "target": "eval_release_90b66a30.json",  # Paste Magazine Sampler #48: November 2008
         "distractors": [
             "eval_release_30979257.json",  # Paste Magazine Sampler #41: April 2008
         ],
         "scenario": "similar_samplers",
+    },
+    {
+        "target": "eval_release_30979257.json",  # Paste Magazine Sampler #41: April 2008
+        "distractors": [
+            "eval_release_90b66a30.json",  # Paste Magazine Sampler #48: November 2008
+        ],
+        "scenario": "similar_samplers",
+    },
+    # Re-recording, different track artists (see PICARD-1538)
+    {
+        "target": "eval_release_3f48d22d.json",  # Vinicius de Moraes - A arca de Noé (1980)
+        "distractors": [
+            "eval_release_58651b56.json",  # Vinicius de Moraes - A arca de Noé (2013 re-recording)
+        ],
+        "scenario": "rerecording_different_artists",
+    },
+    {
+        "target": "eval_release_58651b56.json",  # Vinicius de Moraes - A arca de Noé (2013 re-recording)
+        "distractors": [
+            "eval_release_3f48d22d.json",  # Vinicius de Moraes - A arca de Noé (1980)
+        ],
+        "scenario": "rerecording_different_artists",
     },
 ]
 
