@@ -23,7 +23,10 @@
 from collections.abc import Callable
 from weakref import WeakKeyDictionary
 
-from picard.i18n import sort_key as _sort_key
+from picard.i18n.collate import (
+    Comparable,
+    sort_key as _sort_key,
+)
 from picard.item import Item
 
 from picard.ui.itemviews.custom_columns.protocols import (
@@ -81,7 +84,7 @@ class _AdapterBase(SortKeyProvider):
 class LocaleAwareSortAdapter(_AdapterBase):
     """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return case-insensitive sort key for item."""
         return _sort_key(self._base.evaluate(obj) or "")
 
@@ -89,7 +92,7 @@ class LocaleAwareSortAdapter(_AdapterBase):
 class CasefoldSortAdapter(_AdapterBase):
     """Provide case-insensitive sort using `str.casefold()` on evaluated value."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return case-insensitive sort key for item."""
         return _sort_key((self._base.evaluate(obj) or "").casefold())
 
@@ -105,7 +108,7 @@ class NumericSortAdapter(_AdapterBase):
         parser_name = getattr(self._parser, "__name__", repr(self._parser))
         return f"{self.__class__.__name__}(base={self._base!r}, parser={parser_name})"
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return numeric-first composite sort key for item.
 
         Returns a tuple to avoid cross-type comparisons:
@@ -124,7 +127,7 @@ class NumericSortAdapter(_AdapterBase):
 class LengthSortAdapter(_AdapterBase):
     """Provide sort by string length of evaluated value."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return length-based sort key for item."""
         return len(self._base.evaluate(obj) or "")
 
@@ -148,7 +151,7 @@ class ArticleInsensitiveAdapter(_AdapterBase):
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         return f"{self.__class__.__name__}(base={self._base!r}, articles={self._articles!r})"
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return article-insensitive sort key for item.
 
         Returns a tuple (tail, original_lower) so items compare by the tail
@@ -169,7 +172,7 @@ class CompositeSortAdapter(_AdapterBase):
     Each key function takes the item and returns a comparable value.
     """
 
-    def __init__(self, base: ColumnValueProvider, key_funcs: list[Callable[[Item], object]]):
+    def __init__(self, base: ColumnValueProvider, key_funcs: list[Callable[[Item], Comparable]]):
         """Initialize adapter.
 
         Parameters
@@ -186,7 +189,7 @@ class CompositeSortAdapter(_AdapterBase):
         funcs = [getattr(f, "__name__", repr(f)) for f in self._key_funcs]
         return f"{self.__class__.__name__}(base={self._base!r}, key_funcs={funcs})"
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return composite tuple sort key for item.
 
         Normalize each component to ensure cross-item comparability and avoid
@@ -207,7 +210,7 @@ class CompositeSortAdapter(_AdapterBase):
 class NullsLastAdapter(_AdapterBase):
     """Provide sort with empty values ordered last."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return sort key that pushes empty values to the end."""
         v = self._base.evaluate(obj)
         cleaned = _clean_invisible_and_whitespace(v)
@@ -219,7 +222,7 @@ class NullsLastAdapter(_AdapterBase):
 class NullsFirstAdapter(_AdapterBase):
     """Provide sort with empty values ordered first."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return sort key that pulls empty values to the front."""
         v = self._base.evaluate(obj)
         cleaned = _clean_invisible_and_whitespace(v)
@@ -232,7 +235,7 @@ class CachedSortAdapter(_AdapterBase):
     """Provide cached sort keys for an underlying provider (value or sort_key)."""
 
     def __init__(
-        self, base: ColumnValueProvider, key_func: Callable[[Item, ColumnValueProvider], object] | None = None
+        self, base: ColumnValueProvider, key_func: Callable[[Item, ColumnValueProvider], Comparable] | None = None
     ):
         """Initialize adapter.
 
@@ -245,10 +248,10 @@ class CachedSortAdapter(_AdapterBase):
             use provider.sort_key if available, otherwise use casefolded evaluate.
         """
         super().__init__(base)
-        self._cache: WeakKeyDictionary[Item, object] = WeakKeyDictionary()
+        self._cache: WeakKeyDictionary[Item, Comparable] = WeakKeyDictionary()
         self._key_func = key_func
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return cached sort key for item.
 
         If a custom key_func is provided normalize the result to avoid
@@ -299,7 +302,7 @@ class CachedSortAdapter(_AdapterBase):
 class NaturalSortAdapter(_AdapterBase):
     """Provide natural (alphanumeric) sort using locale-aware natural ordering."""
 
-    def sort_key(self, obj: Item):  # pragma: no cover - thin wrapper
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - thin wrapper
         """Return natural sort key for item.
 
         Uses natural sorting to handle mixed text/numbers intelligently.

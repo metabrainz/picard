@@ -183,7 +183,7 @@ def test_nulls_first_adapter(values: list[str], expected: list[str]) -> None:
 def test_cached_sort_adapter() -> None:
     calls: dict[str, int] = {}
 
-    def key_func(it: _ValueItem, provider) -> object:
+    def key_func(it, provider) -> str:
         s = provider.evaluate(it)
         calls[s] = calls.get(s, 0) + 1
         return s.casefold()
