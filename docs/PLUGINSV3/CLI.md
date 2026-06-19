@@ -1161,7 +1161,8 @@ appear in order:
 5. Short description
 6. Categories — comma-separated numbers for multiple (e.g. `1,3`)
 7. License — defaults to last used value or GPL-2.0-or-later
-8. Create initial git commit? — yes/no (default: yes)
+8. Initialize git repository? — yes/no (default: yes)
+9. Create initial git commit? — yes/no (default: yes) — only if "Initialize git repository?" is yes.
 
 Author name, email, and license are persisted across runs.
 
@@ -1174,6 +1175,7 @@ Author name, email, and license are persisted across runs.
 | `--author NAME` | Author name for MANIFEST.toml |
 | `--category CATEGORY` | Plugin category (metadata, coverart, ui, etc.) |
 | `--with-translations` | Include translation support (locale files and examples) |
+| `--no-git` | Skip initialization of the git repository (works in both interactive and non-interactive modes) |
 | `--no-commit` | Skip initial git commit (works in both interactive and non-interactive modes) |
 
 **Examples:**
@@ -1199,6 +1201,9 @@ picard-plugins --init "My Cool Plugin" --parent-dir ~/dev --target-dir my-plugin
 
 # With translation support
 picard-plugins --init "My Cool Plugin" --with-translations
+
+# Skip initializing the git repository
+picard-plugins --init "My Cool Plugin" --no-git
 
 # Skip initial git commit
 picard-plugins --init "My Cool Plugin" --no-commit

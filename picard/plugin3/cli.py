@@ -1949,6 +1949,17 @@ class PluginCLI:
             if locale_input:
                 source_locale = locale_input
 
+        git_initialization = not getattr(self._args, 'no_git', False) and self._out.yesno(
+            'Initialize git repository?', default='Y'
+        )
+
+        if git_initialization:
+            git_commit = not getattr(self._args, 'no_commit', False) and self._out.yesno(
+                'Create initial git commit?', default='Y'
+            )
+        else:
+            git_commit = False
+
         return self.create_plugin_project(
             PluginProjectConfig(
                 name=name,
@@ -1962,8 +1973,8 @@ class PluginCLI:
             ),
             author_email=author_email,
             target=target,
-            git_commit=not getattr(self._args, 'no_commit', False)
-            and self._out.yesno('Create initial git commit?', default='Y'),
+            git_initialization=git_initialization,
+            git_commit=git_commit,
         )
 
     def create_plugin_project(
@@ -1972,6 +1983,7 @@ class PluginCLI:
         *,
         author_email='',
         target=None,
+        git_initialization=True,
         git_commit=True,
     ):
         """Create the plugin project directory and files.
@@ -1980,6 +1992,7 @@ class PluginCLI:
             project: Plugin project configuration
             author_email: Author email for git commit
             target: Explicit target directory (overrides --parent-dir/--target-dir)
+            git_initialization: Whether to initialize a git repository
             git_commit: Whether to create an initial git commit
 
         Returns:
@@ -2009,6 +2022,10 @@ class PluginCLI:
         if project.source_locale == DEFAULT_SOURCE_LOCALE:
             project.source_locale = getattr(self._args, 'source_locale', DEFAULT_SOURCE_LOCALE)
 
+        # Check --no-git flag
+        if git_initialization:
+            git_initialization = not getattr(self._args, 'no_git', False)
+
         # Check --no-commit flag
         if git_commit:
             git_commit = not getattr(self._args, 'no_commit', False)
@@ -2037,7 +2054,7 @@ class PluginCLI:
         if not project.report_bugs_to and author_email:
             project.report_bugs_to = f'mailto:{author_email}'
         try:
-            filenames = write_plugin_project(target, project)
+            filenames = write_plugin_project(target, project, git_initialization)
         except OSError as e:
             self._out.error(f'Failed to create plugin project: {e}')
             return ExitCode.ERROR
@@ -2047,26 +2064,27 @@ class PluginCLI:
             self._out.info(filename)
 
         # Initialize git repository
-        try:
-            backend = git_backend()
-            repo = backend.init_repository(target)
+        if git_initialization:
             try:
-                if git_commit:
-                    commit_message = project.commit_message.strip() or 'Initial plugin scaffold'
-                    author_name, commit_email = get_git_author(project.authors or None, author_email)
-                    backend.add_and_commit_files(
-                        repo,
-                        commit_message,
-                        author_name=author_name,
-                        author_email=commit_email,
-                    )
-                    self._out.success('Git repository initialized with initial commit')
-                else:
-                    self._out.success('Git repository initialized')
-            finally:
-                repo.free()
-        except Exception as e:
-            self._out.warning(f'Git initialization failed: {e}')
+                backend = git_backend()
+                repo = backend.init_repository(target)
+                try:
+                    if git_commit:
+                        commit_message = project.commit_message.strip() or 'Initial plugin scaffold'
+                        author_name, commit_email = get_git_author(project.authors or None, author_email)
+                        backend.add_and_commit_files(
+                            repo,
+                            commit_message,
+                            author_name=author_name,
+                            author_email=commit_email,
+                        )
+                        self._out.success('Git repository initialized with initial commit')
+                    else:
+                        self._out.success('Git repository initialized')
+                finally:
+                    repo.free()
+            except Exception as e:
+                self._out.warning(f'Git initialization failed: {e}')
 
         self._out.nl()
         self._out.print('Next steps:')
@@ -2074,7 +2092,7 @@ class PluginCLI:
         self._out.info(f'Edit {self._out.d_path("__init__.py")} to add your plugin code')
         self._out.info(f'Edit {self._out.d_path("MANIFEST.toml")} to update metadata')
         self._out.info(f'Run {self._out.d_command("picard-plugins --validate .")} to check your plugin')
-        if not git_commit:
+        if git_initialization and not git_commit:
             commit_cmd = 'git add -A && git commit -m "Initial plugin scaffold"'
             self._out.info(f'Run {self._out.d_command(commit_cmd)} to commit')
 
@@ -2234,7 +2252,8 @@ def process_cmdline_args():
     group_advanced.add_argument(
         '--with-translations', action='store_true', help="include translation support (locale files and examples)"
     )
-    group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit with --init")
+    group_advanced.add_argument('--no-git', action='store_true', help="skip initializing git repository")
+    group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit")
     group_advanced.add_argument(
         '--source-locale',
         metavar='LOCALE',

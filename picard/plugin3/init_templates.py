@@ -272,6 +272,7 @@ def generate_source_locale_toml() -> str:
 def write_plugin_project(
     target: Path,
     project: PluginProjectConfig,
+    git_initialization: bool = True,
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -280,7 +281,7 @@ def write_plugin_project(
     Args:
         target: Path to the plugin directory
         project: Plugin project configuration
-
+        git_initialization: Whether to write a .gitignore file (default: True)
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
@@ -296,8 +297,10 @@ def write_plugin_project(
     )
     (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
     (target / 'README.md').write_text(generate_readme(project.name, project.long_description), encoding='utf-8')
-    (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
-    filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
+    filenames = ['MANIFEST.toml', '__init__.py', 'README.md']
+    if git_initialization:
+        (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
+        filenames.append('.gitignore')
     if project.with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
