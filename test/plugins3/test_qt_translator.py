@@ -27,10 +27,10 @@ from PyQt6 import QtCore
 
 from test.picardtestcase import PicardTestCase
 
+from picard.i18n.qt import Translators
 from picard.plugin3.api import PluginApi
 from picard.plugin3.i18n import PluginTranslator
 from picard.plugin3.manifest import PluginManifest
-from picard.tagger import Translators
 
 
 class TestPluginTranslator(PicardTestCase):
