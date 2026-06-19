@@ -26,6 +26,7 @@ import gettext as module_gettext
 import locale
 import os
 import re
+from typing import Protocol
 
 from PyQt6.QtCore import (
     QCollator,
@@ -197,9 +198,13 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 
     _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
-    _qcollator = QCollator()
-    _qcollator_numeric = QCollator()
-    _qcollator_numeric.setNumericMode(True)
+
+    # Setup collator
+    _logger("Collator: %s", ACTIVE_COLLATOR)
+    if ACTIVE_COLLATOR == 'qt':
+        _qcollator = QCollator()
+        _qcollator_numeric = QCollator()
+        _qcollator_numeric.setNumericMode(True)
 
     global _translation
     _translation = {
@@ -250,20 +255,10 @@ def gettext_constants(message: str) -> str:
     return _translation['constants'].gettext(message)
 
 
-def sort_key(string, numeric=False):
-    """Transforms a string to one that can be used in locale-aware comparisons.
+class Comparable(Protocol):
+    """Protocol for annotating comparable types."""
 
-    Args:
-        string: The string to convert
-        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
-
-    Returns: An object that can be compared locale-aware
-    """
-    # QCollator.sortKey is broken, see https://bugreports.qt.io/browse/QTBUG-128170
-    if IS_WIN:
-        return _sort_key_strxfrm(string, numeric)
-    else:
-        return _sort_key_qt(string, numeric)
+    def __lt__(self, other, /) -> bool: ...
 
 
 RE_NUMBER = re.compile(r'(\d+)')
@@ -274,7 +269,15 @@ def _digits_replace(matchobj):
     return str(int(s)) if s.isdecimal() else s
 
 
-def _sort_key_qt(string, numeric=False):
+def _sort_key_qt(string: str, numeric: bool = False) -> Comparable:
+    """Transforms a string to one that can be used in locale-aware comparisons.
+
+    Args:
+        string: The string to convert
+        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
+
+    Returns: An object that can be compared locale-aware
+    """
     collator = _qcollator_numeric if numeric else _qcollator
 
     # Null bytes can cause crashes in OS collation functions.
@@ -297,15 +300,36 @@ def _sort_key_qt(string, numeric=False):
     return collator.sortKey(string)
 
 
-def _sort_key_strxfrm(string, numeric=False):
+def _sort_key_strxfrm(string: str, numeric: bool = False) -> Comparable:
+    """Transforms a string to one that can be used in locale-aware comparisons.
+
+    Args:
+        string: The string to convert
+        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
+
+    Returns: An object that can be compared locale-aware
+    """
     if numeric:
         return [int(s) if s.isdecimal() else _strxfrm(s) for s in RE_NUMBER.split(str(string).replace('\0', ''))]
     else:
         return _strxfrm(string)
 
 
-def _strxfrm(string):
+def _strxfrm(string: str) -> str:
     try:
         return locale.strxfrm(string)
     except (OSError, ValueError):
         return string.lower()
+
+
+AVAILABLE_COLLATORS = {
+    'strxfrm': _sort_key_strxfrm,
+    'qt': _sort_key_qt,
+}
+
+DEFAULT_COLLATOR = 'strxfrm' if IS_WIN else 'qt'
+ACTIVE_COLLATOR = os.environ.get('PICARD_COLLATOR', DEFAULT_COLLATOR)
+if ACTIVE_COLLATOR not in AVAILABLE_COLLATORS:
+    ACTIVE_COLLATOR = DEFAULT_COLLATOR
+
+sort_key = AVAILABLE_COLLATORS.get(ACTIVE_COLLATOR)
