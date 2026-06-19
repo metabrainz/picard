@@ -21,7 +21,7 @@
 from collections.abc import Iterable
 from dataclasses import dataclass
 
-from picard.i18n import setup_gettext
+from picard.i18n import setup_i18n
 
 import pytest
 
@@ -135,7 +135,7 @@ def lightweight_box() -> type[CoverArtBox]:
 @pytest.fixture(autouse=True)
 def i18n_c_locale() -> None:
     # Ensure deterministic number formatting for bytes2human
-    setup_gettext(None, 'C')
+    setup_i18n(None, 'C')
 
 
 @pytest.fixture(autouse=True)

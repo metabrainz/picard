@@ -135,7 +135,7 @@ from picard.formats.registry import FormatRegistry
 from picard.i18n import (
     N_,
     gettext as _,
-    setup_gettext,
+    setup_i18n,
 )
 from picard.options import init_options
 
@@ -391,7 +391,7 @@ class Tagger(QtWidgets.QApplication):
             basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
             localedir = os.path.join(basedir, 'locale')
         # Must be before config upgrade because upgrade dialogs need to be translated.
-        setup_gettext(localedir, config.setting['ui_language'], log.debug)
+        setup_i18n(localedir, config.setting['ui_language'], log.debug)
 
     def _init_webservice(self):
         """Initialize web service/API"""

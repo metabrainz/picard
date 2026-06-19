@@ -286,19 +286,16 @@ class TestPluginNameAndStr(PicardTestCase):
         self.assertEqual(plugin.name(), 'my-plugin')
 
     def test_lt_compares_by_name(self):
-        import picard.i18n
-
         QLocale.setDefault(QLocale('en'))
-        picard.i18n._qcollator = QCollator()
-
-        p1 = Plugin(Path('/tmp'), 'alpha')
-        p1.manifest = Mock()
-        p1.manifest.name_i18n.return_value = 'Alpha'
-        p2 = Plugin(Path('/tmp'), 'beta')
-        p2.manifest = Mock()
-        p2.manifest.name_i18n.return_value = 'Beta'
-        self.assertTrue(p1 < p2)
-        self.assertFalse(p2 < p1)
+        with patch('picard.i18n.collate._qcollator', new=QCollator()):
+            p1 = Plugin(Path('/tmp'), 'alpha')
+            p1.manifest = Mock()
+            p1.manifest.name_i18n.return_value = 'Alpha'
+            p2 = Plugin(Path('/tmp'), 'beta')
+            p2.manifest = Mock()
+            p2.manifest.name_i18n.return_value = 'Beta'
+            self.assertTrue(p1 < p2)
+            self.assertFalse(p2 < p1)
 
 
 class TestPluginDisable(PicardTestCase):
