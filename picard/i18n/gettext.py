@@ -34,6 +34,7 @@ from picard.const.sys import (
 )
 
 
+_logger = lambda *a, **b: None  # noqa: E731
 _null_translations = module_gettext.NullTranslations()
 _translation = {
     'main': _null_translations,
