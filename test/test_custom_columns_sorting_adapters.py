@@ -22,7 +22,7 @@ from collections.abc import Callable
 import dataclasses
 
 from picard.const.sys import IS_WIN
-from picard.i18n import setup_gettext
+from picard.i18n import setup_i18n
 
 import pytest
 
@@ -85,7 +85,7 @@ def _sorted_values(adapter_factory: Callable[[object], object], values: list[str
     ],
 )
 def test_casefold_sort_adapter(values: list[str], expected: list[str]) -> None:
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     result = _sorted_values(CasefoldSortAdapter, values)
     assert result == expected
 
@@ -130,7 +130,7 @@ def test_length_sort_adapter() -> None:
 
 @pytest.mark.skipif(IS_WIN, reason="QCollator not used on Windows")
 def test_article_insensitive_adapter() -> None:
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     values = ["The Beatles", "Beatles", "An Artist", "Artist"]
     expected = ["An Artist", "Artist", "The Beatles", "Beatles"]
     result = _sorted_values(ArticleInsensitiveAdapter, values)
@@ -159,7 +159,7 @@ def test_composite_sort_adapter() -> None:
     ],
 )
 def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     result = _sorted_values(NullsLastAdapter, values)
     assert result == expected
 
@@ -175,7 +175,7 @@ def test_nulls_last_adapter(values: list[str], expected: list[str]) -> None:
     ],
 )
 def test_nulls_first_adapter(values: list[str], expected: list[str]) -> None:
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     result = _sorted_values(NullsFirstAdapter, values)
     assert result == expected
 
@@ -183,7 +183,7 @@ def test_nulls_first_adapter(values: list[str], expected: list[str]) -> None:
 def test_cached_sort_adapter() -> None:
     calls: dict[str, int] = {}
 
-    def key_func(it: _ValueItem, provider) -> object:
+    def key_func(it, provider) -> str:
         s = provider.evaluate(it)
         calls[s] = calls.get(s, 0) + 1
         return s.casefold()
@@ -218,14 +218,14 @@ def test_cached_sort_adapter() -> None:
     ],
 )
 def test_natural_sort_adapter(values: list[str], expected: list[str]) -> None:
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     result = _sorted_values(NaturalSortAdapter, values)
     assert result == expected
 
 
 def test_natural_sort_adapter_basic_functionality() -> None:
     """Test that natural sorting works for basic cases."""
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     values = ["item1", "item10", "item2"]
     result = _sorted_values(NaturalSortAdapter, values)
     expected = ["item1", "item2", "item10"]
@@ -234,7 +234,7 @@ def test_natural_sort_adapter_basic_functionality() -> None:
 
 def test_natural_sort_adapter_vs_regular_sorting() -> None:
     """Test that natural sorting differs from regular text sorting for numeric content."""
-    setup_gettext(None, 'en')
+    setup_i18n(None, 'en')
     values = ["file1.txt", "file10.txt", "file2.txt", "file20.txt"]
 
     # Regular casefold sorting (lexicographic)

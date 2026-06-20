@@ -107,7 +107,7 @@ def test_composite_sort_adapter_mixed_component_types_no_typeerror() -> None:
             super().__init__()
             self.value = s
 
-    def key_primary(obj: Dummy) -> object:
+    def key_primary(obj) -> str | float:
         # Return number if numeric, else original string (mixed types)
         s = obj.value
         try:
@@ -115,7 +115,7 @@ def test_composite_sort_adapter_mixed_component_types_no_typeerror() -> None:
         except Exception:
             return s
 
-    def key_secondary(obj: Dummy) -> object:
+    def key_secondary(obj) -> str:
         return obj.value.casefold()
 
     adapter = CompositeSortAdapter(base=StubProvider(""), key_funcs=[key_primary, key_secondary])
@@ -131,7 +131,7 @@ def test_composite_sort_adapter_mixed_component_types_no_typeerror() -> None:
 
 
 def test_cached_sort_adapter_key_func_mixed_types_normalized() -> None:
-    def key_func(_obj, provider: ColumnValueProvider) -> object:
+    def key_func(_obj, provider: ColumnValueProvider) -> str:
         s = provider.evaluate(_obj)
         return int(s) if s.isdigit() else s
 

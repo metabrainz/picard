@@ -48,7 +48,7 @@ from picard import (
 )
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
-from picard.i18n import setup_gettext
+from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
 from picard.tagger import Tagger
 
@@ -74,7 +74,7 @@ class PicardTestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
         log.set_verbosity(logging.DEBUG)
-        setup_gettext(None, 'C')
+        setup_i18n(None, 'C')
         self.tagger = MockTagger()
         self.init_config()
 

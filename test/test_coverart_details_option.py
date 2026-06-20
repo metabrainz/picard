@@ -12,7 +12,7 @@ from picard.config import (
     Option,
     get_config,
 )
-from picard.i18n import setup_gettext
+from picard.i18n import setup_i18n
 
 import pytest
 
@@ -22,7 +22,7 @@ from picard.ui.coverartbox import CoverArtBox
 @pytest.fixture(autouse=True)
 def i18n_c_locale() -> None:
     # Ensure deterministic number formatting
-    setup_gettext(None, 'C')
+    setup_i18n(None, 'C')
 
 
 @dataclass
