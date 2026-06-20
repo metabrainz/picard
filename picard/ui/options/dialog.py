@@ -720,10 +720,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         log.debug("refresh_plugin_pages: Refresh complete")
 
-        # Reload profiles settings tree to reflect plugin option changes
+        # Rebuild the profile settings tree to reflect plugin option changes.
+        # Use profile_selected() instead of load() to preserve unsaved
+        # in-memory profile data (new profiles, settings changes).
         profile_page = self.get_page('profiles')
         if profile_page and profile_page.loaded:
-            profile_page.load()
+            profile_page.profile_selected()
+            profile_page.update_config_overrides()
+            self.highlight_enabled_profile_options()
 
     def enable_page(self, pagename):
         """Enable a page in the options tree."""
