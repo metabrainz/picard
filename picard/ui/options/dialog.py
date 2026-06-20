@@ -988,13 +988,6 @@ class AttachedProfilesDialog(PicardDialog):
                 return QtCore.Qt.CheckState.Checked
             if in_count > 0:
                 return QtCore.Qt.CheckState.PartiallyChecked
-        # Check if any other enabled profile has it
-        selected_set = set(selected_ids)
-        for profile in self._enabled_profiles:
-            if profile['id'] in selected_set:
-                continue
-            if pkey in self.profile_page.profile_settings.get(profile['id'], {}):
-                return QtCore.Qt.CheckState.PartiallyChecked
         return QtCore.Qt.CheckState.Unchecked
 
     def _build_tooltip(self, pkey: str) -> str:
