@@ -108,7 +108,13 @@ elif IS_MACOS:
 
     def _get_default_locale_mac():
         defaults = Foundation.NSUserDefaults.standardUserDefaults()
-        return defaults.objectForKey_('AppleLanguages')[0].replace('-', '_')
+        if 'AppleLocale' in defaults:
+            return defaults['AppleLocale']
+        elif 'AppleLanguages' in defaults:
+            # Note: In newer macOS versions AppleLanguages no longer contains the full
+            # locale name with region, so this might be unusable.
+            return defaults['AppleLanguages'][0].replace('-', '_')
+        return None
 
     _get_default_locale = _get_default_locale_mac
 else:
