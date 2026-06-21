@@ -92,6 +92,33 @@ def set_locale_from_env():
     return current_locale
 
 
+def _bcp47_to_locale(tag: str) -> str:
+    """Convert a BCP 47 language tag to a POSIX locale identifier.
+
+    Extracts the language and region components, skipping script subtags.
+    If no region is found, uses locale.normalize() to infer a default region
+    for the language.
+
+    Examples:
+        'en-US' -> 'en_US'
+        'zh-Hans-CN' -> 'zh_CN'
+        'en' -> 'en_US' (via locale.normalize)
+        'fr' -> 'fr_FR' (via locale.normalize)
+    """
+    parts = tag.split('-')
+    language = parts[0]
+    for part in parts[1:]:
+        # Region designator: 2 uppercase ASCII letters or 3 digits
+        if (len(part) == 2 and part.isascii() and part.isupper()) or (len(part) == 3 and part.isdigit()):
+            return f'{language}_{part}'
+    # No region found — use locale.normalize to infer a default region
+    normalized = locale.normalize(language)
+    if normalized != language:
+        # Strip encoding suffix (e.g. 'en_US.ISO8859-1' -> 'en_US')
+        return normalized.split('.')[0]
+    return language
+
+
 if IS_WIN:
     from ctypes import windll  # type: ignore[attr-defined]
 
@@ -106,14 +133,31 @@ if IS_WIN:
 elif IS_MACOS:
     import Foundation
 
-    def _get_default_locale_mac():
-        defaults = Foundation.NSUserDefaults.standardUserDefaults()
-        if 'AppleLocale' in defaults:
-            return defaults['AppleLocale']
-        elif 'AppleLanguages' in defaults:
-            # Note: In newer macOS versions AppleLanguages no longer contains the full
-            # locale name with region, so this might be unusable.
-            return defaults['AppleLanguages'][0].replace('-', '_')
+    def _get_default_locale_mac() -> str | None:
+        """Read the user's locale from macOS user defaults.
+
+        Prefers AppleLocale (full locale with region, e.g. 'en_US') and falls
+        back to AppleLanguages (BCP 47 language tags, e.g. 'en-US').
+
+        Handles known quirks:
+        - AppleLocale may contain ICU keyword suffixes (e.g. '@currency=GBP')
+          when the user has customized regional settings; these are stripped.
+        - AppleLocale may be absent on some macOS 10.13/10.14 configurations.
+        - AppleLanguages on newer macOS may contain script subtags
+          (e.g. 'zh-Hans-CN') or lack region entirely (e.g. 'en').
+        """
+        try:
+            defaults = Foundation.NSUserDefaults.standardUserDefaults()
+            if 'AppleLocale' in defaults:
+                locale_str = defaults['AppleLocale']
+                # Strip ICU keyword suffixes like @currency=USD or @calendar=gregorian
+                return locale_str.split('@')[0] if locale_str else None
+            elif 'AppleLanguages' in defaults:
+                # Note: In newer macOS versions AppleLanguages no longer contains the full
+                # locale name with region, so this might return only a language code.
+                return _bcp47_to_locale(defaults['AppleLanguages'][0])
+        except Exception as e:
+            _logger("Failed to read macOS locale defaults: %s", e)
         return None
 
     _get_default_locale = _get_default_locale_mac
