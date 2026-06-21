@@ -719,7 +719,6 @@ class Album(MetadataItem):
             self.loaded = True
             self.status = AlbumStatus.LOADED
             self.match_files(unmatched_files + self.unmatched_files.files)
-        self.update_metadata_images()
         self.update()
 
         # Trigger re-sort after album is fully loaded to ensure accurate match quality sorting
