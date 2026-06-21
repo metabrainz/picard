@@ -238,7 +238,6 @@ class MetadataItem(QtCore.QObject, Item):
             for child in list(self.children_metadata_items()):
                 if child.can_show_coverart:
                     child.keep_original_images()
-        self.update_metadata_images()
 
     def children_metadata_items(self) -> Iterable['MetadataItem']:
         """Yield MetadataItems that are children of the current object"""
