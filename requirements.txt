@@ -228,9 +228,9 @@ markdown==3.10.2 \
     --hash=sha256:994d51325d25ad8aa7ce4ebaec003febcce822c3f8c911e3b17c52f7f589f950 \
     --hash=sha256:e91464b71ae3ee7afd3017d9f358ef0baf158fd9a298db92f1d4761133824c36
     # via picard (pyproject.toml)
-mutagen==1.47.0 \
-    --hash=sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99 \
-    --hash=sha256:edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719
+mutagen==1.48.0 \
+    --hash=sha256:4933d14b83a2add03c23e04a3c397ffbe44f130403f1256881ee228869aee3bb \
+    --hash=sha256:60a48d3e30173f728170fb0503f66b26026bf7629afb12546b18395c5cdf0bd6
     # via picard (pyproject.toml)
 pycparser==3.0 ; implementation_name != 'PyPy' \
     --hash=sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29 \
@@ -337,17 +337,17 @@ pyjwt==2.13.0 \
     --hash=sha256:41571c89ca91598c79e8ef18a2d07367d4810fbbd6f637794879baf1b7703423 \
     --hash=sha256:66adcc2aff09b3f1bbd95fc1e1577df8ac8723c978552fd43304c8a290ac5728
     # via picard (pyproject.toml)
-pyobjc-core==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:17b4e003af384d3086c2f39989a0b282c5755dd1066f331cf7c9fa65febe22ce \
-    --hash=sha256:1e4216f2ec962dc13cf7f31b9bc3a7190337a0f401e7dc9de6b2d8c08b9dbb7a \
-    --hash=sha256:3137b2d14f9f2154fb5b1c092c38d15e164f68ab190c18335d76e4e7e1583f79 \
-    --hash=sha256:45fffb2b8dc0ae4480386429bd1e7fa8aabeb2eec81816d6971b33936dfcfff8 \
-    --hash=sha256:515ecf2afe168301feb66a7230d700584ce2e4b8a0ac178e19450b8898384139 \
-    --hash=sha256:51d7de4cfa32f508c6a7aac31f131b12d5e196a8dcf588e6e8d7e6337224f66d \
-    --hash=sha256:7677ed758a367bbbb5589d6f5276fb360a45c89168276c26162f61840b0fa03d \
-    --hash=sha256:9287c7c46d6ae8676b4c6c0389a8f4b5381f42ae53a47151900c08b157e5a992 \
-    --hash=sha256:a51352e478785cd7fce1604b9902125a286139caea0759cb340e59d75b594992 \
-    --hash=sha256:ac952bac8057dd0b97ee7b311c39f97cad7430b7cfbd67ca0a30135a7d17d2ab
+pyobjc-core==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:047c226eeb58a2993ace5e8904e71cc9426ee20d064c617f8fbf32717d37093e \
+    --hash=sha256:1188613805336270279570467e4455b74cb6c0f60913ac74c917ee1c37cfaecb \
+    --hash=sha256:24b76a63caf0b5369d4a377c7c0438cd70df81539057af3db839bfaa3579e04a \
+    --hash=sha256:2b8fc0531c27277325e113ac00b8a72a82e6145f0a88175b9425d8de814ff69a \
+    --hash=sha256:7a7b9b018402342cf32bf1956366896350fbe5c0478cb3ef59778f77abed7f07 \
+    --hash=sha256:9bef500f979e22d54f9da3aaebf6a48f873234b324858bd69256055a318955c7 \
+    --hash=sha256:a64232bb27ed101d4adc7d42b0e64a6d3331aac7bee7861c037a6777a163f10b \
+    --hash=sha256:aa5c889961d79d7704f17eeb27f80ee791335819c1bb14babeff7b9ea665b5f0 \
+    --hash=sha256:af101222762665a4125157906cb4b23f5d5a63d3851d5e0504f72a1eaaa2cfd2 \
+    --hash=sha256:efe465e3ecc6fc73f7c7622620345d134a8d34564ab1c29d8247e45f4ed55071
     # via
     #   picard (pyproject.toml)
     #   pyobjc-framework-avfoundation
@@ -356,74 +356,74 @@ pyobjc-core==12.2 ; sys_platform == 'darwin' \
     #   pyobjc-framework-coremedia
     #   pyobjc-framework-mediaplayer
     #   pyobjc-framework-quartz
-pyobjc-framework-avfoundation==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:4b45994d9230d2751590928d0421fb7d0b7e8988e52ec1d9ab3f1d57cb869a6b \
-    --hash=sha256:593d2ec35f6799d9011f414247570457d8eaa68a1ce1381b4df2ab1daec509f5 \
-    --hash=sha256:67320d3c7cb0fe1caf019d29eea38e39ede81458e3f4c13c5483892dc66f3b3a \
-    --hash=sha256:6f03f0122e4f0b2add93f02d92bd7274abf09979116382c74f79715d33e6461d \
-    --hash=sha256:b43a0d1344a062dd983881398a75e5916c46c479b299ff89c14d298ab0a0f1f0 \
-    --hash=sha256:c71e09a7b8ff94c488086908c21e133d618139fbc40c8b366db6b2522290b276 \
-    --hash=sha256:d06443acf26f3f3e16e8a9bfad42db900af3b8c3ca34c5676343d2f8e001f56b \
-    --hash=sha256:d2535a7bc3e579bc7621066481791f53d1ac83c0bda16fedbbfa513271238b56 \
-    --hash=sha256:d60d7ee5935266907acb1a61c25a0d2750f9b1f4ffe4fa6c908440f003d1addf \
-    --hash=sha256:f2d573dcd05591e77c320559c5f09c2b345893ff31902c4cb1baa5e69030575d
+pyobjc-framework-avfoundation==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:043aedd86adbc0a3bfe8f76d1a1ce920539e47b5dd5d965358f93e0063c9a53d \
+    --hash=sha256:1ec2fdfe6eee51f12e7d933e0109ea8ad553acf4301c01f46b79d0a9d378d705 \
+    --hash=sha256:2735e4f1c345d2b533541577e292f3ad2f75d19200eff99f1a2db16d78b4f1a3 \
+    --hash=sha256:3e92a8502d389469b1307a6a2c386f20d2e77878c7e35e3e14120596b47eb205 \
+    --hash=sha256:3f74e199c933df54020b972b985af5a5d2e63134278ea02dfd81923976500794 \
+    --hash=sha256:50e2b65e5c3845eb8ad0d37868a7f040656fe69e6c03f4282670e7dc52ed7a4a \
+    --hash=sha256:8af3928933f29ff977663f2c402cb4edc0ba3496d273be4b1400b74e2e103f14 \
+    --hash=sha256:9291848b0f0f66031bd3af2549e1e0cdf43e4872b9c562bd29f0239c6ef2b75f \
+    --hash=sha256:d3ce4b2bb2ae51ad5c27f1d2f2a623bef8b443bccc34423b5149df010f9f501c \
+    --hash=sha256:f372800274df35f8d964cad0ad6da7636f1b6720e802e28e5a6bc1f16f16f135
     # via pyobjc-framework-mediaplayer
-pyobjc-framework-cocoa==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:06cb92d97d1af9d1f459ae6cf1d1a7b824c12d3aff1b709885966acd6b7208c2 \
-    --hash=sha256:0bb7cd468ca89bbc2d1d8acb930b4f4fdce8826de30a66608fc28f8880c1f6a6 \
-    --hash=sha256:20b392e2b7241caad0538dfde12143343e5dfe48f72e7df660a7548e635903dc \
-    --hash=sha256:290e544a8c2d0786a34a359d825eaad44ebaaa3b30cdd765b2755422ca39a0d2 \
-    --hash=sha256:46b6681e2b21b099ed095339c140f2c8137d6ac5658653166ee90722f9e3c621 \
-    --hash=sha256:5a0bed77b0b56074cc2b4564aae3e6e9d5da5fdf93252f50b6dbced0f7fece3a \
-    --hash=sha256:a2efad455ded551d1a033fd22245d57b71b6c065e8b52158dceed1611b5ae033 \
-    --hash=sha256:aecfd44908fa12a9291fb6ca2458ebbc611102de6784f2202a35fd5ed9f56c60 \
-    --hash=sha256:ef679740f541c52118149b558b757d1f11d9dcf30c2a23344b13a6af6a99a1ab \
-    --hash=sha256:f0bbe0abedfb24b11ff6c71e26cdefb0df001c6482f95591fad40c2688c16498
+pyobjc-framework-cocoa==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:05443c1494532779cccff83e9792fdd6f0a4800cac56620132bf28e0bf966e9d \
+    --hash=sha256:28b9b8bab1c36efb94744786918752d0c1842f5fbb67e7d5ca97b5f736512080 \
+    --hash=sha256:3b74a78fa7803e547b32e5e8ec1b49987b52fe318383e793bc6cd49b80efbd9f \
+    --hash=sha256:a6c584e2af0813cb2f6103b184e632665a26f58c1bd5b08ffd6e95a19c617f7b \
+    --hash=sha256:b386c324d64ae565c1f6b7dfb77be68f640a1c7c23caa6966ab661131f519561 \
+    --hash=sha256:b6023657b8d6cc049a21bd6b4752425f2f53c42f9f0b02d64c7608cc484bf103 \
+    --hash=sha256:b94b37fe5730e5ae1fb0052912cd174e6ec329b0bfba4a012ae5db1014b5864b \
+    --hash=sha256:c685ccd8e266a07cf912a2c5a13b1f2eff2a868a1aff163b4801b4687bd425e1 \
+    --hash=sha256:dc2eaca2f13c7bcd8e41e51a372e47825dea9dd3126108760eed7ba883d2945c \
+    --hash=sha256:dc6da84f4fc62cc25463bbb85e77a57b8d5ac6caf9a60702daf2edb601332f15
     # via
     #   picard (pyproject.toml)
     #   pyobjc-framework-avfoundation
     #   pyobjc-framework-coreaudio
     #   pyobjc-framework-coremedia
     #   pyobjc-framework-quartz
-pyobjc-framework-coreaudio==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:038293a480ec3afc902541ece05404fffdb915f0a6ad60fc81156beeb256cc5f \
-    --hash=sha256:1640bf44b001c960ae7ae84a43382141711bfbee439c88dea3872c64556e0308 \
-    --hash=sha256:1990be9a9311869b551e6a997ee84bee12ea38fc978d5fa7fc0119caff2f9ba5 \
-    --hash=sha256:22451de9c391d6f82a89f8cb9a2574d89da7534ffaaddfb0b6b034709a8df5be \
-    --hash=sha256:27ef90a6414bbb156a8f2ea22afff5af080fc7fcfb570f215739c1ca136544e1 \
-    --hash=sha256:3fa7e25e6b90dab26bc9f94ad058e0346424604daa103d03ebbb6c2636772c1a \
-    --hash=sha256:4aba12b357f4e429a5c8a1bf6ccb7b5902ee8726863744284e3f6ae9b76fbdbf \
-    --hash=sha256:505564f35227b6bf3bcfcc950edeae81628724202eb2a49f4bf213be39589521 \
-    --hash=sha256:7f8ebd42735ca954d457c87e815da632e2ccd3b55ea501cda488389dd1f37093 \
-    --hash=sha256:c74eb20e20597b07a702a24ae9fd8bb986a51baf24c503e5a4de2511dc01114c
+pyobjc-framework-coreaudio==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:18717e6e106556fd4ffd0bdf6a6dae796fc9100c6b373e664437604dd0b9e94d \
+    --hash=sha256:214ce41d1ac3743377f607326d3ff70494dd6f75b2c575fe9c99d3890c545dee \
+    --hash=sha256:41a0d8c3b3957f35f17370071aeef94e176d07c9e2130d0aeeb4b260117acd52 \
+    --hash=sha256:5081583ecc89aff5e1d6655677822f67033795dcbd3db6d8b2e0fa53a3d9085d \
+    --hash=sha256:51be22e4fac73ba4b26ee34c457ac94f56218e4e9c1494f8f4e7dfe9dbb6a15f \
+    --hash=sha256:6fb46bc090edcaefeb70be2c179071e7a758e3375aebd3338b11773e371c3dce \
+    --hash=sha256:7dfbf1851523aed453af43a628e057d8950d6e020574aa497a2e4f559b6383c8 \
+    --hash=sha256:9c06b9d7ee3b2a76dd171de519f571d09bdebd85f40b5960d16f711395513cdd \
+    --hash=sha256:d05e5fd58c1e5f48e7767b1f6182cf36ee9bff38568544d51f468b25ad90e334 \
+    --hash=sha256:efb79709371f29139f44adc36bd6c32d5a3a0ff3ffd0c5f3f372275cef893b18
     # via pyobjc-framework-avfoundation
-pyobjc-framework-coremedia==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:171b8dfc6ef34678d46470b6bc176e5c3cbb39c81abbce03d276d5d3680a5ee3 \
-    --hash=sha256:2eaddb2f4e25d7b6f32d4b85b828cc89ce6ae5502d531c2913b90d93f85fc2ae \
-    --hash=sha256:422d8af0e8f62a1385aa86228e47ed7c01405831102bef1ee43f07320711c082 \
-    --hash=sha256:95ed2063cc48d73f6eb06f4e603372515b5b009bd2d6e547f90bbe9e64217206 \
-    --hash=sha256:9b75c3228732d78dacfac7a39f52470606e949f07c940b45ba73588db41fe73c \
-    --hash=sha256:c1adf7b6fcfb4c88bc2150c6f0366c19774e46c6978ebcfb7c70d02753bc0183 \
-    --hash=sha256:d9586fb8ae22ab1a500e812e5c16dde09b3ea75613a8b5ed61d17cd9ba75c809 \
-    --hash=sha256:e992147e7b0c8c435f1bb786c8c610511453cf54bdf6c6b4a17e05936bacc44b \
-    --hash=sha256:ee5889c07f61d16f8d195a793a7f0ebf7f5c4eef4d1ef2fdbf5c823c74e242d0 \
-    --hash=sha256:fff54b5907cd346daea1bf4d6554fd6da1d69ee9bf012774c3b4ec972f4257a6
+pyobjc-framework-coremedia==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:2a355770b66b4caf99560c11af44dfeca53066ece75807fc6a391a16369ccc72 \
+    --hash=sha256:38e03a92a7fdf43162faadf354a8497ae764e3b3be26a8ffb107ed5d743cac76 \
+    --hash=sha256:45878f686ce8ea1735ce382b34ef3a5852cafe0ae2a27a49c08701f4c3ab830b \
+    --hash=sha256:541d64d2fc7576054bdc3508a94f37671e81e5ca1582e16ebec2c0e05dd75412 \
+    --hash=sha256:5536453ba631227810a1141fb1761149244bd6d0e7cd4b12477be3b164f5bb11 \
+    --hash=sha256:71b45f7cd52bd997d836c15a0e1016db90815a219dc87fd20435a6f08b87df7b \
+    --hash=sha256:84e9fb3f7b6420fc3865a5812604c63546b5777f4999e0e0e830a9a0816e8743 \
+    --hash=sha256:97a7b4bc2b53ad207648b4f187e6a7f00a45684db992803bef9aaf5931e0b572 \
+    --hash=sha256:9f2b30ef288c9f2fa1599a1cc5868f8cd949c7138a7f15244c7a6884afcef273 \
+    --hash=sha256:fd0e25bc704dd91882bc29d682880c42f712b39bdfe3d3168780d24a9d9eaf26
     # via pyobjc-framework-avfoundation
-pyobjc-framework-mediaplayer==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:436d3b410b84c7fa6577c4774faa4acc4bd3ca79f582b183e281ca63429a1574 \
-    --hash=sha256:ee4f818a85e89a4c691e368b2709709d11658b81713fe367342af24dba2c5e62
+pyobjc-framework-mediaplayer==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:6acead24bb8f12e202976142db656c553b4a25ca2348165c35ce02862a93757a \
+    --hash=sha256:d37f5ede14fe70c547eac4abb49c9c96086f99acf8236985acadfcb07c851a5b
     # via picard (pyproject.toml)
-pyobjc-framework-quartz==12.2 ; sys_platform == 'darwin' \
-    --hash=sha256:08f7c7b42de70875cee15f4d0e217471e382ffac44d0a5bcfd30f583b9b41adb \
-    --hash=sha256:214c19aadfd100d9202994a22fbced804f7d60f8473de6f292111cc1668f9373 \
-    --hash=sha256:2dec68f8d5b42030fb0f44bf1169a208318393f216a68048b4336649d877293a \
-    --hash=sha256:359738c88b12427a30d73a3d202002ab910e31eebf6bee4550495ec8aa64a004 \
-    --hash=sha256:4e0634ee9782e480587a074d1d08867fa7ef0d845c2f6cbaef6a48b7d2c3899f \
-    --hash=sha256:57553e7085191f9421ec78fe57a8a0c8462e39d675014ac1e4b389381f04535a \
-    --hash=sha256:6fbd127d864108103d4980292ffca32bd9c1e5f643e0abd5773fdde2918afaca \
-    --hash=sha256:8b238979d62b6e0b90d466477eee968d8f2f6720e850af2472e01cef349293b4 \
-    --hash=sha256:96201eb37192fde3abac348adacfc2d4e8af4e76d42752664d1e515f1db5d929 \
-    --hash=sha256:b343395d4790323b0376fe20c83ac468510ba19f65429323ca211708c939d107
+pyobjc-framework-quartz==12.2.1 ; sys_platform == 'darwin' \
+    --hash=sha256:54c9bc7f507192691841ee4eba5bf36990b259df83ac728efed2d7ea1cd021e4 \
+    --hash=sha256:60f29408b4f9ed5391a29c6b63e2aa56ddfb8b66b3fb47962930427981e14462 \
+    --hash=sha256:8105c98b798f2bf81c05c54bddeeadbf62f0b5dfec13bd6e719dd2cdf7e1cddf \
+    --hash=sha256:b3b8b6f71e66147f8ff9e6213864cc8527e3a0b1ee90835b93ce221f4802d9b0 \
+    --hash=sha256:bbc214f1a216b5d3651bc832d0ac4589f029f3f37cd6cbb370aac12a7c77942c \
+    --hash=sha256:bfc0d2badd819823d21df8069dcf9544ce360ed747a8895c51bdb25d8d125f45 \
+    --hash=sha256:c8fed57ac8a1927e4fe4f48ab4042cbc1087d881743182b6f3f2e6e227a9209f \
+    --hash=sha256:ca61624a0b0e6286d8a0f97f47eb9011e4e81e9a339db436d48af527e7065bb1 \
+    --hash=sha256:ceb56939c337b36d9d81185ade31f77dc52c85cf79bb16e53e9b32f54b6bb3f5 \
+    --hash=sha256:de9c8cca7e95290c8d540466af11c7cdfe3a5458e6f56c34006d5b45243f9ed9
     # via pyobjc-framework-avfoundation
 pyqt6==6.11.0 \
     --hash=sha256:0734959955adde095af9a074213a7f73386d1bbbddfc27346b4c0621641a692e \
