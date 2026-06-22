@@ -143,3 +143,31 @@ class TestTryEncodingsLocales(PicardTestCase):
         locale_getpreferredencoding_mock.assert_called_once()
         calls = [call('EN.ISO-8859-1'), call('EN.UTF-8')]
         locale_nomalize_mock.assert_has_calls(calls)
+
+
+class TestBcp47ToLocale(PicardTestCase):
+    def test_language_with_region(self):
+        self.assertEqual('en_US', i18n._bcp47_to_locale('en-US'))
+        self.assertEqual('en_GB', i18n._bcp47_to_locale('en-GB'))
+        self.assertEqual('pt_BR', i18n._bcp47_to_locale('pt-BR'))
+
+    def test_language_with_script_and_region(self):
+        self.assertEqual('zh_CN', i18n._bcp47_to_locale('zh-Hans-CN'))
+        self.assertEqual('zh_TW', i18n._bcp47_to_locale('zh-Hant-TW'))
+
+    @patch('locale.normalize', autospec=True)
+    def test_bare_language_normalizes(self, locale_normalize_mock):
+        locale_normalize_mock.return_value = 'en_US.ISO8859-1'
+        self.assertEqual('en_US', i18n._bcp47_to_locale('en'))
+        locale_normalize_mock.assert_called_once_with('en')
+
+    @patch('locale.normalize', autospec=True)
+    def test_bare_language_no_mapping(self, locale_normalize_mock):
+        # locale.normalize returns input unchanged if no mapping exists
+        locale_normalize_mock.return_value = 'xx'
+        self.assertEqual('xx', i18n._bcp47_to_locale('xx'))
+        locale_normalize_mock.assert_called_once_with('xx')
+
+    def test_numeric_region(self):
+        # UN M.49 numeric region codes (3 digits)
+        self.assertEqual('es_419', i18n._bcp47_to_locale('es-419'))
