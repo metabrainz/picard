@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-06-18 12:03+0200\n"
-"PO-Revision-Date: 2026-06-02 02:12+0000\n"
+"PO-Revision-Date: 2026-06-23 06:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -232,11 +232,13 @@ msgstr ""
 
 #: picard/debug_opts.py:171
 msgid "Timings"
-msgstr ""
+msgstr "Temps"
 
 #: picard/debug_opts.py:171
 msgid "Log timing information for operations affecting UI responsiveness"
 msgstr ""
+"Registra la informació del temps per a les operacions que afecten la "
+"capacitat de resposta de la IU"
 
 #: picard/file.py:330
 msgid "Cannot save file: the file no longer exists."
@@ -328,34 +330,24 @@ msgid "Download only approved images"
 msgstr "Baixa només imatges aprovades"
 
 #: picard/options.py:96
-#, fuzzy
-#| msgid "Show cover art file size"
 msgid "Cover art image size"
-msgstr "Mostra la mida del fitxer de la caràtula"
+msgstr "Mida de la imatge de la caràtula"
 
 #: picard/options.py:98
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types"
-msgstr "Tipus de caràtules"
+msgstr "Tipus d'imatges de caràtules"
 
 #: picard/options.py:104
-#, fuzzy
-#| msgid "Cover art types"
 msgid "Cover art image types to omit"
-msgstr "Tipus de caràtules"
+msgstr "Tipus d'imatges de caràtules que s'ometran"
 
 #: picard/options.py:107
-#, fuzzy
-#| msgid "Never replace selected cover image types"
 msgid "Restrict cover art image types"
-msgstr "No substitueixis mai els tipus d'imatges de la caràtula seleccionats"
+msgstr "Restringeix els tipus d'imatges de la caràtula"
 
 #: picard/options.py:112
-#, fuzzy
-#| msgid "Show cover art type"
 msgid "Local cover art regex"
-msgstr "Mostra el tipus de caràtula"
+msgstr "Expressió regular de caràtules locals"
 
 #: picard/options.py:163
 msgid "Tags to ignore for comparison"
@@ -398,10 +390,8 @@ msgid "Include sub-folders when adding files"
 msgstr "Inclou les subcarpetes en afegir els fitxers"
 
 #: picard/options.py:194
-#, fuzzy
-#| msgid "CD Lookup"
 msgid "CD lookup device"
-msgstr "Cerca de CD"
+msgstr "Dispositiu de cerca de CD"
 
 #: picard/options.py:198
 msgid "Cover art providers"
@@ -945,10 +935,8 @@ msgid "Clear existing tags"
 msgstr "Esborra les etiquetes existents"
 
 #: picard/options.py:596
-#, fuzzy
-#| msgid "Write tags to files"
 msgid "Save tags to files"
-msgstr "Escriu les etiquetes als fitxers"
+msgstr "Desa les etiquetes als fitxers"
 
 #: picard/options.py:597
 msgid "Fix missing seekpoints in FLAC"
@@ -1025,10 +1013,8 @@ msgid "Write RIFF INFO tags to WAVE"
 msgstr "Escriu les etiquetes RIFF INFO als fitxers WAVE"
 
 #: picard/options.py:634
-#, fuzzy
-#| msgid "Selected file naming script"
 msgid "Active file naming script"
-msgstr "Script de nom dels fitxers seleccionat"
+msgstr "Script de nom dels fitxers actiu"
 
 #: picard/options.py:642 picard/ui/forms/ui_options_advanced_sessions.py:123
 msgid "No auto-matching on load"
@@ -3260,10 +3246,9 @@ msgid "<p><strong>{title}:</strong> {values}.</p>"
 msgstr "<p><strong>{title}:</strong> {values}.</p>"
 
 #: picard/ui/__init__.py:298
-#, fuzzy, python-format
-#| msgid "MusicBrainz Picard"
+#, python-format
 msgid "%s — MusicBrainz Picard"
-msgstr "MusicBrainz Picard"
+msgstr "%s — MusicBrainz Picard"
 
 #: picard/ui/aboutdialog.py:79
 msgid "translator-credits"
@@ -3670,10 +3655,8 @@ msgid "Log Detail"
 msgstr "Detalls del registre"
 
 #: picard/ui/logview.py:334
-#, fuzzy
-#| msgid "Log in"
 msgid "Log View"
-msgstr "Inicia la sessió"
+msgstr "Visualització del registre"
 
 #: picard/ui/logview.py:348
 msgid "Clear &log…"
@@ -4188,7 +4171,7 @@ msgstr "Repositori: {url}"
 #: picard/ui/dialogs/installconfirm.py:104
 #, python-brace-format
 msgid "Path: {path}"
-msgstr ""
+msgstr "Camí: {path}"
 
 #: picard/ui/dialogs/installconfirm.py:119
 msgid "Git Reference (Optional)"
@@ -4311,13 +4294,15 @@ msgstr "El camí seleccionat no és un directori."
 
 #: picard/ui/dialogs/installplugin.py:262
 msgid "The directory does not contain a MANIFEST.toml file."
-msgstr ""
+msgstr "El directori no conté un fitxer MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:270
 msgid ""
 "This plugin is not managed by git. It will be installed as a local non-git "
 "plugin without version management or updates."
 msgstr ""
+"Aquest connector no està administrat pel Git. S'instal·larà com a connector "
+"local sense el Git, sense administració de versions ni actualitzacions."
 
 #: picard/ui/dialogs/installplugin.py:325
 msgid "Official plugin - reviewed by Picard team"
@@ -4383,20 +4368,12 @@ msgid "Invalid Plugin Directory"
 msgstr "El directori del connector no és vàlid"
 
 #: picard/ui/dialogs/installplugin.py:543
-#, fuzzy
-#| msgid ""
-#| "The selected directory does not contain a MANIFEST.toml file. A valid "
-#| "plugin requires both a git repository and a MANIFEST.toml file."
 msgid "The selected directory does not contain a MANIFEST.toml file."
-msgstr ""
-"El directori seleccionat no conté cap fitxer MANIFEST.toml. Un connector "
-"vàlid requereix un repositori del Git i un fitxer MANIFEST.toml."
+msgstr "El directori seleccionat no conté cap fitxer MANIFEST.toml."
 
 #: picard/ui/dialogs/installplugin.py:552
-#, fuzzy
-#| msgid "Plugin not found in registry"
 msgid "Plugin Not Managed by Git"
-msgstr "No s'ha trobat el connector al registre"
+msgstr "Connector no administrat pel Git"
 
 #: picard/ui/dialogs/installplugin.py:554
 msgid ""
@@ -4408,6 +4385,13 @@ msgid ""
 "\n"
 "Do you want to continue?"
 msgstr ""
+"Aquest connector no està administrat pel Git.\n"
+"\n"
+"Es requereix un repositori del Git per a distribuir un connector i afegir-lo "
+"al registre oficial. Sense el Git, l'administració de versions i les "
+"actualitzacions automàtiques no estan disponibles.\n"
+"\n"
+"Voleu continuar?"
 
 #: picard/ui/dialogs/installplugin.py:600
 msgid "Plugin has no repository URL"
@@ -4865,10 +4849,8 @@ msgid "Profiles Attached to Options"
 msgstr "Perfils vinculats a les opcions"
 
 #: picard/ui/forms/ui_options_attached_profiles.py:69
-#, fuzzy
-#| msgid "Options to show in the Quick Menu"
 msgid "Options in this section"
-msgstr "Opcions que es mostraran al menú ràpid"
+msgstr "Opcions d'aquesta secció"
 
 #: picard/ui/forms/ui_options_cdlookup.py:47
 msgid "CD-ROM device to use for lookups:"
@@ -5513,16 +5495,16 @@ msgid "Rename files when saving"
 msgstr "Canvia el nom dels fitxers en desar-los"
 
 #: picard/ui/forms/ui_options_renaming.py:143
-#, fuzzy
-#| msgid "Selected file naming script:"
 msgid "Active file naming script:"
-msgstr "Script de nom dels fitxers seleccionat:"
+msgstr "Script de nom dels fitxers actiu:"
 
 #: picard/ui/forms/ui_options_renaming.py:144
 msgid ""
 "To edit scripts, use the script editor from Options > File naming scripts in "
 "the main menu bar."
 msgstr ""
+"Per a editar els scripts, feu servir l'editor de scripts a Opcions > Scripts "
+"de nom dels fitxers a la barra de menú principal."
 
 #: picard/ui/forms/ui_options_renaming.py:145
 #: picard/ui/forms/ui_scripteditor.py:217
@@ -5839,10 +5821,8 @@ msgstr ""
 "defecte serà «Caràtula frontal» (Front)."
 
 #: picard/ui/forms/ui_scripteditor.py:214
-#, fuzzy
-#| msgid "Edit file naming script…"
 msgid "Edit file naming script:"
-msgstr "Edita l'script de nom dels fitxers…"
+msgstr "Edita l'script de nom dels fitxers:"
 
 #: picard/ui/forms/ui_scripteditor.py:215
 msgid "Select the file naming script to load into the editor"
@@ -6789,16 +6769,12 @@ msgid "&View"
 msgstr "&Visualització"
 
 #: picard/ui/mainwindow/__init__.py:948
-#, fuzzy
-#| msgid "File naming script editor"
 msgid "File naming &scripts"
-msgstr "Editor de scripts de nom dels fitxers"
+msgstr "&Scripts de nom dels fitxers"
 
 #: picard/ui/mainwindow/__init__.py:955
-#, fuzzy
-#| msgid "Profiles"
 msgid "&Profiles"
-msgstr "Perfils"
+msgstr "&Perfils"
 
 #: picard/ui/mainwindow/__init__.py:961
 msgid "&Quick settings"
@@ -6938,38 +6914,28 @@ msgid "Login failed: %s"
 msgstr "S'ha produït un error en iniciar la sessió: %s"
 
 #: picard/ui/mainwindow/__init__.py:2237
-#, fuzzy
-#| msgid "Move profile down"
 msgid "No profiles configured"
-msgstr "Mou el perfil avall"
+msgstr "No hi ha cap perfil configurat"
 
 #: picard/ui/mainwindow/__init__.py:2242
-#, fuzzy
-#| msgid "Configuration files"
 msgid "Configure profiles…"
-msgstr "Fitxers de configuració"
+msgstr "Configura els perfils…"
 
 #: picard/ui/mainwindow/__init__.py:2309
-#, fuzzy
-#| msgid "Quick Settings Menu"
 msgid "No quick settings configured"
-msgstr "Menú de configuració ràpida"
+msgstr "No s'ha configurat cap paràmetre ràpid"
 
 #: picard/ui/mainwindow/__init__.py:2314
-#, fuzzy
-#| msgid "&Quick settings"
 msgid "Configure quick settings…"
-msgstr "&Configuració ràpida"
+msgstr "&Configura els paràmetres ràpids…"
 
 #: picard/ui/mainwindow/actions.py:83
 msgid "&Options…"
 msgstr "&Opcions…"
 
 #: picard/ui/mainwindow/actions.py:91
-#, fuzzy
-#| msgid "Edit file naming script…"
 msgid "&Edit scripts…"
-msgstr "Edita l'script de nom dels fitxers…"
+msgstr "&Edita els scripts…"
 
 #: picard/ui/mainwindow/actions.py:92
 msgid "Ctrl+Shift+S"
@@ -7572,27 +7538,24 @@ msgstr ""
 "l'administració amb perfils."
 
 #: picard/ui/options/dialog.py:509 picard/ui/options/dialog.py:531
-#, fuzzy, python-format
-#| msgid "This option will be saved to profile: %s"
+#, python-format
 msgid "This option is tracked by profile: %s"
-msgstr "Aquesta opció es desarà al perfil: %s"
+msgstr "Aquesta opció se segueix al perfil: %s"
 
 #: picard/ui/options/dialog.py:528
-#, fuzzy, python-format
-#| msgid "This option will be saved to profile: %s"
+#, python-format
 msgid "This option is overridden by profile: %s"
-msgstr "Aquesta opció es desarà al perfil: %s"
+msgstr "Aquesta opció se sobreescriu al perfil: %s"
 
 #: picard/ui/options/dialog.py:598
-#, fuzzy, python-format
-#| msgid "The highlighted settings will be applied to %s"
+#, python-format
 msgid "The highlighted settings on this page are overridden by %s"
-msgstr "Els paràmetres ressaltats s'aplicaran %s"
+msgstr "Els paràmetres ressaltats d'aquesta pàgina se sobreescriuen a %s"
 
 #: picard/ui/options/dialog.py:600
 #, python-format
 msgid "Some settings on this page are overridden by %s"
-msgstr ""
+msgstr "Alguns paràmetres d'aquesta pàgina se sobreescriuen a %s"
 
 #: picard/ui/options/dialog.py:787
 msgid "Unexpected error"
@@ -7621,12 +7584,16 @@ msgid ""
 "Hover an option to see which profiles contain it.\n"
 "%s = option is in this profile, %s = option is not in this profile"
 msgstr ""
+"Passeu el ratolí sobre una opció per a veure quins perfils la contenen.\n"
+"%s = l'opció és en aquest perfil, %s = l'opció no és en aquest perfil"
 
 #: picard/ui/options/dialog.py:999
 msgid ""
 "This option is in the selected profile(s).\n"
 "Click to remove it from them."
 msgstr ""
+"Aquesta opció és als perfils seleccionats.\n"
+"Feu clic per a suprimir-la."
 
 #: picard/ui/options/dialog.py:1006
 #, python-format
@@ -7634,12 +7601,16 @@ msgid ""
 "This option is in: %s\n"
 "Click to add it to the selected profile(s)."
 msgstr ""
+"Aquesta opció és a: %s\n"
+"Feu clic per a afegir-la als perfils seleccionats."
 
 #: picard/ui/options/dialog.py:1008
 msgid ""
 "This option is not in any profile.\n"
 "Click to add it to the selected profile(s)."
 msgstr ""
+"Aquesta opció no és a cap perfil.\n"
+"Feu clic per a afegir-la als perfils seleccionats."
 
 #: picard/ui/options/fingerprinting.py:63
 msgid "Fingerprinting"
@@ -8617,14 +8588,12 @@ msgid "Delete the script"
 msgstr "Suprimeix l'script"
 
 #: picard/ui/scripteditor/__init__.py:304
-#, fuzzy
-#| msgid "&Delete the current script"
 msgid "Rese&t current script"
-msgstr "&Suprimeix l'script actual"
+msgstr "Reiniciali&tza l'script actual"
 
 #: picard/ui/scripteditor/__init__.py:305
 msgid "Discard changes and reset to the last saved version"
-msgstr ""
+msgstr "Descarta els canvis i reinicialitza la darrera versió desada"
 
 #: picard/ui/scripteditor/__init__.py:314
 msgid "&Reload random example files"
@@ -8655,16 +8624,12 @@ msgid "New Script"
 msgstr "Script nou"
 
 #: picard/ui/scripteditor/__init__.py:391
-#, fuzzy
-#| msgid "Reset all scripts to the saved values"
 msgid "Reset all scripts to their last saved versions?"
-msgstr "Reinicialitza tots els scripts als valors desats"
+msgstr "Voleu reinicialitzar tots els scripts a les darreres versions desades?"
 
 #: picard/ui/scripteditor/__init__.py:398
-#, fuzzy
-#| msgid "Save the current session to the last used file"
 msgid "Reset the current script to its last saved version?"
-msgstr "Desa la sessió actual en el fitxer utilitzat per darrera vegada"
+msgstr "Voleu reinicialitzar l'script actual a la darrera versió desada?"
 
 #: picard/ui/scripteditor/__init__.py:453
 #, python-brace-format
@@ -8702,10 +8667,8 @@ msgid "The script title must not be empty."
 msgstr "El títol de l'script no pot estar buit."
 
 #: picard/ui/scripteditor/__init__.py:688
-#, fuzzy
-#| msgid "Rename script"
 msgid "Activate script?"
-msgstr "Canvia el nom de l'script"
+msgstr "Voleu activar l'script?"
 
 #: picard/ui/scripteditor/__init__.py:689
 #, python-format
@@ -8713,6 +8676,7 @@ msgid ""
 "The script \"%s\" is not the active file naming script. Do you want to make "
 "it active?"
 msgstr ""
+"L'script «%s» no és l'script de nom dels fitxers actiu. Voleu activar-lo?"
 
 #: picard/ui/scripteditor/__init__.py:834
 msgid "Error Deleting Script"
@@ -8778,7 +8742,7 @@ msgstr "Les opcions de canvi de nom estan inhabilitades"
 
 #: picard/ui/scripteditor/examples.py:160
 msgid "Examples:"
-msgstr ""
+msgstr "Exemples:"
 
 #: picard/ui/scripteditor/examples.py:187
 #, python-format
@@ -8951,7 +8915,7 @@ msgstr "No hi ha cap descripció disponible"
 #: picard/ui/widgets/plugindetailswidget.py:197
 #: picard/ui/widgets/pluginlistwidget.py:610
 msgid "Reload"
-msgstr ""
+msgstr "Torna a carregar"
 
 #: picard/ui/widgets/plugindetailswidget.py:245
 #: picard/ui/widgets/plugindetailswidget.py:367
@@ -8963,10 +8927,9 @@ msgid "N/A"
 msgstr "N/D"
 
 #: picard/ui/widgets/plugindetailswidget.py:294
-#, fuzzy, python-brace-format
-#| msgid "Updates to check:"
+#, python-brace-format
 msgid "Update to {version}"
-msgstr "Actualitzacions que es comprovaran:"
+msgstr "Actualitza a la versió {version}"
 
 #: picard/ui/widgets/plugindetailswidget.py:314
 msgid "Update Plugin"
@@ -8993,15 +8956,13 @@ msgid "Updating…"
 msgstr "S'està actualitzant…"
 
 #: picard/ui/widgets/pluginformat.py:32
-#, fuzzy
-#| msgid "{base} (current)"
 msgid "current"
-msgstr "{base} (actual)"
+msgstr "actual"
 
 #: picard/ui/widgets/pluginformat.py:33
 #, python-brace-format
 msgid "Commit date: {date}"
-msgstr ""
+msgstr "Data de la comissió: {date}"
 
 #: picard/ui/widgets/pluginlistwidget.py:87
 #: picard/ui/widgets/pluginlistwidget.py:99
@@ -9065,10 +9026,8 @@ msgid "Switch Ref"
 msgstr "Canvia la referència"
 
 #: picard/ui/widgets/pluginlistwidget.py:640
-#, fuzzy
-#| msgid "File Directory"
 msgid "View Directory"
-msgstr "Directori del fitxer"
+msgstr "Visualitza el directori"
 
 #: picard/ui/widgets/pluginlistwidget.py:642
 msgid "View Repository"
