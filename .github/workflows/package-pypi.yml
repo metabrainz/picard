@@ -13,8 +13,8 @@ jobs:
     env:
       CODESIGN: 0
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/checkout@v7
+    - uses: actions/setup-python@v6
       with:
         python-version: 3.8
         cache: 'pip'
@@ -62,7 +62,7 @@ jobs:
       run: |
         rm -rf "$HOME/.gnupg"
     - name: Upload artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: picard-sdist
         path: dist/*
@@ -75,9 +75,9 @@ jobs:
         os: [macos-15-intel, windows-2022]
         python-version: ['3.8', '3.9', '3.10', '3.11', '3.12', '>=3.13.5 <3.14', '3.14']
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       id: setup
       with:
         python-version: ${{ matrix.python-version }}
@@ -111,7 +111,7 @@ jobs:
       run: |
         python setup.py clean bdist_wheel
     - name: Upload artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v7
       with:
         name: picard-bdist-${{ runner.os }}-${{ steps.setup.outputs.python-version }}
         path: dist/*.whl
