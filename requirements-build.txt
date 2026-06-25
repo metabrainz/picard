@@ -254,9 +254,9 @@ markdown==3.10.2 \
     --hash=sha256:994d51325d25ad8aa7ce4ebaec003febcce822c3f8c911e3b17c52f7f589f950 \
     --hash=sha256:e91464b71ae3ee7afd3017d9f358ef0baf158fd9a298db92f1d4761133824c36
     # via picard (pyproject.toml)
-mutagen==1.48.0 \
-    --hash=sha256:4933d14b83a2add03c23e04a3c397ffbe44f130403f1256881ee228869aee3bb \
-    --hash=sha256:60a48d3e30173f728170fb0503f66b26026bf7629afb12546b18395c5cdf0bd6
+mutagen==1.48.1 \
+    --hash=sha256:4f077fe87d3fc7fba259aa63d8c026b18382ca6a42ef37c61e16f1b1b5b82fe7 \
+    --hash=sha256:8f95637ab9f6f305cec6bd1294e197debe207998e3e068596563c74f86b0a173
     # via picard (pyproject.toml)
 packaging==26.2 \
     --hash=sha256:5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e \
