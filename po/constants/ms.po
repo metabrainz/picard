@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Jeluang <adli98@yahoo.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-06-26 20:12+0000\n"
+"Last-Translator: Jeluang <adli98@yahoo.com>\n"
 "Language-Team: Malay <https://translations.metabrainz.org/projects/picard/3/"
 "constants/ms/>\n"
 "Language: ms\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -104,12 +105,12 @@ msgstr "Profilku"
 
 #: picard/const/defaults.py:159
 msgid "(copy)"
-msgstr ""
+msgstr "(salinan)"
 
 #: picard/const/defaults.py:160
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "{title} ({count})"
-msgstr ""
+msgstr "{title} ({count})"
 
 #: picard/const/languages.py:32 picard/const/locales.py:51
 #: picard/const/scripts.py:35
