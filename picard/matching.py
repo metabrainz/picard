@@ -50,7 +50,6 @@ from typing import (
     TypeVar,
 )
 
-from picard import tagger_instance
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
@@ -232,13 +231,6 @@ def _compare_to_release_parts(
                 file_label = metadata.get('label', '') or ''
                 score = _catno_label_score(file_catno, file_label, release_label_info)
                 result.identifiers.append((score, id_w['catno']))
-
-    if 'release-group' in release:
-        tagger = tagger_instance()
-        if tagger is not None:
-            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
-            if release['id'] in rg.loaded_albums:
-                result.identifiers.append((1.0, 6))
 
     # Tier 2: Similarity — fuzzy matching core
     with metadata._lock.lock_for_read():

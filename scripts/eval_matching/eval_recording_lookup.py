@@ -420,7 +420,6 @@ def main():
         patch("picard.config.get_config", return_value=mock_config),
         patch("picard.mbjson.get_config", return_value=mock_config),
         patch("picard.matching.get_config", return_value=mock_config),
-        patch("picard.matching.tagger_instance", return_value=None),
     ):
         corpus = generate_corpus() + generate_synthetic_corpus()
 
