@@ -89,7 +89,7 @@ class Option(QtCore.QObject):
 
     def _check_if_valid(self):
         """Check if the option should be sub-classed, and log a warning."""
-        tests = {
+        tests: dict[type, type[Option]] = {
             str: TextOption,
             bool: BoolOption,
             int: IntOption,
