@@ -159,6 +159,7 @@ def get_user_collection(collection_id: str) -> Collection:
 
 def load_user_collections(callback: Callable | None = None) -> None:
     tagger = tagger_instance()
+    config = get_config()
 
     def request_finished(document: dict[str, Any] | None, reply: Any, error: Any) -> None:
         if error:
@@ -190,7 +191,7 @@ def load_user_collections(callback: Callable | None = None) -> None:
         if callback:
             callback()
 
-    if tagger.webservice.oauth_manager.is_authorized():
+    if tagger.webservice.oauth_manager.is_authorized() and config.setting['enable_user_collections']:
         tagger.mb_api.get_collection_list(partial(request_finished))
     else:
         user_collections.clear()
