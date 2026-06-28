@@ -106,7 +106,7 @@ class PicardTestCase(unittest.TestCase):
         """Patch tagger_instance in the given module(s) to return self.tagger.
 
         Usage:
-            self.patch_tagger_instance('picard.item', 'picard.matching')
+            self.patch_tagger_instance('picard.item')
         """
         for module in modules:
             patcher = patch(f'{module}.tagger_instance', return_value=self.tagger)

@@ -81,7 +81,7 @@ settings = {
 class CompareToReleaseTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.item', 'picard.matching')
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(settings)
 
     def test_compare_to_release(self):
@@ -191,7 +191,7 @@ class CompareToReleaseTest(PicardTestCase):
 class CompareToTrackTest(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.item', 'picard.matching')
+        self.patch_tagger_instance('picard.item')
         self.set_config_values(settings)
 
     def test_compare_to_track(self):
