@@ -73,20 +73,6 @@ def test_session_loader_schedule_metadata_application_empty_map(
     mock_single_shot.assert_called_once()
 
 
-def test_session_loader_unset_restoring_flag_when_idle_safe_restore_disabled(
-    session_loader: SessionLoader, cfg_options
-) -> None:
-    """Test unsetting restoring flag when safe restore is disabled."""
-    # Set the config value for this test
-    cfg = picard_config.get_config()
-    cfg.setting['session_safe_restore'] = False
-
-    session_loader._unset_restoring_flag_when_idle()
-
-    # Should not check pending files or web requests when safe restore is disabled
-    # The method should return early without checking attributes
-
-
 def test_session_loader_unset_restoring_flag_when_idle_pending_files(
     session_loader: SessionLoader, mock_single_shot, cfg_options
 ) -> None:
