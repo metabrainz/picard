@@ -32,6 +32,7 @@ from picard.const import (
 # Import the functions under test from the refactored module
 import picard.mbjson as mbjson
 from picard.metadata import Metadata
+from picard.options import StandardizeArtistNames
 from picard.track import Track
 
 import pytest
@@ -51,7 +52,7 @@ def config() -> Any:
             'translation_locales': ['en'],
             'translate_artist_names_script_exception': False,
             'script_exceptions': [],
-            'standardize_artists': False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             'standardize_instruments': False,
             'standardize_vocals': False,
             'release_ars': True,

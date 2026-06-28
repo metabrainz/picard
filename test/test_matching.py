@@ -58,6 +58,7 @@ from picard.mbjson import (
     track_to_metadata,
 )
 from picard.metadata import Metadata
+from picard.options import StandardizeArtistNames
 from picard.track import Track
 
 
@@ -66,7 +67,7 @@ settings = {
     'id3v23_join_with': '/',
     'preferred_release_countries': [],
     'preferred_release_formats': [],
-    'standardize_artists': False,
+    "standardize_artist_names": StandardizeArtistNames.NONE,
     'standardize_instruments': False,
     'standardize_vocals': False,
     'translate_artist_names': False,

@@ -43,6 +43,7 @@ from picard.const.defaults import (
     DEFAULT_SCRIPT_NAME,
     DEFAULT_THEME_NAME,
 )
+from picard.options import StandardizeArtistNames
 from picard.util import unique_numbered_title
 
 from picard.ui.theme import UiTheme
@@ -786,3 +787,17 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         profile_items = profile_settings['quick_menu_items']
         self.assertEqual(profile_items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
         self.assertIn('embed_only_one_front_image', profile_items)
+
+    def test_upgrade_to_v3_0_0b6(self):
+        BoolOption('setting', 'standardize_artists', False)
+        Option('setting', 'standardize_artist_names', StandardizeArtistNames.VARIATIONS)
+
+        self.config.setting['standardize_artists'] = True
+        hooks.upgrade_to_v3_0_0b6(self.config)
+        self.assertNotIn('standardize_artists', self.config.setting)
+        self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.ALL)
+
+        self.config.setting['standardize_artists'] = False
+        hooks.upgrade_to_v3_0_0b6(self.config)
+        self.assertNotIn('standardize_artists', self.config.setting)
+        self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.NONE)

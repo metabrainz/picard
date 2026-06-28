@@ -245,7 +245,7 @@ class MetadataBox(QtWidgets.QTableWidget):
             "move_files",
             "rename_files",
             "active_file_naming_script_id",
-            "standardize_artists",
+            "standardize_artist_names",
             "user_profile_settings",
             "user_profiles",
             "va_name",

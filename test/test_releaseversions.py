@@ -31,6 +31,7 @@ from test.picardtestcase import (
     load_test_json,
 )
 
+from picard.options import StandardizeArtistNames
 from picard.releasegroup import (
     ReleaseGroup,
     prepare_releases_for_versions,
@@ -38,9 +39,7 @@ from picard.releasegroup import (
 
 
 settings = {
-    "standardize_tracks": False,
-    "standardize_artists": False,
-    "standardize_releases": False,
+    "standardize_artist_names": StandardizeArtistNames.NONE,
     "translate_artist_names": False,
 }
 

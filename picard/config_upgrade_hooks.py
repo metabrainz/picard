@@ -60,6 +60,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.options import StandardizeArtistNames
 from picard.util import unique_numbered_title
 
 
@@ -705,3 +706,12 @@ def upgrade_to_v3_0_0b5(config):
         return items
 
     upgrade_option_value(config, 'quick_menu_items', add_quick_menu_items)
+
+
+def upgrade_to_v3_0_0b6(config):
+    """Convert "standardize_artists" to "standardize_artist_names"."""
+    if config.setting['standardize_artists']:
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
+    else:
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+    config.setting.remove('standardize_artists')
