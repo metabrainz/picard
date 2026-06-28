@@ -829,7 +829,8 @@ class Album(MetadataItem):
         }
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
-            inc |= {'user-collections'}
+            if config.setting['enable_user_collections']:
+                inc |= {'user-collections'}
         if config.setting['release_ars'] or config.setting['track_ars']:
             inc |= {
                 'artist-rels',

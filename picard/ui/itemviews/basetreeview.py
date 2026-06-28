@@ -340,7 +340,7 @@ class BaseTreeView(QtWidgets.QTreeWidget):
         # Using type here is intentional. isinstance will return true for the
         # NatAlbum instance, which can't be part of a collection.
         selected_albums = [a for a in self.window.selected_objects if type(a) == Album]  # pylint: disable=C0123 # noqa: E721
-        if selected_albums:
+        if selected_albums and config.setting['enable_user_collections']:
             add_actions(
                 '-',
                 CollectionMenu(selected_albums, _("Collections"), parent=menu),

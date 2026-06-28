@@ -30,6 +30,7 @@
 
 from PyQt6 import QtWidgets
 
+from picard.collection import load_user_collections
 from picard.config import get_config
 from picard.const import MUSICBRAINZ_SERVERS
 from picard.extension_points.options_pages import register_options_page
@@ -61,6 +62,7 @@ class GeneralOptionsPage(OptionsPage):
         'cluster_new_files': {'widgets': ['cluster_new_files']},
         'ignore_file_mbids': {'widgets': ['ignore_file_mbids']},
         'use_server_for_submission': {'widgets': ['use_server_for_submission']},
+        'enable_user_collections': {'widgets': ['enable_user_collections']},
     }
 
     def __init__(self, parent=None):
@@ -86,6 +88,7 @@ class GeneralOptionsPage(OptionsPage):
         self.ui.analyze_new_files.setChecked(config.setting['analyze_new_files'])
         self.ui.cluster_new_files.setChecked(config.setting['cluster_new_files'])
         self.ui.ignore_file_mbids.setChecked(config.setting['ignore_file_mbids'])
+        self.ui.enable_user_collections.setChecked(config.setting['enable_user_collections'])
 
     def save(self):
         config = get_config()
@@ -95,6 +98,13 @@ class GeneralOptionsPage(OptionsPage):
         config.setting['analyze_new_files'] = self.ui.analyze_new_files.isChecked()
         config.setting['cluster_new_files'] = self.ui.cluster_new_files.isChecked()
         config.setting['ignore_file_mbids'] = self.ui.ignore_file_mbids.isChecked()
+        self._update_user_collections(config, self.ui.enable_user_collections.isChecked())
+
+    def _update_user_collections(self, config, new_enable_user_collections):
+        old_enable_user_collections = config.setting['enable_user_collections']
+        config.setting['enable_user_collections'] = new_enable_user_collections
+        if old_enable_user_collections != new_enable_user_collections and new_enable_user_collections:
+            load_user_collections()
 
     def update_server_host(self):
         host = self.ui.server_host.currentText().strip()
@@ -113,17 +123,20 @@ class GeneralOptionsPage(OptionsPage):
             self.ui.login_error.hide()
             self.ui.login.hide()
             self.ui.logout.show()
+            self.ui.enable_user_collections.setDisabled(False)
         elif error_msg:
             self.ui.logged_in.hide()
             self.ui.login_error.setText(_("Login failed: %s") % error_msg)
             self.ui.login_error.show()
             self.ui.login.show()
             self.ui.logout.hide()
+            self.ui.enable_user_collections.setDisabled(True)
         else:
             self.ui.logged_in.hide()
             self.ui.login_error.hide()
             self.ui.login.show()
             self.ui.logout.hide()
+            self.ui.enable_user_collections.setDisabled(True)
 
     def login(self):
         self.tagger.mb_login(self.on_login_finished, self)

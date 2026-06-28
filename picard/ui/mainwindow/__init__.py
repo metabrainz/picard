@@ -72,6 +72,7 @@ from picard.cluster import (
     Cluster,
     FileList,
 )
+from picard.collection import load_user_collections
 from picard.config import (
     SettingConfigSection,
     get_config,
@@ -2322,7 +2323,11 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             settingid (str): ID code of the setting to modify
         """
         config = get_config()
-        config.setting[setting_id] = not config.setting[setting_id]
+        new_value = not config.setting[setting_id]
+        config.setting[setting_id] = new_value
+
+        if setting_id == 'enable_user_collections' and new_value:
+            load_user_collections()
 
     def show_startup_dialogs(self):
         config = get_config()
