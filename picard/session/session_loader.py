@@ -29,6 +29,7 @@ from dataclasses import dataclass
 import gzip
 from pathlib import Path
 from typing import (
+    TYPE_CHECKING,
     Any,
     Protocol,
 )
@@ -53,6 +54,10 @@ from picard.session.session_data import (
     GroupedItems,
 )
 from picard.session.track_mover import TrackMover
+
+
+if TYPE_CHECKING:
+    from picard.tagger import Tagger
 
 
 class ProgressReporter(Protocol):
@@ -111,6 +116,7 @@ class TaggerProgressReporter:
             'preload_cache': msg_preload,
             'load_items': msg_load_items,
             'finalize': msg_finalize,
+            'restored': _("Session restored"),
         }
 
         entry = dispatch.get(stage)
@@ -553,10 +559,10 @@ class OverrideApplicator:
         album.run_when_loaded(run)
 
 
-class SessionLoader:
+class SessionLoader(QtCore.QObject):
     """Orchestrate loading and restoring Picard sessions."""
 
-    def __init__(self, tagger: Any) -> None:
+    def __init__(self, tagger: 'Tagger') -> None:
         """Initialize the session loader.
 
         Parameters
@@ -564,6 +570,7 @@ class SessionLoader:
         tagger : Any
             The Picard tagger instance.
         """
+        super().__init__(tagger)
         self.tagger = tagger
         self._progress: ProgressReporter = TaggerProgressReporter(tagger)
         self._file_reader = SessionFileReader()
@@ -743,10 +750,12 @@ class SessionLoader:
         before unsetting the session restoring flag.
         """
         if not get_config().setting['session_safe_restore']:
+            self._progress.emit('restored')
             return
 
         if self.tagger._pending_files_count == 0 and not self.tagger.webservice.num_pending_web_requests:
             self.tagger._restoring_session = False
+            self._progress.emit('restored')
         else:
             QtCore.QTimer.singleShot(SessionConstants.DEFAULT_RETRY_DELAY_MS, self._unset_restoring_flag_when_idle)
 
