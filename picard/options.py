@@ -4,7 +4,7 @@
 #
 # Copyright (C) 2024 Giorgio Fontanive
 # Copyright (C) 2024 Laurent Monin
-# Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025-2026 Philipp Wolfer
 # Copyright (C) 2025-2026 Bob Swift
 # Copyright (C) 2025 David Kellner
 #
@@ -22,6 +22,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+
+from enum import Enum
 
 from PyQt6 import QtCore
 
@@ -88,6 +90,12 @@ from picard.ui.colors import InterfaceColors
 #      declared there (not here).
 #
 # Please, try to keep options ordered by section and name in their own group.
+
+
+class StandardizeArtistNames(Enum):
+    NONE = "none"  # no standardization
+    VARIATIONS = "variations"  # standardize variations only
+    ALL = "all"  # standardize variations and name changes
 
 
 # picard/coverart/providers/caa.py
@@ -466,7 +474,13 @@ BoolOption('setting', 'guess_tracknumber_and_title', True, title=N_("Guess track
 TextOption('setting', 'nat_name', '[standalone recordings]', title=N_("Standalone recordings name"), in_profile=True)
 BoolOption('setting', 'release_ars', True, title=N_("Use release relationships"), in_profile=True)
 ListOption('setting', 'script_exceptions', [], title=N_("Translation script exceptions"), in_profile=True)
-BoolOption('setting', 'standardize_artists', False, title=N_("Use standardized artist names"), in_profile=True)
+Option(
+    'setting',
+    'standardize_artist_names',
+    StandardizeArtistNames.VARIATIONS,
+    title=N_("Standardize artist names"),
+    in_profile=True,
+)
 BoolOption('setting', 'standardize_instruments', True, title=N_("Use standardized instrument credits"), in_profile=True)
 BoolOption('setting', 'standardize_vocals', True, title=N_("Use standardized vocal credits"), in_profile=True)
 BoolOption('setting', 'track_ars', False, title=N_("Use track and release relationships"), in_profile=True)

@@ -61,17 +61,17 @@ from picard.mbjson import (
     release_dates_and_countries_from_node,
     release_group_to_metadata,
     release_to_metadata,
+    should_standardize_artist_name,
     track_to_metadata,
 )
 from picard.metadata import Metadata
+from picard.options import StandardizeArtistNames
 from picard.releasegroup import ReleaseGroup
 from picard.track import Track
 
 
 settings = {
-    "standardize_tracks": False,
-    "standardize_artists": False,
-    "standardize_releases": False,
+    "standardize_artist_names": StandardizeArtistNames.NONE,
     "translate_artist_names": True,
     "translate_artist_names_script_exception": False,
     "standardize_instruments": True,
@@ -490,7 +490,7 @@ class RecordingComposerCreditsTest(MBJSONTest):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = False
-        config.setting['standardize_artists'] = True
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['composer'], 'Пётр Ильич Чайковский')
         self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
@@ -499,7 +499,7 @@ class RecordingComposerCreditsTest(MBJSONTest):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = False
-        config.setting['standardize_artists'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['composer'], 'Tchaikovsky')
         self.assertEqual(m['composersort'], 'Tchaikovsky, Pyotr Ilyich')
@@ -526,23 +526,63 @@ class RecordingComposerCreditsTest(MBJSONTest):
 class RecordingArtistAliasesTest(MBJSONTest):
     filename = 'recording_artist_aliases.json'
 
-    def test_standardize_artists(self):
+    def test_standardize_artist_name_all(self):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = False
-        config.setting['standardize_artists'] = True
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], 'クー子')
         self.assertEqual(m['artistsort'], 'Kūko')
 
-    def test_use_credited_as(self):
+    def test_standardize_artist_name_variations(self):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = False
-        config.setting['standardize_artists'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.VARIATIONS
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'クー子')
+        self.assertEqual(m['artistsort'], 'Kūko')
+
+    def test_standardize_artist_name_none(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], '後ろから這いより隊C')
         self.assertEqual(m['artistsort'], 'Ushirokara Haiyoritai C')
+
+
+class RecordingArtistNameChangeTest(MBJSONTest):
+    filename = 'recording_artist_name_change.json'
+
+    def test_standardize_artist_name_all(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'Bob Dylan')
+        self.assertEqual(m['artistsort'], 'Dylan, Bob')
+
+    def test_standardize_artist_name_variations(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.VARIATIONS
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'Blind Boy Grunt')
+        self.assertEqual(m['artistsort'], 'Grunt, Blind Boy')
+
+    def test_standardize_artist_name_none(self):
+        m = Metadata()
+        t = Track('1')
+        config.setting['translate_artist_names'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+        recording_to_metadata(self.json_doc, m, t)
+        self.assertEqual(m['artist'], 'Blind Boy Grunt')
+        self.assertEqual(m['artistsort'], 'Grunt, Blind Boy')
 
 
 class RecordingArtistAliasesLocalesTest(MBJSONTest):
@@ -552,7 +592,7 @@ class RecordingArtistAliasesLocalesTest(MBJSONTest):
         m = Metadata()
         t = Track('1')
         config.setting['translate_artist_names'] = True
-        config.setting['standardize_artists'] = False
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
         config.setting['translation_locales'] = ['ja']
         recording_to_metadata(self.json_doc, m, t)
         self.assertEqual(m['artist'], '後ろから這いより隊C')
@@ -626,14 +666,14 @@ class RecordingCreditsTest(MBJSONTest):
         m = Metadata()
         t = Track("1")
         recording_to_metadata(self.json_doc, m, t)
-        config.setting["standardize_artists"] = False
+        config.setting["standardize_artist_names"] = StandardizeArtistNames.NONE
         self.assertNotIn('performer:solo', m)
         self.assertEqual(m['performer:solo vocals'], 'Frida')
 
     def test_recording_standardize_artist_credits(self):
         m = Metadata()
         t = Track("1")
-        config.setting["standardize_artists"] = True
+        config.setting["standardize_artist_names"] = StandardizeArtistNames.ALL
         recording_to_metadata(self.json_doc, m, t)
         self.assertNotIn('performer:solo', m)
         self.assertEqual(m['performer:solo vocals'], 'Anni-Frid Lyngstad')
@@ -759,9 +799,7 @@ class ArtistTranslationTest(MBJSONTest):
 
     def test_locale_specific_match_first(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": False,
             "standardize_instruments": True,
@@ -775,9 +813,7 @@ class ArtistTranslationTest(MBJSONTest):
 
     def test_locale_specific_match_first_exc(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": True,
             "script_exceptions": [("LATIN", 0)],
@@ -792,9 +828,7 @@ class ArtistTranslationTest(MBJSONTest):
 
     def test_locale_specific_match_second(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": False,
             "standardize_instruments": True,
@@ -808,9 +842,7 @@ class ArtistTranslationTest(MBJSONTest):
 
     def test_artist_match_root_locale_fallback(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": False,
             "standardize_instruments": True,
@@ -824,9 +856,7 @@ class ArtistTranslationTest(MBJSONTest):
 
     def test_artist_no_match(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": False,
             "standardize_instruments": True,
@@ -844,9 +874,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
 
     def test_locale_specific_match_first_exc1(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": True,
             "script_exceptions": [("LATIN", 0)],
@@ -861,9 +889,7 @@ class ArtistTranslationArabicExceptionsTest(MBJSONTest):
 
     def test_locale_specific_match_first_exc2(self):
         settings = {
-            "standardize_tracks": False,
-            "standardize_artists": False,
-            "standardize_releases": False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             "translate_artist_names": True,
             "translate_artist_names_script_exception": True,
             "script_exceptions": [("ARABIC", 0)],
@@ -1219,3 +1245,60 @@ class RelationsToMetadataTargetTypeArtistTest(PicardTestCase):
 
         self.assertEqual(m.getall('composer'), ['Ludwig van Beethoven'])
         self.assertEqual(m.getall('musicbrainz_composerid'), ['12345678-1234-1234-1234-123456789abc'])
+
+
+class ShouldStandardizeArtistNameTest(PicardTestCase):
+    def test_should_standardize_artist_name_none(self):
+        self.assertFalse(should_standardize_artist_name(StandardizeArtistNames.NONE, '', {}))
+
+    def test_should_standardize_artist_name_all(self):
+        self.assertTrue(should_standardize_artist_name(StandardizeArtistNames.ALL, '', {}))
+
+    def test_should_standardize_artist_name_variations(self):
+        artist_node = {
+            'aliases': [
+                {
+                    'type-id': ALIAS_TYPE_ARTIST_NAME_ID,
+                    'name': 'Blind Boy Grunt',
+                    'sort-name': 'Grunt, Blind Boy',
+                    'ended': True,
+                },
+                {
+                    'name': 'Lucky Wilbury',
+                    'sort-name': 'Wilbury, Lucky',
+                    'ended': True,
+                },
+                {
+                    'type-id': 'other-type',
+                    'name': 'Other Name',
+                    'sort-name': 'Name, Other',
+                    'ended': True,
+                },
+                {
+                    'type-id': ALIAS_TYPE_ARTIST_NAME_ID,
+                    'name': 'Robert Dylan',
+                    'sort-name': 'Dylan, Rober',
+                    'ended': False,
+                },
+            ]
+        }
+        self.assertFalse(
+            should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, 'Blind Boy Grunt', artist_node)
+        )
+        self.assertFalse(
+            should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, 'Grunt, Blind Boy', artist_node)
+        )
+        self.assertFalse(
+            should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, 'Lucky Wilbury', artist_node)
+        )
+        self.assertTrue(should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, 'Other Name', artist_node))
+        self.assertTrue(should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, 'Robert Dylan', artist_node))
+
+    def test_should_standardize_artist_name_variations_no_aliases(self):
+        credited_name = 'Blind Boy Grunt'
+        self.assertTrue(should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, credited_name, {}))
+
+    def test_should_standardize_artist_name_variations_no_ended_alias(self):
+        credited_name = 'Blind Boy Grunt'
+        artist_node = {'aliases': [{'name': 'Blind Boy Grunt', 'type-id': ALIAS_TYPE_ARTIST_NAME_ID}]}
+        self.assertTrue(should_standardize_artist_name(StandardizeArtistNames.VARIATIONS, credited_name, artist_node))

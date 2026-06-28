@@ -51,6 +51,7 @@ from picard.const import (
     ALIAS_TYPE_RECORDING_NAME_ID,
     RELEASE_FORMATS,
 )
+from picard.options import StandardizeArtistNames
 from picard.util import (
     format_time,
     linear_combination_of_weights,
@@ -175,7 +176,7 @@ class RelFuncContext:
     config: Config
     entity: str | None
     instrumental: bool
-    use_credited_as: bool
+    standardize_names_mode: StandardizeArtistNames
     use_instrument_credits: bool
     use_vocal_credits: bool
     metadata_was_cleared: dict[str, bool]
@@ -223,9 +224,10 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
     has_translation = translated_alias.name != artist['name']
     artist_name = translated_alias.name
     artist_sort_name = translated_alias.sort_name
-    if not has_translation and context.use_credited_as and 'target-credit' in relation:
+    if not has_translation and 'target-credit' in relation:
         credited_as = relation['target-credit']
-        if credited_as and credited_as != artist['name']:
+        use_credited_as = not should_standardize_artist_name(context.standardize_names_mode, credited_as, artist)
+        if credited_as and use_credited_as and credited_as != artist['name']:
             artist_name = credited_as
             artist_sort_name = _select_sort_name_from_aliases(artist, credited_as, config=context.config)
     reltype = relation['type']
@@ -340,7 +342,7 @@ def _relations_to_metadata(
         config=config,
         entity=entity,
         instrumental=instrumental,
-        use_credited_as=not config.setting['standardize_artists'],
+        standardize_names_mode=config.setting['standardize_artist_names'],
         use_instrument_credits=not config.setting['standardize_instruments'],
         use_vocal_credits=not config.setting['standardize_vocals'],
         metadata_was_cleared=dict(),
@@ -639,8 +641,11 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_sort_names = []
     artist_countries = []
     config = get_config()
-    use_credited_as = not config.setting['standardize_artists']
+    standardize_names_mode = config.setting['standardize_artist_names']
     for artist_info in node:
+        use_credited_as = not should_standardize_artist_name(
+            standardize_names_mode, artist_info['name'], artist_info['artist']
+        )
         artist = artist_info['artist']
         if artist and 'id' in artist and artist['id']:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
@@ -661,6 +666,26 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
     return ArtistCreditInfo(artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
+
+
+def should_standardize_artist_name(mode: StandardizeArtistNames, credited_name: str, artist: Node) -> bool:
+    if mode == StandardizeArtistNames.NONE:
+        return False
+
+    if mode == StandardizeArtistNames.ALL:
+        return True
+
+    # Only standardize if the artist credit is not considered a name change,
+    # i.e. if the artist name is not an alias that has been ended.
+    for alias in artist.get('aliases', []):
+        if (
+            alias.get('type-id', None) in {ALIAS_TYPE_ARTIST_NAME_ID, None}
+            and alias.get('ended', False)
+            and (credited_name in {alias['name'], alias['sort-name']})
+        ):
+            return False
+
+    return True
 
 
 def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = False) -> None:

@@ -3,7 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2006-2008, 2011 Lukáš Lalinský
-# Copyright (C) 2008-2009, 2018-2025 Philipp Wolfer
+# Copyright (C) 2008-2009, 2018-2026 Philipp Wolfer
 # Copyright (C) 2011 Johannes Weißl
 # Copyright (C) 2011-2013 Michael Wiencek
 # Copyright (C) 2013, 2018, 2020-2024 Laurent Monin
@@ -47,6 +47,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.options import StandardizeArtistNames
 
 from picard.ui import PicardDialog
 from picard.ui.forms.ui_exception_script_selector import Ui_ExceptionScriptSelector
@@ -96,7 +97,7 @@ class MetadataOptionsPage(OptionsPage):
         'translate_artist_names_script_exception': {'widgets': ['translate_artist_names_script_exception']},
         'translate_from_sortname': {'widgets': ['translate_from_sortname']},
         'script_exceptions': {'widgets': ['selected_scripts']},
-        'standardize_artists': {'widgets': ['standardize_artists']},
+        'standardize_artist_names': {'widgets': ['standardize_artist_names']},
         'standardize_instruments': {'widgets': ['standardize_instruments']},
         'standardize_vocals': {'widgets': ['standardize_vocals']},
         'convert_punctuation': {'widgets': ['convert_punctuation']},
@@ -120,6 +121,14 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.translate_track_titles.stateChanged.connect(self.set_enabled_states)
         self.ui.translate_artist_names_script_exception.stateChanged.connect(self.set_enabled_states)
 
+        self.ui.standardize_artist_names.addItem(_("Do not standardize artist names"), StandardizeArtistNames.NONE)
+        self.ui.standardize_artist_names.addItem(
+            _("Standardize artist name variations only"), StandardizeArtistNames.VARIATIONS
+        )
+        self.ui.standardize_artist_names.addItem(
+            _("Standardize artist name variations and name changes"), StandardizeArtistNames.ALL
+        )
+
     def load(self):
         config = get_config()
         self.ui.translate_artist_names.setChecked(config.setting['translate_artist_names'])
@@ -139,7 +148,9 @@ class MetadataOptionsPage(OptionsPage):
         self.ui.va_name.setText(config.setting['va_name'])
         self.ui.nat_name.setText(config.setting['nat_name'])
         self.ui.translate_from_sortname.setChecked(config.setting['translate_from_sortname'])
-        self.ui.standardize_artists.setChecked(config.setting['standardize_artists'])
+        self.ui.standardize_artist_names.setCurrentIndex(
+            self.ui.standardize_artist_names.findData(config.setting['standardize_artist_names'])
+        )
         self.ui.standardize_instruments.setChecked(config.setting['standardize_instruments'])
         self.ui.standardize_vocals.setChecked(config.setting['standardize_vocals'])
         self.ui.guess_tracknumber_and_title.setChecked(config.setting['guess_tracknumber_and_title'])
@@ -180,7 +191,7 @@ class MetadataOptionsPage(OptionsPage):
             if self.tagger.nats is not None:
                 self.tagger.nats.update()
         config.setting['translate_from_sortname'] = self.ui.translate_from_sortname.isChecked()
-        config.setting['standardize_artists'] = self.ui.standardize_artists.isChecked()
+        config.setting['standardize_artist_names'] = self.ui.standardize_artist_names.currentData()
         config.setting['standardize_instruments'] = self.ui.standardize_instruments.isChecked()
         config.setting['standardize_vocals'] = self.ui.standardize_vocals.isChecked()
         config.setting['guess_tracknumber_and_title'] = self.ui.guess_tracknumber_and_title.isChecked()

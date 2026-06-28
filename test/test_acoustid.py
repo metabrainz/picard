@@ -45,9 +45,6 @@ from picard.track import Track
 
 
 settings = {
-    "standardize_tracks": False,
-    "standardize_artists": False,
-    "standardize_releases": False,
     "translate_artist_names": True,
     "translation_locales": ['en'],
     "translate_artist_names_script_exception": False,
