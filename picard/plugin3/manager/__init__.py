@@ -58,7 +58,7 @@ from picard.plugin3.plugin_metadata import (
     REF_TYPE_LOCAL_DEV,
     PluginMetadata,
     PluginMetadataManager,
-    is_local_non_git_plugin,
+    is_local_plugin,
 )
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
@@ -721,10 +721,10 @@ class PluginManager(QObject):
         # Use ref_type to reliably determine if plugin was installed as a commit
         return metadata.ref_type == 'commit'
 
-    def is_local_non_git(self, plugin):
+    def is_local_plugin(self, plugin):
         """Check if a plugin is a local non-git plugin."""
         metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-        return is_local_non_git_plugin(metadata)
+        return is_local_plugin(metadata)
 
     def _get_current_ref_for_updates(self, repo, metadata):
         """Get the current ref to use for update checking.
@@ -749,7 +749,7 @@ class PluginManager(QObject):
         """Check if a plugin should have its refs fetched."""
         if not plugin.uuid or not metadata or not metadata.url:
             return False
-        if is_local_non_git_plugin(metadata):
+        if is_local_plugin(metadata):
             return False
 
         # Only fetch refs for plugins with remote URLs or local git repos

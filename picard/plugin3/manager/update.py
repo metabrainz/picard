@@ -43,7 +43,7 @@ from picard.plugin3.plugin import (
 )
 from picard.plugin3.plugin_metadata import (
     PluginMetadata,
-    is_local_non_git_plugin,
+    is_local_plugin,
 )
 from picard.plugin3.ref_item import RefItem
 
@@ -161,7 +161,7 @@ class PluginUpdater:
         uuid, metadata = self.manager._get_plugin_uuid_and_metadata(plugin)
 
         # Local non-git plugins: reload instead of git update
-        if is_local_non_git_plugin(metadata):
+        if is_local_plugin(metadata):
             return self._reload_local_plugin(plugin)
 
         self.manager._ensure_plugin_url(plugin, 'update')
@@ -280,7 +280,7 @@ class PluginUpdater:
         """Switch plugin to a different git ref."""
         # Local non-git plugins cannot switch refs
         metadata = self.manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
-        if is_local_non_git_plugin(metadata):
+        if is_local_plugin(metadata):
             raise PluginNoSourceError(plugin.plugin_id, 'switch ref')
 
         self.manager._ensure_plugin_url(plugin, 'switch ref')

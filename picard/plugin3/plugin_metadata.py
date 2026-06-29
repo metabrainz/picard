@@ -129,7 +129,7 @@ LOCAL_MARKER = N_('local')
 LOCAL_DEV_MARKER = N_('local-dev')
 
 
-def is_local_non_git_plugin(metadata) -> bool:
+def is_local_plugin(metadata) -> bool:
     """Check if metadata represents a local plugin. Safe with None."""
     return metadata is not None and getattr(metadata, 'ref_type', None) in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV)
 

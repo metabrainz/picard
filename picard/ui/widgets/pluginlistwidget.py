@@ -44,7 +44,7 @@ from picard.plugin3.plugin_metadata import (
     LOCAL_DEV_MARKER,
     LOCAL_MARKER,
     REF_TYPE_LOCAL_DEV,
-    is_local_non_git_plugin,
+    is_local_plugin,
 )
 from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
@@ -275,7 +275,7 @@ class PluginListWidget(QtWidgets.QWidget):
                 metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.uuid)
                 if metadata:
                     # For local plugins, show translated 'local' or 'local-dev'
-                    if is_local_non_git_plugin(metadata):
+                    if is_local_plugin(metadata):
                         label = LOCAL_DEV_MARKER if metadata.ref_type == REF_TYPE_LOCAL_DEV else LOCAL_MARKER
                         return f'<b>{html.escape(_(label))}</b>'
                     git_ref = metadata.get_git_ref()
@@ -300,7 +300,7 @@ class PluginListWidget(QtWidgets.QWidget):
 
     def _set_version_tooltip(self, item, plugin):
         """Set tooltip on Version column with source path or commit date."""
-        if self.plugin_manager.is_local_non_git(plugin):
+        if self.plugin_manager.is_local_plugin(plugin):
             item.setToolTip(COLUMN_VERSION, str(plugin.local_path))
             return
         commit_date = plugin.get_current_commit_date()
@@ -617,7 +617,7 @@ class PluginListWidget(QtWidgets.QWidget):
         menu.addSeparator()
 
         # Determine if this is a local non-git plugin
-        is_local = self.plugin_manager.is_local_non_git(plugin)
+        is_local = self.plugin_manager.is_local_plugin(plugin)
 
         # Update/Reload action
         if is_local:
@@ -721,7 +721,7 @@ class PluginListWidget(QtWidgets.QWidget):
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh and update updates dict
-            action = "reloaded" if self.plugin_manager.is_local_non_git(plugin) else "updated"
+            action = "reloaded" if self.plugin_manager.is_local_plugin(plugin) else "updated"
             self.plugin_state_changed.emit(plugin, action)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
@@ -809,7 +809,7 @@ class PluginListWidget(QtWidgets.QWidget):
                 pass
 
             # Show confirmation dialog
-            show_ref_selector = not self.plugin_manager.is_local_non_git(plugin)
+            show_ref_selector = not self.plugin_manager.is_local_plugin(plugin)
             confirm_dialog = InstallConfirmDialog(
                 plugin.name(), plugin_url, self, plugin.uuid, current_ref, show_ref_selector=show_ref_selector
             )

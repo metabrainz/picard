@@ -96,7 +96,7 @@ from picard.plugin3.plugin_metadata import (
     LOCAL_DEV_MARKER,
     LOCAL_MARKER,
     REF_TYPE_LOCAL_DEV,
-    is_local_non_git_plugin,
+    is_local_plugin,
 )
 from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.ref_item import RefItem
@@ -448,7 +448,7 @@ class PluginCLI:
 
     def _local_marker(self, metadata) -> str:
         """Return display marker for local non-git plugins."""
-        if is_local_non_git_plugin(metadata):
+        if is_local_plugin(metadata):
             label = LOCAL_DEV_MARKER if metadata.ref_type == REF_TYPE_LOCAL_DEV else LOCAL_MARKER
             return f' [{label}]'
         return ''
@@ -481,7 +481,7 @@ class PluginCLI:
 
                 # Check if local non-git plugin
                 metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
-                is_local = is_local_non_git_plugin(metadata)
+                is_local = is_local_plugin(metadata)
 
                 # Display with semantic methods
                 if is_enabled:
@@ -569,7 +569,7 @@ class PluginCLI:
 
         is_enabled = plugin.uuid and plugin.uuid in self._manager._enabled_plugins
         metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
-        is_local = is_local_non_git_plugin(metadata)
+        is_local = is_local_plugin(metadata)
 
         local_marker = self._local_marker(metadata)
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}{local_marker}')
@@ -678,7 +678,7 @@ class PluginCLI:
         plugin = info['plugin']
         if plugin and plugin.uuid:
             metadata = self._manager._get_plugin_metadata(plugin.uuid)
-            if is_local_non_git_plugin(metadata):
+            if is_local_plugin(metadata):
                 self._out.error(f'Plugin "{identifier}" is a local plugin and is not managed by git')
                 return ExitCode.ERROR
 
@@ -1153,7 +1153,7 @@ class PluginCLI:
                 if result.old_commit == result.new_commit:
                     # Local non-git plugins: show "reloaded" instead of "up to date"
                     metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else None
-                    if is_local_non_git_plugin(metadata):
+                    if is_local_plugin(metadata):
                         self._out.success(f'{self._out.d_name(plugin.plugin_id)}: Plugin reloaded')
                     elif result.new_version:
                         self._out.info(
@@ -1221,7 +1221,7 @@ class PluginCLI:
                     plugin = self._manager.plugin_id_to_plugin(r.plugin_id)
                     plugin_uuid = plugin.uuid if plugin else None
                     metadata = self._manager._get_plugin_metadata(plugin_uuid) if plugin_uuid else None
-                    if is_local_non_git_plugin(metadata):
+                    if is_local_plugin(metadata):
                         self._out.success(f'{self._out.d_name(r.plugin_id)}: Plugin reloaded')
                         updated += 1
                     elif r.result.new_version:

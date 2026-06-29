@@ -182,7 +182,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
         if maintainers:
             self.maintainers_label.setText(maintainers)
 
-        if self.plugin_manager.is_local_non_git(plugin):
+        if self.plugin_manager.is_local_plugin(plugin):
             self.git_url_row_label.setText(_("Path:"))
             git_url = str(plugin.local_path)
         else:
@@ -193,7 +193,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.git_url_label.setText(git_url)
 
         # Update/Reload button state and tooltip
-        if self.plugin_manager.is_local_non_git(plugin):
+        if self.plugin_manager.is_local_plugin(plugin):
             self.update_button.setText(_("Reload"))
             self.update_button.setEnabled(True)
             self.update_button.setToolTip("")
@@ -388,7 +388,7 @@ class PluginDetailsWidget(QtWidgets.QWidget):
             self.plugin_updated.emit()  # Signal that plugin was updated
             # Emit the same signal as context menu for status updates
             if hasattr(self.parent(), 'plugin_state_changed'):
-                action = "reloaded" if self.plugin_manager.is_local_non_git(plugin) else "updated"
+                action = "reloaded" if self.plugin_manager.is_local_plugin(plugin) else "updated"
                 self.parent().plugin_state_changed.emit(plugin, action)
             # Refresh the display - plugin should no longer have update available
             self.show_plugin(plugin)
