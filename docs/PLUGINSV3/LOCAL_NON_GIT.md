@@ -11,6 +11,7 @@ Local non-git plugins allow developers and testers to load a plugin directly fro
 - Rapid prototyping of a new plugin idea
 - Testing a plugin during development before initializing a git repository
 - Loading a plugin received as a plain directory (e.g., from a zip archive)
+- Developing a plugin in a git repository but wanting Picard to load it directly from the working tree (use `--no-git`)
 
 For anything beyond personal testing, use `picard-plugins --init` to create a proper git-managed plugin project.
 
@@ -44,13 +45,42 @@ Do you want to continue? [y/N]
 
 Use `--yes` to skip the prompt.
 
+### Install with `--no-git` (git directory present)
+
+If a plugin directory contains a `.git` repository but you want to load it in-place
+(e.g., for active development), use `--no-git`:
+
+```bash
+picard-plugins --install /path/to/my-git-plugin --no-git
+```
+
+A confirmation prompt warns about disabling git features:
+
+```text
+⚠ This plugin has a git repository.
+⚠   Git features (updates, refs) will be disabled in local mode.
+⚠   Use --reinstall without --no-git to restore them.
+Do you want to continue? [y/N]
+```
+
+Use `--yes` to skip the prompt.
+
+Plugins installed this way show a `[local-dev]` marker in `--list` output to
+distinguish them from plugins without git at all.
+
+To restore git-managed mode later:
+
+```bash
+picard-plugins --install /path/to/my-git-plugin --reinstall
+```
+
 ### List
 
 ```bash
 picard-plugins --list
 ```
 
-Local non-git plugins show a `[local]` marker:
+Local non-git plugins show a `[local]` or `[local-dev]` marker:
 
 ```text
   My Plugin (enabled) [local]
@@ -58,6 +88,12 @@ Local non-git plugins show a `[local]` marker:
     UUID: ...
     Source: /path/to/my-plugin
     Path: /path/to/my-plugin
+
+  My Dev Plugin (enabled) [local-dev]
+    Short description
+    UUID: ...
+    Source: /path/to/my-git-plugin
+    Path: /path/to/my-git-plugin
 ```
 
 ### Update (Reload)
@@ -113,6 +149,19 @@ Local non-git plugins use the same `plugins3_metadata` config dict as git-manage
 }
 ```
 
+When installed with `--no-git` from a directory containing `.git`, the entry uses
+`ref_type` value `"local-dev"` instead of `"local"`:
+
+```python
+{
+    ...
+    "ref_type": "local-dev"
+}
+```
+
+The `"local-dev"` ref type indicates the plugin has a git repository but was explicitly
+installed in local mode. This is used to display the `[local-dev]` marker in list output.
+
 On startup, entries with `ref_type='local'` are loaded directly from the stored path. If the path no longer exists, the entry is automatically removed.
 
 ## Limitations
@@ -141,3 +190,9 @@ picard-plugins --install /path/to/my-plugin --reinstall
 ```
 
 The plugin will now be managed by git with full update/ref support. Alternatively, use `picard-plugins --init` from the start for a proper project scaffold with git already configured.
+
+If the plugin was installed with `--no-git` (already has git), simply reinstall without the flag:
+
+```bash
+picard-plugins --install /path/to/my-plugin --reinstall
+```

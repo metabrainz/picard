@@ -185,6 +185,17 @@ class InstallPluginDialog(PicardDialog):
         self.local_ref_edit.setPlaceholderText(_("main"))
         local_form.addRow(_("Ref/Tag:"), self.local_ref_edit)
 
+        self.no_git_checkbox = QtWidgets.QCheckBox(_("Load in-place (ignore git)"))
+        self.no_git_checkbox.setToolTip(
+            _(
+                "If checked, the plugin will be loaded directly from disk without git features "
+                "(no updates, no ref switching). Useful for active development."
+            )
+        )
+        self.no_git_checkbox.setEnabled(False)
+        self.no_git_checkbox.toggled.connect(self._validate_local_path)
+        local_form.addRow("", self.no_git_checkbox)
+
         local_layout.addWidget(local_group)
         local_layout.addStretch()
         self.tab_widget.addTab(local_widget, _("Local"))
@@ -243,27 +254,46 @@ class InstallPluginDialog(PicardDialog):
         else:  # TAB_LOCAL - Local directory tab
             self.install_button.setEnabled(self._local_path_valid)
 
-    def _validate_local_path(self):
+    def _validate_local_path(self, *args):
         """Validate local path and update Ref/Tag field and status."""
+        if getattr(self, '_validating_local_path', False):
+            return
+        self._validating_local_path = True
+        try:
+            self._do_validate_local_path()
+        finally:
+            self._validating_local_path = False
+
+    def _do_validate_local_path(self):
+        """Internal validation logic for local path."""
         path = self.path_edit.text().strip()
         self._local_path_valid = False
+        no_git = self.no_git_checkbox.isChecked()
 
         if not path:
             self.local_ref_edit.setEnabled(True)
+            self.no_git_checkbox.setEnabled(False)
             self.local_status_label.hide()
         elif not os.path.isdir(path):
             self.local_ref_edit.setEnabled(False)
+            self.no_git_checkbox.setEnabled(False)
             self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_error'))
             self.local_status_label.setText(_("The selected path is not a directory."))
             self.local_status_label.show()
         elif not os.path.isfile(os.path.join(path, "MANIFEST.toml")):
             self.local_ref_edit.setEnabled(False)
+            self.no_git_checkbox.setEnabled(False)
             self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_error'))
             self.local_status_label.setText(_("The directory does not contain a MANIFEST.toml file."))
             self.local_status_label.show()
         elif not os.path.exists(os.path.join(path, ".git")):
             self.local_ref_edit.setEnabled(False)
             self.local_ref_edit.clear()
+            self.no_git_checkbox.setEnabled(False)
+            # Block signals to avoid re-triggering _validate_local_path
+            self.no_git_checkbox.blockSignals(True)
+            self.no_git_checkbox.setChecked(False)
+            self.no_git_checkbox.blockSignals(False)
             self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_warning'))
             self.local_status_label.setText(
                 _(
@@ -273,8 +303,23 @@ class InstallPluginDialog(PicardDialog):
             )
             self.local_status_label.show()
             self._local_path_valid = True
+        elif no_git:
+            self.local_ref_edit.setEnabled(False)
+            if self.local_ref_edit.text():
+                self.local_ref_edit.clear()
+            self.no_git_checkbox.setEnabled(True)
+            self.local_status_label.setStyleSheet("color: %s;" % interface_colors.get_color('log_warning'))
+            self.local_status_label.setText(
+                _(
+                    "Git features (updates, refs) will be disabled. "
+                    "The plugin will be loaded directly from this directory."
+                )
+            )
+            self.local_status_label.show()
+            self._local_path_valid = True
         else:
             self.local_ref_edit.setEnabled(True)
+            self.no_git_checkbox.setEnabled(True)
             self.local_status_label.hide()
             self._local_path_valid = True
 
@@ -523,6 +568,7 @@ class InstallPluginDialog(PicardDialog):
         """Create LocalInstallablePlugin from local path input."""
         url = self.path_edit.text().strip()
         ref = self.local_ref_edit.text().strip() or None
+        no_git = self.no_git_checkbox.isChecked()
         if not url:
             QtWidgets.QMessageBox.warning(
                 self, _("No Directory Selected"), _("Please select a local plugin directory.")
@@ -544,9 +590,11 @@ class InstallPluginDialog(PicardDialog):
             )
             return None
 
-        # Warn if not a git repository
         git_path = os.path.join(url, ".git")
-        if not os.path.exists(git_path):
+        has_git = os.path.exists(git_path)
+
+        if not has_git:
+            # No .git: warn about non-git limitations
             result = QtWidgets.QMessageBox.warning(
                 self,
                 _("Plugin Not Managed by Git"),
@@ -563,7 +611,10 @@ class InstallPluginDialog(PicardDialog):
             )
             if result != QtWidgets.QMessageBox.StandardButton.Yes:
                 return None
-            ref = None  # No ref for non-git plugins
+            ref = None
+        elif no_git:
+            # .git exists but user wants local mode
+            ref = None
 
         return LocalInstallablePlugin(url, ref, self.plugin_manager._registry)
 
@@ -600,6 +651,9 @@ class InstallPluginDialog(PicardDialog):
             QtWidgets.QMessageBox.critical(self, _("Error"), _("Plugin has no repository URL"))
             return
 
+        # Determine no_git flag for local tab
+        no_git = current_tab == TAB_LOCAL and self.no_git_checkbox.isChecked()
+
         # Disable UI before showing confirmation dialog to prevent interaction
         self._disable_ui_for_installation()
 
@@ -608,25 +662,29 @@ class InstallPluginDialog(PicardDialog):
             plugin_name = plugin.get_display_name()
             plugin_uuid = plugin.plugin_uuid
             # Hide ref selector for non-git local plugins
-            show_ref_selector = not (current_tab == TAB_LOCAL and not os.path.exists(os.path.join(url, ".git")))
+            show_ref_selector = not (
+                current_tab == TAB_LOCAL and (not os.path.exists(os.path.join(url, ".git")) or no_git)
+            )
             confirm_dialog = InstallConfirmDialog(
                 plugin_name, url, self, plugin_uuid, None, show_ref_selector=show_ref_selector
             )
             confirm_dialog.finished.connect(
-                lambda result: self._on_install_confirm_finished(result, confirm_dialog, url, plugin, current_tab)
+                lambda result: self._on_install_confirm_finished(
+                    result, confirm_dialog, url, plugin, current_tab, no_git
+                )
             )
             confirm_dialog.open()
         else:
-            self._proceed_with_install(url, plugin.ref, plugin, current_tab)
+            self._proceed_with_install(url, plugin.ref, plugin, current_tab, no_git=no_git)
 
-    def _on_install_confirm_finished(self, result, confirm_dialog, url, plugin, current_tab):
+    def _on_install_confirm_finished(self, result, confirm_dialog, url, plugin, current_tab, no_git=False):
         if result != QtWidgets.QDialog.DialogCode.Accepted:
             self._enable_ui_after_installation()
             return
         ref = confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None
-        self._proceed_with_install(url, ref, plugin, current_tab)
+        self._proceed_with_install(url, ref, plugin, current_tab, no_git=no_git)
 
-    def _proceed_with_install(self, url, ref, plugin, current_tab):
+    def _proceed_with_install(self, url, ref, plugin, current_tab, no_git=False):
         # Use versioning scheme for registry plugins when no ref specified
         if current_tab == TAB_REGISTRY and ref is None:
             # Get original plugin data for versioning scheme
@@ -643,7 +701,9 @@ class InstallPluginDialog(PicardDialog):
 
         # Start async installation
         async_manager = AsyncPluginManager(self.plugin_manager)
-        async_manager.install_plugin(url=url, ref=ref, progress_callback=self._on_progress, callback=self._on_complete)
+        async_manager.install_plugin(
+            url=url, ref=ref, no_git=no_git, progress_callback=self._on_progress, callback=self._on_complete
+        )
 
     def _on_progress(self, update):
         """Handle installation progress."""

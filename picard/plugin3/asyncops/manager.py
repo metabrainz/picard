@@ -33,13 +33,14 @@ class AsyncPluginManager:
     def __init__(self, manager: PluginManager):
         self._manager = manager
 
-    def install_plugin(self, url, ref=None, reinstall=False, progress_callback=None, callback=None):
+    def install_plugin(self, url, ref=None, reinstall=False, no_git=False, progress_callback=None, callback=None):
         """Install plugin asynchronously.
 
         Args:
             url: Plugin URL or registry ID
             ref: Optional git ref
             reinstall: Whether to reinstall if exists
+            no_git: If True, treat a git directory as a local non-git plugin
             progress_callback: Optional callback for progress updates
             callback: Called with OperationResult on completion
         """
@@ -51,7 +52,7 @@ class AsyncPluginManager:
                     ProgressUpdate(operation='install', message=f'Installing from {url}...', percent=0),
                 )
 
-            plugin_id = self._manager.install_plugin(url, ref, reinstall, enable_after_install=True)
+            plugin_id = self._manager.install_plugin(url, ref, reinstall, enable_after_install=True, no_git=no_git)
 
             if progress_callback:
                 to_main(

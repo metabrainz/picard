@@ -54,9 +54,11 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import (
+    REF_TYPE_LOCAL,
+    REF_TYPE_LOCAL_DEV,
     PluginMetadata,
     PluginMetadataManager,
-    is_local_non_git_plugin,
+    is_local_plugin,
 )
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import PluginRegistry
@@ -524,7 +526,7 @@ class PluginManager(QObject):
         loaded_uuids = {p.uuid for p in self._plugins if p.uuid}
 
         for uuid, entry in list(metadata_dict.items()):
-            if entry.get('ref_type') != 'local':
+            if entry.get('ref_type') not in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV):
                 continue
             # Skip if already loaded (e.g. symlink in plugin dir)
             if uuid in loaded_uuids:
@@ -667,7 +669,14 @@ class PluginManager(QObject):
         return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit)
 
     def install_plugin(
-        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+        self,
+        url,
+        ref=None,
+        reinstall=False,
+        force_blacklisted=False,
+        discard_changes=False,
+        enable_after_install=False,
+        no_git=False,
     ):
         """Install a plugin from a git URL or local directory.
 
@@ -678,12 +687,13 @@ class PluginManager(QObject):
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             discard_changes: If True, discard uncommitted changes on reinstall
             enable_after_install: If True, enable the plugin after successful installation
+            no_git: If True, treat a git directory as a local non-git plugin
 
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
         return self._installer.install_plugin(
-            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
+            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, no_git=no_git
         )
 
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):
@@ -711,10 +721,10 @@ class PluginManager(QObject):
         # Use ref_type to reliably determine if plugin was installed as a commit
         return metadata.ref_type == 'commit'
 
-    def is_local_non_git(self, plugin):
+    def is_local_plugin(self, plugin):
         """Check if a plugin is a local non-git plugin."""
         metadata = self._metadata.get_plugin_metadata(plugin.uuid)
-        return is_local_non_git_plugin(metadata)
+        return is_local_plugin(metadata)
 
     def _get_current_ref_for_updates(self, repo, metadata):
         """Get the current ref to use for update checking.
@@ -739,7 +749,7 @@ class PluginManager(QObject):
         """Check if a plugin should have its refs fetched."""
         if not plugin.uuid or not metadata or not metadata.url:
             return False
-        if is_local_non_git_plugin(metadata):
+        if is_local_plugin(metadata):
             return False
 
         # Only fetch refs for plugins with remote URLs or local git repos

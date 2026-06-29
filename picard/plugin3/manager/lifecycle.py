@@ -42,7 +42,7 @@ from picard.plugin3.plugin import (
     Plugin,
     PluginState,
 )
-from picard.plugin3.plugin_metadata import is_local_non_git_plugin
+from picard.plugin3.plugin_metadata import is_local_plugin
 
 
 if TYPE_CHECKING:
@@ -60,7 +60,7 @@ class PluginLifecycleManager:
         # Local non-git plugins: just unregister, don't delete files
         if plugin.uuid:
             metadata = self.manager._get_plugin_metadata(plugin.uuid)
-            if is_local_non_git_plugin(metadata):
+            if is_local_plugin(metadata):
                 return self._unregister_local_plugin(plugin, purge)
 
         try:
