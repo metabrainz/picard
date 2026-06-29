@@ -54,6 +54,8 @@ from picard.plugin3.plugin import (
     short_commit_id,
 )
 from picard.plugin3.plugin_metadata import (
+    REF_TYPE_LOCAL,
+    REF_TYPE_LOCAL_DEV,
     PluginMetadata,
     PluginMetadataManager,
     is_local_non_git_plugin,
@@ -524,7 +526,7 @@ class PluginManager(QObject):
         loaded_uuids = {p.uuid for p in self._plugins if p.uuid}
 
         for uuid, entry in list(metadata_dict.items()):
-            if entry.get('ref_type') != 'local':
+            if entry.get('ref_type') not in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV):
                 continue
             # Skip if already loaded (e.g. symlink in plugin dir)
             if uuid in loaded_uuids:
@@ -667,7 +669,14 @@ class PluginManager(QObject):
         return self._validation_manager._validate_manifest_or_rollback(plugin, old_commit)
 
     def install_plugin(
-        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+        self,
+        url,
+        ref=None,
+        reinstall=False,
+        force_blacklisted=False,
+        discard_changes=False,
+        enable_after_install=False,
+        no_git=False,
     ):
         """Install a plugin from a git URL or local directory.
 
@@ -678,12 +687,13 @@ class PluginManager(QObject):
             force_blacklisted: If True, bypass blacklist check (dangerous!)
             discard_changes: If True, discard uncommitted changes on reinstall
             enable_after_install: If True, enable the plugin after successful installation
+            no_git: If True, treat a git directory as a local non-git plugin
 
         Raises:
             PluginDirtyError: If reinstalling and plugin has uncommitted changes
         """
         return self._installer.install_plugin(
-            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install
+            url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, no_git=no_git
         )
 
     def _find_newer_version_tag(self, url, current_tag, versioning_scheme):

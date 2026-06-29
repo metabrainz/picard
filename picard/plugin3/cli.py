@@ -92,7 +92,12 @@ from picard.plugin3.plugin import (
     PluginSourceGit,
     short_commit_id,
 )
-from picard.plugin3.plugin_metadata import is_local_non_git_plugin
+from picard.plugin3.plugin_metadata import (
+    LOCAL_DEV_MARKER,
+    LOCAL_MARKER,
+    REF_TYPE_LOCAL_DEV,
+    is_local_non_git_plugin,
+)
 from picard.plugin3.project_config import PluginProjectConfig
 from picard.plugin3.ref_item import RefItem
 from picard.plugin3.registry import (
@@ -441,6 +446,13 @@ class PluginCLI:
         """
         return self._manager.select_ref_for_plugin(plugin)
 
+    def _local_marker(self, metadata) -> str:
+        """Return display marker for local non-git plugins."""
+        if is_local_non_git_plugin(metadata):
+            label = LOCAL_DEV_MARKER if metadata.ref_type == REF_TYPE_LOCAL_DEV else LOCAL_MARKER
+            return f' [{label}]'
+        return ''
+
     def _cmd_list(self):
         """List all installed plugins with details."""
         if not self._manager.plugins:
@@ -477,7 +489,7 @@ class PluginCLI:
                 else:
                     status = self._out.d_status_disabled()
 
-                local_marker = ' [local]' if is_local else ''
+                local_marker = self._local_marker(metadata)
                 self._out.print(f'  {self._out.d_name(display_name)} ({status}){local_marker}')
 
                 if getattr(plugin, 'manifest', None):
@@ -559,7 +571,7 @@ class PluginCLI:
         metadata = self._manager._get_plugin_metadata(plugin.uuid) if plugin.uuid else {}
         is_local = is_local_non_git_plugin(metadata)
 
-        local_marker = ' [local]' if is_local else ''
+        local_marker = self._local_marker(metadata)
         self._out.print(f'Plugin: {self._out.d_name(plugin.manifest.name())}{local_marker}')
 
         # Show short description on one line (required field)
@@ -793,6 +805,7 @@ class PluginCLI:
         explicit_ref = getattr(self._args, 'ref', None)
         reinstall = getattr(self._args, 'reinstall', False)
         force_blacklisted = getattr(self._args, 'force_blacklisted', False)
+        no_git = getattr(self._args, 'no_git', False)
         yes = getattr(self._args, 'yes', False)
 
         if force_blacklisted:
@@ -918,6 +931,7 @@ class PluginCLI:
                     # Check trust level and show appropriate warnings
                     # For local non-git directories, skip registry/trust checks
                     local_non_git = Path(url).is_dir() and not (Path(url) / '.git').exists()
+                    local_no_git_override = no_git and Path(url).is_dir() and (Path(url) / '.git').exists()
                     if local_non_git:
                         self._out.warning('This plugin is not managed by git.')
                         self._out.warning(
@@ -925,6 +939,15 @@ class PluginCLI:
                             ' and to have it added to the official registry.'
                         )
                         self._out.warning('  Without git, version management and automatic updates are not available.')
+
+                        if not yes:
+                            if not self._out.yesno('Do you want to continue?'):
+                                self._out.print('Installation cancelled')
+                                return ExitCode.CANCELLED
+                    elif local_no_git_override:
+                        self._out.warning('This plugin has a git repository.')
+                        self._out.warning('  Git features (updates, refs) will be disabled in local mode.')
+                        self._out.warning('  Use --reinstall without --no-git to restore them.')
 
                         if not yes:
                             if not self._out.yesno('Do you want to continue?'):
@@ -970,7 +993,7 @@ class PluginCLI:
                     self._out.warning('Local repository has uncommitted changes')
 
                 plugin_id = self._manager.install_plugin(
-                    url, ref, reinstall, force_blacklisted, enable_after_install=True
+                    url, ref, reinstall, force_blacklisted, enable_after_install=True, no_git=no_git
                 )
                 self._out.success(f'Plugin {self._out.d_id(plugin_id)} installed successfully')
                 self._out.info('Restart Picard to load the plugin')
@@ -986,7 +1009,7 @@ class PluginCLI:
                     success, result = self._handle_dirty_error(
                         e,
                         lambda **kw: self._manager.install_plugin(
-                            url, ref, reinstall, force_blacklisted, enable_after_install=True, **kw
+                            url, ref, reinstall, force_blacklisted, enable_after_install=True, no_git=no_git, **kw
                         ),
                     )
                     if not success:
@@ -2252,7 +2275,11 @@ def process_cmdline_args():
     group_advanced.add_argument(
         '--with-translations', action='store_true', help="include translation support (locale files and examples)"
     )
-    group_advanced.add_argument('--no-git', action='store_true', help="skip initializing git repository")
+    group_advanced.add_argument(
+        '--no-git',
+        action='store_true',
+        help="for --init: skip git init; for --install: load git plugin in local mode (no updates/refs)",
+    )
     group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit")
     group_advanced.add_argument(
         '--source-locale',

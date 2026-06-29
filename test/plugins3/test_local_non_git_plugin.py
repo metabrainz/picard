@@ -29,6 +29,7 @@ from test.plugins3.helpers import (
     run_cli,
 )
 
+from picard.config import get_config
 from picard.plugin3.manager import (
     PluginManager,
     PluginManifestNotFoundError,
@@ -157,6 +158,83 @@ class TestLocalNonGitPlugin(PicardTestCase):
             self.assertIsNone(manager2._get_plugin_metadata(actual_uuid))
 
 
+class TestNoGitInstall(PicardTestCase):
+    """Tests for installing a git-tracked plugin with no_git=True."""
+
+    def test_install_with_no_git_sets_local_dev_ref_type(self):
+        """Install with no_git=True on a .git directory sets ref_type to local-dev."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+            # Create a fake .git directory
+            (plugin_dir / '.git').mkdir()
+
+            manager = _create_manager(plugins_dir)
+            plugin_id = manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+
+            plugin = manager.plugin_id_to_plugin(plugin_id)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
+            self.assertEqual(metadata.ref_type, 'local-dev')
+            self.assertEqual(plugin.local_path, plugin_dir)
+
+    def test_install_without_no_git_has_local_ref_type(self):
+        """Normal local install (no .git) has ref_type='local'."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+
+            manager = _create_manager(plugins_dir)
+            plugin_id = manager.install_plugin(str(plugin_dir), enable_after_install=False)
+
+            plugin = manager.plugin_id_to_plugin(plugin_id)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
+            self.assertEqual(metadata.ref_type, 'local')
+
+    def test_no_git_on_dir_without_git_still_works(self):
+        """no_git=True on a dir without .git installs normally as local."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+
+            manager = _create_manager(plugins_dir)
+            plugin_id = manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+
+            plugin = manager.plugin_id_to_plugin(plugin_id)
+            metadata = manager._get_plugin_metadata(plugin.uuid)
+            self.assertEqual(metadata.ref_type, 'local')
+
+    def test_local_dev_ref_type_persists_in_metadata_dict(self):
+        """ref_type='local-dev' is stored in the config dict."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+            (plugin_dir / '.git').mkdir()
+
+            manager = _create_manager(plugins_dir)
+            manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+
+            config = get_config()
+            raw = config.setting['plugins3_metadata']
+            # Find the entry by looking for our path
+            entry = next(v for v in raw.values() if v.get('url') == str(plugin_dir))
+            self.assertEqual(entry.get('ref_type'), 'local-dev')
+
+    def test_local_ref_type_has_no_has_git_field(self):
+        """Local install has no has_git field and ref_type='local' in config dict."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+
+            manager = _create_manager(plugins_dir)
+            manager.install_plugin(str(plugin_dir), enable_after_install=False)
+
+            config = get_config()
+            raw = config.setting['plugins3_metadata']
+            entry = next(v for v in raw.values() if v.get('url') == str(plugin_dir))
+            self.assertNotIn('has_git', entry)
+            self.assertEqual(entry.get('ref_type'), 'local')
+
+
 class TestLocalNonGitPluginCLI(PicardTestCase):
     """Tests for CLI behavior with local non-git plugins."""
 
@@ -187,3 +265,31 @@ class TestLocalNonGitPluginCLI(PicardTestCase):
             exit_code, _, stderr = run_cli(manager, list_refs=plugin_name)
             self.assertNotEqual(exit_code, 0)
             self.assertIn('not managed by git', stderr)
+
+    def test_cli_list_shows_local_dev_marker(self):
+        """CLI --list shows [local-dev] for plugins installed with --no-git."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+            (plugin_dir / '.git').mkdir()
+
+            manager = _create_manager(plugins_dir)
+            manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+
+            exit_code, stdout, _ = run_cli(manager, list=True)
+            self.assertEqual(exit_code, 0)
+            self.assertIn('[local-dev]', stdout)
+
+    def test_cli_info_shows_local_dev_marker(self):
+        """CLI --info shows [local-dev] for plugins installed with --no-git."""
+        with tempfile.TemporaryDirectory() as tmp_dir, tempfile.TemporaryDirectory() as plugins_dir:
+            uuid = generate_uuid()
+            plugin_dir, plugin_name = _create_plugin_dir(tmp_dir, uuid)
+            (plugin_dir / '.git').mkdir()
+
+            manager = _create_manager(plugins_dir)
+            manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
+
+            exit_code, stdout, _ = run_cli(manager, info=plugin_name)
+            self.assertEqual(exit_code, 0)
+            self.assertIn('[local-dev]', stdout)

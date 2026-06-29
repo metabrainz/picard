@@ -34,6 +34,7 @@ from picard.git.backend import (
 )
 from picard.git.factory import git_backend
 from picard.git.utils import normalize_git_url
+from picard.i18n import N_
 
 
 if TYPE_CHECKING:
@@ -55,7 +56,7 @@ class PluginMetadata:
     git_ref: GitRef | None = None  # New GitRef object (preferred over ref/ref_type)
 
     def to_dict(self):
-        """Convert to dict for config storage, excluding None values."""
+        """Convert to dict for config storage, excluding None values and defaults."""
         data = {k: v for k, v in asdict(self).items() if v is not None}
         # Serialize git_ref to tuple for storage
         if self.git_ref:
@@ -122,9 +123,15 @@ class PluginMetadata:
         return GitRef(name='', target='')
 
 
+REF_TYPE_LOCAL = 'local'
+REF_TYPE_LOCAL_DEV = 'local-dev'
+LOCAL_MARKER = N_('local')
+LOCAL_DEV_MARKER = N_('local-dev')
+
+
 def is_local_non_git_plugin(metadata) -> bool:
-    """Check if metadata represents a local non-git plugin. Safe with None."""
-    return metadata is not None and getattr(metadata, 'ref_type', None) == 'local'
+    """Check if metadata represents a local plugin. Safe with None."""
+    return metadata is not None and getattr(metadata, 'ref_type', None) in (REF_TYPE_LOCAL, REF_TYPE_LOCAL_DEV)
 
 
 class PluginMetadataManager:
