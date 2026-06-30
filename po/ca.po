@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-06-28 18:24+0200\n"
-"PO-Revision-Date: 2026-06-23 06:12+0000\n"
+"PO-Revision-Date: 2026-06-30 07:12+0000\n"
 "Last-Translator: Marc Riera <marc@marcriera.cat>\n"
 "Language-Team: Catalan <https://translations.metabrainz.org/projects/picard/"
 "3/app/ca/>\n"
@@ -566,10 +566,8 @@ msgid "Submit to configured server"
 msgstr "Envia al servidor configurat"
 
 #: picard/options.py:337 picard/ui/forms/ui_options_general.py:137
-#, fuzzy
-#| msgid "Enable saving tags to files"
 msgid "Enable managing user collections"
-msgstr "Habilita el desament de les etiquetes als fitxers"
+msgstr "Habilita la gestió de col·leccions de l'usuari"
 
 #: picard/options.py:341
 msgid "Use album artist genres"
@@ -3189,10 +3187,8 @@ msgid "Applying overrides…"
 msgstr "S'estan aplicant les substitucions…"
 
 #: picard/session/session_loader.py:119
-#, fuzzy
-#| msgid "Sessions directory"
 msgid "Session restored"
-msgstr "Directori de les sessions"
+msgstr "S'ha restaurat la sessió"
 
 #: picard/tags/docs.py:55
 #, python-brace-format
@@ -6277,7 +6273,7 @@ msgstr "ISRC"
 
 #: picard/ui/itemviews/columns.py:180
 msgid "ISWC"
-msgstr ""
+msgstr "ISWC"
 
 #: picard/ui/itemviews/columns.py:184
 msgid "Size"
