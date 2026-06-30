@@ -33,7 +33,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
-"PO-Revision-Date: 2026-05-26 08:12+0000\n"
+"PO-Revision-Date: 2026-05-28 19:12+0000\n"
 "Last-Translator: zatto13 <zatto0524@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/"
 "musicbrainz/attributes/ja/>\n"
@@ -476,6 +476,10 @@ msgid ""
 "just a scaled down version of the poster, both types can be added to the "
 "same image."
 msgstr ""
+"一般的にポスターよりも小さいサイズの印刷物で、通常はイベントの事前告知や参加"
+"者への追加情報の提供を目的として印刷・配布されます。イベントのフライヤーが単"
+"にポスターを縮小したものである場合、両方タイプを同じ画像に設定することができ"
+"ます。"
 
 #. name:Ticket
 #: DB:event_art_archive.art_type/description:2
@@ -484,6 +488,8 @@ msgid ""
 "A document generally used for admission to the event, whether physical or "
 "digital. Use this also for ticket stubs and passes."
 msgstr ""
+"紙媒体またはデジタル形式かを問わず、一般的にイベント入場の際に使用される書類"
+"です。チケットの半券やパスについてもこれを使用してください。"
 
 #. name:Slipcase
 #: DB:release_packaging/description:122
@@ -492,6 +498,8 @@ msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
+"通常、段ボールやプラスチックで作られた4, 5面の箱で、ジュエルケースなどの内側"
+"のパッケージを包むものです。"
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -549,6 +557,15 @@ msgctxt "event_art_type"
 msgid ""
 "A list of songs to be played in the event, often printed or handwritten for "
 "use by the artist."
+msgstr ""
+
+#. name:Logo
+#: DB:event_art_archive.art_type/description:12
+msgctxt "event_art_type"
+msgid ""
+"A logo that is specific to a particular event and only used for it, rather "
+"than being the logo for a series (such as a festival logo reused over "
+"multiple years)."
 msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
@@ -742,6 +759,15 @@ msgid ""
 "artists."
 msgstr ""
 
+#. name:Liner
+#: DB:cover_art_archive.art_type/description:12
+msgctxt "cover_art_type"
+msgid ""
+"A protective sleeve (usually an ‘inner sleeve’) surrounding a medium "
+"(usually a vinyl record, but sometimes a CD), often printed with notes or "
+"images."
+msgstr ""
+
 #. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -871,6 +897,26 @@ msgstr "リリースグループのシリーズ。"
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "リリースのシリーズ。"
+
+#. name:Series award
+#: DB:series_type/description:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of artists honoured by the same award."
+msgctxt "series_type"
+msgid ""
+"A series of series (such as podcasts or festivals) honoured by the same "
+"award."
+msgstr "同一賞を受賞した一連のアーティスト。"
+
+#. name:Series series
+#: DB:series_type/description:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of events."
+msgctxt "series_type"
+msgid "A series of series."
+msgstr "イベントのシリーズ。"
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5644,6 +5690,11 @@ msgctxt "release_group_secondary_type"
 msgid "Live"
 msgstr "ライブ"
 
+#: DB:event_art_archive.art_type/name:12
+msgctxt "event_art_type"
+msgid "Logo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
@@ -7824,6 +7875,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Serbest"
 msgstr "<i>Serbest</i>"
 
+#: DB:series_type/name:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist award"
+msgctxt "series_type"
+msgid "Series award"
+msgstr "アーティストアワード"
+
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
@@ -7833,6 +7892,14 @@ msgstr "シリーズコレクション"
 msgctxt "alias_type"
 msgid "Series name"
 msgstr "シリーズ名"
+
+#: DB:series_type/name:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist series"
+msgctxt "series_type"
+msgid "Series series"
+msgstr "アーティストのシリーズ"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
