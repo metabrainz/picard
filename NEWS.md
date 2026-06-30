@@ -1,5 +1,31 @@
 # MusicBrainz Picard Changes
 
+## Version 3.0.0b5 - 2026-06-30
+
+### Bugfixes
+
+- [PICARD-507](https://tickets.metabrainz.org/browse/PICARD-507) - Wrong matching to already loaded release
+- [PICARD-1696](https://tickets.metabrainz.org/browse/PICARD-1696) - No stable sort order for cover art saved to ID3
+- [PICARD-3308](https://tickets.metabrainz.org/browse/PICARD-3308) - macOS: System locale detection fails
+- [PICARD-3326](https://tickets.metabrainz.org/browse/PICARD-3326) - The releases on PyPI lack the source distribution
+- [PICARD-3327](https://tickets.metabrainz.org/browse/PICARD-3327) - MBID auto-loading and auto-analyze do not work after loading session with "No auto-matching on load" enabled
+
+### Improvements
+
+- [PICARD-3080](https://tickets.metabrainz.org/browse/PICARD-3080) - Consider track no. when matching files to AcoustID results
+- [PICARD-3092](https://tickets.metabrainz.org/browse/PICARD-3092) - Support reading duration from 3GP files (.m4a)
+- [PICARD-3138](https://tickets.metabrainz.org/browse/PICARD-3138) - Make user-collections retrieval optional, similar to genres and ratings
+- [PICARD-3270](https://tickets.metabrainz.org/browse/PICARD-3270) - Add ISRC and ISWC to pre-defined columns
+- [PICARD-3302](https://tickets.metabrainz.org/browse/PICARD-3302) - Allow focusing Log View dialog while Options dialog is open
+- [PICARD-3306](https://tickets.metabrainz.org/browse/PICARD-3306) - File naming script UI is overly complex and duplicated
+- [PICARD-3309](https://tickets.metabrainz.org/browse/PICARD-3309) - Unify Options menu toggle actions into configurable Quick settings
+- [PICARD-3313](https://tickets.metabrainz.org/browse/PICARD-3313) - Support executing local non-git plugins
+- [PICARD-3314](https://tickets.metabrainz.org/browse/PICARD-3314) - Add docstrings to `PluginApi` methods
+- [PICARD-3315](https://tickets.metabrainz.org/browse/PICARD-3315) - Add support for profiles for plugin options and pages
+- [PICARD-3318](https://tickets.metabrainz.org/browse/PICARD-3318) - Attached Profiles dialog should provide a way to configure profiles for this page
+- [PICARD-3329](https://tickets.metabrainz.org/browse/PICARD-3329) - Allow changing the string collator with the `PICARD_COLLATOR` environment variable
+
+
 ## Version 3.0.0b4 - 2026-05-31
 
 ### Bugfixes
