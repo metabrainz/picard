@@ -621,10 +621,27 @@ class ProfilesOptionsPage(OptionsPage):
                     item for item in qlistwidget_items(self.ui.profile_list) if item.profile_id == file_profile_id
                 ]
                 if existing:
+                    file_title = data.get('profile', {}).get('title', _('Unknown'))
+                    existing_name = existing[0].name
                     msgbox = QtWidgets.QMessageBox(self)
                     msgbox.setWindowTitle(_("Profile Exists"))
-                    msgbox.setText(_("A profile '%s' already exists.") % existing[0].name)
-                    update_button = msgbox.addButton(_("Update existing"), QtWidgets.QMessageBox.ButtonRole.YesRole)
+                    if existing_name == file_title:
+                        msgbox.setText(_("A profile '%s' with the same ID already exists.") % existing_name)
+                    else:
+                        msgbox.setText(
+                            _("The existing profile '%s' has the same ID as the imported profile '%s'.")
+                            % (existing_name, file_title)
+                        )
+                    msgbox.setInformativeText(
+                        _(
+                            "Do you want to replace the existing profile's settings "
+                            "with the imported ones, or create a separate copy?"
+                        )
+                    )
+                    update_button = msgbox.addButton(
+                        _("Replace '%s'") % existing_name,
+                        QtWidgets.QMessageBox.ButtonRole.YesRole,
+                    )
                     msgbox.addButton(_("Create new copy"), QtWidgets.QMessageBox.ButtonRole.NoRole)
                     msgbox.exec()
                     if msgbox.clickedButton() == update_button:
