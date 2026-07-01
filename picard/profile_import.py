@@ -106,8 +106,17 @@ def import_profile(
     # Build profile settings dict
     profile_settings = {}
 
-    # Process [settings] section
+    # Apply settings upgrades if the profile is from an older version
     settings_section = data.get('settings', {})
+    picard_version = profile_section.get('picard_version')
+    if picard_version and settings_section:
+        from picard.profile_settings_upgrades import upgrade_settings_for_import
+
+        upgrade_descriptions = upgrade_settings_for_import(settings_section, picard_version)
+        if upgrade_descriptions:
+            log.debug("Applied %d settings upgrades during profile import", len(upgrade_descriptions))
+
+    # Process [settings] section
     for key, value in settings_section.items():
         opt = Option.get('setting', key)
         if opt is None:
