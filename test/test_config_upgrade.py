@@ -25,6 +25,8 @@ from test.picardtestcase import PicardTestCase
 
 from picard.config_upgrade import (
     UpgradeHooksAutodetectError,
+    _rename_option_in_settings,
+    _upgrade_option_value_in_settings,
     autodetect_upgrade_hooks,
 )
 from picard.version import Version
@@ -102,3 +104,58 @@ class TestPicardConfigUpgradesAutodetect(PicardTestCase):
             Version(major=2, minor=0, patch=0, identifier='final', revision=0),
         )
         self.assertEqual(tuple(hooks), expected_keys)
+
+
+class TestRenameOptionInSettings(PicardTestCase):
+    def test_rename_existing_key(self):
+        settings = {'old_name': 'value', 'other': 42}
+        _rename_option_in_settings(settings, 'old_name', 'new_name')
+        self.assertEqual({'new_name': 'value', 'other': 42}, settings)
+
+    def test_rename_with_reverse(self):
+        settings = {'old_name': True}
+        _rename_option_in_settings(settings, 'old_name', 'new_name', reverse=True)
+        self.assertEqual({'new_name': False}, settings)
+
+    def test_rename_missing_key(self):
+        settings = {'other': 'value'}
+        _rename_option_in_settings(settings, 'old_name', 'new_name')
+        self.assertEqual({'other': 'value'}, settings)
+
+    def test_rename_none_value(self):
+        settings = {'old_name': None}
+        _rename_option_in_settings(settings, 'old_name', 'new_name')
+        self.assertEqual({'new_name': None}, settings)
+
+    def test_rename_none_value_reverse(self):
+        settings = {'old_name': None}
+        _rename_option_in_settings(settings, 'old_name', 'new_name', reverse=True)
+        # None values are not transformed, just moved
+        self.assertEqual({'new_name': None}, settings)
+
+
+class TestUpgradeOptionValueInSettings(PicardTestCase):
+    def test_transform_existing_key(self):
+        settings = {'my_opt': 'HELLO', 'other': 42}
+        _upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        self.assertEqual({'my_opt': 'hello', 'other': 42}, settings)
+
+    def test_transform_missing_key(self):
+        settings = {'other': 42}
+        _upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        self.assertEqual({'other': 42}, settings)
+
+    def test_transform_none_value_unchanged(self):
+        settings = {'my_opt': None}
+        _upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        # None values (tracked but not overridden) are not transformed
+        self.assertEqual({'my_opt': None}, settings)
+
+    def test_transform_list(self):
+        settings = {'items': [('Whitelist', True), ('Other', False)]}
+        _upgrade_option_value_in_settings(
+            settings,
+            'items',
+            lambda providers: [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in providers],
+        )
+        self.assertEqual({'items': [('UrlRelationships', True), ('Other', False)]}, settings)
