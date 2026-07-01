@@ -805,10 +805,9 @@ error.
 - b) Always create enabled — immediate effect
 - c) Prompt the user on import ("Enable this profile now?")
 
-**Recommended:** (c) Prompt the user. Creating disabled is safe but adds
-friction for the primary use case (newcomer following a guide). Prompting gives
-the user control without forcing extra steps in the common case. For CLI import,
-default to disabled with a `--enable` flag.
+**Answer:** (c) Prompt the user. This follows the general Picard pattern of
+asking the user when needed. For CLI import, default to disabled with a
+`--enable` flag.
 
 ---
 
@@ -818,10 +817,14 @@ default to disabled with a `--enable` flag.
 - a) Append imported scripts after existing ones
 - b) Replace the profile's entire `list_of_scripts` with the imported set
 - c) Deduplicate by title (update existing, append new)
+- d) Append, but warn/skip if a script with identical title AND content exists
 
-**Recommended:** (a) Append. Least surprising, non-destructive. Replacing would
-silently delete user scripts, and title-based deduplication is unreliable (same
-title doesn't mean same content). Users can manually remove duplicates.
+**Answer:** (d) Append, with deduplication on exact match (same title + same
+content). This avoids accumulating identical copies on repeated imports while
+still allowing scripts with the same title but different content to coexist.
+If only the title matches but content differs, append as a new script (user
+may have customized it). Show a summary after import: "2 scripts added,
+1 duplicate skipped."
 
 ---
 
@@ -831,10 +834,10 @@ title doesn't mean same content). Users can manually remove duplicates.
 - a) Yes — all sections besides `[profile]` are optional
 - b) No — require at least one of `[settings]` or `[scripts]`
 
-**Recommended:** (a) Yes. A file with only `[[scripts.tagging]]` and no
-`[settings]` is valid and useful (sharing scripts without imposing settings).
-The format is more flexible this way, and validation is simpler (just check
-`[profile]` exists).
+**Answer:** (a) Yes. Partial profiles are fine. A file with only
+`[[scripts.tagging]]` and no `[settings]` is valid and useful (sharing scripts
+without imposing settings). Validation is simpler: just check `[profile]`
+exists.
 
 ---
 
@@ -845,9 +848,9 @@ The format is more flexible this way, and validation is simpler (just check
 - b) Use the ID from the file, with collision handling (ask user on conflict)
 - c) Use the ID from the file, silently overwrite on collision
 
-**Recommended:** (b) Use the file's ID with collision prompt. This allows
-re-importing an updated profile to refresh the script rather than duplicating it.
-Silent overwrite (c) is dangerous; always-regenerate (a) leads to script
+**Answer:** (b) Use the file's ID with collision prompt. This allows
+re-importing an updated profile to refresh the script rather than duplicating
+it. Silent overwrite (c) is dangerous; always-regenerate (a) leads to script
 accumulation on repeated imports.
 
 ---
@@ -859,10 +862,13 @@ accumulation on repeated imports.
 - b) Only export plugin settings if explicitly requested by user
 - c) Exclude plugin settings entirely (plugins manage their own config)
 
-**Recommended:** (a) Include automatically if the plugin is installed. On import,
-skip with a warning if the plugin isn't present. Store `required_plugins` in
-`[profile]` metadata (with UUID + informational name) so the warning can name
-the missing plugins. UUID is the only reliable identifier — names can clash.
+**Answer:** (b) Only export plugin settings if explicitly requested by user.
+Plugin settings may contain sensitive data (API keys, tokens, credentials)
+that the `shareable` flag on core options wouldn't catch — plugins define their
+own options and may not mark them as non-shareable. Requiring explicit opt-in
+prevents accidental leaks. On import, skip with a warning if the plugin isn't
+present. Store `required_plugins` in `[profile]` metadata (with UUID +
+informational name) so the warning can name the missing plugins.
 
 ---
 
@@ -874,10 +880,13 @@ the missing plugins. UUID is the only reliable identifier — names can clash.
 - c) Embed content but mark it as a preset (import recognizes and uses the
    existing preset instead of creating a duplicate)
 
-**Recommended:** (b) Reference only. Presets are guaranteed to exist on any
-Picard installation. Embedding creates redundant copies and may cause confusion
-if preset content is updated between versions. The user gets the latest preset
-version rather than a frozen snapshot.
+**Answer:** (c) Embed the content but mark it as a preset. This anticipates
+possible changes to presets (renamed or content updated between versions).
+By embedding the content, the profile is self-contained and works even if the
+preset evolves. On import, if a preset with the same ID exists, the importer
+can compare content and use the local preset if it matches, or ask the user
+if it differs. Add a `preset = true` field in `[scripts.naming]` to signal
+this.
 
 ---
 
@@ -887,9 +896,9 @@ version rather than a frozen snapshot.
 - a) Yes — export all scripts with an `enabled` field
 - b) No — export only enabled scripts in both modes
 
-**Recommended:** (a) Yes. Disabled scripts carry user intent and should survive
-a backup/restore cycle. The `enabled` field is only written in backup mode;
-share mode continues to export only enabled scripts (without the field).
+**Answer:** (a) Yes. Backup mode must include everything to allow full profile
+restoration. Disabled scripts are exported with `enabled = false`. Share mode
+continues to export only enabled scripts (without the field).
 
 ---
 
@@ -901,11 +910,18 @@ share mode continues to export only enabled scripts (without the field).
    transform function)
 - c) Yes — run full config upgrade hooks on imported settings
 
-**Recommended:** (a) for Phase 1, (b) for Phase 2. A lightweight rename map
-covers the common cases (simple renames, inverted booleans) without the
-complexity of running full upgrade hooks on a partial settings dict. Phase 1
-ships with silent skip + warning, which is already how Picard handles unknown
-config keys.
+**Answer:** Yes — the infrastructure now exists (PICARD-3330). The merged
+`_rename_option_in_settings()` and `_upgrade_option_value_in_settings()` helpers
+operate on plain dicts, so they can be applied to imported profile settings
+directly. The import flow:
+
+1. Read `picard_version` from the TOML file
+2. Identify which upgrade transforms apply between that version and current
+3. Apply the relevant renames/transforms to the imported settings dict
+
+This can be implemented in Phase 1 by maintaining a registry of version-keyed
+setting transforms (parallel to the hooks but operating on dicts only). This
+avoids silent data loss without the complexity of running full upgrade hooks.
 
 ---
 
@@ -916,14 +932,13 @@ config keys.
 - b) No — naming scripts are independent resources, never auto-delete
 - c) Yes — silently delete unreferenced scripts
 
-**Recommended:** (a) Prompt. Naming scripts are a side effect of import
-(injected into the global dict). Prompting on profile deletion avoids silent
-accumulation while respecting that the user might want to keep the script for
-other purposes. Phase 2 enhancement.
+**Answer:** (a) Prompt. Naming scripts are a side effect of import (injected
+into the global dict). Prompting on profile deletion avoids silent accumulation
+while respecting that the user might want to keep the script for other purposes.
 
 ---
 
-### 10. What is the canonical file extension?
+### 10. What is the canonical file extension and default filename?
 
 **Possible answers:**
 - a) `.toml` only — standard, syntax-highlighted everywhere
@@ -931,21 +946,16 @@ other purposes. Phase 2 enhancement.
    TOML highlighting
 - c) Custom extension like `.pcp` (Picard Configuration Profile)
 
-**Recommended:** (a) `.toml`. It's standard, gets syntax highlighting in every
-editor, and Picard identifies profile files by content (`[profile]` header), not
-extension. A custom extension loses editor support for no practical gain.
-OS-level file association can be done with `.toml` files using MIME type or
-content sniffing if needed later.
+**Answer:** (a) Use `.toml` extension. The default filename when saving uses
+the prefix `picard-profile-` followed by a slugified profile title, e.g.,
+`picard-profile-navidrome-optimized.toml`. This makes exported files
+immediately recognizable in a directory while keeping standard TOML extension
+for editor support and syntax highlighting. Picard identifies profile files
+by content (`[profile]` header), not extension.
 
 ---
 
 ### 11. How should `enable_tagger_scripts` interact with imported scripts?
-
-**⚠️ No clear recommendation yet.**
-
-**Problem:** If the imported profile has tagger scripts but the original profile
-had `enable_tagger_scripts = false` (scripts defined but master toggle off),
-what should import do?
 
 **Possible answers:**
 - a) Always set `enable_tagger_scripts = true` when scripts are present
@@ -955,20 +965,14 @@ what should import do?
    author's exact configuration
 - c) In share mode: always enable (a). In backup mode: preserve exact value (b)
 
-**Discussion:** Option (a) is simpler and matches the "share" use case (why
-share scripts if not to use them?). But it silently changes behavior if the
-original profile used the master toggle as a quick on/off switch. Option (c)
-may be the pragmatic middle ground but adds mode-specific logic to import.
+**Answer:** (c) Mode-dependent, with user prompt if needed. In share mode,
+scripts are always enabled (the author shared them to be used). In backup mode,
+the exact value of `enable_tagger_scripts` is preserved for faithful
+restoration. If the situation is ambiguous, prompt the user.
 
 ---
 
 ### 12. Should complex list-of-tuple options have bespoke TOML representations?
-
-**⚠️ No clear recommendation yet.**
-
-**Problem:** Options like `ca_providers` and `release_type_scores` store lists
-of tuples with positional semantics. Exporting as list-of-lists
-(`[["album", 0.75], ...]`) is valid but positional meaning is implicit.
 
 **Possible answers:**
 - a) Export as plain list-of-lists — simple, minimal code, positional meaning
@@ -979,10 +983,10 @@ of tuples with positional semantics. Exporting as list-of-lists
 - c) Hybrid — use named fields only for options where readability matters most
    (e.g., `ca_providers` where users might hand-edit), plain lists for the rest
 
-**Discussion:** Option (a) is simplest to implement and maintain. Option (b) is
-more self-documenting but adds per-option serialization logic. The pragmatic
-answer may depend on how often users realistically hand-edit these options
-(probably rarely — they're more likely to adjust them in the GUI).
+**Answer:** (a) Start with plain list-of-lists. This is simplest to implement
+and can be upgraded to (b) or (c) later without breaking compatibility — the
+importer can detect the format by checking whether elements are lists or dicts,
+accepting both. Old exports remain valid when the export format evolves.
 
 ---
 
