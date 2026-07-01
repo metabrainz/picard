@@ -70,7 +70,13 @@ class Option(QtCore.QObject):
     qtype: object = None
 
     def __init__(
-        self, section: str, name: str, default: ConfigValueType, title: str | None = None, in_profile: bool = False
+        self,
+        section: str,
+        name: str,
+        default: ConfigValueType,
+        title: str | None = None,
+        in_profile: bool = False,
+        shareable: bool = True,
     ):
         super().__init__()
         self.section = section
@@ -78,6 +84,7 @@ class Option(QtCore.QObject):
         self.default = default
         self.title = title
         self.in_profile = in_profile
+        self.shareable = shareable
         if in_profile and not title:
             log.warning("Option '%s/%s' has in_profile=True but no title", section, name)
         self.registry[(section, name)] = self
