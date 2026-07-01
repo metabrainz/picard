@@ -61,7 +61,7 @@ def cmd_list(args):
 
 def cmd_export(args):
     """Export a profile to a TOML file."""
-    from picard.profile_export import export_profile
+    from picard.profiles.exporter import export_profile
 
     config = get_config()
     profiles = config.profiles['user_profiles']
@@ -95,7 +95,7 @@ def cmd_export(args):
 
 def cmd_import(args):
     """Import a profile from a TOML file."""
-    from picard.profile_import import (
+    from picard.profiles.importer import (
         ProfileImportError,
         import_profile,
     )

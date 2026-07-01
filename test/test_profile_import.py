@@ -26,7 +26,7 @@ from picard.config import (
     Option,
     TextOption,
 )
-from picard.profile_import import (
+from picard.profiles.importer import (
     ProfileImportError,
     import_profile,
 )

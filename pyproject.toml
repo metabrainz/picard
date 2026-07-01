@@ -58,7 +58,7 @@ Funding = "https://metabrainz.org/donate"
 
 [project.scripts]
 picard-plugins = "picard.plugin3.cli:main"
-picard-profiles = "picard.profile_cli:main"
+picard-profiles = "picard.profiles.cli:main"
 
 [project.optional-dependencies]
 plugins = [
