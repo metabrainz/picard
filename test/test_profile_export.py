@@ -323,3 +323,60 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertNotIn('list_of_scripts', settings)
         self.assertNotIn('enable_tagger_scripts', settings)
         self.assertTrue(settings['rename_files'])
+
+    def test_export_dict_option(self):
+        Option('setting', 'win_compat_replacements', {}, title="Replacements", in_profile=True)
+
+        self._setup_profile(
+            'p1',
+            {
+                'win_compat_replacements': {
+                    '*': '_',
+                    ':': '-',
+                    '?': '',
+                },
+            },
+        )
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        expected = {'*': '_', ':': '-', '?': ''}
+        self.assertEqual(parsed['settings']['win_compat_replacements'], expected)
+
+    def test_export_int_option(self):
+        from picard.config import IntOption
+
+        IntOption('setting', 'caa_image_size', 500, title="Image size", in_profile=True)
+
+        self._setup_profile('p1', {'caa_image_size': 1000})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        self.assertEqual(parsed['settings']['caa_image_size'], 1000)
+
+    def test_export_float_option(self):
+        from picard.config import FloatOption
+
+        FloatOption('setting', 'match_min_similarity', 0.5, title="Similarity", in_profile=True)
+
+        self._setup_profile('p1', {'match_min_similarity': 0.75})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        self.assertAlmostEqual(parsed['settings']['match_min_similarity'], 0.75)
+
+    def test_export_enum_option(self):
+        from picard.const.cover_processing import ImageFormat
+
+        Option('setting', 'cover_format', ImageFormat.JPEG, title="Format", in_profile=True)
+
+        self._setup_profile('p1', {'cover_format': ImageFormat.PNG})
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        # Enum should be exported as its value string
+        self.assertEqual(parsed['settings']['cover_format'], 'png')
