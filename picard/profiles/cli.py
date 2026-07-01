@@ -21,9 +21,9 @@
 """CLI for profile export/import/list operations.
 
 Usage:
-    picard-profiles list
-    picard-profiles export "Profile Title" [-o output.toml] [--mode backup]
-    picard-profiles import input.toml [--enable]
+    picard-profiles --list
+    picard-profiles --export "Profile Title" [-o output.toml] [--mode backup]
+    picard-profiles --import input.toml [--enable] [--replace UUID]
 """
 
 import argparse
@@ -41,6 +41,50 @@ from picard.config import (
     setup_config,
 )
 from picard.options import init_options
+
+
+class ResolveResult:
+    """Result of profile resolution.
+
+    Attributes:
+        profile: The matched profile dict, or None if not found/ambiguous.
+        candidates: List of candidate profiles when ambiguous, empty otherwise.
+    """
+
+    __slots__ = ('profile', 'candidates')
+
+    def __init__(self, profile=None, candidates=None):
+        self.profile = profile
+        self.candidates = candidates or []
+
+
+def _resolve_profile_query(config, query: str) -> ResolveResult:
+    """Resolve a query (title, UUID, or partial match) to a profile.
+
+    Returns a ResolveResult with either a single matched profile or
+    a list of candidates (empty if no match, multiple if ambiguous).
+    """
+    profiles = config.profiles['user_profiles']
+
+    # Exact match first
+    matching = [p for p in profiles if p['title'] == query or p['id'] == query]
+    if not matching:
+        # Partial match
+        matching = [p for p in profiles if query.lower() in p['title'].lower() or p['id'].startswith(query)]
+
+    if len(matching) == 1:
+        return ResolveResult(profile=matching[0])
+    return ResolveResult(candidates=matching)
+
+
+def _print_resolve_error(query: str, result: ResolveResult):
+    """Print an error message for a failed profile resolution."""
+    if not result.candidates:
+        print(f"Error: No profile found matching '{query}'", file=sys.stderr)
+    else:
+        print(f"Error: '{query}' is ambiguous, matches multiple profiles:", file=sys.stderr)
+        for p in result.candidates:
+            print(f"  {p['title']} (id: {p['id']})", file=sys.stderr)
 
 
 def cmd_list(args):
@@ -64,18 +108,14 @@ def cmd_export(args):
     from picard.profiles.exporter import export_profile
 
     config = get_config()
-    profiles = config.profiles['user_profiles']
 
-    # Find profile by title
-    matching = [p for p in profiles if p['title'] == args.title]
-    if not matching:
-        print(f"Error: No profile found with title '{args.title}'", file=sys.stderr)
-        print("Available profiles:", file=sys.stderr)
-        for p in profiles:
-            print(f"  {p['title']}", file=sys.stderr)
+    # Find profile by exact or partial match on title or UUID
+    resolve = _resolve_profile_query(config, args.export)
+    if not resolve.profile:
+        _print_resolve_error(args.export, resolve)
         return 1
 
-    profile = matching[0]
+    profile = resolve.profile
     toml_string = export_profile(
         config,
         profile_id=profile['id'],
@@ -103,14 +143,23 @@ def cmd_import(args):
     config = get_config()
 
     try:
-        with open(args.file, 'r', encoding='utf-8') as f:
+        with open(args.import_file, 'r', encoding='utf-8') as f:
             toml_string = f.read()
     except OSError as e:
         print(f"Error: Cannot read file: {e}", file=sys.stderr)
         return 1
 
+    # Resolve --replace to an actual UUID
+    replace_id = None
+    if getattr(args, 'replace', None):
+        resolve = _resolve_profile_query(config, args.replace)
+        if not resolve.profile:
+            _print_resolve_error(args.replace, resolve)
+            return 1
+        replace_id = resolve.profile['id']
+
     try:
-        result = import_profile(config, toml_string, enabled=args.enable)
+        result = import_profile(config, toml_string, enabled=args.enable, replace_id=replace_id)
     except ProfileImportError as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
@@ -134,26 +183,23 @@ def process_cmdline_args():
     parser.add_argument('-c', '--config-file', action='store', default=None, help="configuration file location")
     parser.add_argument('-v', '--version', action='store_true', help="display version and exit")
 
-    subparsers = parser.add_subparsers(dest='command', help='Available commands')
-
-    # list
-    subparsers.add_parser('list', help='List all configured profiles')
-
-    # export
-    export_parser = subparsers.add_parser('export', help='Export a profile to TOML')
-    export_parser.add_argument('title', help='Title of the profile to export')
-    export_parser.add_argument('-o', '--output', help='Output file (default: stdout)')
-    export_parser.add_argument(
-        '--mode',
-        choices=['share', 'backup'],
-        default='share',
-        help='Export mode (default: share)',
+    group = parser.add_argument_group("Profile Management")
+    group.add_argument('-l', '--list', action='store_true', help="list all configured profiles")
+    group.add_argument(
+        '-e',
+        '--export',
+        metavar='TITLE_OR_ID',
+        help="export a profile by title or UUID (output to stdout or -o file)",
     )
-
-    # import
-    import_parser = subparsers.add_parser('import', help='Import a profile from TOML')
-    import_parser.add_argument('file', help='TOML file to import')
-    import_parser.add_argument('--enable', action='store_true', help='Enable the profile after import')
+    group.add_argument('-i', '--import', metavar='FILE', dest='import_file', help="import a profile from a TOML file")
+    group.add_argument('-o', '--output', metavar='FILE', help="output file for export (default: stdout)")
+    group.add_argument('--mode', choices=['share', 'backup'], default='share', help="export mode (default: share)")
+    group.add_argument('--enable', action='store_true', help="enable the profile after import")
+    group.add_argument(
+        '--replace',
+        metavar='TITLE_OR_ID',
+        help="replace an existing profile on import (match by title or UUID, partial allowed)",
+    )
 
     return parser.parse_args(), parser
 
@@ -180,22 +226,15 @@ def main():
         print(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
         sys.exit(0)
 
-    commands = {
-        'list': cmd_list,
-        'export': cmd_export,
-        'import': cmd_import,
-    }
-
-    if cmdline_args.command is None:
-        parser.print_help()
-        sys.exit(0)
-
-    handler = commands.get(cmdline_args.command)
-    if handler:
-        sys.exit(handler(cmdline_args))
+    if cmdline_args.list:
+        sys.exit(cmd_list(cmdline_args))
+    elif cmdline_args.export:
+        sys.exit(cmd_export(cmdline_args))
+    elif cmdline_args.import_file:
+        sys.exit(cmd_import(cmdline_args))
     else:
         parser.print_help()
-        sys.exit(1)
+        sys.exit(0)
 
 
 if __name__ == "__main__":

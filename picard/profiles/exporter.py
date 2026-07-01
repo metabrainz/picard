@@ -81,6 +81,8 @@ def export_profile(
     # [profile] section
     profile_table = tomlkit.table()
     profile_table.add('title', title)
+    if mode == 'backup':
+        profile_table.add('id', profile_id)
     if description:
         profile_table.add('description', description)
     if author:

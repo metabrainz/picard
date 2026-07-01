@@ -21,6 +21,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from copy import deepcopy
+import re
+import sys
 import uuid
 
 from PyQt6 import (
@@ -62,6 +64,15 @@ from picard.ui.moveable_list_view import MoveableListView
 from picard.ui.options import OptionsPage
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets.profilelistwidget import ProfileListWidgetItem
+
+
+def _slugify(text: str) -> str:
+    """Convert a profile title to a filesystem-friendly slug."""
+    slug = text.lower().strip()
+    slug = re.sub(r'[^\w\s-]', '', slug)
+    slug = re.sub(r'[\s_]+', '-', slug)
+    slug = re.sub(r'-+', '-', slug)
+    return slug.strip('-')
 
 
 class ProfilesOptionsPage(OptionsPage):
@@ -131,6 +142,20 @@ class ProfilesOptionsPage(OptionsPage):
         self.delete_profile_button.clicked.connect(self.delete_profile)
         self.ui.profile_list_buttonbox.addButton(
             self.delete_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
+
+        self.export_profile_button = QtWidgets.QPushButton(_("Export"))
+        self.export_profile_button.setToolTip(_("Export the profile to a file"))
+        self.export_profile_button.clicked.connect(self.export_profile)
+        self.ui.profile_list_buttonbox.addButton(
+            self.export_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
+        )
+
+        self.import_profile_button = QtWidgets.QPushButton(_("Import"))
+        self.import_profile_button.setToolTip(_("Import a profile from a file"))
+        self.import_profile_button.clicked.connect(self.import_profile)
+        self.ui.profile_list_buttonbox.addButton(
+            self.import_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
 
     def restore_defaults(self):
@@ -500,6 +525,159 @@ class ProfilesOptionsPage(OptionsPage):
         self.update_config_overrides()
         self.reload_all_page_settings()
 
+    def export_profile(self):
+        """Export the selected profile to a TOML file."""
+        item = self.get_current_selected_item()
+        if not item:
+            return
+
+        from picard.profiles.exporter import export_profile
+
+        config = get_config()
+        profile_id = item.profile_id
+        title = item.name
+
+        # Ask user for export mode
+        mode_items = [_("Share (exclude sensitive data)"), _("Backup (include everything)")]
+        mode_choice, ok = QtWidgets.QInputDialog.getItem(
+            self,
+            _("Export Profile"),
+            _("Export mode:"),
+            mode_items,
+            0,
+            False,
+        )
+        if not ok:
+            return
+        mode = 'backup' if mode_choice == mode_items[1] else 'share'
+
+        # File save dialog
+        default_filename = "picard-profile-%s.toml" % _slugify(title)
+        filepath, _filter = QtWidgets.QFileDialog.getSaveFileName(
+            self,
+            _("Export Profile"),
+            default_filename,
+            _("TOML files") + " (*.toml)",
+        )
+        if not filepath:
+            return
+
+        toml_string = export_profile(
+            config,
+            profile_id=profile_id,
+            title=title,
+            mode=mode,
+        )
+
+        try:
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(toml_string)
+        except OSError as e:
+            QtWidgets.QMessageBox.critical(self, _("Export Error"), _("Failed to write file: %s") % e)
+            return
+
+        QtWidgets.QMessageBox.information(self, _("Export Complete"), _("Profile exported to: %s") % filepath)
+
+    def import_profile(self):
+        """Import a profile from a TOML file."""
+        if sys.version_info < (3, 11):
+            import tomli as tomllib
+        else:
+            import tomllib
+
+        from picard.profiles.importer import (
+            ProfileImportError,
+            import_profile,
+        )
+
+        config = get_config()
+
+        # File open dialog
+        filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            _("Import Profile"),
+            "",
+            _("TOML files") + " (*.toml)",
+        )
+        if not filepath:
+            return
+
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                toml_string = f.read()
+        except OSError as e:
+            QtWidgets.QMessageBox.critical(self, _("Import Error"), _("Failed to read file: %s") % e)
+            return
+
+        # Check if the file contains a profile UUID that already exists in the dialog
+        replace_id = None
+        try:
+            data = tomllib.loads(toml_string)
+            file_profile_id = data.get('profile', {}).get('id')
+            if file_profile_id:
+                existing = [
+                    item for item in qlistwidget_items(self.ui.profile_list) if item.profile_id == file_profile_id
+                ]
+                if existing:
+                    msgbox = QtWidgets.QMessageBox(self)
+                    msgbox.setWindowTitle(_("Profile Exists"))
+                    msgbox.setText(_("A profile '%s' already exists.") % existing[0].name)
+                    update_button = msgbox.addButton(_("Update existing"), QtWidgets.QMessageBox.ButtonRole.YesRole)
+                    msgbox.addButton(_("Create new copy"), QtWidgets.QMessageBox.ButtonRole.NoRole)
+                    msgbox.exec()
+                    if msgbox.clickedButton() == update_button:
+                        replace_id = file_profile_id
+        except tomllib.TOMLDecodeError:
+            pass  # Will be caught by import_profile below
+
+        # Ask whether to enable the profile (only for new profiles)
+        enabled = False
+        if not replace_id:
+            reply = QtWidgets.QMessageBox.question(
+                self,
+                _("Import Profile"),
+                _("Enable this profile after import?"),
+                QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.No,
+            )
+            enabled = reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+        try:
+            result = import_profile(config, toml_string, enabled=enabled, replace_id=replace_id)
+        except ProfileImportError as e:
+            QtWidgets.QMessageBox.critical(self, _("Import Error"), str(e))
+            return
+
+        # Show warnings if any
+        if result.warnings:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Import Warnings"),
+                "\n".join(result.warnings),
+            )
+
+        # Update the dialog's working state (not reload from config)
+        all_settings = config.profiles['user_profile_settings']
+        self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
+
+        if replace_id:
+            # Update existing item in the list
+            for item in qlistwidget_items(self.ui.profile_list):
+                if item.profile_id == replace_id:
+                    item.name = result.title
+                    break
+        else:
+            # Add new profile to the list widget
+            self.ui.profile_list.add_profile(name=result.title, profile_id=result.profile_id)
+            if not enabled:
+                # add_profile sets Checked by default, uncheck if disabled
+                item = self.ui.profile_list.item(0)
+                if item:
+                    item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+        self.update_config_overrides()
+        self.reload_all_page_settings()
+
     def _clean_and_get_all_profiles(self):
         """Returns the list of profiles, adds any missing profile settings, and removes any "orphan"
         profile settings (i.e. settings dictionaries not associated with an existing profile).
@@ -554,6 +732,7 @@ class ProfilesOptionsPage(OptionsPage):
         state = self.current_profile_id is not None
         self.copy_profile_button.setEnabled(state)
         self.delete_profile_button.setEnabled(state)
+        self.export_profile_button.setEnabled(state)
 
 
 register_options_page(ProfilesOptionsPage)
