@@ -34,7 +34,7 @@ from picard.config import (
     Option,
     TextOption,
 )
-from picard.profile_export import export_profile
+from picard.profiles.exporter import export_profile
 
 
 class TestProfileExport(TestPicardConfigCommon):

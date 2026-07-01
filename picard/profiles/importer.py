@@ -110,7 +110,7 @@ def import_profile(
     settings_section = data.get('settings', {})
     picard_version = profile_section.get('picard_version')
     if picard_version and settings_section:
-        from picard.profile_settings_upgrades import upgrade_settings_for_import
+        from picard.profiles.settings_upgrades import upgrade_settings_for_import
 
         upgrade_descriptions = upgrade_settings_for_import(settings_section, picard_version)
         if upgrade_descriptions:

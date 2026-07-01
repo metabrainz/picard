@@ -20,7 +20,7 @@
 
 from test.picardtestcase import PicardTestCase
 
-from picard.profile_settings_upgrades import (
+from picard.profiles.settings_upgrades import (
     _SETTINGS_UPGRADES,
     _register,
     upgrade_settings_for_import,
