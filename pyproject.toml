@@ -45,6 +45,7 @@ dependencies = [
     "pygit2>=1.18.2, <1.19; python_version < '3.11'",
     "pygit2~=1.19; python_version >= '3.11'",
     "tomli>=2.3.0; python_version < '3.11'",
+    "tomlkit>=0.13.3",
 ]
 
 [project.urls]
@@ -79,7 +80,6 @@ dev = [
     "pytest-randomly>=4.0.1",
     "pytest-xdist>=3.8.0",
     "ruff>=0.13.0",
-    "tomlkit>=0.13.3",
     "wlc>=1.17.2",
 ]
 
