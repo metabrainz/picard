@@ -267,7 +267,7 @@ extension.
 ### Structure
 
 ```toml
-# Picard Exportable Profile
+# Picard Profile
 # https://picard.musicbrainz.org/
 
 [profile]

@@ -74,7 +74,7 @@ def export_profile(
     profile_settings = all_settings.get(profile_id, {})
 
     doc = tomlkit.document()
-    doc.add(tomlkit.comment("Picard Exportable Profile"))
+    doc.add(tomlkit.comment("Picard Profile"))
     doc.add(tomlkit.comment("https://picard.musicbrainz.org/"))
     doc.add(tomlkit.nl())
 
