@@ -237,7 +237,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         # Verify round-trip
         profiles = self.config.profiles['user_profiles']
         self.assertEqual(len(profiles), 2)
-        imported = profiles[1]
+        imported = profiles[0]  # New profile inserted at top
         self.assertEqual(imported['title'], 'Original (copy)')
         settings = self.config.profiles['user_profile_settings'][imported['id']]
         self.assertTrue(settings['rename_files'])
