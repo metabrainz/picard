@@ -334,9 +334,11 @@ class ProfilesOptionsPage(OptionsPage):
     def _get_ca_convert_format(self, value):
         if value is None:
             return _("No format selected")
+        if isinstance(value, str):
+            return value
         if value not in ImageFormat:
             return _("Invalid format selected")
-        return value.title
+        return value.value
 
     def make_setting_value_text(self, key, value):
         config = get_config()
