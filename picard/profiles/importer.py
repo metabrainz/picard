@@ -307,22 +307,25 @@ def _register_profile(
     profiles_list = config.profiles['user_profiles']
 
     if replace:
-        # Update existing profile entry
+        # Update existing profile entry (keeps its position)
         for profile in profiles_list:
             if profile['id'] == profile_id:
                 profile['title'] = title
                 break
     else:
-        # Add new profile entry
-        position = len(profiles_list)
-        profiles_list.append(
+        # Insert new profile at the top (highest priority)
+        profiles_list.insert(
+            0,
             {
                 'id': profile_id,
                 'title': title,
                 'enabled': enabled,
-                'position': position,
-            }
+                'position': 0,
+            },
         )
+        # Update positions for all profiles
+        for i, profile in enumerate(profiles_list):
+            profile['position'] = i
 
     config.profiles['user_profiles'] = profiles_list
 
