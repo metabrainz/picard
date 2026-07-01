@@ -374,7 +374,12 @@ BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when 
 BoolOption('setting', 'rtd_updates_ask', True, title=N_("Show documentation update request"), in_profile=True)
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"), in_profile=True)
 TextOption(
-    'setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"), in_profile=True
+    'setting',
+    'starting_directory_path',
+    DEFAULT_STARTING_DIR,
+    title=N_("Directory to begin browsing"),
+    in_profile=True,
+    shareable=False,
 )
 BoolOption('setting', 'toolbar_show_labels', True, title=N_("Show text labels under icons"), in_profile=True)
 TextOption('setting', 'ui_language', '', title=N_("User interface language"))
@@ -394,7 +399,7 @@ BoolOption(
     title=N_('Submit only tagged files ListenBrainz'),
     in_profile=True,
 )
-TextOption('setting', 'listenbrainz_token', '', title=N_('ListenBrainz user token'), in_profile=True)
+TextOption('setting', 'listenbrainz_token', '', title=N_('ListenBrainz user token'), in_profile=True, shareable=False)
 
 # picard/ui/options/interface_colors.py
 # Colors
@@ -448,6 +453,7 @@ TextOption(
     DEFAULT_AUTOBACKUP_DIRECTORY,
     title=N_("Configuration backup directory"),
     in_profile=True,
+    shareable=False,
 )
 
 # picard/ui/options/matching.py
@@ -506,11 +512,11 @@ IntOption(
     in_profile=True,
 )
 IntOption('setting', 'network_transfer_timeout_seconds', 30, title=N_("Request timeout (seconds)"), in_profile=True)
-TextOption('setting', 'proxy_password', '', title=N_("Proxy password"), in_profile=True)
-TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"), in_profile=True)
-IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port"), in_profile=True)
+TextOption('setting', 'proxy_password', '', title=N_("Proxy password"), in_profile=True, shareable=False)
+TextOption('setting', 'proxy_server_host', '', title=N_("Proxy server address"), in_profile=True, shareable=False)
+IntOption('setting', 'proxy_server_port', 80, title=N_("Proxy server port"), in_profile=True, shareable=False)
 TextOption('setting', 'proxy_type', 'http', title=N_("Type of proxy server"), in_profile=True)
-TextOption('setting', 'proxy_username', '', title=N_("Proxy username"), in_profile=True)
+TextOption('setting', 'proxy_username', '', title=N_("Proxy username"), in_profile=True, shareable=False)
 BoolOption('setting', 'use_proxy', False, title=N_("Use a web proxy server"), in_profile=True)
 
 # picard/ui/options/plugin_execution_order.py
@@ -547,7 +553,9 @@ TextOption(
     'setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns"), in_profile=True
 )
 BoolOption('setting', 'move_files', False, title=N_("Move files"), in_profile=True)
-TextOption('setting', 'move_files_to', DEFAULT_MUSIC_DIR, title=N_("Destination directory"), in_profile=True)
+TextOption(
+    'setting', 'move_files_to', DEFAULT_MUSIC_DIR, title=N_("Destination directory"), in_profile=True, shareable=False
+)
 BoolOption('setting', 'move_overwrite_existing_files', False, title=N_("Overwrite existing files"), in_profile=True)
 BoolOption('setting', 'rename_files', False, title=N_("Rename files"), in_profile=True)
 
@@ -572,7 +580,14 @@ Option(
     in_profile=True,
 )
 BoolOption('setting', 'windows_compatibility', True, title=N_("Windows compatibility"), in_profile=True)
-BoolOption('setting', 'windows_long_paths', DEFAULT_LONG_PATHS, title=N_("Windows long path support"), in_profile=True)
+BoolOption(
+    'setting',
+    'windows_long_paths',
+    DEFAULT_LONG_PATHS,
+    title=N_("Windows long path support"),
+    in_profile=True,
+    shareable=False,
+)
 
 # picard/ui/options/scripting.py
 # Scripting
