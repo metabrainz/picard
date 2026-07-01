@@ -694,6 +694,10 @@ tomli==2.4.1 ; python_full_version < '3.11' \
     # via
     #   picard (pyproject.toml)
     #   pytest
+tomlkit==0.15.0 \
+    --hash=sha256:4dbc8f0fc024412b57ced8757ac7461305126a648ff8c2c807fcb8e133a78738 \
+    --hash=sha256:7d1a9ecba3086638211b13814ea79c90dd54dd11993564376f3aa92271f5c7a3
+    # via picard (pyproject.toml)
 typing-extensions==4.15.0 ; python_full_version < '3.11' \
     --hash=sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466 \
     --hash=sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548
