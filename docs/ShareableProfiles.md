@@ -200,21 +200,30 @@ from accidentally including sensitive data when sharing.
 
 ### Human-Readable Values
 
-**Decision:** All option values in the exported TOML must be clear, human-readable
-text. Internal representations (opaque IDs, encoded tuples, index numbers) are
-converted to meaningful equivalents on export, and converted back on import.
+**Decision:** Option values in the exported TOML should be as human-readable as
+practical. Simple types (strings, booleans, integers, flat lists) map directly
+to TOML. Complex internal representations are converted to clearer equivalents
+where the cost is reasonable.
 
 **Rationale:**
-- Users must be able to read, understand, and hand-edit a profile
-- Forum readers must be able to evaluate a profile before importing it
+- Users should be able to read and understand most of a profile
+- Forum readers should be able to evaluate a profile before importing it
 - Internal storage formats are an implementation detail that should not leak
+
+**Pragmatic approach:** Full human-readability for every option is not always
+worth the implementation and maintenance cost. Where a structured-but-opaque
+representation (e.g., list of lists) is the natural TOML mapping and the option
+is rarely hand-edited, that's acceptable. The priority is: scripts and common
+settings are readable; niche complex options are at least valid TOML.
 
 **Examples:**
 
-| Option | Internal format | Exported as |
-|--------|----------------|-------------|
-| `caa_image_types` | `('front',)` | `["front"]` |
-| `ca_providers` | `[('Cover Art Archive', True), ...]` | (handled via `[settings]` as a TOML array of tables if needed, or simplified) |
+| Option | Internal format | Exported as | Notes |
+|--------|----------------|-------------|-------|
+| `caa_image_types` | `['front']` | `["front"]` | Direct mapping |
+| `ca_providers` | `[('Cover Art Archive', True), ...]` | `[["Cover Art Archive", true], ...]` | List of lists — already readable since names are strings |
+| `release_type_scores` | `[('album', 0.75), ...]` | `[["album", 0.75], ...]` | List of lists — clear enough |
+| `standardize_artists` | `True` | `true` | Direct mapping |
 
 Complex options that cannot be cleanly represented in TOML should be documented
 case by case. If an option's internal format is already human-readable (strings,
@@ -273,6 +282,11 @@ version = "1.0"
 created = "2026-06-21"
 picard_version = "3.0.0"
 picard_version_min = "3.0"
+
+# Optional: plugins required by this profile
+required_plugins = [
+    {uuid = "a1b2c3d4-e5f6-7890-abcd-ef1234567890", name = "My Cool Plugin"},
+]
 
 [settings]
 # Use standardized artist names — Navidrome matches artists by name,
@@ -338,6 +352,7 @@ $delete(originalyear)
 | `created` | string | no | ISO date of creation |
 | `picard_version` | string | yes | Picard version that generated this file (serves as format identifier) |
 | `picard_version_min` | string | no | Minimum Picard version required to use this profile |
+| `required_plugins` | array of tables | no | Plugins needed for this profile's settings (informational; `uuid` is the key, `name` is for display) |
 
 #### `[settings]` — Option Overrides (optional)
 
@@ -361,8 +376,30 @@ Unknown keys are silently ignored on import.
 |-------|------|----------|-------------|
 | `title` | string | yes | Display name |
 | `script` | string | yes | The tagger script content |
+| `enabled` | boolean | no | Whether the script is enabled (default: `true`; only present in backup mode) |
 
-Only enabled scripts are exported. Imported scripts are always enabled.
+In share mode: only enabled scripts are exported (no `enabled` field written).
+In backup mode: all scripts are exported with an explicit `enabled` field.
+Imported scripts default to enabled if the field is absent.
+
+#### `[plugins.<uuid>]` — Plugin Option Overrides (optional)
+
+Each plugin with overridden options gets its own sub-table keyed by UUID:
+
+```toml
+[plugins."a1b2c3d4-e5f6-7890-abcd-ef1234567890"]
+# Plugin: "My Cool Plugin"
+my_option = "value"
+another_option = 42
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| (any key) | any | Plugin option key-value pairs |
+
+The UUID is the canonical plugin identifier (names can clash between plugins).
+Plugin name is included as a comment for human readability. On import, plugin
+sections for uninstalled plugins are skipped with a warning.
 
 ---
 
@@ -376,13 +413,20 @@ Only enabled scripts are exported. Imported scripts are always enabled.
    - Set the profile's `active_file_naming_script_id` override to that ID
 5. If `[[scripts.tagging]]` entries exist:
    - Append to the profile's `list_of_scripts` override
+   - Respect the `enabled` field if present (default: `true`)
    - Set `enable_tagger_scripts = true` in the profile
-6. Apply `[settings]` as profile overrides:
+6. If `[plugins.*]` sections exist:
+   - For each plugin UUID, check if the plugin is installed
+   - If installed: apply settings as profile overrides (keyed as
+     `plugin.<uuid>/option_name`)
+   - If not installed: collect for warning message, skip settings
+7. Apply `[settings]` as profile overrides:
    - Skip unknown option names (forward compatibility)
    - Skip options where `in_profile=False` (cannot be overridden by a profile)
    - `active_file_naming_script_id`, `enable_tagger_scripts`, and `list_of_scripts`
      are handled implicitly by steps 4-5 when scripts are present
-7. Profile is created in disabled state — user can review and enable it
+8. Show warnings (if any): unrecognized options, missing plugins, version mismatch
+9. Profile is created in disabled state — user can review and enable it
 
 ### Conflict Handling
 
@@ -422,13 +466,17 @@ silently dropped. Profiles degrade gracefully rather than failing entirely.
 3. Collect all overridden settings for that profile
 4. In share mode, filter out options where `shareable=False`
 5. If `active_file_naming_script_id` is overridden, resolve and embed the
-   referenced script into `[scripts.naming]`
-6. If `list_of_scripts` is overridden, embed only **enabled** scripts
-   into `[[scripts.tagging]]` (disabled scripts are not exported)
+   referenced script into `[scripts.naming]` (unless it's a built-in preset,
+   in which case keep the ID in `[settings]` and omit `[scripts.naming]`)
+6. If `list_of_scripts` is overridden:
+   - **Share mode:** embed only **enabled** scripts into `[[scripts.tagging]]`
+   - **Backup mode:** embed **all** scripts with an explicit `enabled` field
 7. Remove `active_file_naming_script_id` and `list_of_scripts` from `[settings]`
    (they're represented in `[scripts]` instead)
-8. Write TOML using `tomlkit` (preserves multiline strings, allows adding comments)
-9. Save as file or copy to clipboard
+8. If plugin options are present, resolve plugin names from installed plugins
+   and populate `required_plugins` in `[profile]` metadata
+9. Write TOML using `tomlkit` (preserves multiline strings, allows adding comments)
+10. Save as file or copy to clipboard
 
 ---
 
@@ -472,6 +520,257 @@ picard profile list
 
 ---
 
+## Known Issues & Edge Cases
+
+This section documents potential pitfalls discovered during design review,
+along with proposed mitigations.
+
+### Tuple-to-List Conversion
+
+**Problem:** TOML has no tuple type. Several `in_profile=True` options store
+lists of tuples internally:
+
+| Option | Internal structure | After TOML round-trip |
+|--------|-------------------|----------------------|
+| `list_of_scripts` | `[(pos, name, enabled, script), ...]` | `[[pos, name, enabled, script], ...]` |
+| `release_type_scores` | `[("album", 0.75), ...]` | `[["album", 0.75], ...]` |
+| `ca_providers` | `[("Cover Art Archive", True), ...]` | `[["Cover Art Archive", true], ...]` |
+| `script_exceptions` | `[(script_id, threshold), ...]` | `[[script_id, threshold], ...]` |
+
+Python's tuple-unpacking (`for a, b in items:`) works with both tuples and
+lists, so existing code tolerates this. However, the type identity is lost.
+
+**Mitigation:**
+- `list_of_scripts` is already handled: export extracts it into
+  `[[scripts.tagging]]` sections, import reconstructs the tuple list.
+- For other options: export as TOML list-of-lists. On import, the
+  `ListOption.convert()` method already calls `list(value)` on the outer
+  container; inner elements survive as lists. This is acceptable since all
+  consuming code uses iteration/unpacking, not `isinstance(x, tuple)` checks.
+- If a future code change introduces tuple-identity checks, the import
+  deserializer can add explicit tuple conversion keyed by option name.
+
+### Semantic Dependencies Between Options
+
+**Problem:** Some options reference or depend on others. Importing one without
+its companion can leave configuration in an inconsistent state.
+
+| Dependency | Risk |
+|-----------|------|
+| `active_file_naming_script_id` → `file_renaming_scripts` | ID points to a script that doesn't exist |
+| `enable_tagger_scripts` + `list_of_scripts` | Master toggle vs per-script enabled flags |
+| `caa_restrict_image_types` → `caa_image_types` | Type list only meaningful when restriction is on |
+| `ca_providers` ordering → cover art behavior | Provider order determines which source is tried first |
+
+**Mitigation:**
+- The design already handles the most critical case: scripts are embedded in
+  the export file, and import registers them before setting the reference ID.
+- For the other dependencies: no special handling needed. Profiles override
+  individual settings; the profile system already allows partial overrides.
+  A profile that sets `caa_image_types` without `caa_restrict_image_types` is
+  valid — it just means the restriction setting comes from a lower-priority
+  profile or the base config. This is existing profile behavior, not new.
+- Documentation/comments in exported profiles can hint at related settings.
+
+### Side Effects Outside the Profile (Naming Scripts)
+
+**Problem:** `file_renaming_scripts` (the dict of all naming scripts) is NOT a
+per-profile setting — it's a global dict. But `active_file_naming_script_id`
+(which profile to select) IS per-profile. This means:
+
+- Importing a profile with a naming script injects the script into the **global**
+  `file_renaming_scripts` dict, not into the profile itself.
+- If the user later deletes the imported profile, the naming script remains
+  as an orphan in the global dict.
+- Multiple profiles can reference the same naming script. Deleting one profile
+  should not remove a script that another profile uses.
+
+**Mitigation:**
+- This is acceptable behavior. Naming scripts are a global resource (like fonts
+  or color schemes) — profiles merely *select* one. Users can manage scripts
+  independently via the Script Editor.
+- On profile deletion, optionally offer to delete the associated naming script
+  if no other profile references it. This is a UX enhancement for Phase 2.
+- Document this behavior clearly in user-facing import UI ("This will add a
+  file naming script to your collection").
+
+### Preset Script References
+
+**Problem:** A profile may override `active_file_naming_script_id` to a preset
+ID (`"Preset 1"`, `"Preset 2"`, `"Preset 3"`). Presets are hardcoded in Picard,
+not stored in `file_renaming_scripts`.
+
+**Questions:**
+- Should export embed the preset's script content? This creates a redundant
+  copy on import (the preset already exists).
+- Should export just reference the preset by ID? This assumes the preset
+  content is identical across versions (it may not be).
+
+**Recommendation:** If the active script is a preset, export it by reference
+only (include the ID in settings, do NOT embed in `[scripts.naming]`). Presets
+are guaranteed to exist on any Picard installation. If preset content changes
+between versions, that's intentional — the user should get the updated version.
+Add a `preset = true` flag or omit `[scripts.naming]` entirely when the active
+script is a preset.
+
+### Disabled Tagger Scripts in Backup Mode
+
+**Problem:** The design says "Only enabled scripts are exported." This is
+correct for share mode (recipients want working scripts, not disabled cruft).
+But in backup mode, disabled scripts carry user intent ("I have this script
+but chose to turn it off") and should be preserved.
+
+**Mitigation:** In backup mode, export ALL tagger scripts with an explicit
+`enabled` field:
+
+```toml
+[[scripts.tagging]]
+title = "My experimental script"
+enabled = false
+script = """..."""
+```
+
+On import: if `enabled` field is present, respect it. If absent (share mode
+format), default to `true` (current behavior).
+
+### Config Version Skew and Renamed Options
+
+**Problem:** Picard has renamed many options over its history (e.g.,
+`dont_write_tags` → `enable_tag_saving` with inverted semantics,
+`selected_file_naming_script_id` → `active_file_naming_script_id`). The config
+upgrade hooks that handle these renames only run on the main config file at
+startup — they do NOT run on imported profile data.
+
+A TOML file exported from an older Picard version may contain option names that
+the importing version doesn't recognize. These are silently skipped, leading to
+silent data loss.
+
+**Severity:** Low in practice. Profiles are most likely shared between users
+running similar versions. The `picard_version` field in exports identifies the
+source version. Cross-version sharing of very old profiles is an edge case.
+
+**Possible mitigations (from simplest to most complex):**
+
+1. **Accept silent loss** (current design) — unknown options are skipped with
+   a warning. The `picard_version_min` field gives an early signal. This is
+   the same strategy as Picard's existing config handling.
+
+2. **Maintain a rename mapping** — a small dict of `{old_name: new_name}` (and
+   `{old_name: (new_name, transform_fn)}` for inverted booleans) that the
+   importer consults before skipping unknown options. This covers the common
+   cases without the full upgrade hook machinery.
+
+3. **Run upgrade hooks on import** — most complex, highest fidelity, but the
+   upgrade hooks assume they're operating on a full config, not a partial
+   settings dict. Would need refactoring.
+
+**Recommendation:** Option 2 for Phase 2. A lightweight rename map covers 90%
+of cases with minimal complexity. Phase 1 can ship with option 1 (silent skip +
+warning).
+
+### Profile `None` Values (Tracked-but-Not-Overridden)
+
+**Problem:** In the profile system, a setting can be in three states:
+1. Not tracked by the profile (key absent)
+2. Tracked but no override value (`None`)
+3. Overridden with a specific value (non-`None`)
+
+State 2 means "this profile manages this setting, but currently uses the base
+config value." It carries intent but no portable value.
+
+**Mitigation:**
+- **Share mode:** Skip `None`-valued settings entirely. They carry no useful
+  information for another user (whose base config will be different anyway).
+- **Backup mode:** Also skip them. The tracked-but-no-value state is a UI
+  artifact (checkboxes in the profiles settings tree). On import, the profile
+  is recreated with only the concrete overrides; the user can re-check
+  additional settings in the profiles UI if they want to track them.
+- This means round-tripping a profile through export/import may lose the
+  "tracked" state for settings that have no override. This is acceptable —
+  the tracked-but-no-value state has no effect on runtime behavior.
+
+### Plugin Options in TOML
+
+**Problem:** Plugin profile keys use the format `plugin.<uuid>/option_name`.
+These keys contain dots and slashes which need careful TOML handling (dots in
+bare TOML keys are table path separators).
+
+Additionally:
+- Plugin UUIDs are opaque to humans reading the export — but they are the
+  **only** unique identifier for plugins (names can clash between plugins)
+- If the plugin isn't installed on the importing system, settings are dead weight
+- Plugin UUIDs are installation-independent (defined in MANIFEST.toml), so they
+  ARE portable across systems that have the same plugin installed
+
+**Mitigation for TOML format:** Use a dedicated `[plugins]` section keyed by
+UUID (the canonical identifier), with plugin name as a human-readable comment:
+
+```toml
+[plugins."a1b2c3d4-e5f6-7890-abcd-ef1234567890"]
+# Plugin: "My Cool Plugin"
+my_option = "value"
+another_option = 42
+```
+
+The UUID is the key because:
+- Names are not unique (two plugins could have the same name)
+- The profile system already keys plugin settings by UUID internally
+- Import matching must use UUID, not name
+
+The plugin name is included only as a comment for human readers and in the
+`[profile]` metadata (see below) to enable useful warning messages.
+
+**Mitigation for portability:** On import, if a plugin UUID is not recognized
+(plugin not installed), show a warning with the plugin name (extracted from
+the export's metadata):
+*"This profile requires plugins that are not installed: My Cool Plugin
+(a1b2c3d4-...). Some settings were skipped."*
+
+To enable this, the `[profile]` section includes a `required_plugins` field:
+
+```toml
+[profile]
+# ...
+required_plugins = [
+    {uuid = "a1b2c3d4-e5f6-7890-abcd-ef1234567890", name = "My Cool Plugin"},
+]
+```
+
+The `name` field here is informational only (for display in warnings). The
+`uuid` is what matters for matching. See open question 5.
+
+### Multiline Scripts with Triple Quotes
+
+**Problem:** TOML multiline literal strings use `'''` delimiters. If a Picard
+script contains the sequence `'''`, it would terminate the string early.
+
+**Severity:** Extremely unlikely in practice — Picard's scripting language uses
+`$function()`, `%variable%`, and standard text. Triple single-quotes are not
+part of the language and would be unusual in file/folder names.
+
+**Mitigation:** `tomlkit` handles this automatically by choosing the appropriate
+string representation. If using multiline literal strings (`'''`) and the content
+contains `'''`, fall back to multiline basic strings (`"""`) with proper escaping.
+No special handling needed in our code if we rely on `tomlkit` for serialization.
+
+### Enum Value Stability
+
+**Problem:** Options backed by Enums (`ImageFormat`, `ResizeModes`) store the
+enum's `.value` (a string or int). If enum values are reordered or renamed
+between versions, imported values become invalid.
+
+**Severity:** Low. Enum values in Picard are stable (they represent user-facing
+choices like `"jpeg"` or resize mode integers). Adding new values is fine;
+renaming existing ones would be a breaking change that config upgrade hooks
+would handle for the main config but not for imported profiles.
+
+**Mitigation:** Same as renamed options — accept silent fallback to default if
+the value doesn't match a known enum member. The `Option.convert()` method
+already handles conversion failures by returning the default and logging an
+error.
+
+---
+
 ## Implementation Plan
 
 ### Phase 1: Core (minimal viable)
@@ -499,26 +798,191 @@ picard profile list
 
 ## Open Questions
 
-1. **Should import create a disabled profile?** Suggestion: yes, so users can
-   review before activating. Alternative: prompt the user on import.
+### 1. Should import create a disabled profile?
 
-2. **Should tagger scripts be merged or replaced?** Suggestion: append to
-   existing scripts (least surprising, non-destructive). Users can manually
-   remove duplicates afterward.
+**Possible answers:**
+- a) Always create disabled — user must manually enable
+- b) Always create enabled — immediate effect
+- c) Prompt the user on import ("Enable this profile now?")
 
-3. **Should we support partial profiles?** (e.g., only scripts, no settings)
-   Suggestion: yes, all sections besides `[profile]` are optional. A file with
-   only `[[scripts.tagging]]` and no `[settings]` would be valid.
+**Recommended:** (c) Prompt the user. Creating disabled is safe but adds
+friction for the primary use case (newcomer following a guide). Prompting gives
+the user control without forcing extra steps in the common case. For CLI import,
+default to disabled with a `--enable` flag.
 
-4. **Should the naming script ID be stable or regenerated?** Suggestion: use
-   the ID from the file when present, with collision handling (ask user).
-   This would allow re-importing an updated profile to refresh the script
-   rather than duplicating it.
+---
 
-5. **Plugin options** — Profiles can override plugin options (via
-   `plugin.<uuid>/option_name`). Suggestion: include them in export if the
-   plugin is installed. On import, skip silently if the plugin isn't present.
-   Consider noting required plugins in `[profile]` metadata.
+### 2. Should tagger scripts be merged or replaced?
+
+**Possible answers:**
+- a) Append imported scripts after existing ones
+- b) Replace the profile's entire `list_of_scripts` with the imported set
+- c) Deduplicate by title (update existing, append new)
+
+**Recommended:** (a) Append. Least surprising, non-destructive. Replacing would
+silently delete user scripts, and title-based deduplication is unreliable (same
+title doesn't mean same content). Users can manually remove duplicates.
+
+---
+
+### 3. Should we support partial profiles? (only scripts, no settings)
+
+**Possible answers:**
+- a) Yes — all sections besides `[profile]` are optional
+- b) No — require at least one of `[settings]` or `[scripts]`
+
+**Recommended:** (a) Yes. A file with only `[[scripts.tagging]]` and no
+`[settings]` is valid and useful (sharing scripts without imposing settings).
+The format is more flexible this way, and validation is simpler (just check
+`[profile]` exists).
+
+---
+
+### 4. Should the naming script ID be stable or regenerated on import?
+
+**Possible answers:**
+- a) Always regenerate a new UUID — avoids collisions, always creates a new script
+- b) Use the ID from the file, with collision handling (ask user on conflict)
+- c) Use the ID from the file, silently overwrite on collision
+
+**Recommended:** (b) Use the file's ID with collision prompt. This allows
+re-importing an updated profile to refresh the script rather than duplicating it.
+Silent overwrite (c) is dangerous; always-regenerate (a) leads to script
+accumulation on repeated imports.
+
+---
+
+### 5. How should plugin options be handled in export/import?
+
+**Possible answers:**
+- a) Always include plugin settings in export; skip on import if plugin absent
+- b) Only export plugin settings if explicitly requested by user
+- c) Exclude plugin settings entirely (plugins manage their own config)
+
+**Recommended:** (a) Include automatically if the plugin is installed. On import,
+skip with a warning if the plugin isn't present. Store `required_plugins` in
+`[profile]` metadata (with UUID + informational name) so the warning can name
+the missing plugins. UUID is the only reliable identifier — names can clash.
+
+---
+
+### 6. Should export embed preset naming scripts?
+
+**Possible answers:**
+- a) Embed the preset script content (makes file self-contained)
+- b) Reference by preset ID only (no `[scripts.naming]` section)
+- c) Embed content but mark it as a preset (import recognizes and uses the
+   existing preset instead of creating a duplicate)
+
+**Recommended:** (b) Reference only. Presets are guaranteed to exist on any
+Picard installation. Embedding creates redundant copies and may cause confusion
+if preset content is updated between versions. The user gets the latest preset
+version rather than a frozen snapshot.
+
+---
+
+### 7. Should backup mode export disabled tagger scripts?
+
+**Possible answers:**
+- a) Yes — export all scripts with an `enabled` field
+- b) No — export only enabled scripts in both modes
+
+**Recommended:** (a) Yes. Disabled scripts carry user intent and should survive
+a backup/restore cycle. The `enabled` field is only written in backup mode;
+share mode continues to export only enabled scripts (without the field).
+
+---
+
+### 8. Should import apply a rename mapping for old option names?
+
+**Possible answers:**
+- a) No — accept silent loss, rely on `picard_version_min` warning
+- b) Yes — maintain a lightweight rename map (old_name → new_name + optional
+   transform function)
+- c) Yes — run full config upgrade hooks on imported settings
+
+**Recommended:** (a) for Phase 1, (b) for Phase 2. A lightweight rename map
+covers the common cases (simple renames, inverted booleans) without the
+complexity of running full upgrade hooks on a partial settings dict. Phase 1
+ships with silent skip + warning, which is already how Picard handles unknown
+config keys.
+
+---
+
+### 9. Should profile deletion offer to clean up orphaned naming scripts?
+
+**Possible answers:**
+- a) Yes — prompt to delete the script if unreferenced
+- b) No — naming scripts are independent resources, never auto-delete
+- c) Yes — silently delete unreferenced scripts
+
+**Recommended:** (a) Prompt. Naming scripts are a side effect of import
+(injected into the global dict). Prompting on profile deletion avoids silent
+accumulation while respecting that the user might want to keep the script for
+other purposes. Phase 2 enhancement.
+
+---
+
+### 10. What is the canonical file extension?
+
+**Possible answers:**
+- a) `.toml` only — standard, syntax-highlighted everywhere
+- b) `.picard-profile.toml` — allows OS-level file association while keeping
+   TOML highlighting
+- c) Custom extension like `.pcp` (Picard Configuration Profile)
+
+**Recommended:** (a) `.toml`. It's standard, gets syntax highlighting in every
+editor, and Picard identifies profile files by content (`[profile]` header), not
+extension. A custom extension loses editor support for no practical gain.
+OS-level file association can be done with `.toml` files using MIME type or
+content sniffing if needed later.
+
+---
+
+### 11. How should `enable_tagger_scripts` interact with imported scripts?
+
+**⚠️ No clear recommendation yet.**
+
+**Problem:** If the imported profile has tagger scripts but the original profile
+had `enable_tagger_scripts = false` (scripts defined but master toggle off),
+what should import do?
+
+**Possible answers:**
+- a) Always set `enable_tagger_scripts = true` when scripts are present
+   (current design) — scripts wouldn't be shared if the author didn't intend
+   them to run
+- b) Respect the exported value of `enable_tagger_scripts` — preserve the
+   author's exact configuration
+- c) In share mode: always enable (a). In backup mode: preserve exact value (b)
+
+**Discussion:** Option (a) is simpler and matches the "share" use case (why
+share scripts if not to use them?). But it silently changes behavior if the
+original profile used the master toggle as a quick on/off switch. Option (c)
+may be the pragmatic middle ground but adds mode-specific logic to import.
+
+---
+
+### 12. Should complex list-of-tuple options have bespoke TOML representations?
+
+**⚠️ No clear recommendation yet.**
+
+**Problem:** Options like `ca_providers` and `release_type_scores` store lists
+of tuples with positional semantics. Exporting as list-of-lists
+(`[["album", 0.75], ...]`) is valid but positional meaning is implicit.
+
+**Possible answers:**
+- a) Export as plain list-of-lists — simple, minimal code, positional meaning
+   is documented
+- b) Use TOML arrays of inline tables with named fields:
+   `[{type = "album", score = 0.75}, ...]` — more readable but requires
+   per-option serialization/deserialization logic
+- c) Hybrid — use named fields only for options where readability matters most
+   (e.g., `ca_providers` where users might hand-edit), plain lists for the rest
+
+**Discussion:** Option (a) is simplest to implement and maintain. Option (b) is
+more self-documenting but adds per-option serialization logic. The pragmatic
+answer may depend on how often users realistically hand-edit these options
+(probably rarely — they're more likely to adjust them in the GUI).
 
 ---
 
