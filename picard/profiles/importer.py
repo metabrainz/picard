@@ -65,6 +65,7 @@ def import_profile(
     config: Config,
     toml_string: str,
     enabled: bool = False,
+    replace_id: str | None = None,
 ) -> ProfileImportResult:
     """Import a profile from a TOML string.
 
@@ -72,6 +73,8 @@ def import_profile(
         config: The application Config object.
         toml_string: The TOML content to import.
         enabled: Whether to create the profile as enabled.
+        replace_id: If set, replace the existing profile with this UUID
+                    instead of creating a new one.
 
     Returns:
         ProfileImportResult with details about the import.
@@ -93,9 +96,24 @@ def import_profile(
     if not title:
         raise ProfileImportError("Missing required 'title' in [profile] section")
 
-    # Create profile
-    profile_id = str(uuid.uuid4())
-    unique_title = _make_unique_title(config, title)
+    # Determine profile ID and whether we're replacing
+    if replace_id:
+        # Replace an existing profile
+        profiles_list = config.profiles['user_profiles']
+        existing = [p for p in profiles_list if p['id'] == replace_id]
+        if not existing:
+            raise ProfileImportError(f"No existing profile with id '{replace_id}' to replace")
+        profile_id = replace_id
+        unique_title = title
+    else:
+        # Create a new profile
+        profile_id = profile_section.get('id') or str(uuid.uuid4())
+        # If the file has a UUID and it already exists, generate a new one
+        profiles_list = config.profiles['user_profiles']
+        if any(p['id'] == profile_id for p in profiles_list):
+            profile_id = str(uuid.uuid4())
+        unique_title = _make_unique_title(config, title)
+
     result = ProfileImportResult(profile_id, unique_title)
 
     # Check version compatibility
@@ -141,7 +159,7 @@ def import_profile(
         _import_tagger_scripts(config, profile_settings, tagging_section, result)
 
     # Register the profile
-    _register_profile(config, profile_id, unique_title, enabled, profile_settings)
+    _register_profile(config, profile_id, unique_title, enabled, profile_settings, replace=bool(replace_id))
 
     # Report skipped options
     if result.skipped_options:
@@ -283,19 +301,29 @@ def _register_profile(
     title: str,
     enabled: bool,
     settings: dict,
+    replace: bool = False,
 ):
-    """Register the new profile in config."""
+    """Register or replace a profile in config."""
     profiles_list = config.profiles['user_profiles']
-    position = len(profiles_list)
 
-    profiles_list.append(
-        {
-            'id': profile_id,
-            'title': title,
-            'enabled': enabled,
-            'position': position,
-        }
-    )
+    if replace:
+        # Update existing profile entry
+        for profile in profiles_list:
+            if profile['id'] == profile_id:
+                profile['title'] = title
+                break
+    else:
+        # Add new profile entry
+        position = len(profiles_list)
+        profiles_list.append(
+            {
+                'id': profile_id,
+                'title': title,
+                'enabled': enabled,
+                'position': position,
+            }
+        )
+
     config.profiles['user_profiles'] = profiles_list
 
     all_settings = config.profiles['user_profile_settings']

@@ -88,7 +88,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         mock_get_config.return_value = self.config
         self._setup_profiles()
 
-        args = SimpleNamespace(title='My Rock Profile', output=None, mode='share')
+        args = SimpleNamespace(export='My Rock Profile', output=None, mode='share')
         with patch('sys.stdout', new_callable=StringIO) as mock_out:
             exit_code = cmd_export(args)
 
@@ -104,7 +104,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         self._setup_profiles()
 
         output_file = os.path.join(self.tmp_directory, 'test-export.toml')
-        args = SimpleNamespace(title='My Rock Profile', output=output_file, mode='share')
+        args = SimpleNamespace(export='My Rock Profile', output=output_file, mode='share')
 
         with patch('sys.stdout', new_callable=StringIO):
             exit_code = cmd_export(args)
@@ -121,7 +121,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         mock_get_config.return_value = self.config
         self._setup_profiles()
 
-        args = SimpleNamespace(title='Nonexistent', output=None, mode='share')
+        args = SimpleNamespace(export='Nonexistent', output=None, mode='share')
         with patch('sys.stderr', new_callable=StringIO) as mock_err:
             exit_code = cmd_export(args)
 
@@ -138,7 +138,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         with open(toml_file, 'w', encoding='utf-8') as f:
             f.write('[profile]\ntitle = "Imported"\npicard_version = "3.0.0"\n\n[settings]\nrename_files = true\n')
 
-        args = SimpleNamespace(file=toml_file, enable=False)
+        args = SimpleNamespace(import_file=toml_file, enable=False)
         with patch('sys.stdout', new_callable=StringIO) as mock_out:
             exit_code = cmd_import(args)
 
@@ -159,7 +159,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         with open(toml_file, 'w', encoding='utf-8') as f:
             f.write('[profile]\ntitle = "Enabled"\npicard_version = "3.0.0"\n')
 
-        args = SimpleNamespace(file=toml_file, enable=True)
+        args = SimpleNamespace(import_file=toml_file, enable=True)
         with patch('sys.stdout', new_callable=StringIO):
             exit_code = cmd_import(args)
 
@@ -171,7 +171,7 @@ class TestProfileCLI(TestPicardConfigCommon):
     def test_cmd_import_file_not_found(self, mock_get_config):
         mock_get_config.return_value = self.config
 
-        args = SimpleNamespace(file='/nonexistent/path.toml', enable=False)
+        args = SimpleNamespace(import_file='/nonexistent/path.toml', enable=False)
         with patch('sys.stderr', new_callable=StringIO) as mock_err:
             exit_code = cmd_import(args)
 
@@ -186,7 +186,7 @@ class TestProfileCLI(TestPicardConfigCommon):
         with open(toml_file, 'w', encoding='utf-8') as f:
             f.write('not valid [[ toml')
 
-        args = SimpleNamespace(file=toml_file, enable=False)
+        args = SimpleNamespace(import_file=toml_file, enable=False)
         with patch('sys.stderr', new_callable=StringIO) as mock_err:
             exit_code = cmd_import(args)
 
@@ -204,7 +204,7 @@ class TestProfileCLI(TestPicardConfigCommon):
             'p1': {'proxy_password': 'secret'},
         }
 
-        args = SimpleNamespace(title='Backup Test', output=None, mode='backup')
+        args = SimpleNamespace(export='Backup Test', output=None, mode='backup')
         with patch('sys.stdout', new_callable=StringIO) as mock_out:
             exit_code = cmd_export(args)
 
@@ -225,12 +225,12 @@ class TestProfileCLI(TestPicardConfigCommon):
 
         # Export
         output_file = os.path.join(self.tmp_directory, 'roundtrip.toml')
-        export_args = SimpleNamespace(title='Original', output=output_file, mode='share')
+        export_args = SimpleNamespace(export='Original', output=output_file, mode='share')
         with patch('sys.stdout', new_callable=StringIO):
             cmd_export(export_args)
 
         # Import
-        import_args = SimpleNamespace(file=output_file, enable=False)
+        import_args = SimpleNamespace(import_file=output_file, enable=False)
         with patch('sys.stdout', new_callable=StringIO):
             cmd_import(import_args)
 
