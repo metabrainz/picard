@@ -504,19 +504,35 @@ points and documentation-by-example.
 
 ## CLI Integration
 
+The `picard-profiles` command provides profile management from the terminal:
+
 ```bash
-# Export
-picard profile export "Navidrome optimized" -o navidrome.toml
+# List all profiles
+picard-profiles --list
 
-# Import from file
-picard profile import navidrome.toml
+# Export by title (outputs to stdout)
+picard-profiles --export "Navidrome optimized"
 
-# Import from URL
-picard profile import https://example.com/navidrome.toml
+# Export by partial title or UUID prefix, to a file
+picard-profiles -e Navidrome -o navidrome.toml
 
-# List profiles
-picard profile list
+# Export in backup mode (includes sensitive data and profile UUID)
+picard-profiles -e Navidrome -o navidrome.toml --mode backup
+
+# Import from file (created disabled by default)
+picard-profiles --import navidrome.toml
+
+# Import and enable immediately
+picard-profiles -i navidrome.toml --enable
+
+# Import and replace an existing profile (by title or UUID)
+picard-profiles -i navidrome.toml --replace "Navidrome optimized"
+picard-profiles -i navidrome.toml --replace 6d70
 ```
+
+Profile resolution (for `--export` and `--replace`) supports exact match,
+partial title (case-insensitive), and UUID prefix matching. Errors on
+ambiguous matches.
 
 ---
 
@@ -773,21 +789,22 @@ error.
 
 ## Implementation Plan
 
-### Phase 1: Core (minimal viable)
+### Phase 1: Core (implemented)
 
 1. Add `shareable` flag to `Option.__init__` (default `True`)
 2. Mark security/path options as `shareable=False`
-3. Implement `profile_export.py`:
-   - `export_profile(profile_id, mode='share') -> str` (returns TOML string)
-   - `import_profile(toml_string) -> profile_id` (creates profile, returns ID)
-4. Add Export/Import buttons to profiles UI
+3. Promote `tomlkit` to runtime dependency
+4. Implement `picard/profiles/exporter.py` (`export_profile()`)
+5. Implement `picard/profiles/importer.py` (`import_profile()`)
+6. Implement `picard/profiles/settings_upgrades.py` (version-keyed transforms)
+7. Implement `picard/profiles/cli.py` (`picard-profiles` command)
+8. Add Export/Import buttons to profiles UI (with replace support)
 
 ### Phase 2: Polish
 
 1. Clipboard copy/paste support
-2. CLI `picard profile export/import` commands
-3. Version compatibility warning on import
-4. Ship example profiles (Navidrome, Plex/Jellyfin, etc.)
+2. Ship example profiles (Navidrome, Plex/Jellyfin, etc.)
+3. Import from URL support in CLI
 
 ### Phase 3: Community (future, optional)
 
