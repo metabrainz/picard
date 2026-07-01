@@ -64,6 +64,39 @@ def temp_option(option_type: type[Option], section: str, name: str, default: Con
     opt.unregister()
 
 
+def _rename_option_in_settings(
+    settings: dict,
+    old_name: str,
+    new_name: str,
+    reverse: bool = False,
+) -> None:
+    """Rename an option key in a settings dict (profile override or imported settings).
+
+    If reverse is True, the boolean value is also inverted.
+    Settings with None value (tracked but not overridden) are renamed without transformation.
+    """
+    if old_name in settings:
+        value = settings[old_name]
+        if reverse and value is not None:
+            value = not value
+        settings[new_name] = value
+        del settings[old_name]
+
+
+def _upgrade_option_value_in_settings(
+    settings: dict,
+    name: str,
+    transform: Callable,
+) -> None:
+    """Apply a value transform to an option in a settings dict (profile override or imported settings).
+
+    The transform function receives the current value and must return the new value.
+    Settings with None value (tracked but not overridden) are left unchanged.
+    """
+    if name in settings and settings[name] is not None:
+        settings[name] = transform(settings[name])
+
+
 def rename_option(
     config: Config,
     old_opt: str,
@@ -85,12 +118,38 @@ def rename_option(
         all_settings = _p['user_profile_settings']
         for profile in _p['user_profiles']:
             id = profile['id']
-            if id in all_settings and old_opt in all_settings[id]:
-                all_settings[id][new_opt] = all_settings[id][old_opt]
-                if reverse:
-                    all_settings[id][new_opt] = not all_settings[id][new_opt]
-                all_settings[id].pop(old_opt)
+            if id in all_settings:
+                _rename_option_in_settings(all_settings[id], old_opt, new_opt, reverse)
         _p['user_profile_settings'] = all_settings
+
+
+def upgrade_option_value(
+    config: Config,
+    name: str,
+    transform: Callable,
+) -> None:
+    """Apply a value transform to an option in base config and all profile overrides.
+
+    Use this in upgrade hooks when an option's value format changes but the key
+    stays the same. The transform function receives the current raw value and
+    must return the new value. Reads bypass profile overrides and Option.convert()
+    to access the actual stored value.
+    """
+    _s = config.setting
+    if name in _s:
+        value = _s.raw_value(name)
+        if value is not None:
+            with _s.no_profile():
+                _s[name] = transform(value)
+
+    _p = config.profiles
+    _s.init_profile_options()
+    all_settings = _p['user_profile_settings']
+    for profile in _p['user_profiles']:
+        id = profile['id']
+        if id in all_settings:
+            _upgrade_option_value_in_settings(all_settings[id], name, transform)
+    _p['user_profile_settings'] = all_settings
 
 
 class UpgradeHooksAutodetectError(Exception):
