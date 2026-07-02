@@ -766,8 +766,9 @@ class EncodeFilenameTest(PicardTestCase):
 
     def test_encode_fs_no_unicode_support(self):
         path = '/some/file-ä.ext'
-        with patch('picard.util._io_encoding', 'latin-1') as _io_encoding:
-            self.assertEqual(path.encode(_io_encoding), encode_filename(path))
+        with patch('os.path.supports_unicode_filenames', False):
+            with patch('picard.util._io_encoding', 'latin-1') as _io_encoding:
+                self.assertEqual(path.encode(_io_encoding), encode_filename(path))
 
     def test_encode_path_as_bytes(self):
         path = '/some/file-ä.ext'.encode('latin-1')
