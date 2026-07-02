@@ -45,7 +45,6 @@ from picard.coverart.utils import (
 )
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename
 from picard.util.filenaming import WinPathTooLong
 
 
@@ -332,7 +331,7 @@ class CoverArtImageTest(PicardTestCase):
         with TemporaryDirectory() as d:
             image1 = create_image(b'a', types=['back'], support_types=True)
             expected_filename = os.path.join(d, 'back.png')
-            counter_filename = encode_filename(os.path.join(d, 'back'))
+            counter_filename = os.path.join(d, 'back')
             image1.save(d, metadata, counters)
             self.assertTrue(os.path.exists(expected_filename))
             self.assertEqual(len(image1.data), os.path.getsize(expected_filename))
@@ -416,8 +415,8 @@ class CoverArtImageMakeFilenameTest(PicardTestCase):
 
     def compare_paths(self, path1, path2):
         self.assertEqual(
-            encode_filename(os.path.normpath(path1)),
-            encode_filename(os.path.normpath(path2)),
+            os.path.normpath(path1),
+            os.path.normpath(path2),
         )
 
     def test_make_image_filename(self):

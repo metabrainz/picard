@@ -56,8 +56,6 @@ from picard.coverart.utils import (
 )
 from picard.metadata import Metadata
 from picard.util import (
-    decode_filename,
-    encode_filename,
     imageinfo,
     is_absolute_path,
     periodictouch,
@@ -461,7 +459,7 @@ class CoverArtImage:
         relpath = make_short_filename(basedir, relpath, win_shorten_path=win_shorten_path)
         filename = os.path.join(basedir, relpath)
         filename = make_save_path(filename, win_compat=win_compat, mac_compat=IS_MACOS)
-        return encode_filename(filename)
+        return filename
 
     def save(self, dirname: str, metadata: Metadata, counters: dict[str, int]):
         """Saves this image.
@@ -488,7 +486,7 @@ class CoverArtImage:
         filename = self._make_image_filename(filename, dirname, metadata, win_compat, win_shorten_path)
 
         overwrite = config.setting['save_images_overwrite']
-        ext = encode_filename(self.extension)
+        ext = self.extension
         image_filename = self._next_filename(filename, counters)
         while os.path.exists(image_filename + ext) and not overwrite:
             if not self._is_write_needed(image_filename + ext):
@@ -512,11 +510,11 @@ class CoverArtImage:
     @staticmethod
     def _next_filename(filename, counters):
         if counters[filename]:
-            new_filename = "%s (%d)" % (decode_filename(filename), counters[filename])
+            new_filename = "%s (%d)" % (filename, counters[filename])
         else:
             new_filename = filename
         counters[filename] += 1
-        return encode_filename(new_filename)
+        return new_filename
 
     def _is_write_needed(self, filename):
         if os.path.exists(filename) and os.path.getsize(filename) == self.datalength:
