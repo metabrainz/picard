@@ -758,21 +758,20 @@ class BuildQUrlTest(PicardTestCase):
 
 
 class EncodeFilenameTest(PicardTestCase):
-    @unittest.skipUnless(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem with Unicode support',
-    )
     def test_encode_fs_unicode_support(self):
         path = '/some/file-ä.ext'
-        self.assertEqual(path, encode_filename(path))
+        with patch('os.path.supports_unicode_filenames', True):
+            with patch('picard.util.IS_MACOS', False):
+                self.assertEqual(path, encode_filename(path))
 
-    @unittest.skipIf(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem without Unicode support',
-    )
     def test_encode_fs_no_unicode_support(self):
         path = '/some/file-ä.ext'
-        self.assertEqual(path.encode(_io_encoding), encode_filename(path))
+        with patch('picard.util._io_encoding', 'latin-1') as _io_encoding:
+            self.assertEqual(path.encode(_io_encoding), encode_filename(path))
+
+    def test_encode_path_as_bytes(self):
+        path = '/some/file-ä.ext'.encode('latin-1')
+        self.assertEqual(path, encode_filename(path))
 
 
 class DecodeFilenameTest(PicardTestCase):
@@ -784,11 +783,11 @@ class DecodeFilenameTest(PicardTestCase):
         path = '/some/file-ä.ext'
         self.assertEqual(path, decode_filename(path.encode(_io_encoding)))
 
-    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
     def test_decode_bytes_invalid_encoding(self):
         path = '/some/file-ä.ext'.encode('latin-1')
-        with self.assertRaises(UnicodeDecodeError):
-            decode_filename(path)
+        with patch('picard.util._io_encoding', 'utf-8'):
+            with self.assertRaises(UnicodeDecodeError):
+                decode_filename(path)
 
 
 class NormpathTest(PicardTestCase):
