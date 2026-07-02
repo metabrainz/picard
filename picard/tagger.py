@@ -1013,8 +1013,8 @@ class Tagger(QtWidgets.QApplication):
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
-            filename = normpath(filename)
             filename = resolve_fs_path(filename)
+            filename = normpath(filename)
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r", filename)
                 continue
