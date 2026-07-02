@@ -25,7 +25,6 @@ from mutagen.smf import SMF
 from picard import log
 from picard.file import File
 from picard.metadata import Metadata
-from picard.util import encode_filename
 
 
 class MIDIFile(File):
@@ -36,7 +35,7 @@ class MIDIFile(File):
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         metadata = Metadata()
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         self._info(metadata, file)
         return metadata
 

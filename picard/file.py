@@ -104,7 +104,6 @@ from picard.util import (
     bytes2human,
     decode_filename,
     emptydir,
-    encode_filename,
     format_time,
     is_absolute_path,
     normpath,
@@ -1031,7 +1030,7 @@ class File(MetadataItem):
         metadata['~filename'] = filename_no_ext
         metadata['~extension'] = extension.lower()[1:]
 
-        filename_encoded = encode_filename(self.filename)
+        filename_encoded = self.filename
         try:
             metadata['~filesize'] = os.path.getsize(filename_encoded)
 

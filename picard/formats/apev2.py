@@ -48,7 +48,6 @@ from picard.file import File
 from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
-    encode_filename,
     sanitize_date,
 )
 from picard.util.filenaming import (
@@ -140,7 +139,7 @@ class APEv2File(File):
         assert self._File, f"_File not defined for {self.__class__.__name__}"
         log.debug("Loading file %r", filename)
         self.__casemap = {}
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         metadata = Metadata()
         if file.tags:
             for origname, values in file.tags.items():
@@ -198,7 +197,7 @@ class APEv2File(File):
         log.debug("Saving file %r", filename)
         config = get_config()
         try:
-            tags = mutagen.apev2.APEv2(encode_filename(filename))
+            tags = mutagen.apev2.APEv2(filename)
         except mutagen.apev2.APENoHeaderError:
             tags = mutagen.apev2.APEv2()
         images_to_save = list(metadata.images.to_be_saved_to_tags())
@@ -246,7 +245,7 @@ class APEv2File(File):
             # (mp3tags does this, but it's against the specs)
 
         self._remove_deleted_tags(metadata, tags)
-        tags.save(encode_filename(filename))
+        tags.save(filename)
 
     def _remove_deleted_tags(self, metadata, tags):
         """Remove the tags from the file that were deleted in the UI"""
@@ -396,7 +395,7 @@ class AACFile(APEv2File):
             super()._save(filename, metadata)
         elif config.setting['remove_ape_from_aac']:
             try:
-                mutagen.apev2.delete(encode_filename(filename))
+                mutagen.apev2.delete(filename)
             except BaseException:
                 log.exception("Error removing APEv2 tags from %s", filename)
 
