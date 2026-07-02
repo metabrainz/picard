@@ -84,7 +84,7 @@ from picard.util import (
     normpath,
     parse_date,
     pattern_as_regex,
-    resolve_filename,
+    resolve_fs_path,
     system_supports_long_paths,
     temporary_disconnect,
     titlecase,
@@ -761,14 +761,14 @@ class ResolveFsPathTest(PicardTestCase):
     def test_str_existing_file(self):
         """Returns existing str path unchanged."""
         with NamedTemporaryFile(suffix='.flac') as f:
-            result = resolve_filename(f.name)
+            result = resolve_fs_path(f.name)
             self.assertIsInstance(result, str)
             self.assertEqual(f.name, result)
 
     def test_bytes_existing_file(self):
         """Decodes bytes path and returns str."""
         with NamedTemporaryFile(suffix='.flac') as f:
-            result = resolve_filename(f.name.encode('utf-8'))
+            result = resolve_fs_path(f.name.encode('utf-8'))
             self.assertIsInstance(result, str)
             self.assertEqual(f.name, result)
 
@@ -777,19 +777,19 @@ class ResolveFsPathTest(PicardTestCase):
         import pathlib
 
         with NamedTemporaryFile(suffix='.flac') as f:
-            result = resolve_filename(pathlib.Path(f.name))
+            result = resolve_fs_path(pathlib.Path(f.name))
             self.assertIsInstance(result, str)
             self.assertEqual(f.name, result)
 
     def test_nonexistent_returns_str(self):
         """Non-existent path is returned as str without error."""
-        result = resolve_filename('/nonexistent/path/file.flac')
+        result = resolve_fs_path('/nonexistent/path/file.flac')
         self.assertIsInstance(result, str)
         self.assertEqual('/nonexistent/path/file.flac', result)
 
     def test_nonexistent_bytes_returns_str(self):
         """Non-existent bytes path is decoded and returned as str."""
-        result = resolve_filename(b'/nonexistent/path/file.flac')
+        result = resolve_fs_path(b'/nonexistent/path/file.flac')
         self.assertIsInstance(result, str)
         self.assertEqual('/nonexistent/path/file.flac', result)
 
@@ -807,7 +807,7 @@ class ResolveFsPathTest(PicardTestCase):
                 f.write('test')
             # Try resolving via NFC path
             nfc_path = os.path.join(d, nfc_name)
-            result = resolve_filename(nfc_path)
+            result = resolve_fs_path(nfc_path)
             self.assertTrue(os.path.exists(result))
 
     @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
@@ -824,13 +824,13 @@ class ResolveFsPathTest(PicardTestCase):
                 f.write('test')
             # Try resolving via NFD path
             nfd_path = os.path.join(d, nfd_name)
-            result = resolve_filename(nfd_path)
+            result = resolve_fs_path(nfd_path)
             self.assertTrue(os.path.exists(result))
 
     def test_ascii_path_no_normalization_needed(self):
         """ASCII-only paths are returned unchanged (fast path)."""
         with NamedTemporaryFile(suffix='.flac', prefix='test_ascii_') as f:
-            result = resolve_filename(f.name)
+            result = resolve_fs_path(f.name)
             self.assertEqual(f.name, result)
 
 

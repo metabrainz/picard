@@ -175,7 +175,7 @@ from picard.util import (
     periodictouch,
     pipe,
     process_events_iter,
-    resolve_filename,
+    resolve_fs_path,
     system_supports_long_paths,
     thread,
     versions,
@@ -1014,7 +1014,7 @@ class Tagger(QtWidgets.QApplication):
         new_files = []
         for filename in filenames:
             filename = normpath(filename)
-            filename = resolve_filename(filename)
+            filename = resolve_fs_path(filename)
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r", filename)
                 continue

@@ -214,7 +214,7 @@ Translation: Picard will have problems with non-english characters
 """)
 
 
-def resolve_filename(filename: str | bytes | Path) -> str:
+def resolve_fs_path(filename: str | bytes | Path) -> str:
     """Resolve a filename to its actual on-disk representation.
 
     Call this once when a path enters the file handling pipeline. After
