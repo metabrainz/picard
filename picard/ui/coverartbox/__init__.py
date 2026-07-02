@@ -65,6 +65,7 @@ from picard.util import (
     bytes2human,
     imageinfo,
     normpath,
+    resolve_fs_path,
 )
 from picard.util.lrucache import LRUCache
 
@@ -288,7 +289,7 @@ class CoverArtBox(QtWidgets.QGroupBox):
                 important=True,
             )
         elif url.scheme() == 'file':
-            path = normpath(url.toLocalFile().rstrip("\0"))
+            path = resolve_fs_path(normpath(url.toLocalFile().rstrip("\0")))
             if path and os.path.exists(path):
                 with open(path, 'rb') as f:
                     data = f.read()

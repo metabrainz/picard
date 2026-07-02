@@ -43,7 +43,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util import open_local_path
+from picard.util import (
+    open_local_path,
+    resolve_fs_path,
+)
 
 from picard.ui.forms.ui_options_maintenance import Ui_MaintenanceOptionsPage
 from picard.ui.options import (
@@ -316,7 +319,7 @@ class MaintenanceOptionsPage(OptionsPage):
             directory=directory,
             filter=self._get_dialog_filetypes(ext),
         )
-        return filename
+        return resolve_fs_path(filename) if filename else filename
 
     def load_backup(self):
         directory = self.get_current_autobackup_dir()
