@@ -40,6 +40,7 @@ from datetime import (
 import os
 import re
 import subprocess  # nosec: B404
+import tempfile
 from tempfile import NamedTemporaryFile
 import unittest
 from unittest.mock import (
@@ -68,10 +69,8 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
-    decode_filename,
     detect as charset_detect,
     detect_file_encoding,
-    encode_filename,
     encoded_queryargs,
     extract_year_from_date,
     get_url,
@@ -85,6 +84,7 @@ from picard.util import (
     normpath,
     parse_date,
     pattern_as_regex,
+    resolve_fs_path,
     system_supports_long_paths,
     temporary_disconnect,
     titlecase,
@@ -757,38 +757,88 @@ class BuildQUrlTest(PicardTestCase):
         self.assertEqual(expected, result)
 
 
-class EncodeFilenameTest(PicardTestCase):
-    def test_encode_fs_unicode_support(self):
-        path = '/some/file-ä.ext'
-        with patch('os.path.supports_unicode_filenames', True):
-            with patch('picard.util.IS_MACOS', False):
-                self.assertEqual(path, encode_filename(path))
+class ResolveFsPathTest(PicardTestCase):
+    def test_str_existing_file(self):
+        """Returns existing str path unchanged."""
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(f.name)
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
 
-    def test_encode_fs_no_unicode_support(self):
-        path = '/some/file-ä.ext'
-        with patch('os.path.supports_unicode_filenames', False):
-            with patch('picard.util._io_encoding', 'latin-1') as _io_encoding:
-                self.assertEqual(path.encode(_io_encoding), encode_filename(path))
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_bytes_existing_file(self):
+        """Decodes bytes path and returns str."""
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(f.name.encode('utf-8'))
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
 
-    def test_encode_path_as_bytes(self):
-        path = '/some/file-ä.ext'.encode('latin-1')
-        self.assertEqual(path, encode_filename(path))
+    def test_path_existing_file(self):
+        """Converts Path to str."""
+        import pathlib
 
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(pathlib.Path(f.name))
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
 
-class DecodeFilenameTest(PicardTestCase):
-    def test_decode_string(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path))
+    def test_nonexistent_returns_str(self):
+        """Non-existent path is returned as str without error."""
+        result = resolve_fs_path('/nonexistent/path/file.flac')
+        self.assertIsInstance(result, str)
+        self.assertEqual('/nonexistent/path/file.flac', result)
 
-    def test_decode_bytes(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path.encode(_io_encoding)))
+    def test_nonexistent_bytes_returns_str(self):
+        """Non-existent bytes path is decoded and returned as str."""
+        result = resolve_fs_path(b'/nonexistent/path/file.flac')
+        self.assertIsInstance(result, str)
+        self.assertEqual('/nonexistent/path/file.flac', result)
 
-    def test_decode_bytes_invalid_encoding(self):
-        path = '/some/file-ä.ext'.encode('latin-1')
-        with patch('picard.util._io_encoding', 'utf-8'):
-            with self.assertRaises(UnicodeDecodeError):
-                decode_filename(path)
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_nfc_resolves_to_nfd_file(self):
+        """NFC path resolves to existing NFD file on byte-exact filesystem."""
+        import unicodedata
+
+        nfc_name = 'Voilà.flac'
+        nfd_name = unicodedata.normalize('NFD', nfc_name)
+        with tempfile.TemporaryDirectory() as d:
+            # Create file with NFD name
+            nfd_path = os.path.join(d, nfd_name)
+            with open(nfd_path, 'w') as f:
+                f.write('test')
+            # Try resolving via NFC path
+            nfc_path = os.path.join(d, nfc_name)
+            result = resolve_fs_path(nfc_path)
+            # On byte-exact filesystems (ext4), result is the NFD path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFC
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfc_path):
+                self.assertEqual(nfc_path, result)
+            else:
+                self.assertEqual(nfd_path, result)
+
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_nfd_resolves_to_nfc_file(self):
+        """NFD path resolves to existing NFC file on byte-exact filesystem."""
+        import unicodedata
+
+        nfc_name = 'Voilà.flac'
+        nfd_name = unicodedata.normalize('NFD', nfc_name)
+        with tempfile.TemporaryDirectory() as d:
+            # Create file with NFC name
+            nfc_path = os.path.join(d, nfc_name)
+            with open(nfc_path, 'w') as f:
+                f.write('test')
+            # Try resolving via NFD path
+            nfd_path = os.path.join(d, nfd_name)
+            result = resolve_fs_path(nfd_path)
+            # On byte-exact filesystems (ext4), result is the NFC path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFD
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfd_path):
+                self.assertEqual(nfd_path, result)
+            else:
+                self.assertEqual(nfc_path, result)
 
 
 class NormpathTest(PicardTestCase):

@@ -214,23 +214,43 @@ Translation: Picard will have problems with non-english characters
 """)
 
 
-def encode_filename(filename: str | bytes) -> str | bytes:
-    """Encode unicode strings to filesystem encoding."""
-    if isinstance(filename, str):
-        if os.path.supports_unicode_filenames and not IS_MACOS:
-            return filename
-        else:
-            return filename.encode(_io_encoding, 'replace')
-    else:
+def resolve_fs_path(filename: str | bytes | Path) -> str:
+    """Resolve a filename to its actual on-disk representation.
+
+    Call this once when a path enters the file handling pipeline. After
+    resolution, all downstream code can use the result directly without
+    further normalization or encoding.
+
+    Handles Unicode normalization mismatches (NFC vs NFD) that occur when
+    files are accessed across different OS/filesystem combinations (e.g.
+    macOS SMB client → Linux ext4 server).  See PICARD-3331.
+
+    Args:
+        filename: A file path as str, bytes, or Path.
+
+    Returns:
+        A str path that exists on disk (if any normalization variant matches),
+        or the original path as str if no match is found.
+    """
+    if isinstance(filename, (bytes, bytearray)):
+        filename = os.fsdecode(filename)
+    elif isinstance(filename, Path):
+        filename = str(filename)
+
+    if os.path.exists(filename):
         return filename
 
+    nfc = unicodedata.normalize('NFC', filename)
+    if nfc != filename and os.path.exists(nfc):
+        log.debug("Resolved filename via NFC normalization: %r", filename)
+        return nfc
 
-def decode_filename(filename: str | bytes) -> str:
-    """Decode strings from filesystem encoding to unicode."""
-    if isinstance(filename, str):
-        return filename
-    else:
-        return filename.decode(_io_encoding)
+    nfd = unicodedata.normalize('NFD', filename)
+    if nfd != filename and os.path.exists(nfd):
+        log.debug("Resolved filename via NFD normalization: %r", filename)
+        return nfd
+
+    return filename
 
 
 def _check_windows_min_version(major: int, build: int) -> bool:
@@ -461,14 +481,13 @@ def translate_from_sortname(name: str, sortname: str) -> str:
     return name
 
 
-def find_existing_path(path: str | bytes) -> str:
-    path = encode_filename(path)
+def find_existing_path(path: str) -> str:
     while path and not os.path.isdir(path):
         head, tail = os.path.split(path)
         if head == path:
             break
         path = head
-    return decode_filename(path)
+    return path
 
 
 def _add_windows_executable_extension(*executables: str) -> tuple[str, ...]:

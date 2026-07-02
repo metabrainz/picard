@@ -71,7 +71,6 @@ from picard.tags import (
     parse_subtag,
 )
 from picard.util import (
-    encode_filename,
     sanitize_date,
 )
 
@@ -334,7 +333,7 @@ class ID3File(File):
     def _init_load(self, filename):
         """Initialize loading process and return necessary parameters."""
         self.__casemap = {}
-        file = self._get_file(encode_filename(filename))
+        file = self._get_file(filename)
         tags = file.tags or {}
         config = get_config()
 
@@ -525,8 +524,6 @@ class ID3File(File):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
 
-        # TODO: check _get_tags vs encode_filename(), not sure if we can pass it directly using
-        # encoded_filename below
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
@@ -590,12 +587,11 @@ class ID3File(File):
         self._save_people_frames(tags, people_frames)
         self._remove_deleted_tags(tags, metadata, config_params)
 
-        encoded_filename = encode_filename(filename)
-        self._save_tags(tags, encoded_filename)
+        self._save_tags(tags, filename)
 
         if self._IsMP3 and config.setting['remove_ape_from_mp3']:
             try:
-                mutagen.apev2.delete(encoded_filename)
+                mutagen.apev2.delete(filename)
             except BaseException:
                 pass
 
@@ -636,7 +632,7 @@ class ID3File(File):
 
     def _get_tags(self, filename):
         try:
-            return compatid3.CompatID3(encode_filename(filename))
+            return compatid3.CompatID3(filename)
         except mutagen.id3.ID3NoHeaderError:
             return compatid3.CompatID3()
 

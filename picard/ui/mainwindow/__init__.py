@@ -116,6 +116,7 @@ from picard.util import (
     iter_unique,
     open_local_path,
     reconnect,
+    resolve_fs_path,
     restore_method,
     sanitize_filename,
     thread,
@@ -1489,6 +1490,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             ),
         )
         if path:
+            path = resolve_fs_path(path)
             # Initial progress feedback before heavy load
             self.set_statusbar_message(N_('Loading session from "%(path)s" …'), {'path': path})
             try:

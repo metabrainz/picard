@@ -54,10 +54,7 @@ from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.i18n import N_
 from picard.metadata import Metadata
-from picard.util import (
-    encode_filename,
-    sanitize_date,
-)
+from picard.util import sanitize_date
 
 
 FLAC_MAX_BLOCK_SIZE = 2**24 - 1  # FLAC block size is limited to a 24 bit integer
@@ -145,7 +142,7 @@ class VCommentFile(File):
         assert self._File, f"_File not defined for {self.__class__.__name__}"
         log.debug("Loading file %r", filename)
         config = get_config()
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         file.tags = file.tags or {}
         metadata = Metadata()
         for origname, values in file.tags.items():
@@ -268,7 +265,7 @@ class VCommentFile(File):
         config = get_config()
         is_flac = self._File == mutagen.flac.FLAC
         is_opus = self._File == mutagen.oggopus.OggOpus
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         if file.tags is None:
             file.add_tags()
         assert file.tags is not None

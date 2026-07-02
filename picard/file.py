@@ -102,12 +102,11 @@ from picard.tags.preserved import UserPreservedTags
 from picard.util import (
     any_exception_isinstance,
     bytes2human,
-    decode_filename,
     emptydir,
-    encode_filename,
     format_time,
     is_absolute_path,
     normpath,
+    resolve_fs_path,
     samefile,
     thread,
     tracknum_and_title_from_filename,
@@ -594,7 +593,7 @@ class File(MetadataItem):
         if error is not None:
             self._set_error(error)
         else:
-            self.filename = new_filename = result
+            self.filename = new_filename = resolve_fs_path(result)
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
@@ -819,7 +818,7 @@ class File(MetadataItem):
     def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
-            if self.tagger.files.get(decode_filename(old_file_path)):
+            if self.tagger.files.get(old_file_path):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
             if not overwrite_existing_files and os.path.exists(new_file_path):
@@ -1031,7 +1030,7 @@ class File(MetadataItem):
         metadata['~filename'] = filename_no_ext
         metadata['~extension'] = extension.lower()[1:]
 
-        filename_encoded = encode_filename(self.filename)
+        filename_encoded = self.filename
         try:
             metadata['~filesize'] = os.path.getsize(filename_encoded)
 

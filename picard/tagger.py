@@ -168,7 +168,6 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    encode_filename,
     is_hidden,
     iter_files_from_objects,
     mbid_validate,
@@ -176,6 +175,7 @@ from picard.util import (
     periodictouch,
     pipe,
     process_events_iter,
+    resolve_fs_path,
     system_supports_long_paths,
     thread,
     versions,
@@ -1013,6 +1013,7 @@ class Tagger(QtWidgets.QApplication):
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
+            filename = resolve_fs_path(filename)
             filename = normpath(filename)
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r", filename)
@@ -1305,9 +1306,7 @@ class Tagger(QtWidgets.QApplication):
     def run_lookup_cd(self, device):
         disc = Disc()
         self.set_wait_cursor()
-        thread.run_task(
-            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
-        )
+        thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)

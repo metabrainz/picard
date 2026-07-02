@@ -59,6 +59,7 @@ from picard.i18n import N_
 from picard.metadata import Metadata
 from picard.util import (
     imageinfo,
+    resolve_fs_path,
     thread,
 )
 
@@ -216,7 +217,7 @@ class CoverArt:
         # local files, load image data from filesystem
         elif image.url and image.url.scheme() == 'file':
             try:
-                path = image.url.toLocalFile()
+                path = resolve_fs_path(image.url.toLocalFile())
                 with open(path, 'rb') as file:
                     data = file.read()
                     image_info = imageinfo.identify(data)

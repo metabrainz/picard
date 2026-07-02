@@ -48,8 +48,6 @@ from picard.util import (
     WIN_MAX_FILEPATH_LEN,
     WIN_MAX_NODE_LEN,
     _io_encoding,
-    decode_filename,
-    encode_filename,
     is_unc_path,
     samefile,
 )
@@ -124,7 +122,7 @@ def _shorten_to_bytes_length(text: str, length: int) -> str:
     when encoded in the "filesystem encoding".
     """
     assert isinstance(text, str), "This function only works on unicode"
-    raw = encode_filename(text)
+    raw = os.fsencode(text)
     # maybe there's no need to truncate anything
     if len(raw) <= length:
         return text
@@ -139,12 +137,12 @@ def _shorten_to_bytes_length(text: str, length: int) -> str:
         # so ord(char) & 0b11000000 = 0b10000000
         while i > 0 and (raw[i] & 0xC0) == 0x80:
             i -= 1
-        return decode_filename(raw[:i])
+        return os.fsdecode(raw[:i])
     # finally, a brute force approach
     i = length
     while i > 0:
         try:
-            return decode_filename(raw[:i])
+            return os.fsdecode(raw[:i])
         except UnicodeDecodeError:
             pass
         i -= 1

@@ -354,18 +354,8 @@ class ShortenFilenameTest(PicardTestCase):
         with self.assertRaises(ValueError):
             shorten_filename('a' * 11, 10, None)
 
-    @unittest.skipUnless(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem with Unicode support',
-    )
-    def test_shorten_bytes_fs_unicode_support(self):
-        self.assertEqual('ä' * 10, shorten_filename('ä' * 11, 10, ShortenMode.BYTES))
-
-    @unittest.skipIf(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem without Unicode support',
-    )
-    def test_shorten_bytes_fs_no_unicode_support(self):
+    def test_shorten_bytes_multibyte(self):
+        # 'ä' is 2 bytes in UTF-8, so 10 bytes fits 5 'ä' characters
         self.assertEqual('ä' * 5, shorten_filename('ä' * 11, 10, ShortenMode.BYTES))
         self.assertEqual('ä' * 2, shorten_filename('ä' * 6, 5, ShortenMode.BYTES))
 

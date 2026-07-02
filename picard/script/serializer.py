@@ -45,7 +45,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util import make_filename_from_title
+from picard.util import (
+    make_filename_from_title,
+    resolve_fs_path,
+)
 
 from picard.ui.util import FileDialog
 
@@ -276,6 +279,7 @@ class ScriptSerializer:
         )
         if not filename:
             return None
+        filename = resolve_fs_path(filename)
         log.debug("Importing script file: %s", filename)
         try:
             with open(filename, 'r', encoding='utf-8') as i_file:

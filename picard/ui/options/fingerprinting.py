@@ -39,7 +39,10 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util import webbrowser2
+from picard.util import (
+    resolve_fs_path,
+    webbrowser2,
+)
 
 from picard.ui.forms.ui_options_fingerprinting import (
     Ui_FingerprintingOptionsPage,
@@ -137,7 +140,7 @@ class FingerprintingOptionsPage(OptionsPage):
             directory=self.ui.acoustid_fpcalc.text(),
         )
         if path:
-            path = os.path.normpath(path)
+            path = resolve_fs_path(os.path.normpath(path))
             self.ui.acoustid_fpcalc.setText(path)
 
     def acoustid_fpcalc_download(self):
