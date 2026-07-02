@@ -1016,6 +1016,7 @@ class PluginApi:
         self._set_class_name_and_title(provider_class)
         if getattr(provider_class, 'OPTIONS', None):
             provider_class.OPTIONS.api = self  # type: ignore[attr-defined]
+            provider_class.OPTIONS.OPTION_SECTION = self._api_config.section_name
         return register_cover_art_provider(provider_class)
 
     def register_cover_art_filter(
