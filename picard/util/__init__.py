@@ -233,6 +233,45 @@ def decode_filename(filename: str | bytes) -> str:
         return filename.decode(_io_encoding)
 
 
+def resolve_filename(filename: str | bytes | Path) -> str:
+    """Resolve a filename to its actual on-disk representation.
+
+    Call this once when a path enters the file handling pipeline. After
+    resolution, all downstream code can use the result directly without
+    further normalization or encoding.
+
+    Handles Unicode normalization mismatches (NFC vs NFD) that occur when
+    files are accessed across different OS/filesystem combinations (e.g.
+    macOS SMB client → Linux ext4 server).  See PICARD-3331.
+
+    Args:
+        filename: A file path as str, bytes, or Path.
+
+    Returns:
+        A str path that exists on disk (if any normalization variant matches),
+        or the original path as str if no match is found.
+    """
+    if isinstance(filename, (bytes, bytearray)):
+        filename = os.fsdecode(filename)
+    elif isinstance(filename, Path):
+        filename = str(filename)
+
+    if os.path.exists(filename):
+        return filename
+
+    nfc = unicodedata.normalize('NFC', filename)
+    if nfc != filename and os.path.exists(nfc):
+        log.debug("Resolved filename via NFC normalization: %r", filename)
+        return nfc
+
+    nfd = unicodedata.normalize('NFD', filename)
+    if nfd != filename and os.path.exists(nfd):
+        log.debug("Resolved filename via NFD normalization: %r", filename)
+        return nfd
+
+    return filename
+
+
 def _check_windows_min_version(major: int, build: int) -> bool:
     try:
         v = sys.getwindowsversion()
