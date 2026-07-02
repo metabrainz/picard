@@ -214,25 +214,6 @@ Translation: Picard will have problems with non-english characters
 """)
 
 
-def encode_filename(filename: str | bytes) -> str | bytes:
-    """Encode unicode strings to filesystem encoding."""
-    if isinstance(filename, str):
-        if os.path.supports_unicode_filenames and not IS_MACOS:
-            return filename
-        else:
-            return filename.encode(_io_encoding, 'replace')
-    else:
-        return filename
-
-
-def decode_filename(filename: str | bytes) -> str:
-    """Decode strings from filesystem encoding to unicode."""
-    if isinstance(filename, str):
-        return filename
-    else:
-        return filename.decode(_io_encoding)
-
-
 def resolve_filename(filename: str | bytes | Path) -> str:
     """Resolve a filename to its actual on-disk representation.
 

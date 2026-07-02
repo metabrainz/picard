@@ -102,7 +102,6 @@ from picard.tags.preserved import UserPreservedTags
 from picard.util import (
     any_exception_isinstance,
     bytes2human,
-    decode_filename,
     emptydir,
     format_time,
     is_absolute_path,
@@ -818,7 +817,7 @@ class File(MetadataItem):
     def _apply_additional_files_moves(self, moves, overwrite_existing_files=False):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
-            if self.tagger.files.get(decode_filename(old_file_path)):
+            if self.tagger.files.get(old_file_path):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
             if not overwrite_existing_files and os.path.exists(new_file_path):

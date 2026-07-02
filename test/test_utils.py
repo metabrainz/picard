@@ -69,10 +69,8 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
-    decode_filename,
     detect as charset_detect,
     detect_file_encoding,
-    encode_filename,
     encoded_queryargs,
     extract_year_from_date,
     get_url,
@@ -759,41 +757,7 @@ class BuildQUrlTest(PicardTestCase):
         self.assertEqual(expected, result)
 
 
-class EncodeFilenameTest(PicardTestCase):
-    def test_encode_fs_unicode_support(self):
-        path = '/some/file-ä.ext'
-        with patch('os.path.supports_unicode_filenames', True):
-            with patch('picard.util.IS_MACOS', False):
-                self.assertEqual(path, encode_filename(path))
-
-    def test_encode_fs_no_unicode_support(self):
-        path = '/some/file-ä.ext'
-        with patch('os.path.supports_unicode_filenames', False):
-            with patch('picard.util._io_encoding', 'latin-1') as _io_encoding:
-                self.assertEqual(path.encode(_io_encoding), encode_filename(path))
-
-    def test_encode_path_as_bytes(self):
-        path = '/some/file-ä.ext'.encode('latin-1')
-        self.assertEqual(path, encode_filename(path))
-
-
-class DecodeFilenameTest(PicardTestCase):
-    def test_decode_string(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path))
-
-    def test_decode_bytes(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path.encode(_io_encoding)))
-
-    def test_decode_bytes_invalid_encoding(self):
-        path = '/some/file-ä.ext'.encode('latin-1')
-        with patch('picard.util._io_encoding', 'utf-8'):
-            with self.assertRaises(UnicodeDecodeError):
-                decode_filename(path)
-
-
-class ResolveFilenameTest(PicardTestCase):
+class ResolveFsPathTest(PicardTestCase):
     def test_str_existing_file(self):
         """Returns existing str path unchanged."""
         with NamedTemporaryFile(suffix='.flac') as f:

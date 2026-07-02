@@ -524,8 +524,6 @@ class ID3File(File):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
 
-        # TODO: check _get_tags vs encode_filename(), not sure if we can pass it directly using
-        # encoded_filename below
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
