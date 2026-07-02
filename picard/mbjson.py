@@ -98,7 +98,6 @@ _ARTIST_REL_TYPES = {
 _TRACK_TO_METADATA = {
     'number': '~musicbrainz_tracknumber',
     'position': 'tracknumber',
-    'title': 'title',
 }
 
 _MEDIUM_TO_METADATA = {
@@ -110,7 +109,6 @@ _MEDIUM_TO_METADATA = {
 _RECORDING_TO_METADATA = {
     'disambiguation': '~recordingcomment',
     'first-release-date': '~recording_firstreleasedate',
-    'title': 'title',
 }
 
 _RELEASE_TO_METADATA = {
@@ -761,16 +759,11 @@ def _node_skip_empty_iter(node: Node) -> Iterator[tuple[str, Any]]:
 
 def track_to_metadata(node: Node, track: 'Track') -> None:
     m = track.metadata
-    recording_to_metadata(node['recording'], m, track)
-    config = get_config()
+    recording_to_metadata(node['recording'], m, track, node.get('title'))
     m.add_unique('musicbrainz_trackid', node['id'])
     # overwrite with data we have on the track
     for key, value in _node_skip_empty_iter(node):
-        if key == 'title':
-            # If translating track titles, keep the title potentially set from recording aliases
-            if not config.setting['translate_track_titles']:
-                m['title'] = value
-        elif key in _TRACK_TO_METADATA:
+        if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
             m.length = value
@@ -780,7 +773,9 @@ def track_to_metadata(node: Node, track: 'Track') -> None:
         m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = None) -> None:
+def recording_to_metadata(
+    node: Node, m: 'Metadata', track: 'Track | None' = None, track_title: str | None = None
+) -> None:
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     config = get_config()
@@ -806,14 +801,19 @@ def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = Non
         elif key == 'video' and value:
             m['~video'] = '1'
     add_genres_from_node(node, track)
-    # Translate track title from recording aliases if enabled, unless script exception applies
+    # Translate recording title from recording aliases if enabled, unless script exception applies
+    recording_title = node.get('title')
     if config.setting['translate_track_titles']:
-        if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
-            if alias:
-                m['title'] = alias.name
-    if m['title']:
-        m['~recordingtitle'] = m['title']
+        alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
+        if alias:
+            if not _should_skip_translation_due_to_scripts(recording_title, config=config):
+                recording_title = alias.name
+            if track_title and not _should_skip_translation_due_to_scripts(track_title, config=config):
+                track_title = alias.name
+
+    m['title'] = track_title or recording_title
+    if recording_title:
+        m['~recordingtitle'] = recording_title
     if m.length:
         m['~length'] = format_time(m.length)
 
