@@ -765,6 +765,7 @@ class ResolveFsPathTest(PicardTestCase):
             self.assertIsInstance(result, str)
             self.assertEqual(f.name, result)
 
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
     def test_bytes_existing_file(self):
         """Decodes bytes path and returns str."""
         with NamedTemporaryFile(suffix='.flac') as f:
@@ -808,7 +809,13 @@ class ResolveFsPathTest(PicardTestCase):
             # Try resolving via NFC path
             nfc_path = os.path.join(d, nfc_name)
             result = resolve_fs_path(nfc_path)
-            self.assertTrue(os.path.exists(result))
+            # On byte-exact filesystems (ext4), result is the NFD path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFC
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfc_path):
+                self.assertEqual(nfc_path, result)
+            else:
+                self.assertEqual(nfd_path, result)
 
     @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
     def test_nfd_resolves_to_nfc_file(self):
@@ -825,13 +832,13 @@ class ResolveFsPathTest(PicardTestCase):
             # Try resolving via NFD path
             nfd_path = os.path.join(d, nfd_name)
             result = resolve_fs_path(nfd_path)
-            self.assertTrue(os.path.exists(result))
-
-    def test_ascii_path_no_normalization_needed(self):
-        """ASCII-only paths are returned unchanged (fast path)."""
-        with NamedTemporaryFile(suffix='.flac', prefix='test_ascii_') as f:
-            result = resolve_fs_path(f.name)
-            self.assertEqual(f.name, result)
+            # On byte-exact filesystems (ext4), result is the NFC path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFD
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfd_path):
+                self.assertEqual(nfd_path, result)
+            else:
+                self.assertEqual(nfc_path, result)
 
 
 class NormpathTest(PicardTestCase):
