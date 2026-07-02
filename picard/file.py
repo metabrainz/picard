@@ -106,6 +106,7 @@ from picard.util import (
     format_time,
     is_absolute_path,
     normpath,
+    resolve_fs_path,
     samefile,
     thread,
     tracknum_and_title_from_filename,
@@ -592,7 +593,7 @@ class File(MetadataItem):
         if error is not None:
             self._set_error(error)
         else:
-            self.filename = new_filename = result
+            self.filename = new_filename = resolve_fs_path(result)
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
