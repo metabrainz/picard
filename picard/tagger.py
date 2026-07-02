@@ -168,7 +168,6 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    encode_filename,
     is_hidden,
     iter_files_from_objects,
     mbid_validate,
@@ -1307,9 +1306,7 @@ class Tagger(QtWidgets.QApplication):
     def run_lookup_cd(self, device):
         disc = Disc()
         self.set_wait_cursor()
-        thread.run_task(
-            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
-        )
+        thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
