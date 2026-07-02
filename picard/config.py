@@ -381,6 +381,8 @@ class ProfileConfigSection(ConfigSection):
             return False
         pkey = self._profile_key(name)
         is_override = self._is_settings_override_active()
+        if isinstance(value, Enum):
+            value = value.value
         for profile_id in self._get_active_profile_ids():
             settings = all_settings.get(profile_id)
             if settings and pkey in settings:
