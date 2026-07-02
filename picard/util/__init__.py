@@ -500,14 +500,13 @@ def translate_from_sortname(name: str, sortname: str) -> str:
     return name
 
 
-def find_existing_path(path: str | bytes) -> str:
-    path = encode_filename(path)
+def find_existing_path(path: str) -> str:
     while path and not os.path.isdir(path):
         head, tail = os.path.split(path)
         if head == path:
             break
         path = head
-    return decode_filename(path)
+    return path
 
 
 def _add_windows_executable_extension(*executables: str) -> tuple[str, ...]:
