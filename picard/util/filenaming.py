@@ -122,7 +122,7 @@ def _shorten_to_bytes_length(text: str, length: int) -> str:
     when encoded in the "filesystem encoding".
     """
     assert isinstance(text, str), "This function only works on unicode"
-    raw = text.encode(_io_encoding, 'replace')
+    raw = os.fsencode(text)
     # maybe there's no need to truncate anything
     if len(raw) <= length:
         return text
@@ -137,12 +137,12 @@ def _shorten_to_bytes_length(text: str, length: int) -> str:
         # so ord(char) & 0b11000000 = 0b10000000
         while i > 0 and (raw[i] & 0xC0) == 0x80:
             i -= 1
-        return raw[:i].decode(_io_encoding)
+        return os.fsdecode(raw[:i])
     # finally, a brute force approach
     i = length
     while i > 0:
         try:
-            return raw[:i].decode(_io_encoding)
+            return os.fsdecode(raw[:i])
         except UnicodeDecodeError:
             pass
         i -= 1
