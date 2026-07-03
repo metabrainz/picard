@@ -151,6 +151,8 @@ def cmd_list(output):
 
 def cmd_export(args, output):
     """Export a profile to a TOML file."""
+    import os
+
     from picard.profiles.exporter import export_profile
 
     config = get_config()
@@ -169,6 +171,10 @@ def cmd_export(args, output):
     )
 
     if args.output:
+        if os.path.exists(args.output) and not getattr(args, 'yes', False):
+            if not output.yesno(f"Overwrite {args.output}?"):
+                output.print("Export cancelled.")
+                return ExitCode.SUCCESS
         with open(args.output, 'w', encoding='utf-8') as f:
             f.write(toml_string)
         output.success(f"Profile exported to: {output.d_path(args.output)}")
@@ -201,7 +207,12 @@ def cmd_import(args, output):
         if not resolve.profile:
             _print_resolve_error(args.replace, resolve, output)
             return ExitCode.NOT_FOUND
-        replace_id = resolve.profile['id']
+        replace_profile = resolve.profile
+        if not getattr(args, 'yes', False):
+            if not output.yesno(f"Replace profile {output.d_name(replace_profile['title'])}?"):
+                output.print("Import cancelled.")
+                return ExitCode.SUCCESS
+        replace_id = replace_profile['id']
 
     try:
         result = import_profile(config, toml_string, enabled=args.enable, replace_id=replace_id)
