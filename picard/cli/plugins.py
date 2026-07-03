@@ -1,0 +1,390 @@
+# -*- coding: utf-8 -*-
+#
+# Picard, the next-generation MusicBrainz tagger
+#
+# Copyright (C) 2026 Laurent Monin
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+"""Plugin management subcommand for picard-cli.
+
+Usage:
+    picard-cli plugins list
+    picard-cli plugins install <source> [--ref <ref>] [--reinstall]
+    picard-cli plugins remove <plugin> [--purge]
+    picard-cli plugins update <plugin>... | --all
+    picard-cli plugins enable <plugin>...
+    picard-cli plugins disable <plugin>...
+    picard-cli plugins info <plugin>
+    picard-cli plugins search <query>
+    picard-cli plugins browse
+    picard-cli plugins init [<name>]
+    picard-cli plugins validate <path-or-url>
+    picard-cli plugins refs <plugin>
+    picard-cli plugins switch-ref <plugin> <ref>
+    picard-cli plugins manifest [<plugin>]
+    picard-cli plugins check-blacklist [<url>]
+    picard-cli plugins clean-config [<plugin>]
+    picard-cli plugins refresh-registry
+    picard-cli plugins check-updates
+"""
+
+import logging
+import os
+
+from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
+
+
+def register_subcommand(subparsers):
+    """Register the 'plugins' subcommand with all its verbs."""
+    plugins_parser = subparsers.add_parser(
+        'plugins',
+        help='manage Picard plugins',
+        description='Install, update, enable, and manage Picard plugins.',
+        formatter_class=_argparse().RawDescriptionHelpFormatter,
+        epilog=(
+            "Trust Levels:\n"
+            "  🛡️ official: Reviewed by Picard team (highest trust)\n"
+            "  ✓ trusted: Known authors, not reviewed (high trust)\n"
+            "  ⚠️ community: Other authors, not reviewed (use caution)\n"
+            "  🔓 unregistered: Not in registry (local/unknown source - lowest trust)\n"
+            "\nFor more information, visit: https://picard.musicbrainz.org/docs/plugins/"
+        ),
+    )
+
+    # Common options for the plugins group
+    plugins_parser.add_argument(
+        '--yes',
+        '-y',
+        action='store_true',
+        help="skip confirmation prompts",
+    )
+    plugins_parser.add_argument(
+        '--locale',
+        metavar='LOCALE',
+        default='en',
+        help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')",
+    )
+
+    # Plugin sub-subcommands (verbs)
+    verb_parsers = plugins_parser.add_subparsers(
+        dest='verb',
+        title='plugin commands',
+        metavar='<command>',
+    )
+
+    # --- list ---
+    p_list = verb_parsers.add_parser('list', help='list all installed plugins')
+    p_list.set_defaults(run_command=_run_plugins)
+
+    # --- install ---
+    p_install = verb_parsers.add_parser('install', help='install plugin(s) from git URL(s) or registry ID')
+    p_install.add_argument('source', nargs='+', metavar='SOURCE', help="git URL(s) or registry plugin ID(s)")
+    p_install.add_argument('--ref', metavar='REF', help="git ref (branch/tag/commit) to checkout")
+    p_install.add_argument('--reinstall', action='store_true', help="force reinstall")
+    p_install.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
+    p_install.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
+    p_install.add_argument(
+        '--no-git',
+        action='store_true',
+        help="load plugin in local mode (no git updates/refs)",
+    )
+    p_install.set_defaults(run_command=_run_plugins)
+
+    # --- remove ---
+    p_remove = verb_parsers.add_parser('remove', help='uninstall plugin(s)')
+    p_remove.add_argument('plugin', nargs='+', metavar='PLUGIN', help="plugin name(s), ID(s), or UUID(s)")
+    p_remove.add_argument('--purge', action='store_true', help="also delete plugin saved options")
+    p_remove.set_defaults(run_command=_run_plugins)
+
+    # --- enable ---
+    p_enable = verb_parsers.add_parser('enable', help='enable plugin(s)')
+    p_enable.add_argument('plugin', nargs='+', metavar='PLUGIN', help="plugin name(s), ID(s), or UUID(s)")
+    p_enable.set_defaults(run_command=_run_plugins)
+
+    # --- disable ---
+    p_disable = verb_parsers.add_parser('disable', help='disable plugin(s)')
+    p_disable.add_argument('plugin', nargs='+', metavar='PLUGIN', help="plugin name(s), ID(s), or UUID(s)")
+    p_disable.set_defaults(run_command=_run_plugins)
+
+    # --- update ---
+    p_update = verb_parsers.add_parser('update', help='update plugin(s) to latest version')
+    p_update.add_argument('plugin', nargs='*', metavar='PLUGIN', help="plugin name(s) to update (omit for --all)")
+    p_update.add_argument('--all', action='store_true', dest='update_all', help="update all installed plugins")
+    p_update.set_defaults(run_command=_run_plugins)
+
+    # --- info ---
+    p_info = verb_parsers.add_parser('info', help='show detailed plugin information')
+    p_info.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, or UUID")
+    p_info.set_defaults(run_command=_run_plugins)
+
+    # --- search ---
+    p_search = verb_parsers.add_parser('search', help='search plugins in registry')
+    p_search.add_argument('query', metavar='QUERY', help="search query")
+    p_search.add_argument('--category', metavar='CATEGORY', help="filter by category")
+    p_search.add_argument('--trust', metavar='LEVEL', help="filter by trust level")
+    p_search.set_defaults(run_command=_run_plugins)
+
+    # --- browse ---
+    p_browse = verb_parsers.add_parser('browse', help='browse all plugins from registry')
+    p_browse.add_argument('--category', metavar='CATEGORY', help="filter by category")
+    p_browse.add_argument('--trust', metavar='LEVEL', help="filter by trust level")
+    p_browse.set_defaults(run_command=_run_plugins)
+
+    # --- init ---
+    p_init = verb_parsers.add_parser('init', help='create a new plugin project')
+    p_init.add_argument('name', nargs='?', default='', metavar='NAME', help="plugin name (interactive if omitted)")
+    p_init.add_argument('--author', metavar='NAME', help="author name")
+    p_init.add_argument('--category', metavar='CATEGORY', help="plugin category")
+    p_init.add_argument('--target-dir', metavar='DIR', help="override directory name")
+    p_init.add_argument('--parent-dir', metavar='DIR', help="parent directory (default: current directory)")
+    p_init.add_argument('--with-translations', action='store_true', help="include translation support")
+    p_init.add_argument('--no-git', action='store_true', help="skip git initialization")
+    p_init.add_argument('--no-commit', action='store_true', help="skip initial git commit")
+    p_init.add_argument(
+        '--source-locale',
+        metavar='LOCALE',
+        default=DEFAULT_SOURCE_LOCALE,
+        help=f"source locale for translations (default: {DEFAULT_SOURCE_LOCALE})",
+    )
+    p_init.set_defaults(run_command=_run_plugins)
+
+    # --- validate ---
+    p_validate = verb_parsers.add_parser('validate', help='validate a plugin MANIFEST')
+    p_validate.add_argument('source', metavar='PATH_OR_URL', help="local path or git URL to validate")
+    p_validate.add_argument('--ref', metavar='REF', help="git ref to checkout for validation")
+    p_validate.set_defaults(run_command=_run_plugins)
+
+    # --- refs ---
+    p_refs = verb_parsers.add_parser('refs', help='list available git refs for a plugin')
+    p_refs.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, URL, or UUID")
+    p_refs.set_defaults(run_command=_run_plugins)
+
+    # --- switch-ref ---
+    p_switch_ref = verb_parsers.add_parser('switch-ref', help='switch plugin to a different git ref')
+    p_switch_ref.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, or UUID")
+    p_switch_ref.add_argument('ref', metavar='REF', help="target branch, tag, or commit")
+    p_switch_ref.set_defaults(run_command=_run_plugins)
+
+    # --- manifest ---
+    p_manifest = verb_parsers.add_parser('manifest', help='show MANIFEST.toml (template if no argument)')
+    p_manifest.add_argument(
+        'target', nargs='?', default='', metavar='PLUGIN_OR_PATH', help="plugin, path, or URL (omit for template)"
+    )
+    p_manifest.set_defaults(run_command=_run_plugins)
+
+    # --- check-blacklist ---
+    p_blacklist = verb_parsers.add_parser('check-blacklist', help='check if URL/UUID is blacklisted')
+    p_blacklist.add_argument('url', nargs='?', default='', metavar='URL', help="git URL to check")
+    p_blacklist.add_argument('--uuid', metavar='UUID', help="plugin UUID to check")
+    p_blacklist.set_defaults(run_command=_run_plugins)
+
+    # --- clean-config ---
+    p_clean = verb_parsers.add_parser('clean-config', help='delete saved options for a plugin')
+    p_clean.add_argument(
+        'plugin', nargs='?', default='', metavar='PLUGIN', help="plugin to clean (omit to list orphaned configs)"
+    )
+    p_clean.set_defaults(run_command=_run_plugins)
+
+    # --- refresh-registry ---
+    p_refresh = verb_parsers.add_parser('refresh-registry', help='force refresh of plugin registry cache')
+    p_refresh.set_defaults(run_command=_run_plugins)
+
+    # --- check-updates ---
+    p_check = verb_parsers.add_parser('check-updates', help='check for available updates')
+    p_check.set_defaults(run_command=_run_plugins)
+
+    # Default handler when no verb is given
+    plugins_parser.set_defaults(run_command=_run_plugins)
+
+
+def _adapt_args(args):
+    """Adapt subcommand-style args to the format PluginCLI expects.
+
+    Translates the verb-based namespace into the flat --flag namespace
+    that PluginCLI.run() dispatches on.
+    """
+    verb = getattr(args, 'verb', None)
+
+    # Map verb-style args to the flat PluginCLI args namespace
+    # These are the attributes that PluginCLI.run() checks via if/elif
+    args.list = verb == 'list'
+    args.install = getattr(args, 'source', None) if verb == 'install' else None
+    args.remove = getattr(args, 'plugin', None) if verb == 'remove' else None
+    args.enable = getattr(args, 'plugin', None) if verb == 'enable' else None
+    args.disable = getattr(args, 'plugin', None) if verb == 'disable' else None
+
+    # Update: either specific plugins or --all
+    if verb == 'update':
+        plugins = getattr(args, 'plugin', None)
+        if getattr(args, 'update_all', False) or not plugins:
+            args.update = None
+            args.update_all = True
+        else:
+            args.update = plugins
+            args.update_all = False
+    else:
+        args.update = None
+        args.update_all = getattr(args, 'update_all', False)
+
+    args.info = getattr(args, 'plugin', None) if verb == 'info' else None
+    args.list_refs = getattr(args, 'plugin', None) if verb == 'refs' else None
+
+    if verb == 'switch-ref':
+        args.switch_ref = [args.plugin, args.ref]
+    else:
+        args.switch_ref = None
+
+    args.browse = verb == 'browse'
+    args.search = getattr(args, 'query', None) if verb == 'search' else None
+
+    if verb == 'check-blacklist':
+        args.check_blacklist = getattr(args, 'url', '') or ''
+    else:
+        args.check_blacklist = None
+
+    args.refresh_registry = verb == 'refresh-registry'
+    args.check_updates = verb == 'check-updates'
+
+    if verb == 'validate':
+        args.validate = getattr(args, 'source', None)
+    else:
+        args.validate = None
+
+    if verb == 'manifest':
+        args.manifest = getattr(args, 'target', '')
+    else:
+        # Use sentinel to distinguish "not given" from "given with no arg"
+        args.manifest = None
+
+    if verb == 'init':
+        args.init = getattr(args, 'name', '')
+    else:
+        args.init = None
+
+    if verb == 'clean-config':
+        args.clean_config = getattr(args, 'plugin', '')
+    else:
+        args.clean_config = None
+
+    # Ensure common attributes exist
+    if not hasattr(args, 'ref'):
+        args.ref = None
+    if not hasattr(args, 'reinstall'):
+        args.reinstall = False
+    if not hasattr(args, 'force_blacklisted'):
+        args.force_blacklisted = False
+    if not hasattr(args, 'trust_community'):
+        args.trust_community = False
+    if not hasattr(args, 'trust'):
+        args.trust = None
+    if not hasattr(args, 'category'):
+        args.category = None
+    if not hasattr(args, 'purge'):
+        args.purge = False
+    if not hasattr(args, 'target_dir'):
+        args.target_dir = None
+    if not hasattr(args, 'parent_dir'):
+        args.parent_dir = None
+    if not hasattr(args, 'author'):
+        args.author = None
+    if not hasattr(args, 'with_translations'):
+        args.with_translations = False
+    if not hasattr(args, 'no_git'):
+        args.no_git = False
+    if not hasattr(args, 'no_commit'):
+        args.no_commit = False
+    if not hasattr(args, 'source_locale'):
+        args.source_locale = DEFAULT_SOURCE_LOCALE
+    if not hasattr(args, 'locale'):
+        args.locale = 'en'
+    if not hasattr(args, 'uuid'):
+        args.uuid = None
+    if not hasattr(args, 'yes'):
+        args.yes = False
+    if not hasattr(args, 'no_color'):
+        args.no_color = False
+
+    args.remote_commands_help = False
+
+    return args
+
+
+def _run_plugins(args):
+    """Initialize and run the plugin CLI with subcommand args."""
+    from picard import log
+    from picard.cli._bootstrap import minimal_init
+    from picard.const import USER_PLUGIN_DIR
+    from picard.debug_opts import DebugOpt
+    from picard.git.factory import has_git_backend
+    from picard.plugin3.cli import PluginCLI
+    from picard.plugin3.manager import PluginManager
+    from picard.plugin3.output import PluginOutput
+    from picard.util import cli
+
+    # Check git backend
+    try:
+        if not has_git_backend():
+            cli.print_message_and_exit("git backend not available", status=1)
+    except ImportError as err:
+        cli.print_message_and_exit("failed importing git backend", str(err), status=1)
+
+    # No verb specified - show help
+    verb = getattr(args, 'verb', None)
+    if not verb:
+        # Get the plugins parser to print its help
+        # We can't easily access it here, so just print a message
+        print("Usage: picard-cli plugins <command> [options]")
+        print()
+        print("Run 'picard-cli plugins --help' for available commands.")
+        return 0
+
+    # Bootstrap app with webservice (needed for registry operations)
+    config_file = getattr(args, 'config_file', None)
+    app = minimal_init(config_file, with_webservice=True)  # noqa: F841
+
+    log.enable_console_handler()
+
+    # Configure log verbosity
+    debug = getattr(args, 'debug', False)
+    debug_opts = getattr(args, 'debug_opts', None)
+    if not debug and not debug_opts:
+        log.set_verbosity(logging.WARNING)
+    else:
+        log.set_verbosity(logging.DEBUG)
+
+    # Initialize debug options
+    if debug_opts:
+        DebugOpt.from_string(debug_opts)
+
+    # Adapt args for PluginCLI
+    adapted_args = _adapt_args(args)
+
+    # Create plugin manager
+    manager = PluginManager()
+    manager.add_directory(USER_PLUGIN_DIR, primary=True)
+
+    # Create output
+    no_color = getattr(args, 'no_color', False) or 'NO_COLOR' in os.environ
+    output = PluginOutput(color=False if no_color else None)
+
+    return PluginCLI(manager, adapted_args, output=output).run()
+
+
+def _argparse():
+    """Lazy import of argparse."""
+    import argparse
+
+    return argparse
