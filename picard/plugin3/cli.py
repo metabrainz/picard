@@ -21,7 +21,6 @@
 
 import argparse
 from datetime import datetime
-from enum import IntEnum
 import logging
 import os
 from pathlib import Path
@@ -40,6 +39,10 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     log,
+)
+from picard.cli.base import (
+    BaseCLI,
+    ExitCode,
 )
 from picard.config import (
     Option,
@@ -144,33 +147,19 @@ def get_localized_registry_field(plugin, field, locale='en'):
         return getattr(plugin, field, '')
 
 
-class ExitCode(IntEnum):
-    """Exit codes for plugin CLI commands."""
-
-    SUCCESS = 0
-    ERROR = 1
-    NOT_FOUND = 2
-    CANCELLED = 130
-
-
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 MAX_VERSIONS = 20
 
 Option('persist', 'cli_plugins_init', {})
 
 
-class PluginCLI:
+class PluginCLI(BaseCLI):
     """Command line interface for managing plugins."""
 
     def __init__(self, manager, args, output=None, parser=None):
+        super().__init__(args, output or PluginOutput())
         self._manager = manager
-        self._args = args
-        self._out = output or PluginOutput()
         self._parser = parser
-
-    def _is_debug_mode(self):
-        """Check if debug mode is enabled."""
-        return getattr(self._args, 'debug', False)
 
     def _ensure_registry(self):
         """Ensure registry is loaded, fetching from remote if needed.
@@ -201,24 +190,6 @@ class PluginCLI:
                 self._out.error('Failed to load plugin registry')
             return False
         return True
-
-    def _handle_exception(self, e, message=None):
-        """Handle exception with optional traceback in debug mode.
-
-        Args:
-            e: Exception to handle
-            message: Optional custom error message prefix
-        """
-        if message:
-            self._out.error(f'{message}: {e}')
-        else:
-            self._out.error(f'Error: {e}')
-
-        if self._is_debug_mode():
-            self._out.nl()
-            self._out.error('Traceback:')
-            for line in traceback.format_exc().splitlines():
-                self._out.error(f'  {line}')
 
     def _format_version_info(self, result):
         """Format version info with tags and commits for display.
@@ -315,83 +286,75 @@ class PluginCLI:
                 self._out.print('Operation cancelled')
                 return False, None
 
-    def run(self):
-        """Run the CLI command and return exit code."""
-        try:
-            # Handle --refresh-registry first if specified
-            if getattr(self._args, 'refresh_registry', None):
-                result = self._cmd_refresh_registry()
-                # If refresh failed, return error
-                if result != ExitCode.SUCCESS:
-                    return result
-                # Continue to execute other command if specified
+    def _dispatch(self):
+        """Dispatch to the appropriate plugin command."""
+        # Handle --refresh-registry first if specified
+        if getattr(self._args, 'refresh_registry', None):
+            result = self._cmd_refresh_registry()
+            # If refresh failed, return error
+            if result != ExitCode.SUCCESS:
+                return result
+            # Continue to execute other command if specified
 
-            # Validate that --ref is only used with --install or --validate
-            ref = getattr(self._args, 'ref', None)
-            if ref:
-                valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
-                if not valid_with_ref:
-                    self._out.error('--ref can only be used with --install or --validate')
-                    return ExitCode.ERROR
+        # Validate that --ref is only used with --install or --validate
+        ref = getattr(self._args, 'ref', None)
+        if ref:
+            valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
+            if not valid_with_ref:
+                self._out.error('--ref can only be used with --install or --validate')
+                return ExitCode.ERROR
 
-            if self._args.list:
-                return self._cmd_list()
-            elif self._args.info:
-                return self._cmd_info(self._args.info)
-            elif self._args.list_refs:
-                return self._cmd_list_refs(self._args.list_refs)
-            elif self._args.enable:
-                return self._cmd_enable(self._args.enable)
-            elif self._args.disable:
-                return self._cmd_disable(self._args.disable)
-            elif self._args.install:
-                return self._cmd_install(self._args.install)
-            elif self._args.remove:
-                return self._cmd_remove(self._args.remove)
-            elif self._args.update:
-                return self._cmd_update(self._args.update)
-            elif self._args.update_all:
-                return self._cmd_update_all()
-            elif self._args.check_updates:
-                return self._cmd_check_updates()
-            elif getattr(self._args, 'browse', None):
-                return self._cmd_browse()
-            elif getattr(self._args, 'search', None):
-                return self._cmd_search(self._args.search)
-            elif getattr(self._args, 'check_blacklist', None) is not None or getattr(self._args, 'uuid', None):
-                url = getattr(self._args, 'check_blacklist', None) or None
-                uuid = getattr(self._args, 'uuid', None)
-                if not url and not uuid:
-                    self._out.error('--check-blacklist requires a URL or --uuid (or both)')
-                    return ExitCode.ERROR
-                return self._cmd_check_blacklist(url, uuid)
-            elif getattr(self._args, 'refresh_registry', None):
-                # Already handled at the start, just return success
+        if self._args.list:
+            return self._cmd_list()
+        elif self._args.info:
+            return self._cmd_info(self._args.info)
+        elif self._args.list_refs:
+            return self._cmd_list_refs(self._args.list_refs)
+        elif self._args.enable:
+            return self._cmd_enable(self._args.enable)
+        elif self._args.disable:
+            return self._cmd_disable(self._args.disable)
+        elif self._args.install:
+            return self._cmd_install(self._args.install)
+        elif self._args.remove:
+            return self._cmd_remove(self._args.remove)
+        elif self._args.update:
+            return self._cmd_update(self._args.update)
+        elif self._args.update_all:
+            return self._cmd_update_all()
+        elif self._args.check_updates:
+            return self._cmd_check_updates()
+        elif getattr(self._args, 'browse', None):
+            return self._cmd_browse()
+        elif getattr(self._args, 'search', None):
+            return self._cmd_search(self._args.search)
+        elif getattr(self._args, 'check_blacklist', None) is not None or getattr(self._args, 'uuid', None):
+            url = getattr(self._args, 'check_blacklist', None) or None
+            uuid = getattr(self._args, 'uuid', None)
+            if not url and not uuid:
+                self._out.error('--check-blacklist requires a URL or --uuid (or both)')
+                return ExitCode.ERROR
+            return self._cmd_check_blacklist(url, uuid)
+        elif getattr(self._args, 'refresh_registry', None):
+            # Already handled at the start, just return success
+            return ExitCode.SUCCESS
+        elif getattr(self._args, 'switch_ref', None):
+            return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
+        elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
+            return self._cmd_clean_config(self._args.clean_config)
+        elif getattr(self._args, 'validate', None):
+            return self._cmd_validate(self._args.validate, ref)
+        elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
+            return self._cmd_manifest(self._args.manifest)
+        elif hasattr(self._args, 'init') and self._args.init is not None:
+            return self._cmd_init(self._args.init)
+        else:
+            if self._parser:
+                self._parser.print_help()
                 return ExitCode.SUCCESS
-            elif getattr(self._args, 'switch_ref', None):
-                return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
-            elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
-                return self._cmd_clean_config(self._args.clean_config)
-            elif getattr(self._args, 'validate', None):
-                return self._cmd_validate(self._args.validate, ref)
-            elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
-                return self._cmd_manifest(self._args.manifest)
-            elif hasattr(self._args, 'init') and self._args.init is not None:
-                return self._cmd_init(self._args.init)
             else:
-                if self._parser:
-                    self._parser.print_help()
-                    return ExitCode.SUCCESS
-                else:
-                    self._out.error('No action specified')
-                    return ExitCode.ERROR
-        except KeyboardInterrupt:
-            self._out.nl()
-            self._out.error('Operation cancelled by user')
-            return ExitCode.CANCELLED
-        except Exception as e:
-            self._handle_exception(e)
-            return ExitCode.ERROR
+                self._out.error('No action specified')
+                return ExitCode.ERROR
 
     def _get_registry_plugin_version(self, plugin_data):
         """Get latest version tag for a registry plugin.
