@@ -98,7 +98,10 @@ class CasefoldSortAdapter(_AdapterBase):
 
 
 class NumericSortAdapter(_AdapterBase):
-    """Provide numeric sort using a parser (default: float) on evaluated value."""
+    """Provide numeric sort using a parser (default: float) on value.
+    Sorting will happen on the raw metadata value, if set. Otherwise falls back
+    to base provider evaluate.
+    """
 
     def __init__(self, base: ColumnValueProvider, parser: Callable[[str], float] | None = None):
         super().__init__(base)
@@ -115,7 +118,12 @@ class NumericSortAdapter(_AdapterBase):
         - (0, number) when the value parses as numeric (numbers first)
         - (1, natural_key) when non-numeric (fallback, sorted naturally)
         """
-        value_str: str = self._base.evaluate(obj) or ""
+        value_str = ""
+        if key := getattr(self._base, 'key', None):
+            if metadata := getattr(obj, 'metadata', None):
+                value_str = metadata[key]
+        if not value_str:
+            value_str = self._base.evaluate(obj) or ""
         try:
             parsed_value = self._parser(value_str)
         except (ValueError, TypeError):
