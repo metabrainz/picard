@@ -70,7 +70,7 @@ def mock_webservice_fetch(response_data, error=None):
 class TestPluginRegistry(PicardTestCase):
     def setUp(self):
         super().setUp()
-        self.patch_tagger_instance('picard.plugin3.registry')
+        self.patch_app_instance('picard.plugin3.registry')
 
     def _fetch_registry(self, registry, response_data, error=None):
         """Fetch registry with mocked webservice, return (success, error) result."""
@@ -507,7 +507,7 @@ class TestPluginRegistry(PicardTestCase):
             def callback(success, error):
                 result['success'] = success
 
-            self.patch_tagger_instance('picard.plugin3.registry')
+            self.patch_app_instance('picard.plugin3.registry')
             # Fetch and save to cache
             registry.fetch_registry(use_cache=False, callback=callback)
 
