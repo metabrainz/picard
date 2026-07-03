@@ -23,37 +23,6 @@
 import re
 
 
-def parse_time_format(time_str: str) -> float:
-    """Parse time format (e.g., '3:00', '1:02:59') to seconds.
-
-    Parameters
-    ----------
-    time_str : str
-        Time string in format MM:SS or HH:MM:SS.
-
-    Returns
-    -------
-    float
-        Time in seconds.
-
-    Raises
-    ------
-    ValueError
-        If the time format is invalid.
-    """
-    if not time_str or time_str == "?:??":
-        return 0.0
-    parts = time_str.split(':')
-    if len(parts) == 2:  # MM:SS
-        minutes, seconds = map(float, parts)
-        return minutes * 60 + seconds
-    elif len(parts) == 3:  # HH:MM:SS
-        hours, minutes, seconds = map(float, parts)
-        return hours * 3600 + minutes * 60 + seconds
-    else:
-        raise ValueError(f"Invalid time format: {time_str}")
-
-
 def parse_bitrate(bitrate_str: str) -> float:
     """Parse bitrate format (e.g., '320 kbps', '128 kbps') to kbps.
 

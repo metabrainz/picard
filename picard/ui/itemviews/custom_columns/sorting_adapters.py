@@ -124,6 +124,22 @@ class NumericSortAdapter(_AdapterBase):
             return (0, parsed_value)
 
 
+class MetadataDurationSortAdapter(NumericSortAdapter):
+    """Sort items by their metadata.length (audio duration).
+
+    Fall back to numeric sort adapter of the field value.
+    """
+
+    def sort_key(self, obj: Item) -> Comparable:
+        """Return length-based sort key for item."""
+        metadata = getattr(obj, 'metadata', None)
+        if metadata:
+            # Return a tuple for consistency with NumericSortAdapter
+            return (0, metadata.length)
+        else:
+            return super().sort_key(obj)
+
+
 class LengthSortAdapter(_AdapterBase):
     """Provide sort by string length of evaluated value."""
 
