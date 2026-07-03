@@ -21,7 +21,6 @@
 
 import argparse
 from datetime import datetime
-from enum import IntEnum
 import logging
 import os
 from pathlib import Path
@@ -40,6 +39,10 @@ from picard import (
     PICARD_FANCY_VERSION_STR,
     PICARD_ORG_NAME,
     log,
+)
+from picard.cli.base import (
+    BaseCLI,
+    ExitCode,
 )
 from picard.config import (
     Option,
@@ -144,33 +147,19 @@ def get_localized_registry_field(plugin, field, locale='en'):
         return getattr(plugin, field, '')
 
 
-class ExitCode(IntEnum):
-    """Exit codes for plugin CLI commands."""
-
-    SUCCESS = 0
-    ERROR = 1
-    NOT_FOUND = 2
-    CANCELLED = 130
-
-
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 MAX_VERSIONS = 20
 
 Option('persist', 'cli_plugins_init', {})
 
 
-class PluginCLI:
+class PluginCLI(BaseCLI):
     """Command line interface for managing plugins."""
 
     def __init__(self, manager, args, output=None, parser=None):
+        super().__init__(args, output or PluginOutput())
         self._manager = manager
-        self._args = args
-        self._out = output or PluginOutput()
         self._parser = parser
-
-    def _is_debug_mode(self):
-        """Check if debug mode is enabled."""
-        return getattr(self._args, 'debug', False)
 
     def _ensure_registry(self):
         """Ensure registry is loaded, fetching from remote if needed.
@@ -201,24 +190,6 @@ class PluginCLI:
                 self._out.error('Failed to load plugin registry')
             return False
         return True
-
-    def _handle_exception(self, e, message=None):
-        """Handle exception with optional traceback in debug mode.
-
-        Args:
-            e: Exception to handle
-            message: Optional custom error message prefix
-        """
-        if message:
-            self._out.error(f'{message}: {e}')
-        else:
-            self._out.error(f'Error: {e}')
-
-        if self._is_debug_mode():
-            self._out.nl()
-            self._out.error('Traceback:')
-            for line in traceback.format_exc().splitlines():
-                self._out.error(f'  {line}')
 
     def _format_version_info(self, result):
         """Format version info with tags and commits for display.
@@ -301,7 +272,9 @@ class PluginCLI:
         reinstall = getattr(self._args, 'reinstall', False)
         if self._args.yes:
             if reinstall:
-                self._out.warning('Discarding changes (--reinstall --yes)')
+                self._out.warning(
+                    f'Discarding changes ({self._out.d_option("--reinstall")} {self._out.d_option("--yes")})'
+                )
                 result = action_callback(discard_changes=True)
                 return True, result
             else:
@@ -315,83 +288,75 @@ class PluginCLI:
                 self._out.print('Operation cancelled')
                 return False, None
 
-    def run(self):
-        """Run the CLI command and return exit code."""
-        try:
-            # Handle --refresh-registry first if specified
-            if getattr(self._args, 'refresh_registry', None):
-                result = self._cmd_refresh_registry()
-                # If refresh failed, return error
-                if result != ExitCode.SUCCESS:
-                    return result
-                # Continue to execute other command if specified
+    def _dispatch(self):
+        """Dispatch to the appropriate plugin command."""
+        # Handle refresh-registry first if specified
+        if getattr(self._args, 'refresh_registry', None):
+            result = self._cmd_refresh_registry()
+            # If refresh failed, return error
+            if result != ExitCode.SUCCESS:
+                return result
+            # Continue to execute other command if specified
 
-            # Validate that --ref is only used with --install or --validate
-            ref = getattr(self._args, 'ref', None)
-            if ref:
-                valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
-                if not valid_with_ref:
-                    self._out.error('--ref can only be used with --install or --validate')
-                    return ExitCode.ERROR
+        # Validate that --ref is only used with install or validate commands
+        ref = getattr(self._args, 'ref', None)
+        if ref:
+            valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
+            if not valid_with_ref:
+                self._out.error('--ref can only be used with install or validate')
+                return ExitCode.ERROR
 
-            if self._args.list:
-                return self._cmd_list()
-            elif self._args.info:
-                return self._cmd_info(self._args.info)
-            elif self._args.list_refs:
-                return self._cmd_list_refs(self._args.list_refs)
-            elif self._args.enable:
-                return self._cmd_enable(self._args.enable)
-            elif self._args.disable:
-                return self._cmd_disable(self._args.disable)
-            elif self._args.install:
-                return self._cmd_install(self._args.install)
-            elif self._args.remove:
-                return self._cmd_remove(self._args.remove)
-            elif self._args.update:
-                return self._cmd_update(self._args.update)
-            elif self._args.update_all:
-                return self._cmd_update_all()
-            elif self._args.check_updates:
-                return self._cmd_check_updates()
-            elif getattr(self._args, 'browse', None):
-                return self._cmd_browse()
-            elif getattr(self._args, 'search', None):
-                return self._cmd_search(self._args.search)
-            elif getattr(self._args, 'check_blacklist', None) is not None or getattr(self._args, 'uuid', None):
-                url = getattr(self._args, 'check_blacklist', None) or None
-                uuid = getattr(self._args, 'uuid', None)
-                if not url and not uuid:
-                    self._out.error('--check-blacklist requires a URL or --uuid (or both)')
-                    return ExitCode.ERROR
-                return self._cmd_check_blacklist(url, uuid)
-            elif getattr(self._args, 'refresh_registry', None):
-                # Already handled at the start, just return success
+        if self._args.list:
+            return self._cmd_list()
+        elif self._args.info:
+            return self._cmd_info(self._args.info)
+        elif self._args.list_refs:
+            return self._cmd_list_refs(self._args.list_refs)
+        elif self._args.enable:
+            return self._cmd_enable(self._args.enable)
+        elif self._args.disable:
+            return self._cmd_disable(self._args.disable)
+        elif self._args.install:
+            return self._cmd_install(self._args.install)
+        elif self._args.remove:
+            return self._cmd_remove(self._args.remove)
+        elif self._args.update:
+            return self._cmd_update(self._args.update)
+        elif self._args.update_all:
+            return self._cmd_update_all()
+        elif self._args.check_updates:
+            return self._cmd_check_updates()
+        elif getattr(self._args, 'browse', None):
+            return self._cmd_browse()
+        elif getattr(self._args, 'search', None):
+            return self._cmd_search(self._args.search)
+        elif getattr(self._args, 'check_blacklist', None) is not None or getattr(self._args, 'uuid', None):
+            url = getattr(self._args, 'check_blacklist', None) or None
+            uuid = getattr(self._args, 'uuid', None)
+            if not url and not uuid:
+                self._out.error('check-blacklist requires a URL or --uuid (or both)')
+                return ExitCode.ERROR
+            return self._cmd_check_blacklist(url, uuid)
+        elif getattr(self._args, 'refresh_registry', None):
+            # Already handled at the start, just return success
+            return ExitCode.SUCCESS
+        elif getattr(self._args, 'switch_ref', None):
+            return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
+        elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
+            return self._cmd_clean_config(self._args.clean_config)
+        elif getattr(self._args, 'validate', None):
+            return self._cmd_validate(self._args.validate, ref)
+        elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
+            return self._cmd_manifest(self._args.manifest)
+        elif hasattr(self._args, 'init') and self._args.init is not None:
+            return self._cmd_init(self._args.init)
+        else:
+            if self._parser:
+                self._parser.print_help()
                 return ExitCode.SUCCESS
-            elif getattr(self._args, 'switch_ref', None):
-                return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
-            elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
-                return self._cmd_clean_config(self._args.clean_config)
-            elif getattr(self._args, 'validate', None):
-                return self._cmd_validate(self._args.validate, ref)
-            elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
-                return self._cmd_manifest(self._args.manifest)
-            elif hasattr(self._args, 'init') and self._args.init is not None:
-                return self._cmd_init(self._args.init)
             else:
-                if self._parser:
-                    self._parser.print_help()
-                    return ExitCode.SUCCESS
-                else:
-                    self._out.error('No action specified')
-                    return ExitCode.ERROR
-        except KeyboardInterrupt:
-            self._out.nl()
-            self._out.error('Operation cancelled by user')
-            return ExitCode.CANCELLED
-        except Exception as e:
-            self._handle_exception(e)
-            return ExitCode.ERROR
+                self._out.error('No action specified')
+                return ExitCode.ERROR
 
     def _get_registry_plugin_version(self, plugin_data):
         """Get latest version tag for a registry plugin.
@@ -889,7 +854,7 @@ class PluginCLI:
                     if registry_plugin:
                         plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
-                        install_cmd = f'picard plugins --install {plugin_id}'
+                        install_cmd = f'picard-cli plugins install {plugin_id}'
                         self._out.warning(
                             f'Consider using {self._out.d_command(install_cmd)} '
                             f'for automatic ref selection and trust verification'
@@ -914,8 +879,8 @@ class PluginCLI:
                                 f'Plugin {self._out.d_id(existing_plugin.plugin_id)} is already installed from this URL'
                             )
                             self._out.info(
-                                f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                                f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
+                                f'Use {self._out.d_option("--reinstall")} to reinstall: '
+                                f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                             )
                             continue
 
@@ -947,7 +912,10 @@ class PluginCLI:
                     elif local_no_git_override:
                         self._out.warning('This plugin has a git repository.')
                         self._out.warning('  Git features (updates, refs) will be disabled in local mode.')
-                        self._out.warning('  Use --reinstall without --no-git to restore them.')
+                        self._out.warning(
+                            f'  Use {self._out.d_option("--reinstall")} without'
+                            f' {self._out.d_option("--no-git")} to restore them.'
+                        )
 
                         if not yes:
                             if not self._out.yesno('Do you want to continue?'):
@@ -1001,8 +969,8 @@ class PluginCLI:
                 if isinstance(e, PluginAlreadyInstalledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
                     self._out.info(
-                        f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                        f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
+                        f'Use {self._out.d_option("--reinstall")} to reinstall: '
+                        f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                     )
                     continue
                 elif isinstance(e, PluginDirtyError):
@@ -1020,7 +988,7 @@ class PluginCLI:
                 elif isinstance(e, PluginBlacklistedError):
                     self._out.error(f'Plugin is blacklisted: {e.reason}')
                     self._out.info(
-                        f'Use {self._out.d_command("--force-blacklisted")} to install anyway (not recommended)'
+                        f'Use {self._out.d_option("--force-blacklisted")} to install anyway (not recommended)'
                     )
                     return ExitCode.ERROR
                 elif isinstance(e, PluginManifestNotFoundError):
@@ -1169,7 +1137,7 @@ class PluginCLI:
                 if isinstance(e, PluginCommitPinnedError):
                     self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(e.commit)}')
                     self._out.info(
-                        f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
+                        f'To update to a different version, use: {self._out.d_command(f"picard-cli plugins switch-ref {plugin.plugin_id} <branch-or-tag>")}'
                     )
                     continue
                 elif isinstance(e, PluginDirtyError):
@@ -1281,7 +1249,7 @@ class PluginCLI:
                 version_info = self._format_version_info(update)
                 self._out.info(f'{self._out.d_name(update.plugin_id)}: {version_info}')
             self._out.nl()
-            self._out.print(f'Run with {self._out.d_command("--update-all")} to update all plugins')
+            self._out.print(f'Run with {self._out.d_command("picard-cli plugins update --all")} to update all plugins')
 
         return ExitCode.SUCCESS
 
@@ -1314,7 +1282,7 @@ class PluginCLI:
             elif isinstance(e, PluginRefNotFoundError):
                 self._out.error(f"Ref '{ref}' not found")
                 self._out.info(
-                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                    f'Use {self._out.d_command(f"picard-cli plugins refs {plugin.plugin_id}")} to see available refs'
                 )
                 return ExitCode.ERROR
             elif isinstance(e, PluginNoSourceError):
@@ -1332,7 +1300,7 @@ class PluginCLI:
             elif isinstance(e, ValueError) and 'not found' in str(e):
                 self._out.error(f"Ref '{ref}' not found")
                 self._out.info(
-                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                    f'Use {self._out.d_command(f"picard-cli plugins refs {plugin.plugin_id}")} to see available refs'
                 )
                 return ExitCode.ERROR
             else:
@@ -1353,7 +1321,7 @@ class PluginCLI:
             for plugin_uuid in orphaned:
                 self._out.print(f'  • {self._out.d_uuid(plugin_uuid)}')
             self._out.nl()
-            self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
+            self._out.print(f'Clean with: {self._out.d_command("picard-cli plugins clean-config <uuid>")}')
             return ExitCode.SUCCESS
 
         yes = getattr(self._args, 'yes', False)
@@ -1397,7 +1365,7 @@ class PluginCLI:
                 for uuid in orphaned:
                     self._out.print(f'  • {self._out.d_uuid(uuid)}')
                 self._out.nl()
-                self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
+                self._out.print(f'Clean with: {self._out.d_command("picard-cli plugins clean-config <uuid>")}')
             return ExitCode.SUCCESS
 
         if not yes:
@@ -1715,7 +1683,7 @@ class PluginCLI:
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
             self._out.nl()
-            self._out.print(f'Install with: {self._out.d_command("picard plugins --install <registry-id>")}')
+            self._out.print(f'Install with: {self._out.d_command("picard-cli plugins install <registry-id>")}')
 
             return ExitCode.SUCCESS
 
@@ -1770,7 +1738,7 @@ class PluginCLI:
                 self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
-            self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))
+            self._out.print('Install with: {}'.format(self._out.d_command("picard-cli plugins install <registry-id>")))
 
             return ExitCode.SUCCESS
 
@@ -1860,7 +1828,7 @@ class PluginCLI:
         """Create a new plugin project directory."""
         if not name:
             if self._args.yes:
-                self._out.error('Plugin name is required in non-interactive mode (--yes)')
+                self._out.error(f'Plugin name is required in non-interactive mode ({self._out.d_option("--yes")})')
                 return ExitCode.ERROR
             return self._cmd_init_interactive()
 
@@ -2114,7 +2082,7 @@ class PluginCLI:
         self._out.info(f'cd {self._out.d_path(target)}')
         self._out.info(f'Edit {self._out.d_path("__init__.py")} to add your plugin code')
         self._out.info(f'Edit {self._out.d_path("MANIFEST.toml")} to update metadata')
-        self._out.info(f'Run {self._out.d_command("picard-plugins --validate .")} to check your plugin')
+        self._out.info(f'Run {self._out.d_command("picard-cli plugins validate .")} to check your plugin')
         if git_initialization and not git_commit:
             commit_cmd = 'git add -A && git commit -m "Initial plugin scaffold"'
             self._out.info(f'Run {self._out.d_command(commit_cmd)} to commit')

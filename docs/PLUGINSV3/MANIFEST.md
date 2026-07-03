@@ -204,7 +204,7 @@ Le plugin respecte votre vie privée et n'envoie que les données que vous chois
 
 **Search Results (uses `description`):**
 ```text
-$ picard-plugins --search submit listens
+$ picard-cli plugins search submit listens
 
 Found 1 plugin:
   🛡️ listenbrainz - ListenBrainz Submitter
@@ -232,7 +232,7 @@ Requirements:
 
 **CLI Info Command (uses `long_description` if available):**
 ```text
-$ picard-plugins --info listenbrainz
+$ picard-cli plugins info listenbrainz
 
 Plugin: ListenBrainz Submitter
 Status: enabled
@@ -641,13 +641,13 @@ def enable(api: PluginApi):
 
 ```bash
 # Install from local directory
-picard-plugins --install ~/dev/my-plugin
+picard-cli plugins install ~/dev/my-plugin
 
 # Test changes
-picard-plugins --update my-plugin
+picard-cli plugins update my-plugin
 
 # Switch to development branch
-picard-plugins --switch-ref my-plugin dev
+picard-cli plugins switch-ref my-plugin dev
 ```
 
 ### Debugging
@@ -660,7 +660,7 @@ def enable(api: PluginApi):
     api.log.error("Error message")
 
     # Check plugin info
-    # picard-plugins --info <plugin-name>
+    # picard-cli plugins info <plugin-name>
 ```
 
 ---

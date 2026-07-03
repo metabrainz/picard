@@ -646,7 +646,7 @@ The tool will:
 
 ```bash
 # Install from local directory
-picard-plugins --install ~/dev/picard-plugin-example
+picard-cli plugins install ~/dev/picard-plugin-example
 
 # Test in Picard
 picard
@@ -655,7 +655,7 @@ picard
 tail -f ~/.config/MusicBrainz/Picard/picard.log
 
 # Uninstall
-picard-plugins --uninstall example
+picard-cli plugins remove example
 ```
 
 ---
@@ -670,8 +670,8 @@ picard-plugins --uninstall example
 4. Update plugin documentation
 
 **Note**: The plugin system supports both branches and tags:
-- **Branches**: `picard-plugins --update` pulls latest commits
-- **Tags**: `picard-plugins --update` automatically finds and switches to the latest tag (based on version number)
+- **Branches**: `picard-cli plugins update` pulls latest commits
+- **Tags**: `picard-cli plugins update` automatically finds and switches to the latest tag (based on version number)
 
 **Supported tag formats**:
 - `v1.0.0`, `v1.0`, `v1` (with v prefix)

@@ -228,7 +228,7 @@ def _is_valid_uuid(uuid_str: str) -> tuple[bool, str | None]:
     if _is_placeholder_uuid(uuid_str):
         return False, (
             f"Field 'uuid' appears to be a placeholder/test UUID (got '{uuid_str}'). "
-            "Generate a real UUID using 'picard-plugins --manifest', 'uuidgen', or Python's uuid.uuid4()"
+            "Generate a real UUID using 'picard-cli plugins manifest', 'uuidgen', or Python's uuid.uuid4()"
         )
 
     return True, None

@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Templates and helpers for `picard-plugins --init` plugin scaffolding."""
+"""Templates and helpers for `picard-cli plugins init` plugin scaffolding."""
 
 from pathlib import Path
 import re
@@ -222,7 +222,7 @@ def generate_readme(name: str, long_description: str | None = None) -> str:
 ## Installation
 
 ```bash
-picard-plugins --install /path/to/{slug}
+picard-cli plugins install /path/to/{slug}
 ```
 
 ## Development
@@ -230,7 +230,7 @@ picard-plugins --install /path/to/{slug}
 To validate your plugin:
 
 ```bash
-picard-plugins --validate .
+picard-cli plugins validate .
 ```
 
 ## License
@@ -369,4 +369,4 @@ def get_git_author(authors: list[str] | None = None, author_email: str = '') -> 
     if git_name:
         return git_name, git_email or default_email
 
-    return 'picard-plugins', default_email
+    return 'picard-cli', default_email

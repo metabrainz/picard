@@ -159,12 +159,12 @@ else:
 
     collect_items = [exe, a.binaries, a.zipfiles, a.datas]
 
-    # The picard-plugins CLI tool.
+    # The picard-cli tool.
     # Do not include on macOS, since macOS does not support multiple targets
     # in the app bundle and mixing windowed and console executables.
     if os_name != 'Darwin':
-        a_plugins = Analysis(
-            ['picard/plugin3/cli.py'],
+        a_cli = Analysis(
+            ['picard/cli/__main__.py'],
             pathex=['picard'],
             binaries=[],
             datas=[],
@@ -173,12 +173,12 @@ else:
             runtime_hooks=[],
             excludes=excludes,
         )
-        pyz_plugins = PYZ(a_plugins.pure, a_plugins.zipped_data)
-        exe_plugins = EXE(
-            pyz_plugins,
-            a_plugins.scripts,
+        pyz_cli = PYZ(a_cli.pure, a_cli.zipped_data)
+        exe_cli = EXE(
+            pyz_cli,
+            a_cli.scripts,
             exclude_binaries=True,
-            name='picard-plugins',
+            name='picard-cli',
             debug=False,
             strip=False,
             upx=False,
@@ -187,7 +187,7 @@ else:
             # Windows specific
             version='win-version-info.txt',
         )
-        collect_items.extend([exe_plugins, a_plugins.binaries, a_plugins.zipfiles, a_plugins.datas])
+        collect_items.extend([exe_cli, a_cli.binaries, a_cli.zipfiles, a_cli.datas])
 
     coll = COLLECT(*collect_items, strip=False, upx=False, name='picard')
 

@@ -65,22 +65,22 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 - ✅ State transition validation (prevent double-enable/disable)
 
 **CLI Commands:**
-- ✅ `picard-plugins --list` - List all plugins with details
-- ✅ `picard-plugins --info <name>` - Show detailed plugin information and status
-- ✅ `picard-plugins --install <url>` - Install from git URL
-- ✅ `picard-plugins --install <url> --ref <branch|tag|commit>` - Install specific ref
-- ✅ `picard-plugins --uninstall <name>` - Uninstall with config cleanup prompt
-- ✅ `picard-plugins --uninstall <name> --purge` - Uninstall and delete config
-- ✅ `picard-plugins --enable <name>` - Enable plugin
-- ✅ `picard-plugins --disable <name>` - Disable plugin
-- ✅ `picard-plugins --update <name>` - Update plugin to latest version
-- ✅ `picard-plugins --update-all` - Update all plugins
-- ✅ `picard-plugins --check-updates` - Check for available updates
-- ✅ `picard-plugins --switch-ref <name> <ref>` - Switch to different git ref
-- ✅ `picard-plugins --clean-config <name>` - Delete plugin configuration
-- ✅ `picard-plugins --reinstall` - Force reinstall flag
-- ✅ `picard-plugins --yes` - Skip confirmation prompts
-- ✅ `picard-plugins --force-blacklisted` - Bypass blacklist (dangerous!)
+- ✅ `picard-cli plugins list` - List all plugins with details
+- ✅ `picard-cli plugins info <name>` - Show detailed plugin information and status
+- ✅ `picard-cli plugins install <url>` - Install from git URL
+- ✅ `picard-cli plugins install <url> --ref <branch|tag|commit>` - Install specific ref
+- ✅ `picard-cli plugins remove <name>` - Uninstall with config cleanup prompt
+- ✅ `picard-cli plugins remove <name> --purge` - Uninstall and delete config
+- ✅ `picard-cli plugins enable <name>` - Enable plugin
+- ✅ `picard-cli plugins disable <name>` - Disable plugin
+- ✅ `picard-cli plugins update <name>` - Update plugin to latest version
+- ✅ `picard-cli plugins update-all` - Update all plugins
+- ✅ `picard-cli plugins check-updates` - Check for available updates
+- ✅ `picard-cli plugins switch-ref <name> <ref>` - Switch to different git ref
+- ✅ `picard-cli plugins clean-config <name>` - Delete plugin configuration
+- ✅ `picard-cli plugins install --reinstall` - Force reinstall flag
+- ✅ `picard-cli plugins --yes` - Skip confirmation prompts
+- ✅ `picard-cli plugins install --force-blacklisted` - Bypass blacklist (dangerous!)
 
 **Features:**
 - ✅ API version compatibility checking (rejects incompatible plugins)
@@ -324,16 +324,16 @@ This document outlines the development roadmap for Picard's Plugin v3 system. Th
 **Usage examples:**
 ```bash
 # Install from specific branch
-picard-plugins --install https://github.com/user/plugin --ref dev
+picard-cli plugins install https://github.com/user/plugin --ref dev
 
 # Install from local git repository
-picard-plugins --install ~/dev/my-plugin
+picard-cli plugins install ~/dev/my-plugin
 
 # Switch to different ref
-picard-plugins --switch-ref myplugin v1.0.0
+picard-cli plugins switch-ref myplugin v1.0.0
 
 # Update to latest on current ref
-picard-plugins --update myplugin
+picard-cli plugins update myplugin
 ```
 
 **Acceptance criteria:**
@@ -382,18 +382,18 @@ picard-plugins --update myplugin
 **Configuration cleanup behavior:**
 ```bash
 # Uninstall with prompt
-$ picard-plugins --uninstall myplugin
+$ picard-cli plugins remove myplugin
 Uninstalling myplugin...
 Delete plugin configuration? [y/N] n
 ✓ Plugin uninstalled (configuration kept)
 
 # Uninstall with purge flag
-$ picard-plugins --uninstall myplugin --purge
+$ picard-cli plugins remove myplugin --purge
 Uninstalling myplugin and deleting configuration...
 ✓ Plugin and configuration removed
 
 # Clean config later
-$ picard-plugins --clean-config myplugin
+$ picard-cli plugins clean-config myplugin
 Delete configuration for myplugin? [y/N] y
 ✓ Configuration deleted
 ```

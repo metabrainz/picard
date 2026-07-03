@@ -38,6 +38,8 @@ from picard.version import Version
 
 
 if TYPE_CHECKING:
+    from PyQt6.QtCore import QCoreApplication
+
     from picard.tagger import Tagger
 
 
@@ -71,10 +73,25 @@ def tagger_instance() -> 'Tagger':
     """Returns an instance of Tagger.
 
     Tagger is the main application instance and a subclass of QApplication.
+    Use this only in GUI code that needs the full Tagger.
+    For code that must work in both GUI and CLI mode, use app_instance() instead.
     """
     from picard.tagger import Tagger  # avoid circular imports
 
     return Tagger.instance()
+
+
+def app_instance() -> 'QCoreApplication | None':
+    """Returns the QCoreApplication instance.
+
+    Works in both GUI mode (returns the Tagger, which is a QApplication)
+    and CLI mode (returns the QCoreApplication set up by picard.cli).
+    Use this for code that needs shared services (e.g., webservice) and
+    must work without the full GUI.
+    """
+    from PyQt6.QtCore import QCoreApplication  # avoid top level Qt import
+
+    return QCoreApplication.instance()
 
 
 def crash_handler(exc: Exception):

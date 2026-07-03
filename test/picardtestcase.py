@@ -113,6 +113,17 @@ class PicardTestCase(unittest.TestCase):
             patcher.start()
             self.addCleanup(patcher.stop)
 
+    def patch_app_instance(self, *modules):
+        """Patch app_instance in the given module(s) to return self.tagger.
+
+        Usage:
+            self.patch_app_instance('picard.plugin3.registry')
+        """
+        for module in modules:
+            patcher = patch(f'{module}.app_instance', return_value=self.tagger)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
     def mktmpdir(self, ignore_errors=False):
         tmpdir = mkdtemp(suffix=self.__class__.__name__)
         self.addCleanup(self._rmtmpdir, tmpdir, ignore_errors=ignore_errors)

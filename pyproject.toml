@@ -56,7 +56,7 @@ Changelog = "https://picard.musicbrainz.org/changelog/"
 Funding = "https://metabrainz.org/donate"
 
 [project.scripts]
-picard-plugins = "picard.plugin3.cli:main"
+picard-cli = "picard.cli:main"
 
 [project.optional-dependencies]
 plugins = [

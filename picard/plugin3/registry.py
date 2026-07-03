@@ -27,8 +27,8 @@ from PyQt6.QtCore import QUrl
 from PyQt6.QtNetwork import QNetworkRequest
 
 from picard import (
+    app_instance,
     log,
-    tagger_instance,
 )
 from picard.config import get_config
 from picard.const.defaults import DEFAULT_PLUGIN_REGISTRY_URLS
@@ -257,8 +257,8 @@ class PluginRegistry:
             url: URL to fetch from
             callback: callback(success, error) called when complete
         """
-        tagger = tagger_instance()
-        if not tagger or not hasattr(tagger, 'webservice'):
+        app = app_instance()
+        if not app or not hasattr(app, 'webservice'):
             error = RegistryFetchError(url, Exception('WebService not available'))
             if callback:
                 callback(False, error)
@@ -287,7 +287,7 @@ class PluginRegistry:
                     if callback:
                         callback(False, fetch_error)
 
-        tagger.webservice.get_url(
+        app.webservice.get_url(
             url=QUrl(url),
             handler=handler,
             cacheloadcontrol=QNetworkRequest.CacheLoadControl.PreferCache,

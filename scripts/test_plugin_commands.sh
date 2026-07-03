@@ -4,7 +4,7 @@
 
 set -e
 
-PICARD_PLUGINS="picard-plugins"
+PICARD_PLUGINS="picard-cli plugins"
 TEST_PLUGIN_ID="additional-artists-variables"
 TEST_PLUGIN_UUID="2eae631a-1696-4bdc-841f-f75aaa3ae294"
 TEST_PLUGIN_URL="https://github.com/rdswift/picard-plugin-additional-artists-variables"
