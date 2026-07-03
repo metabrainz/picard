@@ -129,9 +129,22 @@ def cmd_list(output):
         output.print("No profiles configured.")
         return ExitCode.SUCCESS
 
+    output.print("Configured profiles:")
+    output.nl()
+
     for profile in profiles:
         status = output.d_status_enabled() if profile['enabled'] else output.d_status_disabled()
-        output.print(f"  {output.d_name(profile['title'])} [{status}] (id: {output.d_id(profile['id'])})")
+        output.print(f"  {output.d_name(profile['title'])} [{status}] (id: {output.d_uuid(profile['id'])})")
+
+    output.nl()
+    total = len(profiles)
+    enabled = sum(1 for p in profiles if p['enabled'])
+    disabled = total - enabled
+    output.print(
+        f"Total: {output.d_number(total)} profile{'s' if total != 1 else ''} "
+        f"({output.d_status_enabled(str(enabled))} enabled, "
+        f"{output.d_status_disabled(str(disabled))} disabled)"
+    )
 
     return ExitCode.SUCCESS
 

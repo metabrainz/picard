@@ -42,7 +42,3 @@ class PluginOutput(CliOutput):
     def d_commit_new(self, commit):
         """Display new/updated commit hash."""
         return self._colorize(commit, self.GREEN)
-
-    def d_uuid(self, uuid):
-        """Display plugin UUID."""
-        return self._colorize(uuid, self.DIM)

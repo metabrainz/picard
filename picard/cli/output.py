@@ -187,6 +187,10 @@ class CliOutput:
         """Display date/time."""
         return self._colorize(date, self.DIM)
 
+    def d_uuid(self, uuid):
+        """Display a UUID (dim, not prominent)."""
+        return self._colorize(uuid, self.DIM)
+
     def d_warning(self, text):
         """Display warning text in red."""
         return self._colorize(text, self.RED)
