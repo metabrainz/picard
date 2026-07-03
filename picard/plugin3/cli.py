@@ -852,7 +852,7 @@ class PluginCLI(BaseCLI):
                     if registry_plugin:
                         plugin_id = registry_plugin.id
                         self._out.warning(f'This URL is available in the registry as {self._out.d_id(plugin_id)}')
-                        install_cmd = f'picard plugins --install {plugin_id}'
+                        install_cmd = f'picard-cli plugins install {plugin_id}'
                         self._out.warning(
                             f'Consider using {self._out.d_command(install_cmd)} '
                             f'for automatic ref selection and trust verification'
@@ -878,7 +878,7 @@ class PluginCLI(BaseCLI):
                             )
                             self._out.info(
                                 f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                                f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
+                                f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                             )
                             continue
 
@@ -965,7 +965,7 @@ class PluginCLI(BaseCLI):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
                     self._out.info(
                         f'Use {self._out.d_command("--reinstall")} to reinstall: '
-                        f'{self._out.d_command(f"picard plugins --install {url_or_id} --reinstall")}'
+                        f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                     )
                     continue
                 elif isinstance(e, PluginDirtyError):
@@ -1132,7 +1132,7 @@ class PluginCLI(BaseCLI):
                 if isinstance(e, PluginCommitPinnedError):
                     self._out.warning(f'Plugin is pinned to commit {self._out.d_commit_old(e.commit)}')
                     self._out.info(
-                        f'To update to a different version, use: {self._out.d_command(f"picard plugins --switch-ref {plugin.plugin_id} <branch-or-tag>")}'
+                        f'To update to a different version, use: {self._out.d_command(f"picard-cli plugins switch-ref {plugin.plugin_id} <branch-or-tag>")}'
                     )
                     continue
                 elif isinstance(e, PluginDirtyError):
@@ -1244,7 +1244,7 @@ class PluginCLI(BaseCLI):
                 version_info = self._format_version_info(update)
                 self._out.info(f'{self._out.d_name(update.plugin_id)}: {version_info}')
             self._out.nl()
-            self._out.print(f'Run with {self._out.d_command("--update-all")} to update all plugins')
+            self._out.print(f'Run with {self._out.d_command("picard-cli plugins update --all")} to update all plugins')
 
         return ExitCode.SUCCESS
 
@@ -1277,7 +1277,7 @@ class PluginCLI(BaseCLI):
             elif isinstance(e, PluginRefNotFoundError):
                 self._out.error(f"Ref '{ref}' not found")
                 self._out.info(
-                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                    f'Use {self._out.d_command(f"picard-cli plugins refs {plugin.plugin_id}")} to see available refs'
                 )
                 return ExitCode.ERROR
             elif isinstance(e, PluginNoSourceError):
@@ -1295,7 +1295,7 @@ class PluginCLI(BaseCLI):
             elif isinstance(e, ValueError) and 'not found' in str(e):
                 self._out.error(f"Ref '{ref}' not found")
                 self._out.info(
-                    f'Use {self._out.d_command(f"picard plugins --list-refs {plugin.plugin_id}")} to see available refs'
+                    f'Use {self._out.d_command(f"picard-cli plugins refs {plugin.plugin_id}")} to see available refs'
                 )
                 return ExitCode.ERROR
             else:
@@ -1316,7 +1316,7 @@ class PluginCLI(BaseCLI):
             for plugin_uuid in orphaned:
                 self._out.print(f'  • {self._out.d_uuid(plugin_uuid)}')
             self._out.nl()
-            self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
+            self._out.print(f'Clean with: {self._out.d_command("picard-cli plugins clean-config <uuid>")}')
             return ExitCode.SUCCESS
 
         yes = getattr(self._args, 'yes', False)
@@ -1360,7 +1360,7 @@ class PluginCLI(BaseCLI):
                 for uuid in orphaned:
                     self._out.print(f'  • {self._out.d_uuid(uuid)}')
                 self._out.nl()
-                self._out.print(f'Clean with: {self._out.d_command("picard plugins --clean-config <uuid>")}')
+                self._out.print(f'Clean with: {self._out.d_command("picard-cli plugins clean-config <uuid>")}')
             return ExitCode.SUCCESS
 
         if not yes:
@@ -1678,7 +1678,7 @@ class PluginCLI(BaseCLI):
 
             self._out.print(f'Total: {self._out.d_number(len(plugins))} plugin(s)')
             self._out.nl()
-            self._out.print(f'Install with: {self._out.d_command("picard plugins --install <registry-id>")}')
+            self._out.print(f'Install with: {self._out.d_command("picard-cli plugins install <registry-id>")}')
 
             return ExitCode.SUCCESS
 
@@ -1733,7 +1733,7 @@ class PluginCLI(BaseCLI):
                 self._out.info(f'  Registry ID: {self._out.d_id(plugin.id)}')
                 self._out.print('')
 
-            self._out.print('Install with: {}'.format(self._out.d_command("picard plugins --install <registry-id>")))
+            self._out.print('Install with: {}'.format(self._out.d_command("picard-cli plugins install <registry-id>")))
 
             return ExitCode.SUCCESS
 
