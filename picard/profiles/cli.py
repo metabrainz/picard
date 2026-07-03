@@ -18,29 +18,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""CLI for profile export/import/list operations.
+"""Profile management subcommand for picard-cli.
 
 Usage:
-    picard-profiles --list
-    picard-profiles --export "Profile Title" [-o output.toml] [--mode backup]
-    picard-profiles --import input.toml [--enable] [--replace UUID]
+    picard-cli profiles list
+    picard-cli profiles export <profile> [-o output.toml] [--mode backup]
+    picard-cli profiles import <file> [--enable] [--replace <profile>]
 """
 
-import argparse
-import sys
-
-from PyQt6 import QtCore
-
-from picard import (
-    PICARD_APP_NAME,
-    PICARD_FANCY_VERSION_STR,
-    PICARD_ORG_NAME,
-)
-from picard.config import (
-    get_config,
-    setup_config,
-)
-from picard.options import init_options
+from picard.cli.base import ExitCode
+from picard.config import get_config
 
 
 class ResolveResult:
@@ -51,7 +38,7 @@ class ResolveResult:
         candidates: List of candidate profiles when ambiguous, empty otherwise.
     """
 
-    __slots__ = ('profile', 'candidates')
+    __slots__ = ('candidates', 'profile')
 
     def __init__(self, profile=None, candidates=None):
         self.profile = profile
@@ -77,43 +64,88 @@ def _resolve_profile_query(config, query: str) -> ResolveResult:
     return ResolveResult(candidates=matching)
 
 
-def _print_resolve_error(query: str, result: ResolveResult):
+def _print_resolve_error(query: str, result: ResolveResult, output):
     """Print an error message for a failed profile resolution."""
     if not result.candidates:
-        print(f"Error: No profile found matching '{query}'", file=sys.stderr)
+        output.error(f"No profile found matching '{query}'")
     else:
-        print(f"Error: '{query}' is ambiguous, matches multiple profiles:", file=sys.stderr)
+        output.error(f"'{query}' is ambiguous, matches multiple profiles:")
         for p in result.candidates:
-            print(f"  {p['title']} (id: {p['id']})", file=sys.stderr)
+            output.info(f"{p['title']} (id: {p['id']})")
 
 
-def cmd_list(args):
+def register_subcommand(subparsers):
+    """Register the 'profiles' subcommand with all its verbs."""
+    profiles_parser = subparsers.add_parser(
+        'profiles',
+        help='manage Picard profiles',
+        description='Export, import, and list Picard profiles.',
+    )
+
+    # Profile sub-subcommands (verbs)
+    verb_parsers = profiles_parser.add_subparsers(
+        dest='verb',
+        title='profile commands',
+        metavar='<command>',
+    )
+
+    # --- list ---
+    p_list = verb_parsers.add_parser('list', help='list all configured profiles')
+    p_list.set_defaults(run_command=_run_profiles)
+
+    # --- export ---
+    p_export = verb_parsers.add_parser('export', help='export a profile to TOML')
+    p_export.add_argument('profile', metavar='TITLE_OR_ID', help="profile title or UUID (partial match allowed)")
+    p_export.add_argument('-o', '--output', metavar='FILE', help="output file (default: stdout)")
+    p_export.add_argument(
+        '--mode',
+        choices=['share', 'backup'],
+        default='share',
+        help="export mode (default: share)",
+    )
+    p_export.set_defaults(run_command=_run_profiles)
+
+    # --- import ---
+    p_import = verb_parsers.add_parser('import', help='import a profile from a TOML file')
+    p_import.add_argument('file', metavar='FILE', help="TOML file to import")
+    p_import.add_argument('--enable', action='store_true', help="enable the profile after import")
+    p_import.add_argument(
+        '--replace',
+        metavar='TITLE_OR_ID',
+        help="replace an existing profile (match by title or UUID, partial allowed)",
+    )
+    p_import.set_defaults(run_command=_run_profiles)
+
+    # Default handler when no verb is given
+    profiles_parser.set_defaults(run_command=_run_profiles)
+
+
+def cmd_list(output):
     """List all user profiles."""
     config = get_config()
     profiles = config.profiles['user_profiles']
 
     if not profiles:
-        print("No profiles configured.")
-        return 0
+        output.print("No profiles configured.")
+        return ExitCode.SUCCESS
 
     for profile in profiles:
-        status = "enabled" if profile['enabled'] else "disabled"
-        print(f"  {profile['title']} [{status}] (id: {profile['id']})")
+        status = output.d_status_enabled() if profile['enabled'] else output.d_status_disabled()
+        output.print(f"  {output.d_name(profile['title'])} [{status}] (id: {output.d_id(profile['id'])})")
 
-    return 0
+    return ExitCode.SUCCESS
 
 
-def cmd_export(args):
+def cmd_export(args, output):
     """Export a profile to a TOML file."""
     from picard.profiles.exporter import export_profile
 
     config = get_config()
 
-    # Find profile by exact or partial match on title or UUID
-    resolve = _resolve_profile_query(config, args.export)
+    resolve = _resolve_profile_query(config, args.profile)
     if not resolve.profile:
-        _print_resolve_error(args.export, resolve)
-        return 1
+        _print_resolve_error(args.profile, resolve, output)
+        return ExitCode.NOT_FOUND
 
     profile = resolve.profile
     toml_string = export_profile(
@@ -126,14 +158,14 @@ def cmd_export(args):
     if args.output:
         with open(args.output, 'w', encoding='utf-8') as f:
             f.write(toml_string)
-        print(f"Profile exported to: {args.output}")
+        output.success(f"Profile exported to: {output.d_path(args.output)}")
     else:
         print(toml_string)
 
-    return 0
+    return ExitCode.SUCCESS
 
 
-def cmd_import(args):
+def cmd_import(args, output):
     """Import a profile from a TOML file."""
     from picard.profiles.importer import (
         ProfileImportError,
@@ -143,99 +175,65 @@ def cmd_import(args):
     config = get_config()
 
     try:
-        with open(args.import_file, 'r', encoding='utf-8') as f:
+        with open(args.file, 'r', encoding='utf-8') as f:
             toml_string = f.read()
     except OSError as e:
-        print(f"Error: Cannot read file: {e}", file=sys.stderr)
-        return 1
+        output.error(f"Cannot read file: {e}")
+        return ExitCode.ERROR
 
     # Resolve --replace to an actual UUID
     replace_id = None
     if getattr(args, 'replace', None):
         resolve = _resolve_profile_query(config, args.replace)
         if not resolve.profile:
-            _print_resolve_error(args.replace, resolve)
-            return 1
+            _print_resolve_error(args.replace, resolve, output)
+            return ExitCode.NOT_FOUND
         replace_id = resolve.profile['id']
 
     try:
         result = import_profile(config, toml_string, enabled=args.enable, replace_id=replace_id)
     except ProfileImportError as e:
-        print(f"Error: {e}", file=sys.stderr)
-        return 1
+        output.error(str(e))
+        return ExitCode.ERROR
 
-    print(f"Profile imported: {result.title}")
+    output.success(f"Profile imported: {output.d_name(result.title)}")
     if result.warnings:
         for warning in result.warnings:
-            print(f"  Warning: {warning}")
+            output.warning(warning)
 
     # Save config to persist the imported profile
     config.sync()
 
-    return 0
+    return ExitCode.SUCCESS
 
 
-def process_cmdline_args():
-    parser = argparse.ArgumentParser(
-        prog='picard-profiles',
-        description='MusicBrainz Picard profile management',
+def _run_profiles(args):
+    """Initialize and run the profiles CLI."""
+    from picard.cli._bootstrap import (
+        init_cli,
+        is_color_disabled,
     )
-    parser.add_argument('-c', '--config-file', action='store', default=None, help="configuration file location")
-    parser.add_argument('-v', '--version', action='store_true', help="display version and exit")
+    from picard.cli.output import CliOutput
 
-    group = parser.add_argument_group("Profile Management")
-    group.add_argument('-l', '--list', action='store_true', help="list all configured profiles")
-    group.add_argument(
-        '-e',
-        '--export',
-        metavar='TITLE_OR_ID',
-        help="export a profile by title or UUID (output to stdout or -o file)",
-    )
-    group.add_argument('-i', '--import', metavar='FILE', dest='import_file', help="import a profile from a TOML file")
-    group.add_argument('-o', '--output', metavar='FILE', help="output file for export (default: stdout)")
-    group.add_argument('--mode', choices=['share', 'backup'], default='share', help="export mode (default: share)")
-    group.add_argument('--enable', action='store_true', help="enable the profile after import")
-    group.add_argument(
-        '--replace',
-        metavar='TITLE_OR_ID',
-        help="replace an existing profile on import (match by title or UUID, partial allowed)",
-    )
+    # No verb specified - show help
+    verb = getattr(args, 'verb', None)
+    if not verb:
+        print("Usage: picard-cli profiles <command> [options]")
+        print()
+        print("Run 'picard-cli profiles --help' for available commands.")
+        return ExitCode.SUCCESS
 
-    return parser.parse_args(), parser
+    # Bootstrap app
+    app = init_cli(args)  # noqa: F841
 
+    # Create output
+    output = CliOutput(color=False if is_color_disabled(args) else None)
 
-def minimal_init(config_file=None):
-    """Minimal initialization for CLI commands without GUI."""
-    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
-    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
+    if verb == 'list':
+        return cmd_list(output)
+    elif verb == 'export':
+        return cmd_export(args, output)
+    elif verb == 'import':
+        return cmd_import(args, output)
 
-    app = QtCore.QCoreApplication(sys.argv)
-
-    init_options()
-    setup_config(app=app, filename=config_file)
-
-    return app
-
-
-def main():
-    cmdline_args, parser = process_cmdline_args()
-
-    app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
-
-    if cmdline_args.version:
-        print(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-        sys.exit(0)
-
-    if cmdline_args.list:
-        sys.exit(cmd_list(cmdline_args))
-    elif cmdline_args.export:
-        sys.exit(cmd_export(cmdline_args))
-    elif cmdline_args.import_file:
-        sys.exit(cmd_import(cmdline_args))
-    else:
-        parser.print_help()
-        sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+    return ExitCode.ERROR
