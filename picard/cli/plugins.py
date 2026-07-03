@@ -94,8 +94,8 @@ def register_subcommand(subparsers):
     )
     p_install.set_defaults(run_command=_run_plugins)
 
-    # --- remove ---
-    p_remove = verb_parsers.add_parser('remove', help='uninstall plugin(s)')
+    # --- remove (alias: uninstall) ---
+    p_remove = verb_parsers.add_parser('remove', aliases=['uninstall'], help='uninstall plugin(s)')
     p_remove.add_argument('plugin', nargs='+', metavar='PLUGIN', help="plugin name(s), ID(s), or UUID(s)")
     p_remove.add_argument('--purge', action='store_true', help="also delete plugin saved options")
     p_remove.set_defaults(run_command=_run_plugins)
@@ -213,7 +213,7 @@ def _adapt_args(args):
     # These are the attributes that PluginCLI.run() checks via if/elif
     args.list = verb == 'list'
     args.install = getattr(args, 'source', None) if verb == 'install' else None
-    args.remove = getattr(args, 'plugin', None) if verb == 'remove' else None
+    args.remove = getattr(args, 'plugin', None) if verb in ('remove', 'uninstall') else None
     args.enable = getattr(args, 'plugin', None) if verb == 'enable' else None
     args.disable = getattr(args, 'plugin', None) if verb == 'disable' else None
 
