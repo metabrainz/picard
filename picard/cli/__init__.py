@@ -86,6 +86,12 @@ def build_root_parser():
         action='store_true',
         help="disable colored output",
     )
+    parser.add_argument(
+        '--yes',
+        '-y',
+        action='store_true',
+        help="skip confirmation prompts",
+    )
 
     # Subcommands
     subparsers = parser.add_subparsers(

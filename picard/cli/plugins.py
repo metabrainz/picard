@@ -63,12 +63,6 @@ def register_subcommand(subparsers):
 
     # Common options for the plugins group
     plugins_parser.add_argument(
-        '--yes',
-        '-y',
-        action='store_true',
-        help="skip confirmation prompts",
-    )
-    plugins_parser.add_argument(
         '--locale',
         metavar='LOCALE',
         default='en',
