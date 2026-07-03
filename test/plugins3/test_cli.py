@@ -634,7 +634,7 @@ class TestPluginCLIErrors(PicardTestCase):
         result = cli.run()
 
         self.assertEqual(result, ExitCode.ERROR)
-        self.assertIn('--ref can only be used with --install or --validate', stderr.getvalue())
+        self.assertIn('--ref can only be used with install or validate', stderr.getvalue())
 
     def test_no_action_without_parser(self):
         """Test no action specified without parser returns error."""

@@ -301,7 +301,7 @@ class PluginCLI(BaseCLI):
         if ref:
             valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
             if not valid_with_ref:
-                self._out.error('--ref can only be used with --install or --validate')
+                self._out.error('--ref can only be used with install or validate')
                 return ExitCode.ERROR
 
         if self._args.list:
@@ -332,7 +332,7 @@ class PluginCLI(BaseCLI):
             url = getattr(self._args, 'check_blacklist', None) or None
             uuid = getattr(self._args, 'uuid', None)
             if not url and not uuid:
-                self._out.error('--check-blacklist requires a URL or --uuid (or both)')
+                self._out.error('check-blacklist requires a URL or --uuid (or both)')
                 return ExitCode.ERROR
             return self._cmd_check_blacklist(url, uuid)
         elif getattr(self._args, 'refresh_registry', None):
@@ -877,7 +877,7 @@ class PluginCLI(BaseCLI):
                                 f'Plugin {self._out.d_id(existing_plugin.plugin_id)} is already installed from this URL'
                             )
                             self._out.info(
-                                f'Use {self._out.d_command("--reinstall")} to reinstall: '
+                                f'Use {self._out.d_option("--reinstall")} to reinstall: '
                                 f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                             )
                             continue
@@ -964,7 +964,7 @@ class PluginCLI(BaseCLI):
                 if isinstance(e, PluginAlreadyInstalledError):
                     self._out.info(f'Plugin {self._out.d_id(e.plugin_name)} is already installed from this URL')
                     self._out.info(
-                        f'Use {self._out.d_command("--reinstall")} to reinstall: '
+                        f'Use {self._out.d_option("--reinstall")} to reinstall: '
                         f'{self._out.d_command(f"picard-cli plugins install {url_or_id} --reinstall")}'
                     )
                     continue
@@ -983,7 +983,7 @@ class PluginCLI(BaseCLI):
                 elif isinstance(e, PluginBlacklistedError):
                     self._out.error(f'Plugin is blacklisted: {e.reason}')
                     self._out.info(
-                        f'Use {self._out.d_command("--force-blacklisted")} to install anyway (not recommended)'
+                        f'Use {self._out.d_option("--force-blacklisted")} to install anyway (not recommended)'
                     )
                     return ExitCode.ERROR
                 elif isinstance(e, PluginManifestNotFoundError):

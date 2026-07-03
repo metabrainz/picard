@@ -192,8 +192,12 @@ class CliOutput:
         return self._colorize(text, self.RED)
 
     def d_command(self, text):
-        """Display command or option (e.g., --reinstall, picard-cli plugins ...)."""
+        """Display a full command to copy/paste (e.g., picard-cli plugins install foo)."""
         return self._colorize(text, self.CYAN + self.BOLD)
+
+    def d_option(self, text):
+        """Display a CLI option/flag reference (e.g., --reinstall, --ref)."""
+        return self._colorize(text, self.BOLD)
 
     # --- User interaction ---
 
