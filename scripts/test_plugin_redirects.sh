@@ -12,7 +12,7 @@ TEST_PLUGIN_UUID="aabbccdd-1234-4678-9234-aabbccddeeff"
 PLUGIN_DIR_NAME="test_redirect_plugin_${TEST_PLUGIN_UUID}"
 
 export PICARD_PLUGIN_REGISTRY_URL="$REGISTRY_FILE"
-PICARD_PLUGINS="picard-plugins"
+PICARD_PLUGINS="picard-cli plugins"
 
 cleanup() {
     echo "Cleanup: Removing test directory and plugin"

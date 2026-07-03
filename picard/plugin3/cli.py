@@ -2077,7 +2077,7 @@ class PluginCLI(BaseCLI):
         self._out.info(f'cd {self._out.d_path(target)}')
         self._out.info(f'Edit {self._out.d_path("__init__.py")} to add your plugin code')
         self._out.info(f'Edit {self._out.d_path("MANIFEST.toml")} to update metadata')
-        self._out.info(f'Run {self._out.d_command("picard-plugins --validate .")} to check your plugin')
+        self._out.info(f'Run {self._out.d_command("picard-cli plugins validate .")} to check your plugin')
         if git_initialization and not git_commit:
             commit_cmd = 'git add -A && git commit -m "Initial plugin scaffold"'
             self._out.info(f'Run {self._out.d_command(commit_cmd)} to commit')

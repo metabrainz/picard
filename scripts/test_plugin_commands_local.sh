@@ -11,7 +11,7 @@ TEST_PLUGIN_UUID="12345678-1234-4678-9234-123456789abc"
 
 # Use local registry (direct path, no file:// prefix)
 export PICARD_PLUGIN_REGISTRY_URL="$REGISTRY_FILE"
-PICARD_PLUGINS="picard-plugins"
+PICARD_PLUGINS="picard-cli plugins"
 
 BLACKLISTED_UUID="deadbeef-dead-4bad-beef-deadbeefcafe"
 BLACKLISTED_URL="https://github.com/badactor/malicious-plugin"

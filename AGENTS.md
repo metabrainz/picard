@@ -143,23 +143,23 @@ def process_metadata(api, album, metadata, track, release):
 ### Plugin Management CLI
 ```bash
 # List installed plugins
-picard-plugins list
+picard-cli plugins list
 
 # Install plugin from registry
-picard-plugins install plugin-name
+picard-cli plugins install plugin-name
 
 # Install from URL or local path
-picard-plugins install https://github.com/user/plugin.git
-picard-plugins install /path/to/plugin
+picard-cli plugins install https://github.com/user/plugin.git
+picard-cli plugins install /path/to/plugin
 
 # Update plugins
-picard-plugins update plugin-name
+picard-cli plugins update plugin-name
 
 # Remove plugin
-picard-plugins remove plugin-name
+picard-cli plugins remove plugin-name
 
 # Search registry
-picard-plugins search keyword
+picard-cli plugins search keyword
 ```
 
 **Key Files:**

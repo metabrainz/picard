@@ -11,7 +11,7 @@ TEST_PLUGIN_UUID="87654321-4321-4765-8321-876543218765"
 # Disable registry completely
 unset PICARD_PLUGIN_REGISTRY_URL
 export PICARD_PLUGIN_REGISTRY_URL=""
-PICARD_PLUGINS="picard-plugins"
+PICARD_PLUGINS="picard-cli plugins"
 
 echo "=== Testing Plugin Commands (Local Directory WITHOUT Registry) ==="
 echo "Test directory: $TEST_DIR"

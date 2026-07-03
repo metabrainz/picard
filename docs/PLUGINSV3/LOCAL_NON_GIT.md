@@ -13,7 +13,7 @@ Local non-git plugins allow developers and testers to load a plugin directly fro
 - Loading a plugin received as a plain directory (e.g., from a zip archive)
 - Developing a plugin in a git repository but wanting Picard to load it directly from the working tree (use `--no-git`)
 
-For anything beyond personal testing, use `picard-plugins --init` to create a proper git-managed plugin project.
+For anything beyond personal testing, use `picard-cli plugins init` to create a proper git-managed plugin project.
 
 ## How It Works
 
@@ -30,7 +30,7 @@ A local non-git plugin:
 ### Install
 
 ```bash
-picard-plugins --install /path/to/my-plugin
+picard-cli plugins install /path/to/my-plugin
 ```
 
 A confirmation prompt warns about the absence of git:
@@ -51,7 +51,7 @@ If a plugin directory contains a `.git` repository but you want to load it in-pl
 (e.g., for active development), use `--no-git`:
 
 ```bash
-picard-plugins --install /path/to/my-git-plugin --no-git
+picard-cli plugins install /path/to/my-git-plugin --no-git
 ```
 
 A confirmation prompt warns about disabling git features:
@@ -71,13 +71,13 @@ distinguish them from plugins without git at all.
 To restore git-managed mode later:
 
 ```bash
-picard-plugins --install /path/to/my-git-plugin --reinstall
+picard-cli plugins install /path/to/my-git-plugin --reinstall
 ```
 
 ### List
 
 ```bash
-picard-plugins --list
+picard-cli plugins list
 ```
 
 Local non-git plugins show a `[local]` or `[local-dev]` marker:
@@ -99,7 +99,7 @@ Local non-git plugins show a `[local]` or `[local-dev]` marker:
 ### Update (Reload)
 
 ```bash
-picard-plugins --update my-plugin
+picard-cli plugins update my-plugin
 ```
 
 For local non-git plugins, this performs a **reload**: disable → re-read manifest → enable. This picks up any code or manifest changes without restarting Picard.
@@ -109,7 +109,7 @@ Output: `✓ my-plugin: Plugin reloaded`
 ### Remove (Unregister)
 
 ```bash
-picard-plugins --remove my-plugin
+picard-cli plugins remove my-plugin
 ```
 
 This **unregisters** the plugin from Picard's config. The files on disk are **not deleted**.
@@ -186,13 +186,13 @@ git commit -m "Initial commit"
 Then reinstall via git:
 
 ```bash
-picard-plugins --install /path/to/my-plugin --reinstall
+picard-cli plugins install /path/to/my-plugin --reinstall
 ```
 
-The plugin will now be managed by git with full update/ref support. Alternatively, use `picard-plugins --init` from the start for a proper project scaffold with git already configured.
+The plugin will now be managed by git with full update/ref support. Alternatively, use `picard-cli plugins init` from the start for a proper project scaffold with git already configured.
 
 If the plugin was installed with `--no-git` (already has git), simply reinstall without the flag:
 
 ```bash
-picard-plugins --install /path/to/my-plugin --reinstall
+picard-cli plugins install /path/to/my-plugin --reinstall
 ```
