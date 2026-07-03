@@ -290,7 +290,7 @@ class PluginCLI(BaseCLI):
 
     def _dispatch(self):
         """Dispatch to the appropriate plugin command."""
-        # Handle --refresh-registry first if specified
+        # Handle refresh-registry first if specified
         if getattr(self._args, 'refresh_registry', None):
             result = self._cmd_refresh_registry()
             # If refresh failed, return error
@@ -298,7 +298,7 @@ class PluginCLI(BaseCLI):
                 return result
             # Continue to execute other command if specified
 
-        # Validate that --ref is only used with --install or --validate
+        # Validate that --ref is only used with install or validate commands
         ref = getattr(self._args, 'ref', None)
         if ref:
             valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
