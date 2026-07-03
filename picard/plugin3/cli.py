@@ -272,7 +272,9 @@ class PluginCLI(BaseCLI):
         reinstall = getattr(self._args, 'reinstall', False)
         if self._args.yes:
             if reinstall:
-                self._out.warning('Discarding changes (--reinstall --yes)')
+                self._out.warning(
+                    f'Discarding changes ({self._out.d_option("--reinstall")} {self._out.d_option("--yes")})'
+                )
                 result = action_callback(discard_changes=True)
                 return True, result
             else:
@@ -910,7 +912,10 @@ class PluginCLI(BaseCLI):
                     elif local_no_git_override:
                         self._out.warning('This plugin has a git repository.')
                         self._out.warning('  Git features (updates, refs) will be disabled in local mode.')
-                        self._out.warning('  Use --reinstall without --no-git to restore them.')
+                        self._out.warning(
+                            f'  Use {self._out.d_option("--reinstall")} without'
+                            f' {self._out.d_option("--no-git")} to restore them.'
+                        )
 
                         if not yes:
                             if not self._out.yesno('Do you want to continue?'):
@@ -1823,7 +1828,7 @@ class PluginCLI(BaseCLI):
         """Create a new plugin project directory."""
         if not name:
             if self._args.yes:
-                self._out.error('Plugin name is required in non-interactive mode (--yes)')
+                self._out.error(f'Plugin name is required in non-interactive mode ({self._out.d_option("--yes")})')
                 return ExitCode.ERROR
             return self._cmd_init_interactive()
 
