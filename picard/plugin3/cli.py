@@ -2295,19 +2295,6 @@ def minimal_init(config_file=None):
 
 
 def main():
-    import warnings
-
-    warnings.warn(
-        "'picard-plugins' is deprecated. Use 'picard-cli plugins' instead.",
-        DeprecationWarning,
-        stacklevel=1,
-    )
-    print(
-        "WARNING: 'picard-plugins' is deprecated and will be removed in a future release.\n"
-        "         Use 'picard-cli plugins <command>' instead.\n",
-        file=sys.stderr,
-    )
-
     try:
         if not has_git_backend():
             cli.print_message_and_exit("git backend not available", status=1)
