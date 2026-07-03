@@ -65,7 +65,6 @@ from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
 from picard.ui.itemviews.custom_columns.utils import (
     parse_bitrate,
-    parse_file_size,
     parse_time_format,
 )
 from picard.ui.itemviews.match_quality_column import MatchQualityProvider
@@ -183,7 +182,6 @@ def create_common_columns() -> tuple[Column, ...]:
     size_col = make_numeric_field_column(
         N_("Size"),
         '~filesize',
-        parse_file_size,
         align=ColumnAlign.RIGHT,
         column_group=ColumnGroup.FILE,
     )

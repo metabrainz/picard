@@ -102,7 +102,7 @@ class NumericSortAdapter(_AdapterBase):
 
     def __init__(self, base: ColumnValueProvider, parser: Callable[[str], float] | None = None):
         super().__init__(base)
-        self._parser = parser or (lambda s: float(s))
+        self._parser = parser or float
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         parser_name = getattr(self._parser, "__name__", repr(self._parser))

@@ -54,43 +54,6 @@ def parse_time_format(time_str: str) -> float:
         raise ValueError(f"Invalid time format: {time_str}")
 
 
-def parse_file_size(size_str: str) -> float:
-    """Parse file size format (e.g., '1.0 MB', '1.0 MiB') to bytes.
-
-    Parameters
-    ----------
-    size_str : str
-        File size string with optional unit (B, KB, MB, GB, TB).
-
-    Returns
-    -------
-    float
-        Size in bytes.
-
-    Raises
-    ------
-    ValueError
-        If the size format is invalid.
-    """
-    if not size_str:
-        return 0.0
-    # Remove any parentheses content like "(1.0 MiB)"
-    size_str = size_str.split('(')[0].strip()
-    size_str = size_str.upper()
-
-    # Extract number and unit
-    match = re.match(r'^([\d.]+)\s*([KMGT]?B?)$', size_str)
-    if not match:
-        raise ValueError(f"Invalid size format: {size_str}")
-
-    number, unit = match.groups()
-    number = float(number)
-
-    # Convert to bytes
-    multipliers = {'B': 1, 'KB': 1024, 'MB': 1024**2, 'GB': 1024**3, 'TB': 1024**4}
-    return number * multipliers.get(unit, 1)
-
-
 def parse_bitrate(bitrate_str: str) -> float:
     """Parse bitrate format (e.g., '320 kbps', '128 kbps') to kbps.
 
