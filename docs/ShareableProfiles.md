@@ -504,30 +504,30 @@ points and documentation-by-example.
 
 ## CLI Integration
 
-The `picard-profiles` command provides profile management from the terminal:
+The `picard-cli profiles` command provides profile management from the terminal:
 
 ```bash
 # List all profiles
-picard-profiles --list
+picard-cli profiles list
 
 # Export by title (outputs to stdout)
-picard-profiles --export "Navidrome optimized"
+picard-cli profiles export "Navidrome optimized"
 
 # Export by partial title or UUID prefix, to a file
-picard-profiles -e Navidrome -o navidrome.toml
+picard-cli profiles export Navidrome -o navidrome.toml
 
 # Export in backup mode (includes sensitive data and profile UUID)
-picard-profiles -e Navidrome -o navidrome.toml --mode backup
+picard-cli profiles export Navidrome -o navidrome.toml --mode backup
 
 # Import from file (created disabled by default)
-picard-profiles --import navidrome.toml
+picard-cli profiles import navidrome.toml
 
 # Import and enable immediately
-picard-profiles -i navidrome.toml --enable
+picard-cli profiles import navidrome.toml --enable
 
 # Import and replace an existing profile (by title or UUID)
-picard-profiles -i navidrome.toml --replace "Navidrome optimized"
-picard-profiles -i navidrome.toml --replace 6d70
+picard-cli profiles import navidrome.toml --replace "Navidrome optimized"
+picard-cli profiles import navidrome.toml --replace 6d70
 ```
 
 Profile resolution (for `--export` and `--replace`) supports exact match,
@@ -797,7 +797,7 @@ error.
 4. Implement `picard/profiles/exporter.py` (`export_profile()`)
 5. Implement `picard/profiles/importer.py` (`import_profile()`)
 6. Implement `picard/profiles/settings_upgrades.py` (version-keyed transforms)
-7. Implement `picard/profiles/cli.py` (`picard-profiles` command)
+7. Implement `picard/profiles/cli.py` (`picard-cli profiles` subcommand)
 8. Add Export/Import buttons to profiles UI (with replace support)
 
 ### Phase 2: Polish
