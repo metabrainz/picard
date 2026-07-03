@@ -25,6 +25,8 @@ Provides minimal initialization of QCoreApplication and Picard config
 without starting the full GUI application.
 """
 
+import logging
+import os
 import sys
 
 from PyQt6 import QtCore
@@ -65,4 +67,62 @@ def minimal_init(config_file=None, *, with_webservice=False):
 
         app.webservice = WebService()
 
+    return app
+
+
+def init_logging(args):
+    """Configure logging for CLI commands.
+
+    Sets up console handler and verbosity based on --debug / --debug-opts flags.
+
+    Args:
+        args: Parsed argparse namespace with 'debug' and 'debug_opts' attributes.
+    """
+    from picard import log
+    from picard.debug_opts import DebugOpt
+
+    log.enable_console_handler()
+
+    debug = getattr(args, 'debug', False)
+    debug_opts = getattr(args, 'debug_opts', None)
+
+    if not debug and not debug_opts:
+        log.set_verbosity(logging.WARNING)
+    else:
+        log.set_verbosity(logging.DEBUG)
+
+    if debug_opts:
+        DebugOpt.from_string(debug_opts)
+
+
+def is_color_disabled(args):
+    """Determine whether colored output should be disabled.
+
+    Checks both the --no-color flag and the NO_COLOR environment variable.
+
+    Args:
+        args: Parsed argparse namespace with 'no_color' attribute.
+
+    Returns:
+        True if color should be disabled, False otherwise.
+    """
+    return getattr(args, 'no_color', False) or 'NO_COLOR' in os.environ
+
+
+def init_cli(args, *, with_webservice=False):
+    """Full CLI initialization: app bootstrap + logging + color detection.
+
+    Convenience function combining minimal_init() and init_logging().
+    Use this in subcommand handlers instead of calling each step manually.
+
+    Args:
+        args: Parsed argparse namespace (must have config_file, debug, debug_opts).
+        with_webservice: If True, initialize WebService on the app instance.
+
+    Returns:
+        QCoreApplication instance.
+    """
+    config_file = getattr(args, 'config_file', None)
+    app = minimal_init(config_file, with_webservice=with_webservice)
+    init_logging(args)
     return app

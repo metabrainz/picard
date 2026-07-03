@@ -41,9 +41,6 @@ Usage:
     picard-cli plugins check-updates
 """
 
-import logging
-import os
-
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 
 
@@ -324,10 +321,11 @@ def _adapt_args(args):
 
 def _run_plugins(args):
     """Initialize and run the plugin CLI with subcommand args."""
-    from picard import log
-    from picard.cli._bootstrap import minimal_init
+    from picard.cli._bootstrap import (
+        init_cli,
+        is_color_disabled,
+    )
     from picard.const import USER_PLUGIN_DIR
-    from picard.debug_opts import DebugOpt
     from picard.git.factory import has_git_backend
     from picard.plugin3.cli import PluginCLI
     from picard.plugin3.manager import PluginManager
@@ -344,30 +342,13 @@ def _run_plugins(args):
     # No verb specified - show help
     verb = getattr(args, 'verb', None)
     if not verb:
-        # Get the plugins parser to print its help
-        # We can't easily access it here, so just print a message
         print("Usage: picard-cli plugins <command> [options]")
         print()
         print("Run 'picard-cli plugins --help' for available commands.")
         return 0
 
-    # Bootstrap app with webservice (needed for registry operations)
-    config_file = getattr(args, 'config_file', None)
-    app = minimal_init(config_file, with_webservice=True)  # noqa: F841
-
-    log.enable_console_handler()
-
-    # Configure log verbosity
-    debug = getattr(args, 'debug', False)
-    debug_opts = getattr(args, 'debug_opts', None)
-    if not debug and not debug_opts:
-        log.set_verbosity(logging.WARNING)
-    else:
-        log.set_verbosity(logging.DEBUG)
-
-    # Initialize debug options
-    if debug_opts:
-        DebugOpt.from_string(debug_opts)
+    # Bootstrap app, logging, and debug options
+    app = init_cli(args, with_webservice=True)  # noqa: F841
 
     # Adapt args for PluginCLI
     adapted_args = _adapt_args(args)
@@ -377,8 +358,7 @@ def _run_plugins(args):
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
 
     # Create output
-    no_color = getattr(args, 'no_color', False) or 'NO_COLOR' in os.environ
-    output = PluginOutput(color=False if no_color else None)
+    output = PluginOutput(color=False if is_color_disabled(args) else None)
 
     return PluginCLI(manager, adapted_args, output=output).run()
 
