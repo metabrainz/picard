@@ -201,118 +201,6 @@ def register_subcommand(subparsers):
     plugins_parser.set_defaults(run_command=_run_plugins)
 
 
-def _adapt_args(args):
-    """Adapt subcommand-style args to the format PluginCLI expects.
-
-    Translates the verb-based namespace into the flat --flag namespace
-    that PluginCLI.run() dispatches on.
-    """
-    verb = getattr(args, 'verb', None)
-
-    # Map verb-style args to the flat PluginCLI args namespace
-    # These are the attributes that PluginCLI.run() checks via if/elif
-    args.list = verb == 'list'
-    args.install = getattr(args, 'source', None) if verb == 'install' else None
-    args.remove = getattr(args, 'plugin', None) if verb in ('remove', 'uninstall') else None
-    args.enable = getattr(args, 'plugin', None) if verb == 'enable' else None
-    args.disable = getattr(args, 'plugin', None) if verb == 'disable' else None
-
-    # Update: either specific plugins or --all
-    if verb == 'update':
-        plugins = getattr(args, 'plugin', None)
-        if getattr(args, 'update_all', False) or not plugins:
-            args.update = None
-            args.update_all = True
-        else:
-            args.update = plugins
-            args.update_all = False
-    else:
-        args.update = None
-        args.update_all = getattr(args, 'update_all', False)
-
-    args.info = getattr(args, 'plugin', None) if verb == 'info' else None
-    args.list_refs = getattr(args, 'plugin', None) if verb == 'refs' else None
-
-    if verb == 'switch-ref':
-        args.switch_ref = [args.plugin, args.ref]
-    else:
-        args.switch_ref = None
-
-    args.browse = verb == 'browse'
-    args.search = getattr(args, 'query', None) if verb == 'search' else None
-
-    if verb == 'check-blacklist':
-        args.check_blacklist = getattr(args, 'url', '') or ''
-    else:
-        args.check_blacklist = None
-
-    args.refresh_registry = verb == 'refresh-registry'
-    args.check_updates = verb == 'check-updates'
-
-    if verb == 'validate':
-        args.validate = getattr(args, 'source', None)
-    else:
-        args.validate = None
-
-    if verb == 'manifest':
-        args.manifest = getattr(args, 'target', '')
-    else:
-        # Use sentinel to distinguish "not given" from "given with no arg"
-        args.manifest = None
-
-    if verb == 'init':
-        args.init = getattr(args, 'name', '')
-    else:
-        args.init = None
-
-    if verb == 'clean-config':
-        args.clean_config = getattr(args, 'plugin', '')
-    else:
-        args.clean_config = None
-
-    # Ensure common attributes exist
-    if not hasattr(args, 'ref'):
-        args.ref = None
-    if not hasattr(args, 'reinstall'):
-        args.reinstall = False
-    if not hasattr(args, 'force_blacklisted'):
-        args.force_blacklisted = False
-    if not hasattr(args, 'trust_community'):
-        args.trust_community = False
-    if not hasattr(args, 'trust'):
-        args.trust = None
-    if not hasattr(args, 'category'):
-        args.category = None
-    if not hasattr(args, 'purge'):
-        args.purge = False
-    if not hasattr(args, 'target_dir'):
-        args.target_dir = None
-    if not hasattr(args, 'parent_dir'):
-        args.parent_dir = None
-    if not hasattr(args, 'author'):
-        args.author = None
-    if not hasattr(args, 'with_translations'):
-        args.with_translations = False
-    if not hasattr(args, 'no_git'):
-        args.no_git = False
-    if not hasattr(args, 'no_commit'):
-        args.no_commit = False
-    if not hasattr(args, 'source_locale'):
-        args.source_locale = DEFAULT_SOURCE_LOCALE
-    if not hasattr(args, 'locale'):
-        args.locale = 'en'
-    if not hasattr(args, 'uuid'):
-        args.uuid = None
-    if not hasattr(args, 'yes'):
-        args.yes = False
-    if not hasattr(args, 'no_color'):
-        args.no_color = False
-
-    args.remote_commands_help = False
-
-    return args
-
-
 def _run_plugins(args):
     """Initialize and run the plugin CLI with subcommand args."""
     from picard.cli._bootstrap import (
@@ -344,9 +232,6 @@ def _run_plugins(args):
     # Bootstrap app, logging, and debug options
     app = init_cli(args, with_webservice=True)  # noqa: F841
 
-    # Adapt args for PluginCLI
-    adapted_args = _adapt_args(args)
-
     # Create plugin manager
     manager = PluginManager()
     manager.add_directory(USER_PLUGIN_DIR, primary=True)
@@ -354,7 +239,7 @@ def _run_plugins(args):
     # Create output
     output = PluginOutput(color=False if is_color_disabled(args) else None)
 
-    return PluginCLI(manager, adapted_args, output=output).run()
+    return PluginCLI(manager, args, output=output).run()
 
 
 def _argparse():

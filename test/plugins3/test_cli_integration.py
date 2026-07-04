@@ -22,8 +22,6 @@ import subprocess
 import sys
 import unittest
 
-from picard.git.factory import has_git_backend
-
 
 class TestCliIntegration(unittest.TestCase):
     """Integration tests that run picard-cli in a subprocess.
@@ -39,5 +37,4 @@ class TestCliIntegration(unittest.TestCase):
             capture_output=True,
             timeout=10,
         )
-        expected_code = 0 if has_git_backend() else 1
-        self.assertEqual(result.returncode, expected_code, msg=result.stderr.decode())
+        self.assertEqual(result.returncode, 0, msg=result.stderr.decode())
