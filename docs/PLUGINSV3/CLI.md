@@ -170,16 +170,19 @@ plugin commands:
     info            show detailed plugin information
     search          search plugins in registry
     browse          browse all plugins from registry
-    init            create a new plugin project
-    validate        validate a plugin MANIFEST
     refs            list available git refs for a plugin
     switch-ref      switch plugin to a different git ref
-    manifest        show MANIFEST.toml (template if no argument)
     check-blacklist check if URL/UUID is blacklisted
     clean-config    delete saved options for a plugin
     refresh-registry
                     force refresh of plugin registry cache
     check-updates   check for available updates
+
+development commands:
+  <command>
+    init            create a new plugin project
+    validate        validate a plugin MANIFEST
+    manifest        show MANIFEST.toml (template if no argument)
 
 Trust Levels:
   🛡️ official: Reviewed by Picard team (highest trust)
@@ -194,6 +197,8 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 
 ## Commands Summary
 
+### Plugin Commands
+
 | Command | Description |
 |---------|-------------|
 | `list` | List all installed plugins |
@@ -204,17 +209,22 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `update <plugin>` | Update specific plugin |
 | `update --all` | Update all plugins |
 | `info <plugin>` | Show plugin details and status |
+| `search <term>` | Search official plugins |
+| `browse` | Browse official plugins |
 | `refs <plugin>` | List available git refs for plugin |
 | `switch-ref <plugin> <ref>` | Switch plugin to different ref |
-| `check-updates` | Check for updates within installed ref |
-| `validate <path-or-url>` | Validate plugin MANIFEST |
-| `manifest [target]` | Show MANIFEST.toml (template or from plugin) |
-| `init [name]` | Create a new plugin project |
-| `browse` | Browse official plugins |
-| `search <term>` | Search official plugins |
 | `check-blacklist [url]` | Check if URL and/or UUID is blacklisted |
 | `clean-config [plugin]` | Delete plugin saved options or list orphaned configs |
 | `refresh-registry` | Force refresh plugin registry cache |
+| `check-updates` | Check for updates within installed ref |
+
+### Development Commands
+
+| Command | Description |
+|---------|-------------|
+| `init [name]` | Create a new plugin project |
+| `validate <path-or-url>` | Validate plugin MANIFEST |
+| `manifest [target]` | Show MANIFEST.toml (template or from plugin) |
 
 ---
 
