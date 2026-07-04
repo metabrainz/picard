@@ -1253,12 +1253,7 @@ Clean with: picard-cli plugins clean-config <uuid>
 | 0 | Success |
 | 1 | General error |
 | 2 | Plugin not found |
-| 3 | Network error |
-| 4 | Git error |
-| 5 | Blacklisted plugin |
-| 6 | Incompatible API version |
-| 7 | Invalid manifest |
-| 8 | User cancelled |
+| 130 | Operation cancelled (SIGINT) |
 
 ---
 
