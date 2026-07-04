@@ -41,6 +41,10 @@ Usage:
     picard-cli plugins check-updates
 """
 
+from picard.cli.argparse_grouped import (
+    GroupedHelpFormatter,
+    GroupedSubParsersAction,
+)
 from picard.plugin3.constants import DEFAULT_SOURCE_LOCALE
 
 
@@ -50,7 +54,7 @@ def register_subcommand(subparsers):
         'plugins',
         help='manage Picard plugins',
         description='Install, update, enable, and manage Picard plugins.',
-        formatter_class=_argparse().RawDescriptionHelpFormatter,
+        formatter_class=GroupedHelpFormatter,
         epilog=(
             "Trust Levels:\n"
             "  🛡️ official: Reviewed by Picard team (highest trust)\n"
@@ -74,6 +78,7 @@ def register_subcommand(subparsers):
         dest='verb',
         title='plugin commands',
         metavar='<command>',
+        action=GroupedSubParsersAction,
     )
 
     # --- list ---
@@ -134,6 +139,41 @@ def register_subcommand(subparsers):
     p_browse.add_argument('--trust', metavar='LEVEL', help="filter by trust level")
     p_browse.set_defaults(run_command=_run_plugins)
 
+    # --- refs ---
+    p_refs = verb_parsers.add_parser('refs', help='list available git refs for a plugin')
+    p_refs.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, URL, or UUID")
+    p_refs.set_defaults(run_command=_run_plugins)
+
+    # --- switch-ref ---
+    p_switch_ref = verb_parsers.add_parser('switch-ref', help='switch plugin to a different git ref')
+    p_switch_ref.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, or UUID")
+    p_switch_ref.add_argument('ref', metavar='REF', help="target branch, tag, or commit")
+    p_switch_ref.set_defaults(run_command=_run_plugins)
+
+    # --- check-blacklist ---
+    p_blacklist = verb_parsers.add_parser('check-blacklist', help='check if URL/UUID is blacklisted')
+    p_blacklist.add_argument('url', nargs='?', default='', metavar='URL', help="git URL to check")
+    p_blacklist.add_argument('--uuid', metavar='UUID', help="plugin UUID to check")
+    p_blacklist.set_defaults(run_command=_run_plugins)
+
+    # --- clean-config ---
+    p_clean = verb_parsers.add_parser('clean-config', help='delete saved options for a plugin')
+    p_clean.add_argument(
+        'plugin', nargs='?', default='', metavar='PLUGIN', help="plugin to clean (omit to list orphaned configs)"
+    )
+    p_clean.set_defaults(run_command=_run_plugins)
+
+    # --- refresh-registry ---
+    p_refresh = verb_parsers.add_parser('refresh-registry', help='force refresh of plugin registry cache')
+    p_refresh.set_defaults(run_command=_run_plugins)
+
+    # --- check-updates ---
+    p_check = verb_parsers.add_parser('check-updates', help='check for available updates')
+    p_check.set_defaults(run_command=_run_plugins)
+
+    # --- Development commands ---
+    verb_parsers.start_group('development commands')
+
     # --- init ---
     p_init = verb_parsers.add_parser('init', help='create a new plugin project')
     p_init.add_argument('name', nargs='?', default='', metavar='NAME', help="plugin name (interactive if omitted)")
@@ -158,44 +198,12 @@ def register_subcommand(subparsers):
     p_validate.add_argument('--ref', metavar='REF', help="git ref to checkout for validation")
     p_validate.set_defaults(run_command=_run_plugins)
 
-    # --- refs ---
-    p_refs = verb_parsers.add_parser('refs', help='list available git refs for a plugin')
-    p_refs.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, URL, or UUID")
-    p_refs.set_defaults(run_command=_run_plugins)
-
-    # --- switch-ref ---
-    p_switch_ref = verb_parsers.add_parser('switch-ref', help='switch plugin to a different git ref')
-    p_switch_ref.add_argument('plugin', metavar='PLUGIN', help="plugin name, ID, or UUID")
-    p_switch_ref.add_argument('ref', metavar='REF', help="target branch, tag, or commit")
-    p_switch_ref.set_defaults(run_command=_run_plugins)
-
     # --- manifest ---
     p_manifest = verb_parsers.add_parser('manifest', help='show MANIFEST.toml (template if no argument)')
     p_manifest.add_argument(
         'target', nargs='?', default='', metavar='PLUGIN_OR_PATH', help="plugin, path, or URL (omit for template)"
     )
     p_manifest.set_defaults(run_command=_run_plugins)
-
-    # --- check-blacklist ---
-    p_blacklist = verb_parsers.add_parser('check-blacklist', help='check if URL/UUID is blacklisted')
-    p_blacklist.add_argument('url', nargs='?', default='', metavar='URL', help="git URL to check")
-    p_blacklist.add_argument('--uuid', metavar='UUID', help="plugin UUID to check")
-    p_blacklist.set_defaults(run_command=_run_plugins)
-
-    # --- clean-config ---
-    p_clean = verb_parsers.add_parser('clean-config', help='delete saved options for a plugin')
-    p_clean.add_argument(
-        'plugin', nargs='?', default='', metavar='PLUGIN', help="plugin to clean (omit to list orphaned configs)"
-    )
-    p_clean.set_defaults(run_command=_run_plugins)
-
-    # --- refresh-registry ---
-    p_refresh = verb_parsers.add_parser('refresh-registry', help='force refresh of plugin registry cache')
-    p_refresh.set_defaults(run_command=_run_plugins)
-
-    # --- check-updates ---
-    p_check = verb_parsers.add_parser('check-updates', help='check for available updates')
-    p_check.set_defaults(run_command=_run_plugins)
 
     # Default handler when no verb is given
     plugins_parser.set_defaults(run_command=_run_plugins)
