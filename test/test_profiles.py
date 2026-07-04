@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from enum import Enum
 import logging
 import os
 import shutil
@@ -47,6 +48,12 @@ from picard.profile import (
     profile_groups_update_highlights,
     profile_groups_values,
 )
+
+
+class DummyEnum(Enum):
+    A = "a"
+    B = "b"
+    C = "c"
 
 
 class TestPicardProfilesCommon(PicardTestCase):
@@ -76,7 +83,7 @@ class TestPicardProfilesCommon(PicardTestCase):
 
         # Get valid profile option settings for testing
         profile_groups_reset()
-        for n in range(0, 4):
+        for n in range(0, 5):
             group = 'group%d' % (n % 2)
             title = 'title_' + group
             name = 'opt%d' % n
@@ -87,11 +94,13 @@ class TestPicardProfilesCommon(PicardTestCase):
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
         self.test_setting_3 = option_settings[3]
+        self.test_setting_4 = option_settings[4]
 
         TextOption("setting", self.test_setting_0, "abc", in_profile=True)
         BoolOption("setting", self.test_setting_1, True, in_profile=True)
         IntOption("setting", self.test_setting_2, 42, in_profile=True)
         TextOption("setting", self.test_setting_3, "xyz", in_profile=True)
+        Option("setting", self.test_setting_4, DummyEnum.B, in_profile=True)
 
     def tearDown(self):
         Option.registry = self.old_registry
@@ -105,7 +114,7 @@ class TestPicardProfilesCommon(PicardTestCase):
 
     def get_profiles(self, enabled=True):
         profiles = []
-        for i in range(3):
+        for i in range(4):
             profiles.append(
                 {
                     "position": i,
@@ -190,72 +199,84 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.config.setting[self.test_setting_0] = "abc"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 42
+        self.config.setting[self.test_setting_4] = DummyEnum.A
         settings = {
             "test_key_0": {self.test_setting_0: None},
             "test_key_1": {self.test_setting_1: None},
             "test_key_2": {self.test_setting_2: None},
+            "test_key_3": {self.test_setting_4: None},
         }
         self.config.profiles[self.SETTINGS_KEY] = settings
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       None        n/a         n/a
-        # test_key_1:       n/a         None        n/a
-        # test_key_2:       n/a         n/a         None
-        # user_settings:    abc         True        42
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       None       n/a        n/a        n/a
+        # test_key_1:       n/a        None       n/a        n/a
+        # test_key_2:       n/a        n/a        None       n/a
+        # test_key_2:       n/a        n/a        n/a        None
+        # user_settings:    abc        True       42         A
 
         # Test retrieval with overrides at None
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 42)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.A)
 
         # Test setting new values
         self.config.setting[self.test_setting_0] = "def"
         self.config.setting[self.test_setting_1] = False
         self.config.setting[self.test_setting_2] = 99
+        self.config.setting[self.test_setting_4] = DummyEnum.B
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       def         n/a         n/a
-        # test_key_1:       n/a         False       n/a
-        # test_key_2:       n/a         n/a         99
-        # user_settings:    abc         True        42
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       def        n/a        n/a        n/a
+        # test_key_1:       n/a        False      n/a        n/a
+        # test_key_2:       n/a        n/a        99         n/a
+        # test_key_2:       n/a        n/a        n/a        B
+        # user_settings:    abc        True       42         A
 
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.B)
 
         # Test retrieval with profiles disabled
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 42)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.A)
 
         # Test setting new values with profiles disabled
         self.config.setting[self.test_setting_0] = "ghi"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 86
+        self.config.setting[self.test_setting_4] = DummyEnum.C
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       def         n/a         n/a
-        # test_key_1:       n/a         False       n/a
-        # test_key_2:       n/a         n/a         99
-        # user_settings:    ghi         True        86
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       def        n/a        n/a        n/a
+        # test_key_1:       n/a        False      n/a        n/a
+        # test_key_2:       n/a        n/a        99         n/a
+        # test_key_2:       n/a        n/a        n/a        B
+        # user_settings:    ghi        True       86         C
 
         self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 86)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.C)
 
         # Re-enable profiles and check that the saved settings still exist
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.B)
 
     def test_settings_with_overrides(self):
         self.config.setting[self.test_setting_0] = "abc"

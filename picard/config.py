@@ -309,7 +309,7 @@ class ProfileConfigSection(ConfigSection):
         if opt.in_profile:
             override = self._get_profile_override(name)
             if override is not _SENTINEL:
-                return override
+                return opt.convert(override)
         return self.value(opt, opt.default)
 
     def _profile_key(self, name: str) -> str:
