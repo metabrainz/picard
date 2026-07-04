@@ -20,6 +20,7 @@
 
 from collections.abc import Callable
 import dataclasses
+from unittest.mock import MagicMock
 
 from picard.const.sys import IS_WIN
 from picard.i18n import setup_i18n
@@ -43,6 +44,11 @@ from picard.ui.itemviews.custom_columns import (
     NumericSortAdapter,
     make_callable_column,
 )
+from picard.ui.itemviews.custom_columns.protocols import ColumnValueProvider
+from picard.ui.itemviews.custom_columns.sorting_adapters import (
+    MetadataDurationSortAdapter,
+    _AdapterBase,
+)
 
 
 @dataclasses.dataclass
@@ -50,7 +56,7 @@ class _ValueItem:
     value: str
 
 
-def _build_sorted_column(adapter_factory: Callable[[object], object]) -> CustomColumn:
+def _build_sorted_column(adapter_factory: type[_AdapterBase] | Callable[[object], ColumnValueProvider]) -> CustomColumn:
     base_col = make_callable_column(
         title="Value",
         key="test_value_key",
@@ -69,7 +75,9 @@ def _build_sorted_column(adapter_factory: Callable[[object], object]) -> CustomC
     )
 
 
-def _sorted_values(adapter_factory: Callable[[object], object], values: list[str]) -> list[str]:
+def _sorted_values(
+    adapter_factory: type[_AdapterBase] | Callable[[object], ColumnValueProvider], values: list[str]
+) -> list[str]:
     col = _build_sorted_column(adapter_factory)
     items = [_ValueItem(v) for v in values]
     # type: ignore[operator]
@@ -118,6 +126,22 @@ def test_numeric_sort_adapter_custom_parser() -> None:
     # "x" is non-numeric and sorts after numeric values
     expected = ["1:00", "2:05", "3:30", "x"]
     result = _sorted_values(adapter, values)
+    assert result == expected
+
+
+def test_metadata_duration_sort_adapter() -> None:
+    obj1 = MagicMock()
+    obj1.metadata.length = 100
+    obj2 = MagicMock()
+    obj2.metadata.length = 200
+    # Mixin an object without metadata to test mixed content sorting
+    obj3 = _ValueItem(value='300')
+    obj4 = MagicMock()
+    obj4.metadata.length = 400
+    values = [obj2, obj1, obj4, obj3]
+    expected = [obj1, obj2, obj3, obj4]
+    col = _build_sorted_column(MetadataDurationSortAdapter)
+    result = sorted(values, key=lambda it: col.sortkey(it))
     assert result == expected
 
 

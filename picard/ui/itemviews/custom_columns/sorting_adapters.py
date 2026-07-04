@@ -98,11 +98,14 @@ class CasefoldSortAdapter(_AdapterBase):
 
 
 class NumericSortAdapter(_AdapterBase):
-    """Provide numeric sort using a parser (default: float) on evaluated value."""
+    """Provide numeric sort using a parser (default: float) on value.
+    Sorting will happen on the raw metadata value, if set. Otherwise falls back
+    to base provider evaluate.
+    """
 
     def __init__(self, base: ColumnValueProvider, parser: Callable[[str], float] | None = None):
         super().__init__(base)
-        self._parser = parser or (lambda s: float(s))
+        self._parser = parser or float
 
     def __repr__(self) -> str:  # pragma: no cover - debug helper
         parser_name = getattr(self._parser, "__name__", repr(self._parser))
@@ -115,13 +118,34 @@ class NumericSortAdapter(_AdapterBase):
         - (0, number) when the value parses as numeric (numbers first)
         - (1, natural_key) when non-numeric (fallback, sorted naturally)
         """
-        value_str: str = self._base.evaluate(obj) or ""
+        value_str = ""
+        if key := getattr(self._base, 'key', None):
+            if metadata := getattr(obj, 'metadata', None):
+                value_str = metadata[key]
+        if not value_str:
+            value_str = self._base.evaluate(obj) or ""
         try:
             parsed_value = self._parser(value_str)
         except (ValueError, TypeError):
             return (1, _sort_key(value_str, numeric=True))
         else:
             return (0, parsed_value)
+
+
+class MetadataDurationSortAdapter(NumericSortAdapter):
+    """Sort items by their metadata.length (audio duration).
+
+    Fall back to numeric sort adapter of the field value.
+    """
+
+    def sort_key(self, obj: Item) -> Comparable:
+        """Return length-based sort key for item."""
+        metadata = getattr(obj, 'metadata', None)
+        if metadata:
+            # Return a tuple for consistency with NumericSortAdapter
+            return (0, metadata.length)
+        else:
+            return super().sort_key(obj)
 
 
 class LengthSortAdapter(_AdapterBase):

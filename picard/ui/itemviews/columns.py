@@ -55,19 +55,16 @@ from picard.ui.columns import (
     Columns,
     ColumnSortType,
 )
-from picard.ui.itemviews.custom_columns import (
+from picard.ui.itemviews.custom_columns.factory import (
     make_delegate_column,
+    make_duration_field_column,
     make_field_column,
+    make_icon_header_column,
     make_numeric_field_column,
 )
-from picard.ui.itemviews.custom_columns.factory import make_icon_header_column
 from picard.ui.itemviews.custom_columns.providers import LazyHeaderIconProvider
 from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
-from picard.ui.itemviews.custom_columns.utils import (
-    parse_bitrate,
-    parse_file_size,
-    parse_time_format,
-)
+from picard.ui.itemviews.custom_columns.utils import parse_bitrate
 from picard.ui.itemviews.match_quality_column import MatchQualityProvider
 
 
@@ -137,12 +134,10 @@ def create_common_columns() -> tuple[Column, ...]:
     )
 
     # Length with numeric sort key from metadata.length
-    length_col = make_numeric_field_column(
+    length_col = make_duration_field_column(
         N_("Length"),
         '~length',
-        parse_time_format,
         width=50,
-        align=ColumnAlign.RIGHT,
         is_default=True,
         column_group=ColumnGroup.TRACK,
     )
@@ -183,7 +178,6 @@ def create_common_columns() -> tuple[Column, ...]:
     size_col = make_numeric_field_column(
         N_("Size"),
         '~filesize',
-        parse_file_size,
         align=ColumnAlign.RIGHT,
         column_group=ColumnGroup.FILE,
     )
