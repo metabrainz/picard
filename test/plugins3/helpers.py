@@ -185,6 +185,7 @@ class MockCliArgs(Mock):
             'plugin': None,
             'source': None,
             'url': None,
+            'force': False,
         }
         defaults.update(kwargs)
         super().__init__(**defaults)

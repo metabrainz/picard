@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from datetime import datetime
+from io import StringIO
+import os.path
 from pathlib import Path
 import shutil
 
@@ -122,6 +124,24 @@ def get_localized_registry_field(plugin, field, locale='en'):
     else:
         # For other fields, return the base field
         return getattr(plugin, field, '')
+
+
+def newer(file1: Path, file2: Path) -> bool:
+    """Returns True, if file1 has been modified after file2"""
+    if not file2.exists():
+        return True
+    return os.path.getmtime(file1) > os.path.getmtime(file2)
+
+
+def compile_ui(ui_file: Path, py_file: Path) -> None:
+    # import locally in case PyQt6 stops shipping uic (happened in the past)
+    from PyQt6 import uic
+
+    tmp_out = StringIO()
+    uic.compileUi(str(ui_file), tmp_out)
+    output = tmp_out.getvalue()
+    with open(py_file, "w") as f:
+        f.write(output)
 
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -312,6 +332,8 @@ class PluginCLI(BaseCLI):
             return self._cmd_manifest(self._args.target)
         elif cmd == 'init':
             return self._cmd_init(self._args.name)
+        elif cmd == 'compile-ui':
+            return self._cmd_compile_ui(self._args.ui_file, self._args.force)
         else:
             self._out.error('No action specified')
             return ExitCode.ERROR
@@ -1791,6 +1813,29 @@ class PluginCLI(BaseCLI):
             return self._cmd_init_interactive()
 
         return self.create_plugin_project(PluginProjectConfig(name=name))
+
+    def _cmd_compile_ui(self, ui_file, force):
+        """Compile the UI for a plugin."""
+
+        ui_file = Path(ui_file)
+        py_file = ui_file.parent.joinpath(os.path.splitext(ui_file)[0] + '.py')
+
+        if not ui_file.exists():
+            self._out.error(f"File {self._out.bold(ui_file.name)} does not exist.")
+            return ExitCode.NOT_FOUND
+
+        self._out.print(f"Compiling {self._out.bold(ui_file.name)} -> {self._out.bold(py_file.name)}...")
+        if newer(ui_file, py_file) or force:
+            try:
+                compile_ui(ui_file, py_file)
+                self._out.success(f"Compiled {self._out.bold(py_file.name)}")
+            except Exception as e:
+                self._handle_exception(e, f"Failed to compile {self._out.bold(ui_file.name)}")
+                return ExitCode.ERROR
+        else:
+            self._out.info(f"Skipping, {self._out.bold(py_file.name)} is up to date")
+
+        return ExitCode.SUCCESS
 
     def _cmd_init_interactive(self):
         """Run interactive plugin project creation."""

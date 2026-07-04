@@ -1635,3 +1635,40 @@ class TestPluginCLIInitGit(PicardTestCase):
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertIn('Git repository initialized', stdout)
         self.assertNotIn('initial commit', stdout)
+
+
+class TestPluginCLICompileUI(PicardTestCase):
+    """Tests for compile-ui command."""
+
+    def setUp(self):
+        super().setUp()
+        self.tmpdir = Path(self.mktmpdir())
+
+    def test_compile_ui(self):
+        """Test compile-ui succeeds"""
+        ui_file = self.tmpdir / 'widget.ui'
+        py_file = self.tmpdir / 'widget.py'
+        shutil.copy('test/data/widget.ui', ui_file)
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='compile-ui', ui_file=ui_file)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertTrue(py_file.is_file())
+
+    def test_compile_ui_skips_up_to_date(self):
+        """Test compile-ui skips compilation for up-to-date file"""
+        ui_file = self.tmpdir / 'widget.ui'
+        shutil.copy('test/data/widget.ui', ui_file)
+        run_cli(MockPluginManager(), verb='compile-ui', ui_file=ui_file)
+        # Compiling again skips the file
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='compile-ui', ui_file=ui_file)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertIn('Skipping', stdout)
+        # Compiling with --force recompiles the file
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='compile-ui', ui_file=ui_file, force=True)
+        self.assertEqual(ExitCode.SUCCESS, exit_code)
+        self.assertIn('Compiled', stdout)
+
+    def test_compile_ui_no_file(self):
+        """Test compile-ui fails with non-existent file"""
+        ui_file = '/invalid/file.ui'
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='compile-ui', ui_file=ui_file)
+        self.assertEqual(ExitCode.NOT_FOUND, exit_code)
