@@ -140,8 +140,8 @@ class PicardTestCase(unittest.TestCase):
         else:
             shutil.rmtree(tmpdir, ignore_errors=ignore_errors, onerror=_remove_readonly)
 
-    def copy_file_tmp(self, filepath, ext):
-        fd, copy = mkstemp(suffix=ext)
+    def copy_file_tmp(self, filepath, ext, dir=None):
+        fd, copy = mkstemp(suffix=ext, dir=dir)
         os.close(fd)
         self.addCleanup(self.remove_file_tmp, copy)
         shutil.copy(filepath, copy)

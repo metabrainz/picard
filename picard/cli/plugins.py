@@ -205,6 +205,12 @@ def register_subcommand(subparsers):
     )
     p_manifest.set_defaults(run_command=_run_plugins)
 
+    # --- compile-ui ---
+    p_compile_ui = verb_parsers.add_parser('compile-ui', help='compile the UI for a plugin')
+    p_compile_ui.add_argument('ui_file', metavar='PATH', help="Path to a .ui file")
+    p_compile_ui.add_argument('--force', '-f', action='store_true', help='Force compilation even if up-to-date')
+    p_compile_ui.set_defaults(run_command=_run_plugins)
+
     # Default handler when no verb is given
     plugins_parser.set_defaults(run_command=_run_plugins)
 
