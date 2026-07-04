@@ -322,7 +322,7 @@ picard-cli plugins install view-script-variables
 picard-cli plugins install listenbrainz discogs acoustid
 ```
 
-**Note:** The registry ID is shown in `--browse` and `--search` output. It's different from the internal plugin_id that gets created after installation.
+**Note:** The registry ID is shown in `browse` and `search` output. It's different from the internal plugin_id that gets created after installation.
 
 **Versioning behavior:**
 - If plugin has `versioning_scheme` in registry and no `--ref` specified:
@@ -410,19 +410,19 @@ picard-cli plugins update view-script-variables
 # Update one plugin (using plugin ID)
 picard-cli plugins update listenbrainz_a1b2c3d4-e5f6-...
 
-# Update to specific ref
-picard-cli plugins update view-script-variables --ref v2.0.0
-
 # Update all plugins
 picard-cli plugins update --all
 
 # Check for updates without installing
 picard-cli plugins check-updates
+
+# To switch to a specific ref, use switch-ref
+picard-cli plugins switch-ref view-script-variables v2.0.0
 ```
 
 **Note on registry ID:** If you installed a plugin from the registry (e.g., `picard-cli plugins install view-script-variables`), you can use the short registry ID for updates instead of the long plugin_id with UUID suffix.
 
-**Note on `--check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `--switch-ref` instead.
+**Note on `check-updates`:** This command checks for updates within the currently installed git ref (branch/tag). If a plugin is installed from a specific branch (e.g., `dev`), it will only check for updates on that branch, not on other branches like `main`. To switch to a different branch, use `switch-ref` instead.
 
 **Versioning behavior:**
 - If plugin has `versioning_scheme` in registry:
@@ -443,7 +443,7 @@ picard-cli plugins update my-plugin
 # Updates to latest commit on current branch
 ```
 
-**Note on tags:** If a plugin is installed with a version tag (e.g., `v1.0.0`, `1.2.3`), `--update` will automatically find and switch to the latest version tag. Non-version tags (e.g., `stable`, `latest`) are treated as immutable.
+**Note on tags:** If a plugin is installed with a version tag (e.g., `v1.0.0`, `1.2.3`), `update` will automatically find and switch to the latest version tag. Non-version tags (e.g., `stable`, `latest`) are treated as immutable.
 
 ```bash
 # Plugin installed with version tag v1.0.0
@@ -461,7 +461,7 @@ picard-cli plugins switch-ref myplugin v2.0.0
 picard-cli plugins switch-ref myplugin main
 ```
 
-**Note on commits:** If a plugin was installed with a specific commit hash, `--update` will report "Already up to date" because commit hashes are immutable. Use `--switch-ref` to change to a different commit, tag, or branch.
+**Note on commits:** If a plugin was installed with a specific commit hash, `update` will report "Already up to date" because commit hashes are immutable. Use `switch-ref` to change to a different commit, tag, or branch.
 
 **Example:**
 ```bash
@@ -550,16 +550,15 @@ Last Updated: 2025-11-20 14:15:00
 - `picard-cli plugins refs <name|url>` - List available refs for plugin
 - `picard-cli plugins install <url> --ref <ref>` - Install specific ref
 - `picard-cli plugins switch-ref <name> <ref>` - Switch to different ref
-- `picard-cli plugins update <name> --ref <ref>` - Update to specific ref
 - `picard-cli plugins info <name>` - Show available refs for registered plugins
 
 **Description:** Manage git branches, tags, and commits
 
 **Understanding refs:**
-- **Branches** (e.g., `main`, `dev`): Mutable - `--update` pulls latest commits
-- **Version tags** (e.g., `v1.0.0`, `2.1.3`): `--update` automatically finds and switches to latest version tag
-- **Non-version tags** (e.g., `stable`, `latest`): Immutable - use `--switch-ref` to change
-- **Commits** (e.g., `abc1234`): Immutable - cannot be updated, use `--switch-ref` to change
+- **Branches** (e.g., `main`, `dev`): Mutable - `update` pulls latest commits
+- **Version tags** (e.g., `v1.0.0`, `2.1.3`): `update` automatically finds and switches to latest version tag
+- **Non-version tags** (e.g., `stable`, `latest`): Immutable - use `switch-ref` to change
+- **Commits** (e.g., `abc1234`): Immutable - cannot be updated, use `switch-ref` to change
 
 **Registry refs:**
 Plugins in the official registry can specify multiple refs (branches/tags) that are available for installation:
@@ -572,9 +571,9 @@ When installing a registered plugin without specifying `--ref`, Picard automatic
 - Picard 3.x users get the `picard-v3` branch
 - Picard 4.x users get the `main` branch
 
-**When to use `--update` vs `--switch-ref`:**
-- Use `--update` to get the latest version (works for both branches and tags)
-- Use `--switch-ref` to change to a different branch/tag, or to switch from commit to branch/tag
+**When to use `update` vs `switch-ref`:**
+- Use `update` to get the latest version (works for both branches and tags)
+- Use `switch-ref` to change to a different branch/tag, or to switch from commit to branch/tag
 
 **Examples:**
 ```bash
@@ -610,7 +609,7 @@ picard-cli plugins switch-ref myplugin v1.1.0
 
 **Ref validation:**
 
-When using `--switch-ref`, Picard validates the ref exists:
+When using `switch-ref`, Picard validates the ref exists:
 
 - **With `versioning_scheme`**: Validates tag matches pattern and exists
   ```bash
