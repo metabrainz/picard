@@ -87,7 +87,7 @@ class TestPicardProfilesCommon(PicardTestCase):
             group = 'group%d' % (n % 2)
             title = 'title_' + group
             name = 'opt%d' % n
-            highlights = ('obj%d' % i for i in range(0, n))
+            highlights = tuple('obj%d' % i for i in range(0, n))
             profile_groups_add_setting(group, name, highlights, title=title)
         option_settings = list(profile_groups_all_settings())
         self.test_setting_0 = option_settings[0]
@@ -187,11 +187,14 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
         self.assertIn('opt0', profile_groups_all_settings())
 
     def test_update_highlights(self):
-        # Update highlights for opt1
-        profile_groups_update_highlights('opt1', ('new_widget',))
+        profile_groups_add_setting('group1', 'opt1', ('old_widget',), section='section2')
+        # Update highlights for opt1 in section 'section2'
+        profile_groups_update_highlights('section2', 'opt1', ('new_widget',))
         settings = list(profile_groups_settings('group1'))
-        opt1_updated = next(s for s in settings if s.name == 'opt1')
+        opt1_updated = next(s for s in settings if s.name == 'opt1' and s.section == 'section2')
         self.assertEqual(opt1_updated.highlights, ('new_widget',))
+        opt1_unchanged = next(s for s in settings if s.name == 'opt1' and s.section == 'setting')
+        self.assertEqual(opt1_unchanged.highlights, ('obj0',))
 
 
 class TestUserProfiles(TestPicardProfilesCommon):
