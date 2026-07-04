@@ -111,9 +111,9 @@ picard-cli plugins manifest ~/dev/my-plugin    # From local directory
 picard-cli plugins browse
 picard-cli plugins search "cover art"
 
-# Disable colored output
-picard-cli plugins list --no-color
-picard-cli plugins validate ~/dev/my-plugin --no-color
+# Disable colored output (--no-color and --yes are top-level picard-cli options)
+picard-cli --no-color plugins list
+picard-cli --no-color plugins validate ~/dev/my-plugin
 ```
 
 ---
@@ -151,13 +151,12 @@ picard -e "PLUGIN_ENABLE listenbrainz"
 ### Help Output
 
 ```text
-usage: picard-cli plugins [-h] [--yes] [--locale LOCALE] <command> ...
+usage: picard-cli plugins [-h] [--locale LOCALE] <command> ...
 
 Install, update, enable, and manage Picard plugins.
 
 options:
   -h, --help        show this help message and exit
-  --yes, -y         skip confirmation prompts
   --locale LOCALE   locale for displaying plugin info (e.g., 'fr', 'de', 'en')
 
 plugin commands:
