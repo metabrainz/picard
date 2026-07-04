@@ -183,6 +183,7 @@ development commands:
     init            create a new plugin project
     validate        validate a plugin MANIFEST
     manifest        show MANIFEST.toml (template if no argument)
+    compile-ui      compile the UI for a plugin
 
 Trust Levels:
   🛡️ official: Reviewed by Picard team (highest trust)
@@ -225,6 +226,7 @@ For more information, visit: https://picard.musicbrainz.org/docs/plugins/
 | `init [name]` | Create a new plugin project |
 | `validate <path-or-url>` | Validate plugin MANIFEST |
 | `manifest [target]` | Show MANIFEST.toml (template or from plugin) |
+| `compile-ui [path]` | Compile a .ui file to .py |
 
 ---
 
@@ -1180,6 +1182,28 @@ Next steps:
   Edit MANIFEST.toml to update metadata
   Run picard-cli plugins validate . to check your plugin
 ```
+
+
+### Compile UI
+
+**Command:** `picard-cli plugins compile-ui [path]`
+
+**Description:** Compiles a .ui file created with Qt Designer into a .py file
+
+**Use cases:**
+- Design a UI for your plugin using Qt Designer and compile it into a .py file
+
+**Options:**
+
+| Flag | Description |
+|------|-------------|
+| `--force` | Force compilation even if up-to-date |
+
+**Examples:**
+```bash
+picard-cli plugins compile-ui path/to/myplugin.ui
+```
+
 
 ### Testing Workflow
 ```bash
