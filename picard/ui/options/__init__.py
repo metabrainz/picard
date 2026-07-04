@@ -179,12 +179,13 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
     def register_setting(cls, name, highlights=None):
         """Register a setting edited in the page, used to restore defaults
         and to highlight when profiles are used"""
-        option = Option.get(cls.OPTION_SECTION, name)
+        section = cls.OPTION_SECTION
+        option = Option.get(section, name)
         if option is None:
             raise Exception(f"Cannot register setting for non-existing option {name}")
         OptionsPage._registered_settings[cls.NAME].append(option)
         register_quick_menu_item(cls.SORT_ORDER, cls.NAME, cls.PARENT, cls.display_title(), option)
-        pkey = setting_profile_key(name, cls.OPTION_SECTION)
+        pkey = setting_profile_key(name, section)
         if option.in_profile and pkey not in profile_groups_all_settings():
             profile_groups_add_setting(
                 cls.NAME,
@@ -192,7 +193,7 @@ class OptionsPage(QtWidgets.QWidget, HasDisplayTitle):
                 tuple(highlights) if highlights else (),
                 title=cls.display_title(),
                 parent=cls.PARENT,
-                section=cls.OPTION_SECTION,
+                section=section,
             )
         elif option.in_profile and highlights:
-            profile_groups_update_highlights(name, tuple(highlights))
+            profile_groups_update_highlights(section, name, tuple(highlights))
