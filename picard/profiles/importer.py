@@ -38,6 +38,7 @@ from picard.config import (
     Config,
     Option,
 )
+from picard.profiles import PROFILE_FORMAT_VERSION
 
 
 class ProfileImportError(Exception):
@@ -95,6 +96,15 @@ def import_profile(
     title = profile_section.get('title')
     if not title:
         raise ProfileImportError("Missing required 'title' in [profile] section")
+
+    # Check format version compatibility
+    format_version = profile_section.get('format_version', 1)
+    if not isinstance(format_version, int) or format_version > PROFILE_FORMAT_VERSION:
+        raise ProfileImportError(
+            f"Unsupported profile format version {format_version} "
+            f"(this version of Picard supports format version {PROFILE_FORMAT_VERSION}). "
+            f"Please upgrade Picard to import this profile."
+        )
 
     # Determine profile ID and whether we're replacing
     if replace_id:

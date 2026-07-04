@@ -33,6 +33,7 @@ from picard.config import (
     Option,
 )
 from picard.profile import is_plugin_profile_key
+from picard.profiles import PROFILE_FORMAT_VERSION
 from picard.script import get_file_naming_script_presets
 
 import tomlkit
@@ -87,6 +88,7 @@ def export_profile(
         profile_table.add('description', description)
     if author:
         profile_table.add('author', author)
+    profile_table.add('format_version', PROFILE_FORMAT_VERSION)
     profile_table.add('picard_version', PICARD_VERSION_STR)
     profile_table.add('created', date.today().isoformat())
     doc.add('profile', profile_table)

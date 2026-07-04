@@ -309,6 +309,34 @@ script = "$noop()"
         with self.assertRaises(ProfileImportError):
             import_profile(self.config, "[profile]\npicard_version = '3.0'\n")
 
+    def test_import_unsupported_format_version_raises(self):
+        toml = """\
+[profile]
+title = "Future Profile"
+format_version = 999
+picard_version = "4.0.0"
+"""
+        with self.assertRaises(ProfileImportError) as ctx:
+            import_profile(self.config, toml)
+        self.assertIn("Unsupported profile format version", str(ctx.exception))
+
+    def test_import_missing_format_version_defaults_to_1(self):
+        """Profiles without format_version (exported before this field existed) are accepted."""
+        result = import_profile(self.config, MINIMAL_PROFILE)
+        self.assertEqual(result.title, 'Test Profile')
+
+    def test_import_current_format_version_accepted(self):
+        from picard.profiles import PROFILE_FORMAT_VERSION
+
+        toml = f"""\
+[profile]
+title = "Current Format"
+format_version = {PROFILE_FORMAT_VERSION}
+picard_version = "3.0.0"
+"""
+        result = import_profile(self.config, toml)
+        self.assertEqual(result.title, 'Current Format')
+
     def test_import_partial_profile_scripts_only(self):
         ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
         BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)

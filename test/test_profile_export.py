@@ -69,6 +69,7 @@ class TestProfileExport(TestPicardConfigCommon):
 
         self.assertEqual(parsed['profile']['title'], 'Test Profile')
         self.assertIn('picard_version', parsed['profile'])
+        self.assertEqual(parsed['profile']['format_version'], 1)
         self.assertIn('created', parsed['profile'])
         self.assertTrue(parsed['settings']['standardize_artists'])
         self.assertFalse(parsed['settings']['write_id3v23'])

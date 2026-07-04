@@ -280,6 +280,7 @@ folder structure. Based on Navidrome's official tagging guidelines.
 author = "MusicBrainz Community"
 version = "1.0"
 created = "2026-06-21"
+format_version = 1
 picard_version = "3.0.0"
 
 # Optional: plugins required by this profile
@@ -354,7 +355,8 @@ $delete(originalyear)
 | `author` | string | no | Who created/maintains it |
 | `version` | string | no | Profile version (for user reference) |
 | `created` | string | no | ISO date of creation |
-| `picard_version` | string | yes | Picard version that generated this file (serves as format identifier and input for settings upgrades) |
+| `picard_version` | string | yes | Picard version that generated this file (input for settings upgrades) |
+| `format_version` | integer | yes | Profile format version (currently 1). Older Picard versions reject files with a higher format version than they support |
 | `required_plugins` | array of tables | no | Plugins needed for this profile's settings (informational; `uuid` is the key, `name` is for display) |
 
 #### `[settings]` — Option Overrides (optional)
