@@ -92,13 +92,18 @@ class GroupedHelpFormatter(argparse.RawDescriptionHelpFormatter):
 
         # Add additional sections for each group
         for group_title, names in action._groups.items():
-            parts.append(f'\n{group_title}:\n')
-            parts.append('  <command>\n')
+            t = self._theme
+            parts.append(f'\n{t.heading}{group_title}:{t.reset}\n')
+            parts.append(self._current_indent * ' ')
+            parts.append(self._format_action_invocation(action))
+            parts.append('\n')
+
+            self._indent()
             for name in names:
                 for choice_action in action._choices_actions:
                     if choice_action.dest == name:
-                        help_text = choice_action.help or ''
-                        parts.append(f'    {name:<16}{help_text}\n')
+                        parts.append(self._format_action(choice_action))
                         break
+            self._dedent()
 
         return ''.join(parts)
