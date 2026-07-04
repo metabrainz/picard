@@ -12,12 +12,13 @@ TEST_PLUGIN_UUID="aabbccdd-1234-4678-9234-aabbccddeeff"
 PLUGIN_DIR_NAME="test_redirect_plugin_${TEST_PLUGIN_UUID}"
 
 export PICARD_PLUGIN_REGISTRY_URL="$REGISTRY_FILE"
-PICARD_PLUGINS="picard-cli plugins"
+PICARD_CLI="picard-cli"
+PICARD_PLUGINS="$PICARD_CLI plugins"
 
 cleanup() {
     echo "Cleanup: Removing test directory and plugin"
     rm -rf "$TEST_DIR"
-    $PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>/dev/null || true
+    $PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>/dev/null || true
     echo "✓ Cleanup complete"
 }
 trap cleanup EXIT
@@ -113,14 +114,14 @@ git_url = "$PLUGIN_REPO_OLD"
 uuid = "$TEST_PLUGIN_UUID"
 versioning_scheme = "semver"
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install from old repo at v1.0.0
-$PICARD_PLUGINS --install redirect-test --ref v1.0.0 --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins install redirect-test --ref v1.0.0 2>&1 | tail -1
 echo "✓ Installed v1.0.0 from old repo"
 
 # Verify installed version
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}')
+STORED_COMMIT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}')
 if [ "$STORED_COMMIT" = "${COMMIT_V1_0_0:0:7}" ]; then
     echo "✓ Verified at v1.0.0 (${COMMIT_V1_0_0:0:7})"
 else
@@ -140,14 +141,14 @@ redirect_from = [
     "$PLUGIN_REPO_OLD",
 ]
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Update should follow redirect to new repo and get v2.1.0
-$PICARD_PLUGINS --update $TEST_PLUGIN_UUID --yes 2>&1 | grep -E "✓|✗|→"
+$PICARD_CLI --yes plugins update $TEST_PLUGIN_UUID 2>&1 | grep -E "✓|✗|→"
 echo "✓ Update completed"
 
 # Verify plugin updated to new repo's latest version
-INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+INFO_OUTPUT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID 2>&1)
 if echo "$INFO_OUTPUT" | grep -q "2.1.0"; then
     echo "✓ Plugin updated to v2.1.0 from new repository"
 elif echo "$INFO_OUTPUT" | grep -q "2.0.0"; then
@@ -165,7 +166,7 @@ else
     echo "? Source URL may not be updated in display (metadata was updated)"
 fi
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 # =============================================================================
@@ -181,10 +182,10 @@ name = "Redirect Test Plugin"
 git_url = "$PLUGIN_REPO_OLD"
 uuid = "$TEST_PLUGIN_UUID"
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install from old repo on main branch (no specific tag)
-$PICARD_PLUGINS --install "$PLUGIN_REPO_OLD" --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins install "$PLUGIN_REPO_OLD" 2>&1 | tail -1
 echo "✓ Installed from old repo (main branch)"
 
 # Redirect registry to new repo
@@ -198,21 +199,21 @@ redirect_from = [
     "$PLUGIN_REPO_OLD",
 ]
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Update should follow redirect
-$PICARD_PLUGINS --update $TEST_PLUGIN_UUID --yes 2>&1 | grep -E "✓|✗|→"
+$PICARD_CLI --yes plugins update $TEST_PLUGIN_UUID 2>&1 | grep -E "✓|✗|→"
 echo "✓ Branch-based update through redirect completed"
 
 # Verify it got content from new repo
-INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+INFO_OUTPUT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID 2>&1)
 if echo "$INFO_OUTPUT" | grep -q "2\.\(0\|1\)\.0"; then
     echo "✓ Plugin updated to new repo content"
 else
     echo "? Plugin version: $(echo "$INFO_OUTPUT" | grep Version)"
 fi
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 # =============================================================================
@@ -232,16 +233,16 @@ redirect_from = [
     "$PLUGIN_REPO_OLD",
 ]
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install using old URL - should be found via redirect_from in registry
-$PICARD_PLUGINS --install "$PLUGIN_REPO_OLD" --yes 2>&1 | tail -2
+$PICARD_CLI --yes plugins install "$PLUGIN_REPO_OLD" 2>&1 | tail -2
 echo "✓ Install via old URL found plugin in registry"
 
-INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+INFO_OUTPUT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID 2>&1)
 echo "  $(echo "$INFO_OUTPUT" | grep Version)"
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 # =============================================================================
@@ -285,16 +286,16 @@ redirect_from = [
     "$PLUGIN_REPO_OLD",
 ]
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install using oldest URL - should still find via redirect_from
-$PICARD_PLUGINS --install "$PLUGIN_REPO_OLDEST" --yes 2>&1 | tail -2
+$PICARD_CLI --yes plugins install "$PLUGIN_REPO_OLDEST" 2>&1 | tail -2
 echo "✓ Install via oldest URL found plugin in registry"
 
-INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+INFO_OUTPUT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID 2>&1)
 echo "  $(echo "$INFO_OUTPUT" | grep Version)"
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 # =============================================================================
@@ -311,10 +312,10 @@ git_url = "$PLUGIN_REPO_OLD"
 uuid = "$TEST_PLUGIN_UUID"
 versioning_scheme = "semver"
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install from old repo at v1.0.0
-$PICARD_PLUGINS --install redirect-test --ref v1.0.0 --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins install redirect-test --ref v1.0.0 2>&1 | tail -1
 echo "✓ Installed v1.0.0 from old repo"
 
 # Now redirect to new repo AND blacklist the UUID
@@ -333,10 +334,10 @@ redirect_from = [
 uuid = "$TEST_PLUGIN_UUID"
 reason = "Security vulnerability found"
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Update should be blocked by blacklist
-UPDATE_OUTPUT=$($PICARD_PLUGINS --update $TEST_PLUGIN_UUID --yes 2>&1) || true
+UPDATE_OUTPUT=$($PICARD_CLI --yes plugins update $TEST_PLUGIN_UUID 2>&1) || true
 if echo "$UPDATE_OUTPUT" | grep -qi "blacklist"; then
     echo "✓ Update correctly blocked: plugin is blacklisted"
 else
@@ -345,7 +346,7 @@ else
     exit 1
 fi
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 # =============================================================================
@@ -364,14 +365,14 @@ redirect_from = [
     "$PLUGIN_REPO_OLD",
 ]
 EOF
-$PICARD_PLUGINS --refresh-registry 2>&1 | head -1
+$PICARD_PLUGINS refresh-registry 2>&1 | head -1
 
 # Install using old URL directly - should redirect to new repo
-INSTALL_OUTPUT=$($PICARD_PLUGINS --install "$PLUGIN_REPO_OLD" --yes 2>&1)
+INSTALL_OUTPUT=$($PICARD_CLI --yes plugins install "$PLUGIN_REPO_OLD" 2>&1)
 echo "$INSTALL_OUTPUT" | grep -i "redirect" || true
 
 # Verify plugin was installed from new repo (check plugin name contains "Moved")
-INFO_OUTPUT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color 2>&1)
+INFO_OUTPUT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID 2>&1)
 if echo "$INFO_OUTPUT" | grep -q "$PLUGIN_REPO_NEW"; then
     echo "✓ Install via old URL was redirected to new repo"
 else
@@ -380,7 +381,7 @@ else
     exit 1
 fi
 
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes 2>&1 | tail -1
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge 2>&1 | tail -1
 echo
 
 echo "=== All Redirect Tests Completed Successfully ==="
