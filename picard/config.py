@@ -721,6 +721,9 @@ def register_quick_menu_item(
     """
     if option.qtype is not bool:
         return
+    # Plugin options are not supported in the quick settings menu yet
+    if option.section != 'setting':
+        return
     title = option.title
     if not title:
         log.warning("BoolOption '%s/%s' has no title, using option name for quick menu", option.section, option.name)
