@@ -106,7 +106,7 @@ class TestPluginCLI(PicardTestCase):
     def test_list_plugins_empty(self):
         """Test listing plugins when none are installed."""
         manager = MockPluginManager(plugins=[])
-        exit_code, stdout, _ = run_cli(manager, list=True)
+        exit_code, stdout, _ = run_cli(manager, verb='list')
 
         self.assertEqual(exit_code, 0)
         self.assertIn('No plugins installed', stdout)
@@ -121,7 +121,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager(plugins=[mock_plugin], _enabled_plugins={test_uuid})
         manager._get_plugin_metadata = Mock(return_value={})
 
-        exit_code, stdout, _ = run_cli(manager, list=True)
+        exit_code, stdout, _ = run_cli(manager, verb='list')
 
         self.assertEqual(exit_code, 0)
         self.assertIn('Example plugin', stdout)
@@ -142,7 +142,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager(plugins=[plugin1, plugin2, plugin3])
         manager._get_plugin_metadata = Mock(return_value={})
 
-        exit_code, stdout, _ = run_cli(manager, list=True)
+        exit_code, stdout, _ = run_cli(manager, verb='list')
 
         self.assertEqual(exit_code, 0)
         # Check that plugins appear in alphabetical order
@@ -157,7 +157,7 @@ class TestPluginCLI(PicardTestCase):
         """Test info command for non-existent plugin."""
         manager = MockPluginManager(plugins=[])
         manager.find_plugin = Mock(return_value=None)
-        exit_code, _, stderr = run_cli(manager, info='nonexistent')
+        exit_code, _, stderr = run_cli(manager, verb='info', plugin='nonexistent')
 
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
@@ -193,7 +193,7 @@ class TestPluginCLI(PicardTestCase):
             plugin_dir = create_test_plugin_dir(tmpdir, 'test-plugin', manifest_content, add_git=True)
 
             manager = create_mock_manager_with_manifest_validation()
-            exit_code, stdout, stderr = run_cli(manager, validate=str(plugin_dir))
+            exit_code, stdout, stderr = run_cli(manager, verb='validate', source=str(plugin_dir))
 
             if exit_code != 0:
                 print(f"STDOUT: {stdout}")
@@ -223,13 +223,13 @@ class TestPluginCLI(PicardTestCase):
         manager.check_updates = Mock(return_value={})
         manager.update_all_plugins = Mock(return_value=[])
 
-        # Test --check-updates
-        exit_code, _, _ = run_cli(manager, check_updates=True)
+        # Test check-updates
+        exit_code, _, _ = run_cli(manager, verb='check-updates')
         self.assertEqual(exit_code, 0)
         manager.check_updates.assert_called_once()
 
-        # Test --update-all
-        exit_code, _, _ = run_cli(manager, update_all=True)
+        # Test update --all
+        exit_code, _, _ = run_cli(manager, verb='update', update_all=True)
         self.assertEqual(exit_code, 0)
         manager.update_all_plugins.assert_called_once()
 
@@ -237,7 +237,7 @@ class TestPluginCLI(PicardTestCase):
         """Test update command for non-existent plugin."""
         manager = MockPluginManager(plugins=[])
         manager.find_plugin = Mock(return_value=None)
-        exit_code, _, stderr = run_cli(manager, update=['nonexistent'])
+        exit_code, _, stderr = run_cli(manager, verb='update', plugin='nonexistent')
 
         self.assertEqual(exit_code, 2)
         self.assertIn('not found', stderr)
@@ -262,7 +262,7 @@ class TestPluginCLI(PicardTestCase):
             )
         )
 
-        exit_code, stdout, _ = run_cli(manager, update=['test-plugin'])
+        exit_code, stdout, _ = run_cli(manager, verb='update', plugin=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         self.assertIn('1.0.0', stdout)
@@ -302,7 +302,7 @@ class TestPluginCLI(PicardTestCase):
                 patch('picard.plugin3.manager.clean.get_config', return_value=test_config),
                 patch('picard.plugin3.cli.get_config', return_value=test_config),
             ):
-                exit_code, stdout, _ = run_cli(manager, clean_config=test_uuid, yes=True)
+                exit_code, stdout, _ = run_cli(manager, verb='clean-config', plugin=test_uuid, yes=True)
 
             self.assertEqual(exit_code, 0)
             self.assertIn('deleted', stdout.lower())
@@ -318,7 +318,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager(plugins=[mock_plugin], enable_plugin=Mock())
         manager.find_plugin = Mock(return_value=mock_plugin)
 
-        exit_code, _, _ = run_cli(manager, enable=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, verb='enable', plugin=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         manager.enable_plugin.assert_called_once_with(mock_plugin)
@@ -329,7 +329,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager(plugins=[mock_plugin], disable_plugin=Mock())
         manager.find_plugin = Mock(return_value=mock_plugin)
 
-        exit_code, _, _ = run_cli(manager, disable=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, verb='disable', plugin=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         manager.disable_plugin.assert_called_once_with(mock_plugin)
@@ -340,7 +340,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager(plugins=[mock_plugin])
         manager.check_updates = Mock(side_effect=KeyboardInterrupt())
 
-        exit_code, _, stderr = run_cli(manager, check_updates=True)
+        exit_code, _, stderr = run_cli(manager, verb='check-updates')
 
         self.assertEqual(exit_code, 130)
         self.assertIn('cancelled', stderr.lower())
@@ -369,7 +369,7 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(manager, browse=True)
+        exit_code, _, _ = run_cli(manager, verb='browse')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager._registry.list_plugins.assert_called_once_with(category=None, trust_level=None)
@@ -389,7 +389,7 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(manager, browse=True, category='metadata', trust='official')
+        exit_code, _, _ = run_cli(manager, verb='browse', category='metadata', trust='official')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level='official')
@@ -411,7 +411,7 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(manager, search='listen')
+        exit_code, _, _ = run_cli(manager, verb='search', query='listen')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
 
@@ -429,7 +429,7 @@ class TestPluginCLI(PicardTestCase):
         manager._find_plugin_by_url.return_value = None  # Not already installed
         manager.install_plugin.return_value = 'test-plugin'
 
-        exit_code, _, _ = run_cli(manager, install=['test-plugin'])
+        exit_code, _, _ = run_cli(manager, verb='install', source=['test-plugin'])
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager._registry.find_plugin.assert_called_once_with(plugin_id='test-plugin')
@@ -441,7 +441,7 @@ class TestPluginCLI(PicardTestCase):
         manager._registry.find_plugin.return_value = None
         manager._registry.list_plugins.return_value = []
 
-        exit_code, _, stderr = run_cli(manager, install=['nonexistent'])
+        exit_code, _, stderr = run_cli(manager, verb='install', source=['nonexistent'])
 
         self.assertEqual(exit_code, ExitCode.NOT_FOUND)
         self.assertIn('not found in registry', stderr)
@@ -451,7 +451,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager()
         manager._registry.is_blacklisted.return_value = (False, None)
 
-        exit_code, stdout, _ = run_cli(manager, check_blacklist='https://github.com/test/plugin')
+        exit_code, stdout, _ = run_cli(manager, verb='check-blacklist', url='https://github.com/test/plugin')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         self.assertIn('Not blacklisted', stdout)
@@ -462,7 +462,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager()
         manager._registry.is_blacklisted.return_value = (True, 'Security vulnerability')
 
-        exit_code, stdout, stderr = run_cli(manager, check_blacklist='https://github.com/bad/plugin')
+        exit_code, stdout, stderr = run_cli(manager, verb='check-blacklist', url='https://github.com/bad/plugin')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Blacklisted', stderr)
@@ -475,7 +475,8 @@ class TestPluginCLI(PicardTestCase):
 
         exit_code, stdout, stderr = run_cli(
             manager,
-            check_blacklist='https://github.com/test/plugin',
+            verb='check-blacklist',
+            url='https://github.com/test/plugin',
             uuid='blacklisted-uuid-1234',
         )
 
@@ -492,7 +493,7 @@ class TestPluginCLI(PicardTestCase):
 
         exit_code, stdout, stderr = run_cli(
             manager,
-            check_blacklist='',
+            verb='check-blacklist',
             uuid='blacklisted-uuid-1234',
         )
 
@@ -518,7 +519,7 @@ class TestPluginCLI(PicardTestCase):
             ),
         ]
 
-        exit_code, _, _ = run_cli(manager, search='test', category='metadata')
+        exit_code, _, _ = run_cli(manager, verb='search', query='test', category='metadata')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager._registry.list_plugins.assert_called_once_with(category='metadata', trust_level=None)
@@ -528,7 +529,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager()
         manager._registry.list_plugins.return_value = []
 
-        exit_code, _, _ = run_cli(manager, search='test', trust='official')
+        exit_code, _, _ = run_cli(manager, verb='search', query='test', trust='official')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager._registry.list_plugins.assert_called_once_with(category=None, trust_level='official')
@@ -549,7 +550,7 @@ class TestPluginCLI(PicardTestCase):
             'registry_url': 'https://test.example.com/registry.toml',
         }
 
-        exit_code, stdout, _ = run_cli(manager, refresh_registry=True)
+        exit_code, stdout, _ = run_cli(manager, verb='refresh-registry')
 
         self.assertEqual(exit_code, ExitCode.SUCCESS)
         manager.refresh_registry_and_caches.assert_called_once()
@@ -562,7 +563,7 @@ class TestPluginCLI(PicardTestCase):
         manager = MockPluginManager()
         manager.refresh_registry_and_caches.side_effect = Exception('Network error')
 
-        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, verb='refresh-registry')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to refresh registry', stderr)
@@ -575,7 +576,7 @@ class TestPluginCLI(PicardTestCase):
             'https://test.example.com/registry.toml', Exception('Connection timeout')
         )
 
-        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, verb='refresh-registry')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to fetch registry', stderr)
@@ -589,7 +590,7 @@ class TestPluginCLI(PicardTestCase):
             'https://test.example.com/registry.toml', Exception('Invalid JSON')
         )
 
-        exit_code, _, stderr = run_cli(manager, refresh_registry=True)
+        exit_code, _, stderr = run_cli(manager, verb='refresh-registry')
 
         self.assertEqual(exit_code, ExitCode.ERROR)
         self.assertIn('Failed to parse registry', stderr)
@@ -608,7 +609,7 @@ class TestPluginCLI(PicardTestCase):
         # Mock update_plugin to raise PluginCommitPinnedError
         manager.update_plugin.side_effect = PluginCommitPinnedError('test-plugin', 'abc1234')
 
-        exit_code, stdout, stderr = run_cli(manager, update=['test-plugin'])
+        exit_code, stdout, stderr = run_cli(manager, verb='update', plugin=['test-plugin'])
 
         self.assertEqual(exit_code, 0)
         self.assertIn('pinned to commit', stderr)
@@ -618,93 +619,24 @@ class TestPluginCLI(PicardTestCase):
 
 
 class TestPluginCLIErrors(PicardTestCase):
-    def test_ref_without_install_or_validate(self):
-        """Test --ref without --install or --validate returns error."""
+    def test_no_action(self):
+        """Test no action specified returns error."""
         manager = MockPluginManager()
         args = MockCliArgs()
-        args.ref = 'main'
-        args.install = None
-        args.validate = False
-        args.list = False
+        args.verb = None
 
-        stderr = StringIO()
-        output = PluginOutput(stdout=StringIO(), stderr=stderr, color=False)
-
-        cli = PluginCLI(manager, args, output=output)
-        result = cli.run()
-
-        self.assertEqual(result, ExitCode.ERROR)
-        self.assertIn('--ref can only be used with install or validate', stderr.getvalue())
-
-    def test_no_action_without_parser(self):
-        """Test no action specified without parser returns error."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = None
-        args.check_blacklist = None
-        args.refresh_registry = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.validate = None
-        args.manifest = None
-
-        cli, stderr = _make_cli(manager, args, parser=None)
+        cli, stderr = _make_cli(manager, args)
         result = cli.run()
 
         self.assertEqual(result, ExitCode.ERROR)
         self.assertIn('No action specified', stderr.getvalue())
 
-    def test_no_action_with_parser(self):
-        """Test no action specified with parser prints help."""
-        manager = MockPluginManager()
-        args = MockCliArgs()
-        args.ref = None
-        args.list = False
-        args.info = None
-        args.status = None
-        args.enable = None
-        args.disable = None
-        args.install = None
-        args.uninstall = None
-        args.update = None
-        args.update_all = False
-        args.check_updates = False
-        args.browse = False
-        args.search = None
-        args.check_blacklist = None
-        args.refresh_registry = False
-        args.switch_ref = None
-        args.clean_config = None
-        args.validate = None
-        args.manifest = None
-
-        parser = Mock()
-        output = PluginOutput(stdout=StringIO(), stderr=StringIO(), color=False)
-
-        cli = PluginCLI(manager, args, output=output, parser=parser)
-        result = cli.run()
-
-        self.assertEqual(result, ExitCode.SUCCESS)
-        parser.print_help.assert_called_once()
-
     def test_keyboard_interrupt(self):
         """Test KeyboardInterrupt returns CANCELLED."""
         manager = MockPluginManager()
         args = MockCliArgs()
+        args.verb = 'list'
         args.ref = None
-        args.list = True
 
         # Make _cmd_list raise KeyboardInterrupt
         cli, stderr = _make_cli(manager, args)
@@ -719,8 +651,8 @@ class TestPluginCLIErrors(PicardTestCase):
         """Test generic exception returns ERROR."""
         manager = MockPluginManager()
         args = MockCliArgs()
+        args.verb = 'list'
         args.ref = None
-        args.list = True
 
         # Make _cmd_list raise exception
         cli, stderr = _make_cli(manager, args)
@@ -1207,14 +1139,18 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_creates_directory(self):
         """--init NAME creates picard-plugin-<slug> directory."""
         target = self.tmpdir / 'picard-plugin-my-cool-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='My Cool Plugin', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='My Cool Plugin', target_dir=str(target)
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue(target.exists())
 
     def test_init_creates_manifest(self):
         """--init creates MANIFEST.toml with correct name."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test Plugin', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test Plugin', target_dir=str(target)
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('name = "Test Plugin"', manifest)
@@ -1223,7 +1159,7 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_creates_init_py(self):
         """--init creates __init__.py with enable/disable stubs."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         init_py = (target / '__init__.py').read_text(encoding='utf-8')
         self.assertIn('def enable(api: PluginApi)', init_py)
@@ -1232,7 +1168,7 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_creates_readme(self):
         """--init creates README.md with plugin name."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='My Plugin', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='My Plugin', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         readme = (target / 'README.md').read_text(encoding='utf-8')
         self.assertIn('# My Plugin', readme)
@@ -1262,7 +1198,7 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_creates_gitignore(self):
         """--init creates .gitignore."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         gitignore = (target / '.gitignore').read_text(encoding='utf-8')
         self.assertIn('__pycache__/', gitignore)
@@ -1270,7 +1206,9 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_with_author(self):
         """--init --author sets authors in MANIFEST."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe')
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), author='Jane Doe'
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('authors = ["Jane Doe"]', manifest)
@@ -1279,7 +1217,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --author 'Name <email>' parses name for MANIFEST and email for git."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
@@ -1289,7 +1227,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --author 'Name <email>' sets report_bugs_to mailto in MANIFEST."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), author='Jane Doe <jane@example.com>'
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
@@ -1298,7 +1236,7 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_no_email_has_report_bugs_to_comment(self):
         """--init without email has commented report_bugs_to in MANIFEST."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('# report_bugs_to =', manifest)
@@ -1307,7 +1245,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --category sets categories in MANIFEST."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), category='metadata'
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), category='metadata'
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
@@ -1316,7 +1254,10 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_default_directory_name(self):
         """--init without --target-dir uses picard-plugin-<slug> in cwd."""
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test Plugin', target_dir=str(self.tmpdir / 'picard-plugin-test-plugin')
+            MockPluginManager(),
+            verb='init',
+            name='Test Plugin',
+            target_dir=str(self.tmpdir / 'picard-plugin-test-plugin'),
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((self.tmpdir / 'picard-plugin-test-plugin').exists())
@@ -1326,7 +1267,7 @@ class TestPluginCLIInit(PicardTestCase):
         target = self.tmpdir / 'existing'
         target.mkdir()
         (target / 'somefile').write_text('content')
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.ERROR, exit_code)
         self.assertIn('not empty', stderr)
 
@@ -1334,20 +1275,20 @@ class TestPluginCLIInit(PicardTestCase):
         """--init succeeds if target directory exists but is empty."""
         target = self.tmpdir / 'empty'
         target.mkdir()
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'MANIFEST.toml').exists())
 
     def test_init_no_name_with_yes_fails(self):
         """--init --yes without name fails."""
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', yes=True)
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', yes=True)
         self.assertEqual(ExitCode.ERROR, exit_code)
         self.assertIn('required', stderr)
 
     def test_init_prints_summary(self):
         """--init prints created files summary."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertIn('MANIFEST.toml', stdout)
         self.assertIn('__init__.py', stdout)
@@ -1357,7 +1298,9 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_name_too_long(self):
         """--init fails if name exceeds MAX_NAME_LENGTH."""
         long_name = 'A' * (MAX_NAME_LENGTH + 1)
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init=long_name, target_dir=str(self.tmpdir / 'test'))
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name=long_name, target_dir=str(self.tmpdir / 'test')
+        )
         self.assertEqual(ExitCode.ERROR, exit_code)
         self.assertIn('maximum length', stderr)
 
@@ -1365,7 +1308,9 @@ class TestPluginCLIInit(PicardTestCase):
         """--parent-dir sets the parent directory."""
         parent = self.tmpdir / 'projects'
         parent.mkdir()
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test Plugin', parent_dir=str(parent))
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test Plugin', parent_dir=str(parent)
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((parent / 'picard-plugin-test-plugin').exists())
 
@@ -1374,14 +1319,14 @@ class TestPluginCLIInit(PicardTestCase):
         parent = self.tmpdir / 'projects'
         parent.mkdir()
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', parent_dir=str(parent), target_dir='custom-name'
+            MockPluginManager(), verb='init', name='Test', parent_dir=str(parent), target_dir='custom-name'
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((parent / 'custom-name').exists())
 
     def test_init_empty_slug_no_target_dir_fails(self):
         """--init with a name that produces an empty slug and no --target-dir fails."""
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='!!!')
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='!!!')
         self.assertEqual(ExitCode.ERROR, exit_code)
         self.assertIn('--target-dir', stderr)
 
@@ -1389,7 +1334,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --with-translations adds source_locale and i18n comments to MANIFEST."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), with_translations=True
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
@@ -1401,7 +1346,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --with-translations generates __init__.py with t_ and api.tr usage."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), with_translations=True
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         init_py = (target / '__init__.py').read_text(encoding='utf-8')
@@ -1413,7 +1358,7 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --with-translations creates locale/ directory with source locale file."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), with_translations=True
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'locale').is_dir())
@@ -1424,14 +1369,14 @@ class TestPluginCLIInit(PicardTestCase):
     def test_init_without_i18n_no_locale_dir(self):
         """--init without --with-translations does not create locale/ directory."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertFalse((target / 'locale').exists())
 
     def test_init_without_i18n_no_source_locale(self):
         """--init without --with-translations does not add source_locale to MANIFEST."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertNotIn('source_locale', manifest)
@@ -1440,7 +1385,12 @@ class TestPluginCLIInit(PicardTestCase):
         """--init --with-translations --source-locale creates correct locale file and manifest."""
         target = self.tmpdir / 'test-plugin'
         exit_code, stdout, stderr = run_cli(
-            MockPluginManager(), init='Test', target_dir=str(target), with_translations=True, source_locale='fr'
+            MockPluginManager(),
+            verb='init',
+            name='Test',
+            target_dir=str(target),
+            with_translations=True,
+            source_locale='fr',
         )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
@@ -1498,7 +1448,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
             category='1',
         )
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('name = "My Plugin"', manifest)
@@ -1511,7 +1461,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'picard-plugin-my-plugin'
         inputs = self._init_inputs(name='My Plugin')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'MANIFEST.toml').exists())
 
@@ -1520,7 +1470,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'picard-plugin-my-plugin'
         inputs = self._init_inputs(name='My Plugin', git_initialization='n')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'MANIFEST.toml').exists())
         self.assertFalse((target / '.git').is_dir())
@@ -1529,7 +1479,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         """Interactive mode fails if name is empty."""
         inputs = self._init_inputs(name='')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='')
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init')
         self.assertEqual(ExitCode.ERROR, exit_code)
         self.assertIn('required', stderr)
 
@@ -1538,7 +1488,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'test'
         inputs = self._init_inputs(license='MIT')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('license = "MIT"', manifest)
@@ -1548,7 +1498,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'test'
         inputs = self._init_inputs()
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('license = "GPL-2.0-or-later"', manifest)
@@ -1559,7 +1509,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'test'
         inputs = self._init_inputs(category='invalid')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertNotIn('categories', manifest)
@@ -1569,7 +1519,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'test'
         inputs = self._init_inputs(category='1,3')
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', target_dir=str(target))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         manifest = (target / 'MANIFEST.toml').read_text(encoding='utf-8')
         self.assertIn('categories = ["metadata", "ui"]', manifest)
@@ -1579,7 +1529,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         target = self.tmpdir / 'picard-plugin-test'
         inputs = self._init_inputs()
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='', parent_dir=str(self.tmpdir))
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', parent_dir=str(self.tmpdir))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / 'MANIFEST.toml').exists())
 
@@ -1588,7 +1538,7 @@ class TestPluginCLIInitInteractive(PicardTestCase):
         custom_target = self.tmpdir / 'custom-dir'
         inputs = self._init_inputs(target_path=str(custom_target))
         with patch('builtins.input', side_effect=inputs):
-            exit_code, stdout, stderr = run_cli(MockPluginManager(), init='')
+            exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init')
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((custom_target / 'MANIFEST.toml').exists())
 
@@ -1608,21 +1558,23 @@ class TestPluginCLIInitGit(PicardTestCase):
     def test_no_git_does_not_create_git_repo(self):
         """--no-git does not create a git repository."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_git=True)
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), no_git=True
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertFalse((target / '.git').is_dir())
 
     def test_init_creates_git_repo(self):
         """--init creates a git repository."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / '.git').is_dir())
 
     def test_init_creates_initial_commit(self):
         """--init creates an initial commit with all files."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         repo = get_backend_repo(target)
         # Should have a HEAD pointing to a commit
@@ -1633,14 +1585,14 @@ class TestPluginCLIInitGit(PicardTestCase):
     def test_init_git_message_in_output(self):
         """--init prints git initialization message."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertIn('Git repository initialized', stdout)
 
     def test_init_all_files_committed(self):
         """--init commits all generated files (clean working tree)."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target))
+        exit_code, stdout, stderr = run_cli(MockPluginManager(), verb='init', name='Test', target_dir=str(target))
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         repo = get_backend_repo(target)
         status = repo.get_status()
@@ -1652,7 +1604,9 @@ class TestPluginCLIInitGit(PicardTestCase):
     def test_init_commit_uses_provided_author(self):
         """--init --author uses the provided name for the git commit."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), author='Jane Doe')
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), author='Jane Doe'
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         repo = get_backend_repo(target)
         commit_id = repo.get_head_target()
@@ -1663,7 +1617,9 @@ class TestPluginCLIInitGit(PicardTestCase):
     def test_init_no_commit_skips_initial_commit(self):
         """--init --no-commit creates git repo but no commit."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_commit=True)
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), no_commit=True
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertTrue((target / '.git').is_dir())
         repo = get_backend_repo(target)
@@ -1673,7 +1629,9 @@ class TestPluginCLIInitGit(PicardTestCase):
     def test_init_no_commit_output_message(self):
         """--init --no-commit shows 'initialized' without 'initial commit'."""
         target = self.tmpdir / 'test-plugin'
-        exit_code, stdout, stderr = run_cli(MockPluginManager(), init='Test', target_dir=str(target), no_commit=True)
+        exit_code, stdout, stderr = run_cli(
+            MockPluginManager(), verb='init', name='Test', target_dir=str(target), no_commit=True
+        )
         self.assertEqual(ExitCode.SUCCESS, exit_code)
         self.assertIn('Git repository initialized', stdout)
         self.assertNotIn('initial commit', stdout)

@@ -246,23 +246,23 @@ class TestLocalNonGitPluginCLI(PicardTestCase):
             manager = _create_manager(plugins_dir)
             manager.install_plugin(str(plugin_dir), enable_after_install=False)
 
-            # --list shows [local]
-            exit_code, stdout, _ = run_cli(manager, list=True)
+            # list shows [local]
+            exit_code, stdout, _ = run_cli(manager, verb='list')
             self.assertEqual(exit_code, 0)
             self.assertIn('[local]', stdout)
 
-            # --info shows [local]
-            exit_code, stdout, _ = run_cli(manager, info=plugin_name)
+            # info shows [local]
+            exit_code, stdout, _ = run_cli(manager, verb='info', plugin=plugin_name)
             self.assertEqual(exit_code, 0)
             self.assertIn('[local]', stdout)
 
-            # --update shows 'Plugin reloaded'
-            exit_code, stdout, _ = run_cli(manager, update=[plugin_name])
+            # update shows 'Plugin reloaded'
+            exit_code, stdout, _ = run_cli(manager, verb='update', plugin=[plugin_name])
             self.assertEqual(exit_code, 0)
             self.assertIn('Plugin reloaded', stdout)
 
-            # --list-refs is blocked
-            exit_code, _, stderr = run_cli(manager, list_refs=plugin_name)
+            # list-refs is blocked
+            exit_code, _, stderr = run_cli(manager, verb='refs', plugin=plugin_name)
             self.assertNotEqual(exit_code, 0)
             self.assertIn('not managed by git', stderr)
 
@@ -276,7 +276,7 @@ class TestLocalNonGitPluginCLI(PicardTestCase):
             manager = _create_manager(plugins_dir)
             manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
 
-            exit_code, stdout, _ = run_cli(manager, list=True)
+            exit_code, stdout, _ = run_cli(manager, verb='list')
             self.assertEqual(exit_code, 0)
             self.assertIn('[local-dev]', stdout)
 
@@ -290,6 +290,6 @@ class TestLocalNonGitPluginCLI(PicardTestCase):
             manager = _create_manager(plugins_dir)
             manager.install_plugin(str(plugin_dir), enable_after_install=False, no_git=True)
 
-            exit_code, stdout, _ = run_cli(manager, info=plugin_name)
+            exit_code, stdout, _ = run_cli(manager, verb='info', plugin=plugin_name)
             self.assertEqual(exit_code, 0)
             self.assertIn('[local-dev]', stdout)

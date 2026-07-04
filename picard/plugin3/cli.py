@@ -19,27 +19,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-import argparse
 from datetime import datetime
-import logging
-import os
 from pathlib import Path
 import shutil
 
 # Additional imports for CLI operations
-import sys
 import tempfile
 import traceback
 from types import SimpleNamespace
 
 from PyQt6 import QtCore
 
-from picard import (
-    PICARD_APP_NAME,
-    PICARD_FANCY_VERSION_STR,
-    PICARD_ORG_NAME,
-    log,
-)
 from picard.cli.base import (
     BaseCLI,
     ExitCode,
@@ -47,19 +37,12 @@ from picard.cli.base import (
 from picard.config import (
     Option,
     get_config,
-    setup_config,
 )
-from picard.const import USER_PLUGIN_DIR
-from picard.debug_opts import DebugOpt
-from picard.git.factory import (
-    git_backend,
-    has_git_backend,
-)
+from picard.git.factory import git_backend
 from picard.git.utils import (
     check_local_repo_dirty,
     get_local_repository_path,
 )
-from picard.options import init_options
 from picard.plugin3.constants import (
     CATEGORIES as VALID_CATEGORIES,
     DEFAULT_SOURCE_LOCALE,
@@ -78,7 +61,6 @@ from picard.plugin3.manager import (
     PluginBlacklistedError,
     PluginCommitPinnedError,
     PluginDirtyError,
-    PluginManager,
     PluginManifestError,
     PluginManifestInvalidError,
     PluginManifestNotFoundError,
@@ -108,11 +90,6 @@ from picard.plugin3.registry import (
     RegistryParseError,
 )
 from picard.plugin3.validator import MAX_NAME_LENGTH
-from picard.util import (
-    cli,
-    versions,
-)
-from picard.webservice import WebService
 
 
 def get_display_locale(args):
@@ -156,10 +133,9 @@ Option('persist', 'cli_plugins_init', {})
 class PluginCLI(BaseCLI):
     """Command line interface for managing plugins."""
 
-    def __init__(self, manager, args, output=None, parser=None):
+    def __init__(self, manager, args, output=None):
         super().__init__(args, output or PluginOutput())
         self._manager = manager
-        self._parser = parser
 
     def _ensure_registry(self):
         """Ensure registry is loaded, fetching from remote if needed.
@@ -290,73 +266,55 @@ class PluginCLI(BaseCLI):
 
     def _dispatch(self):
         """Dispatch to the appropriate plugin command."""
-        # Handle refresh-registry first if specified
-        if getattr(self._args, 'refresh_registry', None):
-            result = self._cmd_refresh_registry()
-            # If refresh failed, return error
-            if result != ExitCode.SUCCESS:
-                return result
-            # Continue to execute other command if specified
+        cmd = self._args.verb
 
-        # Validate that --ref is only used with install or validate commands
-        ref = getattr(self._args, 'ref', None)
-        if ref:
-            valid_with_ref = self._args.install or (hasattr(self._args, 'validate') and self._args.validate)
-            if not valid_with_ref:
-                self._out.error('--ref can only be used with install or validate')
-                return ExitCode.ERROR
-
-        if self._args.list:
+        if cmd == 'list':
             return self._cmd_list()
-        elif self._args.info:
-            return self._cmd_info(self._args.info)
-        elif self._args.list_refs:
-            return self._cmd_list_refs(self._args.list_refs)
-        elif self._args.enable:
-            return self._cmd_enable(self._args.enable)
-        elif self._args.disable:
-            return self._cmd_disable(self._args.disable)
-        elif self._args.install:
-            return self._cmd_install(self._args.install)
-        elif self._args.remove:
-            return self._cmd_remove(self._args.remove)
-        elif self._args.update:
-            return self._cmd_update(self._args.update)
-        elif self._args.update_all:
-            return self._cmd_update_all()
-        elif self._args.check_updates:
+        elif cmd == 'info':
+            return self._cmd_info(self._args.plugin)
+        elif cmd == 'refs':
+            return self._cmd_list_refs(self._args.plugin)
+        elif cmd == 'enable':
+            return self._cmd_enable(self._args.plugin)
+        elif cmd == 'disable':
+            return self._cmd_disable(self._args.plugin)
+        elif cmd == 'install':
+            return self._cmd_install(self._args.source)
+        elif cmd == 'remove':
+            return self._cmd_remove(self._args.plugin)
+        elif cmd == 'update':
+            if self._args.update_all or not self._args.plugin:
+                return self._cmd_update_all()
+            else:
+                return self._cmd_update(self._args.plugin)
+        elif cmd == 'check-updates':
             return self._cmd_check_updates()
-        elif getattr(self._args, 'browse', None):
+        elif cmd == 'browse':
             return self._cmd_browse()
-        elif getattr(self._args, 'search', None):
-            return self._cmd_search(self._args.search)
-        elif getattr(self._args, 'check_blacklist', None) is not None or getattr(self._args, 'uuid', None):
-            url = getattr(self._args, 'check_blacklist', None) or None
-            uuid = getattr(self._args, 'uuid', None)
+        elif cmd == 'search':
+            return self._cmd_search(self._args.query)
+        elif cmd == 'check-blacklist':
+            url = self._args.url or None
+            uuid = self._args.uuid
             if not url and not uuid:
                 self._out.error('check-blacklist requires a URL or --uuid (or both)')
                 return ExitCode.ERROR
             return self._cmd_check_blacklist(url, uuid)
-        elif getattr(self._args, 'refresh_registry', None):
-            # Already handled at the start, just return success
-            return ExitCode.SUCCESS
-        elif getattr(self._args, 'switch_ref', None):
-            return self._cmd_switch_ref(self._args.switch_ref[0], self._args.switch_ref[1])
-        elif hasattr(self._args, 'clean_config') and self._args.clean_config is not None:
-            return self._cmd_clean_config(self._args.clean_config)
-        elif getattr(self._args, 'validate', None):
-            return self._cmd_validate(self._args.validate, ref)
-        elif hasattr(self._args, 'manifest') and self._args.manifest is not None:
-            return self._cmd_manifest(self._args.manifest)
-        elif hasattr(self._args, 'init') and self._args.init is not None:
-            return self._cmd_init(self._args.init)
+        elif cmd == 'refresh-registry':
+            return self._cmd_refresh_registry()
+        elif cmd == 'switch-ref':
+            return self._cmd_switch_ref(self._args.plugin, self._args.ref)
+        elif cmd == 'clean-config':
+            return self._cmd_clean_config(self._args.plugin)
+        elif cmd == 'validate':
+            return self._cmd_validate(self._args.source, self._args.ref)
+        elif cmd == 'manifest':
+            return self._cmd_manifest(self._args.target)
+        elif cmd == 'init':
+            return self._cmd_init(self._args.name)
         else:
-            if self._parser:
-                self._parser.print_help()
-                return ExitCode.SUCCESS
-            else:
-                self._out.error('No action specified')
-                return ExitCode.ERROR
+            self._out.error('No action specified')
+            return ExitCode.ERROR
 
     def _get_registry_plugin_version(self, plugin_data):
         """Get latest version tag for a registry plugin.
@@ -2149,196 +2107,3 @@ class PluginCLI(BaseCLI):
             'unregistered': '🔓',
         }
         return badges.get(trust_level, '?')
-
-
-def process_cmdline_args():
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
-
-    # Picard specific arguments
-    parser.add_argument('-c', '--config-file', action='store', default=None, help="location of the configuration file")
-    parser.add_argument('--debug', action='store_true', help="enable debug-level logging")
-    parser.add_argument('-v', '--version', action='store_true', help="display version information and exit")
-    parser.add_argument('-V', '--long-version', action='store_true', help="display long version information and exit")
-    parser.add_argument(
-        '--debug-opts',
-        action='store',
-        default=None,
-        nargs='?',
-        const='',
-        metavar='OPTIONS',
-        help="comma-separated list of debug options. Use --debug-opts without value to list available options",
-    )
-    parser.add_argument('--yes', '-y', action='store_true', help="skip confirmation prompts")
-    parser.add_argument('--no-color', action='store_true', help="disable colored output")
-
-    group_management = parser.add_argument_group("Plugin Management")
-    group_management.add_argument('-l', '--list', action='store_true', help="list all installed plugins with details")
-    group_management.add_argument(
-        '-i', '--install', nargs='+', metavar='URL', help="install plugin(s) from git URL(s) or by name"
-    )
-    group_management.add_argument('-r', '--remove', nargs='+', metavar='PLUGIN', help="uninstall plugin(s)")
-    group_management.add_argument('-e', '--enable', nargs='+', metavar='PLUGIN', help="enable plugin(s)")
-    group_management.add_argument('-d', '--disable', nargs='+', metavar='PLUGIN', help="disable plugin(s)")
-    group_management.add_argument(
-        '-u', '--update', nargs='+', metavar='PLUGIN', help="update plugin(s) to latest version"
-    )
-    group_management.add_argument('--update-all', action='store_true', help="update all installed plugins")
-    group_management.add_argument('--info', metavar='PLUGIN', help="show detailed plugin information")
-    group_management.add_argument('--validate', metavar='URL', help="validate plugin MANIFEST from git URL")
-    group_management.add_argument(
-        '--clean-config',
-        nargs='?',
-        const='',
-        metavar='PLUGIN',
-        help="delete saved options for a plugin (list orphaned configs if no plugin specified)",
-    )
-    group_management.add_argument(
-        '--manifest', nargs='?', const='', metavar='PLUGIN', help="show MANIFEST.toml (template if no argument)"
-    )
-    group_management.add_argument(
-        '--init', nargs='?', const='', metavar='NAME', help="create a new plugin project (interactive if no name given)"
-    )
-
-    group_git = parser.add_argument_group("Git Version Control")
-    group_git.add_argument('--list-refs', metavar='PLUGIN', help="list available git refs (branches/tags) for plugin")
-    group_git.add_argument(
-        '--ref', metavar='REF', help="git ref (branch/tag/commit) to use with --install or --validate"
-    )
-    group_git.add_argument(
-        '--switch-ref', nargs=2, metavar=('PLUGIN', 'REF'), help="switch plugin to different git ref"
-    )
-
-    group_discover = parser.add_argument_group("Plugin Discovery")
-    group_discover.add_argument('--browse', action='store_true', help="browse plugins from registry")
-    group_discover.add_argument('--search', metavar='QUERY', help="search plugins in registry")
-    group_discover.add_argument(
-        '--check-blacklist',
-        nargs='?',
-        const='',
-        metavar='URL',
-        help="check if URL and/or UUID is blacklisted",
-    )
-    group_discover.add_argument('--uuid', metavar='UUID', help="plugin UUID to use with --check-blacklist")
-
-    group_registry = parser.add_argument_group("Registry")
-    group_registry.add_argument(
-        '--refresh-registry', action='store_true', help="force refresh of plugin registry cache"
-    )
-    group_registry.add_argument('--check-updates', action='store_true', help="check for available updates")
-
-    group_advanced = parser.add_argument_group("Advanced Options")
-    group_advanced.add_argument('--reinstall', action='store_true', help="force reinstall when used with --install")
-    group_advanced.add_argument('--force-blacklisted', action='store_true', help="bypass blacklist check (dangerous!)")
-    group_advanced.add_argument('--trust-community', action='store_true', help="skip warnings for community plugins")
-    group_advanced.add_argument('--trust', metavar='LEVEL', help="filter by trust level (official, trusted, community)")
-    group_advanced.add_argument(
-        '--category', metavar='CATEGORY', help="filter by category (metadata, coverart, ui, etc.)"
-    )
-    group_advanced.add_argument('--purge', action='store_true', help="delete plugin saved options on uninstall")
-    group_advanced.add_argument('--target-dir', metavar='DIR', help="override directory name for --init")
-    group_advanced.add_argument(
-        '--parent-dir', metavar='DIR', help="parent directory for --init (default: current directory)"
-    )
-    group_advanced.add_argument('--author', metavar='NAME', help="author name for --init")
-    group_advanced.add_argument(
-        '--with-translations', action='store_true', help="include translation support (locale files and examples)"
-    )
-    group_advanced.add_argument(
-        '--no-git',
-        action='store_true',
-        help="for --init: skip git init; for --install: load git plugin in local mode (no updates/refs)",
-    )
-    group_advanced.add_argument('--no-commit', action='store_true', help="skip initial git commit")
-    group_advanced.add_argument(
-        '--source-locale',
-        metavar='LOCALE',
-        default=DEFAULT_SOURCE_LOCALE,
-        help=f"source locale for --init with --with-translations (default: {DEFAULT_SOURCE_LOCALE})",
-    )
-    group_advanced.add_argument(
-        '--locale', metavar='LOCALE', default='en', help="locale for displaying plugin info (e.g., 'fr', 'de', 'en')"
-    )
-
-    # Additional information
-    parser.description = "Manage Picard plugins (install, update, enable, disable)"
-    parser.epilog = (
-        "Trust Levels:\n"
-        "  🛡️ official: Reviewed by Picard team (highest trust)\n"
-        "  ✓ trusted: Known authors, not reviewed (high trust)\n"
-        "  ⚠️ community: Other authors, not reviewed (use caution)\n"
-        "  🔓 unregistered: Not in registry (local/unknown source - lowest trust)\n"
-        "\nFor more information, visit: https://picard.musicbrainz.org/docs/plugins/"
-    )
-
-    args = parser.parse_args()
-    args.remote_commands_help = False
-
-    # Handle debug-opts help request
-    if args.debug_opts is not None and not args.debug_opts.strip():
-        DebugOpt.print_help_and_exit()
-
-    return args, parser
-
-
-def minimal_init(config_file=None):
-    """Minimal initialization for CLI commands without GUI.
-
-    Returns a QCoreApplication instance with config initialized.
-    """
-    QtCore.QCoreApplication.setApplicationName(PICARD_APP_NAME)
-    QtCore.QCoreApplication.setOrganizationName(PICARD_ORG_NAME)
-
-    app = QtCore.QCoreApplication(sys.argv)
-
-    init_options()
-    setup_config(app=app, filename=config_file)
-
-    # Initialize WebService for network operations (needed for registry fetching)
-    app.webservice = WebService()
-
-    return app
-
-
-def main():
-    try:
-        if not has_git_backend():
-            cli.print_message_and_exit("git backend not available", status=1)
-    except ImportError as err:
-        cli.print_message_and_exit("failed importing git backend", str(err), status=1)
-
-    cmdline_args, parser = process_cmdline_args()
-
-    app = minimal_init(cmdline_args.config_file)  # noqa: F841 - app must stay alive for QCoreApplication
-
-    if cmdline_args.long_version:
-        cli.print_message_and_exit(versions.as_string())
-    if cmdline_args.version:
-        cli.print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
-
-    log.enable_console_handler()
-
-    # Suppress INFO logs for cleaner CLI output unless in debug mode or debug options are enabled
-    if not cmdline_args.debug and not cmdline_args.debug_opts:
-        log.set_verbosity(logging.WARNING)
-    elif cmdline_args.debug or cmdline_args.debug_opts:
-        # Ensure DEBUG level is enabled when requested or debug options are used
-        log.set_verbosity(logging.DEBUG)
-
-    # Initialize debug options for CLI
-    if cmdline_args.debug_opts:
-        DebugOpt.from_string(cmdline_args.debug_opts)
-
-    manager = PluginManager()
-    manager.add_directory(USER_PLUGIN_DIR, primary=True)
-
-    # Create output with color setting from args
-    # None = auto-detect (isatty), False = explicitly disabled
-    no_color = getattr(cmdline_args, 'no_color', False) or 'NO_COLOR' in os.environ
-    output = PluginOutput(color=False if no_color else None)
-
-    exit_code = PluginCLI(manager, cmdline_args, output=output, parser=parser).run()
-    sys.exit(exit_code)
-
-
-if __name__ == "__main__":
-    main()
