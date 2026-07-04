@@ -86,8 +86,8 @@ class PluginRegistry:
         else:
             env_url = os.environ.get('PICARD_PLUGIN_REGISTRY_URL')
             if env_url:
-                # Environment variable takes precedence, try it first then fallback to defaults
-                self.registry_urls = [env_url] + DEFAULT_PLUGIN_REGISTRY_URLS
+                # Environment variable overrides defaults entirely
+                self.registry_urls = [env_url]
             else:
                 self.registry_urls = DEFAULT_PLUGIN_REGISTRY_URLS
 
