@@ -56,6 +56,12 @@ picard_version = "3.0.0"
 [scripts.naming]
 id = "test-uuid-123"
 title = "My Naming Script"
+author = "Test Author"
+description = "A script for testing"
+license = "GPL-2.0"
+version = "2.0"
+last_updated = "2026-06-21 12:00:00 UTC"
+script_language_version = "1.1"
 script = '''
 $if2(%albumartist%,%artist%)/%album%/
 $num(%tracknumber%,2) %title%
@@ -159,6 +165,13 @@ standardize_artists = true
         self.assertIn('test-uuid-123', scripts)
         self.assertEqual(scripts['test-uuid-123']['title'], 'My Naming Script')
         self.assertIn('%albumartist%', scripts['test-uuid-123']['script'])
+        # Metadata fields preserved
+        self.assertEqual(scripts['test-uuid-123']['author'], 'Test Author')
+        self.assertEqual(scripts['test-uuid-123']['description'], 'A script for testing')
+        self.assertEqual(scripts['test-uuid-123']['license'], 'GPL-2.0')
+        self.assertEqual(scripts['test-uuid-123']['version'], '2.0')
+        self.assertEqual(scripts['test-uuid-123']['last_updated'], '2026-06-21 12:00:00 UTC')
+        self.assertEqual(scripts['test-uuid-123']['script_language_version'], '1.1')
 
         # Profile references the script
         settings = self.config.profiles['user_profile_settings'][result.profile_id]

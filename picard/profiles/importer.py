@@ -116,11 +116,6 @@ def import_profile(
 
     result = ProfileImportResult(profile_id, unique_title)
 
-    # Check version compatibility
-    picard_version_min = profile_section.get('picard_version_min')
-    if picard_version_min:
-        _check_version_compatibility(picard_version_min, result)
-
     # Build profile settings dict
     profile_settings = {}
 
@@ -184,25 +179,6 @@ def _make_unique_title(config: Config, title: str) -> str:
     return candidate
 
 
-def _check_version_compatibility(picard_version_min: str, result: ProfileImportResult):
-    """Check if current Picard version meets the profile's minimum requirement."""
-    from picard import PICARD_VERSION
-    from picard.version import (
-        Version,
-        VersionError,
-    )
-
-    try:
-        min_version = Version.from_string(picard_version_min)
-        if PICARD_VERSION < min_version:
-            result.warnings.append(
-                f"This profile was created for Picard {picard_version_min}+. "
-                f"Some settings may not apply to your version ({PICARD_VERSION})."
-            )
-    except VersionError:
-        log.warning("Could not parse picard_version_min: %s", picard_version_min)
-
-
 def _import_value(value, opt: Option):
     """Convert a TOML value back to the internal representation expected by an option."""
     # TOML arrays become lists; if the option default is a list of tuples,
@@ -240,12 +216,12 @@ def _import_naming_script(config: Config, naming_section: dict, result: ProfileI
         'id': script_id,
         'title': title,
         'script': script_content,
-        'description': '',
-        'author': '',
-        'license': '',
-        'version': '',
-        'last_updated': '',
-        'script_language_version': '',
+        'description': naming_section.get('description', ''),
+        'author': naming_section.get('author', ''),
+        'license': naming_section.get('license', ''),
+        'version': naming_section.get('version', ''),
+        'last_updated': naming_section.get('last_updated', ''),
+        'script_language_version': naming_section.get('script_language_version', ''),
     }
     config.setting['file_renaming_scripts'] = scripts
 

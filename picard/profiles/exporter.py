@@ -164,6 +164,11 @@ def _export_scripts(doc, config, profile_settings, mode):
             naming_table.add('title', script_data['title'])
             if _is_preset_script(active_script_id):
                 naming_table.add('preset', True)
+            # Include all metadata fields if present
+            for field in ('author', 'description', 'license', 'version', 'last_updated', 'script_language_version'):
+                value = script_data.get(field, '')
+                if value:
+                    naming_table.add(field, value)
             naming_table.add('script', _multiline_string(script_data['script']))
             # Use dotted key path: [scripts.naming]
             if 'scripts' not in doc:

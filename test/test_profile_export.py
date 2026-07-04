@@ -180,6 +180,12 @@ class TestProfileExport(TestPicardConfigCommon):
                 'id': 'test-uuid',
                 'title': 'My Script',
                 'script': '$if2(%albumartist%,%artist%)/%album%',
+                'author': 'Test Author',
+                'description': 'A test naming script',
+                'license': 'GPL-2.0',
+                'version': '1.2',
+                'last_updated': '2026-06-21 12:00:00 UTC',
+                'script_language_version': '1.1',
             },
         }
 
@@ -198,6 +204,13 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertEqual(naming['title'], 'My Script')
         self.assertIn('%albumartist%', naming['script'])
         self.assertNotIn('preset', naming)
+        # Metadata fields
+        self.assertEqual(naming['author'], 'Test Author')
+        self.assertEqual(naming['description'], 'A test naming script')
+        self.assertEqual(naming['license'], 'GPL-2.0')
+        self.assertEqual(naming['version'], '1.2')
+        self.assertEqual(naming['last_updated'], '2026-06-21 12:00:00 UTC')
+        self.assertEqual(naming['script_language_version'], '1.1')
 
     def test_export_preset_naming_script(self):
         TextOption('setting', 'active_file_naming_script_id', '', title="Active script", in_profile=True)
@@ -380,3 +393,42 @@ class TestProfileExport(TestPicardConfigCommon):
 
         # Enum should be exported as its value string
         self.assertEqual(parsed['settings']['cover_format'], 'png')
+
+    def test_export_naming_script_empty_metadata_omitted(self):
+        TextOption('setting', 'active_file_naming_script_id', '', title="Active script", in_profile=True)
+
+        self.config.setting['file_renaming_scripts'] = {
+            'test-uuid': {
+                'id': 'test-uuid',
+                'title': 'Minimal Script',
+                'script': '%artist%/%album%/%title%',
+                'author': '',
+                'description': '',
+                'license': '',
+                'version': '',
+                'last_updated': '',
+                'script_language_version': '',
+            },
+        }
+
+        self._setup_profile(
+            'p1',
+            {
+                'active_file_naming_script_id': 'test-uuid',
+            },
+        )
+
+        result = export_profile(self.config, 'p1', title='Test')
+        parsed = tomllib.loads(result)
+
+        naming = parsed['scripts']['naming']
+        self.assertEqual(naming['id'], 'test-uuid')
+        self.assertEqual(naming['title'], 'Minimal Script')
+        self.assertIn('%artist%', naming['script'])
+        # Empty metadata fields should NOT be present
+        self.assertNotIn('author', naming)
+        self.assertNotIn('description', naming)
+        self.assertNotIn('license', naming)
+        self.assertNotIn('version', naming)
+        self.assertNotIn('last_updated', naming)
+        self.assertNotIn('script_language_version', naming)

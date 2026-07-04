@@ -21,7 +21,7 @@ for specific use cases (e.g., optimizing for Navidrome, Plex, Jellyfin, etc.).
 4. **Safe by default** — Security-sensitive options (credentials, tokens) and
    user-specific options (filesystem paths) are excluded from export.
 5. **Forward/backward compatible** — Unknown settings are ignored on import.
-   A `picard_version_min` field signals compatibility requirements.
+   The `picard_version` field identifies the source version for upgrade transforms.
 
 ---
 
@@ -281,7 +281,6 @@ author = "MusicBrainz Community"
 version = "1.0"
 created = "2026-06-21"
 picard_version = "3.0.0"
-picard_version_min = "3.0"
 
 # Optional: plugins required by this profile
 required_plugins = [
@@ -306,6 +305,11 @@ embed_only_one_front_image = true
 [scripts.naming]
 id = "_profile_naming"
 title = "Navidrome / media server friendly"
+author = "MusicBrainz Community"
+description = "Clean folder structure optimized for Navidrome media server."
+version = "1.0"
+last_updated = "2026-06-21 12:00:00 UTC"
+script_language_version = "1.1"
 script = """
 $if2(%albumartist%,%artist%)/
 %album%$if(%_releasecomment%, \\(%_releasecomment%\\))\
@@ -350,8 +354,7 @@ $delete(originalyear)
 | `author` | string | no | Who created/maintains it |
 | `version` | string | no | Profile version (for user reference) |
 | `created` | string | no | ISO date of creation |
-| `picard_version` | string | yes | Picard version that generated this file (serves as format identifier) |
-| `picard_version_min` | string | no | Minimum Picard version required to use this profile |
+| `picard_version` | string | yes | Picard version that generated this file (serves as format identifier and input for settings upgrades) |
 | `required_plugins` | array of tables | no | Plugins needed for this profile's settings (informational; `uuid` is the key, `name` is for display) |
 
 #### `[settings]` — Option Overrides (optional)
@@ -368,6 +371,12 @@ Unknown keys are silently ignored on import.
 |-------|------|----------|-------------|
 | `id` | string | no | Script ID (generated if missing) |
 | `title` | string | yes | Display name |
+| `author` | string | no | Script author |
+| `description` | string | no | What the script does |
+| `license` | string | no | License under which the script is distributed |
+| `version` | string | no | Script version (user-defined) |
+| `last_updated` | string | no | UTC date/time when the script was last updated |
+| `script_language_version` | string | no | Picard script language version at time of export |
 | `script` | string | yes | The naming script content |
 
 #### `[[scripts.tagging]]` — Tagger Scripts (optional, array)
@@ -406,27 +415,26 @@ sections for uninstalled plugins are skipped with a warning.
 ## Import Behavior
 
 1. Parse TOML, validate `[profile]` section exists
-2. Check `picard_version_min` — warn if current Picard is older
-3. Create a new profile with `title` from `[profile]`
-4. If `[scripts.naming]` exists:
+2. Create a new profile with `title` from `[profile]`
+3. If `[scripts.naming]` exists:
    - Register the script in `file_renaming_scripts` (generate ID if not provided)
    - Set the profile's `active_file_naming_script_id` override to that ID
-5. If `[[scripts.tagging]]` entries exist:
+4. If `[[scripts.tagging]]` entries exist:
    - Append to the profile's `list_of_scripts` override
    - Respect the `enabled` field if present (default: `true`)
    - Set `enable_tagger_scripts = true` in the profile
-6. If `[plugins.*]` sections exist:
+5. If `[plugins.*]` sections exist:
    - For each plugin UUID, check if the plugin is installed
    - If installed: apply settings as profile overrides (keyed as
      `plugin.<uuid>/option_name`)
    - If not installed: collect for warning message, skip settings
-7. Apply `[settings]` as profile overrides:
+6. Apply `[settings]` as profile overrides:
    - Skip unknown option names (forward compatibility)
    - Skip options where `in_profile=False` (cannot be overridden by a profile)
    - `active_file_naming_script_id`, `enable_tagger_scripts`, and `list_of_scripts`
-     are handled implicitly by steps 4-5 when scripts are present
-8. Show warnings (if any): unrecognized options, missing plugins, version mismatch
-9. Profile is created in disabled state — user can review and enable it
+     are handled implicitly by steps 3-4 when scripts are present
+7. Show warnings (if any): unrecognized options, missing plugins
+8. Profile is created in disabled state — user can review and enable it
 
 ### Conflict Handling
 
@@ -447,10 +455,6 @@ Profiles may reference options that no longer exist in the current Picard versio
    *"2 settings were not recognized and were skipped: `old_name`, `other_name`"*
 3. **The profile is still created** with whatever settings *could* be applied.
    Scripts always import successfully since they are plain text.
-4. **`picard_version_min`** provides an early signal — if the importing Picard
-   version is older than what the profile expects, a warning is shown *before*
-   import: *"This profile was created for Picard 3.2+. Some settings may not
-   apply to your version (3.0)."*
 
 This mirrors Picard's existing config upgrade strategy: unrecognized keys are
 silently dropped. Profiles degrade gracefully rather than failing entirely.
@@ -668,7 +672,7 @@ source version. Cross-version sharing of very old profiles is an edge case.
 **Possible mitigations (from simplest to most complex):**
 
 1. **Accept silent loss** (current design) — unknown options are skipped with
-   a warning. The `picard_version_min` field gives an early signal. This is
+   a warning. The `picard_version` field identifies the source version. This is
    the same strategy as Picard's existing config handling.
 
 2. **Maintain a rename mapping** — a small dict of `{old_name: new_name}` (and
@@ -922,7 +926,7 @@ continues to export only enabled scripts (without the field).
 ### 8. Should import apply a rename mapping for old option names?
 
 **Possible answers:**
-- a) No — accept silent loss, rely on `picard_version_min` warning
+- a) No — accept silent loss, rely on `picard_version` for upgrade transforms
 - b) Yes — maintain a lightweight rename map (old_name → new_name + optional
    transform function)
 - c) Yes — run full config upgrade hooks on imported settings
