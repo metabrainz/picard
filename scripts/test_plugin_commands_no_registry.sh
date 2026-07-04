@@ -11,7 +11,8 @@ TEST_PLUGIN_UUID="87654321-4321-4765-8321-876543218765"
 # Disable registry completely
 unset PICARD_PLUGIN_REGISTRY_URL
 export PICARD_PLUGIN_REGISTRY_URL=""
-PICARD_PLUGINS="picard-cli plugins"
+PICARD_CLI="picard-cli"
+PICARD_PLUGINS="$PICARD_CLI plugins"
 
 echo "=== Testing Plugin Commands (Local Directory WITHOUT Registry) ==="
 echo "Test directory: $TEST_DIR"
@@ -84,12 +85,12 @@ echo
 
 # Test 1: Install plugin from local directory (not registry)
 echo "1. Install plugin from local directory (no registry)"
-$PICARD_PLUGINS --install "$PLUGIN_REPO" --ref v1.0.0 --yes
+$PICARD_CLI --yes plugins install "$PLUGIN_REPO" --ref v1.0.0
 echo
 
 # Test 2: Verify installation
 echo "2. Verify plugin installation"
-$PICARD_PLUGINS --info $TEST_PLUGIN_UUID
+$PICARD_PLUGINS info $TEST_PLUGIN_UUID
 echo
 
 # Test 3: Check if plugin has git remotes (Fix 1 test)
@@ -123,22 +124,22 @@ echo
 echo "5. Check for updates (Fix 2 test - should detect v1.2.0 without versioning_scheme)"
 echo "Before fix: Would skip plugin due to no versioning_scheme"
 echo "After fix: Should detect new tag v1.2.0"
-$PICARD_PLUGINS --check-updates
+$PICARD_PLUGINS check-updates
 echo
 
 # Test 6: List available refs (should show v1.2.0 after fetch)
 echo "6. List available refs (should show v1.2.0 after remote fetch)"
-$PICARD_PLUGINS --list-refs $TEST_PLUGIN_UUID
+$PICARD_PLUGINS refs $TEST_PLUGIN_UUID
 echo
 
 # Test 7: Update to newer tag
 echo "7. Update plugin to newer tag"
-$PICARD_PLUGINS --update $TEST_PLUGIN_UUID --yes
+$PICARD_CLI --yes plugins update $TEST_PLUGIN_UUID
 echo
 
 # Test 8: Verify update worked
 echo "8. Verify plugin was updated"
-STORED_COMMIT=$($PICARD_PLUGINS --info $TEST_PLUGIN_UUID --no-color | grep -oP 'Version:.*@\K[a-f0-9]{7}' || echo "unknown")
+STORED_COMMIT=$($PICARD_CLI --no-color plugins info $TEST_PLUGIN_UUID | grep -oP 'Version:.*@\K[a-f0-9]{7}' || echo "unknown")
 echo "Current commit: $STORED_COMMIT"
 echo "Expected v1.2.0 commit: ${COMMIT_V1_2_0:0:7}"
 if [ "$STORED_COMMIT" = "${COMMIT_V1_2_0:0:7}" ]; then
@@ -159,7 +160,7 @@ echo
 
 # Test 10: Clean up
 echo "10. Clean up test plugin"
-$PICARD_PLUGINS --remove $TEST_PLUGIN_UUID --purge --yes
+$PICARD_CLI --yes plugins remove $TEST_PLUGIN_UUID --purge
 echo
 
 echo "Cleanup: Removing test directory"
