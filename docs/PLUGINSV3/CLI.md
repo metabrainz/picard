@@ -906,13 +906,10 @@ picard-cli plugins check-blacklist --uuid a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d
 # Refresh registry cache
 picard-cli plugins refresh-registry
 
-# Combine with other commands (recommended when switching registries)
-picard-cli plugins refresh-registry --browse
-picard-cli plugins refresh-registry --install view-script-variables
-
 # After changing PICARD_PLUGIN_REGISTRY_URL
 export PICARD_PLUGIN_REGISTRY_URL="https://example.com/custom-registry.toml"
-picard-cli plugins refresh-registry --browse
+picard-cli plugins refresh-registry
+picard-cli plugins browse
 ```
 
 **Use cases:**
@@ -921,7 +918,7 @@ picard-cli plugins refresh-registry --browse
 - Forcing immediate update of registry data
 - Clearing stale cache
 
-**Note:** The registry is cached locally. Use `--refresh-registry` to bypass the cache and fetch the latest version immediately. It can be combined with any other command that uses the registry (--browse, --search, --install, etc.).
+**Note:** The registry is cached locally. Use `refresh-registry` to bypass the cache and fetch the latest version immediately. Run it before other registry commands (`browse`, `search`, `install`) if you need fresh data.
 
 ---
 
