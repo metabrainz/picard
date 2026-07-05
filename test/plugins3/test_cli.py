@@ -22,6 +22,7 @@ from io import StringIO
 from pathlib import Path
 import shutil
 import tempfile
+import unittest
 from unittest.mock import (
     Mock,
     PropertyMock,
@@ -67,6 +68,15 @@ from picard.plugin3.validator import (
     MAX_NAME_LENGTH,
     generate_uuid,
 )
+
+
+has_uic = False
+try:
+    import PyQt6.uic  # noqa: F401
+
+    has_uic = True
+except ImportError:
+    pass
 
 
 def create_mock_registry_plugin(data):
@@ -1637,6 +1647,7 @@ class TestPluginCLIInitGit(PicardTestCase):
         self.assertNotIn('initial commit', stdout)
 
 
+@unittest.skipUnless(has_uic, "PyQt6.uic is required for this test")
 class TestPluginCLICompileUI(PicardTestCase):
     """Tests for compile-ui command."""
 
