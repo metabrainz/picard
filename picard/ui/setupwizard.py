@@ -41,6 +41,8 @@ from picard.util.readthedocs import ReadTheDocs
 
 
 class WizardCheckbox(QtWidgets.QWidget):
+    toggled = QtCore.pyqtSignal(bool)
+
     def __init__(self, title: str, description: str, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
 
@@ -67,19 +69,30 @@ class WizardCheckbox(QtWidgets.QWidget):
         font = self._checkbox.font()
         font.setWeight(QtGui.QFont.Weight.Bold)
         self._checkbox.setFont(font)
+        self._checkbox.toggled.connect(self.toggled)
         layout.addWidget(self._checkbox)
 
-        hint = QtWidgets.QLabel(description)
-        label_indent = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_IndicatorWidth) + style.pixelMetric(
+        widget_indent = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_IndicatorWidth) + style.pixelMetric(
             QtWidgets.QStyle.PixelMetric.PM_CheckBoxLabelSpacing
         )
-        hint.setIndent(label_indent)
+
+        self._inner_layout = QtWidgets.QVBoxLayout()
+        self._inner_layout.setContentsMargins(widget_indent, 0, 0, 0)
+        layout.addLayout(self._inner_layout)
+
+        hint = QtWidgets.QLabel(description)
         hint.setWordWrap(True)
         hint.setSizePolicy(
             QtWidgets.QSizePolicy.Policy.Preferred,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        layout.addWidget(hint)
+        self._inner_layout.addWidget(hint)
+
+    def add_extra_widget(self, widget: QtWidgets.QWidget) -> None:
+        self._inner_layout.addWidget(widget)
+
+    def add_extra_layout(self, layout: QtWidgets.QLayout) -> None:
+        self._inner_layout.addLayout(layout)
 
     def mousePressEvent(self, event: QtGui.QMouseEvent | None) -> None:
         if event is None:
@@ -151,10 +164,19 @@ class FileOrganizationPage(SetupWizardPage):
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        self.rename_checkbox = QtWidgets.QCheckBox(_("Rename files based on tags (e.g. \"Artist - Title.mp3\")"))
+        self.rename_checkbox = WizardCheckbox(
+            _("Rename files based on tags (e.g. \"Artist - Title.mp3\")"),
+            _("When saving filenames will be updated based on the tags."),
+        )
         layout.addWidget(self.rename_checkbox)
 
-        self.move_checkbox = QtWidgets.QCheckBox(_("Move files to a directory structure based on tags"))
+        self.move_checkbox = WizardCheckbox(
+            _("Move files to a folder structure based on tags"),
+            _(
+                "Choose the base folder where you want your tagged audio files. "
+                "Saved files will be moved to this folder and a subfolder structure based on the tags."
+            ),
+        )
         self.move_checkbox.toggled.connect(self._update_move_to_state)
         layout.addWidget(self.move_checkbox)
 
@@ -169,7 +191,7 @@ class FileOrganizationPage(SetupWizardPage):
         self.browse_button.setEnabled(False)
         self.browse_button.clicked.connect(self._browse_directory)
         move_to_layout.addWidget(self.browse_button)
-        layout.addLayout(move_to_layout)
+        self.move_checkbox.add_extra_layout(move_to_layout)
 
         layout.addStretch()
         hint = QtWidgets.QLabel(
@@ -184,13 +206,13 @@ class FileOrganizationPage(SetupWizardPage):
 
     def initializePage(self) -> None:
         config = get_config()
-        self.rename_checkbox.setChecked(config.setting['rename_files'])
-        self.move_checkbox.setChecked(config.setting['move_files'])
+        self.rename_checkbox.set_checked(config.setting['rename_files'])
+        self.move_checkbox.set_checked(config.setting['move_files'])
         self.move_to_edit.setText(config.setting['move_files_to'])
 
     def save_settings(self, config: Config) -> None:
-        config.setting['rename_files'] = self.rename_checkbox.isChecked()
-        config.setting['move_files'] = self.move_checkbox.isChecked()
+        config.setting['rename_files'] = self.rename_checkbox.is_checked()
+        config.setting['move_files'] = self.move_checkbox.is_checked()
         config.setting['move_files_to'] = self.move_to_edit.text()
 
     def _update_move_to_state(self, checked: bool) -> None:
@@ -217,10 +239,16 @@ class CoverArtPage(SetupWizardPage):
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        self.embed_checkbox = QtWidgets.QCheckBox(_("Embed cover art into audio files"))
+        self.embed_checkbox = WizardCheckbox(
+            _("Embed cover art into audio files"),
+            _("When enabled, cover art will be embedded into audio files as metadata."),
+        )
         layout.addWidget(self.embed_checkbox)
 
-        self.save_to_files_checkbox = QtWidgets.QCheckBox(_("Save cover art as separate image files"))
+        self.save_to_files_checkbox = WizardCheckbox(
+            _("Save cover art as separate image files"),
+            _("When enabled, cover art will be saved as separate image files."),
+        )
         layout.addWidget(self.save_to_files_checkbox)
 
         layout.addStretch()
@@ -232,12 +260,12 @@ class CoverArtPage(SetupWizardPage):
 
     def initializePage(self) -> None:
         config = get_config()
-        self.embed_checkbox.setChecked(config.setting['save_images_to_tags'])
-        self.save_to_files_checkbox.setChecked(config.setting['save_images_to_files'])
+        self.embed_checkbox.set_checked(config.setting['save_images_to_tags'])
+        self.save_to_files_checkbox.set_checked(config.setting['save_images_to_files'])
 
     def save_settings(self, config: Config) -> None:
-        config.setting['save_images_to_tags'] = self.embed_checkbox.isChecked()
-        config.setting['save_images_to_files'] = self.save_to_files_checkbox.isChecked()
+        config.setting['save_images_to_tags'] = self.embed_checkbox.is_checked()
+        config.setting['save_images_to_files'] = self.save_to_files_checkbox.is_checked()
 
 
 class UpdatesPage(SetupWizardPage):
