@@ -30,12 +30,14 @@ from picard.config import (
     Config,
     get_config,
 )
+from picard.const import PLUGINS_BACKGROUND_CHECK_DELAY
 from picard.const.sys import IS_WIN
 from picard.i18n import gettext as _
 from picard.util import (
     get_url,
     icontheme,
 )
+from picard.util.readthedocs import ReadTheDocs
 
 
 class WizardCheckbox(QtWidgets.QWidget):
@@ -250,6 +252,8 @@ class UpdatesPage(SetupWizardPage):
             icontheme.lookup('plugin-update').pixmap(32, 32),
         )
 
+        tagger = tagger_instance()
+
         layout = QtWidgets.QVBoxLayout(self)
 
         self.update_check_app = WizardCheckbox(
@@ -257,7 +261,7 @@ class UpdatesPage(SetupWizardPage):
             _("Check for a new program version on the Picard website and show an update dialog if available."),
         )
         layout.addWidget(self.update_check_app)
-        if not tagger_instance().autoupdate_enabled:
+        if not tagger.autoupdate_enabled:
             self.update_check_app.hide()
 
         self.update_check_plugins = WizardCheckbox(
@@ -265,6 +269,8 @@ class UpdatesPage(SetupWizardPage):
             _("Check for plugin updates on the Picard website and show a notification in the status bar."),
         )
         layout.addWidget(self.update_check_plugins)
+        if not tagger._pluginmanager3:
+            self.update_check_plugins.hide()
 
         self.update_check_docs = WizardCheckbox(
             _("Check for documentation updates during startup"),
@@ -293,6 +299,18 @@ class UpdatesPage(SetupWizardPage):
         config.setting['check_for_updates'] = self.update_check_app.is_checked()
         config.setting['check_for_plugin_updates'] = self.update_check_plugins.is_checked()
         config.setting['check_rtd_updates'] = self.update_check_docs.is_checked()
+
+        # Trigger update checks if enabled
+        tagger = tagger_instance()
+
+        if config.setting['check_for_updates']:
+            tagger.window._auto_update_check()
+
+        if config.setting['check_for_plugin_updates']:
+            QtCore.QTimer.singleShot(PLUGINS_BACKGROUND_CHECK_DELAY * 1000, tagger.window._check_for_plugin_updates)
+
+        if config.setting['check_rtd_updates']:
+            ReadTheDocs.update_documentation_items()
 
 
 class SetupWizard(QtWidgets.QWizard):
