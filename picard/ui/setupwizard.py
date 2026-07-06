@@ -3,6 +3,7 @@
 # Picard, the next-generation MusicBrainz tagger
 #
 # Copyright (C) 2026 Laurent Monin
+# Copyright (C) 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,9 +21,11 @@
 
 from PyQt6 import (
     QtCore,
+    QtGui,
     QtWidgets,
 )
 
+from picard import tagger_instance
 from picard.config import (
     Config,
     get_config,
@@ -33,6 +36,60 @@ from picard.util import (
     get_url,
     icontheme,
 )
+
+
+class WizardCheckbox(QtWidgets.QWidget):
+    def __init__(self, title: str, description: str, parent: QtWidgets.QWidget | None = None):
+        super().__init__(parent)
+
+        style = QtWidgets.QApplication.style()
+        assert style
+
+        palette = self.palette()
+        highlight_bg = palette.color(QtGui.QPalette.ColorRole.Highlight)
+        highlight_text = palette.color(QtGui.QPalette.ColorRole.HighlightedText)
+
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setStyleSheet(f"""
+            WizardCheckbox:hover {{
+                background-color: {highlight_bg.name()};
+            }}
+            * {{
+                color: {highlight_text.name()};
+            }}
+        """)
+
+        layout = QtWidgets.QVBoxLayout(self)
+
+        self._checkbox = QtWidgets.QCheckBox(title)
+        font = self._checkbox.font()
+        font.setWeight(QtGui.QFont.Weight.Bold)
+        self._checkbox.setFont(font)
+        layout.addWidget(self._checkbox)
+
+        hint = QtWidgets.QLabel(description)
+        label_indent = style.pixelMetric(QtWidgets.QStyle.PixelMetric.PM_IndicatorWidth) + style.pixelMetric(
+            QtWidgets.QStyle.PixelMetric.PM_CheckBoxLabelSpacing
+        )
+        hint.setIndent(label_indent)
+        hint.setWordWrap(True)
+        hint.setSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+        )
+        layout.addWidget(hint)
+
+    def mousePressEvent(self, event: QtGui.QMouseEvent | None) -> None:
+        if event is None:
+            return
+        self._checkbox.toggle()
+        event.accept()
+
+    def set_checked(self, checked: bool) -> None:
+        self._checkbox.setChecked(checked)
+
+    def is_checked(self) -> bool:
+        return self._checkbox.isChecked()
 
 
 class SetupWizardPage(QtWidgets.QWizardPage):
@@ -181,6 +238,63 @@ class CoverArtPage(SetupWizardPage):
         config.setting['save_images_to_files'] = self.save_to_files_checkbox.isChecked()
 
 
+class UpdatesPage(SetupWizardPage):
+    """Page for configuring update settings."""
+
+    def __init__(self, parent: QtWidgets.QWizard | None = None):
+        super().__init__(parent)
+        self.setTitle(_("Updates"))
+        self.setSubTitle(_("Choose how Picard should check for updates."))
+        self.setPixmap(
+            QtWidgets.QWizard.WizardPixmap.LogoPixmap,
+            icontheme.lookup('plugin-update').pixmap(32, 32),
+        )
+
+        layout = QtWidgets.QVBoxLayout(self)
+
+        self.update_check_app = WizardCheckbox(
+            _("Check for program updates during startup"),
+            _("Check for a new program version on the Picard website and show an update dialog if available."),
+        )
+        layout.addWidget(self.update_check_app)
+        if not tagger_instance().autoupdate_enabled:
+            self.update_check_app.hide()
+
+        self.update_check_plugins = WizardCheckbox(
+            _("Check for plugin updates during startup"),
+            _("Check for plugin updates on the Picard website and show a notification in the status bar."),
+        )
+        layout.addWidget(self.update_check_plugins)
+
+        self.update_check_docs = WizardCheckbox(
+            _("Check for documentation updates during startup"),
+            _(
+                "On startup the available documentation languages will be updated from ReadTheDocs.org. "
+                "This allows showing the online documentation in the best available language based on "
+                "the currently selected user interface language."
+            ),
+        )
+        layout.addWidget(self.update_check_docs)
+
+        layout.addStretch()
+        hint = QtWidgets.QLabel(
+            _("You can change these later under Options \N{RIGHTWARDS ARROW} General \N{RIGHTWARDS ARROW} Startup.")
+        )
+        hint.setWordWrap(True)
+        layout.addWidget(hint)
+
+    def initializePage(self) -> None:
+        config = get_config()
+        self.update_check_app.set_checked(config.setting['check_for_updates'])
+        self.update_check_plugins.set_checked(config.setting['check_for_plugin_updates'])
+        self.update_check_docs.set_checked(config.setting['check_rtd_updates'])
+
+    def save_settings(self, config: Config) -> None:
+        config.setting['check_for_updates'] = self.update_check_app.is_checked()
+        config.setting['check_for_plugin_updates'] = self.update_check_plugins.is_checked()
+        config.setting['check_rtd_updates'] = self.update_check_docs.is_checked()
+
+
 class SetupWizard(QtWidgets.QWizard):
     """First-run setup wizard for new Picard users."""
 
@@ -188,13 +302,14 @@ class SetupWizard(QtWidgets.QWizard):
         WelcomePage,
         FileOrganizationPage,
         CoverArtPage,
+        UpdatesPage,
     ]
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
         self.setWindowTitle(_("Picard Setup"))
         self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
-        self.setMinimumSize(500, 350)
+        self.setMinimumSize(620, 480)
         self.setOption(QtWidgets.QWizard.WizardOption.NoBackButtonOnStartPage)
         if IS_WIN:
             self.setWizardStyle(QtWidgets.QWizard.WizardStyle.ModernStyle)
