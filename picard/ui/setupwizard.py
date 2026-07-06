@@ -214,6 +214,16 @@ class FileOrganizationPage(SetupWizardPage):
         config.setting['move_files'] = self.move_checkbox.is_checked()
         config.setting['move_files_to'] = self.move_to_edit.text()
 
+    def validatePage(self) -> bool:
+        if self.move_checkbox.is_checked() and not self.move_to_edit.text().strip():
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Destination folder required"),
+                _("Please choose a destination folder for your music files, or uncheck the move files option."),
+            )
+            return False
+        return True
+
     def _update_move_to_state(self, checked: bool) -> None:
         self.move_to_edit.setEnabled(checked)
         self.browse_button.setEnabled(checked)
