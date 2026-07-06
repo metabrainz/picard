@@ -132,6 +132,16 @@ class WelcomePage(SetupWizardPage):
 
         layout = QtWidgets.QVBoxLayout(self)
 
+        illustration = QtWidgets.QLabel()
+        pixmap = QtGui.QPixmap(":/images/wizard-welcome.png")
+        illustration.setPixmap(
+            pixmap.scaled(
+                150, 150, QtCore.Qt.AspectRatioMode.KeepAspectRatio, QtCore.Qt.TransformationMode.SmoothTransformation
+            )
+        )
+        illustration.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(illustration)
+
         doc_url = get_url('/getting_started/screen_main.html')
         text = QtWidgets.QLabel(
             _(
