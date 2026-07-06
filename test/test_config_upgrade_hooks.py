@@ -801,3 +801,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0b6(self.config)
         self.assertNotIn('standardize_artists', self.config.setting)
         self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.NONE)
+
+    def test_upgrade_to_v3_0_0b7(self):
+        BoolOption('setting', 'rtd_updates_ask', True)
+        self.config.persist['rtd_updates_ask'] = True
+
+        hooks.upgrade_to_v3_0_0b7(self.config)
+
+        self.assertNotIn('rtd_updates_ask', self.config.setting)

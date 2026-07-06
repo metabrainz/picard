@@ -379,7 +379,6 @@ TextOption('setting', 'load_image_behavior', 'append')
 BoolOption('setting', 'quit_confirmation', True, title=N_("Confirm quit if unsaved changes"), in_profile=True)
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"), in_profile=True)
 BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"), in_profile=True)
-BoolOption('setting', 'rtd_updates_ask', True, title=N_("Show documentation update request"), in_profile=True)
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"), in_profile=True)
 TextOption(
     'setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"), in_profile=True

@@ -135,7 +135,6 @@ from picard.ui import (
     modal_options,
 )
 from picard.ui.aboutdialog import AboutDialog
-from picard.ui.allowrtdupdatesdialog import AllowRtdUpdatesDialog
 from picard.ui.coverartbox import CoverArtBox
 from picard.ui.enums import MainAction
 from picard.ui.filebrowser import FileBrowser
@@ -2335,7 +2334,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         config = get_config()
         self.show_new_user_dialog(config)
         self.show_setup_wizard()
-        self.show_allow_rtd_updates_dialog(config)
         self.tutorial.show('overview')
 
     def show_setup_wizard(self) -> None:
@@ -2347,15 +2345,6 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         if config.setting['show_new_user_dialog']:
             msg = NewUserDialog(self)
             config.setting['show_new_user_dialog'] = msg.show()
-
-    def show_allow_rtd_updates_dialog(self, config):
-        if not config.setting['check_rtd_updates'] and config.setting['rtd_updates_ask']:
-            msg = AllowRtdUpdatesDialog(self)
-            allow, ask = msg.show()
-            config.setting['check_rtd_updates'] = allow
-            config.setting['rtd_updates_ask'] = ask
-
-        ReadTheDocs.update_documentation_items()  # Retry updates if required
 
     def show_plugins_options_page(self):
         self.show_options(page='plugins')
