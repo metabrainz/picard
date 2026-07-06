@@ -284,23 +284,23 @@ class UpdatesPage(SetupWizardPage):
         layout = QtWidgets.QVBoxLayout(self)
 
         self.update_check_app = WizardCheckbox(
-            _("Check for program updates during startup"),
-            _("Check for a new program version on the Picard website and show an update dialog if available."),
+            _("Check for program updates"),
+            _("Check for a new program version online and show an update dialog if available."),
         )
         layout.addWidget(self.update_check_app)
         if not tagger.autoupdate_enabled:
             self.update_check_app.hide()
 
         self.update_check_plugins = WizardCheckbox(
-            _("Check for plugin updates during startup"),
-            _("Check for plugin updates on the Picard website and show a notification in the status bar."),
+            _("Check for plugin updates"),
+            _("Check for plugin updates online and show a notification in the status bar."),
         )
         layout.addWidget(self.update_check_plugins)
         if not tagger._pluginmanager3:
             self.update_check_plugins.hide()
 
         self.update_check_docs = WizardCheckbox(
-            _("Check for documentation updates during startup"),
+            _("Check for documentation updates"),
             _("Check for available documentation translations, so the online help can be shown in your language."),
         )
         layout.addWidget(self.update_check_docs)
