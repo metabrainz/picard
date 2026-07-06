@@ -1002,6 +1002,7 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
             MainAction.VIEW_HISTORY,
             '-',
             MainAction.CHECK_UPDATE if self.tagger.autoupdate_enabled else None,
+            MainAction.SHOW_SETUP_WIZARD,
             '-',
             MainAction.SUPPORT_FORUM,
             MainAction.REPORT_BUG,
@@ -2336,8 +2337,8 @@ class MainWindow(QtWidgets.QMainWindow, PreserveGeometry):
         self.show_setup_wizard()
         self.tutorial.show('overview')
 
-    def show_setup_wizard(self) -> None:
-        if SetupWizard.should_show():
+    def show_setup_wizard(self, force=False) -> None:
+        if SetupWizard.should_show() or force:
             wizard = SetupWizard(self)
             wizard.exec()
 

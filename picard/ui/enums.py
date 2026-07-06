@@ -68,6 +68,7 @@ class MainAction(str, Enum):
     BROWSER_LOOKUP = 'browser_lookup_action'
     CD_LOOKUP = 'cd_lookup_action'
     CHECK_UPDATE = 'check_update_action'
+    SHOW_SETUP_WIZARD = 'show_setup_wizard_action'
     CLOSE_WINDOW = 'close_window_action'
     CLUSTER = 'cluster_action'
     CUT = 'cut_action'
