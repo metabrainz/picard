@@ -168,16 +168,13 @@ class FileOrganizationPage(SetupWizardPage):
 
         self.rename_checkbox = WizardCheckbox(
             _("Rename files based on tags (e.g. \"Artist - Title.mp3\")"),
-            _("When saving filenames will be updated based on the tags."),
+            _("When you save tagged files, their filenames will be updated based on the new tags."),
         )
         layout.addWidget(self.rename_checkbox)
 
         self.move_checkbox = WizardCheckbox(
             _("Move files to a folder structure based on tags"),
-            _(
-                "Choose the base folder where you want your tagged audio files. "
-                "Saved files will be moved to this folder and a subfolder structure based on the tags."
-            ),
+            _("Saved files will be organized into subfolders (e.g. Artist/Album/) inside the folder you choose below."),
         )
         self.move_checkbox.toggled.connect(self._update_move_to_state)
         layout.addWidget(self.move_checkbox)
@@ -243,13 +240,13 @@ class CoverArtPage(SetupWizardPage):
 
         self.embed_checkbox = WizardCheckbox(
             _("Embed cover art into audio files"),
-            _("When enabled, cover art will be embedded into audio files as metadata."),
+            _("The cover image will be stored inside the audio file itself, so it shows up in any music player."),
         )
         layout.addWidget(self.embed_checkbox)
 
         self.save_to_files_checkbox = WizardCheckbox(
             _("Save cover art as separate image files"),
-            _("When enabled, cover art will be saved as separate image files."),
+            _("A cover image file (e.g. cover.jpg) will be saved alongside your audio files in the same folder."),
         )
         layout.addWidget(self.save_to_files_checkbox)
 
@@ -304,11 +301,7 @@ class UpdatesPage(SetupWizardPage):
 
         self.update_check_docs = WizardCheckbox(
             _("Check for documentation updates during startup"),
-            _(
-                "On startup the available documentation languages will be updated from ReadTheDocs.org. "
-                "This allows showing the online documentation in the best available language based on "
-                "the currently selected user interface language."
-            ),
+            _("Check for available documentation translations, so the online help can be shown in your language."),
         )
         layout.addWidget(self.update_check_docs)
 
