@@ -22,13 +22,14 @@
 # 和田篤 <entry@wa2c.com>, 2018
 # shuuji3 <shuuji3@gmail.com>, 2023.
 # RT2231 <shirokuma0822@outlook.com>, 2026.
+# zatto13 <zatto0524@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-06-28 18:24+0200\n"
-"PO-Revision-Date: 2026-05-23 11:12+0000\n"
-"Last-Translator: RT2231 <shirokuma0822@outlook.com>\n"
+"PO-Revision-Date: 2026-07-07 20:12+0000\n"
+"Last-Translator: zatto13 <zatto0524@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "3/app/ja/>\n"
 "Language: ja\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.7\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:205
@@ -1324,13 +1325,15 @@ msgstr ""
 
 #: picard/tagger.py:764 picard/ui/mainwindow/__init__.py:1504
 #: picard/ui/mainwindow/__init__.py:1530
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid ""
 "Could not load session from \"%(path)s\":\n"
 "\n"
 "%(error)s"
-msgstr "アルバム%(id)sを読み込み中です…"
+msgstr ""
+"\"%(path)s\"からセッションを読み込めません:\n"
+"\n"
+"%(error)s"
 
 #: picard/tagger.py:807
 #, python-brace-format
@@ -1774,21 +1777,12 @@ msgid "$pad(text,length,char)"
 msgstr ""
 
 #: picard/script/functions.py:148
-#, fuzzy
-#| msgid ""
-#| "`$pad(text,length,char)`\n"
-#| "\n"
-#| "Pads the `text` to the `length` provided by adding as many copies of "
-#| "`char` as\n"
-#| "    needed to the **beginning** of the string."
 msgid ""
 "Pads the `text` to the `length` provided by adding as many copies of `char` "
 "as needed to the **beginning** of the string."
 msgstr ""
-"`$pad(text,length,char)`\n"
-"\n"
-"文字列の**先頭部**に対し必要に応じて\n"
-"`text` を `char` のコピーを追加することにより `length`  数パディングします。"
+"文字列の**先頭部**に対し必要に応じて`text` を `char` のコピーを追加することに"
+"より `length` 数パディングします。"
 
 #: picard/script/functions.py:160
 msgid "$strip(text)"
@@ -4889,10 +4883,8 @@ msgid "Enter URL"
 msgstr ""
 
 #: picard/ui/coverartbox/imageurldialog.py:53
-#, fuzzy
-#| msgid "Cover Art"
 msgid "Cover art URL:"
-msgstr "カバーアート"
+msgstr "カバーアートURL:"
 
 #: picard/ui/dialogs/installconfirm.py:51
 msgid "Confirm Plugin Installation"
@@ -4950,10 +4942,8 @@ msgid ""
 msgstr ""
 
 #: picard/ui/dialogs/installplugin.py:72
-#, fuzzy
-#| msgid "Install plugin…"
 msgid "Install Plugin"
-msgstr "プラグインをインストール…"
+msgstr "プラグインをインストール"
 
 #: picard/ui/dialogs/installplugin.py:108 picard/ui/options/plugins.py:111
 #, fuzzy
@@ -5031,10 +5021,8 @@ msgid "Select directory"
 msgstr "すべて選択"
 
 #: picard/ui/dialogs/installplugin.py:182
-#, fuzzy
-#| msgid "Destination directory:"
 msgid "Directory:"
-msgstr "宛先ディレクトリ"
+msgstr "ディレクトリ:"
 
 #: picard/ui/dialogs/installplugin.py:190 picard/ui/dialogs/plugininfo.py:239
 #, fuzzy
@@ -5253,10 +5241,8 @@ msgid "Plugin Information"
 msgstr "［アルバムの情報を読み込んでいます］"
 
 #: picard/ui/dialogs/plugininfo.py:100
-#, fuzzy
-#| msgid "ID3"
 msgid "ID:"
-msgstr "ID3"
+msgstr "ID:"
 
 #: picard/ui/dialogs/plugininfo.py:101
 msgid "UUID:"
@@ -5294,10 +5280,8 @@ msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:108
 #: picard/ui/widgets/plugindetailswidget.py:97
-#, fuzzy
-#| msgid "Authors"
 msgid "Authors:"
-msgstr "作者"
+msgstr "作者:"
 
 #: picard/ui/dialogs/plugininfo.py:109
 #: picard/ui/widgets/plugindetailswidget.py:102
@@ -5307,10 +5291,8 @@ msgstr ""
 #: picard/ui/dialogs/plugininfo.py:110
 #: picard/ui/widgets/plugindetailswidget.py:110
 #: picard/ui/widgets/plugindetailswidget.py:189
-#, fuzzy
-#| msgid "Verbosity"
 msgid "Repository:"
-msgstr "冗長"
+msgstr "レポジトリ:"
 
 #: picard/ui/dialogs/plugininfo.py:111
 #: picard/ui/forms/ui_scripteditor_details.py:104
@@ -5328,10 +5310,8 @@ msgid "Homepage:"
 msgstr ""
 
 #: picard/ui/dialogs/plugininfo.py:114
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report Bugs To:"
-msgstr "バグを報告(&R)…"
+msgstr "バグを以下に報告:"
 
 #: picard/ui/dialogs/plugininfo.py:115
 #: picard/ui/widgets/plugindetailswidget.py:186
@@ -5585,16 +5565,12 @@ msgid ""
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:114
-#, fuzzy
-#| msgid "Destination directory:"
 msgid "Sessions directory:"
-msgstr "宛先ディレクトリ"
+msgstr "セッションディレクトリ："
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:116
-#, fuzzy
-#| msgid "Version"
 msgid "Saving sessions:"
-msgstr "バージョン"
+msgstr "セッションを保存:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:117
 msgid "Auto-save every N minutes (0 to disable):"
@@ -5613,10 +5589,8 @@ msgid "Do not make MusicBrainz requests on restore"
 msgstr ""
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:121
-#, fuzzy
-#| msgid "&Load selected files"
 msgid "Loading sessions:"
-msgstr "選択したファイルを読込"
+msgstr "セッションを読み込む:"
 
 #: picard/ui/forms/ui_options_advanced_sessions.py:122
 msgid "Load last saved session on startup"
@@ -5637,7 +5611,7 @@ msgstr "読み込みに使用するCD-ROMドライブ："
 
 #: picard/ui/forms/ui_options_cdlookup_select.py:54
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "読み込みに使用する標準のCD-ROMドライブ"
+msgstr "読み込みに使用する標準のCD-ROMドライブ:"
 
 #: picard/ui/forms/ui_options_cover.py:124
 msgid "Embed cover images into tags"
@@ -5823,7 +5797,7 @@ msgstr "すべて選択"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:114
 msgid "Download…"
-msgstr "ダウンロード"
+msgstr "ダウンロード……"
 
 #: picard/ui/forms/ui_options_fingerprinting.py:115
 msgid "API key:"
@@ -6041,16 +6015,12 @@ msgid "Show the below tags above all other tags in the metadata view"
 msgstr "メタデータビューの他のすべてのタグに以下のタグを表示"
 
 #: picard/ui/forms/ui_options_maintenance.py:146
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configuration file:"
-msgstr "設定必須"
+msgstr "設定ファイル:"
 
 #: picard/ui/forms/ui_options_maintenance.py:147
-#, fuzzy
-#| msgid "Open plugin folder"
 msgid "Open folder…"
-msgstr "プラグインフォルダを開く"
+msgstr "フォルダを開く……"
 
 #: picard/ui/forms/ui_options_maintenance.py:148
 msgid "Automatic configuration backups directory:"
@@ -6107,10 +6077,8 @@ msgid "Translations"
 msgstr "［アルバムの情報を読み込んでいます］"
 
 #: picard/ui/forms/ui_options_metadata.py:186
-#, fuzzy
-#| msgid "Translate artist names"
 msgid "Translate names when available:"
-msgstr "アーティスト名を翻訳"
+msgstr "使用可能時の名前を翻訳:"
 
 #: picard/ui/forms/ui_options_metadata.py:187
 #, fuzzy
@@ -6131,10 +6099,8 @@ msgid "Track titles"
 msgstr "トラック"
 
 #: picard/ui/forms/ui_options_metadata.py:190
-#, fuzzy
-#| msgid "Preferred Releases"
 msgid "Preferred locales:"
-msgstr "優先リリース"
+msgstr "優先ロケール:"
 
 #: picard/ui/forms/ui_options_metadata.py:191
 #: picard/ui/forms/ui_options_metadata.py:193
@@ -6154,9 +6120,8 @@ msgid "Various artists:"
 msgstr "さまざまなアーティスト:"
 
 #: picard/ui/forms/ui_options_metadata.py:197
-#, fuzzy
 msgid "Standalone recordings:"
-msgstr "スタンドアロンレコーディング"
+msgstr "スタンドアロンレコーディング:"
 
 #: picard/ui/forms/ui_options_metadata.py:198
 #: picard/ui/forms/ui_options_metadata.py:199
@@ -6303,7 +6268,7 @@ msgstr "保存時にファイルを移動"
 
 #: picard/ui/forms/ui_options_renaming.py:137
 msgid "Destination directory:"
-msgstr "宛先ディレクトリ"
+msgstr "宛先ディレクトリ:"
 
 #: picard/ui/forms/ui_options_renaming.py:139
 #, fuzzy
@@ -6630,7 +6595,7 @@ msgstr "使用する画像のサイズを指定します。"
 
 #: picard/ui/forms/ui_provider_options_local.py:51
 msgid "Local cover art files match the following regular expression:"
-msgstr "次の正規表現に一致するローカルのカバーアートファイル"
+msgstr "次の正規表現に一致するローカルのカバーアートファイル:"
 
 #: picard/ui/forms/ui_provider_options_local.py:52
 msgid ""
@@ -7724,10 +7689,9 @@ msgid "Loading session from \"%(path)s\" …"
 msgstr "アルバム%(id)sを読み込み中です…"
 
 #: picard/ui/mainwindow/__init__.py:1509 picard/ui/mainwindow/__init__.py:1536
-#, fuzzy, python-format
-#| msgid "Loading album %(id)s …"
+#, python-format
 msgid "Session loaded from \"%(path)s\""
-msgstr "アルバム%(id)sを読み込み中です…"
+msgstr "Session loaded from \"%(path)s\"から読み込まれたセッション"
 
 #: picard/ui/mainwindow/__init__.py:1612
 msgid "Configuration Required"
@@ -7794,10 +7758,8 @@ msgid "No profiles configured"
 msgstr "ファイルを上に移動"
 
 #: picard/ui/mainwindow/__init__.py:2243
-#, fuzzy
-#| msgid "Configuration Required"
 msgid "Configure profiles…"
-msgstr "設定必須"
+msgstr "設定プロフィール……"
 
 #: picard/ui/mainwindow/__init__.py:2310
 #, fuzzy
@@ -7806,20 +7768,16 @@ msgid "No quick settings configured"
 msgstr "エンコーダ設定"
 
 #: picard/ui/mainwindow/__init__.py:2315
-#, fuzzy
-#| msgid "Encoder Settings"
 msgid "Configure quick settings…"
-msgstr "エンコーダ設定"
+msgstr "クイック設定を構成……"
 
 #: picard/ui/mainwindow/actions.py:83
 msgid "&Options…"
 msgstr "オプション(&O)…"
 
 #: picard/ui/mainwindow/actions.py:91
-#, fuzzy
-#| msgid "&Run scripts"
 msgid "&Edit scripts…"
-msgstr "スクリプトを実行(&R)"
+msgstr "&スクリプトを編集……"
 
 #: picard/ui/mainwindow/actions.py:92
 msgid "Ctrl+Shift+S"
@@ -8049,10 +8007,8 @@ msgid "Ctrl+K"
 msgstr "Ctrl+K"
 
 #: picard/ui/mainwindow/actions.py:399
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD &log file…"
-msgstr "CDを検索"
+msgstr "CDとログファイルを検索……"
 
 #: picard/ui/mainwindow/actions.py:400
 #, fuzzy
@@ -8061,10 +8017,8 @@ msgid "Lookup release from a CD ripping log file"
 msgstr "ドライブ内のCDの詳細を検索"
 
 #: picard/ui/mainwindow/actions.py:408
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC &tag…"
-msgstr "CDを検索"
+msgstr "TOCとタグを検索……"
 
 #: picard/ui/mainwindow/actions.py:409
 msgid "Lookup release via disc identifiers from track tags"
@@ -8733,16 +8687,12 @@ msgid "Submit AcoustIDs"
 msgstr "AcoustID を送信"
 
 #: picard/ui/options/interface_toolbar.py:126
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup TOC tag…"
-msgstr "CDを検索"
+msgstr "TOCタグを検索……"
 
 #: picard/ui/options/interface_toolbar.py:130
-#, fuzzy
-#| msgid "Lookup CD…"
 msgid "Lookup CD log file…"
-msgstr "CDを検索"
+msgstr "CDログファイルを検索……"
 
 #: picard/ui/options/interface_toolbar.py:138 picard/ui/player/toolbar.py:69
 msgid "Play"
@@ -8754,7 +8704,7 @@ msgstr "プレイヤーで開く"
 
 #: picard/ui/options/interface_toolbar.py:146
 msgid "Lookup CD…"
-msgstr "CDを検索"
+msgstr "CDを検索……"
 
 #: picard/ui/options/interface_toolbar.py:198
 msgid "Drag and Drop to re-order"
@@ -8990,10 +8940,8 @@ msgid "Error loading plugins: {}"
 msgstr "プラグイン一覧の読み込み中にエラーが発生しました: %(error)s"
 
 #: picard/ui/options/plugins.py:229
-#, fuzzy
-#| msgid "&Refresh"
 msgid "Refreshing…"
-msgstr "更新(&R)"
+msgstr "更新中……"
 
 #: picard/ui/options/plugins.py:230
 msgid "Refreshing plugin registry, list, and checking for updates…"
@@ -9095,10 +9043,8 @@ msgid "No enabled scripts"
 msgstr "スクリプト名変更"
 
 #: picard/ui/options/profiles.py:293
-#, fuzzy
-#| msgid "Enable tagger scripts"
 msgid "Enabled scripts:"
-msgstr "タグ付けスクリプトを有効化"
+msgstr "スクリプトを有効化:"
 
 #: picard/ui/options/profiles.py:298
 #, fuzzy
@@ -9891,10 +9837,8 @@ msgid "View Repository"
 msgstr ""
 
 #: picard/ui/widgets/pluginlistwidget.py:648
-#, fuzzy
-#| msgid "&Report a Bug…"
 msgid "Report a Bug"
-msgstr "バグを報告(&R)…"
+msgstr "バグを報告"
 
 #: picard/ui/widgets/pluginlistwidget.py:654
 msgid "Execution Order"
