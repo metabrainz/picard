@@ -79,7 +79,6 @@ class InterfaceOptionsPage(OptionsPage):
         'builtin_search': {'widgets': ['builtin_search']},
         'use_adv_search_syntax': {'widgets': ['use_adv_search_syntax']},
         'show_new_user_dialog': {'widgets': ['new_user_dialog']},
-        'rtd_updates_ask': {'widgets': ['rtd_updates_ask']},
         'quit_confirmation': {'widgets': ['quit_confirmation']},
         'file_save_warning': {'widgets': ['file_save_warning']},
         'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
@@ -162,7 +161,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting['builtin_search'])
         self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
         self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
-        self.ui.rtd_updates_ask.setChecked(config.setting['rtd_updates_ask'])
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
         current_ui_language = config.setting['ui_language']
@@ -185,7 +183,6 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
         config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
         config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
-        config.setting['rtd_updates_ask'] = self.ui.rtd_updates_ask.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()

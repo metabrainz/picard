@@ -557,6 +557,14 @@ def _create_check_update_action(parent):
     return action
 
 
+@add_action(MainAction.SHOW_SETUP_WIZARD)
+def _create_show_setup_wizard_action(parent):
+    action = QtGui.QAction(_("Show Setup &Wizard…"), parent)
+    action.setMenuRole(QtGui.QAction.MenuRole.ApplicationSpecificRole)
+    action.triggered.connect(partial(parent.show_setup_wizard, True))
+    return action
+
+
 @add_action(MainAction.SAVE_SESSION_AS)
 def _create_save_session_action(parent):
     action = QtGui.QAction(icontheme.lookup('document-save'), _("Save Session &As…"), parent)

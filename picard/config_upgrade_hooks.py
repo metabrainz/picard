@@ -715,3 +715,8 @@ def upgrade_to_v3_0_0b6(config):
     else:
         config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
     config.setting.remove('standardize_artists')
+
+
+def upgrade_to_v3_0_0b7(config):
+    """Remove "rtd_updates_ask"."""
+    config.setting.remove('rtd_updates_ask')

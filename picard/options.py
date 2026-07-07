@@ -379,7 +379,6 @@ TextOption('setting', 'load_image_behavior', 'append')
 BoolOption('setting', 'quit_confirmation', True, title=N_("Confirm quit if unsaved changes"), in_profile=True)
 BoolOption('setting', 'show_menu_icons', DEFAULT_SHOW_MENU_ICONS, title=N_("Show icons in menus"), in_profile=True)
 BoolOption('setting', 'show_new_user_dialog', True, title=N_("Show warning when Picard starts"), in_profile=True)
-BoolOption('setting', 'rtd_updates_ask', True, title=N_("Show documentation update request"), in_profile=True)
 BoolOption('setting', 'starting_directory', False, title=N_("Begin browsing in a specific directory"), in_profile=True)
 TextOption(
     'setting', 'starting_directory_path', DEFAULT_STARTING_DIR, title=N_("Directory to begin browsing"), in_profile=True
@@ -599,7 +598,7 @@ ListOption('setting', 'list_of_scripts', [], title=N_("Tagger scripts"), in_prof
 IntOption('persist', 'last_update_check', 0)
 BoolOption('setting', 'check_rtd_updates', False, title=N_("Check for documentation updates"), in_profile=True)
 BoolOption('setting', 'check_for_plugin_updates', False, title=N_("Check for plugin updates"), in_profile=True)
-BoolOption('setting', 'check_for_updates', True, title=N_("Check for program updates"), in_profile=True)
+BoolOption('setting', 'check_for_updates', False, title=N_("Check for program updates"), in_profile=True)
 IntOption('setting', 'update_check_days', 7, title=N_("Days between update checks"), in_profile=True)
 IntOption('setting', 'update_level', DEFAULT_PROGRAM_UPDATE_LEVEL, title=N_("Update types to check"), in_profile=True)
 IntOption('setting', 'log_verbosity', DEFAULT_LOG_LEVEL, title=N_("Log verbosity level"), in_profile=True)
