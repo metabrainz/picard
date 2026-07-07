@@ -1791,7 +1791,6 @@ def main(localedir=None, autoupdate=True):
     cmdline_args = process_cmdline_args()
 
     if cmdline_args.long_version:
-        _ = QtCore.QCoreApplication(sys.argv)
         print_message_and_exit(versions.as_string())
     if cmdline_args.version:
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")
