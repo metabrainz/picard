@@ -22,13 +22,14 @@
 # 和田篤 <entry@wa2c.com>, 2018
 # shuuji3 <shuuji3@gmail.com>, 2023.
 # RT2231 <shirokuma0822@outlook.com>, 2026.
+# zatto13 <zatto0524@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: MusicBrainz\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-01-09 09:10+0100\n"
-"PO-Revision-Date: 2026-05-23 12:12+0000\n"
-"Last-Translator: RT2231 <shirokuma0822@outlook.com>\n"
+"PO-Revision-Date: 2026-07-07 20:12+0000\n"
+"Last-Translator: zatto13 <zatto0524@gmail.com>\n"
 "Language-Team: Japanese <https://translations.metabrainz.org/projects/picard/"
 "2/app/ja/>\n"
 "Language: ja\n"
@@ -36,7 +37,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.5\n"
+"X-Generator: Weblate 2026.7\n"
 "Generated-By: Babel 2.9.1\n"
 
 #: picard/album.py:150
@@ -4455,7 +4456,7 @@ msgstr "読み込みに使用するCD-ROMドライブ："
 
 #: picard/ui/ui_options_cdlookup_select.py:48
 msgid "Default CD-ROM drive to use for lookups:"
-msgstr "読み込みに使用する標準のCD-ROMドライブ"
+msgstr "読み込みに使用する標準のCD-ROMドライブ:"
 
 #: picard/ui/ui_options_cover.py:98
 msgid "Use the following file name for images:"
@@ -4522,7 +4523,7 @@ msgstr "参照…"
 
 #: picard/ui/ui_options_fingerprinting.py:106
 msgid "Download…"
-msgstr "ダウンロード"
+msgstr "ダウンロード……"
 
 #: picard/ui/ui_options_fingerprinting.py:107
 msgid "API key:"
@@ -4746,9 +4747,8 @@ msgid "Various artists:"
 msgstr "さまざまなアーティスト:"
 
 #: picard/ui/ui_options_metadata.py:142
-#, fuzzy
 msgid "Standalone recordings:"
-msgstr "スタンドアロンレコーディング"
+msgstr "スタンドアロンレコーディング:"
 
 #: picard/ui/options/interface.py:93 picard/ui/ui_options_metadata.py:143
 #: picard/ui/ui_options_metadata.py:144
@@ -4869,7 +4869,7 @@ msgstr "保存時にファイルを移動"
 
 #: picard/ui/ui_options_renaming.py:151
 msgid "Destination directory:"
-msgstr "宛先ディレクトリ"
+msgstr "宛先ディレクトリ:"
 
 #: picard/ui/ui_options_renaming.py:153
 msgid "Move additional files (case insensitive):"
@@ -5117,7 +5117,7 @@ msgstr "承認された画像のみをダウンロード"
 
 #: picard/ui/ui_provider_options_local.py:53
 msgid "Local cover art files match the following regular expression:"
-msgstr "次の正規表現に一致するローカルのカバーアートファイル"
+msgstr "次の正規表現に一致するローカルのカバーアートファイル:"
 
 #: picard/ui/ui_provider_options_local.py:55
 msgid ""
@@ -5536,7 +5536,7 @@ msgstr "プレイヤーで開く"
 
 #: picard/ui/options/interface_toolbar.py:116
 msgid "Lookup CD…"
-msgstr "CDを検索"
+msgstr "CDを検索……"
 
 #: picard/ui/options/interface_toolbar.py:187
 msgid "Drag and Drop to re-order"
