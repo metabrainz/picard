@@ -50,16 +50,18 @@ class WizardCheckbox(QtWidgets.QWidget):
         assert style
 
         palette = self.palette()
-        highlight_bg = palette.color(QtGui.QPalette.ColorRole.Highlight)
-        highlight_text = palette.color(QtGui.QPalette.ColorRole.HighlightedText)
+        highlight = palette.color(QtGui.QPalette.ColorRole.Highlight)
+        hover_bg = QtGui.QColor(
+            highlight.red(),
+            highlight.green(),
+            highlight.blue(),
+            80,
+        )
 
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_StyledBackground, True)
         self.setStyleSheet(f"""
             WizardCheckbox:hover {{
-                background-color: {highlight_bg.name()};
-            }}
-            * {{
-                color: {highlight_text.name()};
+                background-color: {hover_bg.name(QtGui.QColor.NameFormat.HexArgb)};
             }}
         """)
 
