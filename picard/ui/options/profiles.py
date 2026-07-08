@@ -99,6 +99,8 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.profile_list.itemChanged.connect(self.profile_item_changed)
         self.ui.profile_list.currentItemChanged.connect(self.current_item_changed)
         self.ui.profile_list.itemChanged.connect(self.reload_all_page_settings)
+        self.ui.profile_list.export_requested.connect(self.export_profile_item)
+        self.ui.profile_list.import_replace_requested.connect(self.import_and_replace_profile)
         self.ui.settings_tree.itemChanged.connect(self.set_profile_settings_changed)
         self.ui.settings_tree.itemExpanded.connect(self.update_current_expanded_items_list)
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
@@ -527,9 +529,14 @@ class ProfilesOptionsPage(OptionsPage):
         self.update_config_overrides()
         self.reload_all_page_settings()
 
-    def export_profile(self):
+    def export_profile_item(self, item):
+        """Export a specific profile item (from context menu)."""
+        self.export_profile(item)
+
+    def export_profile(self, item=None):
         """Export the selected profile to a TOML file."""
-        item = self.get_current_selected_item()
+        if item is None:
+            item = self.get_current_selected_item()
         if not item:
             return
 
@@ -695,6 +702,74 @@ class ProfilesOptionsPage(OptionsPage):
                 item = self.ui.profile_list.item(0)
                 if item:
                     item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+        self.update_config_overrides()
+        self.reload_all_page_settings()
+
+    def import_and_replace_profile(self, item):
+        """Import a profile from a TOML file and replace the given profile."""
+        from picard.profiles.importer import (
+            ProfileImportError,
+            import_profile,
+        )
+
+        config = get_config()
+
+        # File open dialog
+        filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
+            self,
+            _("Import and Replace Profile"),
+            "",
+            _("TOML files") + " (*.toml)",
+        )
+        if not filepath:
+            return
+
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                toml_string = f.read()
+        except OSError as e:
+            QtWidgets.QMessageBox.critical(self, _("Import Error"), _("Failed to read file: %s") % e)
+            return
+
+        # Confirm full replacement
+        reply = QtWidgets.QMessageBox.warning(
+            self,
+            _("Replace Profile"),
+            _(
+                "This will completely replace profile '%s'."
+                " All existing settings and scripts in this profile will be overwritten."
+                "\n\nContinue?"
+            )
+            % item.name,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        if reply != QtWidgets.QMessageBox.StandardButton.Yes:
+            return
+
+        replace_id = item.profile_id
+
+        try:
+            result = import_profile(config, toml_string, enabled=item.enabled, replace_id=replace_id)
+        except ProfileImportError as e:
+            QtWidgets.QMessageBox.critical(self, _("Import Error"), str(e))
+            return
+
+        # Show warnings if any
+        if result.warnings:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Import Warnings"),
+                "\n".join(result.warnings),
+            )
+
+        # Update the dialog's working state
+        all_settings = config.profiles['user_profile_settings']
+        self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
+
+        # Update existing item in the list
+        item.name = result.title
 
         self.update_config_overrides()
         self.reload_all_page_settings()

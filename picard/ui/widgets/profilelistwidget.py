@@ -41,6 +41,9 @@ from picard.ui import HashableListWidgetItem
 
 
 class ProfileListWidget(QtWidgets.QListWidget):
+    export_requested = QtCore.pyqtSignal(object)
+    import_replace_requested = QtCore.pyqtSignal(object)
+
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
         if item:
@@ -51,6 +54,13 @@ class ProfileListWidget(QtWidgets.QListWidget):
             remove_action = QtGui.QAction(_("Remove profile"), self)
             remove_action.triggered.connect(partial(self.remove_profile, item))
             menu.addAction(remove_action)
+            menu.addSeparator()
+            export_action = QtGui.QAction(_("Export profile…"), self)
+            export_action.triggered.connect(partial(self.export_requested.emit, item))
+            menu.addAction(export_action)
+            import_replace_action = QtGui.QAction(_("Import and replace…"), self)
+            import_replace_action.triggered.connect(partial(self.import_replace_requested.emit, item))
+            menu.addAction(import_replace_action)
             menu.exec(event.globalPos())
 
     def keyPressEvent(self, event):
@@ -119,6 +129,10 @@ class ProfileListWidgetItem(HashableListWidgetItem):
     @property
     def name(self):
         return self.text()
+
+    @name.setter
+    def name(self, value):
+        self.setText(value)
 
     @property
     def enabled(self):
