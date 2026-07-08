@@ -26,10 +26,16 @@ Usage:
     picard-cli profiles import <file> [--enable] [--replace <profile>]
 """
 
+from dataclasses import (
+    dataclass,
+    field,
+)
+
 from picard.cli.base import ExitCode
 from picard.config import get_config
 
 
+@dataclass(slots=True)
 class ResolveResult:
     """Result of profile resolution.
 
@@ -38,11 +44,8 @@ class ResolveResult:
         candidates: List of candidate profiles when ambiguous, empty otherwise.
     """
 
-    __slots__ = ('candidates', 'profile')
-
-    def __init__(self, profile=None, candidates=None):
-        self.profile = profile
-        self.candidates = candidates or []
+    profile: dict | None = None
+    candidates: list = field(default_factory=list)
 
 
 def _resolve_profile_query(config, query: str) -> ResolveResult:
