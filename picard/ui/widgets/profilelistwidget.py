@@ -43,6 +43,8 @@ from picard.ui import HashableListWidgetItem
 class ProfileListWidget(QtWidgets.QListWidget):
     export_requested = QtCore.pyqtSignal(object)
     import_replace_requested = QtCore.pyqtSignal(object)
+    copy_to_clipboard_requested = QtCore.pyqtSignal(object)
+    import_from_clipboard_requested = QtCore.pyqtSignal()
 
     def contextMenuEvent(self, event):
         item = self.itemAt(event.x(), event.y())
@@ -58,9 +60,16 @@ class ProfileListWidget(QtWidgets.QListWidget):
             export_action = QtGui.QAction(_("Export profile…"), self)
             export_action.triggered.connect(partial(self.export_requested.emit, item))
             menu.addAction(export_action)
+            copy_action = QtGui.QAction(_("Copy to clipboard"), self)
+            copy_action.triggered.connect(partial(self.copy_to_clipboard_requested.emit, item))
+            menu.addAction(copy_action)
+            menu.addSeparator()
             import_replace_action = QtGui.QAction(_("Import and replace…"), self)
             import_replace_action.triggered.connect(partial(self.import_replace_requested.emit, item))
             menu.addAction(import_replace_action)
+            import_clipboard_action = QtGui.QAction(_("Import from clipboard"), self)
+            import_clipboard_action.triggered.connect(self.import_from_clipboard_requested.emit)
+            menu.addAction(import_clipboard_action)
             menu.exec(event.globalPos())
 
     def keyPressEvent(self, event):

@@ -112,6 +112,8 @@ class ProfilesOptionsPage(OptionsPage):
         self.ui.profile_list.itemChanged.connect(self.reload_all_page_settings)
         self.ui.profile_list.export_requested.connect(self.export_profile_item)
         self.ui.profile_list.import_replace_requested.connect(self.import_and_replace_profile)
+        self.ui.profile_list.copy_to_clipboard_requested.connect(self.copy_profile_to_clipboard)
+        self.ui.profile_list.import_from_clipboard_requested.connect(self.import_profile_from_clipboard)
         self.ui.settings_tree.itemChanged.connect(self.set_profile_settings_changed)
         self.ui.settings_tree.itemExpanded.connect(self.update_current_expanded_items_list)
         self.ui.settings_tree.itemCollapsed.connect(self.update_current_expanded_items_list)
@@ -165,8 +167,11 @@ class ProfilesOptionsPage(OptionsPage):
         )
 
         self.import_profile_button = QtWidgets.QPushButton(_("Import"))
-        self.import_profile_button.setToolTip(_("Import a profile from a file"))
-        self.import_profile_button.clicked.connect(self.import_profile)
+        self.import_profile_button.setToolTip(_("Import a profile from a file or clipboard"))
+        import_menu = QtWidgets.QMenu(self.import_profile_button)
+        import_menu.addAction(_("From file…"), self.import_profile)
+        import_menu.addAction(_("From clipboard"), self.import_profile_from_clipboard)
+        self.import_profile_button.setMenu(import_menu)
         self.ui.profile_list_buttonbox.addButton(
             self.import_profile_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole
         )
@@ -544,6 +549,22 @@ class ProfilesOptionsPage(OptionsPage):
         """Export a specific profile item (from context menu)."""
         self.export_profile(item)
 
+    def copy_profile_to_clipboard(self, item):
+        """Copy a profile to the clipboard as TOML text (share mode)."""
+        config = get_config()
+        toml_string = export_profile(
+            config,
+            profile_id=item.profile_id,
+            title=item.name,
+            mode='share',
+        )
+        QtWidgets.QApplication.clipboard().setText(toml_string)
+        QtWidgets.QMessageBox.information(
+            self,
+            _("Copy to Clipboard"),
+            _("Profile '%s' copied to clipboard.") % item.name,
+        )
+
     def export_profile(self, item=None):
         """Export the selected profile to a TOML file."""
         if item is None:
@@ -595,6 +616,54 @@ class ProfilesOptionsPage(OptionsPage):
             return
 
         QtWidgets.QMessageBox.information(self, _("Export Complete"), _("Profile exported to: %s") % filepath)
+
+    def import_profile_from_clipboard(self):
+        """Import a profile from clipboard text."""
+        toml_string = QtWidgets.QApplication.clipboard().text()
+        if not toml_string or not toml_string.strip():
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Import from Clipboard"),
+                _("The clipboard is empty."),
+            )
+            return
+
+        # Quick validation: check for [profile] section
+        try:
+            data = tomllib.loads(toml_string)
+            if 'profile' not in data:
+                raise ValueError("missing [profile]")
+        except (tomllib.TOMLDecodeError, ValueError):
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Import from Clipboard"),
+                _("The clipboard does not contain a valid Picard profile."),
+            )
+            return
+
+        # Ask whether to enable the profile
+        reply = QtWidgets.QMessageBox.question(
+            self,
+            _("Import from Clipboard"),
+            _("Enable this profile after import?"),
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        enabled = reply == QtWidgets.QMessageBox.StandardButton.Yes
+
+        result = self._do_import(toml_string, enabled=enabled)
+        if not result:
+            return
+
+        # Add new profile to the list widget
+        self.ui.profile_list.add_profile(name=result.title, profile_id=result.profile_id)
+        if not enabled:
+            item = self.ui.profile_list.item(0)
+            if item:
+                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+
+        self.update_config_overrides()
+        self.reload_all_page_settings()
 
     def import_profile(self):
         """Import a profile from a TOML file."""

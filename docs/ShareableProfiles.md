@@ -502,13 +502,27 @@ Right-clicking a profile in the list shows a context menu with:
 - **Rename profile** — Inline rename of the profile title
 - **Remove profile** — Delete the profile (with confirmation)
 - **Export profile…** — Export this specific profile to a `.toml` file
+- **Copy to clipboard** — Copy the profile as TOML text (share mode)
 - **Import and replace…** — Import a `.toml` file to fully replace this
   profile's settings and scripts (with a clear warning about data loss)
+- **Import from clipboard** — Import a profile from clipboard text
 
-### Optional: Clipboard support
+### Clipboard support
 
-- "Copy profile to clipboard" — for quick forum posting
-- "Import from clipboard" — for quick pasting
+Accessible from the profile context menu and the Import button dropdown:
+
+- **Copy to clipboard** (context menu) — Exports the profile as TOML text
+  in share mode and copies it to the system clipboard. Shows a confirmation
+  message. Ideal for quick forum posting.
+- **Import from clipboard** (context menu + Import button dropdown) — Reads
+  TOML text from the clipboard, validates it contains a `[profile]` section,
+  then imports it as a new profile. Shows an error if the clipboard is empty
+  or does not contain a valid profile.
+
+Both use the Qt clipboard API (`QtWidgets.QApplication.clipboard()`) which
+handles cross-platform differences (X11 selections, Windows clipboard, macOS
+pasteboard) transparently. The pattern is already used in the codebase (log
+viewer, metadata box).
 
 ### Optional: Bundled example profiles
 
