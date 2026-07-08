@@ -166,7 +166,12 @@ class CollectionCheckBox(QtWidgets.QCheckBox):
             self.setCheckState(QtCore.Qt.CheckState.Unchecked)
 
     def updateText(self):
-        self.setText(self.label())
+        try:
+            self.setText(self.label())
+        except RuntimeError:
+            # The underlying C++ widget may have been deleted if the menu
+            # was closed before the async web service response arrived.
+            pass
 
     def label(self):
         c = self.collection
