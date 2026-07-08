@@ -495,6 +495,16 @@ Add two buttons to the profile list button bar:
 - **Export** — Exports the selected profile to a `.toml` file (save dialog)
 - **Import** — Imports a profile from a `.toml` file (open dialog)
 
+### Profile context menu
+
+Right-clicking a profile in the list shows a context menu with:
+
+- **Rename profile** — Inline rename of the profile title
+- **Remove profile** — Delete the profile (with confirmation)
+- **Export profile…** — Export this specific profile to a `.toml` file
+- **Import and replace…** — Import a `.toml` file to fully replace this
+  profile's settings and scripts (with a clear warning about data loss)
+
 ### Optional: Clipboard support
 
 - "Copy profile to clipboard" — for quick forum posting
