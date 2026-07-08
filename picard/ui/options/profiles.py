@@ -598,8 +598,6 @@ class ProfilesOptionsPage(OptionsPage):
 
     def import_profile(self):
         """Import a profile from a TOML file."""
-        config = get_config()
-
         # File open dialog
         filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
             self,
@@ -669,23 +667,9 @@ class ProfilesOptionsPage(OptionsPage):
             )
             enabled = reply == QtWidgets.QMessageBox.StandardButton.Yes
 
-        try:
-            result = import_profile(config, toml_string, enabled=enabled, replace_id=replace_id)
-        except ProfileImportError as e:
-            QtWidgets.QMessageBox.critical(self, _("Import Error"), str(e))
+        result = self._do_import(toml_string, enabled=enabled, replace_id=replace_id)
+        if not result:
             return
-
-        # Show warnings if any
-        if result.warnings:
-            QtWidgets.QMessageBox.warning(
-                self,
-                _("Import Warnings"),
-                "\n".join(result.warnings),
-            )
-
-        # Update the dialog's working state (not reload from config)
-        all_settings = config.profiles['user_profile_settings']
-        self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
 
         if replace_id:
             # Update existing item in the list
@@ -705,10 +689,36 @@ class ProfilesOptionsPage(OptionsPage):
         self.update_config_overrides()
         self.reload_all_page_settings()
 
-    def import_and_replace_profile(self, item):
-        """Import a profile from a TOML file and replace the given profile."""
+    def _do_import(self, toml_string, enabled=False, replace_id=None):
+        """Run the import and update dialog state.
+
+        Returns the ProfileImportResult on success, or None on failure
+        (error is shown to the user).
+        """
         config = get_config()
 
+        try:
+            result = import_profile(config, toml_string, enabled=enabled, replace_id=replace_id)
+        except ProfileImportError as e:
+            QtWidgets.QMessageBox.critical(self, _("Import Error"), str(e))
+            return None
+
+        # Show warnings if any
+        if result.warnings:
+            QtWidgets.QMessageBox.warning(
+                self,
+                _("Import Warnings"),
+                "\n".join(result.warnings),
+            )
+
+        # Update the dialog's working state
+        all_settings = config.profiles['user_profile_settings']
+        self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
+
+        return result
+
+    def import_and_replace_profile(self, item):
+        """Import a profile from a TOML file and replace the given profile."""
         # File open dialog
         filepath, _filter = QtWidgets.QFileDialog.getOpenFileName(
             self,
@@ -742,25 +752,9 @@ class ProfilesOptionsPage(OptionsPage):
         if reply != QtWidgets.QMessageBox.StandardButton.Yes:
             return
 
-        replace_id = item.profile_id
-
-        try:
-            result = import_profile(config, toml_string, enabled=item.enabled, replace_id=replace_id)
-        except ProfileImportError as e:
-            QtWidgets.QMessageBox.critical(self, _("Import Error"), str(e))
+        result = self._do_import(toml_string, enabled=item.enabled, replace_id=item.profile_id)
+        if not result:
             return
-
-        # Show warnings if any
-        if result.warnings:
-            QtWidgets.QMessageBox.warning(
-                self,
-                _("Import Warnings"),
-                "\n".join(result.warnings),
-            )
-
-        # Update the dialog's working state
-        all_settings = config.profiles['user_profile_settings']
-        self.profile_settings[result.profile_id] = all_settings.get(result.profile_id, {})
 
         # Update existing item in the list
         item.name = result.title
