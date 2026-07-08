@@ -30,10 +30,13 @@ from test.test_config import TestPicardConfigCommon
 
 from picard.config import (
     BoolOption,
+    FloatOption,
+    IntOption,
     ListOption,
     Option,
     TextOption,
 )
+from picard.const.cover_processing import ImageFormat
 from picard.profiles.exporter import export_profile
 
 
@@ -359,8 +362,6 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertEqual(parsed['settings']['win_compat_replacements'], expected)
 
     def test_export_int_option(self):
-        from picard.config import IntOption
-
         IntOption('setting', 'caa_image_size', 500, title="Image size", in_profile=True)
 
         self._setup_profile('p1', {'caa_image_size': 1000})
@@ -371,8 +372,6 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertEqual(parsed['settings']['caa_image_size'], 1000)
 
     def test_export_float_option(self):
-        from picard.config import FloatOption
-
         FloatOption('setting', 'match_min_similarity', 0.5, title="Similarity", in_profile=True)
 
         self._setup_profile('p1', {'match_min_similarity': 0.75})
@@ -383,8 +382,6 @@ class TestProfileExport(TestPicardConfigCommon):
         self.assertAlmostEqual(parsed['settings']['match_min_similarity'], 0.75)
 
     def test_export_enum_option(self):
-        from picard.const.cover_processing import ImageFormat
-
         Option('setting', 'cover_format', ImageFormat.JPEG, title="Format", in_profile=True)
 
         self._setup_profile('p1', {'cover_format': ImageFormat.PNG})

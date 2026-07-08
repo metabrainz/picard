@@ -30,9 +30,15 @@ from dataclasses import (
     dataclass,
     field,
 )
+import os
 
 from picard.cli.base import ExitCode
 from picard.config import get_config
+from picard.profiles.exporter import export_profile
+from picard.profiles.importer import (
+    ProfileImportError,
+    import_profile,
+)
 
 
 @dataclass(slots=True)
@@ -154,10 +160,6 @@ def cmd_list(output):
 
 def cmd_export(args, output):
     """Export a profile to a TOML file."""
-    import os
-
-    from picard.profiles.exporter import export_profile
-
     config = get_config()
 
     resolve = _resolve_profile_query(config, args.profile)
@@ -189,11 +191,6 @@ def cmd_export(args, output):
 
 def cmd_import(args, output):
     """Import a profile from a TOML file."""
-    from picard.profiles.importer import (
-        ProfileImportError,
-        import_profile,
-    )
-
     config = get_config()
 
     try:
@@ -241,6 +238,7 @@ def cmd_import(args, output):
 
 def _run_profiles(args):
     """Initialize and run the profiles CLI."""
+    # Lazy imports: avoid loading heavy dependencies at parse time
     from picard.cli._bootstrap import (
         init_cli,
         is_color_disabled,

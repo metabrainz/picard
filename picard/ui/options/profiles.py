@@ -25,6 +25,12 @@ import re
 import sys
 import uuid
 
+
+if sys.version_info < (3, 11):
+    import tomli as tomllib
+else:
+    import tomllib
+
 from PyQt6 import (
     QtCore,
     QtWidgets,
@@ -52,6 +58,11 @@ from picard.profile import (
     is_plugin_profile_key,
     profile_groups_values,
     setting_profile_key,
+)
+from picard.profiles.exporter import export_profile
+from picard.profiles.importer import (
+    ProfileImportError,
+    import_profile,
 )
 from picard.script import (
     get_file_naming_script_presets,
@@ -540,8 +551,6 @@ class ProfilesOptionsPage(OptionsPage):
         if not item:
             return
 
-        from picard.profiles.exporter import export_profile
-
         config = get_config()
         profile_id = item.profile_id
         title = item.name
@@ -589,16 +598,6 @@ class ProfilesOptionsPage(OptionsPage):
 
     def import_profile(self):
         """Import a profile from a TOML file."""
-        if sys.version_info < (3, 11):
-            import tomli as tomllib
-        else:
-            import tomllib
-
-        from picard.profiles.importer import (
-            ProfileImportError,
-            import_profile,
-        )
-
         config = get_config()
 
         # File open dialog
@@ -708,11 +707,6 @@ class ProfilesOptionsPage(OptionsPage):
 
     def import_and_replace_profile(self, item):
         """Import a profile from a TOML file and replace the given profile."""
-        from picard.profiles.importer import (
-            ProfileImportError,
-            import_profile,
-        )
-
         config = get_config()
 
         # File open dialog

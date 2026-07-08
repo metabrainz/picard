@@ -40,7 +40,10 @@ from picard.config_upgrade import (  # noqa: F401 - used by upgrade hooks
     _rename_option_in_settings,
     _upgrade_option_value_in_settings,
 )
-from picard.version import Version
+from picard.version import (
+    Version,
+    VersionError,
+)
 
 
 # Registry of settings upgrades, keyed by the version that introduced the change.
@@ -91,8 +94,6 @@ def upgrade_settings_for_import(settings: dict, from_version_str: str) -> list[s
     Returns:
         List of descriptions of upgrades that were applied.
     """
-    from picard.version import VersionError
-
     try:
         from_version = Version.from_string(from_version_str)
     except VersionError:

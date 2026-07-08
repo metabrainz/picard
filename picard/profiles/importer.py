@@ -39,6 +39,7 @@ from picard.config import (
     Option,
 )
 from picard.profiles import PROFILE_FORMAT_VERSION
+from picard.profiles.settings_upgrades import upgrade_settings_for_import
 
 
 class ProfileImportError(Exception):
@@ -133,8 +134,6 @@ def import_profile(
     settings_section = data.get('settings', {})
     picard_version = profile_section.get('picard_version')
     if picard_version and settings_section:
-        from picard.profiles.settings_upgrades import upgrade_settings_for_import
-
         upgrade_descriptions = upgrade_settings_for_import(settings_section, picard_version)
         if upgrade_descriptions:
             log.debug("Applied %d settings upgrades during profile import", len(upgrade_descriptions))

@@ -26,6 +26,7 @@ from picard.config import (
     Option,
     TextOption,
 )
+from picard.profiles import PROFILE_FORMAT_VERSION
 from picard.profiles.importer import (
     ProfileImportError,
     import_profile,
@@ -326,8 +327,6 @@ picard_version = "4.0.0"
         self.assertEqual(result.title, 'Test Profile')
 
     def test_import_current_format_version_accepted(self):
-        from picard.profiles import PROFILE_FORMAT_VERSION
-
         toml = f"""\
 [profile]
 title = "Current Format"
