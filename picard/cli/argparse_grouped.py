@@ -92,8 +92,11 @@ class GroupedHelpFormatter(argparse.RawDescriptionHelpFormatter):
 
         # Add additional sections for each group
         for group_title, names in action._groups.items():
-            t = self._theme
-            parts.append(f'\n{t.heading}{group_title}:{t.reset}\n')
+            # Color themes in argparse are available in Python 3.14+
+            if t := getattr(self, '_theme', None):
+                parts.append(f'\n{t.heading}{group_title}:{t.reset}\n')
+            else:
+                parts.append(f'\n{group_title}:\n')
             parts.append(self._current_indent * ' ')
             parts.append(self._format_action_invocation(action))
             parts.append('\n')
