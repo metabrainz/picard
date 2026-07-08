@@ -776,13 +776,19 @@ class ID3FileTest(PicardTestCase):
             [("Test", 0), ("syl", 10), ("la", 20), ("bles", 30)],
             [("Test newline\nin the middle", 0), ("of the text", 1000)],
             [("Test empty lyrics at the end\n", 0), ("", 1000)],
-            [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)])
+            [("Test timestamp estimation", 0), ("in the\nlast phrase", 1000)],
+            [("start", 54940), ("\n", 60000), ("end", 119680)],
+            [],
+        )
         correct_lrc = (
             "[00:00.000]<00:00.000>Test<00:00.500>normal\n[00:01.000]<00:01.000>behaviour",
             "[00:00.000]<00:00.000>Test<00:00.010>syl<00:00.020>la<00:00.030>bles",
             "[00:00.000]<00:00.000>Test newline\n[00:00.480]in the middle<00:01.000>of the text",
             "[00:00.000]<00:00.000>Test empty lyrics at the end\n[00:01.000]<00:01.000>",
-            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.352]last phrase")
+            "[00:00.000]<00:00.000>Test timestamp estimation<00:01.000>in the\n[00:01.352]last phrase",
+            "[00:54.940]<00:54.940>start<01:00.000>\n[01:00.000]<01:59.680>end",
+            "",
+        )
         for sylt, correct_lrc in zip(sylt, correct_lrc):
             lrc = self.file._parse_sylt_text(sylt, 2)
             self.assertEqual(lrc, correct_lrc)
