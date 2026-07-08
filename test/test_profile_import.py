@@ -373,3 +373,47 @@ ca_providers = [["Cover Art Archive", true], ["UrlRelationships", false]]
         # Inner lists should be converted to tuples since default has tuples
         expected = [('Cover Art Archive', True), ('UrlRelationships', False)]
         self.assertEqual(settings['ca_providers'], expected)
+
+    def test_replace_fully_overrides_scripts(self):
+        """Replace import fully overrides the profile's scripts.
+
+        When using --replace, the imported file becomes the new truth.
+        Existing scripts not in the import (e.g. disabled scripts excluded
+        from share-mode exports) are replaced, not preserved.
+        """
+        ListOption('setting', 'list_of_scripts', [], title="Scripts", in_profile=True)
+        BoolOption('setting', 'enable_tagger_scripts', False, title="Enable scripts", in_profile=True)
+
+        # Existing profile has two scripts: one enabled, one disabled
+        existing_id = 'existing-profile-uuid'
+        self.config.profiles['user_profiles'] = [
+            {'id': existing_id, 'title': 'My profile', 'enabled': True, 'position': 0},
+        ]
+        self.config.profiles['user_profile_settings'] = {
+            existing_id: {
+                'enable_tagger_scripts': True,
+                'list_of_scripts': [
+                    (0, 'Enabled Script', True, '$set(foo,bar)'),
+                    (1, 'Disabled Script', False, '$set(baz,qux)'),
+                ],
+            },
+        }
+
+        # Import with replace — only the enabled script is in the file
+        toml_share_export = """\
+[profile]
+title = "My profile"
+picard_version = "3.0.0"
+
+[[scripts.tagging]]
+title = "Enabled Script"
+script = "$set(foo,bar)"
+"""
+        result = import_profile(self.config, toml_share_export, replace_id=existing_id)
+
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        scripts = settings['list_of_scripts']
+
+        # Only the imported script should be present — replace is a full override
+        self.assertEqual(len(scripts), 1)
+        self.assertEqual(scripts[0][1], 'Enabled Script')

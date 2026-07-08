@@ -634,8 +634,10 @@ class ProfilesOptionsPage(OptionsPage):
                         )
                     msgbox.setInformativeText(
                         _(
-                            "Do you want to replace the existing profile's settings "
-                            "with the imported ones, or create a separate copy?"
+                            "Replacing will completely overwrite the existing profile's"
+                            " settings and scripts with the imported ones."
+                            " Any data in the existing profile that is not in the"
+                            " imported file will be lost."
                         )
                     )
                     update_button = msgbox.addButton(

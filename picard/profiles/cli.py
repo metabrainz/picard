@@ -212,7 +212,12 @@ def cmd_import(args, output):
             return ExitCode.NOT_FOUND
         replace_profile = resolve.profile
         if not getattr(args, 'yes', False):
-            if not output.yesno(f"Replace profile {output.d_name(replace_profile['title'])}?"):
+            output.warning(
+                f"This will {output.bold('completely replace')} profile"
+                f" {output.d_name(replace_profile['title'])}."
+                f" All existing settings and scripts in this profile will be overwritten."
+            )
+            if not output.yesno("Continue?"):
                 output.print("Import cancelled.")
                 return ExitCode.SUCCESS
         replace_id = replace_profile['id']
