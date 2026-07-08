@@ -158,13 +158,13 @@ def _export_scripts(doc, config, profile_settings, mode):
     # File naming script
     active_script_id = profile_settings.get('active_file_naming_script_id')
     if active_script_id is not None:
-        script_data = _resolve_naming_script(config, active_script_id)
+        script_data, is_preset = _resolve_naming_script(config, active_script_id)
         if script_data:
             doc.add(tomlkit.nl())
             naming_table = tomlkit.table()
             naming_table.add('id', script_data['id'])
             naming_table.add('title', script_data['title'])
-            if _is_preset_script(active_script_id):
+            if is_preset:
                 naming_table.add('preset', True)
             # Include all metadata fields if present
             for field in ('author', 'description', 'license', 'version', 'last_updated', 'script_language_version'):
@@ -203,11 +203,15 @@ def _export_scripts(doc, config, profile_settings, mode):
             doc['scripts'].add('tagging', tagging_array)
 
 
-def _resolve_naming_script(config, script_id: str) -> dict | None:
-    """Resolve a naming script ID to its content dict."""
+def _resolve_naming_script(config, script_id: str) -> tuple[dict | None, bool]:
+    """Resolve a naming script ID to its content dict.
+
+    Returns:
+        A tuple of (script_data, is_preset). script_data is None if not found.
+    """
     scripts = config.setting.raw_value('file_renaming_scripts') or {}
     if script_id in scripts:
-        return scripts[script_id]
+        return scripts[script_id], False
 
     # Check presets
     for preset in get_file_naming_script_presets():
@@ -216,15 +220,8 @@ def _resolve_naming_script(config, script_id: str) -> dict | None:
                 'id': preset['id'],
                 'title': str(preset['title']),
                 'script': str(preset['script']),
-            }
-    return None
-
-
-def _is_preset_script(script_id: str) -> bool:
-    """Check if a script ID refers to a built-in preset."""
-    for preset in get_file_naming_script_presets():
-        if preset['id'] == script_id:
-            return True
+            }, True
+    return None, False
     return False
 
 
