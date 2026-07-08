@@ -43,8 +43,8 @@ jobs:
         Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
         New-Item -Name .\artifacts -ItemType Directory
       env:
-        DISCID_VERSION: 0.6.5
-        DISCID_SHA256SUM: a1198731d417a04b3d8499bcc10b6a8ddcab06476c855ebff0fb4134888b1be5
+        DISCID_VERSION: 0.7.0
+        DISCID_SHA256SUM: 9a7b655e30401b6b5d5d0b2906c758e0d759619ed7f60e512f369e581473c555
         FPCALC_VERSION: 1.6.0
         FPCALC_SHA256SUM: 30179d3d0dc4cc92f1a0995c1a2e523fb4867724c2ee6a6ceae474f8e4d6937a
     - name: Install gettext

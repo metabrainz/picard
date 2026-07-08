@@ -13,7 +13,7 @@ fi
 # Install libdiscid
 if [ -n "$DISCID_VERSION" ]; then
   DISCID_FILENAME="libdiscid-$DISCID_VERSION-mac.zip"
-  wget "https://ftp.musicbrainz.org/pub/musicbrainz/libdiscid/$DISCID_FILENAME"
+  wget "https://data.metabrainz.org/pub/musicbrainz/libdiscid/$DISCID_FILENAME"
   echo "$DISCID_SHA256SUM  $DISCID_FILENAME" | shasum --algorithm 256 --check --status
   unzip "$DISCID_FILENAME"
   cp "libdiscid-$DISCID_VERSION-mac/universal2/libdiscid.0.dylib" .
