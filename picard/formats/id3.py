@@ -678,6 +678,9 @@ class ID3File(File):
         return values
 
     def _parse_sylt_text(self, text, length):
+        if not text:
+            return ''
+
         def milliseconds_to_timestamp(ms):
             minutes = ms // (60 * 1000)
             seconds = (ms % (60 * 1000)) // 1000
@@ -693,7 +696,8 @@ class ID3File(File):
             if '\n' in lyrics:
                 split = lyrics.split('\n')
                 lrc_lyrics.append(f"<{timestamp}>{split[0]}")
-                distribution = (milliseconds[i + 1] - milliseconds[i]) / len(lyrics.replace('\n', ''))
+                length = len(lyrics.replace('\n', '')) or 1
+                distribution = (milliseconds[i + 1] - milliseconds[i]) / length
                 estimation = milliseconds[i] + distribution * len(split[0])
                 for line in split[1:]:
                     timestamp = milliseconds_to_timestamp(int(estimation))
