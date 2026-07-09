@@ -58,21 +58,28 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             autodetect_upgrade_hooks,
         )
 
+        def has_test(test_methods, func_name):
+            """Check for test_{name} exactly or test_{name}_* (underscore boundary)."""
+            expected = f'test_{func_name}'
+            return any(m == expected or m.startswith(expected + '_') for m in test_methods)
+
         # Old-style hooks (upgrade_to_v* functions)
         hooks = autodetect_upgrade_hooks()
         test_prefix = 'test_' + UPGRADE_FUNCTION_PREFIX
         test_methods = {m for m in dir(self) if m.startswith(test_prefix)}
         for version, hook in hooks.items():
-            prefix = 'test_' + hook.__name__
-            matching = {m for m in test_methods if m.startswith(prefix)}
-            self.assertTrue(matching, f"No test found for {hook.__name__} (version {version})")
+            self.assertTrue(
+                has_test(test_methods, hook.__name__),
+                f"No test found for {hook.__name__} (version {version})",
+            )
 
         # New-style hooks (both @upgrade_settings and @upgrade_config)
         all_test_methods = {m for m in dir(self) if m.startswith('test_')}
         for version, _utype, func in _UPGRADES_REGISTRY:
-            prefix = 'test_' + func.__name__
-            matching = {m for m in all_test_methods if m.startswith(prefix)}
-            self.assertTrue(matching, f"No test found for {func.__name__} (version {version})")
+            self.assertTrue(
+                has_test(all_test_methods, func.__name__),
+                f"No test found for {func.__name__} (version {version})",
+            )
 
     def test_upgrade_to_v1_0_0final0_A(self):
         TextOption('setting', 'file_naming_format', '')
