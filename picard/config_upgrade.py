@@ -29,6 +29,7 @@
 from collections.abc import Callable
 from contextlib import contextmanager
 from enum import Enum
+from itertools import groupby
 from typing import (
     Any,
     NamedTuple,
@@ -326,29 +327,27 @@ def run_config_upgrades(config: Config) -> None:
 
     sorted_upgrades = _get_sorted_upgrades(_UPGRADES_REGISTRY)
 
-    # Build a version-ordered execution plan for Config.run_upgrade_hooks()
-    all_versions = sorted({e.version for e in sorted_upgrades})
+    def make_hook(entries):
+        def hook(config):
+            for entry in entries:
+                if entry.upgrade_type == _UpgradeType.SETTINGS:
+                    _run_settings_upgrade_on_config(config, entry.func)
+                else:
+                    if entry.func.__doc__:
+                        log.debug("Config upgrade: %s", entry.func.__doc__.strip())
+                    entry.func(config)
 
+        docs = [entry.func.__doc__.strip() for entry in entries if entry.func.__doc__]
+        hook.__doc__ = '; '.join(docs) if docs else None
+        hook.__name__ = f'upgrade_{entries[0].version}'
+        return hook
+
+    # Group entries by version, preserving declaration order within each group.
+    # groupby yields (version, iterator_of_entries) for consecutive entries
+    # sharing the same version in the already-sorted list.
     hooks: dict[Version, Callable[[Config], None]] = {}
-    for version in all_versions:
-        version_entries = [e for e in sorted_upgrades if e.version == version]
-
-        def make_hook(entries):
-            def hook(config):
-                for entry in entries:
-                    if entry.upgrade_type == _UpgradeType.SETTINGS:
-                        _run_settings_upgrade_on_config(config, entry.func)
-                    else:
-                        if entry.func.__doc__:
-                            log.debug("Config upgrade: %s", entry.func.__doc__.strip())
-                        entry.func(config)
-
-            docs = [entry.func.__doc__.strip() for entry in entries if entry.func.__doc__]
-            hook.__doc__ = '; '.join(docs) if docs else None
-            hook.__name__ = f'upgrade_{version}'
-            return hook
-
-        hooks[version] = make_hook(version_entries)
+    for version, entries_iter in groupby(sorted_upgrades, key=lambda e: e.version):
+        hooks[version] = make_hook(list(entries_iter))
 
     config.run_upgrade_hooks(hooks)
 
