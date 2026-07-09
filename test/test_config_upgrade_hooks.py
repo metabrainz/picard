@@ -220,18 +220,18 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('save_only_front_images_to_tags', self.config.setting)
         self.assertTrue(self.config.setting['embed_only_one_front_image'])
 
-    def test_upgrade_to_v2_0_0dev3(self):
+    def test_convert_caa_image_size(self):
         IntOption("setting", "caa_image_size", 500)
 
         self.config.setting['caa_image_size'] = 0
-        hooks.upgrade_to_v2_0_0dev3(self.config)
+        hooks.convert_caa_image_size(self.config)
         self.assertEqual(250, self.config.setting['caa_image_size'])
 
         self.config.setting['caa_image_size'] = 501
-        hooks.upgrade_to_v2_0_0dev3(self.config)
+        hooks.convert_caa_image_size(self.config)
         self.assertEqual(501, self.config.setting['caa_image_size'])
 
-    def test_upgrade_to_v2_1_0dev1(self):
+    def test_upgrade_genre_options(self):
         BoolOption("setting", "use_genres", False)
         IntOption("setting", "max_genres", 5)
         IntOption("setting", "min_genre_usage", 90)
@@ -249,7 +249,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['only_my_tags'] = True
         self.config.setting['artists_tags'] = True
 
-        hooks.upgrade_to_v2_1_0dev1(self.config)
+        hooks.upgrade_genre_options(self.config.setting)
         self.assertEqual(self.config.setting['use_genres'], True)
         self.assertEqual(self.config.setting['max_genres'], 6)
         self.assertEqual(self.config.setting['min_genre_usage'], 85)
@@ -267,39 +267,39 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('only_my_tags', self.config.setting)
         self.assertNotIn('artists_tags', self.config.setting)
 
-    def test_upgrade_to_v2_2_0dev3(self):
+    def test_convert_ignore_genres_to_filter(self):
         TextOption("setting", "ignore_genres", "")
         TextOption("setting", "genres_filter", "")
 
         self.config.setting['ignore_genres'] = "a, b,c"
-        hooks.upgrade_to_v2_2_0dev3(self.config)
+        hooks.convert_ignore_genres_to_filter(self.config)
         self.assertNotIn('ignore_genres', self.config.setting)
         self.assertEqual(self.config.setting['genres_filter'], "-a\n-b\n-c")
 
-    def test_upgrade_to_v2_2_0dev4(self):
+    def test_update_default_file_naming_format_v2_1(self):
         TextOption("setting", "file_naming_format", "")
 
         self.config.setting['file_naming_format'] = 'xxx'
-        hooks.upgrade_to_v2_2_0dev4(self.config)
+        hooks.update_default_file_naming_format_v2_1(self.config)
         self.assertEqual('xxx', self.config.setting['file_naming_format'])
 
         self.config.setting['file_naming_format'] = hooks.OLD_DEFAULT_FILE_NAMING_FORMAT_v2_1
-        hooks.upgrade_to_v2_2_0dev4(self.config)
+        hooks.update_default_file_naming_format_v2_1(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
 
-    def test_upgrade_to_v2_4_0beta3(self):
+    def test_convert_preserved_tags_to_list(self):
         ListOption("setting", "preserved_tags", [])
         self.config.setting['preserved_tags'] = 'foo,bar'
-        hooks.upgrade_to_v2_4_0beta3(self.config)
+        hooks.convert_preserved_tags_to_list(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
 
-    def test_upgrade_to_v2_4_0beta3_already_done(self):
+    def test_convert_preserved_tags_to_list_already_done(self):
         ListOption("setting", "preserved_tags", [])
         self.config.setting['preserved_tags'] = ['foo', 'bar']
-        hooks.upgrade_to_v2_4_0beta3(self.config)
+        hooks.convert_preserved_tags_to_list(self.config)
         self.assertEqual(['foo', 'bar'], self.config.setting['preserved_tags'])
 
-    def test_upgrade_to_v2_5_0dev1(self):
+    def test_rename_whitelist_ca_provider(self):
         ListOption("setting", "ca_providers", [])
 
         self.config.setting['ca_providers'] = [
@@ -312,120 +312,97 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             ('UrlRelationships', True),
             ('Local', False),
         ]
-        hooks.upgrade_to_v2_5_0dev1(self.config)
+        hooks.rename_whitelist_ca_provider(self.config.setting)
         self.assertEqual(expected, self.config.setting['ca_providers'])
 
-    def test_upgrade_to_v2_5_0dev1_profiles(self):
-        ListOption('setting', 'ca_providers', [], in_profile=True)
-        ListOption.add_if_missing('profiles', 'user_profiles', [])
-        Option.add_if_missing('profiles', 'user_profile_settings', {})
-
-        self.config.setting['ca_providers'] = [
-            ('Cover Art Archive', True),
-            ('Whitelist', True),
-        ]
-        self.config.profiles['user_profiles'] = [
-            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
-        ]
-        self.config.profiles['user_profile_settings'] = {
-            'p1': {
-                'ca_providers': [
-                    ('Cover Art Archive', False),
-                    ('Whitelist', False),
-                    ('Local', True),
-                ],
-            },
+    def test_rename_whitelist_ca_provider_dict(self):
+        settings = {
+            'ca_providers': [
+                ('Cover Art Archive', False),
+                ('Whitelist', False),
+                ('Local', True),
+            ],
         }
-
-        hooks.upgrade_to_v2_5_0dev1(self.config)
-
-        # Base config updated
-        with self.config.setting.no_profile():
-            self.assertEqual(
-                [('Cover Art Archive', True), ('UrlRelationships', True)],
-                self.config.setting['ca_providers'],
-            )
-        # Profile updated
-        profile_settings = self.config.profiles['user_profile_settings']['p1']
+        hooks.rename_whitelist_ca_provider(settings)
         self.assertEqual(
             [('Cover Art Archive', False), ('UrlRelationships', False), ('Local', True)],
-            profile_settings['ca_providers'],
+            settings['ca_providers'],
         )
 
-    def test_upgrade_to_v2_5_0dev2(self):
+    def test_reset_main_splitter_states(self):
         Option("persist", "splitter_state", QByteArray())
         Option("persist", "bottom_splitter_state", QByteArray())
         self.config.persist["splitter_state"] = b'foo'
         self.config.persist["bottom_splitter_state"] = b'bar'
-        hooks.upgrade_to_v2_5_0dev2(self.config)
+        hooks.reset_main_splitter_states(self.config)
         self.assertEqual(b'', self.config.persist['splitter_state'])
         self.assertEqual(b'', self.config.persist['bottom_splitter_state'])
 
-    def test_upgrade_to_v2_6_0dev1(self):
+    def test_clear_fpcalc_path(self):
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = "/usr/bin/fpcalc"
-        hooks.upgrade_to_v2_6_0dev1(self.config)
+        hooks.clear_fpcalc_path(self.config)
         self.assertEqual("/usr/bin/fpcalc", self.config.setting["acoustid_fpcalc"])
 
-    def test_upgrade_to_v2_6_0dev1_empty(self):
+    def test_clear_fpcalc_path_empty(self):
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = None
-        hooks.upgrade_to_v2_6_0dev1(self.config)
+        hooks.clear_fpcalc_path(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
-    def test_upgrade_to_v2_6_0dev1_snap(self):
+    def test_clear_fpcalc_path_snap(self):
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = "/snap/picard/221/usr/bin/fpcalc"
-        hooks.upgrade_to_v2_6_0dev1(self.config)
+        hooks.clear_fpcalc_path(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
-    def test_upgrade_to_v2_6_0dev1_frozen(self):
+    def test_clear_fpcalc_path_frozen(self):
         from unittest.mock import patch
 
         TextOption("setting", "acoustid_fpcalc", "")
         self.config.setting["acoustid_fpcalc"] = r"C:\Program Files\MusicBrainz Picard\fpcalc.exe"
         with patch.object(hooks, 'IS_FROZEN', True):
-            hooks.upgrade_to_v2_6_0dev1(self.config)
+            hooks.clear_fpcalc_path(self.config)
         self.assertEqual("", self.config.setting["acoustid_fpcalc"])
 
-    def test_upgrade_to_v2_6_0beta2(self):
+    def test_rename_caa_image_options(self):
         BoolOption('setting', 'image_type_as_filename', False)
         BoolOption('setting', 'save_only_one_front_image', False)
 
         self.config.setting['caa_image_type_as_filename'] = True
         self.config.setting['caa_save_single_front_image'] = True
-        hooks.upgrade_to_v2_6_0beta2(self.config)
+        hooks.rename_caa_image_options(self.config.setting)
         self.assertNotIn('caa_image_type_as_filename', self.config.setting)
         self.assertTrue(self.config.setting['image_type_as_filename'])
         self.assertNotIn('caa_save_single_front_image', self.config.setting)
         self.assertTrue(self.config.setting['save_only_one_front_image'])
 
-    def test_upgrade_to_v2_6_0beta3(self):
+    def test_convert_use_system_theme(self):
         # Legacy setting
         BoolOption('setting', 'use_system_theme', False)
         self.config.setting['use_system_theme'] = True
         del Option.registry['setting', 'use_system_theme']
         # New setting
         TextOption('setting', 'ui_theme', str(UiTheme.DEFAULT))
-        hooks.upgrade_to_v2_6_0beta3(self.config)
+        hooks.convert_use_system_theme(self.config)
         self.assertNotIn('use_system_theme', self.config.setting)
         self.assertIn('ui_theme', self.config.setting)
         self.assertEqual('system', self.config.setting['ui_theme'])
 
-    def test_upgrade_to_v2_7_0dev2(self):
+    def test_restructure_splitter_persist(self):
         Option('persist', 'bottom_splitter_state', b'')
         Option('persist', 'splitter_state', b'')
         Option('persist', 'splitters_MainWindow', {})
         self.config.persist['bottom_splitter_state'] = b'bottom'
         self.config.persist['splitter_state'] = b'main'
-        hooks.upgrade_to_v2_7_0dev2(self.config)
+        hooks.restructure_splitter_persist(self.config)
         self.assertNotIn('bottom_splitter_state', self.config.persist)
         self.assertNotIn('splitter_state', self.config.persist)
         splitters = self.config.persist['splitters_MainWindow']
         self.assertEqual(b'bottom', splitters['main_window_bottom_splitter'])
         self.assertEqual(b'main', splitters['main_panel_splitter'])
 
-    def test_upgrade_to_v2_7_0dev3(self):
+    def test_convert_naming_scripts_to_dict(self):
         # Legacy settings
         ListOption('setting', 'file_naming_scripts', [])
         self.config.setting['file_naming_scripts'] = [
@@ -439,7 +416,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         # New settings
         Option('setting', 'file_renaming_scripts', {})
         TextOption('setting', 'selected_file_naming_script_id', '')
-        hooks.upgrade_to_v2_7_0dev3(self.config)
+        hooks.convert_naming_scripts_to_dict(self.config)
         new_scripts = self.config.setting['file_renaming_scripts']
         selected_script_id = self.config.setting['selected_file_naming_script_id']
         self.assertEqual(3, len(new_scripts))
@@ -454,7 +431,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual('Primary file naming script', default_script['title'])
         self.assertEqual('%title%', default_script['script'])
 
-    def test_upgrade_to_v2_7_0dev4(self):
+    def test_convert_script_exception_to_list(self):
         # Legacy settings
         TextOption('setting', 'artist_script_exception', '')
         TextOption('setting', 'artist_locale', '')
@@ -465,11 +442,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         # New settings
         ListOption('setting', 'artist_script_exceptions', [])
         ListOption('setting', 'artist_locales', ['en'])
-        hooks.upgrade_to_v2_7_0dev4(self.config)
+        hooks.convert_script_exception_to_list(self.config)
         self.assertEqual(['LATIN'], self.config.setting['artist_script_exceptions'])
         self.assertEqual(['en'], self.config.setting['artist_locales'])
 
-    def test_upgrade_to_v2_7_0dev5(self):
+    def test_convert_script_exceptions_with_weighting(self):
         # Legacy settings
         ListOption('setting', 'artist_script_exceptions', [])
         IntOption('setting', 'artist_script_exception_weighting', 0)
@@ -479,7 +456,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         del Option.registry[('setting', 'artist_script_exception_weighting')]
         # New settings
         ListOption('setting', 'script_exceptions', [])
-        hooks.upgrade_to_v2_7_0dev5(self.config)
+        hooks.convert_script_exceptions_with_weighting(self.config)
         self.assertEqual(
             self.config.setting['script_exceptions'],
             [
@@ -488,7 +465,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             ],
         )
 
-    def test_upgrade_to_v2_8_0dev2(self):
+    def test_remove_acousticbrainz_from_toolbar(self):
         ListOption('setting', 'toolbar_layout', [])
         self.config.setting['toolbar_layout'] = [
             'add_directory_action',
@@ -496,17 +473,17 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             'save_action',
         ]
         expected = ['add_directory_action', 'save_action']
-        hooks.upgrade_to_v2_8_0dev2(self.config)
+        hooks.remove_acousticbrainz_from_toolbar(self.config.setting)
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
-        hooks.upgrade_to_v2_8_0dev2(self.config)
+        hooks.remove_acousticbrainz_from_toolbar(self.config.setting)
         self.assertEqual(expected, self.config.setting['toolbar_layout'])
 
-    def test_upgrade_to_v2_9_0alpha2(self):
+    def test_add_preset_naming_scripts(self):
         from picard.script import get_file_naming_script_presets
 
         Option('setting', 'file_renaming_scripts', {})
         self.config.setting['file_renaming_scripts'] = {}
-        hooks.upgrade_to_v2_9_0alpha2(self.config)
+        hooks.add_preset_naming_scripts(self.config)
         scripts = self.config.setting['file_renaming_scripts']
         preset_ids = {item['id'] for item in get_file_naming_script_presets()}
         for preset_id in preset_ids:
