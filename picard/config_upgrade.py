@@ -319,53 +319,6 @@ def temp_option(option_type: type[Option], section: str, name: str, default: Con
     opt.unregister()
 
 
-def rename_option(
-    config: Config,
-    old_opt: str,
-    new_opt: str,
-    option_type: type[Option],
-    default: ConfigValueType,
-    reverse: bool = False,
-):
-    _s = config.setting
-    if old_opt in _s:
-        rename_option_in_settings(_s, old_opt, new_opt, option_type, default, reverse)
-
-        _p = config.profiles
-        _s.init_profile_options()
-        all_settings = _p['user_profile_settings']
-        for profile in _p['user_profiles']:
-            id = profile['id']
-            if id in all_settings:
-                rename_option_in_settings(all_settings[id], old_opt, new_opt, reverse=reverse)
-        _p['user_profile_settings'] = all_settings
-
-
-def upgrade_option_value(
-    config: Config,
-    name: str,
-    transform: Callable,
-) -> None:
-    """Apply a value transform to an option in base config and all profile overrides.
-
-    Use this in upgrade hooks when an option's value format changes but the key
-    stays the same. The transform function receives the current raw value and
-    must return the new value. Reads bypass profile overrides and Option.convert()
-    to access the actual stored value.
-    """
-    _s = config.setting
-    upgrade_option_value_in_settings(_s, name, transform)
-
-    _p = config.profiles
-    _s.init_profile_options()
-    all_settings = _p['user_profile_settings']
-    for profile in _p['user_profiles']:
-        id = profile['id']
-        if id in all_settings:
-            upgrade_option_value_in_settings(all_settings[id], name, transform)
-    _p['user_profile_settings'] = all_settings
-
-
 def run_config_upgrades(config: Config) -> None:
     """Execute all registered upgrade hooks."""
     # Ensure hooks module is imported so decorators have populated the registry
