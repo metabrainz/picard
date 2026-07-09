@@ -620,13 +620,16 @@ def copy_standardize_instruments_to_vocals(settings):
         write_option(settings, 'standardize_vocals', value)
 
 
-def upgrade_to_v3_0_0dev7(config):
+@upgrade_settings('3.0.0dev7')
+def change_theme_system_to_default(settings):
     """Change theme option SYSTEM to DEFAULT"""
     # Avoid loading UI modules in headless/CLI contexts
     from picard.ui.theme import UiTheme
 
-    if config.setting['ui_theme'] == "system":
-        config.setting['ui_theme'] = UiTheme.DEFAULT
+    def _fix_theme(value):
+        return UiTheme.DEFAULT.value if value == "system" else value
+
+    upgrade_option_value_in_settings(settings, 'ui_theme', _fix_theme)
 
 
 @upgrade_settings('3.0.0dev8')

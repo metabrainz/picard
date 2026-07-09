@@ -594,11 +594,16 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.copy_standardize_instruments_to_vocals(settings)
         self.assertTrue(settings['standardize_vocals'])
 
-    def test_upgrade_to_v3_0_0dev7(self):
+    def test_change_theme_system_to_default(self):
         TextOption('setting', 'ui_theme', DEFAULT_THEME_NAME)
         self.config.setting['ui_theme'] = 'system'
-        hooks.upgrade_to_v3_0_0dev7(self.config)
+        hooks.change_theme_system_to_default(self.config.setting)
         self.assertEqual(DEFAULT_THEME_NAME, self.config.setting['ui_theme'])
+
+    def test_change_theme_system_to_default_dict(self):
+        settings = {'ui_theme': 'system'}
+        hooks.change_theme_system_to_default(settings)
+        self.assertEqual(DEFAULT_THEME_NAME, settings['ui_theme'])
 
     def test_rename_dont_write_tags(self):
         BoolOption('setting', 'enable_tag_saving', True)
