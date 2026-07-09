@@ -596,7 +596,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('dont_write_tags', settings)
         self.assertFalse(settings['enable_tag_saving'])
 
-    def test_upgrade_to_v3_0_0dev9(self):
+    def test_remove_old_plugin_options(self):
         from PyQt6 import QtCore
 
         # Add old plugin options that should be removed
@@ -611,7 +611,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.persist['plugins_list_state'] = QtCore.QByteArray(b'test')
         self.config.setting['enabled_plugins'] = ['plugin1', 'plugin2']
 
-        hooks.upgrade_to_v3_0_0dev9(self.config)
+        hooks.remove_old_plugin_options(self.config)
 
         # Verify options were removed
         self.assertNotIn('plugins_list_sort_order', self.config.persist)

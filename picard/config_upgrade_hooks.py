@@ -49,6 +49,7 @@ from picard.config_upgrade import (
     rename_option,
     rename_option_in_settings,
     temp_option,
+    upgrade_config,
     upgrade_option_value,
     upgrade_option_value_in_settings,
     upgrade_settings,
@@ -625,7 +626,8 @@ def rename_dont_write_tags(settings):
     rename_option_in_settings(settings, 'dont_write_tags', 'enable_tag_saving', BoolOption, False, reverse=True)
 
 
-def upgrade_to_v3_0_0dev9(config):
+@upgrade_config('3.0.0dev9')
+def remove_old_plugin_options(config):
     """Remove obsolete old plugin system options"""
     # Remove old plugin UI state options (unused)
     config.persist.remove('plugins_list_sort_order')
