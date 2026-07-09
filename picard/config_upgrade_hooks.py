@@ -599,13 +599,17 @@ def upgrade_to_v3_0_0dev4(config):
         config.persist.remove('file_view_header_state')
 
 
-def upgrade_to_v3_0_0dev5(config):
+@upgrade_settings('3.0.0dev5')
+def sanitize_replace_dir_separator(settings):
     """Ensure "replace_dir_separator" contains no directory separator"""
-    replace_dir_separator = config.setting['replace_dir_separator']
-    replace_dir_separator = replace_dir_separator.replace(os.sep, DEFAULT_REPLACEMENT)
-    if os.altsep:
-        replace_dir_separator = replace_dir_separator.replace(os.altsep, DEFAULT_REPLACEMENT)
-    config.setting['replace_dir_separator'] = replace_dir_separator
+
+    def _sanitize(value):
+        value = value.replace(os.sep, DEFAULT_REPLACEMENT)
+        if os.altsep:
+            value = value.replace(os.altsep, DEFAULT_REPLACEMENT)
+        return value
+
+    upgrade_option_value_in_settings(settings, 'replace_dir_separator', _sanitize)
 
 
 def upgrade_to_v3_0_0dev6(config):

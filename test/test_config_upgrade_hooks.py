@@ -566,16 +566,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(b'', self.config.persist['album_view_header_state'])
         self.assertEqual(b'', self.config.persist['file_view_header_state'])
 
-    def test_upgrade_to_v3_0_0dev5(self):
+    def test_sanitize_replace_dir_separator(self):
         TextOption('setting', 'replace_dir_separator', DEFAULT_REPLACEMENT)
         self.config.setting['replace_dir_separator'] = os.sep
-        hooks.upgrade_to_v3_0_0dev5(self.config)
+        hooks.sanitize_replace_dir_separator(self.config.setting)
         self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
 
         if os.altsep:
             self.config.setting['replace_dir_separator'] = os.altsep
-            hooks.upgrade_to_v3_0_0dev5(self.config)
+            hooks.sanitize_replace_dir_separator(self.config.setting)
             self.assertEqual(DEFAULT_REPLACEMENT, self.config.setting['replace_dir_separator'])
+
+    def test_sanitize_replace_dir_separator_dict(self):
+        settings = {'replace_dir_separator': os.sep}
+        hooks.sanitize_replace_dir_separator(settings)
+        self.assertEqual(DEFAULT_REPLACEMENT, settings['replace_dir_separator'])
 
     def test_upgrade_to_v3_0_0dev6(self):
         BoolOption('setting', 'standardize_instruments', False)
