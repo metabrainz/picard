@@ -43,6 +43,7 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
+from picard.move_conflict import MoveConflictStrategy
 
 from picard.ui.forms.ui_options_renaming import Ui_RenamingOptionsPage
 from picard.ui.options import (
@@ -69,7 +70,9 @@ class RenamingOptionsPage(OptionsPage):
     OPTIONS: PageOptionConfigs = {
         'move_files': {'widgets': ['move_files']},
         'move_files_to': {'widgets': ['move_files_to']},
-        'move_overwrite_existing_files': {'widgets': ['move_overwrite_existing_files']},
+        'move_conflict_strategy': {
+            'widgets': ['move_conflict_skip', 'move_conflict_rename', 'move_conflict_overwrite']
+        },
         'move_additional_files': {'widgets': ['move_additional_files']},
         'move_additional_files_pattern': {'widgets': ['move_additional_files_pattern']},
         'delete_empty_dirs': {'widgets': ['delete_empty_dirs']},
@@ -103,8 +106,14 @@ class RenamingOptionsPage(OptionsPage):
         self.ui.move_files_to.setCursorPosition(0)
         self.ui.move_additional_files.setChecked(config.setting['move_additional_files'])
         self.ui.move_additional_files_pattern.setText(config.setting['move_additional_files_pattern'])
+        strategy = MoveConflictStrategy.from_config(config.setting['move_conflict_strategy'])
+        if strategy == MoveConflictStrategy.SKIP:
+            self.ui.move_conflict_skip.setChecked(True)
+        elif strategy == MoveConflictStrategy.RENAME:
+            self.ui.move_conflict_rename.setChecked(True)
+        elif strategy == MoveConflictStrategy.OVERWRITE:
+            self.ui.move_conflict_overwrite.setChecked(True)
         self.ui.delete_empty_dirs.setChecked(config.setting['delete_empty_dirs'])
-        self.ui.move_overwrite_existing_files.setChecked(config.setting['move_overwrite_existing_files'])
         populate_script_selection_combo_box(
             config.setting['file_renaming_scripts'],
             config.setting['active_file_naming_script_id'],
@@ -122,9 +131,16 @@ class RenamingOptionsPage(OptionsPage):
         config.setting['move_files'] = self.ui.move_files.isChecked()
         config.setting['move_files_to'] = os.path.normpath(self.ui.move_files_to.text())
         config.setting['move_additional_files'] = self.ui.move_additional_files.isChecked()
+        if self.ui.move_conflict_skip.isChecked():
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.SKIP.value
+        elif self.ui.move_conflict_rename.isChecked():
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.RENAME.value
+        elif self.ui.move_conflict_overwrite.isChecked():
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.OVERWRITE.value
+        else:
+            config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
         config.setting['move_additional_files_pattern'] = self.ui.move_additional_files_pattern.text()
         config.setting['delete_empty_dirs'] = self.ui.delete_empty_dirs.isChecked()
-        config.setting['move_overwrite_existing_files'] = self.ui.move_overwrite_existing_files.isChecked()
         idx = self.ui.naming_script_selector.currentIndex()
         script_item = self.ui.naming_script_selector.itemData(idx)
         if script_item and script_item['id'] in config.setting['file_renaming_scripts']:

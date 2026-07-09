@@ -559,9 +559,9 @@ BoolOption('setting', 'move_additional_files', False, title=N_("Move additional 
 TextOption(
     'setting', 'move_additional_files_pattern', "*.jpg *.png", title=N_("Additional file patterns"), in_profile=True
 )
+TextOption('setting', 'move_conflict_strategy', 'rename', title=N_("File conflict handling strategy"), in_profile=True)
 BoolOption('setting', 'move_files', False, title=N_("Move files"), in_profile=True)
 TextOption('setting', 'move_files_to', DEFAULT_MUSIC_DIR, title=N_("Destination directory"), in_profile=True)
-BoolOption('setting', 'move_overwrite_existing_files', False, title=N_("Overwrite existing files"), in_profile=True)
 BoolOption('setting', 'rename_files', False, title=N_("Rename files"), in_profile=True)
 
 # picard/ui/options/renaming_compat.py

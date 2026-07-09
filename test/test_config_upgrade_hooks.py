@@ -737,6 +737,27 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('file_lookup_threshold', self.config.setting)
         self.assertNotIn('cluster_lookup_threshold', self.config.setting)
 
+    def test_upgrade_to_v3_0_0b4_with_old_move_conflict_option_enabled(self):
+        BoolOption("setting", "move_overwrite_existing_files", False)
+        TextOption("setting", "move_conflict_strategy", "")
+        self.config.setting['move_overwrite_existing_files'] = True
+        hooks.upgrade_to_v3_0_0b4(self.config)
+        self.assertEqual("overwrite", self.config.setting['move_conflict_strategy'])
+        self.assertNotIn('move_overwrite_existing_files', self.config.setting)
+
+    def test_upgrade_to_v3_0_0b4_with_old_move_conflict_option_disabled(self):
+        BoolOption("setting", "move_overwrite_existing_files", False)
+        TextOption("setting", "move_conflict_strategy", "")
+        self.config.setting['move_overwrite_existing_files'] = False
+        hooks.upgrade_to_v3_0_0b4(self.config)
+        self.assertEqual("rename", self.config.setting['move_conflict_strategy'])
+        self.assertNotIn('move_overwrite_existing_files', self.config.setting)
+
+    def test_upgrade_to_v3_0_0b4_without_old_move_conflict_option(self):
+        TextOption("setting", "move_conflict_strategy", "")
+        hooks.upgrade_to_v3_0_0b4(self.config)
+        self.assertEqual("rename", self.config.setting['move_conflict_strategy'])
+
     def test_upgrade_to_v3_0_0b5(self):
         ListOption('setting', 'quick_menu_items', [])
         TextOption('setting', 'selected_file_naming_script_id', '')

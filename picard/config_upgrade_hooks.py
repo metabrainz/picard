@@ -60,6 +60,7 @@ from picard.i18n import (
     gettext as _,
     gettext_constants,
 )
+from picard.move_conflict import MoveConflictStrategy
 from picard.options import StandardizeArtistNames
 from picard.util import unique_numbered_title
 
@@ -686,6 +687,20 @@ def upgrade_to_v3_0_0b3(config):
     """
     config.setting.remove('file_lookup_threshold')
     config.setting.remove('cluster_lookup_threshold')
+
+
+def upgrade_to_v3_0_0b4(config):
+    """Rename move_overwrite_existing_files to move_conflict_strategy."""
+    if 'move_overwrite_existing_files' in config.setting:
+        with temp_option(BoolOption, 'setting', 'move_overwrite_existing_files', False) as old_opt:
+            old_value = config.setting.value(old_opt, False)
+            if old_value:
+                config.setting['move_conflict_strategy'] = MoveConflictStrategy.OVERWRITE.value
+            else:
+                config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
+            config.setting.remove('move_overwrite_existing_files')
+    else:
+        config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
 
 
 def upgrade_to_v3_0_0b5(config):
