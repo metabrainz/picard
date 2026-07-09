@@ -547,7 +547,8 @@ def upgrade_to_v2_9_0alpha2(config):
     config.setting['file_renaming_scripts'] = scripts
 
 
-def upgrade_to_v3_0_0dev1(config):
+@upgrade_config('3.0.0dev1')
+def clear_qt5_state(config):
     """Clear Qt5 state config"""
     # A lot of persisted data is serialized Qt5 data that is not compatible with Qt6.
     # Keep only the data that is still useful and definitely supported.
@@ -580,7 +581,8 @@ def upgrade_to_v3_0_0dev1(config):
             config.remove(key)
 
 
-def upgrade_to_v3_0_0dev2(config):
+@upgrade_config('3.0.0dev2')
+def reset_options_dialog_splitters(config):
     """Reset option dialog splitter states"""
     config.persist['splitters_OptionsDialog'] = b''
 
@@ -591,7 +593,8 @@ def rename_toolbar_multiselect(settings):
     rename_option_in_settings(settings, 'toolbar_multiselect', 'allow_multi_dirs_selection', BoolOption, False)
 
 
-def upgrade_to_v3_0_0dev4(config):
+@upgrade_config('3.0.0dev4')
+def reset_locked_header_states(config):
     """Reset "file/album_view_header_state" if there were saved while locked."""
     if config.persist['album_view_header_locked']:
         config.persist.remove('album_view_header_state')
@@ -680,7 +683,8 @@ def upgrade_to_v3_0_0a2(config):
     upgrade_option_value(config, 'list_of_scripts', fix_tagger_scripts)
 
 
-def upgrade_to_v3_0_0a3(config):
+@upgrade_config('3.0.0a3')
+def remove_persisted_column_config(config):
     """Remove persisted column configuration"""
     config.persist.remove('album_view_header_state')
     config.persist.remove('file_view_header_state')

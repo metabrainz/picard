@@ -512,21 +512,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         for preset_id in preset_ids:
             self.assertIn(preset_id, scripts)
 
-    def test_upgrade_to_v3_0_0dev1(self):
+    def test_clear_qt5_state(self):
         Option('persist', 'current_directory', '')
         Option('persist', 'obsolete_qt5_state', b'')
         self.config.persist['current_directory'] = '/home/test'
         self.config.persist['obsolete_qt5_state'] = b'data'
         # Write directly to simulate Qt5 persisted keys
         self.config.setValue('persist/some_unknown_key', b'old')
-        hooks.upgrade_to_v3_0_0dev1(self.config)
+        hooks.clear_qt5_state(self.config)
         self.assertEqual('/home/test', self.config.persist['current_directory'])
         self.assertNotIn('persist/some_unknown_key', self.config.allKeys())
 
-    def test_upgrade_to_v3_0_0dev2(self):
+    def test_reset_options_dialog_splitters(self):
         Option('persist', 'splitters_OptionsDialog', b'')
         self.config.persist['splitters_OptionsDialog'] = b'state'
-        hooks.upgrade_to_v3_0_0dev2(self.config)
+        hooks.reset_options_dialog_splitters(self.config)
         self.assertEqual(b'', self.config.persist['splitters_OptionsDialog'])
 
     def test_rename_toolbar_multiselect(self):
@@ -545,7 +545,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('toolbar_multiselect', settings)
         self.assertTrue(settings['allow_multi_dirs_selection'])
 
-    def test_upgrade_to_v3_0_0dev4(self):
+    def test_reset_locked_header_states(self):
         Option('persist', 'album_view_header_state', QByteArray())
         Option('persist', 'file_view_header_state', QByteArray())
         BoolOption('persist', 'album_view_header_locked', False)
@@ -555,14 +555,14 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.persist['file_view_header_state'] = b'bar'
 
         # test not locked, states shouldn't be modified
-        hooks.upgrade_to_v3_0_0dev4(self.config)
+        hooks.reset_locked_header_states(self.config)
         self.assertEqual(b'foo', self.config.persist['album_view_header_state'])
         self.assertEqual(b'bar', self.config.persist['file_view_header_state'])
 
         # test locked, states should be removed
         self.config.persist['album_view_header_locked'] = True
         self.config.persist['file_view_header_locked'] = True
-        hooks.upgrade_to_v3_0_0dev4(self.config)
+        hooks.reset_locked_header_states(self.config)
         self.assertEqual(b'', self.config.persist['album_view_header_state'])
         self.assertEqual(b'', self.config.persist['file_view_header_state'])
 
@@ -733,13 +733,13 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         profile_settings = self.config.profiles['user_profile_settings']['p1']
         self.assertEqual(expected_script, profile_settings['list_of_scripts'][0][3])
 
-    def test_upgrade_to_v3_0_0a3(self):
+    def test_remove_persisted_column_config(self):
         Option('persist', 'album_view_header_state', PyQt6.QtCore.QByteArray())
         Option('persist', 'file_view_header_state', PyQt6.QtCore.QByteArray())
         self.config.persist['album_view_header_state'] = b'a'
         self.config.persist['file_view_header_state'] = b'a'
 
-        hooks.upgrade_to_v3_0_0a3(self.config)
+        hooks.remove_persisted_column_config(self.config)
 
         self.assertNotIn('album_view_header_state', self.config.persist)
         self.assertNotIn('file_view_header_state', self.config.persist)
