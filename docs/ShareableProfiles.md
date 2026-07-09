@@ -695,24 +695,24 @@ silent data loss.
 running similar versions. The `picard_version` field in exports identifies the
 source version. Cross-version sharing of very old profiles is an edge case.
 
-**Possible mitigations (from simplest to most complex):**
+**Current approach:** Unknown options are skipped with a warning. The
+`picard_version` field identifies the source version. This is the same strategy
+as Picard's existing config handling.
 
-1. **Accept silent loss** (current design) — unknown options are skipped with
-   a warning. The `picard_version` field identifies the source version. This is
-   the same strategy as Picard's existing config handling.
+**Future improvement (separate branch):** The existing config upgrade hook
+system (`config_upgrade_hooks.py`) and profile import both need to apply the
+same option transforms (renames, value changes) to settings dicts. Rather than
+maintaining a separate parallel registry for profile import, a unified upgrade
+mechanism should be designed that:
 
-2. **Maintain a rename mapping** — a small dict of `{old_name: new_name}` (and
-   `{old_name: (new_name, transform_fn)}` for inverted booleans) that the
-   importer consults before skipping unknown options. This covers the common
-   cases without the full upgrade hook machinery.
+1. Defines each option transform once (as a dict-level operation)
+2. Is consumed by both the startup config upgrade path and the import path
+3. Eliminates the duplication between `rename_option(config, ...)` at startup
+   and a hypothetical `_rename_option_in_settings(settings, ...)` at import
 
-3. **Run upgrade hooks on import** — most complex, highest fidelity, but the
-   upgrade hooks assume they're operating on a full config, not a partial
-   settings dict. Would need refactoring.
-
-**Recommendation:** Option 2 for Phase 2. A lightweight rename map covers 90%
-of cases with minimal complexity. Phase 1 can ship with option 1 (silent skip +
-warning).
+This unification is out of scope for the shareable profiles feature and will be
+addressed in a dedicated branch that reworks the overall config upgrade system
+with profiles and import in mind.
 
 ### Profile `None` Values (Tracked-but-Not-Overridden)
 
@@ -826,9 +826,8 @@ error.
 3. Promote `tomlkit` to runtime dependency
 4. Implement `picard/profiles/exporter.py` (`export_profile()`)
 5. Implement `picard/profiles/importer.py` (`import_profile()`)
-6. Implement `picard/profiles/settings_upgrades.py` (version-keyed transforms)
-7. Implement `picard/profiles/cli.py` (`picard-cli profiles` subcommand)
-8. Add Export/Import buttons to profiles UI (with replace support)
+6. Implement `picard/profiles/cli.py` (`picard-cli profiles` subcommand)
+7. Add Export/Import buttons to profiles UI (with replace support)
 
 ### Phase 2: Polish
 
@@ -957,18 +956,13 @@ continues to export only enabled scripts (without the field).
    transform function)
 - c) Yes — run full config upgrade hooks on imported settings
 
-**Answer:** Yes — the infrastructure now exists (PICARD-3330). The merged
-`_rename_option_in_settings()` and `_upgrade_option_value_in_settings()` helpers
-operate on plain dicts, so they can be applied to imported profile settings
-directly. The import flow:
-
-1. Read `picard_version` from the TOML file
-2. Identify which upgrade transforms apply between that version and current
-3. Apply the relevant renames/transforms to the imported settings dict
-
-This can be implemented in Phase 1 by maintaining a registry of version-keyed
-setting transforms (parallel to the hooks but operating on dicts only). This
-avoids silent data loss without the complexity of running full upgrade hooks.
+**Answer:** Deferred to a separate branch. The existing config upgrade hooks and
+profile import both need to apply the same transforms to settings dicts. Rather
+than maintaining a parallel registry (which duplicates the version and the
+transform logic), a unified upgrade mechanism will be designed in a dedicated
+branch. Until then, the importer silently skips unknown options with a warning
+(option a). The `picard_version` field is recorded in exports to enable future
+upgrade logic without changing the file format.
 
 ---
 

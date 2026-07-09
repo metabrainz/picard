@@ -33,13 +33,11 @@ if sys.version_info < (3, 11):
 else:
     import tomllib
 
-from picard import log
 from picard.config import (
     Config,
     Option,
 )
 from picard.profiles import PROFILE_FORMAT_VERSION
-from picard.profiles.settings_upgrades import upgrade_settings_for_import
 
 
 class ProfileImportError(Exception):
@@ -130,13 +128,7 @@ def import_profile(
     # Build profile settings dict
     profile_settings = {}
 
-    # Apply settings upgrades if the profile is from an older version
     settings_section = data.get('settings', {})
-    picard_version = profile_section.get('picard_version')
-    if picard_version and settings_section:
-        upgrade_descriptions = upgrade_settings_for_import(settings_section, picard_version)
-        if upgrade_descriptions:
-            log.debug("Applied %d settings upgrades during profile import", len(upgrade_descriptions))
 
     # Process [settings] section
     for key, value in settings_section.items():
