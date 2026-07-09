@@ -670,11 +670,10 @@ def upgrade_to_v3_0_0a3(config):
     config.persist.remove('file_view_header_state')
 
 
-def upgrade_to_v3_0_0b2(config):
+@upgrade_settings('3.0.0b2')
+def rename_artist_locales(settings):
     """Option "artist_locales" was renamed to "translation_locales"."""
-    old_opt = 'artist_locales'
-    new_opt = 'translation_locales'
-    rename_option(config, old_opt, new_opt, ListOption, ['en'])
+    rename_option_in_settings(settings, 'artist_locales', 'translation_locales', ListOption, ['en'])
 
 
 def upgrade_to_v3_0_0b3(config):

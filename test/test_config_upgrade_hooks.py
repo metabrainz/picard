@@ -742,13 +742,19 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('album_view_header_state', self.config.persist)
         self.assertNotIn('file_view_header_state', self.config.persist)
 
-    def test_upgrade_to_v3_0_0b2(self):
+    def test_rename_artist_locales(self):
         ListOption('setting', 'translation_locales', ['en'])
 
         self.config.setting['artist_locales'] = ['fr', 'de']
-        hooks.upgrade_to_v3_0_0b2(self.config)
+        hooks.rename_artist_locales(self.config.setting)
         self.assertNotIn('artist_locales', self.config.setting)
         self.assertEqual(self.config.setting['translation_locales'], ['fr', 'de'])
+
+    def test_rename_artist_locales_dict(self):
+        settings = {'artist_locales': ['fr', 'de']}
+        hooks.rename_artist_locales(settings)
+        self.assertNotIn('artist_locales', settings)
+        self.assertEqual(settings['translation_locales'], ['fr', 'de'])
 
     def test_upgrade_to_v3_0_0b3(self):
         FloatOption('setting', 'file_lookup_threshold', 0.7)
