@@ -94,8 +94,8 @@ def upgrade_settings(version_str: str):
 
     The decorated function receives a single argument: either a plain dict
     (profile override, imported settings) or a SettingConfigSection (base config).
-    Use the polymorphic helpers (rename_option_in_settings,
-    upgrade_option_value_in_settings) which handle both cases.
+    Use the polymorphic helpers (rename_option,
+    upgrade_option_value) which handle both cases.
 
     Multiple functions can share the same version — they execute in
     definition order.
@@ -104,7 +104,7 @@ def upgrade_settings(version_str: str):
         @upgrade_settings('3.0.0dev3')
         def rename_toolbar_multiselect(settings):
             '''Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection".'''
-            rename_option_in_settings(settings, 'toolbar_multiselect',
+            rename_option(settings, 'toolbar_multiselect',
                                       'allow_multi_dirs_selection', BoolOption, False)
     """
 
@@ -156,7 +156,7 @@ def _get_sorted_upgrades(
 # ---------------------------------------------------------------------------
 
 
-def rename_option_in_settings(
+def rename_option(
     settings: Settings,
     old_name: str,
     new_name: str,
@@ -199,7 +199,7 @@ def rename_option_in_settings(
             settings.remove(old_name)
 
 
-def upgrade_option_value_in_settings(
+def upgrade_option_value(
     settings: Settings,
     name: str,
     transform: Callable,

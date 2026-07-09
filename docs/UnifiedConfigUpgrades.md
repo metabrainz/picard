@@ -97,8 +97,8 @@ are required (asserted at runtime) to support QSettings deserialization.
 
 | Helper | Purpose |
 |--------|---------|
-| `rename_option_in_settings(settings, old, new, option_type, default, reverse)` | Rename a key, optionally invert boolean |
-| `upgrade_option_value_in_settings(settings, name, transform)` | Apply a value transform to an existing key |
+| `rename_option(settings, old, new, option_type, default, reverse)` | Rename a key, optionally invert boolean |
+| `upgrade_option_value(settings, name, transform)` | Apply a value transform to an existing key |
 | `get_option(settings, name, option_type, default) -> Any` | Read an option value without removing (for complex transforms: type changes, one→many) |
 | `remove_option(settings, name)` | Remove an option key (no-op if absent) |
 | `write_option(settings, name, value)` | Write a value (handles Enum→.value serialization for dicts) |
@@ -185,10 +185,10 @@ Once all hooks are migrated, the following can be removed from
 | `rename_option(config, ...)` | Old-style wrapper, delegates to polymorphic helper |
 | `upgrade_option_value(config, ...)` | Old-style wrapper, delegates to polymorphic helper |
 
-Note: `_rename_option_in_settings` and `_upgrade_option_value_in_settings`
+Note: `_rename_option` and `_upgrade_option_value`
 (the old dict-only helpers) have already been removed — the old-style wrappers
-now delegate to the polymorphic `rename_option_in_settings` and
-`upgrade_option_value_in_settings` directly.
+now delegate to the polymorphic `rename_option` and
+`upgrade_option_value` directly.
 
 `run_config_upgrades()` simplifies to:
 
@@ -215,7 +215,7 @@ combined docstring assembly.
 | Settings vs non-settings | Mixed in same function | Structurally separated by decorator |
 | Testability | Needs full Config/QSettings fixture | Dict path testable with plain dicts |
 | Discovery | Module introspection by name prefix | Decorator registration at import time |
-| Adding a hook | Name function with version, call `rename_option(config, ...)` | Decorate with version, call `rename_option_in_settings(settings, ...)` |
+| Adding a hook | Name function with version, call `rename_option(config, ...)` | Decorate with version, call `rename_option(settings, ...)` |
 | Type safety | `config` parameter (untyped internals) | `settings: Settings` (typed union, asserts in ConfigSection path) |
 
 ---

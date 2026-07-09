@@ -25,73 +25,73 @@ from test.picardtestcase import PicardTestCase
 
 
 class TestRenameOptionInSettingsPolymorphic(PicardTestCase):
-    """Tests for the new polymorphic rename_option_in_settings (dict path)."""
+    """Tests for the new polymorphic rename_option (dict path)."""
 
     def test_rename_existing_key(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         settings = {'old_name': 'value', 'other': 42}
-        rename_option_in_settings(settings, 'old_name', 'new_name')
+        rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'new_name': 'value', 'other': 42}, settings)
 
     def test_rename_with_reverse(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         settings = {'old_name': True}
-        rename_option_in_settings(settings, 'old_name', 'new_name', reverse=True)
+        rename_option(settings, 'old_name', 'new_name', reverse=True)
         self.assertEqual({'new_name': False}, settings)
 
     def test_rename_missing_key(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         settings = {'other': 'value'}
-        rename_option_in_settings(settings, 'old_name', 'new_name')
+        rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'other': 'value'}, settings)
 
     def test_rename_none_value(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         settings = {'old_name': None}
-        rename_option_in_settings(settings, 'old_name', 'new_name')
+        rename_option(settings, 'old_name', 'new_name')
         self.assertEqual({'new_name': None}, settings)
 
     def test_rename_none_value_reverse(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         settings = {'old_name': None}
-        rename_option_in_settings(settings, 'old_name', 'new_name', reverse=True)
+        rename_option(settings, 'old_name', 'new_name', reverse=True)
         self.assertEqual({'new_name': None}, settings)
 
 
 class TestUpgradeOptionValueInSettingsPolymorphic(PicardTestCase):
-    """Tests for the new polymorphic upgrade_option_value_in_settings (dict path)."""
+    """Tests for the new polymorphic upgrade_option_value (dict path)."""
 
     def test_transform_existing_key(self):
-        from picard.config_upgrade import upgrade_option_value_in_settings
+        from picard.config_upgrade import upgrade_option_value
 
         settings = {'my_opt': 'HELLO', 'other': 42}
-        upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'my_opt': 'hello', 'other': 42}, settings)
 
     def test_transform_missing_key(self):
-        from picard.config_upgrade import upgrade_option_value_in_settings
+        from picard.config_upgrade import upgrade_option_value
 
         settings = {'other': 42}
-        upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'other': 42}, settings)
 
     def test_transform_none_value_unchanged(self):
-        from picard.config_upgrade import upgrade_option_value_in_settings
+        from picard.config_upgrade import upgrade_option_value
 
         settings = {'my_opt': None}
-        upgrade_option_value_in_settings(settings, 'my_opt', str.lower)
+        upgrade_option_value(settings, 'my_opt', str.lower)
         self.assertEqual({'my_opt': None}, settings)
 
     def test_transform_list(self):
-        from picard.config_upgrade import upgrade_option_value_in_settings
+        from picard.config_upgrade import upgrade_option_value
 
         settings = {'items': [('Whitelist', True), ('Other', False)]}
-        upgrade_option_value_in_settings(
+        upgrade_option_value(
             settings,
             'items',
             lambda providers: [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in providers],

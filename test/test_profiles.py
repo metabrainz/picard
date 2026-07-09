@@ -389,7 +389,7 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
 
     def test_config_option_rename(self):
-        from picard.config_upgrade import rename_option_in_settings
+        from picard.config_upgrade import rename_option
 
         self.config.setting[self.test_setting_0] = "abc"
         self.config.setting[self.test_setting_1] = True
@@ -404,10 +404,10 @@ class TestUserProfiles(TestPicardProfilesCommon):
         self.config.setting[self.test_setting_0] = "def"
 
         # Rename in base config
-        rename_option_in_settings(self.config.setting, self.test_setting_0, self.test_setting_3, TextOption, "")
+        rename_option(self.config.setting, self.test_setting_0, self.test_setting_3, TextOption, "")
         # Rename in all profile override dicts
         for profile_settings in self.config.profiles[self.SETTINGS_KEY].values():
-            rename_option_in_settings(profile_settings, self.test_setting_0, self.test_setting_3)
+            rename_option(profile_settings, self.test_setting_0, self.test_setting_3)
 
         self.assertEqual(self.config.setting[self.test_setting_3], "def")
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)

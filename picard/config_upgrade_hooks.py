@@ -50,10 +50,10 @@ from picard.config import (
 from picard.config_upgrade import (
     get_option,
     remove_option,
-    rename_option_in_settings,
+    rename_option,
     temp_option,
     upgrade_config,
-    upgrade_option_value_in_settings,
+    upgrade_option_value,
     upgrade_settings,
     write_option,
 )
@@ -101,13 +101,13 @@ from picard.util import unique_numbered_title
 # ---------------
 #
 # Rename an option (works on both dict and ConfigSection):
-#   rename_option_in_settings(settings, 'old_name', 'new_name', BoolOption, False)
+#   rename_option(settings, 'old_name', 'new_name', BoolOption, False)
 #
 # Rename with reversed boolean:
-#   rename_option_in_settings(settings, 'old_name', 'new_name', BoolOption, False, reverse=True)
+#   rename_option(settings, 'old_name', 'new_name', BoolOption, False, reverse=True)
 #
 # Value transform:
-#   upgrade_option_value_in_settings(settings, 'name', lambda v: v.lower())
+#   upgrade_option_value(settings, 'name', lambda v: v.lower())
 #
 # Read old option, write new option, remove old (type change / one→many):
 #   value = get_option(settings, 'old_name', BoolOption, False)
@@ -196,7 +196,7 @@ def merge_va_file_naming(config, interactive=True, merge=True):
 @upgrade_settings('1.3.0dev1')
 def rename_windows_compatible_filenames(settings):
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110)."""
-    rename_option_in_settings(settings, 'windows_compatible_filenames', 'windows_compatibility', BoolOption, True)
+    rename_option(settings, 'windows_compatible_filenames', 'windows_compatibility', BoolOption, True)
 
 
 @upgrade_config('1.3.0dev2')
@@ -335,9 +335,7 @@ def convert_tagger_scripts_to_list(config):
 @upgrade_settings('1.4.0dev7')
 def rename_save_only_front_images_to_tags(settings):
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
-    rename_option_in_settings(
-        settings, 'save_only_front_images_to_tags', 'embed_only_one_front_image', BoolOption, True
-    )
+    rename_option(settings, 'save_only_front_images_to_tags', 'embed_only_one_front_image', BoolOption, True)
 
 
 @upgrade_config('2.0.0dev3')
@@ -367,12 +365,12 @@ def upgrade_genre_options(settings):
         value = get_option(settings, 'folksonomy_tags', BoolOption, False)
         if value:
             write_option(settings, 'use_genres', True)
-    rename_option_in_settings(settings, 'max_tags', 'max_genres', IntOption, 5)
-    rename_option_in_settings(settings, 'min_tag_usage', 'min_genre_usage', IntOption, 90)
-    rename_option_in_settings(settings, 'ignore_tags', 'ignore_genres', TextOption, '')
-    rename_option_in_settings(settings, 'join_tags', 'join_genres', TextOption, '')
-    rename_option_in_settings(settings, 'only_my_tags', 'only_my_genres', BoolOption, False)
-    rename_option_in_settings(settings, 'artists_tags', 'artists_genres', BoolOption, False)
+    rename_option(settings, 'max_tags', 'max_genres', IntOption, 5)
+    rename_option(settings, 'min_tag_usage', 'min_genre_usage', IntOption, 90)
+    rename_option(settings, 'ignore_tags', 'ignore_genres', TextOption, '')
+    rename_option(settings, 'join_tags', 'join_genres', TextOption, '')
+    rename_option(settings, 'only_my_tags', 'only_my_genres', BoolOption, False)
+    rename_option(settings, 'artists_tags', 'artists_genres', BoolOption, False)
 
 
 @upgrade_config('2.2.0dev3')
@@ -419,7 +417,7 @@ def convert_preserved_tags_to_list(config):
 @upgrade_settings('2.5.0dev1')
 def rename_whitelist_ca_provider(settings):
     """Rename whitelist cover art provider"""
-    upgrade_option_value_in_settings(
+    upgrade_option_value(
         settings,
         'ca_providers',
         lambda providers: [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in providers],
@@ -443,8 +441,8 @@ def clear_fpcalc_path(config):
 @upgrade_settings('2.6.0beta2')
 def rename_caa_image_options(settings):
     """Rename caa_image_type_as_filename and caa_save_single_front_image options"""
-    rename_option_in_settings(settings, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
-    rename_option_in_settings(settings, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
+    rename_option(settings, 'caa_image_type_as_filename', 'image_type_as_filename', BoolOption, False)
+    rename_option(settings, 'caa_save_single_front_image', 'save_only_one_front_image', BoolOption, False)
 
 
 @upgrade_config('2.6.0beta3')
@@ -571,7 +569,7 @@ def remove_acousticbrainz_from_toolbar(settings):
         return toolbar_layout
 
     try:
-        upgrade_option_value_in_settings(settings, 'toolbar_layout', _remove_action)
+        upgrade_option_value(settings, 'toolbar_layout', _remove_action)
     except ValueError:
         pass
 
@@ -631,7 +629,7 @@ def reset_options_dialog_splitters(config):
 @upgrade_settings('3.0.0dev3')
 def rename_toolbar_multiselect(settings):
     """Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection"."""
-    rename_option_in_settings(settings, 'toolbar_multiselect', 'allow_multi_dirs_selection', BoolOption, False)
+    rename_option(settings, 'toolbar_multiselect', 'allow_multi_dirs_selection', BoolOption, False)
 
 
 @upgrade_config('3.0.0dev4')
@@ -653,7 +651,7 @@ def sanitize_replace_dir_separator(settings):
             value = value.replace(os.altsep, DEFAULT_REPLACEMENT)
         return value
 
-    upgrade_option_value_in_settings(settings, 'replace_dir_separator', _sanitize)
+    upgrade_option_value(settings, 'replace_dir_separator', _sanitize)
 
 
 @upgrade_settings('3.0.0dev6')
@@ -673,13 +671,13 @@ def change_theme_system_to_default(settings):
     def _fix_theme(value):
         return UiTheme.DEFAULT.value if value == "system" else value
 
-    upgrade_option_value_in_settings(settings, 'ui_theme', _fix_theme)
+    upgrade_option_value(settings, 'ui_theme', _fix_theme)
 
 
 @upgrade_settings('3.0.0dev8')
 def rename_dont_write_tags(settings):
     """Option "dont_write_tags" was renamed to "enable_tag_saving" (value is reversed)."""
-    rename_option_in_settings(settings, 'dont_write_tags', 'enable_tag_saving', BoolOption, False, reverse=True)
+    rename_option(settings, 'dont_write_tags', 'enable_tag_saving', BoolOption, False, reverse=True)
 
 
 @upgrade_config('3.0.0dev9')
@@ -698,7 +696,7 @@ def remove_old_plugin_options(config):
 def lowercase_cover_art_formats(settings):
     """Update cover art processing format options"""
     for setting_key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
-        upgrade_option_value_in_settings(
+        upgrade_option_value(
             settings,
             setting_key,
             lambda value: value.lower() if isinstance(value, str) else value,
@@ -722,8 +720,8 @@ def fix_matchedtracks_in_scripts(settings):
     def fix_tagger_scripts(scripts):
         return [(pos, name, enabled, fix_matchedtracks(script)) for pos, name, enabled, script in scripts]
 
-    upgrade_option_value_in_settings(settings, 'file_renaming_scripts', fix_renaming_scripts)
-    upgrade_option_value_in_settings(settings, 'list_of_scripts', fix_tagger_scripts)
+    upgrade_option_value(settings, 'file_renaming_scripts', fix_renaming_scripts)
+    upgrade_option_value(settings, 'list_of_scripts', fix_tagger_scripts)
 
 
 @upgrade_config('3.0.0a3')
@@ -736,7 +734,7 @@ def remove_persisted_column_config(config):
 @upgrade_settings('3.0.0b2')
 def rename_artist_locales(settings):
     """Option "artist_locales" was renamed to "translation_locales"."""
-    rename_option_in_settings(settings, 'artist_locales', 'translation_locales', ListOption, ['en'])
+    rename_option(settings, 'artist_locales', 'translation_locales', ListOption, ['en'])
 
 
 @upgrade_settings('3.0.0b3')
@@ -754,9 +752,7 @@ def remove_similarity_thresholds(settings):
 @upgrade_settings('3.0.0b5')
 def rename_selected_file_naming_script_id(settings):
     """Option "selected_file_naming_script_id" was renamed to "active_file_naming_script_id"."""
-    rename_option_in_settings(
-        settings, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, ''
-    )
+    rename_option(settings, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
 
 
 @upgrade_settings('3.0.0b5')
@@ -770,7 +766,7 @@ def add_quick_menu_items(settings):
                 items.insert(0, item)
         return items
 
-    upgrade_option_value_in_settings(settings, 'quick_menu_items', _add_items)
+    upgrade_option_value(settings, 'quick_menu_items', _add_items)
 
 
 @upgrade_settings('3.0.0b6')
