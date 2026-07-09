@@ -32,6 +32,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from typing import TYPE_CHECKING
+
 from PyQt6 import (
     QtCore,
     QtGui,
@@ -45,7 +47,6 @@ from picard import (
 from picard.config import (
     Option,
     OptionError,
-    SettingConfigSection,
     get_config,
 )
 from picard.extension_points.options_pages import ext_point_options_pages
@@ -54,8 +55,10 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.profile import (
+    is_plugin_profile_key,
     profile_groups_group_from_page,
     profile_groups_order,
+    setting_profile_key,
 )
 from picard.util import (
     get_url,
@@ -66,6 +69,7 @@ from picard.ui import (
     HashableTreeWidgetItem,
     PicardDialog,
     SingletonDialog,
+    modal_options,
 )
 from picard.ui.colors import interface_colors as _interface_colors
 from picard.ui.forms.ui_options import Ui_OptionsDialog
@@ -110,6 +114,10 @@ from picard.ui.options import (  # noqa: F401 # pylint: disable=unused-import
 )
 
 
+if TYPE_CHECKING:
+    from picard.ui.options.profiles import ProfilesOptionsPage
+
+
 class ErrorOptionsPage(OptionsPage):
     def __init__(self, parent=None, errmsg='', from_cls: OptionsPage | None = None, dialog=None):
         # copy properties from failing page
@@ -152,6 +160,11 @@ class ErrorOptionsPage(OptionsPage):
         self.ui = layout
 
         self.dialog = dialog
+
+
+def _is_simple_value(value) -> bool:
+    """Return True if the value is a simple scalar that can be reliably compared."""
+    return isinstance(value, (str, int, float, bool))
 
 
 class OptionsDialog(PicardDialog, SingletonDialog):
@@ -213,7 +226,22 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def __init__(self, default_page=None, parent=None):
         super().__init__(parent=parent)
-        self.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        if modal_options():
+            # On macOS: use WindowModal (blocks MainWindow, allows child windows
+            # like Script Editor to be shown above). Add Window flag to prevent
+            # sheet rendering.
+            self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.Window)
+        else:
+            # On Linux/Windows: use NonModal + disabled MainWindow (set in
+            # show_options). Use Tool type to stay above parent (MainWindow)
+            # without staying on top of other applications.
+            self.setWindowModality(QtCore.Qt.WindowModality.NonModal)
+            self.setWindowFlags(
+                QtCore.Qt.WindowType.Tool
+                | QtCore.Qt.WindowType.WindowTitleHint
+                | QtCore.Qt.WindowType.WindowSystemMenuHint
+                | QtCore.Qt.WindowType.WindowCloseButtonHint
+            )
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_DeleteOnClose)
 
         self.ui = Ui_OptionsDialog()
@@ -285,6 +313,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.default_item = None
         if not default_page:
             default_page = config.persist['options_last_active_page']
+        self._default_page = default_page
         log.debug("OptionsDialog init: Trying to restore page '%s'", default_page)
         self.add_pages(None, default_page, self.ui.pages_tree)
 
@@ -300,8 +329,6 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.finished.connect(self.saveWindowState)
 
         self.load_all_pages()
-        self.first_enter = True
-        self.installEventFilter(self)
 
         maintenance_page = self.get_page('maintenance')
         if maintenance_page.loaded:
@@ -378,19 +405,14 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         message_box.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
         message_box.exec()
 
-    def display_attached_profiles(self, option_group):
+    def display_attached_profiles(self, option_group: dict) -> None:
         profile_page = self.get_page('profiles')
-        override_profiles = profile_page._clean_and_get_all_profiles()
-        override_settings = profile_page.profile_settings
         profile_dialog = AttachedProfilesDialog(
             option_group,
+            profile_page,
             parent=self,
-            override_profiles=override_profiles,
-            override_settings=override_settings,
         )
-        profile_dialog.show()
-        profile_dialog.raise_()
-        profile_dialog.activateWindow()
+        profile_dialog.show_modal()
 
     def update_from_profile_changes(self):
         if not self.suspend_signals:
@@ -406,84 +428,142 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
     def highlight_enabled_profile_options(self, load_settings=False):
         working_profiles, working_settings = self.get_working_profile_data()
-        fg_color = _interface_colors.get_color('profile_hl_fg')
-        bg_color = _interface_colors.get_color('profile_hl_bg')
+        bg_tracked = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=50)
+        bg_override = _interface_colors.get_color_css_rgba('profile_hl_bg', alpha=120)
 
         for page in self.loaded_pages:
             option_group = profile_groups_group_from_page(page)
             if option_group:
                 if load_settings:
                     page.load()
+                seen_widgets = set()
                 for opt in option_group['settings']:
                     for objname in opt.highlights:
                         try:
                             obj = getattr(page.ui, objname)
                         except AttributeError:
+                            try:
+                                obj = getattr(page, objname)
+                            except AttributeError:
+                                log.warning(
+                                    "Option '%s' references widget '%s' not found on page '%s'",
+                                    opt.name,
+                                    objname,
+                                    page.NAME,
+                                )
+                                continue
+                        if not isinstance(obj, QtWidgets.QWidget):
+                            log.warning(
+                                "Option '%s' references widget '%s', expected QWidget, found '%s' on page '%s'",
+                                opt.name,
+                                objname,
+                                obj.__class__.__name__,
+                                page.NAME,
+                            )
                             continue
-                        style = "#%s { color: %s; background-color: %s; }" % (objname, fg_color, bg_color)
+                        # Skip list/tree views - stylesheets break checkable item rendering
+                        if isinstance(obj, QtWidgets.QAbstractItemView):
+                            continue
+                        style_override = "#%s { background-color: %s; }" % (objname, bg_override)
+                        style_tracked = "#%s { background-color: %s; }" % (objname, bg_tracked)
                         style_reset = "#%s { }" % (objname)
                         self._check_and_highlight_option(
-                            obj, opt.name, working_profiles, working_settings, style, style_reset
+                            obj,
+                            setting_profile_key(opt.name, opt.section),
+                            working_profiles,
+                            working_settings,
+                            style_override,
+                            style_tracked,
+                            style_reset,
+                            seen_widgets,
                         )
 
-    def _check_and_highlight_option(self, obj, option_name, working_profiles, working_settings, style, style_reset):
+    def _check_and_highlight_option(
+        self,
+        obj,
+        option_name,
+        working_profiles,
+        working_settings,
+        style_override,
+        style_tracked,
+        style_reset,
+        seen_widgets,
+    ):
         obj.setStyleSheet(style_reset)
-        obj.setToolTip(None)
+        # Save original tooltip on first encounter, restore it on each pass
+        if not hasattr(obj, '_original_tooltip'):
+            obj._original_tooltip = obj.toolTip() or ''
+        obj.setToolTip(obj._original_tooltip)
+        config = get_config()
         for item in working_profiles:
-            if item['enabled']:
-                profile_id = item['id']
-                profile_title = item['title']
-                if profile_id in working_settings:
-                    profile_settings = working_settings[profile_id]
+            if not item['enabled']:
+                continue
+            profile_id = item['id']
+            profile_title = item['title']
+            profile_settings = working_settings.get(profile_id, {})
+            if option_name not in profile_settings:
+                continue
+            profile_value = profile_settings[option_name]
+            if profile_value is None:
+                # Tracked but no value set yet
+                tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                obj.setStyleSheet(style_tracked)
+            else:
+                # Check if value actually differs from base
+                if is_plugin_profile_key(option_name):
+                    section, name = option_name.split('/', 1)
+                    opt = Option.get(section, name)
+                    base_value = opt.default if opt else None
                 else:
-                    profile_settings = {}
-                if option_name in profile_settings:
-                    tooltip = _("This option will be saved to profile: %s") % profile_title
+                    opt = Option.get('setting', option_name)
+                    with config.setting.no_profile():
+                        base_value = config.setting[option_name]
+                # Convert profile value to same type for comparison
+                if opt:
                     try:
-                        obj.setStyleSheet(style)
-                        obj.setToolTip(tooltip)
-                    except AttributeError:
+                        profile_value = opt.convert(profile_value)
+                    except (ValueError, TypeError):
                         pass
-                    break
+                if _is_simple_value(profile_value) and profile_value != base_value:
+                    tooltip_text = _("This option is overridden by profile: %s") % profile_title
+                    obj.setStyleSheet(style_override)
+                else:
+                    tooltip_text = _("This option is tracked by profile: %s") % profile_title
+                    obj.setStyleSheet(style_tracked)
+            # Append to existing tooltip if not already present
+            if obj in seen_widgets:
+                break
+            seen_widgets.add(obj)
+            # Fix combobox dropdown text color
+            if isinstance(obj, QtWidgets.QComboBox):
+                pal = obj.view().palette()
+                pal.setColor(
+                    pal.ColorRole.HighlightedText,
+                    QtGui.QColor(_interface_colors.get_color('profile_hl_fg')),
+                )
+                obj.view().setPalette(pal)
+            existing = obj.toolTip() or ''
+            if existing:
+                if QtCore.Qt.mightBeRichText(existing):
+                    from html import escape
 
-    def eventFilter(self, object, event):
-        """Process selected events."""
-        evtype = event.type()
-        if evtype == QtCore.QEvent.Type.Enter:
-            if self.first_enter:
-                self.first_enter = False
-                if self.tagger and self.tagger.window.script_editor_dialog is not None:
-                    self.get_page('filerenaming').show_script_editing_page()
-                    self.activateWindow()
-        return False
+                    obj.setToolTip(existing + '<br>' + escape(tooltip_text))
+                else:
+                    obj.setToolTip(existing + '\n' + tooltip_text)
+            else:
+                obj.setToolTip(tooltip_text)
+            break
 
     def get_page(self, pagename):
         return self.item_to_page[self.pagename_to_item[pagename]]
 
-    def page_has_attached_profiles(self, page, enabled_profiles_only=False):
-        if not page.loaded:
-            return False
-        profile_page = self.get_page('profiles')
-        if not profile_page.loaded:
-            return False
-        option_group = profile_groups_group_from_page(page)
-        if not option_group:
-            return False
-        working_profiles, working_settings = self.get_working_profile_data()
-        for opt in option_group['settings']:
-            for item in working_profiles:
-                if enabled_profiles_only and not item['enabled']:
-                    continue
-                profile_id = item['id']
-                if opt.name in working_settings[profile_id]:
-                    return True
-        return False
-
     def set_profiles_button_and_highlight(self, page):
-        if self.page_has_attached_profiles(page):
-            self.ui.attached_profiles_button.setDisabled(False)
-        else:
-            self.ui.attached_profiles_button.setDisabled(True)
+        option_group = profile_groups_group_from_page(page)
+        enabled = False
+        if option_group:
+            working_profiles, _ = self.get_working_profile_data()
+            enabled = any(p['enabled'] for p in working_profiles)
+        self.ui.attached_profiles_button.setEnabled(enabled)
         self.update_profile_save_warning(page)
 
     def update_profile_save_warning(self, page):
@@ -500,19 +580,25 @@ class OptionsDialog(PicardDialog, SingletonDialog):
                     if profile_id not in working_settings:
                         continue
                     profile_settings = working_settings[profile_id]
-                    if opt.name in profile_settings:
+                    if setting_profile_key(opt.name, opt.section) in profile_settings:
                         profile_set.add((idx, item['title']))
-                        break
 
         if not profile_set:
             self.ui.profile_warning.setVisible(False)
             return
 
-        if len(profile_set) == 1:
-            text = _('profile "%s"') % profile_set.pop()[1]
+        sorted_profiles = sorted(profile_set)
+        if len(sorted_profiles) <= 3:
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles])
         else:
-            text = _('profiles %s') % ', '.join([f'"{p[1]}"' for p in sorted(profile_set)])
-        self.profile_warning_text.setText(_('The highlighted settings will be applied to %s') % text)
+            names = ', '.join([f'"{p[1]}"' for p in sorted_profiles[:3]]) + ', …'
+
+        has_highlights = option_group and any(opt.highlights for opt in option_group['settings'])
+        if has_highlights:
+            msg = _('The highlighted settings on this page are overridden by %s') % names
+        else:
+            msg = _('Some settings on this page are overridden by %s') % names
+        self.profile_warning_text.setText(msg)
         self.ui.profile_warning.setVisible(True)
 
     def switch_page(self):
@@ -618,7 +704,7 @@ class OptionsDialog(PicardDialog, SingletonDialog):
         self.default_item = None  # Clear reference to deleted tree item
 
         # Rebuild pages tree
-        default_page = current_page or config.persist['options_last_active_page']
+        default_page = current_page or self._default_page
         self.add_pages(None, default_page, self.ui.pages_tree)
 
         # Restore tree state
@@ -633,6 +719,15 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             self.ui.pages_tree.setCurrentItem(self.default_item)
 
         log.debug("refresh_plugin_pages: Refresh complete")
+
+        # Rebuild the profile settings tree to reflect plugin option changes.
+        # Use profile_selected() instead of load() to preserve unsaved
+        # in-memory profile data (new profiles, settings changes).
+        profile_page = self.get_page('profiles')
+        if profile_page and profile_page.loaded:
+            profile_page.profile_selected()
+            profile_page.update_config_overrides()
+            self.highlight_enabled_profile_options()
 
     def enable_page(self, pagename):
         """Enable a page in the options tree."""
@@ -666,11 +761,23 @@ class OptionsDialog(PicardDialog, SingletonDialog):
 
         # Force the `profiles` page to always save first to avoid an error when
         # saving settings to a new profile that has been marked as enabled.
-        pages = [
-            self.get_page('profiles'),
-        ]
-        pages.extend(x for x in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)) if x.NAME != 'profiles')
-        for page in pages:
+        profile_page = self.get_page('profiles')
+        try:
+            profile_page.save()
+        except Exception as e:
+            log.exception("Failed saving options page %r", profile_page)
+            self._show_page_error(profile_page, e)
+            return
+
+        # Clear overrides so subsequent page saves use persisted profile state
+        # rather than the dialog's working copy (which was already saved above)
+        config = get_config()
+        config.setting.set_profiles_override()
+        config.setting.set_settings_override()
+
+        for page in sorted(self.loaded_pages, key=lambda p: (p.SORT_ORDER, p.NAME)):
+            if page.NAME == 'profiles':
+                continue
             try:
                 page.save()
             except Exception as e:
@@ -747,66 +854,239 @@ class OptionsDialog(PicardDialog, SingletonDialog):
             function()
 
 
+class _NoSelectionDelegate(QtWidgets.QStyledItemDelegate):
+    """Delegate that paints items without selection highlight."""
+
+    def initStyleOption(self, option, index):
+        super().initStyleOption(option, index)
+        option.state &= ~QtWidgets.QStyle.StateFlag.State_Selected
+
+
 class AttachedProfilesDialog(PicardDialog):
     NAME = 'attachedprofiles'
     TITLE = N_("Attached Profiles")
+    MARKER_ACTIVE = "★"
+    MARKER_INACTIVE = "☆"
 
-    def __init__(self, option_group, parent=None, override_profiles=None, override_settings=None):
+    def __init__(self, option_group: dict, profile_page: 'ProfilesOptionsPage', parent=None) -> None:
         super().__init__(parent=parent)
         self.option_group = option_group
+        self.profile_page = profile_page
+        self._building_tree: bool = False
+        self._highlighted_item: QtWidgets.QTreeWidgetItem | None = None
+
         self.ui = Ui_AttachedProfilesDialog()
         self.ui.setupUi(self)
         self.ui.buttonBox.addButton(QtWidgets.QDialogButtonBox.StandardButton.Close)
         self.ui.buttonBox.rejected.connect(self.close_window)
+        self.ui.splitter.setStretchFactor(1, 1)
 
-        config = get_config()
-        if override_profiles is None or override_settings is None:
-            self.profiles = config.profiles[SettingConfigSection.PROFILES_KEY]
-            self.settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
-        else:
-            self.profiles = override_profiles
-            self.settings = override_settings
+        self.setWindowTitle(_("Profiles Attached to Options in %s Section") % self.option_group['title'])
 
-        self.populate_table()
+        # Only show enabled profiles
+        self._enabled_profiles = [p for p in self.profile_page._clean_and_get_all_profiles() if p['enabled']]
 
-        self.ui.buttonBox.setFocus()
-        self.setModal(True)
+        self._populate_profile_list()
+        self.ui.profile_list.setIndentation(0)
+        self.ui.profile_list.setItemDelegateForColumn(0, _NoSelectionDelegate(self.ui.profile_list))
+        self.ui.profile_list.itemSelectionChanged.connect(self._on_selection_changed)
+        self.ui.settings_tree.itemChanged.connect(self._on_item_changed)
+        self.ui.settings_tree.setMouseTracking(True)
+        self.ui.settings_tree.setIndentation(0)
+        self.ui.settings_tree.itemEntered.connect(self._on_item_hovered)
 
-    def populate_table(self):
-        model = QtGui.QStandardItemModel()
-        model.setColumnCount(2)
-        header_names = (_("Option"), _("Attached Profiles"))
-        model.setHorizontalHeaderLabels(header_names)
+        # Hide left pane if only one enabled profile
+        if len(self._enabled_profiles) <= 1:
+            self.ui.profile_list.setSelectionMode(QtWidgets.QAbstractItemView.SelectionMode.NoSelection)
 
-        window_title = _("Profiles Attached to Options in %s Section") % self.option_group['title']
-        self.setWindowTitle(window_title)
+        self._last_selection = []
+        if len(self._enabled_profiles) > 1 and self.ui.profile_list.topLevelItemCount() > 0:
+            self.ui.profile_list.topLevelItem(0).setSelected(True)
+        elif len(self._enabled_profiles) == 1:
+            self._populate_settings_tree()
 
+    # --- Profile list ---
+
+    def _populate_profile_list(self) -> None:
+        self.ui.profile_list.clear()
+        self.ui.profile_list.setToolTip(
+            _(
+                "Hover an option to see which profiles contain it.\n"
+                "%s = option is in this profile, %s = option is not in this profile"
+            )
+            % (self.MARKER_ACTIVE, self.MARKER_INACTIVE)
+        )
+        fm = self.ui.profile_list.fontMetrics()
+        marker_width = fm.horizontalAdvance(self.MARKER_ACTIVE) + 4
+        marker_height = fm.boundingRect(self.MARKER_ACTIVE).height()
+        marker_size = QtCore.QSize(marker_width, marker_height)
+        for profile in self._enabled_profiles:
+            item = QtWidgets.QTreeWidgetItem([self.MARKER_INACTIVE, profile['title']])
+            item.setData(0, QtCore.Qt.ItemDataRole.UserRole, profile['id'])
+            item.setSizeHint(0, marker_size)
+            self.ui.profile_list.addTopLevelItem(item)
+        self.ui.profile_list.header().setMinimumSectionSize(marker_width)
+        self.ui.profile_list.header().resizeSection(0, marker_width)
+        self.ui.profile_list.header().setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeMode.Fixed)
+
+    def _selected_profile_ids(self) -> list[str]:
+        ids = [item.data(0, QtCore.Qt.ItemDataRole.UserRole) for item in self.ui.profile_list.selectedItems()]
+        if not ids:
+            # No selection (single profile mode) — use all enabled profiles
+            ids = [p['id'] for p in self._enabled_profiles]
+        return ids
+
+    def _on_selection_changed(self) -> None:
+        if not self.ui.profile_list.selectedItems():
+            # Never allow empty selection
+            self.ui.profile_list.blockSignals(True)
+            if len(self._last_selection) == 1:
+                self._last_selection[0].setSelected(True)
+            else:
+                first = self.ui.profile_list.topLevelItem(0)
+                first.setSelected(True)
+                self._last_selection = [first]
+            self.ui.profile_list.blockSignals(False)
+            return
+        self._last_selection = list(self.ui.profile_list.selectedItems())
+        self._populate_settings_tree()
+
+    # --- Settings tree ---
+
+    def _populate_settings_tree(self) -> None:
+        self._building_tree = True
+        self._highlighted_item = None
+        self._check_states = {}
+        self.ui.settings_tree.clear()
+        selected_ids = self._selected_profile_ids()
         for setting in self.option_group['settings']:
             try:
-                title = Option.get_title('setting', setting.name)
+                title = Option.get_title(setting.section, setting.name)
             except OptionError as e:
                 log.debug(e)
                 continue
-            option_item = QtGui.QStandardItem(_(title))
-            option_item.setEditable(False)
-            attached = []
-            for profile in self.profiles:
-                if setting.name in self.settings[profile['id']]:
-                    if profile['enabled']:
-                        display_title = _('{profile} [Enabled]').format(profile=profile['title'])
-                    else:
-                        display_title = profile['title']
-                    attached.append(display_title)
-            attached_profiles = "\n".join(attached) or _("None")
-            profile_item = QtGui.QStandardItem(attached_profiles)
-            profile_item.setEditable(False)
-            model.appendRow((option_item, profile_item))
+            if title is None:
+                title = setting.name
+            pkey = setting_profile_key(setting.name, setting.section)
+            item = QtWidgets.QTreeWidgetItem([_(title)])
+            item.setData(0, QtCore.Qt.ItemDataRole.UserRole, pkey)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            state = self._compute_check_state(pkey, selected_ids)
+            self._check_states[pkey] = state
+            item.setCheckState(0, state)
+            item.setToolTip(0, self._build_tooltip(pkey))
+            self.ui.settings_tree.addTopLevelItem(item)
+        self._building_tree = False
 
-        self.ui.options_list.setModel(model)
-        self.ui.options_list.resizeColumnsToContents()
-        self.ui.options_list.resizeRowsToContents()
-        self.ui.options_list.horizontalHeader().setStretchLastSection(True)
+    def _compute_check_state(self, pkey: str, selected_ids: list[str]) -> QtCore.Qt.CheckState:
+        """Determine check state for an option given selected profiles."""
+        if selected_ids:
+            in_count = sum(1 for pid in selected_ids if pkey in self.profile_page.get_settings_for_profile(pid))
+            if in_count == len(selected_ids):
+                return QtCore.Qt.CheckState.Checked
+            if in_count > 0:
+                return QtCore.Qt.CheckState.PartiallyChecked
+        # Check if any other enabled profile has it
+        selected_set = set(selected_ids)
+        for profile in self._enabled_profiles:
+            if profile['id'] in selected_set:
+                continue
+            if pkey in self.profile_page.profile_settings.get(profile['id'], {}):
+                return QtCore.Qt.CheckState.PartiallyChecked
+        return QtCore.Qt.CheckState.Unchecked
 
-    def close_window(self):
-        """Close the script metadata editor window."""
+    def _build_tooltip(self, pkey: str) -> str:
+        """Build tooltip explaining current state and what clicking will do."""
+        selected_ids = self._selected_profile_ids()
+        state = self._compute_check_state(pkey, selected_ids)
+        if state == QtCore.Qt.CheckState.Checked:
+            tooltip = _("This option is in the selected profile(s).\nClick to remove it from them.")
+        elif state == QtCore.Qt.CheckState.PartiallyChecked:
+            # Find which profile(s) have it
+            profiles_with = []
+            for profile in self._enabled_profiles:
+                if pkey in self.profile_page.profile_settings.get(profile['id'], {}):
+                    profiles_with.append(profile['title'])
+            tooltip = _("This option is in: %s\nClick to add it to the selected profile(s).") % ", ".join(profiles_with)
+        else:
+            tooltip = _("This option is not in any profile.\nClick to add it to the selected profile(s).")
+        return tooltip
+
+    def _on_item_changed(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
+        if self._building_tree:
+            return
+        # Only react to actual check state changes
+        pkey = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        new_state = item.checkState(0)
+        if self._check_states.get(pkey) == new_state:
+            return
+        selected_ids = self._selected_profile_ids()
+        if not selected_ids:
+            return
+        # User clicked: partial or unchecked → add to selected profiles
+        # checked → remove from selected profiles
+        if new_state != QtCore.Qt.CheckState.Unchecked:
+            # Any click from partial/unchecked means "add"
+            for pid in selected_ids:
+                settings = self.profile_page.get_settings_for_profile(pid)
+                if pkey not in settings:
+                    settings[pkey] = None
+        else:
+            # Unchecked means "remove from selected profiles"
+            for pid in selected_ids:
+                settings = self.profile_page.get_settings_for_profile(pid)
+                settings.pop(pkey, None)
+        # Recompute correct state (may become partial if other profiles have it)
+        correct_state = self._compute_check_state(pkey, selected_ids)
+        self._check_states[pkey] = correct_state
+        if item.checkState(0) != correct_state:
+            self.ui.settings_tree.blockSignals(True)
+            item.setCheckState(0, correct_state)
+            self.ui.settings_tree.blockSignals(False)
+        item.setToolTip(0, self._build_tooltip(pkey))
+        self._update_profile_markers(pkey)
+        self.profile_page.update_config_overrides()
+        self.profile_page.profile_selected(update_settings=True)
+        self.profile_page.reload_all_page_settings()
+
+    def _on_item_hovered(self, item: QtWidgets.QTreeWidgetItem, column: int) -> None:
+        """Show filled circle on profile list items that contain the hovered option."""
+        if self._highlighted_item is item:
+            return
+        # Highlight the option row
+        self._clear_option_highlight()
+        bg = QtGui.QColor(_interface_colors.get_color('profile_hl_bg'))
+        bg.setAlpha(80)
+        item.setBackground(0, QtGui.QBrush(bg))
+        self._highlighted_item = item
+        # Update markers
+        pkey = item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+        self._update_profile_markers(pkey)
+
+    def _update_profile_markers(self, pkey: str) -> None:
+        for i in range(self.ui.profile_list.topLevelItemCount()):
+            list_item = self.ui.profile_list.topLevelItem(i)
+            pid = list_item.data(0, QtCore.Qt.ItemDataRole.UserRole)
+            psettings = self.profile_page.profile_settings.get(pid, {})
+            marker = self.MARKER_ACTIVE if pkey in psettings else self.MARKER_INACTIVE
+            if list_item.text(0) != marker:
+                list_item.setText(0, marker)
+
+    def _clear_profile_highlights(self) -> None:
+        for i in range(self.ui.profile_list.topLevelItemCount()):
+            list_item = self.ui.profile_list.topLevelItem(i)
+            if list_item.text(0) != self.MARKER_INACTIVE:
+                list_item.setText(0, self.MARKER_INACTIVE)
+        self._clear_option_highlight()
+
+    def _clear_option_highlight(self) -> None:
+        if self._highlighted_item:
+            self._highlighted_item.setBackground(0, QtGui.QBrush())
+            self._highlighted_item = None
+
+    def leaveEvent(self, event):
+        self._clear_profile_highlights()
+        super().leaveEvent(event)
+
+    def close_window(self) -> None:
         self.close()

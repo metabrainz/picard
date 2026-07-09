@@ -35,6 +35,7 @@ from picard.coverart.utils import CAA_TYPES
 from picard.i18n import N_
 
 from picard.ui.forms.ui_provider_options_local import Ui_LocalOptions
+from picard.ui.options import PageOptionConfigs
 
 
 class ProviderOptionsLocal(ProviderOptions):
@@ -42,7 +43,12 @@ class ProviderOptionsLocal(ProviderOptions):
     Options for Local Files cover art provider
     """
 
+    NAME = "provider_local"
     HELP_URL = '/config/options_local_files.html'
+
+    OPTIONS: PageOptionConfigs = {
+        'local_cover_regex': {'widgets': ['local_cover_regex_edit']},
+    }
 
     _options_ui = Ui_LocalOptions
 

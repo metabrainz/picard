@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 from functools import partial
+import html
 
 from PyQt6 import (
     QtCore,
@@ -39,6 +40,12 @@ from picard.metadata import (
 )
 from picard.plugin3.asyncops.manager import AsyncPluginManager
 from picard.plugin3.plugin import PluginState
+from picard.plugin3.plugin_metadata import (
+    LOCAL_DEV_MARKER,
+    LOCAL_MARKER,
+    REF_TYPE_LOCAL_DEV,
+    is_local_plugin,
+)
 from picard.plugin3.ref_item import RefItem
 from picard.util import temporary_disconnect
 
@@ -267,8 +274,19 @@ class PluginListWidget(QtWidgets.QWidget):
             if plugin.uuid:
                 metadata = self.plugin_manager._metadata.get_plugin_metadata(plugin.uuid)
                 if metadata:
+                    # For local plugins, show translated 'local' or 'local-dev'
+                    if is_local_plugin(metadata):
+                        label = LOCAL_DEV_MARKER if metadata.ref_type == REF_TYPE_LOCAL_DEV else LOCAL_MARKER
+                        return f'<b>{html.escape(_(label))}</b>'
                     git_ref = metadata.get_git_ref()
                     ref_item = RefItem.from_git_ref(git_ref)
+                    result = html_ref_format(ref_item)
+                    if result:
+                        return result
+                # No metadata (e.g. fresh config), fall back to local git repo
+                ref_name, commit = self.plugin_manager._metadata._get_current_ref_info(plugin)
+                if ref_name:
+                    ref_item = RefItem(shortname=ref_name, commit=commit)
                     result = html_ref_format(ref_item)
                     if result:
                         return result
@@ -281,7 +299,10 @@ class PluginListWidget(QtWidgets.QWidget):
         return _("Unknown")
 
     def _set_version_tooltip(self, item, plugin):
-        """Set tooltip on Version column with commit date if available."""
+        """Set tooltip on Version column with source path or commit date."""
+        if self.plugin_manager.is_local_plugin(plugin):
+            item.setToolTip(COLUMN_VERSION, str(plugin.local_path))
+            return
         commit_date = plugin.get_current_commit_date()
         if commit_date:
             item.setToolTip(COLUMN_VERSION, commit_date_display(commit_date))
@@ -595,10 +616,17 @@ class PluginListWidget(QtWidgets.QWidget):
 
         menu.addSeparator()
 
-        # Update action
-        update_action = menu.addAction(_("Update"))
-        update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
-        update_action.setEnabled(self._has_update_available(plugin))
+        # Determine if this is a local non-git plugin
+        is_local = self.plugin_manager.is_local_plugin(plugin)
+
+        # Update/Reload action
+        if is_local:
+            reload_action = menu.addAction(_("Reload"))
+            reload_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+        else:
+            update_action = menu.addAction(_("Update"))
+            update_action.triggered.connect(lambda: self._update_plugin_from_menu(plugin))
+            update_action.setEnabled(self._has_update_available(plugin))
 
         # Uninstall action
         uninstall_action = menu.addAction(_("Uninstall"))
@@ -608,9 +636,10 @@ class PluginListWidget(QtWidgets.QWidget):
         reinstall_action = menu.addAction(_("Reinstall"))
         reinstall_action.triggered.connect(lambda: self._reinstall_plugin_from_menu(plugin))
 
-        # Switch ref action
-        switch_ref_action = menu.addAction(_("Switch Ref"))
-        switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
+        # Switch ref action (disabled for local non-git plugins)
+        if not is_local:
+            switch_ref_action = menu.addAction(_("Switch Ref"))
+            switch_ref_action.triggered.connect(lambda: self._switch_ref_from_menu(plugin))
 
         menu.addSeparator()
 
@@ -621,7 +650,10 @@ class PluginListWidget(QtWidgets.QWidget):
         # View repository action (if available)
         remote_url = self._get_plugin_remote_url(plugin)
         if remote_url:
-            view_repo_action = menu.addAction(_("View Repository"))
+            if is_local:
+                view_repo_action = menu.addAction(_("View Directory"))
+            else:
+                view_repo_action = menu.addAction(_("View Repository"))
             view_repo_action.triggered.connect(lambda: self._view_repository(plugin))
 
         # Report bug action (if available)
@@ -689,7 +721,8 @@ class PluginListWidget(QtWidgets.QWidget):
             # Refresh the plugin list
             self.populate_plugins(self.plugin_manager.plugins)
             # Emit signal for options dialog to refresh and update updates dict
-            self.plugin_state_changed.emit(plugin, "updated")
+            action = "reloaded" if self.plugin_manager.is_local_plugin(plugin) else "updated"
+            self.plugin_state_changed.emit(plugin, action)
         else:
             error_msg = str(result.error) if result.error else _("Unknown error")
             self._update_error_dialog(plugin, error_msg)
@@ -704,7 +737,10 @@ class PluginListWidget(QtWidgets.QWidget):
     def _uninstall_plugin_from_menu(self, plugin):
         """Uninstall plugin from context menu."""
         dialog = UninstallPluginDialog(plugin, self)
-        dialog.exec()
+        dialog.finished.connect(lambda: self._on_uninstall_dialog_finished(dialog, plugin))
+        dialog.open()
+
+    def _on_uninstall_dialog_finished(self, dialog, plugin):
         if dialog.uninstall_confirmed:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.uninstall_plugin(
@@ -739,6 +775,30 @@ class PluginListWidget(QtWidgets.QWidget):
                 return
             plugin_url = metadata.url
 
+            # For local-dev plugins, warn that reinstall will switch to git-managed mode
+            no_git = False
+            if metadata.ref_type == REF_TYPE_LOCAL_DEV:
+                msgbox = QtWidgets.QMessageBox(self)
+                msgbox.setWindowTitle(_("Reinstall Local Plugin"))
+                msgbox.setText(
+                    _(
+                        "This plugin is loaded in local mode (git ignored).\n\n"
+                        "Do you want to keep it in local mode, or switch to "
+                        "git-managed mode (cloned to plugin directory)?"
+                    )
+                )
+                keep_local_btn = msgbox.addButton(_("Keep local"), QtWidgets.QMessageBox.ButtonRole.YesRole)
+                switch_git_btn = msgbox.addButton(_("Switch to git"), QtWidgets.QMessageBox.ButtonRole.NoRole)
+                msgbox.addButton(QtWidgets.QMessageBox.StandardButton.Cancel)
+                msgbox.exec()
+                clicked = msgbox.clickedButton()
+                if clicked == keep_local_btn:
+                    no_git = True
+                elif clicked == switch_git_btn:
+                    no_git = False
+                else:
+                    return
+
             # Get current ref for reinstall
             current_ref = None
             try:
@@ -749,19 +809,27 @@ class PluginListWidget(QtWidgets.QWidget):
                 pass
 
             # Show confirmation dialog
-            confirm_dialog = InstallConfirmDialog(plugin.name(), plugin_url, self, plugin.uuid, current_ref)
-            if confirm_dialog.exec() != QtWidgets.QDialog.DialogCode.Accepted:
-                return
+            show_ref_selector = not self.plugin_manager.is_local_plugin(plugin)
+            confirm_dialog = InstallConfirmDialog(
+                plugin.name(), plugin_url, self, plugin.uuid, current_ref, show_ref_selector=show_ref_selector
+            )
+            confirm_dialog.finished.connect(
+                lambda result: self._on_reinstall_confirm_finished(result, confirm_dialog, plugin, plugin_url, no_git)
+            )
+            confirm_dialog.open()
         except Exception as e:
             log.error("Failed to reinstall plugin %s: %s", plugin.plugin_id, e, exc_info=True)
             self._reinstall_error_dialog(plugin, str(e))
-            return
 
+    def _on_reinstall_confirm_finished(self, result, confirm_dialog, plugin, plugin_url, no_git=False):
+        if result != QtWidgets.QDialog.DialogCode.Accepted:
+            return
         async_manager = AsyncPluginManager(self.plugin_manager)
         async_manager.install_plugin(
             url=plugin_url,
             ref=confirm_dialog.selected_ref.shortname if confirm_dialog.selected_ref else None,
             reinstall=True,
+            no_git=no_git,
             callback=partial(self._on_reinstall_complete, plugin),
         )
 
@@ -785,7 +853,11 @@ class PluginListWidget(QtWidgets.QWidget):
     def _switch_ref_from_menu(self, plugin):
         """Switch plugin ref from context menu."""
         dialog = SwitchRefDialog(plugin, self)
-        if dialog.exec() == QtWidgets.QDialog.DialogCode.Accepted:
+        dialog.finished.connect(lambda result: self._on_switch_ref_dialog_finished(result, dialog, plugin))
+        dialog.open()
+
+    def _on_switch_ref_dialog_finished(self, result, dialog, plugin):
+        if result == QtWidgets.QDialog.DialogCode.Accepted:
             async_manager = AsyncPluginManager(self.plugin_manager)
             async_manager.switch_ref(
                 plugin=plugin,
@@ -861,7 +933,7 @@ class PluginListWidget(QtWidgets.QWidget):
             msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
             msg.setText(_("There were no installed metadata processing plugins found."))
             msg.setWindowTitle(_("No Data"))
-            msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+            msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
             msg.setStandardButtons(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.setDefaultButton(QtWidgets.QMessageBox.StandardButton.Ok)
             msg.show()
@@ -921,7 +993,7 @@ class SwitchRefDialog(QtWidgets.QDialog):
         if not self.plugin_manager:
             raise RuntimeError("Plugin manager not available")
         self.setWindowTitle(_("Switch Git Ref"))
-        self.setModal(True)
+        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.resize(font_scaled_size(self, 50, 20))
         self.setMinimumSize(font_scaled_size(self, 50, 20))
         self.setup_ui()

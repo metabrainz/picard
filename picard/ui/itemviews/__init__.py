@@ -483,7 +483,7 @@ class ClusterItem(TreeItem):
         if self.obj.special and album and album.loaded:
             album.ui_item.update(update_tracks=False)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            TreeItem.window.panel.update_current_view()
 
     def add_file(self, file):
         self.add_files([file])
@@ -567,7 +567,7 @@ class AlbumItem(TreeItem):
                 self.setToolTip(self.columns.status_icon_column, _("Album unchanged"))
         self.update_colums_text()
         if selection_changed and update_selection:
-            TreeItem.window.update_selection(new_selection=False)
+            TreeItem.window.panel.update_current_view()
         # Workaround for PICARD-1446: Expand/collapse indicator for the release
         # is briefly missing on Windows
         self.emitDataChanged()
@@ -652,7 +652,7 @@ class TrackItem(TreeItem):
             self.setToolTip(self.columns.status_icon_column, icon_tooltip)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            TreeItem.window.panel.update_current_view()
         if update_album:
             self.parent().update(update_tracks=False, update_selection=update_selection)
 
@@ -673,7 +673,7 @@ class FileItem(TreeItem):
         bgcolor = get_match_color(file.similarity, TreeItem.base_color)
         self.update_colums_text(color=color, bgcolor=bgcolor)
         if update_selection and self.isSelected():
-            TreeItem.window.update_selection(new_selection=False)
+            TreeItem.window.panel.update_current_view()
         parent = self.parent()
         if isinstance(parent, TrackItem) and update_track:
             parent.update(update_files=False, update_selection=update_selection)

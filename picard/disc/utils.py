@@ -25,10 +25,11 @@
 # SOFTWARE.
 
 from collections import namedtuple
+from collections.abc import Iterable
 
 
-PREGAP_LENGTH = 150
-DATA_TRACK_GAP = 11400
+PREGAP_LENGTH: int = 150
+DATA_TRACK_GAP: int = 11400
 
 
 TocEntry = namedtuple('TocEntry', 'number start_sector end_sector')
@@ -38,7 +39,7 @@ class NotSupportedTOCError(Exception):
     pass
 
 
-def calculate_mb_toc_numbers(toc):
+def calculate_mb_toc_numbers(toc: Iterable[TocEntry]) -> tuple[int, ...]:
     """
     Take iterator of TOC entries, return a tuple of numbers for MusicBrainz disc id
 
@@ -63,7 +64,7 @@ def calculate_mb_toc_numbers(toc):
     return (1, num_tracks, leadout_offset) + offsets
 
 
-def _remove_data_track(toc):
+def _remove_data_track(toc: tuple[TocEntry, ...]) -> tuple[TocEntry, ...]:
     if len(toc) > 1:
         last_track_gap = toc[-1].start_sector - toc[-2].end_sector
         if last_track_gap == DATA_TRACK_GAP + 1:

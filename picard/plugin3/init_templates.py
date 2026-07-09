@@ -18,7 +18,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-"""Templates and helpers for `picard-plugins --init` plugin scaffolding."""
+"""Templates and helpers for `picard-cli plugins init` plugin scaffolding."""
 
 from pathlib import Path
 import re
@@ -222,7 +222,7 @@ def generate_readme(name: str, long_description: str | None = None) -> str:
 ## Installation
 
 ```bash
-picard-plugins --install /path/to/{slug}
+picard-cli plugins install /path/to/{slug}
 ```
 
 ## Development
@@ -230,7 +230,7 @@ picard-plugins --install /path/to/{slug}
 To validate your plugin:
 
 ```bash
-picard-plugins --validate .
+picard-cli plugins validate .
 ```
 
 ## License
@@ -272,6 +272,7 @@ def generate_source_locale_toml() -> str:
 def write_plugin_project(
     target: Path,
     project: PluginProjectConfig,
+    git_initialization: bool = True,
 ) -> list[str]:
     """Write plugin scaffold files to target directory.
 
@@ -280,7 +281,7 @@ def write_plugin_project(
     Args:
         target: Path to the plugin directory
         project: Plugin project configuration
-
+        git_initialization: Whether to write a .gitignore file (default: True)
     Returns:
         list: Filenames/dirs created (for display purposes)
     """
@@ -296,8 +297,10 @@ def write_plugin_project(
     )
     (target / '__init__.py').write_text(init_py_content, encoding='utf-8')
     (target / 'README.md').write_text(generate_readme(project.name, project.long_description), encoding='utf-8')
-    (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
-    filenames = ['MANIFEST.toml', '__init__.py', 'README.md', '.gitignore']
+    filenames = ['MANIFEST.toml', '__init__.py', 'README.md']
+    if git_initialization:
+        (target / '.gitignore').write_text(generate_gitignore(), encoding='utf-8')
+        filenames.append('.gitignore')
     if project.with_i18n:
         locale_dir = target / 'locale'
         locale_dir.mkdir()
@@ -366,4 +369,4 @@ def get_git_author(authors: list[str] | None = None, author_email: str = '') -> 
     if git_name:
         return git_name, git_email or default_email
 
-    return 'picard-plugins', default_email
+    return 'picard-cli', default_email

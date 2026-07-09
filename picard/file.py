@@ -87,6 +87,7 @@ from picard.item import MetadataItem
 from picard.matching import (
     SimMatchTrack,
     compare_to_track,
+    find_best_match_with_margin,
 )
 from picard.metadata import Metadata
 from picard.move_conflict import MoveConflictStrategy
@@ -102,13 +103,11 @@ from picard.tags.preserved import UserPreservedTags
 from picard.util import (
     any_exception_isinstance,
     bytes2human,
-    decode_filename,
     emptydir,
-    encode_filename,
-    find_best_match_with_margin,
     format_time,
     is_absolute_path,
     normpath,
+    resolve_fs_path,
     samefile,
     thread,
     tracknum_and_title_from_filename,
@@ -144,6 +143,7 @@ FILE_COMPARISON_WEIGHTS = {
         'length': 10,
         'title': 13,
         'totaltracks': 4,
+        'tracknumber': 4,
     },
     'preferences': {
         'format': 2,
@@ -607,7 +607,7 @@ class File(MetadataItem):
         if error is not None:
             self._set_error(error)
         else:
-            self.filename = new_filename = result
+            self.filename = new_filename = resolve_fs_path(result)
             self.base_filename = os.path.basename(new_filename)
             length = self.orig_metadata.length
             temp_info = {}
@@ -834,7 +834,7 @@ class File(MetadataItem):
     def _apply_additional_files_moves(self, moves, strategy):
         for old_file_path, new_file_path in moves:
             # FIXME we shouldn't do this from a thread!
-            if self.tagger.files.get(decode_filename(old_file_path)):
+            if self.tagger.files.get(old_file_path):
                 log.debug("File loaded in the tagger, not moving %r", old_file_path)
                 continue
             new_file_path = self._handle_conflict(new_file_path, old_file_path, strategy)
@@ -1046,7 +1046,7 @@ class File(MetadataItem):
         metadata['~filename'] = filename_no_ext
         metadata['~extension'] = extension.lower()[1:]
 
-        filename_encoded = encode_filename(self.filename)
+        filename_encoded = self.filename
         try:
             metadata['~filesize'] = os.path.getsize(filename_encoded)
 

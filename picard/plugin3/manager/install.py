@@ -25,7 +25,10 @@ import tempfile
 
 from picard import log
 from picard.git.ops import GitOperations
-from picard.git.utils import get_local_repository_path
+from picard.git.utils import (
+    get_local_path,
+    get_local_repository_path,
+)
 from picard.plugin3.installable import (
     LocalInstallablePlugin,
     UrlInstallablePlugin,
@@ -42,7 +45,11 @@ from picard.plugin3.plugin import (
     PluginState,
     hash_string,
 )
-from picard.plugin3.plugin_metadata import PluginMetadata
+from picard.plugin3.plugin_metadata import (
+    REF_TYPE_LOCAL,
+    REF_TYPE_LOCAL_DEV,
+    PluginMetadata,
+)
 from picard.plugin3.validation import PluginValidation
 
 
@@ -72,11 +79,23 @@ class PluginInstaller:
         self.manager = manager
 
     def install_plugin(
-        self, url, ref=None, reinstall=False, force_blacklisted=False, discard_changes=False, enable_after_install=False
+        self,
+        url,
+        ref=None,
+        reinstall=False,
+        force_blacklisted=False,
+        discard_changes=False,
+        enable_after_install=False,
+        no_git=False,
     ):
         """Install a plugin from a git URL or local directory."""
-        # Check if url is a local directory
+        # Check if url is a local directory (git or plain)
         local_path = get_local_repository_path(url)
+        if not local_path:
+            # Also check for plain local directory (non-git)
+            plain_path = get_local_path(url)
+            if plain_path and plain_path.is_dir():
+                local_path = plain_path
 
         # For remote URLs, check if registry redirects to a different URL
         if not local_path:
@@ -89,7 +108,7 @@ class PluginInstaller:
         # Install from local directory or remote URL
         if local_path:
             return self._install_from_local_directory(
-                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install
+                local_path, reinstall, force_blacklisted, ref, discard_changes, enable_after_install, no_git=no_git
             )
 
         return self._install_from_remote_url(
@@ -202,8 +221,77 @@ class PluginInstaller:
                 raise PluginAlreadyInstalledError(plugin_name, source_url)
             self._handle_existing_plugin_reinstall(final_path, plugin_name, discard_changes)
 
+    def _install_local_non_git(
+        self, local_path, reinstall, force_blacklisted, enable_after_install, ref_type=REF_TYPE_LOCAL
+    ):
+        """Install a non-git local plugin loaded in-place."""
+        # Validate manifest directly from source
+        manifest = PluginValidation.read_and_validate_manifest(local_path, str(local_path))
+
+        # Check if already installed from this path
+        if not reinstall:
+            resolved_path = local_path.resolve()
+            for existing in self.manager._plugins:
+                if existing.local_path.resolve() == resolved_path:
+                    raise PluginAlreadyInstalledError(manifest.name(), str(local_path))
+
+        # Blacklist + UUID conflict check
+        if not force_blacklisted:
+            self._check_blacklist(str(local_path), None, local_path, manifest.uuid)
+        self._check_uuid_conflict(manifest, str(local_path), reinstall)
+
+        # Handle reinstall: remove existing plugin from list
+        if reinstall:
+            for existing in list(self.manager._plugins):
+                if existing.uuid and existing.uuid == manifest.uuid:
+                    try:
+                        if existing.state != PluginState.DISABLED:
+                            existing.disable()
+                    except Exception:
+                        pass
+                    self.manager._enabled_plugins.discard(existing.uuid)
+                    self.manager._plugins.remove(existing)
+                    break
+
+        # Save metadata with ref_type
+        self.manager._metadata.save_plugin_metadata(
+            PluginMetadata(
+                name=manifest.name(),
+                url=str(local_path),
+                ref=REF_TYPE_LOCAL,
+                commit='',
+                uuid=manifest.uuid,
+                ref_type=ref_type,
+            )
+        )
+
+        # Create Plugin pointing directly at the local path
+        plugin = Plugin(local_path.parent, local_path.name, uuid=manifest.uuid)
+        plugin.read_manifest()
+        self.manager._plugins.append(plugin)
+        self.manager.plugin_installed.emit(plugin)
+
+        if enable_after_install:
+            try:
+                self.manager.enable_plugin(plugin)
+            except Exception as e:
+                log.error('Local plugin installation failed during enable: %s', e)
+                self.manager._plugins.remove(plugin)
+                raise
+
+        log.info('Local plugin %s installed from %s', plugin.plugin_id, local_path)
+        return plugin.plugin_id
+
     def _install_common(
-        self, source_url, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, is_local=False
+        self,
+        source_url,
+        ref,
+        reinstall,
+        force_blacklisted,
+        discard_changes,
+        enable_after_install,
+        is_local=False,
+        no_git=False,
     ):
         """Common installation logic for both remote and local sources."""
         # Preserve original ref if reinstalling and no ref specified
@@ -212,10 +300,12 @@ class PluginInstaller:
         # Handle local-specific pre-sync operations
         if is_local:
             local_path = Path(source_url)
-            # All plugins must be git repositories
-            if not (local_path / '.git').exists():
-                raise ValueError(
-                    f"Plugin directory {local_path} is not a git repository. All plugins must be git repositories."
+            has_git = (local_path / '.git').exists()
+            # --no-git flag or no .git directory: install in-place
+            if no_git or not has_git:
+                ref_type = REF_TYPE_LOCAL_DEV if no_git and has_git else REF_TYPE_LOCAL
+                return self._install_local_non_git(
+                    local_path, reinstall, force_blacklisted, enable_after_install, ref_type=ref_type
                 )
 
             # Check source repository status and get current ref if needed
@@ -283,10 +373,18 @@ class PluginInstaller:
         ref=None,
         discard_changes=False,
         enable_after_install=False,
+        no_git=False,
     ):
         """Install a plugin from a local directory."""
         return self._install_common(
-            local_path, ref, reinstall, force_blacklisted, discard_changes, enable_after_install, is_local=True
+            local_path,
+            ref,
+            reinstall,
+            force_blacklisted,
+            discard_changes,
+            enable_after_install,
+            is_local=True,
+            no_git=no_git,
         )
 
     def _handle_existing_plugin_reinstall(self, final_path, plugin_name, discard_changes):

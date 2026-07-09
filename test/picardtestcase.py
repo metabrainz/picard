@@ -48,7 +48,7 @@ from picard import (
 )
 from picard.formats import DEFAULT_FORMATS
 from picard.formats.registry import FormatRegistry
-from picard.i18n import setup_gettext
+from picard.i18n import setup_i18n
 from picard.releasegroup import ReleaseGroup
 from picard.tagger import Tagger
 
@@ -74,7 +74,7 @@ class PicardTestCase(unittest.TestCase):
     def setUp(self):
         super().setUp()
         log.set_verbosity(logging.DEBUG)
-        setup_gettext(None, 'C')
+        setup_i18n(None, 'C')
         self.tagger = MockTagger()
         self.init_config()
 
@@ -106,10 +106,21 @@ class PicardTestCase(unittest.TestCase):
         """Patch tagger_instance in the given module(s) to return self.tagger.
 
         Usage:
-            self.patch_tagger_instance('picard.item', 'picard.matching')
+            self.patch_tagger_instance('picard.item')
         """
         for module in modules:
             patcher = patch(f'{module}.tagger_instance', return_value=self.tagger)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def patch_app_instance(self, *modules):
+        """Patch app_instance in the given module(s) to return self.tagger.
+
+        Usage:
+            self.patch_app_instance('picard.plugin3.registry')
+        """
+        for module in modules:
+            patcher = patch(f'{module}.app_instance', return_value=self.tagger)
             patcher.start()
             self.addCleanup(patcher.stop)
 
@@ -129,8 +140,8 @@ class PicardTestCase(unittest.TestCase):
         else:
             shutil.rmtree(tmpdir, ignore_errors=ignore_errors, onerror=_remove_readonly)
 
-    def copy_file_tmp(self, filepath, ext):
-        fd, copy = mkstemp(suffix=ext)
+    def copy_file_tmp(self, filepath, ext, dir=None):
+        fd, copy = mkstemp(suffix=ext, dir=dir)
         os.close(fd)
         self.addCleanup(self.remove_file_tmp, copy)
         shutil.copy(filepath, copy)

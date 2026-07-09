@@ -56,7 +56,7 @@ Changelog = "https://picard.musicbrainz.org/changelog/"
 Funding = "https://metabrainz.org/donate"
 
 [project.scripts]
-picard-plugins = "picard.plugin3.cli:main"
+picard-cli = "picard.cli:main"
 
 [project.optional-dependencies]
 plugins = [
@@ -72,7 +72,7 @@ build = [
     "setuptools>=77.0.1",
 ]
 dev = [
-    "Babel>=2.6.0",
+    {include-group = "build"},
     "pre-commit>=4.2.0",
     "pymarkdownlnt>=0.9.33",
     "pytest-cov>=7.0.0",
@@ -81,11 +81,6 @@ dev = [
     "ruff>=0.13.0",
     "tomlkit>=0.13.3",
     "wlc>=1.17.2",
-]
-
-[tool.setuptools]
-ext-modules = [
-    {name = "picard.util._astrcmp", sources = ["picard/util/_astrcmp.c"]},
 ]
 
 [tool.setuptools.dynamic]
@@ -138,15 +133,13 @@ exclude = [
 line-length = 120
 indent-width = 4
 
-target-version = "py310"
-
 [tool.ruff.lint]
 # Enable Pyflakes (`F`), a subset of the pycodestyle (`E`) and
 # most of pyupgrade checks by default.
 # Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
 # McCabe complexity (`C901`) by default.
 select = ["E4", "E7", "E9", "E", "F", "W", "B", "I", "UP"]
-ignore = ["B023", "E501", "Q", "UP009", "UP015", "UP031", "UP032", "UP037"]
+ignore = ["B023", "E501", "Q", "UP009", "UP015", "UP031", "UP032"]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.
 fixable = ["ALL"]

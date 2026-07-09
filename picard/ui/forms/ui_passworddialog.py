@@ -1,6 +1,6 @@
 # Form implementation generated from reading ui file 'ui/passworddialog.ui'
 #
-# Created by: PyQt6 UI code generator 6.9.1
+# Created by: PyQt6 UI code generator 6.11.0
 #
 # Automatically generated - do not edit.
 # Use `python setup.py build_ui` to update it.
@@ -37,7 +37,6 @@ class Ui_PasswordDialog(object):
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.username = QtWidgets.QLineEdit(parent=PasswordDialog)
-        self.username.setWindowModality(QtCore.Qt.WindowModality.NonModal)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -61,7 +60,7 @@ class Ui_PasswordDialog(object):
         self.verticalLayout.addWidget(self.buttonbox)
 
         self.retranslateUi(PasswordDialog)
-        self.buttonbox.rejected.connect(PasswordDialog.reject)
+        self.buttonbox.rejected.connect(PasswordDialog.reject) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(PasswordDialog)
 
     def retranslateUi(self, PasswordDialog):

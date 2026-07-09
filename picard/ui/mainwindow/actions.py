@@ -88,7 +88,7 @@ def _create_options_action(parent):
 
 @add_action(MainAction.SHOW_SCRIPT_EDITOR)
 def _create_show_script_editor_action(parent):
-    action = QtGui.QAction(_("Open &file naming script editor…"))
+    action = QtGui.QAction(_("&Edit scripts…"))
     action.setShortcut(QtGui.QKeySequence(_("Ctrl+Shift+S")))
     action.triggered.connect(parent.open_file_naming_script_editor)
     return action
@@ -480,36 +480,6 @@ def _create_refresh_action(parent):
     return action
 
 
-@add_action(MainAction.ENABLE_RENAMING)
-def _create_enable_renaming_action(parent):
-    config = get_config()
-    action = QtGui.QAction(_("&Rename Files"), parent)
-    action.setCheckable(True)
-    action.setChecked(config.setting['rename_files'])
-    action.triggered.connect(parent.toggle_rename_files)
-    return action
-
-
-@add_action(MainAction.ENABLE_MOVING)
-def _create_enable_moving_action(parent):
-    config = get_config()
-    action = QtGui.QAction(_("&Move Files"), parent)
-    action.setCheckable(True)
-    action.setChecked(config.setting['move_files'])
-    action.triggered.connect(parent.toggle_move_files)
-    return action
-
-
-@add_action(MainAction.ENABLE_TAG_SAVING)
-def _create_enable_tag_saving_action(parent):
-    config = get_config()
-    action = QtGui.QAction(_("Save &Tags"), parent)
-    action.setCheckable(True)
-    action.setChecked(config.setting['enable_tag_saving'])
-    action.triggered.connect(parent.toggle_tag_saving)
-    return action
-
-
 @add_action(MainAction.TAGS_FROM_FILENAMES)
 def _create_tags_from_filenames_action(parent):
     action = QtGui.QAction(icontheme.lookup('picard-tags-from-filename'), _("Tags From &File Names…"), parent)
@@ -584,6 +554,14 @@ def _create_check_update_action(parent):
         action.triggered.connect(parent.do_update_check)
     else:
         action = None
+    return action
+
+
+@add_action(MainAction.SHOW_SETUP_WIZARD)
+def _create_show_setup_wizard_action(parent):
+    action = QtGui.QAction(_("Show Setup &Wizard…"), parent)
+    action.setMenuRole(QtGui.QAction.MenuRole.ApplicationSpecificRole)
+    action.triggered.connect(partial(parent.show_setup_wizard, True))
     return action
 
 

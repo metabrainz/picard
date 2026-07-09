@@ -42,6 +42,7 @@ from picard.git.ref_utils import find_git_ref
 from picard.i18n import sort_key
 from picard.plugin3.api import PluginApi
 from picard.plugin3.manifest import PluginManifest
+from picard.profile import profile_groups_remove_group
 from picard.version import Version
 
 
@@ -752,6 +753,7 @@ class Plugin:
         for name, api in list(PluginApi._instances.items()):
             if api._plugin_module is self._module:
                 api._remove_qt_translator()
+                profile_groups_remove_group(api._api_config.section_name)
                 del PluginApi._instances[name]
                 # Remove from cache (entries for this module and submodules)
                 for key in list(PluginApi._module_cache):

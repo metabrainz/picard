@@ -26,11 +26,15 @@
 
 from collections.abc import (
     Iterable,
+    Iterator,
     MutableSequence,
 )
 from typing import TYPE_CHECKING
 
-from picard.config import get_config
+from picard.config import (
+    SettingConfigSection,
+    get_config,
+)
 
 
 if TYPE_CHECKING:
@@ -39,8 +43,8 @@ if TYPE_CHECKING:
 
 class ImageList(MutableSequence['CoverArtImage']):
     def __init__(self, iterable: Iterable['CoverArtImage'] | None = None):
-        self._images: list['CoverArtImage'] = list(iterable or ())
-        self._hash_dict: dict = {}
+        self._images: list[CoverArtImage] = list(iterable or ())
+        self._hash_dict: dict[str, CoverArtImage] = {}
         self._dirty = True
 
     def __len__(self):
@@ -58,7 +62,7 @@ class ImageList(MutableSequence['CoverArtImage']):
         del self._images[index]
         self._dirty = True
 
-    def insert(self, index, value: 'CoverArtImage'):
+    def insert(self, index: int, value: 'CoverArtImage'):
         self._images.insert(index, value)
         self._dirty = True
 
@@ -73,7 +77,7 @@ class ImageList(MutableSequence['CoverArtImage']):
             return False
         return self._sorted() == other._sorted()
 
-    def copy(self):
+    def copy(self) -> 'ImageList':
         return self.__class__(self._images)
 
     def get_front_image(self) -> 'CoverArtImage | None':
@@ -82,7 +86,7 @@ class ImageList(MutableSequence['CoverArtImage']):
                 return img
         return None
 
-    def to_be_saved_to_tags(self, settings=None):
+    def to_be_saved_to_tags(self, settings: SettingConfigSection | None = None) -> Iterator['CoverArtImage']:
         """Generator returning images to be saved to tags according to
         passed settings or config.setting
         """
@@ -101,17 +105,17 @@ class ImageList(MutableSequence['CoverArtImage']):
                 else:
                     yield image
 
-    def strip_front_images(self):
+    def strip_front_images(self) -> None:
         self._images = [image for image in self._images if not image.is_front_image()]
         self._dirty = True
 
-    def hash_dict(self):
+    def hash_dict(self) -> dict[str, 'CoverArtImage']:
         if self._dirty:
             self._hash_dict = {img.datahash.hash: img for img in self._images if img.datahash}
             self._dirty = False
         return self._hash_dict
 
-    def get_types_dict(self):
+    def get_types_dict(self) -> dict[tuple[str, ...], 'CoverArtImage']:
         types_dict = {}
         for image in self._images:
             image_types = image.normalized_types()

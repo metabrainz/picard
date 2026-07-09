@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the picard project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
 # Philipp Wolfer <ph.wolfer@gmail.com>, 2023.
+# Theo Asimakopoulos <theoasima@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: picard 2.9.1\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-17 03:06+0200\n"
-"PO-Revision-Date: 2025-05-08 05:03+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-06-15 11:12+0000\n"
+"Last-Translator: Theo Asimakopoulos <theoasima@gmail.com>\n"
 "Language-Team: Greek <https://translations.metabrainz.org/projects/picard/3/"
 "constants/el/>\n"
 "Language: el\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.11.3\n"
+"X-Generator: Weblate 2026.6.1\n"
 "Generated-By: Babel 2.12.1\n"
 
 #: picard/const/__init__.py:148
@@ -4286,7 +4287,7 @@ msgstr ""
 
 #: picard/const/tags.py:67
 msgid "Album Artist"
-msgstr "Καλλιτέχνης Άλμπουμ"
+msgstr "Καλλιτέχνης άλμπουμ"
 
 #: picard/const/tags.py:69
 msgid ""
@@ -4452,7 +4453,7 @@ msgstr ""
 
 #: picard/const/tags.py:205
 msgid "Bitrate"
-msgstr ""
+msgstr "Ρυθμός bit"
 
 #: picard/const/tags.py:206
 msgid "Approximate bitrate in kbps."
@@ -4656,7 +4657,7 @@ msgstr ""
 
 #: picard/const/tags.py:387
 msgid "File Extension"
-msgstr ""
+msgstr "Επέκταση αρχείου"
 
 #: picard/const/tags.py:388
 msgid "The file's extension."

@@ -18,8 +18,8 @@
 # along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 from collections.abc import (
-    Generator,
     Iterable,
+    Iterator,
 )
 
 from PyQt6 import (
@@ -43,7 +43,6 @@ class CoverTypesSelectorDialog(PicardDialog):
     def __init__(self, selected_types: Iterable[str] | None = None, parent=None):
         super().__init__(parent)
         self.setWindowTitle(_("Cover art types"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self._layout = QtWidgets.QVBoxLayout(self)
 
         self._types_list = QtWidgets.QListWidget(self)
@@ -82,7 +81,7 @@ class CoverTypesSelectorDialog(PicardDialog):
     def reset_to_defaults(self):
         self._update_checked_items(DEFAULT_CA_NEVER_REPLACE_TYPES)
 
-    def selected_types(self) -> Generator[str, None, None]:
+    def selected_types(self) -> Iterator[str]:
         for i in range(self._types_list.count()):
             item = self._types_list.item(i)
             if item and item.checkState() == QtCore.Qt.CheckState.Checked:

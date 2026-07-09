@@ -25,7 +25,7 @@ jobs:
       UV_FROZEN: 1
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 1000
         fetch-tags: true
@@ -34,7 +34,7 @@ jobs:
       with:
         python-version: '3.14'
     - name: Install uv
-      uses: astral-sh/setup-uv@v8.1.0
+      uses: astral-sh/setup-uv@v8.2.0
     - name: Setup Windows build environment
       run: |
         & .\scripts\package\win-setup.ps1 `
@@ -43,8 +43,8 @@ jobs:
         Add-Content $env:GITHUB_PATH "C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64"
         New-Item -Name .\artifacts -ItemType Directory
       env:
-        DISCID_VERSION: 0.6.5
-        DISCID_SHA256SUM: a1198731d417a04b3d8499bcc10b6a8ddcab06476c855ebff0fb4134888b1be5
+        DISCID_VERSION: 0.7.0
+        DISCID_SHA256SUM: 9a7b655e30401b6b5d5d0b2906c758e0d759619ed7f60e512f369e581473c555
         FPCALC_VERSION: 1.6.0
         FPCALC_SHA256SUM: 30179d3d0dc4cc92f1a0995c1a2e523fb4867724c2ee6a6ceae474f8e4d6937a
     - name: Install gettext
@@ -96,7 +96,7 @@ jobs:
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
         enable-AzPSSession: true
     - name: Sign picard.exe
-      uses: azure/artifact-signing-action@v1.2.0
+      uses: azure/artifact-signing-action@v2.0.0
       if: matrix.setup.type != 'portable' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}
@@ -120,20 +120,20 @@ jobs:
       if: matrix.setup.type == 'msix-package'
       run: |
         uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
-        Remove-Item .\dist\picard\picard-plugins.exe
+        Remove-Item .\dist\picard\picard-cli.exe
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
     - name: Build Windows 10 store app package
       if: matrix.setup.type == 'store-app'
       run: |
         uv run python setup.py build_appxmanifest --build-number=$Env:BUILD_NUMBER
-        Remove-Item .\dist\picard\picard-plugins.exe
+        Remove-Item .\dist\picard\picard-cli.exe
         & .\scripts\package\win-package-appx.ps1 dist\picard
         Move-Item .\dist\*.msix .\artifacts
       env:
         PICARD_APPX_PUBLISHER: CN=0A9169B7-05A3-4ED9-8876-830F17846709
     - name: Sign final executable
-      uses: azure/artifact-signing-action@v1.2.0
+      uses: azure/artifact-signing-action@v2.0.0
       if: matrix.setup.type != 'store-app' && env.CODESIGN == 'true'
       with:
         endpoint: ${{ secrets.AZURE_ENDPOINT }}

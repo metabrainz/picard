@@ -131,7 +131,7 @@ class SaveWarningDialog:
         self.msg.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         self.msg.setText(warning_text)
         self.msg.setWindowTitle(_("File Save Warning"))
-        self.msg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        self.msg.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
 
         self.cb = QtWidgets.QCheckBox(disable_text)
         self.cb.setChecked(False)

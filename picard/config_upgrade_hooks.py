@@ -48,6 +48,7 @@ from picard.config import (
 from picard.config_upgrade import (
     rename_option,
     temp_option,
+    upgrade_option_value,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -60,6 +61,7 @@ from picard.i18n import (
     gettext_constants,
 )
 from picard.move_conflict import MoveConflictStrategy
+from picard.options import StandardizeArtistNames
 from picard.util import unique_numbered_title
 
 
@@ -383,8 +385,11 @@ def upgrade_to_v2_4_0beta3(config):
 
 def upgrade_to_v2_5_0dev1(config):
     """Rename whitelist cover art provider"""
-    _s = config.setting
-    _s['ca_providers'] = [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in _s['ca_providers']]
+    upgrade_option_value(
+        config,
+        'ca_providers',
+        lambda providers: [('UrlRelationships' if n == 'Whitelist' else n, s) for n, s in providers],
+    )
 
 
 def upgrade_to_v2_5_0dev2(config):
@@ -633,11 +638,12 @@ def upgrade_to_v3_0_0dev9(config):
 
 def upgrade_to_v3_0_0dev10(config):
     """Update cover art processing format options"""
-    # Use raw values to ensure that we get a string to process
     for setting_key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
-        value = config.setting.raw_value(setting_key, qtype='QString')
-        if value and isinstance(value, str):
-            config.setting[setting_key] = value.lower()
+        upgrade_option_value(
+            config,
+            setting_key,
+            lambda value: value.lower() if isinstance(value, str) else value,
+        )
 
 
 def upgrade_to_v3_0_0a2(config):
@@ -648,15 +654,15 @@ def upgrade_to_v3_0_0a2(config):
     def fix_matchedtracks(script):
         return matched_tracks_regex.sub('$matchedtracks()', script)
 
+    def fix_tagger_scripts(scripts):
+        return [(pos, name, enabled, fix_matchedtracks(script)) for pos, name, enabled, script in scripts]
+
     renaming_scripts = config.setting.raw_value('file_renaming_scripts') or {}
     for script_item in renaming_scripts.values():
         script_item['script'] = fix_matchedtracks(script_item['script'])
     config.setting['file_renaming_scripts'] = renaming_scripts
 
-    tagger_scripts = config.setting.raw_value('list_of_scripts') or []
-    for i, (pos, name, enabled, script) in enumerate(tagger_scripts):
-        tagger_scripts[i] = (pos, name, enabled, fix_matchedtracks(script))
-    config.setting['list_of_scripts'] = tagger_scripts
+    upgrade_option_value(config, 'list_of_scripts', fix_tagger_scripts)
 
 
 def upgrade_to_v3_0_0a3(config):
@@ -695,3 +701,37 @@ def upgrade_to_v3_0_0b4(config):
             config.setting.remove('move_overwrite_existing_files')
     else:
         config.setting['move_conflict_strategy'] = MoveConflictStrategy.default().value
+
+
+def upgrade_to_v3_0_0b5(config):
+    """Rename active script key and add toggles to quick_menu_items.
+
+    Rename 'selected_file_naming_script_id' to 'active_file_naming_script_id'.
+    Add rename_files, move_files, enable_tag_saving to quick_menu_items
+    (previously dedicated menu actions, now in configurable quick settings).
+    """
+    rename_option(config, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
+
+    new_items = ['rename_files', 'move_files', 'enable_tag_saving']
+
+    def add_quick_menu_items(items):
+        for item in reversed(new_items):
+            if item not in items:
+                items.insert(0, item)
+        return items
+
+    upgrade_option_value(config, 'quick_menu_items', add_quick_menu_items)
+
+
+def upgrade_to_v3_0_0b6(config):
+    """Convert "standardize_artists" to "standardize_artist_names"."""
+    if config.setting['standardize_artists']:
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
+    else:
+        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
+    config.setting.remove('standardize_artists')
+
+
+def upgrade_to_v3_0_0b7(config):
+    """Remove "rtd_updates_ask"."""
+    config.setting.remove('rtd_updates_ask')

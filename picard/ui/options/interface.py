@@ -47,7 +47,10 @@ from picard.i18n import (
 from picard.util.readthedocs import ReadTheDocs
 
 from picard.ui.forms.ui_options_interface import Ui_InterfaceOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.theme import (
     AVAILABLE_UI_THEMES,
     OS_SUPPORTS_THEMES,
@@ -67,23 +70,21 @@ class InterfaceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_interface.html"
 
-    OPTIONS = (
-        ('toolbar_show_labels', ['toolbar_show_labels']),
-        ('show_menu_icons', ['show_menu_icons']),
-        ('ui_language', ['ui_language']),
-        ('ui_theme', ['ui_theme']),
-        ('allow_multi_dirs_selection', ['allow_multi_dirs_selection']),
-        ('builtin_search', ['builtin_search']),
-        ('use_adv_search_syntax', ['use_adv_search_syntax']),
-        ('show_new_user_dialog', ['new_user_dialog']),
-        ('rtd_updates_ask', ['rtd_updates_ask']),
-        ('quit_confirmation', ['quit_confirmation']),
-        ('file_save_warning', ['file_save_warning']),
-        ('filebrowser_horizontal_autoscroll', ['filebrowser_horizontal_autoscroll']),
-        ('starting_directory', ['starting_directory']),
-        ('starting_directory_path', ['starting_directory_path']),
-    )
-
+    OPTIONS: PageOptionConfigs = {
+        'toolbar_show_labels': {'widgets': ['toolbar_show_labels']},
+        'show_menu_icons': {'widgets': ['show_menu_icons']},
+        'ui_language': {},
+        'ui_theme': {},
+        'allow_multi_dirs_selection': {'widgets': ['allow_multi_dirs_selection']},
+        'builtin_search': {'widgets': ['builtin_search']},
+        'use_adv_search_syntax': {'widgets': ['use_adv_search_syntax']},
+        'show_new_user_dialog': {'widgets': ['new_user_dialog']},
+        'quit_confirmation': {'widgets': ['quit_confirmation']},
+        'file_save_warning': {'widgets': ['file_save_warning']},
+        'filebrowser_horizontal_autoscroll': {'widgets': ['filebrowser_horizontal_autoscroll']},
+        'starting_directory': {'widgets': ['starting_directory']},
+        'starting_directory_path': {'widgets': ['starting_directory_path']},
+    }
     # Those are labels for theme display
     _UI_THEME_LABELS = {
         UiTheme.DEFAULT: {
@@ -160,7 +161,6 @@ class InterfaceOptionsPage(OptionsPage):
         self.ui.builtin_search.setChecked(config.setting['builtin_search'])
         self.ui.use_adv_search_syntax.setChecked(config.setting['use_adv_search_syntax'])
         self.ui.new_user_dialog.setChecked(config.setting['show_new_user_dialog'])
-        self.ui.rtd_updates_ask.setChecked(config.setting['rtd_updates_ask'])
         self.ui.quit_confirmation.setChecked(config.setting['quit_confirmation'])
         self.ui.file_save_warning.setChecked(config.setting['file_save_warning'])
         current_ui_language = config.setting['ui_language']
@@ -183,7 +183,6 @@ class InterfaceOptionsPage(OptionsPage):
         config.setting['builtin_search'] = self.ui.builtin_search.isChecked()
         config.setting['use_adv_search_syntax'] = self.ui.use_adv_search_syntax.isChecked()
         config.setting['show_new_user_dialog'] = self.ui.new_user_dialog.isChecked()
-        config.setting['rtd_updates_ask'] = self.ui.rtd_updates_ask.isChecked()
         config.setting['quit_confirmation'] = self.ui.quit_confirmation.isChecked()
         config.setting['file_save_warning'] = self.ui.file_save_warning.isChecked()
         self.tagger.window.update_toolbar_style()

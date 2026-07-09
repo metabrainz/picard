@@ -532,6 +532,15 @@ msgid ""
 "use by the artist."
 msgstr "一个记录了活动演奏曲目的列表，通常是打印或者手写的，由艺术家使用。"
 
+#. name:Logo
+#: DB:event_art_archive.art_type/description:12
+msgctxt "event_art_type"
+msgid ""
+"A logo that is specific to a particular event and only used for it, rather "
+"than being the logo for a series (such as a festival logo reused over "
+"multiple years)."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -716,6 +725,15 @@ msgstr ""
 "一种推广性质的发行，通常仅具有有限的流通价值，具有向厂牌，出版方以及其他艺术"
 "家展示作品的作用。"
 
+#. name:Liner
+#: DB:cover_art_archive.art_type/description:12
+msgctxt "cover_art_type"
+msgid ""
+"A protective sleeve (usually an ‘inner sleeve’) surrounding a medium "
+"(usually a vinyl record, but sometimes a CD), often printed with notes or "
+"images."
+msgstr ""
+
 #. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -847,6 +865,26 @@ msgstr "一系列专辑组。"
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "一系列专辑。"
+
+#. name:Series award
+#: DB:series_type/description:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of recordings honoured by the same award."
+msgctxt "series_type"
+msgid ""
+"A series of series (such as podcasts or festivals) honoured by the same "
+"award."
+msgstr "一系列录音荣获同一个奖项。"
+
+#. name:Series series
+#: DB:series_type/description:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of events."
+msgctxt "series_type"
+msgid "A series of series."
+msgstr "一系列活动。"
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5564,6 +5602,11 @@ msgctxt "release_group_secondary_type"
 msgid "Live"
 msgstr "现场的"
 
+#: DB:event_art_archive.art_type/name:12
+msgctxt "event_art_type"
+msgid "Logo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
@@ -7717,6 +7760,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Serbest"
 msgstr "Serbest"
 
+#: DB:series_type/name:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist award"
+msgctxt "series_type"
+msgid "Series award"
+msgstr "艺术家奖项"
+
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
@@ -7726,6 +7777,14 @@ msgstr "系列收藏"
 msgctxt "alias_type"
 msgid "Series name"
 msgstr "系列名称"
+
+#: DB:series_type/name:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist series"
+msgctxt "series_type"
+msgid "Series series"
+msgstr "艺术家系列"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"

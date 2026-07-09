@@ -11,7 +11,10 @@
 # information, see <http://creativecommons.org/publicdomain/zero/1.0>
 
 
-def astrcmp_py(a, b):
+from collections.abc import Callable
+
+
+def astrcmp_py(a: str, b: str) -> float:
     """Calculates the Levenshtein distance between a and b."""
     n, m = len(a), len(b)
     if n > m:
@@ -38,7 +41,7 @@ def astrcmp_py(a, b):
 try:
     from picard.util._astrcmp import astrcmp as astrcmp_c  # type: ignore[unresolved-import,import-not-found]
 
-    astrcmp = astrcmp_c
+    astrcmp: Callable[[str, str], float] = astrcmp_c
     astrcmp_implementation = "C"
 except ImportError:
     astrcmp = astrcmp_py

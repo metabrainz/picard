@@ -60,7 +60,6 @@ class PluginOrderSelectorDialog(PicardDialog):
         self._make_plugin_list()
 
         self.setWindowTitle(_("Plugin Execution Order"))
-        self.setWindowModality(QtCore.Qt.WindowModality.WindowModal)
         self.setMinimumSize(font_scaled_size(self, 80, 25))
         self._layout = QtWidgets.QVBoxLayout(self)
 

@@ -142,11 +142,12 @@ class LogHighlighter(QtGui.QSyntaxHighlighter):
 
 class LogViewDialog(PicardDialog):
     defaultsize = QtCore.QSize(570, 400)
+    modality = QtCore.Qt.WindowModality.NonModal
 
     def __init__(self, title, parent=None):
         super().__init__(parent=parent)
         self.setWindowFlags(QtCore.Qt.WindowType.Window)
-        self.setWindowTitle(title)
+        self.set_window_title(title)
         self.vbox = QtWidgets.QVBoxLayout()
         self.setLayout(self.vbox)
         self.list_view = QtWidgets.QListView()
@@ -330,7 +331,7 @@ class DebugOptsMenu(QtWidgets.QMenu):
 
 class LogView(LogViewCommon):
     def __init__(self, parent=None):
-        super().__init__(log.main_tail, _("Log"), parent=parent)
+        super().__init__(log.main_tail, _("Log View"), parent=parent)
         self.verbosity = log.get_effective_level()
         self._status_label = None
         self.help_url = '/appendices/log_viewer.html'

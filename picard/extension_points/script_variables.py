@@ -86,7 +86,7 @@ def register_script_variable(name: str, documentation: str | None = None, api=No
     ext_point_script_variables.register(module_name, (name, plugin_documentation, plugin_name))
 
 
-def get_plugin_variable_names():
+def get_plugin_variable_names() -> set[str]:
     """Get all plugin-provided variable names.
 
     Returns
@@ -97,7 +97,7 @@ def get_plugin_variable_names():
     return {name for name, _documentation, _plugin in ext_point_script_variables}
 
 
-def get_plugin_variable_documentation(name):
+def get_plugin_variable_documentation(name: str) -> str | None:
     """Get documentation for a plugin-provided variable.
 
     Parameters

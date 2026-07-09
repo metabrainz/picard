@@ -33,15 +33,18 @@ from test.picardtestcase import PicardTestCase
 
 from picard.i18n import (
     N_,
-    _try_encodings,
-    _try_locales,
     gettext as _,
     gettext_constants,
     gettext_countries,
     ngettext,
     pgettext_attributes,
-    setup_gettext,
+    setup_i18n,
     sort_key,
+)
+from picard.i18n.gettext import (
+    _bcp47_to_locale,
+    _try_encodings,
+    _try_locales,
 )
 
 
@@ -50,7 +53,7 @@ localedir = os.path.join(os.path.dirname(__file__), '..', 'locale')
 
 class TestI18n(PicardTestCase):
     def tearDown(self):
-        setup_gettext(None, 'C')
+        setup_i18n(None, 'C')
 
     def test_missing_locales(self):
         tmplocaledir = tempfile.mkdtemp()
@@ -61,7 +64,7 @@ class TestI18n(PicardTestCase):
         self.addCleanup(cleanup_tmplocale)
         locale_de = os.path.join(tmplocaledir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertFalse(os.path.exists(locale_de), 'unexpected file %s' % locale_de)
-        setup_gettext(tmplocaledir, 'de')
+        setup_i18n(tmplocaledir, 'de')
         self.assertEqual('foo', _('foo'))
         self.assertEqual('Country', _('Country'))
         self.assertEqual('Country', N_('Country'))
@@ -79,7 +82,7 @@ class TestI18n(PicardTestCase):
         locale_de = os.path.join(localedir, 'de', 'LC_MESSAGES', 'picard.mo')
         self.assertTrue(os.path.exists(locale_de), 'expected file %s' % locale_de)
 
-        setup_gettext(localedir, 'de')
+        setup_i18n(localedir, 'de')
 
         self.assertEqual('foo', _('foo'))
         self.assertEqual('Land', _('Country'))
@@ -91,11 +94,11 @@ class TestI18n(PicardTestCase):
         self.assertEqual('Frankreich', gettext_countries('France'))
 
     def test_gettext_handles_empty_string(self):
-        setup_gettext(localedir, 'fr')
+        setup_i18n(localedir, 'fr')
         self.assertEqual('', _(''))
 
     def test_sort_key(self):
-        setup_gettext(localedir, 'de')
+        setup_i18n(localedir, 'de')
         self.assertLess(sort_key('äb'), sort_key('ac'))
         self.assertLess(sort_key('foo002'), sort_key('foo1'))
         self.assertLess(sort_key('002 foo'), sort_key('1 foo'))
@@ -110,7 +113,7 @@ class TestI18n(PicardTestCase):
         self.assertLess(sort_key('99', numeric=True), sort_key('100', numeric=True))
 
     def test_sort_key_numbers_different_scripts(self):
-        setup_gettext(localedir, 'en')
+        setup_i18n(localedir, 'en')
         for four in ('4', '𝟜', '٤', '๔'):
             self.assertLess(
                 sort_key('3', numeric=True),
@@ -161,3 +164,31 @@ class TestTryEncodingsLocales(PicardTestCase):
         locale_getpreferredencoding_mock.assert_called_once()
         calls = [call('EN.ISO-8859-1'), call('EN.UTF-8')]
         locale_nomalize_mock.assert_has_calls(calls)
+
+
+class TestBcp47ToLocale(PicardTestCase):
+    def test_language_with_region(self):
+        self.assertEqual('en_US', _bcp47_to_locale('en-US'))
+        self.assertEqual('en_GB', _bcp47_to_locale('en-GB'))
+        self.assertEqual('pt_BR', _bcp47_to_locale('pt-BR'))
+
+    def test_language_with_script_and_region(self):
+        self.assertEqual('zh_CN', _bcp47_to_locale('zh-Hans-CN'))
+        self.assertEqual('zh_TW', _bcp47_to_locale('zh-Hant-TW'))
+
+    @patch('locale.normalize', autospec=True)
+    def test_bare_language_normalizes(self, locale_normalize_mock):
+        locale_normalize_mock.return_value = 'en_US.ISO8859-1'
+        self.assertEqual('en_US', _bcp47_to_locale('en'))
+        locale_normalize_mock.assert_called_once_with('en')
+
+    @patch('locale.normalize', autospec=True)
+    def test_bare_language_no_mapping(self, locale_normalize_mock):
+        # locale.normalize returns input unchanged if no mapping exists
+        locale_normalize_mock.return_value = 'xx'
+        self.assertEqual('xx', _bcp47_to_locale('xx'))
+        locale_normalize_mock.assert_called_once_with('xx')
+
+    def test_numeric_region(self):
+        # UN M.49 numeric region codes (3 digits)
+        self.assertEqual('es_419', _bcp47_to_locale('es-419'))

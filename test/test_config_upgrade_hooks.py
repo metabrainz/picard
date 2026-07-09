@@ -43,6 +43,7 @@ from picard.const.defaults import (
     DEFAULT_SCRIPT_NAME,
     DEFAULT_THEME_NAME,
 )
+from picard.options import StandardizeArtistNames
 from picard.util import unique_numbered_title
 
 from picard.ui.theme import UiTheme
@@ -297,6 +298,43 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         ]
         hooks.upgrade_to_v2_5_0dev1(self.config)
         self.assertEqual(expected, self.config.setting['ca_providers'])
+
+    def test_upgrade_to_v2_5_0dev1_profiles(self):
+        ListOption('setting', 'ca_providers', [], in_profile=True)
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', 'user_profile_settings', {})
+
+        self.config.setting['ca_providers'] = [
+            ('Cover Art Archive', True),
+            ('Whitelist', True),
+        ]
+        self.config.profiles['user_profiles'] = [
+            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
+        ]
+        self.config.profiles['user_profile_settings'] = {
+            'p1': {
+                'ca_providers': [
+                    ('Cover Art Archive', False),
+                    ('Whitelist', False),
+                    ('Local', True),
+                ],
+            },
+        }
+
+        hooks.upgrade_to_v2_5_0dev1(self.config)
+
+        # Base config updated
+        with self.config.setting.no_profile():
+            self.assertEqual(
+                [('Cover Art Archive', True), ('UrlRelationships', True)],
+                self.config.setting['ca_providers'],
+            )
+        # Profile updated
+        profile_settings = self.config.profiles['user_profile_settings']['p1']
+        self.assertEqual(
+            [('Cover Art Archive', False), ('UrlRelationships', False), ('Local', True)],
+            profile_settings['ca_providers'],
+        )
 
     def test_upgrade_to_v2_5_0dev2(self):
         Option("persist", "splitter_state", QByteArray())
@@ -570,6 +608,35 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual(ImageFormat.WEBP, self.config.setting['cover_tags_convert_to_format'])
         self.assertEqual(ImageFormat.PNG, self.config.setting['cover_file_convert_to_format'])
 
+    def test_upgrade_to_v3_0_0dev10_profiles(self):
+        Option('setting', 'cover_tags_convert_to_format', 'jpeg', in_profile=True)
+        Option('setting', 'cover_file_convert_to_format', 'jpeg', in_profile=True)
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', 'user_profile_settings', {})
+
+        self.config.setting['cover_tags_convert_to_format'] = 'WebP'
+        self.config.setting['cover_file_convert_to_format'] = 'PNG'
+        self.config.profiles['user_profiles'] = [
+            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
+        ]
+        self.config.profiles['user_profile_settings'] = {
+            'p1': {
+                'cover_tags_convert_to_format': 'TIFF',
+                'cover_file_convert_to_format': 'JPEG',
+            },
+        }
+
+        hooks.upgrade_to_v3_0_0dev10(self.config)
+
+        # Base config updated
+        with self.config.setting.no_profile():
+            self.assertEqual('webp', self.config.setting['cover_tags_convert_to_format'])
+            self.assertEqual('png', self.config.setting['cover_file_convert_to_format'])
+        # Profile updated
+        profile_settings = self.config.profiles['user_profile_settings']['p1']
+        self.assertEqual('tiff', profile_settings['cover_tags_convert_to_format'])
+        self.assertEqual('jpeg', profile_settings['cover_file_convert_to_format'])
+
     def test_upgrade_to_v3_0_0a2(self):
         Option('setting', 'file_renaming_scripts', {})
         ListOption('setting', 'list_of_scripts', [])
@@ -602,6 +669,44 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             expected_script,
             result_tagger_script[3],
         )
+
+    def test_upgrade_to_v3_0_0a2_profiles(self):
+        Option('setting', 'file_renaming_scripts', {})
+        ListOption('setting', 'list_of_scripts', [], in_profile=True)
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', 'user_profile_settings', {})
+
+        test_script = r'$set(foo,$matchedtracks(baz))'
+        expected_script = '$set(foo,$matchedtracks())'
+
+        self.config.setting['file_renaming_scripts'] = {
+            'test-id': {'id': 'test-id', 'title': 'Test', 'script': test_script},
+        }
+        self.config.setting['list_of_scripts'] = [
+            (0, 'Base Script', True, test_script),
+        ]
+        self.config.profiles['user_profiles'] = [
+            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
+        ]
+        self.config.profiles['user_profile_settings'] = {
+            'p1': {
+                'list_of_scripts': [
+                    (0, 'Profile Script', True, test_script),
+                ],
+            },
+        }
+
+        hooks.upgrade_to_v3_0_0a2(self.config)
+
+        # Base config updated
+        self.assertEqual(expected_script, self.config.setting['list_of_scripts'][0][3])
+        self.assertEqual(
+            expected_script,
+            self.config.setting['file_renaming_scripts']['test-id']['script'],
+        )
+        # Profile updated
+        profile_settings = self.config.profiles['user_profile_settings']['p1']
+        self.assertEqual(expected_script, profile_settings['list_of_scripts'][0][3])
 
     def test_upgrade_to_v3_0_0a3(self):
         Option('persist', 'album_view_header_state', PyQt6.QtCore.QByteArray())
@@ -652,3 +757,76 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         TextOption("setting", "move_conflict_strategy", "")
         hooks.upgrade_to_v3_0_0b4(self.config)
         self.assertEqual("rename", self.config.setting['move_conflict_strategy'])
+
+    def test_upgrade_to_v3_0_0b5(self):
+        ListOption('setting', 'quick_menu_items', [])
+        TextOption('setting', 'selected_file_naming_script_id', '')
+        TextOption('setting', 'active_file_naming_script_id', '')
+        self.config.setting['selected_file_naming_script_id'] = 'test-script-id'
+        self.config.setting['quick_menu_items'] = ['save_images_to_tags', 'save_images_to_files']
+        hooks.upgrade_to_v3_0_0b5(self.config)
+        # Verify key rename
+        self.assertEqual(self.config.setting['active_file_naming_script_id'], 'test-script-id')
+        self.assertNotIn('selected_file_naming_script_id', self.config.setting)
+        # Verify quick_menu_items
+        items = self.config.setting['quick_menu_items']
+        self.assertEqual(items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
+        self.assertIn('save_images_to_tags', items)
+        self.assertIn('save_images_to_files', items)
+
+    def test_upgrade_to_v3_0_0b5_profiles(self):
+        ListOption('setting', 'quick_menu_items', [], in_profile=True)
+        TextOption('setting', 'selected_file_naming_script_id', '')
+        TextOption('setting', 'active_file_naming_script_id', '')
+        ListOption.add_if_missing('profiles', 'user_profiles', [])
+        Option.add_if_missing('profiles', 'user_profile_settings', {})
+
+        self.config.setting['selected_file_naming_script_id'] = 'test-id'
+        self.config.setting['quick_menu_items'] = ['save_images_to_tags']
+        self.config.profiles['user_profiles'] = [
+            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
+        ]
+        self.config.profiles['user_profile_settings'] = {
+            'p1': {
+                'selected_file_naming_script_id': 'profile-script-id',
+                'quick_menu_items': ['embed_only_one_front_image'],
+            },
+        }
+
+        hooks.upgrade_to_v3_0_0b5(self.config)
+
+        # Base config: key renamed, items added
+        self.assertEqual('test-id', self.config.setting['active_file_naming_script_id'])
+        self.assertNotIn('selected_file_naming_script_id', self.config.setting)
+        items = self.config.setting['quick_menu_items']
+        self.assertEqual(items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
+
+        # Profile: key renamed, items added
+        profile_settings = self.config.profiles['user_profile_settings']['p1']
+        self.assertEqual('profile-script-id', profile_settings['active_file_naming_script_id'])
+        self.assertNotIn('selected_file_naming_script_id', profile_settings)
+        profile_items = profile_settings['quick_menu_items']
+        self.assertEqual(profile_items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
+        self.assertIn('embed_only_one_front_image', profile_items)
+
+    def test_upgrade_to_v3_0_0b6(self):
+        BoolOption('setting', 'standardize_artists', False)
+        Option('setting', 'standardize_artist_names', StandardizeArtistNames.VARIATIONS)
+
+        self.config.setting['standardize_artists'] = True
+        hooks.upgrade_to_v3_0_0b6(self.config)
+        self.assertNotIn('standardize_artists', self.config.setting)
+        self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.ALL)
+
+        self.config.setting['standardize_artists'] = False
+        hooks.upgrade_to_v3_0_0b6(self.config)
+        self.assertNotIn('standardize_artists', self.config.setting)
+        self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.NONE)
+
+    def test_upgrade_to_v3_0_0b7(self):
+        BoolOption('setting', 'rtd_updates_ask', True)
+        self.config.persist['rtd_updates_ask'] = True
+
+        hooks.upgrade_to_v3_0_0b7(self.config)
+
+        self.assertNotIn('rtd_updates_ask', self.config.setting)

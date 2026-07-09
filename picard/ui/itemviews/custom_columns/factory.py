@@ -49,7 +49,10 @@ from picard.ui.itemviews.custom_columns.providers import (
     TransformProvider,
 )
 from picard.ui.itemviews.custom_columns.script_provider import ChainedValueProvider
-from picard.ui.itemviews.custom_columns.sorting_adapters import NumericSortAdapter
+from picard.ui.itemviews.custom_columns.sorting_adapters import (
+    MetadataDurationSortAdapter,
+    NumericSortAdapter,
+)
 
 
 def _infer_sort_type(provider: ColumnValueProvider, sort_type: ColumnSortType | None) -> ColumnSortType:
@@ -222,6 +225,46 @@ def make_numeric_field_column(
         always_visible=always_visible,
         sort_type=ColumnSortType.SORTKEY,
         status_icon=status_icon,
+        is_default=is_default,
+        column_group=column_group,
+    )
+
+
+def make_duration_field_column(
+    title: str,
+    key: str,
+    *,
+    width: int | None = None,
+    is_default: bool = False,
+    column_group: ColumnGroup | None = None,
+) -> CustomColumn:
+    """Create a field column for metadata length sorting.
+
+    Parameters
+    ----------
+    title : str
+        Display title of the column.
+    key : str
+        Internal key used to identify the column and field source.
+    width : int | None, optional
+        Fixed width in pixels. If ``None``, uses default behavior.
+    is_default : bool, default ``False``
+        If ``True``, marks this column as visible by default.
+
+    Returns
+    -------
+    CustomColumn
+        The configured duration field column with proper sorting.
+    """
+    base_provider = FieldReferenceProvider(key)
+    numeric_provider = MetadataDurationSortAdapter(base_provider)
+    return _create_custom_column(
+        title,
+        key,
+        numeric_provider,
+        width=width,
+        align=ColumnAlign.RIGHT,
+        sort_type=ColumnSortType.SORTKEY,
         is_default=is_default,
         column_group=column_group,
     )

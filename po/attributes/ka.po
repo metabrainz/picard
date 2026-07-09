@@ -437,6 +437,15 @@ msgid ""
 "use by the artist."
 msgstr ""
 
+#. name:Logo
+#: DB:event_art_archive.art_type/description:12
+msgctxt "event_art_type"
+msgid ""
+"A logo that is specific to a particular event and only used for it, rather "
+"than being the logo for a series (such as a festival logo reused over "
+"multiple years)."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -600,6 +609,15 @@ msgid ""
 "artists."
 msgstr ""
 
+#. name:Liner
+#: DB:cover_art_archive.art_type/description:12
+msgctxt "cover_art_type"
+msgid ""
+"A protective sleeve (usually an ‘inner sleeve’) surrounding a medium "
+"(usually a vinyl record, but sometimes a CD), often printed with notes or "
+"images."
+msgstr ""
+
 #. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -728,6 +746,20 @@ msgstr ""
 #: DB:series_type/description:2
 msgctxt "series_type"
 msgid "A series of releases."
+msgstr ""
+
+#. name:Series award
+#: DB:series_type/description:17
+msgctxt "series_type"
+msgid ""
+"A series of series (such as podcasts or festivals) honoured by the same "
+"award."
+msgstr ""
+
+#. name:Series series
+#: DB:series_type/description:16
+msgctxt "series_type"
+msgid "A series of series."
 msgstr ""
 
 #. name:Work award
@@ -5376,6 +5408,11 @@ msgctxt "release_group_secondary_type"
 msgid "Live"
 msgstr "ცოცხალი"
 
+#: DB:event_art_archive.art_type/name:12
+msgctxt "event_art_type"
+msgid "Logo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
@@ -7519,6 +7556,11 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Serbest"
 msgstr ""
 
+#: DB:series_type/name:17
+msgctxt "series_type"
+msgid "Series award"
+msgstr ""
+
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
@@ -7527,6 +7569,11 @@ msgstr ""
 #: DB:series_alias_type/name:1
 msgctxt "alias_type"
 msgid "Series name"
+msgstr ""
+
+#: DB:series_type/name:16
+msgctxt "series_type"
+msgid "Series series"
 msgstr ""
 
 #: DB:event_art_archive.art_type/name:3

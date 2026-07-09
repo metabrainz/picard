@@ -23,12 +23,15 @@
 
 
 from collections import OrderedDict
+from collections.abc import Generator
+from contextlib import contextmanager
 from platform import python_version
 
 from mutagen import version_string as mutagen_version
 
 from PyQt6.QtCore import (
     PYQT_VERSION_STR as pyqt_version,
+    QCoreApplication,
     qVersion,
 )
 from PyQt6.QtNetwork import QSslSocket
@@ -42,9 +45,9 @@ from picard.i18n import (
 from picard.util.astrcmp import astrcmp_implementation
 
 
-_versions: dict | None = None
+_versions: dict[str, str | None] | None = None
 
-_names = {
+_names: dict[str, str] = {
     'version': "Picard",
     'python-version': "Python",
     'pyqt-version': "PyQt",
@@ -57,7 +60,7 @@ _names = {
 }
 
 
-def _load_versions():
+def _load_versions() -> None:
     global _versions
 
     # Get pygit2 version if available
@@ -77,13 +80,30 @@ def _load_versions():
             ('mutagen-version', mutagen_version),
             ('discid-version', discid_version),
             ('astrcmp', astrcmp_implementation),
-            ('ssl-version', QSslSocket.sslLibraryVersionString()),
+            ('ssl-version', _ssl_version()),
             ('pygit2-version', pygit2_version),
         )
     )
 
 
-def _value_as_text(value, i18n=False):
+@contextmanager
+def _ensure_qt_app() -> Generator[None, None, None]:
+    app = QCoreApplication.instance()
+    if not app:
+        # If no app is running, create a temporary new one, but close after use.
+        app = QCoreApplication([])
+        yield
+        app.exit()
+    else:
+        yield
+
+
+def _ssl_version() -> str | None:
+    with _ensure_qt_app():
+        return QSslSocket.sslLibraryVersionString()
+
+
+def _value_as_text(value: str | None, i18n: bool = False) -> str:
     if not value:
         value = N_("is not installed")
         if i18n:
@@ -91,16 +111,18 @@ def _value_as_text(value, i18n=False):
     return value
 
 
-def version_name(key):
+def version_name(key: str) -> str:
     return _names[key]
 
 
-def as_dict(i18n=False):
+def as_dict(i18n: bool = False) -> OrderedDict[str, str]:
     if not _versions:
         _load_versions()
-    return OrderedDict((key, _value_as_text(value, i18n)) for key, value in _versions.items())
+    versions = _versions
+    assert versions is not None
+    return OrderedDict((key, _value_as_text(value, i18n)) for key, value in versions.items())
 
 
-def as_string(i18n=False, separator=", "):
+def as_string(i18n: bool = False, separator: str = ", ") -> str:
     values = as_dict(i18n)
     return separator.join(_names[key] + " " + value for key, value in values.items())

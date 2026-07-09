@@ -104,6 +104,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
 
     TITLE = N_("File naming script editor")
     STYLESHEET_ERROR = OptionsPage.STYLESHEET_ERROR
+    modality = QtCore.Qt.WindowModality.NonModal
 
     help_url = 'doc_naming_script_edit'
 
@@ -148,7 +149,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         super().__init__(parent=parent)
         self.examples = examples
 
-        self.setWindowTitle(self.display_title())
+        self.set_window_title(self.display_title())
         self.loading = True
         self.ui = Ui_ScriptEditor()
         self.ui.setupUi(self)
@@ -300,6 +301,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.delete_action.triggered.connect(self.delete_script)
         script_menu.addAction(self.delete_action)
 
+        self.reset_current_script_action = QtGui.QAction(_("Rese&t current script"), self)
+        self.reset_current_script_action.setToolTip(_("Discard changes and reset to the last saved version"))
+        self.reset_current_script_action.setIcon(icontheme.lookup('view-refresh'))
+        self.reset_current_script_action.triggered.connect(self.revert_script)
+        script_menu.addAction(self.reset_current_script_action)
+
         # Display menu settings
         display_menu = main_menu.addMenu(_("&View"))
         display_menu.setToolTipsVisible(True)
@@ -354,17 +361,11 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         for script_item in get_file_naming_script_presets():
             _add_menu_item(script_item['title'], script_item['script'])
 
-    def is_options_ui(self):
-        return self.parent().__class__.__name__ == 'RenamingOptionsPage'
-
-    def is_main_ui(self):
-        return self.parent().__class__.__name__ == 'MainWindow'
-
     def load(self, reload=False):
         """Load initial configuration."""
         config = get_config()
         self.naming_scripts = config.setting['file_renaming_scripts']
-        self.selected_script_id = config.setting['selected_file_naming_script_id']
+        self.selected_script_id = config.setting['active_file_naming_script_id']
         if not self.selected_script_id or self.selected_script_id not in self.naming_scripts:
             self.selected_script_id = DEFAULT_NAMING_PRESET_ID
         self.last_selected_id = self.selected_script_id
@@ -372,12 +373,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             self.examples.settings = config.setting
             self.original_script_id = self.selected_script_id
             self.original_script_title = self.all_scripts()[self.original_script_id]['title']
-        if self.is_options_ui():
-            selector = self.parent().ui.naming_script_selector
-            idx = selector.currentIndex()
-            sel_id = selector.itemData(idx)['id']
-            if sel_id in self.all_scripts():
-                self.selected_script_id = sel_id
         self.selected_script_index = 0
         self.populate_script_selector()
         if not self.loading:
@@ -393,8 +388,25 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
 
     def reload_from_config(self):
         """Reload the scripts and selected script from the configuration."""
+        if not confirmation_dialog(self, _("Reset all scripts to their last saved versions?")):
+            return
         if self.unsaved_changes_in_profile_confirmation():
             self.load(reload=True)
+
+    def revert_script(self):
+        """Revert the current script to its last saved version from config."""
+        if not confirmation_dialog(self, _("Reset the current script to its last saved version?")):
+            return
+        config = get_config()
+        saved_scripts = config.setting['file_renaming_scripts']
+        script_id = self.selected_script_id
+        if script_id in saved_scripts:
+            saved = saved_scripts[script_id]
+            idx = self.ui.preset_naming_scripts.currentIndex()
+            self.ui.preset_naming_scripts.setItemData(idx, saved)
+            self.ui.preset_naming_scripts.setItemText(idx, saved['title'])
+            self.naming_scripts[script_id] = saved
+            self.select_script(save=False)
 
     def docs_browser(self):
         """Open the scriping documentation in a browser."""
@@ -460,8 +472,8 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         """Reset the currently selected script if it was not saved and is no longer available."""
         config = get_config()
         unsaved = set(self.unsaved_scripts())
-        if config.setting['selected_file_naming_script_id'] in unsaved:
-            config.setting['selected_file_naming_script_id'] = self.original_script_id
+        if config.setting['active_file_naming_script_id'] in unsaved:
+            config.setting['active_file_naming_script_id'] = self.original_script_id
         self.naming_scripts = config.setting['file_renaming_scripts']
         all_scripts = self.all_scripts()
         if self.selected_script_id not in all_scripts:
@@ -481,7 +493,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         for script_id in self.unsaved_scripts():
             profile = self.is_used_in_profile(script_id=script_id, profiles=profiles_with_scripts)
             if profile:
-                profiles_settings[profile.id]['selected_file_naming_script_id'] = self.original_script_id
+                profiles_settings[profile.id]['active_file_naming_script_id'] = self.original_script_id
 
     def unsaved_scripts(self):
         """Generate ID codes of scripts that have not been saved.
@@ -508,12 +520,12 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         profile_settings = config.profiles[SettingConfigSection.SETTINGS_KEY]
         for profile in profiles:
             settings = profile_settings[profile['id']]
-            if 'selected_file_naming_script_id' in settings:
+            if 'active_file_naming_script_id' in settings:
                 profiles_list.append(
                     self.Profile(
                         profile['id'],
                         profile['title'],
-                        settings['selected_file_naming_script_id'],
+                        settings['active_file_naming_script_id'],
                     )
                 )
         return profiles_list
@@ -581,9 +593,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.current_item_dict = self.get_selected_item()
         details_page = ScriptDetailsEditor(self.current_item_dict, parent=self)
         details_page.signal_save.connect(self.update_from_details)
-        details_page.show()
-        details_page.raise_()
-        details_page.activateWindow()
+        details_page.show_modal()
 
     def update_from_details(self):
         """Update the script selection combo box and script list after updates from the script details dialog."""
@@ -652,12 +662,35 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
     def make_it_so(self):
         """Save the scripts and settings to configuration and exit."""
         script_item = self.get_selected_item()
-        self.selected_script_id = script_item['id']
         self.naming_scripts = self.get_scripts_dict()
         config = get_config()
         config.setting['file_renaming_scripts'] = self.naming_scripts
-        config.setting['selected_file_naming_script_id'] = script_item['id']
+        # Re-read active ID after save, as it may have been repaired if the
+        # previously active script was deleted.
+        active_script_id = config.setting['active_file_naming_script_id']
+        if script_item['id'] != active_script_id:
+            if self._ask_activate_script(script_item['title']):
+                config.setting['active_file_naming_script_id'] = script_item['id']
+        self.selected_script_id = script_item['id']
         self.close()
+
+    def _ask_activate_script(self, script_title):
+        """Ask the user if they want to make the edited script the active one.
+
+        Args:
+            script_title (str): Title of the script being saved
+
+        Returns:
+            bool: True if user wants to activate the script
+        """
+        result = QtWidgets.QMessageBox.question(
+            self,
+            _("Activate script?"),
+            _("The script \"%s\" is not the active file naming script. Do you want to make it active?") % script_title,
+            QtWidgets.QMessageBox.StandardButton.Yes | QtWidgets.QMessageBox.StandardButton.No,
+            QtWidgets.QMessageBox.StandardButton.No,
+        )
+        return result == QtWidgets.QMessageBox.StandardButton.Yes
 
     def get_scripts_dict(self):
         """Get dictionary of scripts from the combo box items suitable for saving to the configuration settings.
@@ -709,7 +742,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self._set_combobox_index(idx)
         self.select_script()
 
-    def select_script(self, update_last_selected=True):
+    def select_script(self, update_last_selected=True, save=True):
         """Load the current script from the combo box into the editor."""
         self.selected_script_index, script_item = self.get_selected_index_and_item()
         self.ui.script_title.setText(script_item['title'])
@@ -717,7 +750,7 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.selected_script_id = script_item['id']
         if update_last_selected:
             self.last_selected_id = self.selected_script_id
-        if not self.loading:
+        if not self.loading and save:
             self.save_script()
             self.signal_save.emit()
         self.set_button_states()
@@ -747,10 +780,6 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
             save_enabled (bool, optional): Allow selection of different script item. Defaults to True.
         """
         self.ui.preset_naming_scripts.setEnabled(save_enabled)
-        if self.is_options_ui():
-            self.parent().ui.naming_script_selector.setEnabled(save_enabled)
-        elif self.is_main_ui():
-            self.parent().script_quick_selector_menu.setEnabled(save_enabled)
 
     def set_button_states(self, save_enabled=True):
         """Set the button states based on the readonly and deletable attributes of the currently selected
@@ -776,6 +805,9 @@ class ScriptEditorDialog(PicardDialog, SingletonDialog, HasDisplayTitle):
         self.delete_action.setEnabled(save_enabled and self.ui.preset_naming_scripts.count() > 1)
         self.import_action.setEnabled(save_enabled)
         self.export_action.setEnabled(save_enabled)
+        self.reset_current_script_action.setEnabled(
+            save_enabled and self.selected_script_id in get_config().setting['file_renaming_scripts']
+        )
 
     def match_after_to_before(self):
         """Sets the selected item in the 'after' list to the corresponding item in the 'before' list."""
@@ -1039,7 +1071,6 @@ class ScriptDetailsEditor(PicardDialog, HasDisplayTitle):
 
         self.ui.buttonBox.setFocus()
 
-        self.setModal(True)
         self.setWindowTitle(_(self.display_title()))
         self.skip_change_check = False
 

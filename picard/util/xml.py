@@ -25,6 +25,7 @@
 import re
 
 from PyQt6.QtCore import (
+    QByteArray,
     QIODevice,
     QXmlStreamReader,
 )
@@ -35,14 +36,14 @@ _node_name_re = re.compile('[^a-zA-Z0-9]')
 
 class XmlNode:
     def __init__(self):
-        self.text = ''
-        self.children = {}
-        self.attribs = {}
+        self.text: str = ''
+        self.children: dict[str, list[XmlNode]] = {}
+        self.attribs: dict[str, str] = {}
 
     def __repr__(self):
         return repr(self.__dict__)
 
-    def append_child(self, name, node=None):
+    def append_child(self, name: str, node: 'XmlNode | None' = None) -> 'XmlNode':
         if node is None:
             node = XmlNode()
         self.children.setdefault(name, []).append(node)
@@ -62,7 +63,7 @@ def _node_name(n):
     return _node_name_re.sub('_', n)
 
 
-def parse_xml(response: QIODevice) -> XmlNode:
+def parse_xml(response: QIODevice | QByteArray | bytes | str) -> XmlNode:
     stream = QXmlStreamReader(response)
     document = XmlNode()
     current_node = document

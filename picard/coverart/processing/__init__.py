@@ -22,6 +22,7 @@ from collections.abc import Callable
 from functools import partial
 from queue import Queue
 import time
+from typing import Any
 
 from picard import log
 from picard.album import Album
@@ -54,21 +55,21 @@ from picard.util.imageinfo import (
 )
 
 
-def run_image_filters(data, image_info, album, coverartimage):
+def run_image_filters(data: bytes, image_info: ImageInfo, album: Album, coverartimage: CoverArtImage) -> bool:
     for f in ext_point_cover_art_filters:
         if not f(data, image_info, album, coverartimage):
             return False
     return True
 
 
-def run_image_metadata_filters(metadata):
+def run_image_metadata_filters(metadata: dict[str, Any]) -> bool:
     for f in ext_point_cover_art_metadata_filters:
         if not f(metadata):
             return False
     return True
 
 
-def handle_processing_exceptions(func):
+def handle_processing_exceptions(func: Callable) -> Callable:
     def wrapper(self, *args, **kwargs):
         try:
             func(self, *args, **kwargs)
@@ -95,7 +96,7 @@ class CoverArtImageProcessing:
         save_images_to_files: bool,
         image: ProcessingImage,
         target: ImageProcessor.Target,
-    ):
+    ) -> None:
         try:
             queue = self.queues[target]
             if queue:
@@ -123,7 +124,7 @@ class CoverArtImageProcessing:
         coverartimage: CoverArtImage,
         initial_data: bytes,
         image_info: ImageInfo,
-    ):
+    ) -> None:
         config = get_config()
         try:
             start_time = time.time()
@@ -191,7 +192,7 @@ class CoverArtImageProcessing:
         initial_data: bytes,
         image_info: ImageInfo,
         callback: Callable[[CoverArtImage, Exception | None], None],
-    ):
+    ) -> None:
         if coverartimage.can_be_processed:
             run_processors = partial(self._run_image_processors, coverartimage, initial_data, image_info)
 
@@ -203,7 +204,7 @@ class CoverArtImageProcessing:
             coverartimage.set_data(initial_data)
             callback(coverartimage, None)
 
-    def wait_for_processing(self):
+    def wait_for_processing(self) -> bool:
         self.task_counter.wait_for_tasks()
         has_io_error = False
         while not self.errors.empty():

@@ -35,6 +35,7 @@ from picard.metadata import (
     Metadata,
     MultiMetadataProxy,
 )
+from picard.options import StandardizeArtistNames
 from picard.tags import preserved_tag_names
 from picard.util.imagelist import ImageList
 
@@ -44,7 +45,7 @@ settings = {
     'id3v23_join_with': '/',
     'preferred_release_countries': [],
     'preferred_release_formats': [],
-    'standardize_artists': False,
+    "standardize_artist_names": StandardizeArtistNames.NONE,
     'standardize_instruments': False,
     'standardize_vocals': False,
     'translate_artist_names': False,

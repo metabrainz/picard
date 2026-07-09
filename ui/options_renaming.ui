@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>489</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,14 +19,11 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
     <widget class="QGroupBox" name="move_files">
      <property name="title">
       <string>Move files when saving</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -120,9 +117,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="selected_script_label">
+    <widget class="QLabel" name="naming_script_label">
      <property name="text">
-      <string>Selected file naming script:</string>
+      <string>Active file naming script:</string>
      </property>
      <property name="buddy">
       <cstring>naming_script_selector</cstring>
@@ -130,31 +127,27 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <property name="spacing">
-      <number>2</number>
+    <widget class="QComboBox" name="naming_script_selector">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <item>
-      <widget class="QComboBox" name="naming_script_selector">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="open_script_editor">
-       <property name="text">
-        <string>Edit file naming script…</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QLabel" name="script_help_label">
+     <property name="text">
+      <string>To edit scripts, use the script editor from Options > File naming scripts in the main menu bar.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="examples_group">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
        <horstretch>0</horstretch>
@@ -164,13 +157,13 @@
      <property name="minimumSize">
       <size>
        <width>0</width>
-       <height>120</height>
+       <height>100</height>
       </size>
      </property>
      <property name="title">
       <string>Files will be named like this:</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_6">
+     <layout class="QVBoxLayout" name="examples_layout">
       <property name="leftMargin">
        <number>3</number>
       </property>
@@ -184,24 +177,15 @@
        <number>3</number>
       </property>
       <item>
-       <widget class="QSplitter" name="renaming_options_examples_splitter">
+       <widget class="QSplitter" name="examples_splitter">
         <property name="orientation">
          <enum>Qt::Orientation::Horizontal</enum>
         </property>
-        <widget class="QFrame" name="frame">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QFrame" name="before_frame">
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="before_layout">
           <property name="spacing">
            <number>3</number>
           </property>
@@ -218,7 +202,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="example_filename_before_label">
+           <widget class="QLabel" name="example_before_label">
             <property name="text">
              <string>Before</string>
             </property>
@@ -229,20 +213,11 @@
           </item>
          </layout>
         </widget>
-        <widget class="QFrame" name="frame_2">
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>0</height>
-          </size>
-         </property>
+        <widget class="QFrame" name="after_frame">
          <property name="frameShape">
           <enum>QFrame::Shape::NoFrame</enum>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="after_layout">
           <property name="spacing">
            <number>3</number>
           </property>
@@ -259,7 +234,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="example_filename_after_label">
+           <widget class="QLabel" name="example_after_label">
             <property name="text">
              <string>After</string>
             </property>
@@ -275,43 +250,6 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QLabel" name="example_selection_note">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <item>
-      <widget class="QPushButton" name="example_filename_sample_files_button">
-       <property name="text">
-        <string>Reload examples</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Orientation::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
  <tabstops>
@@ -326,10 +264,6 @@
   <tabstop>move_conflict_overwrite</tabstop>
   <tabstop>rename_files</tabstop>
   <tabstop>naming_script_selector</tabstop>
-  <tabstop>open_script_editor</tabstop>
-  <tabstop>example_filename_before</tabstop>
-  <tabstop>example_filename_after</tabstop>
-  <tabstop>example_filename_sample_files_button</tabstop>
  </tabstops>
  <buttongroups>
   <buttongroup name="move_conflict_group"/>

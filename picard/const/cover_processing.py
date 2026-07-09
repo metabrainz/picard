@@ -138,7 +138,7 @@ class ImageFormat(Enum):
     PDF = 'pdf'
 
     @property
-    def title(self):
+    def title(self) -> str:
         return _INFO_MAPPING[self].name
 
     @property
@@ -153,23 +153,23 @@ class ImageFormat(Enum):
         return _INFO_MAPPING[self].extensions
 
     @property
-    def mime(self):
+    def mime(self) -> str:
         return _INFO_MAPPING[self].mime
 
     @property
-    def extension(self):
+    def extension(self) -> str:
         return _INFO_MAPPING[self].extensions[0]
 
     @property
-    def all_extensions(self):
+    def all_extensions(self) -> tuple[str, ...]:
         return _INFO_MAPPING[self].extensions
 
     @property
-    def can_convert(self):
+    def can_convert(self) -> bool:
         return _INFO_MAPPING[self].can_convert
 
     @property
-    def use_quality(self):
+    def use_quality(self) -> bool:
         return _INFO_MAPPING[self].use_quality
 
     def __repr__(self):
@@ -227,4 +227,4 @@ def get_image_format_from_format(format_string: str) -> ImageFormat | None:
 COVER_PROCESSING_SLEEP = 0.001
 
 
-ALLOWED_QT_FORMATS: set[str] = {str(x, 'utf-8') for x in QtGui.QImageWriter.supportedImageFormats()}  # type: ignore[call-overload]
+ALLOWED_QT_FORMATS: set[str] = {x.data().decode('utf-8') for x in QtGui.QImageWriter.supportedImageFormats()}

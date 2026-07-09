@@ -26,7 +26,10 @@ from picard.extension_points.options_pages import register_options_page
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_ratings import Ui_RatingsOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class RatingsOptionsPage(OptionsPage):
@@ -37,11 +40,11 @@ class RatingsOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_ratings.html"
 
-    OPTIONS = (
-        ('enable_ratings', ['enable_ratings']),
-        ('rating_user_email', ['rating_user_email']),
-        ('submit_ratings', ['submit_ratings']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'enable_ratings': {'widgets': ['enable_ratings']},
+        'rating_user_email': {'widgets': ['rating_user_email']},
+        'submit_ratings': {'widgets': ['submit_ratings']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

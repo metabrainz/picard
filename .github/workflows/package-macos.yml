@@ -16,8 +16,8 @@ jobs:
           runner: 'macos-15'
       fail-fast: false
     env:
-      DISCID_VERSION: 0.6.5
-      DISCID_SHA256SUM: 8aa187dd5afdecc06441b49e086dd9a46b3ffac818fd9c1dae0cb55780d846f2
+      DISCID_VERSION: 0.7.0
+      DISCID_SHA256SUM: 7026662f3a47f9663052cff1a5d16aff8772bbf9ace2f68cb0bdba4242b3b83d
       FPCALC_VERSION: 1.6.0
       FPCALC_SHA256SUM: 31f654cce8308fcb22869d043770eb66afffed95e8a548fd877f0e670c16d7ec
       MACOSX_DEPLOYMENT_TARGET: ${{ matrix.setup.macos-deployment-target }}
@@ -25,7 +25,7 @@ jobs:
       UV_FROZEN: 1
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
       with:
         fetch-depth: 1000
         fetch-tags: true
@@ -34,7 +34,7 @@ jobs:
       with:
         python-version: '3.14'
     - name: Install uv
-      uses: astral-sh/setup-uv@v8.1.0
+      uses: astral-sh/setup-uv@v8.2.0
     - name: Setup macOS build environment
       run: |
         ./scripts/package/macos-setup.sh

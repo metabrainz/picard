@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import Callable
 from functools import partial
 
 from PyQt6.QtWidgets import QMessageBox
@@ -53,7 +54,7 @@ class UpdateCheckManager:
         self._show_always = False
         self._update_level = 0
 
-    def check_update(self, show_always=False, update_level=0, callback=None):
+    def check_update(self, show_always: bool = False, update_level: int = 0, callback: Callable | None = None):
         """Checks if an update is available.
 
         Compares the version number of the currently running instance of Picard

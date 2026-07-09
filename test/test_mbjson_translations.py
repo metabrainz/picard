@@ -32,6 +32,7 @@ from picard.const import (
 # Import the functions under test from the refactored module
 import picard.mbjson as mbjson
 from picard.metadata import Metadata
+from picard.options import StandardizeArtistNames
 from picard.track import Track
 
 import pytest
@@ -51,7 +52,7 @@ def config() -> Any:
             'translation_locales': ['en'],
             'translate_artist_names_script_exception': False,
             'script_exceptions': [],
-            'standardize_artists': False,
+            "standardize_artist_names": StandardizeArtistNames.NONE,
             'standardize_instruments': False,
             'standardize_vocals': False,
             'release_ars': True,
@@ -297,6 +298,99 @@ def test_release_to_metadata_translation_toggle(
         assert m['album'] == 'Album Title EN'
     else:
         assert m['album'] != 'Album Title EN'
+
+
+@pytest.mark.parametrize('toggle', [False, True])
+def test_track_to_metadata_translation_toggle(
+    monkeypatch: pytest.MonkeyPatch,
+    config: Any,
+    mock_get_config: Callable[[], Any],
+    toggle: bool,
+) -> None:
+    config.setting['translate_track_titles'] = toggle
+    config.setting['translation_locales'] = ['en']
+    config.setting['translate_artist_names_script_exception'] = False
+
+    node = {
+        'id': 'track-1',
+        'title': 'Track Title',
+        'recording': {
+            'id': 'rec-1',
+            'title': '蜷局',
+            'aliases': [
+                {'locale': 'en', 'name': 'Recording Title EN', 'sort-name': 'Recording Title EN', 'primary': True},
+            ],
+        },
+    }
+    m = Metadata()
+    t = Track('1')
+    t.metadata = m
+    mbjson.track_to_metadata(node, track=t)
+
+    if toggle:
+        assert m['title'] == 'Recording Title EN'
+    else:
+        assert m['title'] == 'Track Title'
+
+
+@pytest.mark.parametrize('toggle', [False, True])
+def test_track_to_metadata_translation_honor_script_exception(
+    monkeypatch: pytest.MonkeyPatch,
+    config: Any,
+    mock_get_config: Callable[[], Any],
+    toggle: bool,
+) -> None:
+    config.setting['translate_track_titles'] = True
+    config.setting['translation_locales'] = ['en']
+    config.setting['translate_artist_names_script_exception'] = toggle
+    monkeypatch.setattr(mbjson, '_should_skip_translation_due_to_scripts', lambda _text, config=None: toggle)
+
+    node = {
+        'id': 'track-1',
+        'title': 'Track Title',
+        'recording': {
+            'id': 'rec-1',
+            'title': '蜷局',
+            'aliases': [
+                {'locale': 'en', 'name': 'Recording Title EN', 'sort-name': 'Recording Title EN', 'primary': True},
+            ],
+        },
+    }
+    m = Metadata()
+    t = Track('1')
+    t.metadata = m
+    mbjson.track_to_metadata(node, track=t)
+
+    if toggle:
+        assert m['title'] == 'Track Title'
+    else:
+        assert m['title'] == 'Recording Title EN'
+
+
+def test_track_to_metadata_translation_do_not_use_recording_title_as_translation(
+    monkeypatch: pytest.MonkeyPatch,
+    config: Any,
+    mock_get_config: Callable[[], Any],
+) -> None:
+    config.setting['translate_track_titles'] = True
+    config.setting['translation_locales'] = ['en']
+    config.setting['translate_artist_names_script_exception'] = False
+
+    node = {
+        'id': 'track-1',
+        'title': 'Track Title',
+        'recording': {
+            'id': 'rec-1',
+            'title': 'Recording Title',
+            'aliases': [],  # no aliases, should fall use track title
+        },
+    }
+    m = Metadata()
+    t = Track('1')
+    t.metadata = m
+    mbjson.track_to_metadata(node, track=t)
+
+    assert m['title'] == 'Track Title'
 
 
 @pytest.mark.parametrize('toggle', [False, True])

@@ -93,6 +93,7 @@ def submit_file(file, as_release=False):
 
 
 def serve_form(token):
+    assert jwt, "jwt is not available"
     try:
         payload = jwt.decode(token, __key, algorithms=__algorithm)
         log.debug("received JWT token %r", payload)
@@ -118,6 +119,7 @@ def serve_form(token):
 
 
 def _generate_token(payload):
+    assert jwt, "jwt is not available"
     token = jwt.encode(payload, __key, algorithm=__algorithm)
     if isinstance(token, bytes):  # For compatibility with PyJWT 1.x
         token = token.decode()

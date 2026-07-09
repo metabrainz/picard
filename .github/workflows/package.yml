@@ -62,6 +62,10 @@ jobs:
         pattern: picard-*.whl
         path: dist/
         merge-multiple: true
+    - uses: actions/download-artifact@v8
+      with:
+        pattern: picard-sdist
+        path: dist/
     - name: Prepare distributions
       run: |
         ls -l dist/
@@ -79,7 +83,7 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - uses: actions/setup-python@v6
       with:
         python-version: '3.14'

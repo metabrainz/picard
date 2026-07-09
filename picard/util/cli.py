@@ -20,7 +20,7 @@
 import sys
 
 
-def print_message_and_exit(message, informative_text=None, status=0):
+def print_message_and_exit(message: str, informative_text: str | None = None, status: int = 0) -> None:
     print(message)
     if informative_text:
         print(informative_text)

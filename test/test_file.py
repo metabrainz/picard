@@ -346,7 +346,7 @@ class FileNamingTest(PicardTestCase):
                 'replace_spaces_with_underscores': False,
                 'replace_dir_separator': '_',
                 'file_renaming_scripts': {'test_id': {'script': '%album%/%title%'}},
-                'selected_file_naming_script_id': 'test_id',
+                'active_file_naming_script_id': 'test_id',
             }
         )
         self.metadata = Metadata(

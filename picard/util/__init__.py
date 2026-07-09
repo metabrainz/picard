@@ -46,7 +46,14 @@ from collections import (
     defaultdict,
     namedtuple,
 )
-from collections.abc import Mapping
+from collections.abc import (
+    Callable,
+    Generator,
+    Iterable,
+    Iterator,
+    Mapping,
+    Sequence,
+)
 from contextlib import (
     contextmanager,
     suppress,
@@ -58,7 +65,6 @@ from datetime import (
 from itertools import chain
 import json
 import ntpath
-from operator import attrgetter
 import os
 from pathlib import (
     Path,
@@ -73,7 +79,6 @@ from typing import Any
 import unicodedata
 
 from PyQt6 import QtCore
-from PyQt6.QtCore import QByteArray
 from PyQt6.QtGui import QDesktopServices
 from PyQt6.QtNetwork import QNetworkReply
 
@@ -126,7 +131,15 @@ WIN_LONGPATH_PREFIX_UNC = '\\\\?\\UNC\\'
 
 
 class ReadWriteLockContext:
-    """Context for releasing a locked QReadWriteLock"""
+    """Context manager wrapping a `QReadWriteLock`.
+
+    Multiple threads can obtain a read lock, but only one can obtain a write lock.
+    Read and write locks can be explicitly entered with `lock_for_read` and `lock_for_write`:
+
+        lock = ReadWriteLockContext()
+        with lock.lock_for_read():
+            ...
+    """
 
     def __init__(self):
         self.__lock = QtCore.QReadWriteLock()
@@ -148,11 +161,8 @@ class ReadWriteLockContext:
     def __exit__(self, type, value, tb):
         self.__lock.unlock()
 
-    def __bool__(self):
-        return self._entered > 0
 
-
-def process_events_iter(iterable, interval=0.1):
+def process_events_iter(iterable: Iterable, interval: float = 0.1) -> Iterator:
     """
     Creates an iterator over iterable that calls QCoreApplication.processEvents()
     after certain time intervals.
@@ -176,7 +186,7 @@ def process_events_iter(iterable, interval=0.1):
     QtCore.QCoreApplication.processEvents()
 
 
-def iter_files_from_objects(objects, save=False):
+def iter_files_from_objects(objects: Iterable, save: bool = False) -> Iterator:
     """Creates an iterator over all unique files from list of albums, clusters, tracks or files."""
     return iter_unique(chain(*(obj.iterfiles(save) for obj in objects)))
 
@@ -204,26 +214,46 @@ Translation: Picard will have problems with non-english characters
 """)
 
 
-def encode_filename(filename):
-    """Encode unicode strings to filesystem encoding."""
-    if isinstance(filename, str):
-        if os.path.supports_unicode_filenames and not IS_MACOS:
-            return filename
-        else:
-            return filename.encode(_io_encoding, 'replace')
-    else:
+def resolve_fs_path(filename: str | bytes | Path) -> str:
+    """Resolve a filename to its actual on-disk representation.
+
+    Call this once when a path enters the file handling pipeline. After
+    resolution, all downstream code can use the result directly without
+    further normalization or encoding.
+
+    Handles Unicode normalization mismatches (NFC vs NFD) that occur when
+    files are accessed across different OS/filesystem combinations (e.g.
+    macOS SMB client → Linux ext4 server).  See PICARD-3331.
+
+    Args:
+        filename: A file path as str, bytes, or Path.
+
+    Returns:
+        A str path that exists on disk (if any normalization variant matches),
+        or the original path as str if no match is found.
+    """
+    if isinstance(filename, (bytes, bytearray)):
+        filename = os.fsdecode(filename)
+    elif isinstance(filename, Path):
+        filename = str(filename)
+
+    if os.path.exists(filename):
         return filename
 
+    nfc = unicodedata.normalize('NFC', filename)
+    if nfc != filename and os.path.exists(nfc):
+        log.debug("Resolved filename via NFC normalization: %r", filename)
+        return nfc
 
-def decode_filename(filename):
-    """Decode strings from filesystem encoding to unicode."""
-    if isinstance(filename, str):
-        return filename
-    else:
-        return filename.decode(_io_encoding)
+    nfd = unicodedata.normalize('NFD', filename)
+    if nfd != filename and os.path.exists(nfd):
+        log.debug("Resolved filename via NFD normalization: %r", filename)
+        return nfd
+
+    return filename
 
 
-def _check_windows_min_version(major, build):
+def _check_windows_min_version(major: int, build: int) -> bool:
     try:
         v = sys.getwindowsversion()
         return v.major >= major and v.build >= build
@@ -231,7 +261,7 @@ def _check_windows_min_version(major, build):
         return False
 
 
-def system_supports_long_paths():
+def system_supports_long_paths() -> bool:
     """Detects long path support.
 
     On Windows returns True, only if long path support is enabled in the registry (Windows 10 1607 or later).
@@ -258,7 +288,7 @@ def system_supports_long_paths():
         return False
 
 
-def normpath(path, realpath=True):
+def normpath(path: str, realpath: bool = True) -> str:
     path = os.path.normpath(path)
     if realpath:
         try:
@@ -285,7 +315,7 @@ def is_unc_path(path: str) -> bool:
     )
 
 
-def win_prefix_longpath(path):
+def win_prefix_longpath(path: str) -> str:
     """
     For paths longer then WIN_MAX_FILEPATH_LEN enable long path support by prefixing with WIN_LONGPATH_PREFIX.
 
@@ -299,7 +329,7 @@ def win_prefix_longpath(path):
     return path
 
 
-def is_absolute_path(path):
+def is_absolute_path(path: str) -> bool:
     """Similar to os.path.isabs, but properly detects Windows shares as absolute paths
     See https://bugs.python.org/issue22302
     """
@@ -314,11 +344,11 @@ def is_absolute_path(path):
     return os.path.isabs(path)
 
 
-def samepath(path1, path2):
+def samepath(path1: str, path2: str) -> bool:
     return os.path.normcase(os.path.normpath(path1)) == os.path.normcase(os.path.normpath(path2))
 
 
-def samefile(path1, path2):
+def samefile(path1: str, path2: str) -> bool:
     """Returns True, if both `path1` and `path2` refer to the same file.
 
     Behaves similar to os.path.samefile, but first checks identical paths including
@@ -329,7 +359,7 @@ def samefile(path1, path2):
     return samepath(path1, path2) or os.path.samefile(path1, path2)
 
 
-def format_time(ms, display_zero=False):
+def format_time(ms: float | int, display_zero: bool = False) -> str:
     """Formats time in milliseconds to a string representation.
 
     Args:
@@ -354,7 +384,7 @@ def format_time(ms, display_zero=False):
         return "%d:%02d:%02d" % (hours, minutes, seconds)
 
 
-def sanitize_date(datestr):
+def sanitize_date(datestr: str) -> str:
     """Sanitize date format.
 
     e.g.: "1980-00-00" -> "1980"
@@ -377,7 +407,7 @@ def sanitize_date(datestr):
     return ("", "%04d", "%04d-%02d", "%04d-%02d-%02d")[len(date)] % tuple(date)
 
 
-def replace_win32_incompat(string, repl="_", replacements=None):
+def replace_win32_incompat(string: str, repl: str = "_", replacements: dict[str, str] | None = None) -> str:
     """Replace win32 filename incompatible characters from ``string`` by
     ``repl``."""
     # Don't replace : for windows drive
@@ -397,12 +427,12 @@ def replace_win32_incompat(string, repl="_", replacements=None):
 _re_non_alphanum = re.compile(r'\W+', re.UNICODE)
 
 
-def strip_non_alnum(string):
+def strip_non_alnum(string: str) -> str:
     """Remove all non-alphanumeric characters from ``string``."""
     return _re_non_alphanum.sub(" ", string).strip()
 
 
-def sanitize_filename(string, repl="_", win_compat=False):
+def sanitize_filename(string: str, repl: str = "_", win_compat: bool = False) -> str:
     string = string.replace(os.sep, repl)
     if os.altsep:
         string = string.replace(os.altsep, repl)
@@ -411,7 +441,7 @@ def sanitize_filename(string, repl="_", win_compat=False):
     return string
 
 
-def make_filename_from_title(title=None, default=None):
+def make_filename_from_title(title: str | None = None, default: str | None = None) -> str:
     if default is None:
         default = _("No Title")
     if not title or not title.strip():
@@ -422,7 +452,7 @@ def make_filename_from_title(title=None, default=None):
     return filename
 
 
-def _reverse_sortname(sortname):
+def _reverse_sortname(sortname: str) -> str:
     """Reverse sortnames."""
     chunks = [a.strip() for a in sortname.split(",")]
     if len(chunks) == 2:
@@ -435,7 +465,7 @@ def _reverse_sortname(sortname):
         return sortname.strip()
 
 
-def translate_from_sortname(name, sortname):
+def translate_from_sortname(name: str, sortname: str) -> str:
     """'Translate' the artist name by reversing the sortname."""
     for c in name:
         ctg = unicodedata.category(c)
@@ -451,21 +481,20 @@ def translate_from_sortname(name, sortname):
     return name
 
 
-def find_existing_path(path):
-    path = encode_filename(path)
+def find_existing_path(path: str) -> str:
     while path and not os.path.isdir(path):
         head, tail = os.path.split(path)
         if head == path:
             break
         path = head
-    return decode_filename(path)
+    return path
 
 
-def _add_windows_executable_extension(*executables):
-    return [e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables]
+def _add_windows_executable_extension(*executables: str) -> tuple[str, ...]:
+    return tuple(e if e.endswith(('.py', '.exe')) else e + '.exe' for e in executables)
 
 
-def find_executable(*executables):
+def find_executable(*executables: str) -> str | None:
     if IS_WIN:
         executables = _add_windows_executable_extension(*executables)
     paths = [os.path.dirname(sys.executable)] if sys.executable else []
@@ -482,12 +511,12 @@ def find_executable(*executables):
                 return os.path.abspath(f)
 
 
-def run_executable(executable, *args, timeout=None):
+def run_executable(executable: str, *args, timeout: int | float | None = None) -> tuple[int, str, str]:
     # Prevent new shell window from appearing
     startupinfo = None
     if IS_WIN:
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo = subprocess.STARTUPINFO()  # ty: ignore[unresolved-attribute]
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW  # ty: ignore[unresolved-attribute]
 
     # Include python interpreter if running a python script
     if ".py" in executable:
@@ -508,7 +537,7 @@ def run_executable(executable, *args, timeout=None):
     return ret.returncode, ret.stdout.decode(sys.stdout.encoding), ret.stderr.decode(sys.stderr.encoding)
 
 
-def open_local_path(path):
+def open_local_path(path: str) -> None:
     url = QtCore.QUrl.fromLocalFile(path)
     if os.environ.get('SNAP'):
         run_executable('xdg-open', url.toString())
@@ -520,12 +549,12 @@ _mbid_format = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
 _re_mbid_val = re.compile(_mbid_format, re.IGNORECASE)
 
 
-def mbid_validate(string):
+def mbid_validate(string: str) -> bool:
     """Test if passed string is a valid mbid"""
     return _re_mbid_val.match(string) is not None
 
 
-def parse_amazon_url(url):
+def parse_amazon_url(url: str) -> dict[str, str] | None:
     """Extract host and asin from an amazon url.
     It returns a dict with host and asin keys on success, None else
     """
@@ -536,7 +565,7 @@ def parse_amazon_url(url):
     return None
 
 
-def throttle(interval):
+def throttle(interval: float | int) -> Callable:
     """
     Throttle a function so that it will only execute once per ``interval``
     (specified in milliseconds).
@@ -594,7 +623,13 @@ class IgnoreUpdatesContext:
     updates if it is `False`.
     """
 
-    def __init__(self, on_exit=None, on_enter=None, on_first_enter=None, on_last_exit=None):
+    def __init__(
+        self,
+        on_exit: Callable | None = None,
+        on_enter: Callable | None = None,
+        on_first_enter: Callable | None = None,
+        on_last_exit: Callable | None = None,
+    ):
         self._entered = 0
         self._on_exit = on_exit
         self._on_last_exit = on_last_exit
@@ -620,12 +655,12 @@ class IgnoreUpdatesContext:
         return self._entered > 0
 
 
-def uniqify(seq):
+def uniqify(seq: Iterable) -> list:
     """Uniqify a list, preserving order"""
     return list(iter_unique(seq))
 
 
-def iter_unique(seq):
+def iter_unique(seq: Iterable) -> Iterator:
     """Creates an iterator only returning unique values from seq"""
     seen = set()
     return (x for x in seq if x not in seen and not seen.add(x))
@@ -651,7 +686,7 @@ _tracknum_regexps = [
 ]
 
 
-def tracknum_from_filename(base_filename):
+def tracknum_from_filename(base_filename: str) -> int | None:
     """Guess and extract track number from filename
     Returns `None` if none found, the number as integer else
     """
@@ -670,7 +705,7 @@ def tracknum_from_filename(base_filename):
 GuessedFromFilename = namedtuple('GuessedFromFilename', ('tracknumber', 'title'))
 
 
-def tracknum_and_title_from_filename(base_filename):
+def tracknum_and_title_from_filename(base_filename: str) -> GuessedFromFilename:
     """Guess tracknumber and title from filename.
     Uses `tracknum_from_filename` to guess the tracknumber. The filename is used
     as the title. If the tracknumber is at the beginning of the title it gets stripped.
@@ -693,7 +728,7 @@ def tracknum_and_title_from_filename(base_filename):
     return GuessedFromFilename(tracknumber, title)
 
 
-def is_hidden(filepath):
+def is_hidden(filepath: str) -> bool:
     """Test whether a file or directory is hidden.
     A file is considered hidden if it starts with a dot
     on non-Windows systems or if it has the "hidden" flag
@@ -729,7 +764,7 @@ else:
         return False
 
 
-def linear_combination_of_weights(parts):
+def linear_combination_of_weights(parts: list[tuple[float, int]]) -> float:
     """Produces a probability as a linear combination of weights
     Parts should be a list of tuples in the form:
         [(v0, w0), (v1, w1), ..., (vn, wn)]
@@ -748,7 +783,7 @@ def linear_combination_of_weights(parts):
     return sum_of_products / total
 
 
-def album_artist_from_path(filename, album, artist):
+def album_artist_from_path(filename: str, album: str, artist: str) -> tuple[str, str]:
     """If album is not set, try to extract album and artist from path.
 
     Args:
@@ -777,12 +812,12 @@ def album_artist_from_path(filename, album, artist):
     return album, artist
 
 
-def encoded_queryargs(queryargs):
+def encoded_queryargs(queryargs: Mapping[str, Any]) -> dict[str, str]:
     """
     Percent-encode all values from passed dictionary
     Keys are left unmodified
     """
-    return {name: bytes(QtCore.QUrl.toPercentEncoding(str(value))).decode() for name, value in queryargs.items()}
+    return {name: QtCore.QUrl.toPercentEncoding(str(value)).data().decode() for name, value in queryargs.items()}
 
 
 def get_url(url_key: str) -> str:
@@ -814,7 +849,9 @@ def get_url(url_key: str) -> str:
     return url_key
 
 
-def build_qurl(host, port=80, path=None, queryargs=None):
+def build_qurl(
+    host: str, port: int = 80, path: str | None = None, queryargs: Mapping[str, Any] | None = None
+) -> QtCore.QUrl:
     """
     Builds and returns a QUrl object from `host`, `port` and `path` and
     automatically enables HTTPS if necessary.
@@ -843,7 +880,7 @@ def build_qurl(host, port=80, path=None, queryargs=None):
     return url
 
 
-def union_sorted_lists(list1, list2):
+def union_sorted_lists(list1: Sequence, list2: Sequence) -> list:
     """
     Returns union of two sorted lists.
     >> list1 = [1, 2, 2, 2, 3]
@@ -891,7 +928,7 @@ def __convert_to_string(obj: Any) -> str:
         return str(obj)
 
 
-def load_json(data: bytes | QByteArray | str) -> Any:
+def load_json(data: bytes | QtCore.QByteArray | str) -> Any:
     """Deserializes a string or bytes like json response and converts
     it to a python object.
 
@@ -909,7 +946,7 @@ def parse_json(reply: QNetworkReply) -> Any:
     return load_json(reply.readAll())
 
 
-def restore_method(func):
+def restore_method(func: Callable) -> Callable:
     def func_wrapper(*args, **kwargs):
         tagger = tagger_instance()
         if not tagger._no_restore:
@@ -918,7 +955,9 @@ def restore_method(func):
     return func_wrapper
 
 
-def reconnect(signal, newhandler=None, oldhandler=None):
+def reconnect(
+    signal: QtCore.pyqtBoundSignal, newhandler: Callable | None = None, oldhandler: Callable | None = None
+) -> None:
     """
     Reconnect an handler to a signal
 
@@ -939,7 +978,7 @@ def reconnect(signal, newhandler=None, oldhandler=None):
 
 
 @contextmanager
-def temporary_disconnect(signal, *handlers):
+def temporary_disconnect(signal: QtCore.pyqtBoundSignal, *handlers: Callable) -> Generator[None, None, None]:
     """
     Create context to temporarly disconnect one or more signal handlers
     """
@@ -952,7 +991,7 @@ def temporary_disconnect(signal, *handlers):
             signal.connect(handler)
 
 
-def compare_barcodes(barcode1, barcode2):
+def compare_barcodes(barcode1: str, barcode2: str) -> bool:
     """
     Compares two barcodes. Returns True if they are the same, False otherwise.
 
@@ -968,69 +1007,7 @@ def compare_barcodes(barcode1, barcode2):
     return barcode1.zfill(13) == barcode2.zfill(13)
 
 
-BestMatch = namedtuple('BestMatch', ('similarity', 'result'))
-
-
-def sort_by_similarity(candidates):
-    """Sorts the objects in candidates by similarity.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-    Returns: List of candidates sorted by similarity (highest similarity first)
-    """
-    return sorted(candidates, reverse=True, key=attrgetter('similarity'))
-
-
-def find_best_match(candidates, no_match):
-    """Returns a BestMatch based on the similarity of candidates.
-
-    Args:
-        candidates: Iterable with objects having a `similarity`  attribute
-        no_match: Match to return if there was no candidate
-
-    Returns: `BestMatch` with the similarity and the matched object as result.
-    """
-    best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
-    return BestMatch(similarity=best_match.similarity, result=best_match)
-
-
-MatchResult = namedtuple('MatchResult', ('similarity', 'result', 'reason'))
-
-
-def find_best_match_with_margin(candidates, no_match, min_similarity=0.0, min_margin=0.0):
-    """Find best match, flagging if below floor or margin is too small.
-
-    Args:
-        candidates: Iterable with objects having a `similarity` attribute
-        no_match: Match to return if no candidate passes the floor
-        min_similarity: Reject if best score is below this floor
-        min_margin: Flag as ambiguous if best - second_best < this value
-            (skipped when there's only one candidate)
-
-    Returns: `MatchResult` with similarity, result, and reason.
-        reason is None (confident), 'ambiguous' (margin too small,
-        best match still returned), or 'below_floor' (no_match returned).
-    """
-    best = no_match
-    second_best_sim = -1.0
-    for candidate in candidates:
-        sim = candidate.similarity
-        if sim > best.similarity:
-            second_best_sim = best.similarity
-            best = candidate
-        elif sim > second_best_sim:
-            second_best_sim = sim
-
-    if best.similarity < min_similarity:
-        return MatchResult(similarity=best.similarity, result=no_match, reason='below_floor')
-
-    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
-        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
-
-    return MatchResult(similarity=best.similarity, result=best, reason=None)
-
-
-def limited_join(a_list, limit, join_string='+', middle_string='…'):
+def limited_join(a_list: list[str], limit: int, join_string: str = '+', middle_string: str = '…') -> str:
     """Join elements of a list with `join_string`
     If list is longer than `limit`, middle elements will be dropped,
     and replaced by `middle_string`.
@@ -1066,7 +1043,7 @@ def limited_join(a_list, limit, join_string='+', middle_string='…'):
     return join_string.join(start + [middle_string] + end)
 
 
-def countries_shortlist(countries):
+def countries_shortlist(countries: list[str]) -> str:
     return limited_join(countries, 6, '+', '…')
 
 
@@ -1125,7 +1102,7 @@ def parse_date(dt: str) -> datetime | None:
     return None
 
 
-def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
+def pattern_as_regex(pattern: str, allow_wildcards: bool = False, flags: int = 0) -> re.Pattern[str]:
     """Parses a string and interprets it as a matching pattern.
 
     - If pattern is of the form /pattern/flags it is interpreted as a regular expression (e.g. `/foo.*/`).
@@ -1165,7 +1142,7 @@ def pattern_as_regex(pattern, allow_wildcards=False, flags=0):
     return re.compile(regex, flags)
 
 
-def wildcards_to_regex_pattern(pattern):
+def wildcards_to_regex_pattern(pattern: str) -> str:
     """Converts a pattern with shell like wildcards into a regular expression string.
 
     The following syntax is supported:
@@ -1228,7 +1205,7 @@ def wildcards_to_regex_pattern(pattern):
     return ''.join(regex)
 
 
-def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
+def _regex_numbered_title_fmt(fmt: str, title_repl: str, count_repl: str) -> str:
     title_marker = '{title}'
     count_marker = '{count}'
 
@@ -1248,14 +1225,14 @@ def _regex_numbered_title_fmt(fmt, title_repl, count_repl):
     )
 
 
-def _get_default_numbered_title_format():
+def _get_default_numbered_title_format() -> str:
     # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_NUMBERED_TITLE_FORMAT
 
     return gettext_constants(DEFAULT_NUMBERED_TITLE_FORMAT)
 
 
-def unique_numbered_title(default_title, existing_titles, fmt=None):
+def unique_numbered_title(default_title: str, existing_titles: set[str], fmt: str | None = None) -> str:
     """Generate a new unique and numbered title
     based on given default title and existing titles
     """
@@ -1278,7 +1255,7 @@ def unique_numbered_title(default_title, existing_titles, fmt=None):
     return fmt.format(title=default_title, count=count + 1)
 
 
-def get_base_title_with_suffix(title, suffix, fmt=None):
+def get_base_title_with_suffix(title: str, suffix: str, fmt: str | None = None) -> str:
     """Extract the base portion of a title,
     removing the suffix and number portion from the end.
     """
@@ -1293,7 +1270,7 @@ def get_base_title_with_suffix(title, suffix, fmt=None):
     return match_obj['title'] if match_obj else title
 
 
-def get_base_title(title):
+def get_base_title(title: str) -> str:
     """Extract the base portion of a title, using the standard suffix."""
     # Avoid circular import: util → const.defaults → util
     from picard.const.defaults import DEFAULT_COPY_TEXT
@@ -1302,17 +1279,17 @@ def get_base_title(title):
     return get_base_title_with_suffix(title, suffix)
 
 
-def iter_exception_chain(err):
+def iter_exception_chain(err: BaseException) -> Iterator[BaseException]:
     """Iterate over the exception chain.
     Yields this exception and all __context__ and __cause__ exceptions"""
     yield err
-    if hasattr(err, '__context__'):
-        yield from iter_exception_chain(err.__context__)
-    if hasattr(err, '__cause__'):
-        yield from iter_exception_chain(err.__cause__)
+    if context := getattr(err, '__context__', None):
+        yield from iter_exception_chain(context)
+    if cause := getattr(err, '__cause__', None):
+        yield from iter_exception_chain(cause)
 
 
-def any_exception_isinstance(error, type_):
+def any_exception_isinstance(error: BaseException, type_: type):
     """Returns True, if any exception in the exception chain is instance of type_."""
     return any(isinstance(err, type_) for err in iter_exception_chain(error))
 
@@ -1326,7 +1303,7 @@ ENCODING_BOMS = {
 }
 
 
-def detect_file_encoding(path, max_bytes_to_read=1024 * 256):
+def detect_file_encoding(path: str, max_bytes_to_read: int = 1024 * 256) -> str:
     """Attempts to guess the unicode encoding of a file based on the BOM, and
     depending on avalibility, using a charset detection method.
 
@@ -1362,7 +1339,7 @@ def detect_file_encoding(path, max_bytes_to_read=1024 * 256):
         return encoding
 
 
-def iswbound(char):
+def iswbound(char: str) -> bool:
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """Checks whether the given character is a word boundary"""
@@ -1370,7 +1347,7 @@ def iswbound(char):
     return 'Zs' == category or 'Sk' == category or 'P' == category[0]
 
 
-def titlecase(text):
+def titlecase(text: str) -> str:
     # GPL 2.0 licensed code by Javier Kohen, Sambhav Kothari
     # from https://github.com/metabrainz/picard-plugins/blob/2.0/plugins/titlecase/titlecase.py
     """Converts text to title case following word boundary rules.
@@ -1410,42 +1387,7 @@ def titlecase(text):
     return capitalized
 
 
-def format_ref_commit(ref, commit, ref_formatter=None, commit_formatter=None):
-    """Format ref and commit for display.
-
-    Args:
-        ref: Git reference (branch, tag, etc.)
-        commit: Git commit hash (full length)
-        ref_formatter: Optional function to format the ref part
-        commit_formatter: Optional function to format the commit part
-
-    Returns:
-        Formatted string: "ref @commit", "@commit", "ref", or empty string
-    """
-    # Import here to avoid circular imports
-    from picard.plugin3.plugin import short_commit_id
-
-    # Shorten commit for display
-    short_commit = short_commit_id(commit) if commit else ''
-
-    # Apply formatters if provided
-    formatted_ref = ref_formatter(ref) if ref_formatter and ref else ref
-    formatted_commit = commit_formatter(short_commit) if commit_formatter and short_commit else short_commit
-
-    if ref and short_commit:
-        # If ref is the same as commit (commit hash used as ref), just show @commit
-        if ref == commit or ref == short_commit:
-            return f"@{formatted_commit}"
-        return f"{formatted_ref} @{formatted_commit}"
-    elif ref:
-        return formatted_ref
-    elif short_commit:
-        return f"@{formatted_commit}"
-    else:
-        return ""
-
-
-def parse_versioning_scheme(versioning_scheme):
+def parse_versioning_scheme(versioning_scheme: str) -> re.Pattern | None:
     """Parse versioning scheme into compiled regex pattern.
 
     Args:
@@ -1471,7 +1413,7 @@ def parse_versioning_scheme(versioning_scheme):
         return None
 
 
-def atomic_write(path, data):
+def atomic_write(path: str, data: bytes) -> None:
     """Write bytes atomically to the given path.
 
     Writes to a temporary file in the destination directory and replaces

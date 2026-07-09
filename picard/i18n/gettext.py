@@ -5,7 +5,7 @@
 # Copyright (C) 2012 Frederik “Freso” S. Olesen
 # Copyright (C) 2013-2014, 2018-2024 Laurent Monin
 # Copyright (C) 2017 Sambhav Kothari
-# Copyright (C) 2017-2024 Philipp Wolfer
+# Copyright (C) 2017-2024, 2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,16 +21,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-
+from collections.abc import Callable
 import gettext as module_gettext
 import locale
 import os
-import re
 
-from PyQt6.QtCore import (
-    QCollator,
-    QLocale,
-)
+from PyQt6.QtCore import QLocale
 
 from picard.const.sys import (
     IS_MACOS,
@@ -38,11 +34,7 @@ from picard.const.sys import (
 )
 
 
-_logger = None
-_qcollator = QCollator()
-_qcollator_numeric = QCollator()
-_qcollator_numeric.setNumericMode(True)
-
+_logger = lambda *a, **b: None  # noqa: E731
 _null_translations = module_gettext.NullTranslations()
 _translation = {
     'main': _null_translations,
@@ -100,26 +92,81 @@ def set_locale_from_env():
     return current_locale
 
 
+def _bcp47_to_locale(tag: str) -> str:
+    """Convert a BCP 47 language tag to a POSIX locale identifier.
+
+    Extracts the language and region components, skipping script subtags.
+    If no region is found, uses locale.normalize() to infer a default region
+    for the language.
+
+    Examples:
+        'en-US' -> 'en_US'
+        'zh-Hans-CN' -> 'zh_CN'
+        'en' -> 'en_US' (via locale.normalize)
+        'fr' -> 'fr_FR' (via locale.normalize)
+    """
+    parts = tag.split('-')
+    language = parts[0]
+    for part in parts[1:]:
+        # Region designator: 2 uppercase ASCII letters or 3 digits
+        if (len(part) == 2 and part.isascii() and part.isupper()) or (len(part) == 3 and part.isdigit()):
+            return f'{language}_{part}'
+    # No region found — use locale.normalize to infer a default region
+    normalized = locale.normalize(language)
+    if normalized != language:
+        # Strip encoding suffix (e.g. 'en_US.ISO8859-1' -> 'en_US')
+        return normalized.split('.')[0]
+    return language
+
+
 if IS_WIN:
     from ctypes import windll  # type: ignore[attr-defined]
 
-    def _get_default_locale():
+    def _get_default_locale_win():
         try:
             return locale.windows_locale[windll.kernel32.GetUserDefaultUILanguage()]
         except KeyError:
             return None
 
+    _get_default_locale = _get_default_locale_win
+
 elif IS_MACOS:
     import Foundation
 
-    def _get_default_locale():
-        defaults = Foundation.NSUserDefaults.standardUserDefaults()
-        return defaults.objectForKey_('AppleLanguages')[0].replace('-', '_')
+    def _get_default_locale_mac() -> str | None:
+        """Read the user's locale from macOS user defaults.
 
+        Prefers AppleLocale (full locale with region, e.g. 'en_US') and falls
+        back to AppleLanguages (BCP 47 language tags, e.g. 'en-US').
+
+        Handles known quirks:
+        - AppleLocale may contain ICU keyword suffixes (e.g. '@currency=GBP')
+          when the user has customized regional settings; these are stripped.
+        - AppleLocale may be absent on some macOS 10.13/10.14 configurations.
+        - AppleLanguages on newer macOS may contain script subtags
+          (e.g. 'zh-Hans-CN') or lack region entirely (e.g. 'en').
+        """
+        try:
+            defaults = Foundation.NSUserDefaults.standardUserDefaults()
+            if 'AppleLocale' in defaults:
+                locale_str = defaults['AppleLocale']
+                # Strip ICU keyword suffixes like @currency=USD or @calendar=gregorian
+                return locale_str.split('@')[0] if locale_str else None
+            elif 'AppleLanguages' in defaults:
+                # Note: In newer macOS versions AppleLanguages no longer contains the full
+                # locale name with region, so this might return only a language code.
+                return _bcp47_to_locale(defaults['AppleLanguages'][0])
+        except Exception as e:
+            _logger("Failed to read macOS locale defaults: %s", e)
+        return None
+
+    _get_default_locale = _get_default_locale_mac
 else:
 
-    def _get_default_locale():
+    def _get_default_locale_none():
         return None
+
+    _get_default_locale = _get_default_locale_none
 
 
 def _try_encodings():
@@ -157,13 +204,10 @@ def _log_lang_env_vars():
     _logger("Env vars: %s", ' '.join(env_vars))
 
 
-def setup_gettext(localedir, ui_language=None, logger=None):
+def setup_gettext(localedir: str | None, ui_language: str | None, logger: Callable):
     """Setup locales, load translations, install gettext functions."""
-    global _logger, _qcollator, _qcollator_numeric
-    if not logger:
-        _logger = lambda *a, **b: None  # noqa: E731
-    else:
-        _logger = logger
+    global _logger
+    _logger = logger
 
     if ui_language:
         _logger("UI language: %r", ui_language)
@@ -197,9 +241,6 @@ def setup_gettext(localedir, ui_language=None, logger=None):
 
     _logger("Using locale: %r", current_locale)
     QLocale.setDefault(QLocale(current_locale))
-    _qcollator = QCollator()
-    _qcollator_numeric = QCollator()
-    _qcollator_numeric.setNumericMode(True)
 
     global _translation
     _translation = {
@@ -248,64 +289,3 @@ def gettext_countries(message: str) -> str:
 
 def gettext_constants(message: str) -> str:
     return _translation['constants'].gettext(message)
-
-
-def sort_key(string, numeric=False):
-    """Transforms a string to one that can be used in locale-aware comparisons.
-
-    Args:
-        string: The string to convert
-        numeric: Boolean indicating whether to use number aware sorting (natural sorting)
-
-    Returns: An object that can be compared locale-aware
-    """
-    # QCollator.sortKey is broken, see https://bugreports.qt.io/browse/QTBUG-128170
-    if IS_WIN:
-        return _sort_key_strxfrm(string, numeric)
-    else:
-        return _sort_key_qt(string, numeric)
-
-
-RE_NUMBER = re.compile(r'(\d+)')
-
-
-def _digits_replace(matchobj):
-    s = matchobj.group(0)
-    return str(int(s)) if s.isdecimal() else s
-
-
-def _sort_key_qt(string, numeric=False):
-    collator = _qcollator_numeric if numeric else _qcollator
-
-    # Null bytes can cause crashes in OS collation functions.
-    string = string.replace('\0', '')
-
-    # On macOS / Windows the numeric sorting does not work reliable with non-latin
-    # scripts. Replace numbers in the sort string with their latin equivalent.
-    if numeric and (IS_MACOS or IS_WIN):
-        string = RE_NUMBER.sub(_digits_replace, string)
-
-    if IS_MACOS:
-        # macOS does not sort the empty string before other values correctly
-        if not string:
-            string = ' '
-        # On macOS numeric sorting of strings entirely consisting of numeric
-        # characters fails and always sorts alphabetically (002 < 1). Always
-        # prefix with an alphabetic character to work around that.
-        string = 'a' + string
-
-    return collator.sortKey(string)
-
-
-def _sort_key_strxfrm(string, numeric=False):
-    if numeric:
-        return [int(s) if s.isdecimal() else _strxfrm(s) for s in RE_NUMBER.split(str(string).replace('\0', ''))]
-    else:
-        return _strxfrm(string)
-
-
-def _strxfrm(string):
-    try:
-        return locale.strxfrm(string)
-    except (OSError, ValueError):
-        return string.lower()

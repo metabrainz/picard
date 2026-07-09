@@ -18,7 +18,7 @@
   </property>
   <layout class="QVBoxLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="musicbrainz_server_box">
      <property name="title">
       <string>MusicBrainz Server</string>
      </property>
@@ -116,7 +116,7 @@ QCheckBox { color: black }</string>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="rename_files_2">
+    <widget class="QGroupBox" name="musicbrainz_account_box">
      <property name="title">
       <string>MusicBrainz Account</string>
      </property>
@@ -172,11 +172,18 @@ QCheckBox { color: black }</string>
         </item>
        </layout>
       </item>
+      <item>
+       <widget class="QCheckBox" name="enable_user_collections">
+        <property name="text">
+         <string>Enable managing user collections</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="general_box">
      <property name="title">
       <string>General</string>
      </property>

@@ -44,7 +44,7 @@ from picard.album import Album
 from picard.album_requests import TaskType
 from picard.config import (
     Config,
-    ConfigSection,
+    ProfileConfigSection,
     get_config,
 )
 from picard.coverart.image import CoverArtImage
@@ -186,13 +186,14 @@ class PluginApi:
     _deprecation_warnings_emitted: set[tuple[str, str, int]] = set()  # Track emitted deprecation warnings
 
     def __init__(self, manifest: PluginManifest, tagger: 'Tagger') -> None:
-        self._tagger: 'Tagger' = tagger
+        self._tagger: Tagger = tagger
         self._manifest = manifest
         self._plugin_module: types.ModuleType | None = None  # Will be set when plugin is enabled
         self._plugin_id = manifest.module_name
         full_name = f'plugin.{self._manifest.uuid}'
         self._logger = getLogger(f'main.plugin.{self._manifest.module_name}')
-        self._api_config = ConfigSection(get_config(), full_name)
+        self._api_config = ProfileConfigSection(get_config(), full_name)
+        self._api_config.display_name = manifest.name()
         self._translations: dict[str, dict] = {}
         self._source_locale = manifest.source_locale
         self._plugin_dir: Path | None = None
@@ -424,16 +425,72 @@ class PluginApi:
 
     @property
     def web_service(self) -> WebService:
+        """Access to Picard's web service for HTTP requests.
+
+        Use this to perform asynchronous HTTP requests. Results are delivered
+        to a handler callback rather than returned directly.
+
+        Returns:
+            WebService: The web service instance.
+
+        Example:
+            def my_processor(api, album, metadata, release):
+                def response_handler(response, reply, error):
+                    if error:
+                        api.logger.error(f"Request failed: {error}")
+                    else:
+                        data = response.json()
+                        # Process data
+
+                api.web_service.get(
+                    'example.com',
+                    '/api/endpoint',
+                    response_handler,
+                    priority=True,
+                    important=False,
+                )
+        """
         return self._tagger.webservice
 
     @property
     def mb_api(self) -> MBAPIHelper:
+        """Helper for MusicBrainz API requests.
+
+        Provides simplified access to the MusicBrainz web service, wrapping
+        common lookups such as fetching a release by its MBID.
+
+        Returns:
+            MBAPIHelper: The MusicBrainz API helper instance.
+
+        Example:
+            def my_processor(api, album, metadata, release):
+                api.mb_api.get_release_by_id(
+                    release_id,
+                    handler,
+                    inc=['artists', 'recordings'],
+                )
+        """
         if not self._mb_api:
             self._mb_api = MBAPIHelper(self._tagger.webservice)
         return self._mb_api
 
     @property
     def logger(self) -> Logger:
+        """Plugin-specific logger instance.
+
+        Log messages are namespaced under ``plugin.{module_name}`` so that
+        output can be attributed to the originating plugin.
+
+        Returns:
+            Logger: The logger instance for this plugin.
+
+        Example:
+            def enable(api):
+                api.logger.debug("Debug message")
+                api.logger.info("Info message")
+                api.logger.warning("Warning message")
+                api.logger.error("Error message")
+        """
         return self._logger
 
     @property
@@ -443,10 +500,26 @@ class PluginApi:
 
     @property
     def global_config(self) -> Config:
+        """Access to Picard's global configuration.
+
+        Use this to read or write Picard's shared settings. For settings
+        private to the plugin, use :attr:`plugin_config` instead.
+
+        Returns:
+            Config: Picard's global configuration object.
+
+        Example:
+            def my_processor(api, album, metadata, release):
+                # Read settings
+                enabled = api.global_config.setting.get('my_plugin_enabled', False)
+
+                # Write settings
+                api.global_config.setting['my_plugin_enabled'] = True
+        """
         return get_config()
 
     @property
-    def plugin_config(self) -> ConfigSection:
+    def plugin_config(self) -> ProfileConfigSection:
         """Configuration private to the plugin"""
         return self._api_config
 
@@ -642,6 +715,36 @@ class PluginApi:
     def register_album_metadata_processor(
         self, function: Callable[['PluginApi', Album, Metadata, dict], None], priority: int = 0
     ) -> None:
+        """Register a function to process album metadata.
+
+        The registered function is called for each album that is loaded,
+        allowing it to inspect or modify the album's metadata.
+
+        Args:
+            function: The processor function to register. The ``api`` argument
+                is injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``album``: The :class:`Album` being processed.
+                - ``metadata``: The :class:`Metadata` to read from and modify.
+                - ``release_node``: The raw MusicBrainz release data as a dict.
+
+                Expected signature::
+
+                    def function(api, album, metadata, release_node):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def process_album(api, album, metadata, release_node):
+                metadata['custom_album_tag'] = 'value'
+
+            def enable(api):
+                api.register_album_metadata_processor(process_album)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_album_metadata_processor(wrapped, priority)
@@ -649,6 +752,41 @@ class PluginApi:
     def register_track_metadata_processor(
         self, function: Callable[['PluginApi', Track, Metadata, dict, dict | None], None], priority: int = 0
     ) -> None:
+        """Register a function to process track metadata.
+
+        The registered function is called for each track that is loaded,
+        allowing it to inspect or modify the track's metadata.
+
+        Args:
+            function: The processor function to register. The ``api`` argument
+                is injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``track``: The :class:`Track` being processed.
+                - ``metadata``: The :class:`Metadata` to read from and modify.
+                - ``track_node``: The raw MusicBrainz track data as a dict.
+                - ``release_node``: The raw MusicBrainz release data as a dict,
+                  or ``None`` if not available.
+
+                Expected signature::
+
+                    def function(api, track, metadata, track_node, release_node=None):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def process_track(api, track, metadata, track_node, release_node=None):
+                api.logger.info(f"Processing: {metadata['title']}")
+                metadata['custom_tag'] = 'value'
+
+            def enable(api):
+                api.register_track_metadata_processor(process_track)
+                # With priority
+                api.register_track_metadata_processor(process_track, priority=100)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_track_metadata_processor(wrapped, priority)
@@ -657,6 +795,31 @@ class PluginApi:
     def register_album_post_removal_processor(
         self, function: Callable[['PluginApi', Album], None], priority: int = 0
     ) -> None:
+        """Register a function called after an album is removed.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``album``: The :class:`Album` that was removed.
+
+                Expected signature::
+
+                    def function(api, album):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_album_removed(api, album):
+                api.logger.info(f"Album removed: {album.id}")
+
+            def enable(api):
+                api.register_album_post_removal_processor(on_album_removed)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_album_post_removal_processor(wrapped, priority)
@@ -664,6 +827,31 @@ class PluginApi:
     def register_file_post_load_processor(
         self, function: Callable[['PluginApi', File], None], priority: int = 0
     ) -> None:
+        """Register a function called after a file is loaded.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``file``: The :class:`File` that was loaded.
+
+                Expected signature::
+
+                    def function(api, file):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_file_loaded(api, file):
+                api.logger.info(f"File loaded: {file.filename}")
+
+            def enable(api):
+                api.register_file_post_load_processor(on_file_loaded)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_load_processor(wrapped, priority)
@@ -671,6 +859,32 @@ class PluginApi:
     def register_file_post_addition_to_track_processor(
         self, function: Callable[['PluginApi', Track, File], None], priority: int = 0
     ) -> None:
+        """Register a function called when a file is added to a track.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``track``: The :class:`Track` the file was added to.
+                - ``file``: The :class:`File` that was added.
+
+                Expected signature::
+
+                    def function(api, track, file):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_file_added(api, track, file):
+                api.logger.info(f"{file.filename} added to {track}")
+
+            def enable(api):
+                api.register_file_post_addition_to_track_processor(on_file_added)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_addition_to_track_processor(wrapped, priority)
@@ -678,6 +892,32 @@ class PluginApi:
     def register_file_post_removal_from_track_processor(
         self, function: Callable[['PluginApi', Track, File], None], priority: int = 0
     ) -> None:
+        """Register a function called when a file is removed from a track.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``track``: The :class:`Track` the file was removed from.
+                - ``file``: The :class:`File` that was removed.
+
+                Expected signature::
+
+                    def function(api, track, file):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_file_removed(api, track, file):
+                api.logger.info(f"{file.filename} removed from {track}")
+
+            def enable(api):
+                api.register_file_post_removal_from_track_processor(on_file_removed)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_removal_from_track_processor(wrapped, priority)
@@ -685,6 +925,31 @@ class PluginApi:
     def register_file_post_save_processor(
         self, function: Callable[['PluginApi', File], None], priority: int = 0
     ) -> None:
+        """Register a function called after a file is saved.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``file``: The :class:`File` that was saved.
+
+                Expected signature::
+
+                    def function(api, file):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_file_saved(api, file):
+                api.logger.info(f"File saved: {file.filename}")
+
+            def enable(api):
+                api.register_file_post_save_processor(on_file_saved)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_post_save_processor(wrapped, priority)
@@ -692,36 +957,198 @@ class PluginApi:
     def register_file_pre_save_processor(
         self, function: Callable[['PluginApi', File], None], priority: int = 0
     ) -> None:
+        """Register a function called just before a file is saved.
+
+        Args:
+            function: The function to register. The ``api`` argument is
+                injected automatically, so the function receives the
+                following parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``file``: The :class:`File` that is about to be saved.
+
+                Expected signature::
+
+                    def function(api, file):
+                        ...
+
+            priority: Execution priority. Higher values run earlier
+                (default: 0).
+
+        Example:
+            def on_file_saving(api, file):
+                api.logger.info(f"About to save: {file.filename}")
+
+            def enable(api):
+                api.register_file_pre_save_processor(on_file_saving)
+        """
         wrapped = partial(function, self)
         update_wrapper(wrapped, function)
         return register_file_pre_save_processor(wrapped, priority)
 
     # Cover art
     def register_cover_art_provider(self, provider_class: type[CoverArtProvider]) -> None:
+        """Register a custom cover art provider.
+
+        The provider supplies cover art images from a custom source. Pass the
+        class, not an instance; Picard makes ``self.api`` available inside the
+        class to access the :class:`PluginApi` instance.
+
+        Args:
+            provider_class: A subclass of :class:`CoverArtProvider`. It should
+                define a ``NAME`` attribute and implement ``queue_images()`` to
+                queue the cover art images it provides.
+
+        Example:
+            from picard.plugin3.api import CoverArtProvider
+
+            class MyProvider(CoverArtProvider):
+                NAME = "My Provider"
+
+                def queue_images(self):
+                    # Queue cover art images
+                    pass
+
+            def enable(api):
+                api.register_cover_art_provider(MyProvider)
+        """
         provider_class.api = self
         self._set_class_name_and_title(provider_class)
         if getattr(provider_class, 'OPTIONS', None):
             provider_class.OPTIONS.api = self  # type: ignore[attr-defined]
+            provider_class.OPTIONS.OPTION_SECTION = self._api_config.section_name
         return register_cover_art_provider(provider_class)
 
     def register_cover_art_filter(
         self, filter: Callable[['PluginApi', bytes, ImageInfo, Album | None, CoverArtImage], bool]
     ) -> None:
+        """Register a filter to decide which cover art images to keep.
+
+        The filter is called for each downloaded cover art image. Return
+        ``True`` to keep the image or ``False`` to discard it.
+
+        Args:
+            filter: The filter function to register. The ``api`` argument is
+                injected automatically, so the function receives the following
+                parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``data``: The raw image data as ``bytes``.
+                - ``image_info``: An :class:`ImageInfo` describing the image
+                  (e.g. ``width``, ``height``, ``mime``).
+                - ``album``: The :class:`Album` the image belongs to, or
+                  ``None``.
+                - ``image``: The :class:`CoverArtImage` object.
+
+                Expected signature::
+
+                    def filter(api, data, image_info, album, image) -> bool:
+                        ...
+
+        Example:
+            def my_cover_filter(api, data, image_info, album, image) -> bool:
+                # Keep only images that are at least 500px wide
+                return image_info.width >= 500
+
+            def enable(api):
+                api.register_cover_art_filter(my_cover_filter)
+        """
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_filter(wrapped)
 
-    def register_cover_art_metadata_filter(self, filter: Callable[['PluginApi', dict], bool]) -> None:
+    def register_cover_art_metadata_filter(self, filter: Callable[['PluginApi', dict[str, Any]], bool]) -> None:
+        """Register a filter to decide which cover art to keep by its metadata.
+
+        The filter is called with the cover art's metadata before the image is
+        downloaded. Return ``True`` to keep the image or ``False`` to discard
+        it.
+
+        Args:
+            filter: The filter function to register. The ``api`` argument is
+                injected automatically, so the function receives the following
+                parameters:
+
+                - ``api``: The :class:`PluginApi` instance.
+                - ``image_metadata``: A dict with the cover art metadata
+                  (e.g. its ``type``).
+
+                Expected signature::
+
+                    def filter(api, image_metadata) -> bool:
+                        ...
+
+        Example:
+            def my_metadata_filter(api, image_metadata) -> bool:
+                return image_metadata.get('type') == 'front'
+
+            def enable(api):
+                api.register_cover_art_metadata_filter(my_metadata_filter)
+        """
         wrapped = partial(filter, self)
         update_wrapper(wrapped, filter)
         return register_cover_art_metadata_filter(wrapped)
 
     def register_cover_art_processor(self, processor_class: type[ImageProcessor]) -> None:
+        """Register a processor to modify cover art images.
+
+        The processor can transform cover art images before they are saved to
+        tags or to a file. Pass the class, not an instance; Picard makes
+        ``self.api`` available inside the class.
+
+        Args:
+            processor_class: A subclass of :class:`ImageProcessor`. It should
+                implement ``run(image)`` to modify the image and may override
+                ``save_to_tags()``, ``save_to_file()`` and ``same_processing()``
+                to control when it is applied.
+
+        Example:
+            from picard.plugin3.api import ImageProcessor
+
+            class MyProcessor(ImageProcessor):
+                def save_to_tags(self):
+                    return True
+
+                def save_to_file(self):
+                    return True
+
+                def run(self, image):
+                    # Modify the image in place
+                    pass
+
+            def enable(api):
+                api.register_cover_art_processor(MyProcessor)
+        """
         processor_class.api = self
         return register_cover_art_processor(processor_class)
 
     # File formats
     def register_format(self, format: type[File]) -> None:
+        """Register support for a custom file format.
+
+        Args:
+            format: A subclass of :class:`File` implementing the custom format.
+                It should define ``NAME`` and ``EXTENSIONS`` attributes and
+                implement ``_load()`` and ``_save()``.
+
+        Example:
+            from picard.plugin3.api import File
+
+            class MyFormat(File):
+                NAME = "My Format"
+                EXTENSIONS = [".myformat"]
+
+                def _load(self, filename):
+                    # Load file and return its Metadata
+                    pass
+
+                def _save(self, filename):
+                    # Save metadata to file
+                    pass
+
+            def enable(api):
+                api.register_format(MyFormat)
+        """
         return self._tagger.format_registry.register(format)
 
     # Scripting
@@ -734,39 +1161,260 @@ class PluginApi:
         documentation: str | None = None,
         signature: str | None = None,
     ) -> None:
+        """Register a custom tagger script function.
+
+        Once registered, the function can be used in tagger scripts as
+        ``$name(...)``.
+
+        Args:
+            function: The function to register. Its first argument is always
+                the script ``parser``, followed by the script arguments.
+
+                Expected signature::
+
+                    def function(parser, arg1, arg2, ...):
+                        ...
+
+            name: The function name to use in scripts. Defaults to the
+                function's ``__name__``.
+            eval_args: Whether to evaluate the arguments before passing them to
+                the function (default: ``True``).
+            check_argcount: Whether to validate the number of arguments
+                (default: ``True``).
+            documentation: Optional help text shown for the function.
+            signature: Optional signature string shown in the documentation
+                (e.g. ``"$my_func(arg1,arg2)"``).
+
+        Example:
+            def my_script_func(parser, arg1, arg2):
+                return f"{arg1}-{arg2}"
+
+            def enable(api):
+                api.register_script_function(
+                    my_script_func,
+                    name="my_func",  # Optional: defaults to function name
+                    documentation="Combines two arguments with a dash",
+                    signature="$my_func(arg1,arg2)",
+                )
+
+            # Usage in scripts: $my_func(value1,value2)
+        """
         return register_script_function(function, name, eval_args, check_argcount, documentation, signature)
 
     def register_script_variable(self, name: str, documentation: str | None = None) -> None:
+        """Register a variable name for script autocomplete.
+
+        Args:
+            name: The variable name without the surrounding ``%`` symbols.
+            documentation: Optional help text shown for the variable.
+
+        Example:
+            def enable(api):
+                api.register_script_variable(
+                    "my_plugin_var",
+                    documentation="A custom variable from my plugin",
+                )
+        """
         return register_script_variable(name, documentation, self)
 
     # Menu actions
     def register_album_action(self, action: type[BaseAction]) -> None:
+        """Register a context menu action for albums.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class to access the :class:`PluginApi` instance. The
+        action's ``callback(objs)`` is invoked with the selected albums.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    for obj in objs:
+                        self.api.logger.info(f"Action on: {obj}")
+
+            def enable(api):
+                api.register_album_action(MyAction)
+        """
         action.api = self
         return register_album_action(action)
 
     def register_cluster_action(self, action: type[BaseAction]) -> None:
+        """Register a context menu action for clusters.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class. The action's ``callback(objs)`` is invoked with the
+        selected clusters.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    for obj in objs:
+                        self.api.logger.info(f"Action on: {obj}")
+
+            def enable(api):
+                api.register_cluster_action(MyAction)
+        """
         action.api = self
         return register_cluster_action(action)
 
     def register_clusterlist_action(self, action: type[BaseAction]) -> None:
+        """Register a context menu action for the cluster list.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class. The action's ``callback(objs)`` is invoked with the
+        selected cluster list items.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    for obj in objs:
+                        self.api.logger.info(f"Action on: {obj}")
+
+            def enable(api):
+                api.register_clusterlist_action(MyAction)
+        """
         action.api = self
         return register_clusterlist_action(action)
 
     def register_track_action(self, action: type[BaseAction]) -> None:
+        """Register a context menu action for tracks.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class. The action's ``callback(objs)`` is invoked with the
+        selected tracks.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    for obj in objs:
+                        self.api.logger.info(f"Action on: {obj}")
+
+            def enable(api):
+                api.register_track_action(MyAction)
+        """
         action.api = self
         return register_track_action(action)
 
     def register_file_action(self, action: type[BaseAction]) -> None:
+        """Register a context menu action for files.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class. The action's ``callback(objs)`` is invoked with the
+        selected files.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    for obj in objs:
+                        self.api.logger.info(f"Action on: {obj}")
+
+            def enable(api):
+                api.register_file_action(MyAction)
+        """
         action.api = self
         return register_file_action(action)
 
     def register_tools_menu_action(self, action: type[BaseAction]) -> None:
+        """Register an action in the plugin Tools menu.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class. The action's ``callback(objs)`` is invoked when the
+        menu item is triggered.
+
+        Args:
+            action: A subclass of :class:`BaseAction` defining a ``TITLE`` and
+                a ``callback(self, objs)`` method.
+
+        Example:
+            from picard.plugin3.api import BaseAction
+
+            class MyAction(BaseAction):
+                TITLE = "My Custom Action"
+
+                def callback(self, objs):
+                    self.api.logger.info("Triggered from Tools menu")
+
+            def enable(api):
+                api.register_tools_menu_action(MyAction)
+        """
         action.api = self
         return register_tools_menu_action(action)
 
     # UI
     def register_options_page(self, page_class: type[OptionsPage]) -> None:
+        """Register a settings page in Picard's options dialog.
+
+        Pass the class, not an instance. Picard makes ``self.api`` available
+        inside the class to access the :class:`PluginApi` instance.
+
+        Args:
+            page_class: A subclass of :class:`OptionsPage`. It should define the
+                ``NAME``, ``TITLE`` and ``PARENT`` (usually ``"plugins"``)
+                attributes and implement ``load()`` and ``save()`` to load
+                settings into the UI and persist them again.
+
+        Example:
+            from picard.plugin3.api import OptionsPage
+
+            class MyOptionsPage(OptionsPage):
+                NAME = "my_plugin"
+                TITLE = "My Plugin"
+                PARENT = "plugins"
+
+                def __init__(self):
+                    super().__init__()
+                    # Build UI
+
+                def load(self):
+                    enabled = self.api.plugin_config.get('enabled', True)
+
+                def save(self):
+                    self.api.plugin_config['enabled'] = True
+
+            def enable(api):
+                api.register_options_page(MyOptionsPage)
+        """
         page_class.api = self
+        page_class.OPTION_SECTION = self._api_config.section_name
         # The options page needs a unique name if no name was given
         self._set_class_name_and_title(page_class)
         return register_options_page(page_class)

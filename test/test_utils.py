@@ -32,7 +32,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-from collections import namedtuple
 from collections.abc import Iterator
 from datetime import (
     date,
@@ -41,6 +40,7 @@ from datetime import (
 import os
 import re
 import subprocess  # nosec: B404
+import tempfile
 from tempfile import NamedTemporaryFile
 import unittest
 from unittest.mock import (
@@ -69,13 +69,10 @@ from picard.util import (
     album_artist_from_path,
     any_exception_isinstance,
     build_qurl,
-    decode_filename,
     detect as charset_detect,
     detect_file_encoding,
-    encode_filename,
     encoded_queryargs,
     extract_year_from_date,
-    find_best_match,
     get_url,
     is_absolute_path,
     is_unc_path,
@@ -87,7 +84,7 @@ from picard.util import (
     normpath,
     parse_date,
     pattern_as_regex,
-    sort_by_similarity,
+    resolve_fs_path,
     system_supports_long_paths,
     temporary_disconnect,
     titlecase,
@@ -477,40 +474,6 @@ class MbidValidateTest(PicardTestCase):
         self.assertRaises(TypeError, util.mbid_validate, None)
 
 
-SimMatchTest = namedtuple('SimMatchTest', 'similarity name')
-
-
-class SortBySimilarity(PicardTestCase):
-    def setUp(self):
-        super().setUp()
-        self.test_values = [
-            SimMatchTest(similarity=0.74, name='d'),
-            SimMatchTest(similarity=0.61, name='a'),
-            SimMatchTest(similarity=0.75, name='b'),
-            SimMatchTest(similarity=0.75, name='c'),
-        ]
-
-    def test_sort_by_similarity(self):
-        results = [result.name for result in sort_by_similarity(self.test_values)]
-        self.assertEqual(results, ['b', 'c', 'd', 'a'])
-
-    def test_findbestmatch(self):
-        no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.test_values, no_match)
-
-        self.assertEqual(best_match.result.name, 'b')
-        self.assertEqual(best_match.similarity, 0.75)
-
-    def test_findbestmatch_nomatch(self):
-        self.test_values = []
-
-        no_match = SimMatchTest(similarity=-1, name='no_match')
-        best_match = find_best_match(self.test_values, no_match)
-
-        self.assertEqual(best_match.result.name, 'no_match')
-        self.assertEqual(best_match.similarity, -1)
-
-
 class LimitedJoin(PicardTestCase):
     def setUp(self):
         super().setUp()
@@ -794,38 +757,88 @@ class BuildQUrlTest(PicardTestCase):
         self.assertEqual(expected, result)
 
 
-class EncodeFilenameTest(PicardTestCase):
-    @unittest.skipUnless(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem with Unicode support',
-    )
-    def test_encode_fs_unicode_support(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, encode_filename(path))
-
-    @unittest.skipIf(
-        os.path.supports_unicode_filenames and not IS_MACOS,
-        'for filesystem without Unicode support',
-    )
-    def test_encode_fs_no_unicode_support(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path.encode(_io_encoding), encode_filename(path))
-
-
-class DecodeFilenameTest(PicardTestCase):
-    def test_decode_string(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path))
-
-    def test_decode_bytes(self):
-        path = '/some/file-ä.ext'
-        self.assertEqual(path, decode_filename(path.encode(_io_encoding)))
+class ResolveFsPathTest(PicardTestCase):
+    def test_str_existing_file(self):
+        """Returns existing str path unchanged."""
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(f.name)
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
 
     @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
-    def test_decode_bytes_invalid_encoding(self):
-        path = '/some/file-ä.ext'.encode('latin-1')
-        with self.assertRaises(UnicodeDecodeError):
-            decode_filename(path)
+    def test_bytes_existing_file(self):
+        """Decodes bytes path and returns str."""
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(f.name.encode('utf-8'))
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
+
+    def test_path_existing_file(self):
+        """Converts Path to str."""
+        import pathlib
+
+        with NamedTemporaryFile(suffix='.flac') as f:
+            result = resolve_fs_path(pathlib.Path(f.name))
+            self.assertIsInstance(result, str)
+            self.assertEqual(f.name, result)
+
+    def test_nonexistent_returns_str(self):
+        """Non-existent path is returned as str without error."""
+        result = resolve_fs_path('/nonexistent/path/file.flac')
+        self.assertIsInstance(result, str)
+        self.assertEqual('/nonexistent/path/file.flac', result)
+
+    def test_nonexistent_bytes_returns_str(self):
+        """Non-existent bytes path is decoded and returned as str."""
+        result = resolve_fs_path(b'/nonexistent/path/file.flac')
+        self.assertIsInstance(result, str)
+        self.assertEqual('/nonexistent/path/file.flac', result)
+
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_nfc_resolves_to_nfd_file(self):
+        """NFC path resolves to existing NFD file on byte-exact filesystem."""
+        import unicodedata
+
+        nfc_name = 'Voilà.flac'
+        nfd_name = unicodedata.normalize('NFD', nfc_name)
+        with tempfile.TemporaryDirectory() as d:
+            # Create file with NFD name
+            nfd_path = os.path.join(d, nfd_name)
+            with open(nfd_path, 'w') as f:
+                f.write('test')
+            # Try resolving via NFC path
+            nfc_path = os.path.join(d, nfc_name)
+            result = resolve_fs_path(nfc_path)
+            # On byte-exact filesystems (ext4), result is the NFD path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFC
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfc_path):
+                self.assertEqual(nfc_path, result)
+            else:
+                self.assertEqual(nfd_path, result)
+
+    @unittest.skipUnless(_io_encoding.lower() == 'utf-8', 'utf-8 only test')
+    def test_nfd_resolves_to_nfc_file(self):
+        """NFD path resolves to existing NFC file on byte-exact filesystem."""
+        import unicodedata
+
+        nfc_name = 'Voilà.flac'
+        nfd_name = unicodedata.normalize('NFD', nfc_name)
+        with tempfile.TemporaryDirectory() as d:
+            # Create file with NFC name
+            nfc_path = os.path.join(d, nfc_name)
+            with open(nfc_path, 'w') as f:
+                f.write('test')
+            # Try resolving via NFD path
+            nfd_path = os.path.join(d, nfd_name)
+            result = resolve_fs_path(nfd_path)
+            # On byte-exact filesystems (ext4), result is the NFC path.
+            # On normalization-insensitive filesystems (ZFS, APFS), the NFD
+            # path already exists so it's returned unchanged.
+            if os.path.exists(nfd_path):
+                self.assertEqual(nfd_path, result)
+            else:
+                self.assertEqual(nfc_path, result)
 
 
 class NormpathTest(PicardTestCase):

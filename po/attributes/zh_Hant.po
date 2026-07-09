@@ -3,11 +3,12 @@
 # WorldPioneerXXX <peter04peter04p@gmail.com>, 2024.
 # guardiansock <guardian.sock5925@fastmail.com>, 2024.
 # KenParker_CN <peekabookenny@gmail.com>, 2025.
+# jerry155756294 <a155750130@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2025-03-31 11:45+0000\n"
-"Last-Translator: BestSteve <ibmibmibm.tw@gmail.com>\n"
+"PO-Revision-Date: 2026-06-18 21:12+0000\n"
+"Last-Translator: jerry155756294 <a155750130@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://"
 "translations.metabrainz.org/projects/musicbrainz/attributes/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -15,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #. name:Motet
 #: DB:work_type/description:9
@@ -455,6 +456,8 @@ msgid ""
 "A four- or five-sided box, usually made of cardboard or plastic, that "
 "surrounds a second inner package such as a jewel case."
 msgstr ""
+"一個四面或五面的盒子，通常由紙板或塑膠製成，包裹著第二個內部包裝，例如珠寶"
+"盒。"
 
 #. name:Promotion
 #: DB:release_status/description:2
@@ -514,6 +517,15 @@ msgid ""
 "A list of songs to be played in the event, often printed or handwritten for "
 "use by the artist."
 msgstr "一個紀錄了活動演奏曲目的列表，通常是列印或者手寫的，由創作者使用。"
+
+#. name:Logo
+#: DB:event_art_archive.art_type/description:12
+msgctxt "event_art_type"
+msgid ""
+"A logo that is specific to a particular event and only used for it, rather "
+"than being the logo for a series (such as a festival logo reused over "
+"multiple years)."
+msgstr ""
 
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
@@ -705,6 +717,15 @@ msgstr ""
 "一種宣傳版本，主要用於有限發行，向唱片公司、出版商和其他創作者展示創作者的聲"
 "音。"
 
+#. name:Liner
+#: DB:cover_art_archive.art_type/description:12
+msgctxt "cover_art_type"
+msgid ""
+"A protective sleeve (usually an ‘inner sleeve’) surrounding a medium "
+"(usually a vinyl record, but sometimes a CD), often printed with notes or "
+"images."
+msgstr ""
+
 #. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -836,6 +857,26 @@ msgstr "一系列專輯組。"
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "一系列專輯。"
+
+#. name:Series award
+#: DB:series_type/description:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of recordings honoured by the same award."
+msgctxt "series_type"
+msgid ""
+"A series of series (such as podcasts or festivals) honoured by the same "
+"award."
+msgstr "一系列錄音榮獲同一獎項。"
+
+#. name:Series series
+#: DB:series_type/description:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of events."
+msgctxt "series_type"
+msgid "A series of series."
+msgstr "一系列活動。"
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -1217,12 +1258,9 @@ msgid "Album"
 msgstr "專輯"
 
 #: DB:work_attribute_type/name:216
-#, fuzzy
-#| msgctxt "cover_art_type"
-#| msgid "Track"
 msgctxt "work_attribute_type"
 msgid "AllTrack ID"
-msgstr "音軌"
+msgstr "所有音軌的ID"
 
 #. name:Manual
 #: DB:series_ordering_type/description:2
@@ -1386,20 +1424,14 @@ msgstr ""
 
 #. name:Schedule
 #: DB:event_art_archive.art_type/description:5
-#, fuzzy
-#| msgctxt "event_art_type"
-#| msgid ""
-#| "An image usually showing the order and time for the performances in an "
-#| "event. Can be a standalone image, but also a poster or banner (in which "
-#| "case all applicable types should be set)."
 msgctxt "event_art_type"
 msgid ""
 "An image usually showing the order and time for the performances in an "
 "event. Can be a standalone image, but also a poster, a banner or a page from "
 "a program (in which case all applicable types should be set)."
 msgstr ""
-"通常是一張顯示活動中的表演順序和時間安排的圖像。它可以是一個獨立的圖像，也可"
-"以是海報或橫幅的一部分(在這種情況下，所有適用的類型都應被設置)。"
+"通常顯示活動中表演順序與時間的圖片。可以是獨立圖片，也可以是海報、橫幅或活動"
+"手冊中的某一頁（若是後者，應同時設定所有適用的類型）。"
 
 #. name:Concert
 #: DB:event_type/description:1
@@ -1488,7 +1520,7 @@ msgctxt "label_type"
 msgid ""
 "An organization that mostly concentrates on broadcasting audio or video "
 "content, be it on television, radio or the internet."
-msgstr ""
+msgstr "專注於播送音訊或視訊內容的組織，不論是透過電視、廣播（電台）或網路。"
 
 #. name:Creative Agency
 #: DB:label_type/description:11
@@ -1496,7 +1528,7 @@ msgctxt "label_type"
 msgid ""
 "An organization that provides creative direction for visual elements of "
 "releases (such as illustrations, design and other artwork)."
-msgstr ""
+msgstr "為發行物的視覺元素（例如插畫、設計和其他美術作品）提供創意指導的組織。"
 
 #. name:Rights Society
 #: DB:label_type/description:8
@@ -2211,12 +2243,9 @@ msgid "Broadcast"
 msgstr "廣播"
 
 #: DB:label_type/name:12
-#, fuzzy
-#| msgctxt "release_group_primary_type"
-#| msgid "Broadcast"
 msgctxt "label_type"
 msgid "Broadcaster"
-msgstr "廣播"
+msgstr "廣播員"
 
 #: DB:work_attribute_type_allowed_value/value:885
 msgctxt "work_attribute_type_allowed_value"
@@ -2617,7 +2646,7 @@ msgstr ""
 #: DB:label_type/name:11
 msgctxt "label_type"
 msgid "Creative Agency"
-msgstr ""
+msgstr "創意機構"
 
 #: DB:work_attribute_type_allowed_value/value:608
 msgctxt "work_attribute_type_allowed_value"
@@ -3261,7 +3290,7 @@ msgstr "升 E 小調"
 #: DB:work_attribute_type/name:215
 msgctxt "work_attribute_type"
 msgid "EAÜ ID"
-msgstr ""
+msgstr "EAÜ ID"
 
 #: DB:work_attribute_type/name:37
 msgctxt "work_attribute_type"
@@ -3299,7 +3328,7 @@ msgctxt "medium_format"
 msgid ""
 "Enhanced version of Blu-ray supporting 4K Ultra HD video which is not "
 "compatible with all Blu-ray players."
-msgstr ""
+msgstr "支援 4K 超高清影片的增強版藍光光碟，但並非所有藍光播放器都相容。"
 
 #: DB:instrument_type/name:6
 msgctxt "instrument_type"
@@ -3915,12 +3944,9 @@ msgid "HDCD"
 msgstr "HDCD"
 
 #: DB:work_attribute_type/name:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ASCAP ID"
 msgctxt "work_attribute_type"
 msgid "HDS-ZAMP ID"
-msgstr "ASCAP ID"
+msgstr "HDS-ZAMP ID"
 
 #: DB:work_attribute_type/name:64
 msgctxt "work_attribute_type"
@@ -4342,12 +4368,9 @@ msgstr "英國音樂著作權協會PRS ID"
 
 #. name:MUSICAUTOR ID
 #: DB:work_attribute_type/description:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Nicaraguan rights society NICAUTOR"
 msgctxt "work_attribute_type"
 msgid "ID for the Bulgarian rights society MUSICAUTOR"
-msgstr "尼加拉瓜著作權協會NICAUTOR ID"
+msgstr "保加利亞著作權集體管理組織 MUSICAUTOR 的識別碼"
 
 #. name:SOCAN ID
 #: DB:work_attribute_type/description:10
@@ -4387,12 +4410,9 @@ msgstr "哥斯大黎加著作權協會ACAM ID"
 
 #. name:HDS-ZAMP ID
 #: DB:work_attribute_type/description:214
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Cuban rights society ACDAM"
 msgctxt "work_attribute_type"
 msgid "ID for the Croatian rights society HDS-ZAMP"
-msgstr "古巴著作權協會ACDAM ID"
+msgstr "克羅埃西亞著作權集體管理組織 HDS-ZAMP 的ID"
 
 #. name:ACDAM ID
 #: DB:work_attribute_type/description:47
@@ -4432,12 +4452,9 @@ msgstr "厄瓜多著作權協會SAYCE ID"
 
 #. name:EAÜ ID
 #: DB:work_attribute_type/description:215
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Austrian rights society AKM"
 msgctxt "work_attribute_type"
 msgid "ID for the Estonian rights society EAÜ"
-msgstr "奧地利著作權協會AKM ID"
+msgstr "愛沙尼亞人權協會EAÜ的ID"
 
 #. name:TEOSTO ID
 #: DB:work_attribute_type/description:66
@@ -4627,12 +4644,9 @@ msgstr "薩爾瓦多著作權協會SACIM ID"
 
 #. name:SOKOJ ID
 #: DB:work_attribute_type/description:213
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the Norwegian rights society TONO"
 msgctxt "work_attribute_type"
 msgid "ID for the Serbian rights society SOKOJ"
-msgstr "挪威著作權協會TONO ID"
+msgstr "塞爾維亞人權協會 SOKOJ 的 ID"
 
 #. name:COMPASS ID
 #: DB:work_attribute_type/description:45
@@ -4696,12 +4710,9 @@ msgstr "美國著作權協會ASCAP ID"
 
 #. name:AllTrack ID
 #: DB:work_attribute_type/description:216
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "ID for the US rights society ASCAP"
 msgctxt "work_attribute_type"
 msgid "ID for the US rights society AllTrack"
-msgstr "美國著作權協會ASCAP ID"
+msgstr "美國著作權協會 AllTrack 的 ID"
 
 #. name:BMI ID
 #: DB:work_attribute_type/description:7
@@ -5582,6 +5593,11 @@ msgctxt "release_group_secondary_type"
 msgid "Live"
 msgstr "現場的"
 
+#: DB:event_art_archive.art_type/name:12
+msgctxt "event_art_type"
+msgid "Logo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
@@ -5608,12 +5624,9 @@ msgid "MCT ID"
 msgstr "MCT ID"
 
 #: DB:work_attribute_type/name:212
-#, fuzzy
-#| msgctxt "work_attribute_type"
-#| msgid "NICAUTOR ID"
 msgctxt "work_attribute_type"
 msgid "MUSICAUTOR ID"
-msgstr "NICAUTOR ID"
+msgstr "MUSICAUTOR ID"
 
 #: DB:work_attribute_type_allowed_value/value:963
 msgctxt "work_attribute_type_allowed_value"
@@ -6940,7 +6953,7 @@ msgstr "產品"
 #: DB:event_art_archive.art_type/name:11
 msgctxt "event_art_type"
 msgid "Program"
-msgstr ""
+msgstr "節目單"
 
 #: DB:release_status/name:2
 msgctxt "release_status"
@@ -7526,7 +7539,7 @@ msgstr "SODRAC ID"
 #: DB:work_attribute_type/name:213
 msgctxt "work_attribute_type"
 msgid "SOKOJ ID"
-msgstr ""
+msgstr "SOKOJ ID"
 
 #: DB:work_attribute_type/name:35
 msgctxt "work_attribute_type"
@@ -7739,6 +7752,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Serbest"
 msgstr "Serbest"
 
+#: DB:series_type/name:17
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist award"
+msgctxt "series_type"
+msgid "Series award"
+msgstr "創作者獎項"
+
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
@@ -7748,6 +7769,14 @@ msgstr "系列收藏"
 msgctxt "alias_type"
 msgid "Series name"
 msgstr "系列名稱"
+
+#: DB:series_type/name:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Artist series"
+msgctxt "series_type"
+msgid "Series series"
+msgstr "創作者系列"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"
@@ -7836,7 +7865,7 @@ msgstr "薄壓克力盒"
 #: DB:release_packaging/name:122
 msgctxt "release_packaging"
 msgid "Slipcase"
-msgstr ""
+msgstr "紙套 / 側滑外紙盒"
 
 #: DB:release_packaging/name:11
 msgctxt "release_packaging"
@@ -8686,12 +8715,9 @@ msgid "Udaya ravicandrika"
 msgstr "Udaya ravicandrika"
 
 #: DB:medium_format/name:211
-#, fuzzy
-#| msgctxt "medium_format"
-#| msgid "Blu-ray"
 msgctxt "medium_format"
 msgid "Ultra HD Blu-ray"
-msgstr "Blu-ray"
+msgstr "Ultra HD Blu-ray  藍光光碟"
 
 #. name:Watermark
 #: DB:cover_art_archive.art_type/description:13

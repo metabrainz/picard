@@ -40,11 +40,15 @@ from enum import IntEnum
 import re
 from urllib.parse import urlparse
 
-from mutagen import id3
+from mutagen import (
+    FileType,
+    id3,
+)
 import mutagen.aiff
 import mutagen.apev2
 import mutagen.dsdiff
 import mutagen.dsf
+import mutagen.id3
 import mutagen.mp3
 import mutagen.trueaudio
 
@@ -67,7 +71,6 @@ from picard.tags import (
     parse_subtag,
 )
 from picard.util import (
-    encode_filename,
     sanitize_date,
 )
 
@@ -134,6 +137,7 @@ class ID3File(File):
     _IsMP3 = False
     FORMAT_KEY = 'id3'
     FORMAT_DESCRIPTION = N_("ID3 (MP3, AIFF)")
+    _File: type[FileType] | None = None
 
     __upgrade = {
         'XSOP': 'TSOP',
@@ -329,7 +333,7 @@ class ID3File(File):
     def _init_load(self, filename):
         """Initialize loading process and return necessary parameters."""
         self.__casemap = {}
-        file = self._get_file(encode_filename(filename))
+        file = self._get_file(filename)
         tags = file.tags or {}
         config = get_config()
 
@@ -520,8 +524,6 @@ class ID3File(File):
         """Save metadata to the file."""
         log.debug("Saving file %r", filename)
 
-        # TODO: check _get_tags vs encode_filename(), not sure if we can pass it directly using
-        # encoded_filename below
         tags = self._get_tags(filename)
         config = get_config()
         self._initialize_tags_for_saving(tags, config)
@@ -585,12 +587,11 @@ class ID3File(File):
         self._save_people_frames(tags, people_frames)
         self._remove_deleted_tags(tags, metadata, config_params)
 
-        encoded_filename = encode_filename(filename)
-        self._save_tags(tags, encoded_filename)
+        self._save_tags(tags, filename)
 
         if self._IsMP3 and config.setting['remove_ape_from_mp3']:
             try:
-                mutagen.apev2.delete(encoded_filename)
+                mutagen.apev2.delete(filename)
             except BaseException:
                 pass
 
@@ -631,7 +632,7 @@ class ID3File(File):
 
     def _get_tags(self, filename):
         try:
-            return compatid3.CompatID3(encode_filename(filename))
+            return compatid3.CompatID3(filename)
         except mutagen.id3.ID3NoHeaderError:
             return compatid3.CompatID3()
 
@@ -677,6 +678,9 @@ class ID3File(File):
         return values
 
     def _parse_sylt_text(self, text, length):
+        if not text:
+            return ''
+
         def milliseconds_to_timestamp(ms):
             minutes = ms // (60 * 1000)
             seconds = (ms % (60 * 1000)) // 1000
@@ -692,7 +696,8 @@ class ID3File(File):
             if '\n' in lyrics:
                 split = lyrics.split('\n')
                 lrc_lyrics.append(f"<{timestamp}>{split[0]}")
-                distribution = (milliseconds[i + 1] - milliseconds[i]) / len(lyrics.replace('\n', ''))
+                length = len(lyrics.replace('\n', '')) or 1
+                distribution = (milliseconds[i + 1] - milliseconds[i]) / length
                 estimation = milliseconds[i] + distribution * len(split[0])
                 for line in split[1:]:
                     timestamp = milliseconds_to_timestamp(int(estimation))
@@ -1101,6 +1106,7 @@ class NonCompatID3File(ID3File):
     """Base class for ID3 files which do not support setting `compatid3.CompatID3`."""
 
     def _get_file(self, filename):
+        assert self._File, f"_File not defined for {self.__class__.__name__}"
         return self._File(filename, known_frames=compatid3.known_frames)
 
     def _get_tags(self, filename):

@@ -33,6 +33,7 @@
 import base64
 import re
 
+from mutagen import FileType
 import mutagen.flac
 import mutagen.oggflac
 import mutagen.oggopus
@@ -53,10 +54,7 @@ from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.i18n import N_
 from picard.metadata import Metadata
-from picard.util import (
-    encode_filename,
-    sanitize_date,
-)
+from picard.util import sanitize_date
 
 
 FLAC_MAX_BLOCK_SIZE = 2**24 - 1  # FLAC block size is limited to a 24 bit integer
@@ -126,7 +124,7 @@ def flac_remove_empty_seektable(file):
 class VCommentFile(File):
     """Generic VComment-based file."""
 
-    _File = None
+    _File: type[FileType] | None = None
     FORMAT_KEY = 'vorbis'
     FORMAT_DESCRIPTION = N_("Vorbis Comments (FLAC, Ogg Vorbis, Opus)")
     DATE_SANITIZATION_TOGGLEABLE = True
@@ -141,9 +139,10 @@ class VCommentFile(File):
     __rtranslate = {v: k for k, v in __translate.items()}
 
     def _load(self, filename):
+        assert self._File, f"_File not defined for {self.__class__.__name__}"
         log.debug("Loading file %r", filename)
         config = get_config()
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         file.tags = file.tags or {}
         metadata = Metadata()
         for origname, values in file.tags.items():
@@ -261,13 +260,15 @@ class VCommentFile(File):
 
     def _save(self, filename, metadata):
         """Save metadata to the file."""
+        assert self._File, f"_File not defined for {self.__class__.__name__}"
         log.debug("Saving file %r", filename)
         config = get_config()
         is_flac = self._File == mutagen.flac.FLAC
         is_opus = self._File == mutagen.oggopus.OggOpus
-        file = self._File(encode_filename(filename))
+        file = self._File(filename)
         if file.tags is None:
             file.add_tags()
+        assert file.tags is not None
         if config.setting['clear_existing_tags']:
             preserve_tags = ['waveformatextensible_channel_mask']
             if not is_flac and config.setting['preserve_images']:

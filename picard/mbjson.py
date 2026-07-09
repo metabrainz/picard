@@ -30,8 +30,8 @@
 from collections import defaultdict
 from collections.abc import (
     Callable,
-    Generator,
     Iterable,
+    Iterator,
 )
 from dataclasses import dataclass
 from typing import (
@@ -51,6 +51,7 @@ from picard.const import (
     ALIAS_TYPE_RECORDING_NAME_ID,
     RELEASE_FORMATS,
 )
+from picard.options import StandardizeArtistNames
 from picard.util import (
     format_time,
     linear_combination_of_weights,
@@ -98,7 +99,6 @@ _ARTIST_REL_TYPES = {
 _TRACK_TO_METADATA = {
     'number': '~musicbrainz_tracknumber',
     'position': 'tracknumber',
-    'title': 'title',
 }
 
 _MEDIUM_TO_METADATA = {
@@ -110,7 +110,6 @@ _MEDIUM_TO_METADATA = {
 _RECORDING_TO_METADATA = {
     'disambiguation': '~recordingcomment',
     'first-release-date': '~recording_firstreleasedate',
-    'title': 'title',
 }
 
 _RELEASE_TO_METADATA = {
@@ -177,7 +176,7 @@ class RelFuncContext:
     config: Config
     entity: str | None
     instrumental: bool
-    use_credited_as: bool
+    standardize_names_mode: StandardizeArtistNames
     use_instrument_credits: bool
     use_vocal_credits: bool
     metadata_was_cleared: dict[str, bool]
@@ -225,9 +224,10 @@ def _relations_to_metadata_target_type_artist(relation: Node, m: 'Metadata', con
     has_translation = translated_alias.name != artist['name']
     artist_name = translated_alias.name
     artist_sort_name = translated_alias.sort_name
-    if not has_translation and context.use_credited_as and 'target-credit' in relation:
+    if not has_translation and 'target-credit' in relation:
         credited_as = relation['target-credit']
-        if credited_as and credited_as != artist['name']:
+        use_credited_as = not should_standardize_artist_name(context.standardize_names_mode, credited_as, artist)
+        if credited_as and use_credited_as and credited_as != artist['name']:
             artist_name = credited_as
             artist_sort_name = _select_sort_name_from_aliases(artist, credited_as, config=context.config)
     reltype = relation['type']
@@ -342,7 +342,7 @@ def _relations_to_metadata(
         config=config,
         entity=entity,
         instrumental=instrumental,
-        use_credited_as=not config.setting['standardize_artists'],
+        standardize_names_mode=config.setting['standardize_artist_names'],
         use_instrument_credits=not config.setting['standardize_instruments'],
         use_vocal_credits=not config.setting['standardize_vocals'],
         metadata_was_cleared=dict(),
@@ -641,8 +641,11 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_sort_names = []
     artist_countries = []
     config = get_config()
-    use_credited_as = not config.setting['standardize_artists']
+    standardize_names_mode = config.setting['standardize_artist_names']
     for artist_info in node:
+        use_credited_as = not should_standardize_artist_name(
+            standardize_names_mode, artist_info['name'], artist_info['artist']
+        )
         artist = artist_info['artist']
         if artist and 'id' in artist and artist['id']:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
@@ -665,6 +668,26 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     return ArtistCreditInfo(artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
 
 
+def should_standardize_artist_name(mode: StandardizeArtistNames, credited_name: str, artist: Node) -> bool:
+    if mode == StandardizeArtistNames.NONE:
+        return False
+
+    if mode == StandardizeArtistNames.ALL:
+        return True
+
+    # Only standardize if the artist credit is not considered a name change,
+    # i.e. if the artist name is not an alias that has been ended.
+    for alias in artist.get('aliases', []):
+        if (
+            alias.get('type-id', None) in {ALIAS_TYPE_ARTIST_NAME_ID, None}
+            and alias.get('ended', False)
+            and (credited_name in {alias['name'], alias['sort-name']})
+        ):
+            return False
+
+    return True
+
+
 def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = False) -> None:
     ids = [n['artist']['id'] for n in node]
     credits = artist_credit_from_node(node)
@@ -684,7 +707,7 @@ def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = F
         m['~artists_countries'] = credits.countries
 
 
-def _release_event_iter(node: Node) -> Generator[Node, None, None]:
+def _release_event_iter(node: Node) -> Iterator[Node]:
     if 'release-events' in node:
         yield from node['release-events']
 
@@ -753,7 +776,7 @@ def media_formats_from_node(node: list[Node]) -> str:
     return " + ".join(formats)
 
 
-def _node_skip_empty_iter(node: Node) -> Generator[tuple[str, Any], None, None]:
+def _node_skip_empty_iter(node: Node) -> Iterator[tuple[str, Any]]:
     for key, value in node.items():
         if value or value == 0:
             yield key, value
@@ -761,16 +784,11 @@ def _node_skip_empty_iter(node: Node) -> Generator[tuple[str, Any], None, None]:
 
 def track_to_metadata(node: Node, track: 'Track') -> None:
     m = track.metadata
-    recording_to_metadata(node['recording'], m, track)
-    config = get_config()
+    recording_to_metadata(node['recording'], m, track, node.get('title'))
     m.add_unique('musicbrainz_trackid', node['id'])
     # overwrite with data we have on the track
     for key, value in _node_skip_empty_iter(node):
-        if key == 'title':
-            # If translating track titles, keep the title potentially set from recording aliases
-            if not config.setting['translate_track_titles']:
-                m['title'] = value
-        elif key in _TRACK_TO_METADATA:
+        if key in _TRACK_TO_METADATA:
             m[_TRACK_TO_METADATA[key]] = value
         elif key == 'length' and value:
             m.length = value
@@ -780,7 +798,9 @@ def track_to_metadata(node: Node, track: 'Track') -> None:
         m['~length'] = format_time(m.length)
 
 
-def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = None) -> None:
+def recording_to_metadata(
+    node: Node, m: 'Metadata', track: 'Track | None' = None, track_title: str | None = None
+) -> None:
     m.length = 0
     m.add_unique('musicbrainz_recordingid', node['id'])
     config = get_config()
@@ -806,14 +826,19 @@ def recording_to_metadata(node: Node, m: 'Metadata', track: 'Track | None' = Non
         elif key == 'video' and value:
             m['~video'] = '1'
     add_genres_from_node(node, track)
-    # Translate track title from recording aliases if enabled, unless script exception applies
+    # Translate recording title from recording aliases if enabled, unless script exception applies
+    recording_title = node.get('title')
     if config.setting['translate_track_titles']:
-        if not _should_skip_translation_due_to_scripts(node.get('title'), config=config):
-            alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
-            if alias:
-                m['title'] = alias.name
-    if m['title']:
-        m['~recordingtitle'] = m['title']
+        alias = _find_localized_alias_name(node.get('aliases'), config.setting['translation_locales'])
+        if alias:
+            if not _should_skip_translation_due_to_scripts(recording_title, config=config):
+                recording_title = alias.name
+            if track_title and not _should_skip_translation_due_to_scripts(track_title, config=config):
+                track_title = alias.name
+
+    m['title'] = track_title or recording_title
+    if recording_title:
+        m['~recordingtitle'] = recording_title
     if m.length:
         m['~length'] = format_time(m.length)
 

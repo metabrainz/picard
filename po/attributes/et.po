@@ -454,6 +454,15 @@ msgid ""
 "use by the artist."
 msgstr ""
 
+#. name:Logo
+#: DB:event_art_archive.art_type/description:12
+msgctxt "event_art_type"
+msgid ""
+"A logo that is specific to a particular event and only used for it, rather "
+"than being the logo for a series (such as a festival logo reused over "
+"multiple years)."
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:28
 msgctxt "work_attribute_type_allowed_value"
 msgid "A major"
@@ -617,6 +626,15 @@ msgid ""
 "artists."
 msgstr ""
 
+#. name:Liner
+#: DB:cover_art_archive.art_type/description:12
+msgctxt "cover_art_type"
+msgid ""
+"A protective sleeve (usually an ‘inner sleeve’) surrounding a medium "
+"(usually a vinyl record, but sometimes a CD), often printed with notes or "
+"images."
+msgstr ""
+
 #. name:Quartet
 #: DB:work_type/description:14
 msgctxt "work_type"
@@ -747,6 +765,23 @@ msgstr "Seeria koosneb väljalaskerühmadest."
 msgctxt "series_type"
 msgid "A series of releases."
 msgstr "Seeria koosneb väljalasetest."
+
+#. name:Series award
+#: DB:series_type/description:17
+msgctxt "series_type"
+msgid ""
+"A series of series (such as podcasts or festivals) honoured by the same "
+"award."
+msgstr ""
+
+#. name:Series series
+#: DB:series_type/description:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "A series of events."
+msgctxt "series_type"
+msgid "A series of series."
+msgstr "Seeria koosneb sündmustest."
 
 #. name:Work award
 #: DB:series_type/description:46
@@ -5458,6 +5493,11 @@ msgctxt "release_group_secondary_type"
 msgid "Live"
 msgstr "kontsertsalvestus"
 
+#: DB:event_art_archive.art_type/name:12
+msgctxt "event_art_type"
+msgid "Logo"
+msgstr ""
+
 #: DB:work_attribute_type_allowed_value/value:636
 msgctxt "work_attribute_type_allowed_value"
 msgid "Longa"
@@ -7616,6 +7656,14 @@ msgctxt "work_attribute_type_allowed_value"
 msgid "Serbest"
 msgstr "Serbest"
 
+#: DB:series_type/name:17
+#, fuzzy
+#| msgctxt "alias_type"
+#| msgid "Series name"
+msgctxt "series_type"
+msgid "Series award"
+msgstr "seeria pealkiri"
+
 #: DB:editor_collection_type/name:14
 msgctxt "collection_type"
 msgid "Series collection"
@@ -7625,6 +7673,14 @@ msgstr ""
 msgctxt "alias_type"
 msgid "Series name"
 msgstr "seeria pealkiri"
+
+#: DB:series_type/name:16
+#, fuzzy
+#| msgctxt "series_type"
+#| msgid "Release series"
+msgctxt "series_type"
+msgid "Series series"
+msgstr "väljalasete seeria"
 
 #: DB:event_art_archive.art_type/name:3
 msgctxt "event_art_type"

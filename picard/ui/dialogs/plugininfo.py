@@ -26,16 +26,15 @@ from PyQt6 import (
     QtWidgets,
 )
 
-from picard import tagger_instance
 from picard.i18n import gettext as _
 from picard.plugin3.categories import PluginCategorySet
 from picard.plugin3.installable import InstallablePlugin
 
-from picard.ui import PreserveGeometry
+from picard.ui import PicardDialog
 from picard.ui.util import font_scaled_size
 
 
-class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
+class PluginInfoDialog(PicardDialog):
     """Dialog showing detailed plugin information for both registry and installed plugins."""
 
     defaultsize = QtCore.QSize(600, 500)
@@ -45,17 +44,11 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
         self._plugin_data = plugin_data
 
         # Cache plugin manager for performance
-        tagger = tagger_instance()
-        self.plugin_manager = tagger.get_plugin_manager()
+        self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Plugin Information"))
-        self.setModal(True)
         self.setMinimumSize(font_scaled_size(self, 60, 20))
         self.setup_ui()
-
-    def showEvent(self, event):
-        super().showEvent(event)
-        self.restore_geometry()
 
     @property
     def plugin_data(self):
@@ -309,6 +302,8 @@ class PluginInfoDialog(QtWidgets.QDialog, PreserveGeometry):
             return getattr(self.plugin_data, 'git_url', getattr(self.plugin_data, 'source_url', '')) or ''
         else:
             try:
+                if self.plugin_manager and self.plugin_manager.is_local_plugin(self.plugin_data):
+                    return ''
                 return self.plugin_manager.get_plugin_remote_url(self.plugin_data) or '' if self.plugin_manager else ''
             except (AttributeError, Exception):
                 return ''

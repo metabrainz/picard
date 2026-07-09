@@ -23,12 +23,12 @@
 import sys
 
 
-IS_WIN = sys.platform == 'win32'
-IS_LINUX = sys.platform == 'linux'
-IS_MACOS = sys.platform == 'darwin'
-IS_HAIKU = sys.platform == 'haiku'
+IS_WIN: bool = sys.platform == 'win32'
+IS_LINUX: bool = sys.platform == 'linux'
+IS_MACOS: bool = sys.platform == 'darwin'
+IS_HAIKU: bool = sys.platform == 'haiku'
 
 # These variables are set by pyinstaller if running from a packaged build
 # See http://pyinstaller.readthedocs.io/en/stable/runtime-information.html
-IS_FROZEN = getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
-FROZEN_TEMP_PATH = getattr(sys, '_MEIPASS', '')
+IS_FROZEN: bool = getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS')
+FROZEN_TEMP_PATH: str = getattr(sys, '_MEIPASS', '')

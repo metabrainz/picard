@@ -45,9 +45,6 @@ from picard.track import Track
 
 
 settings = {
-    "standardize_tracks": False,
-    "standardize_artists": False,
-    "standardize_releases": False,
     "translate_artist_names": True,
     "translation_locales": ['en'],
     "translate_artist_names_script_exception": False,
@@ -82,12 +79,13 @@ class RecordingTest(AcoustIDTest):
                 {
                     'format': 'CD',
                     'track-count': 12,
+                    'track-offset': 4,
                     'position': 1,
                     'track': [
                         {
                             'position': 5,
                             'id': '16affcc3-9f34-48e5-88dc-68378c4cc208',
-                            'number': 5,
+                            'number': '5',
                         }
                     ],
                 }

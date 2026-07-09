@@ -30,7 +30,7 @@ from picard.util import strip_non_alnum
 from picard.util.astrcmp import astrcmp
 
 
-def normalize(orig_string):
+def normalize(orig_string: str) -> str:
     """Strips non-alphanumeric characters from a string unless doing so would make it blank."""
     string = strip_non_alnum(orig_string.lower())
     if not string:
@@ -38,7 +38,7 @@ def normalize(orig_string):
     return string
 
 
-def similarity(a1, b1):
+def similarity(a1: str, b1: str) -> float:
     """Calculates similarity of single words as a function of their edit distance."""
     a2 = normalize(a1)
     if a2:
@@ -51,7 +51,7 @@ def similarity(a1, b1):
 _split_words_re = re.compile(r'\W+', re.UNICODE)
 
 
-def similarity2(a, b):
+def similarity2(a: str, b: str) -> float:
     """Calculates similarity of a multi-word strings."""
     if not a or not b:
         return 0.0

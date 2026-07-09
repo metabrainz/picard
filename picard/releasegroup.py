@@ -26,9 +26,12 @@
 
 
 from collections import defaultdict
+from collections.abc import Callable
 from functools import partial
 from itertools import combinations
 import traceback
+
+from PyQt6.QtNetwork import QNetworkReply
 
 from picard import log
 from picard.i18n import (
@@ -104,20 +107,20 @@ def prepare_releases_for_versions(releases):
 
 
 class ReleaseGroup(MetadataItem):
-    def __init__(self, rg_id):
+    def __init__(self, rg_id: str) -> None:
         super().__init__(rg_id)
         self.loaded = False
-        self.versions = []
+        self.versions: list[dict] = []
         self.version_headings = " / ".join(_(VERSIONS_HEADINGS[k]) for k in VERSIONS_NAME_KEYS)
-        self.loaded_albums = set()
+        self.loaded_albums: set[str] = set()
         self.refcount = 0
-        self.versions_count = None
+        self.versions_count: int | None = None
 
-    def load_versions(self, callback):
+    def load_versions(self, callback: Callable) -> None:
         kwargs = {'release-group': self.id, 'limit': 100}
         self.tagger.mb_api.browse_releases(partial(self._request_finished, callback), **kwargs)
 
-    def _parse_versions(self, document):
+    def _parse_versions(self, document: dict) -> None:
         """Parse document and return a list of releases"""
         del self.versions[:]
 
@@ -164,7 +167,13 @@ class ReleaseGroup(MetadataItem):
                 }
                 self.versions.append(version)
 
-    def _request_finished(self, callback, document, http, error):
+    def _request_finished(
+        self,
+        callback: Callable,
+        document: dict,
+        http: QNetworkReply,
+        error: QNetworkReply.NetworkError | Exception | None,
+    ) -> None:
         try:
             if error:
                 log.error("%r", http.errorString())
@@ -172,13 +181,12 @@ class ReleaseGroup(MetadataItem):
                 try:
                     self._parse_versions(document)
                 except BaseException:
-                    error = True
                     log.error(traceback.format_exc())
         finally:
             self.loaded = True
             callback()
 
-    def remove_album(self, album_id):
+    def remove_album(self, album_id: str) -> None:
         self.loaded_albums.discard(album_id)
         self.refcount -= 1
         if self.refcount == 0:

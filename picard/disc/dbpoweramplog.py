@@ -21,6 +21,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from collections.abc import (
+    Iterable,
+    Iterator,
+)
 import re
 
 from picard.disc.utils import (
@@ -34,7 +38,7 @@ from picard.util import detect_file_encoding
 RE_TOC_ENTRY = re.compile(r"^Track (?P<num>\d+):\s+Ripped LBA (?P<start_sector>\d+) to (?P<end_sector>\d+)")
 
 
-def filter_toc_entries(lines):
+def filter_toc_entries(lines: Iterable[str]) -> Iterator[TocEntry]:
     """
     Take iterator of lines, return iterator of toc entries
     """
@@ -51,7 +55,7 @@ def filter_toc_entries(lines):
             yield TocEntry(track_num, int(m['start_sector']), int(m['end_sector']) - 1)
 
 
-def toc_from_file(path):
+def toc_from_file(path: str) -> tuple[int, ...]:
     """Reads dBpoweramp log files, generates MusicBrainz disc TOC listing for use as discid."""
     encoding = detect_file_encoding(path)
     with open(path, 'r', encoding=encoding) as f:

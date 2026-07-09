@@ -50,11 +50,13 @@ import tempfile
 
 from setuptools import (
     Command,
+    Extension,
     setup,
 )
 from setuptools.command.build import build
 from setuptools.command.editable_wheel import editable_wheel
 from setuptools.command.install import install
+from setuptools.modified import newer
 
 
 # required for PEP 517
@@ -78,19 +80,6 @@ APPDATA_FILE = PICARD_APP_ID + '.appdata.xml'
 APPDATA_FILE_TEMPLATE = APPDATA_FILE + '.in'
 DESKTOP_FILE = PICARD_APP_ID + '.desktop'
 DESKTOP_FILE_TEMPLATE = DESKTOP_FILE + '.in'
-
-
-def newer(source, target):
-    """Return true if 'source' exists and is more recently modified than
-    'target', or if 'source' exists and 'target' doesn't.  Return false if
-    both exist and 'target' is the same age or younger than 'source'.
-    Raise FileNotFoundError if 'source' does not exist.
-    """
-    if not os.path.exists(source):
-        raise FileNotFoundError('file "%s" does not exist' % os.path.abspath(source))
-    if not os.path.exists(target):
-        return True
-    return os.path.getmtime(source) > os.path.getmtime(target)
 
 
 class picard_build_locales(Command):
@@ -121,8 +110,7 @@ class picard_install(install):
     user_options = install.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
     ]
-
-    sub_commands = install.sub_commands
+    boolean_options = ['disable-autoupdate']
 
     def initialize_options(self):
         install.initialize_options(self)
@@ -132,16 +120,14 @@ class picard_install(install):
         install.finalize_options(self)
         self.distribution.get_command_obj('build').disable_autoupdate = self.disable_autoupdate
 
-    def run(self):
-        install.run(self)
-
 
 class picard_build(build):
     user_options = build.user_options + [
         ('disable-autoupdate', None, 'disable update checking and hide settings for it'),
         ('build-number=', None, 'build number (integer)'),
-        ('disable-locales', None, ''),
+        ('disable-locales', None, 'skip building locales'),
     ]
+    boolean_options = ['disable-autoupdate', 'disable-locales']
 
     def initialize_options(self):
         super().initialize_options()
@@ -706,6 +692,9 @@ args = {
         'regen_constants_pot_file': picard_regen_constants_pot_file,
         'patch_version': picard_patch_version,
     },
+    'ext_modules': [
+        Extension('picard.util._astrcmp', sources=['picard/util/_astrcmp.c']),
+    ],
     'scripts': ['scripts/' + PACKAGE_NAME],
 }
 

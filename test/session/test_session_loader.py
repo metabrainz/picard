@@ -28,6 +28,8 @@ from unittest.mock import (
 
 import yaml
 
+import PyQt6.QtCore
+
 import picard.config as picard_config
 from picard.metadata import Metadata
 from picard.session.session_loader import SessionLoader
@@ -35,11 +37,20 @@ from picard.session.session_loader import SessionLoader
 import pytest
 
 
+class MockQtTagger(PyQt6.QtCore.QObject):
+    def __init__(self) -> None:
+        super().__init__()
+        self.albums = {}
+        self.clear_session = Mock()
+        self.load_album = Mock()
+        self.webservice = Mock()
+
+
 @pytest.fixture
 def session_loader() -> SessionLoader:
     """Provide a SessionLoader instance."""
-    tagger_mock = Mock()
-    return SessionLoader(tagger_mock)
+    tagger_mock = MockQtTagger()
+    return SessionLoader(tagger_mock)  # type: ignore
 
 
 def test_session_loader_schedule_metadata_application(session_loader: SessionLoader, mock_single_shot) -> None:
@@ -60,20 +71,6 @@ def test_session_loader_schedule_metadata_application_empty_map(
         session_loader._schedule_metadata_application({})
 
     mock_single_shot.assert_called_once()
-
-
-def test_session_loader_unset_restoring_flag_when_idle_safe_restore_disabled(
-    session_loader: SessionLoader, cfg_options
-) -> None:
-    """Test unsetting restoring flag when safe restore is disabled."""
-    # Set the config value for this test
-    cfg = picard_config.get_config()
-    cfg.setting['session_safe_restore'] = False
-
-    session_loader._unset_restoring_flag_when_idle()
-
-    # Should not check pending files or web requests when safe restore is disabled
-    # The method should return early without checking attributes
 
 
 def test_session_loader_unset_restoring_flag_when_idle_pending_files(
@@ -137,8 +134,8 @@ def test_session_loader_finalize_loading(session_loader: SessionLoader, mock_sin
 
 def test_session_loader_initialization() -> None:
     """Test SessionLoader initialization."""
-    tagger_mock = Mock()
-    loader = SessionLoader(tagger_mock)
+    tagger_mock = MockQtTagger()
+    loader = SessionLoader(tagger_mock)  # type: ignore
 
     assert loader.tagger == tagger_mock
     assert loader.loaded_albums == {}
@@ -157,10 +154,8 @@ def test_session_loader_requests_allowed(tmp_path: Path, mock_single_shot, cfg_o
     cfg.setting['session_no_mb_requests_on_load'] = False
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
-    tagger.albums = {}
-
-    loader = SessionLoader(tagger)
+    tagger = MockQtTagger()
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,
@@ -187,10 +182,8 @@ def test_session_loader_requests_suppressed(tmp_path: Path, mock_single_shot, cf
     cfg.setting['session_no_mb_requests_on_load'] = True
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
-    tagger.albums = {}
-
-    loader = SessionLoader(tagger)
+    tagger = MockQtTagger()
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,
@@ -211,13 +204,13 @@ def test_session_loader_cached_album_refresh_allowed(tmp_path: Path, mock_single
     cfg.setting['session_no_mb_requests_on_load'] = False
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
+    tagger = MockQtTagger()
     album_mock = Mock()
     album_mock.unmatched_files = Mock()
     album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
     tagger.albums = {"album-123": album_mock}
 
-    loader = SessionLoader(tagger)
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,
@@ -240,13 +233,13 @@ def test_session_loader_cached_album_no_refresh_when_suppressed(tmp_path: Path, 
     cfg.setting['session_no_mb_requests_on_load'] = True
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
+    tagger = MockQtTagger()
     album_mock = Mock()
     album_mock.unmatched_files = Mock()
     album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
     tagger.albums = {"album-123": album_mock}
 
-    loader = SessionLoader(tagger)
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,
@@ -279,10 +272,8 @@ def test_session_loader_request_suppression_matrix_unmatched(
     cfg.setting['session_no_mb_requests_on_load'] = no_requests
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
-    tagger.albums = {}
-
-    loader = SessionLoader(tagger)
+    tagger = MockQtTagger()
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,
@@ -320,13 +311,13 @@ def test_session_loader_request_suppression_matrix_cached(
     cfg.setting['session_no_mb_requests_on_load'] = no_requests
     cfg.setting['session_safe_restore'] = False
 
-    tagger = Mock()
+    tagger = MockQtTagger()
     album_mock = Mock()
     album_mock.unmatched_files = Mock()
     album_mock.run_when_loaded = Mock(side_effect=lambda cb: cb())
     tagger.albums = {"album-xyz": album_mock}
 
-    loader = SessionLoader(tagger)
+    loader = SessionLoader(tagger)  # type: ignore
 
     data = {
         'version': 1,

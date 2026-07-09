@@ -27,7 +27,10 @@ from picard.formats.wav import WAVFile
 from picard.i18n import N_
 
 from picard.ui.forms.ui_options_tags_compatibility_wave import Ui_TagsCompatibilityOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 
 
 class TagsCompatibilityWaveOptionsPage(OptionsPage):
@@ -38,11 +41,11 @@ class TagsCompatibilityWaveOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_tags_compatibility_wave.html"
 
-    OPTIONS = (
-        ('write_wave_riff_info', ['write_wave_riff_info']),
-        ('remove_wave_riff_info', ['remove_wave_riff_info']),
-        ('wave_riff_info_encoding', ['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'write_wave_riff_info': {'widgets': ['write_wave_riff_info']},
+        'remove_wave_riff_info': {'widgets': ['remove_wave_riff_info']},
+        'wave_riff_info_encoding': {'widgets': ['wave_riff_info_enc_cp1252', 'wave_riff_info_enc_utf8']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

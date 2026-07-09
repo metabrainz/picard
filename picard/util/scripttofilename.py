@@ -23,8 +23,12 @@
 
 
 import re
+from typing import TYPE_CHECKING
 
-from picard.config import get_config
+from picard.config import (
+    SettingConfigSection,
+    get_config,
+)
 from picard.const.sys import IS_WIN
 from picard.metadata import Metadata
 from picard.script import ScriptParser
@@ -35,10 +39,15 @@ from picard.util import (
 from picard.util.textencoding import replace_non_ascii
 
 
+if TYPE_CHECKING:
+    from picard.file import File
+
 _re_replace_underscores = re.compile(r'[\s_]+')
 
 
-def script_to_filename_with_metadata(naming_format, metadata, file=None, settings=None):
+def script_to_filename_with_metadata(
+    naming_format: str, metadata: Metadata, file: 'File | None' = None, settings: SettingConfigSection | None = None
+) -> tuple[str, Metadata]:
     """Creates a valid filename from a script with the given metadata.
 
     Args:
@@ -77,7 +86,9 @@ def script_to_filename_with_metadata(naming_format, metadata, file=None, setting
     return (filename, new_metadata)
 
 
-def script_to_filename(naming_format, metadata, file=None, settings=None):
+def script_to_filename(
+    naming_format: str, metadata: Metadata, file: 'File | None' = None, settings: SettingConfigSection | None = None
+) -> str:
     """Creates a valid filename from a script with the given metadata.
 
     Args:

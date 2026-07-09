@@ -32,11 +32,11 @@ The plugin registry is a centralized TOML file served by the Picard website that
 ```bash
 # Use custom registry URL (tried first, then defaults)
 export PICARD_PLUGIN_REGISTRY_URL="https://test.example.com/plugins.toml"
-picard-plugins --browse
+picard-cli plugins browse
 
 # Use local registry file for testing
 export PICARD_PLUGIN_REGISTRY_URL="file:///path/to/local/registry.toml"
-picard-plugins --install my-plugin
+picard-cli plugins install my-plugin
 ```
 
 ---
@@ -249,11 +249,11 @@ When installing a plugin, Picard automatically selects the most appropriate ref 
 
 ```bash
 # Picard 3.x user
-$ picard-plugins --install my-plugin
+$ picard-cli plugins install my-plugin
 # Auto-selects 'picard-v3' branch
 
 # Picard 4.x user
-$ picard-plugins --install my-plugin
+$ picard-cli plugins install my-plugin
 # Auto-selects 'main' branch
 ```
 
@@ -262,14 +262,14 @@ Users can override auto-selection:
 
 ```bash
 # Install from specific ref
-$ picard-plugins --install my-plugin --ref beta
+$ picard-cli plugins install my-plugin --ref beta
 
 # List available refs
-$ picard-plugins --info my-plugin
+$ picard-cli plugins info my-plugin
 # Shows: Available refs: main (default), beta, picard-v3
 
 # Switch to different ref
-$ picard-plugins --switch-ref my-plugin beta
+$ picard-cli plugins switch-ref my-plugin beta
 ```
 
 **Update behavior:**
@@ -440,19 +440,19 @@ updated_at = "2025-11-24T15:00:00Z"
 
 Without `versioning_scheme`:
 ```bash
-$ picard-plugins --install my-plugin
+$ picard-cli plugins install my-plugin
 # Installs: main branch @ latest commit
 ```
 
 With `versioning_scheme`:
 ```bash
-$ picard-plugins --install my-plugin
+$ picard-cli plugins install my-plugin
 # Fetches all tags, filters by pattern, installs latest (e.g., v2.1.4)
 ```
 
 **Install with --ref:**
 ```bash
-$ picard-plugins --install my-plugin --ref v1.0.0
+$ picard-cli plugins install my-plugin --ref v1.0.0
 # Installs specific version (works with or without versioning_scheme)
 ```
 
@@ -460,13 +460,13 @@ $ picard-plugins --install my-plugin --ref v1.0.0
 
 Without `versioning_scheme`:
 ```bash
-$ picard-plugins --update my-plugin
+$ picard-cli plugins update my-plugin
 # Updates to latest commit on installed branch
 ```
 
 With `versioning_scheme`:
 ```bash
-$ picard-plugins --update my-plugin
+$ picard-cli plugins update my-plugin
 # Discovers newer tags (e.g., v2.1.4 → v3.0.0)
 ```
 
@@ -474,14 +474,14 @@ $ picard-plugins --update my-plugin
 
 With `versioning_scheme`:
 ```bash
-$ picard-plugins --switch-ref my-plugin v1.0.0
+$ picard-cli plugins switch-ref my-plugin v1.0.0
 # Validates v1.0.0 exists and matches pattern
 # If invalid, shows available versions
 ```
 
 With explicit `refs`:
 ```bash
-$ picard-plugins --switch-ref my-plugin beta
+$ picard-cli plugins switch-ref my-plugin beta
 # Validates "beta" is in refs list
 # If invalid, shows available refs
 ```
@@ -497,14 +497,14 @@ git tag v1.0.0
 git push --tags
 
 # Users automatically get v1.0.0
-picard-plugins --install my-plugin
+picard-cli plugins install my-plugin
 
 # Later: release v1.0.1
 git tag v1.0.1
 git push --tags
 
 # Users get update notification
-picard-plugins --update my-plugin
+picard-cli plugins update my-plugin
 # Updates: v1.0.0 → v1.0.1
 ```
 
@@ -522,13 +522,13 @@ refs = [
 Users can choose:
 ```bash
 # Stable release (latest tag)
-picard-plugins --install my-plugin
+picard-cli plugins install my-plugin
 
 # Development branch
-picard-plugins --install my-plugin --ref main
+picard-cli plugins install my-plugin --ref main
 
 # Beta branch
-picard-plugins --install my-plugin --ref beta
+picard-cli plugins install my-plugin --ref beta
 ```
 
 #### 3. No Registry Updates for Releases
@@ -929,7 +929,7 @@ Key methods:
 ### Official Plugin - No Warning
 
 ```bash
-$ picard-plugins --install listenbrainz
+$ picard-cli plugins install listenbrainz
 Installing ListenBrainz (Official)...
 ✓ Installed successfully
 ```
@@ -937,7 +937,7 @@ Installing ListenBrainz (Official)...
 ### Trusted Plugin - Minimal Warning
 
 ```bash
-$ picard-plugins --install discogs
+$ picard-cli plugins install discogs
 Installing Discogs by Bob Swift (Trusted)...
 Note: This plugin is not reviewed by the Picard team.
 Continue? [Y/n] y
@@ -947,7 +947,7 @@ Continue? [Y/n] y
 ### Community Plugin - Clear Warning
 
 ```bash
-$ picard-plugins --install custom-tagger
+$ picard-cli plugins install custom-tagger
 Installing Custom Tagger by John Doe (Community)...
 
 ⚠️  WARNING: This plugin is not reviewed or endorsed by the Picard team.
@@ -961,7 +961,7 @@ Continue? [y/N] y
 ### Unregistered Plugin - Strongest Warning
 
 ```bash
-$ picard-plugins --install https://github.com/unknown/random-plugin
+$ picard-cli plugins install https://github.com/unknown/random-plugin
 Installing plugin from https://github.com/unknown/random-plugin...
 
 🔓 SECURITY WARNING: This plugin is NOT in the official registry.
@@ -994,7 +994,7 @@ Continue? [y/N]
 - Registry is cached locally as a raw copy of the remote TOML file
 - Cache file: `~/.cache/MusicBrainz/Picard/plugin_registry_<hash>.toml`
 - Automatically fetched on first use if no cache exists
-- Manual refresh: `picard-plugins --refresh-registry`
+- Manual refresh: `picard-cli plugins refresh-registry`
 - Fallback to cache if network unavailable
 
 ---

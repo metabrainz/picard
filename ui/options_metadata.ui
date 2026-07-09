@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>423</width>
-    <height>721</height>
+    <height>726</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -27,11 +27,31 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QCheckBox" name="standardize_artists">
-        <property name="text">
-         <string>Use standardized artist names</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="standardize_artist_names_label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Standardize artist names:</string>
+          </property>
+          <property name="buddy">
+           <cstring>standardize_artist_names</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="standardize_artist_names">
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <widget class="QCheckBox" name="standardize_instruments">
@@ -292,7 +312,6 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>standardize_artists</tabstop>
   <tabstop>standardize_instruments</tabstop>
   <tabstop>standardize_vocals</tabstop>
   <tabstop>convert_punctuation</tabstop>

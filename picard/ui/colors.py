@@ -99,9 +99,9 @@ register_color(_ALL, 'log_warning', 'darkorange')
 register_color(_ALL, 'tagstatus_added', 'green')
 register_color(_ALL, 'tagstatus_changed', 'darkgoldenrod')
 register_color(_ALL, 'tagstatus_removed', 'red')
-register_color(_DARK, 'profile_hl_fg', '#FFFFFF')
+register_color(_DARK, 'profile_hl_fg', '#ffffff')
 register_color(_LIGHT, 'profile_hl_fg', '#000000')
-register_color(_DARK, 'profile_hl_bg', '#000080')
+register_color(_DARK, 'profile_hl_bg', '#1c71d8')
 register_color(_LIGHT, 'profile_hl_bg', '#F9F906')
 register_color(_LIGHT, 'row_highlight', '#FFFFE0')
 register_color(_DARK, 'row_highlight', '#90907E')
@@ -185,6 +185,11 @@ class InterfaceColors:
 
     def get_qcolor(self, color_key):
         return QtGui.QColor(self.get_color(color_key))
+
+    def get_color_css_rgba(self, color_key, alpha=255):
+        """Return an rgba() string for use in Qt stylesheets. Alpha is 0-255."""
+        color = self.get_qcolor(color_key)
+        return f'rgba({color.red()}, {color.green()}, {color.blue()}, {alpha})'
 
     def get_color_description(self, color_key):
         return _(self.default_colors[color_key].description)

@@ -71,7 +71,10 @@ from picard.i18n import (
     gettext as _,
 )
 from picard.item import MetadataItem
-from picard.matching import length_score
+from picard.matching import (
+    find_best_match,
+    length_score,
+)
 from picard.mbjson import (
     medium_to_metadata,
     release_group_to_metadata,
@@ -92,7 +95,6 @@ from picard.script import (
 )
 from picard.track import Track
 from picard.util import (
-    find_best_match,
     format_time,
     mbid_validate,
 )
@@ -717,7 +719,6 @@ class Album(MetadataItem):
             self.loaded = True
             self.status = AlbumStatus.LOADED
             self.match_files(unmatched_files + self.unmatched_files.files)
-        self.update_metadata_images()
         self.update()
 
         # Trigger re-sort after album is fully loaded to ensure accurate match quality sorting
@@ -828,7 +829,8 @@ class Album(MetadataItem):
         }
         if self.tagger.webservice.oauth_manager.is_authorized():
             require_authentication = True
-            inc |= {'user-collections'}
+            if config.setting['enable_user_collections']:
+                inc |= {'user-collections'}
         if config.setting['release_ars'] or config.setting['track_ars']:
             inc |= {
                 'artist-rels',
@@ -924,7 +926,7 @@ class Album(MetadataItem):
             tracknumber = metadata['tracknumber']
             discnumber = metadata['discnumber']
 
-            def mbid_candidates():
+            def mbid_candidates() -> Iterable[SimMatchAlbum]:
                 if not tracks_cache:
                     tracks_cache.build(tracks)
                 for mbid in (recordingid, trackid):

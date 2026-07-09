@@ -36,19 +36,19 @@ class InstallConfirmDialog(PicardDialog):
 
     defaultsize = QtCore.QSize(500, 400)
 
-    def __init__(self, plugin_name, url, parent=None, plugin_uuid=None, current_ref=None):
+    def __init__(self, plugin_name, url, parent=None, plugin_uuid=None, current_ref=None, show_ref_selector=True):
         super().__init__(parent)
         self.plugin_name = plugin_name
         self.url = url
         self.plugin_uuid = plugin_uuid
         self.current_ref = current_ref
         self.selected_ref = None
+        self._show_ref_selector = show_ref_selector
 
         # Cache plugin manager for performance
         self.plugin_manager = self.tagger.get_plugin_manager()
 
         self.setWindowTitle(_("Confirm Plugin Installation"))
-        self.setModal(True)
         self.setMinimumSize(font_scaled_size(self, 60, 20))
         self.setup_ui()
         self.check_trust_and_blacklist()
@@ -97,9 +97,11 @@ class InstallConfirmDialog(PicardDialog):
 
         if self.url.startswith(('http://', 'https://')):
             url_display = f'<a href="{self.url}">{self.url}</a>'
+            url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=url_display))
+        elif self._show_ref_selector:
+            url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=self.url))
         else:
-            url_display = self.url
-        url_label = QtWidgets.QLabel(_("Repository: {url}").format(url=url_display))
+            url_label = QtWidgets.QLabel(_("Path: {path}").format(path=self.url))
         url_label.setTextInteractionFlags(
             QtCore.Qt.TextInteractionFlag.TextSelectableByMouse | QtCore.Qt.TextInteractionFlag.LinksAccessibleByMouse
         )
@@ -113,7 +115,7 @@ class InstallConfirmDialog(PicardDialog):
         self.warning_label.hide()
         layout.addWidget(self.warning_label)
 
-        # Ref selection (optional)
+        # Ref selection (optional, hidden for non-git plugins)
         ref_group = QtWidgets.QGroupBox(_("Git Reference (Optional)"))
         ref_layout = QtWidgets.QVBoxLayout(ref_group)
 
@@ -121,6 +123,9 @@ class InstallConfirmDialog(PicardDialog):
         self.ref_selector = RefSelectorWidget(include_default=True)
         ref_layout.addWidget(self.ref_selector)
         layout.addWidget(ref_group)
+        if not self._show_ref_selector:
+            ref_group.hide()
+            layout.addStretch()
 
         # Buttons
         button_box = QtWidgets.QDialogButtonBox()
@@ -171,6 +176,8 @@ class InstallConfirmDialog(PicardDialog):
 
     def load_refs(self):
         """Load available refs from repository."""
+        if not self._show_ref_selector:
+            return
         try:
             refs = self.plugin_manager.fetch_all_git_refs(self.url)
             if refs:

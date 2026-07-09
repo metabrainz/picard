@@ -61,11 +61,11 @@ from picard.item import (
 from picard.matching import (
     SimMatchRelease,
     compare_to_release,
+    find_best_match_with_margin,
 )
 from picard.track import Track
 from picard.util import (
     album_artist_from_path,
-    find_best_match_with_margin,
     format_time,
 )
 

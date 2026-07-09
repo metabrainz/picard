@@ -49,10 +49,6 @@
 import argparse
 from collections import namedtuple
 import contextlib
-from dataclasses import (
-    dataclass,
-    field,
-)
 from functools import partial
 from hashlib import blake2b
 from io import StringIO
@@ -135,8 +131,9 @@ from picard.formats.registry import FormatRegistry
 from picard.i18n import (
     N_,
     gettext as _,
-    setup_gettext,
+    setup_i18n,
 )
+from picard.i18n.qt import Translators
 from picard.options import init_options
 
 
@@ -171,7 +168,6 @@ from picard.track import (
 from picard.util import (
     check_io_encoding,
     cli,
-    encode_filename,
     is_hidden,
     iter_files_from_objects,
     mbid_validate,
@@ -179,6 +175,7 @@ from picard.util import (
     periodictouch,
     pipe,
     process_events_iter,
+    resolve_fs_path,
     system_supports_long_paths,
     thread,
     versions,
@@ -232,12 +229,13 @@ class Tagger(QtWidgets.QApplication):
     album_removed = QtCore.pyqtSignal(Album)
     _qt_translators_updated = QtCore.pyqtSignal()
 
-    __instance = None
+    __instance: 'Tagger'
 
     def __init__(self, cmdline_args, localedir, autoupdate, pipe_handler=None):
         self._bootstrap()
         super().__init__(sys.argv)
         self.__class__.__instance = self
+        self._setup_app_icon()
         self._init_properties_from_args_or_env(cmdline_args)
         init_options()
         setup_config(app=self, filename=self._config_file)
@@ -278,6 +276,15 @@ class Tagger(QtWidgets.QApplication):
         # shutdown.
         self.exit_cleanup = []
         self.stopping = False
+
+    def _setup_app_icon(self):
+        icon = QtGui.QIcon()
+        for size in (16, 24, 32, 48, 128, 256):
+            icon.addFile(
+                ":/images/{size}x{size}/{app_id}.png".format(size=size, app_id=PICARD_APP_ID),
+                QtCore.QSize(size, size),
+            )
+        self.setWindowIcon(icon)
 
     def _init_properties_from_args_or_env(self, cmdline_args):
         """Initialize properties from command line arguments or environment"""
@@ -381,7 +388,7 @@ class Tagger(QtWidgets.QApplication):
             basedir = FROZEN_TEMP_PATH if IS_FROZEN else os.path.dirname(__file__)
             localedir = os.path.join(basedir, 'locale')
         # Must be before config upgrade because upgrade dialogs need to be translated.
-        setup_gettext(localedir, config.setting['ui_language'], log.debug)
+        setup_i18n(localedir, config.setting['ui_language'], log.debug)
 
     def _init_webservice(self):
         """Initialize web service/API"""
@@ -1006,6 +1013,7 @@ class Tagger(QtWidgets.QApplication):
         ignore_hidden = config.setting["ignore_hidden_files"]
         new_files = []
         for filename in filenames:
+            filename = resolve_fs_path(filename)
             filename = normpath(filename)
             if ignore_hidden and is_hidden(filename):
                 log.debug("File ignored (hidden): %r", filename)
@@ -1298,9 +1306,7 @@ class Tagger(QtWidgets.QApplication):
     def run_lookup_cd(self, device):
         disc = Disc()
         self.set_wait_cursor()
-        thread.run_task(
-            partial(disc.read, encode_filename(device)), partial(self._lookup_disc, disc), traceback=log.is_debug()
-        )
+        thread.run_task(partial(disc.read, device), partial(self._lookup_disc, disc), traceback=log.is_debug())
 
     def lookup_discid_from_logfile(self):
         file_chooser = FileDialog(parent=self.window)
@@ -1532,9 +1538,9 @@ class Tagger(QtWidgets.QApplication):
         self.window.raise_()
         self.window.activateWindow()
 
-    @classmethod
-    def instance(cls):
-        return cls.__instance
+    @staticmethod
+    def instance() -> 'Tagger':
+        return Tagger.__instance
 
     def signal(self, signum, frame):
         log.debug("signal %i received", signum)
@@ -1774,110 +1780,6 @@ def setup_dbus():
         pass
 
 
-# Translator priority constants (higher = installed later = searched first)
-TRANSLATOR_PRIORITY_QT_BASE = 100  # Qt base translations (highest priority)
-TRANSLATOR_PRIORITY_PLUGIN = 0  # Plugin translations (lower priority)
-
-
-@dataclass(init=True, order=True, kw_only=True)
-class Translator:
-    sort_index: int = TRANSLATOR_PRIORITY_QT_BASE
-    installed: bool = field(default=False, compare=False)
-    instance: QtCore.QTranslator = field(default=None, compare=False)
-    comment: str = field(default='', compare=False)
-
-    def __str__(self):
-        if self.sort_index == TRANSLATOR_PRIORITY_QT_BASE:
-            prefix = "Picard"
-        elif self.sort_index == TRANSLATOR_PRIORITY_PLUGIN:
-            prefix = "plugin"
-        else:
-            prefix = "unknown"
-        return f"{prefix} {self.comment}"
-
-
-class Translators:
-    def __init__(self, tagger):
-        self.tagger = tagger
-        self.tagger._qt_translators_updated.connect(self.reinstall)
-        self._translators = []
-        self._changed = False
-        self.add_default_translators()
-
-    def add_default_translators(self):
-        translator = QtCore.QTranslator(self.tagger)
-        locale = QtCore.QLocale()
-        translation_path = QtCore.QLibraryInfo.path(QtCore.QLibraryInfo.LibraryPath.TranslationsPath)
-        log.debug("Looking for Qt locale %s in %s", locale.name(), translation_path)
-        if translator.load(locale, 'qtbase_', directory=translation_path):
-            t = Translator(sort_index=TRANSLATOR_PRIORITY_QT_BASE, instance=translator, comment='Qt Base')
-            self._translators.append(t)
-            self._changed = True
-        else:
-            log.debug("Qt locale %s not available", locale.name())
-
-    def add_translator(self, translator):
-        plugin_id = getattr(translator, 'plugin_id', '')
-        comment = plugin_id if plugin_id else repr(translator)
-        if translator.isEmpty():
-            # this shouldn't happen with plugins, but safer
-            log.debug("Not adding empty translator for %s", comment)
-            return
-        t = Translator(sort_index=TRANSLATOR_PRIORITY_PLUGIN, instance=translator, comment=comment)
-        self._translators.append(t)
-        self._changed = True
-
-    def remove_translator(self, translator):
-        for t in self._translators[:]:
-            if t.instance == translator:
-                if t.installed:
-                    log.debug("Remove translator: %s", t)
-                    self.tagger.removeTranslator(t.instance)
-                self._translators.remove(t)
-                self._changed = True
-                break
-
-    def reinstall(self):
-        if not self._changed:
-            return
-        self._changed = False
-
-        # Translations are searched for in the reverse order in which they were installed,
-        # so the most recently installed translation file is searched for translations first
-        # and the earliest translation file is searched last.
-        # The search stops as soon as a translation containing a matching string is found.
-
-        # First, remove installed translators
-        for t in self._translators:
-            if t.installed:
-                self.tagger.removeTranslator(t.instance)
-                t.installed = False
-
-        # Now install new ones (higher sort_index installed last, used first)
-        installed_count = 0
-        for t in sorted(self._translators):
-            t.installed = self.tagger.installTranslator(t.instance)
-            if t.installed:
-                installed_count += 1
-
-        log.debug("%d/%d Qt Translators installed", installed_count, len(self._translators))
-        installed_index = 0
-        last = installed_count - 1
-        prefix = "Qt Translator"
-        # Iterate in reverse order, since "the most recently installed translation file is searched for translations first"
-        for t in sorted(self._translators, reverse=True):
-            if not t.installed:
-                log.debug("%s: %s failed to install", prefix, t)
-                continue
-            if installed_count > 1 and installed_index == 0:
-                log.debug("%s: %s installed (searched first)", prefix, t)
-            elif installed_count > 1 and installed_index == last:
-                log.debug("%s: %s installed (searched last)", prefix, t)
-            else:
-                log.debug("%s: %s installed", prefix, t)
-            installed_index += 1
-
-
 def main(localedir=None, autoupdate=True):
     log.enable_default_handlers()
 
@@ -1889,7 +1791,6 @@ def main(localedir=None, autoupdate=True):
     cmdline_args = process_cmdline_args()
 
     if cmdline_args.long_version:
-        _ = QtCore.QCoreApplication(sys.argv)
         print_message_and_exit(versions.as_string())
     if cmdline_args.version:
         print_message_and_exit(f"{PICARD_ORG_NAME} {PICARD_APP_NAME} {PICARD_FANCY_VERSION_STR}")

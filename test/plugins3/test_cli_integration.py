@@ -22,22 +22,19 @@ import subprocess
 import sys
 import unittest
 
-from picard.git.factory import has_git_backend
-
 
 class TestCliIntegration(unittest.TestCase):
-    """Integration tests that run picard-plugins in a subprocess.
+    """Integration tests that run picard-cli in a subprocess.
 
     These tests verify the actual startup path works end-to-end,
     without mocking, to catch regressions like PICARD-3300.
     """
 
     def test_cli_starts_without_crash(self):
-        """picard-plugins -V must not crash during minimal_init (PICARD-3300)."""
+        """picard-cli -V must not crash during minimal_init (PICARD-3300)."""
         result = subprocess.run(
             [sys.executable, '-m', 'picard.plugin3.cli', '-V'],
             capture_output=True,
             timeout=10,
         )
-        expected_code = 0 if has_git_backend() else 1
-        self.assertEqual(result.returncode, expected_code, msg=result.stderr.decode())
+        self.assertEqual(result.returncode, 0, msg=result.stderr.decode())

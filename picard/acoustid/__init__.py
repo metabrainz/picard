@@ -196,6 +196,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def _on_fpcalc_finished(self, task, exit_code, exit_status):
         process = self.sender()
+        assert isinstance(process, QtCore.QProcess), "expected sender to be a QProcess"
         finished = process.property('picard_finished')
         if finished:
             return
@@ -211,13 +212,13 @@ class AcoustIDClient(QtCore.QObject):
                 and exit_status == QtCore.QProcess.ExitStatus.NormalExit
             ):
                 if exit_code == FpcalcExit.DECODING_ERROR:
-                    error = bytes(process.readAllStandardError()).decode()
+                    error = process.readAllStandardError().data().decode()
                     log.warning(
                         "fpcalc non-critical decoding errors for %s: %s",
                         task.file,
                         error,
                     )
-                output = bytes(process.readAllStandardOutput()).decode()
+                output = process.readAllStandardOutput().data().decode()
                 jsondata = json.loads(output)
                 # Use only integer part of duration, floats are not allowed in lookup
                 duration = int(jsondata.get('duration'))
@@ -245,6 +246,7 @@ class AcoustIDClient(QtCore.QObject):
 
     def _on_fpcalc_error(self, task, error):
         process = self.sender()
+        assert isinstance(process, QtCore.QProcess), "expected sender to be a QProcess"
         finished = process.property('picard_finished')
         if finished:
             return

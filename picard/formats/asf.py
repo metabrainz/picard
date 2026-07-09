@@ -43,7 +43,6 @@ from picard.coverart.utils import types_from_id3
 from picard.file import File
 from picard.formats.mutagenext import delall_ci
 from picard.metadata import Metadata
-from picard.util import encode_filename
 
 
 def unpack_image(data):
@@ -209,7 +208,7 @@ class ASFFile(File):
         log.debug("Loading file %r", filename)
         config = get_config()
         self.__casemap = {}
-        file = ASF(encode_filename(filename))
+        file = ASF(filename)
         metadata = Metadata()
         if not file.tags:
             return metadata
@@ -263,7 +262,7 @@ class ASFFile(File):
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         config = get_config()
-        file = ASF(encode_filename(filename))
+        file = ASF(filename)
         tags = file.tags
         if not tags:
             return

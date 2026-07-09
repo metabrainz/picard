@@ -1,0 +1,806 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": "BR",
+        "disambiguation": "O poetinha",
+        "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+        "name": "Vinicius de Moraes",
+        "sort-name": "Moraes, Vinicius de",
+        "type": "Person",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+      },
+      "joinphrase": "",
+      "name": "Vinicius de Moraes"
+    }
+  ],
+  "asin": null,
+  "barcode": "",
+  "country": "BR",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": true,
+    "count": 5,
+    "darkened": false,
+    "front": true
+  },
+  "date": "1980",
+  "disambiguation": "",
+  "id": "3f48d22d-f1f6-4a96-b038-199753c9a618",
+  "label-info": [
+    {
+      "catalog-number": "201 612",
+      "label": {
+        "disambiguation": "German label, used worldwide in the past",
+        "id": "b6d68d43-4939-4d76-b0d7-ef855d9f3e6e",
+        "label-code": 116,
+        "name": "Ariola",
+        "sort-name": "Ariola",
+        "type": "Imprint",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "Vinyl",
+      "format-id": "10e17707-9751-3aaf-95b2-2432acd5374c",
+      "id": "42bdb629-b71a-3eeb-96c3-cafaa4844c4a",
+      "position": 1,
+      "title": "",
+      "track-count": 14,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "Brazilian singer/lyricist",
+                "id": "3a5d1cc7-627e-48ea-aba3-fdd20d782c33",
+                "name": "Chico Buarque",
+                "sort-name": "Buarque, Chico",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " e ",
+              "name": "Chico Buarque"
+            },
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "1bfa27e3-0376-4206-a772-4586e25a64f5",
+                "name": "Milton Nascimento",
+                "sort-name": "Nascimento, Milton",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Milton Nascimento"
+            }
+          ],
+          "id": "fd50483b-d383-4b5a-a2c2-a42b123f880a",
+          "length": 257333,
+          "number": "A1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "Brazilian singer/lyricist",
+                  "id": "3a5d1cc7-627e-48ea-aba3-fdd20d782c33",
+                  "name": "Chico Buarque",
+                  "sort-name": "Buarque, Chico",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " e ",
+                "name": "Chico Buarque"
+              },
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "1bfa27e3-0376-4206-a772-4586e25a64f5",
+                  "name": "Milton Nascimento",
+                  "sort-name": "Nascimento, Milton",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Milton Nascimento"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "b165eb0a-f17e-4a94-8225-478870548cb8",
+            "isrcs": [
+              "BRPGD8000021"
+            ],
+            "length": 257333,
+            "title": "A arca de No\u00e9",
+            "video": false
+          },
+          "title": "A arca de No\u00e9"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "2813598d-22cb-4f95-bd4d-34a4f79f8a2d",
+                "name": "MPB4",
+                "sort-name": "MPB4",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "MPB4"
+            }
+          ],
+          "id": "fd88c057-88ee-4054-9fea-74837c997812",
+          "length": 126040,
+          "number": "A2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "2813598d-22cb-4f95-bd4d-34a4f79f8a2d",
+                  "name": "MPB4",
+                  "sort-name": "MPB4",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "MPB4"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "7e60e889-1419-4b31-8158-381d5ef10567",
+            "isrcs": [
+              "BRPGD8000022"
+            ],
+            "length": 126000,
+            "title": "O pato",
+            "video": false
+          },
+          "title": "O pato"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "Brazilian pop & jazz singer",
+                "id": "e9e85a54-074c-4d29-a886-bcaaa9d44f9f",
+                "name": "Elis Regina",
+                "sort-name": "Elis Regina",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Elis Regina"
+            }
+          ],
+          "id": "7aa95a49-6286-4194-8fe2-8d025ca35b8d",
+          "length": 138600,
+          "number": "A3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "Brazilian pop & jazz singer",
+                  "id": "e9e85a54-074c-4d29-a886-bcaaa9d44f9f",
+                  "name": "Elis Regina",
+                  "sort-name": "Elis Regina",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Elis Regina"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "630dae52-ff4e-451a-8c57-af9472489377",
+            "isrcs": [
+              "BRPGD8000023"
+            ],
+            "length": 138160,
+            "title": "A corujinha",
+            "video": false
+          },
+          "title": "A corujinha"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "7a08d4fb-e5c1-4c39-a99b-1908ca2e83b4",
+                "name": "Alceu Valen\u00e7a",
+                "sort-name": "Valen\u00e7a, Alceu",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Alceu Valen\u00e7a"
+            }
+          ],
+          "id": "1c45e75e-f4b9-4305-a81a-502be54ff2c2",
+          "length": 194933,
+          "number": "A4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "7a08d4fb-e5c1-4c39-a99b-1908ca2e83b4",
+                  "name": "Alceu Valen\u00e7a",
+                  "sort-name": "Valen\u00e7a, Alceu",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Alceu Valen\u00e7a"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "89e93c54-c569-43df-a2db-1e1e12781bf3",
+            "isrcs": [
+              "BRPGD8000024"
+            ],
+            "length": 194933,
+            "title": "A foca",
+            "video": false
+          },
+          "title": "A foca"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "5b5d63ac-e78e-459e-abab-5e90e3dddbb5",
+                "name": "Moraes Moreira",
+                "sort-name": "Moraes, Moreira",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Moraes Moreira"
+            }
+          ],
+          "id": "607cb4a3-1e56-45f0-9395-7fc5b8728462",
+          "length": 161800,
+          "number": "A5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "5b5d63ac-e78e-459e-abab-5e90e3dddbb5",
+                  "name": "Moraes Moreira",
+                  "sort-name": "Moraes, Moreira",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Moraes Moreira"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "a4f94bff-6f8d-432f-a200-30027689a897",
+            "isrcs": [
+              "BRPGD8000025"
+            ],
+            "length": 161800,
+            "title": "As abelhas",
+            "video": false
+          },
+          "title": "As abelhas"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "8777a849-fb4e-4430-9918-170f619c5286",
+                "name": "Bebel Gilberto",
+                "sort-name": "Gilberto, Bebel",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Bebel Gilberto"
+            }
+          ],
+          "id": "5af408fa-3132-43f5-9917-0d7a9a11a87f",
+          "length": 88426,
+          "number": "A6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "8777a849-fb4e-4430-9918-170f619c5286",
+                  "name": "Bebel Gilberto",
+                  "sort-name": "Gilberto, Bebel",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Bebel Gilberto"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "6e5c6f54-59ec-41cf-82e3-22e3b9e03df3",
+            "isrcs": [
+              "BRPGD8000026"
+            ],
+            "length": 88066,
+            "title": "A pulga",
+            "video": false
+          },
+          "title": "A pulga"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "6b1cc80f-5955-4c80-a8eb-8c0b9a4fec2c",
+                "name": "As Fren\u00e9ticas",
+                "sort-name": "Fren\u00e9ticas, As",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "As Fren\u00e9ticas"
+            }
+          ],
+          "id": "4b0f71a1-7667-466c-b3ac-683e89317771",
+          "length": 171506,
+          "number": "A7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "6b1cc80f-5955-4c80-a8eb-8c0b9a4fec2c",
+                  "name": "As Fren\u00e9ticas",
+                  "sort-name": "Fren\u00e9ticas, As",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "As Fren\u00e9ticas"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1978-05-15",
+            "id": "a974ce18-b079-474b-9758-5112ae1f55b6",
+            "isrcs": [
+              "BRPGD8000027"
+            ],
+            "length": 171506,
+            "title": "Aula de piano",
+            "video": false
+          },
+          "title": "Aula de piano"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "Brazilian singer-songwriter",
+                "id": "f3e83286-b99e-4852-b3fd-fdc49ba701d2",
+                "name": "F\u00e1bio Jr.",
+                "sort-name": "F\u00e1bio Jr.",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "F\u00e1bio Jr."
+            }
+          ],
+          "id": "44cc1a53-9126-4d1d-a4d6-4996dcbd3f67",
+          "length": 208866,
+          "number": "B1",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "Brazilian singer-songwriter",
+                  "id": "f3e83286-b99e-4852-b3fd-fdc49ba701d2",
+                  "name": "F\u00e1bio Jr.",
+                  "sort-name": "F\u00e1bio Jr.",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "F\u00e1bio Jr."
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "222217ae-1d18-4ac8-ba2f-7912982bbcf5",
+            "isrcs": [
+              "BRPGD8000028"
+            ],
+            "length": 208866,
+            "title": "A porta",
+            "video": false
+          },
+          "title": "A porta"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "6fa56da3-9e74-4920-8c76-947a43dd7fab",
+                "name": "Boca Livre",
+                "sort-name": "Boca Livre",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Boca Livre"
+            }
+          ],
+          "id": "e9c570cc-6a0f-48ca-9cbc-b25294818d56",
+          "length": 134133,
+          "number": "B2",
+          "position": 9,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "6fa56da3-9e74-4920-8c76-947a43dd7fab",
+                  "name": "Boca Livre",
+                  "sort-name": "Boca Livre",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Boca Livre"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "7fda2deb-c48c-460d-bcaf-ccc1e7c35b5b",
+            "isrcs": [
+              "BRPGD8000029"
+            ],
+            "length": 134000,
+            "title": "A casa",
+            "video": false
+          },
+          "title": "A casa"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "67e97898-3bb5-412a-a51e-95a7b59a1bef",
+                "name": "Ney Matogrosso",
+                "sort-name": "Matogrosso, Ney",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Ney Matogrosso"
+            }
+          ],
+          "id": "9cb8682c-8879-4bcd-9548-6c87c1dc0cfd",
+          "length": 145960,
+          "number": "B3",
+          "position": 10,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "67e97898-3bb5-412a-a51e-95a7b59a1bef",
+                  "name": "Ney Matogrosso",
+                  "sort-name": "Matogrosso, Ney",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Ney Matogrosso"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "7178ac19-a757-4509-95b8-3c647cceec28",
+            "isrcs": [
+              "BRPGD8000030"
+            ],
+            "length": 145960,
+            "title": "S\u00e3o Francisco",
+            "video": false
+          },
+          "title": "S\u00e3o Francisco"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "026128bb-a1c3-49cd-bdb0-3526057d3f32",
+                "name": "Marina Lima",
+                "sort-name": "Lima, Marina",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Marina"
+            }
+          ],
+          "id": "f2269e55-c7f2-4713-bcf2-4691e4041ae4",
+          "length": 158600,
+          "number": "B4",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "026128bb-a1c3-49cd-bdb0-3526057d3f32",
+                  "name": "Marina Lima",
+                  "sort-name": "Lima, Marina",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Marina"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "c63d1d8f-9291-4aba-bc12-a02d19ca10c5",
+            "isrcs": [
+              "BRPGD8000031"
+            ],
+            "length": 158600,
+            "title": "O gato",
+            "video": false
+          },
+          "title": "O gato"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "0eb0cbde-6fab-4bbe-9b15-5d831b0d17cb",
+                "name": "Walter Franco",
+                "sort-name": "Franco, Walter",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Walter Franco"
+            }
+          ],
+          "id": "9b774ce2-0f7d-4dca-88de-e3900a2496ae",
+          "length": 129666,
+          "number": "B5",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "0eb0cbde-6fab-4bbe-9b15-5d831b0d17cb",
+                  "name": "Walter Franco",
+                  "sort-name": "Franco, Walter",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Walter Franco"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "f4fda638-0fee-480b-86d8-8cc358a83148",
+            "isrcs": [
+              "BRPGD8000032"
+            ],
+            "length": 129107,
+            "title": "O rel\u00f3gio",
+            "video": false
+          },
+          "title": "O rel\u00f3gio"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "",
+                "id": "390ff98c-0614-4927-8b94-db7b40a92bbe",
+                "name": "Toquinho",
+                "sort-name": "Toquinho",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Toquinho"
+            }
+          ],
+          "id": "ab9ba0ce-8ac3-4302-a9cc-cd9e5d1cb17b",
+          "length": 174640,
+          "number": "B6",
+          "position": 13,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "",
+                  "id": "390ff98c-0614-4927-8b94-db7b40a92bbe",
+                  "name": "Toquinho",
+                  "sort-name": "Toquinho",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Toquinho"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "ae1d80d2-0398-4815-be9c-cd4891b1b682",
+            "isrcs": [
+              "BRPGD8000033"
+            ],
+            "length": 174640,
+            "title": "Menininha",
+            "video": false
+          },
+          "title": "Menininha"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "BR",
+                "disambiguation": "O poetinha",
+                "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+                "name": "Vinicius de Moraes",
+                "sort-name": "Moraes, Vinicius de",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Vinicius de Moraes"
+            }
+          ],
+          "id": "77a55d3d-d05f-476b-9bfe-418cf2c96e14",
+          "length": 217400,
+          "number": "B7",
+          "position": 14,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "BR",
+                  "disambiguation": "O poetinha",
+                  "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+                  "name": "Vinicius de Moraes",
+                  "sort-name": "Moraes, Vinicius de",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Vinicius de Moraes"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "1980",
+            "id": "18e2c279-46ed-4559-ac14-433d48acb1aa",
+            "isrcs": [
+              "BRUM70500162"
+            ],
+            "length": 217400,
+            "title": "Final",
+            "video": false
+          },
+          "title": "Final"
+        }
+      ]
+    }
+  ],
+  "packaging": "Cardboard/Paper Sleeve",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "f45b47f8-5796-386e-b172-6c31b009a5d8",
+        "iso-3166-1-codes": [
+          "BR"
+        ],
+        "name": "Brazil",
+        "sort-name": "Brazil",
+        "type": null,
+        "type-id": null
+      },
+      "date": "1980"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": "BR",
+          "disambiguation": "O poetinha",
+          "id": "1c01cf84-07c7-408a-b5a8-7dae0b1312fc",
+          "name": "Vinicius de Moraes",
+          "sort-name": "Moraes, Vinicius de",
+          "type": "Person",
+          "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+        },
+        "joinphrase": "",
+        "name": "Vinicius de Moraes"
+      }
+    ],
+    "disambiguation": "",
+    "first-release-date": "1980",
+    "id": "98b19346-b1e3-3b77-872c-4ec9f4f28e69",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [],
+    "secondary-types": [],
+    "title": "A arca de No\u00e9"
+  },
+  "status": "Official",
+  "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+  "text-representation": {
+    "language": "por",
+    "script": "Latn"
+  },
+  "title": "A arca de No\u00e9"
+}

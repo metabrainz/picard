@@ -54,7 +54,7 @@ _BYTES_STRINGS_I18N = (
 )
 
 
-def decimal(number, scale=1, l10n=True):
+def decimal(number: int | float | str, scale: int = 1, l10n: bool = True) -> str:
     """
     Convert bytes to short human-readable string, decimal mode
 
@@ -64,7 +64,7 @@ def decimal(number, scale=1, l10n=True):
     return short_string(int(number), 1000, scale=scale, l10n=l10n)
 
 
-def binary(number, scale=1, l10n=True):
+def binary(number: int | float | str, scale: int = 1, l10n: bool = True) -> str:
     """
     Convert bytes to short human-readable string, binary mode
     >>> [binary(n) for n in [1000, 1024, 15500]]
@@ -73,7 +73,7 @@ def binary(number, scale=1, l10n=True):
     return short_string(int(number), 1024, scale=scale, l10n=l10n)
 
 
-def short_string(number, multiple, scale=1, l10n=True):
+def short_string(number: int, multiple: int, scale: int = 1, l10n: bool = True) -> str:
     """
     Returns short human-readable string for `number` bytes
     >>> [short_string(n, 1024, 2) for n in [1000, 1100, 15500]]
@@ -98,7 +98,7 @@ def short_string(number, multiple, scale=1, l10n=True):
         return fmt % num + " " + unit
 
 
-def calc_unit(number, multiple=1000):
+def calc_unit(number: int | float, multiple: int = 1000) -> tuple[float, str]:
     """
     Calculate rounded number of multiple * bytes, finding best unit
 
@@ -130,3 +130,4 @@ def calc_unit(number, multiple=1000):
             return (sign * n, suffix)
         else:
             n /= multiple
+    raise AssertionError("unreachable")

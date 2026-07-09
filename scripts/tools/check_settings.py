@@ -43,7 +43,7 @@ RE_CHECK_OPTION = re.compile(
 )
 
 # Ignore Option keys that start with any of the strings in the set()
-CHECK_OPTION_PREFIXES_TO_IGNORE = {'splitters_'}
+CHECK_OPTION_PREFIXES_TO_IGNORE = {'splitters_', 'my_'}
 RE_CHECK_PREFIXES = re.compile("^(" + '|'.join(CHECK_OPTION_PREFIXES_TO_IGNORE) + ").*$")
 
 # Ignore Option keys that contain any of the strings in the set()

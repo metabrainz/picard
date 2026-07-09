@@ -1,0 +1,191 @@
+{
+  "title": "Dreadful Day",
+  "first-release-date": "1972",
+  "aliases": [],
+  "artist-credit": [
+    {
+      "name": "Blind Boy Grunt",
+      "artist": {
+        "name": "Bob Dylan",
+        "aliases": [
+          {
+            "type": "Artist name",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "begin": "1962",
+            "end": "1963",
+            "sort-name": "Grunt, Blind Boy",
+            "locale": null,
+            "ended": true,
+            "primary": null,
+            "name": "Blind Boy Grunt"
+          },
+          {
+            "locale": null,
+            "ended": false,
+            "name": "Bob D",
+            "primary": null,
+            "type": "Search hint",
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+            "begin": null,
+            "sort-name": "Bob D",
+            "end": null
+          },
+          {
+            "primary": true,
+            "name": "Bob Dylan",
+            "ended": false,
+            "locale": "en",
+            "end": null,
+            "sort-name": "Dylan, Bob",
+            "begin": null,
+            "type": "Artist name",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc"
+          },
+          {
+            "ended": false,
+            "locale": null,
+            "primary": null,
+            "name": "Bob Landy",
+            "begin": null,
+            "type-id": null,
+            "type": null,
+            "end": null,
+            "sort-name": "Landy, Bob"
+          },
+          {
+            "end": null,
+            "sort-name": "Zimmerman, Bobby",
+            "type": null,
+            "type-id": null,
+            "begin": null,
+            "primary": null,
+            "name": "Bobby Zimmerman",
+            "locale": null,
+            "ended": false
+          },
+          {
+            "name": "Boo Wilbury",
+            "primary": null,
+            "locale": null,
+            "ended": true,
+            "end": "1990",
+            "sort-name": "Wilbury, Boo",
+            "type-id": null,
+            "type": null,
+            "begin": "1990"
+          },
+          {
+            "end": null,
+            "sort-name": "Boy Dylan",
+            "type": "Search hint",
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+            "begin": null,
+            "primary": null,
+            "name": "Boy Dylan",
+            "locale": null,
+            "ended": false
+          },
+          {
+            "name": "DYLYN Bob",
+            "primary": null,
+            "ended": false,
+            "locale": null,
+            "end": null,
+            "sort-name": "DYLYN Bob",
+            "begin": null,
+            "type": "Search hint",
+            "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e"
+          },
+          {
+            "sort-name": "Dylan",
+            "end": null,
+            "begin": null,
+            "type-id": null,
+            "type": null,
+            "name": "Dylan",
+            "primary": null,
+            "ended": false,
+            "locale": null
+          },
+          {
+            "sort-name": "Jack Frost",
+            "end": null,
+            "begin": null,
+            "type": "Artist name",
+            "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+            "name": "Jack Frost",
+            "primary": null,
+            "ended": false,
+            "locale": null
+          },
+          {
+            "sort-name": "Wilbury, Lucky",
+            "end": "1988",
+            "type-id": null,
+            "type": null,
+            "begin": "1988",
+            "name": "Lucky Wilbury",
+            "primary": null,
+            "locale": null,
+            "ended": true
+          },
+          {
+            "primary": null,
+            "name": "Robert Allen Zimmerman",
+            "locale": null,
+            "ended": false,
+            "sort-name": "Zimmerman, Robert Allen",
+            "end": null,
+            "type": "Legal name",
+            "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+            "begin": null
+          },
+          {
+            "end": null,
+            "sort-name": "Dylan, Robert",
+            "type-id": null,
+            "type": null,
+            "begin": null,
+            "name": "Robert Dylan",
+            "primary": null,
+            "locale": null,
+            "ended": false
+          },
+          {
+            "ended": false,
+            "locale": null,
+            "primary": null,
+            "name": "Robert Zimmerman",
+            "begin": null,
+            "type": null,
+            "type-id": null,
+            "sort-name": "Zimmerman, Robert",
+            "end": null
+          },
+          {
+            "begin": null,
+            "type-id": null,
+            "type": null,
+            "sort-name": "Дилан, Боб",
+            "end": null,
+            "ended": false,
+            "locale": "ru",
+            "name": "Боб Дилан",
+            "primary": false
+          }
+        ],
+        "country": "US",
+        "sort-name": "Dylan, Bob",
+        "disambiguation": "",
+        "id": "72c536dc-7137-4477-a521-567eeb840fa8",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "type": "Person"
+      },
+      "joinphrase": ""
+    }
+  ],
+  "id": "7ef0754b-0543-4f31-8268-bb0a55de5d24",
+  "length": null,
+  "video": false,
+  "disambiguation": ""
+}

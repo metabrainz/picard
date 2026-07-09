@@ -58,7 +58,10 @@ from picard.i18n import (
 )
 
 from picard.ui.forms.ui_options_releases import Ui_ReleasesOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import qlistwidget_items
 from picard.ui.widgets import ClickableSlider
 
@@ -165,11 +168,11 @@ class ReleasesOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_releases.html"
 
-    OPTIONS = (
-        ('release_type_scores', ['type_group']),
-        ('preferred_release_countries', ['country_group']),
-        ('preferred_release_formats', ['format_group']),
-    )
+    OPTIONS: PageOptionConfigs = {
+        'release_type_scores': {'widgets': ['type_group']},
+        'preferred_release_countries': {'widgets': ['country_group']},
+        'preferred_release_formats': {'widgets': ['format_group']},
+    }
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)

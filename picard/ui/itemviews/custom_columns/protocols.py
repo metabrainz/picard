@@ -27,6 +27,7 @@ from typing import (
 
 from PyQt6 import QtGui
 
+from picard.i18n.collate import Comparable
 from picard.item import Item
 
 
@@ -64,7 +65,7 @@ class ColumnValueProvider(Protocol):
 
 @runtime_checkable
 class SortKeyProvider(Protocol):
-    def sort_key(self, obj: Item):  # pragma: no cover - optional
+    def sort_key(self, obj: Item) -> Comparable:  # pragma: no cover - optional
         """Return sort key for item.
 
         Parameters

@@ -43,22 +43,17 @@ from picard.i18n import (
     N_,
     gettext as _,
 )
-from picard.util import open_local_path
+from picard.util import (
+    open_local_path,
+    resolve_fs_path,
+)
 
 from picard.ui.forms.ui_options_maintenance import Ui_MaintenanceOptionsPage
-from picard.ui.options import OptionsPage
+from picard.ui.options import (
+    OptionsPage,
+    PageOptionConfigs,
+)
 from picard.ui.util import FileDialog
-
-
-OPTIONS_NOT_IN_PAGES = {
-    # Include options that are required but are not entered directly from the options pages.
-    'file_renaming_scripts',
-    'selected_file_naming_script_id',
-    # Items missed if TagsCompatibilityWaveOptionsPage does not register.
-    'remove_wave_riff_info',
-    'wave_riff_info_encoding',
-    'write_wave_riff_info',
-}
 
 
 def _safe_autobackup_dir(path):
@@ -75,8 +70,9 @@ class MaintenanceOptionsPage(OptionsPage):
     ACTIVE = True
     HELP_URL = "/config/options_maintenance.html"
 
-    OPTIONS = (('autobackup_directory', ['autobackup_dir']),)
-
+    OPTIONS: PageOptionConfigs = {
+        'autobackup_directory': {'widgets': ['autobackup_dir']},
+    }
     signal_reload = QtCore.pyqtSignal()
 
     def __init__(self, parent=None):
@@ -162,10 +158,7 @@ class MaintenanceOptionsPage(OptionsPage):
         self.ui.config_file.setText(config.fileName())
 
         # Setting options from all option pages and loaded plugins (including plugins currently disabled).
-        key_options = set(config.setting.as_dict())
-
-        # Combine all page and plugin settings with required options not appearing in option pages.
-        current_options = OPTIONS_NOT_IN_PAGES.union(key_options)
+        current_options = set(config.setting.as_dict())
 
         # All setting options included in the INI file.
         config.beginGroup('setting')
@@ -326,7 +319,7 @@ class MaintenanceOptionsPage(OptionsPage):
             directory=directory,
             filter=self._get_dialog_filetypes(ext),
         )
-        return filename
+        return resolve_fs_path(filename) if filename else filename
 
     def load_backup(self):
         directory = self.get_current_autobackup_dir()

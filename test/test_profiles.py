@@ -21,6 +21,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+from enum import Enum
 import logging
 import os
 import shutil
@@ -41,10 +42,18 @@ from picard.profile import (
     profile_groups_all_settings,
     profile_groups_keys,
     profile_groups_order,
+    profile_groups_remove_group,
     profile_groups_reset,
     profile_groups_settings,
+    profile_groups_update_highlights,
     profile_groups_values,
 )
+
+
+class DummyEnum(Enum):
+    A = "a"
+    B = "b"
+    C = "c"
 
 
 class TestPicardProfilesCommon(PicardTestCase):
@@ -74,22 +83,24 @@ class TestPicardProfilesCommon(PicardTestCase):
 
         # Get valid profile option settings for testing
         profile_groups_reset()
-        for n in range(0, 4):
+        for n in range(0, 5):
             group = 'group%d' % (n % 2)
             title = 'title_' + group
             name = 'opt%d' % n
-            highlights = ('obj%d' % i for i in range(0, n))
+            highlights = tuple('obj%d' % i for i in range(0, n))
             profile_groups_add_setting(group, name, highlights, title=title)
         option_settings = list(profile_groups_all_settings())
         self.test_setting_0 = option_settings[0]
         self.test_setting_1 = option_settings[1]
         self.test_setting_2 = option_settings[2]
         self.test_setting_3 = option_settings[3]
+        self.test_setting_4 = option_settings[4]
 
-        TextOption("setting", self.test_setting_0, "abc")
-        BoolOption("setting", self.test_setting_1, True)
-        IntOption("setting", self.test_setting_2, 42)
-        TextOption("setting", self.test_setting_3, "xyz")
+        TextOption("setting", self.test_setting_0, "abc", in_profile=True)
+        BoolOption("setting", self.test_setting_1, True, in_profile=True)
+        IntOption("setting", self.test_setting_2, 42, in_profile=True)
+        TextOption("setting", self.test_setting_3, "xyz", in_profile=True)
+        Option("setting", self.test_setting_4, DummyEnum.B, in_profile=True)
 
     def tearDown(self):
         Option.registry = self.old_registry
@@ -103,7 +114,7 @@ class TestPicardProfilesCommon(PicardTestCase):
 
     def get_profiles(self, enabled=True):
         profiles = []
-        for i in range(3):
+        for i in range(4):
             profiles.append(
                 {
                     "position": i,
@@ -136,8 +147,8 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
     def test_settings_have_no_blank_keys(self):
         for group in profile_groups_keys():
             settings = profile_groups_settings(group)
-            for name, _highlights in settings:
-                self.assertNotEqual(name.strip(), "")
+            for setting in settings:
+                self.assertNotEqual(setting.name.strip(), "")
 
     def test_groups_have_title(self):
         for value in profile_groups_values():
@@ -158,78 +169,117 @@ class TestUserProfileGroups(TestPicardProfilesCommon):
         result_after = [value['title'] for value in profile_groups_values()]
         self.assertEqual(result_after, ['title_group1', 'title_group0'])
 
+    def test_remove_group(self):
+        self.assertIn('opt0', profile_groups_all_settings())
+        profile_groups_remove_group('group0')
+        # opt0 and opt2 were in group0
+        self.assertNotIn('opt0', profile_groups_all_settings())
+        self.assertNotIn('opt2', profile_groups_all_settings())
+        # opt1 and opt3 should remain (they're in group1)
+        self.assertIn('opt1', profile_groups_all_settings())
+        self.assertIn('opt3', profile_groups_all_settings())
+
+    def test_remove_group_preserves_shared_names(self):
+        # Add same option name to two groups
+        profile_groups_add_setting('extra_group', 'opt0', (), title='Extra')
+        profile_groups_remove_group('extra_group')
+        # opt0 should still be in _known_settings because group0 still has it
+        self.assertIn('opt0', profile_groups_all_settings())
+
+    def test_update_highlights(self):
+        profile_groups_add_setting('group1', 'opt1', ('old_widget',), section='section2')
+        # Update highlights for opt1 in section 'section2'
+        profile_groups_update_highlights('section2', 'opt1', ('new_widget',))
+        settings = list(profile_groups_settings('group1'))
+        opt1_updated = next(s for s in settings if s.name == 'opt1' and s.section == 'section2')
+        self.assertEqual(opt1_updated.highlights, ('new_widget',))
+        opt1_unchanged = next(s for s in settings if s.name == 'opt1' and s.section == 'setting')
+        self.assertEqual(opt1_unchanged.highlights, ('obj0',))
+
 
 class TestUserProfiles(TestPicardProfilesCommon):
     def test_settings(self):
         self.config.setting[self.test_setting_0] = "abc"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 42
+        self.config.setting[self.test_setting_4] = DummyEnum.A
         settings = {
             "test_key_0": {self.test_setting_0: None},
             "test_key_1": {self.test_setting_1: None},
             "test_key_2": {self.test_setting_2: None},
+            "test_key_3": {self.test_setting_4: None},
         }
         self.config.profiles[self.SETTINGS_KEY] = settings
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       None        n/a         n/a
-        # test_key_1:       n/a         None        n/a
-        # test_key_2:       n/a         n/a         None
-        # user_settings:    abc         True        42
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       None       n/a        n/a        n/a
+        # test_key_1:       n/a        None       n/a        n/a
+        # test_key_2:       n/a        n/a        None       n/a
+        # test_key_2:       n/a        n/a        n/a        None
+        # user_settings:    abc        True       42         A
 
         # Test retrieval with overrides at None
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 42)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.A)
 
         # Test setting new values
         self.config.setting[self.test_setting_0] = "def"
         self.config.setting[self.test_setting_1] = False
         self.config.setting[self.test_setting_2] = 99
+        self.config.setting[self.test_setting_4] = DummyEnum.B
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       def         n/a         n/a
-        # test_key_1:       n/a         False       n/a
-        # test_key_2:       n/a         n/a         99
-        # user_settings:    abc         True        42
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       def        n/a        n/a        n/a
+        # test_key_1:       n/a        False      n/a        n/a
+        # test_key_2:       n/a        n/a        99         n/a
+        # test_key_2:       n/a        n/a        n/a        B
+        # user_settings:    abc        True       42         A
 
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.B)
 
         # Test retrieval with profiles disabled
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=False)
         self.assertEqual(self.config.setting[self.test_setting_0], "abc")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 42)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.A)
 
         # Test setting new values with profiles disabled
         self.config.setting[self.test_setting_0] = "ghi"
         self.config.setting[self.test_setting_1] = True
         self.config.setting[self.test_setting_2] = 86
+        self.config.setting[self.test_setting_4] = DummyEnum.C
 
         # Stack:
-        #                   setting_0   setting_1   setting_2
-        #                   ---------   ---------   ---------
-        # test_key_0:       def         n/a         n/a
-        # test_key_1:       n/a         False       n/a
-        # test_key_2:       n/a         n/a         99
-        # user_settings:    ghi         True        86
+        #                   setting_0  setting_1  setting_2  setting_4
+        #                   ---------  ---------  ---------  ---------
+        # test_key_0:       def        n/a        n/a        n/a
+        # test_key_1:       n/a        False      n/a        n/a
+        # test_key_2:       n/a        n/a        99         n/a
+        # test_key_2:       n/a        n/a        n/a        B
+        # user_settings:    ghi        True       86         C
 
         self.assertEqual(self.config.setting[self.test_setting_0], "ghi")
         self.assertEqual(self.config.setting[self.test_setting_1], True)
         self.assertEqual(self.config.setting[self.test_setting_2], 86)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.C)
 
         # Re-enable profiles and check that the saved settings still exist
         self.config.profiles[self.PROFILES_KEY] = self.get_profiles(enabled=True)
         self.assertEqual(self.config.setting[self.test_setting_0], "def")
         self.assertEqual(self.config.setting[self.test_setting_1], False)
         self.assertEqual(self.config.setting[self.test_setting_2], 99)
+        self.assertEqual(self.config.setting[self.test_setting_4], DummyEnum.B)
 
     def test_settings_with_overrides(self):
         self.config.setting[self.test_setting_0] = "abc"
@@ -415,3 +465,51 @@ class TestUserProfiles(TestPicardProfilesCommon):
 
         # Overrides restored even after exception
         self.assertIs(self.config.setting.profiles_override, override_profiles)
+
+    def test_clean_profile_settings(self):
+        from picard.ui.options.profiles import ProfilesOptionsPage
+
+        # test_setting_0 has in_profile=True (from setUp)
+        # Create an option without in_profile
+        TextOption('setting', 'stale_option', 'default')
+
+        # Simulate profile_settings with valid, stale, and plugin keys
+        page = ProfilesOptionsPage.__new__(ProfilesOptionsPage)
+        page.profile_settings = {
+            'p1': {
+                self.test_setting_0: 'value1',  # valid (in_profile=True)
+                'stale_option': 'stale_value',  # invalid (in_profile=False)
+                'nonexistent_option': 'gone',  # option doesn't exist
+                'plugin.some-uuid/greeting': 'hello',  # plugin key — always kept
+            }
+        }
+
+        cleaned = page._clean_profile_settings()
+        self.assertIn(self.test_setting_0, cleaned['p1'])
+        self.assertNotIn('stale_option', cleaned['p1'])
+        self.assertNotIn('nonexistent_option', cleaned['p1'])
+        self.assertIn('plugin.some-uuid/greeting', cleaned['p1'])
+
+    def test_clean_plugin_profile_settings(self):
+        from picard.plugin3.manager.clean import PluginCleanupManager
+
+        # Set up profile settings with plugin and core keys
+        self.config.profiles[self.SETTINGS_KEY] = {
+            'p1': {
+                'move_files': True,
+                'plugin.test-uuid/greeting': 'hello',
+                'plugin.test-uuid/other': 'world',
+                'plugin.other-uuid/opt': 'keep',
+            }
+        }
+
+        cleanup = PluginCleanupManager(None)
+        cleanup._clean_plugin_profile_settings(self.config, 'test-uuid')
+
+        settings = self.config.profiles[self.SETTINGS_KEY]
+        # Core keys and other plugin keys preserved
+        self.assertIn('move_files', settings['p1'])
+        self.assertIn('plugin.other-uuid/opt', settings['p1'])
+        # Target plugin keys removed
+        self.assertNotIn('plugin.test-uuid/greeting', settings['p1'])
+        self.assertNotIn('plugin.test-uuid/other', settings['p1'])

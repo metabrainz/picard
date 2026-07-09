@@ -41,12 +41,15 @@ from dataclasses import (
     dataclass,
     field,
 )
+from operator import attrgetter
 from typing import (
     TYPE_CHECKING,
+    Generic,
+    Protocol,
     TypeAlias,
+    TypeVar,
 )
 
-from picard import tagger_instance
 from picard.config import Config, get_config
 from picard.mbjson import artist_credit_from_node, get_score
 from picard.similarity import similarity2
@@ -88,6 +91,12 @@ _RELEASE_WEIGHT_KEYS = {
 }
 
 
+class Similar(Protocol):
+    """Any type that provides a "similarity" attribute."""
+
+    similarity: float
+
+
 @dataclass
 class SimMatchTrack:
     """Holds the similarity score and release/track data for a matched track."""
@@ -104,6 +113,17 @@ class SimMatchRelease:
 
     similarity: float
     release: dict | None
+
+
+# Generic type variable that implements the Similar protocol.
+S = TypeVar('S', bound=Similar)
+
+
+@dataclass
+class MatchResult(Generic[S]):
+    similarity: float
+    result: S
+    reason: str | None = None
 
 
 # Type for a pair of score and weight (e.g. (0.8, 12))
@@ -211,13 +231,6 @@ def _compare_to_release_parts(
                 file_label = metadata.get('label', '') or ''
                 score = _catno_label_score(file_catno, file_label, release_label_info)
                 result.identifiers.append((score, id_w['catno']))
-
-    if 'release-group' in release:
-        tagger = tagger_instance()
-        if tagger is not None:
-            rg = tagger.get_release_group_by_id(release['release-group']['id'])  # type: ignore[attr-defined]
-            if release['id'] in rg.loaded_albums:
-                result.identifiers.append((1.0, 6))
 
     # Tier 2: Similarity — fuzzy matching core
     with metadata._lock.lock_for_read():
@@ -337,6 +350,10 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
         if "releases" in track:
             releases = track['releases']
 
+            if 'tracknumber' in metadata and 'tracknumber' in sim_w:
+                sim = _compare_tracknumber(track.get('recording', {}).get('id'), metadata, releases)
+                track_parts.similarity.append((sim, sim_w["tracknumber"]))
+
         search_score = get_score(track)
         if not releases:
             config = get_config()
@@ -356,6 +373,64 @@ def compare_to_track(metadata: 'Metadata', track: dict, weights: TieredWeights) 
             rg = release['release-group'] if "release-group" in release else None
             result = SimMatchTrack(similarity=sim, releasegroup=rg, release=release, track=track)
     return result
+
+
+def sort_by_similarity(candidates: Iterable[S]) -> list[S]:
+    """Sorts the objects in candidates by similarity.
+
+    Args:
+        candidates: Iterable with objects having a `similarity` attribute
+    Returns: List of candidates sorted by similarity (highest similarity first)
+    """
+    return sorted(candidates, reverse=True, key=attrgetter('similarity'))
+
+
+def find_best_match(candidates: Iterable[S], no_match: S) -> MatchResult[S]:
+    """Returns a MatchResult based on the similarity of candidates.
+
+    Args:
+        candidates: Iterable with objects having a `similarity` attribute
+        no_match: Match to return if there was no candidate
+
+    Returns: `MatchResult` with the similarity and the matched object as result.
+    """
+    best_match = max(candidates, key=attrgetter('similarity'), default=no_match)
+    return MatchResult(similarity=getattr(best_match, 'similarity', 0.0), result=best_match)
+
+
+def find_best_match_with_margin(
+    candidates: Iterable[S], no_match: S, min_similarity: float = 0.0, min_margin: float = 0.0
+) -> MatchResult[S]:
+    """Find best match, flagging if below floor or margin is too small.
+
+    Args:
+        candidates: Iterable with objects having a `similarity` attribute
+        no_match: Match to return if no candidate passes the floor
+        min_similarity: Reject if best score is below this floor
+        min_margin: Flag as ambiguous if best - second_best < this value
+            (skipped when there's only one candidate)
+
+    Returns: `MatchResult` with similarity, result, and reason.
+        reason is None (confident), 'ambiguous' (margin too small,
+        best match still returned), or 'below_floor' (no_match returned).
+    """
+    best = no_match
+    second_best_sim = -1.0
+    for candidate in candidates:
+        sim = candidate.similarity
+        if sim > best.similarity:
+            second_best_sim = best.similarity
+            best = candidate
+        elif sim > second_best_sim:
+            second_best_sim = sim
+
+    if best.similarity < min_similarity:
+        return MatchResult(similarity=no_match.similarity, result=no_match, reason='below_floor')
+
+    if second_best_sim >= 0 and (best.similarity - second_best_sim) < min_margin:
+        return MatchResult(similarity=best.similarity, result=best, reason='ambiguous')
+
+    return MatchResult(similarity=best.similarity, result=best, reason=None)
 
 
 def length_score(a: int | None, b: int | None) -> float:
@@ -445,6 +520,45 @@ def _trackcount_score(actual: int, expected: int) -> float:
     else:
         # File has fewer tracks — could be single disc of multi-disc release
         return max(0.0, 1.0 - ratio * 2)
+
+
+def _compare_tracknumber(recording_id: str, metadata: 'Metadata', releases: list[dict]) -> float:
+    """Compares the track number from metadata to the track number in the release."""
+    try:
+        tracknumber = int(metadata['tracknumber'])
+    except ValueError:
+        tracknumber = None
+
+    # Find the track in the media and compare track numbers
+    if tracknumber:
+        for release in releases:
+            for medium in release.get('media', []):
+                track_offset = medium.get('track-offset', None)
+
+                # For recording lookups the web service returns only a "track" field
+                # containing the the track corresponding to the recording and sets
+                # the track-offset to indicate the number of skipped tracks before it.
+                # The track has no position field, so we use the track-offset to compare.
+                if track_offset is not None and 'track' in medium:
+                    if medium['track'] and tracknumber == track_offset + 1:
+                        return 1.0
+                    continue
+                # Else if the data contains a "tracks" field with full track listing
+                # search for the track with matching recording and compare its position.
+                else:
+                    tracks = medium.get('tracks', [])
+                    matching_tracks = filter(
+                        lambda t: t.get('recording', {}).get('id') == recording_id,
+                        tracks,
+                    )
+                    for matching_track in matching_tracks:
+                        if matching_track.get('position') == tracknumber:
+                            return 1.0
+        # Track number did not match on any medium across all releases
+        return 0.0
+
+    # No valid track number in metadata — neutral (neither confirms nor denies)
+    return 0.5
 
 
 def _isrcs_score(file_isrcs: Iterable[str], track_isrcs: Iterable[str]) -> float:

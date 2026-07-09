@@ -48,7 +48,6 @@ from picard.coverart.image import (
 from picard.file import File
 from picard.formats.mutagenext import delall_ci
 from picard.metadata import Metadata
-from picard.util import encode_filename
 
 
 def _add_text_values_to_metadata(metadata, name, values):
@@ -182,7 +181,7 @@ class MP4File(File):
     def _load(self, filename):
         log.debug("Loading file %r", filename)
         self.__casemap = {}
-        file = MP4(encode_filename(filename))
+        file = MP4(filename)
         tags = file.tags or {}
         metadata = Metadata()
         for name, values in tags.items():
@@ -257,10 +256,11 @@ class MP4File(File):
     def _save(self, filename, metadata):
         log.debug("Saving file %r", filename)
         config = get_config()
-        file = MP4(encode_filename(self.filename))
+        file = MP4(self.filename)
         if file.tags is None:
             file.add_tags()
         tags = file.tags
+        assert tags is not None
 
         if config.setting['clear_existing_tags']:
             cover = tags.get('covr') if config.setting['preserve_images'] else None

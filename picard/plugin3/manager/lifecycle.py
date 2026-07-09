@@ -42,6 +42,7 @@ from picard.plugin3.plugin import (
     Plugin,
     PluginState,
 )
+from picard.plugin3.plugin_metadata import is_local_plugin
 
 
 if TYPE_CHECKING:
@@ -56,6 +57,12 @@ class PluginLifecycleManager:
 
     def uninstall_plugin(self, plugin: Plugin, purge=False):
         """Uninstall a plugin."""
+        # Local non-git plugins: just unregister, don't delete files
+        if plugin.uuid:
+            metadata = self.manager._get_plugin_metadata(plugin.uuid)
+            if is_local_plugin(metadata):
+                return self._unregister_local_plugin(plugin, purge)
+
         try:
             self.manager.disable_plugin(plugin)
         except Exception:
@@ -98,6 +105,24 @@ class PluginLifecycleManager:
         if plugin in self.manager.plugins:
             self.manager.plugins.remove(plugin)
 
+        self.manager.plugin_uninstalled.emit(plugin)
+
+    def _unregister_local_plugin(self, plugin: Plugin, purge=False):
+        """Unregister a local non-git plugin without deleting files."""
+        try:
+            self.manager.disable_plugin(plugin)
+        except Exception:
+            log.warning("Failed to disable local plugin %s during uninstall", plugin.plugin_id, exc_info=True)
+        config = get_config()
+        if plugin.uuid:
+            metadata_dict = config.setting['plugins3_metadata']
+            metadata_dict.pop(plugin.uuid, None)
+            config.setting['plugins3_metadata'] = metadata_dict
+            unset_plugin_uuid(plugin.uuid)
+        if purge and plugin.uuid:
+            self.manager._clean_plugin_config(plugin.uuid)
+        if plugin in self.manager.plugins:
+            self.manager.plugins.remove(plugin)
         self.manager.plugin_uninstalled.emit(plugin)
 
     def enable_plugin(self, plugin: Plugin):

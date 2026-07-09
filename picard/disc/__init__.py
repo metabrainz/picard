@@ -55,7 +55,7 @@ except ImportError:
 
 
 class Disc:
-    def __init__(self, id=None):
+    def __init__(self, id: str | None = None):
         self.tagger = tagger_instance()
         self.id = id
         self.mcn = None
@@ -65,6 +65,7 @@ class Disc:
         self._files_to_match = None
 
     def read(self, device=None):
+        assert discid, "discid is not available"
         if device is None:
             device = discid.get_default_device()
         log.debug("Reading CD using device: %r", device)
@@ -76,6 +77,7 @@ class Disc:
             raise
 
     def put(self, toc):
+        assert discid, "discid is not available"
         log.debug("Generating disc ID using TOC: %r", toc)
         try:
             first, last, sectors, *offsets = toc
@@ -114,7 +116,10 @@ class Disc:
             return None
 
     def lookup(self):
-        self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
+        if self.id:
+            self.tagger.mb_api.lookup_discid(self.id, self._lookup_finished)
+        else:
+            log.warning("Disc.lookup called without disc ID set, cannot lookup")
 
     def lookup_by_toc(self, toc_string, skip_dialog=False, files_to_match=None):
         """Lookup releases by table of contents string.

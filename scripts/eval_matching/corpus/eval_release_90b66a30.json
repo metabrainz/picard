@@ -1,0 +1,1066 @@
+{
+  "artist-credit": [
+    {
+      "artist": {
+        "country": null,
+        "disambiguation": "add compilations to this artist",
+        "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+        "name": "Various Artists",
+        "sort-name": "Various Artists",
+        "type": "Other",
+        "type-id": "ac897045-5043-3294-969b-187360e45d86"
+      },
+      "joinphrase": "",
+      "name": "Various Artists"
+    }
+  ],
+  "asin": null,
+  "barcode": "",
+  "country": "US",
+  "cover-art-archive": {
+    "artwork": true,
+    "back": true,
+    "count": 3,
+    "darkened": false,
+    "front": true
+  },
+  "date": "2008-11",
+  "disambiguation": "",
+  "id": "90b66a30-878b-4c32-a943-7f87842d2a2c",
+  "label-info": [
+    {
+      "catalog-number": null,
+      "label": {
+        "disambiguation": "music magazine",
+        "id": "b61b1059-4409-491e-a23b-9c77ffca7ee3",
+        "label-code": null,
+        "name": "Paste",
+        "sort-name": "Paste",
+        "type": "Imprint",
+        "type-id": "b6285b2a-3514-3d43-80df-fcf528824ded"
+      }
+    }
+  ],
+  "media": [
+    {
+      "format": "CD",
+      "format-id": "9712d52a-4509-3d4b-a1a2-67c88c643e31",
+      "id": "e208d487-4ddf-35d5-a845-10ad5c08b9ce",
+      "position": 1,
+      "title": "",
+      "track-count": 20,
+      "track-offset": 0,
+      "tracks": [
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "8475297d-fb78-4630-8d74-9b87b6bb7cc8",
+                "name": "of Montreal",
+                "sort-name": "of Montreal",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "of Montreal"
+            }
+          ],
+          "id": "4c5cb996-84c0-3f8e-9f8c-fb1f64935ae1",
+          "length": 207373,
+          "number": "1",
+          "position": 1,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "8475297d-fb78-4630-8d74-9b87b6bb7cc8",
+                  "name": "of Montreal",
+                  "sort-name": "of Montreal",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "of Montreal"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-09",
+            "id": "c5123334-b458-4622-92b8-fcc934795f42",
+            "isrcs": [
+              "US3R40816015",
+              "US3R40816101"
+            ],
+            "length": 205000,
+            "title": "Id Engager",
+            "video": false
+          },
+          "title": "Id Engager"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "d6977357-a88b-45e6-a1f2-ab9b6cf6954f",
+                "name": "Sonya Kitchell",
+                "sort-name": "Kitchell, Sonya",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Sonya Kitchell"
+            }
+          ],
+          "id": "0b5c695e-f184-3d3f-a0f5-a24b2534db4e",
+          "length": 214053,
+          "number": "2",
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "d6977357-a88b-45e6-a1f2-ab9b6cf6954f",
+                  "name": "Sonya Kitchell",
+                  "sort-name": "Kitchell, Sonya",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Sonya Kitchell"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-02",
+            "id": "2a272266-d4d5-446a-bfb4-2a8b7cce75bb",
+            "isrcs": [],
+            "length": 212000,
+            "title": "For Every Drop",
+            "video": false
+          },
+          "title": "For Every Drop"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "CA",
+                "disambiguation": "",
+                "id": "ca7ce20f-c735-4ad9-b664-d8d83b3c7948",
+                "name": "The Dears",
+                "sort-name": "Dears, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Dears"
+            }
+          ],
+          "id": "d3c3a5fb-2827-356d-b748-23bc6e43a32b",
+          "length": 259866,
+          "number": "3",
+          "position": 3,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "CA",
+                  "disambiguation": "",
+                  "id": "ca7ce20f-c735-4ad9-b664-d8d83b3c7948",
+                  "name": "The Dears",
+                  "sort-name": "Dears, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Dears"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-10-21",
+            "id": "c340c293-fea7-467f-806d-b52c102bc107",
+            "isrcs": [],
+            "length": 257839,
+            "title": "Money Babies",
+            "video": false
+          },
+          "title": "Money Babies"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": null,
+                "disambiguation": "",
+                "id": "6fa309fe-a379-4757-a99c-154a6db00122",
+                "name": "The Good Players",
+                "sort-name": "Good Players, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Good Players"
+            }
+          ],
+          "id": "ef60f4d3-a9e9-3e82-8ae9-d5ee030ef31c",
+          "length": 194813,
+          "number": "4",
+          "position": 4,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": null,
+                  "disambiguation": "",
+                  "id": "6fa309fe-a379-4757-a99c-154a6db00122",
+                  "name": "The Good Players",
+                  "sort-name": "Good Players, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Good Players"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-10-14",
+            "id": "81edbf55-654d-453e-aa03-76b6ea3f791e",
+            "isrcs": [],
+            "length": 192800,
+            "title": "David's Lamentation 268",
+            "video": false
+          },
+          "title": "David\u2019s Lamentation"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "AU",
+                "disambiguation": "Australian country singer\u2010songwriter",
+                "id": "7333182d-8933-4896-adaa-fe98e6b59bd7",
+                "name": "Kasey Chambers",
+                "sort-name": "Chambers, Kasey",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": " & ",
+              "name": "Kasey Chambers"
+            },
+            {
+              "artist": {
+                "country": "AU",
+                "disambiguation": "",
+                "id": "8073707c-fe4f-41e2-a899-d90731e93269",
+                "name": "Shane Nicholson",
+                "sort-name": "Nicholson, Shane",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Shane Nicholson"
+            }
+          ],
+          "id": "4d2faaca-e6d4-3e23-97d7-70f978c865ff",
+          "length": 224400,
+          "number": "5",
+          "position": 5,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "AU",
+                  "disambiguation": "Australian country singer\u2010songwriter",
+                  "id": "7333182d-8933-4896-adaa-fe98e6b59bd7",
+                  "name": "Kasey Chambers",
+                  "sort-name": "Chambers, Kasey",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": " & ",
+                "name": "Kasey Chambers"
+              },
+              {
+                "artist": {
+                  "country": "AU",
+                  "disambiguation": "",
+                  "id": "8073707c-fe4f-41e2-a899-d90731e93269",
+                  "name": "Shane Nicholson",
+                  "sort-name": "Nicholson, Shane",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Shane Nicholson"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-01-01",
+            "id": "884aab9d-3f83-47b8-b770-bce09c3a5883",
+            "isrcs": [
+              "AULI00845240",
+              "USSH50800955"
+            ],
+            "length": 222000,
+            "title": "Rattlin\u2019 Bones",
+            "video": false
+          },
+          "title": "Rattlin\u2019 Bones"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "indie band",
+                "id": "91c86e49-0ba9-4341-a09b-2a574e56412f",
+                "name": "Calhoun",
+                "sort-name": "Calhoun",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Calhoun"
+            }
+          ],
+          "id": "49b3bef2-6502-390b-bc29-a511615ae123",
+          "length": 172106,
+          "number": "6",
+          "position": 6,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "indie band",
+                  "id": "91c86e49-0ba9-4341-a09b-2a574e56412f",
+                  "name": "Calhoun",
+                  "sort-name": "Calhoun",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Calhoun"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "a04303df-22f8-4c88-8628-9f19b1edde94",
+            "isrcs": [],
+            "length": 172106,
+            "title": "Breathe",
+            "video": false
+          },
+          "title": "Breathe"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "66932740-f510-4bc6-b4d0-160bb1f4c723",
+                "name": "Jolie Holland",
+                "sort-name": "Holland, Jolie",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Jolie Holland"
+            }
+          ],
+          "id": "d34b92a4-aeca-3cdd-b415-2b455e0a982e",
+          "length": 242226,
+          "number": "7",
+          "position": 7,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "66932740-f510-4bc6-b4d0-160bb1f4c723",
+                  "name": "Jolie Holland",
+                  "sort-name": "Holland, Jolie",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Jolie Holland"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "42dcab67-506c-423e-a6d2-e1c9c816141d",
+            "isrcs": [],
+            "length": 242226,
+            "title": "Mexico City",
+            "video": false
+          },
+          "title": "Mexico City"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "4c49960d-daac-4ca2-be43-d1a8ee23f153",
+                "name": "The Little Ones",
+                "sort-name": "Little Ones, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Little Ones"
+            }
+          ],
+          "id": "988fa6da-99e9-3c11-b832-ae31466e47c9",
+          "length": 245013,
+          "number": "8",
+          "position": 8,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "4c49960d-daac-4ca2-be43-d1a8ee23f153",
+                  "name": "The Little Ones",
+                  "sort-name": "Little Ones, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Little Ones"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "223f20d3-35d6-4b8c-83a4-e06992d4c667",
+            "isrcs": [],
+            "length": 243000,
+            "title": "Morning Tide",
+            "video": false
+          },
+          "title": "Morning Tide"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "21549870-7b2d-4c5b-ad59-f00ba9df7ca7",
+                "name": "O\u2019Death",
+                "sort-name": "O\u2019Death",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "O\u2019Death"
+            }
+          ],
+          "id": "b6b4067f-d52e-32b7-8612-e5a31c3afa64",
+          "length": 149213,
+          "number": "9",
+          "position": 9,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "21549870-7b2d-4c5b-ad59-f00ba9df7ca7",
+                  "name": "O\u2019Death",
+                  "sort-name": "O\u2019Death",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "O\u2019Death"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-22",
+            "id": "c3ed3ed7-e1df-4c66-8a2f-b08bc767269e",
+            "isrcs": [],
+            "length": 147200,
+            "title": "Low Tide",
+            "video": false
+          },
+          "title": "Low Tide"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "84b0af1a-8f10-433f-a1ed-948e71712b16",
+                "name": "Anya Marina",
+                "sort-name": "Marina, Anya",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Anya Marina"
+            }
+          ],
+          "id": "a243a072-71e6-392b-bd33-93baaa0e2e96",
+          "length": 185853,
+          "number": "10",
+          "position": 10,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "84b0af1a-8f10-433f-a1ed-948e71712b16",
+                  "name": "Anya Marina",
+                  "sort-name": "Marina, Anya",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Anya Marina"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "bc6aadcc-2dc0-4540-afbd-8ea17697faf9",
+            "isrcs": [],
+            "length": 185853,
+            "title": "Move You",
+            "video": false
+          },
+          "title": "Move You"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US blues musician",
+                "id": "4f48167c-29b8-4bde-a749-6803ce0a3922",
+                "name": "Taj Mahal",
+                "sort-name": "Mahal, Taj",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Taj Mahal"
+            }
+          ],
+          "id": "faa07986-ed9a-340b-8fcf-e984f1b332b1",
+          "length": 285546,
+          "number": "11",
+          "position": 11,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "US blues musician",
+                  "id": "4f48167c-29b8-4bde-a749-6803ce0a3922",
+                  "name": "Taj Mahal",
+                  "sort-name": "Mahal, Taj",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Taj Mahal"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-30",
+            "id": "63abcb92-84ac-476f-a615-8674b3b12412",
+            "isrcs": [],
+            "length": 283520,
+            "title": "Never Let You Go",
+            "video": false
+          },
+          "title": "Never Let You Go"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "US rock'n'roll band",
+                "id": "62470569-9793-49ad-adea-39a788bb6728",
+                "name": "The Shaky Hands",
+                "sort-name": "Shaky Hands, The",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "The Shaky Hands"
+            }
+          ],
+          "id": "dbb55c68-d45f-3b2f-99c5-02738acd7b22",
+          "length": 167000,
+          "number": "12",
+          "position": 12,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "US rock'n'roll band",
+                  "id": "62470569-9793-49ad-adea-39a788bb6728",
+                  "name": "The Shaky Hands",
+                  "sort-name": "Shaky Hands, The",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "The Shaky Hands"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "bb0c009c-101a-4e68-acf6-f431d1e8c8cb",
+            "isrcs": [],
+            "length": 167000,
+            "title": "World\u2019s Gone Mad",
+            "video": false
+          },
+          "title": "World\u2019s Gone Mad"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "c33c4e5c-6fab-4a7a-bd72-b3a05a8938aa",
+                "name": "Drew Holcomb & the Neighbors",
+                "sort-name": "Holcomb, Drew & the Neighbors",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Drew Holcomb & the Neighbors"
+            }
+          ],
+          "id": "cb06b1e1-5b04-3e9d-a513-877dcd21a974",
+          "length": 241773,
+          "number": "13",
+          "position": 13,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "c33c4e5c-6fab-4a7a-bd72-b3a05a8938aa",
+                  "name": "Drew Holcomb & the Neighbors",
+                  "sort-name": "Holcomb, Drew & the Neighbors",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Drew Holcomb & the Neighbors"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "bdc4ec50-11c1-446b-b936-1a2bf053c4e4",
+            "isrcs": [],
+            "length": 240000,
+            "title": "Hallelujah",
+            "video": false
+          },
+          "title": "Hallelujah"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "3ced20e7-de6a-4634-9d0a-616599fe2a04",
+                "name": "Sandra McCracken",
+                "sort-name": "McCracken, Sandra",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Sandra McCracken"
+            }
+          ],
+          "id": "6fb3d214-1cd8-3619-9683-d1b756ffe3f2",
+          "length": 246746,
+          "number": "14",
+          "position": 14,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "3ced20e7-de6a-4634-9d0a-616599fe2a04",
+                  "name": "Sandra McCracken",
+                  "sort-name": "McCracken, Sandra",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Sandra McCracken"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "383cf22a-6920-47d7-8359-e2872334ccc2",
+            "isrcs": [],
+            "length": 246746,
+            "title": "Lose You",
+            "video": false
+          },
+          "title": "Lose You"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "ffaff287-8849-465a-81f4-501a49eafd42",
+                "name": "High Places",
+                "sort-name": "High Places",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "High Places"
+            }
+          ],
+          "id": "58cda864-2e41-3367-ab72-4d11dcfef181",
+          "length": 219440,
+          "number": "15",
+          "position": 15,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "ffaff287-8849-465a-81f4-501a49eafd42",
+                  "name": "High Places",
+                  "sort-name": "High Places",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "High Places"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-23",
+            "id": "8f5b5de3-660c-4cf1-85f4-18342632f51b",
+            "isrcs": [
+              "GBVCE0800184"
+            ],
+            "length": 219000,
+            "title": "Vision's the First...",
+            "video": false
+          },
+          "title": "Vision\u2019s the First"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "b4e725d0-a177-4802-9b1a-b7aeb8917dda",
+                "name": "Matt Hires",
+                "sort-name": "Hires, Matt",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Matt Hires"
+            }
+          ],
+          "id": "a682efc4-fa67-3377-a9d1-40c2ccdc03be",
+          "length": 238813,
+          "number": "16",
+          "position": 16,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "b4e725d0-a177-4802-9b1a-b7aeb8917dda",
+                  "name": "Matt Hires",
+                  "sort-name": "Hires, Matt",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Matt Hires"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "b17b5dab-99a1-42a3-963e-88d80f9e0e92",
+            "isrcs": [],
+            "length": 236800,
+            "title": "Honey Let Me Sing You a Song",
+            "video": false
+          },
+          "title": "Honey Let Me Sing You a Song"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": null,
+                "disambiguation": "",
+                "id": "20a50192-4b76-4dd6-8bb9-0657a6ad549b",
+                "name": "Nick Pagliari",
+                "sort-name": "Pagliari, Nick",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Nick Pagliari"
+            }
+          ],
+          "id": "bf82f9a6-4d85-31e7-a0fa-fa79f57061e4",
+          "length": 211106,
+          "number": "17",
+          "position": 17,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": null,
+                  "disambiguation": "",
+                  "id": "20a50192-4b76-4dd6-8bb9-0657a6ad549b",
+                  "name": "Nick Pagliari",
+                  "sort-name": "Pagliari, Nick",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Nick Pagliari"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "a7f52091-088b-48e4-83d5-1643c02f0787",
+            "isrcs": [],
+            "length": 211106,
+            "title": "Don\u2019t Wanna Die Lonely",
+            "video": false
+          },
+          "title": "Don\u2019t Wanna Die Lonely"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "3e6cae7c-8fd9-4c00-a46e-750839488772",
+                "name": "Eulogies",
+                "sort-name": "Eulogies",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Eulogies"
+            }
+          ],
+          "id": "cee9fc80-535e-34b4-bcd7-14ca90cb2a91",
+          "length": 246800,
+          "number": "18",
+          "position": 18,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "3e6cae7c-8fd9-4c00-a46e-750839488772",
+                  "name": "Eulogies",
+                  "sort-name": "Eulogies",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Eulogies"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-10-15",
+            "id": "103f3427-5276-4405-8ea2-e8c9143abc8d",
+            "isrcs": [],
+            "length": 246160,
+            "title": "Is There Anyone Here?",
+            "video": false
+          },
+          "title": "Is There Anyone Here?"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "20efa62f-4f98-4bdd-abcc-3e6cfb90d271",
+                "name": "Horse Feathers",
+                "sort-name": "Horse Feathers",
+                "type": "Group",
+                "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+              },
+              "joinphrase": "",
+              "name": "Horse Feathers"
+            }
+          ],
+          "id": "b31ec3e4-59a9-3bef-a8d1-0e9d54930e62",
+          "length": 212680,
+          "number": "19",
+          "position": 19,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "20efa62f-4f98-4bdd-abcc-3e6cfb90d271",
+                  "name": "Horse Feathers",
+                  "sort-name": "Horse Feathers",
+                  "type": "Group",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b"
+                },
+                "joinphrase": "",
+                "name": "Horse Feathers"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-09-09",
+            "id": "50a66b98-c124-43d7-91fd-790437d0be0b",
+            "isrcs": [],
+            "length": 210000,
+            "title": "Curs in the Weeds",
+            "video": false
+          },
+          "title": "Curs in the Weeds"
+        },
+        {
+          "artist-credit": [
+            {
+              "artist": {
+                "country": "US",
+                "disambiguation": "",
+                "id": "44927128-c890-4af4-87ab-a036803baf94",
+                "name": "Joe Pug",
+                "sort-name": "Pug, Joe",
+                "type": "Person",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              },
+              "joinphrase": "",
+              "name": "Joe Pug"
+            }
+          ],
+          "id": "55f6b41d-dce5-331e-a71d-72e05efafa2f",
+          "length": 280226,
+          "number": "20",
+          "position": 20,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "country": "US",
+                  "disambiguation": "",
+                  "id": "44927128-c890-4af4-87ab-a036803baf94",
+                  "name": "Joe Pug",
+                  "sort-name": "Pug, Joe",
+                  "type": "Person",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+                },
+                "joinphrase": "",
+                "name": "Joe Pug"
+              }
+            ],
+            "disambiguation": "",
+            "first-release-date": "2008-11",
+            "id": "7e04b163-dde5-4313-a904-57efa8d85630",
+            "isrcs": [],
+            "length": 280105,
+            "title": "Hymn #101",
+            "video": false
+          },
+          "title": "Hymn #101"
+        }
+      ]
+    }
+  ],
+  "packaging": "Cardboard/Paper Sleeve",
+  "packaging-id": "f7101ce3-0384-39ce-9fde-fbbd0044d35f",
+  "quality": "normal",
+  "release-events": [
+    {
+      "area": {
+        "disambiguation": "",
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "iso-3166-1-codes": [
+          "US"
+        ],
+        "name": "United States",
+        "sort-name": "United States",
+        "type": null,
+        "type-id": null
+      },
+      "date": "2008-11"
+    }
+  ],
+  "release-group": {
+    "artist-credit": [
+      {
+        "artist": {
+          "country": null,
+          "disambiguation": "add compilations to this artist",
+          "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+          "name": "Various Artists",
+          "sort-name": "Various Artists",
+          "type": "Other",
+          "type-id": "ac897045-5043-3294-969b-187360e45d86"
+        },
+        "joinphrase": "",
+        "name": "Various Artists"
+      }
+    ],
+    "disambiguation": "",
+    "first-release-date": "2008-11",
+    "id": "826bc83c-069b-3e09-aaea-a44ebb2dbcda",
+    "primary-type": "Album",
+    "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+    "secondary-type-ids": [
+      "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+    ],
+    "secondary-types": [
+      "Compilation"
+    ],
+    "title": "Paste Magazine Sampler #48: November 2008"
+  },
+  "status": "Promotion",
+  "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+  "text-representation": {
+    "language": "eng",
+    "script": "Latn"
+  },
+  "title": "Paste Magazine Sampler #48: November 2008"
+}

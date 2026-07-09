@@ -21,11 +21,11 @@
 
 
 import mutagen
+import mutagen.apev2
 
 from picard import log
 from picard.config import get_config
 from picard.formats.apev2 import APEv2File
-from picard.util import encode_filename
 
 from .mutagenext import ac3
 
@@ -53,7 +53,7 @@ class AC3File(APEv2File):
             super()._save(filename, metadata)
         elif config.setting['remove_ape_from_ac3']:
             try:
-                mutagen.apev2.delete(encode_filename(filename))
+                mutagen.apev2.delete(filename)
             except BaseException:
                 log.exception('Error removing APEv2 tags from %s', filename)
 

@@ -19,7 +19,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-def parse_toc_itunes_cddb(tag_value):
+def parse_toc_itunes_cddb(tag_value: str) -> tuple[int, int, list[int]]:
     """
     Parse iTunes_CDDB_1 format TOC tag.
 
