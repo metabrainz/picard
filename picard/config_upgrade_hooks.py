@@ -72,40 +72,52 @@ from picard.util import unique_numbered_title
 # TO ADD AN UPGRADE HOOK:
 # ----------------------
 #
-# 1. Add a new method here, named using the following scheme:
-#    UPGRADE_FUNCTION_PREFIX + version with dots replaced by underscores
+# Use one of two decorators:
 #
-#    For example:
-#    `upgrade_to_v1_0_0dev1(config)` for an upgrade hook upgrading to 1.0.0dev1
+#   @upgrade_settings('x.y.z')  — for settings transforms (renames, value changes)
+#   @upgrade_config('x.y.z')    — for non-settings operations (persist, UI state)
 #
-#    The only parameter passed when hooks are executed at startup is `config`.
-#    Extra parameters can be added for testability (see `merge_va_file_naming`).
+# @upgrade_settings functions receive a `settings` argument (dict or ConfigSection).
+# They automatically run on base config + all profile overrides + imported profiles.
 #
-#    Describe changes using a docstring — it is logged when the hook is executed.
+# @upgrade_config functions receive the full `config` object. They do NOT run on
+# profiles or imported data. Only use for persist, allKeys(), interactive dialogs.
 #
-# 2. Update `PICARD_VERSION` to match the new hook version.
+# Function names are descriptive (no version encoding). The version is in the
+# decorator argument only.
 #
-# 3. Add a corresponding test in test/test_config_upgrade_hooks.py, named
-#    `test_` + the hook function name (e.g. `test_upgrade_to_v1_0_0dev1`).
+# Describe changes using a docstring — it is logged when the hook is executed.
+#
+# After adding a hook:
+# 1. Update `PICARD_VERSION` to match the new hook version.
+# 2. Add a corresponding test in test/test_config_upgrade_hooks.py, named
+#    `test_` + the hook function name (e.g. `test_my_rename`).
 #    The `test_all_hooks_have_tests` test will fail if a test is missing.
 #
 #
 # COMMON PATTERNS:
 # ---------------
 #
-# Rename an option:
-#   rename_option(config, 'old_name', 'new_name', BoolOption, False)
+# Rename an option (works on both dict and ConfigSection):
+#   rename_option_in_settings(settings, 'old_name', 'new_name', BoolOption, False)
 #
-# Rename an option with reversed boolean value:
-#   rename_option(config, 'old_name', 'new_name', BoolOption, False, reverse=True)
+# Rename with reversed boolean:
+#   rename_option_in_settings(settings, 'old_name', 'new_name', BoolOption, False, reverse=True)
 #
-# Read and remove a legacy option using a temporary registration
-# (needed so config.setting.value() knows the type for deserialization):
-#   with temp_option(TextOption, 'setting', 'old_name', '') as old_opt:
-#       value = config.setting.value(old_opt)
-#   config.setting.remove('old_name')
+# Value transform:
+#   upgrade_option_value_in_settings(settings, 'name', lambda v: v.lower())
+#
+# Read old option, write new option, remove old (type change / one→many):
+#   value = get_option(settings, 'old_name', BoolOption, False)
+#   write_option(settings, 'new_name', new_value)
+#   remove_option(settings, 'old_name')
 #
 # Remove an obsolete option:
+#   remove_option(settings, 'old_name')
+#
+# Read and remove a legacy option in @upgrade_config (QSettings deserialization):
+#   with temp_option(TextOption, 'setting', 'old_name', '') as old_opt:
+#       value = config.setting.value(old_opt)
 #   config.setting.remove('old_name')
 
 
