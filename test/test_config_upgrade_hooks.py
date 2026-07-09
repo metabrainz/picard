@@ -81,7 +81,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
                 f"No test found for {func.__name__} (version {version})",
             )
 
-    def test_upgrade_to_v1_0_0final0_A(self):
+    def test_merge_va_file_naming_A(self):
         TextOption('setting', 'file_naming_format', '')
 
         self.config.setting['va_file_naming_format'] = 'abc'
@@ -90,12 +90,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('va_file_naming_format', self.config.setting)
         self.assertIn('use_va_format', self.config.setting)
 
-        hooks.upgrade_to_v1_0_0final0(self.config, interactive=False, merge=True)
+        hooks.merge_va_file_naming(self.config, interactive=False, merge=True)
         self.assertNotIn('va_file_naming_format', self.config.setting)
         self.assertNotIn('use_va_format', self.config.setting)
         self.assertIn('file_naming_format', self.config.setting)
 
-    def test_upgrade_to_v1_0_0final0_B(self):
+    def test_merge_va_file_naming_B(self):
         TextOption('setting', 'file_naming_format', '')
 
         self.config.setting['va_file_naming_format'] = 'abc'
@@ -104,32 +104,32 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('va_file_naming_format', self.config.setting)
         self.assertIn('use_va_format', self.config.setting)
 
-        hooks.upgrade_to_v1_0_0final0(self.config, interactive=False, merge=False)
+        hooks.merge_va_file_naming(self.config, interactive=False, merge=False)
         self.assertNotIn('va_file_naming_format', self.config.setting)
         self.assertNotIn('use_va_format', self.config.setting)
         self.assertNotIn('file_naming_format', self.config.setting)
 
-    def test_upgrade_to_v1_3_0dev1(self):
+    def test_rename_windows_compatible_filenames(self):
         BoolOption('setting', 'windows_compatibility', False)
 
         self.config.setting['windows_compatible_filenames'] = True
-        hooks.upgrade_to_v1_3_0dev1(self.config)
+        hooks.rename_windows_compatible_filenames(self.config.setting)
         self.assertNotIn('windows_compatible_filenames', self.config.setting)
         self.assertTrue(self.config.setting['windows_compatibility'])
 
-    def test_upgrade_to_v1_3_0dev2(self):
+    def test_convert_preserved_tags_separator(self):
         TextOption('setting', 'preserved_tags', '')
         self.config.setting['preserved_tags'] = "a b  c  "
-        hooks.upgrade_to_v1_3_0dev2(self.config)
+        hooks.convert_preserved_tags_separator(self.config)
         self.assertEqual("a,b,c", self.config.setting['preserved_tags'])
 
-    def test_upgrade_to_v1_3_0dev2_skip_list(self):
+    def test_convert_preserved_tags_separator_skip_list(self):
         ListOption('setting', 'preserved_tags', [])
         self.config.setting['preserved_tags'] = ['foo']
-        hooks.upgrade_to_v1_3_0dev2(self.config)
+        hooks.convert_preserved_tags_separator(self.config)
         self.assertEqual(['foo'], self.config.setting['preserved_tags'])
 
-    def test_upgrade_to_v1_3_0dev3(self):
+    def test_convert_options_to_lists(self):
         ListOption("setting", "preferred_release_countries", [])
         ListOption("setting", "preferred_release_formats", [])
         ListOption("setting", "enabled_plugins", [])
@@ -142,30 +142,30 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['caa_image_types'] = 'a b c'
         self.config.setting['metadata_box_sizes'] = 'a b c'
 
-        hooks.upgrade_to_v1_3_0dev3(self.config)
+        hooks.convert_options_to_lists(self.config)
         self.assertEqual(["a", "b", "c"], self.config.setting['preferred_release_countries'])
         self.assertEqual(["a", "b", "c"], self.config.setting['preferred_release_formats'])
         self.assertEqual(["a", "b", "c"], self.config.setting['enabled_plugins'])
         self.assertEqual(["a", "b", "c"], self.config.setting['caa_image_types'])
         self.assertEqual(["a", "b", "c"], self.config.setting['metadata_box_sizes'])
 
-    def test_upgrade_to_v1_3_0dev4(self):
+    def test_convert_release_type_scores(self):
         ListOption("setting", "release_type_scores", [])
 
         self.config.setting['release_type_scores'] = "a 0.1 b 0.2 c 1"
-        hooks.upgrade_to_v1_3_0dev4(self.config)
+        hooks.convert_release_type_scores(self.config)
 
         self.assertEqual([('a', 0.1), ('b', 0.2), ('c', 1.0)], self.config.setting['release_type_scores'])
 
-    def test_upgrade_to_v1_4_0dev2(self):
+    def test_remove_username_password(self):
         self.config.setting['username'] = 'abc'
         self.config.setting['password'] = 'abc'  # nosec
 
-        hooks.upgrade_to_v1_4_0dev2(self.config)
+        hooks.remove_username_password(self.config)
         self.assertNotIn('username', self.config.setting)
         self.assertNotIn('password', self.config.setting)
 
-    def test_upgrade_to_v1_4_0dev3(self):
+    def test_convert_ca_providers_to_tuples(self):
         ListOption("setting", "ca_providers", [])
 
         self.config.setting['ca_provider_use_amazon'] = True
@@ -173,7 +173,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.config.setting['ca_provider_use_whitelist'] = False
         self.config.setting['ca_provider_use_caa_release_group_fallback'] = True
 
-        hooks.upgrade_to_v1_4_0dev3(self.config)
+        hooks.convert_ca_providers_to_tuples(self.config)
         self.assertIn('ca_providers', self.config.setting)
         self.assertIn(('Amazon', True), self.config.setting['ca_providers'])
         self.assertIn(('Cover Art Archive', True), self.config.setting['ca_providers'])
@@ -181,27 +181,27 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn(('CaaReleaseGroup', True), self.config.setting['ca_providers'])
         self.assertEqual(len(self.config.setting['ca_providers']), 4)
 
-    def test_upgrade_to_v1_4_0dev4(self):
+    def test_update_default_file_naming_format_v1_3(self):
         TextOption("setting", "file_naming_format", "")
 
         self.config.setting['file_naming_format'] = 'xxx'
-        hooks.upgrade_to_v1_4_0dev4(self.config)
+        hooks.update_default_file_naming_format_v1_3(self.config)
         self.assertEqual('xxx', self.config.setting['file_naming_format'])
 
         self.config.setting['file_naming_format'] = hooks.OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3
-        hooks.upgrade_to_v1_4_0dev4(self.config)
+        hooks.update_default_file_naming_format_v1_3(self.config)
         self.assertEqual(DEFAULT_FILE_NAMING_FORMAT, self.config.setting['file_naming_format'])
 
-    def test_upgrade_to_v1_4_0dev5(self):
-        hooks.upgrade_to_v1_4_0dev5(self.config)
+    def test_migrate_to_ini_config(self):
+        hooks.migrate_to_ini_config(self.config)
 
-    def test_upgrade_to_v1_4_0dev6(self):
+    def test_convert_tagger_scripts_to_list(self):
         BoolOption('setting', 'enable_tagger_scripts', False)
         ListOption('setting', 'list_of_scripts', [])
 
         self.config.setting['enable_tagger_script'] = True
         self.config.setting['tagger_script'] = "abc"
-        hooks.upgrade_to_v1_4_0dev6(self.config)
+        hooks.convert_tagger_scripts_to_list(self.config)
 
         self.assertNotIn('enable_tagger_script', self.config.setting)
         self.assertNotIn('tagger_script', self.config.setting)
@@ -212,11 +212,11 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             self.config.setting['list_of_scripts'],
         )
 
-    def test_upgrade_to_v1_4_0dev7(self):
+    def test_rename_save_only_front_images_to_tags(self):
         BoolOption('setting', 'embed_only_one_front_image', False)
 
         self.config.setting['save_only_front_images_to_tags'] = True
-        hooks.upgrade_to_v1_4_0dev7(self.config)
+        hooks.rename_save_only_front_images_to_tags(self.config.setting)
         self.assertNotIn('save_only_front_images_to_tags', self.config.setting)
         self.assertTrue(self.config.setting['embed_only_one_front_image'])
 

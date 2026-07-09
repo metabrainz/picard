@@ -81,7 +81,7 @@ from picard.util import unique_numbered_title
 #    `upgrade_to_v1_0_0dev1(config)` for an upgrade hook upgrading to 1.0.0dev1
 #
 #    The only parameter passed when hooks are executed at startup is `config`.
-#    Extra parameters can be added for testability (see `upgrade_to_v1_0_0final0`).
+#    Extra parameters can be added for testability (see `merge_va_file_naming`).
 #
 #    Describe changes using a docstring — it is logged when the hook is executed.
 #
@@ -111,7 +111,8 @@ from picard.util import unique_numbered_title
 #   config.setting.remove('old_name')
 
 
-def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
+@upgrade_config('1.0.0final0')
+def merge_va_file_naming(config, interactive=True, merge=True):
     """In version 1.0, the file naming formats for single and various artist releases were merged."""
     _s = config.setting
 
@@ -180,14 +181,14 @@ def upgrade_to_v1_0_0final0(config, interactive=True, merge=True):
             remove_va_file_naming_format(merge=False)
 
 
-def upgrade_to_v1_3_0dev1(config):
+@upgrade_settings('1.3.0dev1')
+def rename_windows_compatible_filenames(settings):
     """Option "windows_compatible_filenames" was renamed "windows_compatibility" (PICARD-110)."""
-    old_opt = 'windows_compatible_filenames'
-    new_opt = 'windows_compatibility'
-    rename_option(config, old_opt, new_opt, BoolOption, True)
+    rename_option_in_settings(settings, 'windows_compatible_filenames', 'windows_compatibility', BoolOption, True)
 
 
-def upgrade_to_v1_3_0dev2(config):
+@upgrade_config('1.3.0dev2')
+def convert_preserved_tags_separator(config):
     """Option "preserved_tags" is now using comma instead of spaces as tag separator (PICARD-536)"""
     _s = config.setting
     opt = 'preserved_tags'
@@ -195,7 +196,8 @@ def upgrade_to_v1_3_0dev2(config):
         _s[opt] = re.sub(r"\s+", ",", _s[opt].strip())
 
 
-def upgrade_to_v1_3_0dev3(config):
+@upgrade_config('1.3.0dev3')
+def convert_options_to_lists(config):
     """Options were made to support lists (solving PICARD-144 and others)"""
     _s = config.setting
     option_separators = {
@@ -213,7 +215,8 @@ def upgrade_to_v1_3_0dev3(config):
                 pass
 
 
-def upgrade_to_v1_3_0dev4(config):
+@upgrade_config('1.3.0dev4')
+def convert_release_type_scores(config):
     """Option "release_type_scores" is now a list of tuples"""
     _s = config.setting
 
@@ -236,7 +239,8 @@ def upgrade_to_v1_3_0dev4(config):
             pass
 
 
-def upgrade_to_v1_4_0dev2(config):
+@upgrade_config('1.4.0dev2')
+def remove_username_password(config):
     """Options "username" and "password" are removed and
     replaced with OAuth tokens
     """
@@ -247,7 +251,8 @@ def upgrade_to_v1_4_0dev2(config):
         _s.remove(opt)
 
 
-def upgrade_to_v1_4_0dev3(config):
+@upgrade_config('1.4.0dev3')
+def convert_ca_providers_to_tuples(config):
     """Cover art providers options were moved to a list of tuples"""
     _s = config.setting
     map_ca_provider = [
@@ -275,19 +280,22 @@ OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3 = (
 )
 
 
-def upgrade_to_v1_4_0dev4(config):
+@upgrade_config('1.4.0dev4')
+def update_default_file_naming_format_v1_3(config):
     """Adds trailing comma to default file names for scripts"""
     _s = config.setting
     if _s['file_naming_format'] == OLD_DEFAULT_FILE_NAMING_FORMAT_v1_3:
         _s['file_naming_format'] = DEFAULT_FILE_NAMING_FORMAT
 
 
-def upgrade_to_v1_4_0dev5(config):
+@upgrade_config('1.4.0dev5')
+def migrate_to_ini_config(config):
     """Using Picard.ini configuration file on all platforms"""
     # this is done in Config.__init__()
 
 
-def upgrade_to_v1_4_0dev6(config):
+@upgrade_config('1.4.0dev6')
+def convert_tagger_scripts_to_list(config):
     """Adds support for multiple and selective tagger scripts"""
     _s = config.setting
     old_enabled_option = 'enable_tagger_script'
@@ -312,11 +320,12 @@ def upgrade_to_v1_4_0dev6(config):
     _s.remove(old_script_text_option)
 
 
-def upgrade_to_v1_4_0dev7(config):
+@upgrade_settings('1.4.0dev7')
+def rename_save_only_front_images_to_tags(settings):
     """Option "save_only_front_images_to_tags" was renamed to "embed_only_one_front_image"."""
-    old_opt = 'save_only_front_images_to_tags'
-    new_opt = 'embed_only_one_front_image'
-    rename_option(config, old_opt, new_opt, BoolOption, True)
+    rename_option_in_settings(
+        settings, 'save_only_front_images_to_tags', 'embed_only_one_front_image', BoolOption, True
+    )
 
 
 def upgrade_to_v2_0_0dev3(config):
