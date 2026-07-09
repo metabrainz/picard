@@ -53,10 +53,12 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
     def test_all_hooks_have_tests(self):
         """Ensure every upgrade hook has at least one corresponding test method."""
         from picard.config_upgrade import (
+            _UPGRADES_REGISTRY,
             UPGRADE_FUNCTION_PREFIX,
             autodetect_upgrade_hooks,
         )
 
+        # Old-style hooks (upgrade_to_v* functions)
         hooks = autodetect_upgrade_hooks()
         test_prefix = 'test_' + UPGRADE_FUNCTION_PREFIX
         test_methods = {m for m in dir(self) if m.startswith(test_prefix)}
@@ -64,6 +66,13 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             prefix = 'test_' + hook.__name__
             matching = {m for m in test_methods if m.startswith(prefix)}
             self.assertTrue(matching, f"No test found for {hook.__name__} (version {version})")
+
+        # New-style hooks (both @upgrade_settings and @upgrade_config)
+        all_test_methods = {m for m in dir(self) if m.startswith('test_')}
+        for version, _utype, func in _UPGRADES_REGISTRY:
+            prefix = 'test_' + func.__name__
+            matching = {m for m in all_test_methods if m.startswith(prefix)}
+            self.assertTrue(matching, f"No test found for {func.__name__} (version {version})")
 
     def test_upgrade_to_v1_0_0final0_A(self):
         TextOption('setting', 'file_naming_format', '')
@@ -513,13 +522,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0dev2(self.config)
         self.assertEqual(b'', self.config.persist['splitters_OptionsDialog'])
 
-    def test_upgrade_to_v3_0_0dev3(self):
+    def test_rename_toolbar_multiselect(self):
+        """Test new-style @upgrade_settings hook on ConfigSection."""
         BoolOption('setting', 'allow_multi_dirs_selection', False)
 
         self.config.setting['toolbar_multiselect'] = True
-        hooks.upgrade_to_v3_0_0dev3(self.config)
+        hooks.rename_toolbar_multiselect(self.config.setting)
         self.assertNotIn('toolbar_multiselect', self.config.setting)
         self.assertTrue(self.config.setting['allow_multi_dirs_selection'])
+
+    def test_rename_toolbar_multiselect_dict(self):
+        """Test new-style @upgrade_settings hook on plain dict."""
+        settings = {'toolbar_multiselect': True}
+        hooks.rename_toolbar_multiselect(settings)
+        self.assertNotIn('toolbar_multiselect', settings)
+        self.assertTrue(settings['allow_multi_dirs_selection'])
 
     def test_upgrade_to_v3_0_0dev4(self):
         Option('persist', 'album_view_header_state', QByteArray())

@@ -28,22 +28,37 @@
 
 from collections.abc import Callable
 from contextlib import contextmanager
+from enum import Enum
 from inspect import (
     getmembers,
     isfunction,
 )
 import sys
+from typing import (
+    Any,
+    NamedTuple,
+)
 
-from picard import PICARD_VERSION
+from picard import (
+    PICARD_VERSION,
+    log,
+)
 from picard.config import (
     Config,
     ConfigValueType,
     Option,
+    SettingConfigSection,
 )
 from picard.version import (
     Version,
     VersionError,
 )
+
+
+# Type alias for the polymorphic settings parameter accepted by upgrade functions.
+# Either a plain dict (profile overrides, imported settings) or a SettingConfigSection
+# (base config at startup).
+Settings = dict | SettingConfigSection
 
 
 # All upgrade functions have to start with following prefix
@@ -57,44 +72,250 @@ _HOOKS_MODULE = 'picard.config_upgrade_hooks'
 # See config_upgrade_hooks.py
 
 
+# ---------------------------------------------------------------------------
+# New-style decorator-based upgrade system
+# ---------------------------------------------------------------------------
+# Two decorators:
+#   @upgrade_settings(version_str) — settings transforms (dict or SettingConfigSection)
+#   @upgrade_config(version_str) — full config operations (startup only)
+#
+# Both register into a single list (_UPGRADES_REGISTRY) in declaration order.
+# See docs/UnifiedConfigUpgrades.md for design rationale.
+# ---------------------------------------------------------------------------
+
+
+class _UpgradeType(Enum):
+    """Type tag for upgrade registry entries."""
+
+    SETTINGS = 'settings'
+    CONFIG = 'config'
+
+
+class _UpgradeEntry(NamedTuple):
+    """A single entry in the upgrades registry."""
+
+    version: Version
+    upgrade_type: _UpgradeType
+    func: Callable
+
+
+# Single registry populated by both decorators. Entries are stored in
+# declaration order.
+_UPGRADES_REGISTRY: list[_UpgradeEntry] = []
+
+
+def upgrade_settings(version_str: str):
+    """Decorator to register a settings upgrade function.
+
+    The decorated function receives a single argument: either a plain dict
+    (profile override, imported settings) or a SettingConfigSection (base config).
+    Use the polymorphic helpers (rename_option_in_settings,
+    upgrade_option_value_in_settings) which handle both cases.
+
+    Multiple functions can share the same version — they execute in
+    definition order.
+
+    Example:
+        @upgrade_settings('3.0.0dev3')
+        def rename_toolbar_multiselect(settings):
+            '''Option "toolbar_multiselect" was renamed to "allow_multi_dirs_selection".'''
+            rename_option_in_settings(settings, 'toolbar_multiselect',
+                                      'allow_multi_dirs_selection', BoolOption, False)
+    """
+
+    def decorator(func):
+        version = Version.from_string(version_str)
+        _UPGRADES_REGISTRY.append(_UpgradeEntry(version, _UpgradeType.SETTINGS, func))
+        return func
+
+    return decorator
+
+
+def upgrade_config(version_str: str):
+    """Decorator to register a config upgrade function (non-settings operations).
+
+    The decorated function receives the full Config object. Use this for
+    operations that need persist, allKeys(), interactive dialogs, or other
+    non-settings Config access.
+
+    WARNING: These functions do NOT run on profile override dicts or imported
+    profile data. If you need to transform a settings key, use
+    @upgrade_settings instead.
+
+    Example:
+        @upgrade_config('3.0.0dev1')
+        def clear_qt5_state(config):
+            '''Clear Qt5 state config.'''
+            for key in config.allKeys():
+                if key.startswith('persist/'):
+                    config.remove(key)
+    """
+
+    def decorator(func):
+        version = Version.from_string(version_str)
+        _UPGRADES_REGISTRY.append(_UpgradeEntry(version, _UpgradeType.CONFIG, func))
+        return func
+
+    return decorator
+
+
+def _get_sorted_upgrades(
+    registry: list[_UpgradeEntry],
+) -> list[_UpgradeEntry]:
+    """Return upgrades sorted by version, preserving declaration order within same version."""
+    return sorted(registry, key=lambda x: x.version)
+
+
+# ---------------------------------------------------------------------------
+# Polymorphic helpers — work on both plain dicts and ConfigSection objects
+# ---------------------------------------------------------------------------
+
+
+def rename_option_in_settings(
+    settings: Settings,
+    old_name: str,
+    new_name: str,
+    option_type: type[Option] | None = None,
+    default: ConfigValueType | None = None,
+    reverse: bool = False,
+) -> None:
+    """Rename an option key in settings.
+
+    Polymorphic: works on both plain dicts (profile overrides, imported
+    settings) and ConfigSection objects (base config at startup).
+
+    Args:
+        settings: A plain dict or a ConfigSection instance.
+        old_name: The old option key name.
+        new_name: The new option key name.
+        option_type: Option class (e.g., BoolOption). Required for ConfigSection,
+                     ignored for plain dicts.
+        default: Default value for the option. Required for ConfigSection,
+                 ignored for plain dicts.
+        reverse: If True, invert the boolean value during rename.
+    """
+    if isinstance(settings, dict):
+        # Plain dict path (profile overrides, imported data)
+        if old_name in settings:
+            value = settings[old_name]
+            if reverse and value is not None:
+                value = not value
+            settings[new_name] = value
+            del settings[old_name]
+    else:
+        # ConfigSection path (base config at startup)
+        assert option_type is not None
+        assert default is not None
+        if old_name in settings:
+            with temp_option(option_type, settings.section_name, old_name, default) as opt:
+                settings[new_name] = settings.value(opt, default)
+            if reverse:
+                settings[new_name] = not settings[new_name]
+            settings.remove(old_name)
+
+
+def upgrade_option_value_in_settings(
+    settings: Settings,
+    name: str,
+    transform: Callable,
+) -> None:
+    """Apply a value transform to an option in settings.
+
+    Polymorphic: works on both plain dicts (profile overrides, imported
+    settings) and ConfigSection objects (base config at startup).
+
+    The transform function receives the current value and must return the
+    new value. Settings with None value (tracked but not overridden in
+    profile dicts) are left unchanged.
+
+    Args:
+        settings: A plain dict or a ConfigSection instance.
+        name: The option key name.
+        transform: Function that takes the current value and returns the new value.
+    """
+    if isinstance(settings, dict):
+        # Plain dict path
+        if name in settings and settings[name] is not None:
+            settings[name] = transform(settings[name])
+    else:
+        # ConfigSection path
+        if name in settings:
+            value = settings.raw_value(name)
+            if value is not None:
+                with settings.no_profile():
+                    settings[name] = transform(value)
+
+
+def read_old_option(
+    settings: Settings,
+    name: str,
+    option_type: type[Option] | None = None,
+    default: ConfigValueType | None = None,
+) -> Any:
+    """Read and remove an old option value from settings.
+
+    Polymorphic: works on both plain dicts and ConfigSection objects.
+    After reading, the option key is removed from settings.
+
+    For plain dicts, the value is already a Python object (bool, int, str, etc.)
+    and is returned directly.
+
+    For ConfigSection, the option_type is needed to deserialize the raw value
+    from QSettings (via a temporarily registered Option).
+
+    Args:
+        settings: A plain dict or a ConfigSection instance.
+        name: The option key name to read and remove.
+        option_type: Option class (e.g., BoolOption). Required for ConfigSection,
+                     ignored for plain dicts.
+        default: Default value if the key is missing. Required for ConfigSection,
+                 ignored for plain dicts (returns None if missing and no default).
+
+    Returns:
+        The option value (deserialized), or default if the key is not present.
+    """
+    if isinstance(settings, dict):
+        return settings.pop(name, default)
+    else:
+        assert option_type is not None
+        assert default is not None
+        if name not in settings:
+            return default
+        with temp_option(option_type, settings.section_name, name, default) as opt:
+            value = settings.value(opt, default)
+        settings.remove(name)
+        return value
+
+
+def write_option(
+    settings: Settings,
+    name: str,
+    value: Any,
+) -> None:
+    """Write an option value to settings.
+
+    Polymorphic: works on both plain dicts and ConfigSection objects.
+    Handles Enum serialization: for plain dicts, enums are stored as their
+    .value (matching how profile overrides persist enum options). For
+    ConfigSection, enums are passed directly (ConfigSection.__setitem__
+    handles serialization).
+
+    Args:
+        settings: A plain dict or a ConfigSection instance.
+        name: The option key name.
+        value: The value to write. Enums are auto-serialized for dicts.
+    """
+    if isinstance(settings, dict):
+        settings[name] = value.value if isinstance(value, Enum) else value
+    else:
+        settings[name] = value
+
+
 @contextmanager
 def temp_option(option_type: type[Option], section: str, name: str, default: ConfigValueType):
     opt = option_type(section, name, default)
     yield opt
     opt.unregister()
-
-
-def _rename_option_in_settings(
-    settings: dict,
-    old_name: str,
-    new_name: str,
-    reverse: bool = False,
-) -> None:
-    """Rename an option key in a settings dict (profile override or imported settings).
-
-    If reverse is True, the boolean value is also inverted.
-    Settings with None value (tracked but not overridden) are renamed without transformation.
-    """
-    if old_name in settings:
-        value = settings[old_name]
-        if reverse and value is not None:
-            value = not value
-        settings[new_name] = value
-        del settings[old_name]
-
-
-def _upgrade_option_value_in_settings(
-    settings: dict,
-    name: str,
-    transform: Callable,
-) -> None:
-    """Apply a value transform to an option in a settings dict (profile override or imported settings).
-
-    The transform function receives the current value and must return the new value.
-    Settings with None value (tracked but not overridden) are left unchanged.
-    """
-    if name in settings and settings[name] is not None:
-        settings[name] = transform(settings[name])
 
 
 def rename_option(
@@ -107,11 +328,7 @@ def rename_option(
 ):
     _s = config.setting
     if old_opt in _s:
-        with temp_option(option_type, 'setting', old_opt, default) as opt:
-            _s[new_opt] = _s.value(opt, default)
-        if reverse:
-            _s[new_opt] = not _s[new_opt]
-        _s.remove(old_opt)
+        rename_option_in_settings(_s, old_opt, new_opt, option_type, default, reverse)
 
         _p = config.profiles
         _s.init_profile_options()
@@ -119,7 +336,7 @@ def rename_option(
         for profile in _p['user_profiles']:
             id = profile['id']
             if id in all_settings:
-                _rename_option_in_settings(all_settings[id], old_opt, new_opt, reverse)
+                rename_option_in_settings(all_settings[id], old_opt, new_opt, reverse=reverse)
         _p['user_profile_settings'] = all_settings
 
 
@@ -136,11 +353,7 @@ def upgrade_option_value(
     to access the actual stored value.
     """
     _s = config.setting
-    if name in _s:
-        value = _s.raw_value(name)
-        if value is not None:
-            with _s.no_profile():
-                _s[name] = transform(value)
+    upgrade_option_value_in_settings(_s, name, transform)
 
     _p = config.profiles
     _s.init_profile_options()
@@ -148,7 +361,7 @@ def upgrade_option_value(
     for profile in _p['user_profiles']:
         id = profile['id']
         if id in all_settings:
-            _upgrade_option_value_in_settings(all_settings[id], name, transform)
+            upgrade_option_value_in_settings(all_settings[id], name, transform)
     _p['user_profile_settings'] = all_settings
 
 
@@ -191,7 +404,138 @@ def autodetect_upgrade_hooks(
     return dict(sorted(hooks.items()))
 
 
-def upgrade_config(config: Config) -> None:
-    """Execute detected upgrade hooks"""
+def run_config_upgrades(config: Config) -> None:
+    """Execute all upgrade hooks (old-style and new-style)."""
+    # Old-style hooks (upgrade_to_v* functions)
+    old_hooks = autodetect_upgrade_hooks()
 
-    config.run_upgrade_hooks(autodetect_upgrade_hooks())
+    # New-style hooks (decorator-based, single registry)
+    sorted_upgrades = _get_sorted_upgrades(_UPGRADES_REGISTRY)
+
+    # Merge into a single version-ordered execution plan.
+    # Each version may have: new-style entries (in declaration order) and/or
+    # an old-style hook.
+    all_versions = sorted(set(old_hooks.keys()) | {e.version for e in sorted_upgrades})
+
+    merged_hooks: dict[Version, Callable[[Config], None]] = {}
+    for version in all_versions:
+        # Collect new-style entries for this version (already in declaration order)
+        version_entries = [e for e in sorted_upgrades if e.version == version]
+        old_hook = old_hooks.get(version)
+
+        def make_combined_hook(v_entries, v_old_hook):
+            """Create a closure that runs all hooks for a given version."""
+
+            def combined(config):
+                # Run new-style hooks in declaration order
+                for entry in v_entries:
+                    if entry.upgrade_type == _UpgradeType.SETTINGS:
+                        _run_settings_upgrade_on_config(config, entry.func)
+                    else:
+                        if entry.func.__doc__:
+                            log.debug("Config upgrade: %s", entry.func.__doc__.strip())
+                        entry.func(config)
+
+                # Run old-style hook (handles its own profile iteration)
+                if v_old_hook:
+                    v_old_hook(config)
+
+            # Build docstring for logging by run_upgrade_hooks
+            docs = []
+            for entry in v_entries:
+                if entry.func.__doc__:
+                    docs.append(entry.func.__doc__.strip())
+            if v_old_hook and v_old_hook.__doc__:
+                docs.append(v_old_hook.__doc__.strip())
+            combined.__doc__ = '; '.join(docs) if docs else None
+            combined.__name__ = f'combined_upgrade_{version}'
+            return combined
+
+        merged_hooks[version] = make_combined_hook(version_entries, old_hook)
+
+    config.run_upgrade_hooks(merged_hooks)
+
+
+def _run_settings_upgrade_on_config(
+    config: Config,
+    func: Callable,
+) -> None:
+    """Run a single @upgrade_settings function on base config and all profile overrides."""
+    _s = config.setting
+
+    # Apply to base config (SettingConfigSection path)
+    if func.__doc__:
+        log.debug("Settings upgrade: %s", func.__doc__.strip())
+    func(_s)
+
+    # Apply to all profile override dicts (plain dict path)
+    _s.init_profile_options()
+    _p = config.profiles
+    all_settings = _p['user_profile_settings']
+    modified = False
+    for profile in _p['user_profiles']:
+        profile_id = profile['id']
+        if profile_id in all_settings:
+            func(all_settings[profile_id])
+            modified = True
+    if modified:
+        _p['user_profile_settings'] = all_settings
+
+
+def get_upgrades(
+    from_version_str: str,
+    upgrade_types: set[_UpgradeType] | None = None,
+) -> list[_UpgradeEntry]:
+    """Return registered upgrades matching the given types and version range.
+
+    Args:
+        from_version_str: Only return upgrades with version > this version.
+        upgrade_types: Set of _UpgradeType to include. None means all types.
+
+    Returns:
+        List of _UpgradeEntry sorted by version (declaration order preserved
+        within same version).
+    """
+    # Ensure hooks module is imported so decorators have populated the registry
+    import picard.config_upgrade_hooks  # noqa: F401
+
+    try:
+        from_version = Version.from_string(from_version_str)
+    except VersionError:
+        return []
+
+    sorted_upgrades = _get_sorted_upgrades(_UPGRADES_REGISTRY)
+    return [
+        e
+        for e in sorted_upgrades
+        if e.version > from_version and (upgrade_types is None or e.upgrade_type in upgrade_types)
+    ]
+
+
+def get_applicable_settings_upgrades(from_version_str: str) -> list[_UpgradeEntry]:
+    """Return settings upgrades applicable for a given source version.
+
+    Used by profile import to upgrade settings from an older Picard version.
+    """
+    return get_upgrades(from_version_str, {_UpgradeType.SETTINGS})
+
+
+def apply_settings_upgrades_for_import(settings: dict, from_version_str: str) -> list[str]:
+    """Apply all settings upgrades applicable between from_version and current.
+
+    Used by profile import. Modifies the settings dict in place.
+
+    Args:
+        settings: The settings dict to upgrade in place.
+        from_version_str: The picard_version from the exported profile.
+
+    Returns:
+        List of descriptions of upgrades that were applied.
+    """
+    applicable = get_applicable_settings_upgrades(from_version_str)
+    applied = []
+    for entry in applicable:
+        entry.func(settings)
+        if entry.func.__doc__:
+            applied.append(entry.func.__doc__.strip())
+    return applied

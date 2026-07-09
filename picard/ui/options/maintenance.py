@@ -36,7 +36,7 @@ from picard.config import (
     get_config,
     load_new_config,
 )
-from picard.config_upgrade import upgrade_config
+from picard.config_upgrade import run_config_upgrades
 from picard.const.defaults import DEFAULT_AUTOBACKUP_DIRECTORY
 from picard.extension_points.options_pages import register_options_page
 from picard.i18n import (
@@ -341,7 +341,7 @@ class MaintenanceOptionsPage(OptionsPage):
         log.warning("Loading configuration from %s", filename)
         if load_new_config(filename):
             config = get_config()
-            upgrade_config(config)
+            run_config_upgrades(config)
             self.signal_reload.emit()
             self._dialog_load_backup_success(filename)
         else:
