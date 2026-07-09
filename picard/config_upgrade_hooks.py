@@ -85,6 +85,11 @@ from picard.util import unique_numbered_title
 # @upgrade_config functions receive the full `config` object. They do NOT run on
 # profiles or imported data. Only use for persist, allKeys(), interactive dialogs.
 #
+# Multiple functions can share the same version. All decorator types share a
+# single registry: execution order follows source file order regardless of type.
+# This lets you control sequencing when a settings change and a config change
+# at the same version depend on each other.
+#
 # Function names are descriptive (no version encoding). The version is in the
 # decorator argument only.
 #
