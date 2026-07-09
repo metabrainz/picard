@@ -329,16 +329,22 @@ def run_config_upgrades(config: Config) -> None:
 
     def make_hook(entries):
         def hook(config):
-            for entry in entries:
+            for i, entry in enumerate(entries, 1):
+                if entry.func.__doc__:
+                    log.debug(
+                        "[%d] %s upgrade: %s",
+                        i,
+                        entry.upgrade_type.value.capitalize(),
+                        entry.func.__doc__.strip(),
+                    )
                 if entry.upgrade_type == _UpgradeType.SETTINGS:
                     _run_settings_upgrade_on_config(config, entry.func)
                 else:
-                    if entry.func.__doc__:
-                        log.debug("Config upgrade: %s", entry.func.__doc__.strip())
                     entry.func(config)
 
-        docs = [entry.func.__doc__.strip() for entry in entries if entry.func.__doc__]
-        hook.__doc__ = '; '.join(docs) if docs else None
+        # Minimal docstring triggers the version transition log in run_upgrade_hooks
+        # without repeating individual descriptions (those are logged per-function).
+        hook.__doc__ = f'{len(entries)} upgrade(s)'
         hook.__name__ = f'upgrade_{entries[0].version}'
         return hook
 
@@ -360,8 +366,6 @@ def _run_settings_upgrade_on_config(
     _s = config.setting
 
     # Apply to base config (SettingConfigSection path)
-    if func.__doc__:
-        log.debug("Settings upgrade: %s", func.__doc__.strip())
     func(_s)
 
     # Apply to all profile override dicts (plain dict path)
