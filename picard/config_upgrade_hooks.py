@@ -50,6 +50,7 @@ from picard.config_upgrade import (
     rename_option_in_settings,
     temp_option,
     upgrade_option_value,
+    upgrade_option_value_in_settings,
     upgrade_settings,
 )
 from picard.const.defaults import (
@@ -687,24 +688,26 @@ def upgrade_to_v3_0_0b3(config):
     config.setting.remove('cluster_lookup_threshold')
 
 
-def upgrade_to_v3_0_0b5(config):
-    """Rename active script key and add toggles to quick_menu_items.
+@upgrade_settings('3.0.0b5')
+def rename_selected_file_naming_script_id(settings):
+    """Option "selected_file_naming_script_id" was renamed to "active_file_naming_script_id"."""
+    rename_option_in_settings(
+        settings, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, ''
+    )
 
-    Rename 'selected_file_naming_script_id' to 'active_file_naming_script_id'.
-    Add rename_files, move_files, enable_tag_saving to quick_menu_items
-    (previously dedicated menu actions, now in configurable quick settings).
-    """
-    rename_option(config, 'selected_file_naming_script_id', 'active_file_naming_script_id', TextOption, '')
 
+@upgrade_settings('3.0.0b5')
+def add_quick_menu_items(settings):
+    """Add rename_files, move_files, enable_tag_saving to quick_menu_items."""
     new_items = ['rename_files', 'move_files', 'enable_tag_saving']
 
-    def add_quick_menu_items(items):
+    def _add_items(items):
         for item in reversed(new_items):
             if item not in items:
                 items.insert(0, item)
         return items
 
-    upgrade_option_value(config, 'quick_menu_items', add_quick_menu_items)
+    upgrade_option_value_in_settings(settings, 'quick_menu_items', _add_items)
 
 
 def upgrade_to_v3_0_0b6(config):

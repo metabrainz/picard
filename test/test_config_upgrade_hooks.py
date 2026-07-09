@@ -766,56 +766,35 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('file_lookup_threshold', self.config.setting)
         self.assertNotIn('cluster_lookup_threshold', self.config.setting)
 
-    def test_upgrade_to_v3_0_0b5(self):
-        ListOption('setting', 'quick_menu_items', [])
-        TextOption('setting', 'selected_file_naming_script_id', '')
+    def test_rename_selected_file_naming_script_id(self):
         TextOption('setting', 'active_file_naming_script_id', '')
         self.config.setting['selected_file_naming_script_id'] = 'test-script-id'
-        self.config.setting['quick_menu_items'] = ['save_images_to_tags', 'save_images_to_files']
-        hooks.upgrade_to_v3_0_0b5(self.config)
-        # Verify key rename
+        hooks.rename_selected_file_naming_script_id(self.config.setting)
         self.assertEqual(self.config.setting['active_file_naming_script_id'], 'test-script-id')
         self.assertNotIn('selected_file_naming_script_id', self.config.setting)
-        # Verify quick_menu_items
+
+    def test_rename_selected_file_naming_script_id_dict(self):
+        settings = {'selected_file_naming_script_id': 'test-script-id'}
+        hooks.rename_selected_file_naming_script_id(settings)
+        self.assertEqual(settings['active_file_naming_script_id'], 'test-script-id')
+        self.assertNotIn('selected_file_naming_script_id', settings)
+
+    def test_add_quick_menu_items(self):
+        ListOption('setting', 'quick_menu_items', [])
+        self.config.setting['quick_menu_items'] = ['save_images_to_tags', 'save_images_to_files']
+        hooks.add_quick_menu_items(self.config.setting)
         items = self.config.setting['quick_menu_items']
         self.assertEqual(items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
         self.assertIn('save_images_to_tags', items)
         self.assertIn('save_images_to_files', items)
 
-    def test_upgrade_to_v3_0_0b5_profiles(self):
-        ListOption('setting', 'quick_menu_items', [], in_profile=True)
-        TextOption('setting', 'selected_file_naming_script_id', '')
-        TextOption('setting', 'active_file_naming_script_id', '')
-        ListOption.add_if_missing('profiles', 'user_profiles', [])
-        Option.add_if_missing('profiles', 'user_profile_settings', {})
-
-        self.config.setting['selected_file_naming_script_id'] = 'test-id'
-        self.config.setting['quick_menu_items'] = ['save_images_to_tags']
-        self.config.profiles['user_profiles'] = [
-            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
-        ]
-        self.config.profiles['user_profile_settings'] = {
-            'p1': {
-                'selected_file_naming_script_id': 'profile-script-id',
-                'quick_menu_items': ['embed_only_one_front_image'],
-            },
-        }
-
-        hooks.upgrade_to_v3_0_0b5(self.config)
-
-        # Base config: key renamed, items added
-        self.assertEqual('test-id', self.config.setting['active_file_naming_script_id'])
-        self.assertNotIn('selected_file_naming_script_id', self.config.setting)
-        items = self.config.setting['quick_menu_items']
+    def test_add_quick_menu_items_dict(self):
+        settings = {'quick_menu_items': ['save_images_to_tags', 'save_images_to_files']}
+        hooks.add_quick_menu_items(settings)
+        items = settings['quick_menu_items']
         self.assertEqual(items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
-
-        # Profile: key renamed, items added
-        profile_settings = self.config.profiles['user_profile_settings']['p1']
-        self.assertEqual('profile-script-id', profile_settings['active_file_naming_script_id'])
-        self.assertNotIn('selected_file_naming_script_id', profile_settings)
-        profile_items = profile_settings['quick_menu_items']
-        self.assertEqual(profile_items[:3], ['rename_files', 'move_files', 'enable_tag_saving'])
-        self.assertIn('embed_only_one_front_image', profile_items)
+        self.assertIn('save_images_to_tags', items)
+        self.assertIn('save_images_to_files', items)
 
     def test_upgrade_to_v3_0_0b6(self):
         BoolOption('setting', 'standardize_artists', False)
