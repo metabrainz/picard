@@ -583,12 +583,18 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.upgrade_to_v3_0_0dev7(self.config)
         self.assertEqual(DEFAULT_THEME_NAME, self.config.setting['ui_theme'])
 
-    def test_upgrade_to_v3_0_0dev8(self):
+    def test_rename_dont_write_tags(self):
         BoolOption('setting', 'enable_tag_saving', True)
         self.config.setting['dont_write_tags'] = True
-        hooks.upgrade_to_v3_0_0dev8(self.config)
+        hooks.rename_dont_write_tags(self.config.setting)
         self.assertNotIn('dont_write_tags', self.config.setting)
         self.assertFalse(self.config.setting['enable_tag_saving'])
+
+    def test_rename_dont_write_tags_dict(self):
+        settings = {'dont_write_tags': True}
+        hooks.rename_dont_write_tags(settings)
+        self.assertNotIn('dont_write_tags', settings)
+        self.assertFalse(settings['enable_tag_saving'])
 
     def test_upgrade_to_v3_0_0dev9(self):
         from PyQt6 import QtCore

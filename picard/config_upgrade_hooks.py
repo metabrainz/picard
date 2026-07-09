@@ -618,11 +618,10 @@ def upgrade_to_v3_0_0dev7(config):
         config.setting['ui_theme'] = UiTheme.DEFAULT
 
 
-def upgrade_to_v3_0_0dev8(config):
+@upgrade_settings('3.0.0dev8')
+def rename_dont_write_tags(settings):
     """Option "dont_write_tags" was renamed to "enable_tag_saving" (value is reversed)."""
-    old_opt = 'dont_write_tags'
-    new_opt = 'enable_tag_saving'
-    rename_option(config, old_opt, new_opt, BoolOption, False, reverse=True)
+    rename_option_in_settings(settings, 'dont_write_tags', 'enable_tag_saving', BoolOption, False, reverse=True)
 
 
 def upgrade_to_v3_0_0dev9(config):
