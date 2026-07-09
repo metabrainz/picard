@@ -612,10 +612,12 @@ def sanitize_replace_dir_separator(settings):
     upgrade_option_value_in_settings(settings, 'replace_dir_separator', _sanitize)
 
 
-def upgrade_to_v3_0_0dev6(config):
+@upgrade_settings('3.0.0dev6')
+def copy_standardize_instruments_to_vocals(settings):
     """New independent option "standardize_vocals" should use the value of the old shared option"""
-    standardize_instruments_and_vocals = config.setting['standardize_instruments']
-    config.setting['standardize_vocals'] = standardize_instruments_and_vocals
+    if 'standardize_instruments' in settings:
+        value = get_option(settings, 'standardize_instruments', BoolOption, False)
+        write_option(settings, 'standardize_vocals', value)
 
 
 def upgrade_to_v3_0_0dev7(config):

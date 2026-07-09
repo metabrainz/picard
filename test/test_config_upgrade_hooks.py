@@ -582,12 +582,17 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         hooks.sanitize_replace_dir_separator(settings)
         self.assertEqual(DEFAULT_REPLACEMENT, settings['replace_dir_separator'])
 
-    def test_upgrade_to_v3_0_0dev6(self):
+    def test_copy_standardize_instruments_to_vocals(self):
         BoolOption('setting', 'standardize_instruments', False)
         BoolOption('setting', 'standardize_vocals', False)
         self.config.setting['standardize_instruments'] = True
-        hooks.upgrade_to_v3_0_0dev6(self.config)
+        hooks.copy_standardize_instruments_to_vocals(self.config.setting)
         self.assertTrue(self.config.setting['standardize_vocals'])
+
+    def test_copy_standardize_instruments_to_vocals_dict(self):
+        settings = {'standardize_instruments': True}
+        hooks.copy_standardize_instruments_to_vocals(settings)
+        self.assertTrue(settings['standardize_vocals'])
 
     def test_upgrade_to_v3_0_0dev7(self):
         TextOption('setting', 'ui_theme', DEFAULT_THEME_NAME)
