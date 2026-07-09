@@ -52,6 +52,11 @@ ALIASES = {
     'vishal choudhary': 'Vishal Choudhary',
     'vishichoudhary': 'Vishal Choudhary',
     'yvanzo': 'Yvan Rivière',
+    'knguyen': 'Khoa Nguyen',
+    'iron-prog': 'Deepak Tiwari',
+    'Stevil Knevil': 'StevilKnevil',
+    'deepakss-74': 'Deepak Kumar',
+    'Thuna': 'Thuna-Cing',
 }
 
 
@@ -139,7 +144,7 @@ def parse_file(path, encoding='utf-8'):
 
     fix_header_pattern = re.compile(r'^(?:#|/\*|//)\s+(fix-header:)\s*(.*)$', re.IGNORECASE)
     skip_pattern = re.compile(
-        r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+PyQt6)',
+        r'^(?:#|/\*|//)\s+(Automatically\s+generated|Created\s+by:\s+The\s+Resource\s+Compiler\s+for\s+Qt)',
         re.IGNORECASE,
     )
     with open(path, encoding=encoding) as f:
