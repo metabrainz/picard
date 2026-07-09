@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 #
 # Picard, the next-generation MusicBrainz tagger
 #
@@ -222,10 +221,6 @@ def parse_file(path, encoding='utf-8'):
         return found, authors_from_file, authors_from_log, "".join(before), "".join(after)
 
 
-CODING_TEXT = """# -*- coding: utf-8 -*-
-#
-"""
-
 LICENSE_TOP = """# Picard, the next-generation MusicBrainz tagger
 #
 """
@@ -283,7 +278,6 @@ def fix_header(path, encoding='utf-8'):
             None,
             [
                 found["shebang"],
-                CODING_TEXT.strip(),
                 LICENSE_TOP.strip() if not found['nolicense'] else None,
                 new_copyright.strip() if not found['nolicense'] else None,
                 (LICENSE_BOTTOM.strip() + ("\n\n" if has_content else "")) if not found['nolicense'] else None,
