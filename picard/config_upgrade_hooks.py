@@ -636,11 +636,12 @@ def upgrade_to_v3_0_0dev9(config):
     config.setting.remove('enabled_plugins')
 
 
-def upgrade_to_v3_0_0dev10(config):
+@upgrade_settings('3.0.0dev10')
+def lowercase_cover_art_formats(settings):
     """Update cover art processing format options"""
     for setting_key in ('cover_tags_convert_to_format', 'cover_file_convert_to_format'):
-        upgrade_option_value(
-            config,
+        upgrade_option_value_in_settings(
+            settings,
             setting_key,
             lambda value: value.lower() if isinstance(value, str) else value,
         )

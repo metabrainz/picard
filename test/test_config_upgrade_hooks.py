@@ -619,46 +619,26 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('plugins_list_state', self.config.persist)
         self.assertNotIn('enabled_plugins', self.config.setting)
 
-    def test_upgrade_to_v3_0_0dev10(self):
+    def test_lowercase_cover_art_formats(self):
         Option('setting', 'cover_tags_convert_to_format', ImageFormat.JPEG)
         Option('setting', 'cover_file_convert_to_format', ImageFormat.JPEG)
 
         self.config.setting['cover_tags_convert_to_format'] = 'WebP'
         self.config.setting['cover_file_convert_to_format'] = 'PNG'
 
-        hooks.upgrade_to_v3_0_0dev10(self.config)
+        hooks.lowercase_cover_art_formats(self.config.setting)
 
         self.assertEqual(ImageFormat.WEBP, self.config.setting['cover_tags_convert_to_format'])
         self.assertEqual(ImageFormat.PNG, self.config.setting['cover_file_convert_to_format'])
 
-    def test_upgrade_to_v3_0_0dev10_profiles(self):
-        Option('setting', 'cover_tags_convert_to_format', 'jpeg', in_profile=True)
-        Option('setting', 'cover_file_convert_to_format', 'jpeg', in_profile=True)
-        ListOption.add_if_missing('profiles', 'user_profiles', [])
-        Option.add_if_missing('profiles', 'user_profile_settings', {})
-
-        self.config.setting['cover_tags_convert_to_format'] = 'WebP'
-        self.config.setting['cover_file_convert_to_format'] = 'PNG'
-        self.config.profiles['user_profiles'] = [
-            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
-        ]
-        self.config.profiles['user_profile_settings'] = {
-            'p1': {
-                'cover_tags_convert_to_format': 'TIFF',
-                'cover_file_convert_to_format': 'JPEG',
-            },
+    def test_lowercase_cover_art_formats_dict(self):
+        settings = {
+            'cover_tags_convert_to_format': 'TIFF',
+            'cover_file_convert_to_format': 'JPEG',
         }
-
-        hooks.upgrade_to_v3_0_0dev10(self.config)
-
-        # Base config updated
-        with self.config.setting.no_profile():
-            self.assertEqual('webp', self.config.setting['cover_tags_convert_to_format'])
-            self.assertEqual('png', self.config.setting['cover_file_convert_to_format'])
-        # Profile updated
-        profile_settings = self.config.profiles['user_profile_settings']['p1']
-        self.assertEqual('tiff', profile_settings['cover_tags_convert_to_format'])
-        self.assertEqual('jpeg', profile_settings['cover_file_convert_to_format'])
+        hooks.lowercase_cover_art_formats(settings)
+        self.assertEqual('tiff', settings['cover_tags_convert_to_format'])
+        self.assertEqual('jpeg', settings['cover_file_convert_to_format'])
 
     def test_upgrade_to_v3_0_0a2(self):
         Option('setting', 'file_renaming_scripts', {})
