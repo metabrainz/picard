@@ -29,20 +29,12 @@
 from collections.abc import Callable
 from contextlib import contextmanager
 from enum import Enum
-from inspect import (
-    getmembers,
-    isfunction,
-)
-import sys
 from typing import (
     Any,
     NamedTuple,
 )
 
-from picard import (
-    PICARD_VERSION,
-    log,
-)
+from picard import log
 from picard.config import (
     Config,
     ConfigValueType,
@@ -59,13 +51,6 @@ from picard.version import (
 # Either a plain dict (profile overrides, imported settings) or a SettingConfigSection
 # (base config at startup).
 Settings = dict | SettingConfigSection
-
-
-# All upgrade functions have to start with following prefix
-UPGRADE_FUNCTION_PREFIX = 'upgrade_to_v'
-
-# Module that contains the upgrade hook functions
-_HOOKS_MODULE = 'picard.config_upgrade_hooks'
 
 
 # TO ADD AN UPGRADE HOOK:
@@ -381,70 +366,23 @@ def upgrade_option_value(
     _p['user_profile_settings'] = all_settings
 
 
-class UpgradeHooksAutodetectError(Exception):
-    pass
-
-
-def autodetect_upgrade_hooks(
-    module_name: str | None = None,
-    prefix: str = UPGRADE_FUNCTION_PREFIX,
-) -> dict[Version, Callable[[Config], None]]:
-    """Detect upgrade hooks methods"""
-
-    if module_name is None:
-        import picard.config_upgrade_hooks  # noqa: F401
-
-        module_name = _HOOKS_MODULE
-
-    def is_upgrade_hook(f):
-        """Check if passed function is an upgrade hook"""
-        return isfunction(f) and f.__module__ == module_name and f.__name__.startswith(prefix)
-
-    # Build a dict with version as key and function as value
-    hooks = dict()
-    for name, hook in getmembers(sys.modules[module_name], predicate=is_upgrade_hook):
-        try:
-            version = Version.from_string(name[len(prefix) :])
-        except VersionError as e:
-            raise UpgradeHooksAutodetectError("Failed to extract version from %s()" % hook.__name__) from e
-        if version in hooks:
-            raise UpgradeHooksAutodetectError(
-                "Conflicting functions for version %s: %s vs %s" % (version, hooks[version], hook)
-            )
-        if version > PICARD_VERSION:
-            raise UpgradeHooksAutodetectError(
-                "Upgrade hook %s has version %s > Picard version %s" % (hook.__name__, version, PICARD_VERSION)
-            )
-        hooks[version] = hook
-
-    return dict(sorted(hooks.items()))
-
-
 def run_config_upgrades(config: Config) -> None:
-    """Execute all upgrade hooks (old-style and new-style)."""
-    # Old-style hooks (upgrade_to_v* functions)
-    old_hooks = autodetect_upgrade_hooks()
+    """Execute all registered upgrade hooks."""
+    # Ensure hooks module is imported so decorators have populated the registry
+    import picard.config_upgrade_hooks  # noqa: F401
 
-    # New-style hooks (decorator-based, single registry)
     sorted_upgrades = _get_sorted_upgrades(_UPGRADES_REGISTRY)
 
-    # Merge into a single version-ordered execution plan.
-    # Each version may have: new-style entries (in declaration order) and/or
-    # an old-style hook.
-    all_versions = sorted(set(old_hooks.keys()) | {e.version for e in sorted_upgrades})
+    # Build a version-ordered execution plan for Config.run_upgrade_hooks()
+    all_versions = sorted({e.version for e in sorted_upgrades})
 
-    merged_hooks: dict[Version, Callable[[Config], None]] = {}
+    hooks: dict[Version, Callable[[Config], None]] = {}
     for version in all_versions:
-        # Collect new-style entries for this version (already in declaration order)
         version_entries = [e for e in sorted_upgrades if e.version == version]
-        old_hook = old_hooks.get(version)
 
-        def make_combined_hook(v_entries, v_old_hook):
-            """Create a closure that runs all hooks for a given version."""
-
-            def combined(config):
-                # Run new-style hooks in declaration order
-                for entry in v_entries:
+        def make_hook(entries):
+            def hook(config):
+                for entry in entries:
                     if entry.upgrade_type == _UpgradeType.SETTINGS:
                         _run_settings_upgrade_on_config(config, entry.func)
                     else:
@@ -452,24 +390,14 @@ def run_config_upgrades(config: Config) -> None:
                             log.debug("Config upgrade: %s", entry.func.__doc__.strip())
                         entry.func(config)
 
-                # Run old-style hook (handles its own profile iteration)
-                if v_old_hook:
-                    v_old_hook(config)
+            docs = [entry.func.__doc__.strip() for entry in entries if entry.func.__doc__]
+            hook.__doc__ = '; '.join(docs) if docs else None
+            hook.__name__ = f'upgrade_{version}'
+            return hook
 
-            # Build docstring for logging by run_upgrade_hooks
-            docs = []
-            for entry in v_entries:
-                if entry.func.__doc__:
-                    docs.append(entry.func.__doc__.strip())
-            if v_old_hook and v_old_hook.__doc__:
-                docs.append(v_old_hook.__doc__.strip())
-            combined.__doc__ = '; '.join(docs) if docs else None
-            combined.__name__ = f'combined_upgrade_{version}'
-            return combined
+        hooks[version] = make_hook(version_entries)
 
-        merged_hooks[version] = make_combined_hook(version_entries, old_hook)
-
-    config.run_upgrade_hooks(merged_hooks)
+    config.run_upgrade_hooks(hooks)
 
 
 def _run_settings_upgrade_on_config(

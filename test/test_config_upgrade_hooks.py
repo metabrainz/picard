@@ -52,28 +52,13 @@ from picard.ui.theme import UiTheme
 class TestPicardConfigUpgrades(TestPicardConfigCommon):
     def test_all_hooks_have_tests(self):
         """Ensure every upgrade hook has at least one corresponding test method."""
-        from picard.config_upgrade import (
-            _UPGRADES_REGISTRY,
-            UPGRADE_FUNCTION_PREFIX,
-            autodetect_upgrade_hooks,
-        )
+        from picard.config_upgrade import _UPGRADES_REGISTRY
 
         def has_test(test_methods, func_name):
             """Check for test_{name} exactly or test_{name}_* (underscore boundary)."""
             expected = f'test_{func_name}'
             return any(m == expected or m.startswith(expected + '_') for m in test_methods)
 
-        # Old-style hooks (upgrade_to_v* functions)
-        hooks = autodetect_upgrade_hooks()
-        test_prefix = 'test_' + UPGRADE_FUNCTION_PREFIX
-        test_methods = {m for m in dir(self) if m.startswith(test_prefix)}
-        for version, hook in hooks.items():
-            self.assertTrue(
-                has_test(test_methods, hook.__name__),
-                f"No test found for {hook.__name__} (version {version})",
-            )
-
-        # New-style hooks (both @upgrade_settings and @upgrade_config)
         all_test_methods = {m for m in dir(self) if m.startswith('test_')}
         for version, _utype, func in _UPGRADES_REGISTRY:
             self.assertTrue(

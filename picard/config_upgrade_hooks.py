@@ -29,8 +29,10 @@
 
 """Config upgrade hook functions.
 
-All upgrade_to_v* functions are auto-detected by
-picard.config_upgrade.autodetect_upgrade_hooks().
+Config upgrade hook functions.
+
+All hooks are registered via @upgrade_settings or @upgrade_config decorators.
+See the comment block below for instructions on adding new hooks.
 """
 
 import os
