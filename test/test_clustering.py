@@ -58,11 +58,7 @@ class ClusterTest(PicardTestCase):
         # File is NOT in the cluster
         self.assertNotIn(file, self.cluster.files)
         # Mock all the methods that would be called
-        with (
-            patch.object(self.cluster, 'update'),
-            patch.object(self.cluster, 'item', Mock()),
-            # patch.object(self.cluster, 'remove_metadata_images_from_children'),
-        ):
+        with patch.object(self.cluster, 'update'), patch.object(self.cluster, 'item', Mock()):
             # This should not raise ValueError
             self.cluster.remove_file(file, new_album=False)
             self.cluster.remove_file(file, new_album=False)
