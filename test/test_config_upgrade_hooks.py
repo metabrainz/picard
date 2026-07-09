@@ -758,15 +758,21 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertNotIn('artist_locales', settings)
         self.assertEqual(settings['translation_locales'], ['fr', 'de'])
 
-    def test_upgrade_to_v3_0_0b3(self):
+    def test_remove_similarity_thresholds(self):
         FloatOption('setting', 'file_lookup_threshold', 0.7)
         FloatOption('setting', 'cluster_lookup_threshold', 0.7)
 
         self.config.setting['file_lookup_threshold'] = 0.8
         self.config.setting['cluster_lookup_threshold'] = 0.6
-        hooks.upgrade_to_v3_0_0b3(self.config)
+        hooks.remove_similarity_thresholds(self.config.setting)
         self.assertNotIn('file_lookup_threshold', self.config.setting)
         self.assertNotIn('cluster_lookup_threshold', self.config.setting)
+
+    def test_remove_similarity_thresholds_dict(self):
+        settings = {'file_lookup_threshold': 0.8, 'cluster_lookup_threshold': 0.6}
+        hooks.remove_similarity_thresholds(settings)
+        self.assertNotIn('file_lookup_threshold', settings)
+        self.assertNotIn('cluster_lookup_threshold', settings)
 
     def test_rename_selected_file_naming_script_id(self):
         TextOption('setting', 'active_file_naming_script_id', '')
