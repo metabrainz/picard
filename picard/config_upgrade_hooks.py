@@ -664,7 +664,8 @@ def lowercase_cover_art_formats(settings):
         )
 
 
-def upgrade_to_v3_0_0a2(config):
+@upgrade_settings('3.0.0a2')
+def fix_matchedtracks_in_scripts(settings):
     """Update $matchedtracks() usage in scripts"""
 
     matched_tracks_regex = re.compile(r'\$matchedtracks\([^)$]+\)')
@@ -672,15 +673,16 @@ def upgrade_to_v3_0_0a2(config):
     def fix_matchedtracks(script):
         return matched_tracks_regex.sub('$matchedtracks()', script)
 
+    def fix_renaming_scripts(scripts):
+        for script_item in scripts.values():
+            script_item['script'] = fix_matchedtracks(script_item['script'])
+        return scripts
+
     def fix_tagger_scripts(scripts):
         return [(pos, name, enabled, fix_matchedtracks(script)) for pos, name, enabled, script in scripts]
 
-    renaming_scripts = config.setting.raw_value('file_renaming_scripts') or {}
-    for script_item in renaming_scripts.values():
-        script_item['script'] = fix_matchedtracks(script_item['script'])
-    config.setting['file_renaming_scripts'] = renaming_scripts
-
-    upgrade_option_value(config, 'list_of_scripts', fix_tagger_scripts)
+    upgrade_option_value_in_settings(settings, 'file_renaming_scripts', fix_renaming_scripts)
+    upgrade_option_value_in_settings(settings, 'list_of_scripts', fix_tagger_scripts)
 
 
 @upgrade_config('3.0.0a3')

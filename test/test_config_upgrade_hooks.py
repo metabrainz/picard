@@ -662,7 +662,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertEqual('tiff', settings['cover_tags_convert_to_format'])
         self.assertEqual('jpeg', settings['cover_file_convert_to_format'])
 
-    def test_upgrade_to_v3_0_0a2(self):
+    def test_fix_matchedtracks_in_scripts(self):
         Option('setting', 'file_renaming_scripts', {})
         ListOption('setting', 'list_of_scripts', [])
 
@@ -682,7 +682,7 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             (0, 'Script 1', True, test_script),
         ]
 
-        hooks.upgrade_to_v3_0_0a2(self.config)
+        hooks.fix_matchedtracks_in_scripts(self.config.setting)
 
         result_naming_script = self.config.setting['file_renaming_scripts']['766bb2ce-5170-45f1-900c-02e7f9bd41cb']
         self.assertEqual(
@@ -695,43 +695,23 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
             result_tagger_script[3],
         )
 
-    def test_upgrade_to_v3_0_0a2_profiles(self):
-        Option('setting', 'file_renaming_scripts', {})
-        ListOption('setting', 'list_of_scripts', [], in_profile=True)
-        ListOption.add_if_missing('profiles', 'user_profiles', [])
-        Option.add_if_missing('profiles', 'user_profile_settings', {})
-
+    def test_fix_matchedtracks_in_scripts_dict(self):
         test_script = r'$set(foo,$matchedtracks(baz))'
         expected_script = '$set(foo,$matchedtracks())'
 
-        self.config.setting['file_renaming_scripts'] = {
-            'test-id': {'id': 'test-id', 'title': 'Test', 'script': test_script},
-        }
-        self.config.setting['list_of_scripts'] = [
-            (0, 'Base Script', True, test_script),
-        ]
-        self.config.profiles['user_profiles'] = [
-            {'id': 'p1', 'enabled': True, 'position': 0, 'title': 'Test'},
-        ]
-        self.config.profiles['user_profile_settings'] = {
-            'p1': {
-                'list_of_scripts': [
-                    (0, 'Profile Script', True, test_script),
-                ],
+        settings = {
+            'file_renaming_scripts': {
+                'test-id': {'id': 'test-id', 'title': 'Test', 'script': test_script},
             },
+            'list_of_scripts': [
+                (0, 'Script 1', True, test_script),
+            ],
         }
 
-        hooks.upgrade_to_v3_0_0a2(self.config)
+        hooks.fix_matchedtracks_in_scripts(settings)
 
-        # Base config updated
-        self.assertEqual(expected_script, self.config.setting['list_of_scripts'][0][3])
-        self.assertEqual(
-            expected_script,
-            self.config.setting['file_renaming_scripts']['test-id']['script'],
-        )
-        # Profile updated
-        profile_settings = self.config.profiles['user_profile_settings']['p1']
-        self.assertEqual(expected_script, profile_settings['list_of_scripts'][0][3])
+        self.assertEqual(expected_script, settings['file_renaming_scripts']['test-id']['script'])
+        self.assertEqual(expected_script, settings['list_of_scripts'][0][3])
 
     def test_remove_persisted_column_config(self):
         Option('persist', 'album_view_header_state', PyQt6.QtCore.QByteArray())
