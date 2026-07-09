@@ -835,10 +835,13 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         # Should not create standardize_artist_names if old option wasn't present
         self.assertNotIn('standardize_artist_names', settings)
 
-    def test_upgrade_to_v3_0_0b7(self):
+    def test_remove_rtd_updates_ask(self):
         BoolOption('setting', 'rtd_updates_ask', True)
-        self.config.persist['rtd_updates_ask'] = True
-
-        hooks.upgrade_to_v3_0_0b7(self.config)
-
+        self.config.setting['rtd_updates_ask'] = True
+        hooks.remove_rtd_updates_ask(self.config.setting)
         self.assertNotIn('rtd_updates_ask', self.config.setting)
+
+    def test_remove_rtd_updates_ask_dict(self):
+        settings = {'rtd_updates_ask': True}
+        hooks.remove_rtd_updates_ask(settings)
+        self.assertNotIn('rtd_updates_ask', settings)

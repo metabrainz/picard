@@ -740,6 +740,7 @@ def convert_standardize_artists(settings):
     remove_option(settings, 'standardize_artists')
 
 
-def upgrade_to_v3_0_0b7(config):
+@upgrade_settings('3.0.0b7')
+def remove_rtd_updates_ask(settings):
     """Remove "rtd_updates_ask"."""
-    config.setting.remove('rtd_updates_ask')
+    remove_option(settings, 'rtd_updates_ask')
