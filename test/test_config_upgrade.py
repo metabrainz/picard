@@ -352,48 +352,66 @@ class TestGetSortedUpgrades(PicardTestCase):
         self.assertEqual(result[1], _UpgradeEntry(v, C, f2))
 
 
-class TestReadOldOption(PicardTestCase):
-    """Tests for the polymorphic read_old_option (dict path)."""
+class TestGetOption(PicardTestCase):
+    """Tests for the polymorphic get_option (dict path)."""
 
     def test_read_existing_key(self):
-        from picard.config_upgrade import read_old_option
+        from picard.config_upgrade import get_option
 
         settings = {'old_key': 'value', 'other': 42}
-        result = read_old_option(settings, 'old_key')
+        result = get_option(settings, 'old_key')
         self.assertEqual(result, 'value')
-        self.assertNotIn('old_key', settings)
-        self.assertIn('other', settings)
+        # Key is NOT removed
+        self.assertIn('old_key', settings)
 
     def test_read_missing_key_returns_default(self):
-        from picard.config_upgrade import read_old_option
+        from picard.config_upgrade import get_option
 
         settings = {'other': 42}
-        result = read_old_option(settings, 'old_key', default='fallback')
+        result = get_option(settings, 'old_key', default='fallback')
         self.assertEqual(result, 'fallback')
         self.assertEqual(settings, {'other': 42})
 
     def test_read_missing_key_no_default_returns_none(self):
-        from picard.config_upgrade import read_old_option
+        from picard.config_upgrade import get_option
 
         settings = {'other': 42}
-        result = read_old_option(settings, 'old_key')
+        result = get_option(settings, 'old_key')
         self.assertIsNone(result)
 
     def test_read_bool_value(self):
-        from picard.config_upgrade import read_old_option
+        from picard.config_upgrade import get_option
 
         settings = {'flag': True}
-        result = read_old_option(settings, 'flag')
+        result = get_option(settings, 'flag')
         self.assertTrue(result)
-        self.assertNotIn('flag', settings)
+        self.assertIn('flag', settings)
 
     def test_read_none_value(self):
-        from picard.config_upgrade import read_old_option
+        from picard.config_upgrade import get_option
 
         settings = {'tracked': None}
-        result = read_old_option(settings, 'tracked', default=False)
+        result = get_option(settings, 'tracked', default=False)
         self.assertIsNone(result)
-        self.assertNotIn('tracked', settings)
+
+
+class TestRemoveOption(PicardTestCase):
+    """Tests for the polymorphic remove_option (dict path)."""
+
+    def test_remove_existing_key(self):
+        from picard.config_upgrade import remove_option
+
+        settings = {'old_key': 'value', 'other': 42}
+        remove_option(settings, 'old_key')
+        self.assertNotIn('old_key', settings)
+        self.assertIn('other', settings)
+
+    def test_remove_missing_key_is_noop(self):
+        from picard.config_upgrade import remove_option
+
+        settings = {'other': 42}
+        remove_option(settings, 'old_key')
+        self.assertEqual(settings, {'other': 42})
 
 
 class TestWriteOption(PicardTestCase):

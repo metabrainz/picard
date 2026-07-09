@@ -776,19 +776,36 @@ class TestPicardConfigUpgrades(TestPicardConfigCommon):
         self.assertIn('save_images_to_tags', items)
         self.assertIn('save_images_to_files', items)
 
-    def test_upgrade_to_v3_0_0b6(self):
+    def test_convert_standardize_artists(self):
         BoolOption('setting', 'standardize_artists', False)
         Option('setting', 'standardize_artist_names', StandardizeArtistNames.VARIATIONS)
 
         self.config.setting['standardize_artists'] = True
-        hooks.upgrade_to_v3_0_0b6(self.config)
+        hooks.convert_standardize_artists(self.config.setting)
         self.assertNotIn('standardize_artists', self.config.setting)
         self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.ALL)
 
         self.config.setting['standardize_artists'] = False
-        hooks.upgrade_to_v3_0_0b6(self.config)
+        hooks.convert_standardize_artists(self.config.setting)
         self.assertNotIn('standardize_artists', self.config.setting)
         self.assertEqual(self.config.setting['standardize_artist_names'], StandardizeArtistNames.NONE)
+
+    def test_convert_standardize_artists_dict(self):
+        settings = {'standardize_artists': True}
+        hooks.convert_standardize_artists(settings)
+        self.assertNotIn('standardize_artists', settings)
+        self.assertEqual(settings['standardize_artist_names'], StandardizeArtistNames.ALL.value)
+
+        settings = {'standardize_artists': False}
+        hooks.convert_standardize_artists(settings)
+        self.assertNotIn('standardize_artists', settings)
+        self.assertEqual(settings['standardize_artist_names'], StandardizeArtistNames.NONE.value)
+
+    def test_convert_standardize_artists_missing(self):
+        settings = {'other_option': 'value'}
+        hooks.convert_standardize_artists(settings)
+        # Should not create standardize_artist_names if old option wasn't present
+        self.assertNotIn('standardize_artist_names', settings)
 
     def test_upgrade_to_v3_0_0b7(self):
         BoolOption('setting', 'rtd_updates_ask', True)

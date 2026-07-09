@@ -246,16 +246,15 @@ def upgrade_option_value_in_settings(
                     settings[name] = transform(value)
 
 
-def read_old_option(
+def get_option(
     settings: Settings,
     name: str,
     option_type: type[Option] | None = None,
     default: ConfigValueType | None = None,
 ) -> Any:
-    """Read and remove an old option value from settings.
+    """Read an option value from settings without removing it.
 
     Polymorphic: works on both plain dicts and ConfigSection objects.
-    After reading, the option key is removed from settings.
 
     For plain dicts, the value is already a Python object (bool, int, str, etc.)
     and is returned directly.
@@ -265,7 +264,7 @@ def read_old_option(
 
     Args:
         settings: A plain dict or a ConfigSection instance.
-        name: The option key name to read and remove.
+        name: The option key name to read.
         option_type: Option class (e.g., BoolOption). Required for ConfigSection,
                      ignored for plain dicts.
         default: Default value if the key is missing. Required for ConfigSection,
@@ -275,16 +274,33 @@ def read_old_option(
         The option value (deserialized), or default if the key is not present.
     """
     if isinstance(settings, dict):
-        return settings.pop(name, default)
+        return settings.get(name, default)
     else:
         assert option_type is not None
         assert default is not None
         if name not in settings:
             return default
         with temp_option(option_type, settings.section_name, name, default) as opt:
-            value = settings.value(opt, default)
+            return settings.value(opt, default)
+
+
+def remove_option(
+    settings: Settings,
+    name: str,
+) -> None:
+    """Remove an option key from settings.
+
+    Polymorphic: works on both plain dicts and ConfigSection objects.
+    No-op if the key is not present.
+
+    Args:
+        settings: A plain dict or a ConfigSection instance.
+        name: The option key name to remove.
+    """
+    if isinstance(settings, dict):
+        settings.pop(name, None)
+    else:
         settings.remove(name)
-        return value
 
 
 def write_option(

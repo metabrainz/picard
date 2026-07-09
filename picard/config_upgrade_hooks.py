@@ -46,6 +46,8 @@ from picard.config import (
     TextOption,
 )
 from picard.config_upgrade import (
+    get_option,
+    remove_option,
     rename_option,
     rename_option_in_settings,
     temp_option,
@@ -53,6 +55,7 @@ from picard.config_upgrade import (
     upgrade_option_value,
     upgrade_option_value_in_settings,
     upgrade_settings,
+    write_option,
 )
 from picard.const.defaults import (
     DEFAULT_FILE_NAMING_FORMAT,
@@ -713,13 +716,18 @@ def add_quick_menu_items(settings):
     upgrade_option_value_in_settings(settings, 'quick_menu_items', _add_items)
 
 
-def upgrade_to_v3_0_0b6(config):
+@upgrade_settings('3.0.0b6')
+def convert_standardize_artists(settings):
     """Convert "standardize_artists" to "standardize_artist_names"."""
-    if config.setting['standardize_artists']:
-        config.setting['standardize_artist_names'] = StandardizeArtistNames.ALL
-    else:
-        config.setting['standardize_artist_names'] = StandardizeArtistNames.NONE
-    config.setting.remove('standardize_artists')
+    if 'standardize_artists' not in settings:
+        return
+    value = get_option(settings, 'standardize_artists', BoolOption, False)
+    write_option(
+        settings,
+        'standardize_artist_names',
+        StandardizeArtistNames.ALL if value else StandardizeArtistNames.NONE,
+    )
+    remove_option(settings, 'standardize_artists')
 
 
 def upgrade_to_v3_0_0b7(config):

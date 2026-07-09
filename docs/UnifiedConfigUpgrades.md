@@ -99,7 +99,8 @@ are required (asserted at runtime) to support QSettings deserialization.
 |--------|---------|
 | `rename_option_in_settings(settings, old, new, option_type, default, reverse)` | Rename a key, optionally invert boolean |
 | `upgrade_option_value_in_settings(settings, name, transform)` | Apply a value transform to an existing key |
-| `read_old_option(settings, name, option_type, default) -> Any` | Read and remove an old option (for complex transforms: type changes, one→many) |
+| `get_option(settings, name, option_type, default) -> Any` | Read an option value without removing (for complex transforms: type changes, one→many) |
+| `remove_option(settings, name)` | Remove an option key (no-op if absent) |
 | `write_option(settings, name, value)` | Write a value (handles Enum→.value serialization for dicts) |
 
 ### Registry and startup flow
