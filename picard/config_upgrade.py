@@ -213,7 +213,7 @@ def upgrade_option_value(
     Polymorphic: works on both plain dicts (profile overrides, imported
     settings) and ConfigSection objects (base config at startup).
 
-    The transform function receives the current value and must return the
+    The transform function receives the current raw value and must return the
     new value. Settings with None value (tracked but not overridden in
     profile dicts) are left unchanged.
 
