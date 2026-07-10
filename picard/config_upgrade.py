@@ -33,6 +33,7 @@ from itertools import groupby
 from typing import (
     Any,
     NamedTuple,
+    TypeAlias,
 )
 
 from picard import log
@@ -53,6 +54,8 @@ from picard.version import (
 # (base config at startup).
 Settings = dict | SettingConfigSection
 
+SettingsUpgradeFunc: TypeAlias = Callable[[Settings], None]
+ConfigUpgradeFunc: TypeAlias = Callable[[Config], None]
 
 # TO ADD AN UPGRADE HOOK:
 # See config_upgrade_hooks.py
@@ -90,7 +93,7 @@ class _UpgradeEntry(NamedTuple):
 _UPGRADES_REGISTRY: list[_UpgradeEntry] = []
 
 
-def upgrade_settings(version_str: str):
+def upgrade_settings(version_str: str) -> Callable[[SettingsUpgradeFunc], None]:
     """Decorator to register a settings upgrade function.
 
     The decorated function receives a single argument: either a plain dict
@@ -117,7 +120,7 @@ def upgrade_settings(version_str: str):
     return decorator
 
 
-def upgrade_config(version_str: str):
+def upgrade_config(version_str: str) -> Callable[[ConfigUpgradeFunc], None]:
     """Decorator to register a config upgrade function (non-settings operations).
 
     The decorated function receives the full Config object. Use this for
