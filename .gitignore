@@ -83,3 +83,4 @@ test-registry.json
 .augmentcode/
 .github/copilot*
 .copilot/
+.claude/
