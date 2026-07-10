@@ -63,16 +63,16 @@ def short_commit_id(commit_id):
 
 
 def hash_string(text):
-    """Generate SHA1 hash of a string for use in filenames.
+    """Generate hash of a string for use in filenames.
 
     Args:
         text: String to hash
 
     Returns:
-        str: Full SHA1 hash (40 characters)
+        str: A 40 characters BLAKE2b hash
     """
 
-    return hashlib.sha1(text.encode()).hexdigest()
+    return hashlib.blake2b(text.encode(), digest_size=20).hexdigest()
 
 
 class PluginState(Enum):
