@@ -21,7 +21,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+from enum import Enum, IntEnum
+
 from test.picardtestcase import PicardTestCase
+
+from picard.config import (
+    BoolOption,
+    IntOption,
+    ListOption,
+    Option,
+    TextOption,
+)
 
 
 class TestRenameOptionInSettingsPolymorphic(PicardTestCase):
@@ -279,7 +289,7 @@ class TestGetOption(PicardTestCase):
         from picard.config_upgrade import get_option
 
         settings = {'old_key': 'value', 'other': 42}
-        result = get_option(settings, 'old_key')
+        result = get_option(settings, 'old_key', option_type=TextOption, default='')
         self.assertEqual(result, 'value')
         # Key is NOT removed
         self.assertIn('old_key', settings)
@@ -288,7 +298,7 @@ class TestGetOption(PicardTestCase):
         from picard.config_upgrade import get_option
 
         settings = {'other': 42}
-        result = get_option(settings, 'old_key', default='fallback')
+        result = get_option(settings, 'old_key', option_type=TextOption, default='fallback')
         self.assertEqual(result, 'fallback')
         self.assertEqual(settings, {'other': 42})
 
@@ -296,14 +306,14 @@ class TestGetOption(PicardTestCase):
         from picard.config_upgrade import get_option
 
         settings = {'other': 42}
-        result = get_option(settings, 'old_key')
+        result = get_option(settings, 'old_key', option_type=IntOption, default=None)
         self.assertIsNone(result)
 
     def test_read_bool_value(self):
         from picard.config_upgrade import get_option
 
         settings = {'flag': True}
-        result = get_option(settings, 'flag')
+        result = get_option(settings, 'flag', option_type=BoolOption, default=False)
         self.assertTrue(result)
         self.assertIn('flag', settings)
 
@@ -311,8 +321,37 @@ class TestGetOption(PicardTestCase):
         from picard.config_upgrade import get_option
 
         settings = {'tracked': None}
-        result = get_option(settings, 'tracked', default=False)
+        result = get_option(settings, 'tracked', option_type=Option, default=False)
         self.assertIsNone(result)
+
+    def test_read_list_value(self):
+        from picard.config_upgrade import get_option
+
+        settings = {'opt1': ['foo', 'bar']}
+        result = get_option(settings, 'opt1', option_type=ListOption, default=[])
+        self.assertEqual(result, ['foo', 'bar'])
+
+    def test_read_enum_value(self):
+        from picard.config_upgrade import get_option
+
+        class MyEnum(Enum):
+            VALUE1 = 'value1'
+            VALUE2 = 'value2'
+
+        settings = {'enum_opt': 'value2'}
+        result = get_option(settings, 'enum_opt', option_type=Option, default=MyEnum.VALUE1)
+        self.assertEqual(result, MyEnum.VALUE2)
+
+    def test_read_int_enum_value(self):
+        from picard.config_upgrade import get_option
+
+        class MyEnum(IntEnum):
+            VALUE1 = 1
+            VALUE2 = 2
+
+        settings = {'enum_opt': 2}
+        result = get_option(settings, 'enum_opt', option_type=IntOption, default=MyEnum.VALUE1)
+        self.assertEqual(result, MyEnum.VALUE2)
 
 
 class TestRemoveOption(PicardTestCase):

@@ -238,8 +238,8 @@ def upgrade_option_value(
 def get_option(
     settings: Settings,
     name: str,
-    option_type: type[Option] | None = None,
-    default: ConfigValueType | None = None,
+    option_type: type[Option],
+    default: ConfigValueType | None,
 ) -> Any:
     """Read an option value from settings without removing it.
 
@@ -263,12 +263,17 @@ def get_option(
         The option value (deserialized), or default if the key is not present.
     """
     if isinstance(settings, dict):
-        return settings.get(name, default)
-    else:
-        assert option_type is not None
+        value = settings.get(name, default)
+        if value is None:
+            return None
         assert default is not None
+        with temp_option(option_type, 'upgrade', name, default) as opt:
+            value = opt.convert(value)
+        return value
+    else:
         if name not in settings:
             return default
+        assert default is not None
         with temp_option(option_type, settings.section_name, name, default) as opt:
             return settings.value(opt, default)
 
