@@ -235,13 +235,13 @@ def upgrade_option_value(
                     settings[name] = transform(value)
 
 
-def get_option(
+def get_option_value(
     settings: Settings,
     name: str,
     option_type: type[Option],
     default: ConfigValueType | None,
 ) -> Any:
-    """Read an option value from settings without removing it.
+    """Read an option value from settings.
 
     Polymorphic: works on both plain dicts and ConfigSection objects.
 

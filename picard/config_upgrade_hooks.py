@@ -48,7 +48,7 @@ from picard.config import (
     TextOption,
 )
 from picard.config_upgrade import (
-    get_option,
+    get_option_value,
     remove_option,
     rename_option,
     temp_option,
@@ -367,7 +367,7 @@ def convert_caa_image_size(config):
 def upgrade_genre_options(settings):
     """Upgrade genre related options"""
     if 'folksonomy_tags' in settings:
-        value = get_option(settings, 'folksonomy_tags', BoolOption, False)
+        value = get_option_value(settings, 'folksonomy_tags', BoolOption, False)
         if value:
             write_option(settings, 'use_genres', True)
     rename_option(settings, 'max_tags', 'max_genres', IntOption, 5)
@@ -663,7 +663,7 @@ def sanitize_replace_dir_separator(settings):
 def copy_standardize_instruments_to_vocals(settings):
     """New independent option "standardize_vocals" should use the value of the old shared option"""
     if 'standardize_instruments' in settings:
-        value = get_option(settings, 'standardize_instruments', BoolOption, False)
+        value = get_option_value(settings, 'standardize_instruments', BoolOption, False)
         write_option(settings, 'standardize_vocals', value)
 
 
@@ -779,7 +779,7 @@ def convert_standardize_artists(settings):
     """Convert "standardize_artists" to "standardize_artist_names"."""
     if 'standardize_artists' not in settings:
         return
-    value = get_option(settings, 'standardize_artists', BoolOption, False)
+    value = get_option_value(settings, 'standardize_artists', BoolOption, False)
     write_option(
         settings,
         'standardize_artist_names',

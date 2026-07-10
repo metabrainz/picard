@@ -41,7 +41,7 @@ from picard.config_upgrade import (
     _UpgradeEntry,
     _UpgradeType,
     apply_settings_upgrades_for_import,
-    get_option,
+    get_option_value,
     remove_option,
     rename_option,
     upgrade_config,
@@ -246,36 +246,36 @@ class TestGetOption(PicardTestCase):
 
     def test_read_existing_key(self):
         settings = {'old_key': 'value', 'other': 42}
-        result = get_option(settings, 'old_key', option_type=TextOption, default='')
+        result = get_option_value(settings, 'old_key', option_type=TextOption, default='')
         self.assertEqual(result, 'value')
         # Key is NOT removed
         self.assertIn('old_key', settings)
 
     def test_read_missing_key_returns_default(self):
         settings = {'other': 42}
-        result = get_option(settings, 'old_key', option_type=TextOption, default='fallback')
+        result = get_option_value(settings, 'old_key', option_type=TextOption, default='fallback')
         self.assertEqual(result, 'fallback')
         self.assertEqual(settings, {'other': 42})
 
     def test_read_missing_key_no_default_returns_none(self):
         settings = {'other': 42}
-        result = get_option(settings, 'old_key', option_type=IntOption, default=None)
+        result = get_option_value(settings, 'old_key', option_type=IntOption, default=None)
         self.assertIsNone(result)
 
     def test_read_bool_value(self):
         settings = {'flag': True}
-        result = get_option(settings, 'flag', option_type=BoolOption, default=False)
+        result = get_option_value(settings, 'flag', option_type=BoolOption, default=False)
         self.assertTrue(result)
         self.assertIn('flag', settings)
 
     def test_read_none_value(self):
         settings = {'tracked': None}
-        result = get_option(settings, 'tracked', option_type=Option, default=False)
+        result = get_option_value(settings, 'tracked', option_type=Option, default=False)
         self.assertIsNone(result)
 
     def test_read_list_value(self):
         settings = {'opt1': ['foo', 'bar']}
-        result = get_option(settings, 'opt1', option_type=ListOption, default=[])
+        result = get_option_value(settings, 'opt1', option_type=ListOption, default=[])
         self.assertEqual(result, ['foo', 'bar'])
 
     def test_read_enum_value(self):
@@ -284,7 +284,7 @@ class TestGetOption(PicardTestCase):
             VALUE2 = 'value2'
 
         settings = {'enum_opt': 'value2'}
-        result = get_option(settings, 'enum_opt', option_type=Option, default=MyEnum.VALUE1)
+        result = get_option_value(settings, 'enum_opt', option_type=Option, default=MyEnum.VALUE1)
         self.assertEqual(result, MyEnum.VALUE2)
 
     def test_read_int_enum_value(self):
@@ -293,7 +293,7 @@ class TestGetOption(PicardTestCase):
             VALUE2 = 2
 
         settings = {'enum_opt': 2}
-        result = get_option(settings, 'enum_opt', option_type=IntOption, default=MyEnum.VALUE1)
+        result = get_option_value(settings, 'enum_opt', option_type=IntOption, default=MyEnum.VALUE1)
         self.assertEqual(result, MyEnum.VALUE2)
 
 
