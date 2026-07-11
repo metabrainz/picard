@@ -534,3 +534,33 @@ picard_version = "2.0.0"
 
         self.assertEqual(result.title, 'Empty Settings')
         self.assertEqual(result.upgraded_settings, [])
+
+    def test_import_upgrade_exception_handled_gracefully(self):
+        """If a settings upgrade hook raises, import still succeeds with a warning."""
+        from unittest.mock import patch
+
+        BoolOption('setting', 'some_option', False, title="Some", in_profile=True)
+
+        toml = """\
+[profile]
+title = "Broken Upgrade"
+picard_version = "2.0.0"
+
+[settings]
+some_option = true
+"""
+
+        with patch(
+            'picard.profiles.importer.apply_settings_upgrades_for_import',
+            side_effect=ValueError("unexpected value"),
+        ):
+            result = import_profile(self.config, toml)
+
+        # Profile was still created
+        self.assertEqual(result.title, 'Broken Upgrade')
+        settings = self.config.profiles['user_profile_settings'][result.profile_id]
+        self.assertTrue(settings['some_option'])
+        # Warning about the failure was added
+        self.assertTrue(any('failed' in w for w in result.warnings))
+        # No upgrades recorded
+        self.assertEqual(result.upgraded_settings, [])

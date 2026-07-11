@@ -137,13 +137,23 @@ def import_profile(
     # Apply settings upgrades if the profile is from an older version
     picard_version = profile_section.get('picard_version')
     if picard_version and settings_section:
-        upgrade_descriptions = apply_settings_upgrades_for_import(settings_section, picard_version)
-        if upgrade_descriptions:
-            result.upgraded_settings = upgrade_descriptions
-            log.debug(
-                "Applied %d settings upgrade(s) during profile import",
-                len(upgrade_descriptions),
+        try:
+            upgrade_descriptions = apply_settings_upgrades_for_import(settings_section, picard_version)
+        except Exception as e:
+            log.warning(
+                "Settings upgrade failed during profile import: %s",
+                e,
             )
+            result.warnings.append(
+                f"Settings upgrade from Picard {picard_version} failed: {e}. Some settings may not have been converted."
+            )
+        else:
+            if upgrade_descriptions:
+                result.upgraded_settings = upgrade_descriptions
+                log.debug(
+                    "Applied %d settings upgrade(s) during profile import",
+                    len(upgrade_descriptions),
+                )
 
     # Process [settings] section
     for key, value in settings_section.items():
