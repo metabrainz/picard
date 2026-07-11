@@ -159,6 +159,7 @@ class ArtistCreditInfo:
     names: list[str]
     sort_names: list[str]
     countries: list[str]
+    comments: list[str]
 
 
 @dataclass
@@ -640,6 +641,7 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
     artist_names = []
     artist_sort_names = []
     artist_countries = []
+    artist_comments = []
     config = get_config()
     standardize_names_mode = config.setting['standardize_artist_names']
     for artist_info in node:
@@ -650,6 +652,7 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
         if artist and 'id' in artist and artist['id']:
             # Add artist's country code if specified, otherwise 'XX' (Unknown Country)
             artist_countries.append(artist['country'] if 'country' in artist and artist['country'] else 'XX')
+            artist_comments.append(artist.get('disambiguation', ''))
         translated_alias = _translate_artist_node(artist, config=config)
         has_translation = translated_alias.name != artist['name']
         if not has_translation and use_credited_as and 'name' in artist_info:
@@ -665,7 +668,9 @@ def artist_credit_from_node(node: list[Node]) -> ArtistCreditInfo:
         if 'joinphrase' in artist_info:
             artist_name += artist_info['joinphrase'] or ''
             artist_sort_name += artist_info['joinphrase'] or ''
-    return ArtistCreditInfo(artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries)
+    return ArtistCreditInfo(
+        artist_name, artist_sort_name, artist_names, artist_sort_names, artist_countries, artist_comments
+    )
 
 
 def should_standardize_artist_name(mode: StandardizeArtistNames, credited_name: str, artist: Node) -> bool:
@@ -698,6 +703,8 @@ def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = F
         m['~albumartists'] = credits.names
         m['~albumartists_sort'] = credits.sort_names
         m['~albumartists_countries'] = credits.countries
+        m['~albumartists_comments'] = credits.comments
+        m['~albumartistcomment'] = credits.comments[0] if len(credits.comments) == 1 else ''
     else:
         m['musicbrainz_artistid'] = ids
         m['artist'] = credits.name
@@ -705,6 +712,8 @@ def artist_credit_to_metadata(node: list[Node], m: 'Metadata', release: bool = F
         m['artists'] = credits.names
         m['~artists_sort'] = credits.sort_names
         m['~artists_countries'] = credits.countries
+        m['~artists_comments'] = credits.comments
+        m['~artistcomment'] = credits.comments[0] if len(credits.comments) == 1 else ''
 
 
 def _release_event_iter(node: Node) -> Iterator[Node]:

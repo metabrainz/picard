@@ -102,6 +102,25 @@ ALL_TAGS = TagVars(
         is_multi_value=True,
     ),
     TagVar(
+        'albumartists_comments',
+        shortdesc=N_('Album Artists Comments'),
+        longdesc=N_(
+            'The disambiguation comments for all of the credited album artists, in the same order as the artists.'
+        ),
+        is_hidden=True,
+        is_tag=False,
+        is_multi_value=True,
+    ),
+    TagVar(
+        'albumartistcomment',
+        shortdesc=N_('Album Artist Comment'),
+        longdesc=N_(
+            'The disambiguation comment for the album artist. This is only set if there is a single album artist.'
+        ),
+        is_hidden=True,
+        is_tag=False,
+    ),
+    TagVar(
         'albumartistsort',
         shortdesc=N_('Album Artist Sort Order'),
         longdesc=N_('The release artists sort names, separated by the specified join phrases. (e.g.: "Beatles, The")'),
@@ -170,6 +189,25 @@ ALL_TAGS = TagVars(
         is_hidden=True,
         is_tag=False,
         is_multi_value=True,
+    ),
+    TagVar(
+        'artists_comments',
+        shortdesc=N_('Artists Comments'),
+        longdesc=N_(
+            'The disambiguation comments for all of the credited track artists, in the same order as the artists.'
+        ),
+        is_hidden=True,
+        is_tag=False,
+        is_multi_value=True,
+    ),
+    TagVar(
+        'artistcomment',
+        shortdesc=N_('Artist Comment'),
+        longdesc=N_(
+            'The disambiguation comment for the track artist. This is only set if there is a single track artist.'
+        ),
+        is_hidden=True,
+        is_tag=False,
     ),
     TagVar(
         'artistsort',
